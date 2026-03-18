@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-227093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEP8DAO+ummqbQIAu9opvQ
-	(envelope-from <stable+bounces-227093-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:00:19 +0100
+	id kExmCLu/umkGbgIAu9opvQ
+	(envelope-from <stable+bounces-227094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:07:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3BCE2BDB93
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:00:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 826E82BDDC7
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:07:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0DE7B301689B
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:00:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E0B4308E633
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929B83DEAC5;
-	Wed, 18 Mar 2026 15:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C87A36BCE7;
+	Wed, 18 Mar 2026 15:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gKpsxvi5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyTJYUMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A467C3B9608
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 15:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20CC3DB64F
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 15:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773846000; cv=none; b=a5oQfbcNI2sHglwKAolOWar95xHAYRfMVqdRK4qoxW6CQaqiXiVOogGiJaNWmtDgRwqUd67SHxCEzVy0/t2EF3GikCNVhLbfr0uD4lB+JMfC74lLs7QKHUVdiAni6E1qkzqtE2mXdLFvwdTGaHX0hVafhZZb5dSXkwKqpS0ie/0=
+	t=1773846015; cv=none; b=OHKRMlOCbo8M5HCvicG45SMBC0kBLzj5hTey3c/5RO+VDM/tV0fbVQcEzmOEOrymhVDBpDYILbMcobSlWEz7XY98yULCfZQNWP5t0wv4eEwAP8RqSDd2p+3igODhlY9L1LvqItz1EPBpSi9uyrdnl13IS8ykrQeIAAjtC+2kK7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773846000; c=relaxed/simple;
-	bh=XgvN6mqLfK2aZBbXLWWDzLhP+575EYrwP1a0i2orxjM=;
+	s=arc-20240116; t=1773846015; c=relaxed/simple;
+	bh=3sxjWS3rwmhPhZzIQUg9/BWS2FvFgKn5GPUx/l8sz9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3oJfYKH/TBADTxeHdNRSC5mCkCEAxGnmTmF0pf6j2LklBcG4wkjFGkM1YHmr2an7Crbrw8ng0vED90tK9td8O9t/M889GoS0z9ENv7e5moAAEI70RgBJa2nbBlVzdxK1qzQeOxHA053cIuiUaVL9L2QdXBMruwGiuu2J2q40Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gKpsxvi5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31389C2BCB0;
-	Wed, 18 Mar 2026 14:59:59 +0000 (UTC)
+	 MIME-Version; b=W+t00FKvu1Mw0iU5DREk4oOPFBSSZKZkbuzbly5DjLxNLQom7K8SMQjqPwuhN8l3d7ozNF9y/ZG746SGqkLhSOzvmyXc4wj2Ymfdv1AxGVLeEytGhVMTVl+bxIPwT1X58SzfVfyVmyulgNRUzuhbqqx1bS6MB1uxQBBlBJTXIgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyTJYUMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E15DC19421;
+	Wed, 18 Mar 2026 15:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773846000;
-	bh=XgvN6mqLfK2aZBbXLWWDzLhP+575EYrwP1a0i2orxjM=;
+	s=k20201202; t=1773846014;
+	bh=3sxjWS3rwmhPhZzIQUg9/BWS2FvFgKn5GPUx/l8sz9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gKpsxvi5JiXl/ouMVitHtWZSpaPcpWqnKSkRmvQNIYFDBuYkqKFNv075GqO4jWH8O
-	 WfyvBNwLl16gZaULQiidAzKWb3qDqrjo0esTL97rjSL0cpH9wQ5t3XeTXqCle+F3Z6
-	 X8biSbLyDicp7FNcYEK1xUuqcdZo6kohTkO48jy1zg02WazmUjmrbWCM/T75r09E9w
-	 ubeVKbOIFf2GAvRhFCuEgLTHSgYzEYqnmWvo9ShcYYWJUf2ZwN9tqK+m1EDai7c/Pb
-	 whTj9GiXEX41jSjLJA9mekb7e+Osc7lJOg3vtSzcOicfum3pvPKDmuvynULGf8/nmG
-	 lM/PNhQJ/llNg==
+	b=HyTJYUMbYaQFvLdciwXeN+fyWch1WkNByr0kyJyfxiKyaP6b6JyYBXKF78QBM6WRK
+	 Smgke2diMQ2PLOqBoe+HOO9uNBRXP7j33+Zj96LwgziYUPXcmvCb3/kVfZ6GMrBtl6
+	 SfDA0VokNXgd9tYO057q7uWKzZWI6tDX36jbHK9T1hT60QlcBTrJBX4jsEqIU/1dHj
+	 lq+G4UtYurzKF9V9Mdvbd/80ktY2QiiYOtJjG6Iu0Snpp2T4GxmU3nwpjAISHRZ4Jv
+	 XbSO/xFmOpkWQR+J8yjUEb4xki5khCsYSCPoBSHem5wzLXmnEJpP0oJJzoSzH4HUms
+	 3HZVdN54dSkUA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kevin Hao <haokexin@gmail.com>,
-	Quanyang Wang <quanyang.wang@windriver.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Marek Vasut <marek.vasut@mailbox.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 2/2] net: macb: Shuffle the tx ring before enabling tx
-Date: Wed, 18 Mar 2026 10:59:56 -0400
-Message-ID: <20260318145956.858944-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y] drm/bridge: ti-sn65dsi83: fix CHA_DSI_CLK_RANGE rounding
+Date: Wed, 18 Mar 2026 11:00:12 -0400
+Message-ID: <20260318150012.859558-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260318145956.858944-1-sashal@kernel.org>
-References: <2026031732-womanless-smother-6439@gregkh>
- <20260318145956.858944-1-sashal@kernel.org>
+In-Reply-To: <2026031706-track-prevalent-493d@gregkh>
+References: <2026031706-track-prevalent-493d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,214 +67,80 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,windriver.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227093-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227094-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.986];
+	NEURAL_HAM(-0.00)[-0.994];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:url]
-X-Rspamd-Queue-Id: F3BCE2BDB93
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 826E82BDDC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 881a0263d502e1a93ebc13a78254e9ad19520232 ]
+[ Upstream commit 2f22702dc0fee06a240404e0f7ead5b789b253d8 ]
 
-Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
-the rootfs may take an extended time to recover after a suspend.
-Upon investigation, it was determined that the issue originates from a
-problem in the macb driver.
+The DSI frequency must be in the range:
 
-According to the Zynq UltraScale TRM [1], when transmit is disabled,
-the transmit buffer queue pointer resets to point to the address
-specified by the transmit buffer queue base address register.
+  (CHA_DSI_CLK_RANGE * 5 MHz) <= DSI freq < ((CHA_DSI_CLK_RANGE + 1) * 5 MHz)
 
-In the current implementation, the code merely resets `queue->tx_head`
-and `queue->tx_tail` to '0'. This approach presents several issues:
+So the register value should point to the lower range value, but
+DIV_ROUND_UP() rounds the division to the higher range value, resulting in
+an excess of 1 (unless the frequency is an exact multiple of 5 MHz).
 
-- Packets already queued in the tx ring are silently lost,
-  leading to memory leaks since the associated skbs cannot be released.
+For example for a 437100000 MHz clock CHA_DSI_CLK_RANGE should be 87 (0x57):
 
-- Concurrent write access to `queue->tx_head` and `queue->tx_tail` may
-  occur from `macb_tx_poll()` or `macb_start_xmit()` when these values
-  are reset to '0'.
+  (87 * 5 = 435) <= 437.1 < (88 * 5 = 440)
 
-- The transmission may become stuck on a packet that has already been sent
-  out, with its 'TX_USED' bit set, but has not yet been processed. However,
-  due to the manipulation of 'queue->tx_head' and 'queue->tx_tail',
-  `macb_tx_poll()` incorrectly assumes there are no packets to handle
-  because `queue->tx_head == queue->tx_tail`. This issue is only resolved
-  when a new packet is placed at this position. This is the root cause of
-  the prolonged recovery time observed for the NFS root filesystem.
+but current code returns 88 (0x58).
 
-To resolve this issue, shuffle the tx ring and tx skb array so that
-the first unsent packet is positioned at the start of the tx ring.
-Additionally, ensure that updates to `queue->tx_head` and
-`queue->tx_tail` are properly protected with the appropriate lock.
+Fix the computation by removing the DIV_ROUND_UP().
 
-[1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
-
-Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
-Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
+Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-1-2e15f5a9a6a0@bootlin.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+[ adapted ctx->dsi->lanes access to ctx->dsi_lanes struct member ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 98 +++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index f168469f7a58c..35d258048aa0e 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -37,6 +37,7 @@
- #include <linux/tcp.h>
- #include <linux/types.h>
- #include <linux/udp.h>
-+#include <linux/gcd.h>
- #include <net/pkt_sched.h>
- #include "macb.h"
- 
-@@ -705,6 +706,97 @@ static void macb_mac_link_down(struct phylink_config *config, unsigned int mode,
- 	netif_tx_stop_all_queues(ndev);
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+index f96c0a89854b8..2c02326421133 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+@@ -348,9 +348,9 @@ static u8 sn65dsi83_get_dsi_range(struct sn65dsi83 *ctx,
+ 	 *  DSI_CLK = mode clock * bpp / dsi_data_lanes / 2
+ 	 * the 2 is there because the bus is DDR.
+ 	 */
+-	return DIV_ROUND_UP(clamp((unsigned int)mode->clock *
+-			    mipi_dsi_pixel_format_to_bpp(ctx->dsi->format) /
+-			    ctx->dsi_lanes / 2, 40000U, 500000U), 5000U);
++	return clamp((unsigned int)mode->clock *
++		     mipi_dsi_pixel_format_to_bpp(ctx->dsi->format) /
++		     ctx->dsi_lanes / 2, 40000U, 500000U) / 5000U;
  }
  
-+/* Use juggling algorithm to left rotate tx ring and tx skb array */
-+static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
-+{
-+	unsigned int head, tail, count, ring_size, desc_size;
-+	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
-+	struct macb_dma_desc *desc_curr, *desc_next;
-+	unsigned int i, cycles, shift, curr, next;
-+	struct macb *bp = queue->bp;
-+	unsigned char desc[24];
-+	unsigned long flags;
-+
-+	desc_size = macb_dma_desc_get_size(bp);
-+
-+	if (WARN_ON_ONCE(desc_size > ARRAY_SIZE(desc)))
-+		return;
-+
-+	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
-+	head = queue->tx_head;
-+	tail = queue->tx_tail;
-+	ring_size = bp->tx_ring_size;
-+	count = CIRC_CNT(head, tail, ring_size);
-+
-+	if (!(tail % ring_size))
-+		goto unlock;
-+
-+	if (!count) {
-+		queue->tx_head = 0;
-+		queue->tx_tail = 0;
-+		goto unlock;
-+	}
-+
-+	shift = tail % ring_size;
-+	cycles = gcd(ring_size, shift);
-+
-+	for (i = 0; i < cycles; i++) {
-+		memcpy(&desc, macb_tx_desc(queue, i), desc_size);
-+		memcpy(&tx_skb, macb_tx_skb(queue, i),
-+		       sizeof(struct macb_tx_skb));
-+
-+		curr = i;
-+		next = (curr + shift) % ring_size;
-+
-+		while (next != i) {
-+			desc_curr = macb_tx_desc(queue, curr);
-+			desc_next = macb_tx_desc(queue, next);
-+
-+			memcpy(desc_curr, desc_next, desc_size);
-+
-+			if (next == ring_size - 1)
-+				desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
-+			if (curr == ring_size - 1)
-+				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
-+
-+			skb_curr = macb_tx_skb(queue, curr);
-+			skb_next = macb_tx_skb(queue, next);
-+			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
-+
-+			curr = next;
-+			next = (curr + shift) % ring_size;
-+		}
-+
-+		desc_curr = macb_tx_desc(queue, curr);
-+		memcpy(desc_curr, &desc, desc_size);
-+		if (i == ring_size - 1)
-+			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
-+		if (curr == ring_size - 1)
-+			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
-+		memcpy(macb_tx_skb(queue, curr), &tx_skb,
-+		       sizeof(struct macb_tx_skb));
-+	}
-+
-+	queue->tx_head = count;
-+	queue->tx_tail = 0;
-+
-+	/* Make descriptor updates visible to hardware */
-+	wmb();
-+
-+unlock:
-+	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
-+}
-+
-+/* Rotate the queue so that the tail is at index 0 */
-+static void gem_shuffle_tx_rings(struct macb *bp)
-+{
-+	struct macb_queue *queue;
-+	int q;
-+
-+	for (q = 0, queue = bp->queues; q < bp->num_queues; q++, queue++)
-+		gem_shuffle_tx_one_ring(queue);
-+}
-+
- static void macb_mac_link_up(struct phylink_config *config,
- 			     struct phy_device *phy,
- 			     unsigned int mode, phy_interface_t interface,
-@@ -743,8 +835,6 @@ static void macb_mac_link_up(struct phylink_config *config,
- 			ctrl |= MACB_BIT(PAE);
- 
- 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--			queue->tx_head = 0;
--			queue->tx_tail = 0;
- 			queue_writel(queue, IER,
- 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
- 		}
-@@ -758,8 +848,10 @@ static void macb_mac_link_up(struct phylink_config *config,
- 
- 	spin_unlock_irqrestore(&bp->lock, flags);
- 
--	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
-+	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
- 		macb_set_tx_clk(bp, speed);
-+		gem_shuffle_tx_rings(bp);
-+	}
- 
- 	/* Enable Rx and Tx; Enable PTP unicast */
- 	ctrl = macb_readl(bp, NCR);
+ static u8 sn65dsi83_get_dsi_div(struct sn65dsi83 *ctx)
 -- 
 2.51.0
 
