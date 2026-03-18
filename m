@@ -1,101 +1,60 @@
-Return-Path: <stable+bounces-227123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227121-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDNKBfzVummfcAIAu9opvQ
-	(envelope-from <stable+bounces-227123-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:42:36 +0100
+	id cFSTDPDVummfcAIAu9opvQ
+	(envelope-from <stable+bounces-227121-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:42:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D2002BF7AA
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:42:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B596C2BF784
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:42:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4C4930BAB6D
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:38:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7BA3C308D0C2
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1845536B07B;
-	Wed, 18 Mar 2026 16:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1185921ADC7;
+	Wed, 18 Mar 2026 16:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="M136BDHh";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="zMu5KRYC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aeiI91Ft"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D173A451C
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 16:19:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773850800; cv=pass; b=T7BmR3+kssLHoY4JhiB0lwVbJM0whhkzZmCO9pghX5oD5eVu24bCc61mtPsN4/dSyqubbGQ5ldwuuwnv7GdemfwE/n4K8qBhjVsH1Fel8eLsNJPpX2CBqKpkLfqn5zB+ZAL6BbDQ4pxflCdc75oIRgn3iTAhnCS2A0An1Ktkkrs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773850800; c=relaxed/simple;
-	bh=/k9DjZs9HuznrEsEgEnWrtTj3Q7mI6JrR369Z+5naec=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1623DB62B
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 16:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773850790; cv=none; b=lImUZ9wSm5g6SHJCfMzrjLGKhya7IlbGxly5nIBx5z9Z3a71LwkKfhqPr3feBefpAX58qg3PAAIt2qMa2d+nKhVhM4fgycZJntjDbpRPG3fAdUGbBv5dWM26335IVJpZ5q/CVWV1xkjFTwEBB56eV/+JUMNb85ToTope16TCYpw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773850790; c=relaxed/simple;
+	bh=pwE1FyDHdBWX7ahO3n3Qsgm+SKLOn39lgJmhF6xey/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1vylTT6Gbbj/aSq6tH3hG0GknNU9CEWeVC1vZ+A16TJ76307SEcx/QSxXZIE5yiaHtv8C4SqAKoWJj0IhBnuTnKJ6YaPkdSbFiKzruW5cfTp0X37YyPFaPALb8Cg8IU2WO9h4R/1oNwJ9oug+4WuHUHMxMZiqyhjI6hjWJ6YgU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=M136BDHh; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=zMu5KRYC; arc=pass smtp.client-ip=85.215.255.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
-ARC-Seal: i=1; a=rsa-sha256; t=1773850790; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=NxVolBYHvAkVkP4twy//v++jClURKD6muZyw9PSMpLAOBQi370uo5jzflPF8r3l/v9
-    UnVjbCL9qrcHNPFD+JKlKjZV2G1yS1IkhfluhWORyatYSKXpel40Ep/tSf2QHGZqzrgz
-    wpIJ9WqzLbKT6djv8siPzy4VXhPkYfK2dGFOn/+TgMUUoV4aXDN3aX75i23c7i9B278r
-    pzSJILzfwCfg3E8ScehSueKxB9pqWyR/BOE5CjTjILfTc2qtAaDyW1Ma7FnUc+YHHDd1
-    IB0F6iniaH6mMsLRYTphxUuqZJUlZejxEh9l9jp/dfV3dNUffQbK//X3X8Ob/ScV4vk7
-    W54g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1773850790;
-    s=strato-dkim-0002; d=strato.com;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=OqP7gq/LowT7pcNzuhoIrzO3GvrxyRnB6oXUy5+oLp0=;
-    b=CNQW5DJE0yTU0tUxVUUSmyB8y2eazyrQGP0BYENIsOgsyVzeoTEHTE5yRl3HsQirk0
-    P6zyu9GtvrD5VDTwyJHgkfDwMBYXrthR8u68EbQ9mLPApm4IWXsIzykpw6NhuNN2oIpc
-    KhGqQSQhjC3qvhs0yADE95r69XjnQLhIBiA3oyQjSs6qTG4jgRT3i13JAvCnKoGUnAkm
-    4aegLa7TD0/F5oNorU5ibvnpdHxBhB1hKTXPGJZG9M207zZgURsubHINPaV1ofe/jF0G
-    J7ncMI0c7nzE3I6P7eEQ6GJD3kUR8SRtBvp8Y862z2HpzPnBAa84u15Kvr8jkipNK5JL
-    iv+A==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1773850790;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=OqP7gq/LowT7pcNzuhoIrzO3GvrxyRnB6oXUy5+oLp0=;
-    b=M136BDHh+nRp+MLl9hmn+s0j/pWneUpdT1Mw1kC2Rnmt01dWf/9gQLxHGnMSfeu6aX
-    1FLgFElgBEjn8ZHk5QtOVBDnlqdqu4FS6r2sfEgyDyAHk7CdH1yAvSUqqML62AbF6c72
-    11b4SRheXUuHdBCLpC+CTT6Q9iIGSYi+OnsBsLODXJ/ZP0c37cZ8r/+wsKgHeoDV4Ann
-    y39S8aYVUwwlr3iFc/+6x1a6BizPatQiluI9z6eeloZc1+8qOkPNwvgm2lSA92Y1WIyA
-    b1qaaiXNo66CU+HN3VrVaf2zf3BjtouP9S56Zo7RtLindAIktSace0XAayaHmK96WM64
-    fZag==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1773850790;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
-    From:Subject:Sender;
-    bh=OqP7gq/LowT7pcNzuhoIrzO3GvrxyRnB6oXUy5+oLp0=;
-    b=zMu5KRYCp5m/6YMYz7I1z9K/L1TkfcCWAsaj6aqzCwM1WW2ykVpYzmlBMu9ZdZFVDN
-    bVXgF5apln/6jvEPreBw==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeFQ7s0ZDT0tksFSR+Aix0esQJVIAlZEg=="
-Received: from lenov17.lan
-    by smtp.strato.de (RZmta 55.0.1 AUTH)
-    with ESMTPSA id Kba96d22IGJoouZ
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 18 Mar 2026 17:19:50 +0100 (CET)
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-To: ali.norouzi@keysight.com,
-	security@kernel.org,
-	torvalds@linuxfoundation.org
-Cc: mkl@pengutronix.de,
-	socketcan@hartkopp.net,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] can: isotp: fix tx.buf use-after-free in isotp_sendmsg()
-Date: Wed, 18 Mar 2026 17:19:14 +0100
-Message-ID: <20260318161914.15140-3-socketcan@hartkopp.net>
+	 MIME-Version; b=twfrqW5Cpz4KuikkwYWTaVPC9APoZOclDCfSE8moz4qn4WpGe5UDApDbi9ZMLvfcZA3CSlJ03g3U4R4whwBUY0YSqGP32/4EHOTEqUAtls/32/jBl8KoVOrJ4dKt82Vbh7Fv9BoTQAUeqGw0OH2TGsc+aU42ozu7utNJO/0plxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aeiI91Ft; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A43F0C2BC87;
+	Wed, 18 Mar 2026 16:19:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773850789;
+	bh=pwE1FyDHdBWX7ahO3n3Qsgm+SKLOn39lgJmhF6xey/I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aeiI91FtcviTtjZtmL96wgnbnW0WxwY052dvcqf2VLWcnCE5wcxjdg/zaexuVJ5Tj
+	 6f4Mid+M288SJgh6JE/+ENgmuHlAByktRwNVJdaDvt0OH53hgKQj07j/AeAl/6W5YS
+	 pSGVy3WH450UbRmbf+92PrbAh2V+/zUBce1hf9ZyQUGGsXUfT7nmyrUhYWgchfVMXC
+	 m/uCs00KmTfdrvBR9t17jvVQk51kmJgFSQ9QbTdBe/ni3sftFfSdlrE1/Hdg1o/g1d
+	 rQfYH+pa04tpEIyJrN+76o9/pVRlfzhQEUDghsyLGo9gHVNrhezJc8PhqCLt54wxHN
+	 Xommu2ZA+meww==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] drm/bridge: ti-sn65dsi83: halve horizontal syncs for dual LVDS output
+Date: Wed, 18 Mar 2026 12:19:46 -0400
+Message-ID: <20260318161946.919669-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260318161914.15140-1-socketcan@hartkopp.net>
-References: <20260318161914.15140-1-socketcan@hartkopp.net>
+In-Reply-To: <2026031726-sanitary-regress-9821@gregkh>
+References: <2026031726-sanitary-regress-9821@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -103,121 +62,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spamd-Result: default: False [-1.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[hartkopp.net,reject];
-	R_DKIM_ALLOW(-0.20)[hartkopp.net:s=strato-dkim-0002,hartkopp.net:s=strato-dkim-0003];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227123-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[hartkopp.net:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-227121-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[socketcan@hartkopp.net,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.996];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,hartkopp.net:dkim,hartkopp.net:email,hartkopp.net:mid]
-X-Rspamd-Queue-Id: 8D2002BF7AA
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mailbox.org:email,msgid.link:url,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: B596C2BF784
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-isotp_sendmsg() uses only cmpxchg() on so->tx.state to serialize access
-to so->tx.buf. isotp_release() waits for ISOTP_IDLE via
-wait_event_interruptible() and then calls kfree(so->tx.buf).
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-If a signal interrupts the wait_event_interruptible() inside close()
-while tx.state is ISOTP_SENDING, the loop exits early and release
-proceeds to force ISOTP_SHUTDOWN and continues to kfree(so->tx.buf)
-while sendmsg may still be reading so->tx.buf for the final CAN frame
-in isotp_fill_dataframe().
+[ Upstream commit d0d727746944096a6681dc6adb5f123fc5aa018d ]
 
-The so->tx.buf can be allocated once when the standard tx.buf length needs
-to be extended. Move the kfree() of this potentially extended tx.buf to
-sk_destruct time when either isotp_sendmsg() and isotp_release() are done.
+Dual LVDS output (available on the SN65DSI84) requires HSYNC_PULSE_WIDTH
+and HORIZONTAL_BACK_PORCH to be divided by two with respect to the values
+used for single LVDS output.
 
-Fixes: e057dd3fc20f ("can: add ISO 15765-2:2016 transport protocol")
+While not clearly stated in the datasheet, this is needed according to the
+DSI Tuner [0] output. It also makes sense intuitively because in dual LVDS
+output two pixels at a time are output and so the output clock is half of
+the pixel clock.
+
+Some dual-LVDS panels refuse to show any picture without this fix.
+
+Divide by two HORIZONTAL_FRONT_PORCH too, even though this register is used
+only for test pattern generation which is not currently implemented by this
+driver.
+
+[0] https://www.ti.com/tool/DSI-TUNER
+
+Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
 Cc: stable@vger.kernel.org
-Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Co-developed-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
+Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-2-2e15f5a9a6a0@bootlin.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+[ adapted variable declaration placement ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/isotp.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/can/isotp.c b/net/can/isotp.c
-index da3b72e7afcc..2770f43f4951 100644
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -1246,16 +1246,10 @@ static int isotp_release(struct socket *sock)
- 	hrtimer_cancel(&so->rxtimer);
- 
- 	so->ifindex = 0;
- 	so->bound = 0;
- 
--	if (so->rx.buf != so->rx.sbuf)
--		kfree(so->rx.buf);
--
--	if (so->tx.buf != so->tx.sbuf)
--		kfree(so->tx.buf);
--
- 	sock_orphan(sk);
- 	sock->sk = NULL;
- 
- 	release_sock(sk);
- 	sock_prot_inuse_add(net, sk->sk_prot, -1);
-@@ -1620,10 +1614,25 @@ static int isotp_notifier(struct notifier_block *nb, unsigned long msg,
- 	isotp_busy_notifier = NULL;
- 	spin_unlock(&isotp_notifier_lock);
- 	return NOTIFY_DONE;
- }
- 
-+static void isotp_sock_destruct(struct sock *sk)
-+{
-+	struct isotp_sock *so = isotp_sk(sk);
-+
-+	/* do the standard CAN sock destruct work */
-+	can_sock_destruct(sk);
-+
-+	/* free potential extended PDU buffers */
-+	if (so->rx.buf != so->rx.sbuf)
-+		kfree(so->rx.buf);
-+
-+	if (so->tx.buf != so->tx.sbuf)
-+		kfree(so->tx.buf);
-+}
-+
- static int isotp_init(struct sock *sk)
+diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+index f96c0a89854b8..8fa43096bf32a 100644
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+@@ -370,6 +370,7 @@ static void sn65dsi83_atomic_enable(struct drm_bridge *bridge,
+ 				    struct drm_bridge_state *old_bridge_state)
  {
- 	struct isotp_sock *so = isotp_sk(sk);
- 
- 	so->ifindex = 0;
-@@ -1664,10 +1673,13 @@ static int isotp_init(struct sock *sk)
- 
- 	spin_lock(&isotp_notifier_lock);
- 	list_add_tail(&so->notifier, &isotp_notifier_list);
- 	spin_unlock(&isotp_notifier_lock);
- 
-+	/* re-assign default can_sock_destruct() reference */
-+	sk->sk_destruct = isotp_sock_destruct;
-+
- 	return 0;
- }
- 
- static __poll_t isotp_poll(struct file *file, struct socket *sock, poll_table *wait)
- {
+ 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
++	const unsigned int dual_factor = ctx->lvds_dual_link ? 2 : 1;
+ 	struct drm_atomic_state *state = old_bridge_state->base.state;
+ 	const struct drm_bridge_state *bridge_state;
+ 	const struct drm_crtc_state *crtc_state;
+@@ -489,18 +490,18 @@ static void sn65dsi83_atomic_enable(struct drm_bridge *bridge,
+ 	/* 32 + 1 pixel clock to ensure proper operation */
+ 	le16val = cpu_to_le16(32 + 1);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_SYNC_DELAY_LOW, &le16val, 2);
+-	le16val = cpu_to_le16(mode->hsync_end - mode->hsync_start);
++	le16val = cpu_to_le16((mode->hsync_end - mode->hsync_start) / dual_factor);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_HSYNC_PULSE_WIDTH_LOW,
+ 			  &le16val, 2);
+ 	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
+ 			  &le16val, 2);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
+-		     mode->htotal - mode->hsync_end);
++		     (mode->htotal - mode->hsync_end) / dual_factor);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
+ 		     mode->vtotal - mode->vsync_end);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
+-		     mode->hsync_start - mode->hdisplay);
++		     (mode->hsync_start - mode->hdisplay) / dual_factor);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
+ 		     mode->vsync_start - mode->vdisplay);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
 -- 
 2.51.0
 
