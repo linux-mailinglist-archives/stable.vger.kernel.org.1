@@ -1,179 +1,146 @@
-Return-Path: <stable+bounces-227155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNw9G4wNu2kSegIAu9opvQ
-	(envelope-from <stable+bounces-227155-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:39:40 +0100
+	id SGulONEOu2kSegIAu9opvQ
+	(envelope-from <stable+bounces-227156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:45:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C45EE2C28B7
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:39:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E432C2965
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 616CC3057187
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 20:39:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 888AE3165070
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 20:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDECA358D27;
-	Wed, 18 Mar 2026 20:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53CF33C51D;
+	Wed, 18 Mar 2026 20:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RN7T+gvv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNb7iMnb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6541534107A
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 20:39:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8900E34107A
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 20:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773866366; cv=none; b=WRfmIH/dFGOC7SXZeI71C4IPKqg/KGgrFa1yzqNWLy7l/3ppYfvAijCkLmVpjwW37U2VvCqcp1He2cqnCPU9PV057LAQB2Oj2TAVm17SDSY89OJZo6HD2I4HvncBtqz1vdD/igFF0W8Tn5KEgs0S3+UkWyaKEBgbOoa/EOpyCIQ=
+	t=1773866504; cv=none; b=UQ37zZIaIfZ9KmllbMCTwTIrHPACP6AB/U1MvBgV+jBVk0p4ekWRJr5b8aVzE3O97C/xvlf2wnrTZwnsqENmx+PS4ZUDRcDgPdDTM40eB9w7c00O010ZKQNpE8IEPmecQdY29Gkd6eHkMRXEvyFtAg2Jh35zgXi0NQFQKNINSdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773866366; c=relaxed/simple;
-	bh=K6fFk6jgPk/ELODmU4K13Iuu5ExuxDeXbxGnbD9Iu4Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MBR2Wic1QwgP6oU42dhci2JLOTbXMdeMkM4qLcN1D7MH8rTmcd7pIwmpHkMTEZhyT/tTlDj95YSHR5c9Zpp0aBangCTAH+F3q+Q6EP8HX1reUTxUbcX2qr2RKo9WXL/Ftqypvu0MwKgT5WDr4RYxH8aIk2x1tPuTw3Sp3IuUe2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RN7T+gvv; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-35b905e9dc0so209808a91.3
-        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 13:39:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773866364; x=1774471164; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NO7l1j/JSa3nzmOJtX7R9PKY7mTRri7kyBMKzNUW53c=;
-        b=RN7T+gvvm5AaZ9HDtKV/+SoBD4iY2amCMPOUrm+kVlrA6CkMBVBrFUaWta2g9dkWYb
-         eSNMHP/0GiSNK/X/LYzjpZeQKLKzO9AKalxY9uHCEHb2AyXHU9civCm/iTTqzuqCa7yp
-         Qgj3H4MWJZX/RS2DqaB70sHMeA0+DAp9Ae1bVHXjqUaCOGOghvSU9J5onZ8XN3kIj8oG
-         lHV75Yo27R2+u92t7vONLgyx6FqJ6v/DYhrww2h0tVDqFbzLZfzfYJKHCOEnuB6As/iW
-         slK+lz4BylxpMej90quh1UXz02LdE5jBgDBi7ZNlwHypJtEGgZPGDCREUlfQHndnWD6O
-         tg0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773866364; x=1774471164;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NO7l1j/JSa3nzmOJtX7R9PKY7mTRri7kyBMKzNUW53c=;
-        b=dXcbXzusY9sLKXYuI9pFI0XcXV89Xxgq8qsdp5rJBdIhnC1jXwsmYkBTPkE6Epyzur
-         AcrAPaWfCPnBBtpZQ+IBRAbzt/0spBeGPEvnrRd3BXyfbzpima4WEz0sUI2lbrQ88EuV
-         V5HqEDXViINSBCV/NsKT/eBnKakajMNWFhB+9QRUqKX0JE1BY1Pt5XALQhFGxgVku1Gd
-         8Re3W2HrfeU79J6Kbdn46+U8ZSOXI+scUsSSMV2tOmdm8GV+12yt+cCsbKd8hY+0MPoH
-         J2yjbzuaSpjYwBum9V3M1oRbCOZ8pAprN8gej8Gob7hgp2aJi8sxkFWa65lGv8mS/Vie
-         Dr5A==
-X-Forwarded-Encrypted: i=1; AJvYcCUQj9ydHfq+iQrR/fWXX4QXWI5A0itT0Nf2git4N3kiUoKZlfPLpL1rHH5niOqMM5rIYEBikgg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDr1pLgUVQ7f/mcXCf6ytC2tA2r3dQcfSWOQYI4i1KuhapzxTK
-	JIyseLU2sYsXlDV9YU1JlhzpioI/Zwp2FocttHVsQWnjBK2Dj56Je4nx
-X-Gm-Gg: ATEYQzyzLKmJD42c7EfU2xmSAO9BX9Uty5hvV4x6A0PkhcDleVodV40JhNNnYjijSzr
-	BZ2I4ArTQ0MBPICr57DdrwzfSXHLkyXCBlHICvAueVDBmbBPrsg/kythpyTQbmp1udoyh5hY06N
-	FauxX7K5flNFVWuN/3Kxb91NP78DhmOjmABNX2BLvkNRr3XE5ha9kSU2fpIT7aqfvIROCW/zQy/
-	rciTwDfayJCIeWEb819jcW7vEK+JsIjy+Uj9m9r/79XbSADB+B8OUZLWLIRMSHPkd5yoH1J4XOe
-	eZy+yx9ttGOGaLY6/OBNypSo9K6DdhmjDiflm3CXv/3dFRbuXHZ/H9gTVnyOirMSL4CVGypbQi2
-	kSHK9CVHL/aSvel+XxnvO6Nj+Fr6BtT04GQWAvxC4pZYRPZUj0PVrtJnmz7tlZzf6RLDg9oC1Lt
-	Jo8v5YbWu1lSJq9nNHzC5hEkrZkyapWUwTR41q
-X-Received: by 2002:a17:90b:2886:b0:359:fd9a:c506 with SMTP id 98e67ed59e1d1-35bb9f27187mr3873380a91.29.1773866363774;
-        Wed, 18 Mar 2026 13:39:23 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bc62b514bsm577096a91.3.2026.03.18.13.39.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 13:39:23 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Wed, 18 Mar 2026 13:39:22 -0700
-From: Guenter Roeck <linux@roeck-us.net>
-To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
-Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Sanman Pradhan <psanman@juniper.net>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 1/2] hwmon: (pmbus/isl68137) Fix unchecked return
- value and use sysfs_emit()
-Message-ID: <02d70fd5-de57-49d5-b0a3-ad59c957f057@roeck-us.net>
-References: <20260318193952.47908-1-sanman.pradhan@hpe.com>
- <20260318193952.47908-2-sanman.pradhan@hpe.com>
+	s=arc-20240116; t=1773866504; c=relaxed/simple;
+	bh=yrdIZaku+ltjPzr5+mmCP5tWE1r2lTt1ZmS6vhPlXM8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qgBdXbVxHhw+z7IcC+7oqkwzDqI9jmBucFP285grQU4oBYJfd1hPlgUWvRQq10+d70JeAcB5YkkF74CWy+3w5RHcyDIw22tNpyP49KLEIWSr+uVAw51gwSoPlxabxZfI2S4Fl2YofOA61FSwVdMOiPa9FU9CSIqHgsKD7ZpIgh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNb7iMnb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A531C19421;
+	Wed, 18 Mar 2026 20:41:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773866504;
+	bh=yrdIZaku+ltjPzr5+mmCP5tWE1r2lTt1ZmS6vhPlXM8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=BNb7iMnbcAL6xy7gFadC9pR6VIog560K/o1/Llv392R4gxpY+a2uyZVCT/KGXZjJK
+	 HOrsZ0exhdcTTBEpAe0TUu50S1V46C2nMgqAI2wiLj6KKILYga/AD4MPQL1esaQK/H
+	 s05aed2hRa1ShyT6bBOqEqTECrcjD1JYZ+v7rw7fjI3lcwxVt15JahXkNutLskc8QU
+	 Eu8ACv41ig+E3cCB6Orwh8dZNPHMS2V5Cr7Ww283AeGPcLB8XHHCXPaf3USvhMfDSw
+	 eIasbvTGC14Ty6SXrYsGTvvo9xAoVXDwldUKmzBK6bTvlTE27UDVXTCzXloBIq1Yyi
+	 Lqy0TZ6jd7cjw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Varun Gupta <varun.gupta@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19.y] drm/xe: Fix memory leak in xe_vm_madvise_ioctl
+Date: Wed, 18 Mar 2026 16:41:41 -0400
+Message-ID: <20260318204141.1139130-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031742-pull-husband-3953@gregkh>
+References: <2026031742-pull-husband-3953@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318193952.47908-2-sanman.pradhan@hpe.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227155-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-227156-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[roeck-us.net];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.973];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,roeck-us.net:mid,juniper.net:email]
-X-Rspamd-Queue-Id: C45EE2C28B7
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 61E432C2965
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 07:40:19PM +0000, Pradhan, Sanman wrote:
-> From: Sanman Pradhan <psanman@juniper.net>
-> 
-> isl68137_avs_enable_show_page() uses the return value of
-> pmbus_read_byte_data() without checking for errors. If the I2C transaction
-> fails, a negative error code is passed through bitwise operations,
-> producing incorrect output.
-> 
-> Add an error check to propagate the return value if it is negative.
-> Additionally, modernize the callback by replacing sprintf()
-> with sysfs_emit().
-> 
-> Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+From: Varun Gupta <varun.gupta@intel.com>
 
-Applied.
+[ Upstream commit 0cfe9c4838f1147713f6b5c02094cd4dc0c598fa ]
 
-Thanks,
-Guenter
+When check_bo_args_are_sane() validation fails, jump to the new
+free_vmas cleanup label to properly free the allocated resources.
+This ensures proper cleanup in this error path.
 
-> ---
-> v2:
->   - Kept explicit bitmask comparison instead of using !! operator
-> ---
->  drivers/hwmon/pmbus/isl68137.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/hwmon/pmbus/isl68137.c b/drivers/hwmon/pmbus/isl68137.c
-> index 97b61836f53a4..e7dac26b5be61 100644
-> --- a/drivers/hwmon/pmbus/isl68137.c
-> +++ b/drivers/hwmon/pmbus/isl68137.c
-> @@ -98,8 +98,11 @@ static ssize_t isl68137_avs_enable_show_page(struct i2c_client *client,
->  {
->  	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
->  
-> -	return sprintf(buf, "%d\n",
-> -		       (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS ? 1 : 0);
-> +	if (val < 0)
-> +		return val;
-> +
-> +	return sysfs_emit(buf, "%d\n",
-> +			   (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS);
->  }
->  
->  static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
+Fixes: 293032eec4ba ("drm/xe/bo: Update atomic_access attribute on madvise")
+Cc: stable@vger.kernel.org # v6.18+
+Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Signed-off-by: Varun Gupta <varun.gupta@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260223175145.1532801-1-varun.gupta@intel.com
+Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
+(cherry picked from commit 29bd06faf727a4b76663e4be0f7d770e2d2a7965)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+[ changed old goto target from `madv_fini` to `unlock_vm` ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/xe/xe_vm_madvise.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/xe/xe_vm_madvise.c b/drivers/gpu/drm/xe/xe_vm_madvise.c
+index fe7e1b45f5c0c..9dc801f657129 100644
+--- a/drivers/gpu/drm/xe/xe_vm_madvise.c
++++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
+@@ -390,7 +390,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
+ 						    madvise_range.num_vmas,
+ 						    args->atomic.val)) {
+ 				err = -EINVAL;
+-				goto unlock_vm;
++				goto free_vmas;
+ 			}
+ 		}
+ 
+@@ -426,6 +426,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
+ err_fini:
+ 	if (madvise_range.has_bo_vmas)
+ 		drm_exec_fini(&exec);
++free_vmas:
+ 	kfree(madvise_range.vmas);
+ 	madvise_range.vmas = NULL;
+ unlock_vm:
+-- 
+2.51.0
+
 
