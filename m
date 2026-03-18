@@ -1,290 +1,179 @@
-Return-Path: <stable+bounces-226988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226989-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOXTHQBbumnFUgIAu9opvQ
-	(envelope-from <stable+bounces-226988-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:57:52 +0100
+	id WLdQGDxaumnFUgIAu9opvQ
+	(envelope-from <stable+bounces-226989-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:54:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B12DE2B7589
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:57:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C81A2B74B1
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DD3630965F7
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:53:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DCB5A302B197
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:53:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D85236C9F2;
-	Wed, 18 Mar 2026 07:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E1336F41C;
+	Wed, 18 Mar 2026 07:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="K0DXOYPP"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KXjx8VeX"
 X-Original-To: stable@vger.kernel.org
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012021.outbound.protection.outlook.com [40.107.209.21])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6449C33A704;
-	Wed, 18 Mar 2026 07:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.21
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773820396; cv=fail; b=sb+8zw/6w5jrexNwC8D/RYj9tbWL6rIjOeRQogSuwE3z8Xqzod+3dD0JxvMhziaho/iMf5D5O0yqUqDzjFmy6hTe9bA+7Cp/671fL8p9uauQw0qqrgply9zlE0ESHtGYyAjZ/tI/syTLVmGas4p7slEtBke4uA1/E8QDJ/wYwi8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773820396; c=relaxed/simple;
-	bh=3juMvzSfzwOQFlzWP4MKSFfYHtDLEWEKKjiupy5Ar5o=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=dpVMQDA4IY+nxN848dFHyJICdahNBVrZOUslJyli2Q6x583v7EZ9LkhC6f7qXHnRyJlN7fFYMX4/yzwRGjfyI8VudUCnJXBO7dR3ap72Q2/dtIt3cgEN2iBr9ahx8oTOxROtf58S2OA4cya54U7/OYcHsWqlxZUuWeTQe8ZqIyc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=K0DXOYPP; arc=fail smtp.client-ip=40.107.209.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mralD4Vly6NqR5CCrPFdcVkEBee1xoXMAgyS4qFlLjH4xLBl3O6SgBbPkWGRcLi72meERWRFlO85qg4onza8zGwLbua96IQM4Ezsm7YmzhE0B9UBBcZswFOi3GeLw0qD1wSUkPO0ZpgyKfEYuFoA1x6PXqmKL1HdC1xpIiump5EZrr0QT3jpOYiIZ0kRw/5EdNYBAhYbl5pqX646pHyfBytBX8HDBqLcwNh8QozVPDlK4bR0mCa4VTD0JOTm2zyNxxZJ9O1fwl4hl7tarOpSs8SCvghV8vvjgsRC4XU+U004jijPj4SaZ03eTdqrFNmPD3C8a8B/kYpCPJNvr1wlTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=D+whHc6i7J6dBaAzBUpCy6w6tTSb8DqE08BckLaVpII=;
- b=JmWNUhcLZwXlX7EoKcIbEaRndRjy7st9dlavxilurJbuhZawNKm52o078CEQwChEIU4KMalt2mPiGixqi5LU8kVaBecSbWBTK15l4hQ6W1WsKEnxL4/wlUnYkApWxM+kUatGSt124+Gq3f/yOjv3NDuLYZsjoLXfCBFmIYWKystXYj7VI7aAktHp0/kMseFInA300EYH0A7soHxdNpn0yHmAetnzCiA3FWTa2yt99EQXJB0mevS2O593H4WcoSerCnu15HLb3qtEGzXkCvPl0nuzBuVZC5npeVAbT5zA6XE/CaYX4YR5NcoZG7n+o/x5fY+IYlKbuPS2pyd5AuQ8jQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=D+whHc6i7J6dBaAzBUpCy6w6tTSb8DqE08BckLaVpII=;
- b=K0DXOYPPsPwtc7VMVMeON9Yow6P+c+x6d4MYzgg3o7WG2BXBtHMVZASHHLF/hoXbV4ZZVZ067R1BHcDUbMDAluicPB1uLtpqD1tkvKP8PRXAtx8uTYzhy/UXb5tqYlRYXDDUEN0fou1ITdBXSlgBBgF3JWTY1lW3uDvPMguWKJI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by CH3PR12MB9169.namprd12.prod.outlook.com (2603:10b6:610:1a0::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.17; Wed, 18 Mar
- 2026 07:53:10 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9723.016; Wed, 18 Mar 2026
- 07:53:10 +0000
-Message-ID: <b046cba4-665a-40bb-9932-fdf6684c4501@amd.com>
-Date: Wed, 18 Mar 2026 08:53:06 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dma-buf/udmabuf: skip redundant cpu sync to fix cacheline
- EEXIST warning
-To: "Kasireddy, Vivek" <vivek.kasireddy@intel.com>,
- Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>,
- "kraxel@redhat.com" <kraxel@redhat.com>
-Cc: "sumit.semwal@linaro.org" <sumit.semwal@linaro.org>,
- "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
- "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
- "linaro-mm-sig@lists.linaro.org" <linaro-mm-sig@lists.linaro.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20260317053653.28888-1-mikhail.v.gavrilov@gmail.com>
- <CH3PR11MB7177B163E8FBD9B6D812DE86F84EA@CH3PR11MB7177.namprd11.prod.outlook.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CH3PR11MB7177B163E8FBD9B6D812DE86F84EA@CH3PR11MB7177.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BN9PR03CA0480.namprd03.prod.outlook.com
- (2603:10b6:408:139::35) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72C8B36EAB5
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773820406; cv=none; b=UmJ8CWJWawH8uFbgUK883RUohSd3nHN+9WdAcg+ANQeG+AVbZD4TYqXudpCwi4QnK1N5n7XfhvMlA0W4Q5sOrlOmG4vfwlxN/mDYMhQZhNhFJu6UIjm+X6GvcrE4Z8vnd1+tUxGu3W4ZZ0Pfy2V7x2wfMArRd9i714roMOW+VtI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773820406; c=relaxed/simple;
+	bh=Wh/awYJY4o7LXd9voQBSO/SliYAJ8/1ksA9oufAIkww=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=J6LkQXK8GBbAI3wwQ3kXSlwVt+asCwwbI5yBNfhs5uYuo0wF7mEOFF/cocCsRbvYhMTjav9EPRQsdq2d3xS4XHCAnk2XMyEXbiGD78Oxk9vYF1DKytvy7bw+BY8QDhoDKk99HjXb5zkXwReC8Ns3UCYYGnE8gi2EkuKBvPGtHdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KXjx8VeX; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62HMUvTW1189478
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:53:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=xI7SGXsw9QZI5296v
+	6pNTkZSneNQYV8HkmK9nmgGHw4=; b=KXjx8VeXoUDThYh1PxAghuggCI56eUECU
+	hcIEgriszWEgX9cXWWEkpcm8T6WWtw0Mm4Q2gifBo5YQ9EZ7Dvjh4bX0HuZVfQut
+	47BrDrSiX0sc/eMD1reH9Pa1GA9Xwn10V85YqKS4y0/tkN8/uKj73WWphDdtefLm
+	yw3YI0PBlY67GCY9Ury1OVroAQxEOCCTj0B6k/6E2tXuC+LBNpG7VdVb+3uXA135
+	5DYi6+YwrxzMH19OxEJ88MWNX0klGiUKHl6Y+TnwuWH3p4jR1beSX7Nrj+9N30Bt
+	axTAbCgeGq8FWc490I/9Ou0WI8PkFJukrTMFez/4spK8QUtnWDv/w==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cx7vfk2tj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:53:19 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 62I44OUX005412
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:53:18 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cwj0sd43k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:53:18 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 62I7rEqC37224914
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Mar 2026 07:53:14 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C345B20043;
+	Wed, 18 Mar 2026 07:53:14 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF4B220040;
+	Wed, 18 Mar 2026 07:53:14 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 18 Mar 2026 07:53:14 +0000 (GMT)
+From: Heiko Carstens <hca@linux.ibm.com>
+To: stable@vger.kernel.org
+Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.1.y] s390/xor: Fix xor_xc_2() inline assembly constraints
+Date: Wed, 18 Mar 2026 08:53:13 +0100
+Message-ID: <20260318075313.4053353-1-hca@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031700-prowler-dreamless-96ea@gregkh>
+References: <2026031700-prowler-dreamless-96ea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|CH3PR12MB9169:EE_
-X-MS-Office365-Filtering-Correlation-Id: 40657b99-0453-4fa0-dfb6-08de84c36616
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|366016|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	BMVBD3D37taK8acBYmUx+bF8A3usARtBTKNASZPn4u/8yaFChfaTZSkSnmvVtU62ZpGmBBIuN/+ijje/UNOUhgE0CwcEbJi2w24clBPAHcojuEVbORJlHySEqKfNIRvxYxHhSB4sW9bDxOeeqK8ELdYyNBZUNnzbHCH1lcvnOlIdyleFHzVbWEjhZHlEmIDIUVkdoKXgVbBiVKznY3hd7NRFhqZC9Y8rJ5mS8rREe+5JZ76uOnQa4zfIk8z3Y6Kb8ND40qxjivYCohWGoyNQ9rPpbnx3wHyiojCI4iyPin/YfgfGjF6/2gwW93V7R7d9yZR9L4jt7iec2hWANwaePSoGIcxiSqJPuDgjUO5YHaeQ092kALxcmsHMMrcX+vSeUCwhllcpnO77ZVyonBmpMBBs4OfiV/WaS1FOHfIqkj0s/GkRkm1N1Vf1DV3pNakFULBY/KM2ILmP48PIDxlYYl3RQqrW8qqAuFttG3uuCobIoeCzBJK6fC93iAKM0y90SJNiXjmEC9Deze9GhQfjqPstTSRkNRqPxjlppvMNFQHgtX0I6gAzxGkIP524YME5G/JbpYDtkst33bUpOLvADMSwnTZxORBTdHZVdSm5P8KtxLGqIzCet91HoCyil02zsWT5UrVwQ05kHxrt6KzuTN8lhMozvHfJz5l2s6+HfKWnn+Vh4+XsAe2JslMYIKbGtMoLpySxmi0/F0UaZgIvHkXcdWQ8trQ/E6BZdrvrlzY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WDJVVE9nVjN5cllnS3JlamU5Y1JqbVp1VGxLQzZ1amtFS09oc1VnbVJ1Zzdp?=
- =?utf-8?B?ckFGQkVrTDF1VElOWkllQksxT08rajJqRWY2ajRlczRPSTBWSFkvdStVUXZq?=
- =?utf-8?B?YTVhSkdmY2hsaHNZZHZNMFBMQjQzVzl1ZElpbmZwaW1VT2NWMVR2UERGMlVz?=
- =?utf-8?B?ZFRaV1oyUVQrdEVWTTVNZ3ZMTytGNlNpTG5DYzUrUllQN25FS0VTOUt4b0Zt?=
- =?utf-8?B?Q1JZalVFd3c1ZGc2azM2NE9rcGhoY3VvUVdkSlVORXlZc2VISXdsYitaK1hL?=
- =?utf-8?B?alR4azNPS2R5ZzJZM2dadGpVSFYzeElxMWppMEdVdTdTVC9oWlhsOVp5V0Fn?=
- =?utf-8?B?Vll5UnlqZzhvck5td1FuYVVTaXlzdFFTTmEveDNHNHNYSmlSSGU4Nms2cUh1?=
- =?utf-8?B?OUJpNk1TL01FOGxHTHBtdE9hS1ZMSHg1Z2NSMmdWc29oTS93QUJPNnlSWHND?=
- =?utf-8?B?MFV6eTdlTHlDVHllMDBZUm16UkdLaXdUczh0SEtmMk1QUWJ2VDFlQ1J4K0t5?=
- =?utf-8?B?S3R6MFV0eTluTkdMMmhqSGw3ZG4rWU50UTFMY3MvaWtkVjVRYkJDN2RIZE90?=
- =?utf-8?B?SGJLN0RBK1BNU3RhTnFQOTFrYjZsM1l2NjZJWTBjZjV5UzZkeUduUW5SM1Jj?=
- =?utf-8?B?SEJKRVBvTjdvZzlJZmV0WmZXWTVlTUdQOXNyNStDSW9NZ0YwK1JKV1dRL3ZK?=
- =?utf-8?B?T3JjdTMxVG9BTHJZZDZDTlZjMG8xK1YySi9ZWW9UT1lyRkJCNEtUa3g1dml1?=
- =?utf-8?B?eGk3RXRRMnpMbWNoYW1oQXo0MHdjSEg5dkpoK0tnOStXTWhhMUZqcTNhN05x?=
- =?utf-8?B?T0xOaEloTW9RRnJQL0xTbEFRZzBMZEt5UTl2WjBiVGxGRnhqS1I2MmpiOERV?=
- =?utf-8?B?T1h2Yk1rQzB5b1ZWZTJRYXZ0UWxPUjdROEVSMXpqSDBmVkJkM01jYng2OVV1?=
- =?utf-8?B?QlBvaFpCdHYvUFNmSXJUZ0poTElaUXZ6ZUt4RXltdVkweTlCRERmSTNtYU9N?=
- =?utf-8?B?TERvNzBjVXM5YTNwNnFIUnMxdkNpaHBFRXFmdm9BVDQyRVcySEhBeXdyUFNW?=
- =?utf-8?B?RWxoYjhjTnFGS1psbjFwUno5MTQ0Sy9KZDl2SitIcWY5aEpXOHVlSm5DeWV1?=
- =?utf-8?B?MUdCOHpxbUpsWnFFWTFsNFI0aTJmN1hQWFZOTEllQ2M2cUFjSDRRcFMrbDJT?=
- =?utf-8?B?bUpqd0hnRElMRlZQRGtHNEkwUm5IemJQU2E0OEsxR3g3Ykl6Yk9rU01QK0xK?=
- =?utf-8?B?UysydDdCZFVqQ0EzOWNsZFdFOFpvZ3d4RWh1TS9lSnBTcVBMNWNCTUNRdXFE?=
- =?utf-8?B?KytpQmtMb0NLN2VTSHlEWC9qRGRiOXdTNU1yYyttNW9PT3NRdmtLT2NZUTJI?=
- =?utf-8?B?ZmNrNmVCcVdyYVJDSlh2UWtaUUtRYXZBTytxWTdKQ1JrK09RQXhRSmM3UXdI?=
- =?utf-8?B?Q3o5Wk5kWlZUbUNsZkM2QWlxTUFKcWNtMXBGa2w5UzJxcURpSXh4eGZsT1Jy?=
- =?utf-8?B?blM1czBlcTljV0tXSlpZQUcxZzVqdHI0ZmU3eE9wcWp5dEdEYmZqNndhTXhF?=
- =?utf-8?B?MmRiVjRQYWQvWUx1RG91bFZjUDdFU1VkbVY2ZHE3VkFKVXUvTG5xczFDajZX?=
- =?utf-8?B?WXpTWW43cG1nZzBSeDkvaThFb0Q5S0Jpa1dsQmFpb3NQL3lwVklTMWN1THFz?=
- =?utf-8?B?M3ZkblZCV3NlbGZoMkhFQmtNUmxSQTAvKytZZkswaFY3cEpYc2NKN3p2OXEx?=
- =?utf-8?B?OE1TYndkWndjUGJNKzBtNVVCTmtIK1A3aCtQbGRuUGg4NC9KZ2tsNVV5djBO?=
- =?utf-8?B?QjZHUnYxU0EvSTNtNXZiOVhXQTVzK3NJYy9RY3RLU1BTTHEzVDJuMlFRN1g3?=
- =?utf-8?B?U2NuN1Mvblg2dUJ5bmxzbi8wejdLWGtIL0pIVGZ0ZDU3eEhVU0s2VXdCYngv?=
- =?utf-8?B?QlV6T2RBRFVtUllYdkdubEU4NkVWM1NEL1VRazM1OGdEMUlRbEk3T3FKd0l0?=
- =?utf-8?B?R1NmaFNBMzBCVFdoUk1HZEFNd0NydUlTUVpEUVgzUzFVa2xDUm9LRFZZMGNC?=
- =?utf-8?B?LzVFcmpIRjZDNkRaNjUxOStjdWZkOFZnTHB6RllXWm5wTHA0YlBwNUtjNERS?=
- =?utf-8?B?NFBobENmTUtaMUtJWVVTeTlOM2gybTBrOHJYQXdRRzl5NkQrdU9PY2xtL1ow?=
- =?utf-8?B?ODF6NE45NVRuWkZlMDJaTS8xS01lSE5nUFBYYVgxQlFOeUZhVXczcDRHMmZB?=
- =?utf-8?B?RE95Ly8vWWdOejBGR2VkZGh5dmlZMXpyc2tsS2VTMzErNFlqaGdQekdmVTlX?=
- =?utf-8?Q?PdOwWzfLXJ1vx9iLD0?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 40657b99-0453-4fa0-dfb6-08de84c36616
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2026 07:53:10.1261
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +iV5JdZBX8N0h7JJxoNKE59OYnnAdi9hT9XiVx683kRSE7w/CyzCTmBEJThnc1Xk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9169
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: dXYgNqcSSf7xJZm9Re4deHCBYWFoNMcB
+X-Authority-Analysis: v=2.4 cv=KajfcAYD c=1 sm=1 tr=0 ts=69ba59ef cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=aKZOg4wb7pFh2cTURR0A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDA2NCBTYWx0ZWRfX0IYteaxKsERS
+ SJV7UGcBHlvPy6RzWWmi4zCHgPCuejRKcGAuLuJvyUb4W5oM9ePVwg8JJpyKtQlDTGEJGWYRowj
+ XHJmvDFjLKzmD8sOzHENpwQtQJbbM9Nnxv4vkKiGDqkSeULJoqKFGo2c3X3Lq0CyRBTvw0fzdZR
+ bQbAWAMJeMtv8KNxBRjQnE4zVLPpJl/tN+HNvGNq4dNuZJcITLuYw/HSMN+8Cp3ToyLAprUSrwI
+ oGF2WAYkuAlXCFG1YNLiFTpDtoS99/PVL2KMs52J77IkNu796FRzcATYSkZlUYeohd8T2HZh9II
+ Rm0ENK74/5NMtB5h0c6YyM0KEPxrhtnfMtBJOiSh5CLjfh5WLwLO/FDmYn+uIBbqW+qbtCux9Od
+ owJp7nG/RXRc51FwQG5lX2jWkxE6/fiDOW3ZMYLJEy/0CYFtGhLYel+IQNPnhGcrh1A6XtiJxtR
+ dHPfIxRDUOZT30c/SlQ==
+X-Proofpoint-GUID: dXYgNqcSSf7xJZm9Re4deHCBYWFoNMcB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-17_05,2026-03-17_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 adultscore=0 spamscore=0 malwarescore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603180064
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ibm.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[ibm.com:s=pp1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226988-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[intel.com,gmail.com,redhat.com];
+	DKIM_TRACE(0.00)[ibm.com:+];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226989-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hca@linux.ibm.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.ibm.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:dkim,amd.com:mid]
-X-Rspamd-Queue-Id: B12DE2B7589
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 0C81A2B74B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/18/26 06:40, Kasireddy, Vivek wrote:
-> Hi Mikhail,
-> 
->> Subject: [PATCH] dma-buf/udmabuf: skip redundant cpu sync to fix
->> cacheline EEXIST warning
->>
->> When CONFIG_DMA_API_DEBUG_SG is enabled, importing a udmabuf
->> into a DRM
->> driver (e.g. amdgpu for video playback in GNOME Videos / Showtime)
->> triggers a spurious warning:
->>
->>   DMA-API: amdgpu 0000:03:00.0: cacheline tracking EEXIST, \
->>       overlapping mappings aren't supported
->>   WARNING: kernel/dma/debug.c:619 at add_dma_entry+0x473/0x5f0
->>
->> The call chain is:
->>
->>   amdgpu_cs_ioctl
->>    -> amdgpu_ttm_backend_bind
->>     -> dma_buf_map_attachment
->>      -> [udmabuf] map_udmabuf -> get_sg_table
->>       -> dma_map_sgtable(dev, sg, direction, 0)  // attrs=0
->>        -> debug_dma_map_sg -> add_dma_entry -> EEXIST
->>
->> This happens because udmabuf builds a per-page scatter-gather list via
->> sg_set_folio().  When begin_cpu_udmabuf() has already created an sg
->> table mapped for the misc device, and an importer such as amdgpu
->> maps
->> the same pages for its own device via map_udmabuf(), the DMA debug
->> infrastructure sees two active mappings whose physical addresses share
->> cacheline boundaries and warns about the overlap.
->>
->> The DMA_ATTR_SKIP_CPU_SYNC flag suppresses this check in
->> add_dma_entry() because it signals that no CPU cache maintenance is
->> performed at map/unmap time, making the cacheline overlap harmless.
->>
->> All other major dma-buf exporters already pass this flag:
->>   - drm_gem_map_dma_buf() passes DMA_ATTR_SKIP_CPU_SYNC
->>   - amdgpu_dma_buf_map() passes DMA_ATTR_SKIP_CPU_SYNC
->>
->> The CPU sync at map/unmap time is also redundant for udmabuf:
->> begin_cpu_udmabuf() and end_cpu_udmabuf() already perform explicit
->> cache synchronization via dma_sync_sgtable_for_cpu/device() when
->> CPU
->> access is requested through the dma-buf interface.
->>
->> Pass DMA_ATTR_SKIP_CPU_SYNC to dma_map_sgtable() and
->> dma_unmap_sgtable() in udmabuf to suppress the spurious warning
->> and
->> skip the redundant sync.
->>
->> Fixes: 284562e1f348 ("udmabuf: implement
->> begin_cpu_access/end_cpu_access hooks")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
->> ---
->>  drivers/dma-buf/udmabuf.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
->> index 94b8ecb892bb..9c6f8785a28a 100644
->> --- a/drivers/dma-buf/udmabuf.c
->> +++ b/drivers/dma-buf/udmabuf.c
->> @@ -162,7 +162,7 @@ static struct sg_table *get_sg_table(struct device
->> *dev, struct dma_buf *buf,
->>  		sg_set_folio(sgl, ubuf->folios[i], PAGE_SIZE,
->>  			     ubuf->offsets[i]);
->>
->> -	ret = dma_map_sgtable(dev, sg, direction, 0);
->> +	ret = dma_map_sgtable(dev, sg, direction,
->> DMA_ATTR_SKIP_CPU_SYNC);
->>  	if (ret < 0)
->>  		goto err_map;
->>  	return sg;
->> @@ -177,7 +177,7 @@ static struct sg_table *get_sg_table(struct device
->> *dev, struct dma_buf *buf,
->>  static void put_sg_table(struct device *dev, struct sg_table *sg,
->>  			 enum dma_data_direction direction)
->>  {
->> -	dma_unmap_sgtable(dev, sg, direction, 0);
->> +	dma_unmap_sgtable(dev, sg, direction,
->> DMA_ATTR_SKIP_CPU_SYNC);
-> Looks OK to me but it would be nice if Christian or someone else can
-> provide an Ack for this patch.
+The inline assembly constraints for xor_xc_2() are incorrect. "bytes",
+"p1", and "p2" are input operands, while all three of them are modified
+within the inline assembly. Given that the function consists only of this
+inline assembly it seems unlikely that this may cause any problems, however
+fix this in any case.
 
-The details of the udmabuf handling is absolutely not my field of expertise.
+Fixes: 2cfc5f9ce7f5 ("s390/xor: optimized xor routing using the XC instruction")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20260302133500.1560531-2-hca@linux.ibm.com
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+(cherry picked from commit f775276edc0c505dc0f782773796c189f31a1123)
+---
+ arch/s390/lib/xor.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Feel free to add my Acked-by since it obviously seems to fix a bug, but it would be nice if somebody could do an in deep review as well.
-
-Regards,
-Christian.
-
-> 
-> Thanks,
-> Vivek
-> 
->>  	sg_free_table(sg);
->>  	kfree(sg);
->>  }
->> --
->> 2.53.0
-> 
+diff --git a/arch/s390/lib/xor.c b/arch/s390/lib/xor.c
+index fb924a8041dc..76d7ca64d231 100644
+--- a/arch/s390/lib/xor.c
++++ b/arch/s390/lib/xor.c
+@@ -29,8 +29,8 @@ static void xor_xc_2(unsigned long bytes, unsigned long * __restrict p1,
+ 		"	j	3f\n"
+ 		"2:	xc	0(1,%1),0(%2)\n"
+ 		"3:\n"
+-		: : "d" (bytes), "a" (p1), "a" (p2)
+-		: "0", "1", "cc", "memory");
++		: "+d" (bytes), "+a" (p1), "+a" (p2)
++		: : "0", "1", "cc", "memory");
+ }
+ 
+ static void xor_xc_3(unsigned long bytes, unsigned long * __restrict p1,
+-- 
+2.51.0
 
 
