@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-227097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eC4QOve/umkGbgIAu9opvQ
-	(envelope-from <stable+bounces-227097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:08:39 +0100
+	id 2LlDB2W+umkGbgIAu9opvQ
+	(envelope-from <stable+bounces-227096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:01:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6135D2BDE03
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:08:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AECE22BDC0D
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:01:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B36C630B0E5E
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:01:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 39B803016717
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4736E3DE431;
-	Wed, 18 Mar 2026 15:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2F5285CB9;
+	Wed, 18 Mar 2026 15:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="eQpH50wA"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="Q8Wiu5LO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592233BE636;
-	Wed, 18 Mar 2026 15:01:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20DB3D7D75;
+	Wed, 18 Mar 2026 15:01:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773846072; cv=none; b=CnEh6mHKj0S3hTVVJ6JXt3gFXO/HszE44R4iObeK52cUY0e1wqBp8mnwjsBWIMYtdeWBhjAk3eEUnrgtL72ZLTpRb06xtQTNUQfMi81u3XrpYEma0aW457JqgbldtuIQcQic6eEAzIr5jnONeCZrfbOui+4IfYnGt3VP+BAqtj0=
+	t=1773846071; cv=none; b=bzH7SGYC4uRvWHs3aRJrwhC8N26ASERJyQfmwlxPCTkS1gAG3IQoTTgbux4f4lYo4aH/nDcgysbJXJx8uWjQ8ujgcAs8pVg5NR97XtRAL6++Z4BjV4KZht2krq1wYRhunMopCNx6rxMaa7QDFzNxCUbQ18cjsywedFlUxUe5yEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773846072; c=relaxed/simple;
-	bh=DmiItKPQ9EHlZvu5av+MtnBOpWDzI1clnWp2NdKde3o=;
+	s=arc-20240116; t=1773846071; c=relaxed/simple;
+	bh=99t2Jul0qIhE3s0je/eG1mqEqiB3PvWKRtpR8W0Zl+Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=b5bAFUn/eUo0uDFnkBjqUGtPXzC75+KFyqPdHjDX2TZxcVPSkxQBd2mDQga191EmonGV+buwUdKBh/0+sFZB+moQ3OOsNROQtYJqf9qP+rljtcMKWcxGz3F6vqoMPIibgNXzaipsYpBxR1Yenb8QzwOv1kNFlIMZWC+EhN/cXXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=eQpH50wA; arc=none smtp.client-ip=45.254.49.197
+	 MIME-Version; b=PmK58lJJpGY598c3tNoy9oPhcfm70rWGxWoOVIua6tIkqWPDbguau8BGnGY0lSwsT9rEnM1DNF91TIk0I6TLBTYOL0wyux2Wcrk2g2lEQGa4UBa3AFEAkMBQ7zJXV/fVtYGJUc3/KqktwLL39dApj9dPkimIGosPQKvidVeGPqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=Q8Wiu5LO; arc=none smtp.client-ip=45.254.49.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
 Received: from DESKTOP-SUEFNF9.tailb3ad3b.ts.net (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 376f04280;
-	Wed, 18 Mar 2026 23:01:02 +0800 (GMT+08:00)
+	by smtp.qiye.163.com (Hmail) with ESMTP id 376f04282;
+	Wed, 18 Mar 2026 23:01:04 +0800 (GMT+08:00)
 From: Zilin Guan <zilin@seu.edu.cn>
 To: slava.dubeyko@ibm.com
 Cc: akpm@linux-foundation.org,
@@ -48,9 +48,9 @@ Cc: akpm@linux-foundation.org,
 	slava@dubeyko.com,
 	stable@vger.kernel.org,
 	zilin@seu.edu.cn
-Subject: [PATCH v2 1/2] hfsplus: fix held lock freed on hfsplus_fill_super()
-Date: Wed, 18 Mar 2026 23:00:45 +0800
-Message-Id: <20260318150046.431428-2-zilin@seu.edu.cn>
+Subject: [PATCH v2 2/2] hfsplus: extract hidden directory search into a helper function
+Date: Wed, 18 Mar 2026 23:00:46 +0800
+Message-Id: <20260318150046.431428-3-zilin@seu.edu.cn>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260318150046.431428-1-zilin@seu.edu.cn>
 References: <20260318150046.431428-1-zilin@seu.edu.cn>
@@ -61,28 +61,28 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d0176e4e103a1kunm8a6a5dd1194449
+X-HM-Tid: 0a9d0176eb8703a1kunm8a6a5dd119444d
 X-HM-MType: 10
 X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZGkNJVkwfQkhJS09LShkeT1YeHw5VEwETFhoSFy
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlCHk5LVkJKGR9OQ09PGE9LHVYeHw5VEwETFhoSFy
 	QUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVUtZBg
 	++
 DKIM-Signature: a=rsa-sha256;
-	b=eQpH50wAnd8o+arwrh0ZE3wJ+tQrsNR0X2yT49GucqzUVRpELrpcdZH+I82q+ihbQTncCSpHyhzBDjO+VMhmzKGLtDxOG8aiz5j9fot5rIi+hwzoeMaTLtQEmfIHaJCN0toe6iaKPjPXioJUXWfhk/DPNN8Q6kODV8BddkxpCFE=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=f78VzEoA9VVNkvocFaYeL3bbNDA+AApacm2I3szd6Ok=;
+	b=Q8Wiu5LOkBGJ++kt3DL+WLu5iPXpHYJGLwGWuRrv3htf22fvxHmPjgYPMHg+q2fdMhGyas6PXpeghOEPi2zuA6nMQxqJ3dfbJlIJ2Nm5Coj1LDaanpu1wHzGVd2ciMMkqORpoaoW3SAGPXjVFUo1Q+mFyU/SKH9kPG4pboeTJ8s=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=T9PwoeELAsxbhE2E7IPq2rA7XxeWVBtg7N7Xwbw8GLc=;
 	h=date:mime-version:subject:message-id:from;
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227097-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227096-lists,stable=lfdr.de];
 	TO_DN_NONE(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -94,140 +94,106 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-0.992];
 	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6135D2BDE03
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: AECE22BDC0D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-hfsplus_fill_super() calls hfs_find_init() to initialize a search
-structure, which acquires tree->tree_lock. If the subsequent call to
-hfsplus_cat_build_key() fails, the function jumps to the out_put_root
-error label without releasing the lock. The later cleanup path then
-frees the tree data structure with the lock still held, triggering a
-held lock freed warning.
+In hfsplus_fill_super(), the process of looking up the hidden directory
+involves initializing a catalog search, building a search key, reading
+the b-tree record, and releasing the search data.
 
-Fix this by adding the missing hfs_find_exit(&fd) call before jumping
-to the out_put_root error label. This ensures that tree->tree_lock is
-properly released on the error path.
+Currently, this logic is open-coded directly within the main superblock
+initialization routine. This makes hfsplus_fill_super() quite lengthy
+and its error handling paths less straightforward.
 
-The bug was originally detected on v6.13-rc1 using an experimental
-static analysis tool we are developing, and we have verified that the
-issue persists in the latest mainline kernel. The tool is specifically
-designed to detect memory management issues. It is currently under active
-development and not yet publicly available.
+Extract the hidden directory search sequence into a new helper function,
+hfsplus_get_hidden_dir_entry(). This improves overall code readability,
+cleanly encapsulates the hfs_find_data lifecycle, and simplifies the
+error exits in hfsplus_fill_super().
 
-We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
-lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
-used GDB to dynamically shrink the max_unistr_len parameter to 1 before
-hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
-return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
-exercises the faulty error path. The following warning was observed
-during mount:
+Moreover, the error handling logic for hfs_brec_read is updated to mirror
+hfsplus_lookup(). This gracefully handles the -ENOENT case, keeping the
+directory search behavior consistent with the rest of the filesystem.
 
-	=========================
-	WARNING: held lock freed!
-	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
-	-------------------------
-	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
-	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-	2 locks held by mount/174:
-	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
-	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-
-	stack backtrace:
-	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
-	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-	Call Trace:
-	<TASK>
-	dump_stack_lvl+0x82/0xd0
-	debug_check_no_locks_freed+0x13a/0x180
-	kfree+0x16b/0x510
-	? hfsplus_fill_super+0xcb4/0x18a0
-	hfsplus_fill_super+0xcb4/0x18a0
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x65f/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? pointer+0x4ce/0xbf0
-	? trace_contention_end+0x11c/0x150
-	? __pfx_pointer+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x79b/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? vsnprintf+0x6da/0x1270
-	? srso_return_thunk+0x5/0x5f
-	? __mutex_unlock_slowpath+0x157/0x740
-	? __pfx_vsnprintf+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? mark_held_locks+0x49/0x80
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? irqentry_exit+0x17b/0x5e0
-	? trace_irq_disable.constprop.0+0x116/0x150
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	get_tree_bdev_flags+0x302/0x580
-	? __pfx_get_tree_bdev_flags+0x10/0x10
-	? vfs_parse_fs_qstr+0x129/0x1a0
-	? __pfx_vfs_parse_fs_qstr+0x3/0x10
-	vfs_get_tree+0x89/0x320
-	fc_mount+0x10/0x1d0
-	path_mount+0x5c5/0x21c0
-	? __pfx_path_mount+0x10/0x10
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? kmem_cache_free+0x307/0x540
-	? user_path_at+0x51/0x60
-	? __x64_sys_mount+0x212/0x280
-	? srso_return_thunk+0x5/0x5f
-	__x64_sys_mount+0x212/0x280
-	? __pfx___x64_sys_mount+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	do_syscall_64+0x111/0x680
-	entry_SYSCALL_64_after_hwframe+0x77/0x7f
-	RIP: 0033:0x7ffacad55eae
-	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
-	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
-	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
-	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
-	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
-	</TASK>
-
-After applying this patch, the warning no longer appears.
-
-Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
-CC: stable@vger.kernel.org
 Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 ---
- fs/hfsplus/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/hfsplus/super.c | 41 ++++++++++++++++++++++++++++-------------
+ 1 file changed, 28 insertions(+), 13 deletions(-)
 
 diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 7229a8ae89f9..f396fee19ab8 100644
+index f396fee19ab8..df3f104298cf 100644
 --- a/fs/hfsplus/super.c
 +++ b/fs/hfsplus/super.c
-@@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (err)
- 		goto out_put_root;
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
--	if (unlikely(err < 0))
-+	if (unlikely(err < 0)) {
-+		hfs_find_exit(&fd);
- 		goto out_put_root;
-+	}
- 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
- 		hfs_find_exit(&fd);
+@@ -424,12 +424,33 @@ void hfsplus_prepare_volume_header_for_commit(struct hfsplus_vh *vhdr)
+ 	vhdr->attributes |= cpu_to_be32(HFSPLUS_VOL_INCNSTNT);
+ }
+ 
++static inline int hfsplus_get_hidden_dir_entry(struct super_block *sb,
++					       const struct qstr *str,
++					       hfsplus_cat_entry *entry)
++{
++	struct hfs_find_data fd;
++	int err;
++
++	err = hfs_find_init(HFSPLUS_SB(sb)->cat_tree, &fd);
++	if (err)
++		return err;
++
++	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, str);
++	if (unlikely(err < 0))
++		goto free_fd;
++
++	err = hfs_brec_read(&fd, entry, sizeof(*entry));
++
++free_fd:
++	hfs_find_exit(&fd);
++	return err;
++}
++
+ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
+ {
+ 	struct hfsplus_vh *vhdr;
+ 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
+ 	hfsplus_cat_entry entry;
+-	struct hfs_find_data fd;
+ 	struct inode *root, *inode;
+ 	struct qstr str;
+ 	struct nls_table *nls;
+@@ -565,16 +586,11 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
+ 
+ 	str.len = sizeof(HFSP_HIDDENDIR_NAME) - 1;
+ 	str.name = HFSP_HIDDENDIR_NAME;
+-	err = hfs_find_init(sbi->cat_tree, &fd);
+-	if (err)
+-		goto out_put_root;
+-	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+-	if (unlikely(err < 0)) {
+-		hfs_find_exit(&fd);
+-		goto out_put_root;
+-	}
+-	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
+-		hfs_find_exit(&fd);
++	err = hfsplus_get_hidden_dir_entry(sb, &str, &entry);
++	if (err) {
++		if (err != -ENOENT)
++			goto out_put_root;
++	} else {
  		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
+ 			err = -EIO;
+ 			goto out_put_root;
+@@ -585,8 +601,7 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
+ 			goto out_put_root;
+ 		}
+ 		sbi->hidden_dir = inode;
+-	} else
+-		hfs_find_exit(&fd);
++	}
+ 
+ 	if (!sb_rdonly(sb)) {
+ 		/*
 -- 
 2.34.1
 
