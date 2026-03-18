@@ -1,198 +1,359 @@
-Return-Path: <stable+bounces-227080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GjmBIC4umlWawIAu9opvQ
-	(envelope-from <stable+bounces-227080-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:36:48 +0100
+	id cBeCFAG6umk4bQIAu9opvQ
+	(envelope-from <stable+bounces-227081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:43:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 997A22BD41F
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:36:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0578C2BD668
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:43:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6237B30AB68A
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:31:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F15830832E6
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 882283DAC02;
-	Wed, 18 Mar 2026 14:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="kCHPGqhd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870603DC4AD;
+	Wed, 18 Mar 2026 14:34:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2683D8917;
-	Wed, 18 Mar 2026 14:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02083DA7CC
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 14:34:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773844255; cv=none; b=AgZ6yaYyweSMiEMKEKQlBsAoYvd9YurC1/huVVDlW1vfAH/YVqDthzabSv5Tl/Iv/m4acdZF7XQpR8MRN70M30MrYOlJ+Fl2PfCln3WCz43vmDuc54J2u/7IZs5EUfoAZ+nH2sZZB2GZ82ospUNXsYzCO966gt4B1sRY29OpDbo=
+	t=1773844442; cv=none; b=YLWtd3+0sgfBPxEBmiFv0ppKNJm1TsWcfQdxlIgXix5Z/C36iTkOoIR5pVmfgeeIeBlMNGxDA6LbuTdpKyey84fMyyVyNio6dQGLEOqc19iDGgd7yAzq393R6oDori3YLzygdT0+RTvWczcpg7mj9R8ZoXRVllbgw20k0ZrIiJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773844255; c=relaxed/simple;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sqS+jlq0yP1OYZxEoXaUDfqrcQbuP8NGwy9o/CooA2j51hlNmBMfSrq2NAmQqjPdPwbQgjQExWSsr4cAKrojeqJbLQxXskCJNxwk5f2fPu9extRVSINj7aukNY3MRe38bC4XZaCidDO3fOazs0j2CHLM2xyuLxwBW3SfVOR/BIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=kCHPGqhd; arc=none smtp.client-ip=212.227.17.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1773844249; x=1774449049; i=rwarsow@gmx.de;
-	bh=1R+q0brxT5FCSRMOO/LqKS2K1GLvRDjYnI692aiflvw=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=kCHPGqhd4FSIP3WIL85FEptLz6osZ5hzDWVPQj1C9r3Cn4hnzBt8F5rl2/VCleRL
-	 NT8sJIOsJJZ/4EP1GTa6WUeIieSkkiv4cWBUF7zGxZeofDkJCJpBtbdvln3tithL4
-	 PV9qxXSvl8cOVkdX2BXMp6PE2r0251oetuiJWaUp9tV1P3jqMEQoUpjOyM24aKtfd
-	 +Hd7ekCF3uKE8QAE3SSgc6MtKs8UTK5WGp/B1qEofMsUx6iaPzkpji69SfEHD2Vcr
-	 F30DeNtCMAYRtZwaup3wCN7yRdZvTUyJnjKQFcf7khjeybOonO+pQm8BcEKhIRtcB
-	 NKvH11IddRL+mmGLjQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mof57-1vEMka0RDd-00blV2; Wed, 18
- Mar 2026 15:30:49 +0100
-Message-ID: <e3e255d1-f2b1-4cef-a7c1-a1831740ba47@gmx.de>
-Date: Wed, 18 Mar 2026 15:30:47 +0100
+	s=arc-20240116; t=1773844442; c=relaxed/simple;
+	bh=cLufbcSTF3ZXxO63NfD5IE+LSmoBumdAAbnjhXQdd9I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oUBcz1BTQjsFgVKMeiK8gCsyYLcMOBGPSgFCRQrFhxcBkkfgQYp0OUt+osjYltM7Jkwd90t4O5y/Rw4IYQ+kPj79sxC1ToFQSl2dumnjYB2eJvRlQcWA8ELkbNQt+ERwJqfs9blIZS37FuRYMz5PUBgUtGTK5Ka7K4OUEhJAdTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w2rxz-0001iL-6S; Wed, 18 Mar 2026 15:33:47 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w2rxy-000vHs-1T;
+	Wed, 18 Mar 2026 15:33:46 +0100
+Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1w2rxy-00000009Ar4-1S7v;
+	Wed, 18 Mar 2026 15:33:46 +0100
+Date: Wed, 18 Mar 2026 15:33:46 +0100
+From: Michael Grzeschik <mgr@pengutronix.de>
+To: Hyungjung Joo <jhj140711@gmail.com>
+Cc: ericvh@kernel.org, lucho@ionkov.net, asmadeus@codewreck.org,
+	linux_oss@crudebyte.com, gregkh@linuxfoundation.org,
+	v9fs@lists.linux.dev, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] net: 9p: usbg: clear stale client pointer on close
+Message-ID: <abq3yqrsQJGI71jz@pengutronix.de>
+References: <20260313171659.1225180-1-jhj140711@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/379] 6.19.9-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260318122547.233850204@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260318122547.233850204@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:zNsbj9ZPFtjBw7yeosfYJH6NB/IrxiFjRtAYnVW74CU+Aab8kTL
- 4dgZ3aeWkGJzDuOQdzTxgsaE1w3rQZpS+2l0E98QDio3sVRJflz7qJJKONqc4hwNkAYw9zp
- /k/w7iI9CiVrfDdVhuvMbRmuaGmhdkDYG4+C5nntAYMjRFyR3o/CvRhotxYzMSwpuUGKK1F
- vYyt1MgiyEw7I+K8Of7DA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:wmQ3C6X69eE=;61/01cdY3ARsZVFmmmv8b1taL+P
- 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
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="slHqKoTqpWZ+T6zB"
+Content-Disposition: inline
+In-Reply-To: <20260313171659.1225180-1-jhj140711@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mgr@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spamd-Result: default: False [-3.56 / 15.00];
+	SIGNED_PGP(-2.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmx.de,quarantine];
-	R_DKIM_ALLOW(-0.20)[gmx.de:s=s31663417];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227080-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmx.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.980];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[rwarsow@gmx.de,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmx.de:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-227081-lists,stable=lfdr.de];
+	MISSING_XM_UA(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	DMARC_NA(0.00)[pengutronix.de];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[gmx.de:dkim,gmx.de:email,gmx.de:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 997A22BD41F
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mgr@pengutronix.de,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.568];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: 0578C2BD668
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+
+--slHqKoTqpWZ+T6zB
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
 Hi
 
-no regressions here on x86_64 (Intel 11th Gen. CPU)
+I have some review feedback.
 
-Thanks
+On Sat, Mar 14, 2026 at 02:16:59AM +0900, Hyungjung Joo wrote:
+>p9_usbg_close() tears down the client transport, but usb9pfs keeps
+>using usb9pfs->client from asynchronous TX and RX completion handlers.
+>A late completion can therefore dereference a client that has already
+>been freed during mount teardown.
+>
+>Clear usb9pfs->client under usb9pfs->lock when closing the transport,
+>detach any pending TX request from in_req->context, and make the TX/RX
+>completion handlers bail out once the transport has been detached. This
+>keeps late completions from touching a freed or rebound p9_client.
+>
+>Fixes: a3be076dc174 ("net/9p/usbg: Add new usb gadget function transport")
+>Cc: stable@vger.kernel.org
+>Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>Signed-off-by: Hyungjung Joo <jhj140711@gmail.com>
+>---
+> net/9p/trans_usbg.c | 63 +++++++++++++++++++++++++++++++++------------
+> 1 file changed, 47 insertions(+), 16 deletions(-)
+>
+>diff --git a/net/9p/trans_usbg.c b/net/9p/trans_usbg.c
+>index 1ce70338999c..3c2aa1943f93 100644
+>--- a/net/9p/trans_usbg.c
+>+++ b/net/9p/trans_usbg.c
+>@@ -149,7 +149,8 @@ static void usb9pfs_tx_complete(struct usb_ep *ep, str=
+uct usb_request *req)
+> {
+> 	struct f_usb9pfs *usb9pfs =3D ep->driver_data;
+> 	struct usb_composite_dev *cdev =3D usb9pfs->function.config->cdev;
+>-	struct p9_req_t *p9_tx_req =3D req->context;
+>+	struct p9_client *client;
+>+	struct p9_req_t *p9_tx_req;
+> 	unsigned long flags;
+>
+> 	/* reset zero packages */
+>@@ -165,18 +166,27 @@ static void usb9pfs_tx_complete(struct usb_ep *ep, s=
+truct usb_request *req)
+> 		ep->name, req->status, req->actual, req->length);
+>
+> 	spin_lock_irqsave(&usb9pfs->lock, flags);
+>-	WRITE_ONCE(p9_tx_req->status, REQ_STATUS_SENT);
+>+	client =3D usb9pfs->client;
+>+	p9_tx_req =3D req->context;
+>+	req->context =3D NULL;
+>
+>-	p9_req_put(usb9pfs->client, p9_tx_req);
+>+	if (!client || !p9_tx_req) {
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Just goto unlock_complete;
+
+>+		spin_unlock_irqrestore(&usb9pfs->lock, flags);
+>+		complete(&usb9pfs->send);
+>+		return;
+>+	}
+>
+>-	req->context =3D NULL;
+>+	WRITE_ONCE(p9_tx_req->status, REQ_STATUS_SENT);
+>+
+>+	p9_req_put(client, p9_tx_req);
+>
+
+unlock_complete:
+> 	spin_unlock_irqrestore(&usb9pfs->lock, flags);
+>
+> 	complete(&usb9pfs->send);
+> }
+>
+>-static struct p9_req_t *usb9pfs_rx_header(struct f_usb9pfs *usb9pfs, void=
+ *buf)
+>+static struct p9_req_t *usb9pfs_rx_header(struct f_usb9pfs *usb9pfs,
+>+					  struct p9_client *client, void *buf)
+
+I like this change but not in this patch. Since with your patch,
+rx_header will be called under locking context, this is not
+really a necessary change.
+
+I would keep it in another patch, though and move it before your change.
+
+> {
+> 	struct p9_req_t *p9_rx_req;
+> 	struct p9_fcall	rc;
+>@@ -202,7 +212,7 @@ static struct p9_req_t *usb9pfs_rx_header(struct f_usb=
+9pfs *usb9pfs, void *buf)
+> 		 "mux %p pkt: size: %d bytes tag: %d\n",
+> 		 usb9pfs, rc.size, rc.tag);
+>
+>-	p9_rx_req =3D p9_tag_lookup(usb9pfs->client, rc.tag);
+>+	p9_rx_req =3D p9_tag_lookup(client, rc.tag);
+> 	if (!p9_rx_req || p9_rx_req->status !=3D REQ_STATUS_SENT) {
+> 		p9_debug(P9_DEBUG_ERROR, "Unexpected packet tag %d\n", rc.tag);
+> 		return NULL;
+>@@ -212,7 +222,7 @@ static struct p9_req_t *usb9pfs_rx_header(struct f_usb=
+9pfs *usb9pfs, void *buf)
+> 		p9_debug(P9_DEBUG_ERROR,
+> 			 "requested packet size too big: %d for tag %d with capacity %zd\n",
+> 			 rc.size, rc.tag, p9_rx_req->rc.capacity);
+>-		p9_req_put(usb9pfs->client, p9_rx_req);
+>+		p9_req_put(client, p9_rx_req);
+> 		return NULL;
+> 	}
+>
+>@@ -220,7 +230,7 @@ static struct p9_req_t *usb9pfs_rx_header(struct f_usb=
+9pfs *usb9pfs, void *buf)
+> 		p9_debug(P9_DEBUG_ERROR,
+> 			 "No recv fcall for tag %d (req %p), disconnecting!\n",
+> 			 rc.tag, p9_rx_req);
+>-		p9_req_put(usb9pfs->client, p9_rx_req);
+>+		p9_req_put(client, p9_rx_req);
+> 		return NULL;
+> 	}
+>
+>@@ -231,8 +241,10 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, st=
+ruct usb_request *req)
+> {
+> 	struct f_usb9pfs *usb9pfs =3D ep->driver_data;
+> 	struct usb_composite_dev *cdev =3D usb9pfs->function.config->cdev;
+>+	struct p9_client *client;
+> 	struct p9_req_t *p9_rx_req;
+> 	unsigned int req_size =3D req->actual;
+>+	unsigned long flags;
+> 	int status =3D REQ_STATUS_RCVD;
+>
+> 	if (req->status) {
+>@@ -241,9 +253,16 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, st=
+ruct usb_request *req)
+> 		return;
+> 	}
+>
+>-	p9_rx_req =3D usb9pfs_rx_header(usb9pfs, req->buf);
+>-	if (!p9_rx_req)
+>+	spin_lock_irqsave(&usb9pfs->lock, flags);
+>+	client =3D usb9pfs->client;
+>+	if (!client) {
+>+		spin_unlock_irqrestore(&usb9pfs->lock, flags);
+> 		return;
+>+	}
+>+
+>+	p9_rx_req =3D usb9pfs_rx_header(usb9pfs, client, req->buf);
+>+	if (!p9_rx_req)
+>+		goto out_unlock;
+>
+> 	if (req_size > p9_rx_req->rc.capacity) {
+> 		dev_err(&cdev->gadget->dev,
+>@@ -257,8 +276,11 @@ static void usb9pfs_rx_complete(struct usb_ep *ep, st=
+ruct usb_request *req)
+>
+> 	p9_rx_req->rc.size =3D req_size;
+>
+>-	p9_client_cb(usb9pfs->client, p9_rx_req, status);
+>-	p9_req_put(usb9pfs->client, p9_rx_req);
+>+	p9_client_cb(client, p9_rx_req, status);
+>+	p9_req_put(client, p9_rx_req);
+>+
+>+out_unlock:
+>+	spin_unlock_irqrestore(&usb9pfs->lock, flags);
+>
+> 	complete(&usb9pfs->received);
+> }
+>@@ -416,7 +438,9 @@ static int p9_usbg_create(struct p9_client *client, st=
+ruct fs_context *fc)
+> 		client->status =3D Disconnected;
+> 	else
+> 		client->status =3D Connected;
+>+	spin_lock_irq(&usb9pfs->lock);
+> 	usb9pfs->client =3D client;
+>+	spin_unlock_irq(&usb9pfs->lock);
+>
+> 	client->trans_mod->maxsize =3D usb9pfs->buflen;
+>
+>@@ -427,18 +451,25 @@ static int p9_usbg_create(struct p9_client *client, =
+struct fs_context *fc)
+>
+> static void usb9pfs_clear_tx(struct f_usb9pfs *usb9pfs)
+> {
+>+	struct p9_client *client;
+> 	struct p9_req_t *req;
+>+	unsigned long flags;
+>
+>-	guard(spinlock_irqsave)(&usb9pfs->lock);
+>+	spin_lock_irqsave(&usb9pfs->lock, flags);
+>+	client =3D usb9pfs->client;
+>+	usb9pfs->client =3D NULL;
+>+	req =3D usb9pfs->in_req ? usb9pfs->in_req->context : NULL;
+>+	if (usb9pfs->in_req)
+>+		usb9pfs->in_req->context =3D NULL;
+>+	spin_unlock_irqrestore(&usb9pfs->lock, flags);
+
+Same applies here, it would be nice to seperate the changes of
+using the extra variable to a second patch.
+>
+>-	req =3D usb9pfs->in_req->context;
+>-	if (!req)
+>+	if (!req || !client)
+> 		return;
+>
+> 	if (!req->t_err)
+> 		req->t_err =3D -ECONNRESET;
+>
+>-	p9_client_cb(usb9pfs->client, req, REQ_STATUS_ERROR);
+>+	p9_client_cb(client, req, REQ_STATUS_ERROR);
+> }
+>
+> static void p9_usbg_close(struct p9_client *client)
+>--=20
+>2.34.1
+
+I tested your patch and like the changes, however I have some extra
+patches on top. Would you mind if I take your changes and include my
+suggestions. I would still keep you as author though. These changes would
+then be included in my series I will send today.
+
+Regards,
+Michael
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+--slHqKoTqpWZ+T6zB
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmm6t8cACgkQC+njFXoe
+LGR96xAAuLktJ1iOoveDgtn+MCY/pzKT+sHU0HgPMEpYA+hFu9hdt7kSH5pZwXhz
+sqGm4PH1j+F3mL5a55Tv2h5gjqafBLcN9HTMe9gUpjKuCPBo8NjIRZTgt2ozp60c
+7XyRqjNh2ButuN4aYLSJjfLhsSrVDlo4MuhmDltjXSjaHiuzi5iCdGnsvJY6zMF5
+4L9MhJU9HZT/xtjephHq9KYysaUwRK07ygYNDMTJJSaB5M7MRAFDp4a6m5oLH9G4
+odKKxavan2sfg/UkCSQKbahDsVlNDxNXn9TC6B/c2uweC76yNdTtzSiQ0v8PPDBU
+N5uK0EB47iDIPA6H51f9fTMsnJEgpn+X/QZEsXnUe514ShEsmwA5aU+A/A20LoRM
+VL4DpmuQMiC2AUC2OjSGeYVaZM8puh9BrY+HaD0ajMIT37fOjz5DUTx8GzJRfS5V
+9JuzJKE1/yhO7AHkjDQhRfrsHhmi+si7yqvqeMZDBm04kQEVApOIGnI1tlR7/iw5
+XD5Jqwn4mJyg2aX3Zwmw6nbNI+/i+3XE9EaUh7ywXpeNm9bswbhuNUytkeZnmQ9e
+gJEN1U/6dm+HNpTc+nczOlQ6JQ6cdugoxxICjQOSDh9czTarCZM/a+yw2z7Enh28
+eeAwYWN6UXSIMUscx23tNCn0S9gUjik/ZX6ZKFuoW4xGo41CcxU=
+=gES0
+-----END PGP SIGNATURE-----
+
+--slHqKoTqpWZ+T6zB--
 
