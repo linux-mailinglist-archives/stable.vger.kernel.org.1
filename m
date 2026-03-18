@@ -1,147 +1,317 @@
-Return-Path: <stable+bounces-227167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNVCLuEUu2k3ewIAu9opvQ
-	(envelope-from <stable+bounces-227167-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:10:57 +0100
+	id QCimLRQWu2nYewIAu9opvQ
+	(envelope-from <stable+bounces-227168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:16:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55AA22C2DB2
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:10:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF4A2C2E77
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 22:16:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77D3530C4514
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:10:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 054E4303FF27
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACA436C0C1;
-	Wed, 18 Mar 2026 21:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7585D34D383;
+	Wed, 18 Mar 2026 21:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="MYmMikI5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D4+vedNx"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949E1374161;
-	Wed, 18 Mar 2026 21:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3795134CFD9
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 21:16:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773868209; cv=none; b=EaRgJQmrdHC3biaE3NS15Z6CPZXvtl6K/gU5JsBJyxvSlGMd4IvbXcujT4rEdl205JfA13XqHsN+wD+4SQeiqVBj8KO6jA4CIpwieUF8ChPpPFf+E7c8/4DDTSKUGHQwG6iNqxnaUszilvDzpJ9hdd9fVvitEUC6Ap4W2XiT0eE=
+	t=1773868561; cv=none; b=eKH0c69eYXf1supWoOtAOJHj4JTLNaNGzWLtO5Jpi7bUIe6mrOHxXEKqgTXk2R8VoKWRXupWXo10r4XtEzVK82HDqqEz7eGPr98sjBlw0+YKvO0UZt/0+i+Rws0wDXwEHddXqjSrfCtEhomDe7mdDFMTHUJgpXqdmyD4tSA8EuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773868209; c=relaxed/simple;
-	bh=HdzSdFCqa0NsLI9+vlnMyR5HhJv5zufD9ToL3pTZGH4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PzdGW+XM9IcXc/yhZHC+K4elUPlsbaFed5Xay5vYTUyibiuMWeUNLA92uUvF9NDRNG/CN1pzAwljNRmNVXnZAGCgrRtzDgHIkJc6vN9MykfFqN00XvOfZpr5r2R+FXgCJBf/Hv036HZlYjDQt8Vh0Xb+Hug9OC0qu3YTNpSy64M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=MYmMikI5; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=EY1mjTKPcq49c0oDU/sBcFdPcjBcvXLBCcNIUMXgvyk=; b=MYmMikI5MfNIrBiLnX1UU0a4KR
-	qIbA+Juus5otsuD/8heU6TCwqFCQp8cKzLwDSIFV24gX7J8/puPhdoMRDsMEraV6Zqba7ROUmVRas
-	jEzpYYJ5ktnegtvZhc5eTMjNxlG1n/0UBuYBbixZmQ5cXJU7wLfPaXi8bqW1MQ35yMrDik0WciL72
-	tAenzGL1qfaqHceAR470XLCfaWsiiY3B2HKBob/QYqi/nKThDqweU16aZPS2WKHKYew+YAz3xpuSm
-	MBr1zxB7LiQPOBa6HIe2PPe6YXUJyp+rcfQZs4P0FHJ978HVrXpvp5gQ+JNBdAXqAkwS24n2DYbAm
-	for316bQ==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2y9H-0000000519W-1qF1;
-	Wed, 18 Mar 2026 21:09:51 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 5C4A9301BDE; Wed, 18 Mar 2026 22:09:50 +0100 (CET)
-Date: Wed, 18 Mar 2026 22:09:50 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, Nikunj A Dadhania <nikunj@amd.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org,
-	#@tip-bot2.tec.linutronix.de, 6.9+@tip-bot2.tec.linutronix.de,
-	x86@kernel.org
-Subject: Re: [tip: x86/urgent] x86/cpu: Disable CR pinning during CPU bringup
-Message-ID: <20260318210950.GC3739106@noisy.programming.kicks-ass.net>
-References: <20260318075654.1792916-3-nikunj@amd.com>
- <177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2>
- <20260318204722.GD3738786@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1773868561; c=relaxed/simple;
+	bh=LDKF25rJ7JhQVffXNtdd7hH0VJR0EYqs1VMLBiAY0+Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=datbBQzfwTeOFPiefe9ZDlOPoK4AAkSPFtWsgv818PjOCrq/l3cC+Hle3sHUA66Vt2SKqT+h5i7dU5NUwDbwroG9UZ4TlIebbNoVto6899sasXQ8MlDxxvAsp+fkIyueGzMv6/aIhMQNUhiIHJPn3eWc2rsWdF92qXNd2DUUP4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D4+vedNx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E28C19421;
+	Wed, 18 Mar 2026 21:16:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773868560;
+	bh=LDKF25rJ7JhQVffXNtdd7hH0VJR0EYqs1VMLBiAY0+Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=D4+vedNxFeUM9Ads8Znrti8DnfMl6VIL7cPadt3c/fOLkqUqoxqNf7YfRZWG03hRH
+	 ngBSNfN1GRDVn8GAnVQRF+71yoigabqAA42tDJ+yT+KLvrNhw8Bun/ZM7y5Hh1cykd
+	 dZL28FbIQR12bD7cWEvE4DtnVEJTXO2wJvjS0FYmra5APCjT7/ty4jjxKqz1SDJ9co
+	 T8J+YCjVp92/qaxlX1g7xlkpeWXb2+OtkCnQPgIVc7s0jCsw2jmEv+d5pQSmyG3RXk
+	 7Nk0ZZvdOE0uaD/0NkYtd1cMmopjs9X1JJaTJlk8O/jXLHbazfhHAqTF6A5aYp+QLV
+	 vfk3+DZdgazTw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y] cifs: open files should not hold ref on superblock
+Date: Wed, 18 Mar 2026 17:15:57 -0400
+Message-ID: <20260318211557.1344366-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031711-juror-diaper-819a@gregkh>
+References: <2026031711-juror-diaper-819a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318204722.GD3738786@noisy.programming.kicks-ass.net>
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227167-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-227168-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.985];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.986];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 55AA22C2DB2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1CF4A2C2E77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 09:47:22PM +0100, Peter Zijlstra wrote:
-> On Wed, Mar 18, 2026 at 06:51:10PM -0000, tip-bot2 for Dave Hansen wrote:
-> > --- a/arch/x86/kernel/cpu/common.c
-> > +++ b/arch/x86/kernel/cpu/common.c
-> > @@ -437,6 +437,21 @@ static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_C
-> >  static DEFINE_STATIC_KEY_FALSE_RO(cr_pinning);
-> >  static unsigned long cr4_pinned_bits __ro_after_init;
-> >  
-> > +static bool cr_pinning_enabled(void)
-> > +{
-> > +	if (!static_branch_likely(&cr_pinning))
-> > +		return false;
-> > +
-> > +	/*
-> > +	 * Do not enforce pinning during CPU bringup. It might
-> > +	 * turn on features that are not set up yet, like FRED.
-> > +	 */
-> > +	if (!cpu_online(smp_processor_id()))
-> > +		return false;
-> > +
-> > +	return true;
-> > +}
-> 
-> Urgh, so this means all an attack needs to do is disable the online bit
-> and it gets to poke CR4 bits.
-> 
-> This seems unfortunate.
-> 
-> And sure, randomly clearing the online bit will eventually cause havoc,
-> but I suspect you still get plenty time until the system goes wobbly.
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-So what is the problem with removing FRED from cr4_pinned_mask?
-Specifically, set it up such that if you 'accidentally' clear that, the
-machines insta dies a horrible death.
+[ Upstream commit 340cea84f691c5206561bb2e0147158fe02070be ]
 
-So currently we setup an IDT and everything, then setup the FRED MSRs,
-flip CR4_FRED and call it a day. But we could just explicitly poison all
-the IDT stuff to cause tripple faults.
+Today whenever we deal with a file, in addition to holding
+a reference on the dentry, we also get a reference on the
+superblock. This happens in two cases:
+1. when a new cinode is allocated
+2. when an oplock break is being processed
 
-Fixing that up is a much bigger ask of an attacker, no?
+The reasoning for holding the superblock ref was to make sure
+that when umount happens, if there are users of inodes and
+dentries, it does not try to clean them up and wait for the
+last ref to superblock to be dropped by last of such users.
+
+But the side effect of doing that is that umount silently drops
+a ref on the superblock and we could have deferred closes and
+lease breaks still holding these refs.
+
+Ideally, we should ensure that all of these users of inodes and
+dentries are cleaned up at the time of umount, which is what this
+code is doing.
+
+This code change allows these code paths to use a ref on the
+dentry (and hence the inode). That way, umount is
+ensured to clean up SMB client resources when it's the last
+ref on the superblock (For ex: when same objects are shared).
+
+The code change also moves the call to close all the files in
+deferred close list to the umount code path. It also waits for
+oplock_break workers to be flushed before calling
+kill_anon_super (which eventually frees up those objects).
+
+Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
+Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ replaced kmalloc_obj() with kmalloc(sizeof(...)) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/smb/client/cifsfs.c    |  7 +++++--
+ fs/smb/client/cifsproto.h |  1 +
+ fs/smb/client/file.c      | 11 ----------
+ fs/smb/client/misc.c      | 42 +++++++++++++++++++++++++++++++++++++++
+ fs/smb/client/trace.h     |  2 ++
+ 5 files changed, 50 insertions(+), 13 deletions(-)
+
+diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+index 185ac41bd7e93..4b34a4304edb7 100644
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -330,10 +330,14 @@ static void cifs_kill_sb(struct super_block *sb)
+ 
+ 	/*
+ 	 * We need to release all dentries for the cached directories
+-	 * before we kill the sb.
++	 * and close all deferred file handles before we kill the sb.
+ 	 */
+ 	if (cifs_sb->root) {
+ 		close_all_cached_dirs(cifs_sb);
++		cifs_close_all_deferred_files_sb(cifs_sb);
++
++		/* Wait for all pending oplock breaks to complete */
++		flush_workqueue(cifsoplockd_wq);
+ 
+ 		/* finally release root dentry */
+ 		dput(cifs_sb->root);
+@@ -864,7 +868,6 @@ static void cifs_umount_begin(struct super_block *sb)
+ 	spin_unlock(&tcon->tc_lock);
+ 	spin_unlock(&cifs_tcp_ses_lock);
+ 
+-	cifs_close_all_deferred_files(tcon);
+ 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
+ 	/* cancel_notify_requests(tcon); */
+ 	if (tcon->ses && tcon->ses->server) {
+diff --git a/fs/smb/client/cifsproto.h b/fs/smb/client/cifsproto.h
+index 3528c365a4529..4be719c9fd520 100644
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -313,6 +313,7 @@ extern void cifs_close_deferred_file(struct cifsInodeInfo *cifs_inode);
+ 
+ extern void cifs_close_all_deferred_files(struct cifs_tcon *cifs_tcon);
+ 
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb);
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *cifs_tcon,
+ 					   struct dentry *dentry);
+ 
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 474dadeb15933..6983854d0b2e9 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -711,8 +711,6 @@ struct cifsFileInfo *cifs_new_fileinfo(struct cifs_fid *fid, struct file *file,
+ 	mutex_init(&cfile->fh_mutex);
+ 	spin_lock_init(&cfile->file_info_lock);
+ 
+-	cifs_sb_active(inode->i_sb);
+-
+ 	/*
+ 	 * If the server returned a read oplock and we have mandatory brlocks,
+ 	 * set oplock level to None.
+@@ -767,7 +765,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
+ 	struct inode *inode = d_inode(cifs_file->dentry);
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifsLockInfo *li, *tmp;
+-	struct super_block *sb = inode->i_sb;
+ 
+ 	/*
+ 	 * Delete any outstanding lock records. We'll lose them when the file
+@@ -785,7 +782,6 @@ static void cifsFileInfo_put_final(struct cifsFileInfo *cifs_file)
+ 
+ 	cifs_put_tlink(cifs_file->tlink);
+ 	dput(cifs_file->dentry);
+-	cifs_sb_deactive(sb);
+ 	kfree(cifs_file->symlink_target);
+ 	kfree(cifs_file);
+ }
+@@ -3162,12 +3158,6 @@ void cifs_oplock_break(struct work_struct *work)
+ 	__u64 persistent_fid, volatile_fid;
+ 	__u16 net_fid;
+ 
+-	/*
+-	 * Hold a reference to the superblock to prevent it and its inodes from
+-	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
+-	 * may release the last reference to the sb and trigger inode eviction.
+-	 */
+-	cifs_sb_active(sb);
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+ 
+@@ -3240,7 +3230,6 @@ void cifs_oplock_break(struct work_struct *work)
+ 	cifs_put_tlink(tlink);
+ out:
+ 	cifs_done_oplock_break(cinode);
+-	cifs_sb_deactive(sb);
+ }
+ 
+ static int cifs_swap_activate(struct swap_info_struct *sis,
+diff --git a/fs/smb/client/misc.c b/fs/smb/client/misc.c
+index e10123d8cd7d9..3770f8348541d 100644
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -27,6 +27,11 @@
+ #include "fs_context.h"
+ #include "cached_dir.h"
+ 
++struct tcon_list {
++	struct list_head entry;
++	struct cifs_tcon *tcon;
++};
++
+ /* The xid serves as a useful identifier for each incoming vfs request,
+    in a similar way to the mid which is useful to track each sent smb,
+    and CurrentXid can also provide a running counter (although it
+@@ -833,6 +838,43 @@ cifs_close_all_deferred_files(struct cifs_tcon *tcon)
+ 	}
+ }
+ 
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb)
++{
++	struct rb_root *root = &cifs_sb->tlink_tree;
++	struct rb_node *node;
++	struct cifs_tcon *tcon;
++	struct tcon_link *tlink;
++	struct tcon_list *tmp_list, *q;
++	LIST_HEAD(tcon_head);
++
++	spin_lock(&cifs_sb->tlink_tree_lock);
++	for (node = rb_first(root); node; node = rb_next(node)) {
++		tlink = rb_entry(node, struct tcon_link, tl_rbnode);
++		tcon = tlink_tcon(tlink);
++		if (IS_ERR(tcon))
++			continue;
++		tmp_list = kmalloc(sizeof(struct tcon_list), GFP_ATOMIC);
++		if (tmp_list == NULL)
++			break;
++		tmp_list->tcon = tcon;
++		/* Take a reference on tcon to prevent it from being freed */
++		spin_lock(&tcon->tc_lock);
++		++tcon->tc_count;
++		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
++				    netfs_trace_tcon_ref_get_close_defer_files);
++		spin_unlock(&tcon->tc_lock);
++		list_add_tail(&tmp_list->entry, &tcon_head);
++	}
++	spin_unlock(&cifs_sb->tlink_tree_lock);
++
++	list_for_each_entry_safe(tmp_list, q, &tcon_head, entry) {
++		cifs_close_all_deferred_files(tmp_list->tcon);
++		list_del(&tmp_list->entry);
++		cifs_put_tcon(tmp_list->tcon, netfs_trace_tcon_ref_put_close_defer_files);
++		kfree(tmp_list);
++	}
++}
++
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
+ 					   struct dentry *dentry)
+ {
+diff --git a/fs/smb/client/trace.h b/fs/smb/client/trace.h
+index e592b2627119f..79a246af664d2 100644
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -47,6 +47,7 @@
+ 	EM(netfs_trace_tcon_ref_get_cached_laundromat,	"GET Ch-Lau") \
+ 	EM(netfs_trace_tcon_ref_get_cached_lease_break,	"GET Ch-Lea") \
+ 	EM(netfs_trace_tcon_ref_get_cancelled_close,	"GET Cn-Cls") \
++	EM(netfs_trace_tcon_ref_get_close_defer_files,	"GET Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_get_dfs_refer,		"GET DfsRef") \
+ 	EM(netfs_trace_tcon_ref_get_find,		"GET Find  ") \
+ 	EM(netfs_trace_tcon_ref_get_find_sess_tcon,	"GET FndSes") \
+@@ -58,6 +59,7 @@
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close,	"PUT Cn-Cls") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
++	EM(netfs_trace_tcon_ref_put_close_defer_files,	"PUT Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
+ 	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
+ 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
+-- 
+2.51.0
+
 
