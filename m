@@ -1,160 +1,176 @@
-Return-Path: <stable+bounces-227091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227092-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKqGMfy9umkGbgIAu9opvQ
-	(envelope-from <stable+bounces-227091-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:00:12 +0100
+	id eOAcOpa/umkGbgIAu9opvQ
+	(envelope-from <stable+bounces-227092-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:07:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968092BDB84
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:00:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DEF92BDDA6
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:07:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A1F13006446
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:59:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCD6830782A9
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427A73DEACB;
-	Wed, 18 Mar 2026 14:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EC73DD51B;
+	Wed, 18 Mar 2026 14:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FMik18yW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3kh+F8l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039333DE447
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 14:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CC23D6684
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 14:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773845990; cv=none; b=PMRKJptLBc0sijWlkvU8iLEp93xbXEi4c4mAKQX7YkPb3Ap1uCMXRN0xvMe8BAHBmH8IhOM0Ahs/FzFIwg4qWfIzUeyEjC3xxr3sbdH5utAQmnCAOoTGMmxoPIVHLVFe0Jdxph2Eurgwo5L27y+mGcW7rwqqZ5PwrJMjnyVe9yE=
+	t=1773845999; cv=none; b=UWO+OYzHdr2+oLpnI4CS4ZG3mmqbxZSQPTD97eIEPfaiUfShUPnKjBsp7nLOyL62qUzH/BaOOdAsykwu1TvdoLPic2MY3HQmVlEUrs2o/90bfa9WRVpZPfeGR/Kd3MbZ9SNA64CbJFdpQH2WXvOZqYYddJ2yWyuJWZ656fTND9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773845990; c=relaxed/simple;
-	bh=3/32bOj6ZC5aJdwCpvzLBVZO+irId8q0lUAMvM04gu8=;
+	s=arc-20240116; t=1773845999; c=relaxed/simple;
+	bh=kWa7qoSqMGfhIHM96j+2W/4RJfBnWcCRinoJHtU/aHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=siXowK4yjnWAHNaddG39MOKioNILDylv4tNgTaWcvslwOFF5JRz6sgH4MdJZerVv0MeDj9mFraqN8A13MYmtAGp8Q6Kbto5oJUBcsYxjuJyLSDMYffzwzfvd+yinDQhXO8oA6hqz8JcDIIHTQOwTWPdI3Pq3Efk+WsLbxYA1zp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FMik18yW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9560C2BCAF;
-	Wed, 18 Mar 2026 14:59:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EuPKZr37nep5YCHqMw2GJhdm3Edr4DnbZD33m2VUrh2sFo+EEaTQ0t03JDMBVd8X8jaVGUyUDvzzo6pCAdcAzKc8HBc5Gj+lqoFdp9Zl5jM28qhm+ah7HT3x8OPRjcFu3D3NGxX5oLglWX3f4Qc+hJe1taKZUQEW/IsO7ZP37Xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3kh+F8l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C53DC19421;
+	Wed, 18 Mar 2026 14:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773845989;
-	bh=3/32bOj6ZC5aJdwCpvzLBVZO+irId8q0lUAMvM04gu8=;
+	s=k20201202; t=1773845998;
+	bh=kWa7qoSqMGfhIHM96j+2W/4RJfBnWcCRinoJHtU/aHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FMik18yWe9njrwF0o+WuOMuMvYkCTJ0OUtMCNtB4AGodqwhRnTrWb7ULIhIKqmpYc
-	 6QFDlUBx+7QJUR+Smlu4LcckINmyRSpjDhygqa6/mBdbF+V+x15qWwEk3WiYntpyCg
-	 o9RAQu/1SaZ/em+nw+QVrziooIhw9sfWbUgjIjZEqJ0nvfwKOk3S/kB7wX2mDKUlhC
-	 ykm1KkS1Jm0FKC5hGc8DaubY/NeQeb86YkwbJFl4FpZQlpfRrqc7bV2ufKmyl1YtRg
-	 +WAZF9Qw9pXwpsipZIMZAsQxZHYwUAvJ2vLYbqDZGp8ISE2HXEUoUoBLd2cEBDoePZ
-	 Ni3lPJjrRyZ3w==
+	b=V3kh+F8l/9HqEXtY2HFUHYbTEssswpBkbun9yXobTnU19NPTvuONy4m0LbogsIjnS
+	 6LvdVtXjjDigdxFb4ARe2QIQPFqt6zflEepYT4w8gJ7fhrONSCxxXvdDfSxPdCFx3P
+	 rTRtIldv/5pzyLzcsBPllQbHTMp9of5OGgA/SOJZb1/q/dUuLx3DF+nqSbEKLH1QNx
+	 jH6PcSY/5oESKZjPysHVLKOXfutOnRCrddpUewW7D2zjp4ek21qDp4aPJDu/QCMH6K
+	 IycDyE3G6l97ZlT1QrzOyscOvLq1Qzo5G71FFM/I+qZZ4uvL0krv2PfeuALk8HsSB+
+	 ZNLXF+Kk4R0sQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] ksmbd: Don't log keys in SMB3 signing and encryption key generation
-Date: Wed, 18 Mar 2026 10:59:47 -0400
-Message-ID: <20260318145947.858748-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/2] net: macb: sort #includes
+Date: Wed, 18 Mar 2026 10:59:55 -0400
+Message-ID: <20260318145956.858944-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031719-unranked-wrongdoer-d47a@gregkh>
-References: <2026031719-unranked-wrongdoer-d47a@gregkh>
+In-Reply-To: <2026031732-womanless-smother-6439@gregkh>
+References: <2026031732-womanless-smother-6439@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227091-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227092-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.995];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email]
-X-Rspamd-Queue-Id: 968092BDB84
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lunn.ch:email,linux.dev:email,bootlin.com:email]
+X-Rspamd-Queue-Id: 5DEF92BDDA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 441336115df26b966575de56daf7107ed474faed ]
+[ Upstream commit 8ebeef3d01c8b9e5807afdf1d38547f4625d0e4e ]
 
-When KSMBD_DEBUG_AUTH logging is enabled, generate_smb3signingkey() and
-generate_smb3encryptionkey() log the session, signing, encryption, and
-decryption key bytes. Remove the logs to avoid exposing credentials.
+Sort #include preprocessor directives.
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Context ]
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://patch.msgid.link/20251014-macb-cleanup-v1-15-31cd266e22cd@bootlin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 881a0263d502 ("net: macb: Shuffle the tx ring before enabling tx")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/auth.c | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 37 ++++++++++++------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
 
-diff --git a/fs/ksmbd/auth.c b/fs/ksmbd/auth.c
-index 647692ca78a28..63c631fd2f2eb 100644
---- a/fs/ksmbd/auth.c
-+++ b/fs/ksmbd/auth.c
-@@ -783,12 +783,8 @@ static int generate_smb3signingkey(struct ksmbd_session *sess,
- 	if (!(conn->dialect >= SMB30_PROT_ID && signing->binding))
- 		memcpy(chann->smb3signingkey, key, SMB3_SIGN_KEY_SIZE);
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 90550055c71c1..f168469f7a58c 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -6,36 +6,37 @@
+  */
  
--	ksmbd_debug(AUTH, "dumping generated AES signing keys\n");
-+	ksmbd_debug(AUTH, "generated SMB3 signing key\n");
- 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
--	ksmbd_debug(AUTH, "Session Key   %*ph\n",
--		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
--	ksmbd_debug(AUTH, "Signing Key   %*ph\n",
--		    SMB3_SIGN_KEY_SIZE, key);
- 	return 0;
- }
- 
-@@ -852,23 +848,9 @@ static int generate_smb3encryptionkey(struct ksmbd_conn *conn,
- 	if (rc)
- 		return rc;
- 
--	ksmbd_debug(AUTH, "dumping generated AES encryption keys\n");
-+	ksmbd_debug(AUTH, "generated SMB3 encryption/decryption keys\n");
- 	ksmbd_debug(AUTH, "Cipher type   %d\n", conn->cipher_type);
- 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
--	ksmbd_debug(AUTH, "Session Key   %*ph\n",
--		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
--	if (conn->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
--	    conn->cipher_type == SMB2_ENCRYPTION_AES256_GCM) {
--		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
--			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3encryptionkey);
--		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
--			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3decryptionkey);
--	} else {
--		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
--			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3encryptionkey);
--		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
--			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3decryptionkey);
--	}
- 	return 0;
- }
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+-#include <linux/clk.h>
++#include <linux/circ_buf.h>
+ #include <linux/clk-provider.h>
++#include <linux/clk.h>
+ #include <linux/crc32.h>
+-#include <linux/module.h>
+-#include <linux/moduleparam.h>
+-#include <linux/kernel.h>
+-#include <linux/types.h>
+-#include <linux/circ_buf.h>
+-#include <linux/slab.h>
++#include <linux/dma-mapping.h>
++#include <linux/etherdevice.h>
++#include <linux/firmware/xlnx-zynqmp.h>
++#include <linux/inetdevice.h>
++#include <linux/inetdevice.h>
+ #include <linux/init.h>
+-#include <linux/io.h>
+ #include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/iopoll.h>
++#include <linux/ip.h>
++#include <linux/kernel.h>
++#include <linux/module.h>
++#include <linux/moduleparam.h>
+ #include <linux/netdevice.h>
+-#include <linux/etherdevice.h>
+-#include <linux/dma-mapping.h>
+-#include <linux/platform_device.h>
+-#include <linux/phylink.h>
+ #include <linux/of.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+-#include <linux/ip.h>
+-#include <linux/udp.h>
+-#include <linux/tcp.h>
+-#include <linux/iopoll.h>
+ #include <linux/phy/phy.h>
++#include <linux/phylink.h>
++#include <linux/platform_device.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/ptp_classify.h>
+ #include <linux/reset.h>
+-#include <linux/firmware/xlnx-zynqmp.h>
+-#include <linux/inetdevice.h>
++#include <linux/slab.h>
++#include <linux/tcp.h>
++#include <linux/types.h>
++#include <linux/udp.h>
+ #include <net/pkt_sched.h>
+ #include "macb.h"
  
 -- 
 2.51.0
