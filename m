@@ -1,168 +1,187 @@
-Return-Path: <stable+bounces-226961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IRnJDo/umlqTQIAu9opvQ
-	(envelope-from <stable+bounces-226961-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 06:59:22 +0100
+	id 8DXlNTJAumlqTQIAu9opvQ
+	(envelope-from <stable+bounces-226963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:03:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F10EC2B614F
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 06:59:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631F52B6260
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:03:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CFC4C301DE31
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 05:59:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A134307BDB6
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 06:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8013624A6;
-	Wed, 18 Mar 2026 05:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECBAD36492B;
+	Wed, 18 Mar 2026 06:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIwDTVRI"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="6fTeFP44"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D2936214D;
-	Wed, 18 Mar 2026 05:59:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881AE3624AB;
+	Wed, 18 Mar 2026 06:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773813551; cv=none; b=Ur7cEfyUgClbJLBzBkmG8WFPziiV+Gb+AtzkY1zf1i/4ztD0P29yjiD74bDr/2SYcDz3eZ3xTAnOk+uk2HzcYF7Jqxcs17jpRPU69nYvOwCteB4HCrfjN5I19G5jo43k2VH3Cd1hvEhXjdgfrhldzbCjRCadwCsVSEdv2GA0AeM=
+	t=1773813729; cv=none; b=ArC4nOq22NqJ3zpsqhb5kxMJVvc/aLh7swtOirZBDi3uA99Q45tzRNy4/CyvKWX3HNvdtMl2rL5PPp6RkQ6C+O6lx2s+fuHf0ayiQhcnA35TMc7qRvWPtApwpGdbc8pWakRZezgrSSXoQYRUijj2l/rErMHN9bf+gfE8kZrHBfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773813551; c=relaxed/simple;
-	bh=I57/mwkPwJmgmk2ypVTKx8cID1JimxqeZSvcaTNmllo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LXJqV0on6yANJfOP8tY7YUDyG9lhVxJySiB8+lP82ugSR7UNmu+B3vilsgUK3NGB4BHnLBoiLCORf2y9iUOOxDii89vDa9uBUGQtkIabBrYBI+mcE3qNQTlhkMrpMXA4ij3d0L4WdfsfoQT7PbHRicFAObbKXEcIW5Y4Yfi7aKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIwDTVRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E46AC19421;
-	Wed, 18 Mar 2026 05:59:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773813550;
-	bh=I57/mwkPwJmgmk2ypVTKx8cID1JimxqeZSvcaTNmllo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NIwDTVRIhKfaA0vSxOATiJcRywX/CHfD9D3bEKEV/w7IscO//T1UjLelzLTh2tZi9
-	 Ixu2fIOZytnP86sGb5EUu6Rh93+ziPzY95p5pYqoZhWJ040STfW9wpm3Y9cJVCZYBS
-	 MCflHBwBA+xMm9m5ExMs4f/t35ZhAXI6NyoE3SF4=
-Date: Wed, 18 Mar 2026 06:58:50 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Guan-Yu Lin <guanyulin@google.com>
-Cc: mathias.nyman@intel.com, perex@perex.cz, tiwai@suse.com,
-	quic_wcheng@quicinc.com, broonie@kernel.org, arnd@arndb.de,
-	christophe.jaillet@wanadoo.fr, xiaopei01@kylinos.cn,
-	wesley.cheng@oss.qualcomm.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] ALSA: usb: qcom: manage offload device usage
-Message-ID: <2026031815-heroism-devotedly-e730@gregkh>
-References: <20260309022205.28136-1-guanyulin@google.com>
- <20260309022205.28136-3-guanyulin@google.com>
- <2026031115-unboxed-spouse-1dcd@gregkh>
- <CAOuDEK3k6nyiHxhcL1kv=QNQaZMF6ms=sLerSZ5JBc5WBd7nAw@mail.gmail.com>
- <CAOuDEK2pyt4nKWxXXwtzgRuP6u9kvi_Joe8Ec8qDDHVzSue1rg@mail.gmail.com>
+	s=arc-20240116; t=1773813729; c=relaxed/simple;
+	bh=pIpFeeqUjJJqvZK03MOLrbMVyUZ78R+UQnSQHGBWd14=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vBs/tyV84ypsnAiYdFet1UMl+J8vf1PqOhDA1eh9WCt+WSB2dDmguB9aPHByiCMX6Z+t6+t1vEHvo3wFXaA1HZQkkSF9LdUy8Lf8caEuoV/N6UyF/HG6KO2JCF4JhTeYVY+wNT5G51VC6AiHNbBaKFpyUVditvWUjDWbNXQ1AVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=6fTeFP44; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=51eH/vXNC8aaQ91ItRMmRPmictkivabhFOJxc6D8Mp8=;
+	b=6fTeFP44IoJsvDAdRh47nierWtD+9KW/YhKmVm3CljAYOKdZ4GqiBOQezvzJgt345BlcTX0c9
+	sqo1T5w49CDOlLZL5PCwxq+rmA2hUOPVW1XSpK6wHYAeFPbLvzMiDwH6WcNVyBgPKuYcNIEpADM
+	/v9i0v/GTO4oeuEhIfZZc8k=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fbJ4W2hvhz1cyPH;
+	Wed, 18 Mar 2026 13:56:59 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 977F440563;
+	Wed, 18 Mar 2026 14:01:58 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 18 Mar 2026 14:01:57 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Rafael J .
+ Wysocki" <rafael@kernel.org>
+CC: Jonathan Corbet <corbet@lwn.net>, Ingo Molnar <mingo@redhat.com>, Juergen
+ Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Len
+ Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>, Mark Rutland
+	<mark.rutland@arm.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, Kees
+ Cook <kees@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, Sean
+ Christopherson <seanjc@google.com>, Kai Huang <kai.huang@intel.com>, Tom
+ Lendacky <thomas.lendacky@amd.com>, Thomas Huth <thuth@redhat.com>, Thorsten
+ Blum <thorsten.blum@linux.dev>, Kevin Loughlin <kevinloughlin@google.com>,
+	Zheyun Shen <szy0127@sjtu.edu.cn>, Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Xin Li <xin@zytor.com>,
+	"Ahmed S . Darwish" <darwi@linutronix.de>, Sohil Mehta
+	<sohil.mehta@intel.com>, Ilkka Koskinen <ilkka@os.amperecomputing.com>, Robin
+ Murphy <robin.murphy@arm.com>, James Clark <james.clark@linaro.org>, Besar
+ Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>, Wei Huang
+	<wei.huang2@amd.com>, Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>, <punit.agrawal@oss.qualcomm.com>,
+	<guohanjun@huawei.com>, <suzuki.poulose@arm.com>, <ryan.roberts@arm.com>,
+	<chenl311@chinatelecom.cn>, <masahiroy@kernel.org>,
+	<wangyuquan1236@phytium.com.cn>, <anshuman.khandual@arm.com>,
+	<heinrich.schuchardt@canonical.com>, <Eric.VanTassell@amd.com>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <fengchengwen@huawei.com>,
+	<linux-pci@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<loongarch@lists.linux.dev>, <linux-riscv@lists.infradead.org>,
+	<xen-devel@lists.xenproject.org>, <linux-acpi@vger.kernel.org>,
+	<linux-perf-users@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH v8 0/3] Fix get cpu steer-tag fail on ARM64 platform
+Date: Wed, 18 Mar 2026 14:01:48 +0800
+Message-ID: <20260318060151.29438-1-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOuDEK2pyt4nKWxXXwtzgRuP6u9kvi_Joe8Ec8qDDHVzSue1rg@mail.gmail.com>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226963-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226961-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,perex.cz,suse.com,quicinc.com,kernel.org,arndb.de,wanadoo.fr,kylinos.cn,oss.qualcomm.com,vger.kernel.org];
-	RCPT_COUNT_TWELVE(0.00)[14];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_GT_50(0.00)[58];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: F10EC2B614F
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 631F52B6260
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 04:45:00PM -0400, Guan-Yu Lin wrote:
-> > On Wed, Mar 11, 2026 at 5:31 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > You have multiple levels of locks here, which is always a sign that
-> > > something has gone really wrong.  This looks even more fragile and easy
-> > > to get wrong than before.  Are you _SURE_ this is the only way to solve
-> > > this?  The whole usb_offload_get() api seems more wrong to me than
-> > > before (and I didn't like it even then...)
-> > >
-> > > In other words, this patch set feels rough, and adds more complexity
-> > > overall, requiring a reviewer to "know" where locks are held and not
-> > > held while before they did not.  That's a lot to push onto us for
-> > > something that feels like is due to a broken hardware design?
-> > >
-> > > thanks,
-> > >
-> > > greg k-h
-> >
-> 
-> Hi Greg,
-> 
-> Thank you for the feedback. I understand the concern regarding locking
-> complexity and the reviewer burden. The usb_offload_get/put functions
-> track sideband activity that runtime PM cannot reflect. This is
-> necessary to prevent the USB stack from suspending the device while a
-> sideband stream is active. Ensuring atomicity requires orchestrating
-> three asynchronous subsystems: System PM, Runtime PM, and USB Core.
-> 
-> To address the concerns effectively in the next iteration, I would
-> appreciate clarification on your primary concern:
-> 1. Preference for fine-grained locking:
-> Using USB device lock ensures atomicity across these subsystems, which
-> is inherently a device-wide requirement. A fine-grained approach risks
-> races during concurrent software events, such as a reset occurring
-> during a runtime suspend transition.
-> 2. Preference for improved transparency:
-> If the coarse lock is acceptable but the implementation is too opaque,
-> I will refactor the next version to be more explicit. I plan to
-> include device_lock_assert() calls, __must_hold() macros, and add a
-> "Locking Hierarchy" comment block documenting the vendor-mutex and
-> USB-core lock interactions.
+This patchset fixes the failure of CPU steer tag retrieval on ARM64
+platforms. The series is structured as follows:
 
-At the very least, this is going to have to be required so that we can
-catch any future changes and ensure that changes do not create locking
-inversions and the like.  I guess we are stuck with this for now, due to
-this being "outside" of the normal runtime PM, which still feels wrong
-to me as runtime PM _should_ be able to handle this (if not, why is this
-case somehow unique from all other hardware types?)
+1. First commit: Refactor the ACPI Processor UID retrieval interface
+   (no functional changes when input valid) to align naming conventions
+   across arm64/riscv/loongarch architectures;
+2. Second commit: Implement acpi_get_cpu_uid() for the x86 platform to
+   complete the unified ACPI Processor UID interface across all
+   ACPI-enabled architectures;
+3. Third commit: Implement the core fix for the CPU steer tag retrieval
+   logic on ARM64 (the root cause of the retrieval failure).
 
-> To clarify the "broken hardware" point: this isn't a hardware bug.
+The refactor and x86 implementation lay the groundwork for the unified
+ACPI interface required by the ARM64 steer tag fix, ensuring consistent
+CPU UID retrieval across architectures before addressing the functional
+bug.
 
-It was described as triggering when a shock happened to the system to
-cause the system to reset in places, which is a hardware issue :)
+---
+Changes in v8:
+- Moving arm64's get_cpu_for_acpi_id() to kernel/acpi.c which address
+  Jeremy's review
 
-> These races are triggered by standard software events, such as a reset
-> occurring while a sideband stream is active. Please let me know which
-> direction you think is more appropriate for the kernel, and I will
-> refactor the next version accordingly.
+Changes in v7:
+- Refine first commit which address Jonathan's reviews
+- Fix x86 implement bug (not consider INVALID-ID) which address Peter's
+  review
+- Fix CI error of x86 implement by moving function to acpi/boot.c
 
-And how exactly can a "reset while active" happen as just a normal
-software driven event?
+Changes in v6:
+- Rename existing get_acpi_id_for_cpu() to acpi_get_cpu_uid()
+- Split x86's modify as one commit
 
-thanks,
+Chengwen Feng (3):
+  ACPI: Refactor get_acpi_id_for_cpu() to acpi_get_cpu_uid() on non-x86
+  x86: Implement acpi_get_cpu_uid()
+  PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
 
-greg k-h
+ Documentation/PCI/tph.rst          |  4 +--
+ arch/arm64/include/asm/acpi.h      | 16 +---------
+ arch/arm64/kernel/acpi.c           | 30 ++++++++++++++++++
+ arch/loongarch/include/asm/acpi.h  |  5 ---
+ arch/loongarch/kernel/acpi.c       |  9 ++++++
+ arch/riscv/include/asm/acpi.h      |  4 ---
+ arch/riscv/kernel/acpi.c           | 16 ++++++++++
+ arch/riscv/kernel/acpi_numa.c      |  9 ++++--
+ arch/x86/include/asm/cpu.h         |  1 -
+ arch/x86/include/asm/smp.h         |  1 -
+ arch/x86/kernel/acpi/boot.c        | 20 ++++++++++++
+ arch/x86/xen/enlighten_hvm.c       |  5 +--
+ drivers/acpi/pptt.c                | 50 ++++++++++++++++++++++--------
+ drivers/acpi/riscv/rhct.c          |  7 ++++-
+ drivers/pci/tph.c                  | 16 +++++++---
+ drivers/perf/arm_cspmu/arm_cspmu.c |  6 ++--
+ include/linux/acpi.h               | 11 +++++++
+ include/linux/pci-tph.h            |  4 +--
+ 18 files changed, 158 insertions(+), 56 deletions(-)
+
+-- 
+2.17.1
+
 
