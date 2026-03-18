@@ -1,137 +1,158 @@
-Return-Path: <stable+bounces-227108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aGCJEjvTummfcAIAu9opvQ
-	(envelope-from <stable+bounces-227108-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:30:51 +0100
+	id B4RWEtXcumk3cwIAu9opvQ
+	(envelope-from <stable+bounces-227109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:11:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972F42BF517
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:30:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A222BFF81
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F09F335D086
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:15:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C30D0324763D
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D254070F8;
-	Wed, 18 Mar 2026 15:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DA33F23C9;
+	Wed, 18 Mar 2026 16:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMnXYDze"
+	dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b="s2Cj6nLi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx08-00376f01.pphosted.com (mx08-00376f01.pphosted.com [91.207.212.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B024070ED
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 15:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EFB4035DE;
+	Wed, 18 Mar 2026 16:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.86
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773849392; cv=none; b=sJD4WeO0Swkpj1IoSAzUh967Uutu15bA9wzxI0FvnR8zdwTBzEhV6Tf/JdWZaCJkxbQBJsPrC1Ug0jm6shrJG+lJL9kANFfuSuAL/vbLhAw9ECuGLerWjh+mm13D7ApPWxknwJ1/FU4PtVNGftH/7xA28YnEuJZrHSnjAZ5oai4=
+	t=1773849620; cv=none; b=P8iYQowMtoEzkt2P7CmnKMKYfGKthQw2gmDCx4k8adLBZ3qQo4sdtAVnJrOUd8sazaUS7v39fCp/FJObm9taaukVgyZyHvR/fQQuJzpE40kHtWYKVGLvMjEzZlPtkmC/D/bH5bMqBP3Pb//yLVZHWGczUmLK19aUQUqHqtslsJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773849392; c=relaxed/simple;
-	bh=Hlk1uLOzVt6L1P0annmM0o2Yqm2EqO7fgdi3curs8O0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1uqApPW5IvKmP/hUnT1HTTxCRQBVz5AUY2Sfu64OI/wKWg9HFt0DB99Nf3F0DjJLHO6wv5rZk+jUdgYmcDyLG1CZeDzVtpbuN1+Uv/MRkHTBUUbA23p9JZxgKfYdlpYt3B5vQUdKXN4AgZMthY7eLDFNHbvWm3HRSUZI3Q7Rn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMnXYDze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207D3C19421;
-	Wed, 18 Mar 2026 15:56:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773849391;
-	bh=Hlk1uLOzVt6L1P0annmM0o2Yqm2EqO7fgdi3curs8O0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMnXYDzeLN9P2VQbkEdanZhTniTb9kg1odjU9kbFNY34+Sb4kKZVYzg6oRajgilEM
-	 KALVMsC1WXQKrnFTRdVlTS+mIKEuEtrz/6z44IvSFmSRObaGDhj9OYUDzenIjy5x7s
-	 Ag2AIZCRITUn8eqBsle9O+vr/F5zw9YGYiw3/HkQqp/+wLt57P8J85Jl3Zyh3bvX4F
-	 R7uoNMeZpTtaLHjfGT2+7FRV4Bc6N/DeIkXkqEHu9a6VQDDtvPwsxA+Y5rg+MFGolo
-	 5U7hqrDIgcUqkJEryUGXzjyskiNp4Nhe2LxZnSvV1+tYTd10b6Vq+20ZAwaWzPld15
-	 c/EKx60SOPlAg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] drm/msm: Fix dma_free_attrs() buffer size
-Date: Wed, 18 Mar 2026 11:56:29 -0400
-Message-ID: <20260318155629.874664-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031711-egotism-flap-ecc4@gregkh>
-References: <2026031711-egotism-flap-ecc4@gregkh>
+	s=arc-20240116; t=1773849620; c=relaxed/simple;
+	bh=HbNU6opN3mtELQZsusPWAIOs+NE+zIWaeh15R//swa4=;
+	h=From:To:CC:In-Reply-To:References:Subject:Message-ID:Date:
+	 MIME-Version:Content-Type; b=r0E7Gse2agjRkcLfGOGDqd1ZGUO85eFP2oHgGrbHk6GrF9N2grD0D2tjiPxPEl/V0B82zGFrPVKBDW6PQ26x3YRQcoiMSE6RBOdBc37w/OeasMC9FEsJWcwUpLdbCly2LbWcevQQXVLZZi/mYDUIeagJEu7cYNlZaz37vkRFiok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com; spf=pass smtp.mailfrom=imgtec.com; dkim=pass (2048-bit key) header.d=imgtec.com header.i=@imgtec.com header.b=s2Cj6nLi; arc=none smtp.client-ip=91.207.212.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=imgtec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imgtec.com
+Received: from pps.filterd (m0168888.ppops.net [127.0.0.1])
+	by mx08-00376f01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62I5gDHv2630875;
+	Wed, 18 Mar 2026 15:59:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=imgtec.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=dk201812; bh=u
+	HOoqbN6ZLcpo0DSRygxw21OeUrYvqcpbnfBg4e9KoU=; b=s2Cj6nLi424thIf2A
+	vfijdQJqAKH1DeSfew5rDugJ6EnC9Pnu2lLZPNsQVstIoWtOY3kpskaUJA7cRqR1
+	cUnqbOZU3brcdu0NSppxUmEFc7oK2GouqmfSF6YLA9ev5f9bWoXuDURzHYoZjbq4
+	ilVFm0QwxvzRvVqGp4ntm6U0IA1DsEONnVktXTrqYuIbGvxoq42+5i6Zc1rg/AGd
+	9t4TbclV2nQN+YlqL0g2Ap5zbHHze/Nm+G4J3VNhMZ5Xw9YPW+/Im35Sghthq7ME
+	yy5ziXzWwBgQVtsDWKIztunqjAE0ImN/JkkJNhGNhvPWxKy88g2udGsS6BericY8
+	5UBDw==
+Received: from hhmail02.hh.imgtec.org (83-244-153-141.cust-83.exponential-e.net [83.244.153.141])
+	by mx08-00376f01.pphosted.com (PPS) with ESMTPS id 4cvxtt3dfa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 18 Mar 2026 15:59:48 +0000 (GMT)
+Received: from HHMAIL03.hh.imgtec.org (10.44.0.121) by HHMAIL02.hh.imgtec.org
+ (10.100.10.20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 18 Mar
+ 2026 15:59:48 +0000
+Received: from
+ 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa
+ (172.25.4.249) by HHMAIL03.hh.imgtec.org (10.44.0.121) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Wed, 18 Mar 2026 15:59:47 +0000
+From: Matt Coster <matt.coster@imgtec.com>
+To: Frank Binns <frank.binns@imgtec.com>,
+        Brajesh Gupta
+	<brajesh.gupta@imgtec.com>,
+        Alexandru Dadu <alexandru.dadu@imgtec.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard
+	<mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie
+	<airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+        Alessio Belle
+	<alessio.belle@imgtec.com>
+CC: <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+In-Reply-To: <20260309-fix-soft-reset-v1-1-121113be554f@imgtec.com>
+References: <20260309-fix-soft-reset-v1-1-121113be554f@imgtec.com>
+Subject: Re: [PATCH] drm/imagination: Fix deadlock in soft reset sequence
+Message-ID: <177384958720.4032.11431279489285692576.b4-ty@imgtec.com>
+Date: Wed, 18 Mar 2026 15:59:47 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
+X-Authority-Analysis: v=2.4 cv=L9YQguT8 c=1 sm=1 tr=0 ts=69bacbf4 cx=c_pps
+ a=AKOq//PuzOIrVTIF9yBwbA==:117 a=AKOq//PuzOIrVTIF9yBwbA==:17
+ a=Ylr_HOfL8O8A:10 a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=kQ-hrUj2-E3RCbRHssb7:22 a=qZQ2PDNLMSdLoqI-hfl9:22
+ a=r_1tXGB3AAAA:8 a=lxhOV1slj-FFl-G3NfkA:9 a=QEXdDO2ut3YA:10
+ a=t8nPyN_e6usw4ciXM-Pk:22
+X-Proofpoint-ORIG-GUID: US88TL8G5PEt11ouVcbCwyDVSLW7LX_e
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE4MDEzNiBTYWx0ZWRfX/EEhPPGq64UV
+ B/55BdLPQYlJTxWfFU7/xlP3F5jFCSwvvpIpncOryFyDrd9DWZc65+t+a4kbSp8N49d78npSrS1
+ jn++zezFug/E0vPJ0LEIxvAjI7qTT3yhjuqFfcAVXWl/BP8SVPGYhxYsimuIfQSRWzLTaz12BZk
+ kXkmnbte/jf3GLyzVnWRNBxJCStZu0kH2neiC8ARt3K74RgrxK2mx/QV8Bt/yVeDakncCfWWzVW
+ sppKis8qNr9BW1L1p+P9YmjxrafsJKcd/SHnmH6we9K9DzmW4sMYT79dLfKuin8k7MCapoLPhEt
+ oSLKC0HIiZtpQd8EdBczbU38GUgBviAvQ7eRC4kdOlKhXWHWQON90Ii5h+8H54wc773PCJ1KkQn
+ fvKuBBuTf8uOGJXwN4bdyYZ0gUsonZqKHMXShspofAUIObYWddKCXT6yZ/cVNpEbWF+jcye1rSF
+ uk7I27CetZJgdAwXQqA==
+X-Proofpoint-GUID: US88TL8G5PEt11ouVcbCwyDVSLW7LX_e
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[imgtec.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[imgtec.com:s=dk201812];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[gmail.com,oss.qualcomm.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227108-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,imgtec.com:dkim,imgtec.com:email,imgtec.com:mid];
+	TAGGED_FROM(0.00)[bounces-227109-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[imgtec.com,linux.intel.com,kernel.org,suse.de,gmail.com,ffwll.ch];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.960];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DKIM_TRACE(0.00)[imgtec.com:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,patchwork.freedesktop.org:url]
-X-Rspamd-Queue-Id: 972F42BF517
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matt.coster@imgtec.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: F1A222BFF81
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit e4eb6e4dd6348dd00e19c2275e3fbaed304ca3bd ]
+On Mon, 09 Mar 2026 15:23:48 +0000, Alessio Belle wrote:
+> The soft reset sequence is currently executed from the threaded IRQ
+> handler, hence it cannot call disable_irq() which internally waits
+> for IRQ handlers, i.e. itself, to complete.
+> 
+> Use disable_irq_nosync() during a soft reset instead.
+> 
+> 
+> [...]
 
-The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
-a2xx_gpummu_new() but freed with size TABLE_SIZE in
-a2xx_gpummu_destroy().
+Applied, thanks!
 
-Change the free size to match the allocation.
+[1/1] drm/imagination: Fix deadlock in soft reset sequence
+      commit: a55c2a5c8d680156495b7b1e2a9f5a3e313ba524
 
-Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/707340/
-Message-ID: <20260226095714.12126-2-fourier.thomas@gmail.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/msm/msm_gpummu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/msm/msm_gpummu.c b/drivers/gpu/drm/msm/msm_gpummu.c
-index f7d1945e0c9f5..ab26b7f2e0359 100644
---- a/drivers/gpu/drm/msm/msm_gpummu.c
-+++ b/drivers/gpu/drm/msm/msm_gpummu.c
-@@ -76,7 +76,7 @@ static void msm_gpummu_destroy(struct msm_mmu *mmu)
- {
- 	struct msm_gpummu *gpummu = to_msm_gpummu(mmu);
- 
--	dma_free_attrs(mmu->dev, TABLE_SIZE, gpummu->table, gpummu->pt_base,
-+	dma_free_attrs(mmu->dev, TABLE_SIZE + 32, gpummu->table, gpummu->pt_base,
- 		DMA_ATTR_FORCE_CONTIGUOUS);
- 
- 	kfree(gpummu);
+Best regards,
 -- 
-2.51.0
+Matt Coster <matt.coster@imgtec.com>
 
 
