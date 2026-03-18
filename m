@@ -1,80 +1,81 @@
-Return-Path: <stable+bounces-226972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226973-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MGFIOkVSumkAUQIAu9opvQ
-	(envelope-from <stable+bounces-226972-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:20:37 +0100
+	id EK8wEJlSumkAUQIAu9opvQ
+	(envelope-from <stable+bounces-226973-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:22:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698E32B6D59
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:20:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95CAE2B6D7E
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:22:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7437F304000D
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:16:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9470B3055839
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:16:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 289CF23183B;
-	Wed, 18 Mar 2026 07:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D7AF2253EB;
+	Wed, 18 Mar 2026 07:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="cxSvbOIx"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ayUT9edK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921BD17C220
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1617024503B
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 07:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773818174; cv=none; b=F+MbXYSDdAd0z3yB0gWvtJWWoSV0M6Akth7PwVnMuxwncC5ciQm/yV0MhnYqINcfoUy5WKO3IG5YEUKXQC9FXLQ0mrTTwS1HdubGgo1kW6rO+0EKWqYReblGxtMb63bYebvYyp/DYyONmwSsQiAtT6RFsNg4TP3wN+NEbG+5dwM=
+	t=1773818216; cv=none; b=GQYRnP/29wU1m8gQ4KCkQj5elmddADsYNmi8OP7R/W53rE9QHJcMsvhSloRXJqLbttETeYwAS+WAxHG5HCKSUlo4ii3L2rpWaWQmgwmODd/ayzcl+qsFquEcmtxoNxn/L0lCY7y7N1wkv9JR86ggwdMXNEgyN7qKhaJIpdJW6xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773818174; c=relaxed/simple;
-	bh=DnxEnemkB2WH/Z/UoSAWJTNRzqVI9q6avWpfXrDlFw4=;
+	s=arc-20240116; t=1773818216; c=relaxed/simple;
+	bh=Nf80Au6wCKnLR47bZXhrqtqC3C1ce/Dk91infyE9yeE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HH1cepv3gEldj1pqOOS4KsF/m7WWE09UtCBLitoeXrUJivsnJxPlvf1ooLqlPm3QgCH/18oLCE3M2G0nk6KsOaoSsbZh8t3cfVxyizIxYwbdQSB3Jp3BO6hBEG1XHPt3DinThxxPp/SedLMULw+AvGTodbffvSOletamNYkVwrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=cxSvbOIx; arc=none smtp.client-ip=209.85.221.53
+	 Content-Type:Content-Disposition:In-Reply-To; b=BkU4MKciZirB8FlTalP/bpB4ubilDeCdhC1YFs3qOplkMhLlJXoY1BxDuqTN2YnIc12az4QdGjdaYcdX4v+WlFYoid9C+TAmcvebihqfR/i2AANOx6Il6OuNziNC+aQeaG1namKZuEU2CYbCQY0dCN8mzolCvHdV5LH664E00TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ayUT9edK; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43b41b545d9so3897085f8f.2
-        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 00:16:13 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-486507134e4so17759435e9.0
+        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 00:16:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1773818172; x=1774422972; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1773818213; x=1774423013; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YuswB05nXpaspdO6YZ0AYDzRRQbxug7MJJF7jh6gDCA=;
-        b=cxSvbOIxdcVBkoblcHrIq7vtpT/gYV3EVblrq+CNhD9rW+1/IoZZJCNDFT3djKu7B4
-         KOn8ULXHRAYC9cdx9H0T9OqBnzgm7ColOmzGjwrOur8zkYMOdAn7Zw6cm0e2md89v0uB
-         gv7DfDtpEyVHZ0wNUoDeh3STezuLoPwib3/OMfPe54Rpt4vo0GN2IxZdCMNtPpSyp1LW
-         R70rhX3ESV3qmeCj1Xo+Oc+/MEQK1tDT3FPZfnSAFcp/ZAkNJSJAoozAYs8agmdfpO0q
-         LzNlGrOHiWRs57kqA8sPRZId9h8uHpoTYBi1w1uQy+1zD0sRwYmhkEiF60Hf4X9Ezw6q
-         I0lw==
+        bh=GsdordiQBG8KvI/TOVG/4SQIVN4E6bDexKX1lez9BHc=;
+        b=ayUT9edKqten/RsJneWJ7N1kcefrAb+tePXx53GKE1Ramy8KUIhDUKtd14aHlCucm/
+         bR9b43XmJZpXoddpASpGpVYd+EnsCKSTDLp8j4dkCHX9HCXidBCEfusvGTXtaE7Wyyy0
+         yqgQkNCeJYpw4BNydIcxtl8LIW/dkPWG2CIIEBxXkFd24WsqSz/OP3/0MQj3xNE7RPfo
+         8IB2tPVibmfV4K24d+c/lE5FFHmGHzlJYCukCIwLxRKPtVefj7nsQaTYMsljfRSCs+ZT
+         j3yQph6L9N0PVw4p/b2B2nVO51IgtIOC1sgKFwJEnQU7yL+fB1RXXKR/TN5r9oCV4M4C
+         ILbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773818172; x=1774422972;
+        d=1e100.net; s=20251104; t=1773818213; x=1774423013;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YuswB05nXpaspdO6YZ0AYDzRRQbxug7MJJF7jh6gDCA=;
-        b=aitgRXB/ejxTyJrZ38yP7JU879qb+El2she8nPjhxjgZcNYSx5FdsfsBi/Sa6BGwZ3
-         NrZC9OM+0ad+nQiCCTZq5nBocO+lQXnPciEiy25xPuPG82waZIvjGi9rq9hHrGtNkIlu
-         VwY6MlMe23bfBQN1gRRpHDHUPB2F+F2R0FQ5gTzWyxj0q4bMA7zj52nnsWzloI0j3kD6
-         vV9ZpWdJp9fC4e6gBXtQ6Vf/3kMjhXT6aOS+XAnOpK9C6FQzf1iuqXgDvDSvBVf1RoqE
-         4e2eejI7bOoSPz1aEPEK4vLLAhjBkhvofpCEjVy+FtSI9xt4QAwLKUfVmgS1stvX6VcD
-         TV2Q==
-X-Gm-Message-State: AOJu0YyjtC1fa+Z7M6V9j2g/ujJBSX/x6ayBpQSlE4P90BYcEpKfQvyS
-	tJsJzG1Fs3gfIXIhH6IQpKitxdn0Ux8+yd3skqBCN4UnH3D/mOPUHSXUTyKZR0ceqe8=
-X-Gm-Gg: ATEYQzxeV2rKBVppgd+a6ZsPvDC848sD7btuxV/UqaS3hL4kl4G+N8/k26RPjErUwX8
-	5kpPG81nZOK8MRlNC0TZD06hzzEBnw+S6XhYRoSaQE1Nxw6W4rbu/1fL+crZ6sfyrX7NM+i8Cz2
-	K+fk3ieznBh/J6EYLxhqv3tti/ZhmcTp8hAkx0t/IECHv5L76GmcZ1lwfV/By0Dyp/CUzjapld4
-	Y1sCMaKJpacaoAhhU/gGFW0zOCQVLl5r3rWgu0ErBPID47gCQXBQyVqQjGiwDwgSBgrJZuaqmz/
-	U3FBeC0ErVyR2f+Uy8mr5ws3AFhZmRS2O4mnr/osXmQ3sCok7ZG+zM/icxvKfmSR2lrcwYH5xGE
-	tDXiyUDr8cxnV2nkuhLdire08I9Dke23tc2qJDZDYKJAH4Xc95KzzzyDS+xNvxKoKxRK8mvlRy7
-	KfFK+xrUyPb2lEQ9IR/U0XrpVcCXVgyQ==
-X-Received: by 2002:a05:600c:3b28:b0:485:3aa1:a7f1 with SMTP id 5b1f17b1804b1-486f441bc51mr38158405e9.7.1773818171752;
-        Wed, 18 Mar 2026 00:16:11 -0700 (PDT)
+        bh=GsdordiQBG8KvI/TOVG/4SQIVN4E6bDexKX1lez9BHc=;
+        b=Tv5y8pB7zYGuqvdmLWFJJ0omTpsLJxefKxPNijLpNN7/cB13pff/GuK/LCmyudB/hV
+         Zp/9odnFLc0dEIIlIMYkGsJ+8BAuqKtp0KUxsW6MGezEcG0/iRn2eq7jRM36Sn/AAZcU
+         UGG+KIVx6mqyvPY5eanPIbYyG0kVsnDrdiaDLuS/szcLJAYDRv9J7J1vCEJufiS/Ye+p
+         tYoYxlv74kYQ/4sjldcjKK+OyeIw4EYnJJC4ZGQHUbte6NBWRKKadRejSxdJq4W0ajx/
+         JBl4dduD/k6ZfjWN/gm9FI3Jc7ny8y2B2C9qu2B80gYWAV0Ne4ev2MQDnCwJPBTQ1Kzf
+         SYWg==
+X-Gm-Message-State: AOJu0YznMqAqiu1dqYW4IO/7/RXREN3z7dxqjZlyFFm8CYlfel5xhv/8
+	7rqyzit5vR2dibnntvFDxMTqi1+ZvLCf22c4qKsKc7TMClCxaZuhKh0DE/zeTaYVduMw7M3CV0b
+	JZbbjQDo=
+X-Gm-Gg: ATEYQzyMcdVgbgSEf6IuOGJLVBCv/EHbHsx2GVRrR7UC70/lmzoU3N9nXGVqmRl9a7/
+	Vu4h0DV/Y+d0ZgYclQnQo3cTOyMwHbSrQ5b+PsuOPSiG7OfKbArRDNK+aA9baxjo5YvPzgWVrGt
+	Nj9clwDXVxQlAwqKMPng6c8k2XjMw+KI8daW9LRLc22CAsukRWr1hoqCaZC9LxrQKgSdXyPW7Ee
+	w03MgAxxgoQLAvR1FjZIL9XSA7BKrSEq1Ke64HiVvEqF2Ox/qZWZHVawzHETtSCkunVD/Gbxpqp
+	V3GmOn3gf/gCR62+Cm69N0EQJGQxbl8zd9OrYrJ3jZkvjE2mvnZQKZQYvpoVIHGr/2+0lV0CKi0
+	bCj2IiECtNn/pfdj59u0kSssszBRCmYZ39sRUavjCLjLn7JFjpDKhSpZBCSI0Gu0Grly8Ru5RX/
+	pPMkixI6txzqN6RR4Irrw=
+X-Received: by 2002:a05:600c:1d09:b0:485:4388:348b with SMTP id 5b1f17b1804b1-486f41fd356mr38112435e9.0.1773818213388;
+        Wed, 18 Mar 2026 00:16:53 -0700 (PDT)
 Received: from u94a ([2401:e180:8d6d:4286:a96b:a815:7332:44e7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c741e54461csm1459482a12.15.2026.03.18.00.16.06
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6b541cdfsm1612786b3a.1.2026.03.18.00.16.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 00:16:10 -0700 (PDT)
-Date: Wed, 18 Mar 2026 15:16:02 +0800
+        Wed, 18 Mar 2026 00:16:52 -0700 (PDT)
+Date: Wed, 18 Mar 2026 15:16:44 +0800
 From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
@@ -83,9 +84,9 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com, f.fainelli@gmail.com, 
 	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
 	broonie@kernel.org, achill@achill.org, sr@sladewatkins.com
-Subject: Re: [PATCH 6.19 000/378] 6.19.9-rc1 review
-Message-ID: <2t4msypqkqfuclftuorojbwk2o2asi7qgudwwdwouljindynyk@bwza7tj64vws>
-References: <20260317163006.959177102@linuxfoundation.org>
+Subject: Re: [PATCH 6.18 000/333] 6.18.19-rc1 review
+Message-ID: <qh44yqp56wymolegs4gbwnbsyb7ogzwwboyrv2feqftdfbo6n7@63i74d5f45ah>
+References: <20260317162959.345812316@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,18 +95,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
 X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226972-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-226973-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -122,15 +123,15 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.com:dkim,suse.com:email]
-X-Rspamd-Queue-Id: 698E32B6D59
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:dkim,suse.com:email]
+X-Rspamd-Queue-Id: 95CAE2B6D7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 05:29:17PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.9 release.
-> There are 378 patches in this series, all will be posted as a response
+On Tue, Mar 17, 2026 at 05:30:29PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.19 release.
+> There are 333 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -142,7 +143,7 @@ test_verifier in BPF selftests all passes[1] on x86_64.
 
 Tested-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-1: https://github.com/shunghsiyu/libbpf/actions/runs/23211625016/job/67531397718
+1: https://github.com/shunghsiyu/libbpf/actions/runs/23211625016/job/67531397844
 
 [...]
 
