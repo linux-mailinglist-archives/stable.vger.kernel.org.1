@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-227017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227019-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMkqBLyDumnrXQIAu9opvQ
-	(envelope-from <stable+bounces-227017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 11:51:40 +0100
+	id oL9AKMaDumlpXgIAu9opvQ
+	(envelope-from <stable+bounces-227019-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 11:51:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6408A2BA387
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 11:51:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4642BA3E0
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 11:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CC1493011C7D
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:51:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AEC113014865
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D41395255;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E181F39A06F;
 	Wed, 18 Mar 2026 10:51:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98613378D98
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 10:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4035839281D
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 10:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773831095; cv=none; b=UmvImeb5ZJJs0JOTRAjd+gszYy1cEEbeAJCbFchSRd0B0WjnBh9lIrMrjC5/CneMx/7l/95nvUk7K0k0bg6PE0V4sBj5LcOKD7zrLluVSjiq28sTiDWZlXmOSd01H0/JOzP5jKizWRiqOiTKF1M2v4b0t2IbF0kzho9gHXZApYo=
+	t=1773831096; cv=none; b=erD0+mTh7cRS6i1swXbFHFS1flSo0MfDI9HxeehcAz/vly/81Wf+IsWMertQAWG1YpWy0BpD/m6OsNvWKq78p+uZiWhe76PRu7xwFXYl2B0wV0HfLcRGD1PRK7+Sgi7hsVxlYTwGDthxe3DKMIdXuiw21dycP9/aNrwzucZZn5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773831095; c=relaxed/simple;
-	bh=99MoR5B6FN0+kJyUEkYq+JZz0yxs/jel3MjgkwYNru0=;
+	s=arc-20240116; t=1773831096; c=relaxed/simple;
+	bh=Q3V//YbZg8/h/78beYdtoq1xUvbkhkNfZvyJd033Ag0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FoIf6eVGX+S9rjnMYpRo3G7VDhNmEH2+iPn22Jt9sTvk+RGfi1E1EFJ8DSx7p7z41hR9C7UbCQH0+1MmfZpP2kuSkHDCcjqXRV6IRKbmPVyY7+WbqVLbrJJOTSrdDC7sGkwLrZZPzzdz0Kpdw8b2UTHIbMLytyUlMmjL3dv62sM=
+	 MIME-Version; b=I+gYHmGB9DRnvmAJEWPF+mDv/ZXgM2fsZsM5EP7PQtEY3yQp6mCEaS6KnCmULK5sfPeoaAlAa/9LrnSmZxxGImAZJOwx4mhqvkaen1YuZwtVGK4/rYXkLz2YBatTvhzGXgabPHlTacyGgSpz44GW7ERtPpfg4goumNfjzfGN/0U=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -36,17 +36,17 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-0001WM-F3; Wed, 18 Mar 2026 11:51:25 +0100
+	id 1w2oUn-0001WL-F3; Wed, 18 Mar 2026 11:51:25 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUn-000tSP-0E;
+	id 1w2oUn-000tSR-0H;
 	Wed, 18 Mar 2026 11:51:25 +0100
 Received: from ore by dude04 with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1w2oUm-00000003RIc-47vz;
-	Wed, 18 Mar 2026 11:51:24 +0100
+	id 1w2oUn-00000003RIm-01bL;
+	Wed, 18 Mar 2026 11:51:25 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -61,9 +61,9 @@ Cc: David Jander <david@protonic.nl>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-stm32@st-md-mailman.stormreply.com
-Subject: [PATCH v1 3/7] ARM: dts: stm32: stm32mp15x-mecio1-io: Move divergent mecio1 ADC channels to board files
-Date: Wed, 18 Mar 2026 11:51:19 +0100
-Message-ID: <20260318105123.819807-4-o.rempel@pengutronix.de>
+Subject: [PATCH v1 4/7] ARM: dts: stm32: stm32mp15x-mecio1-io: Fix GPIO names typo
+Date: Wed, 18 Mar 2026 11:51:20 +0100
+Message-ID: <20260318105123.819807-5-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260318105123.819807-1-o.rempel@pengutronix.de>
 References: <20260318105123.819807-1-o.rempel@pengutronix.de>
@@ -83,7 +83,7 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -93,40 +93,27 @@ X-Spamd-Result: default: False [1.54 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227017-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227019-lists,stable=lfdr.de];
 	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
+	NEURAL_HAM(-0.00)[-0.991];
 	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,stable@vger.kernel.org];
 	TAGGED_RCPT(0.00)[stable,dt];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6408A2BA387
+	DBL_BLOCKED_OPENRESOLVER(0.00)[protonic.nl:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email,pengutronix.de:mid]
+X-Rspamd-Queue-Id: 1B4642BA3E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: David Jander <david@protonic.nl>
 
-Move the divergent adc1 channel definitions out of the common
-mecio1-io.dtsi file and into the specific Revision 0 and Revision 1
-board files.
-
-The original common file contained incorrect schematic labels for the
-Revision 0 hardware (e.g., labeling ana0 as p24v_hpdcm instead of
-ain_aux0) and failed to account for physical signal routing changes
-between the board revisions.
-
-Retain only the strictly shared channels in the common include file. Map
-the correct channels and schematic labels directly within
-stm32mp151c-mecio1r0.dts and stm32mp153c-mecio1r1.dts.
-
-Crucially, ensure that the required 200us sample time follows the
-phint1_ain signal to its new physical location on channel 3 for the
-Revision 1 hardware.
+The reset pins for the LPOUT lines were incorrectly prefixed with "GPOUT"
+instead of "LPOUT" in the gpio-line-names array. Fix these typos so the
+pin names consistently match the LPOUT0-4 signals they belong to.
 
 Fixes: 8267753c891c ("ARM: dts: stm32: Add MECIO1 and MECT1S board variants")
 Cc: <stable@vger.kernel.org>
@@ -134,225 +121,33 @@ Signed-off-by: David Jander <david@protonic.nl>
 Co-developed-by: Oleksij Rempel <o.rempel@pengutronix.de>
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts | 50 +++++++++++++++++++
- arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts | 50 +++++++++++++++++++
- .../arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi | 50 +------------------
- 3 files changed, 101 insertions(+), 49 deletions(-)
+ arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts b/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
-index a5ea1431c399..4e795ad42928 100644
---- a/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
-+++ b/arch/arm/boot/dts/st/stm32mp151c-mecio1r0.dts
-@@ -36,6 +36,56 @@ led-1 {
- 	};
- };
- 
-+&adc1 {
-+	channel@0 {
-+		reg = <0>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "ain_aux0";
-+	};
-+
-+	channel@1 {
-+		reg = <1>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "ain_aux1";
-+	};
-+
-+	channel@3 {
-+		reg = <3>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "hpdcm1_i2";
-+	};
-+
-+	channel@5 {
-+		reg = <5>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "pout1_i";
-+	};
-+
-+	channel@9 {
-+		reg = <9>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "pout0_i";
-+	};
-+
-+	channel@13 {
-+		reg = <13>;
-+		st,min-sample-time-ns = <200000>;
-+		label = "phint1_ain";
-+	};
-+
-+	channel@15 {
-+		reg = <15>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "hpdcm0_i1";
-+	};
-+
-+	channel@18 {
-+		reg = <18>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "hpdcm0_i2";
-+	};
-+};
-+
- &clk_hse {
- 	clock-frequency = <25000000>;
- };
-diff --git a/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts b/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
-index 16b814c19350..d32816093e47 100644
---- a/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
-+++ b/arch/arm/boot/dts/st/stm32mp153c-mecio1r1.dts
-@@ -36,6 +36,56 @@ led-1 {
- 	};
- };
- 
-+&adc1 {
-+	channel@0 {
-+		reg = <0>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "p24v_hpdcm";
-+	};
-+
-+	channel@1 {
-+		reg = <1>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "p24v_stp";
-+	};
-+
-+	channel@3 {
-+		reg = <3>;
-+		st,min-sample-time-ns = <200000>;
-+		label = "phint1_ain";
-+	};
-+
-+	channel@5 {
-+		reg = <5>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "hpout1_i";
-+	};
-+
-+	channel@9 {
-+		reg = <9>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "hpout0_i";
-+	};
-+
-+	channel@13 {
-+		reg = <13>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "hpdcm0_i2";
-+	};
-+
-+	channel@15 {
-+		reg = <15>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "hpdcm1_i2";
-+	};
-+
-+	channel@18 {
-+		reg = <18>;
-+		st,min-sample-time-ns = <20000>;
-+		label = "hpdcm0_i1";
-+	};
-+};
-+
- &clk_hse {
- 	clock-frequency = <24000000>;
- };
 diff --git a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-index 1b1299770ca0..f91b3d1f037b 100644
+index f91b3d1f037b..e50e9ae085e8 100644
 --- a/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
 +++ b/arch/arm/boot/dts/st/stm32mp15x-mecio1-io.dtsi
-@@ -90,7 +90,7 @@ v5v: regulator-v5v {
+@@ -185,14 +185,14 @@ &gpiod {
+ &gpioe {
+ 	gpio-line-names = "HPOUT0_RESETN", "HPOUT1", "HPOUT1_ALERTN", "",
+ 			  "", "", "HPOUT1_RESETN",
+-			  "LPOUT0", "LPOUT0_ALERTN", "GPOUT0_RESETN",
+-			  "LPOUT1", "LPOUT1_ALERTN", "GPOUT1_RESETN",
+-			  "LPOUT2", "LPOUT2_ALERTN", "GPOUT2_RESETN";
++			  "LPOUT0", "LPOUT0_ALERTN", "LPOUT0_RESETN",
++			  "LPOUT1", "LPOUT1_ALERTN", "LPOUT1_RESETN",
++			  "LPOUT2", "LPOUT2_ALERTN", "LPOUT2_RESETN";
  };
  
- &adc {
--	/* ANA0, ANA1 are dedicated pins and don't need pinctrl: only in6. */
-+	/* ANA0, ANA1 are dedicated pins and don't need pinctrl. */
- 	pinctrl-0 = <&adc12_pins_mecsbc>;
- 	pinctrl-names = "default";
- 	vdd-supply = <&v3v3>;
-@@ -102,78 +102,30 @@ &adc {
- &adc1 {
- 	status = "okay";
- 
--	channel@0 {
--		reg = <0>;
--		st,min-sample-time-ns = <20000>;
--		label = "p24v_stp";
--	};
--
--	channel@1 {
--		reg = <1>;
--		st,min-sample-time-ns = <20000>;
--		label = "p24v_hpdcm";
--	};
--
- 	channel@2 {
- 		reg = <2>;
- 		st,min-sample-time-ns = <20000>;
- 		label = "ain0";
- 	};
- 
--	channel@3 {
--		reg = <3>;
--		st,min-sample-time-ns = <20000>;
--		label = "hpdcm1_i2";
--	};
--
--	channel@5 {
--		reg = <5>;
--		st,min-sample-time-ns = <20000>;
--		label = "hpout1_i";
--	};
--
- 	channel@6 {
- 		reg = <6>;
- 		st,min-sample-time-ns = <20000>;
- 		label = "ain1";
- 	};
- 
--	channel@9 {
--		reg = <9>;
--		st,min-sample-time-ns = <20000>;
--		label = "hpout0_i";
--	};
--
- 	channel@10 {
- 		reg = <10>;
- 		st,min-sample-time-ns = <200000>;
- 		label = "phint0_ain";
- 	};
- 
--	channel@13 {
--		reg = <13>;
--		st,min-sample-time-ns = <200000>;
--		label = "phint1_ain";
--	};
--
--	channel@15 {
--		reg = <15>;
--		st,min-sample-time-ns = <20000>;
--		label = "hpdcm0_i1";
--	};
--
- 	channel@16 {
- 		reg = <16>;
- 		st,min-sample-time-ns = <20000>;
- 		label = "lsin";
- 	};
- 
--	channel@18 {
--		reg = <18>;
--		st,min-sample-time-ns = <20000>;
--		label = "hpdcm0_i2";
--	};
--
- 	channel@19 {
- 		reg = <19>;
- 		st,min-sample-time-ns = <20000>;
+ &gpiof {
+-	gpio-line-names = "LPOUT3", "LPOUT3_ALERTN", "GPOUT3_RESETN",
+-			  "LPOUT4", "LPOUT4_ALERTN", "GPOUT4_RESETN",
++	gpio-line-names = "LPOUT3", "LPOUT3_ALERTN", "LPOUT3_RESETN",
++			  "LPOUT4", "LPOUT4_ALERTN", "LPOUT4_RESETN",
+ 			  "", "",
+ 			  "", "", "", "",
+ 			  "", "", "", "";
 -- 
 2.47.3
 
