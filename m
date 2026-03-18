@@ -1,236 +1,225 @@
-Return-Path: <stable+bounces-227060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227061-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +K1vF1afumlSZwIAu9opvQ
-	(envelope-from <stable+bounces-227060-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:49:26 +0100
+	id sPpKCqGgumlSZwIAu9opvQ
+	(envelope-from <stable+bounces-227061-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:54:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC6B2BBD30
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:49:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26C0B2BBDBC
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:54:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 504723003D1D
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:49:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9907930060B8
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D683CB2DA;
-	Wed, 18 Mar 2026 12:49:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430173D6CA3;
+	Wed, 18 Mar 2026 12:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="pGkIFAwC"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="rFf0O58G"
 X-Original-To: stable@vger.kernel.org
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824A33876BF;
-	Wed, 18 Mar 2026 12:49:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22933AEF46;
+	Wed, 18 Mar 2026 12:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773838162; cv=none; b=N1MkYBOU1/otEQOn6CjirnnAZVsB4wRvcBm64HAUwzM6A1oM+zxpUnECgbuvg2ZHh2zgGZN/gAoqYTAX0QTIa3XgHZiLkfvGfp4F9Wi0EVGtQO+UDQLNvDIvRsUq0bCyj41ajygmrVVdmp669XSPvghW6BiSB8E7nkzUr7I3GPE=
+	t=1773838489; cv=none; b=JU22dTOEs15aW+slKrOc7M363cS6QTNZPBZG/wbmwu4QVt01ZEW4C+8pRvt37upwtIC7fvdUcG27MrKXZXVH0eBXoLrGc2s6r2w3j3bn0ufoUKdHZNUwFzvfL2VOaKYDsTMyPQN6245AMz+0wR+LZM5TSSj0YUJqNzZZhGpB1NQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773838162; c=relaxed/simple;
-	bh=oT5Bg5wm2M5gH8WW0b3j4/g7X/PV1Dtw1kQhET+zdlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eZAGuOr0yjP4RvWZ7OSqesx1LlnOD5G6foy4HIBsRev5F5sm9bMFqbCxMR3dYodwmkkeuEgYkJxh2xtuKFp9F7BBzpwfJ7lGhA4K6Emj2ghjBXNR2af+hxHqMPOL5Gwh3HUnzUKqZ9r2EELh/UWD2iuyx5GpZ2OmDWwnKBCjaT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=pGkIFAwC; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=t6ztXRiuTH/ghBe6+H1/ISwluyE+GSDSXbsO1ukkq0U=; b=pGkIFAwCnHC80vtzD1NKsVLnYv
-	+4LJvOGaYvWKtfZhf0i7LElV+hRdXxUvpnj8ZByRSaNeSCtxUvOU4YR2Z2Xfke1pUYGl9vDuHecUP
-	1QQq8op7PYYMeKH6IZs2u9Gyj7s8JtYObDcJMVpexh5epuPxghl8sMnQ8/psSplujGcnUEkQJbcmE
-	0XorQDEa1qXuF2oiZ0B2pvHSjoD937H0xkBMYmsZe5lM/Ghk2gvmsuJauMkDtDTTt0iBfkx8CEhYw
-	Tm2vgMM3GE51yxAWd5LIdj2OEm/uawrRuw/lBcEZNmEXpyyA7W1T5NvId5XL1gqdtnVrn+M0PnXJJ
-	SaZOJP7A==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1w2qKp-003fUl-5H; Wed, 18 Mar 2026 12:49:14 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id E23BABE2EE7; Wed, 18 Mar 2026 13:49:12 +0100 (CET)
-Date: Wed, 18 Mar 2026 13:49:12 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Fernando Fernandez Mancera <fmancera@suse.de>, 1130336@bugs.debian.org,
-	Alejandro Olivan Alvarez <alejandro.olivan.alvarez@gmail.com>
-Cc: Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alejandro Olivan Alvarez <alejandro.olivan.alvarez@gmail.com>,
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: Bug#1130336: [regression] Network failure beyond first
- connection after 69894e5b4c5e ("netfilter: nft_connlimit: update the count
- if add was skipped")
-Message-ID: <abqfSB0TUik1kRU4@eldamar.lan>
-References: <177349610461.3071718.4083978280323144323@eldamar.lan>
- <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
- <b3cbfd15-acd1-4500-ba30-eac6f48523fb@suse.de>
- <abW2MAAqLnKZm3KF@strlen.de>
- <177322336258.4376.10097494324750307114.reportbug@Desk1.simalex.iccbroadcast.com>
- <4da571ab-fa1d-4ee6-b71c-24f4a28243ed@suse.de>
+	s=arc-20240116; t=1773838489; c=relaxed/simple;
+	bh=mBsd3+MCNC1BwHztRBOGWE107Z8gEgFQ+gRjsa+6SPg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X0V1ShqUBUHH5SWXi/XgoYE0m9/rtDGALOueS3VGTznBHjhDlESk2C6fJtlnRD5G4no8nEoDeyyjKJb7ZMhnQJPJPIlnBLYvTfHfwHoPfw3Di3tQNwp+BPDDZV2VbxQYjfqL3epyw01EtO2QY6H10ZlAyR/WCDOTCg7TPWsqudY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=rFf0O58G; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=b0UncP7zDtwncIt7fApim79QuJzCfQ1K9RvzpT0PFRQ=; b=rFf0O58G4zIA3fBhy1qKzg/N4u
+	YsAT2ZskeXA4t5yZfLrlWs/Hqx7Q332pr+wZmPncmzXKI4dy0Bod57+njaW2tBi749yW8c5kcbYY/
+	sne53m+Id4/xhii7xc/HX+TuyIVzWxW+AWxpqMZajCfrkmPQIl2yhfacKWYwPpnr5xYVxKrv68Ewk
+	qDLVBJdnTK1hsheA9Aw9sIH5Ld8h2hdAkAwYKwO1BUvCnmjKLMo/H9hW5dKHJm3DORF6WQ0C7v7Lu
+	yyhhQ88k0h/HpNPqTRS2bVtvcfRtT65apUbPItSWkcqJ2bmprV+GtQG6vzchu/oiJXrsHznhqN15m
+	vDNRCP0w==;
+Received: from [189.7.87.203] (helo=[192.168.0.2])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1w2qPr-002n5W-82; Wed, 18 Mar 2026 13:54:27 +0100
+Message-ID: <5fe9332f-fbce-469e-8f19-dd3d7ef54c5f@igalia.com>
+Date: Wed, 18 Mar 2026 09:54:20 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] pmdomain: bcm: bcm2835-power: Increase ASB control
+ timeout
+To: Stefan Wahren <wahrenst@gmx.net>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
+ <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Rob Herring <robh@kernel.org>
+Cc: kernel-dev@igalia.com, linux-pm@vger.kernel.org,
+ linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
+ stable@vger.kernel.org
+References: <20260317-bcm2835-power-timeout-v1-0-19db323c51f9@igalia.com>
+ <20260317-bcm2835-power-timeout-v1-1-19db323c51f9@igalia.com>
+ <c803299f-709b-4b57-b7fc-46ef3bb4c9ee@gmx.net>
+From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
+Content-Language: en-US
+Autocrypt: addr=mcanal@igalia.com; keydata=
+ xsBNBGcCwywBCADgTji02Sv9zjHo26LXKdCaumcSWglfnJ93rwOCNkHfPIBll85LL9G0J7H8
+ /PmEL9y0LPo9/B3fhIpbD8VhSy9Sqz8qVl1oeqSe/rh3M+GceZbFUPpMSk5pNY9wr5raZ63d
+ gJc1cs8XBhuj1EzeE8qbP6JAmsL+NMEmtkkNPfjhX14yqzHDVSqmAFEsh4Vmw6oaTMXvwQ40
+ SkFjtl3sr20y07cJMDe++tFet2fsfKqQNxwiGBZJsjEMO2T+mW7DuV2pKHr9aifWjABY5EPw
+ G7qbrh+hXgfT+njAVg5+BcLz7w9Ju/7iwDMiIY1hx64Ogrpwykj9bXav35GKobicCAwHABEB
+ AAHNIE1hw61yYSBDYW5hbCA8bWNhbmFsQGlnYWxpYS5jb20+wsCRBBMBCAA7FiEE+ORdfQEW
+ dwcppnfRP/MOinaI+qoFAmcCwywCGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4AACgkQ
+ P/MOinaI+qoUBQgAqz2gzUP7K3EBI24+a5FwFlruQGtim85GAJZXToBtzsfGLLVUSCL3aF/5
+ O335Bh6ViSBgxmowIwVJlS/e+L95CkTGzIIMHgyUZfNefR2L3aZA6cgc9z8cfow62Wu8eXnq
+ GM/+WWvrFQb/dBKKuohfBlpThqDWXxhozazCcJYYHradIuOM8zyMtCLDYwPW7Vqmewa+w994
+ 7Lo4CgOhUXVI2jJSBq3sgHEPxiUBOGxvOt1YBg7H9C37BeZYZxFmU8vh7fbOsvhx7Aqu5xV7
+ FG+1ZMfDkv+PixCuGtR5yPPaqU2XdjDC/9mlRWWQTPzg74RLEw5sz/tIHQPPm6ROCACFls7A
+ TQRnAsMsAQgAxTU8dnqzK6vgODTCW2A6SAzcvKztxae4YjRwN1SuGhJR2isJgQHoOH6oCItW
+ Xc1CGAWnci6doh1DJvbbB7uvkQlbeNxeIz0OzHSiB+pb1ssuT31Hz6QZFbX4q+crregPIhr+
+ 0xeDi6Mtu+paYprI7USGFFjDUvJUf36kK0yuF2XUOBlF0beCQ7Jhc+UoI9Akmvl4sHUrZJzX
+ LMeajARnSBXTcig6h6/NFVkr1mi1uuZfIRNCkxCE8QRYebZLSWxBVr3h7dtOUkq2CzL2kRCK
+ T2rKkmYrvBJTqSvfK3Ba7QrDg3szEe+fENpL3gHtH6h/XQF92EOulm5S5o0I+ceREwARAQAB
+ wsB2BBgBCAAgFiEE+ORdfQEWdwcppnfRP/MOinaI+qoFAmcCwywCGwwACgkQP/MOinaI+qpI
+ zQf+NAcNDBXWHGA3lgvYvOU31+ik9bb30xZ7IqK9MIi6TpZqL7cxNwZ+FAK2GbUWhy+/gPkX
+ it2gCAJsjo/QEKJi7Zh8IgHN+jfim942QZOkU+p/YEcvqBvXa0zqW0sYfyAxkrf/OZfTnNNE
+ Tr+uBKNaQGO2vkn5AX5l8zMl9LCH3/Ieaboni35qEhoD/aM0Kpf93PhCvJGbD4n1DnRhrxm1
+ uEdQ6HUjWghEjC+Jh9xUvJco2tUTepw4OwuPxOvtuPTUa1kgixYyG1Jck/67reJzMigeuYFt
+ raV3P8t/6cmtawVjurhnCDuURyhUrjpRhgFp+lW8OGr6pepHol/WFIOQEg==
+In-Reply-To: <c803299f-709b-4b57-b7fc-46ef3bb4c9ee@gmx.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4da571ab-fa1d-4ee6-b71c-24f4a28243ed@suse.de>
-X-Debian-User: carnil
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-0.36 / 15.00];
+	R_DKIM_REJECT(1.00)[igalia.com:s=20170329];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[igalia.com : SPF not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227060-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[suse.de,bugs.debian.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmx.net,linaro.org,broadcom.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[debian.org];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-227061-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[strlen.de,netfilter.org,nwl.cc,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,vger.kernel.org,lists.linux.dev];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.987];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[carnil@debian.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[debian.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mcanal@igalia.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[igalia.com:-];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,eldamar.lan:mid]
-X-Rspamd-Queue-Id: EFC6B2BBD30
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,igalia.com:email,igalia.com:mid]
+X-Rspamd-Queue-Id: 26C0B2BBDBC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Alejandro,
+Hi Stefan,
 
-On Sun, Mar 15, 2026 at 02:09:33AM +0100, Fernando Fernandez Mancera wrote:
-> On 3/14/26 8:25 PM, Florian Westphal wrote:
-> > Fernando Fernandez Mancera <fmancera@suse.de> wrote:
-> > > On 3/14/26 5:13 PM, Fernando Fernandez Mancera wrote:
-> > > > Hi,
-> > > > 
-> > > > On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
-> > > > > Control: forwarded -1
-> > > > > https://lore.kernel.org/ regressions/177349610461.3071718.4083978280323144323@eldamar.lan
-> > > > > Control: tags -1 + upstream
-> > > > > 
-> > > > > Hi
-> > > > > 
-> > > > > In Debian, in https://bugs.debian.org/1130336, Alejandro reported that
-> > > > > after updates including 69894e5b4c5e ("netfilter: nft_connlimit:
-> > > > > update the count if add was skipped"), when the following rule is set
-> > > > > 
-> > > > >      iptables -A INPUT -p tcp -m
-> > > > > connlimit --connlimit-above 111 -j
-> > > > > REJECT --reject-with tcp-reset
-> > > > > 
-> > > > > connections get stuck accordingly, it can be easily reproduced by:
-> > > > > 
-> > > > > # iptables -A INPUT -p tcp -m connlimit
-> > > > > --connlimit-above 111 -j REJECT
-> > > > > --reject-with tcp-reset
-> > > > > # nft list ruleset
-> > > > > # Warning: table ip filter is managed by iptables-nft, do not touch!
-> > > > > table ip filter {
-> > > > >           chain INPUT {
-> > > > >                   type filter hook input priority filter; policy accept;
-> > > > >                   ip protocol tcp xt
-> > > > > match "connlimit" counter packets 0
-> > > > > bytes 0 reject with tcp reset
-> > > > >           }
-> > > > > }
-> > > > > # wget -O /dev/null
-> > > > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > > > rc3.tar.gz
-> > > > > --2026-03-14 14:53:51--
-> > > > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > > > rc3.tar.gz
-> > > > > Resolving git.kernel.org
-> > > > > (git.kernel.org)... 172.105.64.184,
-> > > > > 2a01:7e01:e001:937:0:1991:8:25
-> > > > > Connecting to git.kernel.org
-> > > > > (git.kernel.org)|172.105.64.184|:443...
-> > > > > connected.
-> > > > > HTTP request sent, awaiting response... 301 Moved Permanently
-> > > > > Location: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/
-> > > > > linux.git/snapshot/linux-7.0-rc3.tar.gz
-> > > > > [following]
-> > > > > --2026-03-14 14:53:51--
-> > > > > https://git.kernel.org/pub/scm/linux/kernel/ git/torvalds/linux.git/snapshot/linux-7.0-rc3.tar.gz
-> > > > > Reusing existing connection to git.kernel.org:443.
-> > > > > HTTP request sent, awaiting response... 200 OK
-> > > > > Length: unspecified [application/x-gzip]
-> > > > > Saving to: ‘/dev/null’
-> > > > > 
-> > > > > /dev/null                         [
-> > > > > <=>                    ] 248.03M
-> > > > > 51.9MB/s    in 5.0s
-> > > > > 
-> > > > > 2026-03-14 14:53:56 (49.3 MB/s) - ‘/dev/null’ saved [260080129]
-> > > > > 
-> > > > > # wget -O /dev/null
-> > > > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > > > rc3.tar.gz
-> > > > > --2026-03-14 14:53:58--
-> > > > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > > > rc3.tar.gz
-> > > > > Resolving git.kernel.org
-> > > > > (git.kernel.org)... 172.105.64.184,
-> > > > > 2a01:7e01:e001:937:0:1991:8:25
-> > > > > Connecting to git.kernel.org
-> > > > > (git.kernel.org)|172.105.64.184|:443...
-> > > > > failed: Connection timed out.
-> > > > > Connecting to git.kernel.org
-> > > > > (git.kernel.org)|
-> > > > > 2a01:7e01:e001:937:0:1991:8:25|:443...
-> > > > > failed: Network is unreachable.
-> > > > > 
-> > > > > Before the 69894e5b4c5e ("netfilter: nft_connlimit: update the count
-> > > > > if add was skipped") commit this worked.
-> > > > > 
-> > > > 
-> > > > Thanks for the report. I have reproduced
-> > > > this on upstream kernel. I am working on it.
-> > > > 
-> > > 
-> > > This is what is happening:
-> > > 
-> > > 1. The first connection is established and
-> > > tracked, all good. When it finishes, it goes to
-> > > TIME_WAIT state
-> > > 2. The second connection is established, ct is
-> > > confirmed since the beginning, skipping the
-> > > tracking and calling a GC.
-> > > 3. The previously tracked connection is cleaned
-> > > up during GC as TIME_WAIT is considered closed.
-> > 
-> > This is stupid.  The fix is to add --syn or use
-> > OUTPUT.  Its not even clear to me what the user wants to achive with this rule.
-> > 
+On 18/03/26 08:51, Stefan Wahren wrote:
+> Hi Maíra,
 > 
-> Yes, the ruleset shown does not make sense. Having said this, it could
-> affect to a soft-limit scenario as the one described on the blamed commit..
+> Am 17.03.26 um 23:41 schrieb Maíra Canal:
+>> The bcm2835_asb_control() function uses a tight polling loop to wait
+>> for the ASB bridge to acknowledge a request. During intensive workloads,
+>> this handshake intermittently fails for V3D's master ASB on BCM2711,
+>> resulting in "Failed to disable ASB master for v3d" errors during
+>> runtime PM suspend. As a consequence, the failed power-off leaves V3D in
+>> a broken state, leading to bus faults or system hangs on later accesses.
+>>
+>> As the timeout is insufficient in some scenarios, increase the polling
+>> timeout from 1us to 5us, which is still negligible in the context of a
+>> power domain transition. Also, replace the open-coded ktime_get_ns()/
+>> cpu_relax() polling loop with readl_poll_timeout_atomic().
+> personally I would have moved all readl_poll_timeout_atomic changes in 
+> the second patch, to avoid possible conflicts in stable. But no strong 
+> opinion about this.
+> 
 
-Alejandro, can you describe what you would like to achieve with the
-specific rule? 
+TBH personally, I also agree. But, as I don't have a strong opinion
+about it, I prioritized addressing Ulf's feedback in the last version
+[1].
 
-Regards,
-Salvatore
+[1] 
+https://lore.kernel.org/dri-devel/20260312-v3d-power-management-v7-0-9f006a1d4c55@igalia.com/T/#mf96146960ec7ffeea32e732c95ccf9548af21748
+
+Best regards,
+- Maíra
+
+> Best regards
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power 
+>> domains under a new binding.")
+>> Signed-off-by: Maíra Canal <mcanal@igalia.com>
+>> ---
+>>   drivers/pmdomain/bcm/bcm2835-power.c | 12 ++++--------
+>>   1 file changed, 4 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/pmdomain/bcm/bcm2835-power.c b/drivers/pmdomain/ 
+>> bcm/bcm2835-power.c
+>> index 
+>> 0450202bbee2513c9116a36abaa839b460550935..eee87a3005325848547ce1f5fd729b168a641460 100644
+>> --- a/drivers/pmdomain/bcm/bcm2835-power.c
+>> +++ b/drivers/pmdomain/bcm/bcm2835-power.c
+>> @@ -9,6 +9,7 @@
+>>   #include <linux/clk.h>
+>>   #include <linux/delay.h>
+>>   #include <linux/io.h>
+>> +#include <linux/iopoll.h>
+>>   #include <linux/mfd/bcm2835-pm.h>
+>>   #include <linux/module.h>
+>>   #include <linux/platform_device.h>
+>> @@ -153,7 +154,6 @@ struct bcm2835_power {
+>>   static int bcm2835_asb_control(struct bcm2835_power *power, u32 reg, 
+>> bool enable)
+>>   {
+>>       void __iomem *base = power->asb;
+>> -    u64 start;
+>>       u32 val;
+>>       switch (reg) {
+>> @@ -166,8 +166,6 @@ static int bcm2835_asb_control(struct 
+>> bcm2835_power *power, u32 reg, bool enable
+>>           break;
+>>       }
+>> -    start = ktime_get_ns();
+>> -
+>>       /* Enable the module's async AXI bridges. */
+>>       if (enable) {
+>>           val = readl(base + reg) & ~ASB_REQ_STOP;
+>> @@ -176,11 +174,9 @@ static int bcm2835_asb_control(struct 
+>> bcm2835_power *power, u32 reg, bool enable
+>>       }
+>>       writel(PM_PASSWORD | val, base + reg);
+>> -    while (!!(readl(base + reg) & ASB_ACK) == enable) {
+>> -        cpu_relax();
+>> -        if (ktime_get_ns() - start >= 1000)
+>> -            return -ETIMEDOUT;
+>> -    }
+>> +    if (readl_poll_timeout_atomic(base + reg, val,
+>> +                      !!(val & ASB_ACK) != enable, 0, 5))
+>> +        return -ETIMEDOUT;
+>>       return 0;
+>>   }
+>>
+> 
+
 
