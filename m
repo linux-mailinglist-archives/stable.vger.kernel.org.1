@@ -1,170 +1,259 @@
-Return-Path: <stable+bounces-227100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227101-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CLUNRPDumkGbgIAu9opvQ
-	(envelope-from <stable+bounces-227100-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:21:55 +0100
+	id eCH6As3GumlobwIAu9opvQ
+	(envelope-from <stable+bounces-227101-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:37:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4981E2BE198
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:21:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F33D2BE5F5
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 06BB73256123
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:12:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5BD2B31FAC7F
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750513E1212;
-	Wed, 18 Mar 2026 15:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852913093CF;
+	Wed, 18 Mar 2026 15:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VOJhrXtC"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Sut2LwCw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012032.outbound.protection.outlook.com [52.101.66.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E05221FCF
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 15:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773846651; cv=none; b=ux/lv35LMDkTiNyoqaHzMzZRTGmyB9EfTNPuQ4gWHtIW+pLMXW7ONuHLfGmIRhSbb+Bt7vQlDLPpnRU1tfsosFrhpuhmH74DvA3Nsh2yVvWuv5e2UizDkp3lu2M0pINAQhpE9nTATNhzKvAmQCjJYcPbD6rOFwD/PUK4kOdZ6Y8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773846651; c=relaxed/simple;
-	bh=QG2BtrENZ1xORdkNqsDB6dpPSvjNG1S30qT6a0FlLMg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kM1WTGCf3UDAIGoVMJziKwYCJI5ReIYoq3XDm33fBwMUgtKWHxaoVfWIYiMMr/4L1px+hrTAlRlwLdfG7YD3KHAZ9mJvstkCCsraG3KOwjPLiDHCL2AojEl8AZaRIONja1uIIs0kIvL0/5pP3LtOZIx4ACoykScmZf3O8BRJlzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VOJhrXtC; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-82a655cfab5so36367b3a.1
-        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 08:10:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773846649; x=1774451449; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=l3RkPnsLYSDbKLEv/BKhHIWIll2IYC1YAGuzM3YXuSw=;
-        b=VOJhrXtCM03xnJ2IfuxoTlqAVuzKpLmEjqqPKPINQ9M5MHaasEIcFOfwmaSugv3Bsf
-         rNMMwBD9OnQDskrbV/UAbmoIzp+vOgeslUbux4sru4BG7+fVjljuNix7JJO5p8Y9uZS6
-         /WfXLpKcSYfjpeFT8N0e+wmWTSbrGvMAMbQMr84yS/7OGEaVDpRlox7WcDyd0QRwbeZb
-         JQIZpog8kjLljS/1XfCfZ4H24IRDLdLKtzmKcCgY7pYjyots+IQNDOzjn0O4YD4eNpNs
-         QYMzrisFI+d4gWgpp50CPHk0USXPvAOkySP0pBZvbEZeb54PWpMfRnmg8lgXZOIUXn1O
-         0B7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773846649; x=1774451449;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l3RkPnsLYSDbKLEv/BKhHIWIll2IYC1YAGuzM3YXuSw=;
-        b=VasGpsKTdSaoh42N3JNb3yv5EjOLPRTWupCdDbjSSyuWHQTFPIMRkY3uJiU6S9i8Hk
-         Iz6ifU0SoZr+R98H0w7DfFZCTb2XHrXnutaucpy68zV05gTs4UdHFRWmf5QRZaXsvWJ4
-         hMW4JRkIivMKBeyqehgbEga43Q6cr7UcvGzFnBzcNkwuExP45BOcQXQ+klpgCSVohwV5
-         ibi9QXWtNZ398RXyQwAKP4CHdnwe6f4GUZE2pRfYXuf3kIKlNVISsrNqkSk/ul/W9DpL
-         nsomciK//6Zpb01c4X9X536llcsx1noGskpI7rDzAEAbo9mkMBbcFAmWMfuoYumxU47J
-         Z+vA==
-X-Forwarded-Encrypted: i=1; AJvYcCVEXx674Tyux4WTxM1s7tvvV1whT80fL4I/54sEjSVWx0dSCG5Oc9SswfVlgEWfkP4pGTAFRgY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhU6b+5ksgDrrw9aPqG3ynyJWrb59Qqhe0WIwrw3SY4eLWGBa8
-	A5ue2uNDeRqsrog9cjaOCwUlTJumw9A0OdFVNoMiDrXS8/Fh7jYRj6vq
-X-Gm-Gg: ATEYQzwPvQyanv4DPRFPWlVhLXty+FAVCoqyHl1+Mzrn1ZjKOzE4Qv9NTLu+ymvLIp9
-	WAfnqul0HZEU+8n66DvnnYHqM3HK8filwE21jpIzbcTLWcbc419hm7p3RMTqzg/mrmmC+G/Ghq5
-	xdF9hqzYmR8af1kcTUGhTeIuqS/fChrAFy3/AEiNzFaD6dMa3PzpidFGQji+2B+5XhX0Udkk1vX
-	T9ITGZiH49sGcWWl8ErllO37QAOkcnbMhBM5Rbvz6j6UVWr3KFtWsyi7qyJJd4hEA5bV2sN5hkB
-	J4J6iMRtGHOGFCCogjmo3WFVW/MopOB56uP49qgfuRrpgaBk9ohag85BVWP215Yy9atpwwfehnt
-	MYd8IP7CaFywihgqtmMlgODmXwP1Mygf8qQicayzjxYZIwvL166SDIpB1WNAInHQ3V+BBJSHAyk
-	ln/e5uSRmXB5kPW90mvgyl
-X-Received: by 2002:a05:6a00:3698:b0:824:9848:b020 with SMTP id d2e1a72fcca58-82a6b26e7a3mr3339406b3a.52.1773846649082;
-        Wed, 18 Mar 2026 08:10:49 -0700 (PDT)
-Received: from lgs.. ([223.80.110.53])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82a6bef2fdbsm3090533b3a.56.2026.03.18.08.10.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 08:10:48 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Piotr Raczynski <piotr.raczynski@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ice: fix double free in ice_sf_eth_activate() error path
-Date: Wed, 18 Mar 2026 23:10:28 +0800
-Message-ID: <20260318151028.634828-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B702367D9;
+	Wed, 18 Mar 2026 15:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773847033; cv=fail; b=ffRbyd+KmmxiaZMJsiZPfANflv57G+0/D7SE+8ZCaWDwxCousJtvjZniUC+fZtqmEHcTAXub4nUcc1oh4cv3OrQuBGoL1hyWVxB3bWWy27d2/ZjsHp4n+fctgN/G3l0ukrmcQHNkSbBP+F4sjQg3XGcW4gIS8/lR4WV56eHlVos=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773847033; c=relaxed/simple;
+	bh=c9ojM3iVs5nBFZyR8ClfSQNvomfpb1AXzoElwzpLkNU=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Q4X1vfgdDMgjKo2woePoSST0lg2QPdSJgB+bG7fHOPOcasbBlm0d3U7aqPKoZOvBkjNnM9cTXA8TGnHJf27oKBuUkKZvr0og0qroAXUc//3+40HA8TGFS5nqzw6Fo6Kr8heffkXuKKiYaqP8jWR8TWi36kHND537AOU0Icj4mkQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Sut2LwCw; arc=fail smtp.client-ip=52.101.66.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NP8iNla2P4Mgu1nmvQMbuHfCm9HqdqgOtg71r5U9P6Y6+NUnCDs7W/OUE5+R6Ufm6jD/qi3lCmJWvO7sXdGWG6QU9i8M44Ft7Gl6JSgzvjRLt5MgAFhOsI1w722iDT3uXf0yBubKXm/pBAqZC9vYSaAIAgN8VvIAHOGjW9cJZWuz+xPw0U7SvJ1S4DnqDxFocYN8k0bSacaEM1Arrf2ofnWUsGO3xehXGaOE6SyZ74gjRiKH8V/lc5PRIsxOgK7GD7cqhbYVCzqNHFGqoU7KDQXKegJOO74vaqSxQEyvISQqKQaQtTzicyS/p4d1SA6heTYGfFfLWeWRHZ+O22F0AA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KLr1Cfto2dIv6AANsFGhhEytklokghLOfP3HeCmxBJ4=;
+ b=zQ0qrLzksUTP8l31s96zuADTmsj0rx7GhbMnjdX7rTqA1PDy3ZqGgCvVy/f4MqDcpl6ID/hykkAS8xej4U2RVkJ+zKJfDhyYj+Fe3CEOh0H3nWXwWKuZqPTq5V6PYTmWkY8V/rscth9hy6McD3ofLBO+A1EteBj9TqpZpBZ8EiC/l9qkRXD83rZ6hys1QZ/yo47gf5VYrSNE6ApG5AWJPRMVbfZFWDCs4WmiahHyBG+cFsiQEt8rauZjV9G4ty2g+bZevTnOX+IDpOBBBi/2cFiAPe0KZTxBVkfWBg4qgyIgGq65SKa8K/wR8Klb0hW2EZiLgaEIuplhH1cO2kVr1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KLr1Cfto2dIv6AANsFGhhEytklokghLOfP3HeCmxBJ4=;
+ b=Sut2LwCwa169E80UhIQePrn9xrpPEBHDLOVX5UhxKgcObJbIk0nJ/Hxb8TSdAzbwa8eGzu2T7RZas3jzQx2KvzUz8ke71C2h/rIZ+V3nNJzeAIdPRJ7fMIG9YiGOukVfqtw895llzQdWIMhmKiFDIr9oSs59ncQPx2HU2mGGa9AYxGSpC+8sW/ZOGohFpxABgS6HdFaw0aJbz63/PQIycNRUvbfcFmOGst45os3R6IJ0fcIFswkN3F4sCFcL/DcIqyTdaSXdw8oZeLgkfI7/z3NdcOkJ+R0NVSGJPfKgCGoa8LXyyWqFumCi3DkJQT8WomP0yOMhMbyU/xxHbcvFRg==
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com (2603:10a6:102:231::11)
+ by DU0PR04MB9323.eurprd04.prod.outlook.com (2603:10a6:10:356::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Wed, 18 Mar
+ 2026 15:17:07 +0000
+Received: from PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb]) by PAXPR04MB9185.eurprd04.prod.outlook.com
+ ([fe80::b4c0:6119:2228:2ceb%4]) with mapi id 15.20.9723.018; Wed, 18 Mar 2026
+ 15:17:05 +0000
+From: Shenwei Wang <shenwei.wang@nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Linus Walleij
+	<linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, Frank Li
+	<frank.li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>
+CC: Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, "linux-gpio@vger.kernel.org"
+	<linux-gpio@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, dl-linux-imx <linux-imx@nxp.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [PATCH 1/1] gpio: mxc: map Both Edge pad wakeup to Rising Edge
+Thread-Topic: [PATCH 1/1] gpio: mxc: map Both Edge pad wakeup to Rising Edge
+Thread-Index: AQHctkd84NlNZgrn1Uqpj8qmiIZ63bW0JXmAgABAIlA=
+Date: Wed, 18 Mar 2026 15:17:05 +0000
+Message-ID:
+ <PAXPR04MB918564F8768B5502B53879CE894EA@PAXPR04MB9185.eurprd04.prod.outlook.com>
+References: <20260317195116.2301985-1-shenwei.wang@nxp.com>
+ <DB9PR04MB8461D0BE47F09CFF41492A60884EA@DB9PR04MB8461.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <DB9PR04MB8461D0BE47F09CFF41492A60884EA@DB9PR04MB8461.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB9185:EE_|DU0PR04MB9323:EE_
+x-ms-office365-filtering-correlation-id: 7a72df59-b49e-47c3-eab2-08de85016a27
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|1800799024|376014|366016|7416014|38070700021|18002099003|56012099003|22082099003;
+x-microsoft-antispam-message-info:
+ aSIewueXFHFuvzWzc3mE72BTp7klf+XRQgcQbc1vmUf+7EGEkFAypqOSTlLcwveOln+mxP2/sipUOZ8kJGeik9U3f9MjRe3b3giIyW81yaIDEondgjRrqsVGdE+r+U6P4lng54grS+XKZSbEEgwLpZ6tREmF5u8EkCIVRQIrWKtZNnMUTHdnBM3sk8LPka4S+MsUx1+nPOxr/yDLggDVFu5wk6l1ckDmBJjJgj3khk+f6TITdlv86fuanl77RWwB6pWtt2/4GYB4OhKPi40e+lMk+jJhySkW8D52E6fLJW+GFpgnGk/yJDEPxTmVuMIyXulWYiW4CKmnoMsOUVPlOjNmRjUsMg7PKelEHfVtx57gP8bfJbFAT8pTsgJ7Y80uqh89P0dY/koKxBZDMgdH9pivYuaPavRd47/8/UzEL4bMEAndlzjxfRZAUi9odlTOlaZXALOpF0d6fvI1hKw4VDxX2tC27d2+liorlesw5Yr4v8X5SSRQqHdVcUfrxebenJbQX5+gnxAXU7Leos0Qr5oN1WGHy1MDVEoPPEpbMSI6sJ3NXCVYIZLet3GeDJK4YU9KtOniXJWmk411Rdyh/1O3LHTWxWUaRuibDkXhf1bg9boZ7UmxsMVULsrRc+gyrEdwFI38bKYDeDJPs5FmixaBXP4YqqOEBEuFrLp2ELTq4+nZY4m3wp9OWBDXfid+lIiPW7YR5mgh5fZKAQGGUZHucXBjhZWZDjhX4gFJr990IppSDpoD9jZkzJP1+HlWccT6jAeCBZ1LkdMJkVVY5ZHDhjjXApooo0s9JNhlEB8=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9185.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(1800799024)(376014)(366016)(7416014)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?f1sc4Uv2rfEYWqhBlmjDsODdrcgl/UmC9qL7ziMfSTZy474gB4hRhtjP9UZn?=
+ =?us-ascii?Q?9N3uG70ziiuaOjCMPwLLhTGstfZ+7YAkJjA0IDQdVcaSXhpsNJ6vsrFxgFXK?=
+ =?us-ascii?Q?EANPhiVQh+0bd1SZ3Gnrz3xLDT/pHr8rePIP8stcysSIFHTg4GqiKMiHBIMW?=
+ =?us-ascii?Q?Ocw934LBzzJRxGolEh79aQ0OzkEkrkEL3Xx3Un2PgPNRBZ1vbycHLVlWGg76?=
+ =?us-ascii?Q?UMAMjdvtXIBUPyJ9OTqhyk6ibV+lpcxsu0Xnwa7dQBSY5zC8rUT89NmowWcO?=
+ =?us-ascii?Q?KVyuHxFkkxIhpp4cz5s79riymMN9OOpjtanWx62IbYrS24a8CHQyUKgsS5DC?=
+ =?us-ascii?Q?jEF1zMajJo3IYXL7BTHwlqQsDl45Pkf9BWubuLaSLon8Qp1uLMsSYQHoTMpX?=
+ =?us-ascii?Q?T8G0mX+SC1yNLiEPQ7NnS69mMTKg1CY8UTSYbkbAnL2py+9/keRUJ1YWNeqP?=
+ =?us-ascii?Q?y2aj0/xWMkgF2MS8LiB1pjEbIrlYmkfwGDT8Vxu++mynF9u5zV5n4DrmaBPQ?=
+ =?us-ascii?Q?5VcZp+zOQq/IbcZYUgacBbYv3g5Vhi6dG6fzMYIGTm4YfHjq4iAI5O2G260u?=
+ =?us-ascii?Q?bWpa7/odPNiK5HXBjSBf72AVYeynigrXvYQHpIYZmVEfPRVt1qYo5We4pwDb?=
+ =?us-ascii?Q?IiKCs8kHfI1NF4Ur3n7+Fw9PNnlTkJ3aNaBXW/9zDaVvrD0YLeheeWgI13r9?=
+ =?us-ascii?Q?YwB6jg1jP+2vNpzLKFn6MDC48tGrfxiJMLqBmiIqFoZHXm+EL2MivZdncLIi?=
+ =?us-ascii?Q?pwVyMc8PAIXeAe2LohxWFXbcOR2S1/ZGZqlyDe4KJPFZ61dcXNyE1JIhyMJq?=
+ =?us-ascii?Q?pPCV6e2vToGyWQ1e6gDrQC44mY5KJMuMLhldqhHgMXjKLHZ8tZrLal9lNTyr?=
+ =?us-ascii?Q?rzqw+XpWE1RBbIYfPs4jhZemXSycHIJhbd/qJEOAhWXEhgof/TDJnEzxQdtc?=
+ =?us-ascii?Q?9ZxRJX5FHfTDcn4hajIoKkQAZCeKOoeNq+Yl/ZmmpvRWFXpGPlazn8nBW99r?=
+ =?us-ascii?Q?tSmIET93u+QZgxDmQovWj12KEtfipSvATOJJEuWdsbFA52DihDkT0gNdQHQ0?=
+ =?us-ascii?Q?8062cDk+E4Cn8M+Exp9HZzvNO4YcJZD7k5BZe+4ocjdbVALWdtSfUDhEM/C2?=
+ =?us-ascii?Q?wSSA/VZ94te7tQ266zRCFGn8WlMYL+bs3wysUBTH6R1Jh6Y8g4HmUM1s+/Ir?=
+ =?us-ascii?Q?ySbjkMBXv/MTjJlMKI7SAAVy7LTAvVRQVoJfpXZUFRebKpRNge70toQuOONz?=
+ =?us-ascii?Q?Gr3w+/ocb9OnM5HAst3n0seBpvxB9bkRa+AhGHY2TH504Hrx1abYiP8qw5Iz?=
+ =?us-ascii?Q?0wSWafQjHmTHgPdTmut5BXP7DB4ASJrnzv7aep2WK5TnD1TPecZiBW8TCplt?=
+ =?us-ascii?Q?xInZ/PQ+HkcSat3GJcogY771fhqos4NflQLaAFezDOipDoQDcLMhlRtKs+QN?=
+ =?us-ascii?Q?mh8CjAZxp3QOhL76gO4dpdpT/nBWXKMhO7bJx5GWo6bmlCFxrlEDZXe5Rmu5?=
+ =?us-ascii?Q?A2FKfCl/h/j4P/my03CmLmRwUllWMoX3GKaNXsSiK64i6cbz1upFPBwiz0ZU?=
+ =?us-ascii?Q?86EnRBxuckB5x/NaEuBydXXc2QBnzMWsjJtMiFu4ILNbHSPV4HANB5rfciLU?=
+ =?us-ascii?Q?BMx0cL0G7zXDs3o+TA2pzN5qqQddm2/8Dr8pjl6w2tICiYREpcQ3QdQo1sY2?=
+ =?us-ascii?Q?phktImGzhYHh9hLD1+V6SHPCyOfLn6bt6CKojHwEwCpPuFmr?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9185.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a72df59-b49e-47c3-eab2-08de85016a27
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2026 15:17:05.5200
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /oUsOTSuS/XHaTnDFr7aK7CGeSw85NsCvKtLkqZIlV1rkEkEGIDknhJPpZJG1g1RWsl4pm9un+m2xJOdUPIymA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR04MB9323
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[nxp.com,none];
+	R_DKIM_ALLOW(-0.20)[nxp.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[pengutronix.de,gmail.com,vger.kernel.org,lists.linux.dev,lists.infradead.org,nxp.com];
+	TAGGED_FROM(0.00)[bounces-227101-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	TAGGED_FROM(0.00)[bounces-227100-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[nxp.com:+];
+	MISSING_XM_UA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[shenwei.wang@nxp.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-0.861];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4981E2BE198
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.986];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,PAXPR04MB9185.eurprd04.prod.outlook.com:mid,pengutronix.de:email,nxp.com:dkim,nxp.com:email,infradead.org:email,linux.dev:email]
+X-Rspamd-Queue-Id: 0F33D2BE5F5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When auxiliary_device_add() fails, ice_sf_eth_activate() jumps to
-aux_dev_uninit and calls auxiliary_device_uninit(&sf_dev->adev).
 
-The device release callback ice_sf_dev_release() frees sf_dev, but
-the current error path falls through to sf_dev_free and calls
-kfree(sf_dev) again, causing a double free.
 
-Keep kfree(sf_dev) for the auxiliary_device_init() failure path, but
-avoid falling through to sf_dev_free after auxiliary_device_uninit().
+> -----Original Message-----
+> From: Peng Fan (OSS) <peng.fan@oss.nxp.com>
+> Sent: Wednesday, March 18, 2026 6:19 AM
+> To: Shenwei Wang <shenwei.wang@nxp.com>; Linus Walleij
+> <linusw@kernel.org>; Bartosz Golaszewski <brgl@kernel.org>; Frank Li
+> <frank.li@nxp.com>; Sascha Hauer <s.hauer@pengutronix.de>
+> Cc: Pengutronix Kernel Team <kernel@pengutronix.de>; Fabio Estevam
+> <festevam@gmail.com>; linux-gpio@vger.kernel.org; imx@lists.linux.dev; li=
+nux-
+> arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; dl-linux-im=
+x
+> <linux-imx@nxp.com>; stable@vger.kernel.org
+> Subject: RE: [PATCH 1/1] gpio: mxc: map Both Edge pad wakeup to Rising Ed=
+ge
+>=20
+> Hi Shenwei,
+>=20
+> > Subject: [PATCH 1/1] gpio: mxc: map Both Edge pad wakeup to Rising
+> > Edge
+> >
+> > Suspend may fail on i.MX8QM when Falling Edge is used as a pad wakeup
+> > trigger due to a hardware bug in the detection logic.
+>=20
+> This hardware bug exists on i.MX8QM/QXP/DXL, or just 8QM?
+>=20
 
-Fixes: 13acc5c4cdbe ("ice: subfunction activation and base devlink ops")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
- drivers/net/ethernet/intel/ice/ice_sf_eth.c | 1 +
- 1 file changed, 1 insertion(+)
+Only on i.MX8QM, as described. The system fails to enter suspend when
+Falling Edge wakeup is selected.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sf_eth.c b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-index 1a2c94375ca7..ec6020338b9f 100644
---- a/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-@@ -305,6 +305,7 @@ ice_sf_eth_activate(struct ice_dynamic_port *dyn_port,
- 
- aux_dev_uninit:
- 	auxiliary_device_uninit(&sf_dev->adev);
-+	goto xa_erase;
- sf_dev_free:
- 	kfree(sf_dev);
- xa_erase:
--- 
-2.43.0
+Thanks,
+Shenwei
+
+> More information better to add why suspend may fail.
+> Do you mean not able to resume back because of failing to detect falling =
+edge?
+>=20
+> Since the
+> > hardware does not support Both Edge wakeup, remap requests for Both
+> > Edge to Rising Edge by default to avoid hitting this issue.
+> >
+> > Fixes: f60c9eac54af ("gpio: mxc: enable pad wakeup on i.MX8x
+> > platforms")
+> > cc: stable@vger.kernel.org
+> > Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> > ---
+> >  drivers/gpio/gpio-mxc.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c index
+> > d7666fe9dbf8..f8300690ac05 100644
+> > --- a/drivers/gpio/gpio-mxc.c
+> > +++ b/drivers/gpio/gpio-mxc.c
+> > @@ -589,7 +589,7 @@ static bool mxc_gpio_set_pad_wakeup(struct
+> > mxc_gpio_port *port, bool enable)
+> >  		IMX_SCU_WAKEUP_OFF,		/* 0 */
+> >  		IMX_SCU_WAKEUP_RISE_EDGE,	/*
+> > IRQ_TYPE_EDGE_RISING */
+> >  		IMX_SCU_WAKEUP_FALL_EDGE,	/*
+> > IRQ_TYPE_EDGE_FALLING */
+> > -		IMX_SCU_WAKEUP_FALL_EDGE,	/*
+> > IRQ_TYPE_EDGE_BOTH */
+> > +		IMX_SCU_WAKEUP_RISE_EDGE,	/*
+> > IRQ_TYPE_EDGE_BOTH */
+>=20
+> For IRQ_TYPE_EDGE_BOTH, use IMX_SCU_WAKEUP_RISE_EDGE.
+> Do we need to also add a check for IRQ_TYPE_EDGE_FALLING?
+> Saying not support IRQ_TYPE_EDGE_FALLING because of xxx.
+>=20
+> Regards
+> Peng.
+>=20
+> >  		IMX_SCU_WAKEUP_HIGH_LVL,	/*
+> > IRQ_TYPE_LEVEL_HIGH */
+> >  		IMX_SCU_WAKEUP_OFF,		/* 5 */
+> >  		IMX_SCU_WAKEUP_OFF,		/* 6 */
+> > --
+> > 2.43.0
 
 
