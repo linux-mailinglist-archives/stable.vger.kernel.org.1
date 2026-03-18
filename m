@@ -1,200 +1,166 @@
-Return-Path: <stable+bounces-227006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227004-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNpKGZFqumnnWAIAu9opvQ
-	(envelope-from <stable+bounces-227006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:04:17 +0100
+	id QI3rN6hqumnnWAIAu9opvQ
+	(envelope-from <stable+bounces-227004-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:04:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9260E2B8A2C
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:04:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4550F2B8A36
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:04:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 367263010BAB
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:04:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2D563044174
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB9539E180;
-	Wed, 18 Mar 2026 09:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA905359A97;
+	Wed, 18 Mar 2026 09:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ac2.se header.i=@ac2.se header.b="saxSUnA7"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="KyfrWx96"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.acc.umu.se (mail.acc.umu.se [130.239.18.156])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B601435D604
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 09:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.239.18.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4553039F169
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 09:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773824640; cv=none; b=G4nNY/CeKWsdwPKlCQMPnqlD+Xf7BaClKRk8Q1YwBh+8Vboq6ajPN9WceaELK9ywYR2uXgGl5AL7ZhGAaKgbjNju1UWdnJE/LEBP6uvSH11rSBD59NDlMlv9IcY+fvIQqD3KAN2df80R2EplbaXnfwjmqyIhFRRBXnhMYXvmCfg=
+	t=1773824584; cv=none; b=vEYDtDpAmIYuV1A0MT1urXvzf2iFrtCkti0LmaI5Jqr7+BAXEwhHI5A6P6T1bssxfWw44fl/8KG6HR99XQAlGOC2lDy/Bee126OfOdflLVQM+wMB91JNnFARjZGLF4a/PfCKKAdOs5L4mIAumG1NSRjvtooLEgJ2i4zX7UCpUiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773824640; c=relaxed/simple;
-	bh=W4+xe38yEjG9SWFKdDLcrWA/dwSTIcAsK1usgGIfwng=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XngXAsOKrXAsyt9Z3c3udXsfU/7ht7SVH5OnfMth+TrUl+4bK2jztfovoV28dOBn6A/N0gUE6qJ9c4BFelHQY6lbIu2vYqXOLZ58z+OFvvJwpCCkWA1h9+TJXmiGXKDnnKYEflWyFoFEpCkytHeF2JtGV3vOO3ERri2Y9qN76ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ac2.se; spf=pass smtp.mailfrom=accum.se; dkim=pass (1024-bit key) header.d=ac2.se header.i=@ac2.se header.b=saxSUnA7; arc=none smtp.client-ip=130.239.18.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ac2.se
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=accum.se
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by amavisd-new (Postfix) with ESMTP id 42F5244B91;
-	Wed, 18 Mar 2026 10:03:48 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ac2.se; s=default;
-	t=1773824628; bh=W4+xe38yEjG9SWFKdDLcrWA/dwSTIcAsK1usgGIfwng=;
-	h=From:To:Cc:Subject:Date:From;
-	b=saxSUnA7NOxuA0Y1hV4hz12meNgXOYCb3gRNF0+5e5jRmj1u25yrCXceb2hgJvkQu
-	 blE86CqK6yKk3YiRKtIbumy3XSLHbzHMJeaVi8CFFJTk4SgI8/AM9zaVwNYlCc53+J
-	 9qkjOqpBxY44LkZGBGEGZDBI1VmsFRpek7V57hX4=
-Received: from suiko.ac2.se (suiko.ac2.se [130.239.18.162])
-	by mail.acc.umu.se (Postfix) with ESMTP id 706C844B90;
-	Wed, 18 Mar 2026 10:03:46 +0100 (CET)
-Received: by suiko.ac2.se (Postfix, from userid 24471)
-	id 635ED42B4B; Wed, 18 Mar 2026 10:03:46 +0100 (CET)
-From: Anton Lundin <glance@ac2.se>
-To: keyrings@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Anton Lundin <glance@ac2.se>,
-	stable@vger.kernel.org
-Subject: [PATCHv2] sign-file,extract-cert: use KBUILD_SIGN_PIN in provider mode
-Date: Wed, 18 Mar 2026 10:02:09 +0100
-Message-ID: <20260318090336.556068-1-glance@ac2.se>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1773824584; c=relaxed/simple;
+	bh=WvRMkvjlyA86P8EnzAPqknyHzwOOB2P8vacobpna3yg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h2+tsPpCm0BsZZ/l9/7QROhTWfn/NZLZSATJwEKf884Lyqmgp0GfNm/RHuGGK5VNbTmDpoBPIMSXKC1bYXVZezTDYdTAGw+yigTpgDqdk1cqIH7XTXkfp+qNZkdxoTCOHwep1HHzzd7EzF20bxHABRfE3x6+DU1O3aNjQVHIgf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=KyfrWx96; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5001b.ext.cloudfilter.net ([10.0.29.181])
+	by cmsmtp with ESMTPS
+	id 2mi1wcN6wVCBN2mnpwu3ad; Wed, 18 Mar 2026 09:02:57 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id 2mnlw7W5sSqlV2mnlwIS4S; Wed, 18 Mar 2026 09:02:53 +0000
+X-Authority-Analysis: v=2.4 cv=I7FlRMgg c=1 sm=1 tr=0 ts=69ba6a40
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=YlFsy8CyaHjNQos-U68A:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=L5EjiQpGQaFGZdqT14z7:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Sg7BMjV17IkX6wqAwFUOCQ34ob21tgtLEs44vKQeEGs=; b=KyfrWx96OMU29+YCDJk6EkeL0D
+	QGWcS+vmBrAzZmwDMZcyHI+qtsEwrr3iiSNNH2zsSCfSarCJ5h+dR4jFM5uV2yUOIsPJTanT8pmrj
+	PsvXl+zpbhOqGOH3VH6IbxM0ryPkR0mXXPAdUdvatA6Fs5ERu0fIrxK1vj9xWsh5M6vsOhKEpFeIC
+	UvSOkcLmlJJicmHceYUT9hhXkyi8JLdFKXKvLYK4os0lQPFDUtgEwcs1yR/9wkelXXsmYM6f+9B5j
+	oKeGTSSdRgv2JASu1vlu64xe8FZxKAq2OCEso9kRhQhvfp5JUZELAqQRupMw4NCxQqgwMbKyyy2PZ
+	R86UJHDQ==;
+Received: from c-73-162-206-103.hsd1.ca.comcast.net ([73.162.206.103]:59946 helo=[10.0.1.180])
+	by box5620.bluehost.com with esmtpsa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
+	(Exim 4.98.2)
+	(envelope-from <re@w6rz.net>)
+	id 1w2mnk-00000000QID-3VQl;
+	Wed, 18 Mar 2026 03:02:52 -0600
+Message-ID: <4f5e5f91-3331-4393-af81-c8e926423d4e@w6rz.net>
+Date: Wed, 18 Mar 2026 02:02:51 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.19 000/378] 6.19.9-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260317163006.959177102@linuxfoundation.org>
+Content-Language: en-US
+From: Ron Economos <re@w6rz.net>
+In-Reply-To: <20260317163006.959177102@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.162.206.103
+X-Source-L: No
+X-Exim-ID: 1w2mnk-00000000QID-3VQl
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-162-206-103.hsd1.ca.comcast.net ([10.0.1.180]) [73.162.206.103]:59946
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 19
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfGBJkPgC7OsAuqWqK6XarYFKy+4iLHdnQTAOgkJ+hWX9L9rH7x+HKlTEoFh+FLt51lBJWwAAGX8z8tQ4fabejxzUQHw74qZZglIUfDW1WmExkYCamG7R
+ iXJEdiE99eWW5Bmp2/89rnzAEtmwJMSfpUjouGIQxoTqupnrlNSlJG1TSqMHEPct4ZoklvLRlG27kw==
+X-Spamd-Result: default: False [1.04 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[ac2.se,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[ac2.se:s=default];
+	R_DKIM_REJECT(1.00)[w6rz.net:s=default];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227006-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227004-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[w6rz.net];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[glance@ac2.se,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[ac2.se:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	HAS_X_SOURCE(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	HAS_X_ANTIABUSE(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[re@w6rz.net,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[w6rz.net:-];
+	NEURAL_HAM(-0.00)[-0.989];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9260E2B8A2C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 4550F2B8A36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-This adds support for the documented KBUILD_SIGN_PIN functionality to
-sign-file and extract-cert when built with USE_PKCS11_PROVIDER.
+On 3/17/26 09:29, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.19.9 release.
+> There are 378 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Thu, 19 Mar 2026 16:28:59 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.9-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Signed-off-by: Anton Lundin <glance@ac2.se>
-Fixes: 558bdc45dfb2 ("sign-file,extract-cert: use pkcs11 provider for OPENSSL MAJOR >= 3")
-Cc: stable@vger.kernel.org
----
- certs/extract-cert.c | 27 ++++++++++++++++++++++++++-
- scripts/sign-file.c  |  6 +++++-
- 2 files changed, 31 insertions(+), 2 deletions(-)
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-v2: Added the corresponding fix to extract-cert to
-
-diff --git a/certs/extract-cert.c b/certs/extract-cert.c
-index 7d6d468ed612..30afdc296fff 100644
---- a/certs/extract-cert.c
-+++ b/certs/extract-cert.c
-@@ -25,6 +25,7 @@
- # define USE_PKCS11_PROVIDER
- # include <openssl/provider.h>
- # include <openssl/store.h>
-+# include <openssl/ui.h>
- #else
- # if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
- #  define USE_PKCS11_ENGINE
-@@ -62,18 +63,42 @@ static void write_cert(X509 *x509)
- 		fprintf(stderr, "Extracted cert: %s\n", buf);
- }
- 
-+#ifdef USE_PKCS11_PROVIDER
-+static int pem_pw_cb(char *buf, int len, int w, void *v)
-+{
-+	int pwlen;
-+
-+	if (!key_pass)
-+		return -1;
-+
-+	pwlen = strlen(key_pass);
-+	if (pwlen >= len)
-+		return -1;
-+
-+	strcpy(buf, key_pass);
-+
-+	/* If it's wrong, don't keep trying it. */
-+	key_pass = NULL;
-+
-+	return pwlen;
-+}
-+#endif
-+
- static X509 *load_cert_pkcs11(const char *cert_src)
- {
- 	X509 *cert = NULL;
- #ifdef USE_PKCS11_PROVIDER
- 	OSSL_STORE_CTX *store;
-+	UI_METHOD *ui_method = NULL;
- 
- 	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
- 		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
- 	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
- 		ERR(1, "OSSL_PROVIDER_try_load(default)");
- 
--	store = OSSL_STORE_open(cert_src, NULL, NULL, NULL, NULL);
-+	if (key_pass)
-+		ui_method = UI_UTIL_wrap_read_pem_callback(pem_pw_cb, 0);
-+	store = OSSL_STORE_open(cert_src, ui_method, NULL, NULL, NULL);
- 	ERR(!store, "OSSL_STORE_open");
- 
- 	while (!OSSL_STORE_eof(store)) {
-diff --git a/scripts/sign-file.c b/scripts/sign-file.c
-index 73fbefd2e540..9ac89fea9d73 100644
---- a/scripts/sign-file.c
-+++ b/scripts/sign-file.c
-@@ -32,6 +32,7 @@
- # define USE_PKCS11_PROVIDER
- # include <openssl/provider.h>
- # include <openssl/store.h>
-+# include <openssl/ui.h>
- #else
- # if !defined(OPENSSL_NO_ENGINE) && !defined(OPENSSL_NO_DEPRECATED_3_0)
- #  define USE_PKCS11_ENGINE
-@@ -90,13 +91,16 @@ static EVP_PKEY *read_private_key_pkcs11(const char *private_key_name)
- 	EVP_PKEY *private_key = NULL;
- #ifdef USE_PKCS11_PROVIDER
- 	OSSL_STORE_CTX *store;
-+	UI_METHOD *ui_method = NULL;
- 
- 	if (!OSSL_PROVIDER_try_load(NULL, "pkcs11", true))
- 		ERR(1, "OSSL_PROVIDER_try_load(pkcs11)");
- 	if (!OSSL_PROVIDER_try_load(NULL, "default", true))
- 		ERR(1, "OSSL_PROVIDER_try_load(default)");
- 
--	store = OSSL_STORE_open(private_key_name, NULL, NULL, NULL, NULL);
-+	if (key_pass)
-+		ui_method = UI_UTIL_wrap_read_pem_callback(pem_pw_cb, 0);
-+	store = OSSL_STORE_open(private_key_name, ui_method, NULL, NULL, NULL);
- 	ERR(!store, "OSSL_STORE_open");
- 
- 	while (!OSSL_STORE_eof(store)) {
--- 
-2.47.3
+Tested-by: Ron Economos <re@w6rz.net>
 
 
