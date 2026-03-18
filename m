@@ -1,106 +1,61 @@
-Return-Path: <stable+bounces-227105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227106-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WEKFCPHJumkLcAIAu9opvQ
-	(envelope-from <stable+bounces-227105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:51:13 +0100
+	id 6KTtFvjMummfcAIAu9opvQ
+	(envelope-from <stable+bounces-227106-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:04:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944092BEA16
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:51:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEAF2BEECF
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:04:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8C6B73007979
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:43:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 549EB31D1B47
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:51:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C706130B521;
-	Wed, 18 Mar 2026 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14233CE496;
+	Wed, 18 Mar 2026 15:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bYIVxUZr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSBLYUUR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 331332E8B64
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 15:41:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2AE2BDC2C
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 15:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773848463; cv=none; b=F+GvDS6HUR/MxaKBlgxpkzr45TQ+oOxgLtVaIcTdDK799fGhxji9YFGVQO50SsSv1ecaayyPMgMPgCe/q6JbZ1osc2b5fQGKax3lZfp0yhuF0RICs2SQyi4YVoJJ/u7DKKunFCuoaVX5r4q0O49nKyWt326CzaJRZl6IuJEz+9M=
+	t=1773848922; cv=none; b=PeYg/5qobW2WulCurZhxy4sNVtUCzyoFISqlUJuvAsZDHuoEK4Q/DwnQBGbn1IxqEV7318E0fpBy2lvcBI9MR57qIgZrpglJKfJcFP/eVFOwI6OVrhA5uf+P4XICIqvV1ME8p+fz96JxUerh5rATR6kFBbkqzEPQIi/6DOpEOIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773848463; c=relaxed/simple;
-	bh=KxCg9HM2B8Sqb5kfUOUvgEPx1OUj+gKVqH0z2u8OunQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uIHmU30t5rskOfIA/9+LMYBDcDwDYuwDyRXIV44tWbAz3cBDcygcfuEdP20kHtq4RwLOsEo7UQ+h0hcBaCqbc8lkCHlZLwvhM9EXxjuyn/oyW441GIAmPJuKyOEwY/GNOaiJ4a5frWde05Tsbpl0kNCBQIjLfVpsvjBbUbRanWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bYIVxUZr; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2b07069e2efso4214995ad.3
-        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 08:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773848459; x=1774453259; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9y+pNa6bjnkhcSISFIIKI60hKR4+nSBy2ZBJr+2i9Is=;
-        b=bYIVxUZr09EzR3Cu7oZttNU4TSOCLtAOzoOtqE8W3vUUxi62s39Qd/lpcHaD0mh3b7
-         evw3Y6erkX+UeuFiUVaDISglwS1NByfWCmJgGAIJt/tVyHEwXfiI79d2gKYQCAGlYLQS
-         0U9Pgy8TYXesYyT4H11l+/TVFofs2oL6QYKHjQS8hrYWUqSgK4JXm1xp6wquZlyOuAqf
-         Ntqj1HTwfVRGWSp92cu9aggcGfhoA3jx73hKVGGrlLEV0CspkjzEsr4B6MOthohDQyTG
-         oMSVTmrRStg2Ph9I9M3WlVbVQs19rdKjOT8FGV3QNJeaWEBUxPaqyRwZSAgUcdYEIln7
-         KYwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773848459; x=1774453259;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9y+pNa6bjnkhcSISFIIKI60hKR4+nSBy2ZBJr+2i9Is=;
-        b=bhlyd+TrmT9D6HWuwzNpjHQV9GPzXwXVTH7hZI73jiORV1WUJjLY9cS006wuOAUPsx
-         VSP0FTM4Xkei5Z6uqQR5SA6nwGnWO/MTp1pFdaNaaXVbm8WWY3GiIWiWVUgDhR5zo3hk
-         dgiPGGajxb1Cb1rWB3/950zKeMeZ9RlLVJ1CExOg9yKb8sntbdOQuBPde6/zFvgDX37j
-         xWiTvJ1rE37FnMsxXAWm1s8+DhaoxIzly47chOorTq8AUYpfGeXkBGC3BYjVS0KNC+ih
-         3HqiwkOmGkjHxIe2ECOCTUGKOnX4OM9m5z4hrXrh8HHf5WTP59HnYpfsTG3rkd0Yd9Dn
-         kPWw==
-X-Forwarded-Encrypted: i=1; AJvYcCWlEvXBiIr/tVMrfK+AMI3ARdL4Upv6nJ7UrYe/rT88Uc4kgF/pSqMVsn+1dPjvO8cIuxcgnRg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6z0UzMqfHqLSi4rngsTUt7dnoeJ6fbF3skvmH6G7Hnk9zvreA
-	2Rrl90pvWPhLvSW75PmGkDFFZXD4XlD4LZKF74urzG9/GXmu3xMSB9fE
-X-Gm-Gg: ATEYQzzC/ID9iN6C+XDCknDJJRlAf5Zk2tXCPXtzyKFd4xiX1WHAO0bWPHpZ0fr01JT
-	v0ZT4JY/WZjaH8hEZQK2J3dHVq/caeJjhDQVyEkui0iCkpyBRZ75ORAP2jnjL6hYnFclMVdnYJn
-	YQ1Zv028DGp9q+TFJo2C++6L5+/I9QgWgmEnWRmqTvVkcC0HI3/NrNbVmS3wDTOwMKRx3kFHzee
-	jh7Wv+z2GxqoznK8QDueoRGFWjDBEsaD6MWUaYraOJLqgTyZGTRwcPSzqyChKY72tD0KACzhVha
-	r27dN8sYRHg7rIKRfJC3qkrL+qh26NfetGsuPiwDErdBhhibZ/MJ7Xa0le9AOv6NwP0bmZ0pGyy
-	UEP8KAC616ER3Tqn+VhQjesc+qbS7s/47xI+t622kza2wEFlrm59MrkOrvy2C4z3aDdjCkLHxAm
-	EjMba2kFOmGdWZtg==
-X-Received: by 2002:a17:903:2f0c:b0:2ae:4847:cace with SMTP id d9443c01a7336-2b06e3ca490mr40674705ad.28.1773848459371;
-        Wed, 18 Mar 2026 08:40:59 -0700 (PDT)
-Received: from lgs.. ([36.255.193.30])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b06e431c1asm31772365ad.24.2026.03.18.08.40.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Mar 2026 08:40:58 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: mana: fix use-after-free in add_adev() error path
-Date: Wed, 18 Mar 2026 23:40:41 +0800
-Message-ID: <20260318154041.638747-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773848922; c=relaxed/simple;
+	bh=Hlk1uLOzVt6L1P0annmM0o2Yqm2EqO7fgdi3curs8O0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VWZaR7sia67SaQvgc/Px0c+yTnwG2lfa/YdF7QeuX+ieCIcQ40/tnqiydv1NcyyTcPw4m8LMoVvfOLbjBfwbuHFaPAsmjzKXubXgtzmSzD1+dvoFt9PBQfCiBArC/rZcZdufdBoFzBYR/d5u49QxoZIVBS4oRy5zeBwsMJubKVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSBLYUUR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D63C19421;
+	Wed, 18 Mar 2026 15:48:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773848922;
+	bh=Hlk1uLOzVt6L1P0annmM0o2Yqm2EqO7fgdi3curs8O0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gSBLYUURdB63jtolin8Ct0vMRIuuiJEb5x2TwXHGWRmOjVrMMCQCOjgaZUnwIDCNX
+	 DFwQRCidUga8X72UCZ9b9fXbEskMtHQG8L2YGPwX5UjRD/c6t7J0A6D8TtqujaSRM2
+	 OxzAUb3VexTqapXvXXnxh6ABKpfRg50c7FsgMVd49CJYdtbB3HCDa/dAedJ05yqvGI
+	 9R61RT2Hra4R2kmsSdbb+CW0T2amUWo61oqkCT+vPERnGc/NY//QbV9E9tWyacclUp
+	 l+DjezWbZJPtEM4DvzMrgw21Yvp7ixsa2Wq218i+XxBCL9P6lleWt2hS+3TADWmlam
+	 FWWS+fQBNB9jw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] drm/msm: Fix dma_free_attrs() buffer size
+Date: Wed, 18 Mar 2026 11:48:37 -0400
+Message-ID: <20260318154837.868095-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031710-uptake-straining-ca85@gregkh>
+References: <2026031710-uptake-straining-ca85@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -112,87 +67,71 @@ X-Spamd-Result: default: False [0.84 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[22];
-	TAGGED_FROM(0.00)[bounces-227105-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,oss.qualcomm.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227106-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-0.852];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.960];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 944092BEA16
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,qualcomm.com:email]
+X-Rspamd-Queue-Id: 8EEAF2BEECF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-If auxiliary_device_add() fails, add_adev() calls
-auxiliary_device_uninit(adev), whose release callback adev_release()
-frees the containing struct mana_adev.
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-The current error path then falls through to init_fail and accesses
-adev->id. Since adev is embedded in struct mana_adev, this may lead
-to a use-after-free.
+[ Upstream commit e4eb6e4dd6348dd00e19c2275e3fbaed304ca3bd ]
 
-Fix it by storing the allocated auxiliary device id in a local
-variable and using that saved id in the cleanup path after
-auxiliary_device_uninit().
+The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
+a2xx_gpummu_new() but freed with size TABLE_SIZE in
+a2xx_gpummu_destroy().
 
-Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Change the free size to match the allocation.
+
+Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/707340/
+Message-ID: <20260226095714.12126-2-fourier.thomas@gmail.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_gpummu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 1ad154f9db1a..70d71594c599 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3362,6 +3362,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+diff --git a/drivers/gpu/drm/msm/msm_gpummu.c b/drivers/gpu/drm/msm/msm_gpummu.c
+index f7d1945e0c9f5..ab26b7f2e0359 100644
+--- a/drivers/gpu/drm/msm/msm_gpummu.c
++++ b/drivers/gpu/drm/msm/msm_gpummu.c
+@@ -76,7 +76,7 @@ static void msm_gpummu_destroy(struct msm_mmu *mmu)
  {
- 	struct auxiliary_device *adev;
- 	struct mana_adev *madev;
-+	int id;
- 	int ret;
+ 	struct msm_gpummu *gpummu = to_msm_gpummu(mmu);
  
- 	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
-@@ -3372,7 +3373,8 @@ static int add_adev(struct gdma_dev *gd, const char *name)
- 	ret = mana_adev_idx_alloc();
- 	if (ret < 0)
- 		goto idx_fail;
--	adev->id = ret;
-+	id = ret;
-+	adev->id = id;
+-	dma_free_attrs(mmu->dev, TABLE_SIZE, gpummu->table, gpummu->pt_base,
++	dma_free_attrs(mmu->dev, TABLE_SIZE + 32, gpummu->table, gpummu->pt_base,
+ 		DMA_ATTR_FORCE_CONTIGUOUS);
  
- 	adev->name = name;
- 	adev->dev.parent = gd->gdma_context->dev;
-@@ -3398,7 +3400,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
- 	auxiliary_device_uninit(adev);
- 
- init_fail:
--	mana_adev_idx_free(adev->id);
-+	mana_adev_idx_free(id);
- 
- idx_fail:
- 	kfree(madev);
+ 	kfree(gpummu);
 -- 
-2.43.0
+2.51.0
 
 
