@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-227115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0OQeIqvUummfcAIAu9opvQ
-	(envelope-from <stable+bounces-227115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:36:59 +0100
+	id cPnkLrDUummfcAIAu9opvQ
+	(envelope-from <stable+bounces-227116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:37:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A29A2BF608
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:36:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5492D2BF625
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:37:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43B993068A23
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:35:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 537AF306A3B5
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BEC3F54D1;
-	Wed, 18 Mar 2026 16:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68A337BE95;
+	Wed, 18 Mar 2026 16:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcShw5px"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P07I0i36"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F6A3ECBEE
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 16:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54B53A874F
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 16:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773850237; cv=none; b=Bl6QhXy8w12kEjhalT93zThFM3ZJyum8BNQ/omf6ZMpncHxET6ObtAdV+nJt46rLnRHCy443DfFKDAm7KLjvgfxz1rvZEZomTcYzKF8KkCTglsVzbSYnrDIWykiNyk8cUKWVeIzigk/CCA4OrUKwHc2YmaZcrsdnCi57tysyeQ8=
+	t=1773850317; cv=none; b=McAy3jLfc+l2ABxzg6FuME04Qyqy6ocmqnMb0D1fqSfbQyFB4H9a4R+tbQrSkqO4EZHUB88xmgJY4R6puutOUXrzcVXNYb/loFh34wiNnViQBu0JD03+sumb4YZ5YQHrMPcYy3WY8zxZD0hVNBgJSYfMhMCoT3SOe50I7zC7iUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773850237; c=relaxed/simple;
-	bh=vGEk9TcLCY1iWYayPlA6QptXQQKglYIrDJf3WpdbcZY=;
+	s=arc-20240116; t=1773850317; c=relaxed/simple;
+	bh=pGaeCb26J3QdViMVrSVAUILvJ/MaTGyt0wStPIpl2hI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ag1ys5TE16kx6HVrXYJcQMpU3WS+SjqA3jmprY5FXlBqwAaddU2/P4jIv3P0laUY+xhdkr4Saz3UK79INpZ3L5zLlzFmiYzMlr3sfcF+zlr0HX2fqO7iTDkCCOUOMd+/N6oZH0fcwDrl38doyEHlWd+fAFwoqzjwJqBpWUUHipk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcShw5px; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47083C2BC87;
-	Wed, 18 Mar 2026 16:10:36 +0000 (UTC)
+	 MIME-Version; b=U9mbXPuWXoskAIYUe/+X7ImQ06WcaHo4hWmbotJkkzgx77SW2jUBSl7DJNDFp2XhjufTKFlx767fKHds/qK6p20PGHpgQEbMsu2R3FiY0d/96U6iy6E/CoqbHedTMd/ExosGojpogWhQOgeMFXJhWJIndl8pXJDjV9UV0NLd13w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P07I0i36; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34AFC19421;
+	Wed, 18 Mar 2026 16:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773850236;
-	bh=vGEk9TcLCY1iWYayPlA6QptXQQKglYIrDJf3WpdbcZY=;
+	s=k20201202; t=1773850316;
+	bh=pGaeCb26J3QdViMVrSVAUILvJ/MaTGyt0wStPIpl2hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcShw5px6ChhPMphOqV1cJb2GVoMZMJ5YLmda87WqvtkliVQFWKJI/z5fXGztwPeZ
-	 LgEEpcSyg8GvW06VmIu5heiyDIFDn2jGSetZ6OTKL5fr4g7gf4jarUOh1oSbQSxPmG
-	 NEEkgHxHWLxJRD1mtcaYcmtp8zLVanw9wMQGDTfGrNRk4x24DjKFEr5rJrf1ExG8+p
-	 QFT4+gkMO+iKN3bGmTUBWVId64zqPNsQQZSF0qoSS1cQ6L3v4B9DmbsehHfAOCrO+j
-	 3sLt9lm55cKqxQznX8E6lFn8sv9yWSiJE8SqxqFsY2ejdvnk4mPj7943eYN+UvL94L
-	 r++K9uPkCR97w==
+	b=P07I0i36m3HhN15SbL+KLbYoGEyT/aaD2hT+NPzRD/0FTegaoYX8xTYwymickw4Px
+	 xE2FuF1an1svm2X4ZYyLNYHgWHbEuWiXSGSl0dEUa4oqA1EqO4OTeSjwgYn/5XV53n
+	 5+nDE6Ya3Az94xlMQ9enBh7mMBQtV9qKZYgin/+hfARVasAVcV0iJlEI4VI2SaR19n
+	 M31gyGAfTU1m4iY5jBqflyjx9mSfG/kTp41K5ZAShbblOf3iVogcjlK4wvAsO14AVR
+	 fQOJoaSWuEQFFTJupmcxleUcCAOTXlzzshdQ9cursjeTZJikelW9MM4qVD+owGXWCq
+	 mFpMIT3TqVIQA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Marek Vasut <marek.vasut@mailbox.org>,
+Cc: Kevin Hao <haokexin@gmail.com>,
+	Quanyang Wang <quanyang.wang@windriver.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] drm/bridge: ti-sn65dsi83: halve horizontal syncs for dual LVDS output
-Date: Wed, 18 Mar 2026 12:10:34 -0400
-Message-ID: <20260318161034.907691-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] net: macb: Shuffle the tx ring before enabling tx
+Date: Wed, 18 Mar 2026 12:11:53 -0400
+Message-ID: <20260318161153.909243-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031722-ablaze-chloride-2f82@gregkh>
-References: <2026031722-ablaze-chloride-2f82@gregkh>
+In-Reply-To: <2026031733-handball-prescribe-c50a@gregkh>
+References: <2026031733-handball-prescribe-c50a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,98 +69,215 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,windriver.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-227116-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227115-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.992];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,ti.com:url,mailbox.org:email]
-X-Rspamd-Queue-Id: 0A29A2BF608
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5492D2BF625
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-[ Upstream commit d0d727746944096a6681dc6adb5f123fc5aa018d ]
+[ Upstream commit 881a0263d502e1a93ebc13a78254e9ad19520232 ]
 
-Dual LVDS output (available on the SN65DSI84) requires HSYNC_PULSE_WIDTH
-and HORIZONTAL_BACK_PORCH to be divided by two with respect to the values
-used for single LVDS output.
+Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
+the rootfs may take an extended time to recover after a suspend.
+Upon investigation, it was determined that the issue originates from a
+problem in the macb driver.
 
-While not clearly stated in the datasheet, this is needed according to the
-DSI Tuner [0] output. It also makes sense intuitively because in dual LVDS
-output two pixels at a time are output and so the output clock is half of
-the pixel clock.
+According to the Zynq UltraScale TRM [1], when transmit is disabled,
+the transmit buffer queue pointer resets to point to the address
+specified by the transmit buffer queue base address register.
 
-Some dual-LVDS panels refuse to show any picture without this fix.
+In the current implementation, the code merely resets `queue->tx_head`
+and `queue->tx_tail` to '0'. This approach presents several issues:
 
-Divide by two HORIZONTAL_FRONT_PORCH too, even though this register is used
-only for test pattern generation which is not currently implemented by this
-driver.
+- Packets already queued in the tx ring are silently lost,
+  leading to memory leaks since the associated skbs cannot be released.
 
-[0] https://www.ti.com/tool/DSI-TUNER
+- Concurrent write access to `queue->tx_head` and `queue->tx_tail` may
+  occur from `macb_tx_poll()` or `macb_start_xmit()` when these values
+  are reset to '0'.
 
-Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
+- The transmission may become stuck on a packet that has already been sent
+  out, with its 'TX_USED' bit set, but has not yet been processed. However,
+  due to the manipulation of 'queue->tx_head' and 'queue->tx_tail',
+  `macb_tx_poll()` incorrectly assumes there are no packets to handle
+  because `queue->tx_head == queue->tx_tail`. This issue is only resolved
+  when a new packet is placed at this position. This is the root cause of
+  the prolonged recovery time observed for the NFS root filesystem.
+
+To resolve this issue, shuffle the tx ring and tx skb array so that
+the first unsent packet is positioned at the start of the tx ring.
+Additionally, ensure that updates to `queue->tx_head` and
+`queue->tx_tail` are properly protected with the appropriate lock.
+
+[1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
+
+Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
+Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
-Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-2-2e15f5a9a6a0@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-[ adapted variable declaration placement ]
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted include block context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 98 +++++++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index 8a23116346a8a..29946de5e2ba3 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -325,6 +325,7 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 					struct drm_bridge_state *old_bridge_state)
- {
- 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
-+	const unsigned int dual_factor = ctx->lvds_dual_link ? 2 : 1;
- 	struct drm_atomic_state *state = old_bridge_state->base.state;
- 	const struct drm_bridge_state *bridge_state;
- 	const struct drm_crtc_state *crtc_state;
-@@ -452,18 +453,18 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 	/* 32 + 1 pixel clock to ensure proper operation */
- 	le16val = cpu_to_le16(32 + 1);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_SYNC_DELAY_LOW, &le16val, 2);
--	le16val = cpu_to_le16(mode->hsync_end - mode->hsync_start);
-+	le16val = cpu_to_le16((mode->hsync_end - mode->hsync_start) / dual_factor);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_HSYNC_PULSE_WIDTH_LOW,
- 			  &le16val, 2);
- 	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
- 			  &le16val, 2);
- 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
--		     mode->htotal - mode->hsync_end);
-+		     (mode->htotal - mode->hsync_end) / dual_factor);
- 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
- 		     mode->vtotal - mode->vsync_end);
- 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
--		     mode->hsync_start - mode->hdisplay);
-+		     (mode->hsync_start - mode->hdisplay) / dual_factor);
- 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
- 		     mode->vsync_start - mode->vdisplay);
- 	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index f258c4b82c74d..cebe995af021c 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -38,6 +38,7 @@
+ #include <linux/ptp_classify.h>
+ #include <linux/reset.h>
+ #include <linux/firmware/xlnx-zynqmp.h>
++#include <linux/gcd.h>
+ #include <linux/inetdevice.h>
+ #include "macb.h"
+ 
+@@ -719,6 +720,97 @@ static void macb_mac_link_down(struct phylink_config *config, unsigned int mode,
+ 	netif_tx_stop_all_queues(ndev);
+ }
+ 
++/* Use juggling algorithm to left rotate tx ring and tx skb array */
++static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
++{
++	unsigned int head, tail, count, ring_size, desc_size;
++	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
++	struct macb_dma_desc *desc_curr, *desc_next;
++	unsigned int i, cycles, shift, curr, next;
++	struct macb *bp = queue->bp;
++	unsigned char desc[24];
++	unsigned long flags;
++
++	desc_size = macb_dma_desc_get_size(bp);
++
++	if (WARN_ON_ONCE(desc_size > ARRAY_SIZE(desc)))
++		return;
++
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
++	head = queue->tx_head;
++	tail = queue->tx_tail;
++	ring_size = bp->tx_ring_size;
++	count = CIRC_CNT(head, tail, ring_size);
++
++	if (!(tail % ring_size))
++		goto unlock;
++
++	if (!count) {
++		queue->tx_head = 0;
++		queue->tx_tail = 0;
++		goto unlock;
++	}
++
++	shift = tail % ring_size;
++	cycles = gcd(ring_size, shift);
++
++	for (i = 0; i < cycles; i++) {
++		memcpy(&desc, macb_tx_desc(queue, i), desc_size);
++		memcpy(&tx_skb, macb_tx_skb(queue, i),
++		       sizeof(struct macb_tx_skb));
++
++		curr = i;
++		next = (curr + shift) % ring_size;
++
++		while (next != i) {
++			desc_curr = macb_tx_desc(queue, curr);
++			desc_next = macb_tx_desc(queue, next);
++
++			memcpy(desc_curr, desc_next, desc_size);
++
++			if (next == ring_size - 1)
++				desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
++			if (curr == ring_size - 1)
++				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
++
++			skb_curr = macb_tx_skb(queue, curr);
++			skb_next = macb_tx_skb(queue, next);
++			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
++
++			curr = next;
++			next = (curr + shift) % ring_size;
++		}
++
++		desc_curr = macb_tx_desc(queue, curr);
++		memcpy(desc_curr, &desc, desc_size);
++		if (i == ring_size - 1)
++			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
++		if (curr == ring_size - 1)
++			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
++		memcpy(macb_tx_skb(queue, curr), &tx_skb,
++		       sizeof(struct macb_tx_skb));
++	}
++
++	queue->tx_head = count;
++	queue->tx_tail = 0;
++
++	/* Make descriptor updates visible to hardware */
++	wmb();
++
++unlock:
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
++}
++
++/* Rotate the queue so that the tail is at index 0 */
++static void gem_shuffle_tx_rings(struct macb *bp)
++{
++	struct macb_queue *queue;
++	int q;
++
++	for (q = 0, queue = bp->queues; q < bp->num_queues; q++, queue++)
++		gem_shuffle_tx_one_ring(queue);
++}
++
+ static void macb_mac_link_up(struct phylink_config *config,
+ 			     struct phy_device *phy,
+ 			     unsigned int mode, phy_interface_t interface,
+@@ -757,8 +849,6 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 			ctrl |= MACB_BIT(PAE);
+ 
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+-			queue->tx_head = 0;
+-			queue->tx_tail = 0;
+ 			queue_writel(queue, IER,
+ 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
+ 		}
+@@ -772,8 +862,10 @@ static void macb_mac_link_up(struct phylink_config *config,
+ 
+ 	spin_unlock_irqrestore(&bp->lock, flags);
+ 
+-	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
++	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
+ 		macb_set_tx_clk(bp, speed);
++		gem_shuffle_tx_rings(bp);
++	}
+ 
+ 	/* Enable Rx and Tx; Enable PTP unicast */
+ 	ctrl = macb_readl(bp, NCR);
 -- 
 2.51.0
 
