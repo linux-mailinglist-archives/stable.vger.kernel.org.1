@@ -1,288 +1,255 @@
-Return-Path: <stable+bounces-227062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8JAmOtWgumlSZwIAu9opvQ
-	(envelope-from <stable+bounces-227062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:55:49 +0100
+	id 8GgWImCkummyZwIAu9opvQ
+	(envelope-from <stable+bounces-227063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:10:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DB72BBDE8
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:55:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C05E2BBF79
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:10:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22390301C951
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 12:55:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 67EFF31255C8
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 13:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86AC3D6CD5;
-	Wed, 18 Mar 2026 12:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A57A3D6CD1;
+	Wed, 18 Mar 2026 13:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqkm3fOL"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wpIgNrQX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B843D6CBF;
-	Wed, 18 Mar 2026 12:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773838539; cv=none; b=hEQmgYi5ulx1QlnOl7y7Xx1KhhYwZ2tiqUdKRuSDgOmt6ePhRIF+mSv6lVMYqI6YhGl06aCBjtC1IsIqgy44e9N7vJLOXp44YKAufdfQnIBYmiHhIprW3Gv+F64vlBEyh5cs032ONSmciuV6u4Q4E/HRyE61XJRFPc+2I1TXjZU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773838539; c=relaxed/simple;
-	bh=sDIDsqJ3eFVM7qqeJp3W+MpwzFRTxygdOnQHhQnvPOA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bT5h8EG62n/XNEay0ch53e3Tggrw8Ixz2u1bCfPbuatghLZ28YErPJ0B4/pYp7fmA8ql7otscjh9HK/rnQ25h9IwM/uA3p1mZpvoK4vN02SYssa9Oi6cRH30eEcPm/nT1caInOfrLgK2Hy2dcS2vO2jLwEkakvkKmKKfSIOxhcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqkm3fOL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73747C19421;
-	Wed, 18 Mar 2026 12:55:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773838539;
-	bh=sDIDsqJ3eFVM7qqeJp3W+MpwzFRTxygdOnQHhQnvPOA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bqkm3fOL9EWdZD6ReasTxze7QbXM+wy4+Qr9g0Aj3EAt2ZFHcM1/1knI4ha73coaH
-	 z9w/zpJxLcRkihlNBInHtjD898Bgsq9+XUCiNdFgvexSH7FuJm3SyOPl2JUEI0Zl/R
-	 sNH/ncL2EclkWmKkfzTEmWeyIwRsRVqr+JFiZsGS95SaOngLCgQ+ZtDZ0+vZqSCZW3
-	 GszKMej59qmnvao6fBY4viUINIXynTvaLsMBloLxYbE5kf+BikQem9g0thkLPABi4P
-	 LJeLdt72C+B7iyMBZJdkEg0DI+gUvYkdtoaeikhKPLlWCFirx32VveXQJVeGrFtVQz
-	 cRiUBJYPaETNg==
-Date: Wed, 18 Mar 2026 12:55:33 +0000
-From: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-To: mboone@akamai.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/pagewalk: fix race between concurrent split and
- refault
-Message-ID: <7ded426a-0cb5-437b-9634-8d806b704db6@lucifer.local>
-References: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF87B3B7B76
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 13:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773839236; cv=pass; b=M6J95jZlVF54NH1gBQ9sdWcIbX6Joloa2mbXc6Fw0clmbvYyIcboWI+DQghfQuQBsKj1vUf4Paknb3ceEzlzYsoK82RewWgLd4ttTnultC4kLqXq6yDFcMdVSGa6KnJkGhNXYTahX6qN2i//NwxqKEjh3WGuCiplJqRNB03WjlI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773839236; c=relaxed/simple;
+	bh=lt+ywfAaR1Vf4CU8mDfXb4qsSFqZ/g0PCAg3+I2clZg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YfKaBJaujhhlViQYVJGegVNsampuviseh4WMcOKKvkU3T447+8zjXjMQ2MIoogZcMBEHhSZ7y7FVvtspXHJvnyQuJj1C4S8vtj+FLS86oWO+ED29mlTPddgKRymuFUewh7xKjlPN7kD/9FSDpB3MRZJvZ+MpFKcRAtnBvsnZxBM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wpIgNrQX; arc=pass smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-38bdb4b8e66so4232491fa.2
+        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 06:07:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773839233; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PebJ4v4QLEOzrQ1aXY7knzA1hd7tbe9dWP5+jkPHNfgnNfXy+X8t2p+KBSlfgEXnRC
+         X54BjN8P459xXxDVPTe8HP/E1FWUSToKRX9oSkR0+CWmdSYm74l1QGEenYOKz97lxxZt
+         4hpgbIk+cXeODv0MUAJExf9colKeSiMqDEqQOmyXNOz5rHQgkUC4UmzzgqIsNoDWW/cL
+         KvnsVxtGHU08wVq1MvmLBYF9A5ZL4eBWdhPNmAqYspoYuzv4WShLPAAma+pe98uuTjPC
+         4xQTdp6WZiCEoRAJ6wPIbBrrrrWRKfLh3XhkoyFJsYZsq6J+Y5zlJbqB4H/T67txNDjA
+         FsBw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ns2P3ggM46Yr88OF2vB1ZSaRsJzPAmjjEjQot/+oNY0=;
+        fh=4R9XGlX5jZQpnEWHtJ1i77pC7bgKoaMKO/FxCDS9jL4=;
+        b=D45YdZ729dgaNUIaybI8nA3ZpgMi6XSJc81PvIl75fLzNpKpkQxeQyow6E04q4b8G/
+         MPhI+fBcbvJ0Q86VaSIb7Dl4tVzHhw6FR/QAs9Dos4ES9HBapIfOkWw2plCVCDWx2ujK
+         xMUDCfGkTHnDsBnvdlsxlDBYH8srLhm6AqEZSDBJ9gsd3zWIZ+3+tf3SKLUhxbGFGtp9
+         ttrOSp8sZgyk/MNppr9fMrX0GJ1k528HP6of/yLlyTPiERKHhCu2xexsZPebloInshbW
+         U5gB55lK9PPGoBlFHCpdSBgLTs0aijGLeQdevsDZzCpX770h1Cnw+nYWEtpeBxILNeaz
+         ibmA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1773839233; x=1774444033; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ns2P3ggM46Yr88OF2vB1ZSaRsJzPAmjjEjQot/+oNY0=;
+        b=wpIgNrQXqNCy5/541IV911CuWAYpy3kvXTUMJW9Gvx7Z4UNRyXOGGeEAYsZbQGy4GV
+         o3lWKU/lkHJDS9Eiv6YWx0CUzTNleMcP8koMje7q401wTK39i2amZhvN4n8xEv5ca04H
+         QLt9O4NBKhoairs7RS3rtXqmfMDuvNnbBmjjzpGqXiqmQ0kkshvRpddVH9y+dXZoxPGK
+         18F2XTYP5N0AY+bFgsQaZKcwak0H8+hp+1q5bySlyqKET8kCs/9lSa4omQSpudLoF5in
+         sZOxn+vc8Cw6M3Bm3ffsHk4fQjEZJFS1hFQWjTUkGU+IzX/butKijRqvaeyq6FsqxRI8
+         E03g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773839233; x=1774444033;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ns2P3ggM46Yr88OF2vB1ZSaRsJzPAmjjEjQot/+oNY0=;
+        b=AOgssTJBT8WmaXPNDcYztD7XruzGpzBmFkqShTjFR3LTvZh/ibtdskbgQwynMv3QZ5
+         8dYaBYVkEshi3T/3AEjwgeuGw/js3KAxR8h/EjKXD7GDSI7mvyuKSVu2IGEDwUhCwzcg
+         BP7/mh/PEWygJIcvrd+6JtTvya9fFhFzTzpi3EObnwzM1KCzzXd7ZFqakS7nRCYwbyD4
+         9vhtjarru89QMFvXVU1bvYMX/zHFfMsaq74btVsW2KjJIa3WDcPVf2xX3UI8w12vNYZu
+         thlztgQUW+5tkh7YWJkDgICYK/5luRF2O/A/N3HxOfMOc8Ha8GEq9sFAknsJwaxFKWC1
+         y0Sg==
+X-Forwarded-Encrypted: i=1; AJvYcCXrI2yKTBzEycrI6hoDZCyCANKYfG3i/YelE/rbFL5IIU8TeJUwZs9a9YhA21FDFFi1TDzShfg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwgGZ+obT+UCM5QIraDEEpZxkWh0QTi6Yl5zafq+59+96JUT3vt
+	VHbyueJ5hXAly3MQFS1ymJGqooJ9qH9Zkbt6UDvAJJ/HHOG4YsjT8WdUI7xKnsDf/5m05OqYVo0
+	sEu/PtjkhzcR9nGkD0CHgTOrE++HYnPJukMlpVbcQWg==
+X-Gm-Gg: ATEYQzw9hDDTj0rYrFxXgvAft5YUqpl5+N9hdHypSQcs0H79zBbqVfF/XrE5b4t+wlN
+	+0FmrDZg1E/Fd2N7h4eAzirrMOWVlLBOay8fUCVifpbk6+89CT++DQ8Z5NKi37pcZ2Wo7D4OdqD
+	SPa0OsNaB1ZffyQY1pdh3g2kEGnIHvN7CejLUBajOiQM5fSe7qWgn3YFXhJTIXJSYpAY7WTLWf+
+	WO0IHvjqazc08+7d+AA8m2ZljJunP4BUHLQ9b1jAb9oiJvewcRqSY+gmoIFSXCunlM3uSU5mq/c
+	prb6Qvhp
+X-Received: by 2002:a2e:720e:0:b0:38a:4de2:85f1 with SMTP id
+ 38308e7fff4ca-38bd58b92e0mr10200901fa.32.1773839232816; Wed, 18 Mar 2026
+ 06:07:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317-pagewalk-check-pmd-refault-v1-1-f699a010f2b3@akamai.com>
+References: <20260317-bcm2835-power-timeout-v1-0-19db323c51f9@igalia.com>
+ <20260317-bcm2835-power-timeout-v1-1-19db323c51f9@igalia.com>
+ <c803299f-709b-4b57-b7fc-46ef3bb4c9ee@gmx.net> <5fe9332f-fbce-469e-8f19-dd3d7ef54c5f@igalia.com>
+In-Reply-To: <5fe9332f-fbce-469e-8f19-dd3d7ef54c5f@igalia.com>
+From: Ulf Hansson <ulf.hansson@linaro.org>
+Date: Wed, 18 Mar 2026 14:06:36 +0100
+X-Gm-Features: AaiRm52m5cJvt4QR4VS4vXBV8Ahr79JL09AakQc1EBgijJMRaGkvQqTnXJFDsT8
+Message-ID: <CAPDyKFoooZbU9W_Y1aSx+HuCfjHZGn9XR4_CB8YgDmCBWTB-Tg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] pmdomain: bcm: bcm2835-power: Increase ASB control timeout
+To: =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>
+Cc: Stefan Wahren <wahrenst@gmx.net>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Ray Jui <rjui@broadcom.com>, Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Rob Herring <robh@kernel.org>, 
+	kernel-dev@igalia.com, linux-pm@vger.kernel.org, 
+	linux-rpi-kernel@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[linaro.org,none];
+	R_DKIM_ALLOW(-0.20)[linaro.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-227063-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227062-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmx.net,broadcom.com,kernel.org,igalia.com,vger.kernel.org,lists.infradead.org];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ljs@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ulf.hansson@linaro.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linaro.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B2DB72BBDE8
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linaro.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,igalia.com:email]
+X-Rspamd-Queue-Id: 2C05E2BBF79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 03:03:04PM +0100, Max Boone via B4 Relay wrote:
-> From: Max Boone <mboone@akamai.com>
+On Wed, 18 Mar 2026 at 13:54, Ma=C3=ADra Canal <mcanal@igalia.com> wrote:
 >
-> The splitting of a PUD entry in walk_pud_range() can race with
-> a concurrent thread refaulting the PUD leaf entry causing it to
-> try walking a PMD range that has disappeared.
-
-So IOW, the PUD entry is split, then refaulted back to a PUD leaf entry
-again?
-
+> Hi Stefan,
 >
-> An example and reproduction of this is to try reading numa_maps of
-> a process while VFIO-PCI is setting up DMA (specifically the
-> vfio_pin_pages_remote call) on a large BAR for that process.
+> On 18/03/26 08:51, Stefan Wahren wrote:
+> > Hi Ma=C3=ADra,
+> >
+> > Am 17.03.26 um 23:41 schrieb Ma=C3=ADra Canal:
+> >> The bcm2835_asb_control() function uses a tight polling loop to wait
+> >> for the ASB bridge to acknowledge a request. During intensive workload=
+s,
+> >> this handshake intermittently fails for V3D's master ASB on BCM2711,
+> >> resulting in "Failed to disable ASB master for v3d" errors during
+> >> runtime PM suspend. As a consequence, the failed power-off leaves V3D =
+in
+> >> a broken state, leading to bus faults or system hangs on later accesse=
+s.
+> >>
+> >> As the timeout is insufficient in some scenarios, increase the polling
+> >> timeout from 1us to 5us, which is still negligible in the context of a
+> >> power domain transition. Also, replace the open-coded ktime_get_ns()/
+> >> cpu_relax() polling loop with readl_poll_timeout_atomic().
+> > personally I would have moved all readl_poll_timeout_atomic changes in
+> > the second patch, to avoid possible conflicts in stable. But no strong
+> > opinion about this.
+> >
 >
-> This will trigger a kernel BUG:
-> vfio-pci 0000:03:00.0: enabling device (0000 -> 0002)
-> BUG: unable to handle page fault for address: ffffa23980000000
-> PGD 0 P4D 0
-> Oops: Oops: 0000 [#1] SMP NOPTI
-> ...
-> RIP: 0010:walk_pgd_range+0x3b5/0x7a0
-> Code: 8d 43 ff 48 89 44 24 28 4d 89 ce 4d 8d a7 00 00 20 00 48 8b 4c 24
-> 28 49 81 e4 00 00 e0 ff 49 8d 44 24 ff 48 39 c8 4c 0f 43 e3 <49> f7 06
->    9f ff ff ff 75 3b 48 8b 44 24 20 48 8b 40 28 48 85 c0 74
-> RSP: 0018:ffffac23e1ecf808 EFLAGS: 00010287
-> RAX: 00007f44c01fffff RBX: 00007f4500000000 RCX: 00007f44ffffffff
-> RDX: 0000000000000000 RSI: 000ffffffffff000 RDI: ffffffff93378fe0
-> RBP: ffffac23e1ecf918 R08: 0000000000000004 R09: ffffa23980000000
-> R10: 0000000000000020 R11: 0000000000000004 R12: 00007f44c0200000
-> R13: 00007f44c0000000 R14: ffffa23980000000 R15: 00007f44c0000000
-> FS:  00007fe884739580(0000) GS:ffff9b7d7a9c0000(0000)
-> knlGS:0000000000000000
-> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> CR2: ffffa23980000000 CR3: 000000c0650e2005 CR4: 0000000000770ef0
-> PKRU: 55555554
-> Call Trace:
->  <TASK>
->  __walk_page_range+0x195/0x1b0
->  walk_page_vma+0x62/0xc0
->  show_numa_map+0x12b/0x3b0
->  seq_read_iter+0x297/0x440
->  seq_read+0x11d/0x140
->  vfs_read+0xc2/0x340
->  ksys_read+0x5f/0xe0
->  do_syscall_64+0x68/0x130
->  ? get_page_from_freelist+0x5c2/0x17e0
->  ? mas_store_prealloc+0x17e/0x360
->  ? vma_set_page_prot+0x4c/0xa0
->  ? __alloc_pages_noprof+0x14e/0x2d0
->  ? __mod_memcg_lruvec_state+0x8d/0x140
->  ? __lruvec_stat_mod_folio+0x76/0xb0
->  ? __folio_mod_stat+0x26/0x80
->  ? do_anonymous_page+0x705/0x900
->  ? __handle_mm_fault+0xa8d/0x1000
->  ? __count_memcg_events+0x53/0xf0
->  ? handle_mm_fault+0xa5/0x360
->  ? do_user_addr_fault+0x342/0x640
->  ? arch_exit_to_user_mode_prepare.constprop.0+0x16/0xa0
->  ? irqentry_exit_to_user_mode+0x24/0x100
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x7fe88464f47e
-> Code: c0 e9 b6 fe ff ff 50 48 8d 3d be 07 0b 00 e8 69 01 02 00 66 0f 1f
-> 84 00 00 00 00 00 64 8b 04 25 18 00 00 00 85 c0 75 14 0f 05 <48> 3d 00
->    f0 ff ff 77 5a c3 66 0f 1f 84 00 00 00 00 00 48 83 ec 28
-> RSP: 002b:00007ffe6cd9a9b8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> RAX: ffffffffffffffda RBX: 0000000000020000 RCX: 00007fe88464f47e
-> RDX: 0000000000020000 RSI: 00007fe884543000 RDI: 0000000000000003
-> RBP: 00007fe884543000 R08: 00007fe884542010 R09: 0000000000000000
-> R10: fffffffffffffbc5 R11: 0000000000000246 R12: 0000000000000000
-> R13: 0000000000000003 R14: 0000000000020000 R15: 0000000000020000
->  </TASK>
->
-> Fix this by validating the PUD entry in walk_pmd_range() using a stable
-> snapshot (pudp_get()). If the PUD is not present or is a leaf, retry the
-> walk via ACTION_AGAIN instead of descending further. This mirrors the
-> retry logic in walk_pmd_range().
+> TBH personally, I also agree. But, as I don't have a strong opinion
+> about it, I prioritized addressing Ulf's feedback in the last version
+> [1].
 
-I think it mirrors the retry logic in walk_pte_range() more closely right?
-Because there it's:
+The first version of the patch moved the call to ktime_get_ns(), so I
+thought we might as well use readl_poll_timeout_atomic() directly,
+instead of fixing up the open-coded loop.
 
-	if (!pte)
-		walk->action = ACTION_AGAIN;
-	return err;
-
-I.e. let the parent handle the PTE not being got by pte_offset_map_lock(),
-and you draw a comparison to this in the comment in walk_pmd_range().
+Kind regards
+Uffe
 
 >
-> Fixes: a00cc7d9dd93 ("mm, x86: add support for PUD-sized transparent hugepages")
-
-Yikes, really? :) This is from 2017, I'm a little surprised we didn't hit
-this bug until now.
-
-Has something changed more recently that made it more likely to hit? Or is
-it one of those 'needed people to have more RAM first' or bigger PCI BAR's?
-
-> Cc: stable@vger.kernel.org
-> Co-developed-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Max Boone <mboone@akamai.com>
-
-Only nits here, the logic LGTM, so:
-
-Reviewed-by: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
-
-> ---
->  mm/pagewalk.c | 20 +++++++++++++++++---
->  1 file changed, 17 insertions(+), 3 deletions(-)
->
-> diff --git a/mm/pagewalk.c b/mm/pagewalk.c
-> index a94c401ab..c74b4d800 100644
-> --- a/mm/pagewalk.c
-> +++ b/mm/pagewalk.c
-> @@ -97,6 +97,7 @@ static int walk_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
->  static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->  			  struct mm_walk *walk)
->  {
-> +	pud_t pudval = pudp_get(pud);
->  	pmd_t *pmd;
->  	unsigned long next;
->  	const struct mm_walk_ops *ops = walk->ops;
-> @@ -105,6 +106,18 @@ static int walk_pmd_range(pud_t *pud, unsigned long addr, unsigned long end,
->  	int err = 0;
->  	int depth = real_depth(3);
->
-> +	/*
-> +	 * For PTE handling, pte_offset_map_lock() takes care of checking
-> +	 * whether there actually is a page table. But it also has to be
-> +	 * very careful about concurrent page table reclaim. If we spot a PMD
-> +	 * table, it cannot go away, so we can just walk it. However, if we find
-> +	 * something else, we have to retry.
-
-Nitty but I think we can be clearer here something like:
-
-	/*
-	 * For PTE handling, pte_offset_map_lock() takes care of checking
-	 * whether there actually is a page table. But it also has to be
-	 * very careful about concurrent page table reclaim.
-	 *
-	 * Similarly, we have to be careful here - a PUD entry that points
-         * to a PMD table cannot go away, so we can just walk it. But if
-         * it's something else, we need to ensure we didn't race something,
-         * so need to retry.
-	 *
-	 * A pertinent example of this is a PUD refault after PUD split -
-         * we will need to split again or risk accessing invalid memory.
-	 */
-
-> +	 */
-> +	if (!pud_present(pudval) || pud_leaf(pudval)) {
-> +		walk->action = ACTION_AGAIN;
-> +		return 0;
-> +	}
-> +
->  	pmd = pmd_offset(pud, addr);
->  	do {
->  again:
-> @@ -218,12 +231,13 @@ static int walk_pud_range(p4d_t *p4d, unsigned long addr, unsigned long end,
->  		else if (pud_leaf(*pud) || !pud_present(*pud))
->  			continue; /* Nothing to do. */
->
-> -		if (pud_none(*pud))
-> -			goto again;
-> -
->  		err = walk_pmd_range(pud, addr, next, walk);
->  		if (err)
->  			break;
-> +
-> +		if (walk->action == ACTION_AGAIN)
-> +			goto again;
-> +
-
-NIT: trailing newline.
-
->  	} while (pud++, addr = next, addr != end);
->
->  	return err;
->
-> ---
-> base-commit: b4f0dd314b39ea154f62f3bd3115ed0470f9f71e
-> change-id: 20260317-pagewalk-check-pmd-refault-de8f14fbe6a5
+> [1]
+> https://lore.kernel.org/dri-devel/20260312-v3d-power-management-v7-0-9f00=
+6a1d4c55@igalia.com/T/#mf96146960ec7ffeea32e732c95ccf9548af21748
 >
 > Best regards,
-> --
-> Max Boone <mboone@akamai.com>
+> - Ma=C3=ADra
 >
+> > Best regards
+> >>
+> >> Cc: stable@vger.kernel.org
+> >> Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power
+> >> domains under a new binding.")
+> >> Signed-off-by: Ma=C3=ADra Canal <mcanal@igalia.com>
+> >> ---
+> >>   drivers/pmdomain/bcm/bcm2835-power.c | 12 ++++--------
+> >>   1 file changed, 4 insertions(+), 8 deletions(-)
+> >>
+> >> diff --git a/drivers/pmdomain/bcm/bcm2835-power.c b/drivers/pmdomain/
+> >> bcm/bcm2835-power.c
+> >> index
+> >> 0450202bbee2513c9116a36abaa839b460550935..eee87a3005325848547ce1f5fd72=
+9b168a641460 100644
+> >> --- a/drivers/pmdomain/bcm/bcm2835-power.c
+> >> +++ b/drivers/pmdomain/bcm/bcm2835-power.c
+> >> @@ -9,6 +9,7 @@
+> >>   #include <linux/clk.h>
+> >>   #include <linux/delay.h>
+> >>   #include <linux/io.h>
+> >> +#include <linux/iopoll.h>
+> >>   #include <linux/mfd/bcm2835-pm.h>
+> >>   #include <linux/module.h>
+> >>   #include <linux/platform_device.h>
+> >> @@ -153,7 +154,6 @@ struct bcm2835_power {
+> >>   static int bcm2835_asb_control(struct bcm2835_power *power, u32 reg,
+> >> bool enable)
+> >>   {
+> >>       void __iomem *base =3D power->asb;
+> >> -    u64 start;
+> >>       u32 val;
+> >>       switch (reg) {
+> >> @@ -166,8 +166,6 @@ static int bcm2835_asb_control(struct
+> >> bcm2835_power *power, u32 reg, bool enable
+> >>           break;
+> >>       }
+> >> -    start =3D ktime_get_ns();
+> >> -
+> >>       /* Enable the module's async AXI bridges. */
+> >>       if (enable) {
+> >>           val =3D readl(base + reg) & ~ASB_REQ_STOP;
+> >> @@ -176,11 +174,9 @@ static int bcm2835_asb_control(struct
+> >> bcm2835_power *power, u32 reg, bool enable
+> >>       }
+> >>       writel(PM_PASSWORD | val, base + reg);
+> >> -    while (!!(readl(base + reg) & ASB_ACK) =3D=3D enable) {
+> >> -        cpu_relax();
+> >> -        if (ktime_get_ns() - start >=3D 1000)
+> >> -            return -ETIMEDOUT;
+> >> -    }
+> >> +    if (readl_poll_timeout_atomic(base + reg, val,
+> >> +                      !!(val & ASB_ACK) !=3D enable, 0, 5))
+> >> +        return -ETIMEDOUT;
+> >>       return 0;
+> >>   }
+> >>
+> >
 >
-
-Cheers, Lorenzo
 
