@@ -1,146 +1,137 @@
-Return-Path: <stable+bounces-227156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SGulONEOu2kSegIAu9opvQ
-	(envelope-from <stable+bounces-227156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:45:05 +0100
+	id OMWgFp0Pu2kSegIAu9opvQ
+	(envelope-from <stable+bounces-227157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:48:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E432C2965
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:45:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E602F2C29CE
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 21:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 888AE3165070
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 20:41:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6EF1E304A140
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 20:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53CF33C51D;
-	Wed, 18 Mar 2026 20:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E30F3016E9;
+	Wed, 18 Mar 2026 20:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BNb7iMnb"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GrIoF4wb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8900E34107A
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 20:41:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E8C22578D;
+	Wed, 18 Mar 2026 20:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773866504; cv=none; b=UQ37zZIaIfZ9KmllbMCTwTIrHPACP6AB/U1MvBgV+jBVk0p4ekWRJr5b8aVzE3O97C/xvlf2wnrTZwnsqENmx+PS4ZUDRcDgPdDTM40eB9w7c00O010ZKQNpE8IEPmecQdY29Gkd6eHkMRXEvyFtAg2Jh35zgXi0NQFQKNINSdU=
+	t=1773866850; cv=none; b=LCCMXYmNlt6bcHd5123UYxqap7bhyXt/jU8eubyeC6SNcm502UzVD+d7JwxNrHwtxLpJgM+WGP4vUUmEzKK5S7ccZ0WerDoPuPBQAvQmSw048+LT1oFmT9/drb/Tg58tSZwqi0/UD/Jw/7W+Y84KzI2ktAfEVlYJMutTfQaFleM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773866504; c=relaxed/simple;
-	bh=yrdIZaku+ltjPzr5+mmCP5tWE1r2lTt1ZmS6vhPlXM8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgBdXbVxHhw+z7IcC+7oqkwzDqI9jmBucFP285grQU4oBYJfd1hPlgUWvRQq10+d70JeAcB5YkkF74CWy+3w5RHcyDIw22tNpyP49KLEIWSr+uVAw51gwSoPlxabxZfI2S4Fl2YofOA61FSwVdMOiPa9FU9CSIqHgsKD7ZpIgh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BNb7iMnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A531C19421;
-	Wed, 18 Mar 2026 20:41:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773866504;
-	bh=yrdIZaku+ltjPzr5+mmCP5tWE1r2lTt1ZmS6vhPlXM8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BNb7iMnbcAL6xy7gFadC9pR6VIog560K/o1/Llv392R4gxpY+a2uyZVCT/KGXZjJK
-	 HOrsZ0exhdcTTBEpAe0TUu50S1V46C2nMgqAI2wiLj6KKILYga/AD4MPQL1esaQK/H
-	 s05aed2hRa1ShyT6bBOqEqTECrcjD1JYZ+v7rw7fjI3lcwxVt15JahXkNutLskc8QU
-	 Eu8ACv41ig+E3cCB6Orwh8dZNPHMS2V5Cr7Ww283AeGPcLB8XHHCXPaf3USvhMfDSw
-	 eIasbvTGC14Ty6SXrYsGTvvo9xAoVXDwldUKmzBK6bTvlTE27UDVXTCzXloBIq1Yyi
-	 Lqy0TZ6jd7cjw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Varun Gupta <varun.gupta@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y] drm/xe: Fix memory leak in xe_vm_madvise_ioctl
-Date: Wed, 18 Mar 2026 16:41:41 -0400
-Message-ID: <20260318204141.1139130-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031742-pull-husband-3953@gregkh>
-References: <2026031742-pull-husband-3953@gregkh>
+	s=arc-20240116; t=1773866850; c=relaxed/simple;
+	bh=yETwrF33W3Kw0DDcr7FfcsFsCMX7+ZNqRz7F/giZ35w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=g7TrEfSJbx58vipSBZxm/MuwYaNdwJLV4fABWCP/thQHrx2Txsi+hL+1+lhH7vo2vFpX72Cwz7YMYf62hZlPJI2grPnAT1L0dXH3qN78wJu+shYNPStbrxIpnYdcod7ArGpWRqjcBSy+ia64ZFPZfr8aDK4A4nNZ90A2BBW1ux0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GrIoF4wb; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=C7+DsZQTrjc+Xia09ov6XqWDjTJ1+oxsmqkxhayk73I=; b=GrIoF4wb8/rFbZSJEG6MMCtKuY
+	/9v+ecOQW6COV42nIqzA9MjId5BiBg6DjC8nK4gSNwZvgyrV+AMlGspJ9Seu2Xp+CHVyW1Op5Pn9+
+	VKEC4d8cj+J6Kpic1curd5Y9FzBmTrbT9Uhs4Ta2FpY2LGbvhtKTPQS+KT72UreRlKIJOtpLefc5e
+	uxfO3cNDH9A7HCIFvlHLfeeHpyHXNsgPu2rOCkjD0xkpgY9Gm5byYX/yfYQ5t5bM42gRFnUvp+NTj
+	wh1R+1nr8V+2wgDIjMtI3IZU5LvvPNecx5ICfrKrUdt7vlYuPye6Xl02xaKTa5oSLW4Cg0bXb14u1
+	KDLKLQ7A==;
+Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w2xnX-0000000CF3T-0NYT;
+	Wed, 18 Mar 2026 20:47:23 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 532743004F8; Wed, 18 Mar 2026 21:47:22 +0100 (CET)
+Date: Wed, 18 Mar 2026 21:47:22 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: linux-kernel@vger.kernel.org
+Cc: linux-tip-commits@vger.kernel.org, Nikunj A Dadhania <nikunj@amd.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org,
+	#@tip-bot2.tec.linutronix.de, 6.9+@tip-bot2.tec.linutronix.de,
+	x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/cpu: Disable CR pinning during CPU bringup
+Message-ID: <20260318204722.GD3738786@noisy.programming.kicks-ass.net>
+References: <20260318075654.1792916-3-nikunj@amd.com>
+ <177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2>
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[infradead.org:s=desiato.20200630];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[infradead.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227156-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.973];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_FROM(0.00)[bounces-227157-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.983];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 61E432C2965
+	DBL_BLOCKED_OPENRESOLVER(0.00)[infradead.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,noisy.programming.kicks-ass.net:mid]
+X-Rspamd-Queue-Id: E602F2C29CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Varun Gupta <varun.gupta@intel.com>
+On Wed, Mar 18, 2026 at 06:51:10PM -0000, tip-bot2 for Dave Hansen wrote:
+> --- a/arch/x86/kernel/cpu/common.c
+> +++ b/arch/x86/kernel/cpu/common.c
+> @@ -437,6 +437,21 @@ static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_C
+>  static DEFINE_STATIC_KEY_FALSE_RO(cr_pinning);
+>  static unsigned long cr4_pinned_bits __ro_after_init;
+>  
+> +static bool cr_pinning_enabled(void)
+> +{
+> +	if (!static_branch_likely(&cr_pinning))
+> +		return false;
+> +
+> +	/*
+> +	 * Do not enforce pinning during CPU bringup. It might
+> +	 * turn on features that are not set up yet, like FRED.
+> +	 */
+> +	if (!cpu_online(smp_processor_id()))
+> +		return false;
+> +
+> +	return true;
+> +}
 
-[ Upstream commit 0cfe9c4838f1147713f6b5c02094cd4dc0c598fa ]
+Urgh, so this means all an attack needs to do is disable the online bit
+and it gets to poke CR4 bits.
 
-When check_bo_args_are_sane() validation fails, jump to the new
-free_vmas cleanup label to properly free the allocated resources.
-This ensures proper cleanup in this error path.
+This seems unfortunate.
 
-Fixes: 293032eec4ba ("drm/xe/bo: Update atomic_access attribute on madvise")
-Cc: stable@vger.kernel.org # v6.18+
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Signed-off-by: Varun Gupta <varun.gupta@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260223175145.1532801-1-varun.gupta@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 29bd06faf727a4b76663e4be0f7d770e2d2a7965)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[ changed old goto target from `madv_fini` to `unlock_vm` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/gpu/drm/xe/xe_vm_madvise.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+And sure, randomly clearing the online bit will eventually cause havoc,
+but I suspect you still get plenty time until the system goes wobbly.
 
-diff --git a/drivers/gpu/drm/xe/xe_vm_madvise.c b/drivers/gpu/drm/xe/xe_vm_madvise.c
-index fe7e1b45f5c0c..9dc801f657129 100644
---- a/drivers/gpu/drm/xe/xe_vm_madvise.c
-+++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
-@@ -390,7 +390,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
- 						    madvise_range.num_vmas,
- 						    args->atomic.val)) {
- 				err = -EINVAL;
--				goto unlock_vm;
-+				goto free_vmas;
- 			}
- 		}
- 
-@@ -426,6 +426,7 @@ int xe_vm_madvise_ioctl(struct drm_device *dev, void *data, struct drm_file *fil
- err_fini:
- 	if (madvise_range.has_bo_vmas)
- 		drm_exec_fini(&exec);
-+free_vmas:
- 	kfree(madvise_range.vmas);
- 	madvise_range.vmas = NULL;
- unlock_vm:
--- 
-2.51.0
 
 
