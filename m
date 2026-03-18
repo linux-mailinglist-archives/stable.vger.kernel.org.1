@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-227112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kMsQOUPdumk3cwIAu9opvQ
-	(envelope-from <stable+bounces-227112-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:13:39 +0100
+	id gGKMO7vXumkXcgIAu9opvQ
+	(envelope-from <stable+bounces-227113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:50:03 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DF862BFFE8
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:13:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADC92BF9D8
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EA29328D44F
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:28:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A18B30E8512
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327C03D88FF;
-	Wed, 18 Mar 2026 16:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C04F3FADE5;
+	Wed, 18 Mar 2026 16:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P5BQ2CRL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sn6tRDQf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599C93ACA65
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 16:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823CF3FA5F9
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 16:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773849741; cv=none; b=M+oA8NQWwcfEUbeGyyn5VE70kLcnw+ccNJLXjTCX9dOd8lqk/yFVMkKFYhwBQyLvlTBx/0R0BGMBmRpepLDcP5UYbZGoZTSSbF1VgPO7hjDXDz30EGZAgxk06jKz3dJ38NAn29ESifr65zfvkYeCH2vdwPqfD/uMZyHGAmcIeL0=
+	t=1773850000; cv=none; b=If09UaypKKCGMj9tY6JHexA12csisEOJQDqk34enIzLk4KjA4Ojoyd8bBcoejQpUnYTgRr8GJwO5JJuYKg6GLA2BFj0oVXOAsWG2ueHi7ORZUrs9YApVanljMP+3p6CMxTiv5zhU8fCF2SRLgEPiH0Fw+cyB+thoq8XVMnW4SDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773849741; c=relaxed/simple;
-	bh=jLNrC6pqd/ysf/tlIWZiO91Aq8O6uYZj+eAE4TiuI+w=;
+	s=arc-20240116; t=1773850000; c=relaxed/simple;
+	bh=Vpo9SlsFf86LagbElYRen4KlfDA5etZ8gG0OeqXd9hA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdwB9KVqv/3M1C9+9EE22y2dyEqFlVs6VwOAGPhm+0gtcrEAKohDxhJ2dT8i5mJLJuR1JYi0U21quJpzZz0gNAAybWYSMBIEFOxxVn2qIPAGgE/lvq1ExXMsktxgGK0NxBBAEDwkMgyzLEHqeCAPmTshGAxOTx+AErTB/hZ7NkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P5BQ2CRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D34C2BCB2;
-	Wed, 18 Mar 2026 16:02:20 +0000 (UTC)
+	 MIME-Version; b=mlFdOMK1hO6gNg6S4W43qBeUbvmoMjrE44B6lGoWxxgPONdpldF29uTEc0+EJvwPKkNlBWs7qS6zS7aDUfL6ApG+vUJsnZrbsbHXPPHH/cgNkuQpwEVxpHbjLgfGN9rxlfQeaX6kUYxYPKy/zJrBo2PuzBMXVUYTCwJtorjG68o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sn6tRDQf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648E5C2BC87;
+	Wed, 18 Mar 2026 16:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773849740;
-	bh=jLNrC6pqd/ysf/tlIWZiO91Aq8O6uYZj+eAE4TiuI+w=;
+	s=k20201202; t=1773849999;
+	bh=Vpo9SlsFf86LagbElYRen4KlfDA5etZ8gG0OeqXd9hA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5BQ2CRLWJL597H+g7fY+Mim9LhztswUOPUilTG3+nfSa2OedrVeUqcMNIDidVVne
-	 YK4Q+7dckOUHBQLVVYa6Iq3Kv1841BcTMgjz6FhuZmpH5OX/bcvO9FMMYosaIjxYio
-	 g8ehmx3uqyfT3JemV+fF85ewtWQYCh5Z7/xkPB3FkrY6NTIdIy0Na9cThWPJ/JysXB
-	 dWCGzGjXXnoIJ4cjgcUSIhv1quYikipi6v61Glun2Vq8fDIrpM5itUZWuQMqWbY0Eh
-	 6QXyE5YODSbvSTD/Y6G/ZFpz4O5IY0Ubi+eNTqDTAcKlQTKU+AAIRuET+qzv7S4V6b
-	 rasGvPqZUVfrA==
+	b=Sn6tRDQfzX2R9DPq7Wop320p18ubF42gws7r0Gs/nIA4wZs/9B79zQXg420pbBCBJ
+	 AuizkbYVOrJiE4SSRb9lVCkRiJ1YCRCoHIBR600oIlDDtSMo2hptvAQtWNubsZoai+
+	 DHwSeZZFHL1F7L8U1Zq3EWuiqTud0iJLURatinA5XxTKGPafm+8OOA7qt74JiOvkqr
+	 rLsYnI3mZTrf0BfIyZeCRmSGV7HwRrrPE7j9oIOl4R8gTtLKExGCJl1qduq7okXpl9
+	 VmcN9eabwyEs8PTB6jiJNeA1afEy0gUteq5f/6Z/JXHfNo9YtcRljxUe0OUi/m/e3B
+	 /hH3QmJxYp4MA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Marek Vasut <marek.vasut@mailbox.org>,
+Cc: Thomas Fourier <fourier.thomas@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] drm/bridge: ti-sn65dsi83: halve horizontal syncs for dual LVDS output
-Date: Wed, 18 Mar 2026 12:02:18 -0400
-Message-ID: <20260318160218.901785-1-sashal@kernel.org>
+Subject: [PATCH 5.10.y] drm/msm: Fix dma_free_attrs() buffer size
+Date: Wed, 18 Mar 2026 12:06:37 -0400
+Message-ID: <20260318160637.905031-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031721-jujitsu-bobcat-0c47@gregkh>
-References: <2026031721-jujitsu-bobcat-0c47@gregkh>
+In-Reply-To: <2026031712-blouse-army-648c@gregkh>
+References: <2026031712-blouse-army-648c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,103 +63,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[gmail.com,oss.qualcomm.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227113-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227112-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.960];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,mailbox.org:email,ti.com:url,msgid.link:url]
-X-Rspamd-Queue-Id: 4DF862BFFE8
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,patchwork.freedesktop.org:url]
+X-Rspamd-Queue-Id: 4ADC92BF9D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit d0d727746944096a6681dc6adb5f123fc5aa018d ]
+[ Upstream commit e4eb6e4dd6348dd00e19c2275e3fbaed304ca3bd ]
 
-Dual LVDS output (available on the SN65DSI84) requires HSYNC_PULSE_WIDTH
-and HORIZONTAL_BACK_PORCH to be divided by two with respect to the values
-used for single LVDS output.
+The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
+a2xx_gpummu_new() but freed with size TABLE_SIZE in
+a2xx_gpummu_destroy().
 
-While not clearly stated in the datasheet, this is needed according to the
-DSI Tuner [0] output. It also makes sense intuitively because in dual LVDS
-output two pixels at a time are output and so the output clock is half of
-the pixel clock.
+Change the free size to match the allocation.
 
-Some dual-LVDS panels refuse to show any picture without this fix.
-
-Divide by two HORIZONTAL_FRONT_PORCH too, even though this register is used
-only for test pattern generation which is not currently implemented by this
-driver.
-
-[0] https://www.ti.com/tool/DSI-TUNER
-
-Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
-Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-2-2e15f5a9a6a0@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-[ adapted variable declaration placement ]
+Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/707340/
+Message-ID: <20260226095714.12126-2-fourier.thomas@gmail.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/msm/msm_gpummu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi83.c b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-index 57a7ed13f9965..5bba60ffd7827 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -325,6 +325,7 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 					struct drm_bridge_state *old_bridge_state)
+diff --git a/drivers/gpu/drm/msm/msm_gpummu.c b/drivers/gpu/drm/msm/msm_gpummu.c
+index 379496186c7ff..69df19ef25afa 100644
+--- a/drivers/gpu/drm/msm/msm_gpummu.c
++++ b/drivers/gpu/drm/msm/msm_gpummu.c
+@@ -72,7 +72,7 @@ static void msm_gpummu_destroy(struct msm_mmu *mmu)
  {
- 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
-+	const unsigned int dual_factor = ctx->lvds_dual_link ? 2 : 1;
- 	struct drm_atomic_state *state = old_bridge_state->base.state;
- 	const struct drm_bridge_state *bridge_state;
- 	const struct drm_crtc_state *crtc_state;
-@@ -452,18 +453,18 @@ static void sn65dsi83_atomic_pre_enable(struct drm_bridge *bridge,
- 	/* 32 + 1 pixel clock to ensure proper operation */
- 	le16val = cpu_to_le16(32 + 1);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_SYNC_DELAY_LOW, &le16val, 2);
--	le16val = cpu_to_le16(mode->hsync_end - mode->hsync_start);
-+	le16val = cpu_to_le16((mode->hsync_end - mode->hsync_start) / dual_factor);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_HSYNC_PULSE_WIDTH_LOW,
- 			  &le16val, 2);
- 	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
- 			  &le16val, 2);
- 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
--		     mode->htotal - mode->hsync_end);
-+		     (mode->htotal - mode->hsync_end) / dual_factor);
- 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
- 		     mode->vtotal - mode->vsync_end);
- 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
--		     mode->hsync_start - mode->hdisplay);
-+		     (mode->hsync_start - mode->hdisplay) / dual_factor);
- 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
- 		     mode->vsync_start - mode->vdisplay);
- 	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
+ 	struct msm_gpummu *gpummu = to_msm_gpummu(mmu);
+ 
+-	dma_free_attrs(mmu->dev, TABLE_SIZE, gpummu->table, gpummu->pt_base,
++	dma_free_attrs(mmu->dev, TABLE_SIZE + 32, gpummu->table, gpummu->pt_base,
+ 		DMA_ATTR_FORCE_CONTIGUOUS);
+ 
+ 	kfree(gpummu);
 -- 
 2.51.0
 
