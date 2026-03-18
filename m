@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-227082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227083-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJ3fNKS6umk4bQIAu9opvQ
-	(envelope-from <stable+bounces-227082-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:45:56 +0100
+	id SKw0Dh27umk4bQIAu9opvQ
+	(envelope-from <stable+bounces-227083-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:47:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1120F2BD765
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:45:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8D202BD7E4
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 15:47:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B61AB30B2CAD
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:37:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 58E773017534
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 14:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FA83DDDC6;
-	Wed, 18 Mar 2026 14:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968073A6402;
+	Wed, 18 Mar 2026 14:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M3fEkyx2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n6bYNo0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE91D3DD500
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 14:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57D213CE49B
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 14:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773844584; cv=none; b=WYm7kdueiJ2BbQwOWwzKr4r2zzMlpvRMBvnGIZdT3Op72/sIyuMRp4x/uWqv5swxQCWzTzMrYvZfwrgqEB5M7ebsbyB4TgDiOa9VXNwbXLQuOXP9KHXKmKvJ55U5QrJhAtiQb3vC0MW4bTYWdufgathrnOHqJYwDhhSNwF/vwSU=
+	t=1773844914; cv=none; b=I1QalCXK7Sgu34HRY5uWUT+o/UWgvIzVUnEjkmz0BbpLNiwd45Qsl7iQzFQ7VRYLkAyNAl+mQoyaGNuio38umEvUqef5eu/MzXmwqFmzRr9zXG+KiMr39RNfTPqEAmYyOr5sVLgAkyQjz2Ywspc7bJdLH4qVLCLI4IhHHvfLzv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773844584; c=relaxed/simple;
-	bh=Au4AqFwGb3/I2t3VZdV2Rq7CIszDwN3LFAzQgIMMxTA=;
+	s=arc-20240116; t=1773844914; c=relaxed/simple;
+	bh=G0MzonIOfgWp4mQogxV8/y+TA2ZL/0AXsM4Anbu8CaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/Rbei9zf4aCDDaYczKBEq89bY4r2kT9/yTlQovg0sXFAY6zNY2f0SayHWJGsfylVyq95UMFWtNXCqxR7pDUA0imjph7Mg3L7BCL1p0fyZ79nc24bXmsN2NRG9DU0cJU2h6eQB1FFacgewJA8LugPiK0D5IHat5FtDsnpruop04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M3fEkyx2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49BCC2BC87;
-	Wed, 18 Mar 2026 14:36:23 +0000 (UTC)
+	 MIME-Version; b=lUcNjBsyDuOigm5FKehf8aFmEpbGe7ocs3RFyevykOkVgcW1cNXe7R0KVoAVv5snxKGZXJwVrfLNo/PUIEaZIFxIeh5G8UVBCQAO13JH1at+YLo6xWey2ycTGB62vx/oPQp5ZnrSdpDjiUZlTp4hYH9iFKxPYcvVYNoYHs2mVdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n6bYNo0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67806C19421;
+	Wed, 18 Mar 2026 14:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773844584;
-	bh=Au4AqFwGb3/I2t3VZdV2Rq7CIszDwN3LFAzQgIMMxTA=;
+	s=k20201202; t=1773844914;
+	bh=G0MzonIOfgWp4mQogxV8/y+TA2ZL/0AXsM4Anbu8CaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3fEkyx2NAmuCFGN+uIs5DyaCh3wKx/riL63WG4p+B+/Os37DfoaUQIX02An78tNW
-	 9cCl09AF3C/PPVffZ2U14Y/Qvd8TwjzInEFqQc1pFR0CJpU6lh888zfbHV8JwmclRz
-	 s1fq4Wm9l8BQ0CFRla9dPel4r2GhPcHM3DnLwBiAxnkT6JBD67Iu/dgUCPFZFm8Tfk
-	 luf8T1Me6wIyqdY+uYJPGrFufUaeJ0Vs5vIEgg8u5nHPf0rejihWXwuL52f15EY8o4
-	 Iro1oL7myu23vCVWuRz0rGkv1ZkT7MbfTZdBDhYW/opG9rsG1Gl4iPrKzc7Wb+8mWP
-	 ol4Fvb/YswiFw==
+	b=n6bYNo0cBRdhLdx+cviZEqZQFb8FkXR/OqAbjUB7TYi02Z737KLO0Pr33qBHq3xVu
+	 ZWMskEd8CDWXQqJ7EeWUcDHsY1D6g1+fV8z6qWpT5oUuprAyjkgIQ0KFnbypYMKl7r
+	 oAEY0uPbCK5Dw7yIrJtUbZHcRjFdBX2kixBCH2Q3ZKhvHZ0NCpGTHB+6Sl5dq0CvgW
+	 J5Zd0r52RkuQtiDOEPcdnEehKifqHjWDyVWJD7bxtQR8NCV1++uVslh2Du0D6Dc1SU
+	 tkYDEjOIJ+8eA/y1g5z50TIqmgrEZTE0VrmG75rGTFByQxKMvaEC6HEOZbxRmGwEs4
+	 lqVlnZTYslDNQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Thorsten Blum <thorsten.blum@linux.dev>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y] ksmbd: Don't log keys in SMB3 signing and encryption key generation
-Date: Wed, 18 Mar 2026 10:36:20 -0400
-Message-ID: <20260318143620.844352-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y] ksmbd: Don't log keys in SMB3 signing and encryption key generation
+Date: Wed, 18 Mar 2026 10:41:50 -0400
+Message-ID: <20260318144150.848070-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031717-borrowing-hamburger-4b1a@gregkh>
-References: <2026031717-borrowing-hamburger-4b1a@gregkh>
+In-Reply-To: <2026031718-fanatic-groovy-0f19@gregkh>
+References: <2026031718-fanatic-groovy-0f19@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227082-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227083-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -85,12 +85,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.996];
+	NEURAL_HAM(-0.00)[-0.994];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1120F2BD765
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: A8D202BD7E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -114,10 +114,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 20 deletions(-)
 
 diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index b3d121052408c..a561d0703ed16 100644
+index f4b20b80af062..636de7bfff170 100644
 --- a/fs/smb/server/auth.c
 +++ b/fs/smb/server/auth.c
-@@ -801,12 +801,8 @@ static int generate_smb3signingkey(struct ksmbd_session *sess,
+@@ -797,12 +797,8 @@ static int generate_smb3signingkey(struct ksmbd_session *sess,
  	if (!(conn->dialect >= SMB30_PROT_ID && signing->binding))
  		memcpy(chann->smb3signingkey, key, SMB3_SIGN_KEY_SIZE);
  
@@ -131,7 +131,7 @@ index b3d121052408c..a561d0703ed16 100644
  	return 0;
  }
  
-@@ -870,23 +866,9 @@ static int generate_smb3encryptionkey(struct ksmbd_conn *conn,
+@@ -866,23 +862,9 @@ static int generate_smb3encryptionkey(struct ksmbd_conn *conn,
  	if (rc)
  		return rc;
  
