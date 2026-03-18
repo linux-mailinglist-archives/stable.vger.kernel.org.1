@@ -1,108 +1,170 @@
-Return-Path: <stable+bounces-226995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKQoEK1gumnFUgIAu9opvQ
-	(envelope-from <stable+bounces-226995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:22:05 +0100
+	id ANYEKnFeumnFUgIAu9opvQ
+	(envelope-from <stable+bounces-226996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:12:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C425D2B7D21
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:22:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BE7B2B79C1
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:12:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 37F12301A42F
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:10:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9664C300A66D
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 08:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C4AB37881C;
-	Wed, 18 Mar 2026 08:10:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690713783B9;
+	Wed, 18 Mar 2026 08:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4pDpzKK"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="C1hAtPYT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023EB2153EA;
-	Wed, 18 Mar 2026 08:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A026376462;
+	Wed, 18 Mar 2026 08:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773821413; cv=none; b=WWFDO3QhSNXPZP/8soHZn6IsdJjQmb3+AclxW6/8MBvYqZKUd8ToRxuF5OAIdT9oXE9yqglrnb2glJsWlNQMEw9LB9hXflBL8dAo2Kwlv0LRpcFJ++janFOWMkH/fJYnaeNwqmq7DVochZWadKJqvxBQHGe+9hc1YgIF5soWUGk=
+	t=1773821530; cv=none; b=GzOf5Z0oXH4RYnQFRu77580BrEWe9E31iU6xS3HbWHkfeh/UMkBB12RTHQ8Rxv0NVxDj++BUH74zKyO52qVJyFSTvGz35dd0xaZPspPxkYMSD6VTZSpgTrg98kYC89Tqvhvt0bwT11IrkvMptF85Z49+nQ4VLVZBjoboAiE+k28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773821413; c=relaxed/simple;
-	bh=UqG7d1RST0Q7I/HU8gHmDVv9YpkY0BOvgkpQFs9lbw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=REuJhEehbyKV8Fj1m5iuIVqFQdvq5j7h5sIq/Yak6n1tkqbHlcYRs45r2hmh2GYUIsgxkYErepK+LkBLYadn69srqx6YxmLwZ3Z+mkvf6C666N6KRl2+F6ReIssoPYfvyPf0lOZJkIYE1liU3u8WP+Jh5RcofxdMwDZ+eShkoKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4pDpzKK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E9BC19421;
-	Wed, 18 Mar 2026 08:10:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773821412;
-	bh=UqG7d1RST0Q7I/HU8gHmDVv9YpkY0BOvgkpQFs9lbw4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=R4pDpzKK4osg9IBwFBYFPbnSJEHe4p2mRIwa7tZ3OgeTUP5a8JeEG22OYlHq2CQ4R
-	 h+8Vb/geNuADV8I3fm+Wf7puKN2n9ZNT0C3YMJf1fj4WI/SYhtns3LclAFHnLW/4tl
-	 kW8y46NlUCGxjH8fHXgNja/ruuiPHZfT3BtMAI6c=
-Date: Wed, 18 Mar 2026 09:09:52 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: ZhengYuan Huang <gality369@gmail.com>
-Cc: tytso@mit.edu, adilger.kernel@dilger.ca, tahsin@google.com,
-	linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com, r33s3n6@gmail.com, zzzccc427@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ext4: xattr: fix out-of-bounds access in
- ext4_xattr_set_entry
-Message-ID: <2026031838-knoll-clammy-6446@gregkh>
-References: <20260318075842.3341370-1-gality369@gmail.com>
+	s=arc-20240116; t=1773821530; c=relaxed/simple;
+	bh=3XTTl3LEOOJSxh3bPyjhegVTZLN5AHADJeciGinB5gM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XMV8kgayVzdkTjcT2C0Qs2LdIg9ZDXO4JeYLcTyXpITrLTnSuKJdv+tE2p1gHaMRo+qPSw1HOfngcykGztrU8aSmDoIDnK8PtyByIYEH/grEqSeTYowFqqmRB3+j1pQU89p6Xap5ClgUqoy+yaIUDaVQPgjnl7wE6BeXMZ/2eXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=C1hAtPYT; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Tp
+	9i1hh0AXWBiYH65D0/JDIPSB18WNuvMfE8rai68LI=; b=C1hAtPYTqwIb0bgD1Y
+	kX9kPiIRJ+4wn6Ale6USUwVfub0Fh2v/KZnAFzCn2v9SDOTgao+w8N3XUcUjGW4N
+	UUDBR4lB6J9JsYLRHLD/k3mLYrDmCmZ0LOokWkF7YteO+bGuLunoSlHzoYkNYhc8
+	rYAVbqcvuXCY5yVEAZ6L8CuV8=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wD3NyETXrppDMWHBg--.41679S2;
+	Wed, 18 Mar 2026 16:11:00 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	NeilBrown <neilb@suse.de>
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna.schumaker@netapp.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	"J . Bruce Fields" <bfields@fieldses.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Olga Kornievskaia <kolga@netapp.com>,
+	linux-nfs@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15.y] SUNRPC: lock against ->sock changing during sysfs read
+Date: Wed, 18 Mar 2026 16:10:59 +0800
+Message-Id: <20260318081059.1864218-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318075842.3341370-1-gality369@gmail.com>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3NyETXrppDMWHBg--.41679S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7Kry8tryxKFW5Zr4fZr1fZwb_yoW8uw4kpF
+	yak34fG3yDKrZ7urn5Ar4v9rZxu3WfGF4UGr48C3WFyrZrKF15Jryjkay3ur18urZ5uF43
+	tF4UWF45JF1DAaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pEoGQDUUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbDARSlEWm6XhSDwgAA35
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[163.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-226996-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-226995-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[mit.edu,dilger.ca,google.com,vger.kernel.org,gmail.com];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[163.com];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_CC(0.00)[hammerspace.com,netapp.com,163.com,fieldses.org,oracle.com,davemloft.net,kernel.org,vger.kernel.org];
+	DKIM_TRACE(0.00)[163.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[rob_garcia@163.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C425D2B7D21
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.de:email,netapp.com:email]
+X-Rspamd-Queue-Id: 9BE7B2B79C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 03:58:42PM +0800, ZhengYuan Huang wrote:
-> [BUG]
-> KASAN reports show out-of-bounds and use-after-free memory accesses when
-> ext4_xattr_set_entry() processes corrupted on-disk xattr entries:
+From: NeilBrown <neilb@suse.de>
 
-Does runing fsck on the disk image before mounting it catch this error?
+[ Upstream commit b49ea673e119f59c71645e2f65b3ccad857c90ee ]
 
-thanks,
+->sock can be set to NULL asynchronously unless ->recv_mutex is held.
+So it is important to hold that mutex.  Otherwise a sysfs read can
+trigger an oops.
+Commit 17f09d3f619a ("SUNRPC: Check if the xprt is connected before
+handling sysfs reads") appears to attempt to fix this problem, but it
+only narrows the race window.
 
-greg k-h
+Fixes: 17f09d3f619a ("SUNRPC: Check if the xprt is connected before handling sysfs reads")
+Fixes: a8482488a7d6 ("SUNRPC query transport's source port")
+Signed-off-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ net/sunrpc/sysfs.c    | 5 ++++-
+ net/sunrpc/xprtsock.c | 7 ++++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/net/sunrpc/sysfs.c b/net/sunrpc/sysfs.c
+index 55da1b627a7d..83ba1f2adf62 100644
+--- a/net/sunrpc/sysfs.c
++++ b/net/sunrpc/sysfs.c
+@@ -113,11 +113,14 @@ static ssize_t rpc_sysfs_xprt_srcaddr_show(struct kobject *kobj,
+ 		return 0;
+ 
+ 	sock = container_of(xprt, struct sock_xprt, xprt);
+-	if (kernel_getsockname(sock->sock, (struct sockaddr *)&saddr) < 0)
++	mutex_lock(&sock->recv_mutex);
++	if (sock->sock == NULL ||
++	    kernel_getsockname(sock->sock, (struct sockaddr *)&saddr) < 0)
+ 		goto out;
+ 
+ 	ret = sprintf(buf, "%pISc\n", &saddr);
+ out:
++	mutex_unlock(&sock->recv_mutex);
+ 	xprt_put(xprt);
+ 	return ret + 1;
+ }
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 9e122c20fcc6..07acc6845ce2 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1680,7 +1680,12 @@ static int xs_get_srcport(struct sock_xprt *transport)
+ unsigned short get_srcport(struct rpc_xprt *xprt)
+ {
+ 	struct sock_xprt *sock = container_of(xprt, struct sock_xprt, xprt);
+-	return xs_sock_getport(sock->sock);
++	unsigned short ret = 0;
++	mutex_lock(&sock->recv_mutex);
++	if (sock->sock)
++		ret = xs_sock_getport(sock->sock);
++	mutex_unlock(&sock->recv_mutex);
++	return ret;
+ }
+ EXPORT_SYMBOL(get_srcport);
+ 
+-- 
+2.34.1
+
 
