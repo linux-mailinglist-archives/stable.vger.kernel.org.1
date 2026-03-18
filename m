@@ -1,71 +1,68 @@
-Return-Path: <stable+bounces-227131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wNNEIr/lummdcwIAu9opvQ
-	(envelope-from <stable+bounces-227131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:49:51 +0100
+	id yCBsLczruml0dAIAu9opvQ
+	(envelope-from <stable+bounces-227132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 19:15:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E50472C0A10
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 18:49:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B900E2C1174
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 19:15:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A623232044D6
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:08:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B167F31B2080
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:09:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808D93321BF;
-	Wed, 18 Mar 2026 17:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82F9E33D6DD;
+	Wed, 18 Mar 2026 17:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qlTBW54C"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="g1FYuwNX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0923C3148DC
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 17:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94E333A039;
+	Wed, 18 Mar 2026 17:08:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773853735; cv=none; b=NCbSDVUfRGKQXiOJNBdRg5MEXzEYP/yETp2qQlZb/lfQJHLqdxBYWve0PFRWs5TjlIYopGbP8URfCrDIGJy+PmGzHYlgn7IWAs2RMA+sdjdVARuh/RVTfl7m0Z4ZYb06jrk6pX0DejjCIIUEIFIoNTFjJ8dpmwlNc2sU+jErMog=
+	t=1773853738; cv=none; b=WFyrEOT/DGh3vtC1I41i9r/VrlJbz6wgbtKcMteFdclWIkns2kYSHRnmxK9orqSpuL/EdrazrlgQBYTYIspNbELFBqN54AH62dwjiVIR66jvsckHsHoJYaIUOczE06KAUIasZBlzSag8LRnV5CCrefOoSGB43wRbmqIJBOAvnJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773853735; c=relaxed/simple;
-	bh=WnaO3r8kwiEPCzciuA7Hy5gEsFhz0fe6EAHj01qcMDQ=;
+	s=arc-20240116; t=1773853738; c=relaxed/simple;
+	bh=oaP1OzfN5zepmjf+fAdrQmseqqHLW4qo7nfL5nXAeB0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=t2/Qk8UYetrqmA3l8daA1FdPPCMqaWaKgko+VCboplZFLUBp5jDYFo+IydtQMYtN50Iw7Pv0UyRK4wUTted3qa/ucYwF7YGyQNwp4sWKkUXC5/16VeOw7JYVhg5TTob0uztWggbxP/+VFxxH/lrQks7byMJG6yO0P5DjMhXt2vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qlTBW54C; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version:Content-Type; b=b1D46zsbSPaR10wUHU1onXSIr6lD+4ZtGeaeNB2MNwf3q4bvAodf393i7zONZhZ+9UQuzjht4aUylQeGU4CfTuUDccDOy4UhMZrLEOcSPhYK6O3mrWNKCJgxGw6HGB8Gsz2X5XiRyR+ALOmA1BrbS4Shj6kgR/2DNzxzYIEsxRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=g1FYuwNX; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id CB272C5506A;
-	Wed, 18 Mar 2026 17:09:16 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 020574E426F8;
+	Wed, 18 Mar 2026 17:08:55 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3D3056004F;
-	Wed, 18 Mar 2026 17:08:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5D8C110450502;
-	Wed, 18 Mar 2026 18:08:46 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CBB106004F;
+	Wed, 18 Mar 2026 17:08:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A981810450567;
+	Wed, 18 Mar 2026 18:08:52 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773853731; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1773853733; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=6feiyHbCpZ3qfsMrs13AqEFm5/6rFI3LL/ii8kwxib0=;
-	b=qlTBW54CM4ik+hMftNqR4sjML+3MRgCcUEBR5SZ52fzvhbuprh2w6FAHW9M81mUGNMDrFr
-	2Vz1OmDX7EDCV4Cc0VMF7acfltmykwDSnVN2XOufu6dMZckG0giPNz9iGx89nX0LBBljLv
-	7/+pl+veQWzMKlB/cX26R74v0HBm+irvuM8E0JbPAC9TjfFps/CQc602/RHbv82tnyUF+o
-	NiX4b1cxeSJgNX2vrSQQBLOX2locmSMcGwqJ/Hc+gaTyjYo2O8lIIUxuseJcFAYDcwD0ui
-	r6ucpHeXDJRo5g3FSZPeTmy/3e6JqLg02D3EHYzBr1qgvlxjUA5AlJjrKj39bw==
+	bh=Zax5XZm81akV6xkhhXpN4ysizTkpEPk/kpg6u3k2zJQ=;
+	b=g1FYuwNXAXXlz6R+TMq0HeBOuHaX1JJdcuTevM666CxJoxYGrR4zK878M5ngZts/RuS39U
+	Rf2DBviZQF3t3dzncq+ydm16RtlLDHS40uFA3jBvYDMnu/OdsIOZ8YCcppCTjcELho3NKw
+	OGEWyPHO1RKgtGefr+692TLF7Kr+raR88ZpvzXzkp0GzLUN0YJRGfU3ssnozXyG7uWIaau
+	RaolKNGMs8e0EGtKQXahLgvrWrJUVeWbXFetwjnO/aPzPrrv3I/ycXuOsvR6RzHcXkNMV+
+	PlItq18JizzHDMzBnk12jRNkPakXIfjhEf93NyrTTDzn0+HsqfQpfIaNWGMIUw==
 From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Richard Weinberger <richard@nod.at>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Pratyush Yadav <pratyush@kernel.org>, 
- Michael Walle <michael@walle.cc>, linux-mtd@lists.infradead.org, 
- Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Cheng Ming Lin <chengminglin@mxic.com.tw>, stable@vger.kernel.org, 
- Tudor Ambarus <tudor.ambarus@linaro.org>, 
- Takahiro Kuwano <takahiro.kuwano@infineon.com>
-In-Reply-To: <20260317101842.319656-1-miquel.raynal@bootlin.com>
-References: <20260317101842.319656-1-miquel.raynal@bootlin.com>
-Subject: Re: [PATCH v2] mtd: spi-nor: Fix RDCR controller capability core
- check
-Message-Id: <177385372622.729501.7256585617777481305.b4-ty@bootlin.com>
-Date: Wed, 18 Mar 2026 18:08:46 +0100
+To: Olivier Sobrie <olivier@sobrie.be>
+Cc: Michal Simek <michal.simek@amd.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ linux-mtd@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ Andrea Scian <andrea.scian@dave.eu>, stable@vger.kernel.org
+In-Reply-To: <20260317171807.652642-1-olivier@sobrie.be>
+References: <20260317171807.652642-1-olivier@sobrie.be>
+Subject: Re: [PATCH v2] mtd: rawnand: pl353: make sure optimal timings are
+ applied
+Message-Id: <177385373262.729501.6970700040556749897.b4-ty@bootlin.com>
+Date: Wed, 18 Mar 2026 18:08:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,48 +76,49 @@ X-Last-TLS-Session-Version: TLSv1.3
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[bootlin.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[bootlin.com:+];
-	TAGGED_FROM(0.00)[bounces-227131-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227132-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[miquel.raynal@bootlin.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:mid]
-X-Rspamd-Queue-Id: E50472C0A10
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bootlin.com:dkim,bootlin.com:mid]
+X-Rspamd-Queue-Id: B900E2C1174
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, 17 Mar 2026 11:18:42 +0100, Miquel Raynal wrote:
-> Commit 5008c3ec3f89 ("mtd: spi-nor: core: Check read CR support") adds a
-> controller check to make sure the core will not use CR reads on
-> controllers not supporting them. The approach is valid but the fix is
-> incorrect. Unfortunately, the author could not catch it, because the
-> expected behavior was met. The patch indeed drops the RDCR capability,
-> but it does it for all controllers!
+On Tue, 17 Mar 2026 18:18:07 +0100, Olivier Sobrie wrote:
+> Timings of the nand are adjusted by pl35x_nfc_setup_interface() but
+> actually applied by the pl35x_nand_select_target() function.
+> If there is only one nand chip, the pl35x_nand_select_target() will only
+> apply the timings once since the test at its beginning will always be true
+> after the first call to this function. As a result, the hardware will
+> keep using the default timings set at boot to detect the nand chip, not
+> the optimal ones.
 > 
 > [...]
 
 Applied to mtd/fixes, thanks!
 
-[1/1] mtd: spi-nor: Fix RDCR controller capability core check
-      commit: ac512cd351f7e4ab4569f6a52c116f4ab3a239cc
+[1/1] mtd: rawnand: pl353: make sure optimal timings are applied
+      commit: b9465b04de4b90228de03db9a1e0d56b00814366
 
 Patche(s) should be available on mtd/linux.git and will be
 part of the next PR (provided that no robot complains by then).
