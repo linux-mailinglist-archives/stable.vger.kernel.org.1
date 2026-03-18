@@ -1,253 +1,159 @@
-Return-Path: <stable+bounces-226970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226971-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sM2bHRBJumkFTwIAu9opvQ
-	(envelope-from <stable+bounces-226970-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:41:20 +0100
+	id IFhDOjVLummWTwIAu9opvQ
+	(envelope-from <stable+bounces-226971-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:50:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80C22B682A
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:41:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB79C2B68F0
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 07:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 919E6304653E
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 06:37:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 94DFE3014F63
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 06:50:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF555362132;
-	Wed, 18 Mar 2026 06:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580E7354AF2;
+	Wed, 18 Mar 2026 06:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SEKMxOWC"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="mERAlMHb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C224368284
-	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 06:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773815864; cv=none; b=N0zMRSmjJmx2NssMcmYjb5bcreYGMbvBHsQ5OZLG00yJ/nW2G+/T5b6E6gtKAFiN2e7TAgLMVtL9vu5p7M38wz+J7qG1E71ht5vOTFjDkLPYjdHKNuzre2oFY31rJQPowS5kiwf33nyT0kN2HfaDzWjm/dH3fjVVOEUav5OHP9A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773815864; c=relaxed/simple;
-	bh=B6w9+t6iL/TOp54YhkDN8WKI5sr7szB/UfhThNsC4KY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=AtZV45JB9p14yBi8Z70azNVgG7w09SwMW1FekO07+XU+IcB09P0F4Zxqb2jPhGqMeRGmJkjuxcfPJAfTAFCylC2ld/Zb7B5Qb/YiK4p6YviLsNCtVuERbdMwmt4sZzYcG/JfKzu7oHKA8H95EBRam+72l8LNkIy+7nvkLanyR8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SEKMxOWC; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50917417efbso6079361cf.0
-        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 23:37:43 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F8E322B88
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 06:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773816624; cv=pass; b=BhatR/qYR7e9rZ7HeBVrylglkbyAhWSGU0oN1GFbA1P/n4Hr04pt+luKE19YSljK5K4u04MnXrCV9RWrnpELQtea+IESuOPGPOWsOopb3pLZqWVlZMtt02EC6/g3O9Jw9LOgifsn77yYGJQ8K/anHhD12T4Vgd0/tYkLngpOYhk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773816624; c=relaxed/simple;
+	bh=D+l8pH3fbSGAAiFTAKmcMYwmkdh9ywr3O9jc/b+KYUk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=epf8teFowJlhV4t1Be7jM31ibwtDWqCioq4CZ+7jmRCfgmbR58GNV5LF2f8SPikHy9/RdarPf3eM/wJ2mhzVvTs1VPTQqZQMW03tVECIb88HIR+D8f3wRJRZEs+vvOk3WxJC5MN8bwfS1fwIC3p/TqE0ql4/XI4YSiJcWzMDVlc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=mERAlMHb; arc=pass smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-65c0891f4e9so11632963a12.1
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 23:50:22 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773816621; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ebgo7FnzdMKTeEy0P4evxT8xgMcoJEsXVsT0UehJoKQHA2V/aSFBLnpAyXvg/JVB2d
+         ZLNkYMDXy6Efd1q5N+nq+lAMFIqAXYggfn3dputZ0279QXdXMfdFUXIHJ/sC5kzvU4Pb
+         IA+6Xsm8Kb+FF3+TjcuPRB7u3T0rJsO+SE1DnneL2Gu8qnoa0+S6h6QYJDFeswBxu2BK
+         y2zodLumQyii4VMz4p8gW8Jcvj3IMHRoK0can5pwWHA2TbUOofWHK1tNLFQMcTJ1K7x5
+         ba10XfIsL6zbV0askICR3g0FPJXjlPQEPIPqCbiiSjW7B7WQUlhIdBa5mRVkaKLnULlH
+         Pn0A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Zdvi6hWM24Xo3eVCU2axEwOSGy4gAnAXKG/xyveFr9A=;
+        fh=Wz8J5UEBOCqQDV8EGy7SaS7auVxYFAJQ5oaobiGaD9E=;
+        b=Kc/oIdHysbpWUhiFNVp7DKJEQBxeZ+5Z6N50RMI/yPUv+n1t3rX4uJ0+GkGjKSt79R
+         ltcHg0Zglq5dBG6ZdWMuHuFgwvgOa7NYM3d3ltOg30eJAUd02SLkWUa3M5RQeCHoeirC
+         AebpNSxFW1YcNrnlOxLZN5iBEBOmp2KA1vwyW2OXO8hYGxmTHEDT15vaZ9yrOAYKP+rq
+         YP9pBs6aKcbMJg65qxemTdJ0WvfKhXkwjEC9eVX3FleWCTUT4cRqEAJuKkVpEcIr2/ml
+         yaEHX3X8HVhNuK3T3Sxe4soUtSwUYFaxZi6TJHRQIypXY+qG6anAhMZYj2P1YuIox5RL
+         Ei8g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773815862; x=1774420662; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dZGvwuMrOAu4OGXCJyfmhbRaVBhCV3KVK8W/0vxO3GY=;
-        b=SEKMxOWCeAoc3YF13OcCGHVLNnbFiAJl53HEMRxQh9XNDPxjjurZ0La7FdI4U7uKKZ
-         pzxQsGGEBHj5iuQw+L3SDEY19ub96w66qRfYZEeHlIF83UCEkuxs/guWFSg1mUurguYB
-         HVDWKBIVQPUqXl4FehYI+BERxHmbu+4uOJFL4MJxNaq59mopVJUJoILy/dtBk1ag1edP
-         it2ZXmV3bfhcjWAI/PyXNsX6xbgv8KLnirHSx9xEFRnVyeU9jSinMgreio82ISiXossk
-         rmJyJMQHWl6MaQpHRi2N+jKcrN7ZjdFmN8NvO5ZAxgk6/PBiXH6N+w2jFPIofEVBj2oE
-         B/Vw==
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1773816621; x=1774421421; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zdvi6hWM24Xo3eVCU2axEwOSGy4gAnAXKG/xyveFr9A=;
+        b=mERAlMHbqv/NuviNtrV0DDD03w0LULmaS89w76aqkC7kZgV0nwT8nPU6x3AX66pkHd
+         kJChfcELPEBpyQ8SXn3yNy4pRx8JV2XCt4tcP5hdqF2Lz/1eVem12nboCMmME8gqBQ6a
+         Na+5UYJOJ5tltHzdVH6+FfzrxmroRGQIjPp6gs1vfA+gJzvaK1XwHLa9aRPkRzcnBTz7
+         inHw1VoZf7E2jHQHCcbhFrhKmGXpAM5SzjmrarLThLgkuVyzxO+XCp9nDE46pSZdVS45
+         3lQJ1T6TCfkst5NMnJMpexwnDOv5DOgUQe12wl/whyJhjXeUFW6sYGR9wjj1z9KBXV9n
+         U3fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773815862; x=1774420662;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=dZGvwuMrOAu4OGXCJyfmhbRaVBhCV3KVK8W/0vxO3GY=;
-        b=AiZtJI9vWXqNdjsN6Op06Ip6MtcpvCWZ1USbXKZIk7RIutSPu0/HeI3fiNPyWZ7F1x
-         tLe6eji2YEZ1g4Gk6uqvJ9lExN2x5MBidRnrhHdi3a70PWPhk8dZYqFyXQQiz/aMqp5M
-         URkHtxhxtBw1RAeBozzgQoSi/vZ+3qMOvvz4a4FT/3+84E3If5pt8jv51YJOYJGWnOiY
-         TtCWeLGY/723D1mjrNa6Rb8xtFl9MGpSBSdV8z4kIgdmMaq9GewpmgU7JwO3GGGIQPvu
-         iepjjjENwqQ6JA/0aS/lmI5mLapiK6iiaBLrjCqwZ4CRdHB/Fz3XzPHTrZ1RE8hJeKHz
-         W4aA==
-X-Forwarded-Encrypted: i=1; AJvYcCU4BzxFxnHPXSMjvqP/c47zZLPyhmbUnV55Oc4ZWiU/d4+kG3A8104PnuhvHXmnlVg1jSFJER8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFcYBwL9aS+6IzVpBNQcgL0reCgaZuGbZ6weS8xRiz5W1GiZCZ
-	HJsy7nBLFoVAtbpLfaqNXzQizV5G8aPtfvocJyG4/IPgMM/2jqNtR82B
-X-Gm-Gg: ATEYQzxTGZpLdZjw1QxAw0kwb/Njra5nEnwOclCET8uiomnvYxu9pdtsn0CDC+8Rses
-	oCql07MmHSM7+7q+uZLjfvOEslJtGUWvinzFuIj1sNza7FOu4+qKXUP0Pp/E/Z5EWeU+DlrGH6h
-	gc5DQ9IAf1NnDipqWdnZqKRWomNQ+s6IyscCm8Q66BX4IhkX+nzhXQP/iAa0ICsEpNQosQt2VXF
-	JieLnypgpOE6+tRZ4u7r24eOF4+nqEVw0Vp+tQh9aFoWj+7+j9cw4N1iCJMkp8kpUQBpk192RzI
-	5aHa/2UHPNS+r28k3WZ/IVWYswHTOtqOm+2tB3Hk+tmxvFHtFZE6tPAT6VDq6KfwrhnmJq2BklE
-	0h/ksVooOSZ0pEpzn7pXDzETyCHheXSXxPuZqdqNGNfl36DY1F5T9VNTKiesQZ+cDDUJPCguJ93
-	OUXxqPgSnmV8a676PlYOpCMrVN3pSBbNiq
-X-Received: by 2002:a05:622a:607:b0:501:4184:b59f with SMTP id d75a77b69052e-50b138674bamr30444081cf.15.1773815862249;
-        Tue, 17 Mar 2026 23:37:42 -0700 (PDT)
-Received: from localhost.localdomain ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b135b875esm15235351cf.25.2026.03.17.23.37.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Mar 2026 23:37:41 -0700 (PDT)
-From: Kevin Hao <haokexin@gmail.com>
-Date: Wed, 18 Mar 2026 14:36:59 +0800
-Subject: [PATCH net v2 2/2] net: macb: Protect access to net_device::ip_ptr
- with RCU lock
+        d=1e100.net; s=20251104; t=1773816621; x=1774421421;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zdvi6hWM24Xo3eVCU2axEwOSGy4gAnAXKG/xyveFr9A=;
+        b=ds8l+EXE3tyCANCl1TurLHjJ/tdWpjn5LSzoeF3NLOgrPprUDcuxCaE1MlpJJ9KuNb
+         4O3/MYh3UoMf3gAGnHxArCez7ur1jvpKbEBp8TqFcHu5vivE8mTr7dCrHWHNU2RCAR4/
+         7FqZQAdoNVZKpK+p6GtCYfQ70nyDNnvvswRTdfSD3zCLoG8YhurRn8NAA0nANa914q2N
+         digycrObPoy2S6YqINjYK0UwzgTktu9lNattQsX2cD56sEhzt6JCA9Za52ICl9KkKSZe
+         CfEoLFtEcyy+RI1U3QP9jlI0V5z15ywF0JsnilVzW15HwT44Wghnw2AkPMyRFKtKO24D
+         6aiQ==
+X-Gm-Message-State: AOJu0YxMp9X+Gtk+cSLAMeoyoseHeNX2iar1EsBBCjgs6D2k4nFIXoO1
+	7zqEbLmvi/zQkPNqShsoK+HEySh0/RRu9TrV+h/yUhKl9o61tdOMg8J19eYx1Ac1t1eilKzZub2
+	Ckr6F8mf7U4FcJodEAV1tUWa1SW1R02ELH/6RPeGqKQ==
+X-Gm-Gg: ATEYQzwmddQMDFueOBXmgmb8hP0yyTJurlnhKZ0S31dgGMJUDHrR2gA4Q6CfI2I9j2f
+	MvwwWCF0CBjMFvo64u56D6PfpGEHZvVPghkxY4oxF+cNucgDBY0h/ehgZ7P5jidP9zBw36L/C3E
+	33wRpVUUtk0ZSgUMCHtk/PFj2ZI0Tm+bQH70P08ExOlxC2ImGXdYyUCxG3shhY6y39sJQkVbu3F
+	YaHrxx8em1kQEdER5eFhh4JqLCutXH6DJpFWAsN/51jagMvyBHSTblTKrL7AaludM9jssMBl+7/
+	Z2zcz3zqGSrfgSCYjg7yGC/cOHAtsOzHJBipHjR0uELwN/LOImUBUB1jbpHEmJWO1KoBKJ4=
+X-Received: by 2002:a17:907:7212:b0:b97:ad82:973f with SMTP id
+ a640c23a62f3a-b97f48ba054mr121944066b.13.1773816621097; Tue, 17 Mar 2026
+ 23:50:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260318-macb-irq-v2-2-f1179768ab24@gmail.com>
-References: <20260318-macb-irq-v2-0-f1179768ab24@gmail.com>
-In-Reply-To: <20260318-macb-irq-v2-0-f1179768ab24@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Nicolas Ferre <nicolas.ferre@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Vineeth Karumanchi <vineeth.karumanchi@amd.com>, 
- Harini Katakam <harini.katakam@amd.com>, 
- =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, 
- Kevin Hao <haokexin@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Spamd-Result: default: False [-0.66 / 15.00];
+References: <20260317162959.345812316@linuxfoundation.org>
+In-Reply-To: <20260317162959.345812316@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Wed, 18 Mar 2026 12:19:44 +0530
+X-Gm-Features: AaiRm53yRWxBBTQF1p7uxw4V_pBVj0qnQTGxwtjzEHQXnfphOan0wcD2pkPn8N4
+Message-ID: <CAG=yYw=mjEuAttBzTOq4VpVhwUFmGdddDm4XWxTHtN7Rtm5EbA@mail.gmail.com>
+Subject: Re: [PATCH 6.18 000/333] 6.18.19-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@nabladev.com, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	R_DKIM_ALLOW(-0.20)[rajagiritech-edu-in.20230601.gappssmtp.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226970-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[rajagiritech.edu.in];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226971-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[microchip.com,tuxon.dev,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,amd.com,bootlin.com,gmail.com,vger.kernel.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[haokexin@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DKIM_TRACE(0.00)[rajagiritech-edu-in.20230601.gappssmtp.com:+];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jeffrin@rajagiritech.edu.in,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D80C22B682A
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DB79C2B68F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Access to net_device::ip_ptr and its associated members must be
-protected by an RCU lock. Since we are modifying this piece of code,
-let's also move it to execute only when WAKE_ARP is enabled.
+hello,
 
-To minimize the duration of the RCU lock, a local variable is used to
-temporarily store the IP address. This change resolves the following
-RCU check warning:
-  WARNING: suspicious RCU usage
-  7.0.0-rc3-next-20260310-yocto-standard+ #122 Not tainted
-  -----------------------------
-  drivers/net/ethernet/cadence/macb_main.c:5944 suspicious rcu_dereference_check() usage!
+ Compiled and booted  6.18.19-rc1+
+No new typical dmesg regressions
+.
 
-  other info that might help us debug this:
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  5 locks held by rtcwake/518:
-   #0: ffff000803ab1408 (sb_writers#5){.+.+}-{0:0}, at: vfs_write+0xf8/0x368
-   #1: ffff0008090bf088 (&of->mutex#2){+.+.}-{4:4}, at: kernfs_fop_write_iter+0xbc/0x1c8
-   #2: ffff00080098d588 (kn->active#70){.+.+}-{0:0}, at: kernfs_fop_write_iter+0xcc/0x1c8
-   #3: ffff800081c84888 (system_transition_mutex){+.+.}-{4:4}, at: pm_suspend+0x1ec/0x290
-   #4: ffff0008009ba0f8 (&dev->mutex){....}-{4:4}, at: device_suspend+0x118/0x4f0
 
-  stack backtrace:
-  CPU: 3 UID: 0 PID: 518 Comm: rtcwake Not tainted 7.0.0-rc3-next-20260310-yocto-standard+ #122 PREEMPT
-  Hardware name: ZynqMP ZCU102 Rev1.1 (DT)
-  Call trace:
-   show_stack+0x24/0x38 (C)
-   __dump_stack+0x28/0x38
-   dump_stack_lvl+0x64/0x88
-   dump_stack+0x18/0x24
-   lockdep_rcu_suspicious+0x134/0x1d8
-   macb_suspend+0xd8/0x4c0
-   device_suspend+0x218/0x4f0
-   dpm_suspend+0x244/0x3a0
-   dpm_suspend_start+0x50/0x78
-   suspend_devices_and_enter+0xec/0x560
-   pm_suspend+0x194/0x290
-   state_store+0x110/0x158
-   kobj_attr_store+0x1c/0x30
-   sysfs_kf_write+0xa8/0xd0
-   kernfs_fop_write_iter+0x11c/0x1c8
-   vfs_write+0x248/0x368
-   ksys_write+0x7c/0xf8
-   __arm64_sys_write+0x28/0x40
-   invoke_syscall+0x4c/0xe8
-   el0_svc_common+0x98/0xf0
-   do_el0_svc+0x28/0x40
-   el0_svc+0x54/0x1e0
-   el0t_64_sync_handler+0x84/0x130
-   el0t_64_sync+0x198/0x1a0
-
-Fixes: 0cb8de39a776 ("net: macb: Add ARP support to WOL")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
----
- drivers/net/ethernet/cadence/macb_main.c | 25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 2d4304331e297accd91ab48813a9bd4722ce72dc..9856764402b17397928d0a61da61865a3b10484f 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5909,9 +5909,9 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 	struct macb_queue *queue;
- 	struct in_device *idev;
- 	unsigned long flags;
-+	u32 tmp, ifa_local;
- 	unsigned int q;
- 	int err;
--	u32 tmp;
- 
- 	if (!device_may_wakeup(&bp->dev->dev))
- 		phy_exit(bp->phy);
-@@ -5920,14 +5920,21 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 		return 0;
- 
- 	if (bp->wol & MACB_WOL_ENABLED) {
--		/* Check for IP address in WOL ARP mode */
--		idev = __in_dev_get_rcu(bp->dev);
--		if (idev)
--			ifa = rcu_dereference(idev->ifa_list);
--		if ((bp->wolopts & WAKE_ARP) && !ifa) {
--			netdev_err(netdev, "IP address not assigned as required by WoL walk ARP\n");
--			return -EOPNOTSUPP;
-+		if (bp->wolopts & WAKE_ARP) {
-+			/* Check for IP address in WOL ARP mode */
-+			rcu_read_lock();
-+			idev = __in_dev_get_rcu(bp->dev);
-+			if (idev)
-+				ifa = rcu_dereference(idev->ifa_list);
-+			if (!ifa) {
-+				rcu_read_unlock();
-+				netdev_err(netdev, "IP address not assigned as required by WoL walk ARP\n");
-+				return -EOPNOTSUPP;
-+			}
-+			ifa_local = be32_to_cpu(ifa->ifa_local);
-+			rcu_read_unlock();
- 		}
-+
- 		spin_lock_irqsave(&bp->lock, flags);
- 
- 		/* Disable Tx and Rx engines before  disabling the queues,
-@@ -5966,7 +5973,7 @@ static int __maybe_unused macb_suspend(struct device *dev)
- 		if (bp->wolopts & WAKE_ARP) {
- 			tmp |= MACB_BIT(ARP);
- 			/* write IP address into register */
--			tmp |= MACB_BFEXT(IP, be32_to_cpu(ifa->ifa_local));
-+			tmp |= MACB_BFEXT(IP, ifa_local);
- 		}
- 		spin_unlock_irqrestore(&bp->lock, flags);
- 
-
--- 
-2.53.0
-
+--
+software engineer
+rajagiri school of engineering and technology-
 
