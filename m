@@ -1,176 +1,217 @@
-Return-Path: <stable+bounces-227120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMb3KbzVummfcAIAu9opvQ
-	(envelope-from <stable+bounces-227120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:41:32 +0100
+	id yF67LNrYumkycgIAu9opvQ
+	(envelope-from <stable+bounces-227122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:54:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FDED2BF758
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:41:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 414732BFB3E
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 17:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3A0F930AE7BE
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:38:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B327B34F08F6
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 16:38:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5C13EFD12;
-	Wed, 18 Mar 2026 16:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 331E13A8756;
+	Wed, 18 Mar 2026 16:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="aZshw827";
+	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="bLNHi3w4"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452123EDAB3;
-	Wed, 18 Mar 2026 16:19:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773850762; cv=none; b=akX/VkFk/bgPfuNRZAdHQa4fP89cJgOqg5b7ST3GZ3N5bmEQz+v8OJY5drStSutfeRp2pYhfzb6fwfjymXpVzf/sQKS9HpNmgLERESYcoNKGeH4ghy6zNgLPewPjHCILn3J/RbBLnkiE4viefBbakqMKpuKPiXbJGYeFsZLvHng=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773850762; c=relaxed/simple;
-	bh=Gu49jJm8wHQwQ9hjXL9RUB67/7QCzFhFqZmAdWsGBEE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t9NnC3MQ8SJbfXXJ+7db9FBfocfoWYweJdV/jxpPKklyFS9w8djbTz3sdHPOOe5j67+W4Sqn996htDK1iBmXFBoY350RZRWtnDHwlerMjR7fhJT7SRJeG9MzVkZcfghJ+OV89MBI+HSVYkVpqgDIcJU5tIeTxoCD89kVnVruBDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [172.20.10.225] (unknown [24.40.138.251])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id 731644C2C37F0A;
-	Wed, 18 Mar 2026 17:18:33 +0100 (CET)
-Message-ID: <f26d4c73-99c3-4252-a880-f9e8eb57bf04@molgen.mpg.de>
-Date: Wed, 18 Mar 2026 17:18:32 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E999C24A05D
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 16:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773850798; cv=pass; b=ARhkPluVTTkkWMPiYAjRlkpD8aeBlIk2lvVNIwGUd4xqqZghrUZx3xOf8t51HBhpfWBOt6DesA7T5fKg4OozGp/GMLdhXPYq+1xTsGCDFDHJrTOS3xrPcjwJ/6G1Edi7ajVjvNlFeDiio/SyBotz1n1O5Xk4exGykD3LoZQAYDQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773850798; c=relaxed/simple;
+	bh=0r3bjBA1FPGil83IoKH01pkuEYwEpG5LS3m+cfIdzPc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Bvr1LIG82LA1+K3U7bDQn4ubsI6pOHxW53PDluBweSndvZE62HnEtrn8HnPtY22XE3H7cVLLtoUx+DnTdGiC5ZtrwPFnDuBzovxud9s7cwhnjWzNmYKHYVwz74L44YIcKNTK5QhkEgZ0l7ttE3T94wr3ZQMlZy3EqG+MKLgNlTw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=aZshw827; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=bLNHi3w4; arc=pass smtp.client-ip=85.215.255.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
+ARC-Seal: i=1; a=rsa-sha256; t=1773850790; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=W1bw8tj6JFd5FGiMq4Zb2j5pJDA3sHgMFQz3fda0X02/9KMdVI3DCHQurCUS5WkXn9
+    lwEYXJQ5ZIJAF6L4k9mC6Q5ZMg+byeOCMXKL8Sy3yJbWUTcnzYrbGifoUc85Lz+81O6Y
+    3q6ZW7Lrb6FvyskJwi0kdgytkL1pD/LvsOdj9T5UWt5E/gzo9OnKUcwdr8OK1PuFZuDX
+    o4Nx/rl09IWWaEpCpjjsfdy7otkBJSOnrVLYVsBwRo2NIRCC2v+O9wmM9FeOOVE+Ym8n
+    NTdq4bLJgeEGE0DTlRo014eZgL5zVtfR5zTJ21/tyvAPpLfzk8FXPWCDPNcRDFJuyjMK
+    ZuRg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1773850790;
+    s=strato-dkim-0002; d=strato.com;
+    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=uAW4MClx1aJDjN6ESqo+yTHAchyRZHrRKkV3fAuUJ78=;
+    b=bL4uUQM/bSi+CGSFJ0QH2or7tg7trEyKPNe4tKXNdOPCzWQZtz0fNXsH0cmQPof6q2
+    qJuUzJkbMgTUHjPorSbxNi/A/lHk5o9TpdkuwQX5dtQ3CVDgs9e4k3g/PLNc1uPeL0BY
+    FSchW+hl7uNXk4cdN7BjpCNefVGg8z6vzsARVPfuKF7muiS5hvcmWhKTJ5tIV6fS7oVh
+    QwQ6dDvE6sX4zkk2rjwF2Bss4uuHXTkSC6y0eXU7qreeHPYp+ggLrTUD5NY5NIaul+nx
+    VRMMRY0qG1otkVwMLquhAeGoPSM1Fedl4aUxJ0ap34I0ofYDJWfroOICa8r/ynN/Pcf3
+    duyw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1773850790;
+    s=strato-dkim-0002; d=hartkopp.net;
+    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=uAW4MClx1aJDjN6ESqo+yTHAchyRZHrRKkV3fAuUJ78=;
+    b=aZshw827FfheXzK7BzF43fSjWMDMaCE1zswdRsA5MW8mGBWD/krD0h4dk+KO4Uj1TA
+    +mhNJ+6u+aRWoseplbQS7UonyyLDfGF09OzQliKLmMFwXhvYR85gUP9QJLrNz1pVCU99
+    XV9eNfnxmljvIq91+2pIEXJfwIKvNrN7v/GTHCMMuh0ukVWUZdG3/Hd8H+7foHpsRvFS
+    DPpd1B6rvRMigATkQLBfg+fn3PNBsg2Geedbg/lZz5YfTWHrTxoQip0ndo4fzuMtzyx4
+    ZhiBmopHvU0QKl1CBR+yYVqz5l3F10Pu22dbGpSR8BCKhfQ/l275i3ODWBpwWJiORMSr
+    3QHQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1773850790;
+    s=strato-dkim-0003; d=hartkopp.net;
+    h=References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Cc:Date:
+    From:Subject:Sender;
+    bh=uAW4MClx1aJDjN6ESqo+yTHAchyRZHrRKkV3fAuUJ78=;
+    b=bLNHi3w4+yVhJgfpQferrvX0I9s+a5OKDlGWfu+EwjUepqTtzJQM0bjgRdsBhlsU5v
+    YgixSPEQQC6j54OO7RDw==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeFQ7s0ZDT0tksFSR+Aix0esQJVIAlZEg=="
+Received: from lenov17.lan
+    by smtp.strato.de (RZmta 55.0.1 AUTH)
+    with ESMTPSA id Kba96d22IGJoouY
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 18 Mar 2026 17:19:50 +0100 (CET)
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+To: ali.norouzi@keysight.com,
+	security@kernel.org,
+	torvalds@linuxfoundation.org
+Cc: mkl@pengutronix.de,
+	socketcan@hartkopp.net,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] can: gw: fix OOB heap access in cgw_csum_crc8_rel()
+Date: Wed, 18 Mar 2026 17:19:13 +0100
+Message-ID: <20260318161914.15140-2-socketcan@hartkopp.net>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260318161914.15140-1-socketcan@hartkopp.net>
+References: <20260318161914.15140-1-socketcan@hartkopp.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH] idpf: fix UAF and double free in
- idpf_plug_core_aux_dev() error path
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Joshua Hay <joshua.a.hay@intel.com>,
- Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
- Madhu Chittim <madhu.chittim@intel.com>, intel-wired-lan@lists.osuosl.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260318155220.642160-1-lgs201920130244@gmail.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260318155220.642160-1-lgs201920130244@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [0.04 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[hartkopp.net,reject];
+	R_DKIM_ALLOW(-0.20)[hartkopp.net:s=strato-dkim-0002,hartkopp.net:s=strato-dkim-0003];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227120-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[mpg.de];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227122-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.815];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[hartkopp.net:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	R_DKIM_NA(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[socketcan@hartkopp.net,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_NONE(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,molgen.mpg.de:mid,mpg.de:email]
-X-Rspamd-Queue-Id: 1FDED2BF758
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hartkopp.net:dkim,hartkopp.net:email,hartkopp.net:mid]
+X-Rspamd-Queue-Id: 414732BFB3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Dear Guangshuo,
+From: Ali Norouzi <ali.norouzi@keysight.com>
 
+cgw_csum_crc8_rel() correctly computes bounds-safe indices via calc_idx():
 
-Thank you for your patch.
+    int from = calc_idx(crc8->from_idx, cf->len);
+    int to   = calc_idx(crc8->to_idx,   cf->len);
+    int res  = calc_idx(crc8->result_idx, cf->len);
 
-Am 18.03.26 um 16:52 schrieb Guangshuo Li:
-> If auxiliary_device_add() fails, idpf_plug_core_aux_dev() calls
-> auxiliary_device_uninit(adev), whose release callback
-> idpf_core_adev_release() frees the containing
-> struct iidc_rdma_core_auxiliary_dev.
-> 
-> The current error path then accesses adev->id and later frees iadev
-> again, which may lead to a use-after-free and double free.
-> 
-> Fix it by storing the allocated auxiliary device id in a local
-> variable and avoiding direct freeing of iadev after
-> auxiliary_device_uninit().
-> 
-> Fixes: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev create, init, and destroy")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->   drivers/net/ethernet/intel/idpf/idpf_idc.c | 9 +++++++--
->   1 file changed, 7 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_idc.c b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> index 6dad0593f7f2..0fcbf9f1ddbb 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
-> @@ -197,6 +197,7 @@ static int idpf_plug_core_aux_dev(struct iidc_rdma_core_dev_info *cdev_info)
->   	char name[IDPF_IDC_MAX_ADEV_NAME_LEN];
->   	struct auxiliary_device *adev;
->   	int ret;
-> +	int id;
+    if (from < 0 || to < 0 || res < 0)
+        return;
 
-Name it `adev_id`?
+However, the loop and the result write then use the raw s8 fields directly
+instead of the computed variables:
 
->   
->   	iadev = kzalloc(sizeof(*iadev), GFP_KERNEL);
->   	if (!iadev)
-> @@ -211,12 +212,16 @@ static int idpf_plug_core_aux_dev(struct iidc_rdma_core_dev_info *cdev_info)
->   		pr_err("failed to allocate unique device ID for Auxiliary driver\n");
->   		goto err_ida_alloc;
->   	}
-> -	adev->id = ret;
-> +	id = ret;
-> +	adev->id = id;
->   	adev->dev.release = idpf_core_adev_release;
->   	adev->dev.parent = &cdev_info->pdev->dev;
->   	sprintf(name, "%04x.rdma.core", cdev_info->pdev->vendor);
->   	adev->name = name;
->   
-> +	/* iadev is owned by the auxiliary device */
-> +	iadev = NULL;
-> +
->   	ret = auxiliary_device_init(adev);
->   	if (ret)
->   		goto err_aux_dev_init;
-> @@ -230,7 +235,7 @@ static int idpf_plug_core_aux_dev(struct iidc_rdma_core_dev_info *cdev_info)
->   err_aux_dev_add:
->   	auxiliary_device_uninit(adev);
->   err_aux_dev_init:
-> -	ida_free(&idpf_idc_ida, adev->id);
-> +	ida_free(&idpf_idc_ida, id);
->   err_ida_alloc:
->   	cdev_info->adev = NULL;
->   	kfree(iadev);
+    for (i = crc8->from_idx; ...)        /* BUG: raw negative index */
+    cf->data[crc8->result_idx] = ...;    /* BUG: raw negative index */
 
-Ether way:
+With from_idx = to_idx = result_idx = -64 on a 64-byte CAN FD frame,
+calc_idx(-64, 64) = 0 so the guard passes, but the loop iterates with
+i = -64, reading cf->data[-64], and the write goes to cf->data[-64].
+This write might end up to 56 (7.0-rc) or 40 (<= 6.19) bytes before the
+start of the canfd_frame on the heap.
 
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+The companion function cgw_csum_xor_rel() uses `from`/`to`/`res`
+correctly throughout; fix cgw_csum_crc8_rel() to match.
 
+Confirmed with KASAN on linux-7.0-rc2:
+  BUG: KASAN: slab-out-of-bounds in cgw_csum_crc8_rel+0x515/0x5b0
+  Read of size 1 at addr ffff8880076619c8 by task poc_cgw_oob/62
 
-Kind regards,
+To configure the can-gw crc8 checksums CAP_NET_ADMIN is needed.
 
-Paul
+Fixes: 456a8a646b25 ("can: gw: add support for CAN FD frames")
+Cc: stable@vger.kernel.org
+Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+---
+ net/can/gw.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/net/can/gw.c b/net/can/gw.c
+index 8ee4d67a07d3..0ec99f68aa45 100644
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -373,14 +373,14 @@ static void cgw_csum_crc8_rel(struct canfd_frame *cf,
+ 
+ 	if (from < 0 || to < 0 || res < 0)
+ 		return;
+ 
+ 	if (from <= to) {
+-		for (i = crc8->from_idx; i <= crc8->to_idx; i++)
++		for (i = from; i <= to; i++)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	} else {
+-		for (i = crc8->from_idx; i >= crc8->to_idx; i--)
++		for (i = from; i >= to; i--)
+ 			crc = crc8->crctab[crc ^ cf->data[i]];
+ 	}
+ 
+ 	switch (crc8->profile) {
+ 	case CGW_CRC8PRF_1U8:
+@@ -395,11 +395,11 @@ static void cgw_csum_crc8_rel(struct canfd_frame *cf,
+ 		crc = crc8->crctab[crc ^ (cf->can_id & 0xFF) ^
+ 				   (cf->can_id >> 8 & 0xFF)];
+ 		break;
+ 	}
+ 
+-	cf->data[crc8->result_idx] = crc ^ crc8->final_xor_val;
++	cf->data[res] = crc ^ crc8->final_xor_val;
+ }
+ 
+ static void cgw_csum_crc8_pos(struct canfd_frame *cf,
+ 			      struct cgw_csum_crc8 *crc8)
+ {
+-- 
+2.51.0
+
 
