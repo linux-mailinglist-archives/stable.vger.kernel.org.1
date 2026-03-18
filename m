@@ -1,190 +1,157 @@
-Return-Path: <stable+bounces-227008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227009-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNAUDjVrumnnWAIAu9opvQ
-	(envelope-from <stable+bounces-227008-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:07:01 +0100
+	id wDTUBBduumnRWQIAu9opvQ
+	(envelope-from <stable+bounces-227009-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:19:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC3B92B8A84
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:07:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0B82B8D55
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 10:19:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3EF6E300E155
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:06:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D48B7306763F
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 09:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1249A3A0B31;
-	Wed, 18 Mar 2026 09:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VLY1dV3s"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1C93A783A;
+	Wed, 18 Mar 2026 09:13:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4808F3806D9;
-	Wed, 18 Mar 2026 09:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD56739F169;
+	Wed, 18 Mar 2026 09:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773824814; cv=none; b=WiHAnvIZuhqlEgWJWw40e15wIlpjcIE+t6d9Ye9NH/tpIfQ+IwDGb+coSvQtu4sTNTi5oM6X0wM1XZ5MJ4uVyhBqxDMVBBXC8p/dbZlWtDjRIj35ftzV/Bi57l3ZKB/Vv1qWJITADFGITw/c4A3f2B4XZPgolp4nMPAEm316wLg=
+	t=1773825192; cv=none; b=ruTo7NvPBFLnYMgK7QUCGWye3eSSf2NS5DJG4IVpMHlH7lWEK4R+1oEC0plXowIb5k3KO6VKvj1u1tpcbdiT2jSTAo4kpf9lBDhy+8BvWXsan7ckQRY6++ELwjGLi4p6EyxxqUL22JOZJPXjQlHC1Vbvd6x+zhDhqNm9COUed8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773824814; c=relaxed/simple;
-	bh=OOpz2QLVOMmh9KY2GRGxQ6h+0tnAzCc8jxynqR/fL8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rf4bEBjizwgm8EdOcW3auquIs8OkwfzXAOrXJ2LE94C53ZO64cj1ie2Vrh4/ry1uxGb7Q8xAlL0sgHfCfYSv9uUaVJFr8QHDl12nQTurJUwUcGmuJSvHpWsbqF8RlxhM+eFe3osVfj6A+9qr3n5zdxyEZ814q8OTxJ8tTSPvdNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VLY1dV3s; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773824813; x=1805360813;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=OOpz2QLVOMmh9KY2GRGxQ6h+0tnAzCc8jxynqR/fL8c=;
-  b=VLY1dV3sVmWq3gJTWrFSVViPbCnFtyc2GcbLiLD3QqGf5w9n7Tn/sjAg
-   BUbeOdkvfd6Nx8zNp/gLZ/ImnLRD4i3DZNp6sbg6Y5Vn8FOemBvk/Cz1v
-   yDswofBEh6LvGKlVOtV0BDHue5yd++YjKZcJtsbiDXfBM34gEPZ5oIrTU
-   xHRdH3xVbQkIb+rtH3Z5H0xW/qFTyz9pI1QrW77YMNvAzXUZOnoL/IDjk
-   tajQ2tEK0V26vaghBKQ6bbw+koMb9we5D5EswiVCrWldwRgVjI7IIDYIh
-   AJBuEGs7lrQkl+LhOQ0sUQNUes8mPZI84tEvgFWrSeL9BpM57/Mh4WGgh
-   A==;
-X-CSE-ConnectionGUID: R4xC4tmMTU28wQFRZ0zGew==
-X-CSE-MsgGUID: IqpuriG9S2yAIoES04+teA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11732"; a="74573983"
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="74573983"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 02:06:53 -0700
-X-CSE-ConnectionGUID: bGaVs8xpTUCoR2u709K5aQ==
-X-CSE-MsgGUID: hk9DpRDxSG2N5wW8ulwWpw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,127,1770624000"; 
-   d="scan'208";a="253045856"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.240])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2026 02:06:44 -0700
-Date: Wed, 18 Mar 2026 11:06:41 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>, Daniel Scally <djrscally@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>,
-	Mark Brown <broonie@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>, Russell King <linux@armlinux.org.uk>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Saravana Kannan <saravanak@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org,
-	driver-core@lists.linux.dev, imx@lists.linux.dev,
-	linux-acpi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] device property: Make modifications of fwnode "flags"
- thread safe
-Message-ID: <abprIZ4_LUScJrSd@ashevche-desk.local>
-References: <20260316154159.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <abkCPU3rxHI49N4_@shikoro>
- <abkD-VLprcbbEbB1@ashevche-desk.local>
- <CAMuHMdVX4tfko8iv-EdwO-bBcwCd+cPkb9aP8qJbcM1F4zdz4g@mail.gmail.com>
+	s=arc-20240116; t=1773825192; c=relaxed/simple;
+	bh=eaAdgV/XYEx7DblPHVCOb0iy/Too10DwP8gs+p5HNG0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SEYmzSIGQbD/eSffKzWxpH60nH+1Q/gyWWPPVwn6A1L1afAvfql1Xhb09UGN5B3JNINrOaX9Tn+dXN5yDs+YtpHisDfrc6bg/PtMAv5frEbXWbcwrPwvKlfBM+iKSXXeCFCMffhUw3PUMEElejXYj0kPwcRpU2cudNsXC1LqT64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [10.200.145.11] (unknown [213.235.133.113])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id EA8F44C4430FC9;
+	Wed, 18 Mar 2026 10:12:37 +0100 (CET)
+Message-ID: <9135f7c8-73d2-4cdd-ab82-25945d3324ae@molgen.mpg.de>
+Date: Wed, 18 Mar 2026 10:12:35 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdVX4tfko8iv-EdwO-bBcwCd+cPkb9aP8qJbcM1F4zdz4g@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-0.66 / 15.00];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Bluetooth: btintel_pcie: validate RX packet length
+ against buffer size
+To: moonafterrain@outlook.com
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Kiran K <kiran.k@intel.com>,
+ Tedd Ho-Jeong An <tedd.an@intel.com>,
+ Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+ linux-bluetooth@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Yuhao Jiang <danisjiang@gmail.com>, stable@vger.kernel.org
+References: <SYBPR01MB7881DD95CE054BC53AED4A21AF41A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Content-Language: en-US
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <SYBPR01MB7881DD95CE054BC53AED4A21AF41A@SYBPR01MB7881.ausprd01.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.04 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[sang-engineering.com,chromium.org,linuxfoundation.org,kernel.org,vger.kernel.org,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,linux.intel.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227008-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227009-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[mpg.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[outlook.com];
+	FREEMAIL_CC(0.00)[holtmann.org,gmail.com,intel.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_TWELVE(0.00)[34];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: EC3B92B8A84
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.976];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pmenzel@molgen.mpg.de,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	R_DKIM_NA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,outlook.com:email]
+X-Rspamd-Queue-Id: 0A0B82B8D55
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 09:41:44AM +0100, Geert Uytterhoeven wrote:
-> On Tue, 17 Mar 2026 at 08:34, Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-> > On Tue, Mar 17, 2026 at 08:26:53AM +0100, Wolfram Sang wrote:
+Dear Junrui,
 
-...
 
-> > > Thanks for tackling this issue! I agree it should be fixed, just
-> > > wondered about one thing:
-> > >
-> > > > While flags are often modified while under the "fwnode_link_lock",
-> > > > this is not universally true.
-> > >
-> > > Is it a possibility to use the lock in all code paths instead?
-> > > Because...
-> > >
-> > > >     struct list_head consumers;
-> > > > -   u8 flags;
-> > > > +   unsigned long flags;
-> > >
-> > > ... this change costs some memory on every system. Maybe it can be
-> > > avoided?
-> >
-> > How much memory does it cost? On most 64-bit architectures is +4 bytes,
-> > rarely +0 bytes, on m68k it might be +2bytes. On 32-bit it most likely
-> > +0 bytes. I expect that 64-bit machines will cope with this bump.
+Thank you for your patch. It be great if you configured your name in the 
+author line – currently it only contains the address:
+
+     From: moonafterrain@outlook.com
+
+No idea, why b4 is not doing it.
+
+Am 17.03.26 um 07:04 schrieb moonafterrain@outlook.com:
+> btintel_pcie_submit_rx_work() reads packet_len from an rfh_hdr in
+> DMA-coherent memory and uses it as the length for skb_put_data() without
+> upper bound validation. Since packet_len is a 16-bit field (0-65535) but
+> each RX DMA buffer is only BTINTEL_PCIE_BUFFER_SIZE (4096) bytes, a
+> malicious or malfunctioning firmware could set a large packet_len,
+> causing an out-of-bounds read beyond the buffer into adjacent kernel
+> heap memory.
 > 
-> On all architectures with natural alignment of pointers and longs,
-> it won't cost a thing: struct list_head contains pointers, so the
-> struct must be padded to a multiple of 4 or 8 bytes anyway.
-> On m68k[*],  it will cost 2 bytes, as the existing padding is just a
-> single byte.
+> Add a check that packet_len does not exceed the available payload space
+> alongside the existing zero-length check.
+
+Do you have a reproducer or test case for this issue?
+
+> Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+> ---
+>   drivers/bluetooth/btintel_pcie.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> [*] Iff m68k ever switches to 32-bit alignment, there won't be an
->     additional cost due to the change of flags here, but of course
->     there would be a cost all over the place.
+> diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+> index 37b744e35bc4..9dd02e8af2a0 100644
+> --- a/drivers/bluetooth/btintel_pcie.c
+> +++ b/drivers/bluetooth/btintel_pcie.c
+> @@ -1360,7 +1360,8 @@ static int btintel_pcie_submit_rx_work(struct btintel_pcie_data *data, u8 status
+>   	rfh_hdr = buf;
+>   
+>   	len = rfh_hdr->packet_len;
+> -	if (len <= 0) {
+> +	if (len <= 0 ||
+> +	    len > BTINTEL_PCIE_BUFFER_SIZE - sizeof(*rfh_hdr)) {
+>   		ret = -EINVAL;
 
-Thanks!
+As this seems a broken or malicious firmware, no idea, if it’d make 
+sense to log it.
 
-Yes, the worst case is 64-bit architecture with 4-byte alignment. This
-will cost +4 bytes.
+>   		goto resubmit;
+>   	}
 
-But I think we are really wasting time on this part of the discussion
-(and any similar) as long as nobody targets struct device or any other
-BIG FAT data type, that will bring much more benefit than saving 4 bytes
-in some struct fwnode_handle.
+The diff looks good:
 
--- 
-With Best Regards,
-Andy Shevchenko
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
 
+Kind regards,
+
+Paul
 
