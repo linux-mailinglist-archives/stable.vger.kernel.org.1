@@ -1,149 +1,214 @@
-Return-Path: <stable+bounces-226950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-226951-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UBC0IooPumk2RAIAu9opvQ
-	(envelope-from <stable+bounces-226950-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 03:35:54 +0100
+	id wLeVOBIQumk2RAIAu9opvQ
+	(envelope-from <stable+bounces-226951-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 03:38:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61CA2B5391
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 03:35:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E2A2B53C0
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 03:38:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCFDF3037142
-	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 02:35:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 46D5C304B83F
+	for <lists+stable@lfdr.de>; Wed, 18 Mar 2026 02:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E81B266576;
-	Wed, 18 Mar 2026 02:35:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B14274B39;
+	Wed, 18 Mar 2026 02:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mzmk9G0l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uaw8Yzqb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE01C3BF7;
-	Wed, 18 Mar 2026 02:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA31326FD97
+	for <stable@vger.kernel.org>; Wed, 18 Mar 2026 02:37:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773801350; cv=none; b=RRiMu4SHhA6+NPjvKwUvYJSBnlXlukQ9bsSKjB6kzKl6Ps9qeXk+C8fZtLCo8efr9MxUonNdt/6sty0UuaOxsxHLl/lk6vd2899cusQaOmbLDIZV9j5KSgC6HPJbft2erAiBVTmVmvt+FqL1nL+f/d6dE544knaPosVgFebgQyE=
+	t=1773801481; cv=none; b=EewcLX08CLOOr4BVOeDfiVKe5WdBQsMjBg3XVaehali/QcEDL+hblAdraSkebZfkD3owSsHh8+TDNkZaXYgakU7z2ht21SmsQbQ1yPzawTzsKlOIqdmnnHIl7rjz2TncG2lWVd5VV7SuBUtafqHjm2BrlbYC5ILAUWUR2/A57dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773801350; c=relaxed/simple;
-	bh=YgYEbGMcgKDMjKUJ5LpHCqN6k+Uq7poYrxFG+RkjWm0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oSLYpICiHVFzE/bCj4TCtgILMbsNi4zV3Txk7VuRkIM1GBAXzfzmwv42QGJYjSBU+5yxwdM9UJIStgcubzscHy1FPpNhG0v3J/r/hMF1BPXbqNQuRxB1D7nkwRUkkh6fdPpVcwaMU5BKvjz313hYE1LAJnbf86VEtyTKgrGGICk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mzmk9G0l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8971C4CEF7;
-	Wed, 18 Mar 2026 02:35:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773801349;
-	bh=YgYEbGMcgKDMjKUJ5LpHCqN6k+Uq7poYrxFG+RkjWm0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mzmk9G0llgQlaQqfyrxVdjUyaXpurAyq84qLh2H86Qypp6I+X9mN7r3UJeQkcAMjg
-	 nJYdXNWe8KcYrZ+gmK50cgJKh3vtPsgWBREW3qd2Drn6o3ANszyElc7UgiK4VM19J2
-	 j3Bpq9dEnVLgzlm3kB/4NeLM+soaPTQoxqO9hdpFOkHHC8BIohN8EkcWj/Jwggbew5
-	 xU0R1Lx5Pjyi/3VP65AN01XQI11iAei9OjDBidIqkIqPKWKEvUH8yszGLjrHQ68lRC
-	 Y4S5gT00PpC66pChYd9PesHJcX/+OuRm3+brq5E22XqaeX2I2gLqjd309ZU5/oojIJ
-	 AH9jl19FTiJAg==
-Date: Tue, 17 Mar 2026 19:35:42 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@nabladev.com,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 5.15 000/410] 5.15.202-rc2 review
-Message-ID: <20260318023542.GA2596820@ax162>
-References: <20260302160955.2522727-1-sashal@kernel.org>
- <20260305220801.GA3148061@ax162>
- <20260316220533.GD1329928@ax162>
- <abiuxFzZNLKbhz6F@laps>
- <2026031738-glade-glamorous-eacd@gregkh>
- <2026031714-undusted-rambling-c2ae@gregkh>
+	s=arc-20240116; t=1773801481; c=relaxed/simple;
+	bh=n0w6e/nOGgYAcidng5lDiAq12GtXKpGxxsbG7TpMjxU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Z3nmIS3t1YqHSXMGUNaMk9Pa8WtgVAIzmXjjTGg8+tiUty1SrZ/JNWMn8hPCi31nXzSrHk/LG54NsabVmD2CGPELAt6KdbteZA1VsMRzjVygh2Eh+TbBdcUPVgp4oMXUhu5OZLvvMKQG5uDzTAK0D5Krk6Nd0wA4wFBue8n1Q4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uaw8Yzqb; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d741f61ee5so5436164a34.1
+        for <stable@vger.kernel.org>; Tue, 17 Mar 2026 19:37:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773801479; x=1774406279; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=RHBZTmx3gpGoOcOvI5wr45XrMLqrJh4cbl+ScbRtWNE=;
+        b=Uaw8YzqbmszcT7KbRQpAqaawKS3M3JDNRi5ZGai01YXZf8xpha/3Ugs84HZu7NJSI2
+         KakJ6579ALRu2QoRmdeqkVh8QHqDWG2++ZZxr9vph7qOkVz3I2ysGw20F/qEgcYRK24T
+         iS+oSZuW5IYr/CFd9LKEAxh+qHk8nu7dEA7X++MXEFNyeUZUJ0iASz/KyXicEwjaMOJs
+         Lvtgmp/fAJq6JOMjTtgEHrOfYrB/P4nbuCzDfzzOZupVn9vYijtc20U1WuEjL0QEh4ph
+         tvGu5Io/9HUb9ZlMcE3PxBnVwUefpY0+aKEBEwe9BkdfuwGheK3ZMBuxzAtAIQrUVfiD
+         Wn0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773801479; x=1774406279;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RHBZTmx3gpGoOcOvI5wr45XrMLqrJh4cbl+ScbRtWNE=;
+        b=rO0S02pufj+5tKNc86Ei8RBPVqrbjQqKMjQGvT688MEGIeJZVSSrOiHJXaPBV8IqLY
+         wDx7c6A9XdrGBXanN3uVmevXMJPuHfFbAHpHvTtQt+WaFTbLxi7p0AKcoxXkIpq+vfqJ
+         d/K7CI/+OKOgOXDuScof77oZ+LYE0vnAYOEuStrIVgHIZg1Ax9PZ0EZRMRAPfqGuHYwG
+         1mv8Ci00VUng3KYElTliyANGqNRzCNIejD9i4mOwP/m/T4UHVTeCQEFjHY1ufVqMv3RQ
+         WAlqYTdMGBs6ZxBPAB67jh5nESiOrD49jqAI2PYi8uQL5xQfssKhVmABUOb102tSVNJs
+         KUfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWNQhX2i0jm+vbMS9Oif191fBatEz9CTYW50+/M0UERzu4u5T8XP/aVVJSPvB5Zk/a0Cq11bl4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy04EDeykHPwpHDdHTkgjftvdLwNGcCtvazYlQsfZwDMG9Zm2sF
+	/MIgpcUNbZraXZ2vjxe6PiUaJPNBl7dy9QdRcYTIgxeBrfiO90yrwhEA
+X-Gm-Gg: ATEYQzyW2vgEQbNx6iu0chpjGAE4l6Qes/8azjiy7j95Ro9oRb5Pw369l2UGIPv5vH3
+	aBAuwSYs/iCHljZuAmHlLpHT5HtPHXB6YvWnZ+mJrdyh3Mavqjn2OnjLMaNgpehUviaNHSVhAJl
+	N7iij1n1c/wwoy1rkgteL1/mIxvDfUQhb0aXCqRmNioEaiaEvNKsdDTdv990fQKKt47Yz3YbRSC
+	TPBzVju6CD3IwOYgbzZ4BmIPXads8gpMxOybuwXVNz4BC8j+CSIcqvikfJGE9zHfq4ZJjzx+9Hl
+	iAjIqLz8VWT2N519wIKnA3kw0N2pvc61g/97BRQLvXi4Iowb06sIBGXcHLsiYeX+UaseCUFxWzI
+	py4DQXHFXxitkAtxM2VieTHV5igjspLK0WlYoCcHvX3VlzPH4cX3oLuUZJ1OLjospbEqnR9vVn+
+	tqgA93mugdx/Ydrvd7bDMm0cdgNO1pPkJmANOqa/FRZuwdncXsVjgfR+W9iua4xdgp+Ig2NWXW
+X-Received: by 2002:a05:6820:2d43:b0:67b:c368:136b with SMTP id 006d021491bc7-67c0da8c338mr1059481eaf.29.1773801478708;
+        Tue, 17 Mar 2026 19:37:58 -0700 (PDT)
+Received: from celestia.turtle.lan (static-23-234-115-121.cust.tzulo.com. [23.234.115.121])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-67c0d88c5bbsm880101eaf.10.2026.03.17.19.37.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Mar 2026 19:37:58 -0700 (PDT)
+From: Sam Edwards <cfsworks@gmail.com>
+X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
+To: Ilya Dryomov <idryomov@gmail.com>,
+	Alex Markuze <amarkuze@redhat.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>
+Cc: Milind Changire <mchangir@redhat.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	Sam Edwards <CFSworks@gmail.com>,
+	stable@vger.kernel.org
+Subject: [REGRESSION] [PATCH v2] ceph: fix num_ops OBOE when crypto allocation fails
+Date: Tue, 17 Mar 2026 19:37:33 -0700
+Message-ID: <20260318023733.116789-1-CFSworks@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026031714-undusted-rambling-c2ae@gregkh>
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-226950-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWELVE(0.00)[21];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[kernel.org,vger.kernel.org,lists.linux.dev,linux-foundation.org,roeck-us.net,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[redhat.com,kernel.org,vger.kernel.org,lists.linux.dev,gmail.com];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-226951-lists,stable=lfdr.de];
+	FREEMAIL_TO(0.00)[gmail.com,redhat.com,dubeyko.com];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nathan@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E61CA2B5391
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.dev:email]
+X-Rspamd-Queue-Id: 64E2A2B53C0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Tue, Mar 17, 2026 at 08:39:16AM +0100, Greg Kroah-Hartman wrote:
-> Wait, I removed them all, as that should have fixed the issue (I removed
-> the offending commit that was originally causing the build problem
-> here.)
-> 
-> Nathan, what errors are you seeing now?  None of these changes are in a
-> release, and I don't see any i3c patches in the current queue.
+move_dirty_folio_in_page_array() may fail if the file is encrypted, the
+dirty folio is not the first in the batch, and it fails to allocate a
+bounce buffer to hold the ciphertext. When that happens,
+ceph_process_folio_batch() simply redirties the folio and flushes the
+current batch -- it can retry that folio in a future batch.
 
-Right, you did drop those changes back in January. However, Sasha added some of
-those i3c patches back in 5.15.202.
+However, if this failed folio is not contiguous with the last folio that
+did make it into the batch, then ceph_process_folio_batch() has already
+incremented `ceph_wbc->num_ops`; because it doesn't follow through and
+add the discontiguous folio to the array, ceph_submit_write() -- which
+expects that `ceph_wbc->num_ops` accurately reflects the number of
+contiguous ranges (and therefore the required number of "write extent"
+ops) in the writeback -- will panic the kernel:
 
-I see
+    BUG_ON(ceph_wbc->op_idx + 1 != req->r_num_ops);
 
-  $ git show -s --format='%h ("%s")' HEAD
-  91d48252ad4b ("Linux 5.15.202")
+This issue can be reproduced on affected kernels by writing to
+fscrypt-enabled CephFS file(s) with a 4KiB-written/4KiB-skipped/repeat
+pattern (total filesize should not matter) and gradually increasing the
+system's memory pressure until a bounce buffer allocation fails.
 
-  $ git log --format=oneline v5.15.201..v5.15.202 drivers/i3c
-  cde3d9035e8afcb3b54aa233c51a0babb5013c67 i3c: master: svc: Initialize 'dev' to NULL in svc_i3c_master_ibi_isr()
-  6cae2af141da60a68f9e733f69821c3ea457b0c0 i3c: Move device name assignment after i3c_bus_init
-  acbd89719cb195143b5fc610c82e18f887631eaf i3c: remove i2c board info from i2c_dev_desc
+Fix this crash by decrementing `ceph_wbc->num_ops` back to the correct
+value when move_dirty_folio_in_page_array() fails, but the folio already
+started counting a new (i.e. still-empty) extent.
 
-  $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 mrproper allmodconfig drivers/i3c/master.o
-  drivers/i3c/master.c:2203:3: error: variable 'i2cdev' is uninitialized when used here [-Werror,-Wuninitialized]
-   2203 |                 i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
-        |                 ^~~~~~
-  ...
+The defect corrected by this patch has existed since 2022 (see first
+`Fixes:`), but another bug blocked multi-folio encrypted writeback until
+recently (see second `Fixes:`). The second commit made it into 6.18.16,
+6.19.6, and 7.0-rc1, unmasking the panic in those versions. This patch
+therefore fixes a regression (panic) introduced by cac190c7674f.
 
-which is resolved by commit 6cbf8b38dfe3 ("i3c: fix uninitialized
-variable use in i2c setup") upstream, a fix of commit 31b9887c7258
-("i3c: remove i2c board info from i2c_dev_desc"), which was backported
-in 5.15.202, as you can see above.
+Cc: stable@vger.kernel.org # v6.18+
+Fixes: d55207717ded ("ceph: add encryption support to writepage and writepages")
+Fixes: cac190c7674f ("ceph: fix write storm on fscrypted files")
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+---
 
-I merely brought up what happened in January because that patch was
-already flagged as excessive but I guess it was a stable-dep for a
-different i3c backport back then.
+Changes v1->v2:
+- Added a paragraph to the commit log briefly explaining the I/O pattern to
+  reproduce the issue (thanks Slava)
 
-Hopefully that makes sense, let me know if not.
+- Additionally Cc'd regressions@lists.linux.dev as required when handling
+  regressions
 
-Cheers,
-Nathan
+Feedback not addressed:
+- "Commit message should link to the mentioned BUG_ON line in a source listing"
+    (link would not really help anyone, and the line is a moving target anyway)
+
+- "Commit message should indicate that ceph_wbc->num_ops is passed to
+   ceph_osdc_new_request() to explain why ceph_wbc->num_ops == req->r_num_ops"
+    (ceph_wbc->num_ops is easy enough to search; and the cause->effect of the
+     BUG_ON() is secondary to the central point that ceph_process_folio_batch()
+     is responsible for ensuring ceph_wbc->num_ops is correct before returning)
+
+- "An issue should be filed in the Ceph Redmine, linked via Closes:"
+    (thanks Ilya for clarifying this is unnecessary)
+
+---
+ fs/ceph/addr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+index e87b3bb94ee8..f366e159ffa6 100644
+--- a/fs/ceph/addr.c
++++ b/fs/ceph/addr.c
+@@ -1366,6 +1366,10 @@ void ceph_process_folio_batch(struct address_space *mapping,
+ 		rc = move_dirty_folio_in_page_array(mapping, wbc, ceph_wbc,
+ 				folio);
+ 		if (rc) {
++			/* Did we just begin a new contiguous op? Nevermind! */
++			if (ceph_wbc->len == 0)
++				ceph_wbc->num_ops--;
++
+ 			folio_redirty_for_writepage(wbc, folio);
+ 			folio_unlock(folio);
+ 			break;
+-- 
+2.52.0
+
 
