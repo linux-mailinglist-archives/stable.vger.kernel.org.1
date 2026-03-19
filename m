@@ -1,101 +1,105 @@
-Return-Path: <stable+bounces-227315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227318-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cDFZKLANvGkirwIAu9opvQ
-	(envelope-from <stable+bounces-227315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:52:32 +0100
+	id SGGQIK8NvGkirwIAu9opvQ
+	(envelope-from <stable+bounces-227318-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:52:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 978AE2CD367
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:52:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC312CD359
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AC2B13047E9B
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:44:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 86A51300B77F
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FA73C457C;
-	Thu, 19 Mar 2026 14:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B432D2DBF78;
+	Thu, 19 Mar 2026 14:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="ZOhJF22r"
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="gObhPUzi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BF63D75D1
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 14:44:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CED3A5E92
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 14:52:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773931458; cv=none; b=coTEUOdTJjDEaGA13EBXaShI/SDKoPpbdNdhJLb0CCQlzsyNvtEuKT3ihnN7iGSId/VfV/K9uT0zicuBzxIe5GC+R+dEYwgU16t+MG/0UeLBcSG+96Ez3ZOMB04p0qBshOrclj7NCOvzyWEI6RFCTB1s6kf7BJArepqmKSULqTU=
+	t=1773931940; cv=none; b=ljxTmZFiozSbnioejrmU4zu5AuR52VI5wPNuKyPCz8SoZQfBzqTm81p0mAHwmNAsaxf/IoLd/nBGaO80PV9oqr7ujxlkgSKwTWmPvVjhi0rMJb4w3WTvq0bOi2Aasn35pLWQyv33XLq1FwNJ8vscUAX9zZIbmz85w8Z6KV+ITco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773931458; c=relaxed/simple;
-	bh=ug5Q1tYhOutC+6/+4KjesizCcJe7ky5sajhME7gBIqA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UE+qD3Xm4SMSRSHpb71piXUzP9ybRT4jvVVdZgQSZrpwYWm4DOxtBGghvlToAzBITifY35kpAupovDizFJreFe9PaIxpKVsiMChoNjWPmnmN2Pp8Gacnz3xRioS/csFveTMBVJkOhD2oT7KOuvv+9+4khjLIxKCgALKdYFA+Qx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=ZOhJF22r; arc=none smtp.client-ip=185.125.188.122
+	s=arc-20240116; t=1773931940; c=relaxed/simple;
+	bh=RJ41S1snfyuQgrhKqvYt8cog5cMZwGsaPY/mqZngtdY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tcS57gzUJzmR5kDOZKQOBaUe/5e5kRrUVa0iJq37VzPseXKjqB7cnOxNvIrnn7ufeYtLMUFjffAR4V+B7caThggVAtTIF9oIIsPxNmw7G9kPh2rAZ0sq4PWXYkvx1Bf0mqzipADHWsEeQY+XJ+VPCh/op5DR4/j8+gzj4LegOL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=gObhPUzi; arc=none smtp.client-ip=185.125.188.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id E169C3F665
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 14:44:13 +0000 (UTC)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 1E2F33FE29
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 14:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1773931453;
-	bh=vMKxtJKboCvg52mgxUFzChSrhCEwBJ/YbGYkS+qHCUI=;
+	s=20251003; t=1773931936;
+	bh=3KJpXt63kzGfwrgcWC7T+DbVFRnuXxbhtvmi/paNSmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=ZOhJF22rISfmiGB7coSGcsKNqVEb1kTDzFwfaGUDiwNRF8sv6xYKRgmYMnfJe84PG
-	 VmtkLz9zIb1Wmfcvk3tb8JYjYdOSQTbsb9bDxfZLtbiDXvJ5d7P9nOv2bNFf0k+y0P
-	 VBu09wzk21oXNqQ8IcpP6luve3Q6x8Pg32ieqmWidk9jlWt/7WEqE3x08fG9OZDbT4
-	 h9rVPf/l3iIS/Wh2CAxoMWhEYXPvLRbXxW2EANJe3QXMRcvFgdec+HV4h1qAqhhNLD
-	 dscyO3iThi2YzIT+81R2bQM9Dy1k/LI5BGpE+auBuR9gDz6qrQ/vZVAH/qmJ+e65vd
-	 1ie+gcMW8YWKj7A0hEvr6NlR2hfJEc4y/QVp4+5fJAiImmjQVu2CDVTPd3z+GLYfS6
-	 bm0ep6kR40EsGipHNtMHN40CIJ2anC1d5nPljPoh/CYjDMi/krRmFsqNIBDcRs3LRf
-	 Ye7RkbL5BrZCbD4TBLy9RNzlfXNHjVgJzdRroMISQmdXgOjiRkOsHexrwANWDw11BF
-	 LYP/HfPsl2DfoHm0yPwKrHGH6mLflyInNKKjYpNlUK6GmzVHfTuTkLBs2oaNp6d9ch
-	 OamvVY8eyxypvwLdbEHSlaHH+ojRgxPdDUmalMbD7qIfLSbbF7cTqkSdGYbFqOQXMn
-	 gW0067220MtqitN8F3z3B/J4=
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-439af7ba802so1355930f8f.2
-        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 07:44:13 -0700 (PDT)
+	b=gObhPUziXVJ3NsKzHLe4zO0BYfG4T9242aFJKHquPt4PHjVn2+hT9CeShNQI7E5wh
+	 JkpzYOcf6k3kLWKDTsKUl4ERrc3s3bGQdaHHwSrtKUWZTRbqniqQ5WGDKrCA1s6Kp5
+	 D58bbWQZ6CYGquvh7A6I8Gn0+bSmnaVSP/sU1esXKhF3j6obUdzuVYcrbve7iQr0xb
+	 qj66GTRWQ0Ch2UJS2+vxApUyhuX6O8E6KvIrS4HEDFn24qRJkg+1Op159j+Gl5k1KY
+	 ZHIRs+imyuj0KMK6c8CSu2gZOhLvBIWiX0JiE+i1PKddgxvo52k2bqeblR6XPdX+d1
+	 N66m6c4sYgZdt0s/YRq7dlUfeZsiXmWLIf9lor565RTzGutXDHpiXXgZoKFykbgf31
+	 bsHP5NeTlKK/7lgWTzZ51BN+i40QiogY2+sRJ4gCUj56r1g+wnztEQLY9F3Gz9OrbD
+	 BmOZS6qC9beAbWlS0hUaTHYWH/od6w/DPxuILXp/9YnZf2R108toCzVRyHAfIzbHgs
+	 11xt1Pq4d4TbzkCKgE3BPSoMfzkYwvQvqb0K3Txrbyisn+un/aJ82EDWFUCv03J+ac
+	 c1MlhlwE8zOCVxTe7usQFLEw8d3I1/NlpjY3mf7CpE67ejtjXd7uAPpV/9CkIeJ0At
+	 ZosPuWrlGf5tz7264JN3GWr8=
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4852cf0318dso9574835e9.3
+        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 07:52:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773931453; x=1774536253;
+        d=1e100.net; s=20251104; t=1773931935; x=1774536735;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vMKxtJKboCvg52mgxUFzChSrhCEwBJ/YbGYkS+qHCUI=;
-        b=HtojTT8QqpP0CPmyhmUeZNS1w2+4rZdTa4/uc4kxd5jm6IDeCKUwcELqdku8sWkpab
-         vkXAsNTE/fBDQBtOXa4RivCRnK9dxiCZaQj2irnYY3sPTXwmQ5cu5O/sAnxjIeM8RqOB
-         jkTxCVWYf+R4Ue2x3NVclm6gIiA0b32YjWlFh6dykPX/I2dplwDmvmLS2XyDzLT4blKq
-         ylRO/TEVYZS4j3ndF6i1xb/DWWjwpkkiThU4kW0XjwpWFgDEL5VziEEZN2NEq/Npm1gV
-         7xs9Z9jtrhvbLz3114SrsFAOy2fwxKZcv2Z8SQMUyDrswi7VwmAwk/bi6q548JEbUvXV
-         tAPg==
-X-Gm-Message-State: AOJu0Yx7MJjcYHqPeZNSeY9sfSgvFNhBJg1XwpuwDeXepvGj8NXR2+yE
-	utOfWMMqZo8jL4kT5wTrUc8JGAsNNL2bHBww5e31HcAGdI2q90lfKyrHnp4a+Xy/5+/0j9eUQb+
-	iRkLxcXbWj+2nPWxCVZC0LVpT/gjraxy5taH8Di5kEh2H7OORmd8zwcLzi3lNyoGxie8/Lzwoik
-	w6qiIF753zX9I=
-X-Gm-Gg: ATEYQzxvqqxhBUgCl1sds1Zqx9NTBD2hKmKnUbY4+V9UjELOcqH5QqMB39rMR7kchyE
-	H3Qb+g5wzu38wVuqOJyyKdo6EclS7OyEm2TrAGc00GcdsvaP0QQv3YsCH6zGZKvZdBWg3HAwzZo
-	Y5hQ1lEVLjizZEs+55zROIntaU4ffoFYs0xoOwSUrbfWedU6hWXOuKV/LYzPn2vUXzm6bTLlRwl
-	CF5ohQ/gNmLXIE3VTsQ+p+z2FnsldAJHecc1pR5wdOEndzPHI9zhiM4bI51tmq8x43yYZal+OGJ
-	PQZruMe4cShwVgJRrOrw4LYDFug33DvwhKCQQEJfRM9CcBGPsfKT9J+4djbV9gWTILpdn6iWlMe
-	94nTJmAXE4XKEY0rKn/aWJM522ETMxAkz3gxkoHlRWW7H/G5XeqJ4
-X-Received: by 2002:a5d:64c3:0:b0:43b:47bc:c147 with SMTP id ffacd0b85a97d-43b527cc553mr13236697f8f.45.1773931452957;
-        Thu, 19 Mar 2026 07:44:12 -0700 (PDT)
-X-Received: by 2002:a5d:64c3:0:b0:43b:47bc:c147 with SMTP id ffacd0b85a97d-43b527cc553mr13236647f8f.45.1773931452421;
-        Thu, 19 Mar 2026 07:44:12 -0700 (PDT)
+        bh=3KJpXt63kzGfwrgcWC7T+DbVFRnuXxbhtvmi/paNSmc=;
+        b=JWy0tNC+2PHYMpx0q6gu8xTEwFaTmZSP1Kpcjof0xGKiUdezYGpTglxSzEjvx7tRc/
+         1EFtu2v+0BAyJUpV1nbkbnME5QG28Zyp+vdJI/6kWR8iEiwWyNHibnE9ISIZ7IULgXQv
+         aGOV1NUKb+Ct9SXhgI9YaEz1SiXsqWaeV+QN7WFBpykmVWHq1CJ/xN9XfIy+qRnf4fXG
+         IhyVP0pgdc8DfcCRPrENKS5Np4SJZcCFd2s8npXaKqHYuYg/Wr7zEd7ic8XixBYHtVNA
+         bjjHRJ0n2Tf+ogzHrshzEVV8EBry7c3NvcbVqNHnEnYAlMI3uKe6RACv9HpD5WH3h56k
+         JmiQ==
+X-Gm-Message-State: AOJu0Yxq5WbxUZ1ESzdKu/Nc3iIHZQF3F0KTQK3weBSEBmUtV/FI2Ehm
+	Was6H99ajLhZpNKwU84h2/N4uAJXK+d6sJ8v1/cSo+YRyX6F267j2psQezKXfxpoVSXQ35ul+qQ
+	qKi22onX+8dL0YCm+VN7ftDd4Ls7nt3pdMjdwiDcjYqFCSQ977D2PXBvJPwsIFgYigSRRMyNiWp
+	sY6qPbBrngJ6k=
+X-Gm-Gg: ATEYQzw+za2x6sE4B4jndqtG8w5CNT+uA1HS2yJQ62gxpffJS3YPkvPxqemCQLxY2KQ
+	gBA3rWssXXVvdwy12nF8SJRswWBEZCAxsP0rgDIYaYCyayZmEdfYdoPWEVpOZ4UhANq422BU1Gu
+	rsToukpiAMlTNnX7kluQrceiDwQFBzhf5843IhTIegnnIRponwt5BXoU5aSDxYai9M6rNRzvUiy
+	8A4aWEKua/QaDDYeTjES8QGZvvEJH3ErVxcW0u4suYs38BGbzpOa20M81rZPlLoSwe1CQV3+QHV
+	rp6nhNBPAJCURy5ZIB1Sq54JYXb5MhZOERgw0bHiiC1Q9cj6T2u1fykV9i/IyNtX3JZyuD46FxT
+	S/U856kSabT9BFaJ2bSDo7vBN9vgnyuOBTfvr+p/q45WUcr+qHqwf
+X-Received: by 2002:a05:600c:3551:b0:485:9a50:3369 with SMTP id 5b1f17b1804b1-486f456fe98mr130513865e9.29.1773931935235;
+        Thu, 19 Mar 2026 07:52:15 -0700 (PDT)
+X-Received: by 2002:a05:600c:3551:b0:485:9a50:3369 with SMTP id 5b1f17b1804b1-486f456fe98mr130513445e9.29.1773931934756;
+        Thu, 19 Mar 2026 07:52:14 -0700 (PDT)
 Received: from XPS-17-9720.han-hoki.ts.net ([213.204.117.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b51852097sm16579827f8f.9.2026.03.19.07.44.11
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8c4aa85sm56566895e9.12.2026.03.19.07.52.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 07:44:12 -0700 (PDT)
+        Thu, 19 Mar 2026 07:52:14 -0700 (PDT)
 From: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
 To: stable@vger.kernel.org
 Cc: Ghadi Elie Rahme <ghadi.rahme@canonical.com>,
 	Steve French <sfrench@samba.org>,
 	Paulo Alcantara <pc@cjr.nz>,
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Tom Talpey <tom@talpey.com>,
 	Aurelien Aptel <aaptel@suse.com>,
+	linux-cifs@vger.kernel.org,
 	samba-technical@lists.samba.org
-Subject: [PATCH v2 5.15.y] cifs/dfs_cache: Fix NULL pointer dereference on session connection failure
-Date: Thu, 19 Mar 2026 16:43:25 +0200
-Message-ID: <20260319144325.438788-1-ghadi.rahme@canonical.com>
+Subject: [PATCH v2 6.1.y] smb/dfs_cache: Fix NULL pointer dereference on session connection failure
+Date: Thu, 19 Mar 2026 16:49:29 +0200
+Message-ID: <20260319144929.455978-1-ghadi.rahme@canonical.com>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -109,29 +113,29 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[canonical.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[canonical.com:s=20251003];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227315-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ghadi.rahme@canonical.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.993];
 	DKIM_TRACE(0.00)[canonical.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227318-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[canonical.com:dkim,canonical.com:email,canonical.com:mid,suse.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 978AE2CD367
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ghadi.rahme@canonical.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-0.992];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,canonical.com:dkim,canonical.com:email,canonical.com:mid]
+X-Rspamd-Queue-Id: DBC312CD359
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -197,32 +201,36 @@ Stack trace:
 Fixes: c870a8e70e68 ("cifs: handle different charsets in dfs cache")
 Cc: Steve French <sfrench@samba.org>
 Cc: Paulo Alcantara <pc@cjr.nz>
+Cc: Ronnie Sahlberg <lsahlber@redhat.com>
+Cc: Shyam Prasad N <sprasad@microsoft.com>
+Cc: Tom Talpey <tom@talpey.com>
 Cc: Aurelien Aptel <aaptel@suse.com>
+Cc: linux-cifs@vger.kernel.org
 Cc: samba-technical@lists.samba.org
 Signed-off-by: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
 ---
 Changes in v2:
 - Added maintainers to CC.
 
-v2: https://lore.kernel.org/stable/20260303173108.515913-1-ghadi.rahme@canonical.com/T/#u
+v2: https://lore.kernel.org/stable/20260303173139.517020-1-ghadi.rahme@canonical.com/T/#u
 
- fs/cifs/dfs_cache.c | 2 +-
+ fs/smb/client/dfs_cache.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cifs/dfs_cache.c b/fs/cifs/dfs_cache.c
-index 1864bdadf3dd..92be7fe7c725 100644
---- a/fs/cifs/dfs_cache.c
-+++ b/fs/cifs/dfs_cache.c
+diff --git a/fs/smb/client/dfs_cache.c b/fs/smb/client/dfs_cache.c
+index 3bc1d3494be3..af2177b96f2f 100644
+--- a/fs/smb/client/dfs_cache.c
++++ b/fs/smb/client/dfs_cache.c
 @@ -98,7 +98,7 @@ static struct cifs_ses *find_ipc_from_server_path(struct cifs_ses **ses, const c
- 
+
  	get_ipc_unc(path, unc, sizeof(unc));
  	for (; *ses; ses++) {
--		if (!strcasecmp(unc, (*ses)->tcon_ipc->treeName))
-+		if ((*ses)->tcon_ipc && !strcasecmp(unc, (*ses)->tcon_ipc->treeName))
+-		if (!strcasecmp(unc, (*ses)->tcon_ipc->tree_name))
++		if ((*ses)->tcon_ipc && !strcasecmp(unc, (*ses)->tcon_ipc->tree_name))
  			return *ses;
  	}
  	return ERR_PTR(-ENOENT);
--- 
+--
 2.51.0
 
 
