@@ -1,113 +1,177 @@
-Return-Path: <stable+bounces-227244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qNZwM7nEu2n1ngIAu9opvQ
-	(envelope-from <stable+bounces-227244-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:41:13 +0100
+	id uB+KILvCu2n1ngIAu9opvQ
+	(envelope-from <stable+bounces-227245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:32:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFDB2C8DA3
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:41:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4043E2C8B72
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5EE5E3046512
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:29:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E54063070EE1
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 589EA3A543E;
-	Thu, 19 Mar 2026 09:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831AB3B6379;
+	Thu, 19 Mar 2026 09:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yle47foc"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KNiqUR7f"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156613B2FFF;
-	Thu, 19 Mar 2026 09:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6AB3B6347
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 09:30:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773912549; cv=none; b=oGqdrFLOq6EWz9kDyU0vXgLOTuDq54vfB2DD1gKdHYt7Pf6Ftgvf5gjw7m5FWov6XsCJyzUE5qdwwumZs7drJP+yxhnOJYTXFwNl1W37CQWg30k8Vx60o7TaCY9UXjbZ/XhssWi6PUlHTT3Zg5Mu92QK/JBpuG76jUfUrp561iQ=
+	t=1773912608; cv=none; b=W2V/uT4tfSNj+02HzIrNIFe8rLyfza6Ut0VCbv9Z8FRlOYbGsU4qQbhNdrdTiUy895GFkafmuUq3Vz9IDQj7ndtT4Iyv6Z2UqMaMPLUBpb5CaQI/8PdsLkjAh55ju7mTAQoOlJ5i+HBWFqofDUmE7XzOXiQ3/QmYaxvt5FvxQFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773912549; c=relaxed/simple;
-	bh=OZjDCPMvyj6fBM0TxtQk7RqfV7z4fzmGkmhMdYSyKPc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X8452HzkDGgpvx+QdbS904xm8pO8HCUAlmCWPz+tpAIbXwZBTNTBjA2REKYg4bzEjF8B8ngPnAp+5e9wnU6diBY4fJ/7La04ks2zUgciKrRJpLPiIoFsBwCB2uvqg6Q/cNofvEnt2tq4mf8jAALjxYyMaiGoOW6YJ7R+dY87IFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yle47foc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B3EC19424;
-	Thu, 19 Mar 2026 09:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773912548;
-	bh=OZjDCPMvyj6fBM0TxtQk7RqfV7z4fzmGkmhMdYSyKPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yle47focBnxRT+SdDcr6Gf4SB+uaGyxoSyMeJx28hxIuIeTTAZwXUOBql8zI0FECs
-	 KvGqBEEgjANLjiKV6nsNAizv1/ECeVBvPapDHa/nMNt8HCURARRZV1AAClOMfDthZL
-	 xoWPJJR1/9gflHg8zrSOW8ydzEBSzSj9Sa4p4rwQ=
-Date: Thu, 19 Mar 2026 10:29:03 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jiri Slaby <jirislaby@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH 6.19 240/378] sched_ext: Fix starvation of scx_enable()
- under fair-class saturation
-Message-ID: <2026031953-undrafted-postal-4e78@gregkh>
-References: <20260317163006.959177102@linuxfoundation.org>
- <20260317163015.844144806@linuxfoundation.org>
- <d80f17e4-bd3f-4053-bdf5-671439d5b72e@kernel.org>
+	s=arc-20240116; t=1773912608; c=relaxed/simple;
+	bh=5Tn2GSJy9+z5AN9rUCr5S9E+wQKe4/XNxtQvB/al9GE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=p32mfw8h3z7JgeBHDFUUqQAH1VbzDpHY2ERSdjX72RDLRgHV5pYreg9CKHjTH9eobAZaotT308KVzSoHiC6LsPfPWP7MB3+WDmE2h2xKcSyD7b8lLLlFQpYJ4s3FG5JJlXYcMjegoo6FGJt5hTfp7gcBKVD4m+7P135PYV0PnRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KNiqUR7f; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773912605;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=a4m5UwRuqyM/t4XvLlwc+wdoOn18dTnoMotq/73CZ3Q=;
+	b=KNiqUR7fBuStfgzVa6UzT9qSiV/Zino8T5kUP8DTYuVqQN9baqfB8IZ+7GfnVwIPGOqmCl
+	9kc6GxvydTSeJQn30WDzw7U1GHW0mHs04absHIRN2WgkScc8SVlfJDkbcVQyf7vUtSzJb9
+	maP2Vmm+yaC9xPSFChP1KBdu2T/busU=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>,
+	Kim Phillips <kim.phillips@freescale.com>,
+	Yuan Kang <Yuan.Kang@freescale.com>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 2/2] crypto: caam - guard HMAC key hex dumps in hash_digest_key
+Date: Thu, 19 Mar 2026 10:29:33 +0100
+Message-ID: <20260319092932.208939-4-thorsten.blum@linux.dev>
+In-Reply-To: <20260319092932.208939-3-thorsten.blum@linux.dev>
+References: <20260319092932.208939-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d80f17e4-bd3f-4053-bdf5-671439d5b72e@kernel.org>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3285; i=thorsten.blum@linux.dev; h=from:subject; bh=5Tn2GSJy9+z5AN9rUCr5S9E+wQKe4/XNxtQvB/al9GE=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJm7D/65tezRtGMbJBj+e+2fuGTnRHONyoj/LJPWPIi51 j3146Oc9x2lLAxiXAyyYoosD2b9mOFbWlO5ySRiJ8wcViaQIQxcnAIwkbwURob/G8LOhQp5dD8/ IfD2toSDz6/jjD/UHE6yycetkLlxon0qwz+1BfGrkw0D+t/GzJeYf0YhIfdaMNempvtTV5pk+74 7s4wHAA==
+X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227244-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227245-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linux.dev:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-0.972];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.942];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 5DFDB2C8DA3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4043E2C8B72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 19, 2026 at 08:11:39AM +0100, Jiri Slaby wrote:
-> On 17. 03. 26, 17:33, Greg Kroah-Hartman wrote:
-> > 6.19-stable review patch.  If anyone has any objections, please let me know.
-> > 
-> > ------------------
-> > 
-> > From: Tejun Heo <tj@kernel.org>
-> > 
-> > commit b06ccbabe2506fd70b9167a644978b049150224a upstream.
-> 
-> This one likely needs also:
-> 2fcfe5951eb2 sched_ext: Use WRITE_ONCE() for the write side of scx_enable
-> helper pointer
+Use print_hex_dump_devel() for dumping sensitive HMAC key bytes in
+hash_digest_key() to avoid leaking secrets at runtime when
+CONFIG_DYNAMIC_DEBUG is enabled.
 
-Ugh, I missed that, thanks for catching it!
+Fixes: 045e36780f11 ("crypto: caam - ahash hmac support")
+Fixes: 3f16f6c9d632 ("crypto: caam/qi2 - add support for ahash algorithms")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+---
+This patch now depends on patch 1 in the series.
 
-greg k-h
+Changes in v3:
+- Convert single CAAM patch into a 2-patch series
+- Use print_hex_dump_devel() helper from patch 1/2 to keep call sites
+  compiled (Herbert)
+- Link to v2: https://lore.kernel.org/lkml/20260318194649.137257-3-thorsten.blum@linux.dev/
+
+Changes in v2:
+- Debug-guard key hex dumps instead of removing them entirely (Herbert)
+- Use print_hex_dump() instead of print_hex_dump_debug() since the dumps
+  are already guarded by DEBUG
+- Link to v1: https://lore.kernel.org/lkml/20260306111204.302544-1-thorsten.blum@linux.dev/
+---
+ drivers/crypto/caam/caamalg_qi2.c | 4 ++--
+ drivers/crypto/caam/caamhash.c    | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
+index 167372936ca7..ec40d8ada4a9 100644
+--- a/drivers/crypto/caam/caamalg_qi2.c
++++ b/drivers/crypto/caam/caamalg_qi2.c
+@@ -3269,7 +3269,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
+ 	dpaa2_fl_set_addr(out_fle, key_dma);
+ 	dpaa2_fl_set_len(out_fle, digestsize);
+ 
+-	print_hex_dump_debug("key_in@" __stringify(__LINE__)": ",
++	print_hex_dump_devel("key_in@" __stringify(__LINE__)": ",
+ 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
+ 	print_hex_dump_debug("shdesc@" __stringify(__LINE__)": ",
+ 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
+@@ -3289,7 +3289,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
+ 		/* in progress */
+ 		wait_for_completion(&result.completion);
+ 		ret = result.err;
+-		print_hex_dump_debug("digested key@" __stringify(__LINE__)": ",
++		print_hex_dump_devel("digested key@" __stringify(__LINE__)": ",
+ 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
+ 				     digestsize, 1);
+ 	}
+diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
+index 628c43a7efc4..b8e6cc382d93 100644
+--- a/drivers/crypto/caam/caamhash.c
++++ b/drivers/crypto/caam/caamhash.c
+@@ -393,7 +393,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
+ 	append_seq_store(desc, digestsize, LDST_CLASS_2_CCB |
+ 			 LDST_SRCDST_BYTE_CONTEXT);
+ 
+-	print_hex_dump_debug("key_in@"__stringify(__LINE__)": ",
++	print_hex_dump_devel("key_in@"__stringify(__LINE__)": ",
+ 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
+ 	print_hex_dump_debug("jobdesc@"__stringify(__LINE__)": ",
+ 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
+@@ -408,7 +408,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
+ 		wait_for_completion(&result.completion);
+ 		ret = result.err;
+ 
+-		print_hex_dump_debug("digested key@"__stringify(__LINE__)": ",
++		print_hex_dump_devel("digested key@"__stringify(__LINE__)": ",
+ 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
+ 				     digestsize, 1);
+ 	}
 
