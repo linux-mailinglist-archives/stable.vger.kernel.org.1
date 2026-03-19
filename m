@@ -1,284 +1,246 @@
-Return-Path: <stable+bounces-227382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227384-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KO7xKcxlvGmYyAIAu9opvQ
-	(envelope-from <stable+bounces-227382-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:08:28 +0100
+	id 8D+oMUxnvGnQyAIAu9opvQ
+	(envelope-from <stable+bounces-227384-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:14:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A4DF2D2854
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EAC42D2951
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:14:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B87D7316261C
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:07:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1FCA23081809
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9647D3E92AF;
-	Thu, 19 Mar 2026 21:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36A7402B83;
+	Thu, 19 Mar 2026 21:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dubeyko-com.20230601.gappssmtp.com header.i=@dubeyko-com.20230601.gappssmtp.com header.b="Mf2WIcBL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rhd24Mf0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C212C3AE707
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 21:07:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43F7402427;
+	Thu, 19 Mar 2026 21:14:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773954465; cv=none; b=mlcZAXgY9wBwZaO8c3oY9HqSEGevfs8e8UIu5K71w2OlcoQDZJ+byXgTIq95wCKcgsfowHhIdpGVYe7YaYeC9VcWowTYy2iy+T9ONPjoMxKBIS3q83MdAGWZz/AUQtRGT5msoCf9nS/wWbaJRLLFWuE2U3CuH2kRf2FQv6RMpGA=
+	t=1773954852; cv=none; b=eWPHgsjdCKIuksKVDdlWRwzaSSwHixtYXIkwIdeiBNBfPS8NZ9bNnrqAEpmDCRjYLQhYFk+kutE6rZfEHN/xsGML1vol0ptiO1BrRWPwFpbIKO6COpMOnoAXm62HNUwk5/CvToqbrp4Z+mVW2ZzOjpAJtoDrD9ABmMc/737A988=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773954465; c=relaxed/simple;
-	bh=LIdSmF74+Qy782y4OxXihWI2ikJ7KUlQNEOCOpP650Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Vbo8Yn6O2oRq8rq+FLNwgBMSd4wjrFymzQ8jNMIhxk75AEMh4MYCeCTirWn9elZm0vtzSIywHlrVA+np/SRxoiov4XSp+7fTH6TWsLwAA48z/50KjxuhFYTTVmmzRnuZqkuedyE8cHbKpLn1SrREb6/QCq+eiEUtv2TMn8aE1vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dubeyko.com; spf=pass smtp.mailfrom=dubeyko.com; dkim=pass (2048-bit key) header.d=dubeyko-com.20230601.gappssmtp.com header.i=@dubeyko-com.20230601.gappssmtp.com header.b=Mf2WIcBL; arc=none smtp.client-ip=74.125.224.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dubeyko.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dubeyko.com
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64ae2ce2fe1so1691300d50.1
-        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 14:07:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dubeyko-com.20230601.gappssmtp.com; s=20230601; t=1773954463; x=1774559263; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=W/lLYyO9dsamcqErAahsDucntHDQrTPdMXAJL7p0IXg=;
-        b=Mf2WIcBLa7cZxRkOf4JSeRgVwhntFFba4OeVjGaGwlbvS/3a1f5z715wl9NzEfLA/7
-         nC6NZtP5WjdonIH+xiGFKXSEp9hpWetw65aQYzRAeRVUAf8aln03gTPmrZdmSqpkaqyc
-         1oN1HmlQ5/1VDxBcw/EVKF6ljsNRPq6wtQi8OVuG47Qt1OcmVEUOAEY1sOhzoM6gNftr
-         46MY4lBC98U22D2thrBZfKEbo/51GTkDS+SSjU8igv4SUuMKkAR6vvK8xH/ZX+Lcb+RJ
-         f1BMn+lYAmSAIUq4cref5Z5hLQqOmz517/GhVMgIUxN2Gqp6hMYgvxjxBIrKER+cs1pJ
-         G9Vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773954463; x=1774559263;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=W/lLYyO9dsamcqErAahsDucntHDQrTPdMXAJL7p0IXg=;
-        b=rzHkJkROxBmD8+UvmG7oN0KClyvxvYZXaK+RxP+81xI++aWLffQF1TsjQG77iiOehz
-         wM/qcJvOfSU3NU0WFgImJrcx9BboMakUaOhjtGdgBcXWpIlTrtplceOcaFG5jHVFaK34
-         U/cL2gFt2vcy8rHiOcuzKi/GN0kgYkNB8XCdWVamIgSBBBxwFR6Jq5bgow/nW+yGSAac
-         dLx2oK7taTJIgj0xDaCjQMeipv70zrS+ij8gnkh/wMvKsI2UiGq2qYjwDkMCJPPuKsk2
-         HriHwosNEaUIy89J5cnQf72LFG5Abm+mg47ehBvNk8IgIyYRxd9vhmrBCX8hTD+NCC2p
-         5DPA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBTawZUrlOFUKqCudP0SsXGiYI8XNElENNj1LNXtvNonGaX++411M21e5hsZENKQaVXJlt9ZM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjUSTz04NyfkmpwiZgvk7oR4nIOoFSQGEbCraAzj4ykp/3IaKe
-	fOWNo1bb1Tp3WXhuiHCxAl4j4EH9bodO/faJP6ad/QqkQeo0Lxlg/PpX3eA25A/6ZuM=
-X-Gm-Gg: ATEYQzzRl5tZn5BTmz8nTMGSYhnnwKTTzaVcgQ/2u31VbQDh7ZjNO1ewddzO68AHx/O
-	ktOGHc4vT4vOR71IIgJO+qYYT7dcyy8Up1i3hRtsR5BtVmpirGfeQpqqmZZDGloBMGvuwqM3993
-	n48K2N4nIqZgn67yv+vmgS4lNu3ZbLCq86+azWDLt9kTKDe55C+KiBxkBiALFn9dP3apFQRG/jP
-	0NaDoVx3hpmk4fgtkmfyhYexQ8fF9txxb19LdVnyu/r56VjaztOee50XLsjCprH4c5YdbTTZXTF
-	J3RvTgVcZQhDpJn/tmOuqw5jqAw5JxAQXkzYFD1uSOIxTPrrVX4rswHdXebpnYHtF/KT402yY/o
-	Ws7FiRCmr9mECn5wBsvCV6yJjnuAbozy6VwCIQW1ynLMYh6PBk7M3kiBBlWIQCcco2zx9LOIAi+
-	0HkUoe3EXitKGoQB+5Y0Q6b7cUGhlYDQ5Dru4JPA3HGX49ndnFSc7DBTh48nFTxMH/C4fhADi09
-	VJt5eMGjq4hZjvylcuN3nhBepiXcrI6ROuNbiq0abUAluWl5BtE0PVKOg==
-X-Received: by 2002:a05:690e:1914:b0:64e:599d:f0d7 with SMTP id 956f58d0204a3-64eaa698146mr1116512d50.9.1773954462671;
-        Thu, 19 Mar 2026 14:07:42 -0700 (PDT)
-Received: from ?IPv6:2600:1700:6476:1430:34be:535:4e85:feb4? ([2600:1700:6476:1430:34be:535:4e85:feb4])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64eabbf8503sm202244d50.0.2026.03.19.14.07.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 14:07:42 -0700 (PDT)
-Message-ID: <6f007d418831108fb75642d4c44d186ff7048a82.camel@dubeyko.com>
-Subject: Re:  [PATCH v2 2/2] hfsplus: extract hidden directory search into a
- helper function
-From: Viacheslav Dubeyko <slava@dubeyko.com>
-To: Zilin Guan <zilin@seu.edu.cn>, slava.dubeyko@ibm.com
-Cc: akpm@linux-foundation.org, frank.li@vivo.com,
- glaubitz@physik.fu-berlin.de, 	jianhao.xu@seu.edu.cn,
- linux-fsdevel@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Date: Thu, 19 Mar 2026 14:07:40 -0700
-In-Reply-To: <20260319144955.648380-1-zilin@seu.edu.cn>
-References: <e86980b8682bb9ea007d9fdfab8a8530781ebb2b.camel@ibm.com>
-	 <20260319144955.648380-1-zilin@seu.edu.cn>
-Autocrypt: addr=slava@dubeyko.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (by Flathub.org) 
+	s=arc-20240116; t=1773954852; c=relaxed/simple;
+	bh=mRP95+w+fhUk8Uwl9cU7Js17s7tnPpW9z6YR7cq7YPA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=tZ4GAb0cCGDUq+Tzmcg283kqS4480uoEeKUGPvzAaY5VPdhUG40WMxfmZhoy6ph2/fepX0T0vlJ/i5Hnu4nn06tx7CuZg/D6KWXXGL32CQKbAuAtnqisK52qSMG4gBq8FTA+v5n/rN8ijijLiTyF/6sbYqnCai08+fl/itFY5V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rhd24Mf0; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773954846; x=1805490846;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references;
+  bh=mRP95+w+fhUk8Uwl9cU7Js17s7tnPpW9z6YR7cq7YPA=;
+  b=Rhd24Mf0GHONvNKKgGlrmvVLKu+znSMUjJxZwgbd45BJRbyyxPl3voAP
+   1p9hui54FkrYAVpf7760aE9+N3KJ0yrt58SQzKekio+/Q9B+n0iWO4utJ
+   +cxPVISKGDXJ+cE8uDXztZRfbIihoo2WFFzyPYkKgk9KCn/2DXZoM62o8
+   n7MfPeHqr8A33aQL+HxV3HDFHtfbSYQUn1w4PWcAMMj/F/spq9av3uAhN
+   eTJps4nWzpxdRzO6R7w5PWdTsgoTDLfvatUbQ7zyna13pwThUH887RWy+
+   PDvXhk06jHTeI8idl/bRBh9NB/jaPpxYtyXUZNEqZV5ZkS06alzWzRjES
+   g==;
+X-CSE-ConnectionGUID: 85pFbo7xQT6njDlbt8Yxmw==
+X-CSE-MsgGUID: fshrUCPjS4iL+SWxe4AGUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86116366"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="86116366"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 14:14:03 -0700
+X-CSE-ConnectionGUID: Wxz5GlsfQkCc7Fz6/QQ1Vw==
+X-CSE-MsgGUID: axzZsgLrS6uLUFO4Jvthyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="227221172"
+Received: from estantil-desk.jf.intel.com ([10.166.241.24])
+  by orviesa003.jf.intel.com with ESMTP; 19 Mar 2026 14:14:02 -0700
+From: Emil Tantilov <emil.s.tantilov@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	aleksandr.loktionov@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org,
+	linux-rt-devel@lists.linux.dev,
+	sgzhang@google.com,
+	boolli@google.com,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH iwl-net v2 1/3] idpf: fix PREEMPT_RT raw/bh spinlock nesting for async VC handling
+Date: Thu, 19 Mar 2026 14:13:33 -0700
+Message-Id: <20260319211335.23236-2-emil.s.tantilov@intel.com>
+X-Mailer: git-send-email 2.17.2
+In-Reply-To: <20260319211335.23236-1-emil.s.tantilov@intel.com>
+References: <20260319211335.23236-1-emil.s.tantilov@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[dubeyko-com.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[dubeyko-com.20230601.gappssmtp.com:+];
-	TAGGED_FROM(0.00)[bounces-227382-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[dubeyko.com];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-227384-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[slava@dubeyko.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[emil.s.tantilov@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.997];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,dubeyko-com.20230601.gappssmtp.com:dkim]
-X-Rspamd-Queue-Id: 0A4DF2D2854
+	TAGGED_RCPT(0.00)[stable,netdev];
+	NEURAL_HAM(-0.00)[-0.965];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linutronix.de:email]
+X-Rspamd-Queue-Id: 2EAC42D2951
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 2026-03-19 at 22:49 +0800, Zilin Guan wrote:
-> On Wed, Mar 18, 2026 at 10:33:47PM +0000, Viacheslav Dubeyko wrote:
-> > On Wed, 2026-03-18 at 23:00 +0800, Zilin Guan wrote:
-> > > +static inline int hfsplus_get_hidden_dir_entry(struct
-> > > super_block *sb,
-> > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct qstr
-> > > *str,
-> > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 hfsplus_cat_entry
-> > > *entry)
-> > > +{
-> > > +	struct hfs_find_data fd;
-> > > +	int err;
-> > > +
-> > > +	err =3D hfs_find_init(HFSPLUS_SB(sb)->cat_tree, &fd);
-> > > +	if (err)
-> >=20
-> > Why not unlikely(err) here too?
->=20
-> Right, I'll update this in v3.
->=20
-> > > +		return err;
-> > > +
-> > > +	err =3D hfsplus_cat_build_key(sb, fd.search_key,
-> > > HFSPLUS_ROOT_CNID, str);
-> > > +	if (unlikely(err < 0))
-> >=20
-> > The hfsplus_cat_build_key() return error code or 0. So, we can use
-> > unlikely(err)
-> > here.
->=20
-> Agreed.
->=20
-> > > +		goto free_fd;
-> > > +
-> > > +	err =3D hfs_brec_read(&fd, entry, sizeof(*entry));
-> > > +
-> > > +free_fd:
-> > > +	hfs_find_exit(&fd);
-> > > +	return err;
-> > > +}
-> > > +
-> > > =C2=A0static int hfsplus_fill_super(struct super_block *sb, struct
-> > > fs_context *fc)
-> > > =C2=A0{
-> > > =C2=A0	struct hfsplus_vh *vhdr;
-> > > =C2=A0	struct hfsplus_sb_info *sbi =3D HFSPLUS_SB(sb);
-> > > =C2=A0	hfsplus_cat_entry entry;
-> > > -	struct hfs_find_data fd;
-> > > =C2=A0	struct inode *root, *inode;
-> > > =C2=A0	struct qstr str;
-> > > =C2=A0	struct nls_table *nls;
-> > > @@ -565,16 +586,11 @@ static int hfsplus_fill_super(struct
-> > > super_block *sb, struct fs_context *fc)
-> > > =C2=A0
-> > > =C2=A0	str.len =3D sizeof(HFSP_HIDDENDIR_NAME) - 1;
-> > > =C2=A0	str.name =3D HFSP_HIDDENDIR_NAME;
-> > > -	err =3D hfs_find_init(sbi->cat_tree, &fd);
-> > > -	if (err)
-> > > -		goto out_put_root;
-> > > -	err =3D hfsplus_cat_build_key(sb, fd.search_key,
-> > > HFSPLUS_ROOT_CNID, &str);
-> > > -	if (unlikely(err < 0)) {
-> > > -		hfs_find_exit(&fd);
-> > > -		goto out_put_root;
-> > > -	}
-> > > -	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
-> > > -		hfs_find_exit(&fd);
-> > > +	err =3D hfsplus_get_hidden_dir_entry(sb, &str, &entry);
-> > > +	if (err) {
-> > > +		if (err !=3D -ENOENT)
-> > > +			goto out_put_root;
-> >=20
-> > The hfs_brec_read() can return multiple errors (for example, -
-> > EINVAL). Are you
-> > sure that this check is correct?
-> >=20
-> > Thanks,
-> > Slava.
->=20
-> I see your point.
->=20
-> The current logic follows hfsplus_lookup(), where only -ENOENT is
-> treated
-> as missing, and other errors are propagated. The original code
-> effectively=20
-> ignored hfs_brec_read() errors and continued as if the directory was
-> missing.=20
-> For critical errors like -EIO/-EINVAL/-ENOMEM, failing the mount
-> seems safer.
->=20
-> If maintaining the legacy behavior is preferred, I can map all read
-> errors=20
-> to -ENOENT inside the helper instead:
->=20
-> 	err =3D hfs_brec_read(&fd, entry, sizeof(*entry));
-> 	if (err)
-> 		err =3D -ENOENT;
->=20
-> Would you prefer to keep the legacy behavior, or is propagating the
-> exact=20
-> error acceptable?
->=20
+Switch from using the completion's raw spinlock to a local lock in the
+idpf_vc_xn struct. The conversion is safe because complete/_all() are
+called outside the lock and there is no reason to share the completion
+lock in the current logic. This avoids invalid wait context reported by
+the kernel due to the async handler taking BH spinlock:
 
-I think we can return -ENOENT if hfs_brec_read() fails and continue as
-hidden directory is missing. Let's follow to the current logic for now.
+[  805.726977] =============================
+[  805.726991] [ BUG: Invalid wait context ]
+[  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
+[  805.727026] -----------------------------
+[  805.727038] kworker/u261:0/572 is trying to lock:
+[  805.727051] ff190da6a8dbb6a0 (&vport_config->mac_filter_list_lock){+...}-{3:3}, at: idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727099] other info that might help us debug this:
+[  805.727111] context-{5:5}
+[  805.727119] 3 locks held by kworker/u261:0/572:
+[  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730
+[  805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter->mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730
+[  805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at: idpf_recv_mb_msg+0xc8/0x710 [idpf]
+[  805.727218] stack backtrace:
+...
+[  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf]
+[  805.727247] Call Trace:
+[  805.727249]  <TASK>
+[  805.727251]  dump_stack_lvl+0x77/0xb0
+[  805.727259]  __lock_acquire+0xb3b/0x2290
+[  805.727268]  ? __irq_work_queue_local+0x59/0x130
+[  805.727275]  lock_acquire+0xc6/0x2f0
+[  805.727277]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727284]  ? _printk+0x5b/0x80
+[  805.727290]  _raw_spin_lock_bh+0x38/0x50
+[  805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf]
+[  805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf]
+[  805.727317]  process_one_work+0x226/0x730
+[  805.727322]  worker_thread+0x19e/0x340
+[  805.727325]  ? __pfx_worker_thread+0x10/0x10
+[  805.727328]  kthread+0xf4/0x130
+[  805.727333]  ? __pfx_kthread+0x10/0x10
+[  805.727336]  ret_from_fork+0x32c/0x410
+[  805.727345]  ? __pfx_kthread+0x10/0x10
+[  805.727347]  ret_from_fork_asm+0x1a/0x30
+[  805.727354]  </TASK>
 
-Thanks,
-Slava.
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: stable@vger.kernel.org
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reported-by: Ray Zhang <sgzhang@google.com>
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 14 +++++---------
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.h |  5 +++--
+ 2 files changed, 8 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 113ecfc16dd7..582e0c8e9dc0 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -287,26 +287,21 @@ int idpf_send_mb_msg(struct idpf_adapter *adapter, struct idpf_ctlq_info *asq,
+ 	return err;
+ }
+ 
+-/* API for virtchnl "transaction" support ("xn" for short).
+- *
+- * We are reusing the completion lock to serialize the accesses to the
+- * transaction state for simplicity, but it could be its own separate synchro
+- * as well. For now, this API is only used from within a workqueue context;
+- * raw_spin_lock() is enough.
+- */
++/* API for virtchnl "transaction" support ("xn" for short). */
++
+ /**
+  * idpf_vc_xn_lock - Request exclusive access to vc transaction
+  * @xn: struct idpf_vc_xn* to access
+  */
+ #define idpf_vc_xn_lock(xn)			\
+-	raw_spin_lock(&(xn)->completed.wait.lock)
++	spin_lock(&(xn)->lock)
+ 
+ /**
+  * idpf_vc_xn_unlock - Release exclusive access to vc transaction
+  * @xn: struct idpf_vc_xn* to access
+  */
+ #define idpf_vc_xn_unlock(xn)		\
+-	raw_spin_unlock(&(xn)->completed.wait.lock)
++	spin_unlock(&(xn)->lock)
+ 
+ /**
+  * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
+@@ -338,6 +333,7 @@ static void idpf_vc_xn_init(struct idpf_vc_xn_manager *vcxn_mngr)
+ 		xn->state = IDPF_VC_XN_IDLE;
+ 		xn->idx = i;
+ 		idpf_vc_xn_release_bufs(xn);
++		spin_lock_init(&xn->lock);
+ 		init_completion(&xn->completed);
+ 	}
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+index fe065911ad5a..6876e3ed9d1b 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
+@@ -42,8 +42,8 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
+  * struct idpf_vc_xn - Data structure representing virtchnl transactions
+  * @completed: virtchnl event loop uses that to signal when a reply is
+  *	       available, uses kernel completion API
+- * @state: virtchnl event loop stores the data below, protected by the
+- *	   completion's lock.
++ * @lock: protects the transaction state fields below
++ * @state: virtchnl event loop stores the data below, protected by @lock
+  * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it will be
+  *	      truncated on its way to the receiver thread according to
+  *	      reply_buf.iov_len.
+@@ -58,6 +58,7 @@ typedef int (*async_vc_cb) (struct idpf_adapter *, struct idpf_vc_xn *,
+  */
+ struct idpf_vc_xn {
+ 	struct completion completed;
++	spinlock_t lock;
+ 	enum idpf_vc_xn_state state;
+ 	size_t reply_sz;
+ 	struct kvec reply;
+-- 
+2.37.3
+
 
