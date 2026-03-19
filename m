@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-227259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227260-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UC9ZGATWu2k4owIAu9opvQ
-	(envelope-from <stable+bounces-227259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 11:55:00 +0100
+	id wHTUHkfWu2k4owIAu9opvQ
+	(envelope-from <stable+bounces-227260-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 11:56:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54D92C9CAF
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 11:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D875F2C9CEF
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 11:56:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2FBB231AE5C7
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:50:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6AB3E31F685A
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 867263C3C1A;
-	Thu, 19 Mar 2026 10:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09203C345D;
+	Thu, 19 Mar 2026 10:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdL3rvax"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dAhTUs1r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D973C3C11
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 10:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9451330E855
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 10:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773917408; cv=none; b=i8D/G1b8APCGej61g33HdZXugNdYvnXbQw+VxTm1xFY7cL7wQxBF6P/gGKZIPmu91zlLe/d7Hq1K65aOm9LPqO2D8lJoXu3DyOeyUkcRM0FHCNlZ4NkcbP7AS2r5gsoLqto/Jv+vIAImLxSKyLjwF0AYvVVT7uYbWGORpFhcn4s=
+	t=1773917433; cv=none; b=U/RMFrO6v1mleyj2RzZPdK256aJsHVFjKq9iOESa7aDvEiWPvzrsZAWP40v18iSpKxD1i57pfZtDzY+9kjw6XWMSoT9yNyfVuZbo5WKYbjb6kzrSxDoX6DuOD5v4ygDv2Yw2JVjySZ2RjbvYBc+hVEtPA/yAOi9JT4YRpBVBJ1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773917408; c=relaxed/simple;
-	bh=1yXhYFMnpC1HAgYGbsu+1iNDrkM0XNyeYBe9bhntSBQ=;
+	s=arc-20240116; t=1773917433; c=relaxed/simple;
+	bh=RDSKrCMhRKppPjHPYmbIBYs1W7EoK0HgdznZptNs79M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLYYY6m1xCinWVh0XpzlIaOZoH5fH4UeLwRwI0jwxzX4kqkfIacTvw3hmy5TlI0R0M2gOlefrDpMhZ/RduceijSwbRGkaSYBN192TYU5WvfyVlnWj/8C2LHWiEhkJdhtpFG4EbLy4cJ07buTSSzP107X9+HiNFlldFLnsQ8esxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdL3rvax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D5EC19424;
-	Thu, 19 Mar 2026 10:50:07 +0000 (UTC)
+	 MIME-Version; b=hsa9FdL/3GfaQ04ttexpndnz7X7mFDuxviPB7Muj3wxvyfP8RIL5kkaRJFWnr52hxXyxEkaL6t3XVjQxkp7/uAlsF9d+RxQR2DijpPNIC27q/4pD160fSNcl9JO8oxg+j0qKHIJBC6ELGBzdvmGLKAD7wSMOLBRhnCfa2m5yDtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dAhTUs1r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0798C19424;
+	Thu, 19 Mar 2026 10:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773917407;
-	bh=1yXhYFMnpC1HAgYGbsu+1iNDrkM0XNyeYBe9bhntSBQ=;
+	s=k20201202; t=1773917433;
+	bh=RDSKrCMhRKppPjHPYmbIBYs1W7EoK0HgdznZptNs79M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdL3rvaxfxf8PcSKsFpRezxPzxs6jCVxfSNA/2CX+z/ZAfKfikCVL5ZaiKkE/6Wr4
-	 bZzZUXNMGKceHtg1qTG10cxRmeciLxjr6QoIbWyNpWApkN1HHDqebde3K3wLL/7LPx
-	 VxzhMP52aztv47jKMA6nTN5/mYaarCPGIsEMML8D+z1J+DNcQED36hi9kIsgf56RqU
-	 z5d5myL4Xuics6Ua0lPK1+8eAQkjJg1IzUxL7CHLIiWctZHPueCW5xDmr9lhsaDXq7
-	 xLACv6/oDQU3HhXE6t8wJJ8eXyV01fo80s7xc4v6K6DGl4R3MTU54quppb5PlDr8Tg
-	 A+pwm24TmV+WA==
+	b=dAhTUs1rKbOCcwMcadndUyK/Ny9HgivqFL96Q8aLiLYM1JAVlcr5wEp6a51NwKGn9
+	 qpECWYUJ3pOwZFAtNj/NIYWv9wCODzdbPVk7D4QnSzr6KhHJ7Vtgtl5fy9FdX4vxNp
+	 A370OHWdDM8s/ADMR4MMymI4JvkUl3OURgOXLFYa5qYwoP0jZKS+uQYEy7jw4FUKQn
+	 wVOZrE4Rc3cZBoUNBp2AkkuANOSDLXL9FljMzk8z3poP2P2B+91zalA/TcQh6KlAsl
+	 vZtCesHdlN1Fq3Bfk+6FHM0lWRKVm2oEjnxGnkpIre+DJ6VmkVKD4KHP3mUrK2UySm
+	 5b/a3BTxAUQSQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Long Li <leo.lilong@huawei.com>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
+Cc: Harald Freudenberger <freude@linux.ibm.com>,
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] xfs: ensure dquot item is deleted from AIL only after log shutdown
-Date: Thu, 19 Mar 2026 06:50:05 -0400
-Message-ID: <20260319105005.2298220-1-sashal@kernel.org>
+Subject: [PATCH 6.12.y] s390/zcrypt: Enable AUTOSEL_DOM for CCA serialnr sysfs attribute
+Date: Thu, 19 Mar 2026 06:50:31 -0400
+Message-ID: <20260319105031.2298863-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031748-baton-edition-6e2a@gregkh>
-References: <2026031748-baton-edition-6e2a@gregkh>
+In-Reply-To: <2026031711-abruptly-badass-86b9@gregkh>
+References: <2026031711-abruptly-badass-86b9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,7 +74,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227259-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227260-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
@@ -86,78 +85,83 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.984];
+	NEURAL_HAM(-0.00)[-0.985];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lst.de:email]
-X-Rspamd-Queue-Id: C54D92C9CAF
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D875F2C9CEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Long Li <leo.lilong@huawei.com>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-[ Upstream commit 186ac39b8a7d3ec7ce9c5dd45e5c2730177f375c ]
+[ Upstream commit 598bbefa8032cc58b564a81d1ad68bd815c8dc0f ]
 
-In xfs_qm_dqflush(), when a dquot flush fails due to corruption
-(the out_abort error path), the original code removed the dquot log
-item from the AIL before calling xfs_force_shutdown(). This ordering
-introduces a subtle race condition that can lead to data loss after
-a crash.
+The serialnr sysfs attribute for CCA cards when queried always
+used the default domain for sending the request down to the card.
+If for any reason exactly this default domain is disabled then
+the attribute code fails to retrieve the CCA info and the sysfs
+entry shows an empty string. Works as designed but the serial
+number is a card attribute and thus it does not matter which
+domain is used for the query. So if there are other domains on
+this card available, these could be used.
 
-The AIL tracks the oldest dirty metadata in the journal. The position
-of the tail item in the AIL determines the log tail LSN, which is the
-oldest LSN that must be preserved for crash recovery. When an item is
-removed from the AIL, the log tail can advance past the LSN of that item.
+So extend the code to use AUTOSEL_DOM for the domain value to
+address any online domain within the card for querying the cca
+info and thus show the serialnr as long as there is one domain
+usable regardless of the default domain setting.
 
-The race window is as follows: if the dquot item happens to be at
-the tail of the log, removing it from the AIL allows the log tail
-to advance. If a concurrent log write is sampling the tail LSN at
-the same time and subsequently writes a complete checkpoint (i.e.,
-one containing a commit record) to disk before the shutdown takes
-effect, the journal will no longer protect the dquot's last
-modification. On the next mount, log recovery will not replay the
-dquot changes, even though they were never written back to disk,
-resulting in silent data loss.
-
-Fix this by calling xfs_force_shutdown() before xfs_trans_ail_delete()
-in the out_abort path. Once the log is shut down, no new log writes
-can complete with an updated tail LSN, making it safe to remove the
-dquot item from the AIL.
-
+Fixes: 8f291ebf3270 ("s390/zcrypt: enable card/domain autoselect on ep11 cprbs")
+Suggested-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
 Cc: stable@vger.kernel.org
-Fixes: b707fffda6a3 ("xfs: abort consistently on dquot flush failure")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ adapted error path to preserve existing out_unlock label between xfs_trans_ail_delete and xfs_dqfunlock ]
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+[ preserved zc->online as the fourth argument to cca_get_info() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_dquot.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/s390/crypto/zcrypt_ccamisc.c | 12 +++++++-----
+ drivers/s390/crypto/zcrypt_cex4.c    |  3 +--
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/fs/xfs/xfs_dquot.c b/fs/xfs/xfs_dquot.c
-index 9b67f05d92a19..ce42208d51bea 100644
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -1297,9 +1297,15 @@ xfs_qm_dqflush(
- 	return 0;
+diff --git a/drivers/s390/crypto/zcrypt_ccamisc.c b/drivers/s390/crypto/zcrypt_ccamisc.c
+index 43a27cb3db847..9dd4d01e1203f 100644
+--- a/drivers/s390/crypto/zcrypt_ccamisc.c
++++ b/drivers/s390/crypto/zcrypt_ccamisc.c
+@@ -1665,11 +1665,13 @@ static int fetch_cca_info(u16 cardnr, u16 domain, struct cca_info *ci)
  
- out_abort:
-+	/*
-+	 * Shut down the log before removing the dquot item from the AIL.
-+	 * Otherwise, the log tail may advance past this item's LSN while
-+	 * log writes are still in progress, making these unflushed changes
-+	 * unrecoverable on the next mount.
-+	 */
-+	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- 	dqp->q_flags &= ~XFS_DQFLAG_DIRTY;
- 	xfs_trans_ail_delete(lip, 0);
--	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- out_unlock:
- 	xfs_dqfunlock(dqp);
- 	return error;
+ 	memset(ci, 0, sizeof(*ci));
+ 
+-	/* get first info from zcrypt device driver about this apqn */
+-	rc = zcrypt_device_status_ext(cardnr, domain, &devstat);
+-	if (rc)
+-		return rc;
+-	ci->hwtype = devstat.hwtype;
++	/* if specific domain given, fetch status and hw info for this apqn */
++	if (domain != AUTOSEL_DOM) {
++		rc = zcrypt_device_status_ext(cardnr, domain, &devstat);
++		if (rc)
++			return rc;
++		ci->hwtype = devstat.hwtype;
++	}
+ 
+ 	/* prep page for rule array and var array use */
+ 	pg = (u8 *)__get_free_page(GFP_KERNEL);
+diff --git a/drivers/s390/crypto/zcrypt_cex4.c b/drivers/s390/crypto/zcrypt_cex4.c
+index 64df7d2f6266c..63b793fc97d85 100644
+--- a/drivers/s390/crypto/zcrypt_cex4.c
++++ b/drivers/s390/crypto/zcrypt_cex4.c
+@@ -85,8 +85,7 @@ static ssize_t cca_serialnr_show(struct device *dev,
+ 
+ 	memset(&ci, 0, sizeof(ci));
+ 
+-	if (ap_domain_index >= 0)
+-		cca_get_info(ac->id, ap_domain_index, &ci, zc->online);
++	cca_get_info(ac->id, AUTOSEL_DOM, &ci, zc->online);
+ 
+ 	return sysfs_emit(buf, "%s\n", ci.serial);
+ }
 -- 
 2.51.0
 
