@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-227340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227341-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yAH9LjInvGkxtgIAu9opvQ
-	(envelope-from <stable+bounces-227340-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:41:22 +0100
+	id eCBWDIwovGkxtgIAu9opvQ
+	(envelope-from <stable+bounces-227341-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:47:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28BA62CEF93
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:41:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E462CF0D6
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:47:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B79253065AD4
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 16:23:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CE6423223369
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 16:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B97D3ED5C8;
-	Thu, 19 Mar 2026 16:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E7D315D40;
+	Thu, 19 Mar 2026 16:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Sbw8KOHG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rpc5HcQL"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174F82D7DDC
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 16:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9013ED5D9
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 16:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773937363; cv=none; b=eJK5OuCvIzsNPsa7mbf5dM7m2WNJRzFd/jmDZQTieZ8+wLqCwRAKiyDxjC0y8DvJSf3n2/bOlf1EcPrwDOLjXjC8w7yzvOtutJ4rZJ26ZKsauCHHhOoAMYUouYcjRCpiA2tUyPchoI+BQ02Yy6FduUibWDYsSzUATIQIky9gaQI=
+	t=1773938021; cv=none; b=ozs2JRk0q6jxVJ6s46i9w+tznt8aYDFFKDX7ePKC+PTQnnVEB49yOwVLe02GrdCU+zjb9iy52YZEP6lG1s8co5l6UbvJhZ2aicvXbsIftwwUB4Y6SaduHUigqmTLMuE7sLhnpvmY2FgL4PLJAmX9y/F9Q+oblq1w0X8ldJz7+Xc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773937363; c=relaxed/simple;
-	bh=BnVx0e4sHUG2CxvPexFEtjwoJjLDYgxZk+AFIqdD7Ic=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f/ps2uVV+AVQqblNlWCA+jgEWuoH674CuWfkTE1MoqwDnD5K3qX8gEkQFQ0ov9mFylTh0DuIC73H4Dj8Fq5iscQliXhVNkCp3oFPy4xJw+74jUtJOTd+sYrJIPt7eAfOZRzAstvYDqz1epGPdDlqrMtLWJFeyG48YnZ6Iw8rQSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Sbw8KOHG; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773937350;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=t0iie7bEOScOeBpsKCJ5AujwIH+1zOg24zDax1kXgG8=;
-	b=Sbw8KOHGrxkAxghoE5N85VkV9v+aCyn3VtHcG6hfcyyaG9cynsR9ECTZLAz/8kPzFd++ip
-	q+kj8uzvgUWxHCDtNVzCvzpdNGgi7SdcJESNL14RtsREbP645eLlbRz6oaD4dVOBwsYXNA
-	fzYzn1+7fhGSwiZrcmmAcb/ZD7thuqM=
-From: Junjie Cao <junjie.cao@linux.dev>
-To: Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>
-Cc: linux-nilfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com,
-	stable@vger.kernel.org,
-	Junjie Cao <junjie.cao@linux.dev>
-Subject: [PATCH] nilfs2: skip blocks with no bmap entry in nilfs_ioctl_mark_blocks_dirty()
-Date: Fri, 20 Mar 2026 00:21:59 +0800
-Message-ID: <20260319162159.302104-1-junjie.cao@linux.dev>
+	s=arc-20240116; t=1773938021; c=relaxed/simple;
+	bh=qq9L9JdI2Or83p2kvEZVFApkyZ+yC4StaQL28ZJZ7Iw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=pduTvvtOMjsEAqMB7FSrmS2dWaZyyLaS1h016QzzIsZcUFY0PP4BBtcKqdkhiYFrDFV16oCDIA2sk5xZ1CP1NbSllGL6sORpDocOsCMSQkadJHgsD/t+qp1ZjM6ZFdE3qoqPl2uKeLvYcOZ0ZwtiaY+82ZgSTmD1zqb2wSmO8e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rpc5HcQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9099FC19424;
+	Thu, 19 Mar 2026 16:33:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773938021;
+	bh=qq9L9JdI2Or83p2kvEZVFApkyZ+yC4StaQL28ZJZ7Iw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rpc5HcQL2u+yT6YzDfVssIDrATTD97sK4VwIFA+FPPWEQMr6sfKfNrupnRhGHGTsv
+	 738QaZd884MObfyTg5SubRDbzdM2b+YjuALsXiV6JKkZpT6rWxe3KhuYytsAZm4lBW
+	 8KUmpFJWO+CwQDPc6ubJld7DDyHEhS2aMML2y7pa8pEnv3eAMSoQ3cB9RwRVzyY4HD
+	 YKq2MpOFm+/j/HwYCMoammz8zEUnYFNtTj01i2GiJTLr6Ws6WjSD5zJ3ZPd5gccBSV
+	 rhd0mtz1OSfAftFsV23Q6B/jM8AHvEh/ruqg36qH4o0jgtaTOr/BYnKL1OZjMZTgLW
+	 N6b8Nf1N8kt1A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Zw Tang <shicenci@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()
+Date: Thu, 19 Mar 2026 12:33:39 -0400
+Message-ID: <20260319163339.2721540-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031702-coyness-unbeaten-ac84@gregkh>
+References: <2026031702-coyness-unbeaten-ac84@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,73 +62,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227340-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,dubeyko.com];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[kernel.org,gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227341-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.849];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[junjie.cao@linux.dev,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_RCPT(0.00)[stable,466a45fcfb0562f5b9a0];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.992];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 28BA62CEF93
+X-Rspamd-Queue-Id: A9E462CF0D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-In nilfs_ioctl_mark_blocks_dirty(), called during garbage collection,
-nilfs_bmap_lookup_at_level() may return -ENOENT when a block no longer
-exists in the DAT bmap.  In that case the code sets bd_blocknr to 0 but
-falls through to the liveness check that compares bd_blocknr against
-bd_oblocknr.  If bd_oblocknr also happens to be 0, the descriptor is
-incorrectly treated as live and the code attempts to get or mark the
-non-existent block, triggering a WARN_ON.
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-Fix this by adding a continue statement so that a block descriptor is
-immediately skipped when its bmap lookup returns -ENOENT, since there
-is no block in the DAT to mark dirty.
+[ Upstream commit 5ef268cb7a0aac55521fd9881f1939fa94a8988e ]
 
-Fixes: 7942b919f732 ("nilfs2: ioctl operations")
-Reported-by: syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=466a45fcfb0562f5b9a0
+Remove unneeded warnings for handled errors from __arm_kprobe_ftrace()
+because all caller handled the error correctly.
+
+Link: https://lore.kernel.org/all/177261531182.1312989.8737778408503961141.stgit@mhiramat.tok.corp.google.com/
+
+Reported-by: Zw Tang <shicenci@gmail.com>
+Closes: https://lore.kernel.org/all/CAPHJ_V+J6YDb_wX2nhXU6kh466Dt_nyDSas-1i_Y8s7tqY-Mzw@mail.gmail.com/
+Fixes: 9c89bb8e3272 ("kprobes: treewide: Cleanup the error messages for kprobes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Junjie Cao <junjie.cao@linux.dev>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+[ adapted goto err_ftrace error handling pattern to inline error handling block ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/ioctl.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/kprobes.c | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/fs/nilfs2/ioctl.c b/fs/nilfs2/ioctl.c
-index 1bfe8a2..d71a0a5 100644
---- a/fs/nilfs2/ioctl.c
-+++ b/fs/nilfs2/ioctl.c
-@@ -744,6 +744,7 @@ static int nilfs_ioctl_mark_blocks_dirty(struct the_nilfs *nilfs,
- 		if (ret < 0) {
- 			if (ret != -ENOENT)
- 				return ret;
- 			bdescs[i].bd_blocknr = 0;
-+			continue;
- 		}
- 		if (bdescs[i].bd_blocknr != bdescs[i].bd_oblocknr)
- 			/* skip dead block */
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index 0d463859ad329..caa7382cb0748 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1049,25 +1049,23 @@ static int __arm_kprobe_ftrace(struct kprobe *p, struct ftrace_ops *ops,
+ 	int ret = 0;
+ 
+ 	ret = ftrace_set_filter_ip(ops, (unsigned long)p->addr, 0, 0);
+-	if (WARN_ONCE(ret < 0, "Failed to arm kprobe-ftrace at %pS (error %d)\n", p->addr, ret))
++	if (ret < 0)
+ 		return ret;
+ 
+ 	if (*cnt == 0) {
+ 		ret = register_ftrace_function(ops);
+-		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret))
+-			goto err_ftrace;
++		if (ret < 0) {
++			/*
++			 * At this point, sinec ops is not registered, we should be sefe from
++			 * registering empty filter.
++			 */
++			ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
++			return ret;
++		}
+ 	}
+ 
+ 	(*cnt)++;
+ 	return ret;
+-
+-err_ftrace:
+-	/*
+-	 * At this point, sinec ops is not registered, we should be sefe from
+-	 * registering empty filter.
+-	 */
+-	ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
+-	return ret;
+ }
+ 
+ static int arm_kprobe_ftrace(struct kprobe *p)
 -- 
-2.43.0
+2.51.0
+
 
