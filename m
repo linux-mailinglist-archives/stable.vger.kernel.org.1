@@ -1,161 +1,132 @@
-Return-Path: <stable+bounces-227207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227208-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIX9NGVtu2nGjwIAu9opvQ
-	(envelope-from <stable+bounces-227207-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 04:28:37 +0100
+	id wF4wM695u2m2kgIAu9opvQ
+	(envelope-from <stable+bounces-227208-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 05:21:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81A282C57DE
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 04:28:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23BCA2C5DB3
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 05:21:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3074130BEF37
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 03:27:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C5D330B3F61
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 04:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C5C375F96;
-	Thu, 19 Mar 2026 03:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D128333FE27;
+	Thu, 19 Mar 2026 04:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4EpimIq"
+	dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b="Wp+qcqCi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2D12DC783;
-	Thu, 19 Mar 2026 03:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8638B318ED6;
+	Thu, 19 Mar 2026 04:20:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.181.231.80
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773890852; cv=none; b=k2LN1CGB3KQM4i2FO/B5JX5S72mdxDN6/ux7F/VTU/O/MVabG4mS9K/ComB8JjrChAre8sAxZIUIHsD6VOqrjjYqqcmbNLOnOcCfEN6IgTz9Z1lIdowgQMONBbNXsubALuMFrcoNpzHygNtTQvtyU9piKFFjDs7V5B+vvlBwCDs=
+	t=1773894055; cv=none; b=iPb2P73hjEUlgYcYkCETGPMyz+qKt9+lkkKPbNzl832RJtk2f4z5b6ZBkIHVyKCb2lZu7lp6tR0oZuOwAA96NPOg1jxXQbBH+j/45ttoD/HLzjywSb8EVJCy2/lemfOnhNNioBZo+ujvTfLEg/6hVDlOfCPkhnPvIG3tMXQ6nB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773890852; c=relaxed/simple;
-	bh=sRx/e6yBG83MxWAyEYb9aM48iMeWBalueRmbRh5WjdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KqTZLKsBDQlqpqrKy0GdAwTPFIYNJ0rYC1lMdt8R879X913l0r5aEqBdlTBCShMnT5o++EpN0yxnvFiWvJCcThRUDjfO6GNq5LPWJUXVH3tuIoSM7CzaJEOnAScQXwXlf5E9EncapC2MB6lwC+mR1utrBc5MkJim5joUrZOyYn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4EpimIq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8E9C19421;
-	Thu, 19 Mar 2026 03:27:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773890851;
-	bh=sRx/e6yBG83MxWAyEYb9aM48iMeWBalueRmbRh5WjdE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=S4EpimIq4LnMdEYbgP3izMuEMgLIMR+ETM5Wh6j+kDP02xLrAerV6MhJv4MFj6I39
-	 2kgyZxsn0gmWzn+37imwh+VQKkBZroYX5QftmsDHGTm82JmGes8UN+q1FxaBQE8zIu
-	 +lvwv5WWph4ovhxC7IDfRa+sSueronJlgWg8mnBgTPLyoxsVRrk76YkdCySYXjzA2Z
-	 /AVHRIqQL9S5KJtbyCTIVLh6chRQLaZKvql7I98jZV4tlzl6N77Qf9/irBdDap/Vmp
-	 4NZr0fg25um4rTaxxbYDL1cHYrMpLl7kl2hZlK3yAzSbt9ATcyZiO9K0v8oOD+Ol/+
-	 A9zLnT3Fn+F8w==
-Message-ID: <1adabe3e-4497-4e71-b6a0-f3b81df322eb@kernel.org>
-Date: Thu, 19 Mar 2026 12:27:27 +0900
+	s=arc-20240116; t=1773894055; c=relaxed/simple;
+	bh=2te8/ukVk5tkn/UMG9/I/B0cAeCWAo4JFhY+rfv94Xg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KdW8Nloi6HqHTMdbitM5TzYzI3H9u9keC8+VNrCfKdQVS4RMCwOH4wFCcvPgKivZSmuAdxvnP8cop6olriWUm6RLBO5UUiDSezT+E4icv87dA+L5WAIhqMuQ2yFWWgiJsoEGb80mQku/6+nvYnnZPSdrEpHXpL9+GilA5fXfjiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.b=Wp+qcqCi; arc=none smtp.client-ip=180.181.231.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
+	from:content-type:reply-to; bh=LWQLY8nIw/SpSvEj+/isvem6465b7xcUOlaktpaOEtg=; 
+	b=Wp+qcqCi4AjjeHihETJUI1GJZs+tQxNt3JkMgEhxtbSJHhsltss4aSjhis2bXufVR+50oUvc72q
+	hofkCM7Khcsv8tIy8U0hlSV4OSZxNTwYV8VGhjyNS4BLDeWIbFH4HzGlmfu+hDwMZe0TQAalhbsSR
+	4N7XXIEdvKn0I4+urXSTJkZKhe40/fgxygybFfIrG5P0q/vWbyQmyFGcbUXDUBigDHt4p/SH/RFbk
+	1fBSbAftrm0AcJpnWOU6v1RapopTrdvFBZVu1J3lGrLY/cSjjBN++VIiRc8/QYDG6JNxC9aS/UejE
+	vFqGl18tVO12J15lNzJqYwQ7uAZ2CcGJcg/g==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1w34s7-00FdgR-0e;
+	Thu, 19 Mar 2026 12:20:36 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 19 Mar 2026 13:20:35 +0900
+Date: Thu, 19 Mar 2026 13:20:35 +0900
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Horia =?utf-8?Q?Geant=C4=83?= <horia.geanta@nxp.com>,
+	Pankaj Gupta <pankaj.gupta@nxp.com>,
+	Gaurav Jain <gaurav.jain@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Kim Phillips <kim.phillips@freescale.com>,
+	Yuan Kang <Yuan.Kang@freescale.com>, stable@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] crypto: caam - guard HMAC key hex dumps in
+ hash_digest_key
+Message-ID: <abt5k85OBr8LGaFe@gondor.apana.org.au>
+References: <20260318194649.137257-3-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] scsi: sas: skip opt_sectors when DMA reports no real
- optimization hint
-To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>,
- "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: ahuang12@lenovo.com, axboe@kernel.dk, damien.lemoal@opensource.wdc.com,
- hch@lst.de, iommu@lists.linux.dev, ionut_n2001@yahoo.com,
- john.g.garry@oracle.com, kbusch@kernel.org, linux-kernel@vger.kernel.org,
- linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
- m.szyprowski@samsung.com, robin.murphy@arm.com, sagi@grimberg.me,
- stable@vger.kernel.org, sunlightlinux@gmail.com
-References: <20260318200532.51232-1-ionut.nechita@windriver.com>
- <20260318200532.51232-2-ionut.nechita@windriver.com>
-Content-Language: en-US
-From: Damien Le Moal <dlemoal@kernel.org>
-Organization: Western Digital Research
-In-Reply-To: <20260318200532.51232-2-ionut.nechita@windriver.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260318194649.137257-3-thorsten.blum@linux.dev>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[apana.org.au,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gondor.apana.org.au:s=h01];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lenovo.com,kernel.dk,opensource.wdc.com,lst.de,lists.linux.dev,yahoo.com,oracle.com,kernel.org,vger.kernel.org,lists.infradead.org,samsung.com,arm.com,grimberg.me,gmail.com];
-	TAGGED_FROM(0.00)[bounces-227207-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	DKIM_TRACE(0.00)[gondor.apana.org.au:+];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227208-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[herbert@gondor.apana.org.au,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.992];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 81A282C57DE
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,gondor.apana.org.au:dkim,gondor.apana.org.au:mid]
+X-Rspamd-Queue-Id: 23BCA2C5DB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/19/26 05:05, Ionut Nechita (Wind River) wrote:
-> +static unsigned int sas_dma_opt_sectors(struct device *dma_dev,
-> +					unsigned int max_sectors)
-> +{
-> +	size_t opt = dma_opt_mapping_size(dma_dev);
-> +	unsigned int opt_sectors;
-> +
-> +	if (opt >= dma_max_mapping_size(dma_dev))
-> +		return 0;
-
-I really do not understand this one. How can the optimal DMA mapping size be
-larger than the maximum possible DMA size ?
-If that happens, it is a driver bug, we should WARN_ONCE and return
-dma_max_mapping_size(), no ?
-
-> +
-> +	opt = rounddown_pow_of_two(opt);
-> +	opt_sectors = opt >> SECTOR_SHIFT;
-
-if opt is super large, can this overflow the 32-bits opt_sectors ?
-
-> +
-> +	return min(opt_sectors, max_sectors);
-> +}
-> +
->  static int sas_host_setup(struct transport_container *tc, struct device *dev,
->  			  struct device *cdev)
->  {
-> @@ -239,10 +268,9 @@ static int sas_host_setup(struct transport_container *tc, struct device *dev,
->  		dev_printk(KERN_ERR, dev, "fail to a bsg device %d\n",
->  			   shost->host_no);
+On Wed, Mar 18, 2026 at 08:46:50PM +0100, Thorsten Blum wrote:
+>
+> diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
+> index 167372936ca7..3392070942ab 100644
+> --- a/drivers/crypto/caam/caamalg_qi2.c
+> +++ b/drivers/crypto/caam/caamalg_qi2.c
+> @@ -3269,8 +3269,10 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
+>  	dpaa2_fl_set_addr(out_fle, key_dma);
+>  	dpaa2_fl_set_len(out_fle, digestsize);
 >  
-> -	if (dma_dev->dma_mask) {
-> -		shost->opt_sectors = min_t(unsigned int, shost->max_sectors,
-> -				dma_opt_mapping_size(dma_dev) >> SECTOR_SHIFT);
-> -	}
-> +	if (dma_dev->dma_mask)
-> +		shost->opt_sectors = sas_dma_opt_sectors(dma_dev,
-> +							 shost->max_sectors);
+> -	print_hex_dump_debug("key_in@" __stringify(__LINE__)": ",
+> -			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
+> +#ifdef DEBUG
+> +	print_hex_dump(KERN_DEBUG, "key_in@" __stringify(__LINE__)": ",
+> +		       DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
+> +#endif
 
-Splitting the line after the "=" would make this look nicer:
+I'd prefer to keep the compiler coverage when DEBUG is off.
 
-	if (dma_dev->dma_mask)
-		shost->opt_sectors =
-			sas_dma_opt_sectors(dma_dev, shost->max_sectors);
+Please add a new helper, either print_hex_dump_devel or
+print_hex_dump_sensitive that only gets enabled when DEBUG is
+defined.
 
->  
->  	return 0;
->  }
-
-
+Thanks,
 -- 
-Damien Le Moal
-Western Digital Research
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
