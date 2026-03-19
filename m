@@ -1,267 +1,249 @@
-Return-Path: <stable+bounces-227359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227360-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOUQEdE6vGl3uwIAu9opvQ
-	(envelope-from <stable+bounces-227359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:05:05 +0100
+	id SLbBEpU9vGlxvgIAu9opvQ
+	(envelope-from <stable+bounces-227360-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:16:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3E982D07F6
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:05:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E44E22D0B1E
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C43C332AA302
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:52:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2EF4832845D4
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 934E3393DF7;
-	Thu, 19 Mar 2026 17:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835EB39447C;
+	Thu, 19 Mar 2026 18:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ey/4Pl3s"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+7dDoex"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B214D3128D4
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 17:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773942756; cv=none; b=LVGA4tAWmg8bv0C9yvgiJ3747O/DaxT7SZSOJOQr998GUr6yijSSqZ822G57NxByEJMKkRAELb+QHN4vfaXAxCd86NbNGgyDFKr4b1QMs5S+Q9PM9nrQ4yJ2xGfSG+cLicZEx3ePCmkNLmDkpSLugqYolEVxMT7cHF0lCTn2HAc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773942756; c=relaxed/simple;
-	bh=1qiYzC4e4C5Osb7cyOfG+hx3gfnhgiG4CgnJdnnYqWk=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1DA23988F1
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 18:07:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773943678; cv=pass; b=kM3p7WpIBrd9b6B6gyWi96j19VvLosnU/NefM8L9/KH/UhS0WEk8xrord7mSUJilt/FY2qdaKBejGg7LxVUm51hvypOXf+JylNi6LfNqlfEBo7RLskWU56WyvHWYNjeOjePyHPNhHJoDKZcT+7JOMzPeubuZohdkZ4qgdhO07rE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773943678; c=relaxed/simple;
+	bh=qLyBC2v3psQTDHggKp6cAb3+simj2kT/Xqn/adDf4nE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=faK5L/7fcC9VfH9Db1FfNeFvEmS0pvkQuktedCktANr1TMVRYa/um/27GitdoHnEBYQDQRxJA6DEw8TaAlNBcSpUc+EE1/YZldMxuBxS0Yi9OAS/gTKcYfhDFddmXq1Tr+Y5XpuddSFGjYZ36Bek/c7pWljDTWB2dskF0YmttUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ey/4Pl3s; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b9795ca4e6dso141663766b.2
-        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 10:52:32 -0700 (PDT)
+	 To:Cc:Content-Type; b=W+VdM4dxlr5WhcPxXUKn1wLvh2vCP7HPrMMJYd77Zqo4bYP2O+SZ7eId6CGpFGMQolb9dYaUiyXpkevi1nMjQn+EGt0MpcoKfwb3xYITDk3p3kGI4i89Xi9ZxI/xW/pqNcC62kI+wtr/CD0g5Q8B0wgmlG3TD75/NDoIrUkDObA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+7dDoex; arc=pass smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-486b96760easo13744525e9.2
+        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 11:07:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773943674; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Leikmi7aUOm6eTIr2yqyMR+gM+iqsr2cKMO/wmLJdRqwIWWa71fGg7eVIoBpv8MVtm
+         ArFMR81nxDBOUQ+uaBBX+JTGvwkvLPubaJ8eo8x2lUJgDOUYsUrJGPU9nP97PjzEqjnm
+         46miGV3Satk55io7ycK/VhfXZy/wrUei1Kx1pp/v9q3sPEU0CCf1N3bILX/hLbxHVvpn
+         uo2dq4tZ7JSJyB/zOw2t2aAGcwSjJMdao5tQfzx2xiHvzqXD8t17hYnDwOefO/Zn8FPB
+         FS7VxK2bR2+k/IG0M/1BBmPMiAKiYSipIagC4zbLagEqFs8syVA2I1X/o0oeCVQ77232
+         XykA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LPwYDOqDzfGuF9EEcoCkuHGw4QSL61z/ViJbQ5YfE90=;
+        fh=ZED9GvzQ19TofPAi8yvKnaq1iTopEEZB1yW0mh5xpW8=;
+        b=Ve15rDDDnK+uSKQaBOK5qdMu6IOHvl4SKwP9ffZ1yqyjKHGdPvlbt3BJkLOpY+FqaN
+         wnb+0iBBXNv6iBQvr7IvlIC7u4RDylL0UD16M0O/IkjGASTh8VLqftECCI/VeJP9y4Pp
+         m4EeZHVsIgAjz+Qf8zQejDAz9dgSrlFCDRUG3S48cuA86qehYRGIBnTe9wfp94LGenIo
+         pWHPa/jHo346u2aLlD0wBPKtI5S03teSx7omeYPh87CP2LMtsWmd8bqA6+RbHEKFMqFZ
+         QNfE5mf2Rm+ziVupRKtRrTijd4JEl3cJO3yV3j7rYs4jVKBYAx4LYHffpOO7Hlmk6kuQ
+         gtzg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1773942748; x=1774547548; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773943674; x=1774548474; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IwNvoAxpSBA3F4YxfMu4dubOKf0cPSpjGd1s0V+Fdds=;
-        b=ey/4Pl3sn5K5mHN0JtIepY45ufbzz4EbQ9OhhRAVyebrrXQcVooHXVVUeqLYy1+JgC
-         IXZSN5eUxWevTk3gYQq81IpiBdyxRr/+FmXbWNupxfAlqpOAEQqrG1i34gg5PAk0dDa0
-         qz2IGjK5jr2oHzMpqrXFRduAPC4zokCcV6T1Y=
+        bh=LPwYDOqDzfGuF9EEcoCkuHGw4QSL61z/ViJbQ5YfE90=;
+        b=g+7dDoexpUo2XZb3gfCtgxL6GYIMbW3NNNU0LNQT+eecn24i0HZpMjD+f4ddNbaxtm
+         eXFoxgFBGaYh3Zbfwb/KTIEQLjBxHgbqIgXfxQdQ183zPE9G0Vu6Cxc2mFOa4dYcg5Jl
+         sIvbHx0P8K3R0ES7NmwsR7I/KC4msGLZW4A6Vykd3/X7QSQLUC8GqZ7fSKhgGtv62bHc
+         OnFpVj6P+PydbBqek+Xw6jfj8DS8rWftuvVYX4w4BhQgvGmEQHa0tMOGa3bb7W3fMjhy
+         arWLTvVJrUHqiFVkPDLr/ACX4NG9qHqjqh+mMjOBKSRiB1EGgyu0Qmnf9MJynsV+qsgH
+         TQAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773942748; x=1774547548;
+        d=1e100.net; s=20251104; t=1773943674; x=1774548474;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=IwNvoAxpSBA3F4YxfMu4dubOKf0cPSpjGd1s0V+Fdds=;
-        b=p0nyeih56dZpuZRIhngTaoTmbKw6DUV7MlTXb6vKUoxzlIZyHyNmk22bB3upAlP6tH
-         hf7svOQyvTk4aq5KvTF1MAsBaZrCa0OFMdd6IDbeLZwAZymDiodpIbalEWm4G202EjeZ
-         +qo9OG3QSRp25asnjHferbcxHEerwCnvhQWTTfC59Rd9+WY69sXqXkbg/ksI5/0soY2m
-         08sc7tTQB+7gUPu/alpqVeurK/b2wI3z8gjja4a7T9iBxf2EdtXTq//QLtnya17D7bl1
-         8Djnhq0+uJYKJNXiLA4H8GlrelAC9jpe3q746G8KxvreO7TtsngPFs0z2WpdWoElpn3O
-         mMBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVP0zXOJhDLSEPbZ9TVKo0Q6o67knYvKGCJlN33JN3QTaFKOFxLo0WpHTJtKRQpic05j8knX6I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0dQGHJOvWYgArXH7kIrLmAmmRKx8qDxvQsbDMFYKx0BKAmkPK
-	et/jkVIbp15ZTt+sPIwaub4JG/qk6Q0lcghOFiEzbrKLQ8xt0+26/y4MN6e3thj0Yzd8ttAmT6T
-	9dcVUbA==
-X-Gm-Gg: ATEYQzz2pug8JVZqkQW2IiRwLo4tb6JgrY+dftoUBNgE7VgbUydljMniSO8GYTHgSyf
-	oeeEqQ1zpojed90xmqijoYSP1XYBklCRc38mzlIuDiEY3lqZ5wdhXAVQIxntKsbTz4dIjuj1hzN
-	XO2gAssJxbcF6iyRshR0YwKzE9bF8jhIOND1+arG8/PQTFf78WOsi8AAsKNiWgwU9w+xgJvR2/j
-	y2J7moMXAl952oirSg4S0cuhb52siIhFHVto7HwasKcz5IDF43CUXesSBzLrv8Esu5veXaJbTxw
-	jfvqkbqVZwELV9IwdTQZCqGkl1KJqwWxnlK9CsXew5GtPvm5nvpgjdkk7Xk+Tzy27PSbd4yiVYA
-	sLLVo8Ls1OtxlxTdawHQqrZa20rGwo/l88FKZ1VF+9PeJcepGEvCz9WqfKmFl/a4qHt/NrtTlU7
-	cU+QJpZMe35gmVaP2e2bfQQbTEmbR/cZsYzgiDBJngQ/28PxiV2L9pUgS7Ed7QZg==
-X-Received: by 2002:a17:907:d501:b0:b98:1b18:782c with SMTP id a640c23a62f3a-b982f0b9a52mr22605866b.6.1773942748085;
-        Thu, 19 Mar 2026 10:52:28 -0700 (PDT)
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com. [209.85.221.47])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b97f142b8efsm512144166b.17.2026.03.19.10.52.26
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Mar 2026 10:52:27 -0700 (PDT)
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4327790c4e9so691831f8f.2
-        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 10:52:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX+8R/CmgsUfK1UVRsbtjxS8vVUSWrq2iqLjTljM3a1Gn38rzGE2ToW1AY87KExehXI3waFAk0=@vger.kernel.org
-X-Received: by 2002:a05:6000:18a6:b0:439:beee:43b5 with SMTP id
- ffacd0b85a97d-43b6423d90bmr470716f8f.3.1773942745211; Thu, 19 Mar 2026
- 10:52:25 -0700 (PDT)
+        bh=LPwYDOqDzfGuF9EEcoCkuHGw4QSL61z/ViJbQ5YfE90=;
+        b=i7ePijajGx6DYwmCl9OQLVL48VhyPEoRERzTIZ9jPKwE/rZVAXG/FQcjwOtFQT0vbJ
+         nRkQ5/1PjRKJ5F+cbQySoTrVvbKFXwH9dJ0i20jGDxQMEoBVkSawQoEjWx1h8FOa2f3P
+         zZ36z4StOau0l5C+j0NHWAYuwI8QkR5No+baRbH/6dXWBmEP7kSNG4Yaou5eKtIb/rFV
+         gIvpPTBDYbh7q8DqsmwhbBGGrpKWAFTd7Bt4qP4vRe3HGoVDp0dmwqEYqlMIkbqDi7Ib
+         DpWXJqnbYBAXPRh2IYhekYkUmWAwdlUxYsixgLo9a5YknlMTs4X8ZIOLwUjMUAGzomBd
+         lb+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVGFLMvdlzVmxatfG3xjOjElaGgUGXX15tjbUMK2GFMl99WnlJARsZdMpmKeHTU4GRfiDFH+PA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMO+SJ90gjUTmw4zjyJqr1GubgNC7BQ3O5fo2kefhKXln3fwq/
+	NeFeAOPtRgr9DicKVvPtTJ6nUu5ZanrV5SMzMYBWdXtySx5MiDdwUoAd9KXUhpmu6zm0iOKylvE
+	3cxl3ETorxTMV3lG4DNXVKfifYOilcH4=
+X-Gm-Gg: ATEYQzwSWhdjPNJiHJwDUaTHcVjg95rV9YskngXbjP6my819ohTVFSqbLxWixM0dQDd
+	D0hAcrkMgUNGQaQiNwze3JzGUc1yAVubwq8lpBSbbBDPc2w+H8m32qy6UHc2Slk8g+MzrhLllsr
+	V5abceqO62hw0SVs18xvFaThsuc+LdqWLad6s4O8dIVypmW0LjSkBx7uyKqeSIqEEjs9uygAzcX
+	Xnp483LNWK3FkzyHDqQ05j+EvgbFn9usXivnxh28bufa5LlHYkWkt+kB5mp/wTip4K3XoabqdOC
+	e9rCpA==
+X-Received: by 2002:a05:600c:4e8e:b0:485:3fd1:992c with SMTP id
+ 5b1f17b1804b1-486fedaafc2mr1248265e9.1.1773943674033; Thu, 19 Mar 2026
+ 11:07:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317090112.v2.1.I0a4d03104ecd5103df3d76f66c8d21b1d15a2e38@changeid>
- <CACRMN=euZzwDpCQupzth-J1z9qWXPenmy_bu727+R-kt97zexw@mail.gmail.com>
-In-Reply-To: <CACRMN=euZzwDpCQupzth-J1z9qWXPenmy_bu727+R-kt97zexw@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Thu, 19 Mar 2026 10:52:13 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=WEWMdh+SuSE-5P81g7NhV8KH_4u_FxcRdBFRTAaASqhQ@mail.gmail.com>
-X-Gm-Features: AaiRm51jE-pJGKyYKekSNJEdkSVtbmzl88hjmcc-VHWIT0EUhGVU2WYljuGhtW4
-Message-ID: <CAD=FV=WEWMdh+SuSE-5P81g7NhV8KH_4u_FxcRdBFRTAaASqhQ@mail.gmail.com>
-Subject: Re: [PATCH v2] device property: Make modifications of fwnode "flags"
- thread safe
-To: Saravana Kannan <saravanak@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Mark Brown <broonie@kernel.org>, 
-	Wolfram Sang <wsa+renesas@sang-engineering.com>, Andrew Lunn <andrew@lunn.ch>, 
-	Daniel Scally <djrscally@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>, 
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Len Brown <lenb@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Pengutronix Kernel Team <kernel@pengutronix.de>, Rob Herring <robh@kernel.org>, 
-	Russell King <linux@armlinux.org.uk>, Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, devicetree@vger.kernel.org, 
-	driver-core@lists.linux.dev, imx@lists.linux.dev, linux-acpi@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
-	netdev@vger.kernel.org
+References: <20260318225604.71545-1-joannelkoong@gmail.com> <k7ln2mcmll3t4zic3smao6hvvxprmpsax45fh6mwn4en6f6m42@sdpuqd2pqiwy>
+In-Reply-To: <k7ln2mcmll3t4zic3smao6hvvxprmpsax45fh6mwn4en6f6m42@sdpuqd2pqiwy>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Thu, 19 Mar 2026 11:07:42 -0700
+X-Gm-Features: AaiRm51PiGs5infWIQSFJuqnAy1FZOdjdr7orrxLP3LNZfiW4rd16rvmfCo8zAw
+Message-ID: <CAJnrk1Z7OTah=zam8_4LWx8Kc0B6omrVbiiDRNHm34yAKNEBEA@mail.gmail.com>
+Subject: Re: [PATCH v1] writeback: skip sync(2) inode writeback for
+ filesystems with no data integrity guarantees
+To: Jan Kara <jack@suse.cz>
+Cc: brauner@kernel.org, linux-fsdevel@vger.kernel.org, miklos@szeredi.hu, 
+	david@kernel.org, therealgraysky@proton.me, linux-pm@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227359-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,kernel.org,vger.kernel.org,linux.intel.com,sang-engineering.com,lunn.ch,gmail.com,davemloft.net,google.com,nxp.com,redhat.com,pengutronix.de,armlinux.org.uk,lists.linux.dev,lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227360-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[33];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[chromium.org:+];
-	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.963];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sang-engineering.com:email,intel.com:email,chromium.org:dkim,chromium.org:email]
-X-Rspamd-Queue-Id: A3E982D07F6
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.942];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[joannelkoong@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[proton.me:email,mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E44E22D0B1E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
-
-On Thu, Mar 19, 2026 at 10:25=E2=80=AFAM Saravana Kannan <saravanak@kernel.=
-org> wrote:
+On Thu, Mar 19, 2026 at 5:42=E2=80=AFAM Jan Kara <jack@suse.cz> wrote:
 >
-> On Tue, Mar 17, 2026 at 9:04=E2=80=AFAM Douglas Anderson <dianders@chromi=
-um.org> wrote:
+> On Wed 18-03-26 15:56:04, Joanne Koong wrote:
+> > Add SB_I_NO_DATA_INTEGRITY superblock flag for filesystems that cannot
+> > guarantee data persistence on sync (eg fuse) and skip sync(2) inode
+> > writeback for superblocks with this flag set.
 > >
-> > In various places in the kernel, we modify the fwnode "flags" member
-> > by doing either:
-> >   fwnode->flags |=3D SOME_FLAG;
-> >   fwnode->flags &=3D ~SOME_FLAG;
+> > There was a recent report [1] for a suspend-to-RAM hang on fuse-overlay=
+fs with
+> > firefox + youtube in wb_wait_for_completion() from the pm_fs_sync_work_=
+fn()
+> > path:
 > >
-> > This type of modification is not thread-safe. If two threads are both
-> > mucking with the flags at the same time then one can clobber the
-> > other.
+> > Workqueue: pm_fs_sync pm_fs_sync_work_fn
+> > Call Trace:
+> >  <TASK>
+> >  __schedule+0x457/0x1720
+> >  schedule+0x27/0xd0
+> >  wb_wait_for_completion+0x97/0xe0
+> >  sync_inodes_sb+0xf8/0x2e0
+> >  __iterate_supers+0xdc/0x160
+> >  ksys_sync+0x43/0xb0
+> >  pm_fs_sync_work_fn+0x17/0xa0
+> >  process_one_work+0x193/0x350
+> >  worker_thread+0x1a1/0x310
+> >  kthread+0xfc/0x240
+> >  ret_from_fork+0x243/0x280
+> >  ret_from_fork_asm+0x1a/0x30
+> >  </TASK>
 > >
-> > While flags are often modified while under the "fwnode_link_lock",
-> > this is not universally true.
+> > This can happen in two ways:
+> > a) systemd freezes the user session cgroups first (which freezes the fu=
+se daemon)
+> > before invoking the kernel suspend. The suspend triggers the wb_workfn(=
+) ->
+> > write_inode() path, where fuse issues a synchronous setattr request to =
+the
+> > frozen daemon, which cannot process the request
+> > b) if a dirty folio is already under writeback and needs to have writeb=
+ack
+> > issued again, in writeback_get_folio() -> folio_prepare_writeback(), we
+> > unconditionally wait on writeback to finish, but for buggy/faulty fuse
+> > servers, the request may never be processed
 > >
-> > Create some accessor functions for setting, clearing, and testing the
-> > FWNODE flags and move all users to these accessor functions. New
-> > accessor functions use set_bit() and clear_bit(), which are
-> > thread-safe.
+> > The correct fix is for sync(2) to skip the sync_inodes_sb() path entire=
+ly for
+> > any filesystems that do not have data integrity guarantees.
 > >
-> > Cc: stable@vger.kernel.org
-> > Fixes: c2c724c868c4 ("driver core: Add fw_devlink_parse_fwtree()")
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Acked-by: Mark Brown <broonie@kernel.org>
-> > Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-> > Signed-off-by: Douglas Anderson <dianders@chromium.org>
-> > ---
-> > While this patch is not known for sure to fix any specific issues, it
-> > seems possible that it could fix some rare problems. I'm currently
-> > trying to track down a hard-to-reproduce heisenbug and one (currently
-> > unproven) theory I had was that the fwnode flags could be getting
-> > messed up like this. Even if turns out not to fix my heisenbug,
-> > though, this seems like a worthwhile change to take.
+> > A prior commit (commit f9a49aa302a0 ("fs/writeback: skip AS_NO_DATA_INT=
+EGRITY
+> > mappings in wait_sb_inodes()")) added the AS_NO_DATA_INTEGRITY mapping =
+flag to
+> > skip sync(2) waits for mappings without data integrity semantics, but i=
+t still
+> > allowed wb_workfn() worker threads to be kicked off for the writeback.
+> >
+> > This patch improves upon that by replacing the per-inode AS_NO_DATA_INT=
+EGRITY
+> > mapping flag with a flag at the superblock level, and using that superb=
+lock
+> > flag to skip the sync_inodes_sb() path entirely if there are no data in=
+tegrity
+> > guarantees. The flag belongs at the superblock level because data integ=
+rity is
+> > a filesystem-wide property, not a per-inode one. Having the flag at the
+> > superblock level allows sync_inodes_one_sb() to skip the entire filesys=
+tem
+> > efficiently, rather than iterating every dirty inode only to skip each =
+one
+> > individually.
+> >
+> > This patch restores fuse to its prior behavior before tmp folios were r=
+emoved,
+> > where sync was essentially a no-op.
+> >
+> > [1] https://lore.kernel.org/linux-fsdevel/CAJnrk1a-asuvfrbKXbEwwDSctvem=
+F+6zfhdnuzO65Pt8HsFSRw@mail.gmail.com/T/#m632c4648e9cafc4239299887109ebd880=
+ac6c5c1
+> >
+> > Fixes: 0c58a97f919c ("fuse: remove tmp folio for writebacks and interna=
+l rb tree")
+> > Reported-by: John <therealgraysky@proton.me>
+> > Tested-by: John <therealgraysky@proton.me>
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 >
-> Reviewed-by: Saravana Kannan <saravanak@kernel.org>
+> I'd note that previously, if the FUSE server was not broken, although
+> sync(2) would not provide any data integrity guarantee, it would still
+> flush the data so practically, there would be no user observable differen=
+ce
+> unless you really did powerfail testing. So some users might be
+> unpleasantly surprised by sync(2) suddently not doing anything on FUSE
+> filesystems. Maybe for SB_I_NO_DATA_INTEGRITY filesystems we should at
+> least kick flush worker to do writeback in the background?
+>
+>                                                                 Honza
+>
 
-Thanks for the review!
+That's a great point. I'll make this change for v2.
 
-
-> Thanks Doug. Hope this isn't the cause of the hisenbug. If you report
-> it here, I might be able to take a look at it too (no promises).
-
-I don't _think_ it fixes my bug, but I'm still not 100% sure because
-the bug can take a day or so to reproduce and it appears to only
-reproduce on official kernels built by the builder. :( This makes it
-hard to say anything for certain and also hard for me to inject extra
-debug logic.
-
-I did finally capture a ramdump of a device in the bad state and
-managed to inspect the state of all the fwnode and fwnode_link
-objects.
-
-The problem (simplified) is that I have a pinctrl device:
-
-  max77779_pinctrl {
-    pin1: pin1 {
-      ...;
-    };
-    pin2: pin2 {
-      ...;
-    };
-  };
-
-...and then a client of the pinctrl device:
-
-  client1 {
-    pinctrl-0 =3D <&pin1>;
-    ...
-  };
-
-  client2 {
-    pinctrl-0 =3D <&pin2>;
-    ...
-  };
-
-At parse time, we get a link between the "client1" node and the "pin1"
-node (and "client2" and "pin2").
-
-In a normal boot (where the bug doesn't reproduce), when
-max77779_pinctrl finishes probing, all of the links to its children
-(which don't have a "dev" associated with them) get moved to point to
-"max77779_pinctrl" (__fw_devlink_pickup_dangling_consumers).
-
-When I detect the bug, the max77779_pinctrl device clearly has
-finished probing, but the client devices still point to the child
-nodes.
-
-In the debugger, I can inspect things. I can see:
-* The fwnodes for "pin1" and "pin2" clearly don't have a "dev" node.
-They also don't have "FWNODE_FLAG_NOT_DEVICE" set.
-* The fwnode for "max77779_pinctrl" clearly has a dev node (and a bus).
-* The fwnodes for "pin1" and "pin2" show zero consumers.
-* The fwnodes for "client1" and "client2" _do_ still show suppliers.
-* When I look at the fwnode_link between the clients and the pins, the
-"supplier" points to the node for the pin.
-* When I look at the fwnode_link between the clients and the pins, the
-"c_hook" is non-empty.
-* When I look at the fwnode_link between the clients and the pins, the
-"consumer" points to the node for the client.
-* When I look at the fwnode_link between the clients and the pins, the
-"s_hook" is an empty list (next =3D=3D prev).
-
-It's a bit baffling because everything looks nice and consistent with
-half the link being severed, which doesn't seem possible when looking
-at the code. The code seems to always add to a consumer list and
-supplier list at the same time and remove at the same time.
-
-I've started to run out of ideas on how it could possibly get into
-this state. If you have any, or want me to look at any other data
-structures in the ramdump let me know.
-
--Doug
+Thanks,
+Joanne
 
