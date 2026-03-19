@@ -1,170 +1,161 @@
-Return-Path: <stable+bounces-227206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227207-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULr4C81su2kMkAIAu9opvQ
-	(envelope-from <stable+bounces-227206-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 04:26:05 +0100
+	id cIX9NGVtu2nGjwIAu9opvQ
+	(envelope-from <stable+bounces-227207-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 04:28:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA3EB2C5731
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 04:26:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81A282C57DE
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 04:28:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 88D133026322
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 03:25:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3074130BEF37
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 03:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C831B377039;
-	Thu, 19 Mar 2026 03:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C5C375F96;
+	Thu, 19 Mar 2026 03:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ejJRH+TR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4EpimIq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BDFF36895C
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 03:25:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773890709; cv=pass; b=aWx42HqYUoGJLYqwOxpPanFS28HpJ0dcEV93N0LowcXdaUXczv5sSbuXG54zxO5Zc3IEClYZGkZM69HvremwP0t4lj942huoaOUe42RcZdCUaxUHpUVEtBwqIJHH2TxD5+vCqE2lrbgDRNZnMtfZuxa6WFLAg94Uy195YWPvq3I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773890709; c=relaxed/simple;
-	bh=EoxVk8snN2R0HXndJhx0GkkyTWreh6ieEsqLrF2AZDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q6G/P2lRKNfDzBj5i0fb75cpi/yyvsped6thLcBeeM19PxZfejbpkp+nUIlsEF4crMtqA1+z3UCkRBmBiZlgXHZWcQZmGpYSmdKes6Ra2XVW3wQ3vFCNuJJWeAtSTHZmE+SgLINM3XHiYOqZRkGm7f+yyCQv1dttKK+ygeyqv6Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ejJRH+TR; arc=pass smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79a5a37113aso6294307b3.2
-        for <stable@vger.kernel.org>; Wed, 18 Mar 2026 20:25:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773890707; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RHuPdJI9YiM/r0bdRROoHHvusSMWgdRKnkQC3jWdtCB7kC0euxUkDc1gqhxay1nw5P
-         gSN6P9gBUp+ZCBu3zYvbVzdJHTYT1SeW7w9CCjvnXNCZjyHoV/lrXW/xhUaJBYa2ehyu
-         BSLNeFx+olyC6OAnPNq2V/rRmHsooxuDwjDan8Jqs5DJXUXYAYwC36Gl7pBkTAzZodAM
-         jhTl9abdGQ50C+vxUKl9VszH76vdd1JE1ROOz3+B15YQmOWAFVkt3Uc1FrLSMUTJU74i
-         FAZjkCPNSikXQ7Tk7CWlWyckE3b6OKIEqsVEqqF4e1GL7zcdB9h/FKIU9DKhSgu0rAVJ
-         UmWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=lUbY5prU9XTeY769c6qtwA4RxNc+IoHQBZAlAlVIU5k=;
-        fh=qcB2sUVV3EiZTPsztVhPvR4DyZxuYj82oQGY8/d8MCE=;
-        b=jP/m3mb0LDLhPmwfFunyIOdaJmKXdowXKujOneoxPQ5A0qDFk3UF8H7ZTXSSaufjQM
-         xuti8exA855vidXmTBux4ps4pKvgb2PhNt9yQu06kMV6e/xXvBIz/QpI5BkF6IKf5YIc
-         sd6fRWEh0rfTOuxZjuBpg/8h4gaWq7qAYuqEsjMDOM92cJHPdxOlqMXj9lf44Pca2NE4
-         EekkxAUg5EWjf6nZ8qA1I54JxcyN1HwPf1e1MjeAr2ZO6tt23S3W8ATB0rgmyAOM0V3x
-         VPBC6vVML40PvMf9oEo6XBZknNbd+m459OvyiAZMyVjJKv/yowCTpsnAdCNRQA6CG79w
-         lP4A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773890707; x=1774495507; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lUbY5prU9XTeY769c6qtwA4RxNc+IoHQBZAlAlVIU5k=;
-        b=ejJRH+TRvQ5gwRBM8zckcHgjeGHwZXvzsxthSSxibkh2grxLSad/jhLf5HDGA+HvI4
-         NnfUf/r7uiFG8esTkTWYZiZpRPVzWh2UZsFeREG+61yyRdr2D+w1cZ4X3aiNB80PnLCj
-         nrlqmAS/WqDVHwwgp49PaKNV4fy0FRIM9mBhX/ZcU1FQMtsQhWNPV1vfTW6Exm3HQMVf
-         0NIzSRZEGJ5mmEIaYOC4H9ZfsbOh+BtsxvLVV9UBb70uif5PVtZz/CeNuTJm3N6S44qa
-         hFvZ4TviHSWomUPg99f77wKx+I+6tkq9uPk3CwnvM9VDdPqy3jRbtMaAU0FvHH6MdrO8
-         FoUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773890707; x=1774495507;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lUbY5prU9XTeY769c6qtwA4RxNc+IoHQBZAlAlVIU5k=;
-        b=Ea0B7DFO4c1E6VJT2xEvJZLfvcWXc7IgRirCxAc+IgI0mAmUG8l8O0kL7124mGVcdJ
-         H6LpjnKoiHkLR3VGisf7IS33UAesR3zsHcSkChVYuCizjzndxJFLm9Erog3cCzwA0jUs
-         Ffr0f/0i1UYv/XHIJ6ka9e+Nke+mjDqL1lobX9FXtxVNgbtqaHhDRtwgPjdHGWzTJaPj
-         9JXu0tgPQ4sk9h8q6f/yO/vZACI5DLlNk5ao4dh6guBFvETeyrlCyY1SYQNoVhv0+GTs
-         qhdPJAYDfuerY3wpQz1kqNeBoMJRvxbI6HWZigrQtOsAJ3Lya+qJ/CtQMJBdioLissLi
-         VscA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjX5E4+Kowcz+DjGuX7hJCLjCx1fDQWD459Jmh4LTF7/Iy4xPlTF7zQIofvSvjpPJthjjTUgw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyq/yCqfCyKbB3qj3o7kTZ5FlEpwroaSQMAK+aL5vUsj/6VvhsZ
-	h4aWAaRCT8S0LptJlzMG9uDPkgn61rMhiqZRZ8voo9QOVDIJQORKkY5Vwy5VoUkk272/vDrFWas
-	KeTFJ0gDXPDKbkQll2d7XwhoH+74dWWuf+O6Oi2QcF8XI
-X-Gm-Gg: ATEYQzz8pDIV4ASAi8nKluJ4+Y9JMFi9lXjGBE06kH9H/7QzoUDBsz/sKfGVnLfZ7q7
-	QD2UmaoZVltHjcJ2CJk6NTiJvN0i4kfRf/eYznqlo4HLueeMIdd08KLXjxxOFNcCqBjGeO1SEWi
-	HR42XFDnZzoUeqCkqD1nOwuX+cLZjwV+3a+MIWbowc99xSJMlHKFqIZ1fC/659plUCTMC5lY2Rg
-	V5QQMYEAKSXZpQppKQeRfJ63yG9ddZ6kYegT/XKxVAFEExwLicV0NtLlCHGImDzWHLcP5G5jvHR
-	9opphzI=
-X-Received: by 2002:a05:690c:ec9:b0:79a:6e1a:3f2f with SMTP id
- 00721157ae682-79a71834809mr67186207b3.13.1773890707339; Wed, 18 Mar 2026
- 20:25:07 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2D12DC783;
+	Thu, 19 Mar 2026 03:27:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773890852; cv=none; b=k2LN1CGB3KQM4i2FO/B5JX5S72mdxDN6/ux7F/VTU/O/MVabG4mS9K/ComB8JjrChAre8sAxZIUIHsD6VOqrjjYqqcmbNLOnOcCfEN6IgTz9Z1lIdowgQMONBbNXsubALuMFrcoNpzHygNtTQvtyU9piKFFjDs7V5B+vvlBwCDs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773890852; c=relaxed/simple;
+	bh=sRx/e6yBG83MxWAyEYb9aM48iMeWBalueRmbRh5WjdE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KqTZLKsBDQlqpqrKy0GdAwTPFIYNJ0rYC1lMdt8R879X913l0r5aEqBdlTBCShMnT5o++EpN0yxnvFiWvJCcThRUDjfO6GNq5LPWJUXVH3tuIoSM7CzaJEOnAScQXwXlf5E9EncapC2MB6lwC+mR1utrBc5MkJim5joUrZOyYn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4EpimIq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF8E9C19421;
+	Thu, 19 Mar 2026 03:27:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773890851;
+	bh=sRx/e6yBG83MxWAyEYb9aM48iMeWBalueRmbRh5WjdE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=S4EpimIq4LnMdEYbgP3izMuEMgLIMR+ETM5Wh6j+kDP02xLrAerV6MhJv4MFj6I39
+	 2kgyZxsn0gmWzn+37imwh+VQKkBZroYX5QftmsDHGTm82JmGes8UN+q1FxaBQE8zIu
+	 +lvwv5WWph4ovhxC7IDfRa+sSueronJlgWg8mnBgTPLyoxsVRrk76YkdCySYXjzA2Z
+	 /AVHRIqQL9S5KJtbyCTIVLh6chRQLaZKvql7I98jZV4tlzl6N77Qf9/irBdDap/Vmp
+	 4NZr0fg25um4rTaxxbYDL1cHYrMpLl7kl2hZlK3yAzSbt9ATcyZiO9K0v8oOD+Ol/+
+	 A9zLnT3Fn+F8w==
+Message-ID: <1adabe3e-4497-4e71-b6a0-f3b81df322eb@kernel.org>
+Date: Thu, 19 Mar 2026 12:27:27 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260319022335.3213311-1-zzzccc427@gmail.com> <20260319025710.GA357817@sol>
-In-Reply-To: <20260319025710.GA357817@sol>
-From: Cen Zhang <zzzccc427@gmail.com>
-Date: Thu, 19 Mar 2026 11:24:56 +0800
-X-Gm-Features: AaiRm52go2qevgYqXTn06GleSzroBKX_LMCPd09ZGdoi0s8xlATO5QEwKpO4fM8
-Message-ID: <CAFRLqsUSiS=azce_Q8AB1J=eZGsknorSaVJW7qtSTd2czY22ZA@mail.gmail.com>
-Subject: Re: [f2fs-dev] [PATCH] f2fs: annotate data races around fi->i_flags
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: jaegeuk@kernel.org, chao@kernel.org, baijiaju1990@gmail.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	linux-f2fs-devel@lists.sourceforge.net
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] scsi: sas: skip opt_sectors when DMA reports no real
+ optimization hint
+To: "Ionut Nechita (Wind River)" <ionut.nechita@windriver.com>,
+ "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: ahuang12@lenovo.com, axboe@kernel.dk, damien.lemoal@opensource.wdc.com,
+ hch@lst.de, iommu@lists.linux.dev, ionut_n2001@yahoo.com,
+ john.g.garry@oracle.com, kbusch@kernel.org, linux-kernel@vger.kernel.org,
+ linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+ m.szyprowski@samsung.com, robin.murphy@arm.com, sagi@grimberg.me,
+ stable@vger.kernel.org, sunlightlinux@gmail.com
+References: <20260318200532.51232-1-ionut.nechita@windriver.com>
+ <20260318200532.51232-2-ionut.nechita@windriver.com>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20260318200532.51232-2-ionut.nechita@windriver.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227206-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,gmail.com,vger.kernel.org,lists.sourceforge.net];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[lenovo.com,kernel.dk,opensource.wdc.com,lst.de,lists.linux.dev,yahoo.com,oracle.com,kernel.org,vger.kernel.org,lists.infradead.org,samsung.com,arm.com,grimberg.me,gmail.com];
+	TAGGED_FROM(0.00)[bounces-227207-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	HAS_ORG_HEADER(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	NEURAL_HAM(-0.00)[-0.955];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zzzccc427@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[dlemoal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: CA3EB2C5731
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 81A282C57DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Eric,
+On 3/19/26 05:05, Ionut Nechita (Wind River) wrote:
+> +static unsigned int sas_dma_opt_sectors(struct device *dma_dev,
+> +					unsigned int max_sectors)
+> +{
+> +	size_t opt = dma_opt_mapping_size(dma_dev);
+> +	unsigned int opt_sectors;
+> +
+> +	if (opt >= dma_max_mapping_size(dma_dev))
+> +		return 0;
 
-> Is that really the correct Fixes commit?  I don't see what it has to do
-> with this issue.
+I really do not understand this one. How can the optimal DMA mapping size be
+larger than the maximum possible DMA size ?
+If that happens, it is a driver bug, we should WARN_ONCE and return
+dma_max_mapping_size(), no ?
 
-You're right, commit 360985573b55 only remapped the flag values and is
-not related to the race.
+> +
+> +	opt = rounddown_pow_of_two(opt);
+> +	opt_sectors = opt >> SECTOR_SHIFT;
 
-The race is between the lockless read of fi->i_flags in
-f2fs_update_inode() (from the writeback path) and the writes from the
-ioctl paths.
+if opt is super large, can this overflow the 32-bits opt_sectors ?
 
-The read side goes back to:
+> +
+> +	return min(opt_sectors, max_sectors);
+> +}
+> +
+>  static int sas_host_setup(struct transport_container *tc, struct device *dev,
+>  			  struct device *cdev)
+>  {
+> @@ -239,10 +268,9 @@ static int sas_host_setup(struct transport_container *tc, struct device *dev,
+>  		dev_printk(KERN_ERR, dev, "fail to a bsg device %d\n",
+>  			   shost->host_no);
+>  
+> -	if (dma_dev->dma_mask) {
+> -		shost->opt_sectors = min_t(unsigned int, shost->max_sectors,
+> -				dma_opt_mapping_size(dma_dev) >> SECTOR_SHIFT);
+> -	}
+> +	if (dma_dev->dma_mask)
+> +		shost->opt_sectors = sas_dma_opt_sectors(dma_dev,
+> +							 shost->max_sectors);
 
-19f99cee206c ("f2fs: add core inode operations")
+Splitting the line after the "=" would make this look nicer:
 
-which added:
+	if (dma_dev->dma_mask)
+		shost->opt_sectors =
+			sas_dma_opt_sectors(dma_dev, shost->max_sectors);
 
-ri->i_flags = cpu_to_le32(F2FS_I(inode)->i_flags);
+>  
+>  	return 0;
+>  }
 
-I'll fix the Fixes tag in v2. Please let me know if my understanding is
-correct.
 
-Thanks,
-Cen
+-- 
+Damien Le Moal
+Western Digital Research
 
