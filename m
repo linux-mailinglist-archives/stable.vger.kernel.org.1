@@ -1,158 +1,198 @@
-Return-Path: <stable+bounces-227223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227218-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QCL0NS6fu2kLmAIAu9opvQ
-	(envelope-from <stable+bounces-227223-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:01:02 +0100
+	id YH3dNXyeu2nQlwIAu9opvQ
+	(envelope-from <stable+bounces-227218-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 07:58:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA43A2C704F
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:01:01 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5042C6F2A
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 07:58:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C650F300C7CC
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 07:00:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2FDEB301E981
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 06:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D64738B140;
-	Thu, 19 Mar 2026 07:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6137A39B95B;
+	Thu, 19 Mar 2026 06:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="eYVb1JgF"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="PxLkfRfH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7220397E99;
-	Thu, 19 Mar 2026 07:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B51936BCDC;
+	Thu, 19 Mar 2026 06:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773903626; cv=none; b=EQMQekxZz3zyieDuq+o51pfjiTIKNQfLPmugB3AKBe1l7O/62/ToyKy+/B2WNpQr+4kv1fhQ7e/zY8gkFc335AU2khQ4D4FDnEQzqBfLUwumVV7MMhf5c6NKttBmwixNowSBghiY2Ca6lw8Ivx+ahG56a78miAa/agZQRLn4sms=
+	t=1773903475; cv=none; b=kSYwhieJ93BC2p//hciL2BufzUL9RSafpouaD4I9Go+H8TVXS09pn7WTq1MlPt24MLoytX+BqK5zsCL90yF2zP2QvwR1UEeHz+aOUrPD89AumA0R4IIEgVPKxu5z50ighkmDeVtWpU7BVc6hIfol2vMu5u7A43HXR41rWv5QLm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773903626; c=relaxed/simple;
-	bh=tfSo07p9kP2k0yOq/vyE8jSA85R5JBaNYmOl4Di8iWs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AMyjXNeT3J87Kz7I5jpVAS5Imeo7aaPxUiIFAgTFmJMk7K7eNIaAa2rIx2SW0KGc0cU0tFhx0Jtf+cMtehZzvy5Hwuj3XhAc9pmgnRnheAu7IO4tlr9xx5J7pQlA4W2xwjJJyF1BnrbpO/Big5i+6rIuFolXglzpELt5CfHBLiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=eYVb1JgF; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1773903502;
-	bh=tfSo07p9kP2k0yOq/vyE8jSA85R5JBaNYmOl4Di8iWs=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=eYVb1JgFKg1jOEJ/VH1RJrDT3VdQa1mu4/RCCuTo2rOTLGstJkpz3kW/QqRXQRz7E
-	 FDoOxgD6dXm2Fbr1qMSSbn2N8lvTBVbi8Ws4YDtoMCKsivKN/8fBBk87qfP35tNDJ6
-	 7UmdR/cCPN7lMv4IP+6f0M7WDIhfXlQWNAdttrPE=
-X-QQ-mid: zesmtpip3t1773903495t1cdd0f2e
-X-QQ-Originating-IP: Z14SeiRpFBicsPXaWHT63VJxEZPfcm7o6/zAG1l1+gw=
-Received: from localhost.localdomain ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 19 Mar 2026 14:58:13 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4130904497638004089
-EX-QQ-RecipientCnt: 21
-From: Wentao Guan <guanwentao@uniontech.com>
-To: gregkh@linuxfoundation.org
-Cc: achill@achill.org,
-	akpm@linux-foundation.org,
-	broonie@kernel.org,
-	conor@kernel.org,
-	f.fainelli@gmail.com,
-	hargar@microsoft.com,
-	jonathanh@nvidia.com,
-	linux-kernel@vger.kernel.org,
-	linux@roeck-us.net,
-	lkft-triage@lists.linaro.org,
-	patches@kernelci.org,
-	patches@lists.linux.dev,
-	pavel@nabladev.com,
-	rwarsow@gmx.de,
-	shuah@kernel.org,
-	sr@sladewatkins.com,
-	stable@vger.kernel.org,
-	sudipm.mukherjee@gmail.com,
-	torvalds@linux-foundation.org,
-	Wentao Guan <guanwentao@uniontech.com>
-Subject: Re: [PATCH 6.18 000/335] 6.18.19-rc2 review
-Date: Thu, 19 Mar 2026 14:57:14 +0800
-Message-Id: <20260319065714.925454-1-guanwentao@uniontech.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20260318122621.714862892@linuxfoundation.org>
-References: <20260318122621.714862892@linuxfoundation.org>
+	s=arc-20240116; t=1773903475; c=relaxed/simple;
+	bh=mbRgMAHkYDZztWiT1Ogrr6es+imJJQGGwAX8St+uzaQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DVoLJ5IjyTCsZnZEV6DZWpZWN6KTWyqZmiCsSkQxi7yKIyDykkpuoFWF2A3fLHgErLIQ5CdZpKgaToXdBswz/3CRRfMxQulZHdpjuquqGbbO+ga7RNUKAkux7sm6en+YirvCalLJufpJLl3fNflDiEBEX/QHWgsoph0MkGQDvnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=PxLkfRfH; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=d2oQnHa+M701t1+AFct3mw+oRojrQxSf815aZIrcRXk=;
+	b=PxLkfRfHbXPXHwaXz1Lf4WNBr5zpx65AfQJbRpiGgGp7dlUjDv37AxRS6TOPrAMO6e98o3bVY
+	wROoFooN3Zk1pKb9aF8gGAVO20HhUuWlJFJrZPOJfTsBFYy9VO6CILxOhZ4mU3amRq6OgxLwfRE
+	3fr94QlCnXjIwJfLE0IabAM=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fbxGM2Ssbz1cyp7;
+	Thu, 19 Mar 2026 14:52:43 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 34AD840563;
+	Thu, 19 Mar 2026 14:57:43 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 19 Mar 2026 14:57:40 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Rafael J .
+ Wysocki" <rafael@kernel.org>
+CC: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Paul
+ Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, Thomas Gleixner
+	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
+	<bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+	"H . Peter Anvin" <hpa@zytor.com>, Juergen Gross <jgross@suse.com>, Boris
+ Ostrovsky <boris.ostrovsky@oracle.com>, Len Brown <lenb@kernel.org>, Sunil V
+ L <sunilvl@ventanamicro.com>, Mark Rutland <mark.rutland@arm.com>, Jonathan
+ Cameron <jonathan.cameron@huawei.com>, Kees Cook <kees@kernel.org>, Yanteng
+ Si <si.yanteng@linux.dev>, Sean Christopherson <seanjc@google.com>, Kai Huang
+	<kai.huang@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, Thomas Huth
+	<thuth@redhat.com>, Thorsten Blum <thorsten.blum@linux.dev>, Kevin Loughlin
+	<kevinloughlin@google.com>, Zheyun Shen <szy0127@sjtu.edu.cn>, Peter Zijlstra
+	<peterz@infradead.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Xin
+ Li <xin@zytor.com>, "Ahmed S . Darwish" <darwi@linutronix.de>, Sohil Mehta
+	<sohil.mehta@intel.com>, Ilkka Koskinen <ilkka@os.amperecomputing.com>, Robin
+ Murphy <robin.murphy@arm.com>, James Clark <james.clark@linaro.org>, Besar
+ Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>, Wei Huang
+	<wei.huang2@amd.com>, Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>, <punit.agrawal@oss.qualcomm.com>,
+	<guohanjun@huawei.com>, <suzuki.poulose@arm.com>, <ryan.roberts@arm.com>,
+	<chenl311@chinatelecom.cn>, <masahiroy@kernel.org>,
+	<wangyuquan1236@phytium.com.cn>, <anshuman.khandual@arm.com>,
+	<heinrich.schuchardt@canonical.com>, <Eric.VanTassell@amd.com>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <fengchengwen@huawei.com>,
+	<linux-pci@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<loongarch@lists.linux.dev>, <linux-riscv@lists.infradead.org>,
+	<xen-devel@lists.xenproject.org>, <linux-acpi@vger.kernel.org>,
+	<linux-perf-users@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH v9 0/7] ACPI: Unify CPU UID interface and fix ARM64 TPH steer-tag issue
+Date: Thu, 19 Mar 2026 14:57:28 +0800
+Message-ID: <20260319065735.45954-1-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz3a-0
-X-QQ-XMAILINFO: OPf0glEsUFOQi8r/9kwQt1mbs/ywgIYLyJQP1Zj/+BUjQPNSnXA2JHeb
-	qWviGXUtBZgz7ljNNTSg1bHdTDIg7wRRsmS2+ZlXlrFHOw0gqoB2WYizLfC1OBGP+r0rhLP
-	B+/Uh6JweFKAMZl3IduR1jupe2x2mEhcC3vsiIRjtBbTX3/xs+c29FF+QlAggCAsBA3AOZ/
-	Cck4lKz5xWi2EBnygq+clrzoEz3Y0AJCEeRFLx1Axt674i487NPJ0m7k/HxWZlPuCz/vWNb
-	zFYEoJT7raGLtI0BUwoF6/gaOnB7sx7zdiJfUT+igMZZ85MvN1iTAKR7hQKEvp7alOo6LV5
-	B5V4iDqFjOvtkA2lqzINsoGwg/GVPBiiCSxMv0lnxT77USRyzoK7bYsyUcTnnaXSlgzETst
-	VjXG4OoVwebsYVzQ6CEJBEnawhE60ELxQZXuKzJDmMhYGQjr8q8VAtBISG0R01Q3CKOOt4g
-	HmN9/HvvcS7pDjyxuLyCgoUL1E+mnY3yjStrNKViSY9rOiIsRKbneYRDa/0xEdNCuw17/WS
-	/MabBTNl9YqBCnH2LLf6qtUgkbFoHDUyWU2l19Hb3FZCZu8uQZy0rkblc5ezVn1EPJfWLq5
-	rgtYD3Eeny6tkQEICwGumjpmTpPfmJVYwNbai8gWxP2E7i5WGg99FZ0cKWNxkhoCiH1zBPP
-	KDVvgMoq6fqTiJtuPCGosA+td8PL/f7yNruy5Fwdysah9HpN8LxjZOBokqplIbJpeofUOp3
-	ogBkSEg4ZbS+PVUYA5J7X3sf1hg7Mxb8Ra5f9q6fiatnDdGtVxijV/5w3p+116wyDxQ2RbL
-	L2+EyWXySdmnZy0XXWiTJ0v2eI7g5Bj0Zb4fFnSN0izUtmlSFNcAcshnMh7B+edzTTVWQqv
-	/WExbnvTC2QRNxCAuBPzal8LcS2TF7q6fA/p+Uza3g2Q0fIurveF2mqVc91XxzOvNnOpHhO
-	mMopUplJUs9LxZ1wI6R/LTvnWweP3pZRzP1R/sIaoxDX+p+l6jQmmEORtj2y2yxdV3q2Oa6
-	lIP4UveCISOwTGsFbdXpt5ellYYEw=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[uniontech.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[uniontech.com:s=onoh2408];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-227218-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227223-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[achill.org,linux-foundation.org,kernel.org,gmail.com,microsoft.com,nvidia.com,vger.kernel.org,roeck-us.net,lists.linaro.org,kernelci.org,lists.linux.dev,nabladev.com,gmx.de,sladewatkins.com,uniontech.com];
-	DKIM_TRACE(0.00)[uniontech.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[guanwentao@uniontech.com,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_GT_50(0.00)[70];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.937];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,uniontech.com:dkim,uniontech.com:email,uniontech.com:mid,uos-pc:email]
-X-Rspamd-Queue-Id: BA43A2C704F
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,huawei.com:dkim,huawei.com:mid]
+X-Rspamd-Queue-Id: 7F5042C6F2A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+This patchset unifies ACPI Processor UID retrieval across
+arm64/loongarch/riscv/x86 via acpi_get_cpu_uid() (with input validation)
+and fixes ARM64 CPU steer-tag retrieval failure in PCI/TPH:
 
-Now build success in our x86,arm64,loongarch config without error.
+1-4: Add acpi_get_cpu_uid() for arm64/loongarch/riscv/x86 (update
+     respective users)
+5: Centralize acpi_get_cpu_uid() declaration in include/linux/acpi.h
+6: Clean up ACPI/PPTT and remove unused get_acpi_id_for_cpu()
+7: Fix ARM64 platform CPU steer-tag retrieval failure
 
-Tested-by: Wentao Guan <guanwentao@uniontech.com>
+The interface refactor ensures consistent CPU UID retrieval across
+architectures (no functional changes for valid inputs) and provides the
+unified interface required for the ARM64 TPH fix.
 
-BRs
-Wentao Guan
+---
+Changes in v9:
+- Address Bjorn's review: split commits to each platform so that make
+  them easy to review
 
-Log:
-strings vmlinux-* | grep "Linux version 6.18.19-rc2"
-Linux version 6.18.19-rc2-g1cc312cd0408-dirty (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
-Linux version 6.18.19-rc2-g1cc312cd0408-dirty (guanwentao@uos-PC) (aarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #25.01.00.17 SMP PREEMPT_DYNAMIC Thu Mar 19 13:43:54 CST 2026
-Linux version 6.18.19-rc2-loong64-desktop-hwe-g1cc312cd0408-dirty (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
-Linux version 6.18.19-rc2-loong64-desktop-hwe-g1cc312cd0408-dirty (guanwentao@uos-PC) (loongarch64-linux-gnu-gcc-12 (Deepin 12.3.0-17deepin8) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #25.01.00.17 SMP PREEMPT_DYNAMIC Thu Mar 19 14:25:35 CST 2026
-Linux version 6.18.19-rc2-g1cc312cd0408-dirty (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin14) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) # SMP PREEMPT_DYNAMIC
-Linux version 6.18.19-rc2-g1cc312cd0408-dirty (guanwentao@uos-PC) (gcc (Deepin 12.3.0-17deepin14) 12.3.0, GNU ld (GNU Binutils for Deepin) 2.41) #25.01.00.17 SMP PREEMPT_DYNAMIC Thu Mar 19 12:35:44 CST 2026
+Changes in v8:
+- Moving arm64's get_cpu_for_acpi_id() to kernel/acpi.c which address
+  Jeremy's review
+
+Changes in v7:
+- Refine first commit which address Jonathan's reviews
+- Fix x86 implement bug (not consider INVALID-ID) which address Peter's
+  review
+- Fix CI error of x86 implement by moving function to acpi/boot.c
+
+Changes in v6:
+- Rename existing get_acpi_id_for_cpu() to acpi_get_cpu_uid()
+- Split x86's modify as one commit
+
+Chengwen Feng (7):
+  arm64/acpi: Add acpi_get_cpu_uid() and switch arm_cspmu to use it
+  loongarch/acpi: Add acpi_get_cpu_uid() declaration and implementation
+  riscv/acpi: Add acpi_get_cpu_uid() implementation and update users
+  x86/acpi: Add acpi_get_cpu_uid() implementation and update Xen users
+  ACPI: Centralize acpi_get_cpu_uid() declaration in
+    include/linux/acpi.h
+  ACPI: PPTT: Use acpi_get_cpu_uid() and remove get_acpi_id_for_cpu()
+  PCI/TPH: Fix get cpu steer-tag fail on ARM64 platform
+
+ Documentation/PCI/tph.rst          |  4 +--
+ arch/arm64/include/asm/acpi.h      | 17 +---------
+ arch/arm64/kernel/acpi.c           | 30 ++++++++++++++++++
+ arch/loongarch/include/asm/acpi.h  |  5 ---
+ arch/loongarch/kernel/acpi.c       |  9 ++++++
+ arch/riscv/include/asm/acpi.h      |  4 ---
+ arch/riscv/kernel/acpi.c           | 16 ++++++++++
+ arch/riscv/kernel/acpi_numa.c      |  9 ++++--
+ arch/x86/include/asm/cpu.h         |  1 -
+ arch/x86/include/asm/smp.h         |  1 -
+ arch/x86/kernel/acpi/boot.c        | 20 ++++++++++++
+ arch/x86/xen/enlighten_hvm.c       |  5 +--
+ drivers/acpi/pptt.c                | 50 ++++++++++++++++++++++--------
+ drivers/acpi/riscv/rhct.c          |  7 ++++-
+ drivers/pci/tph.c                  | 16 +++++++---
+ drivers/perf/arm_cspmu/arm_cspmu.c |  6 ++--
+ include/linux/acpi.h               | 11 +++++++
+ include/linux/pci-tph.h            |  4 +--
+ 18 files changed, 158 insertions(+), 57 deletions(-)
+
+-- 
+2.17.1
 
 
