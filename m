@@ -1,106 +1,62 @@
-Return-Path: <stable+bounces-227370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qEDkD6BDvGm4wAIAu9opvQ
-	(envelope-from <stable+bounces-227370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:42:40 +0100
+	id qIlXIZBGvGkJwQIAu9opvQ
+	(envelope-from <stable+bounces-227371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:55:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DFB72D12F5
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:42:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEEA62D1685
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:55:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7CF4F314AE38
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:41:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3E71F30FC4BB
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1E23F65E4;
-	Thu, 19 Mar 2026 18:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5193491F1;
+	Thu, 19 Mar 2026 18:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e3YBlNPP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZypdW5ow"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364CC3ED5C6
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 18:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620D3322533
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 18:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773945674; cv=none; b=o1nlT30HHOBGS2Os/qy02eSKmSVwVID0qfN/Su6Tw9UK8Ap5tiAtV3DPmTSniuth+AmgoseJbkgZVksGUE86dPX/JjFptif0WWJ5DDduxMz0OC74ON2cAV0I+H05Xm+7D8IuifjFNPaVBHy0TOkjdPbf1ON0/ED7iCRkw3tJzKE=
+	t=1773946486; cv=none; b=uuQGxVWJqHwGYFdIwOMfOviPHbUn4pyCY4XhCLByiTaXqTSBi2gvAg8VKByrIphme5f4JU0DpPprMnesae+3GYyPxw/URedxgOhAV5xPdrau9VwtePYtiWTYMmPt+ytClvmS+HEf7nZLVO1do1xENHDHjgBdYAdAiw6SVPSrecQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773945674; c=relaxed/simple;
-	bh=ezG3pC99w4U2uwQ/yG5pLTV/NpoABjnTbl6EjBflYnw=;
+	s=arc-20240116; t=1773946486; c=relaxed/simple;
+	bh=qhiBvqv8DBiffXctSTytSKCaeRz8pqQA8cmGabj9kBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMJkrxUVz90z4Hb39kN6IH1JR2WDAseRgRQKGdeL+M50GbiWOxYOpkQlJE18eLBwzaLAaikVz9to5GrOW2rZrC/pBkq8FZfF9hAoyDa4QWQGltO0kMssmasEg9FdkuV576dbP20DTV/K/MPHWr5GI9zuHvcNm5nVj3UDCZxOHks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e3YBlNPP; arc=none smtp.client-ip=209.85.210.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d7c5b8cb24so931158a34.0
-        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 11:41:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773945670; x=1774550470; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wX6S1CdKc2mUwaozX73tCsBdgQ9rtIDSRhAEJ71WCy8=;
-        b=e3YBlNPPJhBndwM7QhT4+/pIvEfTThLD9Kaz/rhgubMYCHO0CTApNCHL5iZBhvjEax
-         ls+jMrI3ZcTgodf1ZwRhZJGu9d3A8VXSqKT8UAegFhlG7t9V/1bBQvfVTCPqiSwRLTiu
-         BpQ52b6SAhsk7jvEf8iMfZRsbZG6S8MFXHmIegtvHxOgXMVvknfRfIcRIthb3B9lyzb8
-         fEhwJwi9xjUVTtSGfX6oBOOuPIwXwAOBBq2fhy27GwAx29SLdJm7HhfMdjeasQtQmp6b
-         DpBUELMaW+feb6an/xsU/3W7Ed06XIMV5TQaA6ezebpHp+Ix4ZGztNJALnD76/rIhysZ
-         sWIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773945670; x=1774550470;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wX6S1CdKc2mUwaozX73tCsBdgQ9rtIDSRhAEJ71WCy8=;
-        b=rihgaLbtA7SiM1UgY0nhW8sK0pGx/oRIESQwq5iFpNrbetRLayG56PUm6BJDVQZYv5
-         u0ssE8M17EG6EOk2JKwDMN8aw3//JWrfOGVfzbNpYJ3s0zKbOoQ1+wlXA/UAcjV2Rvjj
-         5MT/V6MJZ/FfRIszQFuygrDjSQodt/TtRFPN/2xcwVUuuZ1BnYbywniIaeIJ5RNdM4lO
-         JrtLvgzQkx+dLUrh5pHDJi2Ed2G0v1KumxuGRqMNvRWqvlIrGsgnAHrFyDtfsMFI7t13
-         OhQEuKn87ppkK+d3soYX6uCKmfHeLGH4ibb/JbzY6BmeRd5Q2DlxtzGsJ7+kAXOU3H72
-         6I+Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW8lh7QZdKBK8mk85hNgfgpimbgR4ShYFt0EkLEOTLOupEcj3oDq+98N5LzdGfh2t/AZ+j8Pvs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw5SbBGKSc1SyW0UmNGghu7ilXClwL6TPwurtS1963syVByNGYe
-	yvSfAEvgipLb6d7JpMUBSmeztkvhGnwc+OSPJo1qQMC62BboamCwaPOm
-X-Gm-Gg: ATEYQzw61Nbt3Sfgv/MBT+qIhRKdvYM2oEVKNw2g25jSIK2kysZADE7AE4IiTAGj8ab
-	QssFOQb3srgsOrXPRo89kweTSdUpJcQZ5QULoky4+c1DGyWt0KlsyuZFfCAjbXWJm6zJ0RgVRtL
-	bDufxIdOrw71DllO9XSgGPd+mktpNIllsf99SsaiKMWmx5fGD6p5/xoRciU/BSxMU35wCpykPMc
-	1DYEWb7hh74tr2idLqzKk3efCvoBmyis3+fEeDlrhd6hA8rG3Ac37M6356k8IK24aV4wu8kCO5m
-	pwTydWtefIcjCiFxp2MGvaZu1EIdnELMzEzofBi9marSOtJh5j4z8f41MG5HEnjOMJiRGOAm5o1
-	rPiJnJzbfoBJhBegpnNDc+c6C5m9A9IMaOVrLowaDkyGceOJf8qkYIZs6JUoudI4aR1ewnT+Nkt
-	Ze9G5Udb2JcAcIC7qJX1hdchZq9W8Y+EFqmsN95KxzQ22Yvkfvpqsldcbf4/LE/oW+YwDtYMTVn
-	IKJ3uJTU78=
-X-Received: by 2002:a05:6830:700f:b0:7c7:6043:dd8f with SMTP id 46e09a7af769-7d7eaedc687mr238381a34.15.1773945669849;
-        Thu, 19 Mar 2026 11:41:09 -0700 (PDT)
-Received: from celestia.turtle.lan (static-23-234-115-121.cust.tzulo.com. [23.234.115.121])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d7eadcb757sm181486a34.15.2026.03.19.11.41.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 11:41:09 -0700 (PDT)
-From: Sam Edwards <cfsworks@gmail.com>
-X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Russell King <rmk+kernel@armlinux.org.uk>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Baruch Siach <baruch@tkos.co.il>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Sam Edwards <CFSworks@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v2 2/2] net: stmmac: Prevent indefinite RX stall on buffer exhaustion
-Date: Thu, 19 Mar 2026 11:40:31 -0700
-Message-ID: <20260319184031.8596-3-CFSworks@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260319184031.8596-1-CFSworks@gmail.com>
-References: <20260319184031.8596-1-CFSworks@gmail.com>
+	 MIME-Version; b=NpI9FKlWJU6+tns5bfO9LHnXF4JmGnM9ISF3Djnj8xhgMnc9g4+MPoG6OXUDIPOd9uzcoctD2mk/LPlfmQMGdIHvhU2QrvBVNcNr2mYcIzJyXBYIIWIQxJ2cs5++YY2tMj4XredYlHBkRDfmwsTCT8RpYpOl4RtS34nXisQzEBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZypdW5ow; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623DEC19424;
+	Thu, 19 Mar 2026 18:54:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773946486;
+	bh=qhiBvqv8DBiffXctSTytSKCaeRz8pqQA8cmGabj9kBw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ZypdW5owqt4xs3vT/Gc51W4XOTZOcmFBmpVVLraIdLOaxS96P8qS4j97jqEyeVdCN
+	 uP5zI04s1PpqUgP8HzB8HkyFFrzWu74MfofHCkR68aVm5uOj7oKUPjYMjafLzxW4a0
+	 5AsAD66y4xCB+hvv2kFyh6ho8DMuTuRcjzNsaT9tps2QlfGe1sWCl6onSMwFjcltvU
+	 65YLC7y68zf4Dn2ErdNM8PtCG70kTDjY7l+gU/bJwp5w9Pv1hBvQ28QaT9xlVXsK3d
+	 Hb329xa0lARGpwmwviFUAchX3gRjbwTkaGZKUqMbmWlWwbZCINxd4iRZFx1DBk9JDw
+	 7xf+EN31FIe+A==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] btrfs: fix transaction abort on file creation due to name hash collision
+Date: Thu, 19 Mar 2026 14:54:43 -0400
+Message-ID: <20260319185443.2942946-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031721-flask-submersed-ea9b@gregkh>
+References: <2026031721-flask-submersed-ea9b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -108,102 +64,224 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[armlinux.org.uk,bootlin.com,renesas.com,nxp.com,tkos.co.il,gmail.com,vger.kernel.org,lists.infradead.org];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-227371-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	TAGGED_FROM(0.00)[bounces-227370-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev,kernel];
-	NEURAL_HAM(-0.00)[-0.803];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.973];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9DFB72D12F5
+X-Rspamd-Queue-Id: BEEA62D1685
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The stmmac driver handles interrupts in the usual NAPI way: an interrupt
-arrives, the NAPI instance is scheduled and interrupts are masked, and
-the actual work occurs in the NAPI polling function. Once no further
-work remains, interrupts are unmasked and the NAPI instance is put to
-sleep to await a future interrupt. In the receive case, the MAC only
-sends the interrupt when a DMA operation completes; thus the driver must
-make sure a usable RX DMA descriptor exists before expecting a future
-interrupt.
+From: Filipe Manana <fdmanana@suse.com>
 
-The main receive loop in stmmac_rx() exits under one of 3 conditions:
-1) It encounters a DMA descriptor with OWN=1, indicating that no further
-   pending data exists. The MAC will use this descriptor for the next
-   RX DMA operation, so the driver can expect a future interrupt.
-2) It exhausts the NAPI budget. In this case, the driver doesn't know
-   whether the MAC has any usable DMA descriptors. But when the driver
-   consumes its full budget, that signals NAPI to keep polling, so the
-   question is moot.
-3) It runs out of (non-dirty) descriptors in the RX ring. In this case,
-   the MAC will only have a usable descriptor if stmmac_rx_refill()
-   succeeds (at least partially).
+[ Upstream commit 2d1ababdedd4ba38867c2500eb7f95af5ddeeef7 ]
 
-Currently, stmmac_rx() lacks any check against scenario #3 and
-stmmac_rx_refill() failing: it will stop NAPI polling and unmask
-interrupts to await an interrupt that will never arrive, stalling the
-receive pipeline indefinitely.
+If we attempt to create several files with names that result in the same
+hash, we have to pack them in same dir item and that has a limit inherent
+to the leaf size. However if we reach that limit, we trigger a transaction
+abort and turns the filesystem into RO mode. This allows for a malicious
+user to disrupt a system, without the need to have administration
+privileges/capabilities.
 
-Fix this by checking if stmmac_rx_dirty() returns its maximal value,
-returning the full budget (which tells NAPI to keep polling) if so.
+Reproducer:
 
-Fixes: 47dd7a540b8a ("net: add support for STMicroelectronics Ethernet controllers.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+  $ cat exploit-hash-collisions.sh
+  #!/bin/bash
+
+  DEV=/dev/sdi
+  MNT=/mnt/sdi
+
+  # Use smallest node size to make the test faster and require fewer file
+  # names that result in hash collision.
+  mkfs.btrfs -f --nodesize 4K $DEV
+  mount $DEV $MNT
+
+  # List of names that result in the same crc32c hash for btrfs.
+  declare -a names=(
+   'foobar'
+   '%a8tYkxfGMLWRGr55QSeQc4PBNH9PCLIvR6jZnkDtUUru1t@RouaUe_L:@xGkbO3nCwvLNYeK9vhE628gss:T$yZjZ5l-Nbd6CbC$M=hqE-ujhJICXyIxBvYrIU9-TDC'
+   'AQci3EUB%shMsg-N%frgU:02ByLs=IPJU0OpgiWit5nexSyxZDncY6WB:=zKZuk5Zy0DD$Ua78%MelgBuMqaHGyKsJUFf9s=UW80PcJmKctb46KveLSiUtNmqrMiL9-Y0I_l5Fnam04CGIg=8@U:Z'
+   'CvVqJpJzueKcuA$wqwePfyu7VxuWNN3ho$p0zi2H8QFYK$7YlEqOhhb%:hHgjhIjW5vnqWHKNP4'
+   'ET:vk@rFU4tsvMB0$C_p=xQHaYZjvoF%-BTc%wkFW8yaDAPcCYoR%x$FH5O:'
+   'HwTon%v7SGSP4FE08jBwwiu5aot2CFKXHTeEAa@38fUcNGOWvE@Mz6WBeDH_VooaZ6AgsXPkVGwy9l@@ZbNXabUU9csiWrrOp0MWUdfi$EZ3w9GkIqtz7I_eOsByOkBOO'
+   'Ij%2VlFGXSuPvxJGf5UWy6O@1svxGha%b@=%wjkq:CIgE6u7eJOjmQY5qTtxE2Rjbis9@us'
+   'KBkjG5%9R8K9sOG8UTnAYjxLNAvBmvV5vz3IiZaPmKuLYO03-6asI9lJ_j4@6Xo$KZicaLWJ3Pv8XEwVeUPMwbHYWwbx0pYvNlGMO9F:ZhHAwyctnGy%_eujl%WPd4U2BI7qooOSr85J-C2V$LfY'
+   'NcRfDfuUQ2=zP8K3CCF5dFcpfiOm6mwenShsAb_F%n6GAGC7fT2JFFn:c35X-3aYwoq7jNX5$ZJ6hI3wnZs$7KgGi7wjulffhHNUxAT0fRRLF39vJ@NvaEMxsMO'
+   'Oj42AQAEzRoTxa5OuSKIr=A_lwGMy132v4g3Pdq1GvUG9874YseIFQ6QU'
+   'Ono7avN5GjC:_6dBJ_'
+   'WHmN2gnmaN-9dVDy4aWo:yNGFzz8qsJyJhWEWcud7$QzN2D9R0efIWWEdu5kwWr73NZm4=@CoCDxrrZnRITr-kGtU_cfW2:%2_am'
+   'WiFnuTEhAG9FEC6zopQmj-A-$LDQ0T3WULz%ox3UZAPybSV6v1Z$b4L_XBi4M4BMBtJZpz93r9xafpB77r:lbwvitWRyo$odnAUYlYMmU4RvgnNd--e=I5hiEjGLETTtaScWlQp8mYsBovZwM2k'
+   'XKyH=OsOAF3p%uziGF_ZVr$ivrvhVgD@1u%5RtrV-gl_vqAwHkK@x7YwlxX3qT6WKKQ%PR56NrUBU2dOAOAdzr2=5nJuKPM-T-$ZpQfCL7phxQbUcb:BZOTPaFExc-qK-gDRCDW2'
+   'd3uUR6OFEwZr%ns1XH_@tbxA@cCPmbBRLdyh7p6V45H$P2$F%w0RqrD3M0g8aGvWpoTFMiBdOTJXjD:JF7=h9a_43xBywYAP%r$SPZi%zDg%ql-KvkdUCtF9OLaQlxmd'
+   'ePTpbnit%hyNm@WELlpKzNZYOzOTf8EQ$sEfkMy1VOfIUu3coyvIr13-Y7Sv5v-Ivax2Go_GQRFMU1b3362nktT9WOJf3SpT%z8sZmM3gvYQBDgmKI%%RM-G7hyrhgYflOw%z::ZRcv5O:lDCFm'
+   'evqk743Y@dvZAiG5J05L_ROFV@$2%rVWJ2%3nxV72-W7$e$-SK3tuSHA2mBt$qloC5jwNx33GmQUjD%akhBPu=VJ5g$xhlZiaFtTrjeeM5x7dt4cHpX0cZkmfImndYzGmvwQG:$euFYmXn$_2rA9mKZ'
+   'gkgUtnihWXsZQTEkrMAWIxir09k3t7jk_IK25t1:cy1XWN0GGqC%FrySdcmU7M8MuPO_ppkLw3=Dfr0UuBAL4%GFk2$Ma10V1jDRGJje%Xx9EV2ERaWKtjpwiZwh0gCSJsj5UL7CR8RtW5opCVFKGGy8Cky'
+   'hNgsG_8lNRik3PvphqPm0yEH3P%%fYG:kQLY=6O-61Wa6nrV_WVGR6TLB09vHOv%g4VQRP8Gzx7VXUY1qvZyS'
+   'isA7JVzN12xCxVPJZ_qoLm-pTBuhjjHMvV7o=F:EaClfYNyFGlsfw-Kf%uxdqW-kwk1sPl2vhbjyHU1A6$hz'
+   'kiJ_fgcdZFDiOptjgH5PN9-PSyLO4fbk_:u5_2tz35lV_iXiJ6cx7pwjTtKy-XGaQ5IefmpJ4N_ZqGsqCsKuqOOBgf9LkUdffHet@Wu'
+   'lvwtxyhE9:%Q3UxeHiViUyNzJsy:fm38pg_b6s25JvdhOAT=1s0$pG25x=LZ2rlHTszj=gN6M4zHZYr_qrB49i=pA--@WqWLIuX7o1S_SfS@2FSiUZN'
+   'rC24cw3UBDZ=5qJBUMs9e$=S4Y94ni%Z8639vnrGp=0Hv4z3dNFL0fBLmQ40=EYIY:Z=SLc@QLMSt2zsss2ZXrP7j4='
+   'uwGl2s-fFrf@GqS=DQqq2I0LJSsOmM%xzTjS:lzXguE3wChdMoHYtLRKPvfaPOZF2fER@j53evbKa7R%A7r4%YEkD=kicJe@SFiGtXHbKe4gCgPAYbnVn'
+   'UG37U6KKua2bgc:IHzRs7BnB6FD:2Mt5Cc5NdlsW%$1tyvnfz7S27FvNkroXwAW:mBZLA1@qa9WnDbHCDmQmfPMC9z-Eq6QT0jhhPpqyymaD:R02ghwYo%yx7SAaaq-:x33LYpei$5g8DMl3C'
+   'y2vjek0FE1PDJC0qpfnN:x8k2wCFZ9xiUF2ege=JnP98R%wxjKkdfEiLWvQzmnW'
+   '8-HCSgH5B%K7P8_jaVtQhBXpBk:pE-$P7ts58U0J@iR9YZntMPl7j$s62yAJO@_9eanFPS54b=UTw$94C-t=HLxT8n6o9P=QnIxq-f1=Ne2dvhe6WbjEQtc'
+   'YPPh:IFt2mtR6XWSmjHptXL_hbSYu8bMw-JP8@PNyaFkdNFsk$M=xfL6LDKCDM-mSyGA_2MBwZ8Dr4=R1D%7-mCaaKGxb990jzaagRktDTyp'
+   '9hD2ApKa_t_7x-a@GCG28kY:7$M@5udI1myQ$x5udtggvagmCQcq9QXWRC5hoB0o-_zHQUqZI5rMcz_kbMgvN5jr63LeYA4Cj-c6F5Ugmx6DgVf@2Jqm%MafecpgooqreJ53P-QTS'
+  )
+
+  # Now create files with all those names in the same parent directory.
+  # It should not fail since a 4K leaf has enough space for them.
+  for name in "${names[@]}"; do
+       touch $MNT/$name
+  done
+
+  # Now add one more file name that causes a crc32c hash collision.
+  # This should fail, but it should not turn the filesystem into RO mode
+  # (which could be exploited by malicious users) due to a transaction
+  # abort.
+  touch $MNT/'W6tIm-VK2@BGC@IBfcgg6j_p:pxp_QUqtWpGD5Ok_GmijKOJJt'
+
+  # Check that we are able to create another file, with a name that does not cause
+  # a crc32c hash collision.
+  echo -n "hello world" > $MNT/baz
+
+  # Unmount and mount again, verify file baz exists and with the right content.
+  umount $MNT
+  mount $DEV $MNT
+  echo "File baz content: $(cat $MNT/baz)"
+
+  umount $MNT
+
+When running the reproducer:
+
+  $ ./exploit-hash-collisions.sh
+  (...)
+  touch: cannot touch '/mnt/sdi/W6tIm-VK2@BGC@IBfcgg6j_p:pxp_QUqtWpGD5Ok_GmijKOJJt': Value too large for defined data type
+  ./exploit-hash-collisions.sh: line 57: /mnt/sdi/baz: Read-only file system
+  cat: /mnt/sdi/baz: No such file or directory
+  File baz content:
+
+And the transaction abort stack trace in dmesg/syslog:
+
+  $ dmesg
+  (...)
+  [758240.509761] ------------[ cut here ]------------
+  [758240.510668] BTRFS: Transaction aborted (error -75)
+  [758240.511577] WARNING: fs/btrfs/inode.c:6854 at btrfs_create_new_inode+0x805/0xb50 [btrfs], CPU#6: touch/888644
+  [758240.513513] Modules linked in: btrfs dm_zero (...)
+  [758240.523221] CPU: 6 UID: 0 PID: 888644 Comm: touch Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
+  [758240.524621] Tainted: [W]=WARN
+  [758240.525037] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [758240.526331] RIP: 0010:btrfs_create_new_inode+0x80b/0xb50 [btrfs]
+  [758240.527093] Code: 0f 82 cf (...)
+  [758240.529211] RSP: 0018:ffffce64418fbb48 EFLAGS: 00010292
+  [758240.529935] RAX: 00000000ffffffd3 RBX: 0000000000000000 RCX: 00000000ffffffb5
+  [758240.531040] RDX: 0000000d04f33e06 RSI: 00000000ffffffb5 RDI: ffffffffc0919dd0
+  [758240.531920] RBP: ffffce64418fbc10 R08: 0000000000000000 R09: 00000000ffffffb5
+  [758240.532928] R10: 0000000000000000 R11: ffff8e52c0000000 R12: ffff8e53eee7d0f0
+  [758240.533818] R13: ffff8e57f70932a0 R14: ffff8e5417629568 R15: 0000000000000000
+  [758240.534664] FS:  00007f1959a2a740(0000) GS:ffff8e5b27cae000(0000) knlGS:0000000000000000
+  [758240.535821] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [758240.536644] CR2: 00007f1959b10ce0 CR3: 000000012a2cc005 CR4: 0000000000370ef0
+  [758240.537517] Call Trace:
+  [758240.537828]  <TASK>
+  [758240.538099]  btrfs_create_common+0xbf/0x140 [btrfs]
+  [758240.538760]  path_openat+0x111a/0x15b0
+  [758240.539252]  do_filp_open+0xc2/0x170
+  [758240.539699]  ? preempt_count_add+0x47/0xa0
+  [758240.540200]  ? __virt_addr_valid+0xe4/0x1a0
+  [758240.540800]  ? __check_object_size+0x1b3/0x230
+  [758240.541661]  ? alloc_fd+0x118/0x180
+  [758240.542315]  do_sys_openat2+0x70/0xd0
+  [758240.543012]  __x64_sys_openat+0x50/0xa0
+  [758240.543723]  do_syscall_64+0x50/0xf20
+  [758240.544462]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [758240.545397] RIP: 0033:0x7f1959abc687
+  [758240.546019] Code: 48 89 fa (...)
+  [758240.548522] RSP: 002b:00007ffe16ff8690 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
+  [758240.566278] RAX: ffffffffffffffda RBX: 00007f1959a2a740 RCX: 00007f1959abc687
+  [758240.567068] RDX: 0000000000000941 RSI: 00007ffe16ffa333 RDI: ffffffffffffff9c
+  [758240.567860] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  [758240.568707] R10: 00000000000001b6 R11: 0000000000000202 R12: 0000561eec7c4b90
+  [758240.569712] R13: 0000561eec7c311f R14: 00007ffe16ffa333 R15: 0000000000000000
+  [758240.570758]  </TASK>
+  [758240.571040] ---[ end trace 0000000000000000 ]---
+  [758240.571681] BTRFS: error (device sdi state A) in btrfs_create_new_inode:6854: errno=-75 unknown
+  [758240.572899] BTRFS info (device sdi state EA): forced readonly
+
+Fix this by checking for hash collision, and if the adding a new name is
+possible, early in btrfs_create_new_inode() before we do any tree updates,
+so that we don't need to abort the transaction if we cannot add the new
+name due to the leaf size limit.
+
+A test case for fstests will be sent soon.
+
+Fixes: caae78e03234 ("btrfs: move common inode creation code into btrfs_create_new_inode()")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/btrfs/inode.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index f98b070073c0..05d3c548ce28 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5604,6 +5604,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 	unsigned int desc_size;
- 	struct sk_buff *skb = NULL;
- 	struct stmmac_xdp_buff ctx;
-+	int budget = limit;
- 	int xdp_status = 0;
- 	int bufsz;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 96edac307408c..a4acb4539796c 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -6221,6 +6221,25 @@ int btrfs_create_new_inode(struct btrfs_trans_handle *trans,
+ 	unsigned long ptr;
+ 	int ret;
  
-@@ -5870,6 +5871,12 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 	priv->xstats.rx_dropped += rx_dropped;
- 	priv->xstats.rx_errors += rx_errors;
- 
-+	/* If the RX queue is completely dirty, we can't expect a future
-+	 * interrupt; tell NAPI to keep polling.
-+	 */
-+	if (unlikely(stmmac_rx_dirty(priv, queue) == priv->dma_conf.dma_rx_size - 1))
-+		return budget;
++	if (!args->orphan && !args->subvol) {
++		/*
++		 * Before anything else, check if we can add the name to the
++		 * parent directory. We want to avoid a dir item overflow in
++		 * case we have an existing dir item due to existing name
++		 * hash collisions. We do this check here before we call
++		 * btrfs_add_link() down below so that we can avoid a
++		 * transaction abort (which could be exploited by malicious
++		 * users).
++		 *
++		 * For subvolumes we already do this in btrfs_mksubvol().
++		 */
++		ret = btrfs_check_dir_item_collision(BTRFS_I(dir)->root,
++						     btrfs_ino(BTRFS_I(dir)),
++						     name);
++		if (ret < 0)
++			return ret;
++	}
 +
- 	return count;
- }
- 
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return -ENOMEM;
 -- 
-2.52.0
+2.51.0
 
 
