@@ -1,623 +1,223 @@
-Return-Path: <stable+bounces-227288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227289-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +PK0FLH3u2lKqwIAu9opvQ
-	(envelope-from <stable+bounces-227288-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:18:41 +0100
+	id SM6eLOD3u2koqwIAu9opvQ
+	(envelope-from <stable+bounces-227289-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:19:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA91D2CBCF4
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:18:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D1882CBD31
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2CCE6302B83D
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 13:18:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C8AB30B67C1
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 13:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D7C3D3335;
-	Thu, 19 Mar 2026 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86E043D34B7;
+	Thu, 19 Mar 2026 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M9WpJ15t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZKlmN21x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB6B3D330A
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 13:18:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4570B3A1E70;
+	Thu, 19 Mar 2026 13:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773926292; cv=none; b=eo7v0UT43IbDNgqbwjE7ZZn+Ow73J9oS15jutOsPr6U6HmoWp6hAnfzEyAktHcfHNGmsomYyzDEzv5NA3+bqh+In5gjn6f7f3aHcVaFCF+sIEG6vKc9YQkRUq8Aa7C0/AAIzvk8TAF/w/fhOCJ9P5L4PsyJmzANox7hgLAHzc/o=
+	t=1773926333; cv=none; b=L2oA71FQ9wW0pIbJ6mjkq1Ee7L1DBQKPP//CoAK3RMrIO0M8RJB35g0Zg2DWkv/XAdYsPmyG7/tXQJw+lA0KSpYK9uN6d/gQSsPa0NV0azEctKyFUZtoyvse9Sqp9h3tgWNbapf3Gz/3lxw/wzpj32KQbODB+GXbg2EjlWNhXzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773926292; c=relaxed/simple;
-	bh=eE4SKPYDtQ+yaY2cZcdPef72/7bRg2M0PIE9sgWcoz0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5IfKZC6idB0AWVASB5/iUBCo5EdHyUDoHsN4a4JL3JIui1brH5DKXE538AdEAAJ88zOCvFYF348pRnGRAI4/jc82Kpqefp4XggEHudlaxGEZe9913bbZQONYRIyWh5oXjobYMqVUkrlv1hAHcYs5QYPmlw8j90SUwoTdVbzmM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M9WpJ15t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90362C2BC9E;
-	Thu, 19 Mar 2026 13:18:11 +0000 (UTC)
+	s=arc-20240116; t=1773926333; c=relaxed/simple;
+	bh=DBeq6ynyMBT7SGVxMF7nNxXLpd+5i5Ws71dP8HR4daE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IVz6fBQULGO9diqb96sUJllNJ3XnA39Yrf/pBAMhPOfgiMhPFoOJFDXAMEuyJnY6qG/WrZsQCCDhXsHKbQL/3RNTmQA01eXWYV48wHnpRpv4u7OcJpCy7YOiezNg+l27YttYj85aIxgZ8Oudj64l9xd46KVNA9mHde1V2qiu7vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZKlmN21x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FE4DC19424;
+	Thu, 19 Mar 2026 13:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773926292;
-	bh=eE4SKPYDtQ+yaY2cZcdPef72/7bRg2M0PIE9sgWcoz0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9WpJ15tS40dNkP62PRHzXaU4rynqylc9nhKst0H2fNHzg7Sg6G8LueZa0Hhw9cJB
-	 BXkLry2RyGgD0mtBvk10F18eIFbfkFoi3Up9nM95OmkeOVAXEl0UJH1eAq0U7bpGLs
-	 aSHynsZm+pjskqVsiZnCjn2KlA8MuWMTeSf+9wTON4LpJ26eI3/vD40ZUdZPsu7F58
-	 7PDYS0DukrBeX2xIpM8YmeEvNT92yQn9EaM+/DoHvVYyGNZIYeI+a44ss7+wQWmyUp
-	 KDpDDsn1+ALi+shAIPHU5cJryFWNKwCjn1A2tNgNjlvpeqsd2PZewtOsiOPaPYZomQ
-	 x2gjyAcaGK47Q==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Muhammad Amirul Asyraf Mohamad Jamian <muhammad.amirul.asyraf.mohamad.jamian@altera.com>,
-	Ang Tien Sung <tien.sung.ang@altera.com>,
-	"Fong, Yan Kei" <yankei.fong@altera.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y 2/2] firmware: stratix10-svc: Add Multi SVC clients support
-Date: Thu, 19 Mar 2026 09:18:09 -0400
-Message-ID: <20260319131809.2432986-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260319131809.2432986-1-sashal@kernel.org>
-References: <2026031759-humorless-railing-5f3d@gregkh>
- <20260319131809.2432986-1-sashal@kernel.org>
+	s=k20201202; t=1773926332;
+	bh=DBeq6ynyMBT7SGVxMF7nNxXLpd+5i5Ws71dP8HR4daE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZKlmN21xzTYbuxpDehDoEyHf4slhheV6fzre8D17e+zmj+nbm6dXD9//rN+rOTWG2
+	 9T7UHBnqj7YnFqSeFYXxIeDR7Qyq/hHWZl/RbQVrLWHlZzX3XUa1ie1azTEIHc5GtO
+	 6B9SxCO1V2B0ODFWnt/27jJZAH8jdL9i2UViBnnKx99Ul0V/cWBU5l8IJgaL2WFEU0
+	 ISYAGNcqJmLc8nCPHG0baUMxvFqi++YOznl/oWtbYSeY8xco3Spwb5UZwIcfjijgBi
+	 QezSdk3a4jzBNqAGmjyUWddC2BtuYJLlmr81MRyLix+9oNqrtnhL3aVxNgiMTj1Tvo
+	 d7vbbuX9c0OEw==
+Message-ID: <45e50068-751c-4e8c-a6b0-62cf8d1e58e6@kernel.org>
+Date: Thu, 19 Mar 2026 14:18:49 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vfio/type1: Retry follow_pfnmap_start() when PFNMAP is
+ zapped
+To: "Boone, Max" <mboone@akamai.com>, Alex Williamson <alex@shazbot.org>
+Cc: Max Boone via B4 Relay <devnull+mboone.akamai.com@kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20260317-retry-pin-on-reclaimed-pud-v1-1-1f0d0a23f78d@akamai.com>
+ <20260318152249.43eb81f6@shazbot.org>
+ <3C8F924E-CA2D-4368-83DF-3CCCD4BA49FF@akamai.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <3C8F924E-CA2D-4368-83DF-3CCCD4BA49FF@akamai.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227288-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227289-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.990];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BA91D2CBCF4
+	NEURAL_HAM(-0.00)[-0.993];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,mboone.akamai.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1D1882CBD31
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Muhammad Amirul Asyraf Mohamad Jamian <muhammad.amirul.asyraf.mohamad.jamian@altera.com>
+On 3/19/26 09:36, Boone, Max wrote:
+> 
+> 
+>> On Mar 18, 2026, at 10:22 PM, Alex Williamson <alex@shazbot.org> wrote:
+>>
+>> […]
+>>
+>>> + /*
+>>> + * follow_pfnmap_start() returns -EINVAL for
+>>> + * invalid parameters and non-present entries.
+>>> + * If that happens here after a successful
+>>> + * fixup_user_fault(), it is likely that the
+>>> + * pfnmap has been zapped. Retry instead of
+>>> + * failing.
+>>> + */
+>>
+>> It's a little stronger than that, right?  We're betting that the only
+>> remaining non-zero return is due to a race and we can introduce what
+>> appears to be potential for an infinite loop here because -EAGAIN will
+>> get kicked out to redo the vma_lookup() and fixup_user_fault() should
+>> return a genuine error if we're completely in the weeds.  Should we
+>> make this a little stronger and more specific?  Thanks,
+> 
+> I’d say that the best case would be to have follow_pfnmap_start() return
+> -EINVAL or -ENOENT w.r.t. which of the two return values it is. But then
+> again, we could theoretically run into an infinite loop I guess - as the zap
+> and faulting could run in lockstep (the race window is extremely small
+> though).
 
-[ Upstream commit 22fd7f7fed2ae3702f90d1985c326354e86b9c75 ]
+Well, in theory :) To hit that race repeatedly, you'd really have to be
+quite lucky I guess.
 
-In the current implementation, SVC client drivers such as socfpga-hwmon,
-intel_fcs, stratix10-soc, stratix10-rsu each send an SMC command that
-triggers a single thread in the stratix10-svc driver. Upon receiving a
-callback, the initiating client driver sends a stratix10-svc-done signal,
-terminating the thread without waiting for other pending SMC commands to
-complete. This leads to a timeout issue in the firmware SVC mailbox service
-when multiple client drivers send SMC commands concurrently.
+But the real question is: if user space triggered the pinning, and user
+space keeps hurting itself to make progress, is that a real problem?
 
-To resolve this issue, a dedicated thread is now created per channel. The
-stratix10-svc driver will support up to the number of channels defined by
-SVC_NUM_CHANNEL. Thread synchronization is handled using a mutex to prevent
-simultaneous issuance of SMC commands by multiple threads.
+I guess the crucial part would be to
 
-SVC_NUM_DATA_IN_FIFO is reduced from 32 to 8, since each channel now has
-its own dedicated FIFO and the SDM processes commands one at a time.
-8 entries per channel is sufficient while keeping the total aggregate
-capacity the same (4 channels x 8 = 32 entries).
+a) Have some cond_resched(() in there?
+b) Checking for fatal signals somewhere?
+c) Possibly drop locks (mmap lock?) every now and then?
 
-Additionally, a thread task is now validated before invoking kthread_stop
-when the user aborts, ensuring safe termination.
+For GUP, a) and b) are in place in __get_user_pages().
 
-Timeout values have also been adjusted to accommodate the increased load
-from concurrent client driver activity.
+c) might be done, but I think it's less deterministic.
 
-Fixes: 7ca5ce896524 ("firmware: add Intel Stratix10 service layer driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ang Tien Sung <tien.sung.ang@altera.com>
-Signed-off-by: Fong, Yan Kei <yankei.fong@altera.com>
-Signed-off-by: Muhammad Amirul Asyraf Mohamad Jamian <muhammad.amirul.asyraf.mohamad.jamian@altera.com>
-Link: https://lore.kernel.org/all/20260305093151.2678-1-muhammad.amirul.asyraf.mohamad.jamian@altera.com
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/firmware/stratix10-svc.c              | 228 ++++++++++--------
- .../firmware/intel/stratix10-svc-client.h     |   8 +-
- 2 files changed, 130 insertions(+), 106 deletions(-)
+> 
+> We could make the retry above bounded, and bubble up a -EBUSY such
+> that users of the ioctl can decide to retry instead of fail?
 
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index dbed404a71fcf..5c9d55a94a1b4 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -37,15 +37,14 @@
-  * service layer will return error to FPGA manager when timeout occurs,
-  * timeout is set to 30 seconds (30 * 1000) at Intel Stratix10 SoC.
-  */
--#define SVC_NUM_DATA_IN_FIFO			32
-+#define SVC_NUM_DATA_IN_FIFO			8
- #define SVC_NUM_CHANNEL				4
--#define FPGA_CONFIG_DATA_CLAIM_TIMEOUT_MS	200
-+#define FPGA_CONFIG_DATA_CLAIM_TIMEOUT_MS	2000
- #define FPGA_CONFIG_STATUS_TIMEOUT_SEC		30
- #define BYTE_TO_WORD_SIZE              4
- 
- /* stratix10 service layer clients */
- #define STRATIX10_RSU				"stratix10-rsu"
--#define INTEL_FCS				"intel-fcs"
- 
- /* Maximum number of SDM client IDs. */
- #define MAX_SDM_CLIENT_IDS			16
-@@ -105,11 +104,9 @@ struct stratix10_svc_chan;
- /**
-  * struct stratix10_svc - svc private data
-  * @stratix10_svc_rsu: pointer to stratix10 RSU device
-- * @intel_svc_fcs: pointer to the FCS device
-  */
- struct stratix10_svc {
- 	struct platform_device *stratix10_svc_rsu;
--	struct platform_device *intel_svc_fcs;
- };
- 
- /**
-@@ -251,12 +248,10 @@ struct stratix10_async_ctrl {
-  * @num_active_client: number of active service client
-  * @node: list management
-  * @genpool: memory pool pointing to the memory region
-- * @task: pointer to the thread task which handles SMC or HVC call
-- * @svc_fifo: a queue for storing service message data
-  * @complete_status: state for completion
-- * @svc_fifo_lock: protect access to service message data queue
-  * @invoke_fn: function to issue secure monitor call or hypervisor call
-  * @svc: manages the list of client svc drivers
-+ * @sdm_lock: only allows a single command single response to SDM
-  * @actrl: async control structure
-  *
-  * This struct is used to create communication channels for service clients, to
-@@ -269,12 +264,10 @@ struct stratix10_svc_controller {
- 	int num_active_client;
- 	struct list_head node;
- 	struct gen_pool *genpool;
--	struct task_struct *task;
--	struct kfifo svc_fifo;
- 	struct completion complete_status;
--	spinlock_t svc_fifo_lock;
- 	svc_invoke_fn *invoke_fn;
- 	struct stratix10_svc *svc;
-+	struct mutex sdm_lock;
- 	struct stratix10_async_ctrl actrl;
- };
- 
-@@ -283,6 +276,9 @@ struct stratix10_svc_controller {
-  * @ctrl: pointer to service controller which is the provider of this channel
-  * @scl: pointer to service client which owns the channel
-  * @name: service client name associated with the channel
-+ * @task: pointer to the thread task which handles SMC or HVC call
-+ * @svc_fifo: a queue for storing service message data (separate fifo for every channel)
-+ * @svc_fifo_lock: protect access to service message data queue (locking pending fifo)
-  * @lock: protect access to the channel
-  * @async_chan: reference to asynchronous channel object for this channel
-  *
-@@ -293,6 +289,9 @@ struct stratix10_svc_chan {
- 	struct stratix10_svc_controller *ctrl;
- 	struct stratix10_svc_client *scl;
- 	char *name;
-+	struct task_struct *task;
-+	struct kfifo svc_fifo;
-+	spinlock_t svc_fifo_lock;
- 	spinlock_t lock;
- 	struct stratix10_async_chan *async_chan;
- };
-@@ -527,10 +526,10 @@ static void svc_thread_recv_status_ok(struct stratix10_svc_data *p_data,
-  */
- static int svc_normal_to_secure_thread(void *data)
- {
--	struct stratix10_svc_controller
--			*ctrl = (struct stratix10_svc_controller *)data;
--	struct stratix10_svc_data *pdata;
--	struct stratix10_svc_cb_data *cbdata;
-+	struct stratix10_svc_chan *chan = (struct stratix10_svc_chan *)data;
-+	struct stratix10_svc_controller *ctrl = chan->ctrl;
-+	struct stratix10_svc_data *pdata = NULL;
-+	struct stratix10_svc_cb_data *cbdata = NULL;
- 	struct arm_smccc_res res;
- 	unsigned long a0, a1, a2, a3, a4, a5, a6, a7;
- 	int ret_fifo = 0;
-@@ -555,12 +554,12 @@ static int svc_normal_to_secure_thread(void *data)
- 	a6 = 0;
- 	a7 = 0;
- 
--	pr_debug("smc_hvc_shm_thread is running\n");
-+	pr_debug("%s: %s: Thread is running!\n", __func__, chan->name);
- 
- 	while (!kthread_should_stop()) {
--		ret_fifo = kfifo_out_spinlocked(&ctrl->svc_fifo,
-+		ret_fifo = kfifo_out_spinlocked(&chan->svc_fifo,
- 						pdata, sizeof(*pdata),
--						&ctrl->svc_fifo_lock);
-+						&chan->svc_fifo_lock);
- 
- 		if (!ret_fifo)
- 			continue;
-@@ -569,9 +568,25 @@ static int svc_normal_to_secure_thread(void *data)
- 			 (unsigned int)pdata->paddr, pdata->command,
- 			 (unsigned int)pdata->size);
- 
-+		/* SDM can only process one command at a time */
-+		pr_debug("%s: %s: Thread is waiting for mutex!\n",
-+			 __func__, chan->name);
-+		if (mutex_lock_interruptible(&ctrl->sdm_lock)) {
-+			/* item already dequeued; notify client to unblock it */
-+			cbdata->status = BIT(SVC_STATUS_ERROR);
-+			cbdata->kaddr1 = NULL;
-+			cbdata->kaddr2 = NULL;
-+			cbdata->kaddr3 = NULL;
-+			if (pdata->chan->scl)
-+				pdata->chan->scl->receive_cb(pdata->chan->scl,
-+							     cbdata);
-+			break;
-+		}
-+
- 		switch (pdata->command) {
- 		case COMMAND_RECONFIG_DATA_CLAIM:
- 			svc_thread_cmd_data_claim(ctrl, pdata, cbdata);
-+			mutex_unlock(&ctrl->sdm_lock);
- 			continue;
- 		case COMMAND_RECONFIG:
- 			a0 = INTEL_SIP_SMC_FPGA_CONFIG_START;
-@@ -700,10 +715,11 @@ static int svc_normal_to_secure_thread(void *data)
- 			break;
- 		default:
- 			pr_warn("it shouldn't happen\n");
--			break;
-+			mutex_unlock(&ctrl->sdm_lock);
-+			continue;
- 		}
--		pr_debug("%s: before SMC call -- a0=0x%016x a1=0x%016x",
--			 __func__,
-+		pr_debug("%s: %s: before SMC call -- a0=0x%016x a1=0x%016x",
-+			 __func__, chan->name,
- 			 (unsigned int)a0,
- 			 (unsigned int)a1);
- 		pr_debug(" a2=0x%016x\n", (unsigned int)a2);
-@@ -712,8 +728,8 @@ static int svc_normal_to_secure_thread(void *data)
- 		pr_debug(" a5=0x%016x\n", (unsigned int)a5);
- 		ctrl->invoke_fn(a0, a1, a2, a3, a4, a5, a6, a7, &res);
- 
--		pr_debug("%s: after SMC call -- res.a0=0x%016x",
--			 __func__, (unsigned int)res.a0);
-+		pr_debug("%s: %s: after SMC call -- res.a0=0x%016x",
-+			 __func__, chan->name, (unsigned int)res.a0);
- 		pr_debug(" res.a1=0x%016x, res.a2=0x%016x",
- 			 (unsigned int)res.a1, (unsigned int)res.a2);
- 		pr_debug(" res.a3=0x%016x\n", (unsigned int)res.a3);
-@@ -728,6 +744,7 @@ static int svc_normal_to_secure_thread(void *data)
- 			cbdata->kaddr2 = NULL;
- 			cbdata->kaddr3 = NULL;
- 			pdata->chan->scl->receive_cb(pdata->chan->scl, cbdata);
-+			mutex_unlock(&ctrl->sdm_lock);
- 			continue;
- 		}
- 
-@@ -801,6 +818,8 @@ static int svc_normal_to_secure_thread(void *data)
- 			break;
- 
- 		}
-+
-+		mutex_unlock(&ctrl->sdm_lock);
- 	}
- 
- 	kfree(cbdata);
-@@ -1696,22 +1715,33 @@ int stratix10_svc_send(struct stratix10_svc_chan *chan, void *msg)
- 	if (!p_data)
- 		return -ENOMEM;
- 
--	/* first client will create kernel thread */
--	if (!chan->ctrl->task) {
--		chan->ctrl->task =
--			kthread_run_on_cpu(svc_normal_to_secure_thread,
--					   (void *)chan->ctrl,
--					   cpu, "svc_smc_hvc_thread");
--		if (IS_ERR(chan->ctrl->task)) {
-+	/* first caller creates the per-channel kthread */
-+	if (!chan->task) {
-+		struct task_struct *task;
-+
-+		task = kthread_run_on_cpu(svc_normal_to_secure_thread,
-+					  (void *)chan,
-+					  cpu, "svc_smc_hvc_thread");
-+		if (IS_ERR(task)) {
- 			dev_err(chan->ctrl->dev,
- 				"failed to create svc_smc_hvc_thread\n");
- 			kfree(p_data);
- 			return -EINVAL;
- 		}
-+
-+		spin_lock(&chan->lock);
-+		if (chan->task) {
-+			/* another caller won the race; discard our thread */
-+			spin_unlock(&chan->lock);
-+			kthread_stop(task);
-+		} else {
-+			chan->task = task;
-+			spin_unlock(&chan->lock);
-+		}
- 	}
- 
--	pr_debug("%s: sent P-va=%p, P-com=%x, P-size=%u\n", __func__,
--		 p_msg->payload, p_msg->command,
-+	pr_debug("%s: %s: sent P-va=%p, P-com=%x, P-size=%u\n", __func__,
-+		 chan->name, p_msg->payload, p_msg->command,
- 		 (unsigned int)p_msg->payload_length);
- 
- 	if (list_empty(&svc_data_mem)) {
-@@ -1747,12 +1777,16 @@ int stratix10_svc_send(struct stratix10_svc_chan *chan, void *msg)
- 	p_data->arg[2] = p_msg->arg[2];
- 	p_data->size = p_msg->payload_length;
- 	p_data->chan = chan;
--	pr_debug("%s: put to FIFO pa=0x%016x, cmd=%x, size=%u\n", __func__,
--	       (unsigned int)p_data->paddr, p_data->command,
--	       (unsigned int)p_data->size);
--	ret = kfifo_in_spinlocked(&chan->ctrl->svc_fifo, p_data,
-+	pr_debug("%s: %s: put to FIFO pa=0x%016x, cmd=%x, size=%u\n",
-+		 __func__,
-+		 chan->name,
-+		 (unsigned int)p_data->paddr,
-+		 p_data->command,
-+		 (unsigned int)p_data->size);
-+
-+	ret = kfifo_in_spinlocked(&chan->svc_fifo, p_data,
- 				  sizeof(*p_data),
--				  &chan->ctrl->svc_fifo_lock);
-+				  &chan->svc_fifo_lock);
- 
- 	kfree(p_data);
- 
-@@ -1773,11 +1807,12 @@ EXPORT_SYMBOL_GPL(stratix10_svc_send);
-  */
- void stratix10_svc_done(struct stratix10_svc_chan *chan)
- {
--	/* stop thread when thread is running AND only one active client */
--	if (chan->ctrl->task && chan->ctrl->num_active_client <= 1) {
--		pr_debug("svc_smc_hvc_shm_thread is stopped\n");
--		kthread_stop(chan->ctrl->task);
--		chan->ctrl->task = NULL;
-+	/* stop thread when thread is running */
-+	if (chan->task) {
-+		pr_debug("%s: %s: svc_smc_hvc_shm_thread is stopping\n",
-+			 __func__, chan->name);
-+		kthread_stop(chan->task);
-+		chan->task = NULL;
- 	}
- }
- EXPORT_SYMBOL_GPL(stratix10_svc_done);
-@@ -1817,8 +1852,8 @@ void *stratix10_svc_allocate_memory(struct stratix10_svc_chan *chan,
- 	pmem->paddr = pa;
- 	pmem->size = s;
- 	list_add_tail(&pmem->node, &svc_data_mem);
--	pr_debug("%s: va=%p, pa=0x%016x\n", __func__,
--		 pmem->vaddr, (unsigned int)pmem->paddr);
-+	pr_debug("%s: %s: va=%p, pa=0x%016x\n", __func__,
-+		 chan->name, pmem->vaddr, (unsigned int)pmem->paddr);
- 
- 	return (void *)va;
- }
-@@ -1855,6 +1890,13 @@ static const struct of_device_id stratix10_svc_drv_match[] = {
- 	{},
- };
- 
-+static const char * const chan_names[SVC_NUM_CHANNEL] = {
-+	SVC_CLIENT_FPGA,
-+	SVC_CLIENT_RSU,
-+	SVC_CLIENT_FCS,
-+	SVC_CLIENT_HWMON
-+};
-+
- static int stratix10_svc_drv_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1862,11 +1904,11 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
- 	struct stratix10_svc_chan *chans;
- 	struct gen_pool *genpool;
- 	struct stratix10_svc_sh_memory *sh_memory;
--	struct stratix10_svc *svc;
-+	struct stratix10_svc *svc = NULL;
- 
- 	svc_invoke_fn *invoke_fn;
- 	size_t fifo_size;
--	int ret;
-+	int ret, i = 0;
- 
- 	/* get SMC or HVC function */
- 	invoke_fn = get_invoke_func(dev);
-@@ -1905,8 +1947,8 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
- 	controller->num_active_client = 0;
- 	controller->chans = chans;
- 	controller->genpool = genpool;
--	controller->task = NULL;
- 	controller->invoke_fn = invoke_fn;
-+	INIT_LIST_HEAD(&controller->node);
- 	init_completion(&controller->complete_status);
- 
- 	ret = stratix10_svc_async_init(controller);
-@@ -1917,32 +1959,20 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
- 	}
- 
- 	fifo_size = sizeof(struct stratix10_svc_data) * SVC_NUM_DATA_IN_FIFO;
--	ret = kfifo_alloc(&controller->svc_fifo, fifo_size, GFP_KERNEL);
--	if (ret) {
--		dev_err(dev, "failed to allocate FIFO\n");
--		goto err_async_exit;
--	}
--	spin_lock_init(&controller->svc_fifo_lock);
--
--	chans[0].scl = NULL;
--	chans[0].ctrl = controller;
--	chans[0].name = SVC_CLIENT_FPGA;
--	spin_lock_init(&chans[0].lock);
-+	mutex_init(&controller->sdm_lock);
- 
--	chans[1].scl = NULL;
--	chans[1].ctrl = controller;
--	chans[1].name = SVC_CLIENT_RSU;
--	spin_lock_init(&chans[1].lock);
--
--	chans[2].scl = NULL;
--	chans[2].ctrl = controller;
--	chans[2].name = SVC_CLIENT_FCS;
--	spin_lock_init(&chans[2].lock);
--
--	chans[3].scl = NULL;
--	chans[3].ctrl = controller;
--	chans[3].name = SVC_CLIENT_HWMON;
--	spin_lock_init(&chans[3].lock);
-+	for (i = 0; i < SVC_NUM_CHANNEL; i++) {
-+		chans[i].scl = NULL;
-+		chans[i].ctrl = controller;
-+		chans[i].name = (char *)chan_names[i];
-+		spin_lock_init(&chans[i].lock);
-+		ret = kfifo_alloc(&chans[i].svc_fifo, fifo_size, GFP_KERNEL);
-+		if (ret) {
-+			dev_err(dev, "failed to allocate FIFO %d\n", i);
-+			goto err_free_fifos;
-+		}
-+		spin_lock_init(&chans[i].svc_fifo_lock);
-+	}
- 
- 	list_add_tail(&controller->node, &svc_ctrl);
- 	platform_set_drvdata(pdev, controller);
-@@ -1951,7 +1981,7 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
- 	svc = devm_kzalloc(dev, sizeof(*svc), GFP_KERNEL);
- 	if (!svc) {
- 		ret = -ENOMEM;
--		goto err_free_kfifo;
-+		goto err_free_fifos;
- 	}
- 	controller->svc = svc;
- 
-@@ -1959,51 +1989,43 @@ static int stratix10_svc_drv_probe(struct platform_device *pdev)
- 	if (!svc->stratix10_svc_rsu) {
- 		dev_err(dev, "failed to allocate %s device\n", STRATIX10_RSU);
- 		ret = -ENOMEM;
--		goto err_free_kfifo;
-+		goto err_free_fifos;
- 	}
- 
- 	ret = platform_device_add(svc->stratix10_svc_rsu);
--	if (ret) {
--		platform_device_put(svc->stratix10_svc_rsu);
--		goto err_free_kfifo;
--	}
--
--	svc->intel_svc_fcs = platform_device_alloc(INTEL_FCS, 1);
--	if (!svc->intel_svc_fcs) {
--		dev_err(dev, "failed to allocate %s device\n", INTEL_FCS);
--		ret = -ENOMEM;
--		goto err_unregister_rsu_dev;
--	}
--
--	ret = platform_device_add(svc->intel_svc_fcs);
--	if (ret) {
--		platform_device_put(svc->intel_svc_fcs);
--		goto err_unregister_rsu_dev;
--	}
-+	if (ret)
-+		goto err_put_device;
- 
- 	ret = of_platform_default_populate(dev_of_node(dev), NULL, dev);
- 	if (ret)
--		goto err_unregister_fcs_dev;
-+		goto err_unregister_rsu_dev;
- 
- 	pr_info("Intel Service Layer Driver Initialized\n");
- 
- 	return 0;
- 
--err_unregister_fcs_dev:
--	platform_device_unregister(svc->intel_svc_fcs);
- err_unregister_rsu_dev:
- 	platform_device_unregister(svc->stratix10_svc_rsu);
--err_free_kfifo:
--	kfifo_free(&controller->svc_fifo);
--err_async_exit:
-+	goto err_free_fifos;
-+err_put_device:
-+	platform_device_put(svc->stratix10_svc_rsu);
-+err_free_fifos:
-+	/* only remove from list if list_add_tail() was reached */
-+	if (!list_empty(&controller->node))
-+		list_del(&controller->node);
-+	/* free only the FIFOs that were successfully allocated */
-+	while (i--)
-+		kfifo_free(&chans[i].svc_fifo);
- 	stratix10_svc_async_exit(controller);
- err_destroy_pool:
- 	gen_pool_destroy(genpool);
-+
- 	return ret;
- }
- 
- static void stratix10_svc_drv_remove(struct platform_device *pdev)
- {
-+	int i;
- 	struct stratix10_svc_controller *ctrl = platform_get_drvdata(pdev);
- 	struct stratix10_svc *svc = ctrl->svc;
- 
-@@ -2011,14 +2033,16 @@ static void stratix10_svc_drv_remove(struct platform_device *pdev)
- 
- 	of_platform_depopulate(ctrl->dev);
- 
--	platform_device_unregister(svc->intel_svc_fcs);
- 	platform_device_unregister(svc->stratix10_svc_rsu);
- 
--	kfifo_free(&ctrl->svc_fifo);
--	if (ctrl->task) {
--		kthread_stop(ctrl->task);
--		ctrl->task = NULL;
-+	for (i = 0; i < SVC_NUM_CHANNEL; i++) {
-+		if (ctrl->chans[i].task) {
-+			kthread_stop(ctrl->chans[i].task);
-+			ctrl->chans[i].task = NULL;
-+		}
-+		kfifo_free(&ctrl->chans[i].svc_fifo);
- 	}
-+
- 	if (ctrl->genpool)
- 		gen_pool_destroy(ctrl->genpool);
- 	list_del(&ctrl->node);
-diff --git a/include/linux/firmware/intel/stratix10-svc-client.h b/include/linux/firmware/intel/stratix10-svc-client.h
-index d290060f4c73d..91013161e9db9 100644
---- a/include/linux/firmware/intel/stratix10-svc-client.h
-+++ b/include/linux/firmware/intel/stratix10-svc-client.h
-@@ -68,12 +68,12 @@
-  * timeout value used in Stratix10 FPGA manager driver.
-  * timeout value used in RSU driver
-  */
--#define SVC_RECONFIG_REQUEST_TIMEOUT_MS         300
--#define SVC_RECONFIG_BUFFER_TIMEOUT_MS          720
--#define SVC_RSU_REQUEST_TIMEOUT_MS              300
-+#define SVC_RECONFIG_REQUEST_TIMEOUT_MS         5000
-+#define SVC_RECONFIG_BUFFER_TIMEOUT_MS          5000
-+#define SVC_RSU_REQUEST_TIMEOUT_MS              2000
- #define SVC_FCS_REQUEST_TIMEOUT_MS		2000
- #define SVC_COMPLETED_TIMEOUT_MS		30000
--#define SVC_HWMON_REQUEST_TIMEOUT_MS		300
-+#define SVC_HWMON_REQUEST_TIMEOUT_MS		2000
- 
- struct stratix10_svc_chan;
- 
+Would that be a possible ABI break? You'd really have to only do that in
+a case where user space does stupid things, I guess.
+
+> 
+> David, you mentioned that gup already has retry logic that we don’t have
+> with follow_fault_pfn() -> follow_pfnmap_start(). Would we potentially run
+> into an infinite loop with this change?
+
+GUP triggers page faults through faultin_page(). If handle_mm_fault()
+returns
+
+* VM_FAULT_COMPLETED we return -EAGAIN
+* VM_FAULT_ERROR we return the error
+* VM_FAULT_RETRY we return -EBUSY
+* Otherwise 0
+
+In the caller __get_user_pages(), we
+* Retry immediately with ret == 0
+* Return to the GUP caller (letting it retry) with -EBUSY/-EAGAIN
+
+Having at least a) and b) sounds reasonable. Not sure about having c),
+might be tricky if we are not allowed to drop the lock.
+
 -- 
-2.51.0
+Cheers,
 
+David
 
