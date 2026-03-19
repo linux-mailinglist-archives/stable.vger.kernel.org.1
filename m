@@ -1,193 +1,253 @@
-Return-Path: <stable+bounces-227388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHfjMslqvGlQyQIAu9opvQ
-	(envelope-from <stable+bounces-227388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:29:45 +0100
+	id WPFrBNRrvGnwyQIAu9opvQ
+	(envelope-from <stable+bounces-227389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:34:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77ACC2D2AE0
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:29:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABC62D2B53
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 643D131C7639
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:26:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24C5130936E9
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430E0402B9B;
-	Thu, 19 Mar 2026 21:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A834537E2E8;
+	Thu, 19 Mar 2026 21:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aDABmK1b"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GX38tiwL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04654402459;
-	Thu, 19 Mar 2026 21:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657B3AE184;
+	Thu, 19 Mar 2026 21:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773955568; cv=none; b=DwLbfP4iPTS305eEuc92MnoO229hdB2o5Pzr2jyFFKh0AGglR9tH8p3lc+wNqP7wJE1KrwgicN8QJwQB8CpErd6nFihhB2gJE5lbfZqFRfRsRm+hmCwmbx57ZKvafZZv+Hp/q9f9d5ph2OkHGAvyY+DR+XnfDptJqG8LUna0/jo=
+	t=1773956034; cv=none; b=HLGjza568t/i7GC6qZuXdehfXgWpl26yfynljwHsWQgJ5KO+zJ7PSa8m2SzRvJPNTocjnsF992Qz55luMLYXpzZ0eozQ42y3igJADuESG+C/oC3C7Ux9JPOQY53HftQAGgL0K802xI6S+hoEYIxD4Jcffa2/dJDO+C681U8NVYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773955568; c=relaxed/simple;
-	bh=86ORD5QxZLT54WM41eJIPD/KeX+xFRSwH9SvtCoJslk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KsRpILPChU76l2qPSeOfZaVrAXmugHEi7zwlzj2dpUUQS/BMGSgfeh3hqs3pWpJifvJ3HAJxSujzxgo4dkWwEz9VP6xBLpXb24pz9ea7IXnNTidaUG8gSP1e5Gml/x6Id6yxXv6TzagEyLdTu26SDti/K1cE9wnjcqsLFME6z7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aDABmK1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CD7C19424;
-	Thu, 19 Mar 2026 21:26:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773955567;
-	bh=86ORD5QxZLT54WM41eJIPD/KeX+xFRSwH9SvtCoJslk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aDABmK1bZEEjOJaJGu3AGXNEc63v7xNPp+VXwFx0sNoB4BAzkYQQdv3JiE87x8zbq
-	 037JI3rKIt3pJ2Q81C2xG0lJ8MXZK+8+eLj4G3/TQsrvNsfY52FVc/nq+7zPlWgrZS
-	 iP62Ni65CYSaSdAIpkHyoWTu+yorjxVlMwcb/Zc8khP4u9R9yas01i/dh82EhgIe2J
-	 L7K7Het4cwqqp4SuhHHnHAl/b6mX3Ou7A/K42bG4qDT6nT/oJi7e6yzscX0Ov8k0OU
-	 SuwGkOkaXG+MhuP7FWlMS+fsqKwNMk+k4pa11oLG6rY1LrgO6/GCl+sNpsHtrdYXCS
-	 f6uit7rGkk3Ug==
-Message-ID: <1f1dafa7-54c7-4eae-a19e-5ec1be391079@kernel.org>
-Date: Thu, 19 Mar 2026 22:26:03 +0100
+	s=arc-20240116; t=1773956034; c=relaxed/simple;
+	bh=tzCaIgA8T0NJiMqXwAsDS9LpmbMwGbINnJroJi2ZhHo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qz5Ac1Ng/UNzx95PKHWfRl4CqVnAIaJL5tbKK02/ihhenm5wYHbNKnToFkVT52aRtc7h6D65b/WJq5uCIT/36IWF6lhxtwdgC9BOLgRYrleK7SI1CEQktZQQCEqQUTR4diJ4AbM+s2ndevt8FQgTIAvXZAE/EXt5p5CkhVRH8Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GX38tiwL; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from killaraus.ideasonboard.com (2001-14ba-703d-e500--2a1.rev.dnainternet.fi [IPv6:2001:14ba:703d:e500::2a1])
+	by perceval.ideasonboard.com (Postfix) with UTF8SMTPSA id 79E34838;
+	Thu, 19 Mar 2026 22:32:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1773955956;
+	bh=tzCaIgA8T0NJiMqXwAsDS9LpmbMwGbINnJroJi2ZhHo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=GX38tiwLN6DSYm9GEXrKsPN7SjL9S+iDBJ8NS20B32cwZtCaXMktaDfnTxMwW0BbQ
+	 sEra/ZAhbLpKZyUhUf3svvp0bWPV/4iNWnlp3Vb/o4m40wDXjGDSs9TNA8ASzeZhNu
+	 MjZNAs8s2LVufrMuon8q10FM+vsb9DPuoI00AEgQ=
+Date: Thu, 19 Mar 2026 23:33:48 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Guoniu Zhou <guoniu.zhou@oss.nxp.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Stefan Riedmueller <s.riedmueller@phytec.de>,
+	Jacopo Mondi <jacopo@jmondi.org>, Christian Hemp <c.hemp@phytec.de>,
+	Frank Li <frank.li@nxp.com>, Dong Aisheng <aisheng.dong@nxp.com>,
+	linux-media@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	Guoniu Zhou <guoniu.zhou@nxp.com>, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND v2] media: nxp: imx8-isi: Fix potential
+ out-of-bounds issues
+Message-ID: <20260319213348.GA950375@killaraus.ideasonboard.com>
+References: <20260228-isi-v2-1-f6f9208c6844@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] writeback: don't block sync(2) for filesystems
- with no data integrity guarantees
-To: Joanne Koong <joannelkoong@gmail.com>, brauner@kernel.org
-Cc: linux-fsdevel@vger.kernel.org, jack@suse.cz, miklos@szeredi.hu,
- therealgraysky@proton.me, linux-pm@vger.kernel.org, stable@vger.kernel.org
-References: <20260319194540.3463371-1-joannelkoong@gmail.com>
- <20260319194540.3463371-2-joannelkoong@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20260319194540.3463371-2-joannelkoong@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260228-isi-v2-1-f6f9208c6844@nxp.com>
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227388-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227389-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,pengutronix.de,gmail.com,phytec.de,jmondi.org,nxp.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.982];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[laurent.pinchart@ideasonboard.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 77ACC2D2AE0
+X-Rspamd-Queue-Id: 6ABC62D2B53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/19/26 20:45, Joanne Koong wrote:
-> Add a SB_I_NO_DATA_INTEGRITY superblock flag for filesystems that cannot
-> guarantee data persistence on sync (eg fuse). For superblocks with this
-> flag set, sync(2) kicks off writeback of dirty inodes but does not wait
-> for the flusher threads to complete the writeback.
+Hello Guoniu,
+
+Thank you for the patch.
+
+On Sat, Feb 28, 2026 at 05:35:53PM +0800, Guoniu Zhou wrote:
+> From: Guoniu Zhou <guoniu.zhou@nxp.com>
 > 
-> This replaces the per-inode AS_NO_DATA_INTEGRITY mapping flag added in
-> commit f9a49aa302a0 ("fs/writeback: skip AS_NO_DATA_INTEGRITY mappings
-> in wait_sb_inodes()"). The flag belongs at the superblock level because
-> data integrity is a filesystem-wide property, not a per-inode one.
-> Having this flag at the superblock level allows us to skip the logic in
-> sync_inodes_sb() entirely, rather than iterating every dirty inode in
-> wait_sb_inodes() only to skip each inode individually.
+> The maximum downscaling factor supported by ISI can be up to 16. Add
+> minimum value constraint before applying the setting to hardware.
+> Otherwise, the process will not respond even when Ctrl+C is executed.
 
-Makes sense to me.
+Could you share how you can trigger this from userspace ? I'd like to
+test it and see where the absence of response comes from.
 
-[...]
-
->  	if (sb->s_user_ns != &init_user_ns)
->  		sb->s_iflags |= SB_I_UNTRUSTED_MOUNTER;
->  	sb->s_flags &= ~(SB_NOSEC | SB_I_VERSION);
-> diff --git a/fs/sync.c b/fs/sync.c
-> index 942a60cfedfb..aedbf723830a 100644
-> --- a/fs/sync.c
-> +++ b/fs/sync.c
-> @@ -73,7 +73,12 @@ EXPORT_SYMBOL(sync_filesystem);
+> Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Frank Li <Frank.Li@nxp.com>
+> Signed-off-by: Guoniu Zhou <guoniu.zhou@nxp.com>
+> ---
+> Changes in v2:
+> - Fix possible side-effects caused by 'max_val' in CLAMP_DOWNSCALE_16 macro.
+> - Add space line between two paragraph in comment.
+> - Link to v1: https://lore.kernel.org/r/20260122-isi-v1-1-c3ec6e264f13@nxp.com
+> ---
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h | 16 ++++++++++++++++
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c  |  6 +++---
+>  drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c |  6 ++----
+>  3 files changed, 21 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> index 3cbd35305af0f8026c4f76b5eb5d0864f8e36dc3..84e134f4d5fb26be652ac3e6aecd459bb2a0d1c6 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-core.h
+> @@ -59,6 +59,22 @@ struct v4l2_m2m_dev;
+>  #define MXC_ISI_M2M			"mxc-isi-m2m"
+>  #define MXC_MAX_PLANES			3
 >  
->  static void sync_inodes_one_sb(struct super_block *sb, void *arg)
->  {
-> -	if (!sb_rdonly(sb))
-> +	if (sb_rdonly(sb))
-> +		return;
+> +/*
+> + * ISI scaling engine works in two parts: it performs pre-decimation of
+> + * the image followed by bilinear filtering to achieve the desired
+> + * downscaling factor.
+> + *
+> + * The decimation filter provides a maximum downscaling factor of 8, and
+> + * the subsequent bilinear filter provides a maximum downscaling factor
+> + * of 2. Combined, the maximum scaling factor can be up to 16.
+> + */
+> +#define CLAMP_DOWNSCALE_16(val, max_val)			\
+
+Let's add a MXC_ISI_ prefix.
+
+> +({								\
+> +	typeof(max_val) __max_val = (max_val);			\
+> +								\
+> +	clamp((val), max(1U, __max_val >> 4), __max_val);	\
+
+I think you should round the division up here:
+
+	clamp((val), max(1U, (__max_val + 15) / 16, __max_val);	\
+
+Let's assume the input size (max_val) is 1000. Without rounding up, the
+output size will be clamped to 1000 / 16 = 62. This leads to a
+downscaling factor slightly above 16.
+
+> +})
+
+Any reason not to make this an inline function instead of a macro ?
+
 > +
+>  struct mxc_isi_dev;
+>  struct mxc_isi_m2m_ctx;
+>  
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> index f425ac7868547da401e86ce5a9b70a9890e72541..8860d89713667d06abc94e6024526fabac46feb7 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
+> @@ -509,9 +509,9 @@ __mxc_isi_m2m_try_fmt_vid(struct mxc_isi_m2m_ctx *ctx,
+>  			  const enum mxc_isi_video_type type)
+>  {
+>  	if (type == MXC_ISI_VIDEO_M2M_CAP) {
+> -		/* Downscaling only  */
+> -		pix->width = min(pix->width, ctx->queues.out.format.width);
+> -		pix->height = min(pix->height, ctx->queues.out.format.height);
+> +		/* Downscaling one-sixteenth only  */
 
-Should we move some of the comment you deleting over here?
+There are two spaces after "only".
 
-> +	if (sb->s_iflags & SB_I_NO_DATA_INTEGRITY)
-> +		wakeup_flusher_threads_bdi(sb->s_bdi, WB_REASON_SYNC);
-> +	else
->  		sync_inodes_sb(sb);
->  }
-I was wondering whether that handling should be moved to
-sync_inodes_sb(), so it would catch any (existing+future) callers.
+> +		pix->width = CLAMP_DOWNSCALE_16(pix->width, ctx->queues.out.format.width);
+> +		pix->height = CLAMP_DOWNSCALE_16(pix->height, ctx->queues.out.format.height);
 
-Alternatively, we could catch abuse by adding a warning to sync_inodes_sb.
+To keep lines shorter, you can write
+
+		const struct v4l2_pix_format_mplane *format =
+			&ctx->queues.out.format;
+
+		/* Downscaling only, by up to 16. */
+		pix->width = CLAMP_DOWNSCALE_16(pix->width, format->width);
+		pix->height = CLAMP_DOWNSCALE_16(pix->height, format->height);
+
+>  	}
+>  
+>  	return mxc_isi_format_try(ctx->m2m->pipe, pix, type);
+> diff --git a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> index a41c51dd9ce0f2eeb779e9aa2461593b0d635f41..c3ffc8a38d1269c0a4e6493b4d75690f01cc87bb 100644
+> --- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> +++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-pipe.c
+> @@ -647,10 +647,8 @@ static int mxc_isi_pipe_set_selection(struct v4l2_subdev *sd,
+>  
+
+There's a comment above that states
+
+		/* The sink crop is bound by the sink format downscaling only). */
+
+That's not right, let's fix it:
+
+		/*
+		 * The ISI supports downscaling only, with a factor up to 16.
+		 * Clamp the compose rectangle size accordingly.
+		 */
+
+Reading the driver code to check how rounding is done when programming
+the hardware, I noticed that we clamp the bilinear scaling ratio to
+ISI_DOWNSCALE_THRESHOLD, defined as 0x4000:
+
+	return min_t(u32, from * 0x1000 / (to * *dec), ISI_DOWNSCALE_THRESHOLD);
+
+The ratio is documented to be a Q2.12 value, so 0x4000 is x1.0. The code
+seems wrong to me, what do you think ?
+
+>  		sel->r.left = 0;
+>  		sel->r.top = 0;
+> -		sel->r.width = clamp(sel->r.width, MXC_ISI_MIN_WIDTH,
+> -				     format->width);
+> -		sel->r.height = clamp(sel->r.height, MXC_ISI_MIN_HEIGHT,
+> -				      format->height);
+> +		sel->r.width = CLAMP_DOWNSCALE_16(sel->r.width, format->width);
+> +		sel->r.height = CLAMP_DOWNSCALE_16(sel->r.height, format->height);
+>  
+>  		rect = mxc_isi_pipe_get_pad_compose(pipe, state,
+>  						    MXC_ISI_PIPE_PAD_SINK);
+> 
+> ---
+> base-commit: eb4ee870747c3a77a9c3c84d84efb64bd481013a
+> change-id: 20260122-isi-74f87fbb9a6f
 
 -- 
-Cheers,
+Regards,
 
-David
+Laurent Pinchart
 
