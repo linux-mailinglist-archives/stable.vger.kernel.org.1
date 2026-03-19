@@ -1,168 +1,155 @@
-Return-Path: <stable+bounces-227277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227278-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKDNISvju2njpQIAu9opvQ
-	(envelope-from <stable+bounces-227277-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 12:51:07 +0100
+	id CO66MBvnu2njpQIAu9opvQ
+	(envelope-from <stable+bounces-227278-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 13:07:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CBBA2CAA14
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 12:51:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 201132CAEA4
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 13:07:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F45D301F484
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 11:50:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D512032C655D
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 12:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB29D384247;
-	Thu, 19 Mar 2026 11:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACB2F3CCFB8;
+	Thu, 19 Mar 2026 11:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IX2FFqT1"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DIScMcrJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBF633F589
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 11:50:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597743D170F
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 11:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773921003; cv=none; b=Ls2qerPPP7ODHZTaxsbdzyVwWCEGQq0YEzWXC7y0nQaBNDoeO3yMGRJ8pLWIHXYUCWaBsjtLWKnhpf0bwZ7OGvcnMM7cwIlJzZlhXhydakdzh2R+x3Av8HNp3lx2gWOEnzWieGqnu62NlSvgIwPBbtL9zt3MfLtg+G+Zt5aZhJQ=
+	t=1773921575; cv=none; b=bqJ74V8x/q8hTiPYTy6Qc+k7ShN5ColIXe39WWWWIChlrzbqr0N1xiE9AzEoH1s478+R516Gen0GpQVKO1fVW63QO32+vliWICG5BY+8XzmqH4TLLev4kiG4tMlFrm2u4dbrhyRF+OfoEJ/KDVdsNFw+wnBd1VAhu6J0thG2WMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773921003; c=relaxed/simple;
-	bh=tao9E4zUamd0RQZi1p+9aRvb8M31GMtYQidEw662Vd0=;
+	s=arc-20240116; t=1773921575; c=relaxed/simple;
+	bh=BC9zGprXEhsbsIQS0fdZGhicl3dwenYKDlfk7ILnEuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M3yKa+YrRGIQIgbvF+acBRBZYpl5OITDwVUB2sN+MrD50p1vPr9iZ0ns90txWoNNXm75YABndKaGFf3SZC5DnZ5mhfHHabazSUUN5gfwz/0xK/IR1CKETbMO3r466zw+xTToclQhPH+vEB0flEzzZSjLMLvSUG08qGXAjABOd8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IX2FFqT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C83AC19424;
-	Thu, 19 Mar 2026 11:50:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773921003;
-	bh=tao9E4zUamd0RQZi1p+9aRvb8M31GMtYQidEw662Vd0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IX2FFqT1OVNvL2SPV7JvU7AxEUyJa02lcs2Iwprfdim79SnOxH9XkJLTyp1nBOmSt
-	 d/4/rYBbvf4intvTdvQYJYP/xLC7dqMrgh7erbTfgxxN2UEh4FCSL5Aj1uFdyznsCA
-	 XgLHVvVscznUBWO6XMNrOC//tJt0LFJHxIm1yQO5Ed1AgIEErJdQLNFIv/ncZ6qc4x
-	 PjcxpW9rRGho4tMIc7he4Udzff3iNj7wBnK+RpuIEZ6RfWsHVov2PvQat8P8FbQDHI
-	 H4Rlk/aYazXvD4LS7ITVd1amGVlvuMJoardhzq2ZnsLq/3UWH84bxh+tsXOqAsECPp
-	 yc5KTbk7MIkow==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Harald Freudenberger <freude@linux.ibm.com>,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10.y] s390/zcrypt: Enable AUTOSEL_DOM for CCA serialnr sysfs attribute
-Date: Thu, 19 Mar 2026 07:50:01 -0400
-Message-ID: <20260319115001.2359762-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031714-unsent-plausibly-e43b@gregkh>
-References: <2026031714-unsent-plausibly-e43b@gregkh>
+	 MIME-Version:Content-Type; b=RfsPjWJqQKR8yjBgU6BfVVC6lMP6zgE4jXnip0aRtbUxMm2cuu1Hj8/SKNRmd0AG0XLx8quysW/T3D9BgzGNWgfUCSKn7WXgRG07bWCL2l+ZkPu0dYBxJrS3L5Ak75RC9xicG+vxoli7KHqJbL/0Vq7X/A6nsbhJYFcCMtGbUuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DIScMcrJ; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773921574; x=1805457574;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=BC9zGprXEhsbsIQS0fdZGhicl3dwenYKDlfk7ILnEuY=;
+  b=DIScMcrJ0o5x0jJxpz+7GdHGImsibfh8llbYfWmeWAwuAaZazvF2TgS8
+   Elv5KuHRl8rgm7BMiMgdjcTOSR/lOus8Carqqski3jZPdEelLVSDdU65f
+   GIg/3njlYxtxYZLLsWPtDExLQccaY0B5ymvJ9ot1c8+cyVa8+xeYTY3eS
+   e9QAWO70DjqWucpkUetT1VMXEQSos0GOiA1YBG+rTUU/LhW3mR1EDxoPI
+   blvk5DxfY9KF02F8d7zdrJzNdMl5LPack0YR/HW95wZO1XJxv4yTlTlX9
+   +Tn1PJ7hoX1fvPJHIxBhRYreVnj8Lx/O0QyHDhlN3rNyToIEu/Tk0HVt/
+   A==;
+X-CSE-ConnectionGUID: qmBJFcfvTJGg9Sfil32BZw==
+X-CSE-MsgGUID: ZTimyEF/TkG5zkIkXJj+7g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11733"; a="78593941"
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="78593941"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 04:59:23 -0700
+X-CSE-ConnectionGUID: tsXcdrbJRrOMuI3pIlNHVA==
+X-CSE-MsgGUID: KxtHwojZR/yvmDWKQlSVsw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="223160886"
+Received: from dut6094bmgfrd.fm.intel.com ([10.80.55.31])
+  by orviesa007.jf.intel.com with ESMTP; 19 Mar 2026 04:59:00 -0700
+From: Jia Yao <jia.yao@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Jia Yao <jia.yao@intel.com>,
+	stable@vger.kernel.org,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Mathew Alwin <alwin.mathew@intel.com>,
+	Michal Mrozek <michal.mrozek@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Matthew Auld <matthew.auld@intel.com>
+Subject: [PATCH v7 0/2] drm/xe: PAT index validation for CPU_ADDR_MIRROR and madvise
+Date: Thu, 19 Mar 2026 11:58:56 +0000
+Message-ID: <20260319115858.444541-1-jia.yao@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260129000147.339361-1-jia.yao@intel.com>
+References: <20260129000147.339361-1-jia.yao@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227277-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-227278-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.985];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jia.yao@intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0CBBA2CAA14
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid]
+X-Rspamd-Queue-Id: 201132CAEA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+This series strengthens PAT index validation to reject unsafe
+configurations for CPU cached memory, preventing cases where the GPU may
+bypass CPU caches and observe stale or sensitive data.
 
-[ Upstream commit 598bbefa8032cc58b564a81d1ad68bd815c8dc0f ]
+Patch 1 enforces PAT validation for the madvise ioctl path, ensuring
+XE_COH_NONE cannot be used on CPU cached buffers, including CPU address
+mirror and userptr-backed memory.
 
-The serialnr sysfs attribute for CCA cards when queried always
-used the default domain for sending the request down to the card.
-If for any reason exactly this default domain is disabled then
-the attribute code fails to retrieve the CCA info and the sysfs
-entry shows an empty string. Works as designed but the serial
-number is a card attribute and thus it does not matter which
-domain is used for the query. So if there are other domains on
-this card available, these could be used.
+Patch 2 applies the same validation to vm_bind, treating
+DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR the same as MAP_USERPTR with
+respect to permissible PAT indices.
 
-So extend the code to use AUTOSEL_DOM for the domain value to
-address any online domain within the card for querying the cca
-info and thus show the serialnr as long as there is one domain
-usable regardless of the default domain setting.
+Both patches close a security gap affecting CPU cached memory access
+when incoherent PAT values are used.
 
-Fixes: 8f291ebf3270 ("s390/zcrypt: enable card/domain autoselect on ep11 cprbs")
-Suggested-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-[ preserved zc->online as the fourth argument to cca_get_info() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/s390/crypto/zcrypt_ccamisc.c | 12 +++++++-----
- drivers/s390/crypto/zcrypt_cex4.c    |  3 +--
- 2 files changed, 8 insertions(+), 7 deletions(-)
+Changes since v6:
+  - Correct fixes tag
 
-diff --git a/drivers/s390/crypto/zcrypt_ccamisc.c b/drivers/s390/crypto/zcrypt_ccamisc.c
-index ffab935ddd95b..d8046e589742a 100644
---- a/drivers/s390/crypto/zcrypt_ccamisc.c
-+++ b/drivers/s390/crypto/zcrypt_ccamisc.c
-@@ -1680,11 +1680,13 @@ static int fetch_cca_info(u16 cardnr, u16 domain, struct cca_info *ci)
- 
- 	memset(ci, 0, sizeof(*ci));
- 
--	/* get first info from zcrypt device driver about this apqn */
--	rc = zcrypt_device_status_ext(cardnr, domain, &devstat);
--	if (rc)
--		return rc;
--	ci->hwtype = devstat.hwtype;
-+	/* if specific domain given, fetch status and hw info for this apqn */
-+	if (domain != AUTOSEL_DOM) {
-+		rc = zcrypt_device_status_ext(cardnr, domain, &devstat);
-+		if (rc)
-+			return rc;
-+		ci->hwtype = devstat.hwtype;
-+	}
- 
- 	/* prep page for rule array and var array use */
- 	pg = (u8 *) __get_free_page(GFP_KERNEL);
-diff --git a/drivers/s390/crypto/zcrypt_cex4.c b/drivers/s390/crypto/zcrypt_cex4.c
-index f5195bca1d856..20e17dc61530f 100644
---- a/drivers/s390/crypto/zcrypt_cex4.c
-+++ b/drivers/s390/crypto/zcrypt_cex4.c
-@@ -84,8 +84,7 @@ static ssize_t cca_serialnr_show(struct device *dev,
- 
- 	memset(&ci, 0, sizeof(ci));
- 
--	if (ap_domain_index >= 0)
--		cca_get_info(ac->id, ap_domain_index, &ci, zc->online);
-+	cca_get_info(ac->id, AUTOSEL_DOM, &ci, zc->online);
- 
- 	return scnprintf(buf, PAGE_SIZE, "%s\n", ci.serial);
- }
+Fixes: b43e864af0d4 ("drm/xe/uapi: Add DRM_XE_VM_BIND_FLAG_CPU_ADDR_MIRROR")
+Fixes: e1fbc4f18d5b ("drm/xe/uapi: support pat_index selection with vm_bind")
+Cc: stable@vger.kernel.org # v6.18
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Mathew Alwin <alwin.mathew@intel.com>
+Cc: Michal Mrozek <michal.mrozek@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Matthew Auld <matthew.auld@intel.com>
+
+Jia Yao (2):
+  drm/xe/uapi: Reject coh_none PAT index for CPU cached memory in
+    madvise
+  drm/xe: Reject coh_none PAT index for CPU_ADDR_MIRROR
+
+ drivers/gpu/drm/xe/xe_vm.c         |  2 +-
+ drivers/gpu/drm/xe/xe_vm_madvise.c | 45 ++++++++++++++++++++++++++++++
+ 2 files changed, 46 insertions(+), 1 deletion(-)
+
 -- 
-2.51.0
+2.43.0
 
 
