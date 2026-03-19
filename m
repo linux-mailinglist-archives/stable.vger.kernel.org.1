@@ -1,226 +1,178 @@
-Return-Path: <stable+bounces-227229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HVoODiyu2k8mgIAu9opvQ
-	(envelope-from <stable+bounces-227229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:22:16 +0100
+	id cBmfHYKzu2k8mgIAu9opvQ
+	(envelope-from <stable+bounces-227230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:27:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6684E2C7CC4
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:22:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D26202C7DD4
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:27:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4DD063028F53
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:22:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 551BA302794F
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F3A3A784B;
-	Thu, 19 Mar 2026 08:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FEC53A2549;
+	Thu, 19 Mar 2026 08:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LDVUx6F4"
+	dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b="Ea6ugang";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="x0D+huwD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8318368972
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 08:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773908530; cv=pass; b=unUqm1wOQTsERb19jQLdKPlvy/ShwhyrWeyvoOePZJ7V8S2GB2VbgOxv67hWtlHkTQxQslxmIFYtgOxFhHb4LVu08as0pRGPiww7zReMsmG4oqjQ0rmS6t+7QocKLyVcZekdKdgLFqTqqkjY0pzcxueJTXBbdpDc01cJrYmL6PA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773908530; c=relaxed/simple;
-	bh=01DMyjb/HZSvI6O8znLL6RPAI6YtqeAqhwj7l50SI/s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KiIuuVbbLzyjFggzpoda+a8VJGJGqWwlHPX/A8oadet7E006bDNp3tSxSOU9zx4cS+WFrOYB1L0JIfRXAy4943Tg79Z4ft/6fqFCj6pkBpm461Kmn8CtrduNBgTBYnLp1IA1LtcYn9eUDbKeqdg3ZyB+2jKtMN5b3+N7R9fKkB4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LDVUx6F4; arc=pass smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2aeab6ff148so48535ad.1
-        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 01:22:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773908529; cv=none;
-        d=google.com; s=arc-20240605;
-        b=LTl9ilWEee6rf27UylJOVDdGYgrxVUZrBWbYcNcqw2RnLEhLJV7OjzU2W6P47x2yz7
-         LYP8DiXM+3tam3INHkXS2NjzIJG0T+bCgQyuWaCHgTXqydeyn1dkCp7mujit/bcpMb7N
-         auFwN0OZBFZBoDjxrcGh8PxMi8SVLyzgKJMsSbBy4a+CxfwU3bhsBKcCiAtmcxsDEPTL
-         ME5GlReO+9WT1v6Dq2r2PVdYH60JzaJbcip0++o28SwysnIgB1JGHfiKIMy2Tqz0O3hX
-         66ansJzZ32zJK83Xq8BnRV5koqf327VBD6tVv7cEJyk5HlLXA3VX5ciD+kFBH1QfaT+n
-         NP/A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=IHfTqB5YPEraYU2kXL8nscbmS2lKLIijP1hKdy0xaBM=;
-        fh=nCvO59nBme5OCTvb5FJQLR1INBiTPDGN/mfzOW6PHfY=;
-        b=Ta4Mo7+mwJrfkn9IMeMbsacb2ERRvoSjhAu51dURCFjvkJmXvfPG8EZmKP6CzX2Ysp
-         MV883fpfWkK4i1z36VcRHAjtE+E9fUsOs3LpFh9qX1e2QefGgpVBO0gAnkBUN2e8mKiv
-         Qu7N51DkphE4ostjcJH4aA/HvMXNQFDrAbw0vc9a75/+TSF4JCDBE5S6xqNcBNUomei/
-         ofUZX1eiM519cUF4DrVy2LFPy6JjGa4dZ0FpCK/bQImYZYaYO44H4cYNXa2uIBMO30Me
-         rb+Ot6ODxE8nxxCkH7A0ucbgPh+gpzW/JEYPbPP9lEbfiSfN2zOxQ9XGZdKAvEg3Pf09
-         t3Dw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773908529; x=1774513329; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IHfTqB5YPEraYU2kXL8nscbmS2lKLIijP1hKdy0xaBM=;
-        b=LDVUx6F4cv1JCa5g41Yai2tWjycFahZm0tz7+oiLGIFhJZbbsOOsm9v9sDkJmKdKFU
-         HBEKF45AFN7rxcn4EcbUslLb141GuYBbQDOVbTnR0HgQmzum343aKhAY4aP8k5G0KS9M
-         EB/UCHTapElmL86+/XDIJJ/ZINFF/kWpsTK1q/w8AkgAR1k5an6I1V4GXB2OEuBuLb1u
-         fD+W5lk5ZyVgE8nOTPd0H4pAflTGv5xtgQEjsvjBmcF8ipBzec8s/aynqG4T091og1+J
-         KcXUl9prYV82PiUoadi+MlNzB9na+XktFsjD4RdmKP6YB2WyPIvov4RZZw4bCEi7Imah
-         HjCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773908529; x=1774513329;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=IHfTqB5YPEraYU2kXL8nscbmS2lKLIijP1hKdy0xaBM=;
-        b=Gyy/MEtOUo8lyni+Fkj2Ar8gGAxlVHXPdb74riQHa4tKmZCKCvunUupvu7nvseoQXP
-         WPoxNV53ATwf6t1qts/cj1kNUS5158p33YP4h3uYOJ975/FRC0l5vNCVfxVc/gB9JTsT
-         dUPZLbcbRnLsK2Y5y5ApsqvFbZh9YB4s0s32GVqlo8oD0s04p39m5GX2Kkf5sWK5Zx9w
-         UStLoR9SyBW67GtPevRkodnIdMxfbS99yNI/sbbN52PQZ803REtFQxv1R+UhOq3XCQRI
-         0aJLQczcABsQDFkPY3U1CDir6UW1nRcamzSRq2O5EykO5UedA8u0zd6xwvRdkZWjVoTs
-         /zMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWlIrwXpacvQyHb8cAT+RU4ymFcBLKzMdDaH+vaqK7KqEg3EjMMSiML+iiBzzA+s45vOjX9XR4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4/s/sx2oU+2t8DS+46E0dfuvbAmq3N9WOOkVw/3w8KSeaF5dR
-	g5qnO/Hk0mMGjk4CnP4Fl3J6H3aFarpYMuIScbluVgnLbR9YAdA2AMKW8zSRlW3YSusy3Lh7eKc
-	EYTk+qZ4iYCo2oCvKiEHi2dIjO5zLVrQO3gd/1O/k
-X-Gm-Gg: ATEYQzwCm1qVXYNrjX5P49rzQcE4PJm89mkX32iBF2Zk0gj0FIK2c2tLL0lGj6/fI74
-	tm/SE2eMuGdpNhsOuNraTFIcIQnDUAtNb2a7QMPqpIX9AucM5MyPV5j6Yd5avrvm+pORFuLYTe6
-	K2m8QqZv47PmzOSGUyyV+EQdW4syRAHo9m7pnCP2Z+UpB6R61ch+5hxk86Jd5hwKAGXhW/pb2fm
-	jYbzFIQhomCgHPA9vxh5xqxi9e8jpK3OBxT1takR0A9mysCqHDk762XpFMUo2ZbBXDvFYVZMmI7
-	49r8KcsQ
-X-Received: by 2002:a17:902:ccc4:b0:2a7:d266:d84a with SMTP id
- d9443c01a7336-2b079fbb39emr1497765ad.17.1773908528384; Thu, 19 Mar 2026
- 01:22:08 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F18523D2B1;
+	Thu, 19 Mar 2026 08:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773908816; cv=none; b=p1+lhQYGVv0Hifq+3e1BA9sPA59mgo6bpJ4hRIVqv1deWODicE5tUF+7V+NvtdXCV84IOalFFx0wPhfuBLPclcMteUdoESCVreqW5gDuNudry3e8B95WWTlTIljhMTif9fD2ozmUBMTBLtpTrzBy2XsXGaQwOWE3azOdQ18mu98=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773908816; c=relaxed/simple;
+	bh=QJOhTaAddVnvsG09Wf+rZMNOQ4xuFVwCy16hK5JFG5A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P4om/dc+v5XtyseT8HxJ1c2SNIOq8wIf1jWdvl6TcEmm1e2dWjXZWq1JeMd6s175iClPNlwVGmamzJNrbXHbZsZQp/B/Ud2j8ZqMY6uqj01B0YCEYAPFDDZDphZ5Q42shjRACkOxrTGOurdZr5PndYQa1jVj0Qm5hGH5RwuUB0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com; spf=pass smtp.mailfrom=pobox.com; dkim=pass (2048-bit key) header.d=pobox.com header.i=@pobox.com header.b=Ea6ugang; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=x0D+huwD; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pobox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pobox.com
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 8C4DC7A0132;
+	Thu, 19 Mar 2026 04:26:52 -0400 (EDT)
+Received: from phl-frontend-02 ([10.202.2.161])
+  by phl-compute-01.internal (MEProxy); Thu, 19 Mar 2026 04:26:53 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pobox.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1773908812;
+	 x=1773995212; bh=WFwuZnAjuhsMYTU68qmvbTKAqdxZhPbPWdtmqubrYYQ=; b=
+	Ea6ugangEBeBWxFyrjCGSZ9DvG+c5v1kVBBJPZByWAFyXYd2uj+xg54XEecMgCJn
+	AqIBy8yb9GeTOSkRBG42ZrZ6ztUP+9deyoqcPpl0QNN8aaVpT+dnXVMCci8YMiR6
+	6TJT7XFmIElC/bfjHYYqcYT+cBLxTl/RvP0YN3rzNDYfXVYjbd+420hBi26lncvN
+	vcQALdGgIWxdItQ9Y8cwqg+hPTcPIohfEqh6pBrgwwY462LH6EPznvVemAJLvAO4
+	m/1IL78PzKkBl49hNd5hWgsfNx3FFXgxdWkhvw0R76djpHlVLVSFGS7WGvQ+0yMV
+	vKV1s+rBL/YyaW+hssz/Bg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1773908812; x=
+	1773995212; bh=WFwuZnAjuhsMYTU68qmvbTKAqdxZhPbPWdtmqubrYYQ=; b=x
+	0D+huwDSYTPXc5WV7DrWpJJj65BTehudEZnbqWpYiGQxH8akDeTju07IZfLurjRZ
+	bnyP0cVUPTsZIAnOHUOBXncpMcBkuvFjU1enq1aihk01RRBg3H7eXblMXBPznESu
+	6egqpGzuNYanaJ4V/NoRqJH/4hIY85IwVkNlTLDADVNGcIbWfagMn18eSUlX9H56
+	dYL/WiTaZ6iwucARvRGtBmMJyfjZEsBhm9v1FtEEhzSctXldURonhpBmpaYCmbHh
+	ErThOCmeY57rNWBKv6frwM9OlWdlQA+uCFdSx4oC7LqSInsN5WozPbYhS+6fpxQw
+	YYDq9803Vfb+Dp/gs2MSQ==
+X-ME-Sender: <xms:S7O7aYTIx5LkY-e0PlkeQw2jvJfSS9HHPPV53vB_5DPjA2CG5ndVVg>
+    <xme:S7O7aRpH6iqpsKkX_vKwOVz_8hbPRKQoHak5ipiAj4cpvBnKl_OFaCk8WPfn-BrgH
+    s51wdHgsYI_3iKrWbBG5GLVnyF0wl9Tqq81UGMZDodRh3plqgZOJus>
+X-ME-Received: <xmr:S7O7aRWJreLOIrn3Hkb7vQvYHzgYKPSl7Zz4UNQ74930_cP24Ol-pp6r6YZMpstDTH7e3bbFd2lDhIK4yRiI0Bx7Szj9rA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdeftdeihedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpedfuegrrhhr
+    hicumfdrucfprghthhgrnhdfuceosggrrhhrhihnsehpohgsohigrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeefleehkeehleekjeelffefhfdvleejteehledtieduffevteffleet
+    gefgfefhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
+    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsggrrhhrhihnsehpohgsohigrdgt
+    ohhmpdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    epghhrvghgkhhhsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohep
+    shhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthh
+    gvsheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigqdhkvghr
+    nhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehtohhrvhgrlhgush
+    eslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoheprghkphhmsehl
+    ihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopehlihhnuhigsehroh
+    gvtghkqdhushdrnhgvthdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopehprghttghhvghssehkvghrnhgvlhgtihdrohhrgh
+X-ME-Proxy: <xmx:S7O7af8l21Wz9IgJWJ9z5ukNdvuDm7Ovsu82i6p9JH76gW_BE1WSCw>
+    <xmx:S7O7aZYA8hbhz4O_uMMKfZk1kqiW7-SG4TFhr-ESbYDL4A9fosLRiQ>
+    <xmx:S7O7aXeaNJCL3-ReTdjQ4UgHucb5pgssZ6kNA0YWz-L5QRaFlSh23g>
+    <xmx:S7O7aTrQqkrkeCKzJeJsTY1wYFxL9890q2BxeJXdgrTO58I_xs4hLw>
+    <xmx:TLO7aTl3xDE2j1rBR50wHugH_DtpxkoxVa5wKVNKxKo0i8Iz2yZT9hjE>
+Feedback-ID: i6289494f:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 19 Mar 2026 04:26:48 -0400 (EDT)
+Message-ID: <d5d10fc9-27fc-4c8b-b827-adb345ccb486@pobox.com>
+Date: Thu, 19 Mar 2026 01:26:47 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <813bc5fd-0c35-46af-aea2-90798154daaa@windriver.com>
-In-Reply-To: <813bc5fd-0c35-46af-aea2-90798154daaa@windriver.com>
-From: Ian Rogers <irogers@google.com>
-Date: Thu, 19 Mar 2026 01:21:57 -0700
-X-Gm-Features: AaiRm52YAXaNrkUnKO5zFLhl-iDdZJWeEPshCImbwceVdhaH6rxOGvGt1lbz9ew
-Message-ID: <CAP-5=fW_O_sm9JzfCf=qDXyaffoLLRH3mob1zckESUHsG2rp-g@mail.gmail.com>
-Subject: Re: [REGRESSION] perf build failed after 5cf6e76e4f4f ("libperf:
- Don't remove -g when EXTRA_CFLAGS are used") on riscv64 with gcc 13
-To: Haixiao Yan <haixiao.yan.cn@windriver.com>, Chingbin Li <liqb365@163.com>
-Cc: peterz@infradead.org, mingo@redhat.com, acme@kernel.org, 
-	namhyung@kernel.org, mark.rutland@arm.com, alexander.shishkin@linux.intel.com, 
-	jolsa@kernel.org, adrian.hunter@intel.com, james.clark@linaro.org, 
-	linux-perf-users@vger.kernel.org, pjw@kernel.org, palmer@dabbelt.com, 
-	aou@eecs.berkeley.edu, alex@ghiti.fr, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 000/335] 6.18.19-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260318122621.714862892@linuxfoundation.org>
+Content-Language: en-US
+From: "Barry K. Nathan" <barryn@pobox.com>
+In-Reply-To: <20260318122621.714862892@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[pobox.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[pobox.com:s=fm3,messagingengine.com:s=fm1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[windriver.com,163.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227229-lists,stable=lfdr.de];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	TAGGED_FROM(0.00)[bounces-227230-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[20];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[pobox.com:+,messagingengine.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[irogers@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-0.991];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[barryn@pobox.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.985];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gnu.org:url,yoctoproject.org:url]
-X-Rspamd-Queue-Id: 6684E2C7CC4
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,messagingengine.com:dkim]
+X-Rspamd-Queue-Id: D26202C7DD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Wed, Mar 18, 2026 at 6:57=E2=80=AFPM Haixiao Yan
-<haixiao.yan.cn@windriver.com> wrote:
->
-> Hi,
->
-> Commit[5cf6e76e4f4f](https://git.kernel.org/pub/scm/linux/kernel/git/stab=
-le/linux.git/commit/tools/lib/perf/Makefile?h=3Dlinux-6.6.y&id=3D5cf6e76e4f=
-4fee54c0056758b639cf4919cffba9)
-> changed the libperf Makefile to preserve external CFLAGS instead of overr=
-iding them. As a result, the -O6 optimization flags from perf's
-> build system are now inherited by libperf during compilation. This trigge=
-rs a false positive -Walloc-size-larger-than=3D warning in GCC 13 on
-> riscv64, causing the build to fail with -Werror.
->
-> | cpumap.c: In function 'perf_cpu_map__merge':
-> | cpumap.c:422:20: error: argument 1 range [18446744065119617024, 1844674=
-4073709551612] exceeds maximum objec
-> t size 9223372036854775807 [-Werror=3Dalloc-size-larger-than=3D]
-> |   422 |         tmp_cpus =3D malloc(tmp_len * sizeof(struct perf_cpu));
-> |       |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> | In file included from cpumap.c:3:
-> | /buildarea5/hyan-cn/project_yocto/poky/build-riscv64/tmp/work/qemuriscv=
-64-poky-linux/perf/1.0/recipe-sysroo
-> t/usr/include/stdlib.h:672:14: note: in a call to allocation function 'ma=
-lloc' declared here
-> |   672 | extern void *malloc (size_t __size) __THROW __attribute_malloc_=
-_
-> |       |              ^~~~~~
-> | rm -f /buildarea5/hyan-cn/project_yocto/poky/build-riscv64/tmp/work/qem=
-uriscv64-poky-linux/perf/1.0/perf-1.
-> 0/libapi/libapi.a && riscv64-poky-linux-gcc-ar rcs /buildarea5/hyan-cn/pr=
-oject_yocto/poky/build-riscv64/tmp/w
-> ork/qemuriscv64-poky-linux/perf/1.0/perf-1.0/libapi/libapi.a /buildarea5/=
-hyan-cn/project_yocto/poky/build-ris
-> cv64/tmp/work/qemuriscv64-poky-linux/perf/1.0/perf-1.0/libapi/libapi-in.o
-> | cc1: all warnings being treated as errors
+On 3/18/26 05:27, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.18.19 release.
+> There are 335 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 20 Mar 2026 12:25:23 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.19-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Hi Haixiao,
+Tested on 2 systems (1 arm64, 1 amd64). Working well, no
+regressions observed.
 
-this was raised before by Chingbin in:
-https://lore.kernel.org/lkml/20260212025127.841090-1-liqb365@163.com/
-I was concerned about the introduction of volatile to avoid this
-warning. I've mailed out what is hopefully a fix without volatile in
-it:
-https://lore.kernel.org/lkml/20260319081843.1650640-1-irogers@google.com/
-If you could take a look.
+Tested-by: Barry K. Nathan <barryn@pobox.com>
 
-Thanks,
-Ian
-
-> Steps to reproduce:
->
-> git clone -b scarthgap https://git.yoctoproject.org/poky
-> cd poky
-> sed -i 's/af240d7d57ebf66e87bc2dff34855e630a97ead1/5cf6e76e4f4fee54c00567=
-58b639cf4919cffba9/' meta/recipes-kernel/linux/linux-yocto_6.6.bb
->
-> source oe-init-build-env build-riscv64
->
-> cat >> conf/local.conf << 'EOF'
-> MACHINE =3D "qemuriscv64"
-> 'KERNEL_VERSION_SANITY_SKIP =3D "1"'
-> EOF
->
-> bitbake perf
->
-> I have confirmed that:
-> Known to fail: gcc 13.3.0, 13.4.0
-> Known to work: gcc 11.5.0, 12.5.0, 14.3.0, 15.2.0
->
-> Not sure whether this is a gcc bug.
-> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=3D124549 filed to gcc.
->
-> Thanks,
-> Haixiao
->
->
+-- 
+-Barry K. Nathan  <barryn@pobox.com>
 
