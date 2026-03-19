@@ -1,51 +1,58 @@
-Return-Path: <stable+bounces-227225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227226-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IF/uBbehu2kLmAIAu9opvQ
-	(envelope-from <stable+bounces-227225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:11:51 +0100
+	id mBvENyWiu2kLmAIAu9opvQ
+	(envelope-from <stable+bounces-227226-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:13:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3662C71E4
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:11:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E60D2C720D
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:13:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2610F30074F7
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 07:11:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77200308A24A
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 07:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D2939DBF0;
-	Thu, 19 Mar 2026 07:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA8739E18F;
+	Thu, 19 Mar 2026 07:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pptqe5Ai"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="RRC8Qk+v"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A6239D6EB;
-	Thu, 19 Mar 2026 07:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5746039B97D;
+	Thu, 19 Mar 2026 07:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773904303; cv=none; b=VrX1b69rmS37ushu6NQrcYG4H3lX6p9NDeuaWqe0y0PPtMQSEOD9VsN6l8yoA9m+VLaDAWCCWOEHq/uFKs7rkwlry1f0Zx+eQj0Rwtpcg0il2AVbKoMsYhsjOtZn0F0n8BCUzR2ajsNw4IWn+kWEQooVX6A9jyhfAyN7Yot/xSM=
+	t=1773904399; cv=none; b=s4FV7qYhWzK2fvO1C8ispQVrp25j/71PuVIrYCec5Pei75a8alZbq+VSj/xK1VvY0J1w9pHRwdn8gM9VnSpczg4OIiscyhBWpVGYINp1vhmRCIgj50MrRqbkn1lGzg/dJRFIUGwxhopmiTwxjMHCtZqxs/CTM4EU1qKDs7nQ0GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773904303; c=relaxed/simple;
-	bh=kXY1gYLHGqK32ypVhPf+B2coaNzQbaU4YGC4a5J2YUA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j5MSVPKVAFkYNNOlSE/vhOadxgZC1/8GgTXZS8euFc4mSB/s4gjxNtYlyxz7JHXUe7V73DYdz8P8m3TlZvKIy6BQsdADjsImLMMUzTkpTq/jDsZWpApOSfnrDXXMms9wqnAteLpSxTm4UXQ46/kx0X/Ar199/D/FZN9O9Ps+OQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pptqe5Ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6D1C19424;
-	Thu, 19 Mar 2026 07:11:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773904302;
-	bh=kXY1gYLHGqK32ypVhPf+B2coaNzQbaU4YGC4a5J2YUA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pptqe5Ai+H1IH940ofLccFd+Do0TDzRWS/WDMelouc7p5fLZWHk+iG4Z6vxjltrkf
-	 3/eInx3t4MMQJBls4ObZegxiy6lV/BvjJeNS4cv+wkSOFi+qkLGfN7zo9ENbrrBCe0
-	 fdc+JT7dHle8/SaP1itGEejDgLSpd65H8CYVJk/Y8ZT0A5DCS/qkUYWcSB796VfLZh
-	 RdcHaUxq7Cuuiq8IknExjtNfDxDOYSug4/Dii767CrPqSf9deG4cEEAGf5swQzrqDE
-	 +jxWV7J261lms62eWeIkVlOcsw3IA3NM3gXu/2kHqpZFFOwY5S8Na0vMwWUH1wLi2h
-	 9ly7N0cz/o/7g==
-Message-ID: <d80f17e4-bd3f-4053-bdf5-671439d5b72e@kernel.org>
-Date: Thu, 19 Mar 2026 08:11:39 +0100
+	s=arc-20240116; t=1773904399; c=relaxed/simple;
+	bh=ObpxqKdd4T1HHP+LHUq29v7pjRvtkMicxQwklMl+rDM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=dq8xF1/veYqrn9XqbsFescYUGtSbk8SncJvlshK/c2VpMlskkK6yh9LbA9o0vjzWeHp4vDtyzag+lPXbvZAgow2E2REVaH582cYiiEf+EHzMcxSDYbsO3K+XAIzRrpqCTraj24IST6TvqO/UtBcpoHmd6Shf7AkMrRvXcpQPG/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=RRC8Qk+v; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=rOgEX5LRjbf3VsJc30kly4+FTpT24EGUmpEIfFvp8FU=;
+	b=RRC8Qk+vDk32R8JHqebkm1tGtkV6aqC7Rw/5tqI1aHILlK2h2Fd3giMbyZt1JjR+/2C5nr3jN
+	LCoxznkWL7DSqvcKp14FgIYEdmkocS9XrRO5OVujVzcsJ5/bSzagK1Q0OB6Ne0iQgcMvxD/5fTO
+	P3k1x2ro3WxAtvbL88NnXM8=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fbxcD4jF6z1cyPP;
+	Thu, 19 Mar 2026 15:08:12 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8543840363;
+	Thu, 19 Mar 2026 15:13:12 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Thu, 19 Mar 2026 15:13:10 +0800
+Message-ID: <264525a9-aa36-4848-80c0-f8cf246f93b8@huawei.com>
+Date: Thu, 19 Mar 2026 15:13:09 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,105 +60,172 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 240/378] sched_ext: Fix starvation of scx_enable()
- under fair-class saturation
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Tejun Heo <tj@kernel.org>
-References: <20260317163006.959177102@linuxfoundation.org>
- <20260317163015.844144806@linuxfoundation.org>
+Subject: Re: [PATCH v8 1/3] ACPI: Refactor get_acpi_id_for_cpu() to
+ acpi_get_cpu_uid() on non-x86
+To: Bjorn Helgaas <helgaas@kernel.org>
+CC: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Rafael J .
+ Wysocki" <rafael@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Ingo Molnar
+	<mingo@redhat.com>, Juergen Gross <jgross@suse.com>, Boris Ostrovsky
+	<boris.ostrovsky@oracle.com>, Len Brown <lenb@kernel.org>, Sunil V L
+	<sunilvl@ventanamicro.com>, Mark Rutland <mark.rutland@arm.com>, Jonathan
+ Cameron <jonathan.cameron@huawei.com>, Kees Cook <kees@kernel.org>, Yanteng
+ Si <si.yanteng@linux.dev>, Sean Christopherson <seanjc@google.com>, Kai Huang
+	<kai.huang@intel.com>, Tom Lendacky <thomas.lendacky@amd.com>, Thomas Huth
+	<thuth@redhat.com>, Thorsten Blum <thorsten.blum@linux.dev>, Kevin Loughlin
+	<kevinloughlin@google.com>, Zheyun Shen <szy0127@sjtu.edu.cn>, Peter Zijlstra
+	<peterz@infradead.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Xin
+ Li <xin@zytor.com>, "Ahmed S . Darwish" <darwi@linutronix.de>, Sohil Mehta
+	<sohil.mehta@intel.com>, Ilkka Koskinen <ilkka@os.amperecomputing.com>, Robin
+ Murphy <robin.murphy@arm.com>, James Clark <james.clark@linaro.org>, Besar
+ Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>, Wei Huang
+	<wei.huang2@amd.com>, Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>, <punit.agrawal@oss.qualcomm.com>,
+	<guohanjun@huawei.com>, <suzuki.poulose@arm.com>, <ryan.roberts@arm.com>,
+	<chenl311@chinatelecom.cn>, <masahiroy@kernel.org>,
+	<wangyuquan1236@phytium.com.cn>, <anshuman.khandual@arm.com>,
+	<heinrich.schuchardt@canonical.com>, <Eric.VanTassell@amd.com>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <linux-pci@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <loongarch@lists.linux.dev>,
+	<linux-riscv@lists.infradead.org>, <xen-devel@lists.xenproject.org>,
+	<linux-acpi@vger.kernel.org>, <linux-perf-users@vger.kernel.org>,
+	<stable@vger.kernel.org>
+References: <20260318213458.GA474040@bhelgaas>
 Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20260317163015.844144806@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260318213458.GA474040@bhelgaas>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227225-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[huawei.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jirislaby@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_FROM(0.00)[bounces-227226-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_GT_50(0.00)[58];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 1B3662C71E4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:dkim,huawei.com:email,huawei.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E60D2C720D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 17. 03. 26, 17:33, Greg Kroah-Hartman wrote:
-> 6.19-stable review patch.  If anyone has any objections, please let me know.
+On 3/19/2026 5:34 AM, Bjorn Helgaas wrote:
+> On Wed, Mar 18, 2026 at 02:01:49PM +0800, Chengwen Feng wrote:
+>> Unify CPU ACPI ID retrieval interface across architectures by
+>> refactoring get_acpi_id_for_cpu() to acpi_get_cpu_uid() on
+>> arm64/riscv/loongarch:
+>> - Add input parameter validation
+>> - Adjust interface to int acpi_get_cpu_uid(unsigned int cpu, u32 *uid)
+>>   (old: u32 get_acpi_id_for_cpu(unsigned int cpu), no input check)
+>>
+>> This refactoring (not a pure rename) enhances interface robustness while
+>> preparing for consistent ACPI Processor UID retrieval across all
+>> ACPI-enabled platforms. Valid inputs retain original behavior.
+>>
+>> Note: Move the ARM64-specific get_cpu_for_acpi_id() implementation to
+>>       arch/arm64/kernel/acpi.c to fix compilation errors from circular
+>>       header dependencies introduced by the rename.
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+>> Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+>> ---
+>>  arch/arm64/include/asm/acpi.h      | 16 +---------
+>>  arch/arm64/kernel/acpi.c           | 30 ++++++++++++++++++
+>>  arch/loongarch/include/asm/acpi.h  |  5 ---
+>>  arch/loongarch/kernel/acpi.c       |  9 ++++++
+>>  arch/riscv/include/asm/acpi.h      |  4 ---
+>>  arch/riscv/kernel/acpi.c           | 16 ++++++++++
+>>  arch/riscv/kernel/acpi_numa.c      |  9 ++++--
+>>  drivers/acpi/pptt.c                | 50 ++++++++++++++++++++++--------
+>>  drivers/acpi/riscv/rhct.c          |  7 ++++-
+>>  drivers/perf/arm_cspmu/arm_cspmu.c |  6 ++--
+>>  include/linux/acpi.h               | 13 ++++++++
+>>  11 files changed, 122 insertions(+), 43 deletions(-)
 > 
-> ------------------
+> There's a lot going on in this single patch, which makes it hard to
+> review.  I think this might make more sense as several patches:
 > 
-> From: Tejun Heo <tj@kernel.org>
+>   - arm64: declare acpi_get_cpu_uid() in arch/arm64/include, implement
+>     it, and use in drivers/perf/arm_cspmu/arm_cspmu.c
 > 
-> commit b06ccbabe2506fd70b9167a644978b049150224a upstream.
+>   - loongarch: declare acpi_get_cpu_uid() in arch/loongarch/include
+>     and implement
+> 
+>   - riscv: declare acpi_get_cpu_uid() in arch/riscv/include, implement
+>     it, and use in rhct.c, riscv/kernel/acpi_numa.c
+> 
+>   - x86: declare acpi_get_cpu_uid() in arch/x86/include, implement it,
+>     and use in xen
+> 
+>   - declare acpi_get_cpu_uid() in include/linux/acpi.h, remove
+>     declarations from arm64, loongarch, riscv, x86
+> 
+>   - convert acpi/pptt.c to use acpi_get_cpu_uid(), remove unused
+>     get_acpi_id_for_cpu() from arm64, loongarch, riscv
+> 
+>   - use acpi_get_cpu_uid() in tph.c
 
-This one likely needs also:
-2fcfe5951eb2 sched_ext: Use WRITE_ONCE() for the write side of 
-scx_enable helper pointer
+Thanks for the detailed guidance, done in v9
 
-thanks,
--- 
-js
-suse labs
+> 
+> Doc nit below.
+> 
+
+...
+
+>> diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+>> index 4d2f0bed7a06..035094a55f18 100644
+>> --- a/include/linux/acpi.h
+>> +++ b/include/linux/acpi.h
+>> @@ -324,6 +324,19 @@ int acpi_unmap_cpu(int cpu);
+>>  
+>>  acpi_handle acpi_get_processor_handle(int cpu);
+>>  
+>> +#ifndef CONFIG_X86
+>> +/*
+>> + * acpi_get_cpu_uid() - Get ACPI Processor UID of a specified CPU from MADT table
+>> + * @cpu: Logical CPU number (0-based)
+>> + * @uid: Pointer to store the ACPI Processor UID (valid only on successful return)
+> 
+> This would normally go at the implementation, but it probably does
+> make sense here because each arch has its own implementation.
+> 
+> Should start with "/**" to make it kernel-doc though.
+> 
+> Wrap to fit in 78 columns, like other comments in this file.
+
+done in v9
+
+Thanks
+
+> 
+>> + * Return: 0 on successful retrieval (the ACPI Processor ID is stored in *uid);
+>> + *         -EINVAL if the CPU number is invalid or out of range;
+>> + *         -ENODEV if the ACPI Processor UID for the specified CPU is not found.
+>> + */
+>> +int acpi_get_cpu_uid(unsigned int cpu, u32 *uid);
+>> +#endif
+> 
 
 
