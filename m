@@ -1,194 +1,217 @@
-Return-Path: <stable+bounces-227334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227336-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHMcOmscvGl1sgIAu9opvQ
-	(envelope-from <stable+bounces-227334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 16:55:23 +0100
+	id sIwOHp8bvGlEsQIAu9opvQ
+	(envelope-from <stable+bounces-227336-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 16:51:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 666FD2CE15F
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 16:55:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F32B2CE09E
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 16:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 831F7306F0C9
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:48:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F0830302ECA4
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6CD3E9F62;
-	Thu, 19 Mar 2026 15:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F63C3E6DC8;
+	Thu, 19 Mar 2026 15:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SZXCyEom"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DF53E9583
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 15:48:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110DD1459F6
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 15:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773935285; cv=none; b=jXIVNg/VrQA1CpjLfmjH6lM3GrcXr0Rce+K2mjpKDEx4yv6Osbbxr8PY9q+4cbpHSFkv1rBGQFVuB4uolNx6xmhHaIZmUZJFFLibuoJTC9Nvjyqw3fPfWM7hql/AxJRNFXanflDFmkaI9fL8/P2oFHT0WeBWbxFJHIJyqiGBfIY=
+	t=1773935403; cv=none; b=i8Tr5uoDwik30CpeLtjyhpDWXatZSbWKXl34nwpwsGFILQxwGs5tx///r0D7uQ+RRp84Z6MIXphRahtbzfXaGW1A8DbhPgTG23tOeVdxOPENcve1ADFK7ZXP9SgK1gV8fLgoAmqVQ9NXWZnesqUQ3O+NNp8Tfwgz2gtwX4s8lOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773935285; c=relaxed/simple;
-	bh=DV78igLEdcL3fhU070znmETO6O0WAIAmLjj2wcLCR0I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Y11i+tE+lgwZuyYI3stDlw4U1ilydGyHvlKNDEwPmP1OAGueUu6ALzY3kNn9MC1uJTYbTaNDZzFXRzL8hif0sjCDKiKRh3M9dvPJC7xcVQxJzj62nXQrKh9X9U1ulCes6aojYGD5WaeKUDEYiw/dH9GKabidNaGKKHYi1EjsdNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3FbI-0002Tk-My; Thu, 19 Mar 2026 16:47:56 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3FbH-0016Ev-3D;
-	Thu, 19 Mar 2026 16:47:56 +0100
-Received: from hardanger.blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id ADD035086A1;
-	Thu, 19 Mar 2026 15:47:55 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Thu, 19 Mar 2026 16:47:45 +0100
-Subject: [PATCH can v2 2/2] can: isotp: fix tx.buf use-after-free in
- isotp_sendmsg()
+	s=arc-20240116; t=1773935403; c=relaxed/simple;
+	bh=8+l8lygZ5HSagAb7mvzKhj0hA8Fc+SE+P5udB07cg+M=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=CKSN/gX/G4f2fFT5coeN0QCOxvsW9cWwYHJaTUvpEgAuxPJMH/Rya3Yg6scMMfqUms3jJwpu0ywKXLKLNCF4J9PGACfy8qErMJgyd8YH6leS1BzpqcVgwNvZq9Q9eieti6Mer8g1IJfIMvsBHWfaCJZnilLafC2He5NPSbARTLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SZXCyEom; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773935402; x=1805471402;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=8+l8lygZ5HSagAb7mvzKhj0hA8Fc+SE+P5udB07cg+M=;
+  b=SZXCyEomVvJGNu/yub0W589fIkw6SU98T2ne93IsXCS7uxYAe2GM3zFn
+   QeTOZncClQBJqaSEb+cu2v8utJJIqQLDd9X+nTud9k196kb+hg2ZCYAMZ
+   C6hbtfH8RTjH3To5HtrTxJRoyshQXrmKi2112NbPBPCgnDFZTxATnC7De
+   FdJ1A6i5SWg7FotoAX5k/0mmMohO3Ohf4hMR+Tub+wOuhsTji3wleaZTV
+   C5hT5XvcPpDbaJeBsL6l76TFM4ADLOTZ/fucusU87MuKEhBi8vwuCX6hK
+   wWADbDJxMWHFPfW1fCB5VVezz4BH2yvOHIWUZk0iMafwjs4YrkjebghhY
+   Q==;
+X-CSE-ConnectionGUID: qqB5fkf+S8WT3Rwkje1SjA==
+X-CSE-MsgGUID: H9/0WrpnTQKMLHMhDHBnXw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86373913"
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="86373913"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 08:50:00 -0700
+X-CSE-ConnectionGUID: eLJvHXUWSD62gdS03ZD1Dw==
+X-CSE-MsgGUID: VXNUs5TCSQq+Pm/U+8treg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,129,1770624000"; 
+   d="scan'208";a="218444429"
+Received: from soc-5cg4396xfb.clients.intel.com (HELO [172.28.180.189]) ([172.28.180.189])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 08:49:59 -0700
+Message-ID: <fd3ab8b8-708f-43a6-84be-e6cf98fb2463@linux.intel.com>
+Date: Thu, 19 Mar 2026 16:49:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Subject: Re: [PATCH 6.1.y 3/3] ice: reintroduce retry mechanism for indirect
+ AQ
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
+ Michal Schmidt <mschmidt@redhat.com>,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Paul Menzel <pmenzel@molgen.mpg.de>, Rinitha S <sx.rinitha@intel.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>
+References: <2026031701-reapprove-dollar-1839@gregkh>
+ <20260318000947.379271-1-sashal@kernel.org>
+ <20260318000947.379271-3-sashal@kernel.org>
+Content-Language: pl, en-US
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <20260318000947.379271-3-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260319-fix-can-gw-and-can-isotp-v2-2-c45d52c6d2d8@pengutronix.de>
-References: <20260319-fix-can-gw-and-can-isotp-v2-0-c45d52c6d2d8@pengutronix.de>
-In-Reply-To: <20260319-fix-can-gw-and-can-isotp-v2-0-c45d52c6d2d8@pengutronix.de>
-To: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: kernel@pengutronix.de, Ali Norouzi <ali.norouzi@keysight.com>, 
- linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Marc Kleine-Budde <mkl@pengutronix.de>, stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-5154a
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2479; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=EA3DkM8A44pm0XcFOAHKhKSbYfsdLH1qWFdWEtDwxUM=;
- b=owGbwMvMwCV2xirl17qZay8xnlZLYsjcI7UqdEbBT6Xw09+jCqd927ttgW/LRP9VN1rnl08XN
- a/4feevYkcpC4MYF4OsmCLL0h8nFAUCHUp7XyZMgpnDygQyhIGLUwAmknqA4X8ot/0LBoMVc9d7
- d05NMV68UODC4flq01fMmXTT8sCnH9X7Gf4pq/hpX+44LLfizYdjgh1FtvUFszOX7Nu36d/sbt8
- Loaq8AA==
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spamd-Result: default: False [-1.46 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TAGGED_FROM(0.00)[bounces-227334-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.967];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,pengutronix.de:email,pengutronix.de:mid,hartkopp.net:email,keysight.com:email]
-X-Rspamd-Queue-Id: 666FD2CE15F
+	TAGGED_FROM(0.00)[bounces-227336-lists,stable=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dawid.osuchowski@linux.intel.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.intel.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2F32B2CE09E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+On 2026-03-18 1:09 AM, Sasha Levin wrote:
+> From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+> 
+> [ Upstream commit 326256c0a72d4877cec1d4df85357da106233128 ]
+> 
+> Add retry mechanism for indirect Admin Queue (AQ) commands. To do so we
+> need to keep the command buffer.
+> 
+> This technically reverts commit 43a630e37e25
+> ("ice: remove unused buffer copy code in ice_sq_send_cmd_retry()"),
+> but combines it with a fix in the logic by using a kmemdup() call,
+> making it more robust and less likely to break in the future due to
+> programmer error.
+> 
+> Cc: Michal Schmidt <mschmidt@redhat.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 3056df93f7a8 ("ice: Re-send some AQ commands, as result of EBUSY AQ error")
+> Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+> Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-isotp_sendmsg() uses only cmpxchg() on so->tx.state to serialize access
-to so->tx.buf. isotp_release() waits for ISOTP_IDLE via
-wait_event_interruptible() and then calls kfree(so->tx.buf).
+Hey Sasha,
 
-If a signal interrupts the wait_event_interruptible() inside close()
-while tx.state is ISOTP_SENDING, the loop exits early and release
-proceeds to force ISOTP_SHUTDOWN and continues to kfree(so->tx.buf)
-while sendmsg may still be reading so->tx.buf for the final CAN frame
-in isotp_fill_dataframe().
+Thank you for trying to reapply this patch. Unfortunately for 
+6.1.167-rc1 this will not work, we tried this with my colleague Jakub 
+Staniszewski and got the following output:
 
-The so->tx.buf can be allocated once when the standard tx.buf length needs
-to be extended. Move the kfree() of this potentially extended tx.buf to
-sk_destruct time when either isotp_sendmsg() and isotp_release() are done.
+# git am sasha_levin_ice_6_1_y.mbox
+Applying: ice: reintroduce retry mechanism for indirect AQ
+error: patch failed: drivers/net/ethernet/intel/ice/ice_common.c:1595
+error: drivers/net/ethernet/intel/ice/ice_common.c: patch does not apply
+Patch failed at 0001 ice: reintroduce retry mechanism for indirect AQ
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-Fixes: 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu size")
-Cc: stable@vger.kernel.org
-Reported-by: Ali Norouzi <ali.norouzi@keysight.com>
-Co-developed-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Ali Norouzi <ali.norouzi@keysight.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- net/can/isotp.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+> ---
+>   drivers/net/ethernet/intel/ice/ice_common.c | 12 +++++++++---
+>   1 file changed, 9 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+> index 780c847cd1ffb..7bce89ba0a6fc 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_common.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
+> @@ -1595,6 +1595,7 @@ ice_sq_send_cmd_retry(struct ice_hw *hw, struct ice_ctl_q_info *cq,
+>   {
+>   	struct ice_aq_desc desc_cpy;
+>   	bool is_cmd_for_retry;
+> +	u8 *buf_cpy = NULL;
+>   	u8 idx = 0;
+>   	u16 opcode;
+>   	int status;
+> @@ -1604,8 +1605,11 @@ ice_sq_send_cmd_retry(struct ice_hw *hw, struct ice_ctl_q_info *cq,
+>   	memset(&desc_cpy, 0, sizeof(desc_cpy));
+>   
+>   	if (is_cmd_for_retry) {
+> -		/* All retryable cmds are direct, without buf. */
+> -		WARN_ON(buf);
 
-diff --git a/net/can/isotp.c b/net/can/isotp.c
-index da3b72e7afcc..2770f43f4951 100644
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -1248,12 +1248,6 @@ static int isotp_release(struct socket *sock)
- 	so->ifindex = 0;
- 	so->bound = 0;
- 
--	if (so->rx.buf != so->rx.sbuf)
--		kfree(so->rx.buf);
--
--	if (so->tx.buf != so->tx.sbuf)
--		kfree(so->tx.buf);
--
- 	sock_orphan(sk);
- 	sock->sk = NULL;
- 
-@@ -1622,6 +1616,21 @@ static int isotp_notifier(struct notifier_block *nb, unsigned long msg,
- 	return NOTIFY_DONE;
- }
- 
-+static void isotp_sock_destruct(struct sock *sk)
-+{
-+	struct isotp_sock *so = isotp_sk(sk);
-+
-+	/* do the standard CAN sock destruct work */
-+	can_sock_destruct(sk);
-+
-+	/* free potential extended PDU buffers */
-+	if (so->rx.buf != so->rx.sbuf)
-+		kfree(so->rx.buf);
-+
-+	if (so->tx.buf != so->tx.sbuf)
-+		kfree(so->tx.buf);
-+}
-+
- static int isotp_init(struct sock *sk)
- {
- 	struct isotp_sock *so = isotp_sk(sk);
-@@ -1666,6 +1675,9 @@ static int isotp_init(struct sock *sk)
- 	list_add_tail(&so->notifier, &isotp_notifier_list);
- 	spin_unlock(&isotp_notifier_lock);
- 
-+	/* re-assign default can_sock_destruct() reference */
-+	sk->sk_destruct = isotp_sock_destruct;
-+
- 	return 0;
- }
- 
+The above two lines do not exist in 6.1.y source, that's why the patch 
+didn't apply in the first place.
 
--- 
-2.53.0
+For this change to be applicable you can take the modified / trimmed 
+patch you sent for 5.15.y ("[PATCH 5.15.y 2/2] ice: reintroduce retry 
+mechanism for indirect AQ") and apply the following diff to said patch:
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c 
+b/drivers/net/ethernet/intel/ice/ice_common.c
+index a4d31e139..19d652d78 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -1425,7 +1425,7 @@ ice_sq_send_cmd_retry(struct ice_hw *hw, struct 
+ice_ctl_q_info *cq,
+                 if (buf) {
+                         buf_cpy = kzalloc(buf_size, GFP_KERNEL);
+                         if (!buf_cpy)
+-                               return ICE_ERR_NO_MEMORY;
++                               return -ENOMEM;
+                 }
+
+                 memcpy(&desc_cpy, desc, sizeof(desc_cpy));
+
+Do you want me to resend with this change applied or can you apply it 
+yourself and resend?
+
+Best regards
+Dawid
 
 
