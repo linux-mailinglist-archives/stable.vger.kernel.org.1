@@ -1,246 +1,135 @@
-Return-Path: <stable+bounces-227380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227381-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QL8kOxRfvGlxxQIAu9opvQ
-	(envelope-from <stable+bounces-227380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:39:48 +0100
+	id 6N7jHQ9kvGmLxwIAu9opvQ
+	(envelope-from <stable+bounces-227381-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:01:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9642D2499
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:39:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92FD62D2764
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BAAD7300B292
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 20:39:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A5F7B300692D
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C613F7E89;
-	Thu, 19 Mar 2026 20:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96E136215A;
+	Thu, 19 Mar 2026 21:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b="w5aW9Ald"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CFWBoe6v"
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E689A23ABBF
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 20:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1492D0C94
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 21:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773952783; cv=none; b=jOZCp3UiLiK2I3J0ahBP0rrDqE3aCeqnPC0aRvkra0aRf3ln1iMg4g8LGOTE+KLhuy5t+Hceun14qnfU3OGGm/DFywdLgMvyQsyDqUsxHLNRLh9utbh8ZYfsFTFKTW/A9/qprhStNlT6evrJ+80/S0QGIGnVFGeW73C9PDpY/jU=
+	t=1773954055; cv=none; b=bySdvs6oCy1Hu2JCgH95/Z78ldSlTMRkmuOwxrfeXlmwrN7zX5UXVg/L4RJR7SIamVFQE69mXoe/kFrGO7y1md8jzkqLsF0CfwonF0/DCCuFDD/9c4YarIhlizxhivLoGeI8PoqAWjyz+KeSHPseE6UknyMAn8tQh/uyY2qwqaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773952783; c=relaxed/simple;
-	bh=AAaWsMidyTXPKg0XjqzCwQXP2HbpDF9J7jvc5kDMbzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cb3tewtzN6YmWA1MjBrSLfxdP3azfzQHQFz9w06f0daXyLMqOUmE+WBGRFCoMHAr88FyTIurCbxn6lJ7Etyx8regrtD82MLCq/601FYrr2qPcsi+ceLHU5j+TJ1Qgk3KsSa9iun5MlwUWOIswYjuB6caju5jjx35G3IHuhquNZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca; spf=pass smtp.mailfrom=justthetip.ca; dkim=pass (2048-bit key) header.d=justthetip.ca header.i=@justthetip.ca header.b=w5aW9Ald; arc=none smtp.client-ip=91.218.175.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=justthetip.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=justthetip.ca
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=justthetip.ca;
-	s=key1; t=1773952779;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eaWYm+Ogi+l2RIh2pnwzTgW1KAd3MUkqgb1vx7KhlRU=;
-	b=w5aW9AldFPWHFL45KWDzamzXf7XNc5HY9Iqr2yV5WIzonrrcHpCd0wvlZvkeBH8atuJAfO
-	sNFNqIuw/FPBlUHmmKWX9WL5OWpmKGd9uAGvJ98jU52zhpJud7B335R5VBXy84/vvhQb/9
-	YitnH9sqS4z9R1gUY/lhm9OVLnOHSKh3jgkVII9Y9t4eotMED2T4oTJqzeGz5FEnTnjIQE
-	Ra/n+WL2Qh8AFOCigmxmOqteJPwD/rlFYWQhh8LIUb6TyIOqSRTcKbmS4wEBpqRdcolo2R
-	YWhO+8YaBOAYKHzuTXrX+9s+OihAXJl5zujEp5qSPyDeMLlNIQKJ40wU/Jb++Q==
-From: Lucid Duck <lucid_duck@justthetip.ca>
-To: Sean Wang <sean.wang@kernel.org>
-Cc: Felix Fietkau <nbd@nbd.name>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	morrownr@gmail.com,
-	Lucid Duck <lucid_duck@justthetip.ca>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] wifi: mt76: mt7921: fix txpower reporting from rate power configuration
-Date: Thu, 19 Mar 2026 13:38:54 -0700
-Message-ID: <20260319203854.30479-1-lucid_duck@justthetip.ca>
-In-Reply-To: <CAGp9LzqLbdEb25ocObMMuFPZitrL-UnC7uhaLOkYQN=TgSTmnA@mail.gmail.com>
-References: <CAGp9LzqLbdEb25ocObMMuFPZitrL-UnC7uhaLOkYQN=TgSTmnA@mail.gmail.com>
+	s=arc-20240116; t=1773954055; c=relaxed/simple;
+	bh=kH0cQHtD4Z7NPkXPsL4cUMXJnS1iYFiFT1dkndw02Ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LRpu0Nrhef9PscyhBkpYX5XZ+PobcD1gnJAN6bmWImTAQSBdopeZS3ryYYuIjZ2vrxGkBxYuRZsPD2/vAMdTnk3XDn/iKLCV3hzg8sUzSPEIYcqEFlpaOsyX1L6I0mx5XDONz/PcEUNR3AE2BZIbyUICrDdXUbjRDteVsqw7Jw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CFWBoe6v; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773954054; x=1805490054;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=kH0cQHtD4Z7NPkXPsL4cUMXJnS1iYFiFT1dkndw02Ns=;
+  b=CFWBoe6vZadkaBp2FEUS9ueiWxsCmMfSA5+X5fgTkJ8LWgMEYsgAwkWJ
+   G/Tz1AlJsALbXbrtKkQikV9y6PNZRJwaFRY6DleYcg5csL+Q3atUXDCwN
+   xtM9ndFQz5l/huBM8S2/+rkfqdCwGM1TFHWJVTie/A3n9DGcCMYxabZmt
+   YCTnyOKVMKBP8my79UZlaetNm3cdEKwfbG+kLV8r++iNK5d1CDEpKOx2K
+   VcpbYnioRsNWcAI2k7qwVD+inv9H3voXsxaAxggQATrSaK1aS+X9801kH
+   348K52gDiBduWx3N+tHNi6vtqlFX/2xlC8YIYnTIlcONrUEuKAgBnI7Dz
+   g==;
+X-CSE-ConnectionGUID: 4RDFUKGBQXiyJyyaJ278uA==
+X-CSE-MsgGUID: DilHaBZHTiuB295baFEONA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="74217247"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="74217247"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 14:00:54 -0700
+X-CSE-ConnectionGUID: VFdQqlFjR+qbQmmyPtUF6g==
+X-CSE-MsgGUID: 7+1izOE2SyyW+CusqitO+A==
+X-ExtLoop1: 1
+Received: from amilburn-desk.amilburn-desk (HELO kekkonen.fi.intel.com) ([10.245.245.3])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 14:00:52 -0700
+Received: from kekkonen.localdomain (localhost [IPv6:::1])
+	by kekkonen.fi.intel.com (Postfix) with SMTP id 6B3B911F80C;
+	Thu, 19 Mar 2026 23:00:52 +0200 (EET)
+Date: Thu, 19 Mar 2026 23:00:52 +0200
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6 krs, Bertel Jungin Aukio 5, 02600 Espoo
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 6.12.y 1/2] iio: light: Remove redundant
+ pm_runtime_mark_last_busy() calls
+Message-ID: <abxkBLNmhGlxp9tm@kekkonen.localdomain>
+References: <2026031706-gentile-unbalance-017b@gregkh>
+ <20260319183438.2928887-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260319183438.2928887-1-sashal@kernel.org>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[justthetip.ca,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
-	R_DKIM_ALLOW(-0.20)[justthetip.ca:s=key1];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,vger.kernel.org,lists.infradead.org,gmail.com,justthetip.ca];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227380-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[justthetip.ca:+];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lucid_duck@justthetip.ca,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-227381-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[intel.com:+];
 	FROM_HAS_DN(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	MISSING_XM_UA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sakari.ailus@linux.intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.834];
+	RCVD_COUNT_FIVE(0.00)[6];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,sku_tlbv.channel:url]
-X-Rspamd-Queue-Id: CD9642D2499
+	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:dkim,intel.com:email]
+X-Rspamd-Queue-Id: 92FD62D2764
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The mt7921 driver never updates phy->txpower_cur from the rate power
-configuration sent to firmware, causing mt76_get_txpower() to report
-bogus values to userspace (typically 3 dBm) regardless of actual
-regulatory or SAR limits.
+Hi Sasha,
 
-Two issues are addressed:
+On Thu, Mar 19, 2026 at 02:34:37PM -0400, Sasha Levin wrote:
+> From: Sakari Ailus <sakari.ailus@linux.intel.com>
+> 
+> [ Upstream commit e15f23dd5305d123b571aeee56415d9e90f06ca4 ]
+> 
+> pm_runtime_put_autosuspend(), pm_runtime_put_sync_autosuspend(),
+> pm_runtime_autosuspend() and pm_request_autosuspend() now include a call
+> to pm_runtime_mark_last_busy(). Remove the now-reduntant explicit call to
+> pm_runtime_mark_last_busy().
 
-1. The rate power loop in mt76_connac_mcu_rate_txpower_band() computes
-   the correct bounded TX power per channel via
-   mt76_get_rate_power_limits() but discards the return value. Capture
-   it and store to phy->txpower_cur when processing the current
-   channel, matching how mt7915 handles this in
-   mt7915_mcu_set_txpower_sku(). Subtract the multi-chain path delta
-   before storing, since mt76_get_txpower() adds it back when
-   reporting -- consistent with mt7915's use of mt76_get_power_bound()
-   which performs the same subtraction.
+This is true from v6.17 onwards only; do not apply patches removing
+"redundant" mark_last_busy() calls on earlier kernels as these calls are
+needed there.
 
-2. mt7921 uses the chanctx model but its add_chanctx callback does not
-   update phy->chandef, leaving it stale after association. The rate
-   power loop's channel comparison then fails silently. Sync
-   phy->chandef from ctx->def in add_chanctx and change_chanctx, and
-   recompute txpower_cur via a lightweight helper that performs the
-   same bounded power calculation for the current channel without
-   reprogramming firmware rate tables.
-
-Tested on Alfa AWUS036AXML (MT7921AU), kernel 6.19.8, Canada:
-
-  Before: iw dev wlan0 info shows "txpower 3.00 dBm" (wrong)
-  After:  2.4GHz 36 dBm, 5GHz 23 dBm, 6GHz 12 dBm (match regulatory)
-
-Cc: stable@vger.kernel.org
-Fixes: 1c099ab44727 ("mt76: mt7921: add MAC support")
-Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
----
-Changes since v3:
-- Removed mt7921_set_tx_sar_pwr() from add_chanctx and change_chanctx.
-  Channel transitions don't change underlying power constraints, so
-  reprogramming the full rate table is unnecessary. Replaced with a
-  lightweight helper that recomputes txpower_cur locally.
-- Removed IEEE80211_CONF_CHANGE_CHANNEL trigger from config().
-- Removed BSS_CHANGED_TXPOWER handler from bss_info_changed(). Writing
-  per-vif txpower into per-HW hw->conf.power_level breaks multi-vif
-  semantics. User txpower limits need a different approach (follow-up).
-- Subtracted path delta before storing txpower_cur. The connac rate
-  loop stores total bounded power, but mt76_get_txpower() adds the
-  multi-chain path delta when reporting. mt7915 accounts for this via
-  mt76_get_power_bound(), which subtracts the delta before storing.
-  Without the same subtraction, reported values were inflated by 3 dBm
-  on 2x2 devices.
-
- .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 14 +++++++--
- .../net/wireless/mediatek/mt76/mt7921/main.c  | 30 +++++++++++++++++++
- 2 files changed, 41 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-index 16db0f208..e26a2cb39 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-@@ -2193,14 +2193,22 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy *phy,
- 				.hw_value = ch_list[idx],
- 				.band = band,
- 			};
--			s8 reg_power, sar_power;
-+			s8 reg_power, sar_power, max_power;
- 
- 			reg_power = mt76_connac_get_ch_power(phy, &chan,
- 							     tx_power);
- 			sar_power = mt76_get_sar_power(phy, &chan, reg_power);
- 
--			mt76_get_rate_power_limits(phy, &chan, limits,
--						   sar_power);
-+			max_power = mt76_get_rate_power_limits(phy, &chan,
-+							       limits,
-+							       sar_power);
-+
-+			if (phy->chandef.chan &&
-+			    phy->chandef.chan->hw_value == ch_list[idx] &&
-+			    phy->chandef.chan->band == band)
-+				phy->txpower_cur = max_power -
-+					mt76_tx_power_path_delta(
-+						hweight16(phy->chainmask));
- 
- 			tx_power_tlv.last_msg = ch_list[idx] == last_ch;
- 			sku_tlbv.channel = ch_list[idx];
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 5881040ac..a77ae5791 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1355,13 +1355,39 @@ mt7921_stop_ap(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
- 	mt792x_mutex_release(dev);
- }
- 
-+static void mt7921_update_txpower_cur(struct mt76_phy *phy)
-+{
-+	struct mt76_power_limits limits;
-+	struct ieee80211_channel *chan = phy->chandef.chan;
-+	int n_chains = hweight16(phy->chainmask);
-+	s8 reg_power, sar_power, max_power;
-+	int tx_power;
-+
-+	if (!chan)
-+		return;
-+
-+	tx_power = 2 * phy->hw->conf.power_level;
-+	if (!tx_power)
-+		tx_power = 127;
-+
-+	reg_power = mt76_connac_get_ch_power(phy, chan, tx_power);
-+	sar_power = mt76_get_sar_power(phy, chan, reg_power);
-+	max_power = mt76_get_rate_power_limits(phy, chan, &limits, sar_power);
-+
-+	phy->txpower_cur = max_power - mt76_tx_power_path_delta(n_chains);
-+}
-+
- static int
- mt7921_add_chanctx(struct ieee80211_hw *hw,
- 		   struct ieee80211_chanctx_conf *ctx)
- {
- 	struct mt792x_dev *dev = mt792x_hw_dev(hw);
-+	struct mt76_phy *mphy = hw->priv;
- 
- 	dev->new_ctx = ctx;
-+	mphy->chandef = ctx->def;
-+	mt7921_update_txpower_cur(mphy);
-+
- 	return 0;
- }
- 
-@@ -1396,6 +1422,10 @@ mt7921_change_chanctx(struct ieee80211_hw *hw,
- 		mt7921_mcu_config_sniffer(mvif, ctx);
- 	else
- 		mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->bss_conf.mt76, ctx);
-+
-+	phy->mt76->chandef = ctx->def;
-+	mt7921_update_txpower_cur(phy->mt76);
-+
- 	mt792x_mutex_release(phy->dev);
- }
- 
 -- 
-2.53.0
+Regards,
 
+Sakari Ailus
 
