@@ -1,160 +1,197 @@
-Return-Path: <stable+bounces-227293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227294-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJK0CbH7u2mzqwIAu9opvQ
-	(envelope-from <stable+bounces-227293-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:35:45 +0100
+	id qA+IOIX8u2mzqwIAu9opvQ
+	(envelope-from <stable+bounces-227294-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:39:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F842CC108
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:35:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86E5A2CC191
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:39:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 10A7B30C2943
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 13:34:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CF8533027E0F
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 13:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23403CE4B6;
-	Thu, 19 Mar 2026 13:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A61B63D3312;
+	Thu, 19 Mar 2026 13:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="DtwKMKX5";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="3GgDZN15"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rOaEcpgJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF6E23A4F5F;
-	Thu, 19 Mar 2026 13:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773927281; cv=pass; b=CfKuEQgBN1vSF7LQWh8yNl5q7KKbBZ6tZNt1bpPkc9C9y/H6aFbraI0QFxl1UCaD4QTsjCBfs3VGVa8pRPf4xPsv8OzmSgw0VXWdnd7dc4q8rjTs3nhwAeGdze1GgcVpsFlbAq/M92qWh15uwNrYFUsjJfEul0x0/PuwkR2jqtw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773927281; c=relaxed/simple;
-	bh=LwUipd4w5oLH7fywbHg4u8uDP1LLdDapZrK6SCZ4+mo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lxIxT4mkytrTh8UEErc4u/qigCo16BYgFqSIki7DOc0M/u8EPIpq1pe80j9wJUAKClKGBcuQiw1e34F+8oZ8AwZOIehjAOjgKs2UrDSnTP1eM2VpY7ZMgRgNM5HMKLetcNOSy7FYTcdgt1DY2CXCRyHY+9BWfr35nqO9LKpzw5Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=fail smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=DtwKMKX5; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=3GgDZN15; arc=pass smtp.client-ip=85.215.255.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=hartkopp.net
-ARC-Seal: i=1; a=rsa-sha256; t=1773927275; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=DlaqRAGS3O2KGnI2dIwD59QXj7x0k3zr9DeQs4sP7B7EbaggWvJlmlv4gJtm4vBoot
-    RmJNI9/srB0mQWzBn08ugIg40h6SO/x6OcCz8nXnZ0m0uPgWVKPVMY7YRSzSTUvRAyr4
-    iMuuwtWeREzoiZkd6TxohWwHZJfNdRcX61VIz4ZiKPbBfchLrm65HDmw1wea3lSvZv2P
-    SDjP1UbGECGsoxiUKcZNVvmYSp4zOcQRnHkAUEIbGiCDfAetRFjEpmlpu0Tn7lE3h603
-    nqGP8JQjddSgFoDxrF11pSWZxS8jRiZg2aKifK4ZJdqqAaqb86fetE37cja43i1yYpnS
-    b3mQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1773927275;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=bb+phr2ZuPTP3UcZwnmRM3nr+pjTmb5nTyFCYikERng=;
-    b=VE5owsbhtD4qe3Tqq90DqJimwDw5NqTyi23w61XGWE6jcxyX1DnI7ZartkEXfLYLwF
-    1fIBgmRS3G/dC6a3juJz/nhGHCO2DQMd8EMTCBwyrMYTRw2T4CGR7MVAogNF8ByGnUwE
-    cj9kuC3TDfKrkDkXyOHb/xNFQT0p+zCJn0iFuabpYvm80DYhSg1OgrWt9kcAX2O9TEBS
-    fFPvHUQOLubJ5sz7Q3G3DClABW41P14YvvQTLkw0IHGRDHp58Y8lM3BayKbNqNs5BwRP
-    AYEgooqqivwoqS6QvfHoK83MQYOpvqLjHT/TluAC3Rghu3njzQDb+rYvUKf0hvSyQlnU
-    9o1Q==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1773927275;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=bb+phr2ZuPTP3UcZwnmRM3nr+pjTmb5nTyFCYikERng=;
-    b=DtwKMKX5yZEgDzPWNsbhCKk6m8IeN7nSd/L7DKKA7IELSbry3oCR9l2opJGkhsdM00
-    ez0RYcKXRHqOAJKHe4jFv+6jcWd6k0pux7ABAZlQfRLsFaBVsn/7eiYBZ3pI1jy/a3Er
-    UO07QtN7h1pNQi97zs0GxYUnZM/WpKK2Lji5h/yPfEieruYqJL4OvxcLZC8zPNfGDd3l
-    FzCnS60mg0yLh7T8VhQU3VmTkC2e/WJnFe4YkMUHattAoI7mK3TyCN2hRpI4zwNVVuXu
-    SKo1VKwkYRj1dPxiP4JMEGb5lh2zf0CA6KyGW4fcutHbQqIc9XJcuxHL8/wf7Gdq2vXm
-    v2zA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1773927275;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=bb+phr2ZuPTP3UcZwnmRM3nr+pjTmb5nTyFCYikERng=;
-    b=3GgDZN15vMtkEpNchaPCkAMbC/5is69m/i4TmpzEUl0aPaSQZBtCqf6nqF/NKEJsXB
-    /KYbpZSaMI0EIgXoBcDw==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeFQ7s0ZDT0tksFSR+Aix0esQJVIAlZEg=="
-Received: from [IPV6:2a00:6020:4a38:6800:217d:dfe3:b063:ecb0]
-    by smtp.strato.de (RZmta 55.0.1 AUTH)
-    with ESMTPSA id Kba96d22JDYZs8C
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 19 Mar 2026 14:34:35 +0100 (CET)
-Message-ID: <244e94f7-46f0-442e-931d-1521601f60b2@hartkopp.net>
-Date: Thu, 19 Mar 2026 14:34:34 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EAD1F91E3
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 13:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773927555; cv=none; b=Exm3w+lGDsgOvl7GlT1epyX6ZIUX8eb1UevuyqeUYqQJXU3JEl5ix3Bzxb9qOI0638CTA48p2ccMOiYd3lSWCnbfNgZHBvm10kWG0XMAF5qMcNmEuImz5GFr/PgGPvO6K23igJQg3m6A1GvsK3Fi31E1YDd9a8glAPy4cxFtrKY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773927555; c=relaxed/simple;
+	bh=I/ASeHHVAHtIrSOg+z3q+6OFb16Ug9VFAmWHt2vvedg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=hrZbHJ5MHR0WegeYH1Upj6uzY+2dOPfza8ASr26djYQI+UfKYiXw7vNFJ/+qnrZw0vHj3B2sRlWoXHwv5l3PyK7rm+ANyENbs4G8JutQN/3K17Z68dnW5xe7S/9KlnWj1Pb58Z/9TmkeI9rPIvcizlEHdxMWTX76GZXWtgQaF04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rOaEcpgJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 993E4C19424;
+	Thu, 19 Mar 2026 13:39:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773927555;
+	bh=I/ASeHHVAHtIrSOg+z3q+6OFb16Ug9VFAmWHt2vvedg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rOaEcpgJGQiiwQ8um8EksZi9976iqyYFIJrLixku+NGXZviESk73OTglv0e53HiEc
+	 ag8+hTOmTvLYy54MgmhEtGhxhvZIPo45mv80/L0gOv5OtKNtfC6laizb9AfW8DPcHy
+	 /4uI0SVCNZ3DHezuVFnkTpad7grxIcc22fzAnmI5HisciV0voNTOVVcNdxU23c3CiT
+	 q81VgLLGIOUEmBybCxVVh711MD4HztouUOnJRhSAJfWPTq0YXRxnT7EK4qP4MeXeca
+	 pA2drPhuvqCLC4InvWE9OFDDP9EnZDddC4YTFq+UgzT0UUQpZC5tz82iMTzHnLAhwl
+	 YIwL8PgLXi5sw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] kprobes: Remove unneeded goto
+Date: Thu, 19 Mar 2026 09:39:12 -0400
+Message-ID: <20260319133913.2477768-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031701-glider-ominous-ade9@gregkh>
+References: <2026031701-glider-ominous-ade9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] can: isotp: fix tx.buf use-after-free in
- isotp_sendmsg()
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: stable@vger.kernel.org, Ali Norouzi <ali.norouzi@keysight.com>,
- linux-can@vger.kernel.org
-References: <20260318165120.17560-1-socketcan@hartkopp.net>
- <20260318165120.17560-2-socketcan@hartkopp.net>
- <c6bb76ce-0f3c-4775-beaf-174e281f991f@hartkopp.net>
- <20260319-polar-affable-dolphin-db10fa-mkl@pengutronix.de>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <20260319-polar-affable-dolphin-db10fa-mkl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[hartkopp.net,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[hartkopp.net:s=strato-dkim-0002,hartkopp.net:s=strato-dkim-0003];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[hartkopp.net:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-227293-lists,stable=lfdr.de];
-	RCPT_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227294-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[3];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[socketcan@hartkopp.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.978];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 82F842CC108
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 86E5A2CC191
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
+[ Upstream commit 5e5b8b49335971b68b54afeb0e7ded004945af07 ]
 
-On 19.03.26 14:33, Marc Kleine-Budde wrote:
-> On 19.03.2026 14:13:55, Oliver Hartkopp wrote:
->> Hallo Marc,
->>
->> the AI bot correctly remarked that the Fixes tag points to the wrong commit
->> I took from Alis original patch.
->>
->> Indeed it has to be
->>
->> Fixes: 96d1c81e6a04 ("can: isotp: add module parameter for maximum pdu
->> size")
->>
->> Can you correct that while applying the patch or should I resend it?
-> 
-> I'll do it. Please ignore my mail stating the same send 10 Minutes after
-> yours :)
-> 
+Remove unneeded gotos. Since the labels referred by these gotos have
+only one reference for each, we can replace those gotos with the
+referred code.
 
-Mail scatter today :-D
+Link: https://lore.kernel.org/all/173371211203.480397.13988907319659165160.stgit@devnote2/
+
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Stable-dep-of: 5ef268cb7a0a ("kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/kprobes.c | 45 +++++++++++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 24 deletions(-)
+
+diff --git a/kernel/kprobes.c b/kernel/kprobes.c
+index da59c68df8412..b477102b72bb2 100644
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1082,20 +1082,18 @@ static int __arm_kprobe_ftrace(struct kprobe *p, struct ftrace_ops *ops,
+ 
+ 	if (*cnt == 0) {
+ 		ret = register_ftrace_function(ops);
+-		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret))
+-			goto err_ftrace;
++		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
++			/*
++			 * At this point, sinec ops is not registered, we should be sefe from
++			 * registering empty filter.
++			 */
++			ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
++			return ret;
++		}
+ 	}
+ 
+ 	(*cnt)++;
+ 	return ret;
+-
+-err_ftrace:
+-	/*
+-	 * At this point, sinec ops is not registered, we should be sefe from
+-	 * registering empty filter.
+-	 */
+-	ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
+-	return ret;
+ }
+ 
+ static int arm_kprobe_ftrace(struct kprobe *p)
+@@ -1452,7 +1450,7 @@ _kprobe_addr(kprobe_opcode_t *addr, const char *symbol_name,
+ 	     unsigned long offset, bool *on_func_entry)
+ {
+ 	if ((symbol_name && addr) || (!symbol_name && !addr))
+-		goto invalid;
++		return ERR_PTR(-EINVAL);
+ 
+ 	if (symbol_name) {
+ 		/*
+@@ -1482,11 +1480,10 @@ _kprobe_addr(kprobe_opcode_t *addr, const char *symbol_name,
+ 	 * at the start of the function.
+ 	 */
+ 	addr = arch_adjust_kprobe_addr((unsigned long)addr, offset, on_func_entry);
+-	if (addr)
+-		return addr;
++	if (!addr)
++		return ERR_PTR(-EINVAL);
+ 
+-invalid:
+-	return ERR_PTR(-EINVAL);
++	return addr;
+ }
+ 
+ static kprobe_opcode_t *kprobe_addr(struct kprobe *p)
+@@ -1509,15 +1506,15 @@ static struct kprobe *__get_valid_kprobe(struct kprobe *p)
+ 	if (unlikely(!ap))
+ 		return NULL;
+ 
+-	if (p != ap) {
+-		list_for_each_entry(list_p, &ap->list, list)
+-			if (list_p == p)
+-			/* kprobe p is a valid probe */
+-				goto valid;
+-		return NULL;
+-	}
+-valid:
+-	return ap;
++	if (p == ap)
++		return ap;
++
++	list_for_each_entry(list_p, &ap->list, list)
++		if (list_p == p)
++		/* kprobe p is a valid probe */
++			return ap;
++
++	return NULL;
+ }
+ 
+ /*
+-- 
+2.51.0
 
 
