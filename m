@@ -1,222 +1,243 @@
-Return-Path: <stable+bounces-227395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eF92OWl9vGk1zQIAu9opvQ
-	(envelope-from <stable+bounces-227395-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 23:49:13 +0100
+	id iKqcCDKAvGnfzQIAu9opvQ
+	(envelope-from <stable+bounces-227396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 00:01:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882ED2D3C28
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 23:49:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73B2B2D3F11
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 00:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 11AAE3026A45
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:43:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E848B301E6EE
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 23:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F69407583;
-	Thu, 19 Mar 2026 22:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3786D3AF64B;
+	Thu, 19 Mar 2026 23:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I1JwJQpl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GOxAkJAR"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A3F40628E;
-	Thu, 19 Mar 2026 22:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE6A396D22
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 23:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773960117; cv=none; b=hXk+ltdqagSvh8kueKH01S9I+R+glYrfRJnUIFAlhabwvk8MwOv01nVb29H8BkG9HCkHRVqbMEEh/IxqqCO4oCi8mwjI4xxC7xMiv27O6MjNzlZTW6613Go6kFi550LHnTZANwUYtwyYMM4402sy4YBQCCodHFs+JYPwSPTqMEg=
+	t=1773961263; cv=none; b=IoWyTKX0Tz6BCFGrjJfzZytwRoTtirrUMMGyEAS4jmVJmevMJTWuag5iA/8DBWkspiRt2wEE+CHofmHIZJZFGWvOFgarWWyOUR3R+9eCQNjRRRDyk4+PmqdOniTfifpR42z4XUaq7YqX4kyIzQQcJ0bdcrlw8kZknIXaKvpR9+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773960117; c=relaxed/simple;
-	bh=w42GVYaBOiENOnZTs/bf+y6P5cN1lu44uYlM0XIDM0A=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=sPyPadO0PfGBiru/NTPN5bmWWC6/j0MIY7Eq7GBtHI7d8QxYmEAFmbsAGwQaRS47dfRXqNoK10REOfMu5CwRrme0Xs8KFPGHFlyenjWmmFvt0JRFWxCHANrgmfzxp9U8oxOcoHGhGnVnQh+HiExtTXath8Cf7ZcQQuzvcryL5Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I1JwJQpl; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773960116; x=1805496116;
-  h=from:to:cc:subject:date:message-id;
-  bh=w42GVYaBOiENOnZTs/bf+y6P5cN1lu44uYlM0XIDM0A=;
-  b=I1JwJQpl7aVXUiWUETz/DQ8gBTrzfMNVvVk9L939LkakZ+T9jC5KR0IL
-   Xt9RapGN4mCQBNaGqNMMJYRbT4Q1dhj7ke9BA0X3TRBIMK2LO5WxJqL9m
-   ZJNaSj+iF6Cnwi5+ijtWaI916gDBRO3k5+nMU2Wxn+CUii0eVqT03A1uP
-   4gOXMVgVkvY3URPgzZ1s+Lm/nji3aWeR9ifzx3cG07yhzgsb1IlRadKSJ
-   ks7SXBGwMjxASPQxDdOLnA0rxjzKprH4EPDtN1jbze3v5yU+RMRqdE3da
-   ltli5vT7cofA9R3c9rxhPfGn5z2vvB6Va25a9F/Z4u5LCjESbDHzSnZYc
-   g==;
-X-CSE-ConnectionGUID: tNSJR+tGTuegwFpGc6PR7Q==
-X-CSE-MsgGUID: QbDVCmhBTU6/wkZtI8isAQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="74060139"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="74060139"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 15:41:54 -0700
-X-CSE-ConnectionGUID: cjgj4rPqS52u0ucCRTXghw==
-X-CSE-MsgGUID: 7P+ErQc7SHKpge4J3R2xDA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="223326020"
-Received: from estantil-desk.jf.intel.com ([10.166.241.24])
-  by orviesa007.jf.intel.com with ESMTP; 19 Mar 2026 15:41:53 -0700
-From: Emil Tantilov <emil.s.tantilov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	bpf@vger.kernel.org,
-	aleksander.lobakin@intel.com,
-	decot@google.com,
-	willemb@google.com,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH iwl-net v2] idpf: fix xdp crash in soft reset error path
-Date: Thu, 19 Mar 2026 15:41:59 -0700
-Message-Id: <20260319224159.23885-1-emil.s.tantilov@intel.com>
-X-Mailer: git-send-email 2.17.2
+	s=arc-20240116; t=1773961263; c=relaxed/simple;
+	bh=q27h7aXvzUDBcEG4AFH8pgmQJuOKChXYZNKuDx3bMQE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ncoD1ptmjZCjUKqxJIrSY8KAt9+Mcb8/eRUD7PaCVM9EwJjIOSjGCtIIvv8VFC06iVrwSUze4+0LeKCxAasoPzQCPn4vxVqXZyVOeggLN7usNdpXfZqfh3C1gdguVK7ysStWvgED/bPHk8eCcG0gl4mtvEYCyGPp+V9HiqZYJIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GOxAkJAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE2BC19424;
+	Thu, 19 Mar 2026 23:01:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773961262;
+	bh=q27h7aXvzUDBcEG4AFH8pgmQJuOKChXYZNKuDx3bMQE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=GOxAkJAR2bI5frGkK9tmOSOFcWsyAuHk/lvMFBC6yWkG+8xgbnY64gBRtqeE964gP
+	 QTefe4t3sqDSaYpYykEWanp47RSWKBtQYfKanVaTJ8u6923mhO9eUAa3h8NTIKCDwc
+	 diHOiOvy7H3SJKyFHYoaRqvYEfdGe9YeuxZn1GgSa2lMJ+rwVhfuFaEoCrkw5pHcp1
+	 Ip0KcoZDb5gHdU8KNa4+DyLgEMHeSXr4+MKXpZYpblGwiU0t59MYXkItFiZjA8erAT
+	 +na9F6okIYOrybalCCBdnjhRRgECf+3vxeFzZCFiboNjjSTcga6NpWGpKlQwLobzr3
+	 +pCKOuFIwfvRA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Anand Jain <asj@kernel.org>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y] btrfs: fix transaction abort on set received ioctl due to item overflow
+Date: Thu, 19 Mar 2026 19:01:00 -0400
+Message-ID: <20260319230100.3145557-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026031752-outspoken-doorpost-d583@gregkh>
+References: <2026031752-outspoken-doorpost-d583@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,intel.com,lunn.ch,davemloft.net,google.com,kernel.org,redhat.com,iogearbox.net,gmail.com,fomichev.me];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227395-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227396-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[emil.s.tantilov@intel.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-0.906];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 882ED2D3C28
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.925];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 73B2B2D3F11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-NULL pointer dereference is reported in cases where idpf_vport_open()
-fails during soft reset:
+From: Filipe Manana <fdmanana@suse.com>
 
-./xdpsock -i <inf> -q -r -N
+[ Upstream commit 87f2c46003fce4d739138aab4af1942b1afdadac ]
 
-[ 3179.186687] idpf 0000:83:00.0: Failed to initialize queue ids for vport 0: -12
-[ 3179.276739] BUG: kernel NULL pointer dereference, address: 0000000000000010
-[ 3179.277636] #PF: supervisor read access in kernel mode
-[ 3179.278470] #PF: error_code(0x0000) - not-present page
-[ 3179.279285] PGD 0
-[ 3179.280083] Oops: Oops: 0000 [#1] SMP NOPTI
-...
-[ 3179.283997] Workqueue: events xp_release_deferred
-[ 3179.284770] RIP: 0010:idpf_find_rxq_vec+0x17/0x30 [idpf]
-...
-[ 3179.291937] Call Trace:
-[ 3179.292392]  <TASK>
-[ 3179.292843]  idpf_qp_switch+0x25/0x820 [idpf]
-[ 3179.293325]  idpf_xsk_pool_setup+0x7c/0x520 [idpf]
-[ 3179.293803]  idpf_xdp+0x59/0x240 [idpf]
-[ 3179.294275]  xp_disable_drv_zc+0x62/0xb0
-[ 3179.294743]  xp_clear_dev+0x40/0xb0
-[ 3179.295198]  xp_release_deferred+0x1f/0xa0
-[ 3179.295648]  process_one_work+0x226/0x730
-[ 3179.296106]  worker_thread+0x19e/0x340
-[ 3179.296557]  ? __pfx_worker_thread+0x10/0x10
-[ 3179.297009]  kthread+0xf4/0x130
-[ 3179.297459]  ? __pfx_kthread+0x10/0x10
-[ 3179.297910]  ret_from_fork+0x32c/0x410
-[ 3179.298361]  ? __pfx_kthread+0x10/0x10
-[ 3179.298702]  ret_from_fork_asm+0x1a/0x30
+If the set received ioctl fails due to an item overflow when attempting to
+add the BTRFS_UUID_KEY_RECEIVED_SUBVOL we have to abort the transaction
+since we did some metadata updates before.
 
-Fix the error handling of the soft reset in idpf_xdp_setup_prog() by
-restoring the vport->xdp_prog to the old value. This avoids referencing
-the orphaned prog that was copied to vport->xdp_prog in the soft reset
-and prevents subsequent false positive by idpf_xdp_enabled().
+This means that if a user calls this ioctl with the same received UUID
+field for a lot of subvolumes, we will hit the overflow, trigger the
+transaction abort and turn the filesystem into RO mode. A malicious user
+could exploit this, and this ioctl does not even requires that a user
+has admin privileges (CAP_SYS_ADMIN), only that he/she owns the subvolume.
 
-Update the restart check in idpf_xsk_pool_setup() to use IDPF_VPORT_UP bit
-instead of netif_running(). The idpf_vport_stop/start() calls will not
-update the __LINK_STATE_START bit, making this test a false positive
-should the soft reset fail.
+Fix this by doing an early check for item overflow before starting a
+transaction. This is also race safe because we are holding the subvol_sem
+semaphore in exclusive (write) mode.
 
-Fixes: 3d57b2c00f09 ("idpf: add XSk pool initialization")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+A test case for fstests will follow soon.
+
+Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
+CC: stable@vger.kernel.org # 3.12+
+Reviewed-by: Anand Jain <asj@kernel.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ A whole bunch of small things :) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Changelog:
-v1->v2:
-- Cleaned up the error handling in idpf_xdp_setup_prog() to avoid extra
-  check and bpf_prog_put() call in the error path and fixed indentation
-  at the assignment of restart. Caught in review by Alexander Lobakin.
+ fs/btrfs/ctree.h     |  2 ++
+ fs/btrfs/ioctl.c     | 21 ++++++++++++++++++--
+ fs/btrfs/uuid-tree.c | 46 ++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 67 insertions(+), 2 deletions(-)
 
-v1:
-https://lore.kernel.org/netdev/20260318011545.12874-1-emil.s.tantilov@intel.com/
----
- drivers/net/ethernet/intel/idpf/xdp.c | 1 +
- drivers/net/ethernet/intel/idpf/xsk.c | 4 +++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
-index cbccd4546768..18a6e7062863 100644
---- a/drivers/net/ethernet/intel/idpf/xdp.c
-+++ b/drivers/net/ethernet/intel/idpf/xdp.c
-@@ -488,6 +488,7 @@ static int idpf_xdp_setup_prog(struct idpf_vport *vport,
- 				   "Could not reopen the vport after XDP setup");
+diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
+index 61ec4ba5414d5..76601627b8b48 100644
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -3065,6 +3065,8 @@ int btrfs_uuid_tree_add(struct btrfs_trans_handle *trans, u8 *uuid, u8 type,
+ 			u64 subid);
+ int btrfs_uuid_tree_remove(struct btrfs_trans_handle *trans, u8 *uuid, u8 type,
+ 			u64 subid);
++int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
++				   u8 *uuid, u8 type);
+ int btrfs_uuid_tree_iterate(struct btrfs_fs_info *fs_info);
  
- 		cfg->user_config.xdp_prog = old;
-+		vport->xdp_prog = old;
- 		old = prog;
+ /* dir-item.c */
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 6c97610e90bfb..e299eae7317d5 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4507,6 +4507,25 @@ static long _btrfs_ioctl_set_received_subvol(struct file *file,
+ 		goto out;
  	}
  
-diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
-index d95d3efdfd36..3d8c430efd2b 100644
---- a/drivers/net/ethernet/intel/idpf/xsk.c
-+++ b/drivers/net/ethernet/intel/idpf/xsk.c
-@@ -553,6 +553,7 @@ int idpf_xskrq_poll(struct idpf_rx_queue *rxq, u32 budget)
++	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
++				       BTRFS_UUID_SIZE);
++
++	/*
++	 * Before we attempt to add the new received uuid, check if we have room
++	 * for it in case there's already an item. If the size of the existing
++	 * item plus this root's ID (u64) exceeds the maximum item size, we can
++	 * return here without the need to abort a transaction. If we don't do
++	 * this check, the btrfs_uuid_tree_add() call below would fail with
++	 * -EOVERFLOW and result in a transaction abort. Malicious users could
++	 * exploit this to turn the fs into RO mode.
++	 */
++	if (received_uuid_changed && !btrfs_is_empty_uuid(sa->uuid)) {
++		ret = btrfs_uuid_tree_check_overflow(fs_info, sa->uuid,
++						     BTRFS_UUID_KEY_RECEIVED_SUBVOL);
++		if (ret < 0)
++			goto out;
++	}
++
+ 	/*
+ 	 * 1 - root item
+ 	 * 2 - uuid items (received uuid + subvol uuid)
+@@ -4522,8 +4541,6 @@ static long _btrfs_ioctl_set_received_subvol(struct file *file,
+ 	sa->rtime.sec = ct.tv_sec;
+ 	sa->rtime.nsec = ct.tv_nsec;
  
- int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
+-	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
+-				       BTRFS_UUID_SIZE);
+ 	if (received_uuid_changed &&
+ 	    !btrfs_is_empty_uuid(root_item->received_uuid)) {
+ 		ret = btrfs_uuid_tree_remove(trans, root_item->received_uuid,
+diff --git a/fs/btrfs/uuid-tree.c b/fs/btrfs/uuid-tree.c
+index 74023c8a783f1..55e80c99efd8a 100644
+--- a/fs/btrfs/uuid-tree.c
++++ b/fs/btrfs/uuid-tree.c
+@@ -225,6 +225,52 @@ int btrfs_uuid_tree_remove(struct btrfs_trans_handle *trans, u8 *uuid, u8 type,
+ 	return ret;
+ }
+ 
++/*
++ * Check if we can add one root ID to a UUID key.
++ * If the key does not yet exists, we can, otherwise only if extended item does
++ * not exceeds the maximum item size permitted by the leaf size.
++ *
++ * Returns 0 on success, negative value on error.
++ */
++int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
++				   u8 *uuid, u8 type)
++{
++	struct btrfs_path *path = NULL;
++	int ret;
++	u32 item_size;
++	struct btrfs_key key;
++
++	if (WARN_ON_ONCE(!fs_info->uuid_root)) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	path = btrfs_alloc_path();
++	if (!path) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	btrfs_uuid_to_key(uuid, type, &key);
++	ret = btrfs_search_slot(NULL, fs_info->uuid_root, &key, path, 0, 0);
++	if (ret < 0)
++		goto out;
++	if (ret > 0) {
++		ret = 0;
++		goto out;
++	}
++
++	item_size = btrfs_item_size(path->nodes[0], path->slots[0]);
++
++	if (sizeof(struct btrfs_item) + item_size + sizeof(u64) >
++	    BTRFS_LEAF_DATA_SIZE(fs_info))
++		ret = -EOVERFLOW;
++
++out:
++	btrfs_free_path(path);
++	return ret;
++}
++
+ static int btrfs_uuid_iter_rem(struct btrfs_root *uuid_root, u8 *uuid, u8 type,
+ 			       u64 subid)
  {
-+	const struct idpf_netdev_priv *np = netdev_priv(vport->netdev);
- 	struct xsk_buff_pool *pool = bpf->xsk.pool;
- 	u32 qid = bpf->xsk.queue_id;
- 	bool restart;
-@@ -568,7 +569,8 @@ int idpf_xsk_pool_setup(struct idpf_vport *vport, struct netdev_bpf *bpf)
- 		return -EINVAL;
- 	}
- 
--	restart = idpf_xdp_enabled(vport) && netif_running(vport->netdev);
-+	restart = idpf_xdp_enabled(vport) &&
-+		  test_bit(IDPF_VPORT_UP, np->state);
- 	if (!restart)
- 		goto pool;
- 
 -- 
-2.37.3
+2.51.0
 
 
