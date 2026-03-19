@@ -1,155 +1,162 @@
-Return-Path: <stable+bounces-227385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227386-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCoOLUFnvGkByQIAu9opvQ
-	(envelope-from <stable+bounces-227385-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:14:41 +0100
+	id YDi4CT9qvGlQyQIAu9opvQ
+	(envelope-from <stable+bounces-227386-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:27:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C57B72D293B
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:14:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 839362D2A92
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 22:27:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 60BDB301F5FB
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:14:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 680143210A1B
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 21:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD7F14AD20;
-	Thu, 19 Mar 2026 21:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF773B774D;
+	Thu, 19 Mar 2026 21:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P0gl5DXP"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="MBaQ9Hgj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA258402433;
-	Thu, 19 Mar 2026 21:14:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1541740242C
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 21:23:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773954855; cv=none; b=RAZcwdt4c/M5ZraulORJ9MsMYhs6HcUokXyINdT+KQxC7NkZ1g3D+2ebR5KbgiZOkRHun1YT5Fys5ER9oZj1bDTJSODKWC6a4Xvy+B5OSBA27QaSta2G8UlUZiVLMms1NTiw8YNKs5bp5kDrxYUQogt/FqMiyU6OHncS9zmv6ao=
+	t=1773955399; cv=none; b=Bq61MZtK6clUE1uJiUb1xZNey0r+zAHj4U5kwgTOneX/6WgDa0dMIP29JAOGHYmANikHZkcKto0fh7tFnaiBvT5v287ika0kT34umUwSZAXQBu5bFDXf3d/8TsezMbbAzi13qdaY0PG0y4s4UJAZbKABN75Bd08sTA9x3quEims=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773954855; c=relaxed/simple;
-	bh=yOUQh/Qr8P8XqIix5oGN+qhabvQxrLR5JATDwg1qSaw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=V18Jv5AzSiYtJcQt172AEaAnCFRs1ofcJ3If0osUOrrIlqHyUNkHW66cS4ULSPbIx10jVrlvu1lOCtGdK6XJP0fYtGcbfcZtKbTAyV9fo+DUyb5SGx0M13kKe6Ndr+rcoODNcSgiaUcgS43ZB9JT7HHDqtI61LCmgvZx8YjtpnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P0gl5DXP; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773954851; x=1805490851;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=yOUQh/Qr8P8XqIix5oGN+qhabvQxrLR5JATDwg1qSaw=;
-  b=P0gl5DXPeDzEfoLlGPqLtygoCbJ664dGYYjpVb0A9t+pmo5feQ8hPE0/
-   Co/5EgcakI4pm36OuIhVfCYbg00UPtXNhyLjN8mPI22e+pi/ELZWezbrR
-   4S+10V/MPj1zDhWAYsgvzkED+iykdpdpHxXfgEkhCcR3UvFKCOuxRqfcR
-   1Manpvxrm71yvOiHcHWu2tOi3TOnVVY2k0P1lKUQzbcaSUED/vVxd/29y
-   G/9EnNEH5//OFfzrKVAoiQXKl4ZqZku4MsyPLHrrubmiuRkMccMGdfK9R
-   GEIC191dDqoo80q/5sPT9YWdLgi7SHOk3Au519shGtsFC9nDG/Ac04kko
-   A==;
-X-CSE-ConnectionGUID: JizLX9PhTEur7AJFqgNghg==
-X-CSE-MsgGUID: qa5vYEFWQk2g0204WZRUsw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86116387"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="86116387"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Mar 2026 14:14:03 -0700
-X-CSE-ConnectionGUID: 2EqDeqCLSlSYjS+eULEVQA==
-X-CSE-MsgGUID: 3BQchCY/SRWvkrVajC8CCw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="227221178"
-Received: from estantil-desk.jf.intel.com ([10.166.241.24])
-  by orviesa003.jf.intel.com with ESMTP; 19 Mar 2026 14:14:03 -0700
-From: Emil Tantilov <emil.s.tantilov@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	linux-rt-devel@lists.linux.dev,
-	sgzhang@google.com,
-	boolli@google.com,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
+	s=arc-20240116; t=1773955399; c=relaxed/simple;
+	bh=DlmMfWpYDGyGJyY3dvu/TxNqp89onH7c7Yioh6/SV3Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Fm/IRXszhfVWM6sOb8Tsc2CQ0fjV8QS5v59PnrHWztHfcqhGS1aQ2Kub3efgmSMwGT8Io9K3pXyWhdvI/FA0FhHQ6ARVHW9YMAZ/oGklBL2Hm7vfVY39n57DUpq1vYjDH7QRXm5gfUDO49S+P2VcSxtQsb38tpvx0y3ScQB2rLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=MBaQ9Hgj; arc=none smtp.client-ip=209.85.167.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-467e044082dso18252b6e.1
+        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 14:23:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1773955397; x=1774560197; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SCodX196ucy7nu88OLGRgC4cCz00gZWrCN++YGvYx7I=;
+        b=MBaQ9Hgj+DS8zZ/sRr5H5cTqyNqzp09mdglzjBpCiTSKV9jrUAdZ59DT5d54lGNH1b
+         1EcwyMrHaua4FJqsfEl/vZxRoec3qqz35nvUqsTurSpE7q4zOdmZe8/FdDqfAyET49P4
+         KIvyelyVBkGA4ddLTIo7tgpx4e3ZO0hs0qzaGqggE02PrrEck2X9WAz3fyyRps/VDaCp
+         fU/evL1OEN8dvvX4GmK/WQcGXBBjEWLsw6G2/sEwPY3Ld5wiT6Pdl4YtcjWVgkVhsgDt
+         3KFiphSk/YKOcHyXNK2BudDcT3UbCCIUaMxPxfaoykLTVVemgq0fGccfhHBJyD4LpcPU
+         iQeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773955397; x=1774560197;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SCodX196ucy7nu88OLGRgC4cCz00gZWrCN++YGvYx7I=;
+        b=jwGVv3bYnXBlLf/km0/YJM7G7NLHEA1XR9m3CbrhSlzqqVxdIwYEKaMNLScQ5XCeYx
+         ml4MGKvWyZbRuw7W1J1MfQnNvPVsFUldRJc29lvxIZDseeLKuOaReyagnK6QNVZqAEee
+         M6QI8UqU+yZCaihQxb3/ehs2+VCbiJ337LWlSbBFUTdGSdkdZCOCo7fqwxRe+k17fugm
+         +guutTikqbho6RV4QoDv64vX9bEHbm+K62NlQO6uFTja6y6HfxLxxOZ/SLqbsuax19oj
+         5NsmqrM76cEJDKaJPmfybLE5AlhN72H+5MOi/RsFFG6ZkldF8pQYUp+L85wNF013PXYr
+         5OGA==
+X-Forwarded-Encrypted: i=1; AJvYcCWHQ7Jw+6fTYoYMBymYsYvJxLjzN2DTkKdaRbxQmzcvU5yhE9tpAwkzcio97/uFtKh8nyvY3g0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJeOKE+JT+7xLgyxsOJHJJ5H/BkUvIUW2uKgV+K39vKiVIkwMq
+	Ygd9jAJhB4AzEFvSvkkQgIR766f31n2mpZpEg2jWFpaNt0R2onIjpS01yTY5pbH4ct1YH9KCE2I
+	HZJpPbOU=
+X-Gm-Gg: ATEYQzygKrAFP9gM4CZT5kvHSU86xdnD145ZVXtCDsdD5KyVKO4WDrEdxDihn99qY9g
+	ioUY+8Scl+X6+mIvauUrTXFv8Q1AruFgS1Zzy+qQBAKunhPxvar2nAJLcm+4EzwfqJ+80kcY7iO
+	gbksGCMJz2tCVFFoBXgujWR28iXFCTWjqPcQ0IegbXt9BrZpkPU4MUVTsxgBUoPwuDeeweU+COL
+	vc8haVgmLH/yxXwcqqXOK62MCxhefTqhK5uysQXfPeDAYCE7xy5CVW4JHby9G+8XpI108WBpOvX
+	D+TjiOLVTP4bvoP4KmQzLb17lARGEqnS6u7DCvX7C23pn4nb3PsE/CY4487tWl5E4csrJ4KVHCo
+	TSdSxmVTMsGgzZJf1o9cNtpPZs1V7HeEPPC40Kn4ntb1XrAR1vCW1U8Zd9MaiJSRx2PSkp/Cfxg
+	+uzh75OeYnOQgZADSdrCh0ofmTd1ZxpKYq1CaJRgQNUEcNlt0xn1wwhqWCwwxGgf85rQI=
+X-Received: by 2002:a05:6808:8919:20b0:45f:2719:32af with SMTP id 5614622812f47-467e5eebfdbmr324290b6e.37.1773955396949;
+        Thu, 19 Mar 2026 14:23:16 -0700 (PDT)
+Received: from m2max ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41c148a5ca4sm186363fac.3.2026.03.19.14.23.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 14:23:14 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: io-uring@vger.kernel.org
+Cc: code@mgjm.de,
+	Jens Axboe <axboe@kernel.dk>,
 	stable@vger.kernel.org
-Subject: [PATCH iwl-net v2 3/3] idpf: set the payload size before calling the async handler
-Date: Thu, 19 Mar 2026 14:13:35 -0700
-Message-Id: <20260319211335.23236-4-emil.s.tantilov@intel.com>
-X-Mailer: git-send-email 2.17.2
-In-Reply-To: <20260319211335.23236-1-emil.s.tantilov@intel.com>
-References: <20260319211335.23236-1-emil.s.tantilov@intel.com>
+Subject: [PATCH 1/2] io_uring/kbuf: fix missing BUF_MORE for incremental buffers at EOF
+Date: Thu, 19 Mar 2026 15:21:35 -0600
+Message-ID: <20260319212309.284152-2-axboe@kernel.dk>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260319212309.284152-1-axboe@kernel.dk>
+References: <20260319212309.284152-1-axboe@kernel.dk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel-dk.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227386-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227385-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[emil.s.tantilov@intel.com,stable@vger.kernel.org];
+	DMARC_NA(0.00)[kernel.dk];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[axboe@kernel.dk,stable@vger.kernel.org];
+	NEURAL_HAM(-0.00)[-0.992];
 	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-0.971];
+	DKIM_TRACE(0.00)[kernel-dk.20230601.gappssmtp.com:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid]
-X-Rspamd-Queue-Id: C57B72D293B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kernel.dk:email,kernel.dk:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mgjm.de:email]
+X-Rspamd-Queue-Id: 839362D2A92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Set the payload size before forwarding the reply to the async handler.
-Without this, xn->reply_sz will be 0 and idpf_mac_filter_async_handler()
-will never get past the size check.
+For a zero length transfer, io_kbuf_inc_commit() is called with !len.
+Since we never enter the while loop to consume the buffers,
+io_kbuf_inc_commit() ends up returning true, consuming the buffer. But
+if no data was consumed, by definition it cannot have consumed the
+buffer. Return false for that case.
 
-Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Reported-by: Martin Michaelis <code@mgjm.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Li Li <boolli@google.com>
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Link: https://github.com/axboe/liburing/issues/1553
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 4 ++++
+ io_uring/kbuf.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-index fbd5a15b015c..be66f9b2e101 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-@@ -615,6 +615,10 @@ idpf_vc_xn_forward_reply(struct idpf_adapter *adapter,
- 		err = -ENXIO;
- 		goto out_unlock;
- 	case IDPF_VC_XN_ASYNC:
-+		/* Set reply_sz from the actual payload so that async_handler
-+		 * can evaluate the response.
-+		 */
-+		xn->reply_sz = ctlq_msg->data_len;
- 		err = idpf_vc_xn_forward_async(adapter, xn, ctlq_msg);
- 		idpf_vc_xn_unlock(xn);
- 		return err;
+diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
+index e7f444953dfb..a4cb6752b7aa 100644
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -34,6 +34,10 @@ struct io_provide_buf {
+ 
+ static bool io_kbuf_inc_commit(struct io_buffer_list *bl, int len)
+ {
++	/* No data consumed, return false early to avoid consuming the buffer */
++	if (!len)
++		return false;
++
+ 	while (len) {
+ 		struct io_uring_buf *buf;
+ 		u32 buf_len, this_len;
 -- 
-2.37.3
+2.53.0
 
 
