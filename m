@@ -1,287 +1,341 @@
-Return-Path: <stable+bounces-227371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227372-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIlXIZBGvGkJwQIAu9opvQ
-	(envelope-from <stable+bounces-227371-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:55:12 +0100
+	id YJE1CwZLvGknwgIAu9opvQ
+	(envelope-from <stable+bounces-227372-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 20:14:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEEA62D1685
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:55:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D812D196A
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 20:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E71F30FC4BB
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:54:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28A75309BE9E
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:14:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5193491F1;
-	Thu, 19 Mar 2026 18:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93524364922;
+	Thu, 19 Mar 2026 19:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZypdW5ow"
+	dkim=pass (2048-bit key) header.d=dubeyko-com.20230601.gappssmtp.com header.i=@dubeyko-com.20230601.gappssmtp.com header.b="bS3+R+Lx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620D3322533
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 18:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD9235F176
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 19:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773946486; cv=none; b=uuQGxVWJqHwGYFdIwOMfOviPHbUn4pyCY4XhCLByiTaXqTSBi2gvAg8VKByrIphme5f4JU0DpPprMnesae+3GYyPxw/URedxgOhAV5xPdrau9VwtePYtiWTYMmPt+ytClvmS+HEf7nZLVO1do1xENHDHjgBdYAdAiw6SVPSrecQ=
+	t=1773947646; cv=none; b=OQuzkdPOP0wBGhxHaUxx7IvWpK6xoo9OjBKUGcI6losqWorh0+BZl5KNebZqRZXY8cEOZN3kY29QqMjcPGEcwGEqC76Ol9AyhYMh+hCvfCbNvwTpqHXP7Y94Fv/hnj+N3GyvpqpTbKmplna50JTFLIH6SWZ6yOp2jOGs6HvYsaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773946486; c=relaxed/simple;
-	bh=qhiBvqv8DBiffXctSTytSKCaeRz8pqQA8cmGabj9kBw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NpI9FKlWJU6+tns5bfO9LHnXF4JmGnM9ISF3Djnj8xhgMnc9g4+MPoG6OXUDIPOd9uzcoctD2mk/LPlfmQMGdIHvhU2QrvBVNcNr2mYcIzJyXBYIIWIQxJ2cs5++YY2tMj4XredYlHBkRDfmwsTCT8RpYpOl4RtS34nXisQzEBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZypdW5ow; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623DEC19424;
-	Thu, 19 Mar 2026 18:54:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773946486;
-	bh=qhiBvqv8DBiffXctSTytSKCaeRz8pqQA8cmGabj9kBw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZypdW5owqt4xs3vT/Gc51W4XOTZOcmFBmpVVLraIdLOaxS96P8qS4j97jqEyeVdCN
-	 uP5zI04s1PpqUgP8HzB8HkyFFrzWu74MfofHCkR68aVm5uOj7oKUPjYMjafLzxW4a0
-	 5AsAD66y4xCB+hvv2kFyh6ho8DMuTuRcjzNsaT9tps2QlfGe1sWCl6onSMwFjcltvU
-	 65YLC7y68zf4Dn2ErdNM8PtCG70kTDjY7l+gU/bJwp5w9Pv1hBvQ28QaT9xlVXsK3d
-	 Hb329xa0lARGpwmwviFUAchX3gRjbwTkaGZKUqMbmWlWwbZCINxd4iRZFx1DBk9JDw
-	 7xf+EN31FIe+A==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] btrfs: fix transaction abort on file creation due to name hash collision
-Date: Thu, 19 Mar 2026 14:54:43 -0400
-Message-ID: <20260319185443.2942946-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031721-flask-submersed-ea9b@gregkh>
-References: <2026031721-flask-submersed-ea9b@gregkh>
+	s=arc-20240116; t=1773947646; c=relaxed/simple;
+	bh=dRLGE/W9S0KqzsLMFF78i6JYvxexbZo3FgPUkSy53K0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rUE/oEXvDm14exBVXIjxNkAoLi1weDS2SVg+x1bahbqsLgGlqYlMXgGbDCobqhqzOGHa+hSgTLOuXg8xrPss0SelIXbaixKg8i3ogcAhRlO2EmXrG80JWZgiGPDA39Z9lX5b3PnmwugL3dY3O3djkk9vD456inl82nzEIHAUNok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dubeyko.com; spf=pass smtp.mailfrom=dubeyko.com; dkim=pass (2048-bit key) header.d=dubeyko-com.20230601.gappssmtp.com header.i=@dubeyko-com.20230601.gappssmtp.com header.b=bS3+R+Lx; arc=none smtp.client-ip=74.125.224.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dubeyko.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dubeyko.com
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-64ae2ce2fe1so1590336d50.1
+        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 12:14:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dubeyko-com.20230601.gappssmtp.com; s=20230601; t=1773947644; x=1774552444; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=k+9i/c6eNKtdnJhkCliRC20E4C+1N6apMph0naWP04I=;
+        b=bS3+R+Lx65Pr9pWnOHOqC3Mr9p+TDvmUC+N87/H8Pg5GrUZAA52Z4H6/a7OuBcS8A4
+         S37FmjehtQ60a3LKZsRj4v3xCkrjqcdQrd5+QWBma73JXzW5aQz0SejTYy2OpoD08UgG
+         bmaezV72/o9rw4zbIc5s9RLKjY49Rn+oq61mX048Yd47oBrKvMQBD5ndjf0avnHwczib
+         eGoILm5YE+XBehjTxAMi7/5FRy4KjrI+++r6L15TpNX5q1+u0DJULWYtzJQol2sfowoN
+         5n1sxwPrMuIUh3zde5xWzzZ+0rfrc8ZuW30wNod8WPpDhDselFymnoCB9+i4xztXnWRr
+         l5zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773947644; x=1774552444;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k+9i/c6eNKtdnJhkCliRC20E4C+1N6apMph0naWP04I=;
+        b=ZfQKCJK9MyuaP7PAn6czkKv2W2Qy8t7Xvn1auVZy5OO4c0Ip7nqMq+XpneGXcGY+Zx
+         iDhkgsFFdCceTf/7Aco1q83ujm9hbFxc3kIheRVz2oIXLyrXLLZtzLpt6oSCtS2Hpl3W
+         r2nHHPnU7mkgQZ5/HNiBSH1VT0y/gEcS7o/0heJeoh4Ok7WhxrjY/bX2SnukSTmq9kqI
+         uL3yaS2svYGFQR2Nlm7lOPvm/73dP7W2sdVQJviImP+fjQsHFTTNn3JOm2I3yn8FxtlQ
+         yOzkMENg1GUpjBnpVMXPTLA/j29cuY0IE2+FLHgzBtVuCSROV3htXcE4pGfRjqR9Hd7C
+         awsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQREzLg7bgcnWJ9/pAsr4N/QMBGRe07oGZkYi1/CEluTjIOFyaViMLnRpdWYIP+s0UPu7v1oo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyh4IJyLJOg27vP+AJf/gXmnrQEQP7Bhd7laxAS8BMNoXKIKSAc
+	anhETFei9z1myDoFT34VxHxIA9aaH3nLmV2m4o1FLJ36gkMkB3VSDwxCA1vxM7WAUdk=
+X-Gm-Gg: ATEYQzyL87cS2CO/+XwbAewJOVnjqNs4h/ZMNzlw8uz2LW2ZqVNgq8ElxtqsqvTi5cB
+	sqaZiTpgoxAmQ6qUdQnOa6WzVUOU8VZNj8XUkn3bdw6V8wGjyMJGMUD3a/saaLcuJg9TYWH8enF
+	fzWZjL5JN77SxH0GJYowPnvchlJOBYzQjjLQD8ebAvLiadUD3kP8Bi2sNstnbxZwukmxwczjVG7
+	1Z98QHPs55u4E97qzFxSJmuN6dhHuZlaqYuyxsQOo4mwU24IgA5V/lUc7n5QOhYkNfzm9YVhCrW
+	RVMuvcmdE/IxSWxN75CkNaR4Fda5gNNha/13TAT6SXUNw1L9XFwz+p+YBuT+/kC30uQfWLvUOLP
+	KrfpYgW98RGL+eoi9pAn1Ujj0sLqoeprMh+TjvVTi5RBxncnJoJGt5AsgvN3Js7Vdd5SbrC4Y/Y
+	QrCficYhNTEKDuWoqXRkHmTuoE3NHgcdKbKxplbFoYySbH//8OR6/+VDYLyIYiqKheFMK/F1ZDy
+	q/Oh7MLtGBslhHBfw9Zvea4qr9OQhIycRc0IuVIv/mpr7d/BbSxiFuM3Q==
+X-Received: by 2002:a05:690e:205f:b0:64a:d80f:5cf with SMTP id 956f58d0204a3-64eaa6dcc9dmr624815d50.25.1773947643607;
+        Thu, 19 Mar 2026 12:14:03 -0700 (PDT)
+Received: from ?IPv6:2600:1700:6476:1430:34be:535:4e85:feb4? ([2600:1700:6476:1430:34be:535:4e85:feb4])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64e91be0e91sm3982346d50.15.2026.03.19.12.14.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 12:14:03 -0700 (PDT)
+Message-ID: <27650d0c70f8ccfb8846c03de10d521173e06212.camel@dubeyko.com>
+Subject: Re:  [REGRESSION] [PATCH v2] ceph: fix num_ops OBOE when crypto
+ allocation fails
+From: Viacheslav Dubeyko <slava@dubeyko.com>
+To: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>, "idryomov@gmail.com"	
+ <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
+ "cfsworks@gmail.com"	 <cfsworks@gmail.com>
+Cc: Milind Changire <mchangir@redhat.com>, "stable@vger.kernel.org"	
+ <stable@vger.kernel.org>, Xiubo Li <xiubli@redhat.com>,
+ "jlayton@kernel.org"	 <jlayton@kernel.org>, "linux-kernel@vger.kernel.org"	
+ <linux-kernel@vger.kernel.org>, "ceph-devel@vger.kernel.org"	
+ <ceph-devel@vger.kernel.org>, "regressions@lists.linux.dev"	
+ <regressions@lists.linux.dev>
+Date: Thu, 19 Mar 2026 12:14:01 -0700
+In-Reply-To: <bae7a16910a7b2cff6b9f8996d93ea72dabb9a6b.camel@ibm.com>
+References: <20260318023733.116789-1-CFSworks@gmail.com>
+	 <bae7a16910a7b2cff6b9f8996d93ea72dabb9a6b.camel@ibm.com>
+Autocrypt: addr=slava@dubeyko.com; prefer-encrypt=mutual;
+ keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[dubeyko-com.20230601.gappssmtp.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227371-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227372-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DMARC_NA(0.00)[dubeyko.com];
+	FREEMAIL_TO(0.00)[ibm.com,gmail.com,redhat.com];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	DKIM_TRACE(0.00)[dubeyko-com.20230601.gappssmtp.com:+];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.973];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[slava@dubeyko.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: BEEA62D1685
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:url]
+X-Rspamd-Queue-Id: 58D812D196A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Filipe Manana <fdmanana@suse.com>
+On Wed, 2026-03-18 at 19:41 +0000, Viacheslav Dubeyko wrote:
+> On Tue, 2026-03-17 at 19:37 -0700, Sam Edwards wrote:
+> > move_dirty_folio_in_page_array() may fail if the file is encrypted,
+> > the
+> > dirty folio is not the first in the batch, and it fails to allocate
+> > a
+> > bounce buffer to hold the ciphertext. When that happens,
+> > ceph_process_folio_batch() simply redirties the folio and flushes
+> > the
+> > current batch -- it can retry that folio in a future batch.
+> >=20
+> > However, if this failed folio is not contiguous with the last folio
+> > that
+> > did make it into the batch, then ceph_process_folio_batch() has
+> > already
+> > incremented `ceph_wbc->num_ops`; because it doesn't follow through
+> > and
+> > add the discontiguous folio to the array, ceph_submit_write() --
+> > which
+> > expects that `ceph_wbc->num_ops` accurately reflects the number of
+> > contiguous ranges (and therefore the required number of "write
+> > extent"
+> > ops) in the writeback -- will panic the kernel:
+> >=20
+> > =C2=A0=C2=A0=C2=A0 BUG_ON(ceph_wbc->op_idx + 1 !=3D req->r_num_ops);
+> >=20
+> > This issue can be reproduced on affected kernels by writing to
+> > fscrypt-enabled CephFS file(s) with a 4KiB-written/4KiB-
+> > skipped/repeat
+> > pattern (total filesize should not matter) and gradually increasing
+> > the
+> > system's memory pressure until a bounce buffer allocation fails.
+> >=20
+> > Fix this crash by decrementing `ceph_wbc->num_ops` back to the
+> > correct
+> > value when move_dirty_folio_in_page_array() fails, but the folio
+> > already
+> > started counting a new (i.e. still-empty) extent.
+> >=20
+> > The defect corrected by this patch has existed since 2022 (see
+> > first
+> > `Fixes:`), but another bug blocked multi-folio encrypted writeback
+> > until
+> > recently (see second `Fixes:`). The second commit made it into
+> > 6.18.16,
+> > 6.19.6, and 7.0-rc1, unmasking the panic in those versions. This
+> > patch
+> > therefore fixes a regression (panic) introduced by cac190c7674f.
+> >=20
+> > Cc: stable@vger.kernel.org=C2=A0# v6.18+
+> > Fixes: d55207717ded ("ceph: add encryption support to writepage and
+> > writepages")
+> > Fixes: cac190c7674f ("ceph: fix write storm on fscrypted files")
+> > Signed-off-by: Sam Edwards <CFSworks@gmail.com>
+> > ---
+> >=20
+> > Changes v1->v2:
+> > - Added a paragraph to the commit log briefly explaining the I/O
+> > pattern to
+> > =C2=A0 reproduce the issue (thanks Slava)
+> >=20
+> > - Additionally Cc'd regressions@lists.linux.dev=C2=A0as required when
+> > handling
+> > =C2=A0 regressions
+> >=20
+> > Feedback not addressed:
+> > - "Commit message should link to the mentioned BUG_ON line in a
+> > source listing"
+> > =C2=A0=C2=A0=C2=A0 (link would not really help anyone, and the line is =
+a moving
+> > target anyway)
+>=20
+> My request was to identify the location of:
+>=20
+> BUG_ON(ceph_wbc->op_idx + 1 !=3D req->r_num_ops);
+>=20
+> Because, it's completely not clear from the commit message the
+> location of this
+> code pattern.
+>=20
+> There are two possible ways:
+> (1) Link
+> https://elixir.bootlin.com/linux/v7.0-rc4/source/fs/ceph/addr.c#L1555
+> .
+> I hope you can see that it includes kernel version. So, if the line
+> will change
+> with time, then this link always will identify the position of this
+> code pattern
+> in v7.0-rc4, for example.
+>=20
+> (2) You can show the function that contains this code pattern:
+>=20
+> static
+> int ceph_submit_write(struct address_space *mapping,
+> 			struct writeback_control *wbc,
+> 			struct ceph_writeback_ctl *ceph_wbc)
+> {
+> <skipped>
+>=20
+> =C2=A0=C2=A0=C2=A0 BUG_ON(ceph_wbc->op_idx + 1 !=3D req->r_num_ops);
+>=20
+> <skipped>
+> }
+>=20
+> >=20
+> > - "Commit message should indicate that ceph_wbc->num_ops is passed
+> > to
+> > =C2=A0=C2=A0 ceph_osdc_new_request() to explain why ceph_wbc->num_ops =
+=3D=3D req-
+> > >r_num_ops"
+> > =C2=A0=C2=A0=C2=A0 (ceph_wbc->num_ops is easy enough to search; and the=
+ cause-
+> > >effect of the
+> > =C2=A0=C2=A0=C2=A0=C2=A0 BUG_ON() is secondary to the central point tha=
+t
+> > ceph_process_folio_batch()
+> > =C2=A0=C2=A0=C2=A0=C2=A0 is responsible for ensuring ceph_wbc->num_ops =
+is correct
+> > before returning)
+> >=20
+> > - "An issue should be filed in the Ceph Redmine, linked via
+> > Closes:"
+> > =C2=A0=C2=A0=C2=A0 (thanks Ilya for clarifying this is unnecessary)
+> >=20
+> > ---
+> > =C2=A0fs/ceph/addr.c | 4 ++++
+> > =C2=A01 file changed, 4 insertions(+)
+> >=20
+> > diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
+> > index e87b3bb94ee8..f366e159ffa6 100644
+> > --- a/fs/ceph/addr.c
+> > +++ b/fs/ceph/addr.c
+> > @@ -1366,6 +1366,10 @@ void ceph_process_folio_batch(struct
+> > address_space *mapping,
+> > =C2=A0		rc =3D move_dirty_folio_in_page_array(mapping, wbc,
+> > ceph_wbc,
+> > =C2=A0				folio);
+> > =C2=A0		if (rc) {
+> > +			/* Did we just begin a new contiguous op?
+> > Nevermind! */
+> > +			if (ceph_wbc->len =3D=3D 0)
+> > +				ceph_wbc->num_ops--;
+> > +
+> > =C2=A0			folio_redirty_for_writepage(wbc, folio);
+> > =C2=A0			folio_unlock(folio);
+> > =C2=A0			break;
+>=20
+> Let me run the xfstests for the patch. I'll be back with the result
+> ASAP.
+>=20
+> Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+>=20
 
-[ Upstream commit 2d1ababdedd4ba38867c2500eb7f95af5ddeeef7 ]
+I don't see any new issue during the xfstests run.
 
-If we attempt to create several files with names that result in the same
-hash, we have to pack them in same dir item and that has a limit inherent
-to the leaf size. However if we reach that limit, we trigger a transaction
-abort and turns the filesystem into RO mode. This allows for a malicious
-user to disrupt a system, without the need to have administration
-privileges/capabilities.
+Tested-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 
-Reproducer:
-
-  $ cat exploit-hash-collisions.sh
-  #!/bin/bash
-
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
-
-  # Use smallest node size to make the test faster and require fewer file
-  # names that result in hash collision.
-  mkfs.btrfs -f --nodesize 4K $DEV
-  mount $DEV $MNT
-
-  # List of names that result in the same crc32c hash for btrfs.
-  declare -a names=(
-   'foobar'
-   '%a8tYkxfGMLWRGr55QSeQc4PBNH9PCLIvR6jZnkDtUUru1t@RouaUe_L:@xGkbO3nCwvLNYeK9vhE628gss:T$yZjZ5l-Nbd6CbC$M=hqE-ujhJICXyIxBvYrIU9-TDC'
-   'AQci3EUB%shMsg-N%frgU:02ByLs=IPJU0OpgiWit5nexSyxZDncY6WB:=zKZuk5Zy0DD$Ua78%MelgBuMqaHGyKsJUFf9s=UW80PcJmKctb46KveLSiUtNmqrMiL9-Y0I_l5Fnam04CGIg=8@U:Z'
-   'CvVqJpJzueKcuA$wqwePfyu7VxuWNN3ho$p0zi2H8QFYK$7YlEqOhhb%:hHgjhIjW5vnqWHKNP4'
-   'ET:vk@rFU4tsvMB0$C_p=xQHaYZjvoF%-BTc%wkFW8yaDAPcCYoR%x$FH5O:'
-   'HwTon%v7SGSP4FE08jBwwiu5aot2CFKXHTeEAa@38fUcNGOWvE@Mz6WBeDH_VooaZ6AgsXPkVGwy9l@@ZbNXabUU9csiWrrOp0MWUdfi$EZ3w9GkIqtz7I_eOsByOkBOO'
-   'Ij%2VlFGXSuPvxJGf5UWy6O@1svxGha%b@=%wjkq:CIgE6u7eJOjmQY5qTtxE2Rjbis9@us'
-   'KBkjG5%9R8K9sOG8UTnAYjxLNAvBmvV5vz3IiZaPmKuLYO03-6asI9lJ_j4@6Xo$KZicaLWJ3Pv8XEwVeUPMwbHYWwbx0pYvNlGMO9F:ZhHAwyctnGy%_eujl%WPd4U2BI7qooOSr85J-C2V$LfY'
-   'NcRfDfuUQ2=zP8K3CCF5dFcpfiOm6mwenShsAb_F%n6GAGC7fT2JFFn:c35X-3aYwoq7jNX5$ZJ6hI3wnZs$7KgGi7wjulffhHNUxAT0fRRLF39vJ@NvaEMxsMO'
-   'Oj42AQAEzRoTxa5OuSKIr=A_lwGMy132v4g3Pdq1GvUG9874YseIFQ6QU'
-   'Ono7avN5GjC:_6dBJ_'
-   'WHmN2gnmaN-9dVDy4aWo:yNGFzz8qsJyJhWEWcud7$QzN2D9R0efIWWEdu5kwWr73NZm4=@CoCDxrrZnRITr-kGtU_cfW2:%2_am'
-   'WiFnuTEhAG9FEC6zopQmj-A-$LDQ0T3WULz%ox3UZAPybSV6v1Z$b4L_XBi4M4BMBtJZpz93r9xafpB77r:lbwvitWRyo$odnAUYlYMmU4RvgnNd--e=I5hiEjGLETTtaScWlQp8mYsBovZwM2k'
-   'XKyH=OsOAF3p%uziGF_ZVr$ivrvhVgD@1u%5RtrV-gl_vqAwHkK@x7YwlxX3qT6WKKQ%PR56NrUBU2dOAOAdzr2=5nJuKPM-T-$ZpQfCL7phxQbUcb:BZOTPaFExc-qK-gDRCDW2'
-   'd3uUR6OFEwZr%ns1XH_@tbxA@cCPmbBRLdyh7p6V45H$P2$F%w0RqrD3M0g8aGvWpoTFMiBdOTJXjD:JF7=h9a_43xBywYAP%r$SPZi%zDg%ql-KvkdUCtF9OLaQlxmd'
-   'ePTpbnit%hyNm@WELlpKzNZYOzOTf8EQ$sEfkMy1VOfIUu3coyvIr13-Y7Sv5v-Ivax2Go_GQRFMU1b3362nktT9WOJf3SpT%z8sZmM3gvYQBDgmKI%%RM-G7hyrhgYflOw%z::ZRcv5O:lDCFm'
-   'evqk743Y@dvZAiG5J05L_ROFV@$2%rVWJ2%3nxV72-W7$e$-SK3tuSHA2mBt$qloC5jwNx33GmQUjD%akhBPu=VJ5g$xhlZiaFtTrjeeM5x7dt4cHpX0cZkmfImndYzGmvwQG:$euFYmXn$_2rA9mKZ'
-   'gkgUtnihWXsZQTEkrMAWIxir09k3t7jk_IK25t1:cy1XWN0GGqC%FrySdcmU7M8MuPO_ppkLw3=Dfr0UuBAL4%GFk2$Ma10V1jDRGJje%Xx9EV2ERaWKtjpwiZwh0gCSJsj5UL7CR8RtW5opCVFKGGy8Cky'
-   'hNgsG_8lNRik3PvphqPm0yEH3P%%fYG:kQLY=6O-61Wa6nrV_WVGR6TLB09vHOv%g4VQRP8Gzx7VXUY1qvZyS'
-   'isA7JVzN12xCxVPJZ_qoLm-pTBuhjjHMvV7o=F:EaClfYNyFGlsfw-Kf%uxdqW-kwk1sPl2vhbjyHU1A6$hz'
-   'kiJ_fgcdZFDiOptjgH5PN9-PSyLO4fbk_:u5_2tz35lV_iXiJ6cx7pwjTtKy-XGaQ5IefmpJ4N_ZqGsqCsKuqOOBgf9LkUdffHet@Wu'
-   'lvwtxyhE9:%Q3UxeHiViUyNzJsy:fm38pg_b6s25JvdhOAT=1s0$pG25x=LZ2rlHTszj=gN6M4zHZYr_qrB49i=pA--@WqWLIuX7o1S_SfS@2FSiUZN'
-   'rC24cw3UBDZ=5qJBUMs9e$=S4Y94ni%Z8639vnrGp=0Hv4z3dNFL0fBLmQ40=EYIY:Z=SLc@QLMSt2zsss2ZXrP7j4='
-   'uwGl2s-fFrf@GqS=DQqq2I0LJSsOmM%xzTjS:lzXguE3wChdMoHYtLRKPvfaPOZF2fER@j53evbKa7R%A7r4%YEkD=kicJe@SFiGtXHbKe4gCgPAYbnVn'
-   'UG37U6KKua2bgc:IHzRs7BnB6FD:2Mt5Cc5NdlsW%$1tyvnfz7S27FvNkroXwAW:mBZLA1@qa9WnDbHCDmQmfPMC9z-Eq6QT0jhhPpqyymaD:R02ghwYo%yx7SAaaq-:x33LYpei$5g8DMl3C'
-   'y2vjek0FE1PDJC0qpfnN:x8k2wCFZ9xiUF2ege=JnP98R%wxjKkdfEiLWvQzmnW'
-   '8-HCSgH5B%K7P8_jaVtQhBXpBk:pE-$P7ts58U0J@iR9YZntMPl7j$s62yAJO@_9eanFPS54b=UTw$94C-t=HLxT8n6o9P=QnIxq-f1=Ne2dvhe6WbjEQtc'
-   'YPPh:IFt2mtR6XWSmjHptXL_hbSYu8bMw-JP8@PNyaFkdNFsk$M=xfL6LDKCDM-mSyGA_2MBwZ8Dr4=R1D%7-mCaaKGxb990jzaagRktDTyp'
-   '9hD2ApKa_t_7x-a@GCG28kY:7$M@5udI1myQ$x5udtggvagmCQcq9QXWRC5hoB0o-_zHQUqZI5rMcz_kbMgvN5jr63LeYA4Cj-c6F5Ugmx6DgVf@2Jqm%MafecpgooqreJ53P-QTS'
-  )
-
-  # Now create files with all those names in the same parent directory.
-  # It should not fail since a 4K leaf has enough space for them.
-  for name in "${names[@]}"; do
-       touch $MNT/$name
-  done
-
-  # Now add one more file name that causes a crc32c hash collision.
-  # This should fail, but it should not turn the filesystem into RO mode
-  # (which could be exploited by malicious users) due to a transaction
-  # abort.
-  touch $MNT/'W6tIm-VK2@BGC@IBfcgg6j_p:pxp_QUqtWpGD5Ok_GmijKOJJt'
-
-  # Check that we are able to create another file, with a name that does not cause
-  # a crc32c hash collision.
-  echo -n "hello world" > $MNT/baz
-
-  # Unmount and mount again, verify file baz exists and with the right content.
-  umount $MNT
-  mount $DEV $MNT
-  echo "File baz content: $(cat $MNT/baz)"
-
-  umount $MNT
-
-When running the reproducer:
-
-  $ ./exploit-hash-collisions.sh
-  (...)
-  touch: cannot touch '/mnt/sdi/W6tIm-VK2@BGC@IBfcgg6j_p:pxp_QUqtWpGD5Ok_GmijKOJJt': Value too large for defined data type
-  ./exploit-hash-collisions.sh: line 57: /mnt/sdi/baz: Read-only file system
-  cat: /mnt/sdi/baz: No such file or directory
-  File baz content:
-
-And the transaction abort stack trace in dmesg/syslog:
-
-  $ dmesg
-  (...)
-  [758240.509761] ------------[ cut here ]------------
-  [758240.510668] BTRFS: Transaction aborted (error -75)
-  [758240.511577] WARNING: fs/btrfs/inode.c:6854 at btrfs_create_new_inode+0x805/0xb50 [btrfs], CPU#6: touch/888644
-  [758240.513513] Modules linked in: btrfs dm_zero (...)
-  [758240.523221] CPU: 6 UID: 0 PID: 888644 Comm: touch Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
-  [758240.524621] Tainted: [W]=WARN
-  [758240.525037] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [758240.526331] RIP: 0010:btrfs_create_new_inode+0x80b/0xb50 [btrfs]
-  [758240.527093] Code: 0f 82 cf (...)
-  [758240.529211] RSP: 0018:ffffce64418fbb48 EFLAGS: 00010292
-  [758240.529935] RAX: 00000000ffffffd3 RBX: 0000000000000000 RCX: 00000000ffffffb5
-  [758240.531040] RDX: 0000000d04f33e06 RSI: 00000000ffffffb5 RDI: ffffffffc0919dd0
-  [758240.531920] RBP: ffffce64418fbc10 R08: 0000000000000000 R09: 00000000ffffffb5
-  [758240.532928] R10: 0000000000000000 R11: ffff8e52c0000000 R12: ffff8e53eee7d0f0
-  [758240.533818] R13: ffff8e57f70932a0 R14: ffff8e5417629568 R15: 0000000000000000
-  [758240.534664] FS:  00007f1959a2a740(0000) GS:ffff8e5b27cae000(0000) knlGS:0000000000000000
-  [758240.535821] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [758240.536644] CR2: 00007f1959b10ce0 CR3: 000000012a2cc005 CR4: 0000000000370ef0
-  [758240.537517] Call Trace:
-  [758240.537828]  <TASK>
-  [758240.538099]  btrfs_create_common+0xbf/0x140 [btrfs]
-  [758240.538760]  path_openat+0x111a/0x15b0
-  [758240.539252]  do_filp_open+0xc2/0x170
-  [758240.539699]  ? preempt_count_add+0x47/0xa0
-  [758240.540200]  ? __virt_addr_valid+0xe4/0x1a0
-  [758240.540800]  ? __check_object_size+0x1b3/0x230
-  [758240.541661]  ? alloc_fd+0x118/0x180
-  [758240.542315]  do_sys_openat2+0x70/0xd0
-  [758240.543012]  __x64_sys_openat+0x50/0xa0
-  [758240.543723]  do_syscall_64+0x50/0xf20
-  [758240.544462]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [758240.545397] RIP: 0033:0x7f1959abc687
-  [758240.546019] Code: 48 89 fa (...)
-  [758240.548522] RSP: 002b:00007ffe16ff8690 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
-  [758240.566278] RAX: ffffffffffffffda RBX: 00007f1959a2a740 RCX: 00007f1959abc687
-  [758240.567068] RDX: 0000000000000941 RSI: 00007ffe16ffa333 RDI: ffffffffffffff9c
-  [758240.567860] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  [758240.568707] R10: 00000000000001b6 R11: 0000000000000202 R12: 0000561eec7c4b90
-  [758240.569712] R13: 0000561eec7c311f R14: 00007ffe16ffa333 R15: 0000000000000000
-  [758240.570758]  </TASK>
-  [758240.571040] ---[ end trace 0000000000000000 ]---
-  [758240.571681] BTRFS: error (device sdi state A) in btrfs_create_new_inode:6854: errno=-75 unknown
-  [758240.572899] BTRFS info (device sdi state EA): forced readonly
-
-Fix this by checking for hash collision, and if the adding a new name is
-possible, early in btrfs_create_new_inode() before we do any tree updates,
-so that we don't need to abort the transaction if we cannot add the new
-name due to the leaf size limit.
-
-A test case for fstests will be sent soon.
-
-Fixes: caae78e03234 ("btrfs: move common inode creation code into btrfs_create_new_inode()")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/inode.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 96edac307408c..a4acb4539796c 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -6221,6 +6221,25 @@ int btrfs_create_new_inode(struct btrfs_trans_handle *trans,
- 	unsigned long ptr;
- 	int ret;
- 
-+	if (!args->orphan && !args->subvol) {
-+		/*
-+		 * Before anything else, check if we can add the name to the
-+		 * parent directory. We want to avoid a dir item overflow in
-+		 * case we have an existing dir item due to existing name
-+		 * hash collisions. We do this check here before we call
-+		 * btrfs_add_link() down below so that we can avoid a
-+		 * transaction abort (which could be exploited by malicious
-+		 * users).
-+		 *
-+		 * For subvolumes we already do this in btrfs_mksubvol().
-+		 */
-+		ret = btrfs_check_dir_item_collision(BTRFS_I(dir)->root,
-+						     btrfs_ino(BTRFS_I(dir)),
-+						     name);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
--- 
-2.51.0
-
+Thanks,
+Slava.
 
