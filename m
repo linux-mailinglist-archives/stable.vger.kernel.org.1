@@ -1,267 +1,476 @@
-Return-Path: <stable+bounces-227349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227350-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mNRKIKUvvGnquAIAu9opvQ
-	(envelope-from <stable+bounces-227349-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:17:25 +0100
+	id OPWTAuAxvGnxuQIAu9opvQ
+	(envelope-from <stable+bounces-227350-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:26:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206E02CFBD7
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:17:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CC752CFF6B
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:26:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 70106300ACBD
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:16:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60A0E306784A
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E266244694;
-	Thu, 19 Mar 2026 17:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B712A328B58;
+	Thu, 19 Mar 2026 17:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VT0pj8aY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SdPGaMV9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA5C187346
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 17:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B543244694
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 17:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773940598; cv=none; b=CbzcD0RsrcZvf0/ZRTVU1C/FkOZAlO2Zx7LnJgwizTjc8oVEARb3IlXXoBLsm3EmGSbzUDVqWkf6ICshNfwdM3yZs7nmGnbTBI7uCZ4dmHx/XluVkA8h6MjoqO2sgZEPu4mFYyHmmLaEJK3/eD37GMLawmeo0WS6u+fTuKSeCo8=
+	t=1773940696; cv=none; b=R97Cvf4fGF31DKVgI/xIeBWeCDO+r8spXdqrexRiaHC6W13q1pczvOX5Sm4LBKKdQLTNZBHrH12Fem3eq6ve+lpOBIjIVZOPVpD8U1J7RdVbnVPQjZQj4ME5K9Z4fltAE1kWx+VIr/B8fg+nEswT9gYJBpt8RYf9JtSO9gX7X2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773940598; c=relaxed/simple;
-	bh=YatxokvsgI2YlSpG+znQwcYhQz1/NqSPi9txOjvgcvA=;
+	s=arc-20240116; t=1773940696; c=relaxed/simple;
+	bh=3FqdG9kHF00Iyry1lPyowJ+D2pbojmUiPjZoOiSsMo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oiOwhEwir1J46mJHyhK9RfLzb2k8X+P9Mrzk8UH/ZP5B8cFGBCY6cssJhlQdPfkl+gSTK7/G2FRMWT8c5VoW8WyCCOmv8emYGfrYC1kvYc1W1Xd/A7LkdvxRsKsLot77yWpRaWxyF+cwKhU1zGbtO8SQcjAiBc1qI4iqkUIU/70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VT0pj8aY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF24C19424;
-	Thu, 19 Mar 2026 17:16:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BkRX2hI2tFaREhkqyXg8caqbN7e/bGJE3LLYxXt3m3HdYOI1zDr7dTV2eg4ldrMuCcKvdpfLjWm6OdMdSL3vHRGtFhURGMSpvO8l3eXEhknWUK553KXihKP19+WV+rJ64mupr2h66XKOOanr982XAhRl1bCMBmbFPV+tNbiLPgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SdPGaMV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 996E5C2BCAF;
+	Thu, 19 Mar 2026 17:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773940598;
-	bh=YatxokvsgI2YlSpG+znQwcYhQz1/NqSPi9txOjvgcvA=;
+	s=k20201202; t=1773940696;
+	bh=3FqdG9kHF00Iyry1lPyowJ+D2pbojmUiPjZoOiSsMo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VT0pj8aYKix2whgH0lM3pmRk65A35jqErIKHDcYgMyZw6TmeOSymTCzXf8jxMbzhB
-	 ABTXndNElNHqzod5bsgbkpTghp2bp3VdTLo6/cJjiXAgA+E9QXYZl/IBHXcEWme5oA
-	 C1PomfI8vrNhjG3pb6X9I+qzvkfE7YN5qUV2GQSMMCk9ydA6/4Km7I7z62jyfgsNrV
-	 fKZhZedQxup9y4LKGOgak7tDDuvHVxJvjD6gQyLEzQ1DQiYyRRYmXZxSZzw0/plm4d
-	 Z9y6d77gfcPlAr3i0NITHNTNkHWTzDp0YJXtSiflTIceoCzlqvhZf443MCN7vdfyrT
-	 MtSUO3jHP1NUA==
+	b=SdPGaMV9URNgQ2V8c+n8GIAiNDB+uuldwrBS/MS8BHQqT+wLcL5XJtDPEFijZy9Z6
+	 AYFs3f7LiMIFKjWRinoXLSKofjkcr8Tjij2MJy0/BPuCX6XOBeOlr3bgAZbvgJnFP8
+	 BMZP0RI2m79DsJ0LLPuSqS2fVFFsEtdSQO/9eS6D4Wst9hm4i+QIOlC/RC8Nxi7HCN
+	 Dt6HqgQJ/M1Qzl27Gv5hRxk9AovE7+BkZWaRdIuqAZJfxpHDf2bnNeb+dM9b7rtu74
+	 h+vGnwTih4t12pg8ktxcIezDjSVDTIkpRLYtklByDIOTfM1smFwROhGdscRh3heO+W
+	 +YXpbpDmT2u8g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: =?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] btrfs: fix transaction abort when snapshotting received subvolumes
-Date: Thu, 19 Mar 2026 13:16:35 -0400
-Message-ID: <20260319171635.2755739-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] iio: buffer: fix coding style warnings
+Date: Thu, 19 Mar 2026 13:18:13 -0400
+Message-ID: <20260319171814.2756731-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031755-obnoxious-mutual-6252@gregkh>
-References: <2026031755-obnoxious-mutual-6252@gregkh>
+In-Reply-To: <2026031730-control-earplugs-97b6@gregkh>
+References: <2026031730-control-earplugs-97b6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227349-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227350-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.990];
+	NEURAL_HAM(-0.00)[-0.999];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bur.io:email,test.sh:url,qemu.org:url]
-X-Rspamd-Queue-Id: 206E02CFBD7
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,analog.com:email,huawei.com:email]
+X-Rspamd-Queue-Id: 9CC752CFF6B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-[ Upstream commit e1b18b959025e6b5dbad668f391f65d34b39595a ]
+[ Upstream commit 26e46ef7758922e983a9a2f688369f649cc1a635 ]
 
-Currently a user can trigger a transaction abort by snapshotting a
-previously received snapshot a bunch of times until we reach a
-BTRFS_UUID_KEY_RECEIVED_SUBVOL item overflow (the maximum item size we
-can store in a leaf). This is very likely not common in practice, but
-if it happens, it turns the filesystem into RO mode. The snapshot, send
-and set_received_subvol and subvol_setflags (used by receive) don't
-require CAP_SYS_ADMIN, just inode_owner_or_capable(). A malicious user
-could use this to turn a filesystem into RO mode and disrupt a system.
+Just cosmetics. No functional change intended...
 
-Reproducer script:
-
-  $ cat test.sh
-  #!/bin/bash
-
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
-
-  # Use smallest node size to make the test faster.
-  mkfs.btrfs -f --nodesize 4K $DEV
-  mount $DEV $MNT
-
-  # Create a subvolume and set it to RO so that it can be used for send.
-  btrfs subvolume create $MNT/sv
-  touch $MNT/sv/foo
-  btrfs property set $MNT/sv ro true
-
-  # Send and receive the subvolume into snaps/sv.
-  mkdir $MNT/snaps
-  btrfs send $MNT/sv | btrfs receive $MNT/snaps
-
-  # Now snapshot the received subvolume, which has a received_uuid, a
-  # lot of times to trigger the leaf overflow.
-  total=500
-  for ((i = 1; i <= $total; i++)); do
-      echo -ne "\rCreating snapshot $i/$total"
-      btrfs subvolume snapshot -r $MNT/snaps/sv $MNT/snaps/sv_$i > /dev/null
-  done
-  echo
-
-  umount $MNT
-
-When running the test:
-
-  $ ./test.sh
-  (...)
-  Create subvolume '/mnt/sdi/sv'
-  At subvol /mnt/sdi/sv
-  At subvol sv
-  Creating snapshot 496/500ERROR: Could not create subvolume: Value too large for defined data type
-  Creating snapshot 497/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 498/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 499/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 500/500ERROR: Could not create subvolume: Read-only file system
-
-And in dmesg/syslog:
-
-  $ dmesg
-  (...)
-  [251067.627338] BTRFS warning (device sdi): insert uuid item failed -75 (0x4628b21c4ac8d898, 0x2598bee2b1515c91) type 252!
-  [251067.629212] ------------[ cut here ]------------
-  [251067.630033] BTRFS: Transaction aborted (error -75)
-  [251067.630871] WARNING: fs/btrfs/transaction.c:1907 at create_pending_snapshot.cold+0x52/0x465 [btrfs], CPU#10: btrfs/615235
-  [251067.632851] Modules linked in: btrfs dm_zero (...)
-  [251067.644071] CPU: 10 UID: 0 PID: 615235 Comm: btrfs Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
-  [251067.646165] Tainted: [W]=WARN
-  [251067.646733] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [251067.648735] RIP: 0010:create_pending_snapshot.cold+0x55/0x465 [btrfs]
-  [251067.649984] Code: f0 48 0f (...)
-  [251067.653313] RSP: 0018:ffffce644908fae8 EFLAGS: 00010292
-  [251067.653987] RAX: 00000000ffffff01 RBX: ffff8e5639e63a80 RCX: 00000000ffffffd3
-  [251067.655042] RDX: ffff8e53faa76b00 RSI: 00000000ffffffb5 RDI: ffffffffc0919750
-  [251067.656077] RBP: ffffce644908fbd8 R08: 0000000000000000 R09: ffffce644908f820
-  [251067.657068] R10: ffff8e5adc1fffa8 R11: 0000000000000003 R12: ffff8e53c0431bd0
-  [251067.658050] R13: ffff8e5414593600 R14: ffff8e55efafd000 R15: 00000000ffffffb5
-  [251067.659019] FS:  00007f2a4944b3c0(0000) GS:ffff8e5b27dae000(0000) knlGS:0000000000000000
-  [251067.660115] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [251067.660943] CR2: 00007ffc5aa57898 CR3: 00000005813a2003 CR4: 0000000000370ef0
-  [251067.661972] Call Trace:
-  [251067.662292]  <TASK>
-  [251067.662653]  create_pending_snapshots+0x97/0xc0 [btrfs]
-  [251067.663413]  btrfs_commit_transaction+0x26e/0xc00 [btrfs]
-  [251067.664257]  ? btrfs_qgroup_convert_reserved_meta+0x35/0x390 [btrfs]
-  [251067.665238]  ? _raw_spin_unlock+0x15/0x30
-  [251067.665837]  ? record_root_in_trans+0xa2/0xd0 [btrfs]
-  [251067.666531]  btrfs_mksubvol+0x330/0x580 [btrfs]
-  [251067.667145]  btrfs_mksnapshot+0x74/0xa0 [btrfs]
-  [251067.667827]  __btrfs_ioctl_snap_create+0x194/0x1d0 [btrfs]
-  [251067.668595]  btrfs_ioctl_snap_create_v2+0x107/0x130 [btrfs]
-  [251067.669479]  btrfs_ioctl+0x1580/0x2690 [btrfs]
-  [251067.670093]  ? count_memcg_events+0x6d/0x180
-  [251067.670849]  ? handle_mm_fault+0x1a0/0x2a0
-  [251067.671652]  __x64_sys_ioctl+0x92/0xe0
-  [251067.672406]  do_syscall_64+0x50/0xf20
-  [251067.673129]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [251067.674096] RIP: 0033:0x7f2a495648db
-  [251067.674812] Code: 00 48 89 (...)
-  [251067.678227] RSP: 002b:00007ffc5aa57840 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  [251067.679691] RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f2a495648db
-  [251067.681145] RDX: 00007ffc5aa588b0 RSI: 0000000050009417 RDI: 0000000000000004
-  [251067.682511] RBP: 0000000000000002 R08: 0000000000000000 R09: 0000000000000000
-  [251067.683842] R10: 000000000000000a R11: 0000000000000246 R12: 00007ffc5aa59910
-  [251067.685176] R13: 00007ffc5aa588b0 R14: 0000000000000004 R15: 0000000000000006
-  [251067.686524]  </TASK>
-  [251067.686972] ---[ end trace 0000000000000000 ]---
-  [251067.687890] BTRFS: error (device sdi state A) in create_pending_snapshot:1907: errno=-75 unknown
-  [251067.689049] BTRFS info (device sdi state EA): forced readonly
-  [251067.689054] BTRFS warning (device sdi state EA): Skipping commit of aborted transaction.
-  [251067.690119] BTRFS: error (device sdi state EA) in cleanup_transaction:2043: errno=-75 unknown
-  [251067.702028] BTRFS info (device sdi state EA): last unmount of filesystem 46dc3975-30a2-4a69-a18f-418b859cccda
-
-Fix this by ignoring -EOVERFLOW errors from btrfs_uuid_tree_add() in the
-snapshot creation code when attempting to add the
-BTRFS_UUID_KEY_RECEIVED_SUBVOL item. This is OK because it's not critical
-and we are still able to delete the snapshot, as snapshot/subvolume
-deletion ignores if a BTRFS_UUID_KEY_RECEIVED_SUBVOL is missing (see
-inode.c:btrfs_delete_subvolume()). As for send/receive, we can still do
-send/receive operations since it always peeks the first root ID in the
-existing BTRFS_UUID_KEY_RECEIVED_SUBVOL (it could peek any since all
-snapshots have the same content), and even if the key is missing, it
-falls back to searching by BTRFS_UUID_KEY_SUBVOL key.
-
-A test case for fstests will be sent soon.
-
-Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
-CC: stable@vger.kernel.org # 3.12+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted error check condition to omit unlikely() wrapper ]
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
+Link: https://lore.kernel.org/r/20230216101452.591805-4-nuno.sa@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 064234044056 ("iio: buffer: Fix wait_queue not being removed")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/transaction.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/iio/industrialio-buffer.c | 98 +++++++++++++++----------------
+ 1 file changed, 49 insertions(+), 49 deletions(-)
 
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 6dbbb03be562f..8de686b83adbf 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1877,6 +1877,22 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
- 		ret = btrfs_uuid_tree_add(trans, new_root_item->received_uuid,
- 					  BTRFS_UUID_KEY_RECEIVED_SUBVOL,
- 					  objectid);
-+		/*
-+		 * We are creating of lot of snapshots of the same root that was
-+		 * received (has a received UUID) and reached a leaf's limit for
-+		 * an item. We can safely ignore this and avoid a transaction
-+		 * abort. A deletion of this snapshot will still work since we
-+		 * ignore if an item with a BTRFS_UUID_KEY_RECEIVED_SUBVOL key
-+		 * is missing (see btrfs_delete_subvolume()). Send/receive will
-+		 * work too since it peeks the first root id from the existing
-+		 * item (it could peek any), and in case it's missing it
-+		 * falls back to search by BTRFS_UUID_KEY_SUBVOL keys.
-+		 * Creation of a snapshot does not require CAP_SYS_ADMIN, so
-+		 * we don't want users triggering transaction aborts, either
-+		 * intentionally or not.
-+		 */
-+		if (ret == -EOVERFLOW)
-+			ret = 0;
- 		if (ret && ret != -EEXIST) {
- 			btrfs_abort_transaction(trans, ret);
- 			goto fail;
+diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
+index 7e7ee307a3f7d..e02a4cb3d491c 100644
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -194,7 +194,7 @@ static ssize_t iio_buffer_write(struct file *filp, const char __user *buf,
+ 	written = 0;
+ 	add_wait_queue(&rb->pollq, &wait);
+ 	do {
+-		if (indio_dev->info == NULL)
++		if (!indio_dev->info)
+ 			return -ENODEV;
+ 
+ 		if (!iio_buffer_space_available(rb)) {
+@@ -210,7 +210,7 @@ static ssize_t iio_buffer_write(struct file *filp, const char __user *buf,
+ 			}
+ 
+ 			wait_woken(&wait, TASK_INTERRUPTIBLE,
+-					MAX_SCHEDULE_TIMEOUT);
++				   MAX_SCHEDULE_TIMEOUT);
+ 			continue;
+ 		}
+ 
+@@ -242,7 +242,7 @@ static __poll_t iio_buffer_poll(struct file *filp,
+ 	struct iio_buffer *rb = ib->buffer;
+ 	struct iio_dev *indio_dev = ib->indio_dev;
+ 
+-	if (!indio_dev->info || rb == NULL)
++	if (!indio_dev->info || !rb)
+ 		return 0;
+ 
+ 	poll_wait(filp, &rb->pollq, wait);
+@@ -407,9 +407,9 @@ static ssize_t iio_scan_el_show(struct device *dev,
+ 
+ /* Note NULL used as error indicator as it doesn't make sense. */
+ static const unsigned long *iio_scan_mask_match(const unsigned long *av_masks,
+-					  unsigned int masklength,
+-					  const unsigned long *mask,
+-					  bool strict)
++						unsigned int masklength,
++						const unsigned long *mask,
++						bool strict)
+ {
+ 	if (bitmap_empty(mask, masklength))
+ 		return NULL;
+@@ -427,7 +427,7 @@ static const unsigned long *iio_scan_mask_match(const unsigned long *av_masks,
+ }
+ 
+ static bool iio_validate_scan_mask(struct iio_dev *indio_dev,
+-	const unsigned long *mask)
++				   const unsigned long *mask)
+ {
+ 	if (!indio_dev->setup_ops->validate_scan_mask)
+ 		return true;
+@@ -446,7 +446,7 @@ static bool iio_validate_scan_mask(struct iio_dev *indio_dev,
+  * individual buffers request is plausible.
+  */
+ static int iio_scan_mask_set(struct iio_dev *indio_dev,
+-		      struct iio_buffer *buffer, int bit)
++			     struct iio_buffer *buffer, int bit)
+ {
+ 	const unsigned long *mask;
+ 	unsigned long *trialmask;
+@@ -538,7 +538,6 @@ static ssize_t iio_scan_el_store(struct device *dev,
+ 	mutex_unlock(&indio_dev->mlock);
+ 
+ 	return ret < 0 ? ret : len;
+-
+ }
+ 
+ static ssize_t iio_scan_el_ts_show(struct device *dev,
+@@ -703,7 +702,7 @@ static unsigned int iio_storage_bytes_for_timestamp(struct iio_dev *indio_dev)
+ }
+ 
+ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
+-				const unsigned long *mask, bool timestamp)
++				  const unsigned long *mask, bool timestamp)
+ {
+ 	unsigned int bytes = 0;
+ 	int length, i, largest = 0;
+@@ -729,7 +728,7 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
+ }
+ 
+ static void iio_buffer_activate(struct iio_dev *indio_dev,
+-	struct iio_buffer *buffer)
++				struct iio_buffer *buffer)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 
+@@ -750,12 +749,12 @@ static void iio_buffer_deactivate_all(struct iio_dev *indio_dev)
+ 	struct iio_buffer *buffer, *_buffer;
+ 
+ 	list_for_each_entry_safe(buffer, _buffer,
+-			&iio_dev_opaque->buffer_list, buffer_list)
++				 &iio_dev_opaque->buffer_list, buffer_list)
+ 		iio_buffer_deactivate(buffer);
+ }
+ 
+ static int iio_buffer_enable(struct iio_buffer *buffer,
+-	struct iio_dev *indio_dev)
++			     struct iio_dev *indio_dev)
+ {
+ 	if (!buffer->access->enable)
+ 		return 0;
+@@ -763,7 +762,7 @@ static int iio_buffer_enable(struct iio_buffer *buffer,
+ }
+ 
+ static int iio_buffer_disable(struct iio_buffer *buffer,
+-	struct iio_dev *indio_dev)
++			      struct iio_dev *indio_dev)
+ {
+ 	if (!buffer->access->disable)
+ 		return 0;
+@@ -771,7 +770,7 @@ static int iio_buffer_disable(struct iio_buffer *buffer,
+ }
+ 
+ static void iio_buffer_update_bytes_per_datum(struct iio_dev *indio_dev,
+-	struct iio_buffer *buffer)
++					      struct iio_buffer *buffer)
+ {
+ 	unsigned int bytes;
+ 
+@@ -779,13 +778,13 @@ static void iio_buffer_update_bytes_per_datum(struct iio_dev *indio_dev,
+ 		return;
+ 
+ 	bytes = iio_compute_scan_bytes(indio_dev, buffer->scan_mask,
+-		buffer->scan_timestamp);
++				       buffer->scan_timestamp);
+ 
+ 	buffer->access->set_bytes_per_datum(buffer, bytes);
+ }
+ 
+ static int iio_buffer_request_update(struct iio_dev *indio_dev,
+-	struct iio_buffer *buffer)
++				     struct iio_buffer *buffer)
+ {
+ 	int ret;
+ 
+@@ -794,7 +793,7 @@ static int iio_buffer_request_update(struct iio_dev *indio_dev,
+ 		ret = buffer->access->request_update(buffer);
+ 		if (ret) {
+ 			dev_dbg(&indio_dev->dev,
+-			       "Buffer not started: buffer parameter update failed (%d)\n",
++				"Buffer not started: buffer parameter update failed (%d)\n",
+ 				ret);
+ 			return ret;
+ 		}
+@@ -804,7 +803,7 @@ static int iio_buffer_request_update(struct iio_dev *indio_dev,
+ }
+ 
+ static void iio_free_scan_mask(struct iio_dev *indio_dev,
+-	const unsigned long *mask)
++			       const unsigned long *mask)
+ {
+ 	/* If the mask is dynamically allocated free it, otherwise do nothing */
+ 	if (!indio_dev->available_scan_masks)
+@@ -820,8 +819,9 @@ struct iio_device_config {
+ };
+ 
+ static int iio_verify_update(struct iio_dev *indio_dev,
+-	struct iio_buffer *insert_buffer, struct iio_buffer *remove_buffer,
+-	struct iio_device_config *config)
++			     struct iio_buffer *insert_buffer,
++			     struct iio_buffer *remove_buffer,
++			     struct iio_device_config *config)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	unsigned long *compound_mask;
+@@ -861,7 +861,7 @@ static int iio_verify_update(struct iio_dev *indio_dev,
+ 	if (insert_buffer) {
+ 		modes &= insert_buffer->access->modes;
+ 		config->watermark = min(config->watermark,
+-			insert_buffer->watermark);
++					insert_buffer->watermark);
+ 	}
+ 
+ 	/* Definitely possible for devices to support both of these. */
+@@ -887,7 +887,7 @@ static int iio_verify_update(struct iio_dev *indio_dev,
+ 
+ 	/* What scan mask do we actually have? */
+ 	compound_mask = bitmap_zalloc(indio_dev->masklength, GFP_KERNEL);
+-	if (compound_mask == NULL)
++	if (!compound_mask)
+ 		return -ENOMEM;
+ 
+ 	scan_timestamp = false;
+@@ -908,18 +908,18 @@ static int iio_verify_update(struct iio_dev *indio_dev,
+ 
+ 	if (indio_dev->available_scan_masks) {
+ 		scan_mask = iio_scan_mask_match(indio_dev->available_scan_masks,
+-				    indio_dev->masklength,
+-				    compound_mask,
+-				    strict_scanmask);
++						indio_dev->masklength,
++						compound_mask,
++						strict_scanmask);
+ 		bitmap_free(compound_mask);
+-		if (scan_mask == NULL)
++		if (!scan_mask)
+ 			return -EINVAL;
+ 	} else {
+ 		scan_mask = compound_mask;
+ 	}
+ 
+ 	config->scan_bytes = iio_compute_scan_bytes(indio_dev,
+-				    scan_mask, scan_timestamp);
++						    scan_mask, scan_timestamp);
+ 	config->scan_mask = scan_mask;
+ 	config->scan_timestamp = scan_timestamp;
+ 
+@@ -951,16 +951,16 @@ static void iio_buffer_demux_free(struct iio_buffer *buffer)
+ }
+ 
+ static int iio_buffer_add_demux(struct iio_buffer *buffer,
+-	struct iio_demux_table **p, unsigned int in_loc, unsigned int out_loc,
+-	unsigned int length)
++				struct iio_demux_table **p, unsigned int in_loc,
++				unsigned int out_loc,
++				unsigned int length)
+ {
+-
+ 	if (*p && (*p)->from + (*p)->length == in_loc &&
+-		(*p)->to + (*p)->length == out_loc) {
++	    (*p)->to + (*p)->length == out_loc) {
+ 		(*p)->length += length;
+ 	} else {
+ 		*p = kmalloc(sizeof(**p), GFP_KERNEL);
+-		if (*p == NULL)
++		if (!(*p))
+ 			return -ENOMEM;
+ 		(*p)->from = in_loc;
+ 		(*p)->to = out_loc;
+@@ -1024,7 +1024,7 @@ static int iio_buffer_update_demux(struct iio_dev *indio_dev,
+ 		out_loc += length;
+ 	}
+ 	buffer->demux_bounce = kzalloc(out_loc, GFP_KERNEL);
+-	if (buffer->demux_bounce == NULL) {
++	if (!buffer->demux_bounce) {
+ 		ret = -ENOMEM;
+ 		goto error_clear_mux_table;
+ 	}
+@@ -1057,7 +1057,7 @@ static int iio_update_demux(struct iio_dev *indio_dev)
+ }
+ 
+ static int iio_enable_buffers(struct iio_dev *indio_dev,
+-	struct iio_device_config *config)
++			      struct iio_device_config *config)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	struct iio_buffer *buffer, *tmp = NULL;
+@@ -1075,7 +1075,7 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+ 		ret = indio_dev->setup_ops->preenable(indio_dev);
+ 		if (ret) {
+ 			dev_dbg(&indio_dev->dev,
+-			       "Buffer not started: buffer preenable failed (%d)\n", ret);
++				"Buffer not started: buffer preenable failed (%d)\n", ret);
+ 			goto err_undo_config;
+ 		}
+ 	}
+@@ -1115,7 +1115,7 @@ static int iio_enable_buffers(struct iio_dev *indio_dev,
+ 		ret = indio_dev->setup_ops->postenable(indio_dev);
+ 		if (ret) {
+ 			dev_dbg(&indio_dev->dev,
+-			       "Buffer not started: postenable failed (%d)\n", ret);
++				"Buffer not started: postenable failed (%d)\n", ret);
+ 			goto err_detach_pollfunc;
+ 		}
+ 	}
+@@ -1191,15 +1191,15 @@ static int iio_disable_buffers(struct iio_dev *indio_dev)
+ }
+ 
+ static int __iio_update_buffers(struct iio_dev *indio_dev,
+-		       struct iio_buffer *insert_buffer,
+-		       struct iio_buffer *remove_buffer)
++				struct iio_buffer *insert_buffer,
++				struct iio_buffer *remove_buffer)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	struct iio_device_config new_config;
+ 	int ret;
+ 
+ 	ret = iio_verify_update(indio_dev, insert_buffer, remove_buffer,
+-		&new_config);
++				&new_config);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1255,7 +1255,7 @@ int iio_update_buffers(struct iio_dev *indio_dev,
+ 		return 0;
+ 
+ 	if (insert_buffer &&
+-	    (insert_buffer->direction == IIO_BUFFER_DIRECTION_OUT))
++	    insert_buffer->direction == IIO_BUFFER_DIRECTION_OUT)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&iio_dev_opaque->info_exist_lock);
+@@ -1272,7 +1272,7 @@ int iio_update_buffers(struct iio_dev *indio_dev,
+ 		goto out_unlock;
+ 	}
+ 
+-	if (indio_dev->info == NULL) {
++	if (!indio_dev->info) {
+ 		ret = -ENODEV;
+ 		goto out_unlock;
+ 	}
+@@ -1609,7 +1609,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+ 
+ 	buffer_attrcount = 0;
+ 	if (buffer->attrs) {
+-		while (buffer->attrs[buffer_attrcount] != NULL)
++		while (buffer->attrs[buffer_attrcount])
+ 			buffer_attrcount++;
+ 	}
+ 
+@@ -1636,7 +1636,7 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+ 			}
+ 
+ 			ret = iio_buffer_add_channel_sysfs(indio_dev, buffer,
+-							 &channels[i]);
++							   &channels[i]);
+ 			if (ret < 0)
+ 				goto error_cleanup_dynamic;
+ 			scan_el_attrcount += ret;
+@@ -1644,10 +1644,10 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
+ 				iio_dev_opaque->scan_index_timestamp =
+ 					channels[i].scan_index;
+ 		}
+-		if (indio_dev->masklength && buffer->scan_mask == NULL) {
++		if (indio_dev->masklength && !buffer->scan_mask) {
+ 			buffer->scan_mask = bitmap_zalloc(indio_dev->masklength,
+ 							  GFP_KERNEL);
+-			if (buffer->scan_mask == NULL) {
++			if (!buffer->scan_mask) {
+ 				ret = -ENOMEM;
+ 				goto error_cleanup_dynamic;
+ 			}
+@@ -1763,7 +1763,7 @@ int iio_buffers_alloc_sysfs_and_mask(struct iio_dev *indio_dev)
+ 			goto error_unwind_sysfs_and_mask;
+ 	}
+ 
+-	sz = sizeof(*(iio_dev_opaque->buffer_ioctl_handler));
++	sz = sizeof(*iio_dev_opaque->buffer_ioctl_handler);
+ 	iio_dev_opaque->buffer_ioctl_handler = kzalloc(sz, GFP_KERNEL);
+ 	if (!iio_dev_opaque->buffer_ioctl_handler) {
+ 		ret = -ENOMEM;
+@@ -1812,14 +1812,14 @@ void iio_buffers_free_sysfs_and_mask(struct iio_dev *indio_dev)
+  * a time.
+  */
+ bool iio_validate_scan_mask_onehot(struct iio_dev *indio_dev,
+-	const unsigned long *mask)
++				   const unsigned long *mask)
+ {
+ 	return bitmap_weight(mask, indio_dev->masklength) == 1;
+ }
+ EXPORT_SYMBOL_GPL(iio_validate_scan_mask_onehot);
+ 
+ static const void *iio_demux(struct iio_buffer *buffer,
+-				 const void *datain)
++			     const void *datain)
+ {
+ 	struct iio_demux_table *t;
+ 
 -- 
 2.51.0
 
