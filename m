@@ -1,313 +1,304 @@
-Return-Path: <stable+bounces-227234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227235-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6J5qLKW3u2lHmwIAu9opvQ
-	(envelope-from <stable+bounces-227234-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:45:25 +0100
+	id 2NO2ARK4u2lHmwIAu9opvQ
+	(envelope-from <stable+bounces-227235-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:47:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 450DE2C8044
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:45:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A232C8088
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:47:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5759530F7087
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:45:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D77123018E11
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 08:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018153A1E70;
-	Thu, 19 Mar 2026 08:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B44346AC4;
+	Thu, 19 Mar 2026 08:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PSfiA5HU"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m3J0melb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D04E3ACEF2
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 08:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E8922DFA4
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 08:46:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773909904; cv=none; b=lxjm6CuvYSAnzn5KBRHXsX77ihywVna04yM57cafVTVNRmXtO3p6L9rAN7JXhoHNokj1R85kOYeTmw8X0BVMeWwk2wjOuuq66QuyO39DZFj665j73bSejWh8mi7d8Beucvpt0UiqPsCzgd3G0kKq2qa+jUcaQo3NnmWTvHqReHs=
+	t=1773910008; cv=none; b=P9N1ivslNlUALHtmlnhlYlwXJ2Nb9MpPJwn2ZZpdrm3GLcAFge5n4hnYSDfPpa5eNJ1HH7/v8syLO7oGrbCWnKrnxvocJBsrfGXI5cWPa5RlNsWZ4CY3Pe3MIL5/tbyXrmw11JutyJeY3IEboG5XkS50g1UsZF4cPP7ZRzyb0A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773909904; c=relaxed/simple;
-	bh=3GNC7qpyfUWAFD8/zUA9cu+cY1NU0svmPWQgrnshrwc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IfIJF/ewmG13IaT0dIgtYwJ8UH7+bd2bb0rNiV5py5T5rrkZI0E//Aq52s8ulF+BGASt/uj5SJ66ah0uC8hWbBhwDteWOn1FpVuK8WsDwVjAV5yFCvh7/BZOO00QqHuDvn/5Q9yXW+u45syfSazYowmdzSh1RENh0QNSy/QG9cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PSfiA5HU; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-48558d6ef83so5371195e9.3
-        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 01:45:00 -0700 (PDT)
+	s=arc-20240116; t=1773910008; c=relaxed/simple;
+	bh=yNCVy5eXzx1OF2RHYdmVdbj7luATkIhRigBAH70mGOo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=flJUNtstJSEnHzLK0ZOF/Fr++X+HnDrtjnyhHCLn2xuhT3h2Ysc/zNX2Ur2q2MvZod2QZIJworhmdYa+cdva7s8LdDt3/OmcqxI1ItD68Fddz7WBHUrJ6WPkOBlzCk9KYKpqY68yh+MJawOtMjUmKGoyKUb+goMYzVuAOXnQEpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hhhuuu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m3J0melb; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hhhuuu.bounces.google.com
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2aebfa0af7dso51912225ad.1
+        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 01:46:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773909899; x=1774514699; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3GNC7qpyfUWAFD8/zUA9cu+cY1NU0svmPWQgrnshrwc=;
-        b=PSfiA5HUJYJKGmaTd/WYVCP6CgOsrtqsUCrikbZdwjNzWOhz3rm/OjZRDricL6H+Id
-         Gl+ShsdLPzvFZePzw46Vrt1alhOrLO35ZqwxR63+GJwJe5yORdDXnTzrTBchL26T61QD
-         FjfOW38k6id8U0AHqUC6ik008q63p2ZDze24dCF07sReWiK4wIJPmN3b7RREuUJGOHJk
-         pdbgTrwapD7SarLvCFPjxBGRnA/xK9mF+7111G2VlSvAGuqb4ewBvIgRJqWyPp+4+uxK
-         Ltb0sd3YzjGTQQsUJeflXuK2nsiCv76oRDzbFRQ5qwZmYCQp6A+NnUuqsI22j/pUqZnR
-         /feA==
+        d=google.com; s=20251104; t=1773910005; x=1774514805; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TIdXwdLb4GWT1CEh5fYnvFM9TmOnxGOTFsDM+rsdmHg=;
+        b=m3J0melbZe6Y2Ze5XwK/F9PVmMucvOYwY2H2g5zrXeTY5K5JNctsnind7jKIUjFhHE
+         vXj3jOT5ao25MYpvYlbT7XTR5YpunEx2Ilw6z6cgUt4uMj4e6aP5Op+XFayDMoo8u9FP
+         GPVFCUXFc1rtI7bLuOyob6HBOGe57ihKxwoLUpF69YJD5khf+ELBD+aimL/eIVvF1mN0
+         OpSJ1Hs5+XhRsU3vAbDjtK8MD3UL991yn1BZWb7u0S3RYpoz4URm1aU6zhOGhthAWV51
+         FeHGAO5Wh41rbun5QvCuH9PFUPyqSfgPgTysxJja5IYjb+zaFuHmg0hb99xizAgAAHd+
+         b1CQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773909899; x=1774514699;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3GNC7qpyfUWAFD8/zUA9cu+cY1NU0svmPWQgrnshrwc=;
-        b=Pvj3FTUYvbrfugR+TCLYPvyeDjeBxNh2hH3r2pXaCBENUAKxVP+Mse8ChS4utKCOzh
-         xEpPiiOtaETsG/hXTrPj5wVPpOUjbmfIJMWCKV7E8+Aa8SajRVrdWCQwObP8QhyiPD4G
-         sbBeNCzck92MmJJuAPdgbJoO5DUe3amKR7wVVY+ESoFWbQTXMLsw8s0nq3fTUZsWizmh
-         XIT6jv/5tbGzgZ5uAWkSOeY9t+q6JsUxz2qW+JLyaAL1dKW9DwL90dc+iT0H0BN2od6w
-         uba+/1qgJfHrO4/Xmi/WiWueNzwv4rSsmtcdzBaySlK13DcGxuWkwSx8/LSsr3pHrw+A
-         NMUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjq0YepqO+CpTptDmsPwUOL45fbGfLGfWpPC+EX/GHmyWUX5u3V+7Xjxy/VIYqpLuXPK5hHR0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5mkfFywbZAYxxGq+CMcJEwYWPoUrM/ptE2btSdGeNWVNC/dLv
-	KkLY+jyi0cqeQW3bVBcNKfBuWopj7QJ4ICouU0/G5CUPvKxbsFDsZjYB
-X-Gm-Gg: ATEYQzyHmOBC2vXO+RAQ2HKz2o+oIWxnxPVKP/LS01U29SNlM5p1gmF1DvdSQ0Q9anx
-	RDTHhfB7xOQeh9jv1HVTQQkzNReGtWv5jyOdQvAcy/sHCpgqra8BHcNMl1aFLepUQPRXEW/3Egf
-	/Crn8imx8/vtQDJ6tfGjDKxWW8DYyY1EXmpdnxYZb7V3aAm+knfoyQ38I9D4grNhb3kuPPGbb8P
-	GRLUeBjk/HpUC7a9NaoPAXphdtUx5fzXuhCtwCpzwvBUrg9mlTOxLHmbtyQ16cqbnCGykJh+tEW
-	rzFuikhvF4HrHA7OkzxAePi9yYJUWHfUXkxXN0vQdsFIh1Q4JZsceMmmbZNCxT5jsEhd8uau1lY
-	xcr3I3F7fQ35WAAbJGC/NglzUtF9UB0zGZs4oVQ+k2em6fPwubMq0muoJ8yWr0dUAPIF9HyU7OX
-	EqikePHiOxa9luIfhhX1Ozb0tOT5KxAfuBB+uRS1AosfgjQD9jjw==
-X-Received: by 2002:a05:600c:3e85:b0:483:6d4a:7e6d with SMTP id 5b1f17b1804b1-486f447008amr97772295e9.30.1773909898969;
-        Thu, 19 Mar 2026 01:44:58 -0700 (PDT)
-Received: from [192.168.100.165] ([212.230.233.13])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486f8b296b3sm47004595e9.6.2026.03.19.01.44.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 01:44:58 -0700 (PDT)
-Message-ID: <e24a281622cedf9e8f4dc93c961813aeb7b6ce4c.camel@gmail.com>
-Subject: Re: Bug#1130336: [regression] Network failure beyond first
- connection after 69894e5b4c5e ("netfilter: nft_connlimit: update the count
- if add was skipped")
-From: Alejandro =?ISO-8859-1?Q?Oliv=E1n?= Alvarez
-	 <alejandro.olivan.alvarez@gmail.com>
-To: Salvatore Bonaccorso <carnil@debian.org>, Fernando Fernandez Mancera
-	 <fmancera@suse.de>, 1130336@bugs.debian.org
-Cc: Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso
- <pablo@netfilter.org>,  Phil Sutter	 <phil@nwl.cc>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet	 <edumazet@google.com>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni	 <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, 	netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, regressions@lists.linux.dev, 
-	stable@vger.kernel.org
-Date: Thu, 19 Mar 2026 09:44:46 +0100
-In-Reply-To: <abqfSB0TUik1kRU4@eldamar.lan>
-References: <177349610461.3071718.4083978280323144323@eldamar.lan>
-	 <c72a56ab-a16c-4866-9a44-a03393f074db@suse.de>
-	 <b3cbfd15-acd1-4500-ba30-eac6f48523fb@suse.de> <abW2MAAqLnKZm3KF@strlen.de>
-	 <177322336258.4376.10097494324750307114.reportbug@Desk1.simalex.iccbroadcast.com>
-	 <4da571ab-fa1d-4ee6-b71c-24f4a28243ed@suse.de>
-	 <abqfSB0TUik1kRU4@eldamar.lan>
-Organization: alexolivan.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+        d=1e100.net; s=20251104; t=1773910005; x=1774514805;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TIdXwdLb4GWT1CEh5fYnvFM9TmOnxGOTFsDM+rsdmHg=;
+        b=EWKmOY9QcTwlzl8hGa5iiFlRvll9Vk4B8QnFLI8cz0fhbV3caBt91kKySO3AHsJT79
+         1gDS/MiwW1Ip2X4WXZ7MsjIjTUDudzPU7L1lxkTuEqpBP/GpHEkH/i2xCU0r1CqSNFjW
+         Kl/xCrLLdp3NFV2nCGU/zWymsMPuvrJ+Se5vjijVHn/ikcxljMa2TyM9Rv85opwScIQ1
+         P57A7cUlOhEEhgOiJ9/CRX8BnRnJ5AnuBKVlhhcHAALCy/sXw2R/0AVnWXVguhTgAOCx
+         D4odGqfwukCyVKaFB9LmIfWmOuPW1iEpPvZ2Ho3olIS1bEDcTgAMyeOS5aKMPJMZ6t9R
+         8VCg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4Oxh4HaB6sguVxEyeaUs+6ihqv2WQ7xoSzv1/ggRdHnk4lH7zCyib4+2cTGso6Sfy9n0pUIU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzkxhy6QU4OuklxYB0foTG4r77VCM97kbbR+l1qOvrPJqxSRwtB
+	T45daKRDQHzqvDD4zYqvYx2u7XSBkY0a9kRRNPjp/mTVIAsqAYixsrOEwuC0U8vEk+xe/AhTNhU
+	6BGt8AQ==
+X-Received: from plap4.prod.google.com ([2002:a17:902:f084:b0:2b0:4c25:8ef6])
+ (user=hhhuuu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2445:b0:2b0:5e10:9dbd
+ with SMTP id d9443c01a7336-2b06e30f40dmr67510615ad.3.1773910005011; Thu, 19
+ Mar 2026 01:46:45 -0700 (PDT)
+Date: Thu, 19 Mar 2026 16:46:40 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
+Message-ID: <20260319084640.478695-1-hhhuuu@google.com>
+Subject: [PATCH v3] usb: gadget: f_uvc: fix NULL pointer dereference during
+ unbind race
+From: Jimmy Hu <hhhuuu@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Dan Vacura <w36195@motorola.com>, Alan Stern <stern@rowland.harvard.edu>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans Verkuil <hverkuil@xs4all.nl>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Jimmy Hu <hhhuuu@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	MID_CONTAINS_FROM(1.00)[];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[17];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	TAGGED_FROM(0.00)[bounces-227234-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227235-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[motorola.com,rowland.harvard.edu,ideasonboard.com,xs4all.nl,vger.kernel.org,google.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[alejandroolivanalvarez@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[hhhuuu@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-0.980];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: 450DE2C8044
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[harvard.edu:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 07A232C8088
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi folks.
+Commit b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly
+shutdown") introduced two stages of synchronization waits totaling 1500ms
+in uvc_function_unbind() to prevent several types of kernel panics.
+However, this timing-based approach is insufficient during power
+management (PM) transitions.
 
-On Wed, 2026-03-18 at 13:49 +0100, Salvatore Bonaccorso wrote:
-> Hi Alejandro,
->=20
-> On Sun, Mar 15, 2026 at 02:09:33AM +0100, Fernando Fernandez Mancera
-> wrote:
-> > On 3/14/26 8:25 PM, Florian Westphal wrote:
-> > > Fernando Fernandez Mancera <fmancera@suse.de> wrote:
-> > > > On 3/14/26 5:13 PM, Fernando Fernandez Mancera wrote:
-> > > > > Hi,
-> > > > >=20
-> > > > > On 3/14/26 3:03 PM, Salvatore Bonaccorso wrote:
-> > > > > > Control: forwarded -1
-> > > > > > https://lore.kernel.org/=C2=A0
-> > > > > > regressions/177349610461.3071718.4083978280323144323@eldama
-> > > > > > r.lan
-> > > > > > Control: tags -1 + upstream
-> > > > > >=20
-> > > > > > Hi
-> > > > > >=20
-> > > > > > In Debian, in https://bugs.debian.org/1130336, Alejandro
-> > > > > > reported that
-> > > > > > after updates including 69894e5b4c5e ("netfilter:
-> > > > > > nft_connlimit:
-> > > > > > update the count if add was skipped"), when the following
-> > > > > > rule is set
-> > > > > >=20
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0iptables -A INPUT -p tcp -m
-> > > > > > connlimit --connlimit-above 111 -j
-> > > > > > REJECT --reject-with tcp-reset
-> > > > > >=20
-> > > > > > connections get stuck accordingly, it can be easily
-> > > > > > reproduced by:
-> > > > > >=20
-> > > > > > # iptables -A INPUT -p tcp -m connlimit
-> > > > > > --connlimit-above 111 -j REJECT
-> > > > > > --reject-with tcp-reset
-> > > > > > # nft list ruleset
-> > > > > > # Warning: table ip filter is managed by iptables-nft, do
-> > > > > > not touch!
-> > > > > > table ip filter {
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 chain IN=
-PUT {
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 type filter hook input priority fil=
-ter;
-> > > > > > policy accept;
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ip protocol tcp xt
-> > > > > > match "connlimit" counter packets 0
-> > > > > > bytes 0 reject with tcp reset
-> > > > > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
-> > > > > > }
-> > > > > > # wget -O /dev/null
-> > > > > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > > > > rc3.tar.gz
-> > > > > > --2026-03-14 14:53:51--
-> > > > > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > > > > rc3.tar.gz
-> > > > > > Resolving git.kernel.org
-> > > > > > (git.kernel.org)... 172.105.64.184,
-> > > > > > 2a01:7e01:e001:937:0:1991:8:25
-> > > > > > Connecting to git.kernel.org
-> > > > > > (git.kernel.org)|172.105.64.184|:443...
-> > > > > > connected.
-> > > > > > HTTP request sent, awaiting response... 301 Moved
-> > > > > > Permanently
-> > > > > > Location:
-> > > > > > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/
-> > > > > > linux.git/snapshot/linux-7.0-rc3.tar.gz
-> > > > > > [following]
-> > > > > > --2026-03-14 14:53:51--
-> > > > > > https://git.kernel.org/pub/scm/linux/kernel/=C2=A0git/torvalds/=
-l
-> > > > > > inux.git/snapshot/linux-7.0-rc3.tar.gz
-> > > > > > Reusing existing connection to git.kernel.org:443.
-> > > > > > HTTP request sent, awaiting response... 200 OK
-> > > > > > Length: unspecified [application/x-gzip]
-> > > > > > Saving to: =E2=80=98/dev/null=E2=80=99
-> > > > > >=20
-> > > > > > /dev/null=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0 [
-> > > > > > <=3D>=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ] 248.03M
-> > > > > > 51.9MB/s=C2=A0=C2=A0=C2=A0 in 5.0s
-> > > > > >=20
-> > > > > > 2026-03-14 14:53:56 (49.3 MB/s) - =E2=80=98/dev/null=E2=80=99 s=
-aved
-> > > > > > [260080129]
-> > > > > >=20
-> > > > > > # wget -O /dev/null
-> > > > > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > > > > rc3.tar.gz
-> > > > > > --2026-03-14 14:53:58--
-> > > > > > https://git.kernel.org/torvalds/t/linux-7.0-
-> > > > > > rc3.tar.gz
-> > > > > > Resolving git.kernel.org
-> > > > > > (git.kernel.org)... 172.105.64.184,
-> > > > > > 2a01:7e01:e001:937:0:1991:8:25
-> > > > > > Connecting to git.kernel.org
-> > > > > > (git.kernel.org)|172.105.64.184|:443...
-> > > > > > failed: Connection timed out.
-> > > > > > Connecting to git.kernel.org
-> > > > > > (git.kernel.org)|
-> > > > > > 2a01:7e01:e001:937:0:1991:8:25|:443...
-> > > > > > failed: Network is unreachable.
-> > > > > >=20
-> > > > > > Before the 69894e5b4c5e ("netfilter: nft_connlimit: update
-> > > > > > the count
-> > > > > > if add was skipped") commit this worked.
-> > > > > >=20
-> > > > >=20
-> > > > > Thanks for the report. I have reproduced
-> > > > > this on upstream kernel. I am working on it.
-> > > > >=20
-> > > >=20
-> > > > This is what is happening:
-> > > >=20
-> > > > 1. The first connection is established and
-> > > > tracked, all good. When it finishes, it goes to
-> > > > TIME_WAIT state
-> > > > 2. The second connection is established, ct is
-> > > > confirmed since the beginning, skipping the
-> > > > tracking and calling a GC.
-> > > > 3. The previously tracked connection is cleaned
-> > > > up during GC as TIME_WAIT is considered closed.
-> > >=20
-> > > This is stupid.=C2=A0 The fix is to add --syn or use
-> > > OUTPUT.=C2=A0 Its not even clear to me what the user wants to achive
-> > > with this rule.
-> > >=20
-> >=20
-> > Yes, the ruleset shown does not make sense. Having said this, it
-> > could
-> > affect to a soft-limit scenario as the one described on the blamed
-> > commit..
->=20
-> Alejandro, can you describe what you would like to achieve with the
-> specific rule?=20
->=20
-> Regards,
-> Salvatore
+When the PM subsystem starts freezing user space processes, the
+wait_event_interruptible_timeout() is aborted early, which allows the
+unbind thread to proceed and nullify the gadget pointer
+(cdev->gadget = NULL):
 
-The intended use of that rule was to prevent (limit) a single host from
-establishing too many TCP connections to given host (Denial of
-Service... particularly on streaming servers).
+[  814.123447][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind()
+[  814.178583][ T3173] PM: suspend entry (deep)
+[  814.192487][ T3173] Freezing user space processes
+[  814.197668][  T947] configfs-gadget.g1 gadget.0: uvc: uvc_function_unbind no clean disconnect, wait for release
 
-I learnt about it in several IPtables guides/howtos (maaaany years
-ago!), and never was an issue on itself.
-Was it stupid? ... possibly... It 'seemed' to work, or, at least, when
-checking iptables -L -v one could see packet counter for the rule
-catching some traffic, without ever noticing it being troublesome, so,
-at the very least it 'didn't hurt', and, since DoS ever happened over
-the years...well, I tended to think it was indeed working the way I
-read it did.
+When the PM subsystem resumes or aborts the suspend and tasks are
+restarted, the V4L2 release path is executed and attempts to access the
+already nullified gadget pointer, triggering a kernel panic:
 
-Certainly, I never (the authors of those guides at their time indeed)
-though about the possibility of just target the TCP syn.
-I have given a try to adding the --syn option to the rule to see the
-difference, and well, it is way less disruptive that way, but it still
-breaks things (I saw postfix queues hanging, for instance).
+[  814.292597][    C0] PM: pm_system_irq_wakeup: 479 triggered dhdpcie_host_wake
+[  814.386727][ T3173] Restarting tasks ...
+[  814.403522][ T4558] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000030
+[  814.404021][ T4558] pc : usb_gadget_deactivate+0x14/0xf4
+[  814.404031][ T4558] lr : usb_function_deactivate+0x54/0x94
+[  814.404078][ T4558] Call trace:
+[  814.404080][ T4558]  usb_gadget_deactivate+0x14/0xf4
+[  814.404083][ T4558]  usb_function_deactivate+0x54/0x94
+[  814.404087][ T4558]  uvc_function_disconnect+0x1c/0x5c
+[  814.404092][ T4558]  uvc_v4l2_release+0x44/0xac
+[  814.404095][ T4558]  v4l2_release+0xcc/0x130
 
-So, I have but screwed the idea of using connlimit anymore anyways.
-Sorry for the noise. Lesson learned.
+This patch fixes these issues by:
 
-Cheers!
+1. State Synchronization (flag + mutex)
+Introduce a 'func_unbound' flag in struct uvc_device. This allows
+uvc_function_disconnect() to safely skip accessing the nullified
+cdev->gadget pointer. As suggested by Alan Stern, this flag is protected
+by a new mutex (uvc->lock) to ensure proper memory ordering and prevent
+instruction reordering or speculative loads.
+
+2. Explicit Synchronization (completion)
+Use a completion to synchronize uvc_function_unbind() with the
+uvc_vdev_release() callback. This prevents Use-After-Free (UAF) by
+ensuring struct uvc_device is freed after all video device resources
+are released.
+
+Fixes: b81ac4395bbe ("usb: gadget: uvc: allow for application to cleanly shutdown")
+Cc: <stable@vger.kernel.org>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+---
+v2 -> v3:
+- Replaced pr_info() with pr_debug() instead of uvcg_info() to stay quiet 
+  and avoided potential NULL pointer dereferences on cdev->gadget, as 
+  suggested by Greg KH.
+- Replaced kref-based lifecycle management with a completion to synchronize 
+  uvc_function_unbind() with the video device release callback, avoiding 
+  redundant reference counting, as suggested by Greg KH.
+- Added a proper comment for 'lock' in struct uvc_device to describe 
+  what it protects, as suggested by Greg KH.
+
+v1 -> v2:
+- Renamed 'func_unbinding' to 'func_unbound' for clearer state semantics.
+- Added a mutex (uvc->lock) to protect the 'func_unbound' flag and ensure
+  proper memory ordering, as suggested by Alan Stern.
+- Integrated kref to manage the struct uvc_device lifecycle, allowing the 
+  removal of redundant buffer cleanup skip logic in uvc_v4l2_disable().
+
+v2: https://lore.kernel.org/all/20260309053107.2591494-1-hhhuuu@google.com/
+v1: https://lore.kernel.org/all/20260224083955.1375032-1-hhhuuu@google.com/
+
+ drivers/usb/gadget/function/f_uvc.c | 35 ++++++++++++++++++++++++++++-
+ drivers/usb/gadget/function/uvc.h   |  3 +++
+ 2 files changed, 37 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
+index 494fdbc4e85b..390156e70df9 100644
+--- a/drivers/usb/gadget/function/f_uvc.c
++++ b/drivers/usb/gadget/function/f_uvc.c
+@@ -413,8 +413,18 @@ uvc_function_disconnect(struct uvc_device *uvc)
+ {
+ 	int ret;
+ 
++	mutex_lock(&uvc->lock);
++	if (uvc->func_unbound) {
++		pr_debug("%s: %s unbound, skipping function deactivate\n",
++			 uvc->func.name, uvc->func.fi->group.cg_item.ci_name);
++		goto unlock;
++	}
++
+ 	if ((ret = usb_function_deactivate(&uvc->func)) < 0)
+ 		uvcg_info(&uvc->func, "UVC disconnect failed with %d\n", ret);
++
++unlock:
++	mutex_unlock(&uvc->lock);
+ }
+ 
+ /* --------------------------------------------------------------------------
+@@ -431,6 +441,15 @@ static ssize_t function_name_show(struct device *dev,
+ 
+ static DEVICE_ATTR_RO(function_name);
+ 
++static void uvc_vdev_release(struct video_device *vdev)
++{
++	struct uvc_device *uvc = video_get_drvdata(vdev);
++
++	/* Signal uvc_function_unbind() that the video device has been released */
++	if (uvc->vdev_release_done)
++		complete(uvc->vdev_release_done);
++}
++
+ static int
+ uvc_register_video(struct uvc_device *uvc)
+ {
+@@ -443,7 +462,7 @@ uvc_register_video(struct uvc_device *uvc)
+ 	uvc->vdev.v4l2_dev->dev = &cdev->gadget->dev;
+ 	uvc->vdev.fops = &uvc_v4l2_fops;
+ 	uvc->vdev.ioctl_ops = &uvc_v4l2_ioctl_ops;
+-	uvc->vdev.release = video_device_release_empty;
++	uvc->vdev.release = uvc_vdev_release;
+ 	uvc->vdev.vfl_dir = VFL_DIR_TX;
+ 	uvc->vdev.lock = &uvc->video.mutex;
+ 	uvc->vdev.device_caps = V4L2_CAP_VIDEO_OUTPUT | V4L2_CAP_STREAMING;
+@@ -659,6 +678,9 @@ uvc_function_bind(struct usb_configuration *c, struct usb_function *f)
+ 	int ret = -EINVAL;
+ 
+ 	uvcg_info(f, "%s()\n", __func__);
++	mutex_lock(&uvc->lock);
++	uvc->func_unbound = false;
++	mutex_unlock(&uvc->lock);
+ 
+ 	opts = fi_to_f_uvc_opts(f->fi);
+ 	/* Sanity check the streaming endpoint module parameters. */
+@@ -992,8 +1014,13 @@ static void uvc_function_unbind(struct usb_configuration *c,
+ 	struct uvc_device *uvc = to_uvc(f);
+ 	struct uvc_video *video = &uvc->video;
+ 	long wait_ret = 1;
++	DECLARE_COMPLETION_ONSTACK(vdev_release_done);
+ 
+ 	uvcg_info(f, "%s()\n", __func__);
++	mutex_lock(&uvc->lock);
++	uvc->func_unbound = true;
++	uvc->vdev_release_done = &vdev_release_done;
++	mutex_unlock(&uvc->lock);
+ 
+ 	kthread_cancel_work_sync(&video->hw_submit);
+ 
+@@ -1029,6 +1056,10 @@ static void uvc_function_unbind(struct usb_configuration *c,
+ 		uvcg_dbg(f, "done waiting for release with ret: %ld\n", wait_ret);
+ 	}
+ 
++	/* Wait for the video device to be released */
++	wait_for_completion(&vdev_release_done);
++	uvc->vdev_release_done = NULL;
++
+ 	usb_ep_free_request(cdev->gadget->ep0, uvc->control_req);
+ 	kfree(uvc->control_buf);
+ 
+@@ -1047,6 +1078,8 @@ static struct usb_function *uvc_alloc(struct usb_function_instance *fi)
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	mutex_init(&uvc->video.mutex);
++	mutex_init(&uvc->lock);
++	uvc->func_unbound = true;
+ 	uvc->state = UVC_STATE_DISCONNECTED;
+ 	init_waitqueue_head(&uvc->func_connected_queue);
+ 	opts = fi_to_f_uvc_opts(fi);
+diff --git a/drivers/usb/gadget/function/uvc.h b/drivers/usb/gadget/function/uvc.h
+index 676419a04976..6fa98a173a35 100644
+--- a/drivers/usb/gadget/function/uvc.h
++++ b/drivers/usb/gadget/function/uvc.h
+@@ -155,6 +155,9 @@ struct uvc_device {
+ 	enum uvc_state state;
+ 	struct usb_function func;
+ 	struct uvc_video video;
++	struct completion *vdev_release_done;
++	struct mutex lock;	/* protects func_unbound flag */
++	bool func_unbound;
+ 	bool func_connected;
+ 	wait_queue_head_t func_connected_queue;
+ 
+
+base-commit: f338e77383789c0cae23ca3d48adcc5e9e137e3c
+-- 
+2.53.0.959.g497ff81fa9-goog
+
 
