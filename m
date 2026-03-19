@@ -1,272 +1,177 @@
-Return-Path: <stable+bounces-227357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAVhMeo1vGl3uwIAu9opvQ
-	(envelope-from <stable+bounces-227357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:44:10 +0100
+	id 0B8TESM3vGl3uwIAu9opvQ
+	(envelope-from <stable+bounces-227358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:49:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F182E2D033D
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:44:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 496B82D0477
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:49:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 707DE30106B3
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:34:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A81DA300981C
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EE7F38B7A0;
-	Thu, 19 Mar 2026 17:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD6C33D6D6;
+	Thu, 19 Mar 2026 17:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwQeCd2f"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="heflX5Ez"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD3938B15E
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 17:34:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C7733D4FD;
+	Thu, 19 Mar 2026 17:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773941668; cv=none; b=OfThy2rm8G4+IhPAW3YJZ+k0OR2ARif7RTwDmSi/y8b6Qk243ew13SdgrDdlFxQTlqeW0JTVXAqKSZiGGt1pnrNH6GDurkGHthUg4sAfX3D32J3G31hn4jLP7fincHHa7kE1ocvrCPqc2Be/6HUIid0CdxUbyRwytH1SbSIey4I=
+	t=1773942252; cv=none; b=QjcgMLoQCWoEBmu7AQurnrp1PnibXCCL6Zr7/5rhTj5A0vvZ5txFp6t0oHc95tk9C2TZ2PlTTQ7wWnmgHV+sgSV6i1KGAw3LUSFfZ4osx+0eq7N+yjT98rNw8CkyYlEFPaDAxlJwyPiz2hDyxuDGiMA92YDgX5KCiK/pEKPC9+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773941668; c=relaxed/simple;
-	bh=YkJD0EqVn1tYfQeNmxFpFeIj8ewv3/S8WaRS2XP+l4E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LIe47CZKenZKLr70LFmIiKTcJnB525t52ikYGtuPDEDitKZFx9yMnRxMCx7OuVIKHc7onajNFeihtqNClcisIGmxlBmFNwa2NOUkyQHiAa4uqemWbvR42cMCmryIkx5Kllt84h5ZxnNkZK51qXhHCzP4ZBbcBoHYwv13riWRWXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwQeCd2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E64C19425;
-	Thu, 19 Mar 2026 17:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773941667;
-	bh=YkJD0EqVn1tYfQeNmxFpFeIj8ewv3/S8WaRS2XP+l4E=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwQeCd2fCe2Ax5slkBGKikEWQLEHVp/BvgmDWbYXU3THjqDrlor6DPzYyevP6F17z
-	 70KM4HPgd7SM2cahke3ti2u9nzK7GtbtWUEHGibvUvNHU7uYooavb3pO1GLu1uZVki
-	 NMgaO8QylFsSMLhKgHSDvj6jVOtmE5k2GRC6HdI9DxMSxGtxlhuSjVVhdslUZ+HBcG
-	 A+kaWPERuaTj3Xm0m3PKaqvKDwZz2W5hGrkIq8ZQ2gAM5qdZTiFHZmvm9voDWrFwbU
-	 mibcNYilsUOvzkd132wst0Y2HgOW8AD8xhf7jbEt57xENrfWEliSPeMPt/SlwIu6Nv
-	 g2siy/K2COKgg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] btrfs: fix transaction abort when snapshotting received subvolumes
-Date: Thu, 19 Mar 2026 13:34:25 -0400
-Message-ID: <20260319173425.2823397-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031759-resume-wriggly-cbfd@gregkh>
-References: <2026031759-resume-wriggly-cbfd@gregkh>
+	s=arc-20240116; t=1773942252; c=relaxed/simple;
+	bh=FkqtlqpSBsb7Jecesoe+31n0p+bGU/I2tfLI4fkFkqE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pl2og4uFsy/KAJ8B/5yhZd8HzVZRrhrMO6FHG2yo7680td71xwQPqLklNABVnMG8OYH7+Z1qaBAcKxMSwOCnAgXchxsb+PM8jXTY/vBuPmda74kFnL1qm/BiQYS9O3jOQJ9Xb5sMD9B57folhzQza08G/Xyz+c2OAnugLll9ATk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=heflX5Ez; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1773942241;
+	bh=FkqtlqpSBsb7Jecesoe+31n0p+bGU/I2tfLI4fkFkqE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=heflX5Ez99yGWxeqWqrLZMem7oUc1F6UpGronFGni+DvKLgY7LY90DZWLxWNUo7D8
+	 5SbMctifDPAEMTPStBY+cWZ9B5gJVj6vV3CnuPWMg8xf2E7/TJer2JDgeJOsZAuIJL
+	 EIESoM9JV30BZmCD4k9IxXWZmTW8p+zRzpPvh/+KxlHHvNVEYfvEIfLXk7lAXjsxml
+	 V4odOtEFUGZuHZao1R3bwNcvtJtkAZeEamMOUzUqGMn1M0DJkpMmV/iQwDqRAlKGk8
+	 fBEdsQyddgr2qrqELMgDG1ywsg0tD160+0M3Zh2SQPiBVelxYP/52dA0fa0olO1NtR
+	 hhq4uaHjY2w9w==
+Received: from [IPv6:2606:6d00:11:b76d::5ac] (unknown [IPv6:2606:6d00:11:b76d::5ac])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: nicolas)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 514E317E127A;
+	Thu, 19 Mar 2026 18:44:00 +0100 (CET)
+Message-ID: <604f619585e0c99e0d73a978260e053f3cd68b44.camel@collabora.com>
+Subject: Re: [PATCH] media: chips-media: wave5: fix a potential memory leak
+ in wave5_vdi_init()
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+To: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, jackson.lee@chipsnmedia.com, 
+	mchehab@kernel.org, bob.beckett@collabora.com,
+ sebastian.fricke@collabora.com, 	dafna.hirschfeld@collabora.com
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Thu, 19 Mar 2026 13:43:58 -0400
+In-Reply-To: <20260125141915.2088123-1-lihaoxiang@isrc.iscas.ac.cn>
+References: <20260125141915.2088123-1-lihaoxiang@isrc.iscas.ac.cn>
+Autocrypt: addr=nicolas.dufresne@collabora.com; prefer-encrypt=mutual;
+ keydata=mDMEaCN2ixYJKwYBBAHaRw8BAQdAM0EHepTful3JOIzcPv6ekHOenE1u0vDG1gdHFrChD
+ /e0J05pY29sYXMgRHVmcmVzbmUgPG5pY29sYXNAbmR1ZnJlc25lLmNhPoicBBMWCgBEAhsDBQsJCA
+ cCAiICBhUKCQgLAgQWAgMBAh4HAheABQkJZfd1FiEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrjo
+ CGQEACgkQ2UGUUSlgcvQlQwD/RjpU1SZYcKG6pnfnQ8ivgtTkGDRUJ8gP3fK7+XUjRNIA/iXfhXMN
+ abIWxO2oCXKf3TdD7aQ4070KO6zSxIcxgNQFtDFOaWNvbGFzIER1ZnJlc25lIDxuaWNvbGFzLmR1Z
+ nJlc25lQGNvbGxhYm9yYS5jb20+iJkEExYKAEECGwMFCwkIBwICIgIGFQoJCAsCBBYCAwECHgcCF4
+ AWIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCaCyyxgUJCWX3dQAKCRDZQZRRKWBy9ARJAP96pFmLffZ
+ smBUpkyVBfFAf+zq6BJt769R0al3kHvUKdgD9G7KAHuioxD2v6SX7idpIazjzx8b8rfzwTWyOQWHC
+ AAS0LU5pY29sYXMgRHVmcmVzbmUgPG5pY29sYXMuZHVmcmVzbmVAZ21haWwuY29tPoiZBBMWCgBBF
+ iEE7w1SgRXEw8IaBG8S2UGUUSlgcvQFAmibrGYCGwMFCQll93UFCwkIBwICIgIGFQoJCAsCBBYCAw
+ ECHgcCF4AACgkQ2UGUUSlgcvRObgD/YnQjfi4+L8f4fI7p1pPMTwRTcaRdy6aqkKEmKsCArzQBAK8
+ bRLv9QjuqsE6oQZra/RB4widZPvphs78H0P6NmpIJ
+Organization: Collabora Canada
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-A0olpGo3fNrEJ1Hb0gjg"
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.94 / 15.00];
-	SUSPICIOUS_URL_IN_SUSPICIOUS_MESSAGE(1.00)[];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	URIBL_RED(0.50)[test.sh:url];
+X-Spamd-Result: default: False [-4.26 / 15.00];
+	SIGNED_PGP(-2.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
+	MIME_GOOD(-0.20)[multipart/signed,text/plain];
 	MAILLIST(-0.15)[generic];
-	HAS_ANON_DOMAIN(0.10)[];
-	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227357-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227358-lists,stable=lfdr.de];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[collabora.com:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	NEURAL_SPAM(0.00)[0.741];
+	MIME_TRACE(0.00)[0:+,1:+,2:~];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	R_SPF_ALLOW(0.00)[+ip4:104.64.211.4:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[nicolas.dufresne@collabora.com,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bur.io:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,test.sh:url,qemu.org:url,suse.com:email]
-X-Rspamd-Queue-Id: F182E2D033D
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,collabora.com:dkim,collabora.com:email,collabora.com:mid,iscas.ac.cn:email]
+X-Rspamd-Queue-Id: 496B82D0477
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit e1b18b959025e6b5dbad668f391f65d34b39595a ]
+--=-A0olpGo3fNrEJ1Hb0gjg
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently a user can trigger a transaction abort by snapshotting a
-previously received snapshot a bunch of times until we reach a
-BTRFS_UUID_KEY_RECEIVED_SUBVOL item overflow (the maximum item size we
-can store in a leaf). This is very likely not common in practice, but
-if it happens, it turns the filesystem into RO mode. The snapshot, send
-and set_received_subvol and subvol_setflags (used by receive) don't
-require CAP_SYS_ADMIN, just inode_owner_or_capable(). A malicious user
-could use this to turn a filesystem into RO mode and disrupt a system.
+Hi,
 
-Reproducer script:
+Le dimanche 25 janvier 2026 =C3=A0 22:19 +0800, Haoxiang Li a =C3=A9crit=C2=
+=A0:
+> Add wave5_vdi_free_dma_memory() in the error path of
+> wave5_vdi_init() to prevent a potential memory leak.
+>=20
+> Fixes: 45d1a2b93277 ("media: chips-media: wave5: Add vpuapi layer")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-  $ cat test.sh
-  #!/bin/bash
+It would have been nice to reply to Greg, that being said, I carefully revi=
+ewed
+and this effectively fix a leak in an error path. Description is brief but
+sufficient in my opinion.
 
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-  # Use smallest node size to make the test faster.
-  mkfs.btrfs -f --nodesize 4K $DEV
-  mount $DEV $MNT
+> ---
+> =C2=A0drivers/media/platform/chips-media/wave5/wave5-vdi.c | 1 +
+> =C2=A01 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/media/platform/chips-media/wave5/wave5-vdi.c b/drive=
+rs/media/platform/chips-media/wave5/wave5-vdi.c
+> index bb13267ced38..8f71920a8a35 100644
+> --- a/drivers/media/platform/chips-media/wave5/wave5-vdi.c
+> +++ b/drivers/media/platform/chips-media/wave5/wave5-vdi.c
+> @@ -49,6 +49,7 @@ int wave5_vdi_init(struct device *dev)
+> =C2=A0
+> =C2=A0	if (!PRODUCT_CODE_W_SERIES(vpu_dev->product_code)) {
+> =C2=A0		WARN_ONCE(1, "unsupported product code: 0x%x\n", vpu_dev->product=
+_code);
+> +		wave5_vdi_free_dma_memory(vpu_dev, &vpu_dev->common_mem);
+> =C2=A0		return -EOPNOTSUPP;
+> =C2=A0	}
+> =C2=A0
 
-  # Create a subvolume and set it to RO so that it can be used for send.
-  btrfs subvolume create $MNT/sv
-  touch $MNT/sv/foo
-  btrfs property set $MNT/sv ro true
+--=-A0olpGo3fNrEJ1Hb0gjg
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
 
-  # Send and receive the subvolume into snaps/sv.
-  mkdir $MNT/snaps
-  btrfs send $MNT/sv | btrfs receive $MNT/snaps
+-----BEGIN PGP SIGNATURE-----
 
-  # Now snapshot the received subvolume, which has a received_uuid, a
-  # lot of times to trigger the leaf overflow.
-  total=500
-  for ((i = 1; i <= $total; i++)); do
-      echo -ne "\rCreating snapshot $i/$total"
-      btrfs subvolume snapshot -r $MNT/snaps/sv $MNT/snaps/sv_$i > /dev/null
-  done
-  echo
+iHUEABYKAB0WIQTvDVKBFcTDwhoEbxLZQZRRKWBy9AUCabw13gAKCRDZQZRRKWBy
+9JoZAQDPY69GNyGynTtKcnKcpHRR/29nmIqdd1/f+CKSzuggGwEA23ZG1oFru/g6
++MAkiTdMKzAMvdEvmxmjSdkG3ggbVgc=
+=cmQz
+-----END PGP SIGNATURE-----
 
-  umount $MNT
-
-When running the test:
-
-  $ ./test.sh
-  (...)
-  Create subvolume '/mnt/sdi/sv'
-  At subvol /mnt/sdi/sv
-  At subvol sv
-  Creating snapshot 496/500ERROR: Could not create subvolume: Value too large for defined data type
-  Creating snapshot 497/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 498/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 499/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 500/500ERROR: Could not create subvolume: Read-only file system
-
-And in dmesg/syslog:
-
-  $ dmesg
-  (...)
-  [251067.627338] BTRFS warning (device sdi): insert uuid item failed -75 (0x4628b21c4ac8d898, 0x2598bee2b1515c91) type 252!
-  [251067.629212] ------------[ cut here ]------------
-  [251067.630033] BTRFS: Transaction aborted (error -75)
-  [251067.630871] WARNING: fs/btrfs/transaction.c:1907 at create_pending_snapshot.cold+0x52/0x465 [btrfs], CPU#10: btrfs/615235
-  [251067.632851] Modules linked in: btrfs dm_zero (...)
-  [251067.644071] CPU: 10 UID: 0 PID: 615235 Comm: btrfs Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
-  [251067.646165] Tainted: [W]=WARN
-  [251067.646733] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [251067.648735] RIP: 0010:create_pending_snapshot.cold+0x55/0x465 [btrfs]
-  [251067.649984] Code: f0 48 0f (...)
-  [251067.653313] RSP: 0018:ffffce644908fae8 EFLAGS: 00010292
-  [251067.653987] RAX: 00000000ffffff01 RBX: ffff8e5639e63a80 RCX: 00000000ffffffd3
-  [251067.655042] RDX: ffff8e53faa76b00 RSI: 00000000ffffffb5 RDI: ffffffffc0919750
-  [251067.656077] RBP: ffffce644908fbd8 R08: 0000000000000000 R09: ffffce644908f820
-  [251067.657068] R10: ffff8e5adc1fffa8 R11: 0000000000000003 R12: ffff8e53c0431bd0
-  [251067.658050] R13: ffff8e5414593600 R14: ffff8e55efafd000 R15: 00000000ffffffb5
-  [251067.659019] FS:  00007f2a4944b3c0(0000) GS:ffff8e5b27dae000(0000) knlGS:0000000000000000
-  [251067.660115] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [251067.660943] CR2: 00007ffc5aa57898 CR3: 00000005813a2003 CR4: 0000000000370ef0
-  [251067.661972] Call Trace:
-  [251067.662292]  <TASK>
-  [251067.662653]  create_pending_snapshots+0x97/0xc0 [btrfs]
-  [251067.663413]  btrfs_commit_transaction+0x26e/0xc00 [btrfs]
-  [251067.664257]  ? btrfs_qgroup_convert_reserved_meta+0x35/0x390 [btrfs]
-  [251067.665238]  ? _raw_spin_unlock+0x15/0x30
-  [251067.665837]  ? record_root_in_trans+0xa2/0xd0 [btrfs]
-  [251067.666531]  btrfs_mksubvol+0x330/0x580 [btrfs]
-  [251067.667145]  btrfs_mksnapshot+0x74/0xa0 [btrfs]
-  [251067.667827]  __btrfs_ioctl_snap_create+0x194/0x1d0 [btrfs]
-  [251067.668595]  btrfs_ioctl_snap_create_v2+0x107/0x130 [btrfs]
-  [251067.669479]  btrfs_ioctl+0x1580/0x2690 [btrfs]
-  [251067.670093]  ? count_memcg_events+0x6d/0x180
-  [251067.670849]  ? handle_mm_fault+0x1a0/0x2a0
-  [251067.671652]  __x64_sys_ioctl+0x92/0xe0
-  [251067.672406]  do_syscall_64+0x50/0xf20
-  [251067.673129]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [251067.674096] RIP: 0033:0x7f2a495648db
-  [251067.674812] Code: 00 48 89 (...)
-  [251067.678227] RSP: 002b:00007ffc5aa57840 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  [251067.679691] RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f2a495648db
-  [251067.681145] RDX: 00007ffc5aa588b0 RSI: 0000000050009417 RDI: 0000000000000004
-  [251067.682511] RBP: 0000000000000002 R08: 0000000000000000 R09: 0000000000000000
-  [251067.683842] R10: 000000000000000a R11: 0000000000000246 R12: 00007ffc5aa59910
-  [251067.685176] R13: 00007ffc5aa588b0 R14: 0000000000000004 R15: 0000000000000006
-  [251067.686524]  </TASK>
-  [251067.686972] ---[ end trace 0000000000000000 ]---
-  [251067.687890] BTRFS: error (device sdi state A) in create_pending_snapshot:1907: errno=-75 unknown
-  [251067.689049] BTRFS info (device sdi state EA): forced readonly
-  [251067.689054] BTRFS warning (device sdi state EA): Skipping commit of aborted transaction.
-  [251067.690119] BTRFS: error (device sdi state EA) in cleanup_transaction:2043: errno=-75 unknown
-  [251067.702028] BTRFS info (device sdi state EA): last unmount of filesystem 46dc3975-30a2-4a69-a18f-418b859cccda
-
-Fix this by ignoring -EOVERFLOW errors from btrfs_uuid_tree_add() in the
-snapshot creation code when attempting to add the
-BTRFS_UUID_KEY_RECEIVED_SUBVOL item. This is OK because it's not critical
-and we are still able to delete the snapshot, as snapshot/subvolume
-deletion ignores if a BTRFS_UUID_KEY_RECEIVED_SUBVOL is missing (see
-inode.c:btrfs_delete_subvolume()). As for send/receive, we can still do
-send/receive operations since it always peeks the first root ID in the
-existing BTRFS_UUID_KEY_RECEIVED_SUBVOL (it could peek any since all
-snapshots have the same content), and even if the key is missing, it
-falls back to searching by BTRFS_UUID_KEY_SUBVOL key.
-
-A test case for fstests will be sent soon.
-
-Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
-CC: stable@vger.kernel.org # 3.12+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted error check condition to omit unlikely() wrapper ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/transaction.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index f5e583605d38e..a633445a8d9c8 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1847,6 +1847,22 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
- 		ret = btrfs_uuid_tree_add(trans, new_root_item->received_uuid,
- 					  BTRFS_UUID_KEY_RECEIVED_SUBVOL,
- 					  objectid);
-+		/*
-+		 * We are creating of lot of snapshots of the same root that was
-+		 * received (has a received UUID) and reached a leaf's limit for
-+		 * an item. We can safely ignore this and avoid a transaction
-+		 * abort. A deletion of this snapshot will still work since we
-+		 * ignore if an item with a BTRFS_UUID_KEY_RECEIVED_SUBVOL key
-+		 * is missing (see btrfs_delete_subvolume()). Send/receive will
-+		 * work too since it peeks the first root id from the existing
-+		 * item (it could peek any), and in case it's missing it
-+		 * falls back to search by BTRFS_UUID_KEY_SUBVOL keys.
-+		 * Creation of a snapshot does not require CAP_SYS_ADMIN, so
-+		 * we don't want users triggering transaction aborts, either
-+		 * intentionally or not.
-+		 */
-+		if (ret == -EOVERFLOW)
-+			ret = 0;
- 		if (ret && ret != -EEXIST) {
- 			btrfs_abort_transaction(trans, ret);
- 			goto fail;
--- 
-2.51.0
-
+--=-A0olpGo3fNrEJ1Hb0gjg--
 
