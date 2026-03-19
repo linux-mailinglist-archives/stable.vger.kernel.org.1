@@ -1,61 +1,106 @@
-Return-Path: <stable+bounces-227368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227369-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNvgEWpCvGlBwAIAu9opvQ
-	(envelope-from <stable+bounces-227368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:37:30 +0100
+	id CKo3JX5DvGmAwAIAu9opvQ
+	(envelope-from <stable+bounces-227369-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:42:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF7FC2D121D
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:37:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06B362D12D8
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 19:42:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6920B30B14EA
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:35:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B63E31193C7
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:41:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4481F30E84D;
-	Thu, 19 Mar 2026 18:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0361830E0D5;
+	Thu, 19 Mar 2026 18:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KCaSmDtU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GAe82fXB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063532F83A2
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 18:35:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4EFB3C141B
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 18:41:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773945317; cv=none; b=lfDdlg6EgEJaRoMXDnnmGI8h2el9S6e5tmXYZIwOcDMDNrbMOgbKuGM819y9sZEWUYPLdaN0wrS3va26ycjpWTXDDHafUsW8Bz9ZMHF1RmVt6fFf4jw9gHGgsFJ6qmpxoxHPC4/Za080Tfk3pUTG7q9ARYI4OUFWExyDWsmX6+0=
+	t=1773945671; cv=none; b=mCSPvebu0Tsy36fZvWkKSm/hOFNpFsThtuYGMgjBubmmeSe3WniKQAufNSeUM2EK7rcsiX5ESh01xoPJ/4E9M5q1oR37Xw/gizZ2+/ridY+ikmO9ZKC1SuAPHgXbnfuZtgzDE96UU4tE1GCmVOjRFuopAXrlzUBnp5fkdZw32Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773945317; c=relaxed/simple;
-	bh=a0/QsxplGDEwqTteE7Vj27NR9xXs1CcCgftKGGupo4o=;
+	s=arc-20240116; t=1773945671; c=relaxed/simple;
+	bh=Un+tjKghOnSOGQJqIv2n+A/mJ2xTSQ27PpNpWvuI/2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nVgdZViJmmBpfuaCvOiSxQG2axQ2HrbYAkTwgIF4Iip6TjnBq4xcfvYRrBo7w+TSk+h3WKzcn4VV2qOH5HTdodW98MS1PC5rM/90CuD6yYn6F9VdI1mDn3zp1/zhzhoMuyuTEsF1rd4MalPImdzrKlHolJs0ngH1LxonDtbCd1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KCaSmDtU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257BBC2BC87;
-	Thu, 19 Mar 2026 18:35:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773945316;
-	bh=a0/QsxplGDEwqTteE7Vj27NR9xXs1CcCgftKGGupo4o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KCaSmDtUARv+9yBFEaRtDGhEwdJzmnoB19EylMJnmasgigDUEw09PjEOM7xxvAsPf
-	 vfBTb13euWNdsnzJso4muLTUL9GOK09/OO9rjt8p4HYLzV5SFjeNHJCsfNqMrdfgUu
-	 /ORhtfGzhFBur6KjsJQZP4R692k++2Y0wBAyKvYHRCi93W1juFXdkdNze3EhH8nIr1
-	 DQqQK9aTk0bZZeayTLzT5VUvsxQpKwXdwQGosSuZrSXBh0mz8b9mWVqETIFR1xuSib
-	 Fv0dTFbmGXr+2jnytNAXRTaHT/R9E8eq0z7Y1gR5wS4K5MVSGSufIs6QCA1DNad2Fs
-	 vggbhILcVwPNg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Anand Jain <asj@kernel.org>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] btrfs: fix transaction abort on set received ioctl due to item overflow
-Date: Thu, 19 Mar 2026 14:35:14 -0400
-Message-ID: <20260319183514.2930118-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031708-makeover-flaccid-62b2@gregkh>
-References: <2026031708-makeover-flaccid-62b2@gregkh>
+	 MIME-Version; b=oB3GnZeGKaEq+uzvQxSqVvUH/EGPtKbrejkMZfyqkiki9Er76jt6HSeTPKTv//G9kBONLjAB53aagT84YJRQSjlwg/9nB1H7/kdPwdXyJfiBlrO9Bk2YeuGI3ClAEN5OPl1hjNyR2SXmqQwdfK2UaZKazwXaB1ilIgxsXRBR8M4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GAe82fXB; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7d7e94e0db7so167858a34.1
+        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 11:41:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773945667; x=1774550467; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FLw+KspfNI17fHokU2DyOGE90apcIrKC40CCDarAeuo=;
+        b=GAe82fXBPp4IO7bTdInpZQ/m8FT6DtbVlsAwaUjc/xxt2ctFYH1ghLshR5/ke+gqKY
+         FNyJqkHOLBJDK/v6OfAY4MPSWt7uN92PVvGpcP6IzNQyE6RrpkRT83TGhQJtols6HkE6
+         F1x7ipXgh/xQzPeDfbJAL02rQwyydLlgqz4OxAb/U/5EkiodRaoq4m3YqbxaS16czCYy
+         assYte3AXuBPvyFJF6nXJi62RlnZgG+gsnIJTA41K/+g4TYMtOS9Psmj9Om2dlH9cSjl
+         XOqTw+7BLa10T1d+knLtMHG4/XGvzwZrs/2fOhNL5099L/fLo2VOaPHImuU4pJOrHEJ8
+         iqcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773945667; x=1774550467;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FLw+KspfNI17fHokU2DyOGE90apcIrKC40CCDarAeuo=;
+        b=QVVcuPr8CPc+5gHIaaPWJdf7/AY7qQ6KGOrL4rBhXXdP8YU93Lix90wtELhFr7p4Cd
+         LNEtS5mya2ZE1cdA5RnYEQj94AAk7OIv2YFMpszrhM9B+gPJbMVYNb/mVXNrCnApH9nO
+         G6356sdwNHhDDqgmN0SAYoLHGRfQ5WJywRtit9C9WTyU0uOF2Y9cyR+Qd0+fz4ggjs1f
+         UFP7axeDlT4MQgMIlQ3EZaBYtds/Lo/NPqGppUxAWKTZ4v3MtiYH07lonKyWiVNmYAKn
+         sm2BdKkqvJ1yIm5n4orBtKVexCiySnYbeg0oVNbT+SJuFPaB58JBUtVXLbY6I3ZdFyLy
+         59Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBwXJNLCcXs0pRfQDnj1O+lve/BrptVXR3WGp+7Bfpy4LzKuxvSXUPaF521+8eGC++DMOWVIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqmDDMwC70+44D6Z2wAs1bUdC6HV6kcB/3zqaAD4BxDRqhdzkN
+	nix9hH0X8Lq9FSo/qWI0jkVEqG1KtuC4AuV5XOJaLXsQLQGHoqp8/fon
+X-Gm-Gg: ATEYQzytHWZImnUg3e0OI521qparpe45kdEWDAlxLJe0fQaVnjF1HLDHhaE+ccamQ8w
+	73s2ekzCNoW2/vbhFvLojPisOtI8Vl/09MC49qx7c1Vv/8oNpjKZU3YTdpg7IC5dXqV7oVFknfJ
+	kLN/ftCZ5Hna3EvcmMDhwz4Yrvk8f+WpWh+dH2QvbDMOnH7Ff8PdlQAc5FA/XV7y/O6GILJOhyF
+	6VYYtE/0TLSsQLWauFOgZOtXlvhlIBlK4tvDbTsiybvA2BT9iOBGGBF79ooI5Abj9NaOg4MfEVt
+	UxZjuZ0Pt5Q4PLWR3AzOO++3r4wMvdiHqbDPNZIsQCMWDXPWOBa4j56L4Y4nzTxHa+d97Xd9iNX
+	gKCrLysO9wI8RJZfYcz4a4s02X+wMW/VybEpC6yCATCuMOIyFWpV1u/ag3UjVKiU4383dqs88SG
+	j6IKU1yCZYtNA8AVVbF+LXFGz68tmAy80UZ2CsfvMHe7iKjx/MIOniJKBaff7I8f/zz3MAORgGE
+	BYwD0NFa28=
+X-Received: by 2002:a05:6830:651c:b0:7d7:d0d5:5bf6 with SMTP id 46e09a7af769-7d7eaf4f4femr168906a34.21.1773945667481;
+        Thu, 19 Mar 2026 11:41:07 -0700 (PDT)
+Received: from celestia.turtle.lan (static-23-234-115-121.cust.tzulo.com. [23.234.115.121])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d7eadcb757sm181486a34.15.2026.03.19.11.41.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 11:41:06 -0700 (PDT)
+From: Sam Edwards <cfsworks@gmail.com>
+X-Google-Original-From: Sam Edwards <CFSworks@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Russell King <rmk+kernel@armlinux.org.uk>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Baruch Siach <baruch@tkos.co.il>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Sam Edwards <CFSworks@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2 1/2] net: stmmac: Prevent NULL deref when RX memory exhausted
+Date: Thu, 19 Mar 2026 11:40:30 -0700
+Message-ID: <20260319184031.8596-2-CFSworks@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260319184031.8596-1-CFSworks@gmail.com>
+References: <20260319184031.8596-1-CFSworks@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,178 +108,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227368-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[armlinux.org.uk,bootlin.com,renesas.com,nxp.com,tkos.co.il,gmail.com,vger.kernel.org,lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	TAGGED_FROM(0.00)[bounces-227369-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[cfsworks@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.925];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable,netdev,kernel];
+	NEURAL_HAM(-0.00)[-0.687];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: BF7FC2D121D
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 06B362D12D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Filipe Manana <fdmanana@suse.com>
+The CPU receives frames from the MAC through conventional DMA: the CPU
+allocates buffers for the MAC, then the MAC fills them and returns
+ownership to the CPU. For each hardware RX queue, the CPU and MAC
+coordinate through a shared ring array of DMA descriptors: one
+descriptor per DMA buffer. Each descriptor includes the buffer's
+physical address and a status flag ("OWN") indicating which side owns
+the buffer: OWN=0 for CPU, OWN=1 for MAC. The CPU is only allowed to set
+the flag and the MAC is only allowed to clear it, and both must move
+through the ring in sequence: thus the ring is used for both
+"submissions" and "completions."
 
-[ Upstream commit 87f2c46003fce4d739138aab4af1942b1afdadac ]
+In the stmmac driver, stmmac_rx() bookmarks its position in the ring
+with the `cur_rx` index. The main receive loop in that function checks
+for rx_descs[cur_rx].own=0, gives the corresponding buffer to the
+network stack (NULLing the pointer), and increments `cur_rx` modulo the
+ring size. After the loop exits, stmmac_rx_refill(), which bookmarks its
+position with `dirty_rx`, allocates fresh buffers and rearms the
+descriptors (setting OWN=1). If it fails any allocation, it simply stops
+early (leaving OWN=0) and will retry where it left off when next called.
 
-If the set received ioctl fails due to an item overflow when attempting to
-add the BTRFS_UUID_KEY_RECEIVED_SUBVOL we have to abort the transaction
-since we did some metadata updates before.
+This means descriptors have a three-stage lifecycle (terms my own):
+- `empty` (OWN=1, buffer valid)
+- `full` (OWN=0, buffer valid and populated)
+- `dirty` (OWN=0, buffer NULL)
 
-This means that if a user calls this ioctl with the same received UUID
-field for a lot of subvolumes, we will hit the overflow, trigger the
-transaction abort and turn the filesystem into RO mode. A malicious user
-could exploit this, and this ioctl does not even requires that a user
-has admin privileges (CAP_SYS_ADMIN), only that he/she owns the subvolume.
+But because stmmac_rx() only checks OWN, it confuses `full`/`dirty`. In
+the past (see 'Fixes:'), there was a bug where the loop could cycle
+`cur_rx` all the way back to the first descriptor it dirtied, resulting
+in a NULL dereference when mistaken for `full`. The aforementioned
+commit resolved that *specific* failure by capping the loop's iteration
+limit at `dma_rx_size - 1`, but this is only a partial fix: if the
+previous stmmac_rx_refill() didn't complete, then there are leftover
+`dirty` descriptors that the loop might encounter without needing to
+cycle fully around. The current code therefore panics (see 'Closes:')
+when stmmac_rx_refill() is memory-starved long enough for `cur_rx` to
+catch up to `dirty_rx`.
 
-Fix this by doing an early check for item overflow before starting a
-transaction. This is also race safe because we are holding the subvol_sem
-semaphore in exclusive (write) mode.
+Fix this by further tightening the clamp from `dma_rx_size - 1` to
+`dma_rx_size - stmmac_rx_dirty() - 1`, subtracting any remnant dirty
+entries and limiting the loop so that `cur_rx` cannot catch back up to
+`dirty_rx`. This carries no risk of arithmetic underflow: since the
+maximum possible return value of stmmac_rx_dirty() is `dma_rx_size - 1`,
+the worst the clamp can do is prevent the loop from running at all.
 
-A test case for fstests will follow soon.
-
-Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
-CC: stable@vger.kernel.org # 3.12+
-Reviewed-by: Anand Jain <asj@kernel.org>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted BTRFS_PATH_AUTO_FREE macro to manual btrfs_free_path calls ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b6cb4541853c7 ("net: stmmac: avoid rx queue overrun")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=221010
+Cc: stable@vger.kernel.org
+Signed-off-by: Sam Edwards <CFSworks@gmail.com>
 ---
- fs/btrfs/ioctl.c     | 21 +++++++++++++++++++--
- fs/btrfs/uuid-tree.c | 43 +++++++++++++++++++++++++++++++++++++++++++
- fs/btrfs/uuid-tree.h |  2 ++
- 3 files changed, 64 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index 71e6715efa14c..03ea34790b5d2 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -3999,6 +3999,25 @@ static long _btrfs_ioctl_set_received_subvol(struct file *file,
- 		goto out;
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 6827c99bde8c..f98b070073c0 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5609,7 +5609,8 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
  
-+	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
-+				       BTRFS_UUID_SIZE);
-+
-+	/*
-+	 * Before we attempt to add the new received uuid, check if we have room
-+	 * for it in case there's already an item. If the size of the existing
-+	 * item plus this root's ID (u64) exceeds the maximum item size, we can
-+	 * return here without the need to abort a transaction. If we don't do
-+	 * this check, the btrfs_uuid_tree_add() call below would fail with
-+	 * -EOVERFLOW and result in a transaction abort. Malicious users could
-+	 * exploit this to turn the fs into RO mode.
-+	 */
-+	if (received_uuid_changed && !btrfs_is_empty_uuid(sa->uuid)) {
-+		ret = btrfs_uuid_tree_check_overflow(fs_info, sa->uuid,
-+						     BTRFS_UUID_KEY_RECEIVED_SUBVOL);
-+		if (ret < 0)
-+			goto out;
-+	}
-+
- 	/*
- 	 * 1 - root item
- 	 * 2 - uuid items (received uuid + subvol uuid)
-@@ -4014,8 +4033,6 @@ static long _btrfs_ioctl_set_received_subvol(struct file *file,
- 	sa->rtime.sec = ct.tv_sec;
- 	sa->rtime.nsec = ct.tv_nsec;
+ 	dma_dir = page_pool_get_dma_dir(rx_q->page_pool);
+ 	bufsz = DIV_ROUND_UP(priv->dma_conf.dma_buf_sz, PAGE_SIZE) * PAGE_SIZE;
+-	limit = min(priv->dma_conf.dma_rx_size - 1, (unsigned int)limit);
++	limit = min(priv->dma_conf.dma_rx_size - stmmac_rx_dirty(priv, queue) - 1,
++		    (unsigned int)limit);
  
--	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
--				       BTRFS_UUID_SIZE);
- 	if (received_uuid_changed &&
- 	    !btrfs_is_empty_uuid(root_item->received_uuid)) {
- 		ret = btrfs_uuid_tree_remove(trans, root_item->received_uuid,
-diff --git a/fs/btrfs/uuid-tree.c b/fs/btrfs/uuid-tree.c
-index 5be74f9e47ebf..0987fdcaea68c 100644
---- a/fs/btrfs/uuid-tree.c
-+++ b/fs/btrfs/uuid-tree.c
-@@ -228,6 +228,49 @@ int btrfs_uuid_tree_remove(struct btrfs_trans_handle *trans, u8 *uuid, u8 type,
- 	return ret;
- }
- 
-+/*
-+ * Check if we can add one root ID to a UUID key.
-+ * If the key does not yet exists, we can, otherwise only if extended item does
-+ * not exceeds the maximum item size permitted by the leaf size.
-+ *
-+ * Returns 0 on success, negative value on error.
-+ */
-+int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
-+				   u8 *uuid, u8 type)
-+{
-+	struct btrfs_path *path;
-+	int ret;
-+	u32 item_size;
-+	struct btrfs_key key;
-+
-+	if (WARN_ON_ONCE(!fs_info->uuid_root))
-+		return -EINVAL;
-+
-+	path = btrfs_alloc_path();
-+	if (!path)
-+		return -ENOMEM;
-+
-+	btrfs_uuid_to_key(uuid, type, &key);
-+	ret = btrfs_search_slot(NULL, fs_info->uuid_root, &key, path, 0, 0);
-+	if (ret < 0) {
-+		btrfs_free_path(path);
-+		return ret;
-+	}
-+	if (ret > 0) {
-+		btrfs_free_path(path);
-+		return 0;
-+	}
-+
-+	item_size = btrfs_item_size(path->nodes[0], path->slots[0]);
-+	btrfs_free_path(path);
-+
-+	if (sizeof(struct btrfs_item) + item_size + sizeof(u64) >
-+	    BTRFS_LEAF_DATA_SIZE(fs_info))
-+		return -EOVERFLOW;
-+
-+	return 0;
-+}
-+
- static int btrfs_uuid_iter_rem(struct btrfs_root *uuid_root, u8 *uuid, u8 type,
- 			       u64 subid)
- {
-diff --git a/fs/btrfs/uuid-tree.h b/fs/btrfs/uuid-tree.h
-index 5350c87fe2caf..29e7b76c64621 100644
---- a/fs/btrfs/uuid-tree.h
-+++ b/fs/btrfs/uuid-tree.h
-@@ -7,6 +7,8 @@ int btrfs_uuid_tree_add(struct btrfs_trans_handle *trans, u8 *uuid, u8 type,
- 			u64 subid);
- int btrfs_uuid_tree_remove(struct btrfs_trans_handle *trans, u8 *uuid, u8 type,
- 			u64 subid);
-+int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
-+				   u8 *uuid, u8 type);
- int btrfs_uuid_tree_iterate(struct btrfs_fs_info *fs_info);
- 
- #endif
+ 	if (netif_msg_rx_status(priv)) {
+ 		void *rx_head;
 -- 
-2.51.0
+2.52.0
 
 
