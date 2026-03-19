@@ -1,177 +1,160 @@
-Return-Path: <stable+bounces-227245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uB+KILvCu2n1ngIAu9opvQ
-	(envelope-from <stable+bounces-227245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:32:43 +0100
+	id GEHROSnFu2n1ngIAu9opvQ
+	(envelope-from <stable+bounces-227250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:43:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4043E2C8B72
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:32:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7ED2C8E57
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 10:43:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E54063070EE1
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:30:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B449C32195D9
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 09:36:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831AB3B6379;
-	Thu, 19 Mar 2026 09:30:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="KNiqUR7f"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF093B6BE7;
+	Thu, 19 Mar 2026 09:36:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6AB3B6347
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 09:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DFBC3AF67F
+	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 09:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773912608; cv=none; b=W2V/uT4tfSNj+02HzIrNIFe8rLyfza6Ut0VCbv9Z8FRlOYbGsU4qQbhNdrdTiUy895GFkafmuUq3Vz9IDQj7ndtT4Iyv6Z2UqMaMPLUBpb5CaQI/8PdsLkjAh55ju7mTAQoOlJ5i+HBWFqofDUmE7XzOXiQ3/QmYaxvt5FvxQFI=
+	t=1773912977; cv=none; b=sB6TDiHxjfs+WkfIWJBm7ftjwTaF2+/aOHjPTx+TOEWY3E1hTtdTTaP3qq+JUpuEJkiQQWRqsZXKPv9X3ax41+l6gbYT5w91Wvsn+V//PyAszaa74tVLUdqJCzHyhlGmHo2Pa9CfrYuBOLqBQzuqimm64SiDL2gql1rArNglpjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773912608; c=relaxed/simple;
-	bh=5Tn2GSJy9+z5AN9rUCr5S9E+wQKe4/XNxtQvB/al9GE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p32mfw8h3z7JgeBHDFUUqQAH1VbzDpHY2ERSdjX72RDLRgHV5pYreg9CKHjTH9eobAZaotT308KVzSoHiC6LsPfPWP7MB3+WDmE2h2xKcSyD7b8lLLlFQpYJ4s3FG5JJlXYcMjegoo6FGJt5hTfp7gcBKVD4m+7P135PYV0PnRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=KNiqUR7f; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773912605;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=a4m5UwRuqyM/t4XvLlwc+wdoOn18dTnoMotq/73CZ3Q=;
-	b=KNiqUR7fBuStfgzVa6UzT9qSiV/Zino8T5kUP8DTYuVqQN9baqfB8IZ+7GfnVwIPGOqmCl
-	9kc6GxvydTSeJQn30WDzw7U1GHW0mHs04absHIRN2WgkScc8SVlfJDkbcVQyf7vUtSzJb9
-	maP2Vmm+yaC9xPSFChP1KBdu2T/busU=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: =?UTF-8?q?Horia=20Geant=C4=83?= <horia.geanta@nxp.com>,
-	Pankaj Gupta <pankaj.gupta@nxp.com>,
-	Gaurav Jain <gaurav.jain@nxp.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Kim Phillips <kim.phillips@freescale.com>,
-	Yuan Kang <Yuan.Kang@freescale.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	stable@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 2/2] crypto: caam - guard HMAC key hex dumps in hash_digest_key
-Date: Thu, 19 Mar 2026 10:29:33 +0100
-Message-ID: <20260319092932.208939-4-thorsten.blum@linux.dev>
-In-Reply-To: <20260319092932.208939-3-thorsten.blum@linux.dev>
-References: <20260319092932.208939-3-thorsten.blum@linux.dev>
+	s=arc-20240116; t=1773912977; c=relaxed/simple;
+	bh=gTVzdb8m7QG5g7UkDSopV2bxXllKZ06xKPWgp4i3Yyo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LVBxscGlJO7yAhcFyLbKYBHrhcmLy+AqI9K0KBP6uKnGOxDOt8xJp56aG6vzXPHQamiFDlEppiC5bjyNxeIDf+w1KIyvKgBdBaFNCa2WpLJa9SEFvHULUI4X/qMa5NXeg61khO1GDO5r3Lf/cyzBJvc/W6Uz5zpen83ChwJWUD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1w39nV-0003OA-P9; Thu, 19 Mar 2026 10:36:09 +0100
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1w39nV-0013Da-10;
+	Thu, 19 Mar 2026 10:36:09 +0100
+Received: from [::1] (helo=dude04.red.stw.pengutronix.de)
+	by dude04 with esmtp (Exim 4.98.2)
+	(envelope-from <m.grzeschik@pengutronix.de>)
+	id 1w39nV-00000008yzO-0W6D;
+	Thu, 19 Mar 2026 10:36:09 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Subject: [PATCH 00/11] net/9p/usbg: series of fixes
+Date: Thu, 19 Mar 2026 10:35:57 +0100
+Message-Id: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3285; i=thorsten.blum@linux.dev; h=from:subject; bh=5Tn2GSJy9+z5AN9rUCr5S9E+wQKe4/XNxtQvB/al9GE=; b=owGbwMvMwCUWt7pQ4caZUj3G02pJDJm7D/65tezRtGMbJBj+e+2fuGTnRHONyoj/LJPWPIi51 j3146Oc9x2lLAxiXAyyYoosD2b9mOFbWlO5ySRiJ8wcViaQIQxcnAIwkbwURob/G8LOhQp5dD8/ IfD2toSDz6/jjD/UHE6yycetkLlxon0qwz+1BfGrkw0D+t/GzJeYf0YhIfdaMNempvtTV5pk+74 7s4wHAA==
-X-Developer-Key: i=thorsten.blum@linux.dev; a=openpgp; fpr=1D60735E8AEF3BE473B69D84733678FD8DFEEAD4
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAH3Du2kC/2WMQQ7CIBBFr9LMWgxMCKmuvIfposLQzgYIVFLTc
+ HexW5fv/5d3QKHMVOA+HJCpcuEYOqjLAHadw0KCXWdAiUYqHMUted6pCK3R4ui1NIjQ7ZTpPLr
+ 8nDqvXLaYP2e4qt/636hKSOGMMsr5l5/JPhKF5b3lGHi/OoKptfYFlTDjwKMAAAA=
+X-Change-ID: 20260128-9pfixes-442c28f40622
+To: Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Hyungjung Joo <jhj140711@gmail.com>
+Cc: v9fs@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ kernel@pengutronix.de, Michael Grzeschik <m.grzeschik@pengutronix.de>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1425;
+ i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
+ bh=gTVzdb8m7QG5g7UkDSopV2bxXllKZ06xKPWgp4i3Yyo=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBpu8OEKlr52jwzP7/WaPgjjldxaqOsMqc7fToUN
+ wl1jwJZp8CJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCabvDhAAKCRC/aVhE+XH0
+ q6wOD/0V+1pb82HHuVL/IlBuBIwa83xMfszArPEDRYrkGxmgpO56ksPhsTVAN4jt+GsqmXnym3R
+ veQfTDJsf1MqoWtb3pye7hVhQ834TOilgtlw8DstxHGMBrD9MZSoyd0yrIx8FM0rkDgfMQRXQap
+ K2CCBf1umV2rCdu/f6rrogjvdXJfWKc3iRFi8zJQp+G3SlCYi0HyNJ6baBm2iJ87Hq4SuBHf3dR
+ THvqfAPJYmv7jhcNNN/78ArviUWvbeQjEoFVf+OTl3KGzo86OQSFlIc4FMuFMNDifpI2RzPX6O1
+ EZVm+zUvAZnAFQwgPLYuz/kKljrLWi3EsPS25/GAAeFI2gguQeiqgH/FjXW30pz8NrXv7yrOyU/
+ eNcELJs4Pyw2tfG6xKzUaf4zwYnY/SXH36a5eCg7di1ne4hZeV7NxA8XcYID6THS26sWcE7BQgl
+ 5zSbVsmUjWnTRo3NBZ1ZJyjFAQVvI3y+72V64pTFXl2Yjzc3KmmaMzxKomYspovAixHERsiz+g8
+ qOt/EXR8gkOOR7UUvsPpKD89fPA5qez9KsVxtLSENHaXwYqNy13xXxgVXMHLTE94n6YePiDFVGg
+ gTG++IlAm8mFFgt2bzsMbzqpYzbIRIh1ZaKQKQDQnwAETDJlr+E6ekQhBnBo8n1XNWE3EJHPGfq
+ tOhZ1Hc8NNEMsRA==
+X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
+ fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_TO(0.00)[kernel.org,ionkov.net,codewreck.org,crudebyte.com,linuxfoundation.org,gmail.com];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227250-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227245-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[thorsten.blum@linux.dev,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.942];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[m.grzeschik@pengutronix.de,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:dkim,linux.dev:email,linux.dev:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4043E2C8B72
+	RCVD_COUNT_FIVE(0.00)[6];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.952];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,pengutronix.de:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8C7ED2C8E57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Use print_hex_dump_devel() for dumping sensitive HMAC key bytes in
-hash_digest_key() to avoid leaking secrets at runtime when
-CONFIG_DYNAMIC_DEBUG is enabled.
+This series contains a bunch of patches to make the trans_usbg
+interface more reliable. It adds some extra checks on critical
+pathes and also solves the overall synchronisation of the daemon
+with the gadget. The forwarder script also gained the daemon mode to
+be run and recover any kind of disconnection.
 
-Fixes: 045e36780f11 ("crypto: caam - ahash hmac support")
-Fixes: 3f16f6c9d632 ("crypto: caam/qi2 - add support for ahash algorithms")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
-This patch now depends on patch 1 in the series.
+Hyungjung Joo (1):
+      net/9p/usbg: clear stale client pointer on close
 
-Changes in v3:
-- Convert single CAAM patch into a 2-patch series
-- Use print_hex_dump_devel() helper from patch 1/2 to keep call sites
-  compiled (Herbert)
-- Link to v2: https://lore.kernel.org/lkml/20260318194649.137257-3-thorsten.blum@linux.dev/
+Michael Grzeschik (10):
+      net/9p/usbg: also disable endpoints on p9_usbg_close
+      net/9p/usbg: set client to Disconnected on usb9pfs_disable
+      net/9p/usbg: always reset completion when disconnecting
+      net/9p/usbg: only rely on one completion
+      net/9p/usbg: add timeout for usbg_request
+      net/9p/usbg: add extra interface for status change
+      tools/usb/p9_fwd: catch if claim_interface is not working
+      tools/usb/p9_fwd: catch write or read errors on disconnect
+      tools/usb/p9_fwd: add daemon loop
+      tools/usb/p9_fwd: set new introduced alt mode 1 on interface 1
 
-Changes in v2:
-- Debug-guard key hex dumps instead of removing them entirely (Herbert)
-- Use print_hex_dump() instead of print_hex_dump_debug() since the dumps
-  are already guarded by DEBUG
-- Link to v1: https://lore.kernel.org/lkml/20260306111204.302544-1-thorsten.blum@linux.dev/
+ net/9p/trans_usbg.c | 211 +++++++++++++++++++++++++++++++++++++++++-----------
+ tools/usb/p9_fwd.py |  67 +++++++++++++----
+ 2 files changed, 218 insertions(+), 60 deletions(-)
 ---
- drivers/crypto/caam/caamalg_qi2.c | 4 ++--
- drivers/crypto/caam/caamhash.c    | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+base-commit: 8a30aeb0d1b4e4aaf7f7bae72f20f2ae75385ccb
+change-id: 20260128-9pfixes-442c28f40622
 
-diff --git a/drivers/crypto/caam/caamalg_qi2.c b/drivers/crypto/caam/caamalg_qi2.c
-index 167372936ca7..ec40d8ada4a9 100644
---- a/drivers/crypto/caam/caamalg_qi2.c
-+++ b/drivers/crypto/caam/caamalg_qi2.c
-@@ -3269,7 +3269,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 	dpaa2_fl_set_addr(out_fle, key_dma);
- 	dpaa2_fl_set_len(out_fle, digestsize);
- 
--	print_hex_dump_debug("key_in@" __stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("shdesc@" __stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -3289,7 +3289,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 		/* in progress */
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
--		print_hex_dump_debug("digested key@" __stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@" __stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
- 	}
-diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
-index 628c43a7efc4..b8e6cc382d93 100644
---- a/drivers/crypto/caam/caamhash.c
-+++ b/drivers/crypto/caam/caamhash.c
-@@ -393,7 +393,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 	append_seq_store(desc, digestsize, LDST_CLASS_2_CCB |
- 			 LDST_SRCDST_BYTE_CONTEXT);
- 
--	print_hex_dump_debug("key_in@"__stringify(__LINE__)": ",
-+	print_hex_dump_devel("key_in@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, key, *keylen, 1);
- 	print_hex_dump_debug("jobdesc@"__stringify(__LINE__)": ",
- 			     DUMP_PREFIX_ADDRESS, 16, 4, desc, desc_bytes(desc),
-@@ -408,7 +408,7 @@ static int hash_digest_key(struct caam_hash_ctx *ctx, u32 *keylen, u8 *key,
- 		wait_for_completion(&result.completion);
- 		ret = result.err;
- 
--		print_hex_dump_debug("digested key@"__stringify(__LINE__)": ",
-+		print_hex_dump_devel("digested key@"__stringify(__LINE__)": ",
- 				     DUMP_PREFIX_ADDRESS, 16, 4, key,
- 				     digestsize, 1);
- 	}
+Best regards,
+-- 
+Michael Grzeschik <m.grzeschik@pengutronix.de>
+
 
