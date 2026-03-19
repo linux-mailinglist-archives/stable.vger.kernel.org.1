@@ -1,272 +1,278 @@
-Return-Path: <stable+bounces-227354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227355-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aKTzNu4xvGnxuQIAu9opvQ
-	(envelope-from <stable+bounces-227354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:27:10 +0100
+	id 8N06OOUzvGl3uwIAu9opvQ
+	(envelope-from <stable+bounces-227355-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:35:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D9482CFF7A
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:27:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617F12D0173
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 18:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF4A130041F4
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:27:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 127AF306B781
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 17:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A0A3D6CA0;
-	Thu, 19 Mar 2026 17:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DC0B3803EA;
+	Thu, 19 Mar 2026 17:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XqQqQC5W"
+	dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b="MgKt5lbD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-002e3701.pphosted.com (mx0a-002e3701.pphosted.com [148.163.147.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CA03469E0
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 17:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773941225; cv=none; b=Hvh1bWhUHgIDyUWX39paeegYTFOIBDZHFPz4r13hNR21qkfS4mF1XLdt7WzODtAv/KowHpSjWxxm0GLPBDMlJ7LpCp14x3qWHsB5WL5OFc2knpnJ5v2aF15kI8NSd/PpaqIjqWu6W5z3ylEqtEu+RR4+3/2T0nw+YGNXTLOU5y4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773941225; c=relaxed/simple;
-	bh=envY4yLilt260qPmIOzjbqD9koyDLFVQTpHAraIlsAY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m1yHpYj90V/tvgK9gHDfiW28MPEWubkqCs/fAhuSC2FKS0S0pxhG3YmruwbE3t9mOSmZaH3Qo3JmzoaqeFrvpADCw8XS8KCcTxrt3/bJALPrmDVM0+8QhB+zEkJhNofw5SHOpVGewFWM/30HodHcj0cnGryXBa0yMz1xbctr2cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XqQqQC5W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C75DC19424;
-	Thu, 19 Mar 2026 17:27:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773941225;
-	bh=envY4yLilt260qPmIOzjbqD9koyDLFVQTpHAraIlsAY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XqQqQC5WzDmBauLQ3ms+aDPIkDzXWquSoOgSwBoFr8LoATGGE4j9zj8IKeeXS+zuc
-	 LQLJ5ggA86wLXY+UGGWPOjdek9zyyo6hp/GE03dKdA5eHji6Zizb1aYdGoxaN9B9qI
-	 XgRyWpWa6etKczGZg8cnu3xP+APC/TUKhcvw7iRBqAAjURNLpFGIzcgZgpPicQ5wSX
-	 Q/0qMTL5hjoW31k50GLRd1ylVwzNBWIHU/d0Qp8q37nhfGRRkGTlWUlJNKRC46tfM/
-	 6NtF22X3oe42UPB33w1OVDLNEZtZnREYSZ9RDpqtkEw1T32cX5p0rmNtFbWuOdkeoT
-	 GV5XaD8aerCTQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] btrfs: fix transaction abort when snapshotting received subvolumes
-Date: Thu, 19 Mar 2026 13:27:02 -0400
-Message-ID: <20260319172702.2818866-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026031757-brewing-landmark-c0de@gregkh>
-References: <2026031757-brewing-landmark-c0de@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DCF35F5EB;
+	Thu, 19 Mar 2026 17:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.147.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773941554; cv=fail; b=bK5icjd8gePnpiGooPPaRQqWjcaZjgelJPvdLT0TzpENDfPB0aRP/nlwSCq5QnfuO1PFZLN+jk7u53k1V1LQRtTFOmy5eh/nOkfg7MVoqg7C5XC6yMPK6Mj070gaGCtrx1rIm24N0vKSYcYPioINHvN6X68T1RcK2crSF0zGoUY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773941554; c=relaxed/simple;
+	bh=iQnr/wnwpAIFpKdn+L2WhpBr4kj89mHCRRHrvl9iuRA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=UZ2hTeXVmpsQJCreDuJOsQBjwZ1ZVGP4L4hyDcDaG8Jz7XQrGVUYNmMkNPeuf/FRNFA5f55FXQOgypbiGTEGWVj5mf8wPExu/jWzrTZWtJUrOpHsgvO5XjRcBCQqoGlgUu6CUpPrUDmPaFWZ5ugPasx0M3+83C6lhp3rVClBlOs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com; spf=pass smtp.mailfrom=hpe.com; dkim=pass (2048-bit key) header.d=hpe.com header.i=@hpe.com header.b=MgKt5lbD; arc=fail smtp.client-ip=148.163.147.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hpe.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hpe.com
+Received: from pps.filterd (m0134422.ppops.net [127.0.0.1])
+	by mx0b-002e3701.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JFQDfd1082345;
+	Thu, 19 Mar 2026 17:32:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hpe.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pps0720; bh=Pw
+	XuR5as49KkiXmpfbalTBKsNrDuW7l5W8Jilcp4VYw=; b=MgKt5lbDDCeqFh96/q
+	BeKbNlTgrFe94DV25Uzgc+QqwBCZc6HDzdti/XZz9o1mUs5RYVVee0NdPLeUKLJg
+	/UWhsmj2mjnsa0BMPbtkSbRK6cv6ElbGbX2WkphArFOprMvNTUBElsdEMK9D941h
+	ztcrLj+Y8U3mgor2tbZpKfQesfCR15GHDIiltfMSrFWI4N+0iYgjInpq6UlEn7Pj
+	SZzrNKR4AZ3tLp3gZ3Gybe1jdfrSEBDQ6AGQNc9KRHgkZiNDqv4zVEMgRaqw8kph
+	A1Wu5X1578jCCnxJPB4j3MIq2cLHCVXImo486NVDmj3gQF9GXEQkvCYKyz96nb6m
+	9oDQ==
+Received: from p1lg14879.it.hpe.com (p1lg14879.it.hpe.com [16.230.97.200])
+	by mx0b-002e3701.pphosted.com (PPS) with ESMTPS id 4d0d0c6kw4-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 19 Mar 2026 17:32:05 +0000 (GMT)
+Received: from p1wg14925.americas.hpqcorp.net (unknown [10.119.18.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by p1lg14879.it.hpe.com (Postfix) with ESMTPS id C9508D1E0;
+	Thu, 19 Mar 2026 17:32:04 +0000 (UTC)
+Received: from p1wg14926.americas.hpqcorp.net (10.119.18.115) by
+ p1wg14925.americas.hpqcorp.net (10.119.18.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 19 Mar 2026 05:31:20 -1200
+Received: from p1wg14920.americas.hpqcorp.net (16.230.19.123) by
+ p1wg14926.americas.hpqcorp.net (10.119.18.115) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17 via Frontend Transport; Thu, 19 Mar 2026 05:31:20 -1200
+Received: from DM5PR08CU004.outbound.protection.outlook.com (192.58.206.35) by
+ edge.it.hpe.com (16.230.19.123) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 19 Mar
+ 2026 05:31:20 -1200
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WKqj2Z0UuOiR3LPhwm1CtYkHAJIOcj8N3rUjmv5ODMag/nDhOMfm/gBawezr41E+lZn1aD22C5v95+o82SYwmo9AgDER3u9dautkUPdYWCahMZcX3Fn9tzca+WCFNJDqpJd8L1IKojEWnK00WVLVfmuqNMqVupqEa+JiCxuQFdjrwPxmhUsuDmlEhj0xR7hKyxRTTFNY1Y32NVq42+bxyeBROzDDFJ6Cb1P8Dk6MRh5Z+oKmrVHr4LeDSXf6W8NS75xoZrTMBaj2w3n+ivU1pefcB5gGbFzvaYNooZLpVYb2juCLwRlRGyL+sq/BP9iSeJnHWaeg8KnHWNPsC3onGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PwXuR5as49KkiXmpfbalTBKsNrDuW7l5W8Jilcp4VYw=;
+ b=DcR5ng5k7J77IfA67SmtseNJquUQ04xLpY5QDg+PeM/1eVZrs7ND4Y6mJ0n4houAotpawnFOw2XgGYIiK0Vflla/uQ7k7r9sAswUy/OTUtHv8ghAjlHDv92BSdEVrKhloCECTFNBWOG2yrap0pYjmLGB8iMY9dzaOWn7A5S543IH0D0s7DQr8RpTfWq8TtxN/ntt5utvlYLhU2N701oU+uvDdjknGBAxNltICG1OuG0kuEj1T3eumFXzuqKf3kpbC3x84kjdCG2Ara8J1PTyjayS0y3eszjChWnYlOfGxNoRuwMmXiSlWNavwy9U2tP91lJ+77oEzwI9O3GF09l0Ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=hpe.com; dmarc=pass action=none header.from=hpe.com; dkim=pass
+ header.d=hpe.com; arc=none
+Received: from CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:610:1cc::7)
+ by LV5PR84MB4049.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:408:2fa::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Thu, 19 Mar
+ 2026 17:31:19 +0000
+Received: from CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::2c54:3534:122f:e74f]) by CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::2c54:3534:122f:e74f%4]) with mapi id 15.20.9723.019; Thu, 19 Mar 2026
+ 17:31:19 +0000
+From: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
+To: "linux@roeck-us.net" <linux@roeck-us.net>
+CC: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Sanman Pradhan
+	<psanman@juniper.net>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH v3 1/2] hwmon: (pmbus/ina233) Fix error handling and sign
+ extension in shunt voltage read
+Thread-Topic: [PATCH v3 1/2] hwmon: (pmbus/ina233) Fix error handling and sign
+ extension in shunt voltage read
+Thread-Index: AQHct8YyGIr43f5PJUmoqzHiXGlXEw==
+Date: Thu, 19 Mar 2026 17:31:19 +0000
+Message-ID: <20260319173055.125271-2-sanman.pradhan@hpe.com>
+References: <20260319173055.125271-1-sanman.pradhan@hpe.com>
+In-Reply-To: <20260319173055.125271-1-sanman.pradhan@hpe.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: CH3PR84MB3523:EE_|LV5PR84MB4049:EE_
+x-ms-office365-filtering-correlation-id: 4ae7dd3b-f631-43c6-ace6-08de85dd54ea
+x-ld-processed: 105b2061-b669-4b31-92ac-24d304d195dc,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|56012099003|22082099003|18002099003|38070700021;
+x-microsoft-antispam-message-info: sQCS6iK0r7tsM7EBDm2NTJMgQ2M3kfNiioltFVb7itHM5WjLmfMMhRYKWwzi9OFp4tnyviXUn/vxBZmmskTX8xIV/tZmaCy1D0FnEp8EAL3woD6Fz/kt2USQOjGXacfE+ZOmZko0Qwa3sZ/PAoEX+EYTTEHBXJxWxSnZNZvW2B8iz/8pvUxOm1OaQShOh7khw3YQPdVkzIdP1cei1tDudGX8vrHcLbejop88Lw0bF/O61GjDfkQDlXb7uYOsepcLgjsov52qvt8o0nAdrbzgBCZHlG24ByFGgb9rydzxFVKCyoJo/fNpMA0Lqxlm+OrxQOA2zk3zs0DioetjGrDTOFhm7QXnTpQkFSeF8HiBmpaQuHIRF0fvswTrEN2SGqXLwYPG4EuH6YPFUEKM4q2+ykAKDQlGAo/PKfqN5cgT5GtiE6XGM9gqAnJoSOqiCOs955+4uHx33sYXAFcYtg/+hCJAfwSJzCBqXFRUvYn1dbnM12ijUyyu5UxoTXoguAIHsYgtJVw5tWFU7fLSxfLax+kKjgmdHhOw0nEjnhWhP0D6B7AmFnv9kLNpl5KVCCotNMZ61KgFX6QKW15b7YQBT0YdThrZH9rzUiSKNSTtmIFqhGA9nVMW+GWWqy8mUUzAlyZZ8WynrfvmxBg+TQiXccg0m/KmfSQUIlH5jwVPX+3knoY/6K0SfYBKwvjPsyp6q62NW5K3H9xzdceAeaBE32WBEBQh12sgkiNIhIyFO4N1jEArojpLg9JnpLBicm2oKEG96pu+YS35+RW1AD6aiA7f1jFBpQ2AYC0bPSB+KPo=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(56012099003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?7cNMJlSBuc6jKWGrVzPOPLHOelIKkpPVgGeBXFMuxfznimEj6M088miVA8?=
+ =?iso-8859-1?Q?rG6COHFzvqQM9YdFk2RZX+8fkJGL+2w36hcvJtXwtKUYkRvbrTQp2dQsKJ?=
+ =?iso-8859-1?Q?dUWxQ92gGC7zeXL3K3aMiD+uMtjMsSQTeUQJULNLYZ3rGtVsWg/AhQ+2Vi?=
+ =?iso-8859-1?Q?+8s7gMWmDa0NFSMjptVrC418JDnppsMZUue79GGaYkAxYHhzDzbHfLGJpc?=
+ =?iso-8859-1?Q?/8zDVbVri9M3b3sRMxWfnNBlC2KnD+liX6KNe9/yu1i0+3WVjGDcSgHU8o?=
+ =?iso-8859-1?Q?P5sylse/ri+EISeB9PJbbNFZPxtycK4HaRz1lX5LykQmBhhVGx0jsgUT2c?=
+ =?iso-8859-1?Q?OxMzUyVi7C6YEAi7LBHRnMMv4ri+fiakHDDQFOTv6lVZ0lQw5RoNucpzn4?=
+ =?iso-8859-1?Q?ULL7IAxfRxI6wkHmBLmQbLOK2zopxiZmxWKqWfB89ydmX1Kp8Jr5Zj4HV1?=
+ =?iso-8859-1?Q?y6rnMPAkq9EUZco7QlYhV17D98LEuixCRyi+xcICXeFM4CNCik+kBcB+KS?=
+ =?iso-8859-1?Q?FfORqZ7OUwE6FszyvvoEElA0DYggIHSCebR7Y4kOk+Jf3xq99y+cYdycUt?=
+ =?iso-8859-1?Q?ESnngMbrKvx1Hpey27ldfA+pWY/5n2pJfFk1OwfCIuqe9Lf033fuRr/loj?=
+ =?iso-8859-1?Q?nU9b5+F70NW+XRY1ywn6YEMzrwwNo7TnV3zZtYTqgzxVxuZ0JgifiCpMXB?=
+ =?iso-8859-1?Q?U8iGUYxKpE5SyQ36LFrc1unTPpE/2uG/GWDqq+IWro98dN2tAreNSBXFqn?=
+ =?iso-8859-1?Q?lgBQZOUOJmEgSZasRvRfcS0aM36WfI6II97TaUeNN4Tvdmr60CXc0bWPgn?=
+ =?iso-8859-1?Q?hp+WNwZr6GWalRNhPlxE1iLFb/c51xEb1RihixVNnNFWEJGgfByqrP8mXk?=
+ =?iso-8859-1?Q?vo0kd4KbrKozQD3eJKmZAVd3V4UKIGwVH4LQFxorTyfj9NYwlEv8ioj8OA?=
+ =?iso-8859-1?Q?Trqu7a0aafh4uP9ybC3SDJ/BCFb73yqdhvXC198krlqVj8PElE/YmADbcq?=
+ =?iso-8859-1?Q?FV/+KDOhR8C9uSdXCUflRJ1qNwkuFJnfTv8MhbM4qiBaQ2ZzB350zS2uKF?=
+ =?iso-8859-1?Q?vWX3WB6EGLu+VU083wC+Cwzicsy2ABDVKLJddexeO448ofl0TFoiq+gseg?=
+ =?iso-8859-1?Q?QGHzMb/odN1EXXtsW7QpJ2Hv0YAGlZ9O+QX4fBwgbKatXuI/6RNPR6cUPU?=
+ =?iso-8859-1?Q?P9Dwtz2589fLCj/uYwAQsPYPyRS2WMp8SQBC88E4vXXDOz9xE+mejHQLSA?=
+ =?iso-8859-1?Q?byCpVid/S7KuqgImekrm06mr5FvodI0+QiBS7MZL35mer+GnzTe6WI/rZQ?=
+ =?iso-8859-1?Q?kYAlLTQLLelRg5mDoHzC9uQ5ajTAM1+urSwmM6+0RmDIxBT+H3h1/J/RZH?=
+ =?iso-8859-1?Q?4T+TT8Vkf6h1uHNMDe03dGqnlVshc8prTcUo7LAyXBDhaJZ4RTJlumYC2U?=
+ =?iso-8859-1?Q?UAQbydTxhR7cZB4NJgfFFUclYaD/dRHYan/cSnU3fAhFNDPrVfnOuRG3cO?=
+ =?iso-8859-1?Q?TCbrdbgzdP4lr6hW45Q/7sY5mT1FjlKY6C6eS4td8QfakrTyBFneKFEpwN?=
+ =?iso-8859-1?Q?zFlVKu6ZVMkEV6cJEPv6W3tvvs990u8CIBPGzNV1lDGdXSWTk+3wQj3Ve4?=
+ =?iso-8859-1?Q?wUqIfwOAzt+AyqvdTl8BZYJmBF9PIWsyRKsrqhJ3PEtttYVW+gxaqnPvoy?=
+ =?iso-8859-1?Q?bOdHZph+rTn94cWSNWsk4Mf4gsCdXcPQZAWl39b8uxNK2UfsLK/zimp6sX?=
+ =?iso-8859-1?Q?L1oKiVixeBcVGdZygWVrCckLAZECe6oV+vZkPQtcPcC2Mt?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [2.94 / 15.00];
-	SUSPICIOUS_URL_IN_SUSPICIOUS_MESSAGE(1.00)[];
+X-Exchange-RoutingPolicyChecked: bPlZoFubRhgYsf7adWzreg6a55fRL0w4JVGVDBpgF6drqxsv7UA6SlrkjCaR7R0LlbEvK1Pp6qXLWYtqO3heibo9lqxlnnsW95jMshC/79FKC+9DaiSWWXwjJrRwePhbqmjIWqnZ+QzT6VwNbG4qeaeI7zL9Hf3vFocwLe/mogZfbgFjFG1j+tTtdecEAtcbs7AUEOt0uzd8UucG8KtqzeStcb5yH2t5+BzQ0KirCuYGyDrgG1p6fRUODpK6uF4GlY8PM6hS/Fia6QMeefg8DeOgvIDrQSQc7YXNyq4qyg7o6RwcANwI8oI2flJY+QM7WRB9KJbVBedVcaPWWkQExQ==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR84MB3523.NAMPRD84.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ae7dd3b-f631-43c6-ace6-08de85dd54ea
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Mar 2026 17:31:19.2036
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 105b2061-b669-4b31-92ac-24d304d195dc
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nUjCD5oDoLvxCGudFeX/tCe1WWW6Rf3WXF6dvgz3dyfa4dT+9WO/HrV2Q22dsS29I66/eoCq7iCGuRdPkC+6Hg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV5PR84MB4049
+X-OriginatorOrg: hpe.com
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzE5MDE0MCBTYWx0ZWRfX39XUheASio1Q
+ b3vwnH3fRIaUEKb/t9gIcnBWmPVCEi9eOSwD98UQxIvzZ/LKcKrjr433xFU7J0TqTtn5J9U+PfE
+ VZCJYv/6wCJAREfQi+d9LqGnBUEglarBzms1diCvchReCORp0wbk4CrLKA+b1fis/2yRDOPqNsS
+ PRTju4Lpiyqmixz4uJzZ3HI8OKI2p7iK5Mh0e7wuMYB+j0Xi3tDEBSJpJKicY0aARB7PjrVNtSB
+ zNqeexTkiTtVTyv+XmF+pk5lLOeRfvbR6dP0GOONY+eucEAt6MfOWImz8qX/zcBagFb5GZQ8ikY
+ g/q2wicWbQoCzWQSb31ARUkXIU9UwsQdnYwpq6m5I7Y2NlggHnhngsBxAp+neurAUImag1rHiXE
+ TjKAYC1mxIJC6W+vi65Wn1LDQeuejWbk2GF489mNc1zmjYpNO4QAXDhmC4YOWftfH4cG4ZAY97q
+ 1DAvB1c4uB7mW+Vm/6w==
+X-Proofpoint-GUID: xTLWG95_FGzmBhNBvIUaNBIQpaGVp_Ky
+X-Proofpoint-ORIG-GUID: xTLWG95_FGzmBhNBvIUaNBIQpaGVp_Ky
+X-Authority-Analysis: v=2.4 cv=L9UQguT8 c=1 sm=1 tr=0 ts=69bc3315 cx=c_pps
+ a=5jkVtQsCUlC8zk5UhkBgHg==:117 a=5jkVtQsCUlC8zk5UhkBgHg==:17
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=8nJEP1OIZ-IA:10 a=Yq5XynenixoA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=gQcMVamqm3wCPoSYhaRC:22 a=ModqzXLkJJ0tFyq98apW:22
+ a=OUXY8nFuAAAA:8 a=VwQbUJbxAAAA:8 a=mpKQPwVXuAJAzSNZGwEA:9 a=wPNLvfGTeEIA:10
+ a=cAcMbU7R10T-QSRYIcO_:22
+X-HPE-SCL: -1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_02,2026-03-19_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 clxscore=1015 suspectscore=0 phishscore=0 malwarescore=0
+ spamscore=0 lowpriorityscore=0 adultscore=0 impostorscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603190140
+X-Spamd-Result: default: False [0.84 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	URIBL_RED(0.50)[test.sh:url];
+	DMARC_POLICY_ALLOW(-0.50)[hpe.com,reject];
+	R_DKIM_ALLOW(-0.20)[hpe.com:s=pps0720];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
-	HAS_ANON_DOMAIN(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
-	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227354-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	R_DKIM_ALLOW(0.00)[kernel.org:s=k20201202];
+	TAGGED_FROM(0.00)[bounces-227355-lists,stable=lfdr.de];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_POLICY_ALLOW(0.00)[kernel.org,quarantine];
-	NEURAL_SPAM(0.00)[0.814];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,hpe.com:dkim,hpe.com:mid];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sanman.pradhan@hpe.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	R_SPF_ALLOW(0.00)[+ip4:172.232.135.74:c];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qemu.org:url,bur.io:email]
-X-Rspamd-Queue-Id: 7D9482CFF7A
+	DKIM_TRACE(0.00)[hpe.com:+];
+	NEURAL_HAM(-0.00)[-0.996];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[11]
+X-Rspamd-Queue-Id: 617F12D0173
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Filipe Manana <fdmanana@suse.com>
-
-[ Upstream commit e1b18b959025e6b5dbad668f391f65d34b39595a ]
-
-Currently a user can trigger a transaction abort by snapshotting a
-previously received snapshot a bunch of times until we reach a
-BTRFS_UUID_KEY_RECEIVED_SUBVOL item overflow (the maximum item size we
-can store in a leaf). This is very likely not common in practice, but
-if it happens, it turns the filesystem into RO mode. The snapshot, send
-and set_received_subvol and subvol_setflags (used by receive) don't
-require CAP_SYS_ADMIN, just inode_owner_or_capable(). A malicious user
-could use this to turn a filesystem into RO mode and disrupt a system.
-
-Reproducer script:
-
-  $ cat test.sh
-  #!/bin/bash
-
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
-
-  # Use smallest node size to make the test faster.
-  mkfs.btrfs -f --nodesize 4K $DEV
-  mount $DEV $MNT
-
-  # Create a subvolume and set it to RO so that it can be used for send.
-  btrfs subvolume create $MNT/sv
-  touch $MNT/sv/foo
-  btrfs property set $MNT/sv ro true
-
-  # Send and receive the subvolume into snaps/sv.
-  mkdir $MNT/snaps
-  btrfs send $MNT/sv | btrfs receive $MNT/snaps
-
-  # Now snapshot the received subvolume, which has a received_uuid, a
-  # lot of times to trigger the leaf overflow.
-  total=500
-  for ((i = 1; i <= $total; i++)); do
-      echo -ne "\rCreating snapshot $i/$total"
-      btrfs subvolume snapshot -r $MNT/snaps/sv $MNT/snaps/sv_$i > /dev/null
-  done
-  echo
-
-  umount $MNT
-
-When running the test:
-
-  $ ./test.sh
-  (...)
-  Create subvolume '/mnt/sdi/sv'
-  At subvol /mnt/sdi/sv
-  At subvol sv
-  Creating snapshot 496/500ERROR: Could not create subvolume: Value too large for defined data type
-  Creating snapshot 497/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 498/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 499/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 500/500ERROR: Could not create subvolume: Read-only file system
-
-And in dmesg/syslog:
-
-  $ dmesg
-  (...)
-  [251067.627338] BTRFS warning (device sdi): insert uuid item failed -75 (0x4628b21c4ac8d898, 0x2598bee2b1515c91) type 252!
-  [251067.629212] ------------[ cut here ]------------
-  [251067.630033] BTRFS: Transaction aborted (error -75)
-  [251067.630871] WARNING: fs/btrfs/transaction.c:1907 at create_pending_snapshot.cold+0x52/0x465 [btrfs], CPU#10: btrfs/615235
-  [251067.632851] Modules linked in: btrfs dm_zero (...)
-  [251067.644071] CPU: 10 UID: 0 PID: 615235 Comm: btrfs Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
-  [251067.646165] Tainted: [W]=WARN
-  [251067.646733] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [251067.648735] RIP: 0010:create_pending_snapshot.cold+0x55/0x465 [btrfs]
-  [251067.649984] Code: f0 48 0f (...)
-  [251067.653313] RSP: 0018:ffffce644908fae8 EFLAGS: 00010292
-  [251067.653987] RAX: 00000000ffffff01 RBX: ffff8e5639e63a80 RCX: 00000000ffffffd3
-  [251067.655042] RDX: ffff8e53faa76b00 RSI: 00000000ffffffb5 RDI: ffffffffc0919750
-  [251067.656077] RBP: ffffce644908fbd8 R08: 0000000000000000 R09: ffffce644908f820
-  [251067.657068] R10: ffff8e5adc1fffa8 R11: 0000000000000003 R12: ffff8e53c0431bd0
-  [251067.658050] R13: ffff8e5414593600 R14: ffff8e55efafd000 R15: 00000000ffffffb5
-  [251067.659019] FS:  00007f2a4944b3c0(0000) GS:ffff8e5b27dae000(0000) knlGS:0000000000000000
-  [251067.660115] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [251067.660943] CR2: 00007ffc5aa57898 CR3: 00000005813a2003 CR4: 0000000000370ef0
-  [251067.661972] Call Trace:
-  [251067.662292]  <TASK>
-  [251067.662653]  create_pending_snapshots+0x97/0xc0 [btrfs]
-  [251067.663413]  btrfs_commit_transaction+0x26e/0xc00 [btrfs]
-  [251067.664257]  ? btrfs_qgroup_convert_reserved_meta+0x35/0x390 [btrfs]
-  [251067.665238]  ? _raw_spin_unlock+0x15/0x30
-  [251067.665837]  ? record_root_in_trans+0xa2/0xd0 [btrfs]
-  [251067.666531]  btrfs_mksubvol+0x330/0x580 [btrfs]
-  [251067.667145]  btrfs_mksnapshot+0x74/0xa0 [btrfs]
-  [251067.667827]  __btrfs_ioctl_snap_create+0x194/0x1d0 [btrfs]
-  [251067.668595]  btrfs_ioctl_snap_create_v2+0x107/0x130 [btrfs]
-  [251067.669479]  btrfs_ioctl+0x1580/0x2690 [btrfs]
-  [251067.670093]  ? count_memcg_events+0x6d/0x180
-  [251067.670849]  ? handle_mm_fault+0x1a0/0x2a0
-  [251067.671652]  __x64_sys_ioctl+0x92/0xe0
-  [251067.672406]  do_syscall_64+0x50/0xf20
-  [251067.673129]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [251067.674096] RIP: 0033:0x7f2a495648db
-  [251067.674812] Code: 00 48 89 (...)
-  [251067.678227] RSP: 002b:00007ffc5aa57840 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  [251067.679691] RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f2a495648db
-  [251067.681145] RDX: 00007ffc5aa588b0 RSI: 0000000050009417 RDI: 0000000000000004
-  [251067.682511] RBP: 0000000000000002 R08: 0000000000000000 R09: 0000000000000000
-  [251067.683842] R10: 000000000000000a R11: 0000000000000246 R12: 00007ffc5aa59910
-  [251067.685176] R13: 00007ffc5aa588b0 R14: 0000000000000004 R15: 0000000000000006
-  [251067.686524]  </TASK>
-  [251067.686972] ---[ end trace 0000000000000000 ]---
-  [251067.687890] BTRFS: error (device sdi state A) in create_pending_snapshot:1907: errno=-75 unknown
-  [251067.689049] BTRFS info (device sdi state EA): forced readonly
-  [251067.689054] BTRFS warning (device sdi state EA): Skipping commit of aborted transaction.
-  [251067.690119] BTRFS: error (device sdi state EA) in cleanup_transaction:2043: errno=-75 unknown
-  [251067.702028] BTRFS info (device sdi state EA): last unmount of filesystem 46dc3975-30a2-4a69-a18f-418b859cccda
-
-Fix this by ignoring -EOVERFLOW errors from btrfs_uuid_tree_add() in the
-snapshot creation code when attempting to add the
-BTRFS_UUID_KEY_RECEIVED_SUBVOL item. This is OK because it's not critical
-and we are still able to delete the snapshot, as snapshot/subvolume
-deletion ignores if a BTRFS_UUID_KEY_RECEIVED_SUBVOL is missing (see
-inode.c:btrfs_delete_subvolume()). As for send/receive, we can still do
-send/receive operations since it always peeks the first root ID in the
-existing BTRFS_UUID_KEY_RECEIVED_SUBVOL (it could peek any since all
-snapshots have the same content), and even if the key is missing, it
-falls back to searching by BTRFS_UUID_KEY_SUBVOL key.
-
-A test case for fstests will be sent soon.
-
-Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
-CC: stable@vger.kernel.org # 3.12+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted error check condition to omit unlikely() wrapper ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/transaction.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
-
-diff --git a/fs/btrfs/transaction.c b/fs/btrfs/transaction.c
-index 6d1113dc2abf2..336a1799eeddd 100644
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1869,6 +1869,22 @@ static noinline int create_pending_snapshot(struct btrfs_trans_handle *trans,
- 		ret = btrfs_uuid_tree_add(trans, new_root_item->received_uuid,
- 					  BTRFS_UUID_KEY_RECEIVED_SUBVOL,
- 					  objectid);
-+		/*
-+		 * We are creating of lot of snapshots of the same root that was
-+		 * received (has a received UUID) and reached a leaf's limit for
-+		 * an item. We can safely ignore this and avoid a transaction
-+		 * abort. A deletion of this snapshot will still work since we
-+		 * ignore if an item with a BTRFS_UUID_KEY_RECEIVED_SUBVOL key
-+		 * is missing (see btrfs_delete_subvolume()). Send/receive will
-+		 * work too since it peeks the first root id from the existing
-+		 * item (it could peek any), and in case it's missing it
-+		 * falls back to search by BTRFS_UUID_KEY_SUBVOL keys.
-+		 * Creation of a snapshot does not require CAP_SYS_ADMIN, so
-+		 * we don't want users triggering transaction aborts, either
-+		 * intentionally or not.
-+		 */
-+		if (ret == -EOVERFLOW)
-+			ret = 0;
- 		if (ret && ret != -EEXIST) {
- 			btrfs_abort_transaction(trans, ret);
- 			goto fail;
--- 
-2.51.0
-
+From: Sanman Pradhan <psanman@juniper.net>=0A=
+=0A=
+ina233_read_word_data() reads MFR_READ_VSHUNT via pmbus_read_word_data()=0A=
+but has two issues:=0A=
+=0A=
+1. The return value is not checked for errors before being used in=0A=
+   arithmetic. A negative error code from a failed I2C transaction is=0A=
+   passed directly to DIV_ROUND_CLOSEST(), producing garbage data.=0A=
+=0A=
+2. MFR_READ_VSHUNT is a 16-bit two's complement value. Negative shunt=0A=
+   voltages (values with bit 15 set) are treated as large positive=0A=
+   values since pmbus_read_word_data() returns them zero-extended in an=0A=
+   int. This leads to incorrect scaling in the VIN coefficient=0A=
+   conversion.=0A=
+=0A=
+Fix both issues by adding an error check, casting to s16 for proper=0A=
+sign extension, and clamping the result to a valid non-negative range.=0A=
+The clamp is necessary because read_word_data callbacks must return=0A=
+non-negative values on success (negative values indicate errors to the=0A=
+pmbus core).=0A=
+=0A=
+Fixes: b64b6cb163f16 ("hwmon: Add driver for TI INA233 Current and Power Mo=
+nitor")=0A=
+Cc: stable@vger.kernel.org=0A=
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>=0A=
+---=0A=
+ drivers/hwmon/pmbus/ina233.c | 5 ++++-=0A=
+ 1 file changed, 4 insertions(+), 1 deletion(-)=0A=
+=0A=
+diff --git a/drivers/hwmon/pmbus/ina233.c b/drivers/hwmon/pmbus/ina233.c=0A=
+index dde1e16783943..1f7170372f243 100644=0A=
+--- a/drivers/hwmon/pmbus/ina233.c=0A=
++++ b/drivers/hwmon/pmbus/ina233.c=0A=
+@@ -67,10 +67,13 @@ static int ina233_read_word_data(struct i2c_client *cli=
+ent, int page,=0A=
+ 	switch (reg) {=0A=
+ 	case PMBUS_VIRT_READ_VMON:=0A=
+ 		ret =3D pmbus_read_word_data(client, 0, 0xff, MFR_READ_VSHUNT);=0A=
++		if (ret < 0)=0A=
++			return ret;=0A=
+ =0A=
+ 		/* Adjust returned value to match VIN coefficients */=0A=
+ 		/* VIN: 1.25 mV VSHUNT: 2.5 uV LSB */=0A=
+-		ret =3D DIV_ROUND_CLOSEST(ret * 25, 12500);=0A=
++		ret =3D clamp_val(DIV_ROUND_CLOSEST((s16)ret * 25, 12500),=0A=
++				0, 0x7FFF);=0A=
+ 		break;=0A=
+ 	default:=0A=
+ 		ret =3D -ENODATA;=0A=
+-- =0A=
+2.34.1=
 
