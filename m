@@ -1,92 +1,59 @@
-Return-Path: <stable+bounces-227317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAkZE4wNvGkirwIAu9opvQ
-	(envelope-from <stable+bounces-227317-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:51:56 +0100
+	id iPxwFLANvGkirwIAu9opvQ
+	(envelope-from <stable+bounces-227319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:52:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C742CD339
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:51:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33CC2CD368
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 15:52:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A16FA300AEDB
-	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:51:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 458F33013DF5
+	for <lists+stable@lfdr.de>; Thu, 19 Mar 2026 14:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B5937D11C;
-	Thu, 19 Mar 2026 14:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9C33D5676;
+	Thu, 19 Mar 2026 14:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZzctxiHn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UIZuhkS5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886A02D4B40
-	for <stable@vger.kernel.org>; Thu, 19 Mar 2026 14:51:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700D83D9DD2;
+	Thu, 19 Mar 2026 14:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773931904; cv=none; b=sF1OPCgNiynMx9Loldn6CPr5DmJuu48DQPsy0eIQiC8Gxg4469dClpocrbHe4SXS8sPgbFmlfB2zslnA5w4nh/PeaAXua60sfzu50swK7fAfKMJISJ/NmwTGq+UmGASGd/52ZDgaYnn89/dtEW6hT7mUu85IziA7khS4sVaBcVE=
+	t=1773931946; cv=none; b=uoV9fs1bkTibY8HaIjxlyDwfPzQnRYytPqBPNanodAvVp9H9rPDP6fwgh96AoqwBqZZHhvf4ov5BM/zzgs0MBm20A5BVr5sFwHsYmWUIMWxOxTQv60Yml688NdHgjk5+ihemUF3hyEgPxJCUqa6rfVHnt7MyftXQzOi+A51UfPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773931904; c=relaxed/simple;
-	bh=MkgLuFOWJea4jiUvNXX33Xlm3NpOMQc8WLzychhJZBI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ffLrHqO9eSu4uIinnJjyUrswT9XwNXmvL0svFIJsfFnZGpYh/SyB0H4M+zb7sRDyZdSwrzWCWdrEFSAxoxaYpitE32M2piSgZsjsJDrNlNih3yg0yUthJx5N+66OVcGZfyTTEhqT68Hke2L+RO3xSJNfQsypgTBBagLsGIv8rAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZzctxiHn; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-43b3f91a7abso578198f8f.1
-        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 07:51:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773931902; x=1774536702; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=5VelsOLICYKLjf721tV+ogWOys8/+kg5iM2ALvOXWJs=;
-        b=ZzctxiHn4yN+LQ7CBuOZ0243KbHaz/u2RPVvG8OUIPeMFbcz6n5K5yNTrMiBabopSs
-         3pdl127QpYQw+kVRGznuu84akgxVYhJTpc2EsApRvzlUP6NCs3rqu4xh3hnEWWRs4zj/
-         U7AYNHetIhsAsh22RJz3uzC7OepfupV1b/QgZLmzX/13+bS5SmZaoQ5EWteSQE9F+k81
-         1gB3GOBZzLT6SMgxd5fCganH36lqFw2yIep/i+hhzqc/m6zOL+h9Od8vv0AkOzqfrS8H
-         NOXyj5Fk/ydXpbPZe7E+p3XMrhzb7OJQvauAhzPeQh6WAmrq+4xoMhIA6fKvZ1wMDViz
-         jsZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773931902; x=1774536702;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5VelsOLICYKLjf721tV+ogWOys8/+kg5iM2ALvOXWJs=;
-        b=c/GwsLfugjd49xvi2FAIzdvJPJKoMonNk4+R8h42QYf57TXY0RfM9FJGObFl918dDK
-         XSGzmH0fbAlF7GPvfwid9bYy/1/w0/DTUrXwlDZuAODN6gn7VcF0CV0sVJz5PfEG1wn4
-         XmJrWtCiwSjkXbOrE7pFdhYtdYHEv8Uk3nBC9mNBCEUNTiyCjTSBMSpKixTrcT1207lK
-         AG75j2q8AcDhBl4CRYCzdQVbMME18/V2My9eYHzwhzqMQU8IlaSMS6b3yMtrpXyr8bDP
-         htpf8xwt8BpNTE0fAnpnIww5tkj/4MCNqFc4PJo3a+HhoqYNSsp0g1g4Cp0EjpUvHLVv
-         9qzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU/C/JlIPocP4i0p6gxU6HbEbaEKVUrIBOaOZ28IMbDQbJ1sNbgsJ+c049KQER84Hop6s95DfU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzY8VeLXl53L3Yr4J5piZJyXi++voUcltXGHDFzUcZ4XwLmxJyC
-	2YxdhWC5v8uviUAH/mParSJxifmbX2HcO3xNddkHjZYml9P+oKtFdTSf
-X-Gm-Gg: ATEYQzxQfA23dUGNbOqPu/68Ap0oFi5iRARJaD5YHf4WT8NEamk+xInKKJEW48JOUS6
-	ipqqneODg8r6gxF7c7krS26msblb0jcyQVtoV6LeWuwHao9OK4jBnuMPB0qWTrJNgzFUjNL72TZ
-	ShkHOH59PtwgvzciQyL70IhNI9hiBAQ4bEBoMy6qe5AgJ1BzyDvoSnsAmM8L1WxhClsUCEEuzgq
-	DtxLaHcUl49ginznMPTp5z8bE4H1Uo3bcXpYR/npJ5dCf2kZJjx+fHSIBySWDRXoM9SLbUAC32W
-	id3PQpC7cmEaqmAT2AaKMPA1ZwfARCk7ukla5v9ZlGoyxjwoCzeg+FRsEcJh97UtGzJd1QEku7q
-	7iU14QtZOyCc5gti2jDmq51plh+Dwkjphf1ywyCK1zFhyRUpa3XkeI6sKTjEkOyTrt8cYXxnb4b
-	Wp5Lzid21QQBDBFtGLa0OseVWGv8csDufD/a7NHm8=
-X-Received: by 2002:a05:6000:2504:b0:43b:497c:effd with SMTP id ffacd0b85a97d-43b527c3c0amr14406413f8f.27.1773931901880;
-        Thu, 19 Mar 2026 07:51:41 -0700 (PDT)
-Received: from vasant-suse.suse.org ([80.255.5.134])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b518a4386sm15213866f8f.37.2026.03.19.07.51.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2026 07:51:41 -0700 (PDT)
-From: vsntk18@gmail.com
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: baolu.lu@linux.intel.com,
-	black.hawk@163.com,
-	jgg@nvidia.com,
-	joro@8bytes.org,
-	Vasant Karasulli <vsntk18@gmail.com>,
-	Vasant Karasulli <vkarasulli@suse.de>
-Subject: [PATCH 5.15-stable v2] iommu: fix a reference count leak in iommu_sva_bind_device()
-Date: Thu, 19 Mar 2026 15:51:37 +0100
-Message-Id: <20260319145137.23934-1-vsntk18@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1773931946; c=relaxed/simple;
+	bh=S/gZgyTYvC4CrssFFtYDNp0SzgwSfvUoAiAAW+9FERk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fzWvT4gyq6/pGZQEfQxZoJEgLd6AT7gvNGvZPBSl+K/t9701L969zQH5pjbOC0Yx4uHAzEEnncVRSyDHIOB2Bzbec17WRwuF+9sMoakOpGiJQLH9lesi19zasb2R6VhtgFPnQEPVTxtepUyvI+tOFTqiLLUUFjeBORBNp8L+PDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UIZuhkS5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E24C19424;
+	Thu, 19 Mar 2026 14:52:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773931946;
+	bh=S/gZgyTYvC4CrssFFtYDNp0SzgwSfvUoAiAAW+9FERk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UIZuhkS5OM2LEW/JmKTVfUX8UjkKQTrQFW8hsHgEEJV0gCH0Fb2K2a673mH23Z7VI
+	 4Jkfk37aCLhl7GyqfJU5vZw80pZx+26w/+SEDwDZ5LeGH5RkneDc5EbX+a4g8kT3k2
+	 /E9vfJCdHoJTBpEtdzZojTxtF61UiIrmcLdo0parYaLkkqz2Nkj/qINgIgiW8N/puF
+	 o5SVOAgjMDC1lT47MMaBXigGcG2fRAdKKRBN0O7tv62rEuHDpXGxohAgawdy9N16tt
+	 GUplp8P9qVS5GpnYaRbfGQn6FsI+g2M/tkTcxYGt5ofQ55iiBI0CAUnzsbwBIyb5Nw
+	 YPEJ5mh2MXhDA==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 6 . 15 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] mm/damon/core: avoid use of half-online-committed context
+Date: Thu, 19 Mar 2026 07:52:17 -0700
+Message-ID: <20260319145218.86197-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,85 +62,143 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227319-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[linux.intel.com,163.com,nvidia.com,8bytes.org,gmail.com,suse.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227317-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NO_DN(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[vsntk18@gmail.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.938];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.990];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email]
-X-Rspamd-Queue-Id: B6C742CD339
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E33CC2CD368
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Vasant Karasulli <vsntk18@gmail.com>
+One major usage of damon_call() is online DAMON parameters update.  It
+is done by calling damon_commit_ctx() inside the damon_call() callback
+function.  damon_commit_ctx() can fail for two reasons: 1) invalid
+parameters and 2) internal memory allocation failures.  In case of
+failures, the damon_ctx that attempted to be updated (commit
+destination) can be partially updated (or, corrupted from a
+perspective), and therefore shouldn't be used anymore.  The function
+only ensures the damon_ctx object can safely deallocated using
+damon_destroy_ctx().
 
-commit b34289505180 ("iommu: disable SVA when CONFIG_X86 is set")
-disables SVA to mitigate a security vulnerability.
+The API callers are, however, calling damon_commit_ctx() only after
+asserting the parameters are valid, to avoid damon_commit_ctx() fails
+due to invalid input parameters.  But it can still theoretically fail if
+the internal memory allocation fails.  In the case, DAMON may run with
+the partially updated damon_ctx.  This can result in unexpected
+behaviors including even NULL pointer dereference in case of
+damos_commit_dests() failure [1].  Such allocation failure is arguably
+too small to fail, so the real world impact would be rare.  But, given
+the bad consequence, this needs to be fixed.
 
-Due the current placement of the condition check,
-function returns after iommu_group_get() without a corresponding
-iommu_group_put(). So move the condition check above.
+Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
+the damon_commit_ctx() failure on the damon_ctx object.  For this,
+introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
+when it is failed.  kdamond_call() checks if the field is set after each
+damon_call_control->fn() is executed.  If it is set, ignore remaining
+callback requests and return.  All kdamond_call() callers including
+kdamond_fn() also check the maybe_corrupted field right after
+kdamond_call() invocations.  If the field is set, break the
+kdamond_fn() main loop so that DAMON sill doesn't use the context that
+might be corrupted.
 
-This is a stable-only fix applicable to linux-5.15.y.
+[1] https://lore.kernel.org/20260319043309.97966-1-sj@kernel.org
 
-Fixes: b34289505180 ("iommu: disable SVA when CONFIG_X86 is set")
-Signed-off-by: Vasant Karasulli <vkarasulli@suse.de>
+Fixes: 3301f1861d34 ("mm/damon/sysfs: handle commit command using damon_call()")
+Cc: <stable@vger.kernel.org> # 6.15.x
+Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
-v2:
-  - addressed formatting mistakes in the changelog
+ include/linux/damon.h | 6 ++++++
+ mm/damon/core.c       | 8 ++++++++
+ 2 files changed, 14 insertions(+)
 
- drivers/iommu/iommu.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 964170f90597..25119d75537c 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -3061,6 +3061,9 @@ iommu_sva_bind_device(struct device *dev, struct mm_struct *mm, void *drvdata)
- 	struct iommu_sva *handle = ERR_PTR(-EINVAL);
- 	const struct iommu_ops *ops = dev->bus->iommu_ops;
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index a4fea23da8576..be3d198043ff9 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -810,6 +810,12 @@ struct damon_ctx {
+ 	struct damos_walk_control *walk_control;
+ 	struct mutex walk_control_lock;
  
-+	if (IS_ENABLED(CONFIG_X86))
-+		return ERR_PTR(-EOPNOTSUPP);
++	/*
++	 * indicate if this may be corrupted.  Currentonly this is set only for
++	 * damon_commit_ctx() failure.
++	 */
++	bool maybe_corrupted;
 +
- 	if (!ops || !ops->sva_bind)
- 		return ERR_PTR(-ENODEV);
+ 	/* Working thread of the given DAMON context */
+ 	struct task_struct *kdamond;
+ 	/* Protects @kdamond field access */
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index c1d1091d307e4..37454e8c9c510 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1252,6 +1252,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ {
+ 	int err;
  
-@@ -3068,9 +3071,6 @@ iommu_sva_bind_device(struct device *dev, struct mm_struct *mm, void *drvdata)
- 	if (!group)
- 		return ERR_PTR(-ENODEV);
++	dst->maybe_corrupted = true;
+ 	if (!is_power_of_2(src->min_region_sz))
+ 		return -EINVAL;
  
--	if (IS_ENABLED(CONFIG_X86))
--		return ERR_PTR(-EOPNOTSUPP);
--
- 	/* Ensure device count and domain don't change while we're binding */
- 	mutex_lock(&group->mutex);
+@@ -1277,6 +1278,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
+ 	dst->addr_unit = src->addr_unit;
+ 	dst->min_region_sz = src->min_region_sz;
  
++	dst->maybe_corrupted = false;
+ 	return 0;
+ }
+ 
+@@ -2678,6 +2680,8 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
+ 			complete(&control->completion);
+ 		else if (control->canceled && control->dealloc_on_cancel)
+ 			kfree(control);
++		if (ctx->maybe_corrupted)
++			break;
+ 	}
+ 
+ 	mutex_lock(&ctx->call_controls_lock);
+@@ -2707,6 +2711,8 @@ static int kdamond_wait_activation(struct damon_ctx *ctx)
+ 		kdamond_usleep(min_wait_time);
+ 
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			return -EINVAL;
+ 		damos_walk_cancel(ctx);
+ 	}
+ 	return -EBUSY;
+@@ -2790,6 +2796,8 @@ static int kdamond_fn(void *data)
+ 		 * kdamond_merge_regions() if possible, to reduce overhead
+ 		 */
+ 		kdamond_call(ctx, false);
++		if (ctx->maybe_corrupted)
++			break;
+ 		if (!list_empty(&ctx->schemes))
+ 			kdamond_apply_schemes(ctx);
+ 		else
 
-base-commit: 3330a8d33e086f76608bb4e80a3dc569d04a8814
+base-commit: 969615b6b5d178009a87abf4e4292f90c098978e
 -- 
-2.34.1
-
+2.47.3
 
