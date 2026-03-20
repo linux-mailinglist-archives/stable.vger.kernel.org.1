@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-227519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yET1KpkuvWmI7QIAu9opvQ
-	(envelope-from <stable+bounces-227519-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:25:13 +0100
+	id qOCgCFswvWmI7QIAu9opvQ
+	(envelope-from <stable+bounces-227520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:32:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 254CC2D97F1
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:25:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A841B2D9A15
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 00ED530721A3
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:21:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5A6E93079E1A
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B788F3A4F50;
-	Fri, 20 Mar 2026 11:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBC9378823;
+	Fri, 20 Mar 2026 11:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFuUO0GW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BHvjwI2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C33639526F
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 11:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBC9313E34
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 11:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774005680; cv=none; b=kEd3kpZsDmK85JAVBH92z9/YVQtjJ2nBJhqw9zxqSC4kDWdLZfVMVGkaCZxei+eieAw567vWb7gCorgjsMFR0W4KazGeAucgOktyDJXAkd6TobYG0d4wlL5ISN5Z1KvG8LLfRNoVImFUZkRiPMgOvi1RdyYi1G3Iw8B4KVKWqao=
+	t=1774006175; cv=none; b=nl9VDsCaXAuihfhuq9x7NMt2nW4am6zYGjOLRFk1dO55HhxBmEuVJrMu0ld90zJBmt6yLfsOHGg3sfX4vK4BhVb/Q42p+ZJ0MC/ZhtuMt/lSed+onIaWMIPIfotYTVUHWcRqRo41yQcVwmJ1kskbgyxISaeSFrixT+clDztXdlE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774005680; c=relaxed/simple;
-	bh=iw8n2d6JP+yiDFklZ5E6plkBZ8DYlORLnyibUWm/Xyo=;
+	s=arc-20240116; t=1774006175; c=relaxed/simple;
+	bh=z2RpUgvAZVN/p75c/5V2Oj0CZjapBJCLXpDJYVff5bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GkNnXyKWbrYBRpjzq5YYDXYDID6uIFMdxqqZHemPzoHTYOVV5OaIvz1wkdOw5B+DTN2V9fMm03IpLkClYyYk16XgTKvfnl6GrDo4h/pPtyhNGqwQTudbuUyL3/6idqdraLo8v23CUp7UFf8oTfzT6v9IbIpJxUCzG0XZkI2ae1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFuUO0GW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6075AC4CEF7;
-	Fri, 20 Mar 2026 11:21:19 +0000 (UTC)
+	 MIME-Version; b=dmpgrJZZmCltOid8UQYbKwSdammejuw5/o5PvQOzX7dlWCOGjYBwwm6wywj7hMdCXFbUoXBb0XnkKkBI4V8qbS7ScNylj4IG/afK4lZMdsAWKg4lrpHFCTrwXtsKOlzvykObGdCiX2eD1wK3YpJtZbiQt+Rn5JzpOUjh0UWd78I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BHvjwI2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC494C4CEF7;
+	Fri, 20 Mar 2026 11:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774005680;
-	bh=iw8n2d6JP+yiDFklZ5E6plkBZ8DYlORLnyibUWm/Xyo=;
+	s=k20201202; t=1774006175;
+	bh=z2RpUgvAZVN/p75c/5V2Oj0CZjapBJCLXpDJYVff5bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFuUO0GWHPE1joidhobT+UgM8x0VDrDs8oc1w7B/VvqKiCHjaTJnW55uu9XlFtPVG
-	 pGSFjgVoWcdEeKpIoou3jm1qBiV+fadq6/XNj6JDKMKXTHDbojtqgn2IhWYO43cwZo
-	 ggmE8xb5ZsBEz0FY327qfspyu+JQ31+aIA6cek1oGOId2Xk/ZTjvWRtJ6nJvvXiwl8
-	 mQctPh2Tg/F54ScmlELlBxqEoAG7rXDDFltk4adedk8A+XRQ0aJnD9udqBTXmKhm19
-	 lPGfZKoeAITEYzZsjaCmWrOULVa63Ym119QsYTzFyFL7W4Eqox3RKBm1Vswv8WtSMI
-	 GJmSwHOmp9vBw==
+	b=BHvjwI2itaHA6RgkGe4TrZsqFj6NHDpvcGIjxLZDIDiR5e69K5NElKwcMITJDheUF
+	 ZSR8MukmjTEKw5zWKeDhX6mCO196VYxkDgYJoQmW6kBqE/284jMLfxouCiPmcznPm4
+	 ePYl/nNEDe/KQjAd35K2ATtXYO6cTwwo97xZWvRsxrfq5ZqKgnou80Wpye03U6OF2K
+	 FMDxwoW2tWmBkqCpr4n5hkWJJ0wtxmBx/CgrU9Xh/tDLQXzi6MySyd+uuSSof9MKjs
+	 pvVbjOaXsDgZJBqTU5A21yLIx/LusSWl9L6rQmTxZljY9KBe8NnmkV5kaBTrXkOG/n
+	 UW3OxWvrCy+/g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jeff Layton <jlayton@kernel.org>,
@@ -51,12 +51,12 @@ Cc: Jeff Layton <jlayton@kernel.org>,
 	Nicholas Carlini <npc@anthropic.com>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
-Date: Fri, 20 Mar 2026 07:21:17 -0400
-Message-ID: <20260320112117.3880626-1-sashal@kernel.org>
+Subject: [PATCH 6.1.y] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
+Date: Fri, 20 Mar 2026 07:29:33 -0400
+Message-ID: <20260320112933.3960093-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026032000-underling-groove-29b4@gregkh>
-References: <2026032000-underling-groove-29b4@gregkh>
+In-Reply-To: <2026032005-majority-dynasty-d172@gregkh>
+References: <2026032005-majority-dynasty-d172@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,11 +70,11 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227519-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227520-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -85,12 +85,12 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.984];
+	NEURAL_HAM(-0.00)[-0.993];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 254CC2D97F1
+X-Rspamd-Queue-Id: A841B2D9A15
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -138,10 +138,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index d84eaae7cd0b6..03a4a8de11140 100644
+index d37c90691b953..d83254ae3e71f 100644
 --- a/fs/nfsd/nfs4xdr.c
 +++ b/fs/nfsd/nfs4xdr.c
-@@ -5425,9 +5425,14 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
+@@ -5438,9 +5438,14 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
  		int len = xdr->buf->len - post_err_offset;
  
  		so->so_replay.rp_status = op->status;
@@ -159,7 +159,7 @@ index d84eaae7cd0b6..03a4a8de11140 100644
  status:
  	*p = op->status;
 diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index 5da7785609b07..d1450fe7e2b90 100644
+index 477828dbfc665..53298bdcfb3d0 100644
 --- a/fs/nfsd/state.h
 +++ b/fs/nfsd/state.h
 @@ -430,11 +430,18 @@ struct nfs4_client_reclaim {
