@@ -1,149 +1,128 @@
-Return-Path: <stable+bounces-227502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8HUpG9ESvWnG6QIAu9opvQ
-	(envelope-from <stable+bounces-227502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:26:41 +0100
+	id oMfBNTMTvWnG6QIAu9opvQ
+	(envelope-from <stable+bounces-227503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:28:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1FB32D7FD8
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:26:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 523882D801B
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:28:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 286A0305D285
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:25:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 97BD2300788E
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB14D36215A;
-	Fri, 20 Mar 2026 09:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 567E2330D25;
+	Fri, 20 Mar 2026 09:28:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ICswiIhr"
+	dkim=pass (2048-bit key) header.d=qpok.net header.i=@qpok.net header.b="FZzupXFV"
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0535233F5BA;
-	Fri, 20 Mar 2026 09:25:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74684346E7F
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 09:28:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773998730; cv=none; b=P98XLHnJytM7maOGcN3haDDyv7lfiQbuS7yFNrJtPtgM14rHCk3Pt6fCqRhuUaWMflGTBGOF2srUCFhRcBMrVCqU9Rt8hB0CyBzOs5oRME7ePvm5Vh+vV80N5ijqyMxiv1TY1/tjWJfrT6IdZ2Rs/FZCoyeu0N79nrLzO018zv4=
+	t=1773998896; cv=none; b=AaISgpUnGQNcY9u4YrPGWFObB2vU6NSUtN3ObYgv4xax/fTzKt98RD7qHfHBs7pZxCpyuE1e4OPnZtPsN7iUM+BX6T+m/GlTT7hd7VlRQGUKjwuAgoRH23TUeBguFFAVy6BPEBFLVsPX81U0kPz2Q3HzfFK2ul34209snH7Rrjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773998730; c=relaxed/simple;
-	bh=znPOpiEJwYLiTlYVkKoe/IHzvAviWMTzv16qtNZ1iWI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E+fpOWXvDyj0iHRgZW4ZY+H2M8CQoWU8jj6eS2yG7LWAmi9GIC/Mm8yTvWsA2NNCYTgqZhX3qCfzAhFM3W8X/HwvOUCFJ0nIKV0sjTdy+BlTfAoIlbumhfLqvkpelA6Pgw0Nb/U+4rtV71CoVr9GiiZxt9l1hxXuLu0JVvr1Kss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ICswiIhr; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=TZvSYdXSZCuJYzv6r9GmgLB94F4V1JzGvO04TEeXOA0=; b=ICswiIhrGUF0kjJS/b0HAKbMs2
-	w+BiXDKduMOz57ZbWEpf+PwHPQwBneax3B6yfk1tMDiOoB47zilcBSFsF8mANjEH5bw6vwKtKaPOY
-	w7uhO6NPjvXamJAed9xxGvT7vzFvBaVDPJX+K7btHVg5ovLPNFlm/jQlsGWc1LE64zs+vqjEe5PSk
-	xf5BIJ+1TM34BgUocBodn++KrR5AcTOt+11enVIarL20Pckzz5jgl/SiTUaAZ3yd2bfLeYQ9vaJBq
-	/w55cU6bUkAg41AYpF2ajUeHEgLsib8D7JArRAe7zthInRylTmwySPdYvuymroZ+iqWzzGfkLatl7
-	DiExxJZQ==;
-Received: from 2001-1c00-8d85-5700-266e-96ff-fe07-7dcc.cable.dynamic.v6.ziggo.nl ([2001:1c00:8d85:5700:266e:96ff:fe07:7dcc] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3W6b-00000007XrE-3dIk;
-	Fri, 20 Mar 2026 09:25:22 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 484F7302FFB; Fri, 20 Mar 2026 10:25:21 +0100 (CET)
-Date: Fri, 20 Mar 2026 10:25:21 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: linux-kernel@vger.kernel.org
-Cc: linux-tip-commits@vger.kernel.org, Nikunj A Dadhania <nikunj@amd.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org,
-	x86@kernel.org, Kees Cook <keescook@chromium.org>
-Subject: [PATCH] x86/cpu: Add comment clarifying CRn pinning
-Message-ID: <20260320092521.GG3739106@noisy.programming.kicks-ass.net>
-References: <20260318075654.1792916-3-nikunj@amd.com>
- <177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2>
- <20260318204722.GD3738786@noisy.programming.kicks-ass.net>
- <20260318220939.GD3739106@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1773998896; c=relaxed/simple;
+	bh=rNO14Di7KZnMVWefKhh0ij9quz7UDkBl4bwAflBVCFo=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc; b=o9WdGBzxaXHlQ/0RDNS6TdvCdrprjAlXUQOG+NsatFvaTHpI7lFIYKW8Ay9g7QuCTDZqOwjcB+ankRhQfsmVHXR0erNnd6ILDrdV/jHQFrWiSxy8scdCag4OYiwa+uMZkIXtXxWVuktYkibgofnGl6oRSyF50M9F0Clve1tEfc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qpok.net; spf=pass smtp.mailfrom=qpok.net; dkim=pass (2048-bit key) header.d=qpok.net header.i=@qpok.net header.b=FZzupXFV; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qpok.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qpok.net
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260318220939.GD3739106@noisy.programming.kicks-ass.net>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qpok.net; s=key1;
+	t=1773998891;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6cu10aOjRylqbgtDpJ7kKRC5JYCqevnVQUIUK77SSis=;
+	b=FZzupXFVrgnabe7HqLP3wiNPOiMidvL5zcX4JDSfOlb2ecUGf0U9RPeElY6+GNuXpizWZY
+	cINY0L8DTG2GvzlQ9aOVG7tBxpJ7l5A+e8Ukhtdiy8Uwt3OOkIKbdNxLuVr1J9JM/E9EZR
+	AzzV89VQqYhuB2tpj4a6/woVvojivwWZoF2XacaIhSkt0cl4CJbXpX3U5Negfj/zQWiuj4
+	EIK05r1PJsulirpfNSWsmeklrlBOC8YEsGO/gMw38pP7VdxFe8WKJr+s3rz+CzALUIT/I8
+	YBdNXuokp4vvZNk9nrP+i0sh8scMkOu9YNap0Wnta/szCDBP4TxEF6vIjeDB4A==
+Date: Fri, 20 Mar 2026 09:28:06 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Mark Somerville" <mark@qpok.net>
+Message-ID: <1be114e1130ca59ee91fc5a73aaf43a912d408ea@qpok.net>
+TLS-Required: No
+Subject: [REGRESSION] Unable to pass AMD RX 6400 GPU via VFIO
+To: stable@vger.kernel.org
+Cc: "Mario Limonciello" <superm1@kernel.org>, regressions@lists.linux.dev,
+ "Alex Deucher" <alexander.deucher@amd.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "=?utf-8?B?Q2hyaXN0aWFuIEvDtm5pZw==?="
+ <christian.koenig@amd.com>, "Xinhui Pan" <Xinhui.Pan@amd.com>
+X-Migadu-Flow: FLOW_OUT
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[infradead.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[infradead.org:s=casper.20170209];
+	DMARC_POLICY_ALLOW(-0.50)[qpok.net,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[qpok.net:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[infradead.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227503-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227502-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[qpok.net:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[peterz@infradead.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-0.996];
+	FROM_NEQ_ENVFROM(0.00)[mark@qpok.net,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.991];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,noisy.programming.kicks-ass.net:mid,infradead.org:dkim,infradead.org:email]
-X-Rspamd-Queue-Id: E1FB32D7FD8
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qpok.net:dkim,qpok.net:mid]
+X-Rspamd-Queue-Id: 523882D801B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello maintainers!
 
-Since Boris wanted a nice patch to just press 'apply' on, here goes :-)
+I run Debian 13 stable (6.12 kernel) and have encountered a regression.
 
+My machine has three GPUs, the iGPU that is part of my 7950X and two dGPU=
+s - one NVIDIA 3090 and one AMD RX 6400. I use the iGPU for the host and =
+only use the two dGPUs with virtual machines via VFIO with libvirt.
 
----
-Subject: x86/cpu: Add comment clarifying CRn pinning
-From: Peter Zijlstra <peterz@infradead.org>
-Date: Wed, 18 Mar 2026 23:09:39 +0100
+Although I have specified kernel parameters vfio_pci.ids for the GPUs, I =
+have not blacklisted the amdgpu driver so that the host iGPU can operate.=
+  Previously, starting a VM with the RX 6400 dGPU assigned to it (via VFI=
+O) would work fine. However, doing this with more recent stable kernels c=
+auses the machine to hang immediately (and then, ultimately, reset after =
+a while - ~30s). No errors are logged, at least as things are configured =
+just now.
 
-To avoid future confusion on the purpose and design of the CRn pinning
-code.
+I can reliably reproduce this crash and a bisection revealed the commit t=
+hat introducted the problem: 8140ac7c55e75093a01c6110a2c4025fe7177c57.
 
-Also note that if the attacker controls page-tables, the CRn bits
-loose much of the attraction anyway.
+This is fixed in the mainline kernel, I have tested and verified my RX 64=
+00 is working with VFIO under 7.0-rc4.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/x86/kernel/cpu/common.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+I *think* this is still present in the 6.12.y branch but a second (curren=
+tly ongoing) regression is preventing me checking this on the latest and =
+greatest 6.12 release right now.
 
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -434,6 +434,19 @@ static __always_inline void setup_lass(s
- /* These bits should not change their value after CPU init is finished. */
- static const unsigned long cr4_pinned_mask = X86_CR4_SMEP | X86_CR4_SMAP | X86_CR4_UMIP |
- 					     X86_CR4_FSGSBASE | X86_CR4_CET | X86_CR4_FRED;
-+
-+/*
-+ * The CR pinning protects against ROP on the 'mov %reg, %CRn' instruction(s).
-+ * Since you can ROP directly to these instructions (barring shadow stack),
-+ * any protection must follow immediately and unconditionally after that.
-+ *
-+ * Specifically, the CR[04] write functions below will have the value
-+ * validation controlled by the @cr_pinning static_branch which is
-+ * __ro_after_init, just like the cr4_pinned_bits value.
-+ *
-+ * Once set, an attacker will have to defeat page-tables to get around these
-+ * restrictions. Which is a much bigger ask than 'simple' ROP.
-+ */
- static DEFINE_STATIC_KEY_FALSE_RO(cr_pinning);
- static unsigned long cr4_pinned_bits __ro_after_init;
- 
+Working:   6.12.63
+Regressed: 6.12.69
+Working:   7.0-rc4
 
+#regzbot introduced: 8140ac7c55e75093a01c6110a2c4025fe7177c57
 
