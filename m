@@ -1,220 +1,248 @@
-Return-Path: <stable+bounces-227617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227618-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iBqPI/KvvWnIAQMAu9opvQ
-	(envelope-from <stable+bounces-227617-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:37:06 +0100
+	id sMy7MASyvWlBAgMAu9opvQ
+	(envelope-from <stable+bounces-227618-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:45:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D64422E0E80
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:37:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D265F2E0F96
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:45:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 433A03034641
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:34:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 10A34300F2BA
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7E8C34F486;
-	Fri, 20 Mar 2026 20:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E6E3644BE;
+	Fri, 20 Mar 2026 20:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="cTBQJ4Od"
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="IEYuNagP"
 X-Original-To: stable@vger.kernel.org
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F1E34A765
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 20:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774038867; cv=none; b=sGSqcf5uM6JTt8JgzRmpqPXbvMigLu10dKjxY5RyXNIywxaaJjqg0M9OMLAroN0Bh900qLK6gR+921BJTP0nvEVQyM7w6FygByfvt+yoo9NvXtJ4x2SaLTisAoldtCzRC0dCE9D9FxgrMMzSFCfmua/nGHuBa2qTSD0xJR7AwkY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774038867; c=relaxed/simple;
-	bh=98KaJw/oCwyC5Xn141upYr/+Qxkwh7BSfQzrwNjtpgA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cFvR4rBYx3vyt6PlwCRWZiuquvJb1ZFUxWD0hYPS+RigJGEYDgErpRjRAHAenvUVvColND9CGco41vnLcLO8MlbX6rsKtpzH0kRkXn6N5Sh5IWGH8MM01RQtVNW3h2wo6Yrv7yU9legeaWqJq4hhpbnvPdxp01TKPqIwjWyCltc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=cTBQJ4Od; arc=none smtp.client-ip=91.218.175.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <d0e34348-0ed5-438c-85da-5429537076a2@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774038863;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/WoR8K7XGmDVEtoi9ivwH2sJTHd+vd68YWIhfqzP1KY=;
-	b=cTBQJ4Od+uooOgg8vdoYAevQC/04ylnzYBzYel716jciHEzINF8HKFOMxG5frxtHrljbOb
-	0IvVS1lVOVMqLRZL49GhPx70xwioBUrdSz4dOoW3xXpjH453ALWBEOG+3MZroLFUt9mq/D
-	UGwYQmhNpzJ4R6Fz7IlajyjNiRg24OE=
-Date: Fri, 20 Mar 2026 13:34:08 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85227363C77;
+	Fri, 20 Mar 2026 20:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774039550; cv=fail; b=A9C0rjqlWZjiDCiOb+wFwjchS/jWLKeN87FfkDgK8lKdZezoKgNEVh/rqCUozJnjNIoem5zNbwM8Z4SAoLyKV6aEXh1JxRmzNLgT4MP7pZ35nsmwzlynF6mtXWbIChJGRTtdMVKAPb39CSTdXW8zPxaD0PM8BgccMBrCpPQS0CU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774039550; c=relaxed/simple;
+	bh=uEab41qPzfNO+/wftrcLb20H5Kd0PHtaw9v17jvhvAI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=W6fR/6ODgEKkV88sb50rP1K/VaFVR1tzJI93J79Vqr2hdmQpW+cdSZ7ILD5tAgEDRwCMByT5jQ/0NUieupsrRHx+AmNgT8/+3PpghW3oy9GcsT4XBhumEf+YP/wgcgWV1Q8thiSPELSX0YjYdreCHKRH1pFy/71Skd+VEXvBHO8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=IEYuNagP; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62K8ad4I947177;
+	Fri, 20 Mar 2026 13:44:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=PPS06212021; bh=ib+XAmTBt
+	mYhRbPC2UYkJ9b3Xjrc4+EZnAbNUbw6c/Q=; b=IEYuNagPe0XMOR4SE005gc6Q+
+	07109X4jXoNj8ZOMjqHCe2mDJZIxNAkNFa1KNbKpXvq00BKVFcRWFG+5a2ydRMGZ
+	DLrR8111wjlGWrQs+CrPrB2K913G3GJaALyzu82fSieqnIDcM/rSeZkZgzjfZ0I4
+	8LdlCs0j5xRVPiQirOuiHOPSMW8GyFTDPso2qgAKfEgZO+sLIYO3tFtx7cjDSJop
+	RDJjK+Ftmt5WlIhAg7dfl/6S7Yb3vWtSkso3PizZPe22YWyj3+fHtuodIH8fneK6
+	DBac5Y35Fn/sG31Dvy89O0Hjo5qhW6yn1BqRcqnsGBIp6ynYKz4cxbHlGiloQ==
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010071.outbound.protection.outlook.com [52.101.85.71])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4cw2y18k1q-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 20 Mar 2026 13:44:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Yu7kjHZsCCJ/r8JP25qKvJnJSWRW3DF8c+kJYytfmnreF1Mr8L/k1dWZXMZFEvoXHP6M/3rXsnpwlnHKHdbN8zWnRqrMo91Fh3qTyhR+FTbi456M29OoCe8rtXaXBIkY195bOYMto0yfB5NpGe7yk6bNP9wX39WO6LqVKVo4KnRZm4dCYnsrozlFK+I1nTMLSIDxdszHryKZq/Y7HlxXIIJ15ECl0FScjEWuvzH+dABwsZxE3e61BAiw53KQ5TaSZ6X+bsxvVL8q0t/CVBZSaKWCmBIUpVpP5tyWrBcf2krnTPoO5FSb1HQYeQk6VRaUX3vLL1cZOMjLENDsBw8V5Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ib+XAmTBtmYhRbPC2UYkJ9b3Xjrc4+EZnAbNUbw6c/Q=;
+ b=YAfLJlbgOikjCu8Ao6WoiJHjx5H4qU9mIL6jlvgPRrAtV4wpkwW4kZaBE4A91hSpyn0WqCstlhgUkR6rvkp2FA9Nj4dg1pFu0Z+ObeovDr0CkgsUDqr8Ve8nAY1uLTP7E59A/wxnvfzKWyCsjnh3emO5aLxt4eWza7ShQKD2bh7giPQpbfisoF39jMn/8CZK+42MQASeT2o0PEVXb2xCSjF1b3qib/PBpcmqO1DJ8a/vgG9xMBG59XBhK0+7dxB2Qwj9C7jG7grMWCbm4iYzr00zNdYNJEeUl4CxstLBxONfwO1HX6PptrvHUhPC4llLgug6vrBYTm5Xg+hBu2BhzQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+Received: from SJ2PR11MB7546.namprd11.prod.outlook.com (2603:10b6:a03:4cc::8)
+ by LV3PR11MB8695.namprd11.prod.outlook.com (2603:10b6:408:211::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
+ 2026 20:44:53 +0000
+Received: from SJ2PR11MB7546.namprd11.prod.outlook.com
+ ([fe80::ca9b:dcf:8881:bced]) by SJ2PR11MB7546.namprd11.prod.outlook.com
+ ([fe80::ca9b:dcf:8881:bced%5]) with mapi id 15.20.9745.007; Fri, 20 Mar 2026
+ 20:44:53 +0000
+From: Ionut Nechita <ionut.nechita@windriver.com>
+To: stable@vger.kernel.org
+Cc: frederic@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
+        rdunlap@infradead.org, ptesarik@suse.com,
+        "Ionut Nechita" <ionut.nechita@windriver.com>
+Subject: [PATCH 6.12.y 0/7] timers/migration: Backport fixes and cleanups from 6.18.y
+Date: Fri, 20 Mar 2026 22:44:35 +0200
+Message-ID: <20260320204442.32901-1-ionut.nechita@windriver.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0296.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e7::16) To SJ2PR11MB7546.namprd11.prod.outlook.com
+ (2603:10b6:a03:4cc::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2] ASoC: SOF: Intel: hda: Fix NULL pointer dereference on
- SoundWire IRQ during removal
-To: gaggery.tsai@intel.com, linux-drivers-review-request@eclists.intel.com
-Cc: yung-chuan.liao@linux.intel.com, ranjani.sridharan@linux.intel.com,
- stable@vger.kernel.org
-References: <20260312150005.2069660-1-gaggery.tsai@intel.com>
- <20260312150837.2076641-1-gaggery.tsai@intel.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-In-Reply-To: <20260312150837.2076641-1-gaggery.tsai@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR11MB7546:EE_|LV3PR11MB8695:EE_
+X-MS-Office365-Filtering-Correlation-Id: a6a3be71-8f6c-4e19-46f7-08de86c189f2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|366016|10070799003|1800799024|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	2OFjJD6SXoqax8uKSLIrKyof5Vp4TciJnrSNIl1ZH70PEu1uE119iRZeWFjQEcP+33pS4/VnUmVXdDIaxy+N1w4x3VqF13aulwsYEjcryy8hG0wt8UPGCK+BJNb4LAYeOa7ICs4nqGwZmmhtpWsxSf8wN99oHY6lhVheUI7HEwqju40Uhha4plGS1707Ucxh3W8BjYu2PEASIyi/zt/eC/+go8/sYn3kDUZRnAJAwgS3nPA6JFF3HYBZpYq+InWRBPkBmkTusX9g99ExZVMGJph52zIXqgxygNkph+R20viPbLLkFY6r/d19vVkaTRVrHNEPrF1UXK0B7QDtBviuUO2TgJ3FTaXn7J3uDFeaCzydafqCAJMeZMI4nXTFphwPFpzI/VskB+NwGwl0TDrJY09qth+i9c12bGiCmyMri7TYwnANTVsfzzeqtOT0X6x8L+zFmEgUWaiE6c6SGeuRqmfKQDWQBCGO8Zzu2HP1OHP5vIuDwHZb0El9LLvARzu7CqMgyg0F0gZlkb8IT1XqJ6626uwa88W9M9LSwCN2ApQyiJMfytWIS+dFXYREsRvclZxtIRtcDEL+Q1nn7uNT+Q0D0vVssJARjojVyA0dlwi92jBbmfx541EHmkDdcsaYtB2E+eNeNZcgiCYJj7pKl5lNT3akuq4L/8JH+80YwyhYQqYMsdsup+sEqyluuFbbGYAyYhDzBkCDk1JNOPF7O80GfxvS2LaFY7UmtXZqvU4=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7546.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(10070799003)(1800799024)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?POwLdKX4YKi4VjDDone9+M6AFAXZb+LCMK2vf2wuBTlvDmkGM3jIzyDsKSjq?=
+ =?us-ascii?Q?VJAkreUpam+lAbyMo2Qd7x717zHoRc3lFCAo+9u/hYhejYjCv1o7v0K7KqcO?=
+ =?us-ascii?Q?DaAmjWvJuVhMXs9qquD2cbxFfUcfD+n+7ZGVWYx2sBJaIUTE+2ntQ3vAr8oH?=
+ =?us-ascii?Q?qucrxh8+QW5LqFC3kfj3W/1hhKrDx6tx+s06Vrl3YpGbWh2hA01DDHX7/qmW?=
+ =?us-ascii?Q?ofDAyEA1hJMClgKq7wePjfs2ZhC2AoOHWpyc6nd8CwIz0MZKEvDsHYEGkVeZ?=
+ =?us-ascii?Q?udnrHM6C21Cy7AHb7WBFcfdbyIraHK9QuV60yvzl7iu9bAgk3ElFiOS2mOqq?=
+ =?us-ascii?Q?e6tdcD2K7Aznzf2I+yus+76XlUo8p0LHqcnQoPGymx+6y11snMvXhe2Tu0V7?=
+ =?us-ascii?Q?3V+GcaKbnA65RwfuBN2Wj1SJ7EOIRKmBUtSv/2IocETAQLgqdnH8/UqpLsTC?=
+ =?us-ascii?Q?Och3O3NZ5oT6xp2jVkiaT9meIouHOqHtBpKH1REjt2DA809/MBbiFNp4xm3o?=
+ =?us-ascii?Q?hGkpHPkdB0KID9twbdxfVyJkhOSfueJvD67BorPwqj9V4SVG5DjlOsEl/tEq?=
+ =?us-ascii?Q?RDM0MZnqzR/EKf5q14xKog4dOI0wrUCdSL1vSQuwxbb/w0jKcfQ7l8pJWeYu?=
+ =?us-ascii?Q?eYoBnsVYp1Qgf1sTHQDOR1zUSpDdbwfqZPzCHkCqLU8WG7p7fWXk7HXnwq6C?=
+ =?us-ascii?Q?McfQea+W9mAco4vRexkO364FjvuJ5K9VzkhrTZ8jzRZIu1N1yXVVjcl22qjL?=
+ =?us-ascii?Q?2cHLNGXnvG4+4vjgZqIdIG1ZP5qv3mpNip0iZVKYHPdbiHI0RBd0tCi9aF6c?=
+ =?us-ascii?Q?P0Ea2Xio/peD1fOxfbFLNjW++Ma/Vam6rxD7rkJ3QVFUXfAea+PHR/Nu9g+k?=
+ =?us-ascii?Q?9SxL5BHktLce4VhV1cK+Ef2th8xei+j9ObOVPi0uZAcD1E1wS8Ak2AXjx6+I?=
+ =?us-ascii?Q?E6AxTBhGs5scP4W9x2cFO4I/oMOQSuMa0UZSoO054BXz4/ighazPyuuQTsDl?=
+ =?us-ascii?Q?xhbd8FpTpqPyNlbTPDL2fM1KtItNGAhpW133MsKaOiazacDKX9LHMo7nCGw2?=
+ =?us-ascii?Q?d0H6V4chs6MtZ4o8U6Clzk+zlJ28PGDNj3PZ3coaT1ZMe1oQnOKogyp3dLxI?=
+ =?us-ascii?Q?SAcxTRbSy4lg1xuZi7vHMDK4d1K49o95Iv/Q0jQZAD6A7L0BqaFAWW+7Ud9B?=
+ =?us-ascii?Q?/cm26Xa/Qkh4bU90PYrMpIVlmyUM25uA6Ici9gvC9D2gEG4x4QZ7vCS/xWCE?=
+ =?us-ascii?Q?moV+JH7PokxfzdOVGyjnaU3Rr8qI2XJtZVayySIAx/XVg8OquMc2xhjTbDf0?=
+ =?us-ascii?Q?TU7dsLQhu2g6VSzWXhYmmKxDzRh12VBNs3F7YrwGC9Zb3tTMMsP/pWuVNShJ?=
+ =?us-ascii?Q?/e+cGvzH1xyiYJ69GkmHzBNGRhutdC4QjSSD7yR3ZcChHhTIVm+kjJfvAls7?=
+ =?us-ascii?Q?WrFQXtJ+7gesZvaIdOWSCzn2k1QqbYWV/NQ6dAuiMkG//SdpRwzWn/tRcnh+?=
+ =?us-ascii?Q?+Nju6isAr8Sk6Ju+G1Mfw5CZprlAf5kNu9YN9zzlWhgYWRjSM8YiNNSP3yjv?=
+ =?us-ascii?Q?MhuPNjf9/np0bkLm4WXrp3EZnpmw04q8J+9lcHx0B/Kxe6CIFwrRoXMUfjfE?=
+ =?us-ascii?Q?neJfl+5n7Yuk6IYS3ewoa6jUNLTZGyW6zRZ5U4pTcmfxguP72fvlJ4XiVZ+e?=
+ =?us-ascii?Q?AIBFraNF4IEL58QPpJLXtj4uBp+M56pnDWS2j2XAqxGcc01kspazZJ/JpI4P?=
+ =?us-ascii?Q?jf09R7sOEbvjwsMXoNki4PQIQtX4bYm7vNTGVBtYtEcZPv1omhi7Kh1L7pe/?=
+X-MS-Exchange-AntiSpam-MessageData-1: hvVHtjcQi81uNVbPI2VF6hn4YjqbMss7urc=
+X-Exchange-RoutingPolicyChecked:
+	KrlZxYnOUDzTl5iuC56BzcozmF15B6EYEIzzm9A3bCfMq84zssvwbJZSm4wzsskQ4KorEXMmSINvLW8lgiqLFMTaTu0MH/PD1lmE18lhye9rh9vSnJ9tjXzBnetRV3dbSsPUcobgh1FRoyNmjKIJRuWrxlu1yKdgRWkSe3pAgWJYcJNNPywKjAgYYPlhkbNwzlpxlCiFymMDmUqU1PH2k0bMMt8bLleU9lvLxJeZGwQQYS2GFnpVMxHweCKq86ffhLIKXB0iTa19W+FYeZwXSsKgKo/9xeeYhSNRT+CHoTyPGVQGTnWoOlNI29v0GIP9WaY4exOohPGwesPm1Be1pQ==
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6a3be71-8f6c-4e19-46f7-08de86c189f2
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7546.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 20:44:53.6926
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: JPLIisENap51jSg+fygIvRHn2VkvZfDPrr/YbW83wUMJ5oKxte18nb4f7M1rtY3EgJepKvKuQ5eeENo2+iM9jQUXS6/MdyGkEMjELM5o9QM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8695
+X-Authority-Analysis: v=2.4 cv=CekFJbrl c=1 sm=1 tr=0 ts=69bdb1c8 cx=c_pps
+ a=OGRNNHJcR/XwrOfql3gobQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+ a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
+ a=xqWC_Br6kY4A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bi6dqmuHe4P4UrxVR6um:22 a=HK-ge7EqtdluswH-FwHe:22 a=t7CeM3EgAAAA:8
+ a=RBo3ehTTX1hcqx067dEA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDE2OSBTYWx0ZWRfX5TeWlH+3yY2u
+ YfU/zkayKkTUw8csNWAFJ915r9TB2M9/RmorWVt9Tf983ml/raBE09AET0X4wjMqkGrLd3W8vEP
+ APBZTHAmBr+0I7xFKX7aPqeGqk0X1vh/JtRl8OgE3ZALHR2cJ8kHetet8rZM7qS6+/UfqQNKmj+
+ b5KO/12XCDiaSgBXd2ccBoYGcIyXILaR2YOWR0rv0B2+z03bU/Jy0jRP8F9DQcGLSg4DkSB2xDJ
+ k2UIBFAM9cHZACmoHS9p8O9R2v2iPHuuFHqfcy6e1Qy0L1klufijROdo598XWG9Xsjd2JmYmblg
+ TR1zhshuj7WhenpgvxCKZb/bfyBptneLbQqT+4YEMihawX+qIoTCrwgVKw5bXz7WyVPEPBc0JL0
+ p9+1ZhPcNLKxBZsvk8X+kRbt8e3N4uAp3Y/zpZtgc4g1h+wUI/4pk+H+wCi0VZM1RZiov//wwTu
+ NILKx7biadZFXGg9ITg==
+X-Proofpoint-GUID: SqMT1RUBlYs0BZ46aO3laFS81bRqjafq
+X-Proofpoint-ORIG-GUID: SqMT1RUBlYs0BZ46aO3laFS81bRqjafq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-20_03,2026-03-20_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 spamscore=0 suspectscore=0 adultscore=0 impostorscore=0
+ malwarescore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
+ definitions=main-2603200169
+X-Spamd-Result: default: False [1.34 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
+	R_DKIM_ALLOW(-0.20)[windriver.com:s=PPS06212021];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227617-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-227618-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,windriver.com:dkim,windriver.com:email,windriver.com:mid];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[windriver.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ionut.nechita@windriver.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pierre-louis.bossart@linux.dev,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:email,linux.dev:mid]
-X-Rspamd-Queue-Id: D64422E0E80
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: D265F2E0F96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/12/26 08:08, gaggery.tsai@intel.com wrote:
-> From: Gaggery Tsai <gaggery.tsai@intel.com>
-> 
-> hda_sdw_exit() sets hdev->sdw to NULL after calling sdw_intel_exit(),
-> but the shared IPC IRQ handler is not freed until much later in
-> hda_dsp_remove(). If a SoundWire interrupt fires in this window, the
-> IRQ thread calls hda_dsp_sdw_thread() -> sdw_intel_thread() with a
-> NULL context pointer or with link->cdns already freed, causing a NULL
-> pointer dereference:
-> 
->   BUG: kernel NULL pointer dereference, address: 00000000000003d0
->   RIP: 0010:sdw_cdns_irq+0x9/0x2b0 [soundwire_cadence]
->   Call Trace:
->    sdw_intel_thread+0x2d/0x50 [soundwire_intel]
->    hda_dsp_interrupt_thread+0x99/0x3a0 [snd_sof_intel_hda_generic]
->    irq_thread_fn+0x25/0x60
-> 
-> The race window is between hda_sdw_exit() tearing down SoundWire
-> links and free_irq() in hda_dsp_remove(). During sdw_intel_exit() ->
-> sdw_intel_cleanup(), each link's auxiliary device is unregistered,
-> which clears link->cdns. Meanwhile the IRQ thread can still fire and
-> iterate the link list, calling sdw_cdns_irq() with a NULL cdns.
-> 
-> Fix this in three ways:
-> 
->   1. In hda_sdw_exit(), disable SoundWire interrupts at the hardware
->      level (hda_sdw_int_enable) and call synchronize_irq() BEFORE
->      tearing down the SoundWire context, preventing new IRQ threads
->      from entering the SoundWire path.
-> 
->   2. Add a NULL guard for link->cdns in sdw_intel_thread() to handle
->      the case where the IRQ thread races with individual link
->      removal during sdw_intel_cleanup().
-> 
->   3. Add a NULL guard in hda_dsp_sdw_thread() as defense-in-depth
->      for the case where hdev->sdw is already NULL.
-> 
-> Tested on Intel Panther Lake with SoundWire codecs by manually
-> unbinding the SOF PCI device while audio was active.
-> 
-> Fixes: 722ba5f1f530 ("ASoC: SOF: Intel: hda: merge IPC, stream and SoundWire interrupt handlers")
-> Cc: stable@vger.kernel.org
-> Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>
-> Cc: Bard Liao <yung-chuan.liao@linux.intel.com>
-> Cc: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-> Signed-off-by: Gaggery Tsai <gaggery.tsai@intel.com>
-> ---
->  drivers/soundwire/intel_init.c |  6 ++++--
->  sound/soc/sof/intel/hda.c      | 11 +++++++++--
->  2 files changed, 13 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/soundwire/intel_init.c b/drivers/soundwire/intel_init.c
-> index ad48d67fa935..e093a29f1590 100644
-> --- a/drivers/soundwire/intel_init.c
-> +++ b/drivers/soundwire/intel_init.c
-> @@ -145,8 +145,10 @@ irqreturn_t sdw_intel_thread(int irq, void *dev_id)
->  	struct sdw_intel_ctx *ctx = dev_id;
->  	struct sdw_intel_link_res *link;
->  
-> -	list_for_each_entry(link, &ctx->link_list, list)
-> -		sdw_cdns_irq(irq, link->cdns);
-> +	list_for_each_entry(link, &ctx->link_list, list) {
-> +		if (link->cdns)
-> +			sdw_cdns_irq(irq, link->cdns);
+From: "Ionut Nechita" <ionut.nechita@windriver.com>
 
-is this really a fix? Couldn't you have a case where the branch is taken, but the context is freed by the exit below?
-You'd have a case of use-after-free, which is just as problematic as accessing a NULL pointer...
+This series backports 7 upstream commits to the timer migration
+subsystem for linux-6.12.y stable.
 
-The synchronize_irq() only guarantees no new IRQ will be generated, but it doesn't control if a thread can execute and when the context is used.
+The most important patch is 7/7 which fixes imbalanced NUMA trees in
+the timer migration hierarchy (Fixes: 7ee988770326). Patches 5/7 and
+6/7 are its stable dependencies (Stable-dep-of: 5eb579dfd46b). The
+remaining patches are cleanups and annotations that complete the
+backport.
 
-It almost feels like you need some sort of lock to prevent this list from being accessed.
+After applying this series, kernel/time/timer_migration.c and
+kernel/time/timer_migration.h match linux-6.18.y exactly.
 
-Bard, can you review this as well?
+All patches are clean cherry-picks with no conflicts.
 
-> +	}
->  
->  	return IRQ_HANDLED;
->  }
-> diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-> index c0cc7d3ce526..02a0e354414e 100644
-> --- a/sound/soc/sof/intel/hda.c
-> +++ b/sound/soc/sof/intel/hda.c
-> @@ -256,12 +256,17 @@ static int hda_sdw_exit(struct snd_sof_dev *sdev)
->  
->  	hdev = sdev->pdata->hw_pdata;
->  
-> +	/* Disable SoundWire IRQ at the hardware level first to prevent
-> +	 * the IRQ handler from accessing hdev->sdw after it is freed.
-> +	 * synchronize_irq() ensures any in-flight handler has completed.
-> +	 */
-> +	hda_sdw_int_enable(sdev, false);
-> +	synchronize_irq(sdev->ipc_irq);
+Upstream commits:
+  4477b0601471 ("timer/migration: Fix kernel-doc warnings for union tmigr_state")
+  922efd298bb2 ("timers/migration: Annotate accesses to ignore flag")
+  dcf6230555dc ("timers/migration: Simplify top level detection on group setup")
+  ff56a3e2a861 ("timers/migration: Clean up the loop in tmigr_quick_check()")
+  e21665bac15c ("timers/migration: Convert "while" loops to use "for"")
+  cc25b81fe0ea ("timers/migration: Remove locking on group connection")
+  d4b3a4c2aa7b ("timers/migration: Fix imbalanced NUMA trees")
 
-In addition to my concern above, this feels like a layering violation. The IRQ is used for SoundWire,
-but also IPC and DSP interrupts. You'd want to do this in hda_dsp_remove(), no?
+Frederic Weisbecker (5):
+  timers/migration: Annotate accesses to ignore flag
+  timers/migration: Simplify top level detection on group setup
+  timers/migration: Convert "while" loops to use "for"
+  timers/migration: Remove locking on group connection
+  timers/migration: Fix imbalanced NUMA trees
 
-This may require hda_sdw_exit() to be broken in two, with a _disable() followed by _remove() helper.
+Petr Tesarik (1):
+  timers/migration: Clean up the loop in tmigr_quick_check()
 
-> +
->  	if (hdev->sdw)
->  		sdw_intel_exit(hdev->sdw);
->  	hdev->sdw = NULL;
->  
-> -	hda_sdw_int_enable(sdev, false);
-> -
->  	return 0;
->  }
->  
-> @@ -309,6 +314,8 @@ static bool hda_dsp_check_sdw_irq(struct snd_sof_dev *sdev)
->  
->  static irqreturn_t hda_dsp_sdw_thread(int irq, void *context)
->  {
-> +	if (!context)
-> +		return IRQ_HANDLED;
+Randy Dunlap (1):
+  timer/migration: Fix kernel-doc warnings for union tmigr_state
 
-If the issues are solved, is this really needed?
+ kernel/time/timer_migration.c | 296 ++++++++++++++++++----------------
+ kernel/time/timer_migration.h |  21 ++-
+ 2 files changed, 167 insertions(+), 150 deletions(-)
 
->  	return sdw_intel_thread(irq, context);
->  }
->  
+--
+2.53.0
 
 
