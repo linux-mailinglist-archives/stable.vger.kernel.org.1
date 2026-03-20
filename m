@@ -1,642 +1,358 @@
-Return-Path: <stable+bounces-227621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227626-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCa1JjqyvWlBAgMAu9opvQ
-	(envelope-from <stable+bounces-227621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:46:50 +0100
+	id KBgCOzW4vWm9AwMAu9opvQ
+	(envelope-from <stable+bounces-227626-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:12:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0542C2E0FF7
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:46:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36132E128C
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:12:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CDBA430B9F9A
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:45:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 43A13305B5F8
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5DDA366831;
-	Fri, 20 Mar 2026 20:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA0336A03F;
+	Fri, 20 Mar 2026 21:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="pQrwvHfV"
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="bTEAX4Qs"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF5B364038;
-	Fri, 20 Mar 2026 20:45:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774039552; cv=fail; b=fVt5gonH0anZ3bBXy0KM8shuCKKC4cHTtCAdltpnMekiikd5DI0jmR+uFoO+5B9R0Y7q0Bnm+Q7vrMLauVpjRLB1GOHq1Bcfjdrr0Q7GIA4um3WjTK2wFcjqGGffZWPyoZcmQ6DBW/uwbDjiCluVeX/zQQkl0J9/5zsAeuTsgmE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774039552; c=relaxed/simple;
-	bh=3IEeiaQQnDgGcY/Um6oE6skMSmYdldUYh5bPLBp/0tM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=snNlYhQyPhmrlt71mijrY4EVubM3KIDpukor5DFm4puia2zpkwJafLFQBhnxlOeXPvRDPwLpS+duo9iTx6x/hQknv/w0X/rO/4+r6AR8ZCdBavOwuWApf41QLWsPt7sFC5U8jmBTfCiyFNvjOudxt7dBOk/HLBvw9kTgyc6pwOQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=pQrwvHfV; arc=fail smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62KFNrV71789288;
-	Fri, 20 Mar 2026 13:45:16 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
-	 h=cc:content-transfer-encoding:content-type:date:from
-	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	PPS06212021; bh=NvgeKf27I+9OsA6o9lSFuMD117exw8zSKxHdYScYsd0=; b=
-	pQrwvHfVYcaQ+tGaoLRR00O9m1+k7c88+g2gEdAM/ofBusaJdUZWXaQlOyAeDA6a
-	cVGvY4zqnyYwsjwvYYRYCb5ha0RpEnNR3AONxz4qLYnJwYckV0GSAUDW90WxL8Mx
-	Brb04Fp3qxJffDgLR64PivBPa1vPCZaWrjb7SV6wFHkyWpoGRxo2LSESBziglRZ2
-	EmE+irKnXBo4qoUlAAcx0JSUD2MITiTIPlPCFKjCoRijUdx/k/DnZ5U4jgcKGQhx
-	SQ5Og4z/Eku9Ic5dJjQJs4jYKECzTSpkRtn41aNOWNh+avnCpyhzIZKnyOhPeqNK
-	UQ5vdiwymURmMaQwzeAoyw==
-Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012038.outbound.protection.outlook.com [52.101.43.38])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4d18uggb7h-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 13:45:16 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XJRh43smP59aaKEVcDXjk6hyA/r1iKA/9KPYj3d3gWljlTMZ0H6KBRmwCflDXEadxTOt9x+wPCIGIMRXKGygAd9wScyscqJKSecYJe3g+SNMroBUSA4y8QUIq+gRW/QgohOtmP+dVdO+ZSs61ysnFx82AKakbt1FlPFM98NSy3f3DF16ahmJcFY0dxb4nOR0AKDRITdWXDHFRRc17SnHPFO3Tjs0JdYbk4BZmXTOMXrUyz8dgw2haw2Z9VykHXDHWMukA2OUaECQZIumXFuHuIf2YZoRKHUrWge+xjTdQ1FRwI+ajre7TR/VYepBm91K+dxqJwvWJwn6g4qEjtszTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NvgeKf27I+9OsA6o9lSFuMD117exw8zSKxHdYScYsd0=;
- b=mccEQ6GUr8SRrrNTaebXl2NLBC88lffphtD9zmgh300gy9dpz0bPyqHWsROUXOrq1Xkm8ylaragEY8Hklrn2HNNJOJkHZHBuKy9uF7VN+H0piSEexIT0AC8GgCddGI4oMoD5Jltq2d8AoP6X0ZX1T1InGppqCagaGiP1QvtMR8l8n3kQHjBrvvGPWCKp6n1IfVjJUNPCOIFl5lAwTZWw1sS6ZSQAe56nFjeZvWGmJJ5Zdy+sRPqIv5UQXawlKincoq3p+NofFO2ir7kmYCHqArsDOZUUyVxfgkf6k0qgUu6q46eaeZpCRuY9cewSZ7MRu/4Ve4V2rDBvLgAHqU9CWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from SJ2PR11MB7546.namprd11.prod.outlook.com (2603:10b6:a03:4cc::8)
- by MW6PR11MB8437.namprd11.prod.outlook.com (2603:10b6:303:249::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9723.19; Fri, 20 Mar
- 2026 20:45:11 +0000
-Received: from SJ2PR11MB7546.namprd11.prod.outlook.com
- ([fe80::ca9b:dcf:8881:bced]) by SJ2PR11MB7546.namprd11.prod.outlook.com
- ([fe80::ca9b:dcf:8881:bced%5]) with mapi id 15.20.9745.007; Fri, 20 Mar 2026
- 20:45:09 +0000
-From: Ionut Nechita <ionut.nechita@windriver.com>
-To: stable@vger.kernel.org
-Cc: frederic@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
-        rdunlap@infradead.org, ptesarik@suse.com,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12.y 7/7] timers/migration: Fix imbalanced NUMA trees
-Date: Fri, 20 Mar 2026 22:44:42 +0200
-Message-ID: <20260320204442.32901-8-ionut.nechita@windriver.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260320204442.32901-1-ionut.nechita@windriver.com>
-References: <20260320204442.32901-1-ionut.nechita@windriver.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0296.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e7::16) To SJ2PR11MB7546.namprd11.prod.outlook.com
- (2603:10b6:a03:4cc::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9067F36897E;
+	Fri, 20 Mar 2026 21:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774041089; cv=none; b=KZ6b3qslAmk4pSVjDmayNnREA8KsUn2IsKlaEsG3M0Rb/SA5QZkzgqT7sKWdyOaSAeFXVOH4ngyc2MKlVIwPJTEali2/tdL4py2O8Pl6Pz0p+CWTK4yO5FsMpcFsfeXy5KfwhEaIjogprAkJkuHPhOVcwX31bnyHdeCVwQs9MQI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774041089; c=relaxed/simple;
+	bh=dFfN6N1I6M0Fh9g3seY8P7IXg3wqeVAphqL9ojsU8z4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PHlTKYb9MUg3OhFKeoiChBgV+u8Ep2M4aQ8TOQ3wIS11MI2QALWVA+inqxX7+r7Zrb+XL4kO5ziEIxnDc4OASi2QsI5WeQ7X8ymRFReCjGb40CLIbrHcL2HfmAD92R0+O87pUR9ZnvX9ACRCe7eC0W9h/pZJOnogU5Ugu0iddfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=bTEAX4Qs; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1774041083; x=1774300283;
+	bh=xTyXiIERMV6VSceCuVPfvq7brK873ZpHFxLWfp4fe6k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bTEAX4Qs01wFrGpLwK2SOj8A4CTgx29ocB24ShZ4xk99ToewSnAEW8b7lFQYoo3BN
+	 osx0ehB5s9lxTJA3fMt69PqH7qqy+Es+8F8+yL6w59QvLgNZ09fcpwTLjARoxZvLvw
+	 mi278KZK49WUYyC7KGTmuOFDQFl3gPuihEIxrcCiF/S9Y79jCNOQt6jfManPuAhlSk
+	 vwI0N7Tk4b0svc1MryVqiOFJv1s0qUMRgtN4maxX2Tf0H2QNhwCiKWR2BDwbmCDsj6
+	 OBJ1Vo776pzt/M7j5lfOYdofViW7GEC5orZkL9+TkI2/jFIybyessjMByhT+1Qt/2G
+	 E/BisSXYCKVqQ==
+Date: Fri, 20 Mar 2026 21:11:18 +0000
+To: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?utf-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Eli Cohen <elic@nvidia.com>, Parav Pandit <parav@nvidia.com>
+From: Paul Moses <p@1g4.org>
+Cc: virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] vdpa: don't free reply skb after genlmsg_reply()
+Message-ID: <sxJbzuV6ZQr_GHbWZNHgX7A0nnmxWSlZMO2MeJWofb8ECzmsO626OUn1izRuKxD-wqJl3LjliGPuenrLKEo8ZLpxuPimgqBjDD8ihhdd6Rg=@1g4.org>
+In-Reply-To: <lPMoA-jSSWoNN42ejMYoDHQJVt5KGYsPsJez_Luu8zmwUWQectet-GVqS2EF89-I3k2PddYnY-ZD6z7yCQvK_AF8naIatQV1mD5Xq2671EY=@1g4.org>
+References: <20260312110421.2880401-1-p@1g4.org> <lPMoA-jSSWoNN42ejMYoDHQJVt5KGYsPsJez_Luu8zmwUWQectet-GVqS2EF89-I3k2PddYnY-ZD6z7yCQvK_AF8naIatQV1mD5Xq2671EY=@1g4.org>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: d718014a0bf9e2f207c3dc504ef538ca2fa876d6
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR11MB7546:EE_|MW6PR11MB8437:EE_
-X-MS-Office365-Filtering-Correlation-Id: d76dc035-9a4c-493b-15a0-08de86c19328
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|1800799024|52116014|366016|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	ZhlAqDsQYTcnJAHFhjxP910ngTH8KmaCZw6FPUodvhcU9YZvkxqniUTxfqtnjDJFSJED1zJUkCBW6H5IhWwoLMo+6coDsRDtlxXyyxDu4P6g+HQX8hH6kiTECYF/sonpvoC3TPylfbC0MdGZsv3LX8pMJnMFn6/KPJipqne4AUUwLiF/GnT6iROIqGGJutTU5gPFFouLDIDps4HXD03DZ4gCkomFHuI0Cpge9pKnJgRwxhFwI/L1R4SiEpeRkcZw3TkkpIeAd16dWVtYz2OPLIItUZ3HtE+TWgbx3NdUhmnrni5+IVeKTqPAT0wy2mgPELlu8f/EESFfYlxbiGWyHBlJlJPUzFUJ6dRjDrx9cSli/TJaESVNiBnQE+k1yb9cyfcvPt0+ZSs7q3bAvf870MEG2bxDP/xHzy/do5J0u7NZkBzLnrLsciZD4k+LEdIf/nVg23gxe0G8fYTYpL3gzc3fYyZLLoGCQVMAXqCkyQbIDGeLJB3CDMWWjQtjI9GjQDPMF1xfGhkx8iS1QA1tZLcnMnLD+4+DRCSxCr0uN+8FbONLnBKTFGHX+UrP3YbwqhOEhKdeXbznFJE/BxZl8KmSd1N8nrRvf8QFDMjhS5r7kynec2iXSXaT0jqEFU6C8h+5M92BbjKuziZpk0TYzQ/MPkCYhAd2UnJBl+/bWnI5rlTvZ3g2OCVJz0CFPm5u
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7546.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(1800799024)(52116014)(366016)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?qft46/Bwn9Fn9JlHoNR2jlQeoHTvLbnvQP1ro/6XkiMCu1QM9lvQpuF0Y4c0?=
- =?us-ascii?Q?pbiH173aR4VgyT3t2IpXdr/Fgn4ElIVISSA29SF3k04ExAyPx8jHLUntFJKz?=
- =?us-ascii?Q?ho/F5SK78kTZf0rTZW52C0dOIgpJcxEjDI0spXUzem84vyTeHSE2oWWY0Upf?=
- =?us-ascii?Q?jb8eWPUOMMKYt01nlw+5DjVFfpFHAtHVH7fm25BNqDOYt1VO+Z5//3peUhy6?=
- =?us-ascii?Q?pdUwSoKbCt59CUOWQE/7MFqdSIFAzLfmbOQZhYkLDxiRGHi6hTtjlooKknnP?=
- =?us-ascii?Q?5rD7AaXcdoJp+vp2ibbOpaqeHxtnBXWBh0wb3nif2h61xQFq2I5TddjZaIiJ?=
- =?us-ascii?Q?thp9j6RIG2ksXbJzykczRU4xIiBhJBk8YMEfsZzpBW7u1+j6MLD6xoEnnZzW?=
- =?us-ascii?Q?LRZAgiZDcPhLSEMY5DJgL9jxodK5Xx0LSzRofw63/n1xOcNTx6K9VbzIyuwT?=
- =?us-ascii?Q?P1Xr6UvPQKcoGehPYhItrfNrHcLtud/poNY6NrRfxYbnV4h8HceYZAdmxiqa?=
- =?us-ascii?Q?SWtgSqPYA/tim3MJ+NIJi05EX6VnNvMFoJh1gLoy5W0KdlFEXEjK0bRQtAay?=
- =?us-ascii?Q?kM2d5WxhUm+URarCF0ymmaFb4sBZGtSVLpajVQDwZzM1aFKvMOaycvqKu+tQ?=
- =?us-ascii?Q?Kr9VbPmDnU7XpudGT35MANwmnGbBckSscSTfAXeLnymObIs//jrfRgvcczwj?=
- =?us-ascii?Q?9phKCGDg+uOjz+1dzSKREnvimrH7vS4FFUyb556aAt3C9EG1PsAJju5aBr1z?=
- =?us-ascii?Q?QNxkSHEoR72xwcL2KuFMPMMp81Iqj2940hi5uTyxndUfDhk7V22aymKzrjNK?=
- =?us-ascii?Q?ZAwCqQE2+muN5y9f6Pm+OpU1PaltPI2NQZ1ZosLWEM7b1DKZJg9N4H7dSDAn?=
- =?us-ascii?Q?P6BrEwaykI/BrjV5q1RUxqje8EGmykvsMKEyXc7KwsVyVDCBgwHgGvxsDG/M?=
- =?us-ascii?Q?1MTNB1eZJ8exrvcdPbp+156jfWloyXsbap0baG87k62wEqBn6JOCP2oy2ViZ?=
- =?us-ascii?Q?X+zTq15gd9GMCn831Pjp98ZFkzzCWjMr9saJH3dIQyPEkBZnmBtM9RR78q2C?=
- =?us-ascii?Q?GstHWLTxT9dXS4hixjQKvaAAfA3ijLJc6HH179/Hl/MA54vNsgD1nFdXmypG?=
- =?us-ascii?Q?6GCLYiU794IUy8gNPce6wwlc+jlbr7qMbWR1nyO5KmlXQIsGqBqNk7ULV5EN?=
- =?us-ascii?Q?4B66KVPN1gZKyna9P4349x0n+BzGhRsNwJZZN+JBhzvZrGVtdW5JJSgBu2ci?=
- =?us-ascii?Q?ABxZ66MkVjDuxt4MuBNbWpD4yCVtEumJD+yLPQO1HLjMA2FVy44wIVyGzvMj?=
- =?us-ascii?Q?uHex6P5eIeHotbicxpR7sJY+jWV2RVyw9gwf6BAh3uZ6BH9ymvXjtfQTn7F5?=
- =?us-ascii?Q?zc6USn+tjCxGRxi6MilAfjoWFNQIv/7CWYK8cxnyv5cUu5T8pBNdUbjUv/0N?=
- =?us-ascii?Q?OcL9HSzjm710xkHhF7MLU8UXsnJQJHesyGjgCAXNYURT+n9XKty5CaUt5T+l?=
- =?us-ascii?Q?ImKAcx9Qh1cjV+rv1g2N8m2YJ/UxdGR72Cv5zqGnWDNBCRsnvYNijEh+cGgn?=
- =?us-ascii?Q?HcyTCSU3guNc7AemRp8kCUb2IWTtnnrH8BOe5MfUqA7yYeF2PzK2X6Mnvv11?=
- =?us-ascii?Q?VsuJe5jJKoOvIHFNoNtbIBe/DQLoBKO7T1fPwEv9Jn6gH6katybT67qjYxkM?=
- =?us-ascii?Q?CRK2urgmysNwjBA6nehGOWQ7TvPuHpAgNrv2KwS0H2Qq/2vbXTMOVQMkX4XB?=
- =?us-ascii?Q?Y4R5QMQw0Wckob+rkfZQv5QxZORm7pF5KwROJwfZ0sBGgQC8bWYPG1OWhu6K?=
-X-MS-Exchange-AntiSpam-MessageData-1: VLYVcEPl96nFS3vOV9xX6A0qoMLrnZNFYE8=
-X-Exchange-RoutingPolicyChecked:
-	gnBOOEk7QbqN2hd2X9mohCPd+xNB/NWazv4eYd24nf1tYD9an35UPDOi+6pEwPr4HtnHVLU6Owkwfze1AlZKOd8edZX9JLiS7pQ+mRTbKvDwuKkPnHGOB4CxtB4RM2R3ZajDEkK0DJHhtloUQ4vP4tFNkGk9a9haPrq/U+QgQHMZbGii3t0opYVu1NJRB4PSy9JELprFbYvMuoBwnhFgDm/gv3IE1UAzgPXO0l4mOb2wf77BVKYvsM3lM7oRU+ogNkS0Uy09LeqvXB6Z01PC0PSYWFnM0fHlpIZcZZKHR3ncVU+grfX6tgUxxcym/4k8+7gDceyMtY8pzOylwQpbUA==
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d76dc035-9a4c-493b-15a0-08de86c19328
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7546.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 20:45:09.2212
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FId9jIO5Uun6vQKvQxYnTkEVE7NNEYVuY/Jg6ZPRZWkA3V0CDM2d1L4OKD3IwZp54upjs+4keb+3gc+q/Q4bR5T/ITnjxjr93rR0XjtHyfQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR11MB8437
-X-Proofpoint-ORIG-GUID: A_-psWsjSzoIzbMbyVSnEbmuk6LW7vhl
-X-Proofpoint-GUID: A_-psWsjSzoIzbMbyVSnEbmuk6LW7vhl
-X-Authority-Analysis: v=2.4 cv=A89h/qWG c=1 sm=1 tr=0 ts=69bdb1dc cx=c_pps
- a=MTA8SzjkfSP6DqtUeP+PaQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=bi6dqmuHe4P4UrxVR6um:22 a=iKiJcTA2PjBS6x5JeXcw:22 a=bC-a23v3AAAA:8
- a=VwQbUJbxAAAA:8 a=rPOk8Gav1BpNgUgkAfMA:9 a=FO4_E8m0qiDe52t0p3_H:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDE2OSBTYWx0ZWRfX6WkVPGKVnUV+
- BYsAY76TVcTrcjpXJ3YLP7U/5f4kVDg+jQgMmS5AN/845GXv9/qR/N/MWGlipYcp82Bt9e2s/t9
- Bh7gMmg7mL1zUuJGydSJN1UkwXLzyVqzTMt2bIzRjzarffp7CFVrivygHhBiDCNYvNjB1Pp7Qfs
- RoJlfnXp7j3PTqw+GuR6NRv7Z6HUvm9uHnVi5Zncr9ttz7Ix7Gw5d8deFvMqP+3agDSuf7k95qn
- hLoUb62glK8WQmvlIC6AErg2zsvy8KWdyHi4uIce6mPeXjFCx+h3tGtl95sY1xFRiOg0Beyfdmf
- zs1KPaMcQq92o0Y1luAWYZvUn6hNglRfpL8s29Keld6IJ3amyXkTCai6JyONLcVUYgDurZQ4ku8
- 9HquxbEgK/JhJnwQD4E4UkHbsxM9NPaWplrTtNqPVIc8JNa8pmqlchGvXVcuUquMfuB7JVznU3T
- EROb0D0KNabEaUOTzXA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-20_03,2026-03-20_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 bulkscore=0 impostorscore=0 clxscore=1015
- phishscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603200169
-X-Spamd-Result: default: False [1.34 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
-	R_DKIM_ALLOW(-0.20)[windriver.com:s=PPS06212021];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227621-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,windriver.com:dkim,windriver.com:mid,linutronix.de:email];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227626-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[windriver.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ionut.nechita@windriver.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[1g4.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: 0542C2E0FF7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[1g4.org:dkim,1g4.org:email,1g4.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qemu.org:url]
+X-Rspamd-Queue-Id: A36132E128C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Frederic Weisbecker <frederic@kernel.org>
+FYI, I'm finished with this:
 
-[ Upstream commit 5eb579dfd46b4949117ecb0f1ba2f12d3dc9a6f2 ]
+preconditions:
+- local unprivileged user
+- initial network namespace only
+- existing vdpa device
 
-When a CPU from a new node boots, the old root may happen to be
-connected to the new root even if their node mismatch, as depicted in
-the following scenario:
+impact:
+- DoS only
+- immediate netlink_ack() deref of the request skb makes controlled corrupt=
+ion practically unworkable
 
-1) CPU 0 boots and creates the first group for node 0.
+Feel free to modify patch and only give me "reported by".=20
 
-   [GRP0:0]
-    node 0
-      |
-    CPU 0
+Thanks,
+Paul
 
-2) CPU 1 from node 1 boots and creates a new top that corresponds to
-   node 1, but it also connects the old root from node 0 to the new root
-   from node 1 by mistake.
 
-             [GRP1:0]
-              node 1
-            /        \
-           /          \
-   [GRP0:0]             [GRP0:1]
-    node 0               node 1
-      |                    |
-    CPU 0                CPU 1
 
-3) This eventually leads to an imbalanced tree where some node 0 CPUs
-   migrate node 1 timers (and vice versa) way before reaching the
-   crossnode groups, resulting in more frequent remote memory accesses
-   than expected.
+On Monday, March 16th, 2026 at 8:22 PM, Paul Moses <p@1g4.org> wrote:
 
-                      [GRP2:0]
-                      NUMA_NO_NODE
-                     /             \
-             [GRP1:0]              [GRP1:1]
-              node 1               node 0
-            /        \                |
-           /          \             [...]
-   [GRP0:0]             [GRP0:1]
-    node 0               node 1
-      |                    |
-    CPU 0...              CPU 1...
-
-A balanced tree should only contain groups having children that belong
-to the same node:
-
-                      [GRP2:0]
-                      NUMA_NO_NODE
-                     /             \
-             [GRP1:0]              [GRP1:0]
-              node 0               node 1
-            /        \             /      \
-           /          \           /        \
-   [GRP0:0]          [...]      [...]    [GRP0:1]
-    node 0                                node 1
-      |                                     |
-    CPU 0...                              CPU 1...
-
-In order to fix this, the hierarchy must be unfolded up to the crossnode
-level as soon as a node mismatch is detected. For example the stage 2
-above should lead to this layout:
-
-                      [GRP2:0]
-                      NUMA_NO_NODE
-                     /             \
-             [GRP1:0]              [GRP1:1]
-              node 0               node 1
-              /                         \
-             /                           \
-        [GRP0:0]                        [GRP0:1]
-        node 0                           node 1
-          |                                |
-       CPU 0                             CPU 1
-
-This means that not only GRP1:0 must be created but also GRP1:1 and
-GRP2:0 in order to prepare a balanced tree for next CPUs to boot.
-
-Fixes: 7ee988770326 ("timers: Implement the hierarchical pull model")
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://patch.msgid.link/20251024132536.39841-4-frederic@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- kernel/time/timer_migration.c | 231 +++++++++++++++++++---------------
- 1 file changed, 127 insertions(+), 104 deletions(-)
-
-diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
-index 5f8aef94ca0f7..49635a2b7ee28 100644
---- a/kernel/time/timer_migration.c
-+++ b/kernel/time/timer_migration.c
-@@ -420,6 +420,8 @@ static struct list_head *tmigr_level_list __read_mostly;
- static unsigned int tmigr_hierarchy_levels __read_mostly;
- static unsigned int tmigr_crossnode_level __read_mostly;
- 
-+static struct tmigr_group *tmigr_root;
-+
- static DEFINE_PER_CPU(struct tmigr_cpu, tmigr_cpu);
- 
- #define TMIGR_NONE	0xFF
-@@ -522,11 +524,9 @@ struct tmigr_walk {
- 
- typedef bool (*up_f)(struct tmigr_group *, struct tmigr_group *, struct tmigr_walk *);
- 
--static void __walk_groups(up_f up, struct tmigr_walk *data,
--			  struct tmigr_cpu *tmc)
-+static void __walk_groups_from(up_f up, struct tmigr_walk *data,
-+			       struct tmigr_group *child, struct tmigr_group *group)
- {
--	struct tmigr_group *child = NULL, *group = tmc->tmgroup;
--
- 	do {
- 		WARN_ON_ONCE(group->level >= tmigr_hierarchy_levels);
- 
-@@ -544,6 +544,12 @@ static void __walk_groups(up_f up, struct tmigr_walk *data,
- 	} while (group);
- }
- 
-+static void __walk_groups(up_f up, struct tmigr_walk *data,
-+			  struct tmigr_cpu *tmc)
-+{
-+	__walk_groups_from(up, data, NULL, tmc->tmgroup);
-+}
-+
- static void walk_groups(up_f up, struct tmigr_walk *data, struct tmigr_cpu *tmc)
- {
- 	lockdep_assert_held(&tmc->lock);
-@@ -1498,21 +1504,6 @@ static void tmigr_init_group(struct tmigr_group *group, unsigned int lvl,
- 	s.seq = 0;
- 	atomic_set(&group->migr_state, s.state);
- 
--	/*
--	 * If this is a new top-level, prepare its groupmask in advance.
--	 * This avoids accidents where yet another new top-level is
--	 * created in the future and made visible before the current groupmask.
--	 */
--	if (list_empty(&tmigr_level_list[lvl])) {
--		group->groupmask = BIT(0);
--		/*
--		 * The previous top level has prepared its groupmask already,
--		 * simply account it as the first child.
--		 */
--		if (lvl > 0)
--			group->num_children = 1;
--	}
--
- 	timerqueue_init_head(&group->events);
- 	timerqueue_init(&group->groupevt.nextevt);
- 	group->groupevt.nextevt.expires = KTIME_MAX;
-@@ -1567,22 +1558,51 @@ static struct tmigr_group *tmigr_get_group(unsigned int cpu, int node,
- 	return group;
- }
- 
-+static bool tmigr_init_root(struct tmigr_group *group, bool activate)
-+{
-+	if (!group->parent && group != tmigr_root) {
-+		/*
-+		 * This is the new top-level, prepare its groupmask in advance
-+		 * to avoid accidents where yet another new top-level is
-+		 * created in the future and made visible before this groupmask.
-+		 */
-+		group->groupmask = BIT(0);
-+		WARN_ON_ONCE(activate);
-+
-+		return true;
-+	}
-+
-+	return false;
-+
-+}
-+
- static void tmigr_connect_child_parent(struct tmigr_group *child,
- 				       struct tmigr_group *parent,
- 				       bool activate)
- {
--	struct tmigr_walk data;
-+	if (tmigr_init_root(parent, activate)) {
-+		/*
-+		 * The previous top level had prepared its groupmask already,
-+		 * simply account it in advance as the first child. If some groups
-+		 * have been created between the old and new root due to node
-+		 * mismatch, the new root's child will be intialized accordingly.
-+		 */
-+		parent->num_children = 1;
-+	}
- 
--	if (activate) {
-+	/* Connecting old root to new root ? */
-+	if (!parent->parent && activate) {
- 		/*
--		 * @child is the old top and @parent the new one. In this
--		 * case groupmask is pre-initialized and @child already
--		 * accounted, along with its new sibling corresponding to the
--		 * CPU going up.
-+		 * @child is the old top, or in case of node mismatch, some
-+		 * intermediate group between the old top and the new one in
-+		 * @parent. In this case the @child must be pre-accounted above
-+		 * as the first child. Its new inactive sibling corresponding
-+		 * to the CPU going up has been accounted as the second child.
- 		 */
--		WARN_ON_ONCE(child->groupmask != BIT(0) || parent->num_children != 2);
-+		WARN_ON_ONCE(parent->num_children != 2);
-+		child->groupmask = BIT(0);
- 	} else {
--		/* Adding @child for the CPU going up to @parent. */
-+		/* Common case adding @child for the CPU going up to @parent. */
- 		child->groupmask = BIT(parent->num_children++);
- 	}
- 
-@@ -1594,56 +1614,28 @@ static void tmigr_connect_child_parent(struct tmigr_group *child,
- 	smp_store_release(&child->parent, parent);
- 
- 	trace_tmigr_connect_child_parent(child);
--
--	if (!activate)
--		return;
--
--	/*
--	 * To prevent inconsistent states, active children need to be active in
--	 * the new parent as well. Inactive children are already marked inactive
--	 * in the parent group:
--	 *
--	 * * When new groups were created by tmigr_setup_groups() starting from
--	 *   the lowest level (and not higher then one level below the current
--	 *   top level), then they are not active. They will be set active when
--	 *   the new online CPU comes active.
--	 *
--	 * * But if a new group above the current top level is required, it is
--	 *   mandatory to propagate the active state of the already existing
--	 *   child to the new parent. So tmigr_connect_child_parent() is
--	 *   executed with the formerly top level group (child) and the newly
--	 *   created group (parent).
--	 *
--	 * * It is ensured that the child is active, as this setup path is
--	 *   executed in hotplug prepare callback. This is exectued by an
--	 *   already connected and !idle CPU. Even if all other CPUs go idle,
--	 *   the CPU executing the setup will be responsible up to current top
--	 *   level group. And the next time it goes inactive, it will release
--	 *   the new childmask and parent to subsequent walkers through this
--	 *   @child. Therefore propagate active state unconditionally.
--	 */
--	data.childmask = child->groupmask;
--
--	/*
--	 * There is only one new level per time (which is protected by
--	 * tmigr_mutex). When connecting the child and the parent and set the
--	 * child active when the parent is inactive, the parent needs to be the
--	 * uppermost level. Otherwise there went something wrong!
--	 */
--	WARN_ON(!tmigr_active_up(parent, child, &data) && parent->parent);
- }
- 
--static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
-+static int tmigr_setup_groups(unsigned int cpu, unsigned int node,
-+			      struct tmigr_group *start, bool activate)
- {
- 	struct tmigr_group *group, *child, **stack;
--	int i, top = 0, err = 0;
--	struct list_head *lvllist;
-+	int i, top = 0, err = 0, start_lvl = 0;
-+	bool root_mismatch = false;
- 
- 	stack = kcalloc(tmigr_hierarchy_levels, sizeof(*stack), GFP_KERNEL);
- 	if (!stack)
- 		return -ENOMEM;
- 
--	for (i = 0; i < tmigr_hierarchy_levels; i++) {
-+	if (start) {
-+		stack[start->level] = start;
-+		start_lvl = start->level + 1;
-+	}
-+
-+	if (tmigr_root)
-+		root_mismatch = tmigr_root->numa_node != node;
-+
-+	for (i = start_lvl; i < tmigr_hierarchy_levels; i++) {
- 		group = tmigr_get_group(cpu, node, i);
- 		if (IS_ERR(group)) {
- 			err = PTR_ERR(group);
-@@ -1656,23 +1648,25 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
- 
- 		/*
- 		 * When booting only less CPUs of a system than CPUs are
--		 * available, not all calculated hierarchy levels are required.
-+		 * available, not all calculated hierarchy levels are required,
-+		 * unless a node mismatch is detected.
- 		 *
- 		 * The loop is aborted as soon as the highest level, which might
- 		 * be different from tmigr_hierarchy_levels, contains only a
--		 * single group.
-+		 * single group, unless the nodes mismatch below tmigr_crossnode_level
- 		 */
--		if (group->parent || list_is_singular(&tmigr_level_list[i]))
-+		if (group->parent)
-+			break;
-+		if ((!root_mismatch || i >= tmigr_crossnode_level) &&
-+		    list_is_singular(&tmigr_level_list[i]))
- 			break;
- 	}
- 
- 	/* Assert single root without parent */
- 	if (WARN_ON_ONCE(i >= tmigr_hierarchy_levels))
- 		return -EINVAL;
--	if (WARN_ON_ONCE(!err && !group->parent && !list_is_singular(&tmigr_level_list[top])))
--		return -EINVAL;
- 
--	for (; i >= 0; i--) {
-+	for (; i >= start_lvl; i--) {
- 		group = stack[i];
- 
- 		if (err < 0) {
-@@ -1692,48 +1686,63 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
- 			tmc->tmgroup = group;
- 			tmc->groupmask = BIT(group->num_children++);
- 
-+			tmigr_init_root(group, activate);
-+
- 			trace_tmigr_connect_cpu_parent(tmc);
- 
- 			/* There are no children that need to be connected */
- 			continue;
- 		} else {
- 			child = stack[i - 1];
--			/* Will be activated at online time */
--			tmigr_connect_child_parent(child, group, false);
-+			tmigr_connect_child_parent(child, group, activate);
- 		}
-+	}
- 
--		/* check if uppermost level was newly created */
--		if (top != i)
--			continue;
--
--		WARN_ON_ONCE(top == 0);
-+	if (err < 0)
-+		goto out;
- 
--		lvllist = &tmigr_level_list[top];
-+	if (activate) {
-+		struct tmigr_walk data;
- 
- 		/*
--		 * Newly created root level should have accounted the upcoming
--		 * CPU's child group and pre-accounted the old root.
-+		 * To prevent inconsistent states, active children need to be active in
-+		 * the new parent as well. Inactive children are already marked inactive
-+		 * in the parent group:
-+		 *
-+		 * * When new groups were created by tmigr_setup_groups() starting from
-+		 *   the lowest level, then they are not active. They will be set active
-+		 *   when the new online CPU comes active.
-+		 *
-+		 * * But if new groups above the current top level are required, it is
-+		 *   mandatory to propagate the active state of the already existing
-+		 *   child to the new parents. So tmigr_active_up() activates the
-+		 *   new parents while walking up from the old root to the new.
-+		 *
-+		 * * It is ensured that @start is active, as this setup path is
-+		 *   executed in hotplug prepare callback. This is executed by an
-+		 *   already connected and !idle CPU. Even if all other CPUs go idle,
-+		 *   the CPU executing the setup will be responsible up to current top
-+		 *   level group. And the next time it goes inactive, it will release
-+		 *   the new childmask and parent to subsequent walkers through this
-+		 *   @child. Therefore propagate active state unconditionally.
- 		 */
--		if (group->num_children == 2 && list_is_singular(lvllist)) {
--			/*
--			 * The target CPU must never do the prepare work, except
--			 * on early boot when the boot CPU is the target. Otherwise
--			 * it may spuriously activate the old top level group inside
--			 * the new one (nevertheless whether old top level group is
--			 * active or not) and/or release an uninitialized childmask.
--			 */
--			WARN_ON_ONCE(cpu == raw_smp_processor_id());
--
--			lvllist = &tmigr_level_list[top - 1];
--			list_for_each_entry(child, lvllist, list) {
--				if (child->parent)
--					continue;
-+		WARN_ON_ONCE(!start->parent);
-+		data.childmask = start->groupmask;
-+		__walk_groups_from(tmigr_active_up, &data, start, start->parent);
-+	}
- 
--				tmigr_connect_child_parent(child, group, true);
--			}
-+	/* Root update */
-+	if (list_is_singular(&tmigr_level_list[top])) {
-+		group = list_first_entry(&tmigr_level_list[top],
-+					 typeof(*group), list);
-+		WARN_ON_ONCE(group->parent);
-+		if (tmigr_root) {
-+			/* Old root should be the same or below */
-+			WARN_ON_ONCE(tmigr_root->level > top);
- 		}
-+		tmigr_root = group;
- 	}
--
-+out:
- 	kfree(stack);
- 
- 	return err;
-@@ -1741,12 +1750,26 @@ static int tmigr_setup_groups(unsigned int cpu, unsigned int node)
- 
- static int tmigr_add_cpu(unsigned int cpu)
- {
-+	struct tmigr_group *old_root = tmigr_root;
- 	int node = cpu_to_node(cpu);
- 	int ret;
- 
--	mutex_lock(&tmigr_mutex);
--	ret = tmigr_setup_groups(cpu, node);
--	mutex_unlock(&tmigr_mutex);
-+	guard(mutex)(&tmigr_mutex);
-+
-+	ret = tmigr_setup_groups(cpu, node, NULL, false);
-+
-+	/* Root has changed? Connect the old one to the new */
-+	if (ret >= 0 && old_root && old_root != tmigr_root) {
-+		/*
-+		 * The target CPU must never do the prepare work, except
-+		 * on early boot when the boot CPU is the target. Otherwise
-+		 * it may spuriously activate the old top level group inside
-+		 * the new one (nevertheless whether old top level group is
-+		 * active or not) and/or release an uninitialized childmask.
-+		 */
-+		WARN_ON_ONCE(cpu == raw_smp_processor_id());
-+		ret = tmigr_setup_groups(-1, old_root->numa_node, old_root, true);
-+	}
- 
- 	return ret;
- }
--- 
-2.53.0
-
+> Now that I've wrapped up elsewhere, I can focus on this. Let me
+> know if there's any questions.
+>=20
+> Thanks,
+> Paul
+>=20
+> [    0.716942] ------------[ cut here ]------------
+> [    0.717160] refcount_t: underflow; use-after-free.
+> [    0.717356] WARNING: CPU: 2 PID: 138 at lib/refcount.c:28 refcount_war=
+n_saturate+0x118/0x180
+> [    0.717661] Modules linked in:
+> [    0.717816] CPU: 2 UID: 1000 PID: 138 Comm: poc9 Not tainted 6.18.13 #=
+3 PREEMPT(full)
+> [    0.718138] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS r=
+el-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [    0.718591] RIP: 0010:refcount_warn_saturate+0x118/0x180
+> [    0.718805] Code: 0f b6 05 aa bf 05 02 3c 01 0f 87 d7 db 5d ff a8 01 0=
+f 85 39 ff ff ff 48 c7 c7 78 71 ec 82 c6 05 8c bf 05 02 01 e8 78 f0 78 ff <=
+0f> 0b c9 31 c0 31 f6 31 ff e9 55 4c 45 ff 0f b6 05 73 bf 05 02 3c
+> [    0.719521] RSP: 0018:ffffc9000048b790 EFLAGS: 00010246
+> [    0.719722] RAX: 0000000000000000 RBX: ffff888006c74200 RCX: 000000000=
+0000000
+> [    0.719985] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000000000=
+0000000
+> [poc9-vdpa] port[    0.720257] RBP: ffffc9000048b798 R08: 000000000000000=
+0 R09: 0000000000000000
+> id=3D135 rcvbuf=3D23[    0.720580] R10: 0000000000000000 R11: 00000000000=
+00000 R12: ffff8880075ea000
+> 04 soerr=3D105 dro[    0.720869] R13: ffff888006c74200 R14: 00000000fffff=
+ff5 R15: ffffc9000048b920
+> ps=3D0 get 2/0 sen[    0.721165] FS:  000076880ed826c0(0000) GS:ffff88809=
+a460000(0000) knlGS:0000000000000000
+> d_eagain=3D0
+> [    0.721534] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    0.721768] CR2: 000076880ed801c8 CR3: 0000000008a61000 CR4: 000000000=
+0450ef0
+> [    0.722055] PKRU: 55555554
+> [    0.722159] Call Trace:
+> [    0.722253]  <TASK>
+> [    0.722339]  sk_skb_reason_drop+0x203/0x210
+> [    0.722512]  ? up_read+0x22/0x30
+> [    0.722638]  vdpa_nl_cmd_dev_config_get_doit+0xc7/0x1d0
+> [    0.722832]  genl_family_rcv_msg_doit+0xcf/0x120
+> [    0.723018]  genl_rcv_msg+0x161/0x290
+> [    0.723157]  ? __pfx_vdpa_nl_cmd_dev_config_get_doit+0x10/0x10
+> [    0.723381]  ? __pfx_genl_rcv_msg+0x10/0x10
+> [    0.727944]  netlink_rcv_skb+0x41/0xf0
+> [    0.728136]  genl_rcv+0x28/0x50
+> [    0.728281]  netlink_unicast+0x1d8/0x2b0
+> [    0.728483]  netlink_sendmsg+0x212/0x440
+> [    0.728673]  __sys_sendto+0x1f3/0x200
+> [    0.728859]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.729076]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.729287]  ? __lock_acquire+0x831/0x2980
+> [    0.729491]  __x64_sys_sendto+0x24/0x40
+> [    0.729665]  x64_sys_call+0x1d15/0x2350
+> [    0.729838]  do_syscall_64+0x90/0xc60
+> [    0.730010]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.730226]  ? lock_acquire+0xcc/0x2e0
+> [    0.730391]  ? __folio_batch_add_and_move+0x24b/0x370
+> [    0.730623]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.730835]  ? find_held_lock+0x31/0x90
+> [    0.731010]  ? __folio_batch_add_and_move+0x1ab/0x370
+> [    0.731238]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.731465]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.731677]  ? find_held_lock+0x31/0x90
+> [    0.731851]  ? rcu_read_unlock+0x1f/0x80
+> [    0.732029]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.732247]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.732474]  ? rcu_read_unlock+0x29/0x80
+> [    0.732652]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.732864]  ? do_anonymous_page+0x101/0x840
+> [    0.733055]  ? ___pte_offset_map+0x1d2/0x290
+> [    0.733255]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.733482]  ? __handle_mm_fault+0xa8e/0xf40
+> [    0.733693]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.733904]  ? find_held_lock+0x31/0x90
+> [    0.734079]  ? exc_page_fault+0x98/0x2c0
+> [    0.734257]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.734490]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.734709]  ? do_user_addr_fault+0x37b/0x6e0
+> [    0.734905]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.735118]  ? irqentry_exit_to_user_mode+0xf4/0x300
+> [    0.735340]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.735566]  ? irqentry_exit+0x77/0xb0
+> [    0.735737]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.735949]  ? exc_page_fault+0xbf/0x2c0
+> [    0.736124]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    0.736340]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [    0.736576] RIP: 0033:0x434e6c
+> [    0.736720] Code: fa 6e 03 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c3 44 8=
+b 54 24 28 48 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <=
+48> 3d 00 f0 ff ff 77 34 89 df 48 89 44 24 08 e8 40 6f 03 00 48 8b
+> [    0.737513] RSP: 002b:000076880ed80190 EFLAGS: 00000293 ORIG_RAX: 0000=
+00000000002c
+> [    0.737841] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000000000=
+0434e6c
+> [    0.738154] RDX: 0000000000000020 RSI: 000076880ed801d0 RDI: 000000000=
+0000003
+> [    0.738473] RBP: 0000000069b8ab57 R08: 00000000004b3cf0 R09: 000000000=
+000000c
+> [    0.738767] R10: 0000000000000000 R11: 0000000000000293 R12: 000000000=
+f71e860
+> [    0.739075] R13: 0000000000000013 R14: 000076880ed82cdc R15: 00007fff0=
+dab68e7
+> [    0.739415]  </TASK>
+> [    0.739526] irq event stamp: 785
+> [    0.739675] hardirqs last  enabled at (793): [<ffffffff815153f0>] __up=
+_console_sem+0x90/0xa0
+> [    0.740039] hardirqs last disabled at (800): [<ffffffff815153d5>] __up=
+_console_sem+0x75/0xa0
+> [    0.740410] softirqs last  enabled at (362): [<ffffffff81449bcd>] __ir=
+q_exit_rcu+0x12d/0x150
+> [    0.740782] softirqs last disabled at (357): [<ffffffff81449bcd>] __ir=
+q_exit_rcu+0x12d/0x150
+> [    0.741145] ---[ end trace 0000000000000000 ]---
+> [poc9-vdpa] portid=3D135 rcvbuf=3D2304 soerr=3D0 drops=3D0 get 98859/0 se=
+nd_eagain=3D0
+> [poc9-vdpa] portid=3D135 rcvbuf=3D2304 soerr=3D0 drops=3D0 get 204383/0 s=
+end_eagain=3D0
+> [poc9-vdpa] portid=3D135 rcvbuf=3D2304 soerr=3D0 drops=3D0 get 319574/0 s=
+end_eagain=3D0
+> [    4.037387] BUG: kernel NULL pointer dereference, address: 00000000000=
+00060
+> [    4.037612] #PF: supervisor read access in kernel mode
+> [    4.037761] #PF: error_code(0x0000) - not-present page
+> [    4.037914] PGD 994c067 P4D 994c067 PUD 994d067 PMD 0
+> [    4.038066] Oops: Oops: 0000 [#1] SMP NOPTI
+> [    4.038191] CPU: 4 UID: 1000 PID: 140 Comm: poc9 Tainted: G        W  =
+         6.18.13 #3 PREEMPT(full)
+> [    4.038463] Tainted: [W]=3DWARN
+> [    4.038557] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS r=
+el-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [    4.038869] RIP: 0010:sock_wfree+0x1d/0x3f0
+> [    4.038994] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 0=
+0 55 48 89 e5 41 57 41 56 53 48 83 ec 10 48 8b 5f 18 44 8b 97 d8 00 00 00 <=
+48> 8b 43 60 f6 c4 02 74 51 44 89 d0 44 89 d2 48 8d 8b 94 02 00 00
+> [    4.039511] RSP: 0018:ffffc9000049b8f0 EFLAGS: 00010286
+> [    4.039665] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000000=
+0000000
+> [    4.039874] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88801=
+f8aa100
+> [    4.040076] RBP: ffffc9000049b918 R08: 0000000000000000 R09: 000000000=
+0000000
+> [    4.040278] R10: 00000000000003c0 R11: 0000000000000000 R12: ffff88800=
+75ea000
+> [    4.040482] R13: ffff88801f8aa100 R14: 00000000fffffff5 R15: ffffc9000=
+049baf0
+> [    4.040685] FS:  000076880dd806c0(0000) GS:ffff88809a560000(0000) knlG=
+S:0000000000000000
+> [    4.040908] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    4.041071] CR2: 0000000000000060 CR3: 0000000008a61000 CR4: 000000000=
+0450ef0
+> [    4.041275] PKRU: 55555554
+> [    4.041356] Call Trace:
+> [    4.041434]  <TASK>
+> [    4.041502]  unix_destruct_scm+0x77/0x90
+> [    4.041620]  skb_release_head_state+0x27/0xb0
+> [    4.041750]  sk_skb_reason_drop+0x55/0x210
+> [    4.041868]  ? up_read+0x22/0x30
+> [    4.041976]  vdpa_nl_cmd_dev_config_get_doit+0xc7/0x1d0
+> [    4.042140]  genl_family_rcv_msg_doit+0xcf/0x120
+> [    4.042280]  genl_rcv_msg+0x161/0x290
+> [    4.042387]  ? __pfx_vdpa_nl_cmd_dev_config_get_doit+0x10/0x10
+> [    4.042558]  ? __pfx_genl_rcv_msg+0x10/0x10
+> [    4.042679]  netlink_rcv_skb+0x41/0xf0
+> [    4.042798]  genl_rcv+0x28/0x50
+> [    4.042892]  netlink_unicast+0x1d8/0x2b0
+> [    4.043009]  netlink_sendmsg+0x212/0x440
+> [    4.043127]  __sys_sendto+0x1f3/0x200
+> [    4.043238]  ? __sys_sendto+0x1aa/0x200
+> [    4.043351]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.043493]  ? x64_sys_call+0x1d15/0x2350
+> [    4.043610]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.043747]  ? do_syscall_64+0x1b5/0xc60
+> [    4.043867]  __x64_sys_sendto+0x24/0x40
+> [    4.043979]  x64_sys_call+0x1d15/0x2350
+> [    4.044091]  do_syscall_64+0x90/0xc60
+> [    4.044200]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.044337]  ? x64_sys_call+0x1d15/0x2350
+> [    4.044456]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.044597]  ? do_syscall_64+0x1b5/0xc60
+> [    4.044712]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.044851]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.044990]  ? x64_sys_call+0x1d15/0x2350
+> [    4.045106]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.045243]  ? do_syscall_64+0x1b5/0xc60
+> [    4.045358]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.045498]  ? x64_sys_call+0x1d15/0x2350
+> [    4.045614]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.045750]  ? do_syscall_64+0x1b5/0xc60
+> [    4.045863]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.046007]  ? do_syscall_64+0x1b5/0xc60
+> [    4.046121]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [    4.046259]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [    4.046407] RIP: 0033:0x434e6c
+> [    4.046500] Code: fa 6e 03 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c3 44 8=
+b 54 24 28 48 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <=
+48> 3d 00 f0 ff ff 77 34 89 df 48 89 44 24 08 e8 40 6f 03 00 48 8b
+> [    4.047008] RSP: 002b:000076880dd7e190 EFLAGS: 00000293 ORIG_RAX: 0000=
+00000000002c
+> [    4.047218] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000000000=
+0434e6c
+> [    4.047420] RDX: 0000000000000020 RSI: 000076880dd7e1d0 RDI: 000000000=
+0000003
+> [    4.047618] RBP: 0000000069b93bd6 R08: 00000000004b3cf0 R09: 000000000=
+000000c
+> [    4.047816] R10: 0000000000000000 R11: 0000000000000293 R12: 000000000=
+f71e860
+> [    4.048023] R13: 0000000000000013 R14: 000076880dd80cdc R15: 00007fff0=
+dab68e7
+> [    4.048228]  </TASK>
+> [    4.048295] Modules linked in:
+> [    4.048387] CR2: 0000000000000060
+> [    4.048494] ---[ end trace 0000000000000000 ]---
+> [    4.059378] RIP: 0010:sock_wfree+0x1d/0x3f0
+> [    4.059511] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 0=
+0 55 48 89 e5 41 57 41 56 53 48 83 ec 10 48 8b 5f 18 44 8b 97 d8 00 00 00 <=
+48> 8b 43 60 f6 c4 02 74 51 44 89 d0 44 89 d2 48 8d 8b 94 02 00 00
+> [    4.060019] RSP: 0018:ffffc9000049b8f0 EFLAGS: 00010286
+> [    4.060168] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000000=
+0000000
+> [    4.060367] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88801=
+f8aa100
+> [    4.060574] RBP: ffffc9000049b918 R08: 0000000000000000 R09: 000000000=
+0000000
+> [    4.060776] R10: 00000000000003c0 R11: 0000000000000000 R12: ffff88800=
+75ea000
+> [    4.060978] R13: ffff88801f8aa100 R14: 00000000fffffff5 R15: ffffc9000=
+049baf0
+> [    4.061183] FS:  000076880dd806c0(0000) GS:ffff88809a560000(0000) knlG=
+S:0000000000000000
+> [    4.061416] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    4.061579] CR2: 0000000000000060 CR3: 0000000008a61000 CR4: 000000000=
+0450ef0
+> [    4.061782] PKRU: 55555554
+> [    4.061863] Kernel panic - not syncing: Fatal exception
+> [    4.062096] Kernel Offset: disabled
+> [    4.062204] Rebooting in 1 seconds..
+> 
 
