@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-227510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227511-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cHV3LxkfvWnG6QIAu9opvQ
-	(envelope-from <stable+bounces-227510-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:19:05 +0100
+	id ODTMK2UfvWnG6QIAu9opvQ
+	(envelope-from <stable+bounces-227511-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:20:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4954A2D898E
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:19:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B72312D89DB
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:20:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 84F9A3008D68
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:19:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3A56F301D49F
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 964A238E10E;
-	Fri, 20 Mar 2026 10:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F386638D697;
+	Fri, 20 Mar 2026 10:19:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="tL7LMOd9"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="cXLrhpme"
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24AD38D68B
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 10:18:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB8238E103;
+	Fri, 20 Mar 2026 10:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774001939; cv=none; b=GSDeYC1y94iWahOEXoP0OFc8tXXCoxfdtGfUtHdeTjcGTly+eLmasj6jK4bPR3dkgIWEhGBvpXIyTACXXuLgpjyVlRSbJxgXm93jH+xCr4tmo5/aTEq5jOJlVZtbr+gJlzafg2ow587JYgzL6a4/Tg9Z4xrVJHnItjb64UFXaS8=
+	t=1774001979; cv=none; b=D5wZnNkiOb3EBxtyCDQhG1c2x1BMb4eYS+t+eScrBAUhrLmL6IYmGyapsYsVpZff95uZ8Ni4QtdSuyTmO1aTatv7tPsHD8y880BO8IoBHzyF+6LnBv/rAWwwp3lvOiux6ZHqgTV4jsMhUv0gJgV0xfzzeSFqovy9PhwU7PdORDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774001939; c=relaxed/simple;
-	bh=r5QPv00cbSjaiHlEndGXtd6J9lWwJ+ipO1cfMiBTSvw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7fMPhWjxEccyCcjGKkNWcmFFIwqbLAPAmmzUObMKv6V7H014Wokzernr3OHAyZMQJyILcH/yZDxX5uzFkPnIPKpwDSj3SnswJLoPOnTOCwaVCVIdvTAxAHr/rnmE/o31EaVzejbUzX7c4ZetKxPjuvMCd/wWDTFeGvm7Cl3laY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=tL7LMOd9; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id 9B09D2035A;
-	Fri, 20 Mar 2026 10:18:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1774001927;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4NdzyQEmCPszGyI4LLdMYuA0h6cotbbT1rRui9D682E=;
-	b=tL7LMOd9iVJQfu4rvAF0MaFo21lIjI6H/00Fy6CwMzM4y8qn/wHW8ODLKPvBFB3i1Ehz3P
-	y8omQjcfK6iBAXdnBP5f/4KmODl8V2NCscc/YgPXbJviXCcwDS2p3w1084o47b+/kqdO/X
-	JFfiCXPtdxoETqj0HkufSwJbqHdAAJc=
-From: Sven Eckelmann <sven@narfation.org>
-To: stable@vger.kernel.org
-Cc: Yang Yang <n05ec@lzu.edu.cn>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.6.y] batman-adv: avoid OGM aggregation when skb tailroom is insufficient
-Date: Fri, 20 Mar 2026 11:18:44 +0100
-Message-ID: <20260320101844.1630480-1-sven@narfation.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026032000-grumpily-detonator-0c67@gregkh>
-References: <2026032000-grumpily-detonator-0c67@gregkh>
+	s=arc-20240116; t=1774001979; c=relaxed/simple;
+	bh=QRUfFyJwT6qOrnEazRDbPg1WDHxi2v472i7GoX8JcKo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FS1xBkmzrO1vQ/+hyB2qPBlTrSNnxAV1JKVD4afe/LIBzwVZjzRXewv12xIPka+IiOHeMbO+mDU0cMm1t3KIHTtSvP5JHnK3VrhVHRy+VWZBN/wkklcA6VG1JwOds/WoLndWBkGsFKDxvUu2EYUE2RY0Ajqy9Vga/AKEjh4hV1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=cXLrhpme; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 436BE20B710C;
+	Fri, 20 Mar 2026 03:19:33 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 436BE20B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1774001973;
+	bh=czjA+JLMJXAAj1eEQCrDT4VQOWKl8Iw1uQvMc0heQjo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cXLrhpmeFY9VRC1qv6cLXgYTQHhR/6ByOQ/e13dMhC5m79WmY1sCcoCpe0Yry9fBz
+	 OPYgfoVcOQm9vWLHdeJNg10ucaNWlSkSofoEj+GS51mcsfFfaFUU6k71rRRp/JldRI
+	 0/Voum0Ev2tKRoQ78IEgOEjJToQvqPtDxkB4yT4c=
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+To: ptsm@linux.microsoft.com,
+	nipun.gupta@amd.com,
+	nikhil.agarwal@amd.com,
+	alex@shazbot.org,
+	pieter.jansen-van-vuuren@amd.com,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/2] vfio/cdx: Fix NULL pointer dereference in interrupt trigger path
+Date: Fri, 20 Mar 2026 03:19:33 -0700
+Message-ID: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,80 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[lzu.edu.cn,gmail.com,outlook.com,narfation.org,simonwunderlich.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227510-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-227511-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[narfation.org:+];
-	NEURAL_HAM(-0.00)[-0.986];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lzu.edu.cn:email,narfation.org:dkim,narfation.org:email,narfation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,outlook.com:email,simonwunderlich.de:email]
-X-Rspamd-Queue-Id: 4954A2D898E
+	NEURAL_HAM(-0.00)[-0.992];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linux.microsoft.com:dkim,linux.microsoft.com:mid]
+X-Rspamd-Queue-Id: B72312D89DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+Add validation to ensure MSI is configured before accessing cdx_irqs
+array in vfio_cdx_set_msi_trigger(). Without this check, userspace
+can trigger a NULL pointer dereference by calling VFIO_DEVICE_SET_IRQS
+with VFIO_IRQ_SET_DATA_BOOL or VFIO_IRQ_SET_DATA_NONE flags before
+ever setting up interrupts via VFIO_IRQ_SET_DATA_EVENTFD.
 
-commit 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 upstream.
+The vfio_cdx_msi_enable() function allocates the cdx_irqs array and
+sets config_msi to 1 only when called through the EVENTFD path. The
+trigger loop (for DATA_BOOL/DATA_NONE) assumed this had already been
+done, but there was no enforcement of this call ordering.
 
-When OGM aggregation state is toggled at runtime, an existing forwarded
-packet may have been allocated with only packet_len bytes, while a later
-packet can still be selected for aggregation. Appending in this case can
-hit skb_put overflow conditions.
+This matches the protection used in the PCI VFIO driver where
+vfio_pci_set_msi_trigger() checks irq_is() before the trigger loop.
 
-Reject aggregation when the target skb tailroom cannot accommodate the new
-packet. The caller then falls back to creating a new forward packet
-instead of appending.
-
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: 848e447e000c ("vfio/cdx: add interrupt support")
 Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-[ Adjust context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
 ---
- net/batman-adv/bat_iv_ogm.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vfio/cdx/intr.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index 209180b4c268..c31edbd7c2ab 100644
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -464,6 +464,9 @@ batadv_iv_ogm_can_aggregate(const struct batadv_ogm_packet *new_bat_ogm_packet,
- 	    !time_after_eq(aggregation_end_time, forw_packet->send_time))
- 		return false;
+diff --git a/drivers/vfio/cdx/intr.c b/drivers/vfio/cdx/intr.c
+index 8f4402cec9c5..c0eed065e8ef 100644
+--- a/drivers/vfio/cdx/intr.c
++++ b/drivers/vfio/cdx/intr.c
+@@ -175,6 +175,10 @@ static int vfio_cdx_set_msi_trigger(struct vfio_cdx_device *vdev,
+ 		return ret;
+ 	}
  
-+	if (skb_tailroom(forw_packet->skb) < packet_len)
-+		return false;
++	/* Ensure MSI is configured before accessing cdx_irqs */
++	if (!vdev->config_msi)
++		return -EINVAL;
 +
- 	if (aggregated_bytes > BATADV_MAX_AGGREGATION_BYTES)
- 		return false;
- 
+ 	for (i = start; i < start + count; i++) {
+ 		if (!vdev->cdx_irqs[i].trigger)
+ 			continue;
 -- 
-2.47.3
+2.49.0
 
 
