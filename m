@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-227559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IAEaJJ5ivWlF9gIAu9opvQ
-	(envelope-from <stable+bounces-227559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:07:10 +0100
+	id gLcWNNtmvWnL9gIAu9opvQ
+	(envelope-from <stable+bounces-227560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:25:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF222DC4E3
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:07:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 584D42DCA37
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:25:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9E3FF3026B47
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 14:58:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2E24C3050412
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 15:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8023A9001;
-	Fri, 20 Mar 2026 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805D939F16D;
+	Fri, 20 Mar 2026 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XuWTZ63f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CsiubP2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44556284896
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 14:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42487301704
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774018671; cv=none; b=as0zpre6ym0ROTA7Aed947SV1XMRbWPLggOIHjjhQGg4IvapQU+EvJoV24BL/w36KI/0/vDdo9ye/5NndfVaD5Bbqb95lw4GKHNR58wYne3kcCNwW/H5T79jwXw5S3475Yz/SfFAtJuyTbAVHCdox8dRLwc+68TpbAF5KDZnuTo=
+	t=1774019335; cv=none; b=Xj0Nep1Eppsby6mg/B3WCNHzOXSZ4HcxXFHXWLqG2BRckveOaXzIDPizyTwL9MkjzWMnBQXXKsjpe21FkRi/l+1nh9Mj2xyI64TIfGkiZA91qUbidaI1iF0TSySNiS8tP2CbV1a6yBTIW3lYPxoxYW7t5TkCrvOz7t3Uy+hcVDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774018671; c=relaxed/simple;
-	bh=WYTHIaIReKaxPZlMBRdB79V6pGaS1TcFf7jAqJvVIvw=;
+	s=arc-20240116; t=1774019335; c=relaxed/simple;
+	bh=O+W4wi6SuGvumRiFU0/j6oPDks94T4LtbDGtweTVxNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dADV/ftMyQMV882ufnQuUiXg94OwHz2Uv4/kc9aAtALpMohjKdWNpMlTVwp2HedIF9rWFw0SeWN8cSbCUvdsqAIyVd6USHrKhfDhHehtodn0h81BCGY8diTC0OtUzt82/GRMyVb4dFfxDh04JdOozRWHw6rTxSpmwi/903QNU7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XuWTZ63f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 508EAC4CEF7;
-	Fri, 20 Mar 2026 14:57:50 +0000 (UTC)
+	 MIME-Version; b=RAHQzb2nIfSBDrGqE0BGMCzcEWIZctqpJnOSGlQ2v9b0T6ph8EJAEDEQjjglbH3YTMVgJBteg9OaP3oZNj04u6RUQe0hICdx2n2eXjdaanItXSrbL/th7q/lrem9z/8/fqHW62srBpuOxBwCT9nONJpsgHA5YtGpThFakoBEPe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CsiubP2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5354CC4CEF7;
+	Fri, 20 Mar 2026 15:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774018671;
-	bh=WYTHIaIReKaxPZlMBRdB79V6pGaS1TcFf7jAqJvVIvw=;
+	s=k20201202; t=1774019335;
+	bh=O+W4wi6SuGvumRiFU0/j6oPDks94T4LtbDGtweTVxNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XuWTZ63fQMcnZBGUzIbCHjomSqej+iLafx2sht79FymZE3mygh9kuT8ATyFoXpwRU
-	 VCwepGHMrcFGZkQVTmfzJwWvaRCGS3vm7DziDCXOw+0/eV1skxhWccuVCk0/prQXbx
-	 YNfSfGJeillzW+OAD1bcVurURxC9KmDxblDF4IqgkePSwO/HgRuU/hnyE+Ig2O7BlT
-	 T9J/7982u9WZ3m0GyAzyJHFL0+bv/p1V8z53WQ6WdDYEyYRIRla1RLe9Z7ZDoEow0C
-	 0HLgZkvKhwNW9p24aqMWJSknjBgPs1h38K0y4DN1ejqYB0xOWraOK7+8DBXkD2mv4x
-	 Ev/d5Hhgt/+xA==
+	b=CsiubP2gUBaRqc8gH6QzeUx52W2sY9dl5k/mVKtcVRBRkDQh3oFXfniwyb3Sl786K
+	 s+TpfZR/T7x61Aon99gX/g1GxZe8x/1gN3GGP8TuET+kq1/TnfH+sbShUMxtqn48PL
+	 kXdVzUyLCD9nOhPIyuaIQNY20Dsdqth1Kn0Ow7lwBqJOfGmaW/iXgrVZ7bledAwo9B
+	 AoTJWRDoUoJzjI48KoyrAWpCDURDi/hwvCO8lHQzoq9CU5v0e9MhoNJ+m7389ADRS2
+	 YIf3Wnxyco3SIGE5MjMuKn4EaTbUaIku5p+BPQmgmBuxE/RF+cKoXRqvocnNi3pOCO
+	 GfG1M2dyEU1bw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kevin Hao <haokexin@gmail.com>,
-	Quanyang Wang <quanyang.wang@windriver.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	Harini Katakam <harini.katakam@amd.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
-Date: Fri, 20 Mar 2026 10:57:46 -0400
-Message-ID: <20260320145746.4187361-3-sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/3] net: macb: queue tie-off or disable during WOL suspend
+Date: Fri, 20 Mar 2026 11:08:50 -0400
+Message-ID: <20260320150852.4191566-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260320145746.4187361-1-sashal@kernel.org>
-References: <2026032001-degrease-handcuff-81e4@gregkh>
- <20260320145746.4187361-1-sashal@kernel.org>
+In-Reply-To: <2026032002-habitual-dolly-4a11@gregkh>
+References: <2026032002-habitual-dolly-4a11@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,91 +66,221 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,windriver.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227559-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227560-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.992];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.987];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2CF222DC4E3
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tuxon.dev:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,lunn.ch:email]
+X-Rspamd-Queue-Id: 584D42DCA37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 
-[ Upstream commit 718d0766ce4c7634ce62fa78b526ea7263487edd ]
+[ Upstream commit 759cc793ebfc2d1a02f357ae97e5dcdcd63f758f ]
 
-On certain platforms, such as AMD Versal boards, the tx/rx queue pointer
-registers are cleared after suspend, and the rx queue pointer register
-is also disabled during suspend if WOL is enabled. Previously, we assumed
-that these registers would be restored by macb_mac_link_up(). However,
-in commit bf9cf80cab81, macb_init_buffers() was moved from
-macb_mac_link_up() to macb_open(). Therefore, we should call
-macb_init_buffers() to reinitialize the tx/rx queue pointer registers
-during resume.
+When GEM is used as a wake device, it is not mandatory for the RX DMA
+to be active. The RX engine in IP only needs to receive and identify
+a wake packet through an interrupt. The wake packet is of no further
+significance; hence, it is not required to be copied into memory.
+By disabling RX DMA during suspend, we can avoid unnecessary DMA
+processing of any incoming traffic.
 
-Due to the reset of these two registers, we also need to adjust the
-tx/rx rings accordingly. The tx ring will be handled by
-gem_shuffle_tx_rings() in macb_mac_link_up(), so we only need to
-initialize the rx ring here.
+During suspend, perform either of the below operations:
 
-Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
-Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Tested-by: Quanyang Wang <quanyang.wang@windriver.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260312-macb-versal-v1-2-467647173fa4@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+- tie-off/dummy descriptor: Disable unused queues by connecting
+  them to a looped descriptor chain without free slots.
+
+- queue disable: The newer IP version allows disabling individual queues.
+
+Co-developed-by: Harini Katakam <harini.katakam@amd.com>
+Signed-off-by: Harini Katakam <harini.katakam@amd.com>
+Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Tested-by: Claudiu Beznea <claudiu.beznea@tuxon.dev> # on SAMA7G5
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 718d0766ce4c ("net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/ethernet/cadence/macb.h      |  7 +++
+ drivers/net/ethernet/cadence/macb_main.c | 60 ++++++++++++++++++++++--
+ 2 files changed, 64 insertions(+), 3 deletions(-)
 
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 8d66de71ea604..0d3c6eb72163f 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -636,6 +636,10 @@
+ #define GEM_T2OFST_OFFSET			0 /* offset value */
+ #define GEM_T2OFST_SIZE				7
+ 
++/* Bitfields in queue pointer registers */
++#define MACB_QUEUE_DISABLE_OFFSET		0 /* disable queue */
++#define MACB_QUEUE_DISABLE_SIZE			1
++
+ /* Offset for screener type 2 compare values (T2CMPOFST).
+  * Note the offset is applied after the specified point,
+  * e.g. GEM_T2COMPOFST_ETYPE denotes the EtherType field, so an offset
+@@ -722,6 +726,7 @@
+ #define MACB_CAPS_NEEDS_RSTONUBR		0x00000100
+ #define MACB_CAPS_MIIONRGMII			0x00000200
+ #define MACB_CAPS_NEED_TSUCLK			0x00000400
++#define MACB_CAPS_QUEUE_DISABLE			0x00000800
+ #define MACB_CAPS_PCS				0x01000000
+ #define MACB_CAPS_HIGH_SPEED			0x02000000
+ #define MACB_CAPS_CLK_HW_CHG			0x04000000
+@@ -1254,6 +1259,8 @@ struct macb {
+ 	u32	(*macb_reg_readl)(struct macb *bp, int offset);
+ 	void	(*macb_reg_writel)(struct macb *bp, int offset, u32 value);
+ 
++	struct macb_dma_desc	*rx_ring_tieoff;
++	dma_addr_t		rx_ring_tieoff_dma;
+ 	size_t			rx_buffer_size;
+ 
+ 	unsigned int		rx_ring_size;
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index ffd39103dd860..98970266165e9 100644
+index a235a34b496dc..043491cadcb7f 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5408,8 +5408,18 @@ static int __maybe_unused macb_resume(struct device *dev)
- 		rtnl_unlock();
+@@ -2419,6 +2419,12 @@ static void macb_free_consistent(struct macb *bp)
+ 	unsigned int q;
+ 	int size;
+ 
++	if (bp->rx_ring_tieoff) {
++		dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
++				  bp->rx_ring_tieoff, bp->rx_ring_tieoff_dma);
++		bp->rx_ring_tieoff = NULL;
++	}
++
+ 	bp->macbgem_ops.mog_free_rx_buffers(bp);
+ 
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+@@ -2510,6 +2516,16 @@ static int macb_alloc_consistent(struct macb *bp)
+ 	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
+ 		goto out_err;
+ 
++	/* Required for tie off descriptor for PM cases */
++	if (!(bp->caps & MACB_CAPS_QUEUE_DISABLE)) {
++		bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
++							macb_dma_desc_get_size(bp),
++							&bp->rx_ring_tieoff_dma,
++							GFP_KERNEL);
++		if (!bp->rx_ring_tieoff)
++			goto out_err;
++	}
++
+ 	return 0;
+ 
+ out_err:
+@@ -2517,6 +2533,19 @@ static int macb_alloc_consistent(struct macb *bp)
+ 	return -ENOMEM;
+ }
+ 
++static void macb_init_tieoff(struct macb *bp)
++{
++	struct macb_dma_desc *desc = bp->rx_ring_tieoff;
++
++	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
++		return;
++	/* Setup a wrapping descriptor with no free slots
++	 * (WRAP and USED) to tie off/disable unused RX queues.
++	 */
++	macb_set_addr(bp, desc, MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
++	desc->ctrl = 0;
++}
++
+ static void gem_init_rings(struct macb *bp)
+ {
+ 	struct macb_queue *queue;
+@@ -2540,6 +2569,7 @@ static void gem_init_rings(struct macb *bp)
+ 		gem_rx_refill(queue);
  	}
  
-+	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
-+		macb_init_buffers(bp);
++	macb_init_tieoff(bp);
+ }
+ 
+ static void macb_init_rings(struct macb *bp)
+@@ -2557,6 +2587,8 @@ static void macb_init_rings(struct macb *bp)
+ 	bp->queues[0].tx_head = 0;
+ 	bp->queues[0].tx_tail = 0;
+ 	desc->ctrl |= MACB_BIT(TX_WRAP);
 +
- 	for (q = 0, queue = bp->queues; q < bp->num_queues;
- 	     ++q, ++queue) {
-+		if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
-+			if (macb_is_gem(bp))
-+				gem_init_rx_ring(queue);
-+			else
-+				macb_init_rx_ring(queue);
-+		}
++	macb_init_tieoff(bp);
+ }
+ 
+ static void macb_reset_hw(struct macb *bp)
+@@ -5096,6 +5128,7 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 	unsigned long flags;
+ 	unsigned int q;
+ 	int err;
++	u32 tmp;
+ 
+ 	if (!device_may_wakeup(&bp->dev->dev))
+ 		phy_exit(bp->sgmii_phy);
+@@ -5105,17 +5138,38 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 
+ 	if (bp->wol & MACB_WOL_ENABLED) {
+ 		spin_lock_irqsave(&bp->lock, flags);
+-		/* Flush all status bits */
+-		macb_writel(bp, TSR, -1);
+-		macb_writel(bp, RSR, -1);
 +
- 		napi_enable(&queue->napi_rx);
- 		napi_enable(&queue->napi_tx);
- 	}
++		/* Disable Tx and Rx engines before  disabling the queues,
++		 * this is mandatory as per the IP spec sheet
++		 */
++		tmp = macb_readl(bp, NCR);
++		macb_writel(bp, NCR, tmp & ~(MACB_BIT(TE) | MACB_BIT(RE)));
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues;
+ 		     ++q, ++queue) {
++			/* Disable RX queues */
++			if (bp->caps & MACB_CAPS_QUEUE_DISABLE) {
++				queue_writel(queue, RBQP, MACB_BIT(QUEUE_DISABLE));
++			} else {
++				/* Tie off RX queues */
++				queue_writel(queue, RBQP,
++					     lower_32_bits(bp->rx_ring_tieoff_dma));
++#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
++				queue_writel(queue, RBQPH,
++					     upper_32_bits(bp->rx_ring_tieoff_dma));
++#endif
++			}
+ 			/* Disable all interrupts */
+ 			queue_writel(queue, IDR, -1);
+ 			queue_readl(queue, ISR);
+ 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 				queue_writel(queue, ISR, -1);
+ 		}
++		/* Enable Receive engine */
++		macb_writel(bp, NCR, tmp | MACB_BIT(RE));
++		/* Flush all status bits */
++		macb_writel(bp, TSR, -1);
++		macb_writel(bp, RSR, -1);
++
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+ 		 */
 -- 
 2.51.0
 
