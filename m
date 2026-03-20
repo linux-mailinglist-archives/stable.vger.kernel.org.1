@@ -1,117 +1,468 @@
-Return-Path: <stable+bounces-227436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227437-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Pw5LYfqvGnQ4QIAu9opvQ
-	(envelope-from <stable+bounces-227436-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 07:34:47 +0100
+	id GK6aEv/qvGkL4gIAu9opvQ
+	(envelope-from <stable+bounces-227437-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 07:36:47 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582552D643F
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 07:34:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C0A2D6451
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 07:36:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9442130226A0
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 06:34:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7079E302E78E
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 06:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFFD31E85B;
-	Fri, 20 Mar 2026 06:34:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712FE3246ED;
+	Fri, 20 Mar 2026 06:36:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hr7l1y+J"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="IzUtd72r";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VPsEaIEs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9144B29ACF6;
-	Fri, 20 Mar 2026 06:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9E731F99D
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 06:36:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773988483; cv=none; b=JWm3/pEwGx4IPX59wrrR1vwurVXE4BJ9Vo4u+4nlN2aAODN23zIYN1EVQrWrQfcB9Veh+nW7Ym9PAzxgsdOUt393xYFBSPc80hpE9c9ltqrGym3nBiElmbWdUrTS6QjUUgKW74Qei+l/IydARZ40CrjOSu0ZQuJ+t5nXK3Exdv0=
+	t=1773988603; cv=none; b=E949kRSxIoKbCPO/Kq1AMEPxBEbn8qvuszxtYvCy9Mzd7evsCsGr9rzXxn8d2slDhjXHX22i60TCQ9VBl4V1wDOn82okjQGIgmhaZyqNLlRUaeL2rSL3FBSP9PCN9vx67x4tyZQOLwF9EMXR3RfSu1spjzvptUlF3iX7Hmw3WDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773988483; c=relaxed/simple;
-	bh=ciBHZnV+9yK+pIZcszoVm6DXvUTdjLGIKLPHuMtuItY=;
+	s=arc-20240116; t=1773988603; c=relaxed/simple;
+	bh=aWWCiHdptLBAuskvWrBJXobgVwSKWyquCSKRPSlU6wQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I85SF3omPCe8b7QhLfAYwLx3uMd09+JJyNjvYarDrVbE2G6CWRvgnzOXdSM5+QAF47hV/Qo+yfymxK0SAu/b2jNCevBmy6lf07gSdu3rtZWnYqeMrJjrxQCezCs406vDCpZCFV/iUxOk4FgMQ5Xk9nfsVh4s9cIeFOjEhXoGEY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hr7l1y+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92777C4CEF7;
-	Fri, 20 Mar 2026 06:34:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773988483;
-	bh=ciBHZnV+9yK+pIZcszoVm6DXvUTdjLGIKLPHuMtuItY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hr7l1y+J0EUPPlpaW2DMMsHVzKVQ5OVSvbaNwSgYhTHQkMwKVkDsbd71TtGyDHkN3
-	 1cK74opYxwtw1SavLwjkeH+Sf9NX5d3IOTuWLfCD71nUEDlaMAiTYi0CsULoeq0WqR
-	 A3tY/OdzY6/Qe/wUjnHOqb27ckhJs6N/HxluZyrg=
-Date: Fri, 20 Mar 2026 07:34:22 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Lucid Duck <lucid_duck@justthetip.ca>
-Cc: sean.wang@kernel.org, nbd@nbd.name, lorenzo@kernel.org,
-	linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-	morrownr@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH v4] wifi: mt76: mt7921: fix txpower reporting from rate
- power configuration
-Message-ID: <2026032054-backroom-nearby-53b2@gregkh>
-References: <20260319203854.30479-1-lucid_duck@justthetip.ca>
- <20260320011727.77939-1-lucid_duck@justthetip.ca>
+	 Content-Type:Content-Disposition:In-Reply-To; b=cHSB5hP/wbDycLvC9UFXArYo6JKaZa/HBQne8tTHzfTrkcA2Ti7s7zwwrYNuW1H4WBAKlx+nxmQtyN1PCH4/km6vMvl/yTJ3jHuDgwGVTQwjSOb9gaF963QRYnBPa93r9rSScJwcCC2auU6929YnWTAp6tPJ8CHAhe8wXyudjho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=IzUtd72r; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VPsEaIEs; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62K2Xglr1691830
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 06:36:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	zFwJZkJXzTmRr/gxQAHLFDg6XAlrx8f/ZITkjIT7Ds0=; b=IzUtd72r5Wmfi75t
+	yewmiY0kz55xOf661FYymkStAE88wDDf0fNT3ZTQI+kNjKAoZ2roFIus78fyy4Is
+	aEs9p1Dak0Jl4+Z04WpR/koBfQHM8+nb5K/xuABlBxWx1ElhfnDJ8LcqK0BE03hK
+	E3cyRIYEynzrbWgMVz1vSwWWV+YRc1iWtXxFFE7Mi+/T9RK4DUWb+CPGMbRr6LKD
+	M4gHFENJkQlIyqDf3HBgd/jstwgbu5sDEPQzp4+dbbozkHsSCD/w/WDb6Dygz6WQ
+	/sS/+c9Dh6le/6Pa1Oek1dDXgazi/guWencglaMa7OQtZP9gCoUSZuDSrwXc/1Eq
+	z411ng==
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4d0s5d14un-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 06:36:40 +0000 (GMT)
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50b3544bc7bso12581991cf.2
+        for <stable@vger.kernel.org>; Thu, 19 Mar 2026 23:36:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1773988600; x=1774593400; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zFwJZkJXzTmRr/gxQAHLFDg6XAlrx8f/ZITkjIT7Ds0=;
+        b=VPsEaIEsXKlUB2u40KodBVOe8d7IIJg9RdNzZiror0/s8H4tDo0O1borYgcLi78yVm
+         7TW8uEfcur3/TUFr4LI82mB0SkUHWZ+gi1RZxx5n4jLLI3zZHoBtqjgvNLUnY73ExxCo
+         jK8UYQZjLijBPsRzmoWGi/R68XqvcMnIUxDR4QKtorRm5hr5SetascR41g8HeXU1fu3o
+         Cl/tuhyvWwD2Bp1Q8DCUUilnI5YchZvj8zFBPv5QjY59QTqpoQb9i9vChyuw6CEJVD7n
+         ykE/r1ymqFtQHtObjwjc+FyjwpN+e12aCkLum3/YeU3u0LOqY9l+1wMIGyzTH0ISZVN5
+         cmaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773988600; x=1774593400;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zFwJZkJXzTmRr/gxQAHLFDg6XAlrx8f/ZITkjIT7Ds0=;
+        b=m9lAbt5Bgwrnn+5fL80HvdJbzve1mb7U0u7orI6V19MJ+3TwlWLmKgtURGQbWpXSgT
+         5LkGE01UPYLS/Sa/jvBs9jdhKJSNxhhOmDSFdiULyym9/Zo9REnTvndqj2vwJxzhk7Jk
+         kL+09gguoC1Qd8IEj/vYuKUWeQU9VuDIAHsKQaroKi2RAwGy9flzVrAXl7qTok1LnXYt
+         W80yYFxGjnkl3Yj62VOzVnKtg/IGEzSXWpaR7rJp3rOt32BbP+FN47y8qd7Bo80JgdjB
+         r3Qwhu3SV0idoAwYNUEtR1gMUAm67sFiggy/KppKC+owVnG7C3hcAy/oXNcRECEFI+dP
+         sYwA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQnOGtB+7GkA9p6F5nnaHULCXCnbT3XN+0N5gcp6lcLVGwdBFs7PqSl84PYVU5Lx5NhIRIQwk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1VEeLmijAwXNSLRTLRlhx8kGTa4PCK1k6i6Bci2nPufg7mtWm
+	nFWU92hOn1r7O7ulH6qydMuJQk30/tYU5tf/cydUh/Xv8u2e4rVLLM7FN/jmYQDRubZo/1GGfSW
+	y28tQz5WeVffqY2WGO1wI5S1yi+Oe+qUWemESXseEWDxFS7Mxng8UjRcPgUs=
+X-Gm-Gg: ATEYQzyQAVPvnJlYqoos9JnDYn9yKFZiebz6cEH4THmWoPv4/wdHDDxzoFsI/4XutPY
+	GRLw7ttYS8FgTucgRBjW/LdXKi4S3Rq+Gw7CzI8holCNLj3LZNH2aJI+BrmWcjTx/K3mx/IruwE
+	riyEOb0wI/pORF/GxePbxp1fXuupMgZxbO2PH42aShwdGrZztOUXaSyt3YFY5fw1SPpk1j1XKO3
+	NimPSElqAfXrl2ew6q4QLXWd27H+Kd419hqPclNw3eYfEBPjV5a9nQqI11KjbbzRPIgzpl7pRdp
+	yVcJW4F14bmW9wP73Zd7ypDV7aLVDpomctnBMzRHF9bJMmYMVnBjaPDnoRb4n8kbXdj+C5k+Y5a
+	bAm6MXjIzhNO3+OuVYIK1enpFJ80NPu6U+5BVFKBzGgE78xQeFPD+EUHnk1QXtHJzpHzXBD/ft5
+	PCv9MCncPfYQ2lxkiKN7ZpDkuQKRXakjVvSyk=
+X-Received: by 2002:a05:622a:6992:b0:50b:2e0c:9237 with SMTP id d75a77b69052e-50b375a351fmr18312631cf.68.1773988599940;
+        Thu, 19 Mar 2026 23:36:39 -0700 (PDT)
+X-Received: by 2002:a05:622a:6992:b0:50b:2e0c:9237 with SMTP id d75a77b69052e-50b375a351fmr18312451cf.68.1773988599379;
+        Thu, 19 Mar 2026 23:36:39 -0700 (PDT)
+Received: from umbar.lan (2001-14ba-a073-af00-264b-feff-fe8b-be8a.rev.dnainternet.fi. [2001:14ba:a073:af00:264b:feff:fe8b:be8a])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf9744232sm3875691fa.11.2026.03.19.23.36.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Mar 2026 23:36:38 -0700 (PDT)
+Date: Fri, 20 Mar 2026 08:36:36 +0200
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+To: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Neil Armstrong <neil.armstrong@linaro.org>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Bjorn Andersson <andersson@kernel.org>, linux-arm-msm@vger.kernel.org,
+        linux-phy@lists.infradead.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/2] phy: qcom: edp: Add eDP/DP mode switch support
+Message-ID: <islxoe4wbqx5pl54difetdcl5lrqvfd5ysbaicxz5lv235sfmd@6hwrq3rmqx7c>
+References: <20260302-edp_phy-v3-0-ca8888d793b0@oss.qualcomm.com>
+ <20260302-edp_phy-v3-1-ca8888d793b0@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260320011727.77939-1-lucid_duck@justthetip.ca>
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260302-edp_phy-v3-1-ca8888d793b0@oss.qualcomm.com>
+X-Proofpoint-ORIG-GUID: BPaP1XALh7MXhbBQ-71t9FHrMPCFlctj
+X-Proofpoint-GUID: BPaP1XALh7MXhbBQ-71t9FHrMPCFlctj
+X-Authority-Analysis: v=2.4 cv=CqCys34D c=1 sm=1 tr=0 ts=69bceaf8 cx=c_pps
+ a=JbAStetqSzwMeJznSMzCyw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=JfrnYn6hAAAA:8
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=_q1pDddAzHEZ3SoJKR0A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=uxP6HrT_eTzRwkO_Te1X:22 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDA0NyBTYWx0ZWRfX2x3WAzLMlmSH
+ n4nflaoZLyKuGHUeJ3lDO03JyDZi/40fLiUt/c90g2Q2Uuz7QoPpQMvNnY/Z3mlhT5J7BZD3lEC
+ kbyo5jRYFKhUmdkGxD36pi+Pu7bqldXygpgd+rZ6hBaaIuTdHfcznhJfEfNrfqZYBVkmE3ZD9IK
+ qicOFEN93azdTGZW45z2nhGFNr/6PK3lQxHiYn0ai7e6zmuiWXwtgqoMtnIIX+fn7/fjXufGNaw
+ HO6tTx0/aAHnwMs0bbRzeTUhQD0LNQXYeL/xlj1Xpms86v/ptdR2G+9WVF9ZQODK875He0EeKTt
+ ArfX4UQTwb1FPRiYEyrRHGTovo4Uqls8Q4HZSDdhKYn2/28fGPmMGBoTgIgfS1oUDRQlpq21jgI
+ QmqytQdvI1nsISXG4gb54XerundR3Gy0q5TJYqYh0LxQWVwCXmq1Z7/W/pSznNjxrA4cAaLKxVz
+ 7UtdNKDn88pSR5vQn7g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-19_04,2026-03-19_05,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 lowpriorityscore=0 bulkscore=0 malwarescore=0 suspectscore=0
+ impostorscore=0 phishscore=0 priorityscore=1501 adultscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2603050001 definitions=main-2603200047
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	DMARC_POLICY_ALLOW(-0.50)[qualcomm.com,reject];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_DKIM_ALLOW(-0.20)[qualcomm.com:s=qcppdkim1,oss.qualcomm.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227436-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[kernel.org,nbd.name,vger.kernel.org,lists.infradead.org,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.850];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[qualcomm.com:+,oss.qualcomm.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227437-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[qualcomm.com:dkim,qualcomm.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oss.qualcomm.com:dkim];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 582552D643F
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dmitry.baryshkov@oss.qualcomm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-0.992];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[7]
+X-Rspamd-Queue-Id: A3C0A2D6451
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 19, 2026 at 06:17:27PM -0700, Lucid Duck wrote:
-> Note for stable backport: this patch uses mt76_tx_power_path_delta()
-> which was introduced in commit 56e38675c5bd ("mt76: support power delta
-> calculation for 5 TX paths"). That commit renamed the older
-> mt76_tx_power_nss_delta() and is needed as a prerequisite for the
-> backport to compile.
+On Mon, Mar 02, 2026 at 04:28:29PM +0800, Yongxing Mou wrote:
+> The eDP PHY supports both eDP&DP modes, each requires a different table.
+> The current driver doesn't fully support every combo PHY mode and use
+> either the eDP or DP table when enable the platform. In addition, some
+> platforms mismatch between the mode and the table where DP mode uses
+> the eDP table or eDP mode use the DP table.
 > 
-> For stable kernels that don't have 56e3867, a trivial substitution of
-> mt76_tx_power_nss_delta for mt76_tx_power_path_delta produces identical
-> results for 1-4 chain devices (the lookup tables match exactly).
+> Clean up and correct the tables for currently supported platforms based on
+> the HPG specification.
 > 
-> Reported-by: sam8641 (compile failure on 6.12.74)
+> Here lists the tables can be reused across current platforms.
+> DP mode：
+> 	-sa8775p/sc7280/sc8280xp/x1e80100
+> 	-glymur
+> eDP mode(low vdiff):
 
-This "note for stable backport" will get lost, sorry.  Can you provide
-working backports to stable@vger.kernel.org when this lands in Linus's
-tree?
+Separate question: should we extend phy_configure_dp_opts with the
+low/high vdiff? Is there a point in providing the ability to toggle
+between low vdiff and high vdiff?
 
-thanks,
+> 	-glymur/sa8775p/sc8280xp/x1e80100
+> 	-sc7280
 
-greg k-h
+I understand your wish to perform all the changes in a single patch, but
+there is one problem with that. Consider this patch regresses one of the
+platforms (I'm looking at Kodiak and SC8180X as they get the biggest set
+of changes). It would be almost impossible to separate, which particular
+change caused the regression. I'd suggest splitting this patch into a
+set of more atomic changes. E.g. the AUX_CFG8 is definitely a separate
+change. Writing swing / pre_emph tables on Kodiak and SC8180X is a
+separate change (or two). Switching each of the platforms to the
+corrected set of tables ideally also should come as a separate change,
+so that in case of a regression the issue would be easier to identify.
+
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: f199223cb490 ("phy: qcom: Introduce new eDP PHY driver")
+> Signed-off-by: Yongxing Mou <yongxing.mou@oss.qualcomm.com>
+> ---
+>  drivers/phy/qualcomm/phy-qcom-edp.c | 90 ++++++++++++++++++++++---------------
+>  1 file changed, 53 insertions(+), 37 deletions(-)
+> 
+> diff --git a/drivers/phy/qualcomm/phy-qcom-edp.c b/drivers/phy/qualcomm/phy-qcom-edp.c
+> index 7372de05a0b8..36998326bae6 100644
+> --- a/drivers/phy/qualcomm/phy-qcom-edp.c
+> +++ b/drivers/phy/qualcomm/phy-qcom-edp.c
+> @@ -87,7 +87,8 @@ struct qcom_edp_phy_cfg {
+>  	bool is_edp;
+>  	const u8 *aux_cfg;
+>  	const u8 *vco_div_cfg;
+> -	const struct qcom_edp_swing_pre_emph_cfg *swing_pre_emph_cfg;
+> +	const struct qcom_edp_swing_pre_emph_cfg *dp_swing_pre_emph_cfg;
+> +	const struct qcom_edp_swing_pre_emph_cfg *edp_swing_pre_emph_cfg;
+>  	const struct phy_ver_ops *ver_ops;
+>  };
+>  
+> @@ -116,17 +117,17 @@ struct qcom_edp {
+>  };
+>  
+>  static const u8 dp_swing_hbr_rbr[4][4] = {
+> -	{ 0x08, 0x0f, 0x16, 0x1f },
+> +	{ 0x07, 0x0f, 0x16, 0x1f },
+>  	{ 0x11, 0x1e, 0x1f, 0xff },
+>  	{ 0x16, 0x1f, 0xff, 0xff },
+>  	{ 0x1f, 0xff, 0xff, 0xff }
+>  };
+>  
+>  static const u8 dp_pre_emp_hbr_rbr[4][4] = {
+> -	{ 0x00, 0x0d, 0x14, 0x1a },
+> +	{ 0x00, 0x0e, 0x15, 0x1a },
+>  	{ 0x00, 0x0e, 0x15, 0xff },
+>  	{ 0x00, 0x0e, 0xff, 0xff },
+> -	{ 0x03, 0xff, 0xff, 0xff }
+> +	{ 0x04, 0xff, 0xff, 0xff }
+>  };
+
+I've checked, at least this table doesn't match SC8180X configuration.
+
+>  
+>  static const u8 dp_swing_hbr2_hbr3[4][4] = {
+> @@ -150,6 +151,20 @@ static const struct qcom_edp_swing_pre_emph_cfg dp_phy_swing_pre_emph_cfg = {
+>  	.pre_emphasis_hbr3_hbr2 = &dp_pre_emp_hbr2_hbr3,
+>  };
+>  
+> +static const u8 dp_pre_emp_hbr_rbr_v8[4][4] = {
+> +	{ 0x00, 0x0e, 0x15, 0x1a },
+> +	{ 0x00, 0x0e, 0x15, 0xff },
+> +	{ 0x00, 0x0e, 0xff, 0xff },
+> +	{ 0x00, 0xff, 0xff, 0xff }
+> +};
+> +
+> +static const struct qcom_edp_swing_pre_emph_cfg dp_phy_swing_pre_emph_cfg_v8 = {
+> +	.swing_hbr_rbr = &dp_swing_hbr_rbr,
+> +	.swing_hbr3_hbr2 = &dp_swing_hbr2_hbr3,
+> +	.pre_emphasis_hbr_rbr = &dp_pre_emp_hbr_rbr_v8,
+> +	.pre_emphasis_hbr3_hbr2 = &dp_pre_emp_hbr2_hbr3,
+> +};
+> +
+>  static const u8 edp_swing_hbr_rbr[4][4] = {
+>  	{ 0x07, 0x0f, 0x16, 0x1f },
+>  	{ 0x0d, 0x16, 0x1e, 0xff },
+> @@ -158,7 +173,7 @@ static const u8 edp_swing_hbr_rbr[4][4] = {
+>  };
+>  
+>  static const u8 edp_pre_emp_hbr_rbr[4][4] = {
+> -	{ 0x05, 0x12, 0x17, 0x1d },
+> +	{ 0x05, 0x11, 0x17, 0x1d },
+
+This was changed only for Kodiak. For SC8180X, I assume, we should be
+using the older table.
+
+>  	{ 0x05, 0x11, 0x18, 0xff },
+>  	{ 0x06, 0x11, 0xff, 0xff },
+>  	{ 0x00, 0xff, 0xff, 0xff }
+> @@ -172,10 +187,10 @@ static const u8 edp_swing_hbr2_hbr3[4][4] = {
+>  };
+>  
+>  static const u8 edp_pre_emp_hbr2_hbr3[4][4] = {
+
+I think it becomes worth adding version to the "generic" tables. They
+are not that generic anyway.
+
+> -	{ 0x08, 0x11, 0x17, 0x1b },
+> -	{ 0x00, 0x0c, 0x13, 0xff },
+> -	{ 0x05, 0x10, 0xff, 0xff },
+> -	{ 0x00, 0xff, 0xff, 0xff }
+> +	{ 0x0c, 0x15, 0x19, 0x1e },
+> +	{ 0x0b, 0x15, 0x19, 0xff },
+> +	{ 0x0e, 0x14, 0xff, 0xff },
+> +	{ 0x0d, 0xff, 0xff, 0xff }
+
+Current table indeed doesn't match the swing table. Please take care
+about the SC8180X differences (I think, it will need separate set of
+tables).
+
+>  };
+>  
+>  static const struct qcom_edp_swing_pre_emph_cfg edp_phy_swing_pre_emph_cfg = {
+> @@ -193,25 +208,25 @@ static const u8 edp_phy_vco_div_cfg_v4[4] = {
+>  	0x01, 0x01, 0x02, 0x00,
+>  };
+>  
+> -static const u8 edp_pre_emp_hbr_rbr_v5[4][4] = {
+> -	{ 0x05, 0x11, 0x17, 0x1d },
+> -	{ 0x05, 0x11, 0x18, 0xff },
+> -	{ 0x06, 0x11, 0xff, 0xff },
+> -	{ 0x00, 0xff, 0xff, 0xff }
+> +static const u8 edp_swing_hbr2_hbr3_v3[4][4] = {
+> +	{ 0x06, 0x11, 0x16, 0x1b },
+> +	{ 0x0b, 0x19, 0x1f, 0xff },
+> +	{ 0x18, 0x1f, 0xff, 0xff },
+> +	{ 0x1f, 0xff, 0xff, 0xff }
+>  };
+>  
+> -static const u8 edp_pre_emp_hbr2_hbr3_v5[4][4] = {
+> +static const u8 edp_pre_emp_hbr2_hbr3_v3[4][4] = {
+>  	{ 0x0c, 0x15, 0x19, 0x1e },
+> -	{ 0x0b, 0x15, 0x19, 0xff },
+> -	{ 0x0e, 0x14, 0xff, 0xff },
+> +	{ 0x09, 0x14, 0x19, 0xff },
+> +	{ 0x0f, 0x14, 0xff, 0xff },
+>  	{ 0x0d, 0xff, 0xff, 0xff }
+>  };
+>  
+> -static const struct qcom_edp_swing_pre_emph_cfg edp_phy_swing_pre_emph_cfg_v5 = {
+> +static const struct qcom_edp_swing_pre_emph_cfg edp_phy_swing_pre_emph_cfg_v3 = {
+>  	.swing_hbr_rbr = &edp_swing_hbr_rbr,
+> -	.swing_hbr3_hbr2 = &edp_swing_hbr2_hbr3,
+> -	.pre_emphasis_hbr_rbr = &edp_pre_emp_hbr_rbr_v5,
+> -	.pre_emphasis_hbr3_hbr2 = &edp_pre_emp_hbr2_hbr3_v5,
+> +	.swing_hbr3_hbr2 = &edp_swing_hbr2_hbr3_v3,
+> +	.pre_emphasis_hbr_rbr = &edp_pre_emp_hbr_rbr,
+> +	.pre_emphasis_hbr3_hbr2 = &edp_pre_emp_hbr2_hbr3_v3,
+>  };
+>  
+>  static const u8 edp_phy_aux_cfg_v5[DP_AUX_CFG_SIZE] = {
+> @@ -262,12 +277,7 @@ static int qcom_edp_phy_init(struct phy *phy)
+>  	       DP_PHY_PD_CTL_PLL_PWRDN | DP_PHY_PD_CTL_DP_CLAMP_EN,
+>  	       edp->edp + DP_PHY_PD_CTL);
+>  
+> -	/*
+> -	 * TODO: Re-work the conditions around setting the cfg8 value
+> -	 * when more information becomes available about why this is
+> -	 * even needed.
+> -	 */
+> -	if (edp->cfg->swing_pre_emph_cfg && !edp->is_edp)
+> +	if (!edp->is_edp)
+>  		aux_cfg[8] = 0xb7;
+
+This is a separate fix, as it changes the aux_cfg[8] value for Kodiak
+and SC8180X.
+
+>  
+>  	writel(0xfc, edp->edp + DP_PHY_MODE);
+> @@ -291,7 +301,7 @@ static int qcom_edp_phy_init(struct phy *phy)
+>  
+>  static int qcom_edp_set_voltages(struct qcom_edp *edp, const struct phy_configure_opts_dp *dp_opts)
+>  {
+> -	const struct qcom_edp_swing_pre_emph_cfg *cfg = edp->cfg->swing_pre_emph_cfg;
+> +	const struct qcom_edp_swing_pre_emph_cfg *cfg;
+>  	unsigned int v_level = 0;
+>  	unsigned int p_level = 0;
+>  	u8 ldo_config;
+> @@ -299,11 +309,10 @@ static int qcom_edp_set_voltages(struct qcom_edp *edp, const struct phy_configur
+>  	u8 emph;
+>  	int i;
+>  
+> -	if (!cfg)
+> -		return 0;
+> -
+>  	if (edp->is_edp)
+> -		cfg = &edp_phy_swing_pre_emph_cfg;
+> +		cfg = edp->cfg->edp_swing_pre_emph_cfg;
+> +	else
+> +		cfg = edp->cfg->dp_swing_pre_emph_cfg;
+>  
+>  	for (i = 0; i < dp_opts->lanes; i++) {
+>  		v_level = max(v_level, dp_opts->voltage[i]);
+> @@ -564,20 +573,24 @@ static const struct qcom_edp_phy_cfg sa8775p_dp_phy_cfg = {
+>  	.is_edp = false,
+>  	.aux_cfg = edp_phy_aux_cfg_v5,
+>  	.vco_div_cfg = edp_phy_vco_div_cfg_v4,
+> -	.swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg_v5,
+> +	.dp_swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg,
+> +	.edp_swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg,
+>  	.ver_ops = &qcom_edp_phy_ops_v4,
+>  };
+>  
+>  static const struct qcom_edp_phy_cfg sc7280_dp_phy_cfg = {
+>  	.aux_cfg = edp_phy_aux_cfg_v4,
+>  	.vco_div_cfg = edp_phy_vco_div_cfg_v4,
+> +	.dp_swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg,
+> +	.edp_swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg_v3,
+>  	.ver_ops = &qcom_edp_phy_ops_v4,
+>  };
+>  
+>  static const struct qcom_edp_phy_cfg sc8280xp_dp_phy_cfg = {
+>  	.aux_cfg = edp_phy_aux_cfg_v4,
+>  	.vco_div_cfg = edp_phy_vco_div_cfg_v4,
+> -	.swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg,
+> +	.dp_swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg,
+> +	.edp_swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg,
+>  	.ver_ops = &qcom_edp_phy_ops_v4,
+>  };
+>  
+> @@ -585,7 +598,8 @@ static const struct qcom_edp_phy_cfg sc8280xp_edp_phy_cfg = {
+>  	.is_edp = true,
+>  	.aux_cfg = edp_phy_aux_cfg_v4,
+>  	.vco_div_cfg = edp_phy_vco_div_cfg_v4,
+> -	.swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg,
+> +	.dp_swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg,
+> +	.edp_swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg,
+
+Ok, we are going to continue using eDP table because of is_edp = true.
+
+>  	.ver_ops = &qcom_edp_phy_ops_v4,
+>  };
+>  
+> @@ -766,7 +780,8 @@ static const struct phy_ver_ops qcom_edp_phy_ops_v6 = {
+>  static struct qcom_edp_phy_cfg x1e80100_phy_cfg = {
+>  	.aux_cfg = edp_phy_aux_cfg_v4,
+>  	.vco_div_cfg = edp_phy_vco_div_cfg_v4,
+> -	.swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg,
+> +	.dp_swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg,
+> +	.edp_swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg,
+>  	.ver_ops = &qcom_edp_phy_ops_v6,
+>  };
+>  
+> @@ -945,7 +960,8 @@ static const struct phy_ver_ops qcom_edp_phy_ops_v8 = {
+>  static struct qcom_edp_phy_cfg glymur_phy_cfg = {
+>  	.aux_cfg = edp_phy_aux_cfg_v8,
+>  	.vco_div_cfg = edp_phy_vco_div_cfg_v8,
+> -	.swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg_v5,
+> +	.dp_swing_pre_emph_cfg = &dp_phy_swing_pre_emph_cfg_v8,
+> +	.edp_swing_pre_emph_cfg = &edp_phy_swing_pre_emph_cfg,
+>  	.ver_ops = &qcom_edp_phy_ops_v8,
+>  };
+>  
+> 
+> -- 
+> 2.43.0
+> 
+> 
+> -- 
+> linux-phy mailing list
+> linux-phy@lists.infradead.org
+> https://lists.infradead.org/mailman/listinfo/linux-phy
+
+-- 
+With best wishes
+Dmitry
 
