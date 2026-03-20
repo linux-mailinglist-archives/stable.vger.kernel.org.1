@@ -1,251 +1,372 @@
-Return-Path: <stable+bounces-227555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227556-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iG75DzFivWlF9gIAu9opvQ
-	(envelope-from <stable+bounces-227555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:05:21 +0100
+	id aFKELw5gvWl09QIAu9opvQ
+	(envelope-from <stable+bounces-227556-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 15:56:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E762DC47C
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:05:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192D82DC1E0
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 15:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EE22D302D728
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 14:54:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8920E3050D61
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 14:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825443C7E08;
-	Fri, 20 Mar 2026 14:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07D8345CAF;
+	Fri, 20 Mar 2026 14:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IQltsbGi"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GOIz8dEr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BED03C73C6
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 14:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774018393; cv=none; b=c83pUQJovid6KoT1wB/og1HBuT1HaNBkSOxVHCdZO6dGmZATDA6mtBY0hYncY5sp0e2odOVezEr3HY/0mptqgSxk6v8GyblhOa0gMXpVR6jcb+QI+jdhEQFHe0VklBxoSSXew4FTunxHIntJGmt6hccqUEDL5bldyXRzhoIqkmo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774018393; c=relaxed/simple;
-	bh=Jfmttwx8FBEnXpEGQIu0ujjRU8fBebfRwySfXrGmTaA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NLWs6I9II5g3pVADNOVf6EJfJbMiVhsjYsqsY38sGPTuBTO9I8lPDDbo0zrVxv3RKMckHqFCXgCVNTmiN2MPOyJlM9NFxtAbGTwJNns6bL+t183Hn6+PWaQ26rWRGZ11htwbU3pBfT3FaF87+FF15Ii4E4K7IzX4LRulaFTjpTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IQltsbGi; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82c20f1e890so308778b3a.3
-        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 07:53:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774018390; x=1774623190; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=rTHKXCWTdDkx4cn++Ba0jyyHVgHk9d/lYR5yOZKUNRA=;
-        b=IQltsbGiz6ehLog+mWJ2KaQqA55FebXU+UpXz7b//FMAY7KE1Wl02lRyC7603Bb1QX
-         0gLe5IfAYano0fqjTeNvhHzGEcvaRUYvBQIk6Fbct1BIXV81xOeHAfPmPeX9h8l6P7fT
-         QxWp1mile5sH3hAxjAUnhAarGFbMFf5gUBkaW5cWpCZf4CaXjcuI1j8vBHsG7TyffcVg
-         n+WtggHZMmIYSX6s6bhlVi3i/ugWjdAeL7KGG9p11iZovBKC/QvHB2YUhbm1cpotpsTL
-         LZYR+PCLtzW6xSWSatCD2FOTdHJuk8y/Jam+l3W/NB55QiEMJ0Vq/RK6mfZ7jesnEgiZ
-         /0pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774018390; x=1774623190;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rTHKXCWTdDkx4cn++Ba0jyyHVgHk9d/lYR5yOZKUNRA=;
-        b=FRmJlGzDPBC5zAIM08i3zVNU5msON6ausx7d1mcbZRh5tqry9DNiwSXYQu7/LbxWOo
-         8Eal1GeLDv8pBanl4TQ1wdS93rUJnv8fQH+U4tGhu3HXp+ShArRUn3jZj4dOaHTd7w52
-         de/lmlNZiwuaEb0dwsn2+A55/aG0G3DkZ3o/00RYeL9ktN/RLs6KBj/ggC3kiOlbAmab
-         kMjzgE6y+ae8JMnjcWww4kcKw/8ZxqK/7ZhMUpmmc4ROMhm8ykoQqOAnw6XFhujKHYdm
-         1kaBiLv53BjJRH8JY6Yim53yGjf5MByAtL6e3uA9cLzWXdTm3vngrHwdeUON7oFrtVid
-         9/7A==
-X-Forwarded-Encrypted: i=1; AJvYcCV6gJPn0aP6LA/hEzbUgwavmcGMAnU9fz994S1439W/EuI1OjVPFdkx7ZD5yEF6YgrMpVNX5EI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJ9qU38ZRvyDBPVrcn2rTjWvhWGprSbpc8Qp9dd4ABpWyzTw9r
-	b9wvZagX/QokUt59nrAClWU3qo+HCGAzDWHQ50WFyhqMi0yPom0aAKQP
-X-Gm-Gg: ATEYQzxQ2ks940p7ARU063opebKbJpAxMVaIGwBlFCcoZycfQdN1+naZC1MGspHEOcF
-	IEyVtBop8rBaNZA98nLyT4hESzCqGhl9H/vUFWq6h5AfzRdxe3mlxa2rDLBoP38yWaFnWk0vZk9
-	V5gJ69Ptolf69jD2+kxe/7aYzwnOITjoYX1pW3WG2/FQfsGDlJpphWdoM0HihCik20rhLpmAyCk
-	4LTsOzOI66b+HDy4ZO7QweZQRPmx+klhbi3/aTTO4chUA6uvgAuxxHIEpQT8IQLhZ7F/KQA8wRx
-	LXW13KB46WJsGBvIcwenYeEnVjkWO/PpB9hP2PYHCmzTmJvJhV7khMqaND8XqYEoWoaOBm+Nc2A
-	KcAEEE+5GogkyXFiaobLBkLWvufDLOpfV5pHlGDB6fFifUzBAGOwa0sh4YAw4h0In8AW5DsCZ/Q
-	lU8+oQLdC0HS4Lngy3quNjKVDu7HH9v8IX8RYWJQrmpOe5/Wa7TrS+8W0RzIA14t3fvenO66Wc
-X-Received: by 2002:a05:6a00:3491:b0:82a:955:50d3 with SMTP id d2e1a72fcca58-82a8c395ad2mr2483562b3a.45.1774018390304;
-        Fri, 20 Mar 2026 07:53:10 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03bbf0c2sm2799129b3a.15.2026.03.20.07.53.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Mar 2026 07:53:09 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <b58a981a-6264-42d9-b158-650dd194ca9c@roeck-us.net>
-Date: Fri, 20 Mar 2026 07:53:08 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BEB31F9A9
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 14:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774018571; cv=fail; b=qpe4og9P/BsLpX/CEzGePejttQ7vqtp91tDcfp4Zhn/yhqIxsqdt6Dlv8k3sBv4qpvx8ALFZ5XWvp5tuQRR0vo5dJmXIFiEnGy0iHdXrDijQQI/wvkTSocqaEyUWBF5nDzYZ7pGPGWq2o+n8c4JCR7AhmmVpYPqIrKiREE8VNIE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774018571; c=relaxed/simple;
+	bh=W3/ONfspVNuxddwyvtAKjWoKOIvBn2ChHLFgu/WMYUo=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=aFt1Tz+Fw8a3XvZ0Un+yFxU7bsM1bN0m0QoCe90RuS4iXYGiFu1hJ7U8ipXyXW3c7J2TAPFOlGhirusdDJIe2A+MdcZ4eiUkP0eRTzQnGCtI0sqKUKmCoV81dLZyxz6HgXAHO2vkhVuRaXB84Oh/rf2g8RPxFUE3SrArzm/Th6c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GOIz8dEr; arc=fail smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774018570; x=1805554570;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=W3/ONfspVNuxddwyvtAKjWoKOIvBn2ChHLFgu/WMYUo=;
+  b=GOIz8dEryMX2unTEwgWT+ouUZo+YzUSrA8dB/zVeRpaZZspWDcCTwPej
+   nk1Okb6//Df2ZmFOCBsKjFSXUoMZ4Hym4AC2A6jxQnozm7k8F3kd0649j
+   9OeqUvJTyONMW4rHica6xP6kEerIZP8GgAKJCJ38wYl6T+hGbiWWAN7Xf
+   2AYMJiouNC8O/R5MckZ1UGE9nM3QiayNTREjrgPdBKX7+0GlX3fjXi1AD
+   6r0fgr+2iAv7Vrau5dsCfaLkSNn6935rWaFlq9zfCdBjqwYCcEtq5FK3U
+   jVKxtbJKK5wVcmY3/SdE94Nf9s7YB1Tmb1K57Gc0ZxQhQkfGpwo1RYSb0
+   g==;
+X-CSE-ConnectionGUID: +X94Vf96QouE3lGe6aISvg==
+X-CSE-MsgGUID: VIOI5nn8TZmPKqYbOTvBWg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="85808273"
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="85808273"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 07:56:09 -0700
+X-CSE-ConnectionGUID: khpirnfDSqS7SLrd1lWlyA==
+X-CSE-MsgGUID: seav+SRXR9Cc6FiVzX4F/Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
+   d="scan'208";a="220639920"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 07:56:09 -0700
+Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 20 Mar 2026 07:56:08 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 07:56:08 -0700
+Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.32) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 20 Mar 2026 07:56:08 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=N1K2bTlzJfCHf9UXOaD0aE+KkSpL/y8uRZUGgSjHXzJaU+lPHS/9ReiNmkzftuivkoORp/cOAZ1rJVTRqUN4DiNy/0YMc+tT066b84VNDvo2SvkOR0ylep4LNv+JRFVLUcMNTTRftGoKjC1PeHZEPraSROXt7v2wPshDLdcx8+Ax2D/XGd5+6RjndlL9CtovxoEob5VLuijJBIRscKkuhWnOqEm8ZYtwZYF+Jtz6zg0W2yUniwiEpw3y2VcLxzFXMtLipdsHVBxyjosXSRW2BGuAjxfiK8oQ4M2smIxWC+rwzIxZxv0QGCYl2BmaYO6xSvsG3S4ytCaREinOfUo7Ww==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bMB4XN2xhnoI1bfx5R2Tbjj9rTFgxryZ/BgiEpot+G4=;
+ b=lD7WPN2L7Q6PVRWZ3p/GGMnJmCaS8+K7eBjZznaJiQ2UDrinzkUUgLc1JtzSnTOnV7W47eFqKZvyrM4Nni2V1zNKI/sFRRqJhNkdlsLyKvCdVAFLDNKS2gljGeZdGdrjDSfBuCLSv5ocEww1JIxKOtXlQ0gNV99Ox8eDlGICNp8Xrsw6Zod0H/iN5R6qDgVpdnCnCkwB4lZI40RnvbNCLst6R9I//8bODJbaR88l+i10JAorqAyIyv79I8wiTx09gi2v6fwFIP1kz3DJLkB1X+5bSOZKl/u9bY5oG8jU5FuRWIU4SLMxClh9L9pAdjEdcd05vzbevHHE6X1NThDa1g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
+ by IA4PR11MB8916.namprd11.prod.outlook.com (2603:10b6:208:55e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
+ 2026 14:56:06 +0000
+Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::9ca5:4d1d:db45:f523]) by SJ0PR11MB4845.namprd11.prod.outlook.com
+ ([fe80::9ca5:4d1d:db45:f523%5]) with mapi id 15.20.9723.010; Fri, 20 Mar 2026
+ 14:56:06 +0000
+Date: Fri, 20 Mar 2026 16:55:57 +0200
+From: Imre Deak <imre.deak@intel.com>
+To: "Shankar, Uma" <uma.shankar@intel.com>
+CC: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, Ville
+ =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/i915/dp_tunnel: Fix error handling when clearing
+ stream BW in atomic state
+Message-ID: <ab1f_WvJCZZRR5eK@ideak-desk.lan>
+Reply-To: <imre.deak@intel.com>
+References: <20260320092900.13210-1-imre.deak@intel.com>
+ <DM4PR11MB63602830F5D63903389EF2DAF44CA@DM4PR11MB6360.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DM4PR11MB63602830F5D63903389EF2DAF44CA@DM4PR11MB6360.namprd11.prod.outlook.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
+X-ClientProxiedBy: GVX0EPF0005F707.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:400::392) To SJ0PR11MB4845.namprd11.prod.outlook.com
+ (2603:10b6:a03:2d1::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/efi: defer freeing of boot services memory
-To: Mike Rapoport <rppt@kernel.org>
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org,
- Ard Biesheuvel <ardb@kernel.org>,
- Benjamin Herrenschmidt <benh@kernel.crashing.org>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Ilias Apalodimas <ilias.apalodimas@linaro.org>,
- Ingo Molnar <mingo@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
- Thomas Gleixner <tglx@kernel.org>, linux-efi@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-References: <20260225065555.2471844-1-rppt@kernel.org>
- <100b9ae1-74cc-48b3-ba63-1a72cfa2ebbd@roeck-us.net>
- <ab1U59ye2eBOz6x3@kernel.org>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
-In-Reply-To: <ab1U59ye2eBOz6x3@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|IA4PR11MB8916:EE_
+X-MS-Office365-Filtering-Correlation-Id: b3e3a915-e06e-4483-04f6-08de8690d014
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|18002099003|22082099003|56012099003|7053199007;
+X-Microsoft-Antispam-Message-Info: We1llalsHKC3dm1V1pjWR3r/d6v3/N7GG2qHrzqxabavGyPVev4z6m3d3h+jvl2wljiwDcWAIabf8gxeI985g4ClSOFBjvjmBmNOQeKLJaSJT+tdmeE4OCkf42oFwK22AWaVZKJ0KALoSoorwFUxoeIQLHRehBSsWhqYmtczl6KfaK3kKfo03R4GuiFlCQmXGyuqM29tJFizn88O76s/0PWlQdbzvRvDEde4P4LIxREa4gW+p4wRQyXdhRYd225mCITxftE2FT+2A/y2ekCo2YpfKp6sqdoRpF1WTHwJhOpdAfhy+/bh038PGPKd1Mqkx5v+WUHOOuC6MBivc54iXjRXvCfwWcCu3vouAK4BY09yfw6WykPzN10ScJ0ZaW6sPLb43NZYoz82KsnrZ2HASi7Ny3b5hRuGdC+fOfsVCkVw7mtGDvnOs2xWYFHmJds/8DDsmQVQ9VUoR72Gz1/E1jfOX/KTdwjapfxQaVNfGuY6ckgHxB8dpxrSDGRsCfurOhNKshZfzh14saTE3zH0TflV+VMzPJxsv9Q4AZ0OAuX5JBfH94Am+5OOoRXipy0K488z1fcBDAzQNuYy2zh0Fm8vYH/jE9WJRmRGvQWrpZqar4uVIeHHeu9Zakh+YXO8upvb9O/BuE+rle8l5Ckr3jz/IX8FFIESWshvQzpRPkgnDPiD0/EONrwbGrtnmmZDfv5xZS/Z3VO/ridUTYU/wvGseHpSkZiegqLPE0Jmnrg=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(18002099003)(22082099003)(56012099003)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?iQ0EnTXrLfEYdMDhE7QOHsqEL5XAqPizFX9pBoWTXKcStK0WE7fPecHiyT?=
+ =?iso-8859-1?Q?FLV3y7kVGuL/DxUl88ZxhN6vOjvRlcPge/z9UQZiQephujdAjaSzrj3lLM?=
+ =?iso-8859-1?Q?dYc7mxZPymV3alqeKmCdWIyYJQ3L8pGLEXxLK7y5bBRaex1si/hGFViFgD?=
+ =?iso-8859-1?Q?yhY55ox4MdRAdOnn8jStip0apeAMFbxhEU81Up3B9fWssWVuiYg6JRnnkg?=
+ =?iso-8859-1?Q?ojc245AO001WXug8xhp6pXDA2vMl4x4VA81w7K9ahtIaX1veGuIum1zyXI?=
+ =?iso-8859-1?Q?3BnBnkECgvoNaEL6JmJF8j+SHyzQvGaI6adE5hM+AtzuCJaJoKHslyxmVI?=
+ =?iso-8859-1?Q?iIc9EPRu4KIPMU6/bB5nLYdmib3dJAhbkoWT6HS8pdI2i2zZ9B3b5A3ooz?=
+ =?iso-8859-1?Q?NMCN3Jts/iQwb3obn1KM+Tv6zCNMd2TjaZrURLZpkTxzkUP5fRVN7l4VCz?=
+ =?iso-8859-1?Q?nNzdDyxx+kvdoCYyco9xQXS0zIGt9D273LGrl613jtN0aTULhoLuLX2yg9?=
+ =?iso-8859-1?Q?jrs69DPdsVVU2UpGemb+Li8s+dM3jHtjJmPx5EMVSNOx87B6jDvQSnj0bE?=
+ =?iso-8859-1?Q?nr+jGkzU48N+9EipvyHx2IB24LmwRD+diOnkKH7Ne6Yrc0r+uhxk+z1gmi?=
+ =?iso-8859-1?Q?FZjIgGEuv94L679krsbgW068YtYWEh4GsfHXvp8kIc9nV2keopgEMLCd+c?=
+ =?iso-8859-1?Q?EkvIRHx2PPcSGFwJZwNzGtr9ns2zc/uNvvztyeXEtVTH4HwYssJta38H5A?=
+ =?iso-8859-1?Q?KnKdurGY9Q3LnOBsHRiiletdnPGeKusfBb8Gn26/Sn7XbGR/Q7vhur9nTY?=
+ =?iso-8859-1?Q?F5xC5Srbhtgb5ne8SAWRa5JCGSoM1p7q43/KRw2OgoAx3CXoBrwiEyfPpA?=
+ =?iso-8859-1?Q?rgGoflZvkl1tS+cuMudZ5+9zSGdz8qEgXOGs7lNOhvZJnjjWz71P/lfril?=
+ =?iso-8859-1?Q?b+ENf6QdkYYG8CMhhTPFZlRSu00q5nTOr9Dfpw6QsJW7Ibv2/DSgzCrUo3?=
+ =?iso-8859-1?Q?HC6vmUGSGEEv7LufVofpidSrZHKinG6fPQQNqBZQ6lSSJYCz3v6PMS3m+D?=
+ =?iso-8859-1?Q?1y9wxCA3H240soXTfHXeByUSYb8o5Q102SVMNBM1w78L6f3v9jKz5/UDvN?=
+ =?iso-8859-1?Q?UYVU1ilMYdzp5rXSPY3oVr987E//F1uwS2MHIDLebhkc9Zc9rCZ3XUcdYf?=
+ =?iso-8859-1?Q?xH8pIprc/Z2sFqLx5g0meqS8pZNuXtTp7rpdx/ZzVKxRDHrwbH/swlGYEn?=
+ =?iso-8859-1?Q?/rhgB32Rz8q2mjirXbQvu13eIZm8Qhzz2VCu1A3KwqlaQjM1PBOZ80mneZ?=
+ =?iso-8859-1?Q?BY4WhI8eLavPBzjbTbshRQNaYC006Gdh+HD+OO1JEYbuosJ6oaJF8ahR49?=
+ =?iso-8859-1?Q?qQo+cpiwZhNJxtAjdtlneR0Lj9/iLKa0htxEXVE/Pg78LZZz+nT+FR40m4?=
+ =?iso-8859-1?Q?aS1UUXY/aepZW2v2ynNTSA9bOLEWBz1iHETTyqXdOvQkFyaQhPr+TQzScD?=
+ =?iso-8859-1?Q?HtXd7dmb4Em2Kjrw4C5lIVqx50Lh3c9M1wBwgSoY6Iw15+5O8oqMkECENx?=
+ =?iso-8859-1?Q?MLF+X2cAXocwoxdA8Oa++KmI5wzE5rzkrpBR9tK00LrBZdNAoL8hKMONNs?=
+ =?iso-8859-1?Q?6yEczx5pEFeXDVAfvIdkumEN4aHh9frb6cgYwtW+brXkx0Emm8zPKWyxkC?=
+ =?iso-8859-1?Q?FncVXlf5azZPt9gAIACqWr6X2tUYxB5nb6h3KGSOIxJOizLIWg8gEJziDd?=
+ =?iso-8859-1?Q?FsciPfz8z51MuxFGpjELZa/e84PJliyRJRTgtberhbFfDGX6uMGDwYcpjG?=
+ =?iso-8859-1?Q?Hk4XWbAcVw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: DKAoMBgweFIL58mfyLPYFi0Z/IqJh2jyjjrb7Oi1C/iLwJ6GtBHjgp6almCkmS1cpiffrc4z+zfMEk6R9ak47m9ztrkCUewiMP7HiO3A4MHtmgSOK4e9CJrwbUzuLLC8PBj0Ca4vPL+LuKA2ch8Hw3fP3SWzrFv6fiaKSb+Pn2NoemTxePbbXRMx5f5toN8awWtBUzNa82T4tQHVd+BHa65sUN9rJhWJ9o4odPPi2eliQ/FwFPckYrPzmv2U3fO0FrzxYWDTwvUWqblKjiVUP0lx5BYVkh+dC2TjqJ8cQIUmEam565EdK1MZsYdj5XnxjVRZzjjW5EYvnImu8o6u8w==
+X-MS-Exchange-CrossTenant-Network-Message-Id: b3e3a915-e06e-4483-04f6-08de8690d014
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 14:56:05.9617
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: czsqs0+wLbWIG3024Sr0cU9XQAH+QKQJIz2yhTWv1BslWsz4Lk3nhseJ//l9it8KoccFYOtzYYyThoUv7D2oRA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB8916
+X-OriginatorOrg: intel.com
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	ARC_REJECT(1.00)[cv is fail on i=2];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TAGGED_FROM(0.00)[bounces-227555-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227556-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[roeck-us.net];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:replyto,intel.com:email,lists.freedesktop.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	HAS_REPLYTO(0.00)[imre.deak@intel.com];
+	FROM_NEQ_ENVFROM(0.00)[imre.deak@intel.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,roeck-us.net:email,roeck-us.net:mid]
-X-Rspamd-Queue-Id: D1E762DC47C
+	NEURAL_HAM(-0.00)[-0.997];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_SEVEN(0.00)[10]
+X-Rspamd-Queue-Id: 192D82DC1E0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/20/26 07:08, Mike Rapoport wrote:
-> On Thu, Mar 19, 2026 at 09:06:52PM -0700, Guenter Roeck wrote:
->> Hi,
->>
->>> +void __init efi_unmap_boot_services(void)
->>>   {
->>>   	struct efi_memory_map_data data = { 0 };
->>>   	efi_memory_desc_t *md;
->>>   	int num_entries = 0;
->>> +	int idx = 0;
->>> +	size_t sz;
->>>   	void *new, *new_md;
->>>   
->>>   	/* Keep all regions for /sys/kernel/debug/efi */
->>>   	if (efi_enabled(EFI_DBG))
->>>   		return;
->>>   
->>> +	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
->>
->> Was this possibly supposed to be
->> 	sz = sizeof(*ranges_to_free) * (efi.memmap.nr_map + 1);
->> 				       ^		     ^
->> ?
+On Fri, Mar 20, 2026 at 01:42:58PM +0200, Shankar, Uma wrote:
 > 
-> Yes, thanks for catching this.
->   
+> 
+> > -----Original Message-----
+> > From: Deak, Imre <imre.deak@intel.com>
+> > Sent: Friday, March 20, 2026 2:59 PM
+> > To: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org
+> > Cc: Shankar, Uma <uma.shankar@intel.com>; Ville Syrjälä
+> > <ville.syrjala@linux.intel.com>; stable@vger.kernel.org
+> > Subject: [PATCH] drm/i915/dp_tunnel: Fix error handling when clearing stream BW
+> > in atomic state
+> > 
+> > Clearing the DP tunnel stream BW in the atomic state involves getting the tunnel
+> > group state, which can fail. Handle the error accordingly.
+> > 
+> > This fixes at least one issue where drm_dp_tunnel_atomic_set_stream_bw()
+> > failed to get the tunnel group state returning -EDEADLK, which wasn't handled.
+> > This lead to the ctx->contended warn later in modeset_lock() while taking a WW
+> > mutex for another object in the same atomic state, and thus within the same
+> > already contended WW context.
+> > 
+> > Moving intel_crtc_state_alloc() later would avoid freeing saved_state on the error
+> > path; this stable patch leaves that simplification for a follow-up.
+> > 
+> > Cc: Uma Shankar <uma.shankar@intel.com>
+> > Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+> > Cc: <stable@vger.kernel.org> # v6.9+
+> > Fixes: a4efae87ecb2 ("drm/i915/dp: Compute DP tunnel BW during encoder state
+> > computation")
+> > Signed-off-by: Imre Deak <imre.deak@intel.com>
+> > ---
+> >  drivers/gpu/drm/i915/display/intel_display.c  |  8 +++++++-
+> >  .../gpu/drm/i915/display/intel_dp_tunnel.c    | 20 +++++++++++++------
+> >  .../gpu/drm/i915/display/intel_dp_tunnel.h    | 11 ++++++----
+> >  3 files changed, 28 insertions(+), 11 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/i915/display/intel_display.c
+> > b/drivers/gpu/drm/i915/display/intel_display.c
+> > index ee501009a251f..882db77c0bbcd 100644
+> > --- a/drivers/gpu/drm/i915/display/intel_display.c
+> > +++ b/drivers/gpu/drm/i915/display/intel_display.c
+> > @@ -4640,6 +4640,7 @@ intel_crtc_prepare_cleared_state(struct
+> > intel_atomic_state *state,
+> >  	struct intel_crtc_state *crtc_state =
+> >  		intel_atomic_get_new_crtc_state(state, crtc);
+> >  	struct intel_crtc_state *saved_state;
+> > +	int err;
+> > 
+> >  	saved_state = intel_crtc_state_alloc(crtc);
+> >  	if (!saved_state)
+> > @@ -4648,7 +4649,12 @@ intel_crtc_prepare_cleared_state(struct
+> > intel_atomic_state *state,
+> >  	/* free the old crtc_state->hw members */
+> >  	intel_crtc_free_hw_state(crtc_state);
+> > 
+> > -	intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
+> > +	err = intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
+> > +	if (err) {
+> > +		kfree(saved_state);
+> > +
+> > +		return err;
+> > +	}
+> > 
+> >  	/* FIXME: before the switch to atomic started, a new pipe_config was
+> >  	 * kzalloc'd. Code that depends on any field being zero should be diff --git
+> > a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
+> > b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
+> > index 1fd1ac8d556d8..7363c98172971 100644
+> > --- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
+> > +++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
+> > @@ -659,19 +659,27 @@ int intel_dp_tunnel_atomic_compute_stream_bw(struct
+> > intel_atomic_state *state,
+> >   *
+> >   * Clear any DP tunnel stream BW requirement set by
+> >   * intel_dp_tunnel_atomic_compute_stream_bw().
+> > + *
+> > + * Returns 0 in case of success, a negative error code otherwise.
+> >   */
+> > -void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+> > -					    struct intel_crtc_state *crtc_state)
+> > +int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+> > +					   struct intel_crtc_state *crtc_state)
+> >  {
+> >  	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
+> > +	int err;
+> > 
+> >  	if (!crtc_state->dp_tunnel_ref.tunnel)
+> > -		return;
+> > +		return 0;
+> > +
+> > +	err = drm_dp_tunnel_atomic_set_stream_bw(&state->base,
+> > +						 crtc_state->dp_tunnel_ref.tunnel,
+> > +						 crtc->pipe, 0);
+> > +	if (err)
+> > +		return err;
+> > 
+> > -	drm_dp_tunnel_atomic_set_stream_bw(&state->base,
+> > -					   crtc_state->dp_tunnel_ref.tunnel,
+> > -					   crtc->pipe, 0);
+> >  	drm_dp_tunnel_ref_put(&crtc_state->dp_tunnel_ref);
+> 
+> Hi Imre,
+> Should we not drop reference even in case of failure, is this intentional ?
 
-Thanks for confirming.
+Yes, the early return in case of an error, preserving the tunnel reference
+in the crtc state is intentional. The error here will make the whole
+commit fail and the atomic state - within that the crtc state - being
+freed. That crtc state freeing will drop this reference, see
+intel_crtc_destroy_state().
 
-Just for the record, it wasn't really me, it was an instance of Sashiko
-running on the LTS backport of the patch.
+Aside: it wouldn't cause a functional problem to drop the reference as
+you suggest in case of the earlier error either - the related dropping
+of the reference in intel_crtc_destroy_state() described above would be
+skipped then. But I still think the usual early return - as done in the
+patch - in case of an error is the logically correct way.
 
-Guenter
-
-> @Ard, can you please pick the fix:
 > 
->  From 8fc5c5e828e7d127e6210bc9952451300591cdce Mon Sep 17 00:00:00 2001
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> Date: Fri, 20 Mar 2026 15:59:48 +0200
-> Subject: [PATCH] x86/efi: efi_unmap_boot_services: fix calculation of
->   ranges_to_free size
+> Regards,
+> Uma Shankar
 > 
-> ranges_to_free array should have enough room to store the entire EFI
-> memmap plus an extra element for NULL entry.
-> The calculation of this array size wrongly adds 1 to the overall size
-> instead of adding 1 to the number of elements.
+> > +
+> > +	return 0;
+> >  }
+> > 
+> >  /**
+> > diff --git a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
+> > b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
+> > index 7f0f720e8dcad..10ab9eebcef69 100644
+> > --- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
+> > +++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
+> > @@ -40,8 +40,8 @@ int intel_dp_tunnel_atomic_compute_stream_bw(struct
+> > intel_atomic_state *state,
+> >  					     struct intel_dp *intel_dp,
+> >  					     const struct intel_connector
+> > *connector,
+> >  					     struct intel_crtc_state *crtc_state); -
+> > void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+> > -					    struct intel_crtc_state *crtc_state);
+> > +int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+> > +					   struct intel_crtc_state *crtc_state);
+> > 
+> >  int intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
+> >  					      struct intel_crtc *crtc);
+> > @@ -88,9 +88,12 @@ intel_dp_tunnel_atomic_compute_stream_bw(struct
+> > intel_atomic_state *state,
+> >  	return 0;
+> >  }
+> > 
+> > -static inline void
+> > +static inline int
+> >  intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
+> > -				       struct intel_crtc_state *crtc_state) {}
+> > +				       struct intel_crtc_state *crtc_state) {
+> > +	return 0;
+> > +}
+> > 
+> >  static inline int
+> >  intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
+> > --
+> > 2.49.1
 > 
-> Add parentheses to properly size the array.
-> 
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Fixes: a4b0bf6a40f3 ("x86/efi: defer freeing of boot services memory")
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->   arch/x86/platform/efi/quirks.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/platform/efi/quirks.c b/arch/x86/platform/efi/quirks.c
-> index 35caa5746115..79f0818131e8 100644
-> --- a/arch/x86/platform/efi/quirks.c
-> +++ b/arch/x86/platform/efi/quirks.c
-> @@ -424,7 +424,7 @@ void __init efi_unmap_boot_services(void)
->   	if (efi_enabled(EFI_DBG))
->   		return;
->   
-> -	sz = sizeof(*ranges_to_free) * efi.memmap.nr_map + 1;
-> +	sz = sizeof(*ranges_to_free) * (efi.memmap.nr_map + 1);
->   	ranges_to_free = kzalloc(sz, GFP_KERNEL);
->   	if (!ranges_to_free) {
->   		pr_err("Failed to allocate storage for freeable EFI regions\n");
-
 
