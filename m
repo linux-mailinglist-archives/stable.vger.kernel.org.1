@@ -1,358 +1,236 @@
-Return-Path: <stable+bounces-227626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227627-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBgCOzW4vWm9AwMAu9opvQ
-	(envelope-from <stable+bounces-227626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:12:21 +0100
+	id AE/FGEK6vWnyAwMAu9opvQ
+	(envelope-from <stable+bounces-227627-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:21:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36132E128C
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3C7F2E14B7
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43A13305B5F8
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:11:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3969306906D
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA0336A03F;
-	Fri, 20 Mar 2026 21:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12AC437106A;
+	Fri, 20 Mar 2026 21:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="bTEAX4Qs"
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="BMdmAAIU";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="zsW6E9iE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4317.protonmail.ch (mail-4317.protonmail.ch [185.70.43.17])
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9067F36897E;
-	Fri, 20 Mar 2026 21:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA40036C0CE;
+	Fri, 20 Mar 2026 21:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774041089; cv=none; b=KZ6b3qslAmk4pSVjDmayNnREA8KsUn2IsKlaEsG3M0Rb/SA5QZkzgqT7sKWdyOaSAeFXVOH4ngyc2MKlVIwPJTEali2/tdL4py2O8Pl6Pz0p+CWTK4yO5FsMpcFsfeXy5KfwhEaIjogprAkJkuHPhOVcwX31bnyHdeCVwQs9MQI=
+	t=1774041563; cv=none; b=qo7Cw2vgQgEj57yPs3vJxlT5flgkmMQcY7Jy92fjkQTVpOgz59mAOa++UfNfvzsYuzaFqgZ6eGrIZ09pQQ3wsPV5MA4CE7q5CaI8z8HvdE6gXS3d8u1zw8WPshg+WMrAOObZOeczn0DskKAPpHMyPuUDOH/xuq8NG9qu5OpS4u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774041089; c=relaxed/simple;
-	bh=dFfN6N1I6M0Fh9g3seY8P7IXg3wqeVAphqL9ojsU8z4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PHlTKYb9MUg3OhFKeoiChBgV+u8Ep2M4aQ8TOQ3wIS11MI2QALWVA+inqxX7+r7Zrb+XL4kO5ziEIxnDc4OASi2QsI5WeQ7X8ymRFReCjGb40CLIbrHcL2HfmAD92R0+O87pUR9ZnvX9ACRCe7eC0W9h/pZJOnogU5Ugu0iddfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=bTEAX4Qs; arc=none smtp.client-ip=185.70.43.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1774041083; x=1774300283;
-	bh=xTyXiIERMV6VSceCuVPfvq7brK873ZpHFxLWfp4fe6k=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=bTEAX4Qs01wFrGpLwK2SOj8A4CTgx29ocB24ShZ4xk99ToewSnAEW8b7lFQYoo3BN
-	 osx0ehB5s9lxTJA3fMt69PqH7qqy+Es+8F8+yL6w59QvLgNZ09fcpwTLjARoxZvLvw
-	 mi278KZK49WUYyC7KGTmuOFDQFl3gPuihEIxrcCiF/S9Y79jCNOQt6jfManPuAhlSk
-	 vwI0N7Tk4b0svc1MryVqiOFJv1s0qUMRgtN4maxX2Tf0H2QNhwCiKWR2BDwbmCDsj6
-	 OBJ1Vo776pzt/M7j5lfOYdofViW7GEC5orZkL9+TkI2/jFIybyessjMByhT+1Qt/2G
-	 E/BisSXYCKVqQ==
-Date: Fri, 20 Mar 2026 21:11:18 +0000
-To: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?utf-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, Eli Cohen <elic@nvidia.com>, Parav Pandit <parav@nvidia.com>
-From: Paul Moses <p@1g4.org>
-Cc: virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] vdpa: don't free reply skb after genlmsg_reply()
-Message-ID: <sxJbzuV6ZQr_GHbWZNHgX7A0nnmxWSlZMO2MeJWofb8ECzmsO626OUn1izRuKxD-wqJl3LjliGPuenrLKEo8ZLpxuPimgqBjDD8ihhdd6Rg=@1g4.org>
-In-Reply-To: <lPMoA-jSSWoNN42ejMYoDHQJVt5KGYsPsJez_Luu8zmwUWQectet-GVqS2EF89-I3k2PddYnY-ZD6z7yCQvK_AF8naIatQV1mD5Xq2671EY=@1g4.org>
-References: <20260312110421.2880401-1-p@1g4.org> <lPMoA-jSSWoNN42ejMYoDHQJVt5KGYsPsJez_Luu8zmwUWQectet-GVqS2EF89-I3k2PddYnY-ZD6z7yCQvK_AF8naIatQV1mD5Xq2671EY=@1g4.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: d718014a0bf9e2f207c3dc504ef538ca2fa876d6
+	s=arc-20240116; t=1774041563; c=relaxed/simple;
+	bh=YOZ7lW6FGfjPqmt3uLpu00QggYh1d/djUSJ/Hhani9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lCVI85r2jUK0kobsuYH1lT2tujv3eaMNcs5N01TJjrSgA2jhe1HvRDamC2da0be85WX9tYWTib/1PrZv9822UiYqG5ff3zRX4460NBJgyWxenNR2qsbSNYd1oSqQ/vKHgmEcLLmmWVK5wj8w/tMZFRajbhlE3atwiTGi7nbXZFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=BMdmAAIU; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=zsW6E9iE; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id F10C1140027C;
+	Fri, 20 Mar 2026 17:19:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Fri, 20 Mar 2026 17:19:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1774041559;
+	 x=1774127959; bh=v9MzbXrGKE8UmNQPl3m+i5rAwLb7V8D8qRDvLPMVmLQ=; b=
+	BMdmAAIUT6HBPUdNm2SBHaNBv4wzPXudHc/EPeG3wMzX/tWwB7lwmRHu8W91AJzr
+	rq0UaX7D75ft7x6FYiqPRT8THA9D78EmNVo6niYHpJb06naNAqdKDr++P8yLRjEr
+	NgPUAtWb2GlMt1j5eEL8BxMVi8uLH+exnFQgfAl5KJ9a3SwhkJC5ez2F5//2Mnxp
+	MmS2ofiNkLx0tTp5U7Ms90kM6G4vtC7Rg3kW58o1UuZ6M9r9bU44p2QAbgewdYrL
+	WLInJKjh2Okbs95NFSkXHE9kPX1uPnBS2LTVjYZjaq7ie5Nip/TFuK5QutfWLWlD
+	9r7lOTVjMg+CyrxXBRZtMA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1774041559; x=
+	1774127959; bh=v9MzbXrGKE8UmNQPl3m+i5rAwLb7V8D8qRDvLPMVmLQ=; b=z
+	sW6E9iEE8812j6bw1SGEeAc47GmyG3S/m7ckHL3MW7B4m8bUMA+Spnccx0oprBaJ
+	VInaI94byVjRoYJ+aXpbijJYyFpCa9XtEBexlNc8F2sVWev2wB+zcZejtmveLZTb
+	rnkOUyr9rnNqjxnIUmrIU9ba+tUpCs9jOEpwAlJTPp7ZppYZtPOe9g6LAW8WgpEK
+	tXqHlpkBRQ/FJYf0iuZoV5HmVUNcGwHbAgAH/UnUDyIth7qeK986d84NsnlTuJd0
+	p+afx9O+9fpL/RYh+2YzLzl2Ji7ZfIyZiQTjDIXoDQ2SiNT2xc+Iw2dy5jwnGi95
+	BgQ/t2N4d6NfkAZVV2B+Q==
+X-ME-Sender: <xms:17m9aUMsd0xJ74SZfxATv-kYOtZ2EcoFfJs5iM6l7mpsPDzBBeub0A>
+    <xme:17m9aTIbuEoqghhC_s60yJrNe4_wAQ_bZ6mmI5sHI1u8qyFVq8mNQbBHP9TBvimFD
+    lhDetLYafrqiQOF45fuvUGvzRdDn2oAVoWOKOv2iOfdhpSOz3gLRw>
+X-ME-Received: <xmr:17m9aW1CZTA2dmqUOG9tFORzkluiPePu5JNTwufXTs9w9hTdoEnp6AZGOD8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefuddtleejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
+    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
+    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepkeehjeeitefffeeuieetjedtje
+    ffvdelledvuedvffdvfeetgefhveekuedvfedvnecuffhomhgrihhnpehkvghrnhgvlhdr
+    ohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepuddtpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehmhhhonhgrphesnhhvihguihgrrdgtohhmpdhrtg
+    hpthhtohepughmrghtlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopegurghv
+    vgdrjhhirghnghesihhnthgvlhdrtghomhdprhgtphhtthhopegrnhhkihhtrgesnhhvih
+    guihgrrdgtohhmpdhrtghpthhtohepkhhjrghjuhesnhhvihguihgrrdgtohhmpdhrtghp
+    thhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
+    igqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhkshgvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoh
+    epshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:17m9aXW8v7nAZZIfyg1ESiskYXY6qIzQ7JKinpvXVJpx_ldXKKYKxw>
+    <xmx:17m9aYOfHoM1_ocwPVGRrQe3Q8ob8I--BDq_5gGmGHxT0RSV8I4aDA>
+    <xmx:17m9aa1vAvXPtKEc8zBs4r50JUJOvTK1Mi-MgWqNnlE63qgbobiE2w>
+    <xmx:17m9acQVpks6OLMednN5DKpqwMMDc-Tk652fiFOlzelAuRp-_lzgmw>
+    <xmx:17m9af0tRABYkk6gXKD5RMRdPcU_60RRB2WNp7Gepfzs_xz5LnKsktyU>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 20 Mar 2026 17:19:18 -0400 (EDT)
+Date: Fri, 20 Mar 2026 15:17:26 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: <mhonap@nvidia.com>
+Cc: <dmatlack@google.com>, <dave.jiang@intel.com>, <ankita@nvidia.com>,
+ <kjaju@nvidia.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <stable@vger.kernel.org>,
+ alex@shazbot.org
+Subject: Re: [PATCH] vfio: selftests: Fix VLA initialisation in
+ vfio_pci_irq_set()
+Message-ID: <20260320151726.4db61e9f@shazbot.org>
+In-Reply-To: <20260318145323.7e9831a4@nvidia.com>
+References: <20260317051402.3725670-1-mhonap@nvidia.com>
+	<20260318145323.7e9831a4@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[1g4.org,quarantine];
+	DMARC_POLICY_ALLOW(-0.50)[shazbot.org,none];
+	R_DKIM_ALLOW(-0.20)[shazbot.org:s=fm3,messagingengine.com:s=fm1];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[1g4.org:s=protonmail2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227626-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[1g4.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227627-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[shazbot.org:+,messagingengine.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[p@1g4.org,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[alex@shazbot.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_NONE(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[10];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[1g4.org:dkim,1g4.org:email,1g4.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,qemu.org:url]
-X-Rspamd-Queue-Id: A36132E128C
+	DBL_BLOCKED_OPENRESOLVER(0.00)[shazbot.org:dkim,shazbot.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,messagingengine.com:dkim,nvidia.com:email]
+X-Rspamd-Queue-Id: D3C7F2E14B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-FYI, I'm finished with this:
+On Wed, 18 Mar 2026 14:53:23 -0600
+Alex Williamson <alwilliamson@nvidia.com> wrote:
 
-preconditions:
-- local unprivileged user
-- initial network namespace only
-- existing vdpa device
-
-impact:
-- DoS only
-- immediate netlink_ack() deref of the request skb makes controlled corrupt=
-ion practically unworkable
-
-Feel free to modify patch and only give me "reported by".=20
-
-Thanks,
-Paul
-
-
-
-On Monday, March 16th, 2026 at 8:22 PM, Paul Moses <p@1g4.org> wrote:
-
-> Now that I've wrapped up elsewhere, I can focus on this. Let me
-> know if there's any questions.
->=20
-> Thanks,
-> Paul
->=20
-> [    0.716942] ------------[ cut here ]------------
-> [    0.717160] refcount_t: underflow; use-after-free.
-> [    0.717356] WARNING: CPU: 2 PID: 138 at lib/refcount.c:28 refcount_war=
-n_saturate+0x118/0x180
-> [    0.717661] Modules linked in:
-> [    0.717816] CPU: 2 UID: 1000 PID: 138 Comm: poc9 Not tainted 6.18.13 #=
-3 PREEMPT(full)
-> [    0.718138] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS r=
-el-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> [    0.718591] RIP: 0010:refcount_warn_saturate+0x118/0x180
-> [    0.718805] Code: 0f b6 05 aa bf 05 02 3c 01 0f 87 d7 db 5d ff a8 01 0=
-f 85 39 ff ff ff 48 c7 c7 78 71 ec 82 c6 05 8c bf 05 02 01 e8 78 f0 78 ff <=
-0f> 0b c9 31 c0 31 f6 31 ff e9 55 4c 45 ff 0f b6 05 73 bf 05 02 3c
-> [    0.719521] RSP: 0018:ffffc9000048b790 EFLAGS: 00010246
-> [    0.719722] RAX: 0000000000000000 RBX: ffff888006c74200 RCX: 000000000=
-0000000
-> [    0.719985] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000000000=
-0000000
-> [poc9-vdpa] port[    0.720257] RBP: ffffc9000048b798 R08: 000000000000000=
-0 R09: 0000000000000000
-> id=3D135 rcvbuf=3D23[    0.720580] R10: 0000000000000000 R11: 00000000000=
-00000 R12: ffff8880075ea000
-> 04 soerr=3D105 dro[    0.720869] R13: ffff888006c74200 R14: 00000000fffff=
-ff5 R15: ffffc9000048b920
-> ps=3D0 get 2/0 sen[    0.721165] FS:  000076880ed826c0(0000) GS:ffff88809=
-a460000(0000) knlGS:0000000000000000
-> d_eagain=3D0
-> [    0.721534] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    0.721768] CR2: 000076880ed801c8 CR3: 0000000008a61000 CR4: 000000000=
-0450ef0
-> [    0.722055] PKRU: 55555554
-> [    0.722159] Call Trace:
-> [    0.722253]  <TASK>
-> [    0.722339]  sk_skb_reason_drop+0x203/0x210
-> [    0.722512]  ? up_read+0x22/0x30
-> [    0.722638]  vdpa_nl_cmd_dev_config_get_doit+0xc7/0x1d0
-> [    0.722832]  genl_family_rcv_msg_doit+0xcf/0x120
-> [    0.723018]  genl_rcv_msg+0x161/0x290
-> [    0.723157]  ? __pfx_vdpa_nl_cmd_dev_config_get_doit+0x10/0x10
-> [    0.723381]  ? __pfx_genl_rcv_msg+0x10/0x10
-> [    0.727944]  netlink_rcv_skb+0x41/0xf0
-> [    0.728136]  genl_rcv+0x28/0x50
-> [    0.728281]  netlink_unicast+0x1d8/0x2b0
-> [    0.728483]  netlink_sendmsg+0x212/0x440
-> [    0.728673]  __sys_sendto+0x1f3/0x200
-> [    0.728859]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.729076]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.729287]  ? __lock_acquire+0x831/0x2980
-> [    0.729491]  __x64_sys_sendto+0x24/0x40
-> [    0.729665]  x64_sys_call+0x1d15/0x2350
-> [    0.729838]  do_syscall_64+0x90/0xc60
-> [    0.730010]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.730226]  ? lock_acquire+0xcc/0x2e0
-> [    0.730391]  ? __folio_batch_add_and_move+0x24b/0x370
-> [    0.730623]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.730835]  ? find_held_lock+0x31/0x90
-> [    0.731010]  ? __folio_batch_add_and_move+0x1ab/0x370
-> [    0.731238]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.731465]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.731677]  ? find_held_lock+0x31/0x90
-> [    0.731851]  ? rcu_read_unlock+0x1f/0x80
-> [    0.732029]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.732247]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.732474]  ? rcu_read_unlock+0x29/0x80
-> [    0.732652]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.732864]  ? do_anonymous_page+0x101/0x840
-> [    0.733055]  ? ___pte_offset_map+0x1d2/0x290
-> [    0.733255]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.733482]  ? __handle_mm_fault+0xa8e/0xf40
-> [    0.733693]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.733904]  ? find_held_lock+0x31/0x90
-> [    0.734079]  ? exc_page_fault+0x98/0x2c0
-> [    0.734257]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.734490]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.734709]  ? do_user_addr_fault+0x37b/0x6e0
-> [    0.734905]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.735118]  ? irqentry_exit_to_user_mode+0xf4/0x300
-> [    0.735340]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.735566]  ? irqentry_exit+0x77/0xb0
-> [    0.735737]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.735949]  ? exc_page_fault+0xbf/0x2c0
-> [    0.736124]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    0.736340]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [    0.736576] RIP: 0033:0x434e6c
-> [    0.736720] Code: fa 6e 03 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c3 44 8=
-b 54 24 28 48 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <=
-48> 3d 00 f0 ff ff 77 34 89 df 48 89 44 24 08 e8 40 6f 03 00 48 8b
-> [    0.737513] RSP: 002b:000076880ed80190 EFLAGS: 00000293 ORIG_RAX: 0000=
-00000000002c
-> [    0.737841] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000000000=
-0434e6c
-> [    0.738154] RDX: 0000000000000020 RSI: 000076880ed801d0 RDI: 000000000=
-0000003
-> [    0.738473] RBP: 0000000069b8ab57 R08: 00000000004b3cf0 R09: 000000000=
-000000c
-> [    0.738767] R10: 0000000000000000 R11: 0000000000000293 R12: 000000000=
-f71e860
-> [    0.739075] R13: 0000000000000013 R14: 000076880ed82cdc R15: 00007fff0=
-dab68e7
-> [    0.739415]  </TASK>
-> [    0.739526] irq event stamp: 785
-> [    0.739675] hardirqs last  enabled at (793): [<ffffffff815153f0>] __up=
-_console_sem+0x90/0xa0
-> [    0.740039] hardirqs last disabled at (800): [<ffffffff815153d5>] __up=
-_console_sem+0x75/0xa0
-> [    0.740410] softirqs last  enabled at (362): [<ffffffff81449bcd>] __ir=
-q_exit_rcu+0x12d/0x150
-> [    0.740782] softirqs last disabled at (357): [<ffffffff81449bcd>] __ir=
-q_exit_rcu+0x12d/0x150
-> [    0.741145] ---[ end trace 0000000000000000 ]---
-> [poc9-vdpa] portid=3D135 rcvbuf=3D2304 soerr=3D0 drops=3D0 get 98859/0 se=
-nd_eagain=3D0
-> [poc9-vdpa] portid=3D135 rcvbuf=3D2304 soerr=3D0 drops=3D0 get 204383/0 s=
-end_eagain=3D0
-> [poc9-vdpa] portid=3D135 rcvbuf=3D2304 soerr=3D0 drops=3D0 get 319574/0 s=
-end_eagain=3D0
-> [    4.037387] BUG: kernel NULL pointer dereference, address: 00000000000=
-00060
-> [    4.037612] #PF: supervisor read access in kernel mode
-> [    4.037761] #PF: error_code(0x0000) - not-present page
-> [    4.037914] PGD 994c067 P4D 994c067 PUD 994d067 PMD 0
-> [    4.038066] Oops: Oops: 0000 [#1] SMP NOPTI
-> [    4.038191] CPU: 4 UID: 1000 PID: 140 Comm: poc9 Tainted: G        W  =
-         6.18.13 #3 PREEMPT(full)
-> [    4.038463] Tainted: [W]=3DWARN
-> [    4.038557] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS r=
-el-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-> [    4.038869] RIP: 0010:sock_wfree+0x1d/0x3f0
-> [    4.038994] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 0=
-0 55 48 89 e5 41 57 41 56 53 48 83 ec 10 48 8b 5f 18 44 8b 97 d8 00 00 00 <=
-48> 8b 43 60 f6 c4 02 74 51 44 89 d0 44 89 d2 48 8d 8b 94 02 00 00
-> [    4.039511] RSP: 0018:ffffc9000049b8f0 EFLAGS: 00010286
-> [    4.039665] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000000=
-0000000
-> [    4.039874] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88801=
-f8aa100
-> [    4.040076] RBP: ffffc9000049b918 R08: 0000000000000000 R09: 000000000=
-0000000
-> [    4.040278] R10: 00000000000003c0 R11: 0000000000000000 R12: ffff88800=
-75ea000
-> [    4.040482] R13: ffff88801f8aa100 R14: 00000000fffffff5 R15: ffffc9000=
-049baf0
-> [    4.040685] FS:  000076880dd806c0(0000) GS:ffff88809a560000(0000) knlG=
-S:0000000000000000
-> [    4.040908] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    4.041071] CR2: 0000000000000060 CR3: 0000000008a61000 CR4: 000000000=
-0450ef0
-> [    4.041275] PKRU: 55555554
-> [    4.041356] Call Trace:
-> [    4.041434]  <TASK>
-> [    4.041502]  unix_destruct_scm+0x77/0x90
-> [    4.041620]  skb_release_head_state+0x27/0xb0
-> [    4.041750]  sk_skb_reason_drop+0x55/0x210
-> [    4.041868]  ? up_read+0x22/0x30
-> [    4.041976]  vdpa_nl_cmd_dev_config_get_doit+0xc7/0x1d0
-> [    4.042140]  genl_family_rcv_msg_doit+0xcf/0x120
-> [    4.042280]  genl_rcv_msg+0x161/0x290
-> [    4.042387]  ? __pfx_vdpa_nl_cmd_dev_config_get_doit+0x10/0x10
-> [    4.042558]  ? __pfx_genl_rcv_msg+0x10/0x10
-> [    4.042679]  netlink_rcv_skb+0x41/0xf0
-> [    4.042798]  genl_rcv+0x28/0x50
-> [    4.042892]  netlink_unicast+0x1d8/0x2b0
-> [    4.043009]  netlink_sendmsg+0x212/0x440
-> [    4.043127]  __sys_sendto+0x1f3/0x200
-> [    4.043238]  ? __sys_sendto+0x1aa/0x200
-> [    4.043351]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.043493]  ? x64_sys_call+0x1d15/0x2350
-> [    4.043610]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.043747]  ? do_syscall_64+0x1b5/0xc60
-> [    4.043867]  __x64_sys_sendto+0x24/0x40
-> [    4.043979]  x64_sys_call+0x1d15/0x2350
-> [    4.044091]  do_syscall_64+0x90/0xc60
-> [    4.044200]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.044337]  ? x64_sys_call+0x1d15/0x2350
-> [    4.044456]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.044597]  ? do_syscall_64+0x1b5/0xc60
-> [    4.044712]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.044851]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.044990]  ? x64_sys_call+0x1d15/0x2350
-> [    4.045106]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.045243]  ? do_syscall_64+0x1b5/0xc60
-> [    4.045358]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.045498]  ? x64_sys_call+0x1d15/0x2350
-> [    4.045614]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.045750]  ? do_syscall_64+0x1b5/0xc60
-> [    4.045863]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.046007]  ? do_syscall_64+0x1b5/0xc60
-> [    4.046121]  ? srso_alias_return_thunk+0x5/0xfbef5
-> [    4.046259]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> [    4.046407] RIP: 0033:0x434e6c
-> [    4.046500] Code: fa 6e 03 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c3 44 8=
-b 54 24 28 48 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <=
-48> 3d 00 f0 ff ff 77 34 89 df 48 89 44 24 08 e8 40 6f 03 00 48 8b
-> [    4.047008] RSP: 002b:000076880dd7e190 EFLAGS: 00000293 ORIG_RAX: 0000=
-00000000002c
-> [    4.047218] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 000000000=
-0434e6c
-> [    4.047420] RDX: 0000000000000020 RSI: 000076880dd7e1d0 RDI: 000000000=
-0000003
-> [    4.047618] RBP: 0000000069b93bd6 R08: 00000000004b3cf0 R09: 000000000=
-000000c
-> [    4.047816] R10: 0000000000000000 R11: 0000000000000293 R12: 000000000=
-f71e860
-> [    4.048023] R13: 0000000000000013 R14: 000076880dd80cdc R15: 00007fff0=
-dab68e7
-> [    4.048228]  </TASK>
-> [    4.048295] Modules linked in:
-> [    4.048387] CR2: 0000000000000060
-> [    4.048494] ---[ end trace 0000000000000000 ]---
-> [    4.059378] RIP: 0010:sock_wfree+0x1d/0x3f0
-> [    4.059511] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 0=
-0 55 48 89 e5 41 57 41 56 53 48 83 ec 10 48 8b 5f 18 44 8b 97 d8 00 00 00 <=
-48> 8b 43 60 f6 c4 02 74 51 44 89 d0 44 89 d2 48 8d 8b 94 02 00 00
-> [    4.060019] RSP: 0018:ffffc9000049b8f0 EFLAGS: 00010286
-> [    4.060168] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 000000000=
-0000000
-> [    4.060367] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88801=
-f8aa100
-> [    4.060574] RBP: ffffc9000049b918 R08: 0000000000000000 R09: 000000000=
-0000000
-> [    4.060776] R10: 00000000000003c0 R11: 0000000000000000 R12: ffff88800=
-75ea000
-> [    4.060978] R13: ffff88801f8aa100 R14: 00000000fffffff5 R15: ffffc9000=
-049baf0
-> [    4.061183] FS:  000076880dd806c0(0000) GS:ffff88809a560000(0000) knlG=
-S:0000000000000000
-> [    4.061416] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    4.061579] CR2: 0000000000000060 CR3: 0000000008a61000 CR4: 000000000=
-0450ef0
-> [    4.061782] PKRU: 55555554
-> [    4.061863] Kernel panic - not syncing: Fatal exception
-> [    4.062096] Kernel Offset: disabled
-> [    4.062204] Rebooting in 1 seconds..
+> On Tue, 17 Mar 2026 10:44:02 +0530
+> <mhonap@nvidia.com> wrote:
 > 
+> > From: Manish Honap <mhonap@nvidia.com>
+> > 
+> > C does not permit an initialiser expression on a variable-length array
+> > (C99 Section 6.7.9 constraint: "The type of the entity to be initialized
+> > shall not be a variable length array type").
+> > 
+> > vfio_pci_irq_set() declared:
+> > 
+> >       u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
+> > 
+> > where `count` is a runtime function parameter, making `buf` a VLA.
+> > 
+> > GCC rejects this with (tried with GCC-9.4.0):
+> > 
+> >       error: variable-sized object may not be initialized
+> > 
+> > Fix by removing the `= {}` initialiser and inserting an explicit
+> > memset() immediately after the declaration.  memset() on a VLA is
+> > perfectly legal and achieves the same zero-initialisation on all
+> > conforming C implementations.
+> > 
+> > Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
+> > Cc: stable@vger.kernel.org
+> > Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+> > Reviewed-by: David Matlack <dmatlack@google.com>
+> > Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> > ---
+> > 
+> > This fix is self-contained: it touches only the existing vfio selftest
+> > helper library and carries no dependency on any other patch.  It was
+> > originally included as PATCH 20/20 in the CXL Type-2 VFIO passthrough
+> > RFC series [1] but belongs on the vfio list independently, as noted by
+> > Dave Jiang.
+> > 
+> > [1] https://lore.kernel.org/all/20260311203440.752648-1-mhonap@nvidia.com/
+> > 
+> >  tools/testing/selftests/vfio/lib/vfio_pci_device.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> > index fac4c0ecadef..3258e814f450 100644
+> > --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> > +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> > @@ -26,8 +26,10 @@
+> >  static void vfio_pci_irq_set(struct vfio_pci_device *device,
+> >  			     u32 index, u32 vector, u32 count, int *fds)
+> >  {
+> > -	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count] = {};
+> > +	u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count];
+> >  	struct vfio_irq_set *irq = (void *)&buf;
+> > +
+> > +	memset(buf, 0, sizeof(buf));
+> >  	int *irq_fds = (void *)&irq->data;
+> > 
+> >  	irq->argsz = sizeof(buf);
+> > --
+> > 2.25.1
+> >   
+> 
+> This unnecessarily split the declaration block.  Without objection,
+> I'll commit this with the following change:
+> 
+> diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_device.c b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> index d306ab81123a..fc75e04ef010 100644
+> --- a/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> +++ b/tools/testing/selftests/vfio/lib/vfio_pci_device.c
+> @@ -32,9 +32,9 @@ static void vfio_pci_irq_set(struct vfio_pci_device *device,
+>  {
+>         u8 buf[sizeof(struct vfio_irq_set) + sizeof(int) * count];
+>         struct vfio_irq_set *irq = (void *)&buf;
+> +       int *irq_fds = (void *)&irq->data;
+>  
+>         memset(buf, 0, sizeof(buf));
+> -       int *irq_fds = (void *)&irq->data;
+>  
+>         irq->argsz = sizeof(buf);
+>         irq->flags = VFIO_IRQ_SET_ACTION_TRIGGER;
+
+Applied with this fix to vfio next branch for v7.1.  Thanks,
+
+Alex
+
+
 
