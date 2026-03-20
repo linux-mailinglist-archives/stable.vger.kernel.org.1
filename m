@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-227464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227465-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLeDJIQKvWmy6AIAu9opvQ
-	(envelope-from <stable+bounces-227464-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:51:16 +0100
+	id GJtjNOwKvWkO5gIAu9opvQ
+	(envelope-from <stable+bounces-227465-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:53:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 315B02D77DA
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:51:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A972D786B
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:53:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C54B23047BD5
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:47:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E0E2307D4E5
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3001B364933;
-	Fri, 20 Mar 2026 08:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFC83624A7;
+	Fri, 20 Mar 2026 08:47:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2m/UM3P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xauSPnJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F291A0728
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CDE284693
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773996448; cv=none; b=sjeAUMWteCjkZUWkMAmHdYqDLipJoK0mql0Lo4eQSaXoG/WsBj7Ofw0wBhBkJM88vxH4hZD7GUYcdRwjph6Jg711GAG0bXgtIHCA6WJiPh25WbP1PYXTtrFMNLWEQXC3eWzot/v8wJ7++ZJvIbRSqMrqBQ6rp55CI05FGOTSEGc=
+	t=1773996473; cv=none; b=e2QFHhsiivnjC3nknGTApw+N/2pcFbef6bToWosQ2+TPcUu7o+DcT3VED+XbQ9V3Hu5HmqVzUyjoNe0gMY/uiZOcrBr4FXOMceaBliRK3VOms4HMzE7iHNhN7qFxiJ0Ed1uXIEtPMqoZlD2b0GoaulX+auVGwjxC1sn2kTgH1hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773996448; c=relaxed/simple;
-	bh=tLwLokSGGk1OPDT59SrX6vHuiuyriO9wPPxczhWwnSM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ObhRqjLj1pmbYWwbJUMZ2CwoqeWn35sWtxH6dC9g3XkFVyvqK2lEUjANwJ9BuY5tV22gYFKyuj3zTssNKJjwWxMvdCQhQmOC2oBOochJLmYyD4oomvssfoMHU7p8Xkfo+hPXDBYn7YBQ+G2NL6n1s9UyGpsii31V85yguQ0sfXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2m/UM3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E16C4CEF7;
-	Fri, 20 Mar 2026 08:47:27 +0000 (UTC)
+	s=arc-20240116; t=1773996473; c=relaxed/simple;
+	bh=GBJ9HyxZNA/tgbL7aD/xRa68eRKSQnV9CtG5mqLGg+A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jZ6tIRF7rc01JHvCvBP6YTUM2AqTjz9oufBcySf6AruH2UuuUE6I8FLmrOMqB2lIeDMr6+qfG7P1WyC0G67lWX+jkXYB1FQukwR6RTwTjBaO961UNapkAiPHyWkmaT1aUA7NljrLbGJJY2vqs6P1Ds54qwas5qdQGEkjIujaT3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xauSPnJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4D8C4CEF7;
+	Fri, 20 Mar 2026 08:47:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773996447;
-	bh=tLwLokSGGk1OPDT59SrX6vHuiuyriO9wPPxczhWwnSM=;
+	s=korg; t=1773996472;
+	bh=GBJ9HyxZNA/tgbL7aD/xRa68eRKSQnV9CtG5mqLGg+A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=S2m/UM3PP/K9MoD11ewYN1n5c/ori9PLfSLSC27lQtOkYdkIt/fUSXwVGRMg3tQR+
-	 ic+8pogO7M4blZ6CgZG7OBWdnZvl5Ny7uY3eRgxbiB6fe057RDG6gGiwCyhzdI6uLH
-	 7B350GT8aBfYK/nWwOMcFYYhFiCI1swL+hmV5CkA=
-Subject: FAILED: patch "[PATCH] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache" failed to apply to 5.10-stable tree
-To: jlayton@kernel.org,chuck.lever@oracle.com,npc@anthropic.com
+	b=xauSPnJfXZJtBKGcLXgvLcpnUFYv8H/2yQCrFhZKVxC6LOEuXrSlg970qbO2Uzdvw
+	 y3FgYrLCXCkzggZMOSjfsCUSG/OMBJX/F0kgArYpHGxUb3prc74QVjmYCxeHLOsvDj
+	 CWBsu7Qc2LpIEo3S5r0qCS6Nr56WS4Zuy0Kpxgzk=
+Subject: FAILED: patch "[PATCH] HID: appletb-kbd: add .resume method in PM" failed to apply to 6.19-stable tree
+To: gargaditya08@live.com,jkosina@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Mar 2026 09:47:16 +0100
-Message-ID: <2026032015-mortified-rearrange-fab1@gregkh>
+Date: Fri, 20 Mar 2026 09:47:49 +0100
+Message-ID: <2026032048-canal-smell-2ad1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,48 +57,49 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-227465-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227464-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_TO(0.00)[live.com,suse.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.902];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.488];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: 315B02D77DA
+X-Rspamd-Queue-Id: 39A972D786B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5133b61aaf437e5f25b1b396b14242a6bb0508e2
+git cherry-pick -x 1965445e13c09b79932ca8154977b4408cb9610c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032015-mortified-rearrange-fab1@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032048-canal-smell-2ad1@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -110,92 +111,42 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5133b61aaf437e5f25b1b396b14242a6bb0508e2 Mon Sep 17 00:00:00 2001
-From: Jeff Layton <jlayton@kernel.org>
-Date: Tue, 24 Feb 2026 11:33:35 -0500
-Subject: [PATCH] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
+From 1965445e13c09b79932ca8154977b4408cb9610c Mon Sep 17 00:00:00 2001
+From: Aditya Garg <gargaditya08@live.com>
+Date: Tue, 17 Feb 2026 02:54:46 +0530
+Subject: [PATCH] HID: appletb-kbd: add .resume method in PM
 
-The NFSv4.0 replay cache uses a fixed 112-byte inline buffer
-(rp_ibuf[NFSD4_REPLAY_ISIZE]) to store encoded operation responses.
-This size was calculated based on OPEN responses and does not account
-for LOCK denied responses, which include the conflicting lock owner as
-a variable-length field up to 1024 bytes (NFS4_OPAQUE_LIMIT).
+Upon resuming from suspend, the Touch Bar driver was missing a resume
+method in order to restore the original mode the Touch Bar was on before
+suspending. It is the same as the reset_resume method.
 
-When a LOCK operation is denied due to a conflict with an existing lock
-that has a large owner, nfsd4_encode_operation() copies the full encoded
-response into the undersized replay buffer via read_bytes_from_xdr_buf()
-with no bounds check. This results in a slab-out-of-bounds write of up
-to 944 bytes past the end of the buffer, corrupting adjacent heap memory.
+[jkosina@suse.com: rebased on top of the pm_ptr() conversion]
+Cc: stable@vger.kernel.org
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 
-This can be triggered remotely by an unauthenticated attacker with two
-cooperating NFSv4.0 clients: one sets a lock with a large owner string,
-then the other requests a conflicting lock to provoke the denial.
-
-We could fix this by increasing NFSD4_REPLAY_ISIZE to allow for a full
-opaque, but that would increase the size of every stateowner, when most
-lockowners are not that large.
-
-Instead, fix this by checking the encoded response length against
-NFSD4_REPLAY_ISIZE before copying into the replay buffer. If the
-response is too large, set rp_buflen to 0 to skip caching the replay
-payload. The status is still cached, and the client already received the
-correct response on the original request.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Nicholas Carlini <npc@anthropic.com>
-Tested-by: Nicholas Carlini <npc@anthropic.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 5172dbd0cb05..fa16b34fae50 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -6281,9 +6281,14 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
- 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
+diff --git a/drivers/hid/hid-appletb-kbd.c b/drivers/hid/hid-appletb-kbd.c
+index a1db3b3d0667..0fdc0968b9ef 100644
+--- a/drivers/hid/hid-appletb-kbd.c
++++ b/drivers/hid/hid-appletb-kbd.c
+@@ -476,7 +476,7 @@ static int appletb_kbd_suspend(struct hid_device *hdev, pm_message_t msg)
+ 	return 0;
+ }
  
- 		so->so_replay.rp_status = op->status;
--		so->so_replay.rp_buflen = len;
--		read_bytes_from_xdr_buf(xdr->buf, op_status_offset + XDR_UNIT,
-+		if (len <= NFSD4_REPLAY_ISIZE) {
-+			so->so_replay.rp_buflen = len;
-+			read_bytes_from_xdr_buf(xdr->buf,
-+						op_status_offset + XDR_UNIT,
- 						so->so_replay.rp_buf, len);
-+		} else {
-+			so->so_replay.rp_buflen = 0;
-+		}
- 	}
- status:
- 	op->status = nfsd4_map_status(op->status,
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index 6fcbf1e427d4..c0ca115c3b74 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -541,11 +541,18 @@ struct nfs4_client_reclaim {
- 	struct xdr_netobj	cr_princhash;
+-static int appletb_kbd_reset_resume(struct hid_device *hdev)
++static int appletb_kbd_resume(struct hid_device *hdev)
+ {
+ 	struct appletb_kbd *kbd = hid_get_drvdata(hdev);
+ 
+@@ -500,7 +500,8 @@ static struct hid_driver appletb_kbd_hid_driver = {
+ 	.event = appletb_kbd_hid_event,
+ 	.input_configured = appletb_kbd_input_configured,
+ 	.suspend = pm_ptr(appletb_kbd_suspend),
+-	.reset_resume = pm_ptr(appletb_kbd_reset_resume),
++	.resume = pm_ptr(appletb_kbd_resume),
++	.reset_resume = pm_ptr(appletb_kbd_resume),
+ 	.driver.dev_groups = appletb_kbd_groups,
  };
- 
--/* A reasonable value for REPLAY_ISIZE was estimated as follows:  
-- * The OPEN response, typically the largest, requires 
-- *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +  8(verifier) + 
-- *   4(deleg. type) + 8(deleg. stateid) + 4(deleg. recall flag) + 
-- *   20(deleg. space limit) + ~32(deleg. ace) = 112 bytes 
-+/*
-+ * REPLAY_ISIZE is sized for an OPEN response with delegation:
-+ *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +
-+ *   8(verifier) + 4(deleg. type) + 8(deleg. stateid) +
-+ *   4(deleg. recall flag) + 20(deleg. space limit) +
-+ *   ~32(deleg. ace) = 112 bytes
-+ *
-+ * Some responses can exceed this. A LOCK denial includes the conflicting
-+ * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). Responses
-+ * larger than REPLAY_ISIZE are not cached in rp_ibuf; only rp_status is
-+ * saved. Enlarging this constant increases the size of every
-+ * nfs4_stateowner.
-  */
- 
- #define NFSD4_REPLAY_ISIZE       112 
+ module_hid_driver(appletb_kbd_hid_driver);
 
 
