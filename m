@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-227574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227573-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qMvnHI13vWmt9wIAu9opvQ
-	(envelope-from <stable+bounces-227574-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 17:36:29 +0100
+	id CPntAXJ6vWmt9wIAu9opvQ
+	(envelope-from <stable+bounces-227573-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 17:48:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C91F2DD834
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 17:36:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 789542DDFA1
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 17:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5D44A300BC9A
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:36:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2EBB8313D5F2
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983D33B38A9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844B43B2FC4;
 	Fri, 20 Mar 2026 16:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b="O317TOCR"
+	dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b="I+rSrwmd"
 X-Original-To: stable@vger.kernel.org
 Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FFA2641CA;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25DD39A803;
 	Fri, 20 Mar 2026 16:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.57
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774024579; cv=pass; b=pZRoV/whDUlBMYanzrQFmGkwArY2SKq6VBupbUxpmfiNwWEr0GgqgYcYnB8m6ZdnD7C8V1tnYrOe0MywqAyMjHhf56qN6bPwLFKux49KU93DayWhOXvNHtNmFStvA1Q+sN1PnSgAh1ZRIPY1h5zxD+SiO+A6t20bmI1h0r01WP8=
+	t=1774024579; cv=pass; b=rHxyK8uiHQXKV8Z4BjFvVMRZK8AO2R3pZWxIoahLwCFoja6z7aydf3VHY7yRe1ggkEd7skeheC2ttEmBMQkwcVq+jpAcqjZhuFs7v9+24jrfp8mC0w5zsOwXtXGlcwLUJotFTxeE4gJPnbjoNnxOHWKLg5lXILD1/yUzHbAgjdo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774024579; c=relaxed/simple;
-	bh=UxrDQ+bV476tvqQrvgRHKh9A8SplKNnFA7Ijhyo2+sg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jUrIANmJv+aO5jbNZtp0l8vDFGgMSWqM7Yawg3t1bei+ue8vJkRrdWmr/g0D4AcT+ztCOVnoaq1yjB5DTZILSkE4pCo0ggjcbdSgW7j3ltYd8/GGGUsGSI0JCLCdylB+GbKabpZNv9Z7xh70Iy79fzLsLPI6VSqYNhMYvwpW36I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org; spf=pass smtp.mailfrom=objecting.org; dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b=O317TOCR; arc=pass smtp.client-ip=136.143.169.57
+	bh=rXBnjOpdM4Zz9KkgGNRIZmxPV6JW3HhGTuomv2aKen8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=aPbVMewKJ1TYY//Q2vY9l99pNX/S0XgYajd883uzBfNNhBE5fyj3OYn6PfnpYNytHh8geZzxEcsIJy3pmAvsGxcltIjwbnHw9J61hBFBLcC4fyHVpb/nkVUTEC7glI40Ba/P74WAICpNgoNB+A8kUHux6FH58FeBvjgqRe3bq0w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org; spf=pass smtp.mailfrom=objecting.org; dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b=I+rSrwmd; arc=pass smtp.client-ip=136.143.169.57
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1774024564; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1774024563; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=HzAb7DtkmPMMaHFoOtSy1ByOBce8Z2VsonMAgK3g7nAu1gS9o7GrQ9Y/z0xdTbtxrXsr18PpDiLO/NFezHOBw2DZQKExMfZjQztVz5W6d+/JkWrwA20CmYBBjAxhTXYfmFdSbYJ5Rt7Dumh8ozSmc497CFyfTmJJx5QfRj4h184=
+	b=ff8X3tljHjklyFzeIFOMCAdNbLmebNvpYED9ZqvO5oAD7NDG1a45ss15UN6rHaeUpEF87bR6hsw4wmrIsW2j4KmhzuOc7YqAQmp49YiORUQdPIhzYlGKnYBxHdBY6IvtkY15H0jjAhxHRjbrnZfAMb0ojGsK1vvlG2ydZXgLss0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774024564; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=HdwGly0+BqBUHkF/IVpHh4nGFQLNRDEsFnAVEweW3Yw=; 
-	b=RQTJMzmaKNcGEZIM0a0wqaVr0Rt73Z1x7zQ4w6S1YIPk649spcPUtC6azCFKp2LbBuUohC/4ua830oFdYWQ0mmyNrpWUElkd9COVdyrLGvKDq4sUUHqKUhMQwiEezbc3D2PWdxhMGXtaZ19sX373vL2jrldHQGd29jVc52dZWOg=
+	t=1774024563; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=xBhz+FP718xfFTo+Jqt21ir9B4N+Sz9WG+S91iYYSqU=; 
+	b=Et+EfbnAdIfTOdfn2PjpJQeP4ypoP4uxvfKy9C1+AVGQSrKOzpFxuK7BPala0qvsStG2h0MF5C9Vz0ZZBbUMHrev2ZelqjEqefje9uXmFIr7pMwMhYnilH65aFwi3j1ZEFivFfdGiaZRrG4H54WJnbRnJm0P6hbq1y5HQZiyQUg=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=objecting.org;
 	spf=pass  smtp.mailfrom=objecting@objecting.org;
 	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774024564;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774024563;
 	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
-	bh=HdwGly0+BqBUHkF/IVpHh4nGFQLNRDEsFnAVEweW3Yw=;
-	b=O317TOCR0B+3T99gsNHIJKWes3cGthXqIYy6ZdbnlKhlZlbWf1aaYEk3lgRRV8Jy
-	seuTTJJG68epxgzugQRpXwl/8EB56ZmjQRI/xWlVCR+pWjmNviU0yzLCY7EHlpY3CdP
-	gxwIScXISBAC46AXC0oC0MoYa1NeI0VuWPnC1T7o=
-Received: by mx.zoho.eu with SMTPS id 1774024561416667.7402047367142;
-	Fri, 20 Mar 2026 17:36:01 +0100 (CET)
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Reply-To;
+	bh=xBhz+FP718xfFTo+Jqt21ir9B4N+Sz9WG+S91iYYSqU=;
+	b=I+rSrwmdO5diJIt0LdFNl3Yk3dlXhjTt0x0zyF30VEYe6opl27xXPDSUJJ3tXuYj
+	1CMYjf3lBkYeKUDR3YP7NTyVHGex8JG3e8me/ea7fJzJV7H4XsLbLeKHaO5n+mTseGj
+	7/xRFtAU2A4eivvzCxi6s6B3sCWpX/vEWTlm4eh0=
+Received: by mx.zoho.eu with SMTPS id 1774024562167191.42267947695075;
+	Fri, 20 Mar 2026 17:36:02 +0100 (CET)
 From: Josh Law <objecting@objecting.org>
 To: SeongJae Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>
@@ -61,10 +62,12 @@ Cc: damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	Josh Law <objecting@objecting.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 1/3] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
-Date: Fri, 20 Mar 2026 16:35:57 +0000
-Message-Id: <20260320163559.178101-1-objecting@objecting.org>
+Subject: [PATCH v2 2/3] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
+Date: Fri, 20 Mar 2026 16:35:58 +0000
+Message-Id: <20260320163559.178101-2-objecting@objecting.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260320163559.178101-1-objecting@objecting.org>
+References: <20260320163559.178101-1-objecting@objecting.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,7 +81,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[objecting.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[objecting.org:s=zmail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
@@ -87,50 +90,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227574-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227573-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[objecting.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[objecting@objecting.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[objecting.org:dkim,objecting.org:email,objecting.org:mid]
-X-Rspamd-Queue-Id: 7C91F2DD834
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,objecting.org:dkim,objecting.org:email,objecting.org:mid]
+X-Rspamd-Queue-Id: 789542DDFA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
-param_ctx is leaked because the early return skips the cleanup at the
-out label. Destroy param_ctx before returning.
+Multiple sysfs command paths dereference contexts_arr[0] without first
+verifying that nr_contexts >= 1.  A user can set nr_contexts to 0 via
+sysfs while DAMON is running, causing NULL pointer dereferences.
 
-Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
-Cc: <stable@vger.kernel.org> # 6.18.x
+Guard all commands (except OFF) at the entry point of
+damon_sysfs_handle_cmd().
+
+Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
+Cc: <stable@vger.kernel.org>	# 5.18.x
 Signed-off-by: Josh Law <objecting@objecting.org>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/damon/sysfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 576d1ddd736b..b573b9d60784 100644
+index b573b9d60784..ddc30586c0e6 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -1524,8 +1524,10 @@ static int damon_sysfs_commit_input(void *data)
- 	if (IS_ERR(param_ctx))
- 		return PTR_ERR(param_ctx);
- 	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
--	if (!test_ctx)
-+	if (!test_ctx) {
-+		damon_destroy_ctx(param_ctx);
- 		return -ENOMEM;
-+	}
- 	err = damon_commit_ctx(test_ctx, param_ctx);
- 	if (err)
- 		goto out;
+@@ -1749,6 +1749,9 @@ static int damon_sysfs_update_schemes_tried_regions(
+ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
+ 		struct damon_sysfs_kdamond *kdamond)
+ {
++	if (cmd != DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr != 1)
++		return -EINVAL;
++
+ 	switch (cmd) {
+ 	case DAMON_SYSFS_CMD_ON:
+ 		return damon_sysfs_turn_damon_on(kdamond);
 -- 
 2.34.1
 
