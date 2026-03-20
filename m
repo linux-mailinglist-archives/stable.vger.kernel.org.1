@@ -1,372 +1,287 @@
-Return-Path: <stable+bounces-227556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227557-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFKELw5gvWl09QIAu9opvQ
-	(envelope-from <stable+bounces-227556-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 15:56:14 +0100
+	id QGwZEvpkvWlF9gIAu9opvQ
+	(envelope-from <stable+bounces-227557-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:17:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192D82DC1E0
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 15:56:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49BC22DC7DD
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 16:17:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8920E3050D61
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 14:56:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9A218304468B
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 14:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07D8345CAF;
-	Fri, 20 Mar 2026 14:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCB623B47FC;
+	Fri, 20 Mar 2026 14:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GOIz8dEr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebFdzF6c"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35BEB31F9A9
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 14:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774018571; cv=fail; b=qpe4og9P/BsLpX/CEzGePejttQ7vqtp91tDcfp4Zhn/yhqIxsqdt6Dlv8k3sBv4qpvx8ALFZ5XWvp5tuQRR0vo5dJmXIFiEnGy0iHdXrDijQQI/wvkTSocqaEyUWBF5nDzYZ7pGPGWq2o+n8c4JCR7AhmmVpYPqIrKiREE8VNIE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774018571; c=relaxed/simple;
-	bh=W3/ONfspVNuxddwyvtAKjWoKOIvBn2ChHLFgu/WMYUo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=aFt1Tz+Fw8a3XvZ0Un+yFxU7bsM1bN0m0QoCe90RuS4iXYGiFu1hJ7U8ipXyXW3c7J2TAPFOlGhirusdDJIe2A+MdcZ4eiUkP0eRTzQnGCtI0sqKUKmCoV81dLZyxz6HgXAHO2vkhVuRaXB84Oh/rf2g8RPxFUE3SrArzm/Th6c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GOIz8dEr; arc=fail smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774018570; x=1805554570;
-  h=date:from:to:cc:subject:message-id:reply-to:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=W3/ONfspVNuxddwyvtAKjWoKOIvBn2ChHLFgu/WMYUo=;
-  b=GOIz8dEryMX2unTEwgWT+ouUZo+YzUSrA8dB/zVeRpaZZspWDcCTwPej
-   nk1Okb6//Df2ZmFOCBsKjFSXUoMZ4Hym4AC2A6jxQnozm7k8F3kd0649j
-   9OeqUvJTyONMW4rHica6xP6kEerIZP8GgAKJCJ38wYl6T+hGbiWWAN7Xf
-   2AYMJiouNC8O/R5MckZ1UGE9nM3QiayNTREjrgPdBKX7+0GlX3fjXi1AD
-   6r0fgr+2iAv7Vrau5dsCfaLkSNn6935rWaFlq9zfCdBjqwYCcEtq5FK3U
-   jVKxtbJKK5wVcmY3/SdE94Nf9s7YB1Tmb1K57Gc0ZxQhQkfGpwo1RYSb0
-   g==;
-X-CSE-ConnectionGUID: +X94Vf96QouE3lGe6aISvg==
-X-CSE-MsgGUID: VIOI5nn8TZmPKqYbOTvBWg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="85808273"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="85808273"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 07:56:09 -0700
-X-CSE-ConnectionGUID: khpirnfDSqS7SLrd1lWlyA==
-X-CSE-MsgGUID: seav+SRXR9Cc6FiVzX4F/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="220639920"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 07:56:09 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 07:56:08 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 07:56:08 -0700
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.32) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 07:56:08 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N1K2bTlzJfCHf9UXOaD0aE+KkSpL/y8uRZUGgSjHXzJaU+lPHS/9ReiNmkzftuivkoORp/cOAZ1rJVTRqUN4DiNy/0YMc+tT066b84VNDvo2SvkOR0ylep4LNv+JRFVLUcMNTTRftGoKjC1PeHZEPraSROXt7v2wPshDLdcx8+Ax2D/XGd5+6RjndlL9CtovxoEob5VLuijJBIRscKkuhWnOqEm8ZYtwZYF+Jtz6zg0W2yUniwiEpw3y2VcLxzFXMtLipdsHVBxyjosXSRW2BGuAjxfiK8oQ4M2smIxWC+rwzIxZxv0QGCYl2BmaYO6xSvsG3S4ytCaREinOfUo7Ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bMB4XN2xhnoI1bfx5R2Tbjj9rTFgxryZ/BgiEpot+G4=;
- b=lD7WPN2L7Q6PVRWZ3p/GGMnJmCaS8+K7eBjZznaJiQ2UDrinzkUUgLc1JtzSnTOnV7W47eFqKZvyrM4Nni2V1zNKI/sFRRqJhNkdlsLyKvCdVAFLDNKS2gljGeZdGdrjDSfBuCLSv5ocEww1JIxKOtXlQ0gNV99Ox8eDlGICNp8Xrsw6Zod0H/iN5R6qDgVpdnCnCkwB4lZI40RnvbNCLst6R9I//8bODJbaR88l+i10JAorqAyIyv79I8wiTx09gi2v6fwFIP1kz3DJLkB1X+5bSOZKl/u9bY5oG8jU5FuRWIU4SLMxClh9L9pAdjEdcd05vzbevHHE6X1NThDa1g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com (2603:10b6:a03:2d1::10)
- by IA4PR11MB8916.namprd11.prod.outlook.com (2603:10b6:208:55e::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
- 2026 14:56:06 +0000
-Received: from SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::9ca5:4d1d:db45:f523]) by SJ0PR11MB4845.namprd11.prod.outlook.com
- ([fe80::9ca5:4d1d:db45:f523%5]) with mapi id 15.20.9723.010; Fri, 20 Mar 2026
- 14:56:06 +0000
-Date: Fri, 20 Mar 2026 16:55:57 +0200
-From: Imre Deak <imre.deak@intel.com>
-To: "Shankar, Uma" <uma.shankar@intel.com>
-CC: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>, Ville
- =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] drm/i915/dp_tunnel: Fix error handling when clearing
- stream BW in atomic state
-Message-ID: <ab1f_WvJCZZRR5eK@ideak-desk.lan>
-Reply-To: <imre.deak@intel.com>
-References: <20260320092900.13210-1-imre.deak@intel.com>
- <DM4PR11MB63602830F5D63903389EF2DAF44CA@DM4PR11MB6360.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <DM4PR11MB63602830F5D63903389EF2DAF44CA@DM4PR11MB6360.namprd11.prod.outlook.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-X-ClientProxiedBy: GVX0EPF0005F707.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:158:400::392) To SJ0PR11MB4845.namprd11.prod.outlook.com
- (2603:10b6:a03:2d1::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904643A0B11
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 14:57:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774018669; cv=none; b=e5mNhVtp8iF3BBMNFuWktykYg4l4CxpZkVxDESa5T5bEoqe80YHEP5mURt/ca3Rbtll0foCtJkmmcHlwExnIuKAy+5zFKx9e05o+11eCgJeNkcBDwNQNAYVpZxfnlyOqqmyznlivq9UYfK4N3oHw37+0d8rd5YJTIpE2zO0FyOA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774018669; c=relaxed/simple;
+	bh=MGzeqKZHIFE8T1dLZch4YNPii32M3IbLOI9p7iqFgmM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XF/MlGHv/dtFg0ThjY3zB+GkpjfEnfVhuq79rZqv1d2H7pPxDnMwHSWayO3V4HlDXNZzCLZurNMlCRghnqqqG+uYNp0ISb0odPJ2lhAjvnU61Izua6SMdNlmii2FroR0lcMvxZbxGWgANurW0BZWWmRMCpbwgKuw+6aX7iLnHEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebFdzF6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B60C19425;
+	Fri, 20 Mar 2026 14:57:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774018669;
+	bh=MGzeqKZHIFE8T1dLZch4YNPii32M3IbLOI9p7iqFgmM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ebFdzF6c6RriPUtjgVZizpK6JuhY9H0OLOxKPU6R+0OeWNPdcLf8c84MsfsLowkJ/
+	 JZmCwubzZNuSliG8GYgvif6iKSIZq38MjkIR+SN15A1CuB1ReXB69mT85QIOmX3P/i
+	 suxsL6x7k2C29FDNVM/Vw36bcrxh232GQaJGtJEISR4o6HTlG6Y8LjFd+ADjKj2E4/
+	 ey8TYSau//MHSBYSttb7q0fefbvleMebutfjbbSBGZ95SYiRoN6kW36GARevFE5PX8
+	 Ld7QRgPf8nxI0VT+FBCP4rs/80qc5NBh3U6GLCTvOf0IzgaADFObleYC2e4WjjUQsS
+	 JqbWOIjy/0rMg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	Harini Katakam <harini.katakam@amd.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y 1/3] net: macb: queue tie-off or disable during WOL suspend
+Date: Fri, 20 Mar 2026 10:57:44 -0400
+Message-ID: <20260320145746.4187361-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026032001-degrease-handcuff-81e4@gregkh>
+References: <2026032001-degrease-handcuff-81e4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ0PR11MB4845:EE_|IA4PR11MB8916:EE_
-X-MS-Office365-Filtering-Correlation-Id: b3e3a915-e06e-4483-04f6-08de8690d014
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|18002099003|22082099003|56012099003|7053199007;
-X-Microsoft-Antispam-Message-Info: We1llalsHKC3dm1V1pjWR3r/d6v3/N7GG2qHrzqxabavGyPVev4z6m3d3h+jvl2wljiwDcWAIabf8gxeI985g4ClSOFBjvjmBmNOQeKLJaSJT+tdmeE4OCkf42oFwK22AWaVZKJ0KALoSoorwFUxoeIQLHRehBSsWhqYmtczl6KfaK3kKfo03R4GuiFlCQmXGyuqM29tJFizn88O76s/0PWlQdbzvRvDEde4P4LIxREa4gW+p4wRQyXdhRYd225mCITxftE2FT+2A/y2ekCo2YpfKp6sqdoRpF1WTHwJhOpdAfhy+/bh038PGPKd1Mqkx5v+WUHOOuC6MBivc54iXjRXvCfwWcCu3vouAK4BY09yfw6WykPzN10ScJ0ZaW6sPLb43NZYoz82KsnrZ2HASi7Ny3b5hRuGdC+fOfsVCkVw7mtGDvnOs2xWYFHmJds/8DDsmQVQ9VUoR72Gz1/E1jfOX/KTdwjapfxQaVNfGuY6ckgHxB8dpxrSDGRsCfurOhNKshZfzh14saTE3zH0TflV+VMzPJxsv9Q4AZ0OAuX5JBfH94Am+5OOoRXipy0K488z1fcBDAzQNuYy2zh0Fm8vYH/jE9WJRmRGvQWrpZqar4uVIeHHeu9Zakh+YXO8upvb9O/BuE+rle8l5Ckr3jz/IX8FFIESWshvQzpRPkgnDPiD0/EONrwbGrtnmmZDfv5xZS/Z3VO/ridUTYU/wvGseHpSkZiegqLPE0Jmnrg=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR11MB4845.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(18002099003)(22082099003)(56012099003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?iQ0EnTXrLfEYdMDhE7QOHsqEL5XAqPizFX9pBoWTXKcStK0WE7fPecHiyT?=
- =?iso-8859-1?Q?FLV3y7kVGuL/DxUl88ZxhN6vOjvRlcPge/z9UQZiQephujdAjaSzrj3lLM?=
- =?iso-8859-1?Q?dYc7mxZPymV3alqeKmCdWIyYJQ3L8pGLEXxLK7y5bBRaex1si/hGFViFgD?=
- =?iso-8859-1?Q?yhY55ox4MdRAdOnn8jStip0apeAMFbxhEU81Up3B9fWssWVuiYg6JRnnkg?=
- =?iso-8859-1?Q?ojc245AO001WXug8xhp6pXDA2vMl4x4VA81w7K9ahtIaX1veGuIum1zyXI?=
- =?iso-8859-1?Q?3BnBnkECgvoNaEL6JmJF8j+SHyzQvGaI6adE5hM+AtzuCJaJoKHslyxmVI?=
- =?iso-8859-1?Q?iIc9EPRu4KIPMU6/bB5nLYdmib3dJAhbkoWT6HS8pdI2i2zZ9B3b5A3ooz?=
- =?iso-8859-1?Q?NMCN3Jts/iQwb3obn1KM+Tv6zCNMd2TjaZrURLZpkTxzkUP5fRVN7l4VCz?=
- =?iso-8859-1?Q?nNzdDyxx+kvdoCYyco9xQXS0zIGt9D273LGrl613jtN0aTULhoLuLX2yg9?=
- =?iso-8859-1?Q?jrs69DPdsVVU2UpGemb+Li8s+dM3jHtjJmPx5EMVSNOx87B6jDvQSnj0bE?=
- =?iso-8859-1?Q?nr+jGkzU48N+9EipvyHx2IB24LmwRD+diOnkKH7Ne6Yrc0r+uhxk+z1gmi?=
- =?iso-8859-1?Q?FZjIgGEuv94L679krsbgW068YtYWEh4GsfHXvp8kIc9nV2keopgEMLCd+c?=
- =?iso-8859-1?Q?EkvIRHx2PPcSGFwJZwNzGtr9ns2zc/uNvvztyeXEtVTH4HwYssJta38H5A?=
- =?iso-8859-1?Q?KnKdurGY9Q3LnOBsHRiiletdnPGeKusfBb8Gn26/Sn7XbGR/Q7vhur9nTY?=
- =?iso-8859-1?Q?F5xC5Srbhtgb5ne8SAWRa5JCGSoM1p7q43/KRw2OgoAx3CXoBrwiEyfPpA?=
- =?iso-8859-1?Q?rgGoflZvkl1tS+cuMudZ5+9zSGdz8qEgXOGs7lNOhvZJnjjWz71P/lfril?=
- =?iso-8859-1?Q?b+ENf6QdkYYG8CMhhTPFZlRSu00q5nTOr9Dfpw6QsJW7Ibv2/DSgzCrUo3?=
- =?iso-8859-1?Q?HC6vmUGSGEEv7LufVofpidSrZHKinG6fPQQNqBZQ6lSSJYCz3v6PMS3m+D?=
- =?iso-8859-1?Q?1y9wxCA3H240soXTfHXeByUSYb8o5Q102SVMNBM1w78L6f3v9jKz5/UDvN?=
- =?iso-8859-1?Q?UYVU1ilMYdzp5rXSPY3oVr987E//F1uwS2MHIDLebhkc9Zc9rCZ3XUcdYf?=
- =?iso-8859-1?Q?xH8pIprc/Z2sFqLx5g0meqS8pZNuXtTp7rpdx/ZzVKxRDHrwbH/swlGYEn?=
- =?iso-8859-1?Q?/rhgB32Rz8q2mjirXbQvu13eIZm8Qhzz2VCu1A3KwqlaQjM1PBOZ80mneZ?=
- =?iso-8859-1?Q?BY4WhI8eLavPBzjbTbshRQNaYC006Gdh+HD+OO1JEYbuosJ6oaJF8ahR49?=
- =?iso-8859-1?Q?qQo+cpiwZhNJxtAjdtlneR0Lj9/iLKa0htxEXVE/Pg78LZZz+nT+FR40m4?=
- =?iso-8859-1?Q?aS1UUXY/aepZW2v2ynNTSA9bOLEWBz1iHETTyqXdOvQkFyaQhPr+TQzScD?=
- =?iso-8859-1?Q?HtXd7dmb4Em2Kjrw4C5lIVqx50Lh3c9M1wBwgSoY6Iw15+5O8oqMkECENx?=
- =?iso-8859-1?Q?MLF+X2cAXocwoxdA8Oa++KmI5wzE5rzkrpBR9tK00LrBZdNAoL8hKMONNs?=
- =?iso-8859-1?Q?6yEczx5pEFeXDVAfvIdkumEN4aHh9frb6cgYwtW+brXkx0Emm8zPKWyxkC?=
- =?iso-8859-1?Q?FncVXlf5azZPt9gAIACqWr6X2tUYxB5nb6h3KGSOIxJOizLIWg8gEJziDd?=
- =?iso-8859-1?Q?FsciPfz8z51MuxFGpjELZa/e84PJliyRJRTgtberhbFfDGX6uMGDwYcpjG?=
- =?iso-8859-1?Q?Hk4XWbAcVw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: DKAoMBgweFIL58mfyLPYFi0Z/IqJh2jyjjrb7Oi1C/iLwJ6GtBHjgp6almCkmS1cpiffrc4z+zfMEk6R9ak47m9ztrkCUewiMP7HiO3A4MHtmgSOK4e9CJrwbUzuLLC8PBj0Ca4vPL+LuKA2ch8Hw3fP3SWzrFv6fiaKSb+Pn2NoemTxePbbXRMx5f5toN8awWtBUzNa82T4tQHVd+BHa65sUN9rJhWJ9o4odPPi2eliQ/FwFPckYrPzmv2U3fO0FrzxYWDTwvUWqblKjiVUP0lx5BYVkh+dC2TjqJ8cQIUmEam565EdK1MZsYdj5XnxjVRZzjjW5EYvnImu8o6u8w==
-X-MS-Exchange-CrossTenant-Network-Message-Id: b3e3a915-e06e-4483-04f6-08de8690d014
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR11MB4845.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 14:56:05.9617
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: czsqs0+wLbWIG3024Sr0cU9XQAH+QKQJIz2yhTWv1BslWsz4Lk3nhseJ//l9it8KoccFYOtzYYyThoUv7D2oRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA4PR11MB8916
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227556-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:replyto,intel.com:email,lists.freedesktop.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
-	REPLYTO_DOM_EQ_TO_DOM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	HAS_ORG_HEADER(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	HAS_REPLYTO(0.00)[imre.deak@intel.com];
-	FROM_NEQ_ENVFROM(0.00)[imre.deak@intel.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-227557-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.994];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.997];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 192D82DC1E0
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,lunn.ch:email,amd.com:email,tuxon.dev:email]
+X-Rspamd-Queue-Id: 49BC22DC7DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 20, 2026 at 01:42:58PM +0200, Shankar, Uma wrote:
-> 
-> 
-> > -----Original Message-----
-> > From: Deak, Imre <imre.deak@intel.com>
-> > Sent: Friday, March 20, 2026 2:59 PM
-> > To: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org
-> > Cc: Shankar, Uma <uma.shankar@intel.com>; Ville Syrjälä
-> > <ville.syrjala@linux.intel.com>; stable@vger.kernel.org
-> > Subject: [PATCH] drm/i915/dp_tunnel: Fix error handling when clearing stream BW
-> > in atomic state
-> > 
-> > Clearing the DP tunnel stream BW in the atomic state involves getting the tunnel
-> > group state, which can fail. Handle the error accordingly.
-> > 
-> > This fixes at least one issue where drm_dp_tunnel_atomic_set_stream_bw()
-> > failed to get the tunnel group state returning -EDEADLK, which wasn't handled.
-> > This lead to the ctx->contended warn later in modeset_lock() while taking a WW
-> > mutex for another object in the same atomic state, and thus within the same
-> > already contended WW context.
-> > 
-> > Moving intel_crtc_state_alloc() later would avoid freeing saved_state on the error
-> > path; this stable patch leaves that simplification for a follow-up.
-> > 
-> > Cc: Uma Shankar <uma.shankar@intel.com>
-> > Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-> > Cc: <stable@vger.kernel.org> # v6.9+
-> > Fixes: a4efae87ecb2 ("drm/i915/dp: Compute DP tunnel BW during encoder state
-> > computation")
-> > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > ---
-> >  drivers/gpu/drm/i915/display/intel_display.c  |  8 +++++++-
-> >  .../gpu/drm/i915/display/intel_dp_tunnel.c    | 20 +++++++++++++------
-> >  .../gpu/drm/i915/display/intel_dp_tunnel.h    | 11 ++++++----
-> >  3 files changed, 28 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/i915/display/intel_display.c
-> > b/drivers/gpu/drm/i915/display/intel_display.c
-> > index ee501009a251f..882db77c0bbcd 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_display.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_display.c
-> > @@ -4640,6 +4640,7 @@ intel_crtc_prepare_cleared_state(struct
-> > intel_atomic_state *state,
-> >  	struct intel_crtc_state *crtc_state =
-> >  		intel_atomic_get_new_crtc_state(state, crtc);
-> >  	struct intel_crtc_state *saved_state;
-> > +	int err;
-> > 
-> >  	saved_state = intel_crtc_state_alloc(crtc);
-> >  	if (!saved_state)
-> > @@ -4648,7 +4649,12 @@ intel_crtc_prepare_cleared_state(struct
-> > intel_atomic_state *state,
-> >  	/* free the old crtc_state->hw members */
-> >  	intel_crtc_free_hw_state(crtc_state);
-> > 
-> > -	intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
-> > +	err = intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
-> > +	if (err) {
-> > +		kfree(saved_state);
-> > +
-> > +		return err;
-> > +	}
-> > 
-> >  	/* FIXME: before the switch to atomic started, a new pipe_config was
-> >  	 * kzalloc'd. Code that depends on any field being zero should be diff --git
-> > a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-> > b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-> > index 1fd1ac8d556d8..7363c98172971 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-> > +++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-> > @@ -659,19 +659,27 @@ int intel_dp_tunnel_atomic_compute_stream_bw(struct
-> > intel_atomic_state *state,
-> >   *
-> >   * Clear any DP tunnel stream BW requirement set by
-> >   * intel_dp_tunnel_atomic_compute_stream_bw().
-> > + *
-> > + * Returns 0 in case of success, a negative error code otherwise.
-> >   */
-> > -void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
-> > -					    struct intel_crtc_state *crtc_state)
-> > +int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
-> > +					   struct intel_crtc_state *crtc_state)
-> >  {
-> >  	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
-> > +	int err;
-> > 
-> >  	if (!crtc_state->dp_tunnel_ref.tunnel)
-> > -		return;
-> > +		return 0;
-> > +
-> > +	err = drm_dp_tunnel_atomic_set_stream_bw(&state->base,
-> > +						 crtc_state->dp_tunnel_ref.tunnel,
-> > +						 crtc->pipe, 0);
-> > +	if (err)
-> > +		return err;
-> > 
-> > -	drm_dp_tunnel_atomic_set_stream_bw(&state->base,
-> > -					   crtc_state->dp_tunnel_ref.tunnel,
-> > -					   crtc->pipe, 0);
-> >  	drm_dp_tunnel_ref_put(&crtc_state->dp_tunnel_ref);
-> 
-> Hi Imre,
-> Should we not drop reference even in case of failure, is this intentional ?
+From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 
-Yes, the early return in case of an error, preserving the tunnel reference
-in the crtc state is intentional. The error here will make the whole
-commit fail and the atomic state - within that the crtc state - being
-freed. That crtc state freeing will drop this reference, see
-intel_crtc_destroy_state().
+[ Upstream commit 759cc793ebfc2d1a02f357ae97e5dcdcd63f758f ]
 
-Aside: it wouldn't cause a functional problem to drop the reference as
-you suggest in case of the earlier error either - the related dropping
-of the reference in intel_crtc_destroy_state() described above would be
-skipped then. But I still think the usual early return - as done in the
-patch - in case of an error is the logically correct way.
+When GEM is used as a wake device, it is not mandatory for the RX DMA
+to be active. The RX engine in IP only needs to receive and identify
+a wake packet through an interrupt. The wake packet is of no further
+significance; hence, it is not required to be copied into memory.
+By disabling RX DMA during suspend, we can avoid unnecessary DMA
+processing of any incoming traffic.
 
-> 
-> Regards,
-> Uma Shankar
-> 
-> > +
-> > +	return 0;
-> >  }
-> > 
-> >  /**
-> > diff --git a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-> > b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-> > index 7f0f720e8dcad..10ab9eebcef69 100644
-> > --- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-> > +++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-> > @@ -40,8 +40,8 @@ int intel_dp_tunnel_atomic_compute_stream_bw(struct
-> > intel_atomic_state *state,
-> >  					     struct intel_dp *intel_dp,
-> >  					     const struct intel_connector
-> > *connector,
-> >  					     struct intel_crtc_state *crtc_state); -
-> > void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
-> > -					    struct intel_crtc_state *crtc_state);
-> > +int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
-> > +					   struct intel_crtc_state *crtc_state);
-> > 
-> >  int intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
-> >  					      struct intel_crtc *crtc);
-> > @@ -88,9 +88,12 @@ intel_dp_tunnel_atomic_compute_stream_bw(struct
-> > intel_atomic_state *state,
-> >  	return 0;
-> >  }
-> > 
-> > -static inline void
-> > +static inline int
-> >  intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
-> > -				       struct intel_crtc_state *crtc_state) {}
-> > +				       struct intel_crtc_state *crtc_state) {
-> > +	return 0;
-> > +}
-> > 
-> >  static inline int
-> >  intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *state,
-> > --
-> > 2.49.1
-> 
+During suspend, perform either of the below operations:
+
+- tie-off/dummy descriptor: Disable unused queues by connecting
+  them to a looped descriptor chain without free slots.
+
+- queue disable: The newer IP version allows disabling individual queues.
+
+Co-developed-by: Harini Katakam <harini.katakam@amd.com>
+Signed-off-by: Harini Katakam <harini.katakam@amd.com>
+Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Tested-by: Claudiu Beznea <claudiu.beznea@tuxon.dev> # on SAMA7G5
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 718d0766ce4c ("net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/cadence/macb.h      |  7 +++
+ drivers/net/ethernet/cadence/macb_main.c | 60 ++++++++++++++++++++++--
+ 2 files changed, 64 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 9fb5a18e056d4..e8f013ce166ce 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -645,6 +645,10 @@
+ #define GEM_T2OFST_OFFSET			0 /* offset value */
+ #define GEM_T2OFST_SIZE				7
+ 
++/* Bitfields in queue pointer registers */
++#define MACB_QUEUE_DISABLE_OFFSET		0 /* disable queue */
++#define MACB_QUEUE_DISABLE_SIZE			1
++
+ /* Offset for screener type 2 compare values (T2CMPOFST).
+  * Note the offset is applied after the specified point,
+  * e.g. GEM_T2COMPOFST_ETYPE denotes the EtherType field, so an offset
+@@ -733,6 +737,7 @@
+ #define MACB_CAPS_NEEDS_RSTONUBR		0x00000100
+ #define MACB_CAPS_MIIONRGMII			0x00000200
+ #define MACB_CAPS_NEED_TSUCLK			0x00000400
++#define MACB_CAPS_QUEUE_DISABLE			0x00000800
+ #define MACB_CAPS_PCS				0x01000000
+ #define MACB_CAPS_HIGH_SPEED			0x02000000
+ #define MACB_CAPS_CLK_HW_CHG			0x04000000
+@@ -1253,6 +1258,8 @@ struct macb {
+ 	u32	(*macb_reg_readl)(struct macb *bp, int offset);
+ 	void	(*macb_reg_writel)(struct macb *bp, int offset, u32 value);
+ 
++	struct macb_dma_desc	*rx_ring_tieoff;
++	dma_addr_t		rx_ring_tieoff_dma;
+ 	size_t			rx_buffer_size;
+ 
+ 	unsigned int		rx_ring_size;
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index e1df1546a2d6e..29daa4b484dbf 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -2481,6 +2481,12 @@ static void macb_free_consistent(struct macb *bp)
+ 	unsigned int q;
+ 	int size;
+ 
++	if (bp->rx_ring_tieoff) {
++		dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
++				  bp->rx_ring_tieoff, bp->rx_ring_tieoff_dma);
++		bp->rx_ring_tieoff = NULL;
++	}
++
+ 	bp->macbgem_ops.mog_free_rx_buffers(bp);
+ 
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+@@ -2572,6 +2578,16 @@ static int macb_alloc_consistent(struct macb *bp)
+ 	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
+ 		goto out_err;
+ 
++	/* Required for tie off descriptor for PM cases */
++	if (!(bp->caps & MACB_CAPS_QUEUE_DISABLE)) {
++		bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
++							macb_dma_desc_get_size(bp),
++							&bp->rx_ring_tieoff_dma,
++							GFP_KERNEL);
++		if (!bp->rx_ring_tieoff)
++			goto out_err;
++	}
++
+ 	return 0;
+ 
+ out_err:
+@@ -2579,6 +2595,19 @@ static int macb_alloc_consistent(struct macb *bp)
+ 	return -ENOMEM;
+ }
+ 
++static void macb_init_tieoff(struct macb *bp)
++{
++	struct macb_dma_desc *desc = bp->rx_ring_tieoff;
++
++	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
++		return;
++	/* Setup a wrapping descriptor with no free slots
++	 * (WRAP and USED) to tie off/disable unused RX queues.
++	 */
++	macb_set_addr(bp, desc, MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
++	desc->ctrl = 0;
++}
++
+ static void gem_init_rings(struct macb *bp)
+ {
+ 	struct macb_queue *queue;
+@@ -2602,6 +2631,7 @@ static void gem_init_rings(struct macb *bp)
+ 		gem_rx_refill(queue);
+ 	}
+ 
++	macb_init_tieoff(bp);
+ }
+ 
+ static void macb_init_rings(struct macb *bp)
+@@ -2619,6 +2649,8 @@ static void macb_init_rings(struct macb *bp)
+ 	bp->queues[0].tx_head = 0;
+ 	bp->queues[0].tx_tail = 0;
+ 	desc->ctrl |= MACB_BIT(TX_WRAP);
++
++	macb_init_tieoff(bp);
+ }
+ 
+ static void macb_reset_hw(struct macb *bp)
+@@ -5210,6 +5242,7 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 	unsigned long flags;
+ 	unsigned int q;
+ 	int err;
++	u32 tmp;
+ 
+ 	if (!device_may_wakeup(&bp->dev->dev))
+ 		phy_exit(bp->sgmii_phy);
+@@ -5219,17 +5252,38 @@ static int __maybe_unused macb_suspend(struct device *dev)
+ 
+ 	if (bp->wol & MACB_WOL_ENABLED) {
+ 		spin_lock_irqsave(&bp->lock, flags);
+-		/* Flush all status bits */
+-		macb_writel(bp, TSR, -1);
+-		macb_writel(bp, RSR, -1);
++
++		/* Disable Tx and Rx engines before  disabling the queues,
++		 * this is mandatory as per the IP spec sheet
++		 */
++		tmp = macb_readl(bp, NCR);
++		macb_writel(bp, NCR, tmp & ~(MACB_BIT(TE) | MACB_BIT(RE)));
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues;
+ 		     ++q, ++queue) {
++			/* Disable RX queues */
++			if (bp->caps & MACB_CAPS_QUEUE_DISABLE) {
++				queue_writel(queue, RBQP, MACB_BIT(QUEUE_DISABLE));
++			} else {
++				/* Tie off RX queues */
++				queue_writel(queue, RBQP,
++					     lower_32_bits(bp->rx_ring_tieoff_dma));
++#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
++				queue_writel(queue, RBQPH,
++					     upper_32_bits(bp->rx_ring_tieoff_dma));
++#endif
++			}
+ 			/* Disable all interrupts */
+ 			queue_writel(queue, IDR, -1);
+ 			queue_readl(queue, ISR);
+ 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 				queue_writel(queue, ISR, -1);
+ 		}
++		/* Enable Receive engine */
++		macb_writel(bp, NCR, tmp | MACB_BIT(RE));
++		/* Flush all status bits */
++		macb_writel(bp, TSR, -1);
++		macb_writel(bp, RSR, -1);
++
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+ 		 */
+-- 
+2.51.0
+
 
