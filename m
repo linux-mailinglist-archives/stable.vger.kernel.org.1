@@ -1,180 +1,130 @@
-Return-Path: <stable+bounces-227455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227457-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Og0BwAEvWkO5gIAu9opvQ
-	(envelope-from <stable+bounces-227455-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:23:28 +0100
+	id 0IA6LloOvWkz6QIAu9opvQ
+	(envelope-from <stable+bounces-227457-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:07:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C606F2D7281
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:23:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BB92D7C00
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:07:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BEA25301442D
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:23:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B376131D7D1A
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC7AF37188D;
-	Fri, 20 Mar 2026 08:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D52374E67;
+	Fri, 20 Mar 2026 08:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=klassert.de header.i=@klassert.de header.b="yX0mvro0"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from fs1-de.slnx.de (fs1-de.slnx.de [116.202.84.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755E3371898
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:23:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C37364933;
+	Fri, 20 Mar 2026 08:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.202.84.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773995005; cv=none; b=c1OxZndmyJP6GB2jQEk7ejGvoL5lpaHRpRd9IoR002sjjvPqN6Plq+GK4MiQQfXAlgtHKrApZInOO1J/+KsgdLs8LGfa+qwtHYN1De0WF2FAwMv6unCyUcLSDJe1JRYZiByau4eLEy4udHeBjcYi+SEubOAY0pNMg4Xk2VyJhko=
+	t=1773996192; cv=none; b=elAOc7EwXoxz7eYGl4ET0CzkpGC7ULiWPk4QAOEo2TV991iD0aEcPuhotLPQgghBEMe38HBJt9maBd4KXWpSiSgJJCj92FLmXSoE6Kr1r+IQrRxnQDhwbxnvGzmwx42EPgwmboWN9U8AfvAhvgYvQsrgm+odEioIYjSjc95jRho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773995005; c=relaxed/simple;
-	bh=Clo03zBtTIdH976AMr2Ww2iYTYqAlMmSHwfHuEkSnMA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IZN/yX/3EuReZL+bqfBJ4lRovbvnQX6+Aj4mxuqRFVMO2AGNzKxO3AAlCD+J5xpb6LopauIHBE/POkIduCkKHy6LSwilMxNen2PEx0dIAkt9dpvbkiR08UgWXHxpOGsyQqO884s+E5DXxySlbev9os83fS6DiZDtSPy9PRYGbJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3V8Z-0001jY-EM; Fri, 20 Mar 2026 09:23:19 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1w3V8Y-001DAZ-1i;
-	Fri, 20 Mar 2026 09:23:18 +0100
-Received: from pengutronix.de (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 3C321508FF7;
-	Fri, 20 Mar 2026 08:23:18 +0000 (UTC)
-Date: Fri, 20 Mar 2026 09:23:17 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ruohan Lan <ruohanlan@aliyun.com>
-Cc: gregkh@linuxfoundation.org, stable@vger.kernel.org, 
-	linux-can@vger.kernel.org
-Subject: Re: [PATCH 5.15.y] can: gs_usb: gs_usb_receive_bulk_callback(): fix
- URB memory leak
-Message-ID: <20260320-brilliant-loud-muskox-5db370-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260320075431.5695-1-ruohanlan@aliyun.com>
+	s=arc-20240116; t=1773996192; c=relaxed/simple;
+	bh=vtFVL9zMHQPk9UCOHXE78wRqptwzKdlhUB9DYYixB60=;
+	h=MIME-Version:From:To:Subject:Cc:Content-Type:Message-ID:Date:
+	 Content-Type; b=RhqSkDMkRq0Mu35fVD05G24dwM4tH5Z86hJcLfovA/m3cnMb6FVb3cMH35Ixll85etlE+r6vXZH6XC05VaQJMV/GlVoQshRiHD0i4tYQg3xcryLBpQZqnRDeg/LlgS+g/CB2wAxp0Hqxo8tLugbxXfPYib0OOeCNeeayd6PrHu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klassert.de; spf=pass smtp.mailfrom=klassert.de; dkim=pass (2048-bit key) header.d=klassert.de header.i=@klassert.de header.b=yX0mvro0; arc=none smtp.client-ip=116.202.84.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=klassert.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=klassert.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=klassert.de; s=mx-de;
+	t=1773995533; bh=vtFVL9zMHQPk9UCOHXE78wRqptwzKdlhUB9DYYixB60=;
+	h=From:To:Subject:Cc:Date:From;
+	b=yX0mvro0iEjb4MfK6s325rbCzq7H8RtRJb2Bxrlr6hQSMKfMpNSiu4PQyYC3n5Ez7
+	 /uUp2Vc+X17M9RbPujtoDEXGb7c+SFt6Ujchk7uFCsKYgwDP2cqVOtazztbQEbyP1J
+	 Kh4xsbh45wSrY6/pASuop8QNpxAtUns3IXNMPP22q1ZI4JBt4ff/C7TZbsmy5BDMM7
+	 sVlRsVmbOEXicE0+o10X0jhk313ELbtAAjsAFX+qlptZVxOmdeBMfIFrMe0sR6JdUK
+	 AFFELi8+jldrKVGL51wWRInkledFEidIIcv/ZeydZsRT1QSwl1/2lwU2yYIOgoSw7L
+	 L+jhOo46KCiuA==
+Received: from nbg3-de (nbg3-de.slnx.de [IPv6:2a01:4f8:1c1a:f020::1])
+	by fs1-de.slnx.de (Postfix) with ESMTPSA id 9108314604BC;
+	Fri, 20 Mar 2026 08:32:12 +0000 (UTC)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pcznu24mr4cl2gt5"
-Content-Disposition: inline
-In-Reply-To: <20260320075431.5695-1-ruohanlan@aliyun.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spamd-Result: default: False [-2.56 / 15.00];
-	SIGNED_PGP(-2.00)[];
-	MID_CONTAINS_FROM(1.00)[];
+From: <steffen-ai@klassert.de>
+To: "Qi Tang" <tpluszz77@gmail.com>
+Subject: Re: [PATCH net] xfrm: hold skb->dev across async IPv6 transport reinject
+Cc: <steffen.klassert@secunet.com>, <netdev@vger.kernel.org>, 
+	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, 
+	<edumazet@google.com>, <kuba@kernel.org>, 
+	<pabeni@redhat.com>, <horms@kernel.org>, 
+	<stable@vger.kernel.org>, <steffen@klassert.de>
+Content-Type: text; charset="UTF-8"
+Message-ID: <189e7f89b082031f.2492293c508f2522.8ac0d063cc181f1a@nbg3-de>
+Date: Fri, 20 Mar 2026 08:32:12 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [6.49 / 15.00];
+	MULTIPLE_UNIQUE_HEADERS(6.65)[Content-Type];
+	BROKEN_CONTENT_TYPE(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[klassert.de,reject];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[klassert.de:s=mx-de];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[aliyun.com];
-	TAGGED_FROM(0.00)[bounces-227455-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[pengutronix.de];
+	TAGGED_FROM(0.00)[bounces-227457-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.706];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	GREYLIST(0.00)[pass,body];
+	FAKE_REPLY(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[steffen-ai@klassert.de,stable@vger.kernel.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[pengutronix.de:email,pengutronix.de:mid,pengutronix.de:url,aliyun.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C606F2D7281
-X-Rspamd-Action: no action
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	NEURAL_HAM(-0.00)[-0.997];
+	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[klassert.de:+];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NO_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 17BB92D7C00
+X-Rspamd-Action: add header
 X-Rspamd-Server: lfdr
+X-Spam: Yes
 
+Subject: Re: [PATCH net] xfrm: hold skb->dev across async IPv6 transport reinject
+In-Reply-To: <20260320073023.21873-1-tpluszz77@gmail.com>
+To: Qi Tang <tpluszz77@gmail.com>
+Cc: netdev@vger.kernel.org, steffen.klassert@secunet.com, herbert@gondor.apana.org.au, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, stable@vger.kernel.org
 
---pcznu24mr4cl2gt5
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH 5.15.y] can: gs_usb: gs_usb_receive_bulk_callback(): fix
- URB memory leak
-MIME-Version: 1.0
+The fix looks correct. A few comments:
 
-Hello Ruohan Lan,
+1. The approach of holding a netdev reference at enqueue time and
+   releasing it after async reinject properly addresses the UAF window.
+   The ordering in xfrm_trans_reinject() is key - caching the dev
+   pointer before calling finish() avoids touching skb->cb after a
+   callback that may consume/free the skb.
 
-On 20.03.2026 15:54:31, Ruohan Lan wrote:
-> From: Marc Kleine-Budde <mkl@pengutronix.de>
->
-> [ Upstream commit 7352e1d5932a0e777e39fa4b619801191f57e603 ]
->
-> In gs_can_open(), the URBs for USB-in transfers are allocated, added to t=
-he
-> parent->rx_submitted anchor and submitted. In the complete callback
-> gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
-> gs_can_close() the URBs are freed by calling
-> usb_kill_anchored_urbs(parent->rx_submitted).
->
-> However, this does not take into account that the USB framework unanchors
-> the URB before the complete function is called. This means that once an
-> in-URB has been completed, it is no longer anchored and is ultimately not
-> released in gs_can_close().
->
-> Fix the memory leak by anchoring the URB in the
-> gs_usb_receive_bulk_callback() to the parent->rx_submitted anchor.
->
-> Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devic=
-es")
-> Cc: stable@vger.kernel.org
-> Link: https://patch.msgid.link/20260105-gs_usb-fix-memory-leak-v2-1-cc6ed=
-6438034@pengutronix.de
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> [ The variable usbcan was renamed to parent in
-> commit b6980ad3a90c ("can: gs_usb: uniformly use "parent" as variable nam=
-e for struct gs_usb")
-> introduced in v6.6. To backport to v5.15, replace parent with usbcan. ]
-> Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+2. One minor note: the net tree generally prefers netdev_hold() /
+   netdev_put() for reference tracking, but dev_hold() / dev_put()
+   is functionally equivalent here.
 
-please also backport:
+3. The BUILD_BUG_ON() in xfrm_trans_queue_net() will catch any cb
+   size overflow, so that's covered.
 
-| 79a6d1bfe114 ("can: gs_usb: gs_usb_receive_bulk_callback(): unanchor URL =
-on usb_submit_urb() error")
-| 494fc029f662 ("can: gs_usb: gs_usb_receive_bulk_callback(): fix
+No functional issues observed.
 
-these fix this patch.
+Reviewed-by: Steffen Klassert <steffen.klassert@secunet.com>
 
-Marc
+Model: openai-codex/gpt-5.3-codex
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---pcznu24mr4cl2gt5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSl+MghEFFAdY3pYJLMOmT6rpmt0gUCab0D8gAKCRDMOmT6rpmt
-0nSDAPwODQnWErWq206FlGI9pD2ad1vTBqkCHVLiM1Lt51vvpAEAvqH32LPnmklg
-gwOTr8xHaDW+No3W78xi2DeFDWTrSgg=
-=T83O
------END PGP SIGNATURE-----
-
---pcznu24mr4cl2gt5--
 
