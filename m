@@ -1,134 +1,164 @@
-Return-Path: <stable+bounces-227524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227525-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDrSLM8wvWmI7QIAu9opvQ
-	(envelope-from <stable+bounces-227524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:34:39 +0100
+	id 0HjwAgEyvWmI7QIAu9opvQ
+	(envelope-from <stable+bounces-227525-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:39:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AFA92D9A66
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:34:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A431A2D9B68
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BA4330059AC
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:34:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C466D301251C
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:39:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38515390CB6;
-	Fri, 20 Mar 2026 11:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453163793CC;
+	Fri, 20 Mar 2026 11:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="hoJHZyNH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cui9JZ9P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7245A36AB7B;
-	Fri, 20 Mar 2026 11:34:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E57285CB4
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 11:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774006475; cv=none; b=Rh69pMP5W/4vO7LahoNDLnzySgIIeEPXKJ7fdUAIShrQY1k0FPjLrDHmQPzgwuDMCJCUTP2jhhcjJdCEci8fXtRWArwONPewkZuORx7gdpL5Bh0PpnZum3BSIAef4NFXPU8Hy64w9AOdXH0hRKnREs08K2neaXZnP2GyobzCs2c=
+	t=1774006782; cv=none; b=nzpwNOB2qu8wW5PAeIg1eyWx4iHdCawLDCowpQTjIPjNtFjAJARsz0JySLBc9rolbr8GB05s7d/NQ6wtPxlRueBv4l8lg/fqfueMk5X4C7JxruIr0LMrcHS4XFeuUmcpsoyEC6WnKoN7izIbNjM9g9jYRGXzkQIgN6xQINmzg5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774006475; c=relaxed/simple;
-	bh=cpKrISeaEa81vfDe5seWgwqKqIsMJHuhN6Yw1HQT1tE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XYbbPLJJn36yPqDYU/1fDBENjYj/cJ3mwLc0LBhXIhNwmlYtYntXHuq2BSrLBy+jGUrhNEETxQCibqG+pMXUEeH7NDWhyYFRo7DvVai8osPErPkVN20a40S9sBaLK5cqJZ5aSQ2lgDM2ag7XdJWfCw8+Ksm98rj4l212uaHz0UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=hoJHZyNH; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 3852A40E024F;
-	Fri, 20 Mar 2026 11:34:31 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id a8NG8j3wL-jy; Fri, 20 Mar 2026 11:34:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774006468; bh=1Z/i1Kfr1XvhLZVi7iB3yONdSxIzOfrKcbNizv8Hwpg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hoJHZyNHIShEl+vyzHZsZPXSo4z63Fugx2LRF4FCZqV1pDMpozjZJMvEi89ARubKP
-	 +GbswhRdPlIROn+r6xSkPgNzbBm0WENQoSQC4dM+XARmn5IINVFhVL2qUbSVSoJ89T
-	 F3HOwTS3oh++CRfZVe/8TuaQsIQzCF7FtYkYXZa0t9ZWYfiLkxQtCvzuZB6IIG4M4E
-	 0yInpprduuQ+tdvIu6q+kvDhn7rhdm3OdaZv/SZ3PjjCvqx/Hj25/DT08b5yVQwP1c
-	 R7pO2Lm/7wDLyCP0eKMblAxnahJXNHk8/DeV5JcdmvrAqtENZ0zN+A7wDmLW2hBjCD
-	 k8OF9jnbZH0IvJcdyfRY0wbWDwPpH/fuRIwXB3FpU+lu8kKsbN18iW9869/ytwwt74
-	 hdLb+d4FsueMwTQdJGAEgHEAtwrfOpWp5APIKngPDPoD/c8BhYOqUGm9bxFhWXOCis
-	 8tY/5S/aujRbuHilxbqofVGUKep6dV94JQ4dMZLA6i2GVP0rQo53wL2ki4lrl5g7LX
-	 Honp+f4sUkKDoN7bOP0PiJTVbu1utNC9xpfMJEG/6amFiGTdTSH7TRRkLA30ny3CFA
-	 qPXrfFNCzUE9Nfgkpk771QdCav4Gm5fDtViifTjPPPTN79nanGEVxhYYjBjMXJZdqg
-	 JoYP1kv0DqIDvBVJnPze5kgY=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id E4ADA40E01A9;
-	Fri, 20 Mar 2026 11:34:18 +0000 (UTC)
-Date: Fri, 20 Mar 2026 12:34:18 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sohil Mehta <sohil.mehta@intel.com>, stable@vger.kernel.org,
-	x86@kernel.org, Kees Cook <keescook@chromium.org>
-Subject: Re: [PATCH] x86/cpu: Add comment clarifying CRn pinning
-Message-ID: <20260320113418.GBab0wutW9JtefB667@fat_crate.local>
-References: <20260318075654.1792916-3-nikunj@amd.com>
- <177385987098.1647592.3381141860481415647.tip-bot2@tip-bot2>
- <20260318204722.GD3738786@noisy.programming.kicks-ass.net>
- <20260318220939.GD3739106@noisy.programming.kicks-ass.net>
- <20260320092521.GG3739106@noisy.programming.kicks-ass.net>
+	s=arc-20240116; t=1774006782; c=relaxed/simple;
+	bh=hLD9dA/uhlliqWrXG6r/uQ5BWHEXHyzP5wLmgUcoRAU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PfZEHIQ21wnzSZQw0YYpePOnhQN2IzKl0J0TLUafhiQBZqhkl35O+TNG2ndzz2IIAjQBeSxk/lAMsd9PAQ4785FgORLC01kufFYKds1bBaX2t6PpEA5lyZrImFq5Bqw2IL2HNMAAidEiMLyQkOXwnZtfpPqPwdPzWvU/WkFqkj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cui9JZ9P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02393C4CEF7;
+	Fri, 20 Mar 2026 11:39:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774006781;
+	bh=hLD9dA/uhlliqWrXG6r/uQ5BWHEXHyzP5wLmgUcoRAU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Cui9JZ9PjMoSU1FoxY96pUne/fAVV4UqH9aiqJEDpNK3rZLraqokD026gOa8G0Lcy
+	 AU7Ahf9vidzwP+YLLuMSNzPB5EyYSHeOp81uMhbrVwyT5zNTT82G+FaxHe1NSMHVuw
+	 GhG01AgclF7hy97jNFhe8fqVPryLVgU8Q8TkZVXoiBCAzBCrMm3qgb6WobWqIn6Ybo
+	 glDrvzgJPnBdl6l0+zA9AeEUOJA78bTi/AuspawzUX1Ed3E+vPg2Jd8EDb6508f1lN
+	 7+F4mFCuJHACSwBqJ3kLNjeEuj39+LKS/06/AmY2DnxvQ5ZclHs1M9KlC1DtIEK6CS
+	 wtyJjVbzNz0cA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Tom Rix <trix@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10.y 1/2] nfsd: define exports_proc_ops with CONFIG_PROC_FS
+Date: Fri, 20 Mar 2026 07:39:38 -0400
+Message-ID: <20260320113939.3971291-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026032042-stalling-batboy-6b82@gregkh>
+References: <2026032042-stalling-batboy-6b82@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260320092521.GG3739106@noisy.programming.kicks-ass.net>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[alien8.de:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227525-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227524-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[6];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.993];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.998];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 5AFA92D9A66
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: A431A2D9B68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 20, 2026 at 10:25:21AM +0100, Peter Zijlstra wrote:
-> 
-> Since Boris wanted a nice patch to just press 'apply' on, here goes :-)
+From: Tom Rix <trix@redhat.com>
 
-/me presses that key!
+[ Upstream commit 340086da9a87820b40601141a0e9e87c954ac006 ]
 
-Thanks man!
+gcc with W=1 and ! CONFIG_PROC_FS
+fs/nfsd/nfsctl.c:161:30: error: ‘exports_proc_ops’
+  defined but not used [-Werror=unused-const-variable=]
+  161 | static const struct proc_ops exports_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~
 
-:-P
+The only use of exports_proc_ops is when CONFIG_PROC_FS
+is defined, so its definition should be likewise conditional.
 
+Signed-off-by: Tom Rix <trix@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: e7fcf179b82d ("NFSD: Hold net reference for the lifetime of /proc/fs/nfs/exports fd")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/nfsd/nfsctl.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
+
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 07e5b1b23c91f..ad7a3909ae6df 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -155,18 +155,6 @@ static int exports_net_open(struct net *net, struct file *file)
+ 	return 0;
+ }
+ 
+-static int exports_proc_open(struct inode *inode, struct file *file)
+-{
+-	return exports_net_open(current->nsproxy->net_ns, file);
+-}
+-
+-static const struct proc_ops exports_proc_ops = {
+-	.proc_open	= exports_proc_open,
+-	.proc_read	= seq_read,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= seq_release,
+-};
+-
+ static int exports_nfsd_open(struct inode *inode, struct file *file)
+ {
+ 	return exports_net_open(inode->i_sb->s_fs_info, file);
+@@ -1423,6 +1411,19 @@ static struct file_system_type nfsd_fs_type = {
+ MODULE_ALIAS_FS("nfsd");
+ 
+ #ifdef CONFIG_PROC_FS
++
++static int exports_proc_open(struct inode *inode, struct file *file)
++{
++	return exports_net_open(current->nsproxy->net_ns, file);
++}
++
++static const struct proc_ops exports_proc_ops = {
++	.proc_open	= exports_proc_open,
++	.proc_read	= seq_read,
++	.proc_lseek	= seq_lseek,
++	.proc_release	= seq_release,
++};
++
+ static int create_proc_exports_entry(void)
+ {
+ 	struct proc_dir_entry *entry;
 -- 
-Regards/Gruss,
-    Boris.
+2.51.0
 
-https://people.kernel.org/tglx/notes-about-netiquette
 
