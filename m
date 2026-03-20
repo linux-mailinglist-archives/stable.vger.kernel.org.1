@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-227478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBU8C5QKvWkO5gIAu9opvQ
-	(envelope-from <stable+bounces-227478-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:51:32 +0100
+	id cOq0LKQLvWkO5gIAu9opvQ
+	(envelope-from <stable+bounces-227479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:56:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E273D2D77F2
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:51:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7D32D791D
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3D45030041D8
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:51:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 43D793010D8B
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11771344031;
-	Fri, 20 Mar 2026 08:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AE2364935;
+	Fri, 20 Mar 2026 08:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQjrDxDm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DO8md27f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D392E2850
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C71248886
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773996689; cv=none; b=jV5UuLG2IY1fylpr/2pWYj+rYnhDEFXBdqgkXb947fxqtJaEgzpR6oBHWKP0HbZSTAurlQChBLCYueO/0mnsZ4/8qEMeN2d760A/KPuYLohSiTToo9wLLMATiY59CbWd9RD/osmSssWHCRq/9M7TOZej7lvDScr7LFPJvggCvXw=
+	t=1773996843; cv=none; b=eGY7vtWSqiBnCIU6ThzcRFtJQyKcyYRGgJM4ibNkWFXWsODyFLaXn3jGvl0OuJlza8bpqPP+HG6HwiBkZrI2rEROK9ZhuZNtk3UpW1t0VRCTjHZyt+Vfnl5eQank7cQAcXiAlAGC0S+/pkIO5Ds4Ocn94+GO8VRVNWunm3y9YUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773996689; c=relaxed/simple;
-	bh=B55k++iLa8SToS/1+ckXHfDHLs3K80O8Y2HyqGzzWiM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=frsizfSBg+zATD9jL+PJWwri6AIxH296r/QDkylM4obNnHBvGakjSFikqPtdap5xI3YtF/6xKmMPh9wees0VExvCHmzHjFzZ5ymHELscUdAxxUTuSuc7n9gb+zDa+8RVEUT9iid9/xnfWOpu4nMw/w1rnvxuDrTVsLD5bYEB35I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQjrDxDm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03A6FC4CEF7;
-	Fri, 20 Mar 2026 08:51:28 +0000 (UTC)
+	s=arc-20240116; t=1773996843; c=relaxed/simple;
+	bh=LJ2M4kw/8XXEOtCGNOaKRutG8h4UQAjTUfcDiR2tFdg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OICD+eOFj9ht/R3ZM3N1Ddzn+J4FiVz6kkdjPTeiAsU5k542uqCL2x7vo63Aat2Oe5XnyZyujUEfXrsJHXfwWd6N43xoGom+UdxyTU8XpyrexYhrFEn5XP5f8Gounev/Unl9QlffQXu+yJUK2Gkv3pTDAhuXJnkFmh+jQdXwlZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DO8md27f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5884AC2BC87;
+	Fri, 20 Mar 2026 08:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773996689;
-	bh=B55k++iLa8SToS/1+ckXHfDHLs3K80O8Y2HyqGzzWiM=;
+	s=korg; t=1773996842;
+	bh=LJ2M4kw/8XXEOtCGNOaKRutG8h4UQAjTUfcDiR2tFdg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=MQjrDxDmXqBoyaNsP5G8MaQGaYIG/E5dnW8CtaVKqhRuasF8BD6zm2xwvmfRMznbe
-	 U/A2SfISDodvfM7z8FDaZCJUw2i6cAsrJPtS3DK7gQVHutMxX1QkWX8xNOS2w6IoAX
-	 38KoSsaVXtI8fLZzCHx52NorJ9nH/Q5bsi3jkMYE=
-Subject: FAILED: patch "[PATCH] LoongArch: Check return values for set_memory_{rw,rox}" failed to apply to 5.10-stable tree
-To: yangtiezhu@loongson.cn,chenhuacai@loongson.cn
+	b=DO8md27fPQsu8ndBISwK39SF1wstuNujVufJoexdL8DLwMDAhB+GHm+qDefQsQCiH
+	 oK9WEMsXF67aSAuFOMJ3M5hWRtFRZUTLaY7LmQrH2qcKSzyljZZufskobUn4mzgsk9
+	 IEEVASPAaX6xfMwkTwv8hUn0k5tjQECnCG1sU/y4=
+Subject: FAILED: patch "[PATCH] batman-adv: avoid OGM aggregation when skb tailroom is" failed to apply to 6.12-stable tree
+To: n05ec@lzu.edu.cn,bird@lzu.edu.cn,sven@narfation.org,sw@simonwunderlich.de,tanyuan98@outlook.com,tomapufckgml@gmail.com,yifanwucs@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Mar 2026 09:51:12 +0100
-Message-ID: <2026032012-spotless-detergent-6668@gregkh>
+Date: Fri, 20 Mar 2026 09:53:57 +0100
+Message-ID: <2026032056-kettle-helmet-7e5d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,45 +60,47 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227478-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_TO(0.00)[lzu.edu.cn,narfation.org,simonwunderlich.de,outlook.com,gmail.com];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FROM_NO_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227479-lists,stable=lfdr.de];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.933];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
+	SEM_URIBL_FRESH15_UNKNOWN_FAIL(0.00)[narfation.org:query timed out];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NO_DN(0.00)[];
+	NEURAL_HAM(-0.00)[-0.924];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: E273D2D77F2
+X-Rspamd-Queue-Id: 4B7D32D791D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 431ce839dad66d0d56fb604785452c6a57409f35
+git cherry-pick -x 0d4aef630be9d5f9c1227d07669c26c4383b5ad0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032012-spotless-detergent-6668@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032056-kettle-helmet-7e5d@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -110,51 +112,45 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 431ce839dad66d0d56fb604785452c6a57409f35 Mon Sep 17 00:00:00 2001
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Date: Mon, 16 Mar 2026 10:36:01 +0800
-Subject: [PATCH] LoongArch: Check return values for set_memory_{rw,rox}
+From 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 Mon Sep 17 00:00:00 2001
+From: Yang Yang <n05ec@lzu.edu.cn>
+Date: Sat, 14 Mar 2026 07:11:27 +0000
+Subject: [PATCH] batman-adv: avoid OGM aggregation when skb tailroom is
+ insufficient
 
-set_memory_rw() and set_memory_rox() may fail, so we should check the
-return values and return immediately in larch_insn_text_copy().
+When OGM aggregation state is toggled at runtime, an existing forwarded
+packet may have been allocated with only packet_len bytes, while a later
+packet can still be selected for aggregation. Appending in this case can
+hit skb_put overflow conditions.
 
+Reject aggregation when the target skb tailroom cannot accommodate the new
+packet. The caller then falls back to creating a new forward packet
+instead of appending.
+
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 
-diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
-index 25fdb933119d..6c4ce6892276 100644
---- a/arch/loongarch/kernel/inst.c
-+++ b/arch/loongarch/kernel/inst.c
-@@ -258,6 +258,7 @@ static int text_copy_cb(void *data)
- int larch_insn_text_copy(void *dst, void *src, size_t len)
- {
- 	int ret = 0;
-+	int err = 0;
- 	size_t start, end;
- 	struct insn_copy copy = {
- 		.dst = dst,
-@@ -275,9 +276,19 @@ int larch_insn_text_copy(void *dst, void *src, size_t len)
- 	start = round_down((size_t)dst, PAGE_SIZE);
- 	end   = round_up((size_t)dst + len, PAGE_SIZE);
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index b75c2228e69a..f28e9cbf8ad5 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -473,6 +473,9 @@ batadv_iv_ogm_can_aggregate(const struct batadv_ogm_packet *new_bat_ogm_packet,
+ 	if (aggregated_bytes > max_bytes)
+ 		return false;
  
--	set_memory_rw(start, (end - start) / PAGE_SIZE);
-+	err = set_memory_rw(start, (end - start) / PAGE_SIZE);
-+	if (err) {
-+		pr_info("%s: set_memory_rw() failed\n", __func__);
-+		return err;
-+	}
++	if (skb_tailroom(forw_packet->skb) < packet_len)
++		return false;
 +
- 	ret = stop_machine_cpuslocked(text_copy_cb, &copy, cpu_online_mask);
--	set_memory_rox(start, (end - start) / PAGE_SIZE);
-+
-+	err = set_memory_rox(start, (end - start) / PAGE_SIZE);
-+	if (err) {
-+		pr_info("%s: set_memory_rox() failed\n", __func__);
-+		return err;
-+	}
+ 	if (packet_num >= BATADV_MAX_AGGREGATION_PACKETS)
+ 		return false;
  
- 	return ret;
- }
 
 
