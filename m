@@ -1,192 +1,175 @@
-Return-Path: <stable+bounces-227527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227528-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id APonOBEyvWmI7QIAu9opvQ
-	(envelope-from <stable+bounces-227527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:40:01 +0100
+	id 4AKaLVkyvWmI7QIAu9opvQ
+	(envelope-from <stable+bounces-227528-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:41:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C12A2D9B85
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:40:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B24782D9BAC
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D45643040457
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:39:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AD7BE300F7BD
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E906839C004;
-	Fri, 20 Mar 2026 11:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B693A9633;
+	Fri, 20 Mar 2026 11:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YiZc9rgZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BbSL0S09"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1AB32ED34
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 11:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0A03A7F4C;
+	Fri, 20 Mar 2026 11:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774006784; cv=none; b=TsTIM4Qi+NM5cb7Seoo+17HlGtO71Zp1El4F18zo+L8Rcq2L4XWHsVa2E6qvWX9mmRJZbkKvXUzXyAjsOrOtrlgFo+yIMpC2gpiI/ZUtY1nvwm5YUFiG37t8Y3SGxQWf6GSfLpxxa7lhmCPrWlZpH51OpwE0v9K0K88ED0yL7EE=
+	t=1774006867; cv=none; b=cyIphF91RYHo7Dqa//ZL7G3U/zq3XinERI5OrqXlZqRJEcZSetebgsucbDXqrotl1bruUKJ4+ImdfQsOeO29CvobiAVFEpWO5b1dt+lFxJv1FrXTw9fTADy23Hwr7N28eX8QrEq8m1SRhfYbljm52g87Z8ot6J2WHAkBkeeFL5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774006784; c=relaxed/simple;
-	bh=ZwTsAoDc5qO2yX6984ElcNpjyNpsuXnZ1BK3DEOf3gc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aC1NlCJ6efYBAEzt15cX2ekZ+a96ftZpCMjJEYSP7lBc+5sb35znVqm+Vrw/eFm/WK3zri5CSolMRVYEyJyb7fykaybs0IXKwHaK2zxUaQF9N05DNjSZ3kCRLPEBX9Tgv2xIRzYm+v6VJcjnq16DlmZO9rmmyWghlBoMR2T/UNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YiZc9rgZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8505C4CEF7;
-	Fri, 20 Mar 2026 11:39:43 +0000 (UTC)
+	s=arc-20240116; t=1774006867; c=relaxed/simple;
+	bh=ZP22FKPvmoZEN2zvYQzJ4Q95BDfg0EI3zNhotznuaMM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tjPR3zIySfZWqK9v/I/7hXy4KnStZ94LERbq6wfC+K4N/DFFgFB8VtEjHK231eM4nVEfOCNECiye5yc+HOT7EE5aPujGrIxHtk/bQOlkbY85EunOPGubdZsCvkVtiTz9JxrxH/Jj36OwZYSsEUCNtbJIMUWCgCy/y6PCAPXtLik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BbSL0S09; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F853C4CEF7;
+	Fri, 20 Mar 2026 11:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774006784;
-	bh=ZwTsAoDc5qO2yX6984ElcNpjyNpsuXnZ1BK3DEOf3gc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YiZc9rgZ+VUYbEcRxxJ3KRVwi7JHuPsNQ8pS7Ad8h94M1H5m/C3FzGkTCwK9c5xU1
-	 Nwwy84Jg5wcr5DOjSdD4fTpBnOU6wMgF4UQ862cePCS/X1kEdkpZakylPPv7sTLUku
-	 cv1tqa2h3KFSNzsKZMAiHwhSX4n5UOaZQw1WxK6bQd61FiEIQhdTAf5db3Tp0hYVkg
-	 fabspnCgY7vtdcLnl1h8vZNjTQw6a7m9j++ZLuKObIIfpnxSqAiW7gJWP5Vedpo9tq
-	 4qVSd3U8ekGWk7J1a+epmq4njaCFBVzfftewuSVMvwcXlLxg/YffbTA8py07j6pDfb
-	 ImDWFwJ6dv5ww==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jeff Layton <jlayton@kernel.org>,
-	stable@kernel.org,
-	Nicholas Carlini <npc@anthropic.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
-Date: Fri, 20 Mar 2026 07:39:41 -0400
-Message-ID: <20260320113941.3971332-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026032010-shredding-stargazer-b481@gregkh>
-References: <2026032010-shredding-stargazer-b481@gregkh>
+	s=k20201202; t=1774006867;
+	bh=ZP22FKPvmoZEN2zvYQzJ4Q95BDfg0EI3zNhotznuaMM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=BbSL0S09gbjTOCH902eTaZWwFJxiLeFTOOB0ffYmk4eaCstJylLTx1t5vmQfw3sMW
+	 FBMRq8KlvWpL9RknySCg/Y492McoR4jYgskaAyrGVYHIrcZ4eeFSNn0aQ8ypCGvgjG
+	 lfg23tUFLhNdRJPXoTIUvDcwRh7KGTg/AsFBUXhM5zjomrWRfW4QWxwHpitwcXKeIA
+	 jb4nm4inocCahiqGBS1wWaxnbzyMsjezBAX9clB6/D/XBeTHLT05CRFBfMgFru8tTx
+	 WJiNRL4QO4VaqozpqEW6+ho4h+ACObKTjF3olxl/LyBzntH1TbNdMMD7mNhDBvQ6Fz
+	 8YUWugdygI+SA==
+Message-ID: <fac42585-ea97-4002-b35d-77a80d329103@kernel.org>
+Date: Fri, 20 Mar 2026 12:41:00 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: migrate: requeue destination folio on deferred
+ split queue
+To: Andrew Morton <akpm@linux-foundation.org>, SeongJae Park <sj@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>, npache@redhat.com, ziy@nvidia.com,
+ willy@infradead.org, linux-mm@kvack.org, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, hannes@cmpxchg.org, rakie.kim@sk.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, linux-kernel@vger.kernel.org, kernel-team@meta.com,
+ richard.weiyang@gmail.com, stable@vger.kernel.org
+References: <20260314154042.327ba957b1a8c10f64ae0169@linux-foundation.org>
+ <20260315000555.76876-1-sj@kernel.org>
+ <20260314172321.3ca062bb70e51fefa633a6fe@linux-foundation.org>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20260314172321.3ca062bb70e51fefa633a6fe@linux-foundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227527-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linux.dev,redhat.com,nvidia.com,infradead.org,kvack.org,intel.com,gmail.com,cmpxchg.org,sk.com,gourry.net,linux.alibaba.com,vger.kernel.org,meta.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-227528-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-0.992];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.990];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3C12A2D9B85
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: B24782D9BAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Jeff Layton <jlayton@kernel.org>
+On 3/15/26 01:23, Andrew Morton wrote:
+> On Sat, 14 Mar 2026 17:05:54 -0700 SeongJae Park <sj@kernel.org> wrote:
+> 
+>>  Because THPs are
+>> removed from the deferred_list, THP shinker cannot split the underutilized THPs
+>> in time.  As a result, users will show less free memory than before.
+> 
+> That'll do, thanks ;)
+> 
+> Pasted, added cc:stable.  It's been there since 6.12 so I don't see a
+> need to rush this in, so I won't move this into mm-hotfixes - it'll go
+> into mainline for 7.1-rc1 after which -stable should pick it up.
 
-[ Upstream commit 5133b61aaf437e5f25b1b396b14242a6bb0508e2 ]
+Makes sense. I guess using the partially-mapped is only a slight
+problem, because we usually try to split partially-mapped before migrating.
 
-The NFSv4.0 replay cache uses a fixed 112-byte inline buffer
-(rp_ibuf[NFSD4_REPLAY_ISIZE]) to store encoded operation responses.
-This size was calculated based on OPEN responses and does not account
-for LOCK denied responses, which include the conflicting lock owner as
-a variable-length field up to 1024 bytes (NFS4_OPAQUE_LIMIT).
+So it's mostly about over-allocated THPs (mostly 0) not getting scanned
+and split+reclaimed after they were migrated.
 
-When a LOCK operation is denied due to a conflict with an existing lock
-that has a large owner, nfsd4_encode_operation() copies the full encoded
-response into the undersized replay buffer via read_bytes_from_xdr_buf()
-with no bounds check. This results in a slab-out-of-bounds write of up
-to 944 bytes past the end of the buffer, corrupting adjacent heap memory.
+Under memory pressure without swap, that might create a user-visible
+problem, especially when many such THPs are migrated before being
+scanned for zeropages that can be reclaimed.
 
-This can be triggered remotely by an unauthenticated attacker with two
-cooperating NFSv4.0 clients: one sets a lock with a large owner string,
-then the other requests a conflicting lock to provoke the denial.
-
-We could fix this by increasing NFSD4_REPLAY_ISIZE to allow for a full
-opaque, but that would increase the size of every stateowner, when most
-lockowners are not that large.
-
-Instead, fix this by checking the encoded response length against
-NFSD4_REPLAY_ISIZE before copying into the replay buffer. If the
-response is too large, set rp_buflen to 0 to skip caching the replay
-payload. The status is still cached, and the client already received the
-correct response on the original request.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Nicholas Carlini <npc@anthropic.com>
-Tested-by: Nicholas Carlini <npc@anthropic.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ replaced `op_status_offset + XDR_UNIT` with existing `post_err_offset` variable ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/nfsd/nfs4xdr.c |  9 +++++++--
- fs/nfsd/state.h   | 17 ++++++++++++-----
- 2 files changed, 19 insertions(+), 7 deletions(-)
-
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 46a7fd731ba0a..e02c5650e2ac4 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5439,9 +5439,14 @@ nfsd4_encode_operation(struct nfsd4_compoundres *resp, struct nfsd4_op *op)
- 		int len = xdr->buf->len - post_err_offset;
- 
- 		so->so_replay.rp_status = op->status;
--		so->so_replay.rp_buflen = len;
--		read_bytes_from_xdr_buf(xdr->buf, post_err_offset,
-+		if (len <= NFSD4_REPLAY_ISIZE) {
-+			so->so_replay.rp_buflen = len;
-+			read_bytes_from_xdr_buf(xdr->buf,
-+						post_err_offset,
- 						so->so_replay.rp_buf, len);
-+		} else {
-+			so->so_replay.rp_buflen = 0;
-+		}
- 	}
- status:
- 	*p = op->status;
-diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
-index 477828dbfc665..53298bdcfb3d0 100644
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -430,11 +430,18 @@ struct nfs4_client_reclaim {
- 	struct xdr_netobj	cr_princhash;
- };
- 
--/* A reasonable value for REPLAY_ISIZE was estimated as follows:  
-- * The OPEN response, typically the largest, requires 
-- *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +  8(verifier) + 
-- *   4(deleg. type) + 8(deleg. stateid) + 4(deleg. recall flag) + 
-- *   20(deleg. space limit) + ~32(deleg. ace) = 112 bytes 
-+/*
-+ * REPLAY_ISIZE is sized for an OPEN response with delegation:
-+ *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +
-+ *   8(verifier) + 4(deleg. type) + 8(deleg. stateid) +
-+ *   4(deleg. recall flag) + 20(deleg. space limit) +
-+ *   ~32(deleg. ace) = 112 bytes
-+ *
-+ * Some responses can exceed this. A LOCK denial includes the conflicting
-+ * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). Responses
-+ * larger than REPLAY_ISIZE are not cached in rp_ibuf; only rp_status is
-+ * saved. Enlarging this constant increases the size of every
-+ * nfs4_stateowner.
-  */
- 
- #define NFSD4_REPLAY_ISIZE       112 
 -- 
-2.51.0
+Cheers,
 
+David
 
