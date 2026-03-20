@@ -1,64 +1,96 @@
-Return-Path: <stable+bounces-227522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227523-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4D1jOGswvWmI7QIAu9opvQ
-	(envelope-from <stable+bounces-227522-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:32:59 +0100
+	id APe6KtMwvWmI7QIAu9opvQ
+	(envelope-from <stable+bounces-227523-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:34:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE052D9A32
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:32:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263782D9A7D
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:34:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C1295307EADD
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:29:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 93F043084AE5
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:31:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861433A7F61;
-	Fri, 20 Mar 2026 11:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DFCD3AC0D6;
+	Fri, 20 Mar 2026 11:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xj3dZvDb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MWFmlISx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4565A3A7F49
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 11:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E793A759D
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 11:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774006184; cv=none; b=iaDi4cjc1EYIY6FT+cwgYKI2frMHJ8dCBkfh2hDr9Ihq+7MKueGDJUryDfYmXwZcAznARjxiPgJ5aW3tVv3Nd7QXFHDlkQJXjEBiVE+Al7eE7rCiKLHvGrfqnBEKObnsZmQKL9pmIVpbDohyPFLf0rm3xsWynVFH09M1CZe0YyY=
+	t=1774006266; cv=none; b=ocah50m9CqdbTgSi5m4GMQf6OzOZVBji2Ed7oTjsg4zxuMdLxFWiFibTQYna+4Y7zF02kiu44/xSntMHnoP895FJvx9Jf6QN0T97+INduW4lkXsjXLsqJIBUrsn8bAUgn/R0gxd+lilxyHXKyfpbmhQXZnCg6dQIzL0JfMxek6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774006184; c=relaxed/simple;
-	bh=sRKgGCyGi43IkDBU2lpcsq+RqJLxVxyMeg3WUy1Pt+A=;
+	s=arc-20240116; t=1774006266; c=relaxed/simple;
+	bh=1tOeyqZYtOVZMgL6rtfBgjI0Fs7mG95dZldD/yZ0cZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=da5SF5wBvxd1eblr4QOtivWZVa8Km8p22/8eQNVtN41+nk2//YGFpfF7utTu8URtYNDS+70zQLQxiGu8Q8dv7PsPjKlkjmslgzUlJNU8FTBPN1YpZ4ZpO0qrZ8JtlWYTALbjRKulUTnn2xofWvW8m9ZIvgwutJkZN1fco/zOoaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xj3dZvDb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33808C2BCAF;
-	Fri, 20 Mar 2026 11:29:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774006183;
-	bh=sRKgGCyGi43IkDBU2lpcsq+RqJLxVxyMeg3WUy1Pt+A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xj3dZvDbIpEeFcYYC3P9LgeiPONoQY9Xyq2ob4tkGtJh3O5N9kD3yRkv2L6d2xy+4
-	 1ASqCYXx85GYvEoM40amgFtlIHDHHta1WBZivwdHXxZ/lEniJs5ZRoNudG1pR8x2Dk
-	 8zxvAg4li8WwNT66xC2YXP3FKIj+c1xnh9VWwc5kiXEQ4kaIJtRG5Eqyc+KHxpP1/j
-	 cyTNOMQf2iNN5cxLCIj1sgwnOnJ5nBUHGduDIYcHn6GF1+Z609mpjIYFbNNwlMmF6W
-	 iC8mUq/MO5biL1BW35j7roB+uHHPN5AtgvPjM8IbKor/Da+IKXRQ1GzsJXh+8m8ExC
-	 BjzmHLy+L4FMw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chuck Lever <chuck.lever@oracle.com>,
-	Misbah Anjum N <misanjum@linux.ibm.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15.y 2/2] NFSD: Hold net reference for the lifetime of /proc/fs/nfs/exports fd
-Date: Fri, 20 Mar 2026 07:29:40 -0400
-Message-ID: <20260320112940.3960556-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260320112940.3960556-1-sashal@kernel.org>
-References: <2026032038-dimly-tiring-d92b@gregkh>
- <20260320112940.3960556-1-sashal@kernel.org>
+	 MIME-Version; b=X4/HHqG6jFDShl3aiCCKY1fEH2al6SzYVKndmK5mNC1Az4zwNASQRw5/YeNJAmV9/QYsQsxXdfIsPdaH3f83HqVllk1oN2c6+E8YxI3eIaE3834fp/1N+ys4BPTQ1jdX7h/YN5+scOn40RzzXaUcVLQvW6o7/W0KJYOoV1zHjAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MWFmlISx; arc=none smtp.client-ip=209.85.216.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f68.google.com with SMTP id 98e67ed59e1d1-3567e2b4159so1294615a91.0
+        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 04:30:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774006259; x=1774611059; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jEVxMvU1gGa8q35I1aiel0gWVBZz6xlYQzbFkoU47LE=;
+        b=MWFmlISxhOJHPszS9t4aMT+L0p+970mJnJ9piTFnCxkzBicsTK+9ASL38MIWo/2MIZ
+         sw8Pj0G7Dv0gC6ekr9NS953JYqwiqMoUmwVa1+l/szkMbjw1I0gZg7DAokVmkdCgzvfn
+         MiMdO38D1UhD6BfgF8P4cI7kopUHJaPQ1/s5XIMuxBjlW2bYxmf7b/kGhVNjTK1vplFx
+         5xeDXLIo96yA+M2v0u/8ILqU1Uz2adPOW7urbL7z/KbkxO1pKRfrUoMgCsioFe0fmUtU
+         GOaBR/j8aB5Kr/8OeTEzTcA+OmR+Qu1zTZJCMEj/iYZk/35v6XiPMpKSGMpqi9uOf/yN
+         tGXg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774006259; x=1774611059;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=jEVxMvU1gGa8q35I1aiel0gWVBZz6xlYQzbFkoU47LE=;
+        b=lCsoevQ7Ibk2aj4rfGnIuTC+cIfF8xTmRMeIXE66p7VHUwkPTl6ppTpz0I/KUZk2Hz
+         iZOO80i+XuWK+lBBcKEAQRHZlj/t6J0AQfCem1GpF5lRf3Nq9ZLLrWv9cP40nhpSMWCC
+         nbHNapwHE/PtWFkdpJ9DKkmM8FNUBUZjPPX+BXjl6Tqv+u1bkK7ZhOtEnL1VkxkuXUf0
+         eL9zpMq6VHK0bv7EDNQ/nbf4wEykKwx0/fQEw7Nhz12OwRWxY0Q/tACLj8tbCrGxv7pc
+         1u6zfdCZVFSv2uVEDXXL3361rWSZL/ap8Da2D54UvMywj56tIuGwXC8wZqwgsKQ2DUe3
+         Bq0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUSDJFTHRuqws7XzjxA4jFs9TeBQ/xXr/57/xGtlicSOOigAuzXhoBbUhjvtyUvkhNni+Lm3yM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxTx4w6MenC4WTA9G+ZSyDmZCnGN7q/U+sISPwr/pfPUEJB7ap/
+	t0CdpwGo4xRVDnkQ4EPwvfztECktINL5y/o+BKCqQjyyBtJLuwuxyJU5
+X-Gm-Gg: ATEYQzzah8TTl6f30ECnFXUhASg+dALxTF1s4xKReMohs2C10I/wCkswjk8IIC7Mvrj
+	F6v3PIaisT2i95cEtVQzb9eKDLRuiiCQWDxoWtaXjGuPFm+1U3HhGNjXHRQ/rulf3BePM6DYgo5
+	AhViici33ZlyP8ZdamDvR7iMfrCca0OzKU3hVEbk6P2HhIt/YDIJIDptWGCOjjjiSIJ3KcBZo/j
+	PKHIqf8rvLIXFLYPYZca07xZkZ/5D6f3nHKExFBus05Owtl2Tk+q5nSnP5I+X6PEf662gN2o6uC
+	IaUCgoxIuhwU6cOKAR0cgHXO/L7hhBlwYg0qTg3Wo6Dj0PYv/tfw2Lr2/wG0hq7dxxxbQJjOqig
+	a4ZJOmm8SUlK8wXcbODJDtpWhYYhrrYTdO+XXe4M174St9q0yV0XfiP/Ctuh0I3XsAx3SDJbvyw
+	ZHvt94feKZWUBExVT7RzTk8GGdNA63O6Oa35ZJYzI+tVj9ZkZlki1n5N5i101qxxffU7liN17fx
+	itwsmxDeWQUFICLCD/3FiKk4zK4zwTqQhI=
+X-Received: by 2002:a17:90b:5584:b0:359:fd50:e733 with SMTP id 98e67ed59e1d1-35bd2d34ae3mr1942896a91.31.1774006259038;
+        Fri, 20 Mar 2026 04:30:59 -0700 (PDT)
+Received: from CN4GKQDX76.bytedance.net ([61.213.176.57])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd356d29esm1052261a91.4.2026.03.20.04.30.56
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 20 Mar 2026 04:30:58 -0700 (PDT)
+From: Zile Xiong <xiongzile99@gmail.com>
+To: Tomasz Figa <tfiga@chromium.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: linux-media@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Zile Xiong <xiongzile99@gmail.com>
+Subject: [PATCH v3] media: vb2: use ssize_t for vb2_read/vb2_write
+Date: Fri, 20 Mar 2026 19:30:52 +0800
+Message-ID: <20260320113052.46989-1-xiongzile99@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260320081545.4624-1-xiongzile99@gmail.com>
+References: <20260320081545.4624-1-xiongzile99@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,110 +102,126 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227522-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227523-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[xiongzile99@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.988];
+	NEURAL_HAM(-0.00)[-0.961];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5AE052D9A32
+X-Rspamd-Queue-Id: 263782D9A7D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Chuck Lever <chuck.lever@oracle.com>
+vb2_read() and vb2_write() return size_t, but propagate
+negative errno values from __vb2_perform_fileio() via
+implicit signed/unsigned conversions in callers
+(e.g. vb2_fop_read()), which is not obvious.
 
-[ Upstream commit e7fcf179b82d3a3730fd8615da01b087cc654d0b ]
+vb2_fop_read() and vb2_fop_write() already return ssize_t, so
+using size_t for vb2_read(), vb2_write(), and
+__vb2_perform_fileio() is inconsistent.
 
-The /proc/fs/nfs/exports proc entry is created at module init
-and persists for the module's lifetime. exports_proc_open()
-captures the caller's current network namespace and stores
-its svc_export_cache in seq->private, but takes no reference
-on the namespace. If the namespace is subsequently torn down
-(e.g. container destruction after the opener does setns() to a
-different namespace), nfsd_net_exit() calls nfsd_export_shutdown()
-which frees the cache. Subsequent reads on the still-open fd
-dereference the freed cache_detail, walking a freed hash table.
+Switch these helpers to ssize_t so they can return either a byte
+count or a negative error code.
 
-Hold a reference on the struct net for the lifetime of the open
-file descriptor. This prevents nfsd_net_exit() from running --
-and thus prevents nfsd_export_shutdown() from freeing the cache
--- while any exports fd is open. cache_detail already stores
-its net pointer (cd->net, set by cache_create_net()), so
-exports_release() can retrieve it without additional per-file
-storage.
-
-Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-nfs/dcd371d3a95815a84ba7de52cef447b8@linux.ibm.com/
-Fixes: 96d851c4d28d ("nfsd: use proper net while reading "exports" file")
+Fixes: b25748fe6126 ("[media] v4l: videobuf2: add read() and write() emulator")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Tested-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Zile Xiong <xiongzile99@gmail.com>
 ---
- fs/nfsd/nfsctl.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+v3:
+- add Cc: stable@vger.kernel.org
+- fix function argument alignment
 
-diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
-index e3d34fb7fce5a..bc30cf413c92e 100644
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -152,9 +152,19 @@ static int exports_net_open(struct net *net, struct file *file)
- 
- 	seq = file->private_data;
- 	seq->private = nn->svc_export_cache;
-+	get_net(net);
- 	return 0;
+v2:
+- add Fixes tag
+- clarify type consistency with vb2_fop_read/write
+---
+ drivers/media/common/videobuf2/videobuf2-core.c | 13 +++++++------
+ include/media/videobuf2-core.h                  |  8 ++++----
+ 2 files changed, 11 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
+index adf668b213c2..d5c3d4d939aa 100644
+--- a/drivers/media/common/videobuf2/videobuf2-core.c
++++ b/drivers/media/common/videobuf2/videobuf2-core.c
+@@ -2990,8 +2990,9 @@ static int __vb2_cleanup_fileio(struct vb2_queue *q)
+  * @nonblock:	mode selector (1 means blocking calls, 0 means nonblocking)
+  * @read:	access mode selector (1 means read, 0 means write)
+  */
+-static size_t __vb2_perform_fileio(struct vb2_queue *q, char __user *data, size_t count,
+-		loff_t *ppos, int nonblock, int read)
++static ssize_t __vb2_perform_fileio(struct vb2_queue *q, char __user *data,
++				    size_t count, loff_t *ppos,
++				    int nonblock, int read)
+ {
+ 	struct vb2_fileio_data *fileio;
+ 	struct vb2_fileio_buf *buf;
+@@ -3154,15 +3155,15 @@ static size_t __vb2_perform_fileio(struct vb2_queue *q, char __user *data, size_
+ 	return ret;
  }
  
-+static int exports_release(struct inode *inode, struct file *file)
-+{
-+	struct seq_file *seq = file->private_data;
-+	struct cache_detail *cd = seq->private;
-+
-+	put_net(cd->net);
-+	return seq_release(inode, file);
-+}
-+
- static int exports_nfsd_open(struct inode *inode, struct file *file)
+-size_t vb2_read(struct vb2_queue *q, char __user *data, size_t count,
+-		loff_t *ppos, int nonblocking)
++ssize_t vb2_read(struct vb2_queue *q, char __user *data, size_t count,
++		 loff_t *ppos, int nonblocking)
  {
- 	return exports_net_open(inode->i_sb->s_fs_info, file);
-@@ -164,7 +174,7 @@ static const struct file_operations exports_nfsd_operations = {
- 	.open		= exports_nfsd_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
--	.release	= seq_release,
-+	.release	= exports_release,
- };
+ 	return __vb2_perform_fileio(q, data, count, ppos, nonblocking, 1);
+ }
+ EXPORT_SYMBOL_GPL(vb2_read);
  
- static int export_features_show(struct seq_file *m, void *v)
-@@ -1421,7 +1431,7 @@ static const struct proc_ops exports_proc_ops = {
- 	.proc_open	= exports_proc_open,
- 	.proc_read	= seq_read,
- 	.proc_lseek	= seq_lseek,
--	.proc_release	= seq_release,
-+	.proc_release	= exports_release,
- };
+-size_t vb2_write(struct vb2_queue *q, const char __user *data, size_t count,
+-		loff_t *ppos, int nonblocking)
++ssize_t vb2_write(struct vb2_queue *q, const char __user *data, size_t count,
++		  loff_t *ppos, int nonblocking)
+ {
+ 	return __vb2_perform_fileio(q, (char __user *) data, count,
+ 							ppos, nonblocking, 0);
+diff --git a/include/media/videobuf2-core.h b/include/media/videobuf2-core.h
+index 4424d481d7f7..4b4f4c15c53a 100644
+--- a/include/media/videobuf2-core.h
++++ b/include/media/videobuf2-core.h
+@@ -1093,8 +1093,8 @@ __poll_t vb2_core_poll(struct vb2_queue *q, struct file *file,
+  * @ppos:	file handle position tracking pointer
+  * @nonblock:	mode selector (1 means blocking calls, 0 means nonblocking)
+  */
+-size_t vb2_read(struct vb2_queue *q, char __user *data, size_t count,
+-		loff_t *ppos, int nonblock);
++ssize_t vb2_read(struct vb2_queue *q, char __user *data, size_t count,
++		 loff_t *ppos, int nonblock);
+ /**
+  * vb2_write() - implements write() syscall logic.
+  * @q:		pointer to &struct vb2_queue with videobuf2 queue.
+@@ -1103,8 +1103,8 @@ size_t vb2_read(struct vb2_queue *q, char __user *data, size_t count,
+  * @ppos:	file handle position tracking pointer
+  * @nonblock:	mode selector (1 means blocking calls, 0 means nonblocking)
+  */
+-size_t vb2_write(struct vb2_queue *q, const char __user *data, size_t count,
+-		loff_t *ppos, int nonblock);
++ssize_t vb2_write(struct vb2_queue *q, const char __user *data, size_t count,
++		  loff_t *ppos, int nonblock);
  
- static int create_proc_exports_entry(void)
+ /**
+  * typedef vb2_thread_fnc - callback function for use with vb2_thread.
 -- 
-2.51.0
+2.39.5
 
 
