@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-227471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOUdMhULvWkO5gIAu9opvQ
-	(envelope-from <stable+bounces-227471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:53:41 +0100
+	id eJCQLnsKvWmy6AIAu9opvQ
+	(envelope-from <stable+bounces-227472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:51:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9FD2D78A1
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:53:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA202D77BE
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 09:51:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 267EF3168397
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:48:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B78E93003819
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:51:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D512E7621;
-	Fri, 20 Mar 2026 08:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3142E2850;
+	Fri, 20 Mar 2026 08:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iq4ks3nq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pOIuejr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5D3284693
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729D1280CFC
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773996498; cv=none; b=te+tnf4jrb9mn53e1oKa8oEWHH2EW0gpDTQgziDJAzRdvcNg0lOOsOnI6rZUaFN4X1rqUMp8UqM7F2mcETqwvGCVNuVD6yq6SKHId6LeX06O4zYTkOoApcY5bAOCN2NrtqOSvnE00SIIwHEB/mGMos/1U/fR/pg0YaNSHV+Sqv0=
+	t=1773996665; cv=none; b=takzN1ndcCz3Mjj8D7STGdQTRGlcgda2YBhHVzuduWF+M/CJWfO3jCgaymLlDUICFX4pV2g25xQuAlftTUh2aUSFpc3HuVt6fKSBXxhUj4pLmIVmhsPtEn+vI4C3KPDIaj2fDT9cJ66eXdYDuFIw/1tqnVq67tpvozfCyO4rHi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773996498; c=relaxed/simple;
-	bh=p22TIIL5mf2EDg2iL+lEgdaizJ1ZHx+hDTxq41H8a7o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mJXPonr3CN3xBe0yBIEX04fijhqBIc5ZFq9+oGDmAnQGE0iwEmPQFY3PJ+pe0qAN4FUQk6+uCQLCr7jGSPXks75imWrCwMl3QYDs23PoYLObGSR3F/fTuLf+l1Xv7vPhKRHV5R+SBTrUiNocPL6Yg4mQdpSOpJM/Ih8xCRlLXFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iq4ks3nq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1953FC4CEF7;
-	Fri, 20 Mar 2026 08:48:16 +0000 (UTC)
+	s=arc-20240116; t=1773996665; c=relaxed/simple;
+	bh=/GS73ltj9Y35NSr/JbISTIG/FyQybHY080PmJmseez0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qtE8OgOmrBppKUxkZYWoKrIExCUzDVbbXJLw1UkddnEC3YrBxNWAg+tVwd7resea0bv1ocQ1u9fEN3EW0S8EFugBa2t/d7Ja+/14qbJwGtu8yhNyjohqwaNJQhiNDEFGstzmBo7X8YalN+QX1a8AIriMTaI8uzXXRJXE4B/vDIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pOIuejr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99984C4CEF7;
+	Fri, 20 Mar 2026 08:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1773996497;
-	bh=p22TIIL5mf2EDg2iL+lEgdaizJ1ZHx+hDTxq41H8a7o=;
+	s=korg; t=1773996665;
+	bh=/GS73ltj9Y35NSr/JbISTIG/FyQybHY080PmJmseez0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iq4ks3nqGaBCis711Wh0QeSKSOE/zy/KkxCGBL7y+iFcvsh/GHllARx/GQG309+gt
-	 WbJi9hwv7xTB4dHlZTJ9+jkUZ8R0lf3Unlpxe8VPPPezjTzvKkYxfoFWuQPKkWTbl9
-	 p6M8ziA/F+lNnl8G4uu61tE4i7k6vK8g4vSt9gqQ=
-Subject: FAILED: patch "[PATCH] HID: appletb-kbd: add .resume method in PM" failed to apply to 5.10-stable tree
-To: gargaditya08@live.com,jkosina@suse.com
+	b=1pOIuejrOwj05BjsUDARC0SvfmlnpNaopzJuIGLZvkK8B0ESojVWFKQfpSuDAETzD
+	 QLS1FDd9/CTtoMEhPisw5HdKlb4I68u1gRVst5l2sVfHGwGl0LDf/frBZiBvLJ+NWN
+	 JofIlFWUk8mxMvCMvUJHQm9b1orsfwtK3EkanoAc=
+Subject: FAILED: patch "[PATCH] LoongArch: Check return values for set_memory_{rw,rox}" failed to apply to 6.19-stable tree
+To: yangtiezhu@loongson.cn,chenhuacai@loongson.cn
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Mar 2026 09:48:02 +0100
-Message-ID: <2026032002-nutrient-founding-21d0@gregkh>
+Date: Fri, 20 Mar 2026 09:51:01 +0100
+Message-ID: <2026032001-sizable-drivable-f1c8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,49 +57,48 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [2.34 / 15.00];
 	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227471-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227472-lists,stable=lfdr.de];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[live.com,suse.com];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FROM_NO_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.942];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-0.888];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+]
-X-Rspamd-Queue-Id: 4F9FD2D78A1
+X-Rspamd-Queue-Id: 4FA202D77BE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1965445e13c09b79932ca8154977b4408cb9610c
+git cherry-pick -x 431ce839dad66d0d56fb604785452c6a57409f35
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032002-nutrient-founding-21d0@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032001-sizable-drivable-f1c8@gregkh' --subject-prefix 'PATCH 6.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,42 +110,51 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1965445e13c09b79932ca8154977b4408cb9610c Mon Sep 17 00:00:00 2001
-From: Aditya Garg <gargaditya08@live.com>
-Date: Tue, 17 Feb 2026 02:54:46 +0530
-Subject: [PATCH] HID: appletb-kbd: add .resume method in PM
+From 431ce839dad66d0d56fb604785452c6a57409f35 Mon Sep 17 00:00:00 2001
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Date: Mon, 16 Mar 2026 10:36:01 +0800
+Subject: [PATCH] LoongArch: Check return values for set_memory_{rw,rox}
 
-Upon resuming from suspend, the Touch Bar driver was missing a resume
-method in order to restore the original mode the Touch Bar was on before
-suspending. It is the same as the reset_resume method.
+set_memory_rw() and set_memory_rox() may fail, so we should check the
+return values and return immediately in larch_insn_text_copy().
 
-[jkosina@suse.com: rebased on top of the pm_ptr() conversion]
 Cc: stable@vger.kernel.org
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 
-diff --git a/drivers/hid/hid-appletb-kbd.c b/drivers/hid/hid-appletb-kbd.c
-index a1db3b3d0667..0fdc0968b9ef 100644
---- a/drivers/hid/hid-appletb-kbd.c
-+++ b/drivers/hid/hid-appletb-kbd.c
-@@ -476,7 +476,7 @@ static int appletb_kbd_suspend(struct hid_device *hdev, pm_message_t msg)
- 	return 0;
- }
- 
--static int appletb_kbd_reset_resume(struct hid_device *hdev)
-+static int appletb_kbd_resume(struct hid_device *hdev)
+diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
+index 25fdb933119d..6c4ce6892276 100644
+--- a/arch/loongarch/kernel/inst.c
++++ b/arch/loongarch/kernel/inst.c
+@@ -258,6 +258,7 @@ static int text_copy_cb(void *data)
+ int larch_insn_text_copy(void *dst, void *src, size_t len)
  {
- 	struct appletb_kbd *kbd = hid_get_drvdata(hdev);
+ 	int ret = 0;
++	int err = 0;
+ 	size_t start, end;
+ 	struct insn_copy copy = {
+ 		.dst = dst,
+@@ -275,9 +276,19 @@ int larch_insn_text_copy(void *dst, void *src, size_t len)
+ 	start = round_down((size_t)dst, PAGE_SIZE);
+ 	end   = round_up((size_t)dst + len, PAGE_SIZE);
  
-@@ -500,7 +500,8 @@ static struct hid_driver appletb_kbd_hid_driver = {
- 	.event = appletb_kbd_hid_event,
- 	.input_configured = appletb_kbd_input_configured,
- 	.suspend = pm_ptr(appletb_kbd_suspend),
--	.reset_resume = pm_ptr(appletb_kbd_reset_resume),
-+	.resume = pm_ptr(appletb_kbd_resume),
-+	.reset_resume = pm_ptr(appletb_kbd_resume),
- 	.driver.dev_groups = appletb_kbd_groups,
- };
- module_hid_driver(appletb_kbd_hid_driver);
+-	set_memory_rw(start, (end - start) / PAGE_SIZE);
++	err = set_memory_rw(start, (end - start) / PAGE_SIZE);
++	if (err) {
++		pr_info("%s: set_memory_rw() failed\n", __func__);
++		return err;
++	}
++
+ 	ret = stop_machine_cpuslocked(text_copy_cb, &copy, cpu_online_mask);
+-	set_memory_rox(start, (end - start) / PAGE_SIZE);
++
++	err = set_memory_rox(start, (end - start) / PAGE_SIZE);
++	if (err) {
++		pr_info("%s: set_memory_rox() failed\n", __func__);
++		return err;
++	}
+ 
+ 	return ret;
+ }
 
 
