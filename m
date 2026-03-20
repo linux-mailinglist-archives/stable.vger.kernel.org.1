@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-227591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0HZaIuGGvWnQ+gIAu9opvQ
-	(envelope-from <stable+bounces-227591-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 18:41:53 +0100
+	id CJA2GIuGvWnQ+gIAu9opvQ
+	(envelope-from <stable+bounces-227592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 18:40:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DECA22DED46
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 18:41:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBF712DED02
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 18:40:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6A5731AE5E2
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 17:33:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4E6C4309B4C1
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 17:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0313D1715;
-	Fri, 20 Mar 2026 17:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C524A3CE4B6;
+	Fri, 20 Mar 2026 17:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kCHU81zl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWdZ1cJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D0C284881
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 17:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885FC3D1CCF
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 17:33:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774028009; cv=none; b=lNrMlXWLcD3yiK1wU4tets1puzr/AHGhKJzV903gA+puYZPVtZb7HNwFaToEBd0GJbpPj3r8GgI2F/ZorXIb6DR6JK//LfYXZzX5xV70Do4rjnt0pGNJg55HW4esyl0Al0D7xCaPKmFgffV6qYjWKNVbZ/hfQ7GXXP9Q55z/lXE=
+	t=1774028039; cv=none; b=EBu8XjRww73WgHGxHZELTUHm8eZNl9OdgjmQpU0zfv/oD7tfYpjGtvTU4XOBx8EZyiFIUYiCU/hfVYt5xQY8qUghVAIVrqcYFKoygkNakG9Zo+yHc27bnjXEqZEQ2EZ30zOBr6s6C40db6jd1GZ43K5lrVZI3Noq/V4KzlX1TGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774028009; c=relaxed/simple;
-	bh=2o8JHk2dXgmyRebq9yM8lzBID1ydapDmt3IZsBSbkQA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CU+CuahsS0l4ESCTBOPWn90LVHVnCIveyhffXHUUDRg6K/hd+iosAt5TkMjBw3V5slohDCdwP72McCN5+MEFx7JwNZu3MiNlBQP2vN7vda5vdQKF9VkNeoITC3sBtOYuR9ZdQC3sLekERiqOQ79er1XiftlXlvw+8MG4SQ9mI0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kCHU81zl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345B2C4CEF7;
-	Fri, 20 Mar 2026 17:33:28 +0000 (UTC)
+	s=arc-20240116; t=1774028039; c=relaxed/simple;
+	bh=kfXoYXUOPYcJXBBytrIjjmpZE7v2qkbsfntO6o5e+cY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=be/THj63qFQ8ZWn5SPisAlwaV5P5sQTMSLhVM03hNcGtHaB5FyBghnnRpUeUQJ5J42qMdMF9NjYorFxFkKwdre2l0HzdzB2E5TnEm/E+LMPVSSWLmYAyRhQ1+klAzYwXAUMBeuMJMpG1D05MaPiyNcz0n07LGgXFdf2a9RhO2nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWdZ1cJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2515C4CEF7;
+	Fri, 20 Mar 2026 17:33:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774028008;
-	bh=2o8JHk2dXgmyRebq9yM8lzBID1ydapDmt3IZsBSbkQA=;
+	s=korg; t=1774028039;
+	bh=kfXoYXUOPYcJXBBytrIjjmpZE7v2qkbsfntO6o5e+cY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=kCHU81zl+pVGnVUSgB9YPT7gRvYqTvgaKBZpYzKuuF6FFieCEpWcbuXa2qH+C7mXO
-	 U64NFBObqcZKtbulxfuXYzA9nsRpXkMqSDkUA0XHw6fw19NezMbMGUaw7u+CQ2R5mr
-	 pTLGuUtzXWTM9kXoeelsdOctmDufrAmtmE0jv3xc=
-Subject: FAILED: patch "[PATCH] mtd: Avoid boot crash in RedBoot partition table parser" failed to apply to 5.10-stable tree
-To: fthain@linux-m68k.org,kees@kernel.org,miquel.raynal@bootlin.com
+	b=eWdZ1cJG/LnhiK4hF0BebaVC1tqK+olEX1pdpV8fF7OlJr10+8gHEiJAdUKrD2FA6
+	 uZMDIZl8GzUnjr//SHfKG15/WZdT+7RhQjvumP167kMIjITZM0kAC3yHI+iXAsmWFt
+	 QXbuLYabvlo3AwLuh8u3Lx92+On5aOej2V8Or3iE=
+Subject: FAILED: patch "[PATCH] io_uring/poll: fix multishot recv missing EOF on wakeup race" failed to apply to 6.12-stable tree
+To: axboe@kernel.dk,francis@malagauche.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 20 Mar 2026 18:33:25 +0100
-Message-ID: <2026032025-scanning-frying-8ead@gregkh>
+Date: Fri, 20 Mar 2026 18:33:56 +0100
+Message-ID: <2026032055-frosted-frightful-9afa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,12 +59,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227591-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227592-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -73,33 +73,33 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_NO_DN(0.00)[];
 	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-0.582];
+	NEURAL_HAM(-0.00)[-0.959];
 	TO_DN_NONE(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[bootlin.com:email,linuxfoundation.org:dkim,gregkh:email,linux-m68k.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DECA22DED46
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,gregkh:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,malagauche.com:email,kernel.dk:email]
+X-Rspamd-Queue-Id: CBF712DED02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8e2f8020270af7777d49c2e7132260983e4fc566
+git cherry-pick -x a68ed2df72131447d131531a08fe4dfcf4fa4653
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032025-scanning-frying-8ead@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026032055-frosted-frightful-9afa@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -111,55 +111,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8e2f8020270af7777d49c2e7132260983e4fc566 Mon Sep 17 00:00:00 2001
-From: Finn Thain <fthain@linux-m68k.org>
-Date: Mon, 16 Feb 2026 18:01:30 +1100
-Subject: [PATCH] mtd: Avoid boot crash in RedBoot partition table parser
+From a68ed2df72131447d131531a08fe4dfcf4fa4653 Mon Sep 17 00:00:00 2001
+From: Jens Axboe <axboe@kernel.dk>
+Date: Sun, 15 Mar 2026 09:03:03 -0600
+Subject: [PATCH] io_uring/poll: fix multishot recv missing EOF on wakeup race
 
-Given CONFIG_FORTIFY_SOURCE=y and a recent compiler,
-commit 439a1bcac648 ("fortify: Use __builtin_dynamic_object_size() when
-available") produces the warning below and an oops.
+When a socket send and shutdown() happen back-to-back, both fire
+wake-ups before the receiver's task_work has a chance to run. The first
+wake gets poll ownership (poll_refs=1), and the second bumps it to 2.
+When io_poll_check_events() runs, it calls io_poll_issue() which does a
+recv that reads the data and returns IOU_RETRY. The loop then drains all
+accumulated refs (atomic_sub_return(2) -> 0) and exits, even though only
+the first event was consumed. Since the shutdown is a persistent state
+change, no further wakeups will happen, and the multishot recv can hang
+forever.
 
-    Searching for RedBoot partition table in 50000000.flash at offset 0x7e0000
-    ------------[ cut here ]------------
-    WARNING: lib/string_helpers.c:1035 at 0xc029e04c, CPU#0: swapper/0/1
-    memcmp: detected buffer overflow: 15 byte read of buffer size 14
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.19.0 #1 NONE
+Check specifically for HUP in the poll loop, and ensure that another
+loop is done to check for status if more than a single poll activation
+is pending. This ensures we don't lose the shutdown event.
 
-As Kees said, "'names' is pointing to the final 'namelen' many bytes
-of the allocation ... 'namelen' could be basically any length at all.
-This fortify warning looks legit to me -- this code used to be reading
-beyond the end of the allocation."
-
-Since the size of the dynamic allocation is calculated with strlen()
-we can use strcmp() instead of memcmp() and remain within bounds.
-
-Cc: Kees Cook <kees@kernel.org>
 Cc: stable@vger.kernel.org
-Cc: linux-hardening@vger.kernel.org
-Link: https://lore.kernel.org/all/202602151911.AD092DFFCD@keescook/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: dbc2564cfe0f ("io_uring: let fast poll support multishot")
+Reported-by: Francis Brosseau <francis@malagauche.com>
+Link: https://github.com/axboe/liburing/issues/1549
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/drivers/mtd/parsers/redboot.c b/drivers/mtd/parsers/redboot.c
-index 558905160ddb..bf162c44eafe 100644
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -270,9 +270,9 @@ nogood:
- 
- 		strcpy(names, fl->img->name);
- #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
--		if (!memcmp(names, "RedBoot", 8) ||
--		    !memcmp(names, "RedBoot config", 15) ||
--		    !memcmp(names, "FIS directory", 14)) {
-+		if (!strcmp(names, "RedBoot") ||
-+		    !strcmp(names, "RedBoot config") ||
-+		    !strcmp(names, "FIS directory")) {
- 			parts[i].mask_flags = MTD_WRITEABLE;
+diff --git a/io_uring/poll.c b/io_uring/poll.c
+index aac4b3b881fb..488c08593b64 100644
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -272,6 +272,7 @@ static int io_poll_check_events(struct io_kiocb *req, io_tw_token_t tw)
+ 				atomic_andnot(IO_POLL_RETRY_FLAG, &req->poll_refs);
+ 				v &= ~IO_POLL_RETRY_FLAG;
+ 			}
++			v &= IO_POLL_REF_MASK;
  		}
- #endif
+ 
+ 		/* the mask was stashed in __io_poll_execute */
+@@ -304,8 +305,13 @@ static int io_poll_check_events(struct io_kiocb *req, io_tw_token_t tw)
+ 				return IOU_POLL_REMOVE_POLL_USE_RES;
+ 			}
+ 		} else {
+-			int ret = io_poll_issue(req, tw);
++			int ret;
+ 
++			/* multiple refs and HUP, ensure we loop once more */
++			if ((req->cqe.res & (POLLHUP | POLLRDHUP)) && v != 1)
++				v--;
++
++			ret = io_poll_issue(req, tw);
+ 			if (ret == IOU_COMPLETE)
+ 				return IOU_POLL_REMOVE_POLL_USE_RES;
+ 			else if (ret == IOU_REQUEUE)
+@@ -321,7 +327,6 @@ static int io_poll_check_events(struct io_kiocb *req, io_tw_token_t tw)
+ 		 * Release all references, retry if someone tried to restart
+ 		 * task_work while we were executing it.
+ 		 */
+-		v &= IO_POLL_REF_MASK;
+ 	} while (atomic_sub_return(v, &req->poll_refs) & IO_POLL_REF_MASK);
+ 
+ 	io_napi_add(req);
 
 
