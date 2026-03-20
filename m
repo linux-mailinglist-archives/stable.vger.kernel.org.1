@@ -1,275 +1,386 @@
-Return-Path: <stable+bounces-227629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227630-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPdwFci9vWnyAwMAu9opvQ
-	(envelope-from <stable+bounces-227629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:36:08 +0100
+	id cPksIzzCvWmEBQMAu9opvQ
+	(envelope-from <stable+bounces-227630-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:55:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFD042E170B
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1374C2E183F
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C25F930607B2
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:36:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89E333022067
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BF83E6DF5;
-	Fri, 20 Mar 2026 21:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECB6B3B38A7;
+	Fri, 20 Mar 2026 21:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KYj4xdkR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOhIDu3c"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04103DB633;
-	Fri, 20 Mar 2026 21:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774042560; cv=fail; b=W5VVdch6xHWbQsAKeEKBJ2ALAfWRzewCkf4D9yVreYGon2nt1FJbZLEvnTuwfzY4DC4IhvLcXXALTMNAol/jZyOcpuUiLDabv77KdZ3cfwFzUZmCO/lmG457uv2fIfcy1Gomd2KeJC30J68HElOW19b9r33hwr6pB4QcZgiBmZQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774042560; c=relaxed/simple;
-	bh=AUkJkQ5T+mPJALjddFGc3i4h385UtRDvOwZ0KEveIws=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Wctx37qwvnQS1NyjYxoTDiuXHhKvQ2+8Qnz+q2WWbSJSdJ67RSnVPAJ6zuCqmVztF5RhFTPoDNQsb9SQrn2JKOGtH5flUzSe9736RXNiGf2aBO31WoFLlJ0zcFi7oe6f03QC+IFlxTgkMDrtAumopB+2tjOf45r9+v6E0WnJmXA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KYj4xdkR; arc=fail smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774042552; x=1805578552;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=AUkJkQ5T+mPJALjddFGc3i4h385UtRDvOwZ0KEveIws=;
-  b=KYj4xdkRlCwEyxvyQ9U4jPe1EsV3kWrsmLEurb8J7d6B9c1gI0D9/tQv
-   5GnKvscIr0NOxnc9DhjXt4PCrBznZP0TBGV9DJlecfliBRlaut0oix4bG
-   nxJ6g5KfouglBKzukcnqI9n6ItBJUN/jrnzvTBEBE2gBdAMTschF8eJOh
-   iI/DTRHPZXW6VziCzfXz3h7ngIAVrpkXB57xVIj/Og7EdLldoMEtlvhfU
-   1L9Rrmhggbw4gMiyCNhGokbefcIgRYnUIcTKK5GRJWiA2D4IRR6/CQnuz
-   HPErSvOj2oKhW0Gau9IrQzqXDHnfO1gIxSvV+qxvPQCPVU3Z18AYbdlDI
-   g==;
-X-CSE-ConnectionGUID: qZqYu7B9RZWZyuH3pTix4w==
-X-CSE-MsgGUID: u4z8OpE5S1CISl4Q6CxRNQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="75023062"
-X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
-   d="scan'208";a="75023062"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 14:35:51 -0700
-X-CSE-ConnectionGUID: i46r9TMUTL+3DiIRn4YA+A==
-X-CSE-MsgGUID: uiJeIjQWSFupUS/4+DBUNA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
-   d="scan'208";a="219160322"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 14:35:50 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 14:35:50 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 14:35:50 -0700
-Received: from BYAPR05CU005.outbound.protection.outlook.com (52.101.85.32) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 14:35:49 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kiUuM7qEmB+1zFiznqtYt6Ae4cRQBRWpu3ppzwqvEmSFf1qIQNXuT7xzT1nCqFxp0XFbpwS+evFJMSKM4WGrXppQnInTkXdPOfLo3AblwaO66QpqdtYGr0VoFgyhtOAZ48m/0cRS+mGsCyRDdupHnSKNvYuqBgki1krFpXdfF/n6/GyuJ/mqMDBJW0ZDW7lOOjojmhZqHHZJ0nD62b/y38dg2LJLmooXNCnkdF7yP5amNZVUVTHboapQ8H853mAjx3jKPtFjeACQdBv5feeHF6PH3FpDGI4iu7oEq2BD46LILm9luDv4swGrOHURgOUg/LZLP3JU/7AmHDMtw9EMew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AbBz/RwdGvLm5U5TcHpA33iDWlBZ7CQj6jvZycPYyRE=;
- b=ZlbALQ0QKaZkdDn/+aYp0icca2pj9pLbJMIENOZ1SC9ZwrLC5haxniKPV9f0dB3Qax6vMfMif2W3P9RZeOTlCap51JPOE0NpPnbdN+Zc+180UmCYQ10v2UTnDsxrXJs31mpOTINP00Z+Vbk0yLGYjVQM7ZrCvAh2EPXX4wy1lmxMFfTEvSuEKcw+Epy8pGpJB1jPwtY8e5JyXRrSCK8zhAWJadKyJFc51/BQgK20oUbF2v/IqKCFcM4ezYZfR8dNsFs6H4tKU5OelAUMzo4gAHlZ4XMD7Opi62C0I7XsqmRZpuEP7y1FBxknFvSu2U2yG3TGsqwlkDW2tbMiYFW4aA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH0PR11MB8168.namprd11.prod.outlook.com (2603:10b6:610:186::20)
- by CH3PR11MB8344.namprd11.prod.outlook.com (2603:10b6:610:17f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
- 2026 21:35:47 +0000
-Received: from CH0PR11MB8168.namprd11.prod.outlook.com
- ([fe80::9549:c8e9:6748:12ee]) by CH0PR11MB8168.namprd11.prod.outlook.com
- ([fe80::9549:c8e9:6748:12ee%5]) with mapi id 15.20.9745.007; Fri, 20 Mar 2026
- 21:35:47 +0000
-Message-ID: <0275cffc-7a61-46fb-9d1e-c309ac680b80@intel.com>
-Date: Fri, 20 Mar 2026 14:35:42 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH iwl-net v2] idpf: fix xdp crash in soft reset error path
-To: Simon Horman <horms@kernel.org>
-CC: <daniel@iogearbox.net>, <ast@kernel.org>, <willemb@google.com>,
-	<stable@vger.kernel.org>, <decot@google.com>, <bpf@vger.kernel.org>,
-	<anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<intel-wired-lan@lists.osuosl.org>, <edumazet@google.com>,
-	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <andrew+netdev@lunn.ch>,
-	<kuba@kernel.org>, <davem@davemloft.net>, <sdf@fomichev.me>,
-	<aleksandr.loktionov@intel.com>, <aleksander.lobakin@intel.com>,
-	<john.fastabend@gmail.com>, <hawk@kernel.org>
-References: <20260319224159.23885-1-emil.s.tantilov@intel.com>
- <20260320174843.137651-1-horms@kernel.org>
-Content-Language: en-US
-From: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
-In-Reply-To: <20260320174843.137651-1-horms@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MW4PR04CA0128.namprd04.prod.outlook.com
- (2603:10b6:303:84::13) To CH0PR11MB8168.namprd11.prod.outlook.com
- (2603:10b6:610:186::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B058835C1BD
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 21:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774043687; cv=none; b=Z+DmIAIZm7Epn1z24x7iw7WZxBj9bto2QXfzncwNxi4tC43eWo3SnjCMIzg2OJgc9Xk0jHPGiAp06Li0L67pvIhpZn4dHfKA54k7nf/ht1RyR1cYiHbKC46jv418xFLuZ21uy+BLfAdFc17q7O7wlWVnlnftztWZs8/U/Mrv0rE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774043687; c=relaxed/simple;
+	bh=4D+510PbRhokkw09bzk49Dn36yjF9iLoBXfP7QecEpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=k1hSRF/AVdJoY4iyS63sYRX5NSWTOjs9GcJ/dgPm0f4KqrQdl7UgYhm7aBVRrGCJLmZgGqizcXWkN1afMf2rC4b7KsmLuz5NU49NF+91d4UMzBDxTeesvZ9fAApq08iUzCeuBIh6UD9TljzpzDEzO9fRjPYo5upJthiA6CEufg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOhIDu3c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E42C4CEF7;
+	Fri, 20 Mar 2026 21:54:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774043687;
+	bh=4D+510PbRhokkw09bzk49Dn36yjF9iLoBXfP7QecEpg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=XOhIDu3coBkmpEb3vA4c+RoFGm4jvC976q42wz7HrGNuGq3DvOdFckPZtoKQxPaEO
+	 gOEqHZANLEtWykK54AmY58nSlgHpk3Wzv8hSENpxKtiE0BVmlaaGyVJSt/siWbi6Ke
+	 lDR0BeL+xIi4N5KHES4qBw4sdXrHLtQiCRwCgWzblN3Ib6QTVFEeE5Fut/o0n/OYyk
+	 Iuw431LLs5R6LAlnXchwuPW1OWSPjkAmBMpm1MLRSCdP4DHkTB+xf+l2Qf2SBDylxb
+	 weCLwKTxtQUhiz2ZEifkjXI1kV5edIs+Kx2LkYwFvo+5yte8+P1FndZHQFMGsxtTJg
+	 nbzdBRpDur3+Q==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12.y 1/2] ata: libata-scsi: Return residual for emulated SCSI commands
+Date: Fri, 20 Mar 2026 17:54:44 -0400
+Message-ID: <20260320215445.132838-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026032032-sludge-profanity-a10a@gregkh>
+References: <2026032032-sludge-profanity-a10a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH0PR11MB8168:EE_|CH3PR11MB8344:EE_
-X-MS-Office365-Filtering-Correlation-Id: 53341f03-6705-42f5-850f-08de86c8a5fe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024|56012099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: igXV5Hh3PGoXGxg8hz2UBoH0nG1Mwhy4njazgjIjlJFBo2MW4xCL2c5bNPOczUzpQyN+F4BsOuv1thbjDfqSXRX1gXCmAgYuvyWWpKkIG8nfBwQe/OR3mim8/mp7bg4FRGohy4cOw7HEUfrCTi3C+Rq3LzHAxlhvmG+mojhc5zouQYx2WmmaDiFMHS3A2fexO92hcfYvGVvbfBa98KCT7ADlHlUKzH2mYJSUMa5BCFsujF9iYPc7fdVdx05mV1jDlYJz7KDO6fQ9UOB0Fhus+INBPnK6ARoKgwNZM7D4YDkA2KyfHdiDmhIneUVg1T3MB6BBfaBWvPfh7VKtyDAVFaR6+TXvxQ+CHDvpCwef5iTsyAEkRi+3uub/Nfg8TdUStqNQ+YK4i4BSkUeyV2ujUNUdzEQmYiAgJU4QBqULhabyjn9ScPC+eiwlHQ4ex47HLqRVUbjMvRGEGzkIlJ1S/Y8ScL0P2I9+rKU09dWblHiBtH+Oxlkw0iob1q/m1TAzS81W50Reo4p80/vYRXrMrNRMxomU90e197FueA4cRW2ORM46CpOhCu0beJJhGpjK0V6/Zq0eGevdbRT1wALRuI3UMR2bd4Kss0ChBpYkD/nSstr8jRVGNgPhBE4kaRwU2p4DZS4K/QYn+RQr0paupLXQd0l9UvbFD0YVTrdSFKuRPASn5bwVT3/jkRwJpfTo
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH0PR11MB8168.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(56012099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?QUowRk5iTUFUcUFxSW5sS0J3ZEFUSWVjWTJqM3RWTFpSSDAvQXd5YmYwR0xQ?=
- =?utf-8?B?MXhyTEFseXpQSFRrZU1malFXS25QNXUwZHdBZTZsV3M4QWhsV2tlYStERzNI?=
- =?utf-8?B?aVhKakFYYkk3SFdxWCtNZ0R5TlN3bHdISm9zU2tCZjBXQ0xLQStwWVhDaktp?=
- =?utf-8?B?Mk9MWUZJNkpMK0R6VVErOU5vM0JJZHlrNlNyZVA5dWYzSC91bjJqSE9KRlRV?=
- =?utf-8?B?YVBqdXlmdUNoWlZFd1FuVmVDSzExWHJEM1NBZXhRdHF4Q3lQQU1acjFUL2sv?=
- =?utf-8?B?dng4VVZESlk2T00xWUpYL2Q4ak1HaDVTMFRZOFA3TWYrdkx5ditzblhld0Rr?=
- =?utf-8?B?ZFhwNDNZaitoaG5RalB5UTNtQTlIU3ZvZHBDRFB3SGNQa3h5aEwyelVyYitE?=
- =?utf-8?B?YTFmakZ3aWVxeHlsSXpBNW45WWNOdzJZRnladjRxeU5qeG9FbVBwYUtMcGF5?=
- =?utf-8?B?M3RsODZzaEQrb09PQkJ4L0k4UmNCa21rTW5CZUNYbmR5TW03ZjllYmxaSDV6?=
- =?utf-8?B?UlZ0UVAyUkFXVWVuZUgyRTBUSnhFTGVKRDljWEhWd1NVb01SVFdaOFhHR0pO?=
- =?utf-8?B?SUFhbFNhVlZVMW4way80N3R0QytSblhIMGhlL05jOWJweWJWOHQxNVlhTFBG?=
- =?utf-8?B?QXVDSEJ4RVF1QWgwaWhrTnFULzhUeTh5MkdMZGc2ajMzNFRCZENXUlFlMVh4?=
- =?utf-8?B?MzQ3dC84SWM2ZTlZdFdJbzNySDBlbzhWcTgzd1ZYcTdFMEtyZHlOZTlWQUk5?=
- =?utf-8?B?WTRiTG1YMkhXbUYyNkI4MDg0WnRvUHhGSk9FWHBwaXF5TlpXeE1vbm9ZL0Vz?=
- =?utf-8?B?U3MwQ0tHQWd0TGVGY1ptYzJMVXBsemhtU2VRZ0JVNHhrN2l3NzRIeEY5ZFVh?=
- =?utf-8?B?Q2xDTjc1U0VCVURDN29VN1BTS2RtaWRxZVFPZ3Z2NVNIL0NyWlFRL2VidEFB?=
- =?utf-8?B?RUU4U1hBbWI5SmpYeHhBMnVwRk8rK25zWklnY0FONkphcCs2dXZmOU05UGgy?=
- =?utf-8?B?aFloaSt3dm56dDlCK3lGc1V1UTdoMFZvTGpJdTdjeTJmSnVRblRzL0lVSmNo?=
- =?utf-8?B?RWdTNVdoWDV3RkdIaHZmdmpoL1BWSnZzUGFrYTB1NTFhYWtYUGtab1ptT09O?=
- =?utf-8?B?YmtVTkt5OWlVZVNERzg4dWdBdzN3K2M4bE50NzJ2WTRSZ1M2M1Fuand4MHhY?=
- =?utf-8?B?Q0R6cXlOY2F4aDlUaTh2NHdhYmhaNDlBTGliNitiYjVXa2EyODRMbGo4OXdx?=
- =?utf-8?B?ZG91SkZTVVFWNExYcThKNk1NNHJyN2dzNVFmM1ZkOFN3Snczam44U3VlWlR0?=
- =?utf-8?B?cm1sRVVSS2c2RnFTL3RDV1pnSUxxY0xCWG03RUE3bnFXS1R6Y09OL0tGOW9W?=
- =?utf-8?B?c2JqbEhrZ2Zhek1UcG1uSTFvaWVzNEJCTG5xOXEwWUhFbVlaUDM0ZUQ0aXRP?=
- =?utf-8?B?Vi9ud2Y3WHhvQ2pLbVdpTFNGNllSZUs3eXRIc3JjZWo3dXV4d1hDYytNcUxh?=
- =?utf-8?B?TERka3FRSzBwdllzNTJRVk9yUWxZbVpWUzVGaktYNDVQVTFIdGxuMHRyd2tH?=
- =?utf-8?B?RWlxb1p5WXdDZTE2Y2o3UklQWCs1eHg0UlU0djdhaEVmN0xQZzB6SDJka2pF?=
- =?utf-8?B?M0tEUUZVL3ZRUmZ0L3VsOUlpcFFXZnlPQXl3ek5odW1mbm5zV1kwd3p5b3Ba?=
- =?utf-8?B?TG5rRmlTc2REd3VlVEpPTzdmcGE4dFlHeWJTOS9pdXcrV3p2U2pWMFltb2V0?=
- =?utf-8?B?UUE1cjhZYU9jaTJGdmM5UnkrbStVblpnZitWbE5STXJSbXN5ekNlaXh1blFY?=
- =?utf-8?B?UWthSWpCdEZlK2F3ZDc0VHc4bVFKYUgrTDNpU3pXaXNhMUhKaUZOalRQRngr?=
- =?utf-8?B?L2pyRWFidExHTzZ5cExOdTYyaEV1V2VGZWpxYmFnbTFGV1hGaUVnUlhrTXhG?=
- =?utf-8?B?SFpVMjAwdUdnT3YxclR1MGdJZVZiQTEzUGRGclEwbjRnQU9hcUdCRVEvcTFT?=
- =?utf-8?B?Yk5UNmQwUlJBRVgrb2ttR1JBTGVqOUE4czFwb3RIUlgzc1ZxZW9UdTlQeUVt?=
- =?utf-8?B?NzhBTkFtNi9yd3N1ZnZ4Mnl0djMzaTIzSnN5eTkwNDlmYjd0VjBwNXBYckVT?=
- =?utf-8?B?NHdGNTNXd29GSzI3SG12bFRwUUFiRy8wejlUaVFLZFkvV3lGeTluSnV3a0ZR?=
- =?utf-8?B?WmdaZXIwTlY5bjE4SEIzaVhaVE1ISFhjak9WNDd5bGxodmlURHpOcXoxUkN3?=
- =?utf-8?B?ck1NdERNbkZ6MkU4eFFQemg5MWpGQXdnTHhWUStZS2gwZzYrL0FCdEVCTDhq?=
- =?utf-8?B?eC9WZkF6cncwZlcwdC9CK3gxSDEvV0F3aE1aY05ST1pWY2dKeU9HVC9VVTNW?=
- =?utf-8?Q?0nlZDqgKriMmso5Q=3D?=
-X-Exchange-RoutingPolicyChecked: waSZTGBK364Y7w5ZNmhI/uyJzDpIfcvS6s2PgE2G/Oog4n+GhATjgnUUqVWQIly8yLRBBBAuB3fAbI13f/e9OH9atHWOvpHtT1LwROqpG3WgIGPsOVFwq8NyDI+GbaP3SNSLKH41mYZA7Rssq2tUNcnSKRLPwFXhjl8uqpfJylCj0/R5QGoNGOVAJs54QN+GB/U6bHEVAVB72i6hz7SAAt9H8tM77Ms6PV/QOs6DGsoKY7wqggCVJn/wrtL8xHD7Nn+I7XwO6JNBg87ZWyTqkl/Opu9B+K/OhGerqg0N2QG0LYH3Ny8zRvxWg72vNnNNrr7Aohctd92ITSUOOK6s+A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53341f03-6705-42f5-850f-08de86c8a5fe
-X-MS-Exchange-CrossTenant-AuthSource: CH0PR11MB8168.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 21:35:47.1345
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: miDNgbzvMM1I/3J4mFYPCpBKBXHlWVceUctJCBwpBGnwz2mF6yDrfjhcPR5oKgjPu9dACev/bEKUTd1lstVdI5ker+SkxnH+Pneam0uC58M=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB8344
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227629-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[iogearbox.net,kernel.org,google.com,vger.kernel.org,intel.com,lists.osuosl.org,redhat.com,lunn.ch,davemloft.net,fomichev.me,gmail.com];
-	RCVD_TLS_LAST(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:url,intel.com:dkim,intel.com:mid];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[emil.s.tantilov@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227630-lists,stable=lfdr.de];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: AFD042E170B
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1374C2E183F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Damien Le Moal <dlemoal@kernel.org>
 
+[ Upstream commit 5251ae224d8d3caa21b28d12408062b6e75cffad ]
 
-On 3/20/2026 10:48 AM, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> 
-> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
-> ---
-> idpf: fix xdp crash in soft reset error path
-> 
-> This commit fixes a NULL pointer dereference that occurs when
-> idpf_vport_open() fails during soft reset. The fix restores
-> vport->xdp_prog in the error path and updates the restart check in
-> idpf_xsk_pool_setup() to use IDPF_VPORT_UP instead of netif_running().
-> 
->> Fixes: 3d57b2c00f09 ("idpf: add XSk pool initialization")
-> 
-> The Fixes: tag may not be targeting the correct commit. The primary bug
-> being fixed is the NULL pointer dereference crash in idpf_xdp_setup_prog()
-> that occurs when soft reset fails and vport->xdp_prog is not restored.
+The function ata_scsi_rbuf_fill() used to fill the reply buffer of
+emulated SCSI commands always copies the ATA reply buffer
+(ata_scsi_rbuf) up to the size of the SCSI command buffer (the transfer
+length for the command), even if the reply is shorter than the SCSI
+command buffer. This leads to issuers of the SCSI command to always get
+a result without any residual (resid is always 0) despite the
+potentially shorter reply for the command.
 
-This is not exactly true, this is just one of the instances that would
-cause idpf_qp_switch() to be called. [1]
+Modify all fill actors used by ata_scsi_rbuf_fill() to return the number
+of bytes filled for the reply and 0 in case of error. Using this value,
+add a call to scsi_set_resid() in ata_scsi_rbuf_fill() to set the
+correct residual for the SCSI command when the reply length is shorter
+than the command buffer.
 
-> 
-> Looking at the git history, this missing restoration was introduced in
-> commit 705457e7211f ("idpf: implement XDP_SETUP_PROG in ndo_bpf for
-> splitq"), where idpf_xdp_setup_prog() was first implemented. While commit
-> 3d57b2c00f09 introduced the secondary issue with the netif_running()
-> check, the main crash fix addresses code from commit 705457e7211f.
-> 
-> Should the Fixes: tag point to commit 705457e7211f instead?
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20241022024537.251905-7-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Stable-dep-of: e6d7eba23b66 ("ata: libata-scsi: report correct sense field pointer in ata_scsiop_maint_in()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/ata/libata-scsi.c | 81 +++++++++++++++++++++++----------------
+ 1 file changed, 47 insertions(+), 34 deletions(-)
 
-The reason I chose commit 3d57b2c00f09 is because it is the commit
-introducing the function where the crash is occurring:
-[ 3179.284770] RIP: 0010:idpf_find_rxq_vec+0x17/0x30 [idpf]
-...
-[ 3179.291937] Call Trace:
-[ 3179.292392]  <TASK>
-[ 3179.292843]  idpf_qp_switch+0x25/0x820 [idpf]
-
-The setting of the restart variable is where the above commits "meet",
-in that both conditions - netif_ruinning() and idpf_xdp_enabled() [1]
-can be wrong:
-https://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue.git/tree/drivers/net/ethernet/intel/idpf/xsk.c#n571
-
-which would end up calling idpf_qp_switch() instead of taking the
-alternate path:
-	restart = idpf_xdp_enabled(vport) && netif_running(vport->netdev);
-	if (!restart)
-		goto pool;
-
-Which was introduced by 3d57b2c00f09.
-
-Thanks,
-Emil
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index d7c88a111ea3d..bfabf27adfce5 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1920,17 +1920,19 @@ static void ata_scsi_rbuf_fill(struct ata_device *dev, struct scsi_cmnd *cmd,
+ 		unsigned int (*actor)(struct ata_device *dev,
+ 				      struct scsi_cmnd *cmd, u8 *rbuf))
+ {
+-	unsigned int rc;
+ 	unsigned long flags;
++	unsigned int len;
+ 
+ 	spin_lock_irqsave(&ata_scsi_rbuf_lock, flags);
+ 
+ 	memset(ata_scsi_rbuf, 0, ATA_SCSI_RBUF_SIZE);
+-	rc = actor(dev, cmd, ata_scsi_rbuf);
+-	if (rc == 0) {
++	len = actor(dev, cmd, ata_scsi_rbuf);
++	if (len) {
+ 		sg_copy_from_buffer(scsi_sglist(cmd), scsi_sg_count(cmd),
+ 				    ata_scsi_rbuf, ATA_SCSI_RBUF_SIZE);
+ 		cmd->result = SAM_STAT_GOOD;
++		if (scsi_bufflen(cmd) > len)
++			scsi_set_resid(cmd, scsi_bufflen(cmd) - len);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&ata_scsi_rbuf_lock, flags);
+@@ -2018,7 +2020,11 @@ static unsigned int ata_scsiop_inq_std(struct ata_device *dev,
+ 	else
+ 		memcpy(rbuf + 58, versions, sizeof(versions));
+ 
+-	return 0;
++	/*
++	 * Include all 8 possible version descriptors, even if not all of
++	 * them are popoulated.
++	 */
++	return 96;
+ }
+ 
+ /**
+@@ -2055,7 +2061,8 @@ static unsigned int ata_scsiop_inq_00(struct ata_device *dev,
+ 		num_pages++;
+ 	}
+ 	rbuf[3] = num_pages;	/* number of supported VPD pages */
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2082,7 +2089,8 @@ static unsigned int ata_scsiop_inq_80(struct ata_device *dev,
+ 	memcpy(rbuf, hdr, sizeof(hdr));
+ 	ata_id_string(dev->id, (unsigned char *) &rbuf[4],
+ 		      ATA_ID_SERNO, ATA_ID_SERNO_LEN);
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2143,7 +2151,8 @@ static unsigned int ata_scsiop_inq_83(struct ata_device *dev,
+ 		num += ATA_ID_WWN_LEN;
+ 	}
+ 	rbuf[3] = num - 4;    /* page len (assume less than 256 bytes) */
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2180,7 +2189,8 @@ static unsigned int ata_scsiop_inq_89(struct ata_device *dev,
+ 	rbuf[56] = ATA_CMD_ID_ATA;
+ 
+ 	memcpy(&rbuf[60], &dev->id[0], 512);
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2231,7 +2241,7 @@ static unsigned int ata_scsiop_inq_b0(struct ata_device *dev,
+ 		put_unaligned_be32(1, &rbuf[28]);
+ 	}
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2261,7 +2271,7 @@ static unsigned int ata_scsiop_inq_b1(struct ata_device *dev,
+ 	if (zoned)
+ 		rbuf[8] = (zoned << 4);
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2284,7 +2294,7 @@ static unsigned int ata_scsiop_inq_b2(struct ata_device *dev,
+ 	rbuf[3] = 0x4;
+ 	rbuf[5] = 1 << 6;	/* TPWS */
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2304,7 +2314,7 @@ static unsigned int ata_scsiop_inq_b6(struct ata_device *dev,
+ {
+ 	if (!ata_dev_is_zac(dev)) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	/*
+@@ -2322,7 +2332,7 @@ static unsigned int ata_scsiop_inq_b6(struct ata_device *dev,
+ 	put_unaligned_be32(dev->zac_zones_optimal_nonseq, &rbuf[12]);
+ 	put_unaligned_be32(dev->zac_zones_max_open, &rbuf[16]);
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2346,7 +2356,7 @@ static unsigned int ata_scsiop_inq_b9(struct ata_device *dev,
+ 
+ 	if (!cpr_log) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	/* SCSI Concurrent Positioning Ranges VPD page: SBC-5 rev 1 or later */
+@@ -2360,7 +2370,7 @@ static unsigned int ata_scsiop_inq_b9(struct ata_device *dev,
+ 		put_unaligned_be64(cpr_log->cpr[i].num_lbas, &desc[16]);
+ 	}
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2382,7 +2392,7 @@ static unsigned int ata_scsiop_inquiry(struct ata_device *dev,
+ 	/* is CmdDt set?  */
+ 	if (scsicmd[1] & 2) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	/* Is EVPD clear? */
+@@ -2410,7 +2420,7 @@ static unsigned int ata_scsiop_inquiry(struct ata_device *dev,
+ 		return ata_scsiop_inq_b9(dev, cmd, rbuf);
+ 	default:
+ 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ }
+ 
+@@ -2741,24 +2751,27 @@ static unsigned int ata_scsiop_mode_sense(struct ata_device *dev,
+ 			rbuf[3] = sizeof(sat_blk_desc);
+ 			memcpy(rbuf + 4, sat_blk_desc, sizeof(sat_blk_desc));
+ 		}
+-	} else {
+-		put_unaligned_be16(p - rbuf - 2, &rbuf[0]);
+-		rbuf[3] |= dpofua;
+-		if (ebd) {
+-			rbuf[7] = sizeof(sat_blk_desc);
+-			memcpy(rbuf + 8, sat_blk_desc, sizeof(sat_blk_desc));
+-		}
++
++		return rbuf[0] + 1;
++	}
++
++	put_unaligned_be16(p - rbuf - 2, &rbuf[0]);
++	rbuf[3] |= dpofua;
++	if (ebd) {
++		rbuf[7] = sizeof(sat_blk_desc);
++		memcpy(rbuf + 8, sat_blk_desc, sizeof(sat_blk_desc));
+ 	}
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[0]) + 2;
+ 
+ invalid_fld:
+ 	ata_scsi_set_invalid_field(dev, cmd, fp, bp);
+-	return 1;
++	return 0;
+ 
+ saving_not_supp:
+ 	ata_scsi_set_sense(dev, cmd, ILLEGAL_REQUEST, 0x39, 0x0);
+ 	 /* "Saving parameters not supported" */
+-	return 1;
++	return 0;
+ }
+ 
+ /**
+@@ -2801,7 +2814,7 @@ static unsigned int ata_scsiop_read_cap(struct ata_device *dev,
+ 		rbuf[6] = sector_size >> (8 * 1);
+ 		rbuf[7] = sector_size;
+ 
+-		return 0;
++		return 8;
+ 	}
+ 
+ 	/*
+@@ -2811,7 +2824,7 @@ static unsigned int ata_scsiop_read_cap(struct ata_device *dev,
+ 	if (scsicmd[0] != SERVICE_ACTION_IN_16 ||
+ 	    (scsicmd[1] & 0x1f) != SAI_READ_CAPACITY_16) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	/* sector count, 64-bit */
+@@ -2846,7 +2859,7 @@ static unsigned int ata_scsiop_read_cap(struct ata_device *dev,
+ 		}
+ 	}
+ 
+-	return 0;
++	return 16;
+ }
+ 
+ /**
+@@ -2865,7 +2878,7 @@ static unsigned int ata_scsiop_report_luns(struct ata_device *dev,
+ {
+ 	rbuf[3] = 8;	/* just one lun, LUN 0, size 8 bytes */
+ 
+-	return 0;
++	return 16;
+ }
+ 
+ /*
+@@ -3593,13 +3606,13 @@ static unsigned int ata_scsiop_maint_in(struct ata_device *dev,
+ 
+ 	if ((cdb[1] & 0x1f) != MI_REPORT_SUPPORTED_OPERATION_CODES) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	if (cdb[2] != 1 && cdb[2] != 3) {
+ 		ata_dev_warn(dev, "invalid command format %d\n", cdb[2]);
+ 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	switch (cdb[3]) {
+@@ -3672,7 +3685,7 @@ static unsigned int ata_scsiop_maint_in(struct ata_device *dev,
+ 	rbuf[0] = rwcdlp;
+ 	rbuf[1] = cdlp | supported;
+ 
+-	return 0;
++	return 4;
+ }
+ 
+ /**
+-- 
+2.51.0
 
 
