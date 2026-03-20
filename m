@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-227537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227538-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOkLHVVBvWn28AIAu9opvQ
-	(envelope-from <stable+bounces-227537-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 13:45:09 +0100
+	id cI8aIntBvWn28AIAu9opvQ
+	(envelope-from <stable+bounces-227538-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 13:45:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D782DA762
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 13:45:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BD12DA778
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 13:45:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EFB2A3019511
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:42:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 412083053779
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 017E638737D;
-	Fri, 20 Mar 2026 12:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85346373C11;
+	Fri, 20 Mar 2026 12:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lYvl7zH2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fygfKytG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3126D3815DE
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 12:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 638613822AD
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 12:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774010527; cv=none; b=V1lGR8gGrZpgfrbzh4WMsAm88+XVq7CrAICupEOw1YF5E+O2qwHFZypaNqvugnRBFkGpupoSnEB4tADSfl6HoMMU/Wqdlsgvfo579yK2HNqejO++8W6xD5uXKp+cGxoFCuhBpQlsjFf13bzAtI6TZapRUKxfk3oVmMEfesDa3fI=
+	t=1774010549; cv=none; b=O5XnFEeyGGFbcjJnqcYLP+saOS3atQ9kRLwrigQx9ct8XpQby/etN9xJyc2Bn2MZqffoQsuW5lNS0qYTEOYbmX+P8bna/UqDsj+AcLfePKFsklRUKiYvZRMyNiE9r5TNLp+dJD6NvOXvyubW8udgCvfSoMinyNMHo4jzK6Gtu48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774010527; c=relaxed/simple;
-	bh=BS2+cD9ShaGwzrty8uN2FdypxsSObW+xNB2F+0E3J9U=;
+	s=arc-20240116; t=1774010549; c=relaxed/simple;
+	bh=A/9P8iAEKFRJ7M4R/HCFL9HDLtwSxbSj6Gs+e1vapy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QcaMKYXzV03Gd2pjQpjLk9d6cT8H0hquIG4lpQ7y+J29yrUBCQTXJ9Vu0NziIM7o+LEWOaBh8v0E+7CtJMmjVWr9doEB5qGgK2P2mHOiY7HjDjiQUwds2GfEghfV9lwDgEZfmvor/V3XzbaALX8VEPN/3v8MOiKhJemzdqNV7sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lYvl7zH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC55BC2BCB4;
-	Fri, 20 Mar 2026 12:42:05 +0000 (UTC)
+	 MIME-Version; b=i/auBld1aQQ1rUVtQGyRFSRdtt3UfROQKjxvkQu7uxBL0Fanj5TTP/ajpwjxz8xIvrsJDNywqGvpUnME9yHsGkZdZoEoSCrlcrxh8kgrvRW+vETD3lFgxJVfmhSC9zdHIJbbnjJffuOtHxLx0vDf0/xzeT+I04fieJzMuDouzR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fygfKytG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A61C19425;
+	Fri, 20 Mar 2026 12:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774010526;
-	bh=BS2+cD9ShaGwzrty8uN2FdypxsSObW+xNB2F+0E3J9U=;
+	s=k20201202; t=1774010548;
+	bh=A/9P8iAEKFRJ7M4R/HCFL9HDLtwSxbSj6Gs+e1vapy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYvl7zH2L9zaLhYx8EPf53hKo+zr18rFvYhM2AbMgFP4xxOzG7zoSpcqiZ5nI4v0n
-	 NdNlwzlP6iOrtoHccKTfF2wy1IgsHvgn+K1kMUWqaPQ9Fc9Iu17oWV61Fx3wDbVQCM
-	 BQEWR+llpys9mnkrdFAU/9/axD8r+2EoYPO0meuwEMq/00G7ZQLJJKOm8M+SeBZNA3
-	 BYMQ/sytjMgt5Z44ett5yE8nlZdn50IjaCwBg++1A+xiE5/3DgoeMrpdcKk+qrH+IQ
-	 anC0BxYjFCKNLuSJzwGq2bVZOW4uPttlVlNn2YzjfenaqZPU/1KTNOCFDh/CZzZoFD
-	 omafNIMB2Kzxw==
+	b=fygfKytGdSAyq1FerWEgh5Jdq+cImyuUighw6U6wWPUwXtNH530KKcs4sn7fAYu7M
+	 YvaJHkEFQl3ZzN/Ccqu2QRGPa1c+Un6yEqceBLnw4824kuyHoV5Fo152B694yg+t52
+	 fPEG2j0FfJaMlGbGirGt3nT5UrzXISO9tUVJtVyV0aA7apQYnu8w6cCwLioi0NnV/+
+	 6WEi1n/VCc5m+49oE+B8SrbbI0wUF1trFaUSMByBEfnYdtIfKh0Uglrn/fMaVE6QPk
+	 POtoTVtju/ZeyywNIKueBtQIWX2KNiQpmNxskiADwwz1lpYxlu5h8Ixf2j+djYS0a6
+	 uas9RPuPlQUEw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Kevin Hao <haokexin@gmail.com>,
-	Quanyang Wang <quanyang.wang@windriver.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19.y 2/2] net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
-Date: Fri, 20 Mar 2026 08:42:03 -0400
-Message-ID: <20260320124203.4124440-2-sashal@kernel.org>
+Subject: [PATCH 6.19.y] LoongArch: Check return values for set_memory_{rw,rox}
+Date: Fri, 20 Mar 2026 08:42:26 -0400
+Message-ID: <20260320124226.4124820-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260320124203.4124440-1-sashal@kernel.org>
-References: <2026032059-helpline-reason-16c7@gregkh>
- <20260320124203.4124440-1-sashal@kernel.org>
+In-Reply-To: <2026032001-sizable-drivable-f1c8@gregkh>
+References: <2026032001-sizable-drivable-f1c8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,87 +67,82 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,windriver.com,kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227537-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227538-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.970];
+	NEURAL_HAM(-0.00)[-0.994];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,windriver.com:email]
-X-Rspamd-Queue-Id: 06D782DA762
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:email]
+X-Rspamd-Queue-Id: C6BD12DA778
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-[ Upstream commit 718d0766ce4c7634ce62fa78b526ea7263487edd ]
+[ Upstream commit 431ce839dad66d0d56fb604785452c6a57409f35 ]
 
-On certain platforms, such as AMD Versal boards, the tx/rx queue pointer
-registers are cleared after suspend, and the rx queue pointer register
-is also disabled during suspend if WOL is enabled. Previously, we assumed
-that these registers would be restored by macb_mac_link_up(). However,
-in commit bf9cf80cab81, macb_init_buffers() was moved from
-macb_mac_link_up() to macb_open(). Therefore, we should call
-macb_init_buffers() to reinitialize the tx/rx queue pointer registers
-during resume.
+set_memory_rw() and set_memory_rox() may fail, so we should check the
+return values and return immediately in larch_insn_text_copy().
 
-Due to the reset of these two registers, we also need to adjust the
-tx/rx rings accordingly. The tx ring will be handled by
-gem_shuffle_tx_rings() in macb_mac_link_up(), so we only need to
-initialize the rx ring here.
-
-Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
-Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Tested-by: Quanyang Wang <quanyang.wang@windriver.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260312-macb-versal-v1-2-467647173fa4@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+[ kept `stop_machine()` instead of `stop_machine_cpuslocked()` ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/loongarch/kernel/inst.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index d81fe135dcba4..a0802177a7a24 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5949,8 +5949,18 @@ static int __maybe_unused macb_resume(struct device *dev)
- 		rtnl_unlock();
- 	}
+diff --git a/arch/loongarch/kernel/inst.c b/arch/loongarch/kernel/inst.c
+index bf037f0c6b26c..3f7f0f8b32dec 100644
+--- a/arch/loongarch/kernel/inst.c
++++ b/arch/loongarch/kernel/inst.c
+@@ -258,6 +258,7 @@ static int text_copy_cb(void *data)
+ int larch_insn_text_copy(void *dst, void *src, size_t len)
+ {
+ 	int ret = 0;
++	int err = 0;
+ 	size_t start, end;
+ 	struct insn_copy copy = {
+ 		.dst = dst,
+@@ -269,9 +270,19 @@ int larch_insn_text_copy(void *dst, void *src, size_t len)
+ 	start = round_down((size_t)dst, PAGE_SIZE);
+ 	end   = round_up((size_t)dst + len, PAGE_SIZE);
  
-+	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
-+		macb_init_buffers(bp);
+-	set_memory_rw(start, (end - start) / PAGE_SIZE);
++	err = set_memory_rw(start, (end - start) / PAGE_SIZE);
++	if (err) {
++		pr_info("%s: set_memory_rw() failed\n", __func__);
++		return err;
++	}
 +
- 	for (q = 0, queue = bp->queues; q < bp->num_queues;
- 	     ++q, ++queue) {
-+		if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
-+			if (macb_is_gem(bp))
-+				gem_init_rx_ring(queue);
-+			else
-+				macb_init_rx_ring(queue);
-+		}
+ 	ret = stop_machine(text_copy_cb, &copy, cpu_online_mask);
+-	set_memory_rox(start, (end - start) / PAGE_SIZE);
 +
- 		napi_enable(&queue->napi_rx);
- 		napi_enable(&queue->napi_tx);
- 	}
++	err = set_memory_rox(start, (end - start) / PAGE_SIZE);
++	if (err) {
++		pr_info("%s: set_memory_rox() failed\n", __func__);
++		return err;
++	}
+ 
+ 	return ret;
+ }
 -- 
 2.51.0
 
