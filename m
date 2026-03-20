@@ -1,200 +1,173 @@
-Return-Path: <stable+bounces-227604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227605-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEaSJPiavWmR/QIAu9opvQ
-	(envelope-from <stable+bounces-227604-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:07:36 +0100
+	id uEAdEsWdvWmW/gIAu9opvQ
+	(envelope-from <stable+bounces-227605-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:19:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED9B2DFB7F
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:07:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA052DFD6D
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:19:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37D2031446C5
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 19:02:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 478E13024508
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 19:18:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EC92F28FC;
-	Fri, 20 Mar 2026 19:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D179234A799;
+	Fri, 20 Mar 2026 19:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOnd+wvl"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="m4uYofSg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB6D12E6CD8
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 19:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FD233C1AD;
+	Fri, 20 Mar 2026 19:18:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774033323; cv=none; b=cGhJ41V2TZZy3hr6Pt/8AWijnPkemipTXOcijApI+M6qszBVGeotcZNaYBXmm61EZPV8uqddi0G/NN2jCPbQCXJhgqxK3nvP2WIUuJeiHlvVh8htvdXdHbpZ8j7jeMzc/NjvhK/X/LpaQhmrvrJbOPVDI/5W873Pn40MpEiOhNE=
+	t=1774034310; cv=none; b=m6Il32Ubs+HCYCLeGShcvxOg1COEzU0AZBeXIveJ3e8W4PzvB1d6ubsa8ubcYauBi0mbb8KCzPbKRHhYWnQ8cTT1apblhp30n5z5IyLgtl+Oelga2PzFLAuR7e53K2f7rOpTMfjGCFp4uFUEv8c453wQcbwQhiACZOH3Y6E3x1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774033323; c=relaxed/simple;
-	bh=ccUI6jM2nybPoK5MYdOpHmVaJZygNSNodoJKk+GY4PE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YBdY+zn7d/kXqB0SxsB5yUlnHxVUBDqn3PtkjLc1V41bpBeKFslYfiUSne9yivGdxwSLfEQvWBWtsPhD8m8SPmSTY75DDJoZOEOyxdHXFdAP/lJYB9OWXHDHc7sJhi/ATCenOR6DeqTtzjqz+4RCmJAxc8ed0HQKuJPztY/UZoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOnd+wvl; arc=none smtp.client-ip=74.125.224.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64e8c7f5082so2072250d50.0
-        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 12:02:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774033321; x=1774638121; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LKII24aXXYTMcv/Z2LM8O3cfYOKRyYvXiYN+sxWGmS4=;
-        b=SOnd+wvlr//zUfchDDbYMpn4qXo0btcjaa3KAYl0QjOdQXXbv+jAj2URnOHn93nBuh
-         WxOE4/qi8XDi5lOMW0J0Vxp+3PjYkEbKVNCtaNN3e0cLjmXbt48u9FcGSCt6hIcrVgn/
-         gjecMk17DFCuSNwFTi+0Uee9EHr6xDTd5XZltoyPtVh/ZJECW7Zn1RJtbIHX12KX0H/8
-         +ThV0tO0ShRymDlX9iY18j+9wJfL9VTDAFQUoJKJNfBAuth94kXCJpsEcj9q0DarmmoF
-         4eE386JK+65PRX5+IHyIq56rCep0WoLQckTPcdOtnILAQ7WKvWpHgBAht5HJZ2+a/8ZL
-         mKvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774033321; x=1774638121;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LKII24aXXYTMcv/Z2LM8O3cfYOKRyYvXiYN+sxWGmS4=;
-        b=FMlyU9GmyiBKiS8ChDJ2UzphQ/CIFKiXJTDTQmSeQBu4G2hvRltEAkjwJOBM7agYlp
-         MT4L698x//BDfWDd/B09yS2im5OLQ7qDcU04WV/1okAsaLTFLB/CDYNu8UztHRVD/IOb
-         6YTv1HJS/MZxfyrv6hpJR3kW95Qp9CL2tRX4QQv9OMmrdoTZvOziYwsFASh9YixPxliL
-         kES7m2kUiXpm6b/MSK5X+gNyMmIqfV5H20mFjFELNGdskxF6ukxdLwW/e9SQPsKW6IyM
-         6a/6/HjK0hAbgUcccxATWWqjwkixPn2NaDCVVCZLBnUxW88VVIWznOoCDKPV0YuxUS6o
-         FjoA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8Tn3Og8oUc4rhexb9icL7xm0zBW6NH+B7MPz8MyyOHJnpNvbuRWR6nE8aqO3qKjbEHAcuzgo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxad1FfRqPPph4YeoC7ZS3hGeSJ0ers9KNS6vGco+2UT4d6weMo
-	RYkFdj+3GT39QUs91rc/0k2zKPOWV4IZwNev/jTQa5e+O2G3GHrKrijU
-X-Gm-Gg: ATEYQzz1K6Pb0H5NlnlIp0ZZw+FtnW0G4wEGIX9udVBKTtrb7W/87saJNhQNbJiwWl6
-	PU+PyibBbKnOSWPZQFkMBvEV9OLZxrbAbKWzRUuaRWtcHrcI0IXKYC8emgW2lLiWRo/Gq11B5aS
-	bcU5RvNZInN869N1bSEQ1KB/01J33EFZv2+46hkUw0IiKQrHNgUokkXtciynZ52/44A01wNtPmT
-	jd+Itghe2HgP6aUBWU7n+p6w+I9GQLxkLYsLhwFtBm7C21K8yqSqKfVepXvpLktSpDU2NEpFI2x
-	pGfO/jrowuzsbAfMLQ/kB6MQ7/w4RYV+LmLyIr3XaQAKacGk/6EvngXfJfBPUEby8CmjIhwPLhX
-	GAX/HICs0FBya7lASHxQz1SdrkoQsHwZLQE4jdmFpGxKdX0fAuRG8sCJdE1bLFlXnkarsZExvF4
-	Q7Ge1msMtPhPlBxVcPIcbIq3k/4GOMwE0UG4xQCfbvRFngFdCRSWe9gT4Ecfoa0m0TfIZKjNiaP
-	bLRMJ16RfvPMpMewosrST4dB9s=
-X-Received: by 2002:a05:690c:dd3:b0:79a:3f1c:4afe with SMTP id 00721157ae682-79a90c5109fmr46354447b3.56.1774033319289;
-        Fri, 20 Mar 2026 12:01:59 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (180.134.85.34.bc.googleusercontent.com. [34.85.134.180])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79a9057b4ecsm20955277b3.35.2026.03.20.12.01.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 12:01:58 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	Willem de Bruijn <willemb@google.com>,
-	stable@vger.kernel.org,
-	Tangxin Xie <xietangxin@yeah.net>
-Subject: [PATCH net] net: correctly handle tunneled traffic on IPV6_CSUM GSO fallback
-Date: Fri, 20 Mar 2026 15:01:46 -0400
-Message-ID: <20260320190148.2409107-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.53.0.959.g497ff81fa9-goog
+	s=arc-20240116; t=1774034310; c=relaxed/simple;
+	bh=FXAUvl2mgFDs1DUh0JZrB5wp+9dH7cNGL8fPZrohgNA=;
+	h=Date:To:From:Subject:Message-Id; b=awS5NUK5apnkllrgCoTyoY8WW+5LKj4jF78G1u+9NMuD1fP/9Nl1Ft5E+mbv3kZCsQPxfeGQfKWsk266Mca0GgVyFNHFMNw5CzgFlEKuoYVI/sitPdw18ix/Herd8l/xBAlxcCnpneXung9hh7TiafuxLySZMbZgdmiDZ1q94Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=m4uYofSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319D4C4CEF7;
+	Fri, 20 Mar 2026 19:18:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774034310;
+	bh=FXAUvl2mgFDs1DUh0JZrB5wp+9dH7cNGL8fPZrohgNA=;
+	h=Date:To:From:Subject:From;
+	b=m4uYofSg8rI54V6QAqIzlIiNOPss9HnrPQPV6+xjsW/3Wre+E1BDqLimVZkPLSfdL
+	 vJ4I+2ArV3N4B0szpOTLNxso1tyQZMiDTnn0bm+dB2+1ZSCIJT8AuVzbv1q96Z88ci
+	 jbO+CriYjT9zjnEH2Cf0CM2C00hANZ6ssjbf7THY=
+Date: Fri, 20 Mar 2026 12:18:29 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,kasong@tencent.com,hannes@cmpxchg.org,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,alex@ghiti.fr,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-swap-fix-swap-cache-memcg-accounting.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260320191830.319D4C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[davemloft.net,kernel.org,google.com,redhat.com,vger.kernel.org,yeah.net];
+	TAGGED_FROM(0.00)[bounces-227605-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227604-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	DMARC_NA(0.00)[linux-foundation.org];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_TO(0.00)[vger.kernel.org,huaweicloud.com,gmail.com,tencent.com,cmpxchg.org,kernel.org,redhat.com,ghiti.fr,linux-foundation.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[willemdebruijnkernel@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.889];
+	NEURAL_HAM(-0.00)[-0.918];
+	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,yeah.net:email]
-X-Rspamd-Queue-Id: EED9B2DFB7F
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[cmpxchg.org:email,ghiti.fr:email,smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,huaweicloud.com:email]
+X-Rspamd-Queue-Id: 9EA052DFD6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Willem de Bruijn <willemb@google.com>
 
-NETIF_F_IPV6_CSUM only advertises support for checksum offload of
-packets without IPv6 extension headers. Packets with extension
-headers must fall back onto software checksumming. Since TSO
-depends on checksum offload, those must revert to GSO.
+The patch titled
+     Subject: mm/swap: fix swap cache memcg accounting
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-swap-fix-swap-cache-memcg-accounting.patch
 
-The below commit introduces that fallback. It always checks
-network header length. For tunneled packets, the inner header length
-must be checked instead. Extend the check accordingly.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-fix-swap-cache-memcg-accounting.patch
 
-A special case is tunneled packets without inner IP protocol. Such as
-RFC 6951 SCTP in UDP. Those are not standard IPv6 followed by
-transport header either, so also must revert to the software GSO path.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Cc: stable@vger.kernel.org
-Fixes: 864e3396976e ("net: gso: Forbid IPv6 TSO with extensions on devices with only IPV6_CSUM")
-Reported-by: Tangxin Xie <xietangxin@yeah.net>
-Closes: https://lore.kernel.org/netdev/0414e7e2-9a1c-4d7c-a99d-b9039cf68f40@yeah.net/
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Willem de Bruijn <willemb@google.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Alexandre Ghiti <alex@ghiti.fr>
+Subject: mm/swap: fix swap cache memcg accounting
+Date: Fri, 20 Mar 2026 06:05:59 +0100
+
+The swap readahead path was recently refactored and while doing this, the
+order between the charging of the folio in the memcg and the addition of
+the folio in the swap cache was inverted.
+
+Since the accounting of the folio is done while adding the folio to the
+swap cache and the folio is not charged in the memcg yet, the accounting
+is then done at the node level, which is wrong.
+
+Fix this by charging the folio in the memcg before adding it to the swap cache.
+
+Link: https://lkml.kernel.org/r/20260320050601.1833108-1-alex@ghiti.fr
+Fixes: 2732acda82c9 ("mm, swap: use swap cache as the swap in synchronize layer")
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+Acked-by: Kairui Song <kasong@tencent.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Alexandre Ghiti <alex@ghiti.fr>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- net/core/dev.c | 22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 14a83f2035b9..fc5557062414 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3769,6 +3769,22 @@ static netdev_features_t dflt_features_check(struct sk_buff *skb,
- 	return vlan_features_check(skb, features);
- }
+ mm/swap_state.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+--- a/mm/swap_state.c~mm-swap-fix-swap-cache-memcg-accounting
++++ a/mm/swap_state.c
+@@ -494,6 +494,10 @@ static struct folio *__swap_cache_prepar
  
-+static bool skb_gso_has_extension_hdr(const struct sk_buff *skb)
-+{
-+	if (!skb->encapsulation)
-+		return ((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			 (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			  vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
-+			skb_transport_header_was_set(skb) &&
-+			skb_network_header_len(skb) != sizeof(struct ipv6hdr));
-+	else
-+		return (!skb_inner_network_header_was_set(skb) ||
-+			((skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
-+			  (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
-+			   inner_ip_hdr(skb)->version == 6)) &&
-+			 skb_inner_network_header_len(skb) != sizeof(struct ipv6hdr)));
-+}
+ 	__folio_set_locked(folio);
+ 	__folio_set_swapbacked(folio);
 +
- static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 					    struct net_device *dev,
- 					    netdev_features_t features)
-@@ -3816,11 +3832,7 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	 * so neither does TSO that depends on it.
- 	 */
- 	if (features & NETIF_F_IPV6_CSUM &&
--	    (skb_shinfo(skb)->gso_type & SKB_GSO_TCPV6 ||
--	     (skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4 &&
--	      vlan_get_protocol(skb) == htons(ETH_P_IPV6))) &&
--	    skb_transport_header_was_set(skb) &&
--	    skb_network_header_len(skb) != sizeof(struct ipv6hdr))
-+	    skb_gso_has_extension_hdr(skb))
- 		features &= ~(NETIF_F_IPV6_CSUM | NETIF_F_TSO6 | NETIF_F_GSO_UDP_L4);
++	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry))
++		goto failed;
++
+ 	for (;;) {
+ 		ret = swap_cache_add_folio(folio, entry, &shadow);
+ 		if (!ret)
+@@ -514,11 +518,6 @@ static struct folio *__swap_cache_prepar
+ 			goto failed;
+ 	}
  
- 	return features;
--- 
-2.53.0.959.g497ff81fa9-goog
+-	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry)) {
+-		swap_cache_del_folio(folio);
+-		goto failed;
+-	}
+-
+ 	memcg1_swapin(entry, folio_nr_pages(folio));
+ 	if (shadow)
+ 		workingset_refault(folio, shadow);
+_
+
+Patches currently in -mm which might be from alex@ghiti.fr are
+
+mm-swap-fix-swap-cache-memcg-accounting.patch
 
 
