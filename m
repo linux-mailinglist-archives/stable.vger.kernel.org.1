@@ -1,72 +1,72 @@
-Return-Path: <stable+bounces-227488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227490-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GwgF5YMvWkO5gIAu9opvQ
-	(envelope-from <stable+bounces-227488-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:00:06 +0100
+	id +Iz7C9IMvWkS6QIAu9opvQ
+	(envelope-from <stable+bounces-227490-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:01:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4012D7A3A
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:00:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D09FC2D7A7C
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:01:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A5A631ACD29
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:55:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48A6031D11D8
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97B6375ACB;
-	Fri, 20 Mar 2026 08:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFB7A377EC0;
+	Fri, 20 Mar 2026 08:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MKBmJvk5"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bEVhC4aw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E6D378818
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCF6378D8D
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 08:55:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773996929; cv=none; b=k7P5v3wvJCYImGbGLY79rC0x0KBoGtCjMt1mIV18ah1exvwq5AF5R3mBgLkeMEPhMtHqZdq0f5JK09tbbNXswyrodFxKnkeCip/vsoAhx+21QmsYa/qu1tjjJgTuIBlWj1AxUZCa3IjIIgnKtxOd7wZnH2OSxO0krI8gIMl0GUQ=
+	t=1773996933; cv=none; b=r1wiueDF2bOls5mrhLa+s21sOYop4MQE5Igujvy8fKaO9XT3HWFRD5WxTM59YQfFfqX16o/1bKwKEuxeWfLAS5/TE0JXf2GUeSoBnLvCF2U2UbG4mECLXDigmsywFtY8tA79zaMFp5IxeYTMu5cR11PboHRzEhdBH/O9EcL+cwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773996929; c=relaxed/simple;
-	bh=8Njy/qbquNmaOZrR9Dys5UbmmfgjiArh2foGQuEn5lg=;
+	s=arc-20240116; t=1773996933; c=relaxed/simple;
+	bh=WVxp0ZIk0xYVRKf3pptNJWqovoLfJ9UKaReWVwYXoRI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Q2hNS+by4jFkcoDxPWpOMiqOt7PaVVf4R9WpB81YgO6oCioquQcRanvZtMdb2e4HJd8i4uSAodtajRPwWXkOVsRo4x9TXozA7P5sSWPQM1DXpQrjXPDEYbAWbARAdpVcZFQOTPCTrM8sGTi5n2ltUEvit62RbvSlDtcxUZAerMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MKBmJvk5; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=iFIGULv7D+VZeax051QABjHdwZaxeYw9C/UOZFsuPXylBu4YfM1koHSOEt3/kFPL8GUN9IViI3gV1HZeRRSEdjM7VPhAlE9KVAcoyh5l/F8XSm5PUiRh9m1/stXK3yGuZ1Vfjcly1W/TJPKxCWD11jTrAjHY+xIKMF+X5dVUuVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bEVhC4aw; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82a6c364372so1849999b3a.3
-        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 01:55:27 -0700 (PDT)
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-35a0b51eb23so1830604a91.2
+        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 01:55:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1773996927; x=1774601727; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1773996929; x=1774601729; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IjDg7JCk+pqnl8F+5J0HenZUvt6BOdkz3K2TWkqBMpM=;
-        b=MKBmJvk5GNzCypyMEmueOPKxhKiTnjtJXIn9z5QRIPMBl05LgvYuYXePwxT9l2H9H0
-         RTa8/92RjsEmTFGZaGQWW2agEBWbOrLqanhA8dssCw7qF8aCece0+SgX+0diTTOqtD2O
-         nwvp2Pc6htScUAZGv/h/Dg0dc3DQgirohD51zSK4/xPr/cyEbnBBd7XO/xlVD/hd/33S
-         1EaxsNAe4oBhH7jTmNdrVc06cX9jURL8wHwKF2HCPuFYDvFJmCn29FIFH+PIVuGO+YCB
-         ZH3vidQsbY6bjhVEyZcNvJ2N4/JQ8iIOIK4dHEpLr141NmFvqQZ3jkLvtybWf0ErKske
-         WeHg==
+        bh=+3atbIaOInnERa/VoAz+UbgXjD5q1aDENcAUOzWrVcA=;
+        b=bEVhC4awlShF1WmqjoI6zSEJSx2dXkmLUCt+YJmASCgduC4kLe2sBcqW9zcqiiwkfZ
+         MCSzwC9ngh+/LPsMBlfnxX+3g/F/ZHooL43I06cR4gnt3a0EHHFRtrq3rtHVNF6+7l76
+         LcWsFhGQNYBNpw7ij3oX7eczi13QaD1edVdU1wKIRvMq2bbm5UrwS278vvBbHSNjJVWE
+         tYHfHBzQeZ77vAUl7YuZbYFAFUGK43KcDvDtptHTycHs4TN1IFsYNwW7XPHDTeO/nlZ2
+         /vHfM7/hXiphn8cgMr5Rgok0Xfcui5ekuBzKvO/IxTJ/1v8nVQj0buXZrbu167FY9htp
+         zCiA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1773996927; x=1774601727;
+        d=1e100.net; s=20251104; t=1773996929; x=1774601729;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IjDg7JCk+pqnl8F+5J0HenZUvt6BOdkz3K2TWkqBMpM=;
-        b=sKGK05NgZFlgfxRnZi68PW7m/VIi6h/t9hF+C2BFw9G6ufGQ1rORtTGdnzQvI5a80T
-         Kn7xnwT+06BaXYpTy/GZjPOpOC7YNjp6zjPdixb9WVCiR3wgQPPy4sBvNdqgc1BkaVSE
-         xfRwBL0q8UuNN2guQH75sT0Bqf+J47KuZc+uJ3t4DSuiyt0PT42wT7v6Zqy2OYJBWOhE
-         jjw1nuyzJkIkNakqH4I4rY6QWomyVOu/G1ZIqWKXsSKq7MYi3+sQCSFHx/ZQTSKuvxvB
-         WFqUjDiSvHgZ4KnnNAT4kDrU9lrhaAxRwdzCWA/qhJigf4sapJRIboFICMDZJtQLdEAq
-         t/qw==
-X-Forwarded-Encrypted: i=1; AJvYcCXAUR7MmM4S6PGUoE/L5Y9Va+XRoXBcmSgawFc1Eig/Xqkv2SzdVa1ZgLoXLZvibyjoBO0j5Nk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+Hi7T47XbfQyGSY5jcAGLHJFJaqx0OMaJlgjexIR2PhI9pQo0
-	VU6HA+IcadAkgV4JT0LuhXlKh32P2T4sksUplanPiTeL+86/81dBtJ1dC3fALMTyhv04E7Rrhj4
-	fryT0Fw==
-X-Received: from pfbhj14.prod.google.com ([2002:a05:6a00:870e:b0:829:93d2:8904])
- (user=khtsai job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:10c9:b0:81b:1a87:9eb9
- with SMTP id d2e1a72fcca58-82a8c28c9demr1967028b3a.25.1773996927088; Fri, 20
- Mar 2026 01:55:27 -0700 (PDT)
-Date: Fri, 20 Mar 2026 16:54:48 +0800
+        bh=+3atbIaOInnERa/VoAz+UbgXjD5q1aDENcAUOzWrVcA=;
+        b=GkNhTMqE2g0U+uhGVkK7tXFNUKILmb1SJCWD15cYw24Y34ninBZMDajHpRv9Xy/9gr
+         eQyEpc+TirmfuQeyqV1//BpBq6QIgncWA7x2MrNLGITkgjQf6epVn+wzuimGtL+9TZ1d
+         mzulDCP/JFh87MBtgDjYofLF9fBOWiMXZjqlPS5jCsbNxDvSw/vYklfdmMLtVffo03wX
+         n7hZGOSbuGcUUg8OQ+TN83OLdkodxVVNSeFeRkr/lgNKWdcGjoxmDjCgqEBPkmJj0zjk
+         /fWPPguT7PdNUa52xBznzHxBC06ulW1qr+5jestT03+mNBz5b6M9dm26u4ZQ3ApGj8SC
+         atcA==
+X-Forwarded-Encrypted: i=1; AJvYcCWA+9WyhqvGf1655xMWKTh/btGjKMOBE0uPKUk8SuhXT1lHSHHwN/o1QI0hcHoCBxcJ/DNOKvQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyrj1vhHkbymv9763y3dnt2oZlK8MKnFfszQoIi6941FajDFobY
+	V6ZigBMGJAjt5nyMwnu1qXXqpAD8IlmkcA5uRj5B4BDLeiQrMN2pKrZ9SngBcWUzEM89YuoqYWY
+	0vO2v1g==
+X-Received: from pjzg1.prod.google.com ([2002:a17:90a:e581:b0:359:fee7:eac2])
+ (user=khtsai job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1dcb:b0:34c:c514:ee1f
+ with SMTP id 98e67ed59e1d1-35bd2bf4d56mr1966801a91.11.1773996929139; Fri, 20
+ Mar 2026 01:55:29 -0700 (PDT)
+Date: Fri, 20 Mar 2026 16:54:49 +0800
 In-Reply-To: <20260320-usb-net-lifecycle-v1-0-4886b578161b@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,13 +76,13 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260320-usb-net-lifecycle-v1-0-4886b578161b@google.com>
 X-Developer-Key: i=khtsai@google.com; a=ed25519; pk=abA4Pw6dY2ZufSbSXW9mtp7xiv1AVPtgRhCFWJSEqLE=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773996915; l=6882;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773996915; l=6962;
  i=khtsai@google.com; s=20250916; h=from:subject:message-id;
- bh=8Njy/qbquNmaOZrR9Dys5UbmmfgjiArh2foGQuEn5lg=; b=E8QjYOUgJgOM5Csmdy3sfsUw7fR/ax73QypTpx0yWOL5oaRfrzPbG+B6eo8WWGLrRSydEQTzD
- td56bvoO1zoAmv559X5ky+kPrJtsCsyo/FVxVwR+52mmxLE6gjgugWX
+ bh=WVxp0ZIk0xYVRKf3pptNJWqovoLfJ9UKaReWVwYXoRI=; b=Gm9M57ASM4csFeNKTWED3B6hzlFROTR2MCxjFTnBBaRH7Cim2LsP4p6D8c4rZ8WLy7LIwR+EE
+ QivIVHCuroPC8xdZHIGQRZnxB0eHFuqYdqbYpX0HkExsR5UpbnzzPNI
 X-Mailer: b4 0.14.3
-Message-ID: <20260320-usb-net-lifecycle-v1-5-4886b578161b@google.com>
-Subject: [PATCH 5/7] usb: gadget: f_eem: Fix net_device lifecycle with device_move
+Message-ID: <20260320-usb-net-lifecycle-v1-6-4886b578161b@google.com>
+Subject: [PATCH 6/7] usb: gadget: f_subset: Fix net_device lifecycle with device_move
 From: Kuen-Han Tsai <khtsai@google.com>
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Kyungmin Park <kyungmin.park@samsung.com>, 
 	Felipe Balbi <balbi@kernel.org>, David Lechner <david@lechnology.com>
@@ -93,19 +93,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
 	MV_CASE(0.50)[];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227488-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[google.com:+];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-227490-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.991];
+	RCVD_TLS_LAST(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[stable.vger.kernel.org:query timed out,khtsai.google.com:query timed out];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[khtsai@google.com,stable@vger.kernel.org];
@@ -113,8 +113,9 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-0.993];
 	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: EF4012D7A3A
+X-Rspamd-Queue-Id: D09FC2D7A7C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -123,11 +124,11 @@ registered during the bind phase with the gadget device as its sysfs
 parent. When the function unbinds, the parent device is destroyed, but
 the net_device survives, resulting in dangling sysfs symlinks:
 
-console:/ # ls -l /sys/class/net/usb0
-lrwxrwxrwx ... /sys/class/net/usb0 ->
-/sys/devices/platform/.../gadget.0/net/usb0
-console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
-ls: .../gadget.0/net/usb0: No such file or directory
+  console:/ # ls -l /sys/class/net/usb0
+  lrwxrwxrwx ... /sys/class/net/usb0 ->
+  /sys/devices/platform/.../gadget.0/net/usb0
+  console:/ # ls -l /sys/devices/platform/.../gadget.0/net/usb0
+  ls: .../gadget.0/net/usb0: No such file or directory
 
 Use device_move() to reparent the net_device between the gadget device
 tree and /sys/devices/virtual across bind and unbind cycles. During the
@@ -140,102 +141,98 @@ To maintain compatibility with legacy composite drivers (e.g., multi.c),
 the bound flag is used to indicate whether the network device is shared
 and pre-registered during the legacy driver's bind phase.
 
-Fixes: b29002a15794 ("usb: gadget: f_eem: convert to new function interface with backward compatibility")
+Fixes: 8cedba7c73af ("usb: gadget: f_subset: convert to new function interface with backward compatibility")
 Cc: stable@vger.kernel.org
 Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
 ---
- drivers/usb/gadget/function/f_eem.c | 59 +++++++++++++++++++------------------
- drivers/usb/gadget/function/u_eem.h | 21 +++++++++----
- 2 files changed, 46 insertions(+), 34 deletions(-)
+ drivers/usb/gadget/function/f_subset.c | 57 +++++++++++++++++-----------------
+ drivers/usb/gadget/function/u_gether.h | 22 ++++++++-----
+ 2 files changed, 44 insertions(+), 35 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_eem.c b/drivers/usb/gadget/function/f_eem.c
-index 0142a0e487ee..ac37d7c1d168 100644
---- a/drivers/usb/gadget/function/f_eem.c
-+++ b/drivers/usb/gadget/function/f_eem.c
-@@ -7,6 +7,7 @@
-  * Copyright (C) 2009 EF Johnson Technologies
-  */
- 
-+#include <linux/cleanup.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
-@@ -251,24 +252,22 @@ static int eem_bind(struct usb_configuration *c, struct usb_function *f)
+diff --git a/drivers/usb/gadget/function/f_subset.c b/drivers/usb/gadget/function/f_subset.c
+index 74dc6da5c767..6e3265b8a3a0 100644
+--- a/drivers/usb/gadget/function/f_subset.c
++++ b/drivers/usb/gadget/function/f_subset.c
+@@ -299,25 +299,22 @@ geth_bind(struct usb_configuration *c, struct usb_function *f)
  	struct usb_ep		*ep;
  
- 	struct f_eem_opts	*eem_opts;
+ 	struct f_gether_opts	*gether_opts;
 +	struct net_device	*net __free(detach_gadget) = NULL;
  
- 	eem_opts = container_of(f->fi, struct f_eem_opts, func_inst);
+ 	gether_opts = container_of(f->fi, struct f_gether_opts, func_inst);
+ 
 -	/*
 -	 * in drivers/usb/gadget/configfs.c:configfs_composite_bind()
 -	 * configurations are bound in sequence with list_for_each_entry,
 -	 * in each configuration its functions are bound in sequence
 -	 * with list_for_each_entry, so we assume no race condition
--	 * with regard to eem_opts->bound access
+-	 * with regard to gether_opts->bound access
 -	 */
--	if (!eem_opts->bound) {
--		mutex_lock(&eem_opts->lock);
--		gether_set_gadget(eem_opts->net, cdev->gadget);
--		status = gether_register_netdev(eem_opts->net);
--		mutex_unlock(&eem_opts->lock);
+-	if (!gether_opts->bound) {
+-		mutex_lock(&gether_opts->lock);
+-		gether_set_gadget(gether_opts->net, cdev->gadget);
+-		status = gether_register_netdev(gether_opts->net);
+-		mutex_unlock(&gether_opts->lock);
 -		if (status)
 -			return status;
--		eem_opts->bound = true;
+-		gether_opts->bound = true;
 -	}
-+
-+	scoped_guard(mutex, &eem_opts->lock)
-+		if (eem_opts->bind_count == 0 && !eem_opts->bound) {
-+			if (!device_is_registered(&eem_opts->net->dev)) {
-+				gether_set_gadget(eem_opts->net, cdev->gadget);
-+				status = gether_register_netdev(eem_opts->net);
++	scoped_guard(mutex, &gether_opts->lock)
++		if (gether_opts->bind_count == 0 && !gether_opts->bound) {
++			if (!device_is_registered(&gether_opts->net->dev)) {
++				gether_set_gadget(gether_opts->net, cdev->gadget);
++				status = gether_register_netdev(gether_opts->net);
 +			} else
-+				status = gether_attach_gadget(eem_opts->net, cdev->gadget);
++				status = gether_attach_gadget(gether_opts->net, cdev->gadget);
 +
 +			if (status)
 +				return status;
-+			net = eem_opts->net;
++			net = gether_opts->net;
 +		}
  
- 	us = usb_gstrings_attach(cdev, eem_strings,
- 				 ARRAY_SIZE(eem_string_defs));
-@@ -279,21 +278,19 @@ static int eem_bind(struct usb_configuration *c, struct usb_function *f)
+ 	us = usb_gstrings_attach(cdev, geth_strings,
+ 				 ARRAY_SIZE(geth_string_defs));
+@@ -330,20 +327,18 @@ geth_bind(struct usb_configuration *c, struct usb_function *f)
  	/* allocate instance-specific interface IDs */
  	status = usb_interface_id(c, f);
  	if (status < 0)
 -		goto fail;
 +		return status;
- 	eem->ctrl_id = status;
- 	eem_intf.bInterfaceNumber = status;
+ 	subset_data_intf.bInterfaceNumber = status;
  
 -	status = -ENODEV;
 -
  	/* allocate instance-specific endpoints */
- 	ep = usb_ep_autoconfig(cdev->gadget, &eem_fs_in_desc);
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_in_desc);
  	if (!ep)
 -		goto fail;
 +		return -ENODEV;
- 	eem->port.in_ep = ep;
+ 	geth->port.in_ep = ep;
  
- 	ep = usb_ep_autoconfig(cdev->gadget, &eem_fs_out_desc);
+ 	ep = usb_ep_autoconfig(cdev->gadget, &fs_subset_out_desc);
  	if (!ep)
 -		goto fail;
 +		return -ENODEV;
- 	eem->port.out_ep = ep;
+ 	geth->port.out_ep = ep;
  
  	/* support all relevant hardware speeds... we expect that when
-@@ -309,16 +306,14 @@ static int eem_bind(struct usb_configuration *c, struct usb_function *f)
- 	status = usb_assign_descriptors(f, eem_fs_function, eem_hs_function,
- 			eem_ss_function, eem_ss_function);
+@@ -361,21 +356,19 @@ geth_bind(struct usb_configuration *c, struct usb_function *f)
+ 	status = usb_assign_descriptors(f, fs_eth_function, hs_eth_function,
+ 			ss_eth_function, ss_eth_function);
  	if (status)
 -		goto fail;
 +		return status;
-+
-+	eem_opts->bind_count++;
-+	retain_and_null_ptr(net);
  
- 	DBG(cdev, "CDC Ethernet (EEM): IN/%s OUT/%s\n",
- 			eem->port.in_ep->name, eem->port.out_ep->name);
+ 	/* NOTE:  all that is done without knowing or caring about
+ 	 * the network link ... which is unavailable to this code
+ 	 * until we're activated via set_alt().
+ 	 */
+ 
++	gether_opts->bind_count++;
++	retain_and_null_ptr(net);
++
+ 	DBG(cdev, "CDC Subset: IN/%s OUT/%s\n",
+ 			geth->port.in_ep->name, geth->port.out_ep->name);
  	return 0;
 -
 -fail:
@@ -244,26 +241,25 @@ index 0142a0e487ee..ac37d7c1d168 100644
 -	return status;
  }
  
- static void eem_cmd_complete(struct usb_ep *ep, struct usb_request *req)
-@@ -597,7 +592,7 @@ static void eem_free_inst(struct usb_function_instance *f)
- 	struct f_eem_opts *opts;
+ static inline struct f_gether_opts *to_f_gether_opts(struct config_item *item)
+@@ -418,7 +411,7 @@ static void geth_free_inst(struct usb_function_instance *f)
+ 	struct f_gether_opts *opts;
  
- 	opts = container_of(f, struct f_eem_opts, func_inst);
+ 	opts = container_of(f, struct f_gether_opts, func_inst);
 -	if (opts->bound)
 +	if (device_is_registered(&opts->net->dev))
  		gether_cleanup(netdev_priv(opts->net));
  	else
  		free_netdev(opts->net);
-@@ -640,9 +635,17 @@ static void eem_free(struct usb_function *f)
+@@ -462,8 +455,16 @@ static void geth_free(struct usb_function *f)
  
- static void eem_unbind(struct usb_configuration *c, struct usb_function *f)
+ static void geth_unbind(struct usb_configuration *c, struct usb_function *f)
  {
-+	struct f_eem_opts *opts;
++	struct f_gether_opts *opts;
 +
- 	DBG(c->cdev, "eem unbind\n");
- 
-+	opts = container_of(f->fi, struct f_eem_opts, func_inst);
++	opts = container_of(f->fi, struct f_gether_opts, func_inst);
 +
+ 	geth_string_defs[0].id = 0;
  	usb_free_all_descriptors(f);
 +
 +	opts->bind_count--;
@@ -271,41 +267,41 @@ index 0142a0e487ee..ac37d7c1d168 100644
 +		gether_detach_gadget(opts->net);
  }
  
- static struct usb_function *eem_alloc(struct usb_function_instance *fi)
-diff --git a/drivers/usb/gadget/function/u_eem.h b/drivers/usb/gadget/function/u_eem.h
-index 3bd85dfcd71c..78ef55815219 100644
---- a/drivers/usb/gadget/function/u_eem.h
-+++ b/drivers/usb/gadget/function/u_eem.h
-@@ -15,17 +15,26 @@
+ static struct usb_function *geth_alloc(struct usb_function_instance *fi)
+diff --git a/drivers/usb/gadget/function/u_gether.h b/drivers/usb/gadget/function/u_gether.h
+index 2f7a373ed449..e7b6b51f69c1 100644
+--- a/drivers/usb/gadget/function/u_gether.h
++++ b/drivers/usb/gadget/function/u_gether.h
+@@ -15,17 +15,25 @@
  
  #include <linux/usb/composite.h>
  
 +/**
-+ * struct f_eem_opts - EEM function options
++ * struct f_gether_opts - subset function options
 + * @func_inst: USB function instance.
-+ * @net: The net_device associated with the EEM function.
++ * @net: The net_device associated with the subset function.
 + * @bound: True if the net_device is shared and pre-registered during the
 + *         legacy composite driver's bind phase (e.g., multi.c). If false,
-+ *         the EEM function will register the net_device during its own
++ *         the subset function will register the net_device during its own
 + *         bind phase.
-+ * @bind_count: Tracks the number of configurations the EEM function is
++ * @bind_count: Tracks the number of configurations the subset function is
 + *              bound to, preventing double-registration of the @net device.
 + * @lock: Protects the data from concurrent access by configfs read/write
 + *        and create symlink/remove symlink operations.
 + * @refcnt: Reference counter for the function instance.
 + */
- struct f_eem_opts {
+ struct f_gether_opts {
  	struct usb_function_instance	func_inst;
  	struct net_device		*net;
  	bool				bound;
-+	int				bind_count;
- 
+-
 -	/*
 -	 * Read/write access to configfs attributes is handled by configfs.
 -	 *
 -	 * This is to protect the data from concurrent access by read/write
 -	 * and create symlink/remove symlink.
 -	 */
++	int				bind_count;
  	struct mutex			lock;
  	int				refcnt;
  };
