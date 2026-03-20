@@ -1,275 +1,165 @@
-Return-Path: <stable+bounces-227516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227517-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDtbCXkuvWmI7QIAu9opvQ
-	(envelope-from <stable+bounces-227516-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:24:41 +0100
+	id eJ5BDKctvWmI7QIAu9opvQ
+	(envelope-from <stable+bounces-227517-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:21:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED022D97CD
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:24:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C57052D9710
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F95E3011F08
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:19:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E93CA300E5BD
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:21:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B323A545F;
-	Fri, 20 Mar 2026 11:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89BB36829F;
+	Fri, 20 Mar 2026 11:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ItwI/2km"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OUVquA6A"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AE83A6405
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 11:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2F12E4274
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 11:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774005582; cv=none; b=Nv5/5h9r3qqgi9VyJjsBTFgNK2o68XBAY1tP2zWGx0bQkMIXH+dcYeAE7E7l2JEXUo8hXYpQGfGiXMZCkTMr42xMxyGsmJARF1qZ3zrPV3Wzrh4BM9ONlSso+Yzk60Z3G5tD/GmjHT6EAWscJHV04Z02lttDCFMP4qIOopzgqu4=
+	t=1774005668; cv=none; b=I3EzF9nUDKB30wI0domajX+HTy/28ApYgW+xL1iJ67C2QrMMMO72lMwsi5d0zAyDtKjTjxmrFoTDtU/uuRf8w1+iP/kE9EaTAPQHxmKpIhX6XD0lrANOUogOLwAbk4W+T3l1UvmzeAkqbtQnU1rqnnp09S4T+z57s08CsmPgh+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774005582; c=relaxed/simple;
-	bh=l1dhd2+bxgTr6gHHhaRO4PXaDqK4ddAvdqxlmR7YEIQ=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ElUthO8dt6bOGlHaP/DsNZruOiqaAWZ7P2zchyPSeRKDjQkaEnIiyvxNaAwX3YLy0VITNquEAcRvmjNu/3F3V4A36OJaIzy8B3oV+IobyzOabWVXV33BeeMcEO/DysSDIJZlcRUzrxuKDwucEFJIJiC9nANoYhVrJlu0xNJDgeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ItwI/2km; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774005579; x=1805541579;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=l1dhd2+bxgTr6gHHhaRO4PXaDqK4ddAvdqxlmR7YEIQ=;
-  b=ItwI/2kmygFOj5R1tRh91jn4rIXFF3BDaA/Rvr8DblpkbM9Pmn9idXPt
-   pf7tRM3ObnvTpYRIHMISFGZawqcn5JsKAcpkjWxM78mayaGLuemPEJduN
-   D7O61/3XnbRpq2CUmdAymdEcm+wQ8T/kgNeBkNUsEG4u0R1ZlXVPAONpO
-   U99EnYE8Hciq3/PzqWDuRb4gdWX7/w8jW0GDYtuiAX6uGZPg4DLskZf6F
-   6EYqct8i7CzZXVQmNSSFnDB7935ZgmHvC7QMwnHkwN81pCnzXpOH9+O8k
-   nqy++h6NTs9iDV0iczoJcs2JMgVqFcd8BC2148hxTCgjxjVLhoANK0Wvo
-   Q==;
-X-CSE-ConnectionGUID: FFILFS9JTM+clK0vfz52YQ==
-X-CSE-MsgGUID: MMwFWrQMQ860lk0zb/fTmw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="86450353"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="86450353"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 04:19:38 -0700
-X-CSE-ConnectionGUID: Dctu4s2mTD6LuEPH6gmDvQ==
-X-CSE-MsgGUID: cs26MOWKS6exzCCUqTNgoA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="246284632"
-Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.197])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 04:19:35 -0700
-From: Jani Nikula <jani.nikula@linux.intel.com>
-To: =?utf-8?Q?Micha=C5=82?= Grzelak <michal.grzelak@intel.com>, Imre Deak
- <imre.deak@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, Uma
- Shankar <uma.shankar@intel.com>, Ville =?utf-8?B?U3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/dp_tunnel: Fix error handling when clearing
- stream BW in atomic state
-In-Reply-To: <bbaf3e50-4660-877f-579d-82fa406e077e@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park,
- 6 krs Bertel Jungin Aukio 5, 02600 Espoo, Finland
-References: <20260320092900.13210-1-imre.deak@intel.com>
- <bbaf3e50-4660-877f-579d-82fa406e077e@intel.com>
-Date: Fri, 20 Mar 2026 13:19:32 +0200
-Message-ID: <99351a6c5d3da05614e3132f2dd562a54df5e1c4@intel.com>
+	s=arc-20240116; t=1774005668; c=relaxed/simple;
+	bh=k+bOQHBkzxAjisXSM9H3nLZCgmMwibfZS2YAlre400I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HfsdU/jq+MmRSfuaYCCMjFm/ihfT/yqjQ45ZFzsxKya28Ync/OSK2Y1h4MKB/DPiEYU+P1qERxREi2J+NWjMqZnJ9GlLk0nsyqBjwpxsDFUr4C/ft8IozZ5XxPsJlQyjotLogLoEPDpjYlst+QkTux/FjkMTRIswYQ3fwaOkeQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OUVquA6A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD346C4CEF7;
+	Fri, 20 Mar 2026 11:21:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774005668;
+	bh=k+bOQHBkzxAjisXSM9H3nLZCgmMwibfZS2YAlre400I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OUVquA6AKS7kyDg2TPAG5MOa+aIp1dqKJ4sEaHBx5E0cS0shTxjAqCNI6ipswSx4U
+	 axb20EXJ8yN3Eh057f6r0AzL5M3p73TWCcVWuTb54Lcp6o2ADDqnyjV4yWEHlcjXqA
+	 Fz1/++GPlcvLiCaTxZL0xH4aHYqvENl2N/g6yMsNxxEJ1JpY/+wlxhLUEafY4NocIY
+	 IKU0nFrPj80PCyX+Ra4T8odAYZqi9mORklLBz8gt2ipcqlWugTVAXgn0YTlNZDnvr2
+	 aL9iBhsOP/xuB1ADCgexWlcCGep2/0ZIS0IMe/WTRtIebIWMpvlFc6neql+e0d1YKa
+	 3l7Ypwsww0eNw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Tom Rix <trix@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y 1/2] nfsd: define exports_proc_ops with CONFIG_PROC_FS
+Date: Fri, 20 Mar 2026 07:21:05 -0400
+Message-ID: <20260320112106.3879597-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026032034-freeing-unlimited-383f@gregkh>
+References: <2026032034-freeing-unlimited-383f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_MATCH_TO(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
 	RCVD_TLS_LAST(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227516-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227517-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jani.nikula@linux.intel.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 5ED022D97CD
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[oracle.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C57052D9710
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 20 Mar 2026, Micha=C5=82 Grzelak <michal.grzelak@intel.com> wrote:
-> On Fri, 20 Mar 2026, Imre Deak wrote:
->> Clearing the DP tunnel stream BW in the atomic state involves getting
->> the tunnel group state, which can fail. Handle the error accordingly.
->>
->> This fixes at least one issue where drm_dp_tunnel_atomic_set_stream_bw()
->> failed to get the tunnel group state returning -EDEADLK, which wasn't
->> handled. This lead to the ctx->contended warn later in modeset_lock()
->> while taking a WW mutex for another object in the same atomic state, and
->> thus within the same already contended WW context.
->>
->> Moving intel_crtc_state_alloc() later would avoid freeing saved_state on
->> the error path; this stable patch leaves that simplification for a
->> follow-up.
->>
->> Cc: Uma Shankar <uma.shankar@intel.com>
->> Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
->> Cc: <stable@vger.kernel.org> # v6.9+
->> Fixes: a4efae87ecb2 ("drm/i915/dp: Compute DP tunnel BW during encoder s=
-tate computation")
->> Signed-off-by: Imre Deak <imre.deak@intel.com>
->> ---
->> drivers/gpu/drm/i915/display/intel_display.c  |  8 +++++++-
->> .../gpu/drm/i915/display/intel_dp_tunnel.c    | 20 +++++++++++++------
->> .../gpu/drm/i915/display/intel_dp_tunnel.h    | 11 ++++++----
->> 3 files changed, 28 insertions(+), 11 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/=
-drm/i915/display/intel_display.c
->> index ee501009a251f..882db77c0bbcd 100644
->> --- a/drivers/gpu/drm/i915/display/intel_display.c
->> +++ b/drivers/gpu/drm/i915/display/intel_display.c
->> @@ -4640,6 +4640,7 @@ intel_crtc_prepare_cleared_state(struct intel_atom=
-ic_state *state,
->> 	struct intel_crtc_state *crtc_state =3D
->> 		intel_atomic_get_new_crtc_state(state, crtc);
->> 	struct intel_crtc_state *saved_state;
->> +	int err;
->>
->> 	saved_state =3D intel_crtc_state_alloc(crtc);
->> 	if (!saved_state)
->> @@ -4648,7 +4649,12 @@ intel_crtc_prepare_cleared_state(struct intel_ato=
-mic_state *state,
->> 	/* free the old crtc_state->hw members */
->> 	intel_crtc_free_hw_state(crtc_state);
->>
->> -	intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
->> +	err =3D intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
->> +	if (err) {
->> +		kfree(saved_state);
->> +
->
-> I am unsure if the blank line above is neccessary, but I might be also
-> missing style guidelines. Otherwise looks good to me.
+From: Tom Rix <trix@redhat.com>
 
-It's a common convention to have a blank line before return.
+[ Upstream commit 340086da9a87820b40601141a0e9e87c954ac006 ]
 
-BR,
-Jani.
+gcc with W=1 and ! CONFIG_PROC_FS
+fs/nfsd/nfsctl.c:161:30: error: ‘exports_proc_ops’
+  defined but not used [-Werror=unused-const-variable=]
+  161 | static const struct proc_ops exports_proc_ops = {
+      |                              ^~~~~~~~~~~~~~~~
 
->
-> Reviewed-by: Micha=C5=82 Grzelak <michal.grzelak@intel.com>
->
-> BR,
-> Micha=C5=82
->
->> +		return err;
->> +	}
->>
->> 	/* FIXME: before the switch to atomic started, a new pipe_config was
->> 	 * kzalloc'd. Code that depends on any field being zero should be
->> diff --git a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c b/drivers/gp=
-u/drm/i915/display/intel_dp_tunnel.c
->> index 1fd1ac8d556d8..7363c98172971 100644
->> --- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
->> +++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
->> @@ -659,19 +659,27 @@ int intel_dp_tunnel_atomic_compute_stream_bw(struc=
-t intel_atomic_state *state,
->>  *
->>  * Clear any DP tunnel stream BW requirement set by
->>  * intel_dp_tunnel_atomic_compute_stream_bw().
->> + *
->> + * Returns 0 in case of success, a negative error code otherwise.
->>  */
->> -void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *=
-state,
->> -					    struct intel_crtc_state *crtc_state)
->> +int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *s=
-tate,
->> +					   struct intel_crtc_state *crtc_state)
->> {
->> 	struct intel_crtc *crtc =3D to_intel_crtc(crtc_state->uapi.crtc);
->> +	int err;
->>
->> 	if (!crtc_state->dp_tunnel_ref.tunnel)
->> -		return;
->> +		return 0;
->> +
->> +	err =3D drm_dp_tunnel_atomic_set_stream_bw(&state->base,
->> +						 crtc_state->dp_tunnel_ref.tunnel,
->> +						 crtc->pipe, 0);
->> +	if (err)
->> +		return err;
->>
->> -	drm_dp_tunnel_atomic_set_stream_bw(&state->base,
->> -					   crtc_state->dp_tunnel_ref.tunnel,
->> -					   crtc->pipe, 0);
->> 	drm_dp_tunnel_ref_put(&crtc_state->dp_tunnel_ref);
->> +
->> +	return 0;
->> }
->>
->> /**
->> diff --git a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h b/drivers/gp=
-u/drm/i915/display/intel_dp_tunnel.h
->> index 7f0f720e8dcad..10ab9eebcef69 100644
->> --- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
->> +++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
->> @@ -40,8 +40,8 @@ int intel_dp_tunnel_atomic_compute_stream_bw(struct in=
-tel_atomic_state *state,
->> 					     struct intel_dp *intel_dp,
->> 					     const struct intel_connector *connector,
->> 					     struct intel_crtc_state *crtc_state);
->> -void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *=
-state,
->> -					    struct intel_crtc_state *crtc_state);
->> +int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *s=
-tate,
->> +					   struct intel_crtc_state *crtc_state);
->>
->> int intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state =
-*state,
->> 					      struct intel_crtc *crtc);
->> @@ -88,9 +88,12 @@ intel_dp_tunnel_atomic_compute_stream_bw(struct intel=
-_atomic_state *state,
->> 	return 0;
->> }
->>
->> -static inline void
->> +static inline int
->> intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *state,
->> -				       struct intel_crtc_state *crtc_state) {}
->> +				       struct intel_crtc_state *crtc_state)
->> +{
->> +	return 0;
->> +}
->>
->> static inline int
->> intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state *sta=
-te,
->> --=20
->> 2.49.1
->>
->>
+The only use of exports_proc_ops is when CONFIG_PROC_FS
+is defined, so its definition should be likewise conditional.
 
---=20
-Jani Nikula, Intel
+Signed-off-by: Tom Rix <trix@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: e7fcf179b82d ("NFSD: Hold net reference for the lifetime of /proc/fs/nfs/exports fd")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/nfsd/nfsctl.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
+
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index cc0dea883fbdb..730e0e580cf57 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -155,18 +155,6 @@ static int exports_net_open(struct net *net, struct file *file)
+ 	return 0;
+ }
+ 
+-static int exports_proc_open(struct inode *inode, struct file *file)
+-{
+-	return exports_net_open(current->nsproxy->net_ns, file);
+-}
+-
+-static const struct proc_ops exports_proc_ops = {
+-	.proc_open	= exports_proc_open,
+-	.proc_read	= seq_read,
+-	.proc_lseek	= seq_lseek,
+-	.proc_release	= seq_release,
+-};
+-
+ static int exports_nfsd_open(struct inode *inode, struct file *file)
+ {
+ 	return exports_net_open(inode->i_sb->s_fs_info, file);
+@@ -1423,6 +1411,19 @@ static struct file_system_type nfsd_fs_type = {
+ MODULE_ALIAS_FS("nfsd");
+ 
+ #ifdef CONFIG_PROC_FS
++
++static int exports_proc_open(struct inode *inode, struct file *file)
++{
++	return exports_net_open(current->nsproxy->net_ns, file);
++}
++
++static const struct proc_ops exports_proc_ops = {
++	.proc_open	= exports_proc_open,
++	.proc_read	= seq_read,
++	.proc_lseek	= seq_lseek,
++	.proc_release	= seq_release,
++};
++
+ static int create_proc_exports_entry(void)
+ {
+ 	struct proc_dir_entry *entry;
+-- 
+2.51.0
+
 
