@@ -1,173 +1,141 @@
-Return-Path: <stable+bounces-227605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227606-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEAdEsWdvWmW/gIAu9opvQ
-	(envelope-from <stable+bounces-227605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:19:33 +0100
+	id uGuWDrWivWkM/wIAu9opvQ
+	(envelope-from <stable+bounces-227606-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:40:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EA052DFD6D
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:19:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA6F2E02C8
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 478E13024508
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 19:18:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C739230A87F3
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 19:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D179234A799;
-	Fri, 20 Mar 2026 19:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8B5C3FF886;
+	Fri, 20 Mar 2026 19:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="m4uYofSg"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Eo0WZutw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FD233C1AD;
-	Fri, 20 Mar 2026 19:18:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837383FE67C;
+	Fri, 20 Mar 2026 19:29:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774034310; cv=none; b=m6Il32Ubs+HCYCLeGShcvxOg1COEzU0AZBeXIveJ3e8W4PzvB1d6ubsa8ubcYauBi0mbb8KCzPbKRHhYWnQ8cTT1apblhp30n5z5IyLgtl+Oelga2PzFLAuR7e53K2f7rOpTMfjGCFp4uFUEv8c453wQcbwQhiACZOH3Y6E3x1g=
+	t=1774034950; cv=none; b=uij7Rg5Xf3GL0PIKI7P4Q7jk6z1fX3peRem0ZzdJWBRfSJ+yVHtyDYSjOi6NW85e/0V+xYfC/Ua3iKYaG8i6UOxZ7MIJFmM7dKR/u5QyIX45C8uNqCHbivEaky6mUpdnqsjmBb8SlGeWKX+CWSTfjZQictggY1jDP7EjgKwHta8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774034310; c=relaxed/simple;
-	bh=FXAUvl2mgFDs1DUh0JZrB5wp+9dH7cNGL8fPZrohgNA=;
-	h=Date:To:From:Subject:Message-Id; b=awS5NUK5apnkllrgCoTyoY8WW+5LKj4jF78G1u+9NMuD1fP/9Nl1Ft5E+mbv3kZCsQPxfeGQfKWsk266Mca0GgVyFNHFMNw5CzgFlEKuoYVI/sitPdw18ix/Herd8l/xBAlxcCnpneXung9hh7TiafuxLySZMbZgdmiDZ1q94Rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=m4uYofSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 319D4C4CEF7;
-	Fri, 20 Mar 2026 19:18:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774034310;
-	bh=FXAUvl2mgFDs1DUh0JZrB5wp+9dH7cNGL8fPZrohgNA=;
-	h=Date:To:From:Subject:From;
-	b=m4uYofSg8rI54V6QAqIzlIiNOPss9HnrPQPV6+xjsW/3Wre+E1BDqLimVZkPLSfdL
-	 vJ4I+2ArV3N4B0szpOTLNxso1tyQZMiDTnn0bm+dB2+1ZSCIJT8AuVzbv1q96Z88ci
-	 jbO+CriYjT9zjnEH2Cf0CM2C00hANZ6ssjbf7THY=
-Date: Fri, 20 Mar 2026 12:18:29 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,kasong@tencent.com,hannes@cmpxchg.org,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,alex@ghiti.fr,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-swap-fix-swap-cache-memcg-accounting.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260320191830.319D4C4CEF7@smtp.kernel.org>
+	s=arc-20240116; t=1774034950; c=relaxed/simple;
+	bh=WjjO/AfJ5NydP1+z0seh9U3XwapW7iumh1O/dmiPh/M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FVf2mybn0yE/U7NVwFX5YGQMKzCcqvcDY0ZKbiEDvHcbYqjfI6E16DJzio3B2hgLfV0SBv2AyyZS1ZHCNasVY1zct2MToT0kmMFRVhDSnI9cwYS+J525o23xIXC+BOg58FRI6HItCs39108bviyd+d6dYBbrF0HlUelqIZWdGQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Eo0WZutw; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1774034940;
+	bh=WjjO/AfJ5NydP1+z0seh9U3XwapW7iumh1O/dmiPh/M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Eo0WZutwhbj8RrQneBTjFbKE4ScC5gJXoD4726/niPp97J90/+rNhIWqT9V34tbZ4
+	 SUEqklYVowmTkrQmR1WO4Q2DUyYl8W5n5aaoWV937rCqWNbKSCcGoIgMahG0a88aRP
+	 oQ0GSwkG+Qa+0xCyf1iGSi0U3KzXLGiPI6S5XCg3dCIfaOXxS7OgXb9LB7G6JnEs3G
+	 0Jszp0WkicMlHr46V3Z9gkNzsJItA82O3tF5F4MD9cb6JT4PLr7M3ezxUeplKyLO4v
+	 r1kokNgvgXAH2XZvSmBBNIQGDjzJVsQd6JLap7oP7shMUz7RuByRJi8dSlkIS7zsNg
+	 IIHUOJz8HsSTg==
+Received: from localhost.localdomain (unknown [84.18.237.101])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbeckett)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id 7B64B17E04DC;
+	Fri, 20 Mar 2026 20:29:00 +0100 (CET)
+From: Bob Beckett <bob.beckett@collabora.com>
+To: Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>
+Cc: kernel@collabora.com,
+	Robert Beckett <bob.beckett@collabora.com>,
+	stable@vger.kernel.org,
+	linux-nvme@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] nvme: respect NVME_QUIRK_DISABLE_WRITE_ZEROES when wzsl is set
+Date: Fri, 20 Mar 2026 19:22:08 +0000
+Message-ID: <20260320192217.365936-1-bob.beckett@collabora.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[collabora.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[collabora.com:s=mail];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227605-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[vger.kernel.org,huaweicloud.com,gmail.com,tencent.com,cmpxchg.org,kernel.org,redhat.com,ghiti.fr,linux-foundation.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-0.918];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[cmpxchg.org:email,ghiti.fr:email,smtp.kernel.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,huaweicloud.com:email]
-X-Rspamd-Queue-Id: 9EA052DFD6D
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227606-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[collabora.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[bob.beckett@collabora.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BEA6F2E02C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Robert Beckett <bob.beckett@collabora.com>
 
-The patch titled
-     Subject: mm/swap: fix swap cache memcg accounting
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-swap-fix-swap-cache-memcg-accounting.patch
+The NVM Command Set Identify Controller data may report a non-zero
+Write Zeroes Size Limit (wzsl). When present, nvme_init_non_mdts_limits()
+unconditionally overrides max_zeroes_sectors from wzsl, even if
+NVME_QUIRK_DISABLE_WRITE_ZEROES previously set it to zero.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-swap-fix-swap-cache-memcg-accounting.patch
+This effectively re-enables write zeroes for devices that need it
+disabled, defeating the quirk. Several Kingston OM* drives rely on
+this quirk to avoid firmware issues with write zeroes commands.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Check for the quirk before applying the wzsl override.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Alexandre Ghiti <alex@ghiti.fr>
-Subject: mm/swap: fix swap cache memcg accounting
-Date: Fri, 20 Mar 2026 06:05:59 +0100
-
-The swap readahead path was recently refactored and while doing this, the
-order between the charging of the folio in the memcg and the addition of
-the folio in the swap cache was inverted.
-
-Since the accounting of the folio is done while adding the folio to the
-swap cache and the folio is not charged in the memcg yet, the accounting
-is then done at the node level, which is wrong.
-
-Fix this by charging the folio in the memcg before adding it to the swap cache.
-
-Link: https://lkml.kernel.org/r/20260320050601.1833108-1-alex@ghiti.fr
-Fixes: 2732acda82c9 ("mm, swap: use swap cache as the swap in synchronize layer")
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-Acked-by: Kairui Song <kasong@tencent.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5befc7c26e5a ("nvme: implement non-mdts command limits")
+Cc: stable@vger.kernel.org
+Signed-off-by: Robert Beckett <bob.beckett@collabora.com>
+Assisted-by: claude-opus-4-6-v1
 ---
+ drivers/nvme/host/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- mm/swap_state.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
---- a/mm/swap_state.c~mm-swap-fix-swap-cache-memcg-accounting
-+++ a/mm/swap_state.c
-@@ -494,6 +494,10 @@ static struct folio *__swap_cache_prepar
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 766e9cc4ffca..ce25c8a4e84b 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3388,7 +3388,7 @@ static int nvme_init_non_mdts_limits(struct nvme_ctrl *ctrl)
  
- 	__folio_set_locked(folio);
- 	__folio_set_swapbacked(folio);
-+
-+	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry))
-+		goto failed;
-+
- 	for (;;) {
- 		ret = swap_cache_add_folio(folio, entry, &shadow);
- 		if (!ret)
-@@ -514,11 +518,6 @@ static struct folio *__swap_cache_prepar
- 			goto failed;
- 	}
+ 	ctrl->dmrl = id->dmrl;
+ 	ctrl->dmrsl = le32_to_cpu(id->dmrsl);
+-	if (id->wzsl)
++	if (id->wzsl && !(ctrl->quirks & NVME_QUIRK_DISABLE_WRITE_ZEROES))
+ 		ctrl->max_zeroes_sectors = nvme_mps_to_sectors(ctrl, id->wzsl);
  
--	if (!charged && mem_cgroup_swapin_charge_folio(folio, NULL, gfp, entry)) {
--		swap_cache_del_folio(folio);
--		goto failed;
--	}
--
- 	memcg1_swapin(entry, folio_nr_pages(folio));
- 	if (shadow)
- 		workingset_refault(folio, shadow);
-_
-
-Patches currently in -mm which might be from alex@ghiti.fr are
-
-mm-swap-fix-swap-cache-memcg-accounting.patch
+ free_data:
+-- 
+2.48.1
 
 
