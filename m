@@ -1,70 +1,58 @@
-Return-Path: <stable+bounces-227534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227535-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OIN7Hkw/vWmJ8AIAu9opvQ
-	(envelope-from <stable+bounces-227534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 13:36:28 +0100
+	id WHVEB70/vWmJ8AIAu9opvQ
+	(envelope-from <stable+bounces-227535-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 13:38:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15C9E2DA595
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 13:36:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDDD32DA5F7
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 13:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 898F730670A3
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:33:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 07926307D805
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 12:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978D63AEF2E;
-	Fri, 20 Mar 2026 12:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6C83AEF3D;
+	Fri, 20 Mar 2026 12:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="HxhlHMyN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYiaMxg3"
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B67743A5E73
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 12:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5227B3A0B11;
+	Fri, 20 Mar 2026 12:34:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774010019; cv=none; b=p2sO8M5AfTkCvqZbKemnS0kRR2uaOzNBZ4pnKa4jX10FqTe9hLvQ+o6nXqwcMY6AhQxVtwdZ7StdJIqcfU/C5RdNRczuUwgHU/JMA5ys3cYKtCKN7Kn/lv46EKVqzbmR2Z6Mo7CdNKkZ8cSzScMth4nX53l3fY9qvwLBC0sMBsE=
+	t=1774010062; cv=none; b=M3W6ZvB43qF1Bk+QJey2oYXUzndOoJlydPZwYVThNk/wnmOVdFZnV79uY99ao59Fxi6vSmPjhW7CQaELVwKA0jscQ2FJflNcLzALMG6vjjaoDojVPYC9TLoQ0+0RtvapoNFan3XIcCnIqEJYXv4JSNnUaSicihA8Lfb1dvgOck0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774010019; c=relaxed/simple;
-	bh=yeCICO2tMCoVr2w7g106Z2YCxGWedOQPQY6gDlOwXZ4=;
+	s=arc-20240116; t=1774010062; c=relaxed/simple;
+	bh=0kuYHYKOa9cOrOL9pXPthIlfZkSzriMUGOsY9d18FZg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bIl3L+CSA239anGPFYW66Wm4tHQMzq4CFXAp7Q9jHoHvPP8zS2Qu8dhWecGF7F4oXTKM/D24EA+XHwiXbKgnqcA/GLJZpxfWqSDyCiz+T1Kiib5D5Z1EJtN52Nnip7e1kN0jP72GfjqZ2CA0cl+ObQkqGbFfRJcIokvgr65kPqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=HxhlHMyN; arc=none smtp.client-ip=18.9.28.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from macsyma.thunk.org (pool-173-48-82-49.bstnma.fios.verizon.net [173.48.82.49])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 62KCXNnP004857
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 08:33:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1774010005; bh=FqdV8jVF6ciRgFNzbaoO3n2lL2YXzcLmpNd21f4CeYI=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=HxhlHMyNId2szpCYj4/9iN/y7bz7OA9meDqC8/uVDpig31it4a8bNbcgb9G6n5HOe
-	 Hgtc0fVT+VmBmkQfbQY6imne/nvSQJo2NATdIVToOhaYgFLLoFsgxkiloMxArwjFWc
-	 MQID7a4TJYfE40LRUW54NVFPLsa0EsJptAa/r1AIueDnm7o2JVACGJZKFZFwZ4PGIv
-	 QfoaKPoMlGXmjyLAYJLW3tKeRZcRlrXaLq4ItDCIy709/Ojjm9ZllfPmk/LR6L6UeM
-	 e/ASZT1D8Q5UYxfCJrnPxpXcdovfVSAkmgrew0V/8NzotOdxFcZbLyWCAdv+wXKfGV
-	 wjf5bSHb/cNmA==
-Received: by macsyma.thunk.org (Postfix, from userid 15806)
-	id C97545E73C10; Fri, 20 Mar 2026 08:32:22 -0400 (EDT)
-Date: Fri, 20 Mar 2026 08:32:22 -0400
-From: "Theodore Tso" <tytso@mit.edu>
-To: ZhengYuan Huang <gality369@gmail.com>
-Cc: adilger.kernel@dilger.ca, tahsin@google.com, linux-ext4@vger.kernel.org,
-        linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
-        r33s3n6@gmail.com, zzzccc427@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH] ext4: xattr: fix out-of-bounds access in
- ext4_xattr_set_entry
-Message-ID: <20260320123222.GC14752@macsyma-wired.lan>
-References: <20260318075842.3341370-1-gality369@gmail.com>
- <20260318144509.GA82331@macsyma-wired.lan>
- <CAOmEq9Uq5xMvhT7cyoY2uhSBhwSEEJ1vYRY36N4sxZSPCO1S8w@mail.gmail.com>
- <20260319135826.GA91368@macsyma-wired.lan>
- <CAOmEq9VAW_a7RsSPquy0_eJOLP4aHOWvwTtzmeLUPXpy85xJvw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=j6O6VrhzbycqL9chHjWmLScTbpGciIvxrOt6ZKMru8pSO4cYk3D9KtzPPyLQsezrKxujv8sUU5GN/qdSmRO2yUI1cvHY578w+qeA1xwe4mMII/hAJ8YdZeiVlYDOkwgHn3Eg3/rQ8cFtaYKBRLJKL/eLSQXMqvjXXDu8A8gw4qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYiaMxg3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B16C4CEF7;
+	Fri, 20 Mar 2026 12:34:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774010061;
+	bh=0kuYHYKOa9cOrOL9pXPthIlfZkSzriMUGOsY9d18FZg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=qYiaMxg3yI/CLbApQPzod5zZ5SWNhcey2+TcuZbO/iCiHcXqwio0qedNo2flkONcn
+	 A8Eo5rMPlEUotkpl1ULTVLCH1C6sQgSSlRQek0dgkUjzwRgJDNydHbHc8NzCU7Un+u
+	 3MZWgA3TGyNxNExp/utZmQTdAkirUEQ6NEQb7Y+M=
+Date: Fri, 20 Mar 2026 13:34:17 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Mark Somerville <mark@qpok.net>, stable@vger.kernel.org,
+	Mario Limonciello <superm1@kernel.org>, regressions@lists.linux.dev,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Xinhui Pan <Xinhui.Pan@amd.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [REGRESSION] Unable to pass AMD RX 6400 GPU via VFIO
+Message-ID: <2026032040-yelp-antidote-3f60@gregkh>
+References: <1be114e1130ca59ee91fc5a73aaf43a912d408ea@qpok.net>
+ <2fd785ce-bf37-4875-a9a4-92422870f5b5@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -73,101 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOmEq9VAW_a7RsSPquy0_eJOLP4aHOWvwTtzmeLUPXpy85xJvw@mail.gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <2fd785ce-bf37-4875-a9a4-92422870f5b5@leemhuis.info>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[mit.edu,none];
-	R_DKIM_ALLOW(-0.20)[mit.edu:s=outgoing];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[dilger.ca,google.com,vger.kernel.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-227535-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[mit.edu:+];
-	TAGGED_FROM(0.00)[bounces-227534-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tytso@mit.edu,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.940];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	NEURAL_HAM(-0.00)[-0.991];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 15C9E2DA595
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: BDDD32DA5F7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 20, 2026 at 03:43:21PM +0800, ZhengYuan Huang wrote:
+On Fri, Mar 20, 2026 at 12:42:04PM +0100, Thorsten Leemhuis wrote:
+> @greg/@sasha: I might be missing something, but looks like one patch
+> that was backported missed two series where it's needed (see below for
+> details):
 > 
-> There seem to be three layers of defense: fsck, mount-time checks, and
-> runtime checks.
+> On 3/20/26 10:28, Mark Somerville wrote:
+> > 
+> > I run Debian 13 stable (6.12 kernel) and have encountered a regression.
+> > 
+> > My machine has three GPUs, the iGPU that is part of my 7950X and two dGPUs - one NVIDIA 3090 and one AMD RX 6400. I use the iGPU for the host and only use the two dGPUs with virtual machines via VFIO with libvirt.
+> > 
+> > Although I have specified kernel parameters vfio_pci.ids for the GPUs, I have not blacklisted the amdgpu driver so that the host iGPU can operate.  Previously, starting a VM with the RX 6400 dGPU assigned to it (via VFIO) would work fine. However, doing this with more recent stable kernels causes the machine to hang immediately (and then, ultimately, reset after a while - ~30s). No errors are logged, at least as things are configured just now.
+> > 
+> > I can reliably reproduce this crash and a bisection revealed the commit that introducted the problem: 8140ac7c55e75093a01c6110a2c4025fe7177c57.
+> 
+> That is 28695ca09d3264 ("drm/amd: Clean up kfd node on surprise
+> disconnect") [v6.19-rc6, v6.18.7, v6.12.67 (as 8140ac7c55e750), v6.6.122].
+> 
+> A fix for that f7afda7fcd169a ("drm/amd: Fix hang on amdgpu unload by
+> using pci_dev_is_disconnected()") [v7.0-rc1, v6.18.17, v6.12.77].
+> 
+> @greg/@sasha: Wondering why it's not in 6.19.y and 6.6.y. It failed
+> there first, but later was applied to 6.18.y and 6.12.y:
+> 
+> https://lore.kernel.org/all/?q=%22Fix+hang+on+amdgpu+unload+by+using+pci_dev_is_disconnected%22+%28f%3Agreg+OR+f%3Asasha%29
 
-Within runtime checks, there are those checks that are done the first
-time metadata is loaded from disk --- for example, see the checks in
-__ext4_iget() and the functions it calls, such as check_igot_inode().
+It's in the queue for 6.6.y, I've queued it up for 6.19.y now too.
 
-And then there are checks that are done in hotpaths, since at least in
-theory, a stupid system administrator which makes a block device be
-world-writeable and so a malicious or accidental actor could modify
-the copy of the metadata in the buffer cache.  Those are the ones
-sorts of runtime checks we sould try to avoid.
+thanks,
 
-Mount-time checks tend to be those that validate superblock and block
-group descriptor contents.  They can't validate all of the inodes
-because that would take a lot longer.
-
-> Would it be more accurate to understand the boundary
-> this way: once the filesystem metadata has passed mount-time
-> validation (even if it would not necessarily pass fsck), the
-> filesystem is still expected to handle later errors gracefully rather
-> than crash?
-
-It is a nice to have that a file system, should handle errors
-gracefully rather than crash.  However, if the inconsistency would
-have been caught and corrected by fsck, I don't consider it a
-CVE-worthy security bug, but rather a quality-of-implementation bug.
-
-This is important, because there are risks associated with rolling out
-a new kernel to hundreds of thousands of machines, or using live
-patching to fix high severity security bugs.  If the issue could have
-been caught by fsck, and a competently administered system *does* run
-fsck at boot time (such as at $WORK), the cost benefit ratio of
-treating such bugs as security bugs doesn't make sense.
-
-> More specifically, for inconsistencies that arise at runtime, is the
-> general expectation that they are outside the filesystem's
-> responsibility and should instead be handled by other layers (for
-> example, lower-level storage redundancy / RAID)? Or is there still
-> room for defensive checks in the filesystem, as long as they are done
-> outside hot paths?
-
-This would be on a case by case basis.  If the check is *super* cheap,
-and it's done outside of a hotpath --- say, when a file is first
-opened.  And if doesn't cause long-term maintenance issues, it is
-comething that could be considered.  But in terms of the priority of
-dealing with such patches, it is not something that would be
-considered high priority.  Perhaps just a step above spelling or
-grammer fixes in comments.  :-)
-
-Consider that for a enterprise hard drives, the bit error rate is 1 in
-10**15.  And the chances that such as a bit error would be cause a
-metadata inconsistency that would lead to a crash has to be factored
-in.  If we had infinite resources, it might be something that would be
-considered higher priority, but in the real world, when the
-opportunity cost of having software engineers working on other
-improvements, it's not necessarily going to be a compelling business
-case when I go to my management asking for more headcount.  And if you
-are an academic, perhaps the impact of such work might also be called
-into question.
-
-Cheers,
-
-						- Ted
+greg k-h
 
