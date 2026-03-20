@@ -1,140 +1,186 @@
-Return-Path: <stable+bounces-227446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GHrjKg73vGkt5AIAu9opvQ
-	(envelope-from <stable+bounces-227446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:28:14 +0100
+	id iH4qOKb3vGlW5AIAu9opvQ
+	(envelope-from <stable+bounces-227447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:30:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355162D69EC
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:28:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45A482D6A0C
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:30:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E872F304FA6C
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 07:27:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A55C83026A89
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 07:30:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7B435E956;
-	Fri, 20 Mar 2026 07:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116E22EBDDE;
+	Fri, 20 Mar 2026 07:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EgcsTS+B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g6me9896"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2A935DA7C;
-	Fri, 20 Mar 2026 07:27:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB3127FD51
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 07:30:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773991642; cv=none; b=Wq4aT3rZ/v056WvJkH5amLn63M2kHksXATpqZTWHa1JyJH683G3R2/6ZupL8oL5PuII9dNE7rqb1pfsdHeArgcRdw7hw0y2iopJ4s6IpTVFRLlZJtmx2AQxLt/4VUDxzRa+S79tYNzFvbslC0Oe4/ArvGdBMaIVCuzQycnX7Hug=
+	t=1773991832; cv=none; b=hHoWUbt+V9Fu+ZXfXyGnxJ6nIRyUwtU/P9ArrnKLPtbpAjWGbLaKPMJAqCa2GPVJoAyo4BW3ioOfU/yajYOsIo7Yw2ZSH4NxaIWym1s/RjgszlKjO1saet/xdaoWYMXWHhjembwIZ/MAm3HKfmvDEIzBUmHewUIqxLTMdINqb4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773991642; c=relaxed/simple;
-	bh=v2ueppRZhgGBBJgxqshadTQ4Qg0qsu+2KG1AFV3N02A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mxFGdgAk65kydQ/B+Hov3YSlQZ+o37z6msQTYMvoDkvf5csSMh6Rwl3gIPhkHnbfgTNcurW5AQaeL+nPkNW0FAz7KnRrYt41v5oWtXzVPCSOjeQC4XypZ/F25qY7S4t+oVOY8MEH6+8O0G5q6CL1k9yQ/wHz2fPZE9qFQLXCyx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EgcsTS+B; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773991641; x=1805527641;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=v2ueppRZhgGBBJgxqshadTQ4Qg0qsu+2KG1AFV3N02A=;
-  b=EgcsTS+Bo6Gwke1ygWoGnyRWUOTMMJAbZr+xNQ7yp2aE6UhsWqO83k5k
-   +hk7JP2LOHRhpY6rxLXypT2Fg/vMrgllNevAjXLHgwBPnwPoGiahl9Rjo
-   FSb7FuoMmq/RZRCMtnAHmPfEs3zCbaj7sSJogchIkyiyxWxwpnaKvkw4u
-   jYfMy5PlKsKsx4Cs3wJQ0gZa7K8g2jzbkZt4KWpQHNNStltk2wjk5XUOv
-   +NkhvlpO6pHrHwvK0HHHrYbv2xWysvuEqZeQZR23ECurUZtCdpwoiDy4t
-   k6ZydkoZVi9WwEXljTnjs9/RmMgn/Anml82w7rL3ob2/+DX8jz+aKJBmt
-   w==;
-X-CSE-ConnectionGUID: YxfzX8+OS7ystrRObA9Rgw==
-X-CSE-MsgGUID: tWl9Jyd6RVuGW5UKFaBIbQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="77680718"
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="77680718"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 00:27:20 -0700
-X-CSE-ConnectionGUID: vqIb96FlTFeCm0/BF0yiEg==
-X-CSE-MsgGUID: TSZma3MYQ5aO0fka3UkAtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="219042268"
-Received: from egrumbac-mobl6.ger.corp.intel.com (HELO localhost) ([10.245.245.40])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 00:27:19 -0700
-Date: Fri, 20 Mar 2026 09:27:16 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Lee Jones <lee@kernel.org>
-Cc: Brian Mak <makb@juniper.net>, Herve Codina <herve.codina@bootlin.com>,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] mfd: core: Preserve OF node when ACPI handle is
- present
-Message-ID: <abz21ANNVYP3-pb2@ashevche-desk.local>
-References: <20260311190225.22426-1-makb@juniper.net>
- <20260319181231.GC2902881@google.com>
+	s=arc-20240116; t=1773991832; c=relaxed/simple;
+	bh=VmTtvLpeKQO5Y2kiwXZpXHqc0rLQnZxDq9Sen3bILZI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YaN5xJ1hK6sFJvnzTBQdEioQrX8k+bGEjd1HgtGcFLrDQqqjgSwaYhEnVuc+11wb+On3eW2nX3TaBFcP6OR25G9AtcS/1b2lJqUSF/c3KUv2h0M9Q/9lo5otAq1MRXeie7BRfaGnVH1WUgT8+uESeiOrwiusqpG2cMgN9oE57EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g6me9896; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-82985f42664so1235194b3a.0
+        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 00:30:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773991831; x=1774596631; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0EKZSuB/AoQE2+nK92YoyDWIhnKbiEvomcgy+9ah15Q=;
+        b=g6me9896UWPSPFiIf1CodM1k7Px49E4WYJI/eavSilMk9yn07ryJHlYpvF6fd/sGsh
+         62rMKutxyO+OktntwWtAQPS4XBOAFzv/wgYWQH7eDn0DPIeDRb4krJQOU4dxXv+LEiOG
+         FpWc9mYy85JYzB4c+Dxp0LJ5fhBHOP8Fh1CZkFp/VS2qW/pJNUZZeWK1j708MQ+QLlu2
+         uHVgQpQWGJ+AR0K/eoaT1NYrIO0S0puCdMo9Mbq8RAiAZlol+Ewl6pg1sz7REI7oLB+g
+         2zOnuiA+QODGVR/ucCAY8ZUUH7TgYOhRrv0LpJxJ+sifICSDWpeNMR97w6tfAMaQGXCX
+         uuLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1773991831; x=1774596631;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0EKZSuB/AoQE2+nK92YoyDWIhnKbiEvomcgy+9ah15Q=;
+        b=LYJN5yT8HXIJXAiQofbBVzuwzneoMIX3WI27EM0raIWAvGGoEsa5pNpscQhJ5Zfool
+         8FWloJaGLBxmZHp2zvGf2Tdb52moXkhFIbgJ5rUcGmWfdiX9KB9jwOjgJisONWegkYEg
+         cOVh+Np2ZHCH7gY14TYtRryWKdkhdiXk+OoGZJADccN/jWvUg/t6+5sO+uHXFUXedU1u
+         P8qf2iIlUFr6iPI1V9hXAD7l+8Mu/EeVYJfLRUdDaADg9iWaJQjTvLpQL790gxXLOTkX
+         del0+EqZ+Bs2tzmy03h/y6MFFjIHf4nUNH2pkjhA+4gVJctTwpkfebYQlGxPi3Lj+k1b
+         vWQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX9DggUzKiB6DiU9Y0L+0UWiJHOqd9rBc4TfGKnnDBkvbjv1g2TsayaNfml47Fv9EzWnPz+0Zc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzx5AQ15nfSYliZBRawYXIImZQD+7rXFX0dcjiayRzYH8tLgIKt
+	O7olPvLXXl3VtS0otbLYf3ESIDHsTmcm1qKeMBO7qSM0cYFMxQJxmoZMHgYjkI6kqFU=
+X-Gm-Gg: ATEYQzxm+DwhlXqWOH45I4d/xx4he1gqRANyvNGvNSwl/py7QR08F/ugBVQeQmeJUfO
+	YgiyKQGF9VLwIIJrQogBZR5Hw6eO5bOpJM04PwemUibg2qSSCi2yIiffgjqhl+zGir9tIPKsQt/
+	Mb114BZHnUtwFPfzy51YdTBNBCc10wVxAn/T0o0kpqQ5QziP3IvNvbH4SCI7lsZrPuF+oGsPxfz
+	GpefG9q3TAV3OQm2dmLkDIT4ocEjkosh7QunLvc1tII9CC+IKC00i683xkFK0pcUQccMGjlaKXR
+	CQBRSXSrZ6O8uwNhhQxCvs/czilqfA8b2oEPJPn8vQHqTPDKO6eIoxUgdnA4jlfDm1xxD6T4HwI
+	Z9yWQ8PHrTCER03sialzQ3D/3rF/2KlsIktWRTVMXzeFoOk0Dna/OtJGXRcmZ3IB0cdgi1+ouwQ
+	z+zFa0rMc/sNlk0ttCqv6O1DesT0LiDdVaWLU5Ni2cXbYKdw==
+X-Received: by 2002:a05:6a00:a85:b0:82a:18a2:91b9 with SMTP id d2e1a72fcca58-82a8c39435amr2028620b3a.49.1773991830963;
+        Fri, 20 Mar 2026 00:30:30 -0700 (PDT)
+Received: from localhost.localdomain ([114.243.117.21])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03bbf0c2sm1477677b3a.15.2026.03.20.00.30.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 00:30:30 -0700 (PDT)
+From: Qi Tang <tpluszz77@gmail.com>
+To: netdev@vger.kernel.org
+Cc: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net] xfrm: hold skb->dev across async IPv6 transport reinject
+Date: Fri, 20 Mar 2026 15:30:23 +0800
+Message-ID: <20260320073023.21873-1-tpluszz77@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260319181231.GC2902881@google.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
- krs, Bertel Jungin Aukio 5, 02600 Espoo
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227446-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	HAS_ORG_HEADER(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[andriy.shevchenko@linux.intel.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-227447-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-0.998];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,ashevche-desk.local:mid,intel.com:dkim]
-X-Rspamd-Queue-Id: 355162D69EC
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tpluszz77@gmail.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.943];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 45A482D6A0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, Mar 19, 2026 at 06:12:31PM +0000, Lee Jones wrote:
-> On Wed, 11 Mar 2026, Brian Mak wrote:
+xfrm_trans_queue() queues transport-mode packets for async reinject via
+xfrm_trans_reinject(). The queued skb may still be reinjected after the
+originating device teardown has started.
 
-...
+Keep the device alive across the async reinject window by taking a netdev
+reference when queueing the skb and dropping it after the reinject callback
+completes.
 
-> > +	if (adev)
-> > +		set_primary_fwnode(&pdev->dev, acpi_fwnode_handle(adev));
-> > +	else
-> > +		set_primary_fwnode(&pdev->dev, acpi_fwnode_handle(parent));
-> 
-> Sorry to mess you around again, but how do you feel about:
-> 
->   set_primary_fwnode(&pdev->dev, acpi_fwnode_handle(adev ?: parent));
+Fixes: acf568ee859f ("xfrm: Reinject transport-mode packets through tasklet")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qi Tang <tpluszz77@gmail.com>
+---
+ net/xfrm/xfrm_input.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-If you think it's better, no objections from me.
-
-Some maintainers prefer avoiding ternary, and specifically Elvis, some not —
-hard to remember everybody's preferences :-)
-
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 4ed346e682c7..4b5147cb44b7 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -40,6 +40,7 @@ struct xfrm_trans_cb {
+ 	} header;
+ 	int (*finish)(struct net *net, struct sock *sk, struct sk_buff *skb);
+ 	struct net *net;
++	struct net_device *dev;
+ };
+ 
+ #define XFRM_TRANS_SKB_CB(__skb) ((struct xfrm_trans_cb *)&((__skb)->cb[0]))
+@@ -784,9 +785,13 @@ static void xfrm_trans_reinject(struct work_struct *work)
+ 	spin_unlock_bh(&trans->queue_lock);
+ 
+ 	local_bh_disable();
+-	while ((skb = __skb_dequeue(&queue)))
+-		XFRM_TRANS_SKB_CB(skb)->finish(XFRM_TRANS_SKB_CB(skb)->net,
+-					       NULL, skb);
++	while ((skb = __skb_dequeue(&queue))) {
++		struct xfrm_trans_cb *cb = XFRM_TRANS_SKB_CB(skb);
++		struct net_device *dev = cb->dev;
++
++		cb->finish(cb->net, NULL, skb);
++		dev_put(dev);
++	}
+ 	local_bh_enable();
+ }
+ 
+@@ -805,6 +810,8 @@ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
+ 
+ 	XFRM_TRANS_SKB_CB(skb)->finish = finish;
+ 	XFRM_TRANS_SKB_CB(skb)->net = net;
++	XFRM_TRANS_SKB_CB(skb)->dev = skb->dev;
++	dev_hold(XFRM_TRANS_SKB_CB(skb)->dev);
+ 	spin_lock_bh(&trans->queue_lock);
+ 	__skb_queue_tail(&trans->queue, skb);
+ 	spin_unlock_bh(&trans->queue_lock);
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.43.0
 
 
