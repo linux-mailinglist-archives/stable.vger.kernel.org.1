@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-227513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227514-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOWbGJofvWnG6QIAu9opvQ
-	(envelope-from <stable+bounces-227513-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:21:14 +0100
+	id EFPDAaYfvWnG6QIAu9opvQ
+	(envelope-from <stable+bounces-227514-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:21:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A63B2D8A10
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:21:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BDDD2D8A18
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 11:21:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 72E8C3006830
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:21:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E264930055A6
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 10:21:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F40538A71A;
-	Fri, 20 Mar 2026 10:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8952C38A73D;
+	Fri, 20 Mar 2026 10:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="alE9WPqA"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UvHqS4GP"
 X-Original-To: stable@vger.kernel.org
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30FD481DD
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 10:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2405038D00E;
+	Fri, 20 Mar 2026 10:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774002062; cv=none; b=uTuDKJP1Ha3JXvjqrmNTnrLCPVkcSyq/pxkFFahY8UNfV9QNBlUj3L41lXK0hwP8EDwe1uZUBe3BkS4X+k0EIqNGNsN8ovrevEaW3x7oY+c2ny04bfa2rGI2Ri7Uqq9vkTkx3+IGIi+q4+jkN8kkCcC8Xpvig15i+c0mEYWeXhw=
+	t=1774002081; cv=none; b=FU2lY0N44I3C2JBzTAI+7StfYW0OM3crpvvTy39mHk6uI1tHHxIhq9O/PqRUlnkYqa0wWs3ultEgSMw1ICn311yFeu5HPLDNVkbZvZY0x9gg+QEY1FG4o6sNuWr3yMtCk5Dbix40DUeobqJ6kAC9vF3ccDhyGOhs7N5BeGIw4vk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774002062; c=relaxed/simple;
-	bh=r5QPv00cbSjaiHlEndGXtd6J9lWwJ+ipO1cfMiBTSvw=;
+	s=arc-20240116; t=1774002081; c=relaxed/simple;
+	bh=WGHqbdyR2+lBKnDQcft9sq67hHECCtIjAMRZ7D8+sU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftvKLg5TZFzZ9SiivOxFWAVPz1ePs407t0IQBuH9BnNYcGfs1hL2HqFlLgnhImKMylfUFBSj2oXZIRdLNR5yHZrAXsqr56Hvnql5zYCU+L1Cqt4ergMj028ocETeh78F2Nbyl3OMF7IfDCGCLxSCqva7zQDC4Uhh28kGckoz5oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=alE9WPqA; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
-Received: by dvalin.narfation.org (Postfix) id 69A0F2035A;
-	Fri, 20 Mar 2026 10:20:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1774002053;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4NdzyQEmCPszGyI4LLdMYuA0h6cotbbT1rRui9D682E=;
-	b=alE9WPqAh5p1/LGRzvhUOyfTELsoqoGncx52PQr9lVUuvS1qwdrQkfeym/AnG9GqZLUEYe
-	MsVD321M4IakbRgU1auwPwxKWsdarvQ4CmfjS1m8ztslUq8r7UYkRUxXdGE8I8TG48EkvU
-	gwKC7M4BMPSj0ClC9mEZ+Fy3Dcm0XMo=
-From: Sven Eckelmann <sven@narfation.org>
-To: stable@vger.kernel.org
-Cc: Yang Yang <n05ec@lzu.edu.cn>,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.12.y] batman-adv: avoid OGM aggregation when skb tailroom is insufficient
-Date: Fri, 20 Mar 2026 11:20:40 +0100
-Message-ID: <20260320102040.1648972-1-sven@narfation.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <2026032056-kettle-helmet-7e5d@gregkh>
-References: <2026032056-kettle-helmet-7e5d@gregkh>
+	 MIME-Version; b=mzm81tNuWnUCx+7s52odDA2AykHQwvJk4JtZo2h01aU5OoOIMvnePyPyYy7Br9frwcv+QOQ0VW3GHq1hVDzz3ShpgLcur8fgqiZebEMkdCvOsZzjhBNKpfBMiReEndFn6CgYX9OCsAYTu6a0c0bqiaMRGEnOkHwR96oRnR5dACQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UvHqS4GP; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 9817720B710C;
+	Fri, 20 Mar 2026 03:21:17 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9817720B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1774002077;
+	bh=19CNB2zQXS8NyoQR5qNGoT4wu6UHVDAwYpwlLon/SGA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UvHqS4GPXmAwSDsJV2CGD6is6qxrBdEd/fQEFR7lI8bj3Xd6dZm7vYLG74uCkpvy/
+	 trJ6I22CHSivKcIXATqAH9wrWduKDeGMq3fDeLt+FmkO8JrlJm+73wniwj6Uz7T8JP
+	 gvp8GI4RBGSNbdFn21RUkjW76zSTOgkYFfBLMhXM=
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+To: ptsm@linux.microsoft.com,
+	nipun.gupta@amd.com,
+	nikhil.agarwal@amd.com,
+	abhijit.gangurde@amd.com,
+	puneet.gupta@amd.com,
+	gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 2/2] cdx: Fix double free when sysfs file creation fails
+Date: Fri, 20 Mar 2026 03:21:17 -0700
+Message-ID: <20260320102117.1554548-1-ptsm@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
+References: <20260320101933.1554416-1-ptsm@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,80 +66,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[narfation.org,none];
-	R_DKIM_ALLOW(-0.20)[narfation.org:s=20121];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[lzu.edu.cn,gmail.com,outlook.com,narfation.org,simonwunderlich.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227513-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-227514-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sven@narfation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[narfation.org:+];
-	NEURAL_HAM(-0.00)[-0.985];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_NONE(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[outlook.com:email,simonwunderlich.de:email,lzu.edu.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,narfation.org:dkim,narfation.org:email,narfation.org:mid]
-X-Rspamd-Queue-Id: 4A63B2D8A10
+	NEURAL_HAM(-0.00)[-0.991];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.microsoft.com:dkim,linux.microsoft.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8BDDD2D8A18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+In cdx_create_res_attr(), if sysfs_create_bin_file() fails, the code
+frees res_attr but doesn't set cdx_dev->res_attr[num] to NULL. This
+leaves a dangling pointer in the array. Then cdx_destroy_res_attr()
+frees the already-freed memory. Fix the double free by initializing
+cdx_dev->res_attr[num] after sysfs_create_bin_file() completes.
 
-commit 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 upstream.
-
-When OGM aggregation state is toggled at runtime, an existing forwarded
-packet may have been allocated with only packet_len bytes, while a later
-packet can still be selected for aggregation. Appending in this case can
-hit skb_put overflow conditions.
-
-Reject aggregation when the target skb tailroom cannot accommodate the new
-packet. The caller then falls back to creating a new forward packet
-instead of appending.
-
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Fixes: aeda33ab8160 ("cdx: create sysfs bin files for cdx resources")
 Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-[ Adjust context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
 ---
- net/batman-adv/bat_iv_ogm.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/cdx/cdx.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
-index 209180b4c268..c31edbd7c2ab 100644
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -464,6 +464,9 @@ batadv_iv_ogm_can_aggregate(const struct batadv_ogm_packet *new_bat_ogm_packet,
- 	    !time_after_eq(aggregation_end_time, forw_packet->send_time))
- 		return false;
+diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
+index 9196dc50a48d..a4e03fb07c4c 100644
+--- a/drivers/cdx/cdx.c
++++ b/drivers/cdx/cdx.c
+@@ -768,7 +768,6 @@ static int cdx_create_res_attr(struct cdx_device *cdx_dev, int num)
  
-+	if (skb_tailroom(forw_packet->skb) < packet_len)
-+		return false;
+ 	sysfs_bin_attr_init(res_attr);
+ 
+-	cdx_dev->res_attr[num] = res_attr;
+ 	sprintf(res_attr_name, "resource%d", num);
+ 
+ 	res_attr->mmap = cdx_mmap_resource;
+@@ -777,8 +776,12 @@ static int cdx_create_res_attr(struct cdx_device *cdx_dev, int num)
+ 	res_attr->size = cdx_resource_len(cdx_dev, num);
+ 	res_attr->private = (void *)(unsigned long)num;
+ 	ret = sysfs_create_bin_file(&cdx_dev->dev.kobj, res_attr);
+-	if (ret)
++	if (ret) {
+ 		kfree(res_attr);
++		return ret;
++	}
 +
- 	if (aggregated_bytes > BATADV_MAX_AGGREGATION_BYTES)
- 		return false;
++	cdx_dev->res_attr[num] = res_attr;
  
+ 	return ret;
+ }
 -- 
-2.47.3
+2.49.0
 
 
