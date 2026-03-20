@@ -1,414 +1,357 @@
-Return-Path: <stable+bounces-227635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKAZB67IvWkrBgMAu9opvQ
-	(envelope-from <stable+bounces-227635-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 23:22:38 +0100
+	id IIwdMSrMvWmFCAMAu9opvQ
+	(envelope-from <stable+bounces-227636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 23:37:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594AF2E1B8F
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 23:22:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BC62E1CEF
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 23:37:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5257304D268
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:17:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D5F613034E14
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 22:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321223644BE;
-	Fri, 20 Mar 2026 22:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4563F72623;
+	Fri, 20 Mar 2026 22:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JwwbPjVa"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LXq3g62s";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SzLdR5+Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCCF3090C6
-	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 22:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774045078; cv=fail; b=R/bkdmh27yFIBh9K8A6WhxffL0KNWkjxmfgyL7bAHLpYw8Bm02Pb+lRF3UPLgAjwFg4TMbarmmXeLcH8+2kkW4VbJqkDwLN9C2SwmQaXUzr5lzH/hNLaUagtnBaCsUB/E/AIJczfphfmS6TGvSJI4ws4klzgPgmabwIAEobkk5Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774045078; c=relaxed/simple;
-	bh=O5/KobwFgO2RB8kKsqOsBuF8CC0NNVjwgwUNnPsRqb4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=C1pEuP4TsrvEMWMpRW7gBD4S5CceEIUGxEGJHdX6WCkNBZQV94Uip8nogGHC1tpz+1FuLLoAtkLbhaeW9B2omDM9/s04WqqwWn1aoMD0yrpwtJ+9oCYrPo1WuDZM2ywo7MaTYqId4fANKR5AidkrnjSeLP8QiyagYSzvLNGwtGc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JwwbPjVa; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774045076; x=1805581076;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=O5/KobwFgO2RB8kKsqOsBuF8CC0NNVjwgwUNnPsRqb4=;
-  b=JwwbPjVan31ZRfpUmmstERftWVxsWpdjafLZKN0M/UwtF8b22JvJ77mS
-   319t7TNJ45BbWJKKrpPNHQ7BP0i7xQIlT1dSvlhTu1jiUfssFhsayWltq
-   36nhkgKk9lxvjPqH5jWF97pGDmumkbGSiyntst8y+3iIOo3HhN1zGbA0f
-   raW4E/7Z0q7gnfprH+rP9n0symVVhv2k/Rfe1wRF8PKqFvYAHpUuMIoSk
-   Zo72+M5FMrXvOHBK60KQKPlHemIky5m4aVs/L0msDLM2PnhBsP7Fo/Mzz
-   vJJNUddMDATWXz7uNaZJ8HS9XN+zBwpDf1kzDk8/ThUQyELlK7UsOz3t8
-   g==;
-X-CSE-ConnectionGUID: Q0lPK21qSO239xobPVkaDg==
-X-CSE-MsgGUID: TkQes/RJSxOGscHtQ73CEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11735"; a="75046646"
-X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
-   d="scan'208";a="75046646"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 15:17:55 -0700
-X-CSE-ConnectionGUID: GU9Dibo5SXiynX5CsjBoIw==
-X-CSE-MsgGUID: CAl5ByI6RwOfgiMOjmiP8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,132,1770624000"; 
-   d="scan'208";a="228143775"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 15:17:55 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 15:17:54 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 15:17:54 -0700
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.6) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 15:17:54 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F0WXUxQ6r/+LGskNFo+BQVPnVGreVw+7gq9LYqu6UmRg/2b3iLGZQQd/hEskiOq1aGT+h0qZqOgLwj1+7x5UvL0lPnhDk3FxMUVCZEpMWAGdQntSMAdkJTwMVe8AFp9cHoiMco3Q1uxiEpUbWkNqZua4r3EVuBcBm2k9V9yigukb2lRN/fm2qRfHUr308+hJaWYMq41vp9ubJBz5458WHY01bJEFuqCMd/aMV8fbxctVrZ4sDrfuZsLdMuH0XVE7GQYUgh7++/2zCORyUWh4iZw/K46I6XnzZ0jU5suxvShq8wOhnOKdi4lBpd78Tgz4xrS1SJCxv0ljsiF1IcMtaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uMXREfkuN/y6gfZ6H02iWe3/0JMuZJ6ZOcjFCOph2DU=;
- b=kZGsKgaxyGoP2hXiJeIZ+CxmXI2mY4h7f2VHcRnHRJ+Gm9eRCwvyFXlsjiPDUdzUI/uS+WK4ldd97tajZBnNcGwy8+0Hjcwbi7/iGZf+RURLYfuvpLZr6fzmRrVjc3jn9/SiVWZhF4Iyhq/a9oorKuOSzsLy2Ar9sGET/NwhOSQcymtGbTHcSE1RdLtB5dOXVzI73/kmP7ODG0sTG2pnoW5Pm/RRMX16pq9O4rdyMCRG9DjkDX1Zwf/1FV8ofkZQgm5WraHhZrDj7RbmNyKoT9HNN6YdoFIaTs13EUtZiGWU+CS1I5ClwltrOUKt0UsJ5gNr8AaoHMzKgEclPr7QuQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from DM4PR11MB6360.namprd11.prod.outlook.com (2603:10b6:8:bd::12) by
- IA3PR11MB9352.namprd11.prod.outlook.com (2603:10b6:208:575::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.14; Fri, 20 Mar
- 2026 22:17:50 +0000
-Received: from DM4PR11MB6360.namprd11.prod.outlook.com
- ([fe80::22d9:ae03:5db1:680]) by DM4PR11MB6360.namprd11.prod.outlook.com
- ([fe80::22d9:ae03:5db1:680%5]) with mapi id 15.20.9745.007; Fri, 20 Mar 2026
- 22:17:49 +0000
-From: "Shankar, Uma" <uma.shankar@intel.com>
-To: "Deak, Imre" <imre.deak@intel.com>
-CC: "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
-	=?iso-8859-1?Q?Ville_Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] drm/i915/dp_tunnel: Fix error handling when clearing
- stream BW in atomic state
-Thread-Topic: [PATCH] drm/i915/dp_tunnel: Fix error handling when clearing
- stream BW in atomic state
-Thread-Index: AQHcuEwCUjLU2tChGUCnKMCH7JQobLW3THTQgAA2RICAAHrdQA==
-Date: Fri, 20 Mar 2026 22:17:49 +0000
-Message-ID: <DM4PR11MB6360D58A28A90753E1F6996AF44CA@DM4PR11MB6360.namprd11.prod.outlook.com>
-References: <20260320092900.13210-1-imre.deak@intel.com>
- <DM4PR11MB63602830F5D63903389EF2DAF44CA@DM4PR11MB6360.namprd11.prod.outlook.com>
- <ab1f_WvJCZZRR5eK@ideak-desk.lan>
-In-Reply-To: <ab1f_WvJCZZRR5eK@ideak-desk.lan>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DM4PR11MB6360:EE_|IA3PR11MB9352:EE_
-x-ms-office365-filtering-correlation-id: fd6d25dd-7687-4cfb-41ed-08de86ce85cc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|56012099003|22082099003|7053199007|38070700021;
-x-microsoft-antispam-message-info: A3RWtXs404gQFjo6z8pGj2Uv7PoLFrOU4QR2VT8ff69AjGRfos/Pj15U7YE2eJQToUr/8xJOJ2dyxzPVEwPu2NIVmOVgX3TmgfXWMlyBBJ7wiHcx0Ct6JS/2JcGmgjqsrcv3gEGfPxR9VcWIDmnP/c7UfJjtFfon2hfA+75JsHRw88p9Nc/9OFrvCjvAyr9oyquGBFDmcROJkBbBDlpL7m+Uc4Q2OedLbQtGT7XjTKWmvyYMhn4QYXE8zrFl3khlH8pmIkxNNQhBwm14opdOzqPFobtzqbNPrMXVl9C2aUgWttEX20xpWbpy82BW+2QDipZBTS7RoHexxVNbdiBxNZXVwfpVjngTmKgPYkeQhOPH59v9hKt1qhhyLLMcNwDx0Zr51iqX6DtvNTyFovCNtJTQY5JCt7G/wj+dY8h1StQFvQXNB4/3LebU4JZHenAr7MimCc3uCry4BPxOqqpvrAiYVHjdVXUIldeh4BXcxGCh1m8z4L5lQ9rJ2SPwIcPUtvBvMTueoURj/kr7L4dWBe1B21XvotkwOxzo79sCAfWy5MlpD5FRrFy18rmpPAC6ZZ7Gmd9aW6eQZsZ+smPOx7ceLSH4+iRbWBit0DeSRIHq30oqvB/ti6sSqoWCZWl9G7rOkRqqj3SPAhm5zQmzkMAmWIC245tP0+3DhsnfdsFXQETUN85VogvYPo73RUld6LZ7oBQaAC7zsvBpS2nUZvkW+sIEncb6ZC0Bi8xj7tdrtrJQjQf6wqBigxNFeEMYRdEuSddeE9IQsoS6qWAhUWjBDYpVSq/X4hO5VBMs0TM=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR11MB6360.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(56012099003)(22082099003)(7053199007)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?ueZRfXHvtQ/dDRf37xQnl5VEw3xUKh5mUYlsJiRCojpx6UT5t6MBPTnBAG?=
- =?iso-8859-1?Q?5Eg38+RVjgNKZ9LKBBEQmw5HWXyp5NV6pf/0qvEDQGS2RFTNcHmZhMD7GP?=
- =?iso-8859-1?Q?hzcnIy6CojdvkEtodQMcLxnbXg+Nz4EAt01g4EZp7Lo2OvMLTAK2l0hPXu?=
- =?iso-8859-1?Q?Nvg+Sw/V7snmeRKNSZt1BgU/mzV5gVq67GAEXHEElLiIGj3GqpDp6r6IaO?=
- =?iso-8859-1?Q?9nC1SfQDjH9n6TCI0N6aI2iiCqUcrFhABGznxfd3qa+ZdMf4UU7HklXNjp?=
- =?iso-8859-1?Q?DdBVNFHa18o+NVtt7Yw9QkiaLH1PAd/iIw/Pc8zmOLymmegSo3l21WaVyq?=
- =?iso-8859-1?Q?snncsGUfm9axRHs3LAFM1G6sl/+yblRqzvZkJCVBgm0HOzw0ya3iPhzEjF?=
- =?iso-8859-1?Q?IToPynw/D2DXCXSAtN3J5MO2rXTA9c6BVo2mDKXoNKUTvgQtWsq3foGCUF?=
- =?iso-8859-1?Q?R96iAmiyNdd+bwsKo4gTes/+B18DFE57SegLM3DMqxAIOiQdu9oRv2k72K?=
- =?iso-8859-1?Q?kIZ3I0BXvexbbmHcMj0WReNmKKMAr0qZzkJPZwubbRsrJptudlGPTVKjb+?=
- =?iso-8859-1?Q?IKfE8PWrg9VoDA8dtSaQo451Gr3CzHIMIvMEKGK7nATk1ttfltdtXb0RLE?=
- =?iso-8859-1?Q?NsmA19Tvx0XHf1iwpEMuFIAXKpdc/FJlAf7gsSvj/SnWVq5w5RFbXBGO4E?=
- =?iso-8859-1?Q?e/SfgpiZMXPe8BbmMRRlE9CA1dA1BEO7B24swtZc7xfCUTONV8CLPdWPQ/?=
- =?iso-8859-1?Q?z5j4YtEl3duXAZunhQwpgTlTJNerwXBUSrx6uyIPWx2JqTrCwtptzv6vjF?=
- =?iso-8859-1?Q?+79lToMhxgLbwzZi8/RyQhQyIb2cR85mizyboGRnI98MHoSz/rgrOz+BL1?=
- =?iso-8859-1?Q?PydLQv5QVJxxFU0HTL6tUs0HLdrrYchp1FnHui+z5Ib437J9rmi9JbzKw3?=
- =?iso-8859-1?Q?oZoBLaRk5gnqjnWTkxeMVFhUs7tuNKAifzlK25ewxuijbfhPA1S9PjO55+?=
- =?iso-8859-1?Q?H9Z17CUuhu0YhA1CWDLSyKFGH792Jkth5e1bKhAyRAtVy+oPwl/BhuV2J4?=
- =?iso-8859-1?Q?x9+jIqm+DsW2i4CgPt/Jh7zYEs9GXW5miP0TWSIHfrWl1RElGOZafcC+px?=
- =?iso-8859-1?Q?MFn/TRQzNQDXM9PZyOVjYMqDIT4wtnHYSnGk9Ji0GIfrFJzlud7GD308dj?=
- =?iso-8859-1?Q?hVHB2Sa1749gNAgGUQhM3Z+MfojNRQ+6Cu26WRr/aZbNRVUkbTKNjoRrqd?=
- =?iso-8859-1?Q?xFbAXn1I3WbHswnQk7CLCUhM4J4WnjY3WWF/V7bKblALf/vH33/6JRZuKn?=
- =?iso-8859-1?Q?kHfxiA8RC77oKZlgOhSCkJFhQHeUFkT+UcAn2m1moCxu1uVjrQcc39qFtq?=
- =?iso-8859-1?Q?BvgHU4KGSbl26at99QXAdLoBVbcKr77aUEc+rtVyeoUGRuw3TL8pFyAYuL?=
- =?iso-8859-1?Q?nFhfdd8haI2E/34iZPwiurCA0xTSe845fXg34R1tho3TUwj8JJa4LyDVGy?=
- =?iso-8859-1?Q?Z3LjC/eO6Ixz8S5C+EPqrXyI1D7KewPeHMpnLGlja1oKtTx6se965TWKHz?=
- =?iso-8859-1?Q?hwJrCtnwpFj4XWfZJa3Azpmjnr0qm8eoFCcEELg9T2WXM7zQVH4gC5Ur7u?=
- =?iso-8859-1?Q?FJwABrGFGH0SSFo29n/hcoUZxlnRAFwrVxkKY1ZqiCCbo9L/REYUm4QAJE?=
- =?iso-8859-1?Q?Fi82jq1YaGT4Tnxe3RtUzFjCxY0YDXF0bAztIqu9gUf0ZxncPh8qDNeijR?=
- =?iso-8859-1?Q?Hmz9bPU6rf6k7qEXBpT95eZGeUYkxCUuIVRQbRw8aAY1hHKRqPqVN6k7Rd?=
- =?iso-8859-1?Q?Vi2guhN1AA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 651EC230BE9
+	for <stable@vger.kernel.org>; Fri, 20 Mar 2026 22:37:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774046244; cv=none; b=sXxdTN7zVItoI9I9mIlJlGrfkFIX9j3F+dWo2GTODVG5gflTEkAJunbtbAMDJ9ntiRdHt4hMKwDvLxJEQhdjEW8gc5/4G+3yuGvewfaHDSyh4uLOQqsqoqg0BEHPD+ALevQxP3vot1duWu2Z1FF8/rM44VPQ82C4cKzkMIq+2Vk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774046244; c=relaxed/simple;
+	bh=cM1d6D8bUry5V9rPSk6JmiSspgU/ma4i0sPDO9WuIWw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FFqjnVe6F+CNhPvq1/mqrU/Ns5ezRYc/x3U3VzV6yZP+ZnMXGG/b+CGNle1sNCR66G/6mFFTq6ihRYwtr2aVq8rZzA3as6iG5uk+CXROFw1dupxWBiKlultBweoCyF4lA7MhOlRnCjpwFY1WD1u7347kJlnwtZJ6E5WPVSNj1P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LXq3g62s; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SzLdR5+Y; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1774046241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zZwvqN2mJDJhEGuMzzf10cm+/tKAa5syM+gE8rratps=;
+	b=LXq3g62siwSTKG5oGjlAzP04Yuq1JzcEujkL7FiHpDmp7C+M9lTDiFufbVqY8kgTGcgUbu
+	rwG45ytFUG+SZCUZf52a9sUxrc7C1UI8pik/mOx5pVaMXT8aSGQ8G7NutQZJIH+kkL/Rx4
+	4tAflPIlPPBKR/n/oo0LLPW9sVi6WQE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-688-vkcCbVcMNI-G7wrw2JcX1Q-1; Fri, 20 Mar 2026 18:37:19 -0400
+X-MC-Unique: vkcCbVcMNI-G7wrw2JcX1Q-1
+X-Mimecast-MFC-AGG-ID: vkcCbVcMNI-G7wrw2JcX1Q_1774046239
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48531e8ae62so6590335e9.3
+        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 15:37:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1774046238; x=1774651038; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zZwvqN2mJDJhEGuMzzf10cm+/tKAa5syM+gE8rratps=;
+        b=SzLdR5+YZWY4+oK1RcrkQfNJ0jN2E9jiafb316qj7Oh0Zu5hFV2K8LiZ+ZMrk9OiLW
+         o7d2LuLMjz9dNeB3UtbOpk4CteGWaj8MY6p2VDzdtvgFH2wsSqjIb3ElBX8N+YW3kFJ5
+         diKDVevS4uj31NdPC0nCm1Q2I72y1IrtBaSWXVr73+Skk06qDuUh/ohtGwM/tWV7bte7
+         tXGpkB5D9/2+zEXFoIJ6QdzNqyrTf/iTEoqOQKTfnvSyazG71zDAlXw5A5fY5kAY1xuh
+         S4pFct3Tp5VyqDnZcXim9nz90yFwL5IKeYhvAAQHKrrI3DVZrxvr5Wssm0qpzwx8dnV4
+         kgaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774046238; x=1774651038;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zZwvqN2mJDJhEGuMzzf10cm+/tKAa5syM+gE8rratps=;
+        b=ku1JAB5+THEz6uxSiaDmiw3TtBp8hkn2CngT0ABu+GoQ782mETDl/IqmsIUVzARtHJ
+         WeMiufQKDlhGFIp39T4ZCe4+kkyWNcb+Zh7YAbWnB/mmC6I6IQfQ+YKDhmIciYsN6R/D
+         3DDhmJ5gspwtllbxXc/04Mj5Pfc6TtxqnwOsNr6wXrd9uTTtUJFtO4DciutG57UVejIg
+         JmHWUHFmRFIry3IShpz0RnfNARcyqH3V+Ql6c7NrJaLO04FjtEYnrrvxmHi8oL21eulh
+         Flp+v4BP2ueKub3/UAQnlK6Fr3WE6hywrYDKVklfgNuQZRTbDLDtHeO1SgZ81iql6Au5
+         wi/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVc5CDmjDz442V7CrhEKuQuLpyZX5NvIo8M+GB5vxPs4W/QFWv+vjcKjBa81VUITuBGURj0ArI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+xAw6PqR4eOEtXE5cZsLw52iNtISwieQZMlfNWeGVTbegDAYs
+	9wCkeyxbJD4v29dP41moVSMWZVzFq6iPpm9McOj/zJKhkANmM3NpGs7I5Pqz/XwfEj7xJEYJ1ED
+	fC8nxexKR3zmtqZYjrAmcaKSgWIMbK53km6g5Ln40AkLq02KMQv+RB/enfw==
+X-Gm-Gg: ATEYQzzSZlJD9X3/doHfCx0ljkXkZtGjQb20LmcsdXCQkooAY8YwjMIYsfc/ipvEfH9
+	iLopvQy5wEPA04Fn+xgaWylnEtS6JVKvCskW7K0BPoJiu0JwPFeCoQmQvC+5ws0qVa1cTHtoRea
+	fLeLO3DrthEEWmjGgQ2/iFZk/8fMxId7VosuNMOT6vcZme5EykczSrbjdvLn9nCXQyO9QmFAgxh
+	LS+VUi6q7YaqyLySQxnJIrrMfn/Ry4vogKBYVOGRKutbHFQhbOf/q/m9ES1aFsoqI3F2TmQR3NJ
+	4TrLaR/UFD8cIOwFd21iDiXpyEyCMS/mcddxGnmv7Eu6fVbM/vpbGb+1VbVmrHC33CEq/t5FbZH
+	7ERPtNzAjKnQacuEZ
+X-Received: by 2002:a05:600c:1d15:b0:485:34b3:8587 with SMTP id 5b1f17b1804b1-486fedf9061mr65454765e9.10.1774046238486;
+        Fri, 20 Mar 2026 15:37:18 -0700 (PDT)
+X-Received: by 2002:a05:600c:1d15:b0:485:34b3:8587 with SMTP id 5b1f17b1804b1-486fedf9061mr65454455e9.10.1774046237968;
+        Fri, 20 Mar 2026 15:37:17 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1525:da00:3ac2:1a22:72ff:4256])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe68ec05sm153927905e9.0.2026.03.20.15.37.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Mar 2026 15:37:17 -0700 (PDT)
+Date: Fri, 20 Mar 2026 18:37:14 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Paul Moses <p@1g4.org>
+Cc: Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Eli Cohen <elic@nvidia.com>, Parav Pandit <parav@nvidia.com>,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] vdpa: don't free reply skb after genlmsg_reply()
+Message-ID: <20260320183654-mutt-send-email-mst@kernel.org>
+References: <20260312110421.2880401-1-p@1g4.org>
+ <lPMoA-jSSWoNN42ejMYoDHQJVt5KGYsPsJez_Luu8zmwUWQectet-GVqS2EF89-I3k2PddYnY-ZD6z7yCQvK_AF8naIatQV1mD5Xq2671EY=@1g4.org>
+ <sxJbzuV6ZQr_GHbWZNHgX7A0nnmxWSlZMO2MeJWofb8ECzmsO626OUn1izRuKxD-wqJl3LjliGPuenrLKEo8ZLpxuPimgqBjDD8ihhdd6Rg=@1g4.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: MSRJyL0Y/FCV8Falu147+xRRaLL73tgykFiCxcqWbgeXUWKU86JHVm32NLDD68PYOX5LNeHBotXkgJmEScgJ7+z4ZR6GyYAEuN1rCEvOPyh/NnFJUCKuxaTw02cBmZtNiaJKas5vNMhM003U+HITpt38k7CnXQskY+lkwwRZ8kQrzHI2K52mPGQHIQTv3sj/ZiCy2d45q/DDhNvj3t9RpQhvbp0Qi6FrPEPII506dPw9MLRWnw+cwj+ZMZMQd1fMt/Gr1UGesshRoeUjHI6IHzFWfzPsMMkOegRaj97DjNxpTfrAVBzVSunkNqeQRciMJPIq0jzBCYc8YsEALzwLuw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR11MB6360.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd6d25dd-7687-4cfb-41ed-08de86ce85cc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Mar 2026 22:17:49.8836
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hBHE2Y+vdO0/hh/H37ce26MwLua8YtSNg2XyhBT4RLT3KLok2tdTPHOh/+D7Fg2r7y7mqGLP5kdTNE1WQWF+eg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9352
-X-OriginatorOrg: intel.com
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <sxJbzuV6ZQr_GHbWZNHgX7A0nnmxWSlZMO2MeJWofb8ECzmsO626OUn1izRuKxD-wqJl3LjliGPuenrLKEo8ZLpxuPimgqBjDD8ihhdd6Rg=@1g4.org>
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[redhat.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[redhat.com:s=mimecast20190719,redhat.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227635-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.freedesktop.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,DM4PR11MB6360.namprd11.prod.outlook.com:mid];
+	DKIM_TRACE(0.00)[redhat.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227636-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[uma.shankar@intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TAGGED_RCPT(0.00)[stable];
 	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: 594AF2E1B8F
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mst@redhat.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,1g4.org:email,qemu.org:url]
+X-Rspamd-Queue-Id: 28BC62E1CEF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Fri, Mar 20, 2026 at 09:11:18PM +0000, Paul Moses wrote:
+> FYI, I'm finished with this:
+> 
+> preconditions:
+> - local unprivileged user
+> - initial network namespace only
+> - existing vdpa device
+> 
+> impact:
+> - DoS only
+> - immediate netlink_ack() deref of the request skb makes controlled corruption practically unworkable
+> 
+> Feel free to modify patch and only give me "reported by". 
+> 
+> Thanks,
+> Paul
+> 
 
+As I said I will apply yours and a simplification on top.
 
-> -----Original Message-----
-> From: Deak, Imre <imre.deak@intel.com>
-> Sent: Friday, March 20, 2026 8:26 PM
-> To: Shankar, Uma <uma.shankar@intel.com>
-> Cc: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org; Vill=
-e Syrj=E4l=E4
-> <ville.syrjala@linux.intel.com>; stable@vger.kernel.org
-> Subject: Re: [PATCH] drm/i915/dp_tunnel: Fix error handling when clearing=
- stream
-> BW in atomic state
->=20
-> On Fri, Mar 20, 2026 at 01:42:58PM +0200, Shankar, Uma wrote:
-> >
-> >
-> > > -----Original Message-----
-> > > From: Deak, Imre <imre.deak@intel.com>
-> > > Sent: Friday, March 20, 2026 2:59 PM
-> > > To: intel-gfx@lists.freedesktop.org; intel-xe@lists.freedesktop.org
-> > > Cc: Shankar, Uma <uma.shankar@intel.com>; Ville Syrj=E4l=E4
-> > > <ville.syrjala@linux.intel.com>; stable@vger.kernel.org
-> > > Subject: [PATCH] drm/i915/dp_tunnel: Fix error handling when
-> > > clearing stream BW in atomic state
-> > >
-> > > Clearing the DP tunnel stream BW in the atomic state involves
-> > > getting the tunnel group state, which can fail. Handle the error acco=
-rdingly.
-> > >
-> > > This fixes at least one issue where
-> > > drm_dp_tunnel_atomic_set_stream_bw()
-> > > failed to get the tunnel group state returning -EDEADLK, which wasn't=
- handled.
-> > > This lead to the ctx->contended warn later in modeset_lock() while
-> > > taking a WW mutex for another object in the same atomic state, and
-> > > thus within the same already contended WW context.
-> > >
-> > > Moving intel_crtc_state_alloc() later would avoid freeing
-> > > saved_state on the error path; this stable patch leaves that simplifi=
-cation for a
-> follow-up.
-> > >
-> > > Cc: Uma Shankar <uma.shankar@intel.com>
-> > > Cc: Ville Syrj=E4l=E4 <ville.syrjala@linux.intel.com>
-> > > Cc: <stable@vger.kernel.org> # v6.9+
-> > > Fixes: a4efae87ecb2 ("drm/i915/dp: Compute DP tunnel BW during
-> > > encoder state
-> > > computation")
-> > > Signed-off-by: Imre Deak <imre.deak@intel.com>
-> > > ---
-> > >  drivers/gpu/drm/i915/display/intel_display.c  |  8 +++++++-
-> > >  .../gpu/drm/i915/display/intel_dp_tunnel.c    | 20 +++++++++++++----=
---
-> > >  .../gpu/drm/i915/display/intel_dp_tunnel.h    | 11 ++++++----
-> > >  3 files changed, 28 insertions(+), 11 deletions(-)
-> > >
-> > > diff --git a/drivers/gpu/drm/i915/display/intel_display.c
-> > > b/drivers/gpu/drm/i915/display/intel_display.c
-> > > index ee501009a251f..882db77c0bbcd 100644
-> > > --- a/drivers/gpu/drm/i915/display/intel_display.c
-> > > +++ b/drivers/gpu/drm/i915/display/intel_display.c
-> > > @@ -4640,6 +4640,7 @@ intel_crtc_prepare_cleared_state(struct
-> > > intel_atomic_state *state,
-> > >  	struct intel_crtc_state *crtc_state =3D
-> > >  		intel_atomic_get_new_crtc_state(state, crtc);
-> > >  	struct intel_crtc_state *saved_state;
-> > > +	int err;
-> > >
-> > >  	saved_state =3D intel_crtc_state_alloc(crtc);
-> > >  	if (!saved_state)
-> > > @@ -4648,7 +4649,12 @@ intel_crtc_prepare_cleared_state(struct
-> > > intel_atomic_state *state,
-> > >  	/* free the old crtc_state->hw members */
-> > >  	intel_crtc_free_hw_state(crtc_state);
-> > >
-> > > -	intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
-> > > +	err =3D intel_dp_tunnel_atomic_clear_stream_bw(state, crtc_state);
-> > > +	if (err) {
-> > > +		kfree(saved_state);
-> > > +
-> > > +		return err;
-> > > +	}
-> > >
-> > >  	/* FIXME: before the switch to atomic started, a new pipe_config wa=
-s
-> > >  	 * kzalloc'd. Code that depends on any field being zero should be
-> > > diff --git a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-> > > b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-> > > index 1fd1ac8d556d8..7363c98172971 100644
-> > > --- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-> > > +++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.c
-> > > @@ -659,19 +659,27 @@ int
-> > > intel_dp_tunnel_atomic_compute_stream_bw(struct
-> > > intel_atomic_state *state,
-> > >   *
-> > >   * Clear any DP tunnel stream BW requirement set by
-> > >   * intel_dp_tunnel_atomic_compute_stream_bw().
-> > > + *
-> > > + * Returns 0 in case of success, a negative error code otherwise.
-> > >   */
-> > > -void intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_stat=
-e
-> *state,
-> > > -					    struct intel_crtc_state *crtc_state)
-> > > +int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state=
- *state,
-> > > +					   struct intel_crtc_state *crtc_state)
-> > >  {
-> > >  	struct intel_crtc *crtc =3D to_intel_crtc(crtc_state->uapi.crtc);
-> > > +	int err;
-> > >
-> > >  	if (!crtc_state->dp_tunnel_ref.tunnel)
-> > > -		return;
-> > > +		return 0;
-> > > +
-> > > +	err =3D drm_dp_tunnel_atomic_set_stream_bw(&state->base,
-> > > +						 crtc_state->dp_tunnel_ref.tunnel,
-> > > +						 crtc->pipe, 0);
-> > > +	if (err)
-> > > +		return err;
-> > >
-> > > -	drm_dp_tunnel_atomic_set_stream_bw(&state->base,
-> > > -					   crtc_state->dp_tunnel_ref.tunnel,
-> > > -					   crtc->pipe, 0);
-> > >  	drm_dp_tunnel_ref_put(&crtc_state->dp_tunnel_ref);
-> >
-> > Hi Imre,
-> > Should we not drop reference even in case of failure, is this intention=
-al ?
->=20
-> Yes, the early return in case of an error, preserving the tunnel referenc=
-e in the
-> crtc state is intentional. The error here will make the whole commit fail=
- and the
-> atomic state - within that the crtc state - being freed. That crtc state =
-freeing will
-> drop this reference, see intel_crtc_destroy_state().
->=20
-> Aside: it wouldn't cause a functional problem to drop the reference as yo=
-u suggest
-> in case of the earlier error either - the related dropping of the referen=
-ce in
-> intel_crtc_destroy_state() described above would be skipped then. But I s=
-till think
-> the usual early return - as done in the patch - in case of an error is th=
-e logically
-> correct way.
+> 
+> On Monday, March 16th, 2026 at 8:22 PM, Paul Moses <p@1g4.org> wrote:
+> 
+> > Now that I've wrapped up elsewhere, I can focus on this. Let me
+> > know if there's any questions.
+> > 
+> > Thanks,
+> > Paul
+> > 
+> > [    0.716942] ------------[ cut here ]------------
+> > [    0.717160] refcount_t: underflow; use-after-free.
+> > [    0.717356] WARNING: CPU: 2 PID: 138 at lib/refcount.c:28 refcount_warn_saturate+0x118/0x180
+> > [    0.717661] Modules linked in:
+> > [    0.717816] CPU: 2 UID: 1000 PID: 138 Comm: poc9 Not tainted 6.18.13 #3 PREEMPT(full)
+> > [    0.718138] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> > [    0.718591] RIP: 0010:refcount_warn_saturate+0x118/0x180
+> > [    0.718805] Code: 0f b6 05 aa bf 05 02 3c 01 0f 87 d7 db 5d ff a8 01 0f 85 39 ff ff ff 48 c7 c7 78 71 ec 82 c6 05 8c bf 05 02 01 e8 78 f0 78 ff <0f> 0b c9 31 c0 31 f6 31 ff e9 55 4c 45 ff 0f b6 05 73 bf 05 02 3c
+> > [    0.719521] RSP: 0018:ffffc9000048b790 EFLAGS: 00010246
+> > [    0.719722] RAX: 0000000000000000 RBX: ffff888006c74200 RCX: 0000000000000000
+> > [    0.719985] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+> > [poc9-vdpa] port[    0.720257] RBP: ffffc9000048b798 R08: 0000000000000000 R09: 0000000000000000
+> > id=135 rcvbuf=23[    0.720580] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8880075ea000
+> > 04 soerr=105 dro[    0.720869] R13: ffff888006c74200 R14: 00000000fffffff5 R15: ffffc9000048b920
+> > ps=0 get 2/0 sen[    0.721165] FS:  000076880ed826c0(0000) GS:ffff88809a460000(0000) knlGS:0000000000000000
+> > d_eagain=0
+> > [    0.721534] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [    0.721768] CR2: 000076880ed801c8 CR3: 0000000008a61000 CR4: 0000000000450ef0
+> > [    0.722055] PKRU: 55555554
+> > [    0.722159] Call Trace:
+> > [    0.722253]  <TASK>
+> > [    0.722339]  sk_skb_reason_drop+0x203/0x210
+> > [    0.722512]  ? up_read+0x22/0x30
+> > [    0.722638]  vdpa_nl_cmd_dev_config_get_doit+0xc7/0x1d0
+> > [    0.722832]  genl_family_rcv_msg_doit+0xcf/0x120
+> > [    0.723018]  genl_rcv_msg+0x161/0x290
+> > [    0.723157]  ? __pfx_vdpa_nl_cmd_dev_config_get_doit+0x10/0x10
+> > [    0.723381]  ? __pfx_genl_rcv_msg+0x10/0x10
+> > [    0.727944]  netlink_rcv_skb+0x41/0xf0
+> > [    0.728136]  genl_rcv+0x28/0x50
+> > [    0.728281]  netlink_unicast+0x1d8/0x2b0
+> > [    0.728483]  netlink_sendmsg+0x212/0x440
+> > [    0.728673]  __sys_sendto+0x1f3/0x200
+> > [    0.728859]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.729076]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.729287]  ? __lock_acquire+0x831/0x2980
+> > [    0.729491]  __x64_sys_sendto+0x24/0x40
+> > [    0.729665]  x64_sys_call+0x1d15/0x2350
+> > [    0.729838]  do_syscall_64+0x90/0xc60
+> > [    0.730010]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.730226]  ? lock_acquire+0xcc/0x2e0
+> > [    0.730391]  ? __folio_batch_add_and_move+0x24b/0x370
+> > [    0.730623]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.730835]  ? find_held_lock+0x31/0x90
+> > [    0.731010]  ? __folio_batch_add_and_move+0x1ab/0x370
+> > [    0.731238]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.731465]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.731677]  ? find_held_lock+0x31/0x90
+> > [    0.731851]  ? rcu_read_unlock+0x1f/0x80
+> > [    0.732029]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.732247]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.732474]  ? rcu_read_unlock+0x29/0x80
+> > [    0.732652]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.732864]  ? do_anonymous_page+0x101/0x840
+> > [    0.733055]  ? ___pte_offset_map+0x1d2/0x290
+> > [    0.733255]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.733482]  ? __handle_mm_fault+0xa8e/0xf40
+> > [    0.733693]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.733904]  ? find_held_lock+0x31/0x90
+> > [    0.734079]  ? exc_page_fault+0x98/0x2c0
+> > [    0.734257]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.734490]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.734709]  ? do_user_addr_fault+0x37b/0x6e0
+> > [    0.734905]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.735118]  ? irqentry_exit_to_user_mode+0xf4/0x300
+> > [    0.735340]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.735566]  ? irqentry_exit+0x77/0xb0
+> > [    0.735737]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.735949]  ? exc_page_fault+0xbf/0x2c0
+> > [    0.736124]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    0.736340]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > [    0.736576] RIP: 0033:0x434e6c
+> > [    0.736720] Code: fa 6e 03 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c3 44 8b 54 24 28 48 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <48> 3d 00 f0 ff ff 77 34 89 df 48 89 44 24 08 e8 40 6f 03 00 48 8b
+> > [    0.737513] RSP: 002b:000076880ed80190 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
+> > [    0.737841] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000434e6c
+> > [    0.738154] RDX: 0000000000000020 RSI: 000076880ed801d0 RDI: 0000000000000003
+> > [    0.738473] RBP: 0000000069b8ab57 R08: 00000000004b3cf0 R09: 000000000000000c
+> > [    0.738767] R10: 0000000000000000 R11: 0000000000000293 R12: 000000000f71e860
+> > [    0.739075] R13: 0000000000000013 R14: 000076880ed82cdc R15: 00007fff0dab68e7
+> > [    0.739415]  </TASK>
+> > [    0.739526] irq event stamp: 785
+> > [    0.739675] hardirqs last  enabled at (793): [<ffffffff815153f0>] __up_console_sem+0x90/0xa0
+> > [    0.740039] hardirqs last disabled at (800): [<ffffffff815153d5>] __up_console_sem+0x75/0xa0
+> > [    0.740410] softirqs last  enabled at (362): [<ffffffff81449bcd>] __irq_exit_rcu+0x12d/0x150
+> > [    0.740782] softirqs last disabled at (357): [<ffffffff81449bcd>] __irq_exit_rcu+0x12d/0x150
+> > [    0.741145] ---[ end trace 0000000000000000 ]---
+> > [poc9-vdpa] portid=135 rcvbuf=2304 soerr=0 drops=0 get 98859/0 send_eagain=0
+> > [poc9-vdpa] portid=135 rcvbuf=2304 soerr=0 drops=0 get 204383/0 send_eagain=0
+> > [poc9-vdpa] portid=135 rcvbuf=2304 soerr=0 drops=0 get 319574/0 send_eagain=0
+> > [    4.037387] BUG: kernel NULL pointer dereference, address: 0000000000000060
+> > [    4.037612] #PF: supervisor read access in kernel mode
+> > [    4.037761] #PF: error_code(0x0000) - not-present page
+> > [    4.037914] PGD 994c067 P4D 994c067 PUD 994d067 PMD 0
+> > [    4.038066] Oops: Oops: 0000 [#1] SMP NOPTI
+> > [    4.038191] CPU: 4 UID: 1000 PID: 140 Comm: poc9 Tainted: G        W           6.18.13 #3 PREEMPT(full)
+> > [    4.038463] Tainted: [W]=WARN
+> > [    4.038557] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> > [    4.038869] RIP: 0010:sock_wfree+0x1d/0x3f0
+> > [    4.038994] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 57 41 56 53 48 83 ec 10 48 8b 5f 18 44 8b 97 d8 00 00 00 <48> 8b 43 60 f6 c4 02 74 51 44 89 d0 44 89 d2 48 8d 8b 94 02 00 00
+> > [    4.039511] RSP: 0018:ffffc9000049b8f0 EFLAGS: 00010286
+> > [    4.039665] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+> > [    4.039874] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88801f8aa100
+> > [    4.040076] RBP: ffffc9000049b918 R08: 0000000000000000 R09: 0000000000000000
+> > [    4.040278] R10: 00000000000003c0 R11: 0000000000000000 R12: ffff8880075ea000
+> > [    4.040482] R13: ffff88801f8aa100 R14: 00000000fffffff5 R15: ffffc9000049baf0
+> > [    4.040685] FS:  000076880dd806c0(0000) GS:ffff88809a560000(0000) knlGS:0000000000000000
+> > [    4.040908] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [    4.041071] CR2: 0000000000000060 CR3: 0000000008a61000 CR4: 0000000000450ef0
+> > [    4.041275] PKRU: 55555554
+> > [    4.041356] Call Trace:
+> > [    4.041434]  <TASK>
+> > [    4.041502]  unix_destruct_scm+0x77/0x90
+> > [    4.041620]  skb_release_head_state+0x27/0xb0
+> > [    4.041750]  sk_skb_reason_drop+0x55/0x210
+> > [    4.041868]  ? up_read+0x22/0x30
+> > [    4.041976]  vdpa_nl_cmd_dev_config_get_doit+0xc7/0x1d0
+> > [    4.042140]  genl_family_rcv_msg_doit+0xcf/0x120
+> > [    4.042280]  genl_rcv_msg+0x161/0x290
+> > [    4.042387]  ? __pfx_vdpa_nl_cmd_dev_config_get_doit+0x10/0x10
+> > [    4.042558]  ? __pfx_genl_rcv_msg+0x10/0x10
+> > [    4.042679]  netlink_rcv_skb+0x41/0xf0
+> > [    4.042798]  genl_rcv+0x28/0x50
+> > [    4.042892]  netlink_unicast+0x1d8/0x2b0
+> > [    4.043009]  netlink_sendmsg+0x212/0x440
+> > [    4.043127]  __sys_sendto+0x1f3/0x200
+> > [    4.043238]  ? __sys_sendto+0x1aa/0x200
+> > [    4.043351]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.043493]  ? x64_sys_call+0x1d15/0x2350
+> > [    4.043610]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.043747]  ? do_syscall_64+0x1b5/0xc60
+> > [    4.043867]  __x64_sys_sendto+0x24/0x40
+> > [    4.043979]  x64_sys_call+0x1d15/0x2350
+> > [    4.044091]  do_syscall_64+0x90/0xc60
+> > [    4.044200]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.044337]  ? x64_sys_call+0x1d15/0x2350
+> > [    4.044456]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.044597]  ? do_syscall_64+0x1b5/0xc60
+> > [    4.044712]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.044851]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.044990]  ? x64_sys_call+0x1d15/0x2350
+> > [    4.045106]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.045243]  ? do_syscall_64+0x1b5/0xc60
+> > [    4.045358]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.045498]  ? x64_sys_call+0x1d15/0x2350
+> > [    4.045614]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.045750]  ? do_syscall_64+0x1b5/0xc60
+> > [    4.045863]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.046007]  ? do_syscall_64+0x1b5/0xc60
+> > [    4.046121]  ? srso_alias_return_thunk+0x5/0xfbef5
+> > [    4.046259]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > [    4.046407] RIP: 0033:0x434e6c
+> > [    4.046500] Code: fa 6e 03 00 44 8b 4c 24 2c 4c 8b 44 24 20 89 c3 44 8b 54 24 28 48 8b 54 24 18 b8 2c 00 00 00 48 8b 74 24 10 8b 7c 24 08 0f 05 <48> 3d 00 f0 ff ff 77 34 89 df 48 89 44 24 08 e8 40 6f 03 00 48 8b
+> > [    4.047008] RSP: 002b:000076880dd7e190 EFLAGS: 00000293 ORIG_RAX: 000000000000002c
+> > [    4.047218] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 0000000000434e6c
+> > [    4.047420] RDX: 0000000000000020 RSI: 000076880dd7e1d0 RDI: 0000000000000003
+> > [    4.047618] RBP: 0000000069b93bd6 R08: 00000000004b3cf0 R09: 000000000000000c
+> > [    4.047816] R10: 0000000000000000 R11: 0000000000000293 R12: 000000000f71e860
+> > [    4.048023] R13: 0000000000000013 R14: 000076880dd80cdc R15: 00007fff0dab68e7
+> > [    4.048228]  </TASK>
+> > [    4.048295] Modules linked in:
+> > [    4.048387] CR2: 0000000000000060
+> > [    4.048494] ---[ end trace 0000000000000000 ]---
+> > [    4.059378] RIP: 0010:sock_wfree+0x1d/0x3f0
+> > [    4.059511] Code: 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 55 48 89 e5 41 57 41 56 53 48 83 ec 10 48 8b 5f 18 44 8b 97 d8 00 00 00 <48> 8b 43 60 f6 c4 02 74 51 44 89 d0 44 89 d2 48 8d 8b 94 02 00 00
+> > [    4.060019] RSP: 0018:ffffc9000049b8f0 EFLAGS: 00010286
+> > [    4.060168] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+> > [    4.060367] RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffff88801f8aa100
+> > [    4.060574] RBP: ffffc9000049b918 R08: 0000000000000000 R09: 0000000000000000
+> > [    4.060776] R10: 00000000000003c0 R11: 0000000000000000 R12: ffff8880075ea000
+> > [    4.060978] R13: ffff88801f8aa100 R14: 00000000fffffff5 R15: ffffc9000049baf0
+> > [    4.061183] FS:  000076880dd806c0(0000) GS:ffff88809a560000(0000) knlGS:0000000000000000
+> > [    4.061416] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> > [    4.061579] CR2: 0000000000000060 CR3: 0000000008a61000 CR4: 0000000000450ef0
+> > [    4.061782] PKRU: 55555554
+> > [    4.061863] Kernel panic - not syncing: Fatal exception
+> > [    4.062096] Kernel Offset: disabled
+> > [    4.062204] Rebooting in 1 seconds..
+> > 
 
-Thanks for the explanation Imre, sounds good.
-
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-
-> >
-> > Regards,
-> > Uma Shankar
-> >
-> > > +
-> > > +	return 0;
-> > >  }
-> > >
-> > >  /**
-> > > diff --git a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-> > > b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-> > > index 7f0f720e8dcad..10ab9eebcef69 100644
-> > > --- a/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-> > > +++ b/drivers/gpu/drm/i915/display/intel_dp_tunnel.h
-> > > @@ -40,8 +40,8 @@ int
-> > > intel_dp_tunnel_atomic_compute_stream_bw(struct
-> > > intel_atomic_state *state,
-> > >  					     struct intel_dp *intel_dp,
-> > >  					     const struct intel_connector
-> *connector,
-> > >  					     struct intel_crtc_state *crtc_state); -
-> void
-> > > intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *sta=
-te,
-> > > -					    struct intel_crtc_state *crtc_state);
-> > > +int intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state=
- *state,
-> > > +					   struct intel_crtc_state *crtc_state);
-> > >
-> > >  int intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_st=
-ate
-> *state,
-> > >  					      struct intel_crtc *crtc); @@ -88,9
-> +88,12 @@
-> > > intel_dp_tunnel_atomic_compute_stream_bw(struct
-> > > intel_atomic_state *state,
-> > >  	return 0;
-> > >  }
-> > >
-> > > -static inline void
-> > > +static inline int
-> > >  intel_dp_tunnel_atomic_clear_stream_bw(struct intel_atomic_state *st=
-ate,
-> > > -				       struct intel_crtc_state *crtc_state) {}
-> > > +				       struct intel_crtc_state *crtc_state) {
-> > > +	return 0;
-> > > +}
-> > >
-> > >  static inline int
-> > >  intel_dp_tunnel_atomic_add_state_for_crtc(struct intel_atomic_state
-> > > *state,
-> > > --
-> > > 2.49.1
-> >
 
