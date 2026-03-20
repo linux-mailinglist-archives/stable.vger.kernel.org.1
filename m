@@ -1,85 +1,85 @@
-Return-Path: <stable+bounces-227443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227444-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIYeLOH1vGkt5AIAu9opvQ
-	(envelope-from <stable+bounces-227443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:23:13 +0100
+	id mICTKwr2vGkt5AIAu9opvQ
+	(envelope-from <stable+bounces-227444-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:23:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24602D68D1
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:23:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CBBD2D68E3
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 08:23:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2E69F301092A
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 07:23:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB84730338A0
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 07:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1375E35B62D;
-	Fri, 20 Mar 2026 07:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B07E35BDCE;
+	Fri, 20 Mar 2026 07:23:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k+TTYgPj"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JCyXVJBj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497DA35A3BA;
-	Fri, 20 Mar 2026 07:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7DA35B63A;
+	Fri, 20 Mar 2026 07:23:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773991388; cv=fail; b=NWKqkXATD2EVEH84Ljt3SZJM1Mr8YezA2X7VETGHGpWu+teCQifrbOn1zGI1kSYkPVCxzJyn3ObZ4Q2JGOouwfPuHOEM7/18UFtdEl1w0iQtRlEdBqCLTnKURFfocIphOaFzrqP7CCnZqvbj+kozWbzwxm9eIrUu+Bn53TYduhk=
+	t=1773991429; cv=fail; b=hqXvcfpyoHrYNPL+PV1Tog4oRJiBRU2+IQ0gsVjRc/n3+rO5RbGsIwIpKdgC8Sj1fB+qsea1lZ5iL+2nzvc4QLTYMHDuBrZy0IitT6NfsMHVpnmd6Vz7sfwYQuxKXzfEwa4uYeBKEBtTp92W5+vgaCAO1yu+CBPknoxAdk/8AT4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773991388; c=relaxed/simple;
-	bh=MuSyiSqBIPtfvLTWay7lY6suuOzhM7ZlQnT7gJsgFA4=;
+	s=arc-20240116; t=1773991429; c=relaxed/simple;
+	bh=83wL1tmydkiu+S4R5OxljOPaW4hHVbf9EdRv26Niil0=;
 	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZowQ30Op8B/0oja7o3/UGYSfiezqtUZmpLXcXoPFeTo0yaqbVQVjNfqKtTpYkTFPvJQ9zaTH9zk7KmIZslo4RUfxE8H4ws2vPziu64NVw3MBqbWCE+TtE83mhfMAp5XyupLMcoJmiZS8Wv+npZdQC9FUfCJBL73+uXcvOf5bUf0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k+TTYgPj; arc=fail smtp.client-ip=192.198.163.14
+	 Content-Type:MIME-Version; b=BzuGNdt3SQGH4Es7N/Hqr71o7S1XIEwR12G+Hxc61sEnmQqKBMOlWY9/IX4UThuUI9Iln0wwRZe2/mmUo0DnUM6dBTJ2avWV8DjlYR0JDY+0lAwy8X/e9sT0f74maK7nt0yUy15TarzGeLHmsVseNAOfoyd3pimvZ3KSEm7fYQ8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JCyXVJBj; arc=fail smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773991385; x=1805527385;
+  t=1773991427; x=1805527427;
   h=from:to:cc:subject:date:message-id:references:
    in-reply-to:content-transfer-encoding:mime-version;
-  bh=MuSyiSqBIPtfvLTWay7lY6suuOzhM7ZlQnT7gJsgFA4=;
-  b=k+TTYgPjHxZJTzmsiTMdSYPXpN0fIxZPwvHVyHZQv6hxLQxYaBnCUclX
-   v3C86Efk0RirK9opm1GyEDF/wBZf/3w6JlPSr5OJBr1gxSUHpfzIkqflf
-   q9dTLENGMlOLw4mWVlof/gJAZd43W4Z8IPVYIJ155Cl05iotgkvAaPgWs
-   Ty/UwX/dHPYSWNPmRGSQTeAkV9Fb77fu4JFJvlKLvWWxtOCFsq/CpnQLg
-   TQeevGOZoU0OJLYc0SdI2k7UKcml44ru5hCdtDMCXEVOciy6363szWg8M
-   gESBEfMIiZ5n69LxmJI7PDiKx57K7i02FWo5rrnH1b2HXtw+Zy+TyF/aF
-   g==;
-X-CSE-ConnectionGUID: 8ywr8277QQ6ocPwtwUGg7g==
-X-CSE-MsgGUID: uZTru/bdT3WPr60sfH1jKQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="75145504"
+  bh=83wL1tmydkiu+S4R5OxljOPaW4hHVbf9EdRv26Niil0=;
+  b=JCyXVJBjgZRsRy9COoCvflb10ZWU0NezQa1GUiT7tmpCr8mV59VUqEr2
+   WE2YRedJrCteO47+60hR6smxTIRvJV6WvMg6OxadYW/YD0uwxvOiyPZ4r
+   f1MOcr8lSYUYd5Wq9G6dtQZdD0b1OKtHtyzeC32LyTVX6Rx/1fDUIKQEZ
+   lY3QNp7HLPlHga7DPU+PNNglYCQFJyeWlVk53eIohrGubK38DqeoDxBb6
+   xm3b3JoiHExhD4BKPfuTIjvsohriWKBO4ZqLOp/TZc54bIYG0BlWZhpVG
+   uXDU8Nu+ySg2A6JzRQNQM3Gy2Lzd0gnPszh+1lLhSu7hxSP9/IG5ZqdQK
+   Q==;
+X-CSE-ConnectionGUID: oMM6DGNjRfmnOnYr1oHW/Q==
+X-CSE-MsgGUID: 8i3wqCX4SMKtKhbxghfEsw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11734"; a="77680354"
 X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="75145504"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 00:23:05 -0700
-X-CSE-ConnectionGUID: bNMkfukoQVujooptENVlIg==
-X-CSE-MsgGUID: +COXl7/VS0uvEq9dYe27HA==
+   d="scan'208";a="77680354"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 00:23:46 -0700
+X-CSE-ConnectionGUID: 40F/bX5TRti2Em+rz5YI1g==
+X-CSE-MsgGUID: WZRn/Co1QwSTsxxmcfpDiw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,130,1770624000"; 
-   d="scan'208";a="222300927"
-Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 00:23:05 -0700
+   d="scan'208";a="223233122"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2026 00:23:47 -0700
 Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 00:23:04 -0700
+ 15.2.2562.37; Fri, 20 Mar 2026 00:23:45 -0700
 Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
  FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 00:23:04 -0700
-Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.57) by
+ 15.2.2562.37 via Frontend Transport; Fri, 20 Mar 2026 00:23:45 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.38) by
  edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 20 Mar 2026 00:23:04 -0700
+ 15.2.2562.37; Fri, 20 Mar 2026 00:23:45 -0700
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q+fVbTRgdmZl+5hcxuhrtwTDzP+1Mxjm4/qs/gbVl0VUB6HZ5wGsGlOdakT2N0Z4tf/WIA8t+G93AdK/21qD4gw0wtyV0zI2Subh7PFa0SJdNDgZs7Sy382+H4knBIHk05bnH9JZe/UG9WOY2rOthBloAeFNEcJIOVaNuEBWZDiR2XAyh+viOyK0ALuDC8rjOqG/aN9y9KEAgqspBbGbN/Q38Fn47rw9Tmsf3VK+NRTrBtipLSlpIVKoEBurqdmklt3p6m0TLC92YkS5uGbjk+6E2E2k2ruDhKpWSDGH/rkOxQ5EiSWH86bxCiBqsHNJKoKBztz0FUu8wFX9Y0MJHA==
+ b=EQN2lCa8tcH8iMzr+vKTEZBHlwKbLVG+v9qLD8myoOESqCPo7cZjqLGj7paVs/VphATcQ5W8y6C+DJI01Qp9Sdt+FB7yZbXujOKWNvfOdyWCm9CsknWpzcoVJenDuZXmaH6ue4PiUc43BwkGLoZWmZsC/HJmKU5t8NEDgGnHSEZ9Q5U9g5bAFj+5CRoUW1pyWD+FQL8qKKKhbKnQnCDQmbBgc33mjaDPPhyK2N/zadWGCmSVyWmlJMBGUC3nlpuO+T6YVDI0KSIgRDwtxPNraxfTyBB/xD3vlgOJ7/CfM1EHRMj9qoBD/VBiNZZbw0xjiwSCrThoG9LxXxE/Y5wuOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=BUTjo6h9TlpgbpWkoXbikzGjnB74V6dErAee9NnKZF8=;
- b=dpu1x63cb+a5TfTVqeRAPcCt0GxPqrvEAQ02qcVUz/Fm8Pf4n3Oj160GO4jAR9js34xkKkiGhS+aA1/MwxN8+lbm7P5uSGeuXr3RJn6xo3pf4cH/3wgf9U8h1JzeBiRE4vsmvgYiKwVjiTgQiOVDf8InWf1grkMjdSyyUikpOI/ICfZmSGLcEsk2DxthxXVy5uOAF1VXFxt0BW4KgZtY4K8wIiCmxvlN5in4NnAVaefyO2L+HkkI2K00/gc/mK9xzRx2PNBWwDTLkuy/6gJSppcbJgN3aPuSZNt1X8SSv/H5ACZrlDOJDtBgGe8gaXIbi4/ajFD7cBP67gxFn/bmJA==
+ bh=4D8m+pfZLffX9URcDiB7gJVFUxX8rCCGxnaIr3WiW24=;
+ b=JtKyVXGaV6RNPkkbNVEcWO+PaqFw9zD2RGyMpN2cic3C5x8XaoioblcX1LDPNRhWnh1qWbjYxJ7ujhEe51gYDyisdVgNmTR2QaImjYQbLKpJZxc0768iBrHwJoIEfSvfvnzVwVa8bfX1CxzW0V4MNERR+DlUhIpKhcX5ntiHbS2pHuSHIEnZomzdTwhGticlj7RoLA6G6WzZOJ/VCMDETGqhI32wQlQ0zih4fJRKspzou4CnnhrtKYJzCRgXBdYpm57IYXltLqMmj6O8CQgMBlMpVzJfBeLSxCIK+jwUUPK6Ncau9qTIWxiBel4VuO//a8CcAexfcVJAU3MH0Gcv5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
  dkim=pass header.d=intel.com; arc=none
@@ -87,11 +87,11 @@ Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
  by MW3PR11MB4570.namprd11.prod.outlook.com (2603:10b6:303:5f::22) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
- 2026 07:23:02 +0000
+ 2026 07:23:43 +0000
 Received: from IA3PR11MB8986.namprd11.prod.outlook.com
  ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
  ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.20.9723.006; Fri, 20 Mar 2026
- 07:23:01 +0000
+ 07:23:43 +0000
 From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
 To: "Tantilov, Emil S" <emil.s.tantilov@intel.com>,
 	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
@@ -106,16 +106,16 @@ CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
 	"linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>,
 	"sgzhang@google.com" <sgzhang@google.com>, "boolli@google.com"
 	<boolli@google.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH iwl-net v2 1/3] idpf: fix PREEMPT_RT raw/bh spinlock
- nesting for async VC handling
-Thread-Topic: [PATCH iwl-net v2 1/3] idpf: fix PREEMPT_RT raw/bh spinlock
- nesting for async VC handling
-Thread-Index: AQHct+VVCnxDZqYRPUO+VLwoPB7yFLW3BMxQ
-Date: Fri, 20 Mar 2026 07:23:01 +0000
-Message-ID: <IA3PR11MB8986B4C8A0E0BB5A14BD0400E54CA@IA3PR11MB8986.namprd11.prod.outlook.com>
+Subject: RE: [PATCH iwl-net v2 2/3] idpf: improve locking around
+ idpf_vc_xn_push_free()
+Thread-Topic: [PATCH iwl-net v2 2/3] idpf: improve locking around
+ idpf_vc_xn_push_free()
+Thread-Index: AQHct+VVMZFcw63sfkquPSLA/5lAh7W3BR0Q
+Date: Fri, 20 Mar 2026 07:23:43 +0000
+Message-ID: <IA3PR11MB8986DFB6D9882564D16C0ABBE54CA@IA3PR11MB8986.namprd11.prod.outlook.com>
 References: <20260319211335.23236-1-emil.s.tantilov@intel.com>
- <20260319211335.23236-2-emil.s.tantilov@intel.com>
-In-Reply-To: <20260319211335.23236-2-emil.s.tantilov@intel.com>
+ <20260319211335.23236-3-emil.s.tantilov@intel.com>
+In-Reply-To: <20260319211335.23236-3-emil.s.tantilov@intel.com>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach:
@@ -124,43 +124,43 @@ authentication-results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=intel.com;
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|MW3PR11MB4570:EE_
-x-ms-office365-filtering-correlation-id: 94602bdf-f673-4cb8-7308-08de86518515
+x-ms-office365-filtering-correlation-id: cd8ba23c-725a-47f5-aa76-08de86519e04
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
 x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016|38070700021|7053199007|18002099003|22082099003|56012099003;
-x-microsoft-antispam-message-info: ZFbZ0MrJOH0ObE261gk4npoX0gQ5A9iY23QXg1FzRBeuGGGKI7ZkttpFMvQAl/LsDUFHf0vDhpoTlRRpea6W+OB0RtUl93xj3c227CZUWY6EoxYgQ66ZAAl65ykHUtfV8SQUwdDVAAUSxFVnoguf17CJ/IEZ9yDICEH/Dvc/XJ1Loc3MjXpclbFKNpLEnh4lZxairzeMzAKFjy+K/k8jGFG86lvTZU5fVWJgYGnPIi6m2Dwg3eu+ofTv+pc8ZIvf9iGcalHH0ZCTwAQqNnx/tZw1WHOVgxzFM8KKzpjlzSv14COpGgIqUHogcSRESEPeFBFZzMj6UuNRnOGXzc3BFTuIKMO+vpzs+FhLNtsoTtiHWbD6x61U9IB4Nh8/4scWYXQB+wy8R+bU+pyKT6UhicRndHLQw1p3ZoPMZayLJkA5E3A/yN/qZxUZxfPo0hhhPDjgFx0vYCXXL/KSRMqY8Qd+qkdPexl/nO4dgQTEEhZxP1yKA27P36WUslZ3b7uDlebzjb1L4S66MK9erpQ8ENQrDs2XSnaFS4VDjhtLFheD+e7C4bWq5y99uXVf73qrWRCALZh40DxRp0EEDOfrrg16yzdu1NJsMUfEoNRTvKhf0LiAtv3AIAwlmr5NkgMOx1X/9oPNdZq/Dx5cu7xbgHDV8oGHy47IpwC1DYr7VHkWtR1Fk4bfdqCDUiLo2nSHWXe1srZtnxgBHthzX8zu0xPjgkQHXk3cD71DIIAqpTrU2wB0VxtbxDcxbn/6Hjpuu2OworJh6zNteKkdJCL7Dw+ek4YPTj6ZV4zY4YpyLJU=
+x-microsoft-antispam-message-info: hsMq1bAA8cbZBQEwFnEuM6T49T3ZlDii0IvUfpf8H2w0/g7JxTStrhnxAiOZCQQAOLHMk7SnK9M/08l4Q0zToW0heiuPSNqs3puFeKG7vBbHK7pszoFMEOR+szpvsAfAiOtsDQc58++nUJaQu2Q71m7qQKwbBzUzo0xsNUa2P8BrpA6ioJcpT1vCGGwzFjnC56r8yxr80uuQFTzK40ftDV6PUv0zNtALFtLRZVwNBemDq6qucDDLjLMn6cMYETazvbnhf/kJrRHHmJ+fz0rTbG03IAsweV1C8KQ2h5GoJ7JuZLlYykGpTCPPVcph9FaVsE1h77AURWc7+73fV9qax90BLuqPfdxbjOe8/WF1IuI5G+gogUBeoeeW+noujX7V9VAQ7e2v26iQSL61h3evM/WHZrrG9dhKuXRSGOV6OHtABadQq+Q89HolbPXiOcqH7TaWv8AYssEyuzLMph49iY2aRvDzi3N7pceNXTOv86HsypYOlaSr5g6SwDIEFNmdmbXbsHlrNgnffZj40L1EsscWB5p+invM9iw+Iym90sWZAYcrxwXI037FzjyBw3I/34MFRBx9yrFm5z86HYxDXc27kjlRFLSQFPhV/PIolCXxTLbwJNQIYmBJ0Gw6AWtnHLfyRbNmMESR6UoYsCfR1uU+qSiBDsl4He2XawFw53gzmD4V2x8yNC910nOprHA5oLPi9j0V/irPoSb5GKhfRV1O/RiGnDIB6dq73LGwbR/C3+fIbOv7iLzp9Z+6J2zXuKnwN8/rLmP9ResKfNnJppTRlupkOgWBlFMyKpKJy1k=
 x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(38070700021)(7053199007)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?NOQtPy43HrdvYDnIOtmpkRoop+bWw73t7H0hVaPzWOpbu8ZlkODkX4cR0Q6V?=
- =?us-ascii?Q?gXQWogY6F+zN6bG2eSJY4DaUZBy/pcdCathsHjnnfCMPXm8qZxqBfHWKNmEf?=
- =?us-ascii?Q?2Lvx6e5EoGT0I29D5RqzedgMk9pE25hSHT55iTr/7njW8O1Go+M1q52223hf?=
- =?us-ascii?Q?Zj8xpUVQ58GqM1HzH98Zn3FuWNP+iuk2EmOlVAGRPryZs32ksyshflXunyAw?=
- =?us-ascii?Q?bUeN0NS5O3Wia9jeCvpWUFiKKRrX7JcQAdDZPHRSngPCvu8zuRsOvfFQkP+Z?=
- =?us-ascii?Q?8Rygdu+wJ4MEz6+R082a+4HVNjRTmEYoYBBCw8tA96rptIgxm4Osox301VeL?=
- =?us-ascii?Q?hm54eSck4hOu0yy44bIz05yT+dH+7Am8z6PvdXIePqNFucUkdTQtqD/KeOlC?=
- =?us-ascii?Q?P0sdSIFAH8w+s+7I2A8CvKNIp1fD1LpzF+opNxcdNBtbk0glFINmWgSyYr3Y?=
- =?us-ascii?Q?tKgY7tIIqlG0V+ulq6PDv4cN6aJHM4lRrUaUr/ykI9qrq3Hi+7NVCZ26gT3M?=
- =?us-ascii?Q?7YFwCzX5j1fK23qIOiGO+t8fGZeh8FxZHpCl3KqeOntTKKzAdPJWecGm2sAW?=
- =?us-ascii?Q?qJt1gaZuMxFU1RIIv9nY3fZl5zfmN0MlFf/ICbEllk+BLa+Abikc+eQc4EL6?=
- =?us-ascii?Q?3T+R7qd5Tc6VPW567IhT6kxT2pzYrz0Slsi2wclrPGwkXN/nImrKpZYUjgtO?=
- =?us-ascii?Q?uh+UNpGr83Wr5TI5NlySpHH66q1VHNs5XfODlgjRlMeobyaJrH4aMpaVQNEv?=
- =?us-ascii?Q?Sh5HdZzVYyads3Vo79bFz/IkWap/XF46VReU1ofpwtw6xIb/nDn7NUttN/bb?=
- =?us-ascii?Q?oR6tKnVIj7A5E27I44QIZ72slgMia+ZQXEGhyBiAbfjx/VXxUNECEHxei0+3?=
- =?us-ascii?Q?ba5eB078WxdbXif0ks+PyVGi12i5Uj/PnsxDPoO+fw80HsndWqhZ/AD54v7H?=
- =?us-ascii?Q?6CghQZHo+2UnHq1HTVE1bVKSs7+BIqciexzihbstmpQVjkrl7pJgx5E08weq?=
- =?us-ascii?Q?jZgChdHFhAJysKz3vsIr2se22srAiHFN6CpknTWh9/YOhLAw9Xq8MVLx9SPA?=
- =?us-ascii?Q?nOe8I2aWSCQtTTyGKkAvyEMqDRDFga1FeOEGT3CsfOS0G1AqSbZ9pcUK9MK/?=
- =?us-ascii?Q?5VFBYLO24N+Z9m3hEmbJCuquVSZa2VC5JA8ryoCPzUtbx/HkJUFPln6QSedq?=
- =?us-ascii?Q?7ldgSFQM3q3Df2rhqVEoS1APj8eUOKVT2fLUAm260ZPAoK2djWM+mGgmHJA+?=
- =?us-ascii?Q?L3PeWKBkEcqePFp2sYJ6IUjwbvsCcONxttsDABEgcl7LqK3OGeOWy6kLcgYr?=
- =?us-ascii?Q?PN4mo9+53ZF5xs5HQopG4W+tYH+nH2/Ti8vconT9fFQq5RVY4ZpB0IaBUu2o?=
- =?us-ascii?Q?qGHtqX/of+Supwixl6QhsFnUC65ApFDvBHoSQZ4QTFQPFkA+OV0KsVUtx9lk?=
- =?us-ascii?Q?0VcgQuzjo9cOqm61BpS/jqPUmW+xlGYcHDSeAAn6cBPduMcGDkJSK2Lgv9KX?=
- =?us-ascii?Q?JyUqbvXsy1PiB3rJOrZOMCjExHYEYLIyXMCBTy/mkbKrxFu8t8zhxfztxR37?=
- =?us-ascii?Q?+tvJl0ogr6GqpM8kvJqHGFI0zKMkohD01PpcPbM3JWWam508vhyT3RQpGiXL?=
- =?us-ascii?Q?gWJ8Aq6RJQbuu5VjK6wvWSUm4nl56x3JEByHMyQkYbZD/pyH97YeFhTu3RAY?=
- =?us-ascii?Q?I8PjsBpka1acxxeFr3TOpOD8GMeN39vgoAeqiteJoS9I4o61bvw4yGpCDFtB?=
- =?us-ascii?Q?lApArz+xewxO8SO3USJGezBNgbtrnPs=3D?=
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?7wt5PFx6hOyw2qlQmqvlnA1pUlqDBOnoVHWI7k0z0yLVoROnL2sxXHiPgkDF?=
+ =?us-ascii?Q?lFzXPK2vjnDOQDJpKiYbo0Nfxhksf6oFsVInQPLx5+sijRtkKhUJ6wFlUGyo?=
+ =?us-ascii?Q?U64AlULV4Qk5JTbxDe4thsbS/6TXL1Nx4is9b9UokJuhIZKCzDWHMEDrCP8H?=
+ =?us-ascii?Q?XM+moBYgAorcYWoO6EN0JQzOIwvM20aaDVPgDoNA6YjNMQD88U5VjZnrvTCQ?=
+ =?us-ascii?Q?RyrSNWAuFa/JRiJNh49cE0n2WYNexjGY9SMHZ8lf95/UnUota7F8z131JKeC?=
+ =?us-ascii?Q?E5qm0XJ0wWKjNp5GuDYsnXAfYjxELYPWTg5pt7l4HP1kiINo3zx4dMLOlcCq?=
+ =?us-ascii?Q?i6hjbCeG+5c2k2aZaywzmbMStvF/G+C8aV6U7BAkH5a59/ZV9MQy4PWPiY4R?=
+ =?us-ascii?Q?w1AbFUb4bpwSheHESpsc8nyAkOAvN+2G2mGEIlGLb4nrhYzFNSosLPtIZY5x?=
+ =?us-ascii?Q?CZiTTpkEch8xY2Y+4Kz9ZQYxywN2Wn5HRq9UcsI6bWH0bX5rl7eiwvP7MjFx?=
+ =?us-ascii?Q?1IRF8qFB1gcIWl/roOP0D7uWveVS2SeTJmeyAJesHb/LcRznCZCCtAjjfF8u?=
+ =?us-ascii?Q?f9YcvldKD4j5NabBOaV7dw1ZayB5LrHeqgrLXsQo/m0QV8nqOQnuWNKJsOAt?=
+ =?us-ascii?Q?WAenQk+rXQ6/hYHaZXIhgqJ/7+5vqkXMeFtb7lsx/oxNTjZzuGzForr1PqVg?=
+ =?us-ascii?Q?bLa9F6/wOc6nNguZyf4wSzBI5Or9YGnCTyvAh3wGMFwSCWfhL78yq64s5SvV?=
+ =?us-ascii?Q?mFA4Kqc+/9YHonqDF9lI2b23o1OGTxovDJIQXsVcd6I9fna7IDTtT93Xlt39?=
+ =?us-ascii?Q?L6fnFMpqgWJANwQE7pAPySFAlqIyqJx0gkN6H7+MTQDXWuEHcUPQFUiZEIja?=
+ =?us-ascii?Q?51T+AL10eXewKG2uJyTI06HzAsTIzLlg7395i7uSpoyf5+1QCSMWVVI5yk6v?=
+ =?us-ascii?Q?f5DVLu0LFrgKnfc3EIabYzKyiL/jAGAStPVUUd8tIT5DJrvi2JWsS2RnoFfk?=
+ =?us-ascii?Q?n4JNqFn5zB3VbrDzGNGvrx/fAGRe4v1pglLPCRmoXTuTxv9IU+QQqJQSyMey?=
+ =?us-ascii?Q?HKF01M7IAVM7JnTBP5qDdQgJ3or42psI2hvjLLTRti/Zs/IzZ4NwXuKoRV1n?=
+ =?us-ascii?Q?+PXWHdAXI/Hebk56QZ6TjDKiy7mbuECQTTyUhwIasD34EzY7cLo8i7IofizA?=
+ =?us-ascii?Q?7D0bYPbHZR+q8ldf3u42ZPqCte0Qecim//JjRUWWpeVobCmJUiMF42Yx3dlD?=
+ =?us-ascii?Q?0dshXREcdQ+vTRKCRVuShrcjG/Uyy3W4Fd9ukqxQ1UdjX4EPK6QuxmNHaSHO?=
+ =?us-ascii?Q?Kv6Losvir8YmkiHlfOalEhrb2zPR7z7oTpsestQzC6BmdZDLjuKMNTsAtknk?=
+ =?us-ascii?Q?Al9hWy4Af6+vHOkuBDeJ2wQhEWjrrIDpmZBbcVXpAUeQu1x3qBSEcXgy0RWU?=
+ =?us-ascii?Q?wVKIzkBxZEiSnjSSRGJRSGeJo8kCwl9ToQ0CaMNVCuSA/Za7nc5OiP9nTFhy?=
+ =?us-ascii?Q?2pPC5MarSxbe1pkuWYinqDJUuASlat3spxMdX5LmiwDgQVApjT3aFUSo50Jt?=
+ =?us-ascii?Q?7ySeFXe939YFOp/9lwIak7iBOwECbtvI5T2C27AulgvQAxB/B108vi97IRyQ?=
+ =?us-ascii?Q?4ufDQ0+yZ7XhrDRpA6CoOEmLCn4vnuoRlMTot6bqW13Tfae3+gTIKYReDB4v?=
+ =?us-ascii?Q?LCfKFN+540jgZxADsnmVRPwBMWCP7v4+rUazLADrDLI+UPWUHJSq6wujSgjx?=
+ =?us-ascii?Q?rS7Whyfjo+41XCUAaAAfMSmuTPe9Xrs=3D?=
 Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
@@ -169,29 +169,29 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: WqvC35HBvujMAPhBA+MPXrF/r4dgnl/sDkPFjBkj9V6FjjzdrzHbboGL2BvqvFVZd6Pl183ousQx5XFtizje8SOruay9oGfTsE3Iwnv7atu5ulS0rOEaoa6uEy77HzlFOyNz18oyKNWv3ixZIVtzLYPzzV6QMqJI5xyoWwSoWGh4r8yZFnT9qhmR60gcpPcwQCvTStsVRyt1ChIC03p62nf+b6d623R812vlGybpoodzhBHaOUuOyXnLLy/Pnn2P0klTL/DH4PYpQsOI9iDi+ZWIRo5yfZHeXZP434Xt+Xsfmy0W8V2/ds980spMhhTtCzNMH3y2lyg6CqyITCcViQ==
+X-Exchange-RoutingPolicyChecked: cbqTGWpgAQJmAWkMzZPJ4ZDu1od0xx4QKlelTBBDlAJf1P7Dx7T6npuKoPgiaAgN3IeS+wXuyIjCyXkd6k24Cnw0vEA5DheytcAl4C5sR0TD9DAtjPLMlUFcnsp8RFfrbjwYLaPnRGB/DeeS0n4xyjblH9juini9u39m7qENp3POQa4lY3Fvs5Frwy4dIgarEwTlKaj2Wck2GCYM9sdHnKxidi/K0iWopQAhkl4UAA8YNH81rP8g3In9+oh+u5x+N3f64qOHtctqLug4yM0fg4nnyZHvRoELFE9UermKilCGV+8dm9gR8TsfCgzfOcD3MMO+Qbme5ne+EWqBtWeWGQ==
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94602bdf-f673-4cb8-7308-08de86518515
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Mar 2026 07:23:01.6154
+X-MS-Exchange-CrossTenant-Network-Message-Id: cd8ba23c-725a-47f5-aa76-08de86519e04
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Mar 2026 07:23:43.4195
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ZdmnFQf6BqhNNfMWQQULd/gB9bASIgNv0/YvfVUBxJ2CDlMIfby5qCQKndMwzk6GScMeuQx0/FPkQzODgZL2g+TEX4XYft6JevKy+fKdrkg=
+X-MS-Exchange-CrossTenant-userprincipalname: XSY2l10ufYDip9MnucyF3sXFuwlM6vJvFTnpcxsIW3gLv1ru/ROs0NDi9BBrO28BKUtv9eqD2+IDFpVv+Sj5sXwZRMZNVu+d33LR5vz+++Q=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW3PR11MB4570
 X-OriginatorOrg: intel.com
 X-Spamd-Result: default: False [1.34 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_REJECT(1.00)[cv is fail on i=2];
 	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227443-lists,stable=lfdr.de];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns];
+	TAGGED_FROM(0.00)[bounces-227444-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_TWELVE(0.00)[17];
@@ -205,10 +205,10 @@ X-Spamd-Result: default: False [1.34 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable,netdev];
-	NEURAL_HAM(-0.00)[-0.966];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.970];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCVD_COUNT_SEVEN(0.00)[10]
-X-Rspamd-Queue-Id: F24602D68D1
+X-Rspamd-Queue-Id: 2CBBD2D68E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -227,146 +227,39 @@ X-Rspamd-Server: lfdr
 > rostedt@goodmis.org; linux-rt-devel@lists.linux.dev;
 > sgzhang@google.com; boolli@google.com; Tantilov, Emil S
 > <emil.s.tantilov@intel.com>; stable@vger.kernel.org
-> Subject: [PATCH iwl-net v2 1/3] idpf: fix PREEMPT_RT raw/bh spinlock
-> nesting for async VC handling
+> Subject: [PATCH iwl-net v2 2/3] idpf: improve locking around
+> idpf_vc_xn_push_free()
 >=20
-> Switch from using the completion's raw spinlock to a local lock in the
-> idpf_vc_xn struct. The conversion is safe because complete/_all() are
-> called outside the lock and there is no reason to share the completion
-> lock in the current logic. This avoids invalid wait context reported
-> by the kernel due to the async handler taking BH spinlock:
->=20
-> [  805.726977] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D [  805.726991] [ BUG:
-> Invalid wait context ]
-> [  805.727006] 7.0.0-rc2-net-devq-031026+ #28 Tainted: G S         OE
-> [  805.727026] ----------------------------- [  805.727038]
-> kworker/u261:0/572 is trying to lock:
-> [  805.727051] ff190da6a8dbb6a0 (&vport_config-
-> >mac_filter_list_lock){+...}-{3:3}, at:
-> idpf_mac_filter_async_handler+0xe9/0x260 [idpf] [  805.727099] other
-> info that might help us debug this:
-> [  805.727111] context-{5:5}
-> [  805.727119] 3 locks held by kworker/u261:0/572:
-> [  805.727132]  #0: ff190da6db3e6148 ((wq_completion)idpf-
-> 0000:83:00.0-mbx){+.+.}-{0:0}, at: process_one_work+0x4b5/0x730 [
-> 805.727163]  #1: ff3c6f0a6131fe50 ((work_completion)(&(&adapter-
-> >mbx_task)->work)){+.+.}-{0:0}, at: process_one_work+0x1e5/0x730 [
-> 805.727191]  #2: ff190da765190020 (&x->wait#34){+.+.}-{2:2}, at:
-> idpf_recv_mb_msg+0xc8/0x710 [idpf] [  805.727218] stack backtrace:
-> ...
-> [  805.727238] Workqueue: idpf-0000:83:00.0-mbx idpf_mbx_task [idpf] [
-> 805.727247] Call Trace:
-> [  805.727249]  <TASK>
-> [  805.727251]  dump_stack_lvl+0x77/0xb0 [  805.727259]
-> __lock_acquire+0xb3b/0x2290 [  805.727268]  ?
-> __irq_work_queue_local+0x59/0x130 [  805.727275]
-> lock_acquire+0xc6/0x2f0 [  805.727277]  ?
-> idpf_mac_filter_async_handler+0xe9/0x260 [idpf] [  805.727284]  ?
-> _printk+0x5b/0x80 [  805.727290]  _raw_spin_lock_bh+0x38/0x50 [
-> 805.727298]  ? idpf_mac_filter_async_handler+0xe9/0x260 [idpf] [
-> 805.727303]  idpf_mac_filter_async_handler+0xe9/0x260 [idpf] [
-> 805.727310]  idpf_recv_mb_msg+0x1c8/0x710 [idpf] [  805.727317]
-> process_one_work+0x226/0x730 [  805.727322]  worker_thread+0x19e/0x340
-> [  805.727325]  ? __pfx_worker_thread+0x10/0x10 [  805.727328]
-> kthread+0xf4/0x130 [  805.727333]  ? __pfx_kthread+0x10/0x10 [
-> 805.727336]  ret_from_fork+0x32c/0x410 [  805.727345]  ?
-> __pfx_kthread+0x10/0x10 [  805.727347]  ret_from_fork_asm+0x1a/0x30 [
-> 805.727354]  </TASK>
+> Protect the set_bit() operation for the free_xn bitmask in
+> idpf_vc_xn_push_free(), to make the locking consistent with rest of
+> the code and avoid potential races in that logic.
 >=20
 > Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
 > Cc: stable@vger.kernel.org
-> Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 > Reported-by: Ray Zhang <sgzhang@google.com>
 > Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
 > ---
->  drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 14 +++++---------
-> drivers/net/ethernet/intel/idpf/idpf_virtchnl.h |  5 +++--
->  2 files changed, 8 insertions(+), 11 deletions(-)
+>  drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 2 ++
+>  1 file changed, 2 insertions(+)
 >=20
 > diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
 > b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> index 113ecfc16dd7..582e0c8e9dc0 100644
+> index 582e0c8e9dc0..fbd5a15b015c 100644
 > --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
 > +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> @@ -287,26 +287,21 @@ int idpf_send_mb_msg(struct idpf_adapter
-> *adapter, struct idpf_ctlq_info *asq,
->  	return err;
+> @@ -402,7 +402,9 @@ static void idpf_vc_xn_push_free(struct
+> idpf_vc_xn_manager *vcxn_mngr,
+>  				 struct idpf_vc_xn *xn)
+>  {
+>  	idpf_vc_xn_release_bufs(xn);
+> +	spin_lock_bh(&vcxn_mngr->xn_bm_lock);
+>  	set_bit(xn->idx, vcxn_mngr->free_xn_bm);
+> +	spin_unlock_bh(&vcxn_mngr->xn_bm_lock);
 >  }
 >=20
-> -/* API for virtchnl "transaction" support ("xn" for short).
-> - *
-> - * We are reusing the completion lock to serialize the accesses to
-> the
-> - * transaction state for simplicity, but it could be its own separate
-> synchro
-> - * as well. For now, this API is only used from within a workqueue
-> context;
-> - * raw_spin_lock() is enough.
-> - */
-> +/* API for virtchnl "transaction" support ("xn" for short). */
-> +
 >  /**
->   * idpf_vc_xn_lock - Request exclusive access to vc transaction
->   * @xn: struct idpf_vc_xn* to access
->   */
->  #define idpf_vc_xn_lock(xn)			\
-> -	raw_spin_lock(&(xn)->completed.wait.lock)
-> +	spin_lock(&(xn)->lock)
->=20
->  /**
->   * idpf_vc_xn_unlock - Release exclusive access to vc transaction
->   * @xn: struct idpf_vc_xn* to access
->   */
->  #define idpf_vc_xn_unlock(xn)		\
-> -	raw_spin_unlock(&(xn)->completed.wait.lock)
-> +	spin_unlock(&(xn)->lock)
->=20
->  /**
->   * idpf_vc_xn_release_bufs - Release reference to reply buffer(s) and
-> @@ -338,6 +333,7 @@ static void idpf_vc_xn_init(struct
-> idpf_vc_xn_manager *vcxn_mngr)
->  		xn->state =3D IDPF_VC_XN_IDLE;
->  		xn->idx =3D i;
->  		idpf_vc_xn_release_bufs(xn);
-> +		spin_lock_init(&xn->lock);
->  		init_completion(&xn->completed);
->  	}
->=20
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-> b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-> index fe065911ad5a..6876e3ed9d1b 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.h
-> @@ -42,8 +42,8 @@ typedef int (*async_vc_cb) (struct idpf_adapter *,
-> struct idpf_vc_xn *,
->   * struct idpf_vc_xn - Data structure representing virtchnl
-> transactions
->   * @completed: virtchnl event loop uses that to signal when a reply
-> is
->   *	       available, uses kernel completion API
-> - * @state: virtchnl event loop stores the data below, protected by
-> the
-> - *	   completion's lock.
-> + * @lock: protects the transaction state fields below
-> + * @state: virtchnl event loop stores the data below, protected by
-> + @lock
->   * @reply_sz: Original size of reply, may be > reply_buf.iov_len; it
-> will be
->   *	      truncated on its way to the receiver thread according to
->   *	      reply_buf.iov_len.
-> @@ -58,6 +58,7 @@ typedef int (*async_vc_cb) (struct idpf_adapter *,
-> struct idpf_vc_xn *,
->   */
->  struct idpf_vc_xn {
->  	struct completion completed;
-> +	spinlock_t lock;
->  	enum idpf_vc_xn_state state;
->  	size_t reply_sz;
->  	struct kvec reply;
 > --
 > 2.37.3
 
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-
 
