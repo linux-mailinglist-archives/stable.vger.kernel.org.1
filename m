@@ -1,160 +1,129 @@
-Return-Path: <stable+bounces-227416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227417-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBQRCByzvGn32AIAu9opvQ
-	(envelope-from <stable+bounces-227416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:38:20 +0100
+	id mH2vHAG2vGlv2QIAu9opvQ
+	(envelope-from <stable+bounces-227417-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:50:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4C0C2D52E3
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:38:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C68DB2D53AD
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B750306B9C8
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 02:37:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A03930AA538
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 02:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAEF229B12;
-	Fri, 20 Mar 2026 02:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6346274670;
+	Fri, 20 Mar 2026 02:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HWDIrZsF"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BjGNWz7F"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55DB25228D;
-	Fri, 20 Mar 2026 02:37:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C7740DFC1;
+	Fri, 20 Mar 2026 02:48:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773974228; cv=none; b=gwstIt4IaC/F9v3L+m8+5DKXw4DLAEFzptq4Qv79E4cq/EDnBEGFG8ZNM44UC+rgTw+qzA8ItZrX4HidSp5hqMS26VhfeGZ11jXq/HuzJmIjX494M5v6Yq+zdYRkcF5GwwUg/bn0RJQy57GS1Fi4jkSfLxeCXX26v9Zn7y2hVHo=
+	t=1773974930; cv=none; b=aQRpI0xad6TjgK9yCXsbaVWzcNnwJHzNEBZtIjBNf4y3dM8W9F5lWQVo9aJXn8cHcrLdPvWQph5C0wAKkCaXrjmH1/zpTlI92b2mU2UAezKY5ZucyjQtOJ5xD6BhYMHMTIxvrflQQZYFnN7wFGJ7JAutiH85O/GbQpr0nJZIjvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773974228; c=relaxed/simple;
-	bh=YVeZ9bpU50Ld/h/oOVq1kH6lX37abRxYRQZxsMIlO9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M03d+OHk5EETn1Yofk7+zOw/atojljnk2t6Lp9+qpdQ0xHQ47Pjf0yiB1X7NZT9ZuEoAGCAO6Sg41ZK6z0qfSMwBOltlm67INX2seqwXnTbncEWNhO+31EH6JCboIiEoAYZOIUJ9OK87ZzJ7d53v611KRHgHurOeHZgst9Cp3xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HWDIrZsF; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62JH4P7n3798372;
-	Fri, 20 Mar 2026 02:36:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=zVBF5ZPd5Mvu6dwcbcrrntqHzE/2GM4nZmyGfUpJhlk=; b=
-	HWDIrZsFXisI42wMqzg0nU+9OgyPsDwOT+MZb1O7sQnz/GIAHBHLfETCrPdl5EMq
-	iqa+NkD8pf5HeaQXLDvAqo4DEWFdEGOoa04BJgSFWo3DB2y0/YpG4qXvBxPHENy9
-	VK6BrS8B9oyIJMozOTraFNgvav6KEvYPkIbdAmZg6t5mv2j+lgCKKEEkgjZPfPCb
-	CaGQ+XHwQMX2TADAUQ0bZiSbzB1w6fEL9s5kkA8/XQ5crh2C+4xhhNEzC/mEQt+D
-	50YadQUZG7Nd4VIiR1v3ZXF2vVn/2ypfAgBBghXk+YTRhFR+Jemea9yvqfHPW81a
-	gIf48b82cmN69B0yBYBwHA==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cvyqc0v49-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Mar 2026 02:36:19 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 62K1oWZc003476;
-	Fri, 20 Mar 2026 02:36:18 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4cvx4dp7dq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 20 Mar 2026 02:36:18 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 62K2aDRR020555;
-	Fri, 20 Mar 2026 02:36:17 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4cvx4dp7bq-5;
-	Fri, 20 Mar 2026 02:36:17 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: Hannes Reinecke <hare@suse.de>, Keith Busch <kbusch@kernel.org>,
-        Kanchan Joshi <joshi.k@samsung.com>,
-        Nitesh Shetty <nj.shetty@samsung.com>, Jens Axboe <axboe@kernel.dk>,
-        Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, stable@vger.kernel.org,
-        target-devel@vger.kernel.org, Christoph Hellwig <hch@lst.de>
-Subject: Re: [PATCH] target/file: Use kzalloc_flex for aio_cmd
-Date: Thu, 19 Mar 2026 22:36:04 -0400
-Message-ID: <177397393965.2929898.13829631412694991402.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <f1a2f81c62f043e31f80bb92d5f29893400c8ee2.1773450782.git.Thinh.Nguyen@synopsys.com>
-References: <f1a2f81c62f043e31f80bb92d5f29893400c8ee2.1773450782.git.Thinh.Nguyen@synopsys.com>
+	s=arc-20240116; t=1773974930; c=relaxed/simple;
+	bh=ZwzkqrrfmnwzSwwehE9MFr/f1r47yObrEGfeUmVXDLM=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=Ge4XhGzqVgtY9v/JPB6wiSZWPL9NVGbA8PENL2TgMAWlpAryH0bXADd6NwGHXY0rcxXgeGSg6PAQlzuvUAy3cftvfn4ib8GsA8MLSnjIgWVH5FnsyudpxqKZ7FbrYdmry61xbO11X0n52jMuAzb68BrrGHgOCLJ9JS9fCpsyr2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BjGNWz7F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3095FC19425;
+	Fri, 20 Mar 2026 02:48:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1773974930;
+	bh=ZwzkqrrfmnwzSwwehE9MFr/f1r47yObrEGfeUmVXDLM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BjGNWz7FRCFlJKphV2wMLCwL/9jERXlzggS1owTY5OU7rCYTJDogUWtxO1TDi3tEO
+	 LlAMxnBepVoIOzcHpUiuD3+KREjdThvJqzkb8cY4IJwYaI87qCc8EwneRXtxWcE2ki
+	 6pJvMVrlcRTvbdjtmtHvfdcvfWXEMl0urNlsH2Ws=
+Date: Thu, 19 Mar 2026 19:48:49 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: "# 6 . 15 . x" <stable@vger.kernel.org>, damon@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon/core: avoid use of half-online-committed
+ context
+Message-Id: <20260319194849.64b0911e2a7a6d8b1c22005a@linux-foundation.org>
+In-Reply-To: <20260319145218.86197-1-sj@kernel.org>
+References: <20260319145218.86197-1-sj@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-19_04,2026-03-19_05,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxlogscore=999
- adultscore=0 phishscore=0 malwarescore=0 suspectscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2603050001 definitions=main-2603200019
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDAxOSBTYWx0ZWRfX0cWWAqx01LSn
- OATiB12cNW5HZJ0kiy90X949wAl0820sCnInSWX67FcUqZfDLzLek27YLyoZXMlQNt7OeCi5Bh9
- gqd1DJQ/tWyXZzJRfTjVAcrMH3mmySctQVpagEzRWXyN8kiAT4dZf0R7TlfPyVCYaTzFDLQK/Mu
- t620A6yRsXg3G6HBhGm7Hkjz7r/vokVHQBzkRfUdm05dw5Qz1nW4/YC8C7D0vHLG71f8aKl+jYr
- vAprvboEn//OyZaRdl6FCbjJfq2gjrGBnRv5fnETI/OpWYF2Qn0DZOQmRY1itp8ttUpbI4RRCRy
- 89HBMYEO2wM35gpFXWy2ycB84XATVbfd1TwiLEND+pkPM9SkA0XieljE04AWvAXofYq3nvnc25j
- oDw64YkIMTsaxgqh+rCeE2yst1JC58an0E/0dj1ugMMVNVL/luTz1slJ1/MZhofED25RKf5jGbn
- 1JKCH1pbHISFK+Bbo/A==
-X-Authority-Analysis: v=2.4 cv=J8WnLQnS c=1 sm=1 tr=0 ts=69bcb2a3 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=BqU2WV_vvsyTyxaotp0D:22 a=VwQbUJbxAAAA:8
- a=ROUghZm4d6-JAQTG3GYA:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
-X-Proofpoint-GUID: 0zyF3EMiNxUGtF8rtjr33ajOploLzsLh
-X-Proofpoint-ORIG-GUID: 0zyF3EMiNxUGtF8rtjr33ajOploLzsLh
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[oracle.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[oracle.com:s=corp-2025-04-25];
+	MV_CASE(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[oracle.com:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227416-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:dkim,oracle.com:mid];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[martin.petersen@oracle.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227417-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_COUNT_SEVEN(0.00)[9]
-X-Rspamd-Queue-Id: B4C0C2D52E3
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.878];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:mid]
+X-Rspamd-Queue-Id: C68DB2D53AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, 14 Mar 2026 01:17:40 +0000, Thinh Nguyen wrote:
+On Thu, 19 Mar 2026 07:52:17 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> The target_core_file doesn't initialize the aio_cmd->iocb for the
-> ki_write_stream. When a write command fd_execute_rw_aio() is executed,
-> we may get a bogus ki_write_stream value, causing unintended write
-> failure status when checking iocb->ki_write_stream > max_write_streams
-> in the block device.
+> One major usage of damon_call() is online DAMON parameters update.  It
+> is done by calling damon_commit_ctx() inside the damon_call() callback
+> function.  damon_commit_ctx() can fail for two reasons: 1) invalid
+> parameters and 2) internal memory allocation failures.  In case of
+> failures, the damon_ctx that attempted to be updated (commit
+> destination) can be partially updated (or, corrupted from a
+> perspective), and therefore shouldn't be used anymore.  The function
+> only ensures the damon_ctx object can safely deallocated using
+> damon_destroy_ctx().
 > 
-> Let's just use kzalloc_flex when allocating the aio_cmd and let
-> ki_write_stream=0 to fix this issue.
+> The API callers are, however, calling damon_commit_ctx() only after
+> asserting the parameters are valid, to avoid damon_commit_ctx() fails
+> due to invalid input parameters.  But it can still theoretically fail if
+> the internal memory allocation fails.  In the case, DAMON may run with
+> the partially updated damon_ctx.  This can result in unexpected
+> behaviors including even NULL pointer dereference in case of
+> damos_commit_dests() failure [1].  Such allocation failure is arguably
+> too small to fail, so the real world impact would be rare.  But, given
+> the bad consequence, this needs to be fixed.
 > 
-> [...]
+> Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
+> the damon_commit_ctx() failure on the damon_ctx object.  For this,
+> introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
+> when it is failed.  kdamond_call() checks if the field is set after each
+> damon_call_control->fn() is executed.  If it is set, ignore remaining
+> callback requests and return.  All kdamond_call() callers including
+> kdamond_fn() also check the maybe_corrupted field right after
+> kdamond_call() invocations.  If the field is set, break the
+> kdamond_fn() main loop so that DAMON sill doesn't use the context that
+> might be corrupted.
 
-Applied to 7.0/scsi-fixes, thanks!
-
-[1/1] target/file: Use kzalloc_flex for aio_cmd
-      https://git.kernel.org/mkp/scsi/c/01f784fc9d0a
-
--- 
-Martin K. Petersen
+I guess you saw the AI review?
+	https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
 
