@@ -1,232 +1,193 @@
-Return-Path: <stable+bounces-227420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YGgnC++7vGkd2gIAu9opvQ
-	(envelope-from <stable+bounces-227420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 04:15:59 +0100
+	id UNkMLq28vGlC2gIAu9opvQ
+	(envelope-from <stable+bounces-227424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 04:19:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24442D5612
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 04:15:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70F9E2D5723
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 04:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF7A13011140
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:15:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ABBFA3055F81
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:18:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7832C1C84A0;
-	Fri, 20 Mar 2026 03:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6562DFA2F;
+	Fri, 20 Mar 2026 03:17:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g/KLyr1V"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="MIxrkXi9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B08F40DFC8;
-	Fri, 20 Mar 2026 03:15:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C0482E6CA6;
+	Fri, 20 Mar 2026 03:17:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773976556; cv=none; b=TsfrAOiCPBHKWlsxH2dadrpr5gVDl6dQIX2N8sJ5KGSsPJxBFM003wuoiIKyjjlhwPmZ6U2C/UBQ+ewmNLcZRqyNXjFtudM8dwec8gRVrqvk+EXNteUNY6RP0BZ1HPJzizhomXNmeprWoaLo7PkHZvHT6lBCOo8L5r9TmisVu9I=
+	t=1773976675; cv=none; b=WWolD1XKYv6iDAFJzYjntIgk4IfbEAIwYVLsZ4SJ3Oc1MGgxUxoXcLeYCsqukL/8yzYiEd/qTgMa+X/OcfRVuBQVIi39CpWTuh3ds/6t4KKzPE1nXX77f8o1FUIL/pM/khqlfvA9CCwdGI/n8m3oqUuknQGMEoT93gkYQ/ect+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773976556; c=relaxed/simple;
-	bh=c5SOlNAOAR6OFkxJkGh3j24Vwi+ZKbz8x5WFx0lPK0I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qf59HFGcre+3aP3g9OL65emcSU+ROF+oOd68TsY4zghmu7uP+gb8FyVm374vB12zCdsV54OFPMH57eZbhd1QbUJUmOSjsYxuvF2maZF8mjNI6ZaHE6gXLNK+lLElsis1rnHNgQ6yhnoztIdWVMtVasD+4siMXGwbZiJvg7TVrNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g/KLyr1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD83AC19424;
-	Fri, 20 Mar 2026 03:15:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773976555;
-	bh=c5SOlNAOAR6OFkxJkGh3j24Vwi+ZKbz8x5WFx0lPK0I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/KLyr1VFAFLErYWLwwlICfRuQ791uyq7AxLA9drqoktor4arUOIvZ+0dFn6IAk6X
-	 x0PMfMpb0QCmpIc+tSY4hVXZnvU3J04/cvXBCLAa/FmPc+m1N5LyYErOaBjflkSWqT
-	 GZs16IZX8F4qr4tOaopbAZp5SfOBjb+ojG/j/POLjMqxukcedrP0zQ5/1C79+z3XQP
-	 e+SpOvu1j1kRpPPy4bna75Jgj+oP8MtqyE1aFcwogUTBVhoqr5N46HIr44NvvekmIy
-	 mPaIh+zqNA0GW1CDFujEy0oD+Hqwu0pE6Bn9pwl1hpao1ubT6NAS5nquklapjXl91/
-	 dui3NyLhk8f/w==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 15 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon/core: avoid use of half-online-committed context
-Date: Thu, 19 Mar 2026 20:15:53 -0700
-Message-ID: <20260320031553.2479-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260319194849.64b0911e2a7a6d8b1c22005a@linux-foundation.org>
-References: 
+	s=arc-20240116; t=1773976675; c=relaxed/simple;
+	bh=lw/ZE2DX0T6qWzkDdvlLAqLw9jOCvb280xzuRRSLqz8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C1lslyKkX4+1mZaKYjq/5bRw3AD+5NJZ41Lmbfm+UPY43MJr7pf6OcjOJHyct4HHe6tNziCe2MXSm2Z6F/jspAfL462Ori6YoGDYKi4BXDDaLEXqWzAYgtrs/f2Fvz/DlTPZMpKMkG0c0Dl1MDAZkHbiX8WPaewU7CV4CdV+ons=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=MIxrkXi9; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=BSRbjJDKdaGxbUo/K8gqf6JQzc2twFPR77ICmENPgIQ=;
+	b=MIxrkXi9nr96VTs83oM4cRd7w+yFrG/lh54DDqdd6CvvvRceY55ubQT28/1aq6Hbg1rNmzRkP
+	rLYTV3ixY/D1xC9iqJhIH1H8nK9oVSuMP+gE0i1HS/wIlpkqSBix2mhb57dsWBdQ4qYcfLEjbln
+	uzIYmB35vjixX1vabMNe7FI=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4fcSKG5BvHzcZxn;
+	Fri, 20 Mar 2026 11:12:02 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id EEB6840363;
+	Fri, 20 Mar 2026 11:17:44 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 20 Mar 2026 11:17:43 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: Bjorn Helgaas <bhelgaas@google.com>, Catalin Marinas
+	<catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, "Rafael J .
+ Wysocki" <rafael@kernel.org>
+CC: Jonathan Corbet <corbet@lwn.net>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Borislav Petkov <bp@alien8.de>, "H . Peter Anvin" <hpa@zytor.com>, Juergen
+ Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Len
+ Brown <lenb@kernel.org>, Sunil V L <sunilvl@ventanamicro.com>, Mark Rutland
+	<mark.rutland@arm.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, Kees
+ Cook <kees@kernel.org>, Yanteng Si <si.yanteng@linux.dev>, Sean
+ Christopherson <seanjc@google.com>, Kai Huang <kai.huang@intel.com>, Tom
+ Lendacky <thomas.lendacky@amd.com>, Thomas Huth <thuth@redhat.com>, Thorsten
+ Blum <thorsten.blum@linux.dev>, Kevin Loughlin <kevinloughlin@google.com>,
+	Zheyun Shen <szy0127@sjtu.edu.cn>, Peter Zijlstra <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, Xin Li <xin@zytor.com>,
+	"Ahmed S . Darwish" <darwi@linutronix.de>, Sohil Mehta
+	<sohil.mehta@intel.com>, Ilkka Koskinen <ilkka@os.amperecomputing.com>, Robin
+ Murphy <robin.murphy@arm.com>, James Clark <james.clark@linaro.org>, Besar
+ Wicaksono <bwicaksono@nvidia.com>, Ma Ke <make24@iscas.ac.cn>, Wei Huang
+	<wei.huang2@amd.com>, Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>, <punit.agrawal@oss.qualcomm.com>,
+	<guohanjun@huawei.com>, <suzuki.poulose@arm.com>, <ryan.roberts@arm.com>,
+	<chenl311@chinatelecom.cn>, <masahiroy@kernel.org>,
+	<wangyuquan1236@phytium.com.cn>, <anshuman.khandual@arm.com>,
+	<heinrich.schuchardt@canonical.com>, <Eric.VanTassell@amd.com>,
+	<wangzhou1@hisilicon.com>, <wanghuiqiang@huawei.com>,
+	<liuyonglong@huawei.com>, <fengchengwen@huawei.com>,
+	<linux-pci@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<loongarch@lists.linux.dev>, <linux-riscv@lists.infradead.org>,
+	<xen-devel@lists.xenproject.org>, <linux-acpi@vger.kernel.org>,
+	<linux-perf-users@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH v10 0/8] ACPI: Unify CPU UID interface and fix ARM64 TPH steer-tag issue
+Date: Fri, 20 Mar 2026 11:17:29 +0800
+Message-ID: <20260320031737.35048-1-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[huawei.com,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[huawei.com:s=dkim];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227420-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227424-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[fengchengwen@huawei.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	NEURAL_HAM(-0.00)[-0.973];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.996];
+	RCPT_COUNT_GT_50(0.00)[60];
+	DKIM_TRACE(0.00)[huawei.com:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux-foundation.org:email,sashiko.dev:url]
-X-Rspamd-Queue-Id: B24442D5612
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huawei.com:dkim,huawei.com:mid]
+X-Rspamd-Queue-Id: 70F9E2D5723
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Thu, 19 Mar 2026 19:48:49 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
+This patchset unifies ACPI Processor UID retrieval across
+arm64/loongarch/riscv/x86 via acpi_get_cpu_uid() (with input validation)
+and fixes ARM64 CPU steer-tag retrieval failure in PCI/TPH:
 
-> On Thu, 19 Mar 2026 07:52:17 -0700 SeongJae Park <sj@kernel.org> wrote:
-> 
-> > One major usage of damon_call() is online DAMON parameters update.  It
-> > is done by calling damon_commit_ctx() inside the damon_call() callback
-> > function.  damon_commit_ctx() can fail for two reasons: 1) invalid
-> > parameters and 2) internal memory allocation failures.  In case of
-> > failures, the damon_ctx that attempted to be updated (commit
-> > destination) can be partially updated (or, corrupted from a
-> > perspective), and therefore shouldn't be used anymore.  The function
-> > only ensures the damon_ctx object can safely deallocated using
-> > damon_destroy_ctx().
-> > 
-> > The API callers are, however, calling damon_commit_ctx() only after
-> > asserting the parameters are valid, to avoid damon_commit_ctx() fails
-> > due to invalid input parameters.  But it can still theoretically fail if
-> > the internal memory allocation fails.  In the case, DAMON may run with
-> > the partially updated damon_ctx.  This can result in unexpected
-> > behaviors including even NULL pointer dereference in case of
-> > damos_commit_dests() failure [1].  Such allocation failure is arguably
-> > too small to fail, so the real world impact would be rare.  But, given
-> > the bad consequence, this needs to be fixed.
-> > 
-> > Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
-> > the damon_commit_ctx() failure on the damon_ctx object.  For this,
-> > introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
-> > when it is failed.  kdamond_call() checks if the field is set after each
-> > damon_call_control->fn() is executed.  If it is set, ignore remaining
-> > callback requests and return.  All kdamond_call() callers including
-> > kdamond_fn() also check the maybe_corrupted field right after
-> > kdamond_call() invocations.  If the field is set, break the
-> > kdamond_fn() main loop so that DAMON sill doesn't use the context that
-> > might be corrupted.
-> 
-> I guess you saw the AI review?
-> 	https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
+1-4: Add acpi_get_cpu_uid() for arm64/loongarch/riscv/x86 (update
+     respective users)
+5: Centralize acpi_get_cpu_uid() declaration in include/linux/acpi.h
+6: Clean up perf/arm_cspmu
+7: Clean up ACPI/PPTT and remove unused get_acpi_id_for_cpu()
+8: Pass ACPI Processor UID to Cache Locality _DSM
 
-Yes :)  Pasting it and my reply in line below.  TL; DR: We need a fixup that
-attached below.
+The interface refactor ensures consistent CPU UID retrieval across
+architectures (no functional changes for valid inputs) and provides the
+unified interface required for the ARM64 TPH fix.
 
-: > --- a/mm/damon/core.c
-: > +++ b/mm/damon/core.c
-: > @@ -1252,6 +1252,7 @@ int damon_commit_ctx(struct damon_ctx *dst, struct damon_ctx *src)
-: >  {
-: >       int err;
-: >
-: > +     dst->maybe_corrupted = true;
-: >       if (!is_power_of_2(src->min_region_sz))
-: >               return -EINVAL;
-: 
-: Could this prematurely mark the context as corrupted?
-: 
-: If the power-of-2 validation fails, the function returns -EINVAL without
-: modifying dst at all. However, because maybe_corrupted is already set to
-: true, wouldn't the kdamond thread assume its state is corrupted and
-: unconditionally shut down?
-: 
-: Should the flag be set immediately prior to the first mutating operation
-: like damon_commit_schemes() instead?
-
-Good suggestion.  But marking it as corrupted here doesn't make something
-really bad.  Meanwhile, ksensKeep being aware of what function here is really
-making change to the struct will make it complicated to maintain in long term.
-I'd prefer keeping the code as is for the simplicity.
-
-: 
-: [ ... ]
-: 
-: > @@ -2678,6 +2680,8 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
-: >                       complete(&control->completion);
-: >               else if (control->canceled && control->dealloc_on_cancel)
-: >                       kfree(control);
-: > +             if (ctx->maybe_corrupted)
-: > +                     break;
-: >       }
-: 
-: Does this early break cause a deadlock during cancellation?
-: 
-: When damon_commit_ctx() fails, it sets ctx->maybe_corrupted = true.
-: This corruption triggers an exit from the main loop in kdamond_fn() to the
-: done: label, which invokes kdamond_call(ctx, true) to cancel and complete
-: all remaining pending callbacks.
-: 
-: However, inside kdamond_call(), this loop now unconditionally checks
-: if (ctx->maybe_corrupted) break; at the end of each iteration. Because
-: the flag is true, won't the loop process exactly one callback and then
-: break, leaving the rest of the callbacks in ctx->call_controls unprocessed?
-: 
-: If the worker thread then exits, wouldn't any callers waiting on
-: wait_for_completion(&control->completion) for those remaining callbacks
-: hang indefinitely?
-: 
-: Would it make sense to bypass this break condition when cancel is true?
-
-Good catch!  Andrew, could you please add below attaching fixup?
-
-
-Thanks,
-SJ
-
-[...]
-=== >8 ===
-From cafd5152c6d42e4153c54569b44b249e27939ad6 Mon Sep 17 00:00:00 2001
-From: SeongJae Park <sj@kernel.org>
-Date: Thu, 19 Mar 2026 20:09:27 -0700
-Subject: [PATCH] mm/damon/core: let kdamond_call() with cancel regardless of
- maybe_corrupted
-
-Otherwise, damon_call() callers could indefinitely wait [1].
-
-[1] https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
-
-Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v10:
+- Refine commit header&log according to Punit's and Bjorn's review
+- Split perf/arm_cspmu as a separate commit which address Punit's
+  review
 
-diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 37454e8c9c510..3e1890d64d067 100644
---- a/mm/damon/core.c
-+++ b/mm/damon/core.c
-@@ -2680,7 +2680,7 @@ static void kdamond_call(struct damon_ctx *ctx, bool cancel)
- 			complete(&control->completion);
- 		else if (control->canceled && control->dealloc_on_cancel)
- 			kfree(control);
--		if (ctx->maybe_corrupted)
-+		if (!cancel && ctx->maybe_corrupted)
- 			break;
- 	}
- 
+Changes in v9:
+- Address Bjorn's review: split commits to each platform so that make
+  them easy to review
+
+Changes in v8:
+- Moving arm64's get_cpu_for_acpi_id() to kernel/acpi.c which address
+  Jeremy's review
+
+Chengwen Feng (8):
+  arm64: acpi: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+  LoongArch: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+  RISC-V: ACPI: Add acpi_get_cpu_uid() for unified ACPI CPU UID
+    retrieval
+  x86/acpi: Add acpi_get_cpu_uid() for unified ACPI CPU UID retrieval
+  ACPI: Centralize acpi_get_cpu_uid() declaration in
+    include/linux/acpi.h
+  perf: arm_cspmu: Switch to acpi_get_cpu_uid() from
+    get_acpi_id_for_cpu()
+  ACPI: PPTT: Use acpi_get_cpu_uid() and remove get_acpi_id_for_cpu()
+  PCI/TPH: Pass ACPI Processor UID to Cache Locality _DSM
+
+ Documentation/PCI/tph.rst          |  4 +--
+ arch/arm64/include/asm/acpi.h      | 17 +---------
+ arch/arm64/kernel/acpi.c           | 30 ++++++++++++++++++
+ arch/loongarch/include/asm/acpi.h  |  5 ---
+ arch/loongarch/kernel/acpi.c       |  9 ++++++
+ arch/riscv/include/asm/acpi.h      |  4 ---
+ arch/riscv/kernel/acpi.c           | 16 ++++++++++
+ arch/riscv/kernel/acpi_numa.c      |  9 ++++--
+ arch/x86/include/asm/cpu.h         |  1 -
+ arch/x86/include/asm/smp.h         |  1 -
+ arch/x86/kernel/acpi/boot.c        | 20 ++++++++++++
+ arch/x86/xen/enlighten_hvm.c       |  5 +--
+ drivers/acpi/pptt.c                | 50 ++++++++++++++++++++++--------
+ drivers/acpi/riscv/rhct.c          |  7 ++++-
+ drivers/pci/tph.c                  | 16 +++++++---
+ drivers/perf/arm_cspmu/arm_cspmu.c |  6 ++--
+ include/linux/acpi.h               | 11 +++++++
+ include/linux/pci-tph.h            |  4 +--
+ 18 files changed, 158 insertions(+), 57 deletions(-)
+
 -- 
-2.47.3
+2.17.1
 
 
