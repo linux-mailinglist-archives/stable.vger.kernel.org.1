@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-227622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIu/JZCyvWlBAgMAu9opvQ
-	(envelope-from <stable+bounces-227622-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:48:16 +0100
+	id sMBOBAiyvWlBAgMAu9opvQ
+	(envelope-from <stable+bounces-227619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:46:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E6B2E1007
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:48:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B57A2E0FA5
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 21:45:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27D783102E64
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:46:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3E103070B2A
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 20:45:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C153D368272;
-	Fri, 20 Mar 2026 20:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14418364927;
+	Fri, 20 Mar 2026 20:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="Se7dO+0C"
+	dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b="Cbo3Fq63"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB7C36403C;
-	Fri, 20 Mar 2026 20:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8519E35E95E;
+	Fri, 20 Mar 2026 20:45:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774039555; cv=fail; b=d1bpGgqkUoHuNfTt9TgIv2LlNROXpLrvwDoTkBtqR5IcaOJgB9ldmfd7S2Q/ACAzr8nB66cNP8yqgakMQab6vVKU76EUSiYqz4HryhLORBTMzKKQcSW1VvrEggtKfDzIOmYeERn36XQBXEFhySnDS5zvZEge4NlwcdbosZUStBE=
+	t=1774039550; cv=fail; b=sNIqBirJNElwr4sQ/KB/YWmecR1bhVYXt46Gf/g+/lvXkmM9PwCR9MN8OKkIaMjCxK2Cr5ZsKqDYEr7eKJ1aACPPsbpCZ+bypAOBz7bpQe12sxu2FsxkbL3L3oQzZkNvI9hFs0phOORid7eyP951EuZbQFHORunXDIhsLwmDfOE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774039555; c=relaxed/simple;
-	bh=7QOKNFOJct6QrYxUNNSOZ+w3vVx1rEYHQ8HC2nnyrCo=;
+	s=arc-20240116; t=1774039550; c=relaxed/simple;
+	bh=bomf4Tn5t4fXBnPtAhVrkZaBQwMrwu8kP4RBiJYnyXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RLkYUM+71dKaH1ucs41kbE01gWcsSn50TBx2Q7HXwmYrm0/way9gGQOO/wtlLfmOVbg8sZn+5rUbCLfQgH5+afL0QM8mfuyga1uxf78KmI/397z/cvKKHB72WDnNrbP75GgCr3tcdiwk52ociMYkfrnnb+0iqjta+tt/EX/ysEI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=fail smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=Se7dO+0C; arc=fail smtp.client-ip=205.220.166.238
+	 Content-Type:MIME-Version; b=HxEVcVNbl9ke/W5hhYjlXafRxTQ3EVgnwcZNd0nY04YGz9k5iVd1oqiNWeGv9qreogMgiVNmygPKNBKzliImD3vvF+gjbmsXz8TyY20tmmwY1q1hdhiEjkLQWOUytL4yOiEjTlrM3r3JFF0lHp4CbMzIywNnFAZBF6uR97OEvE8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; dkim=pass (2048-bit key) header.d=windriver.com header.i=@windriver.com header.b=Cbo3Fq63; arc=fail smtp.client-ip=205.220.166.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
 Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62K8ad4J947177;
-	Fri, 20 Mar 2026 13:44:57 -0700
+	by mx0a-0064b401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 62K7o5mn866812;
+	Fri, 20 Mar 2026 13:44:59 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=windriver.com;
 	 h=cc:content-transfer-encoding:content-type:date:from
 	:in-reply-to:message-id:mime-version:references:subject:to; s=
-	PPS06212021; bh=/t7FNfIZM7BrEgX7ee6KFEwpES1VDDsaEGCF2rgP7hY=; b=
-	Se7dO+0C0gCWJPC8eZOzgcwu5mq+a/boYZtbHGiOMRCX+vbhqgbykVsR2Su03NWt
-	9q8TpWrBqDisprjgE/niUNyPZfcLFmPAj2y7+n6M5ks5bPCt/qdLohiYQXTiu99Z
-	iVXQa0B+FTNPhvw2HvYyC6VOhsLn++z/qieIPJhx0pMcgtnlm9axMIQEvuzW1fkZ
-	IHcFZ0aESm1wzxV35p3OVyKd5Fuk4BwUevHKWt5k8CO0IV4gwsHTncrJep0iMaKH
-	0Jrd5yZcggSA/lerb4jGNCUtGqpT3Hc7t7xqFrq6UxSOc+ZJVRB05s30VwoTHG7r
-	YE5b3HIpU3MKoouwq5R4Iw==
-Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010071.outbound.protection.outlook.com [52.101.85.71])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4cw2y18k1q-2
+	PPS06212021; bh=M7ufVu9GXPrexYPW7e3H5cMGDNUC8ezbBQQCxaeqOSg=; b=
+	Cbo3Fq63DNX9umV2FHlaaHJuHkelpnj5bpbhhI5wN8uraSu5XL0CDpofsbuJL01P
+	S+4+CWPZA6wFpADdEtbrkoznF2PyEcXoS/mDhzzClVIEYkmlqi1a63M+8HeBNcXA
+	Z89/nobJIQOAwfFQkuG9B3PrUyjRZJ26aWXaMfnHX2bA/MS3+/CPlujQ3PePK+bV
+	1AqYkH1x0ozqpE5Ge9PGv/AK2BBswBiWN0WGzCzpI1eid8EcUP0yrgCgrpyZWaWt
+	rrP62wA5Zzn4pi+DePuGBN7JYbBM7u1quo0u0pDJtW5Vs3/6qugrGRq7KbjguVVS
+	zFyJ+cB6Ag8YTRkPjXYgaA==
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010002.outbound.protection.outlook.com [52.101.85.2])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 4cw2y18k1r-1
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 20 Mar 2026 13:44:57 -0700 (PDT)
+	Fri, 20 Mar 2026 13:44:59 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LyBN2HwHSN/OdrOyTsS9KmX6GqOS7TIYXt+mtkEMaXZeJQzVzvCA76RytKOR61tcJr0mHgkfPiP6aGzZHkM5wJDSTxkROGjfYWIiIoT9IMoPzRY0aYxJ6MRYY1bIARUnHYUZMPeD7WaRbBjvNUucNR/tOvIAOkn9GomFuov52i1f/vPI2EJRGxacU/7WEU17PFTQQN8XFgcqiqJWXc+yo0EIG0uhesHo4qOm2tenkN9fho0FEbmfj1hzyL9rwTY4da/jo5zlO7MUoP5Ri3kYRf0GcZK6fud0r8uuLQpxqXP4VWMElsm1CIxhh3EUxnbX56jUe/vWOmfRRFi0pq2ruQ==
+ b=Pm2NCxsF2aMKCxIQtM7QB1Dts72zTioUuxsC/CuBtk/UODL1bqReSXxQ5UT7pMFAypSryklXhkoMLR8+sEk8Et0T+Xbe9+adRGKUpEdxkC0XTHvFerqlHb7XvehEpEDlD8x3Bbonf6tKH0dF2qz/VHX9iUzw/E6j5nBlQH95w3HIAj8SI2WFyKOCxqkOI5zUU0DL1ABubR6n7nZs37o//e2y2/JVVvnWFKxoWY8praXJI+SyHCOSc82LqhQVpTY//sDbGsjBC5uRWithUc1kUwBOrsURZmyUHjknNgRoTpr3wtSPkH1XWSuW2rVTI+AlTX2GyY3uB6io+YHBrpWZdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/t7FNfIZM7BrEgX7ee6KFEwpES1VDDsaEGCF2rgP7hY=;
- b=XV1wIsnvaylEBZBe0pp6PZx8owcG54uD0EvmoCYiDO8OqyIikhksr7JBTqJC6EnJHKJoxro/DbkOg0T1lrmOaU0QtvNoUgEw2kGr4C+ux7SaQGcBil26XdRdcl3B7MqPM2j5svYCC7xia4iVaePAHDH7yHC5zPICIHKAJWflcPeRCt1a+0OVv9N6JJcKbCiypLEdfLLeU6NhvfuCqb7a5B4XqDaJbP03VfvPYrcZSUIiE3RA+KdUXjfRJc/8hs+H0oi91a+/5/nGu0PdwEZwwYPqUkArf8ikaM8ue4dK/OkW5xGe6bvN2hbO6dGBVZ/oL8sjkNUPK0ueawgU8H3Lzg==
+ bh=M7ufVu9GXPrexYPW7e3H5cMGDNUC8ezbBQQCxaeqOSg=;
+ b=LdXTH9N3n9OnqL3ic290S+hh0OX1rHoCuU2GVQJPA25QB0jWpLN5zCeEndSC/yB/ou7M/+CaMdumkRxYP/62m4/0yUOLwqBwEnCt0dDVg3YUQ3Fu7GysJDe21O2vifwaSu1QjOSmTdf5jczQhK82Fz30KlbHJAccKxEDPiMDBWzOW265ibhpXoE327xDlXC+AztY1rpeu460KzuBmQAqtEop8XH/CWKTLYBo20RSoSSOMu3IuNgtGx53b3+1DPwm9iNmo5W4fGZHmjrpEgl4JLEGQhrsFSQNPrGWjkkiGjDLDw08D8PYHpD1jTC/ZANfgJnR9CK/lOatBNzBV1hDtw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
@@ -65,18 +65,19 @@ Received: from SJ2PR11MB7546.namprd11.prod.outlook.com (2603:10b6:a03:4cc::8)
  by LV3PR11MB8695.namprd11.prod.outlook.com (2603:10b6:408:211::15) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.9; Fri, 20 Mar
- 2026 20:44:55 +0000
+ 2026 20:44:58 +0000
 Received: from SJ2PR11MB7546.namprd11.prod.outlook.com
  ([fe80::ca9b:dcf:8881:bced]) by SJ2PR11MB7546.namprd11.prod.outlook.com
  ([fe80::ca9b:dcf:8881:bced%5]) with mapi id 15.20.9745.007; Fri, 20 Mar 2026
- 20:44:55 +0000
+ 20:44:58 +0000
 From: Ionut Nechita <ionut.nechita@windriver.com>
 To: stable@vger.kernel.org
 Cc: frederic@kernel.org, tglx@linutronix.de, linux-kernel@vger.kernel.org,
-        rdunlap@infradead.org, ptesarik@suse.com
-Subject: [PATCH 6.12.y 1/7] timer/migration: Fix kernel-doc warnings for union tmigr_state
-Date: Fri, 20 Mar 2026 22:44:36 +0200
-Message-ID: <20260320204442.32901-2-ionut.nechita@windriver.com>
+        rdunlap@infradead.org, ptesarik@suse.com,
+        kernel test robot <oliver.sang@intel.com>
+Subject: [PATCH 6.12.y 2/7] timers/migration: Annotate accesses to ignore flag
+Date: Fri, 20 Mar 2026 22:44:37 +0200
+Message-ID: <20260320204442.32901-3-ionut.nechita@windriver.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260320204442.32901-1-ionut.nechita@windriver.com>
 References: <20260320204442.32901-1-ionut.nechita@windriver.com>
@@ -93,169 +94,266 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SJ2PR11MB7546:EE_|LV3PR11MB8695:EE_
-X-MS-Office365-Filtering-Correlation-Id: f4c88a8b-f711-4d5a-b474-08de86c18b39
+X-MS-Office365-Filtering-Correlation-Id: 6b04b361-f118-445a-e482-08de86c18c96
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|52116014|376014|366016|10070799003|1800799024|56012099003|18002099003|22082099003;
 X-Microsoft-Antispam-Message-Info:
-	hKbuRYR/GcqpppFjyZSl5pFiJDrCBheNuHMTJXZFvO69456IDil3u2t+k0WO/CcUl98HF/akPMfYDi20Kj+T9Iz46DsjXGin6Ub9oFDuacUir1fERXc+NjhaEIFUiJdVI8gXHVgAKKwKIYpvaCxAWH8Iuy/bjR8xhanItSoLk0bZ+Knm6G/dn/PiAf7yCcUYrjWzSZXOIGbUN1Lc0BDQSFnfTakMapdeB5fdWPGum9ojkHywiomXMP0dGSECbARgQy0W6C48l32O8C76ZwloNEwNyWjlrUXdNcKGADOVtDdCqTKgSJi7r3xOf+ZF4EUPCNdjD4pH9129HtekOoIJ5DmVgK40nYppK1mFmrHsXPAyCoTGL73xMsW9sbvwKSeHa0w0cOUBdVMf0fBPhhrId/v4l5hDOxUEdJH8GT2p6uoYxzuBSbwH1ZzGvF/gsQGBCSYVTlyP4EZP3RcPMWdG+6FX4jKQWdciFczCpGjlMq8dF9NQuHtT4kbxt+Y/LweRIXsPBP8Q8kHO0cayr16L2lZf5ufZSMjEWPcxwIqF2LYwkSjtJWGbPyAcJp7upzS2sGoScMHu+gddJgws/4Q9R60X51atq8l2A1R6Ht2k7J6m2ny2Z9l1CaSzJCNlQejw+1/2t3Wue512qeeBODt2hx+DAu5yTGguxyC7Hv7QFC45In32lXmvQGF7AW61M7kWfFx/k98Dn9ALNPfs4t1lMv9RFwqG40zypUmJDTuaUDs=
+	ZERxzb9m3mx0Ozt4fm3e0q/hfc5o2zEjwVFrl2K7QVAjXsfnYk/moooA1WW1JwA5CQGa5I9YAOVfpv1syozud0um2z8062Fa6B7asW2nf/+XyP2E4AGNpwfTEra8lJQHRVjTpnXrBa9AvWig5R3jQd0H8wQ5IKhEfmzPZWlcS6fygGkgRIbPxMIhVwC3F7301rRLy9KKMAjvzK9Bpi0U/g/3WehAAMzq/g5duGmFZ4rvRqBtk+FOKy1I+Cl6mZ9obnE+rpYOJngWl9FQX0KIH5yFGUtMkY2E0g6bCzg5bemiqZ4TmBBzBq1KUYUoHeJ43mPVycDau4LGPhwtSasHGnUqUCioPFqAHCkvcr6Sp1ThyzDsD+Ezu3GbQ27gNSQWBAkKezDFU/AeEf1WBhHbvR74atmoZDxgi3ewzzLZpfTh0bwbz2+va47VqyBletuPGbvm1w+pcJLom541CE93gvrLik69b/nEJRyzOMoJny2X6eXkab3n7Zw3aTHkWcOHSccJuJCiTxI/Oq4WuBNQ93hODbbpwRoYfdcVMjZHYjznJbiHbAbSFz6kbpZzfAGNE+8Trgg0590HPdImw2aQtDdkg0QRZZEDeqrHYDC/MdtC+QhBE8s3JE8gRYtGeeDbQa5ZAkM2AqqG2QjZrKmovIpOLvSJp+dHAR/vgdm9gkSn3WsEUReymtHnaJGpzoChqDkshxvdF6IgVkMZVMUnAtN/zTyvXmtoN0/nmjc64FpR1edTFf1hz6jckEFvWCrK
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR11MB7546.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(10070799003)(1800799024)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?zq/YKfCgnnmgvxItibaI8QeIAOLvgAU1KJ20fRzTMCBy+vcLKyhF3m0I7GVz?=
- =?us-ascii?Q?iIdO5/23eH4eZphYzHkmDffFk/gNjlGrzvd6gnRHsUm6hdVmwnI8TYOp1XUe?=
- =?us-ascii?Q?BoHpi/kRypXgOLDqE5e9U48otdGxqVCJxOaChHuZR9aVPjjcSm2Agob4JLD8?=
- =?us-ascii?Q?Vr0Cxe48bTJk2bi1c9fUcQT5zQTFpwS27xwj+UratWLLTpppvHgkdO9KBfF8?=
- =?us-ascii?Q?kXF/45ctp/IOTLI7LHDlzvSmGOqGhPJ0oTRDcMnGKIA88kdROODAL9VGvNsZ?=
- =?us-ascii?Q?ev6uZhUjhMc2JnqYVB9r4PO4CpETQ3FFpchee3xJ7yTvLQ1ClsxN7IzyK1Nb?=
- =?us-ascii?Q?PZeowu9dpuHdy96aKsaN0n+IbrXv7jgqKFMVF6Dn7MX1VRI29bKixZV/623v?=
- =?us-ascii?Q?RQ7OxZAXc+B1CrU9/SeTH7iVvOGqz8a959QgpB4FVBddUzotbl9Ak9jwk7Jx?=
- =?us-ascii?Q?9ckd8mTHatleWRnUyaSTvKA7LQxlu4XUJiUptypf3TS7ZUF2KuDLH1TcljJz?=
- =?us-ascii?Q?4WdTYnnvOE+YYwTaT5AycS/li/VeQ+U4KzSWixR55ZgezKFNCFzzOtFDwg2V?=
- =?us-ascii?Q?CePTgdZ3yXGGn7MZVR7VcUFrkOK+wImRFmNoxG28b/a0+IvzglPV7cp1CbCG?=
- =?us-ascii?Q?V6BdzjunyVLCH4yakuA6UvCufwiLhXkyVqC13TusKZu170do2fTyw4ADfK07?=
- =?us-ascii?Q?U194XuagLmPYBjia1T2ByLFL3CxzoBmFhEqIPvhWN2cIX2mHTZ1MB8yQP1l1?=
- =?us-ascii?Q?hKrFF5xKTlZOJA/zlRsx7WzuawJfHO58I/jAiScBkaQtDuNz3G4RXAp5kMfH?=
- =?us-ascii?Q?bJKLe13Ly1TYwWaL0QHqZyvw+AcDGqalUFqax2SUsgqWtXzGHQRsj8uYXjFW?=
- =?us-ascii?Q?oeY0nm4K/EOyl0ZH6pdxxe99S0372eoZpXGXeFYPNJtHqLiQd7B638VonKSV?=
- =?us-ascii?Q?luSvASnhjZErFzcTQpKQRmF3YtqAi3QrHidN12UvllOQ0WvoQU41FAZsWzHF?=
- =?us-ascii?Q?NZLcjgbl8qnC8+SClZ0680en1ZqXeNxdKuPDnMFmYGm/R9cqfarXUB5GcZiw?=
- =?us-ascii?Q?kqaKEd8vG9ulOb25XtjXala5WkZ5cuqRBb6v87QFKZWb3o5JPXKGI1ND44zv?=
- =?us-ascii?Q?mUyzXhbwQ5CbZEJdcZeVmAtMThOgFrA2Is4uo0qLn1tqTyQJUBHULz8p31C6?=
- =?us-ascii?Q?/DspQcKwYn465vwyj3haErVsmdu/qnCmqWuegk6Weppr0ebS37d4luZUVCbK?=
- =?us-ascii?Q?rQbElSZ805gjqvTBkelfFmf7BiD5eLxWs0LF3nYgD0/Jz6nrixHpupC5gHpE?=
- =?us-ascii?Q?sCzIghyIdZwEU0QPIh2ZYLVjYh8V/5Ocg/GtcjwNRSDr8TDiUMDDio50zHht?=
- =?us-ascii?Q?sWtaVUDBpscg9RFLxfiCD8AnkUmoF3sTx9pw+HPFBMLLOUFm2ER/jQWmx+s4?=
- =?us-ascii?Q?iAWO4120nbymMII50n2UZklJl3gWNXxrScGfdxsPp0l6s+jElc8DdD90qvHj?=
- =?us-ascii?Q?fVnHR8Gsx3CcetQ24nUJJPxQSZPRWoqZkttDSdEYT+hLzTvq8re4y5hrzf5D?=
- =?us-ascii?Q?YgYyxyUJGZTu/yX342aMOL4BDu6Vf6N9KP2Cto6b5upAKw6gfrse7l4PuxgI?=
- =?us-ascii?Q?EOP58puKgBRQkSMWi9LS2D/9TVRxOQHsgoe1vG+R0PtHafvjPwVOnE6IKeLC?=
- =?us-ascii?Q?Hw9QTV0GPT+QdnLqgef4ieiht0gCDOAABu1f/922DqepiQZK7fzL8A8GXV5e?=
- =?us-ascii?Q?gOGMDnmR8KC4n3+pT53PS+v3TtHvGIkTrerRfEqsgU56KkxWLXQvk+BCbEaL?=
-X-MS-Exchange-AntiSpam-MessageData-1: Qc2MweNVd4o62rGoDgMQXRL2r49IZaIc2cg=
+	=?us-ascii?Q?a+S9xUXsZVb13zP7/6VeiI7IUmHHhWFRq7N5GMIM5yKcOaMzg4aOy1IO5X5W?=
+ =?us-ascii?Q?3tlN3A8bbGlScrKB6/F4c9B6BLkbLoZcFJM0d1xvDHN8fWjjamyO8KPmO7aS?=
+ =?us-ascii?Q?H0YLYjooFxH9iKGGKXckBYbz7bmgcjUnDL0gRxLGCX60nJqQH+gmNag9u3ti?=
+ =?us-ascii?Q?xO3GbB9FX0Kcr0Q86PJH1deCsMUz1/PnWrUQ45IDRJPhhVm2SwQ4oajY6Vhv?=
+ =?us-ascii?Q?Bc882CrR3w6AIFDPaAVGOfS3AYWWHFpzErK0g8XZZ890hbJhAlS/5pze8Uam?=
+ =?us-ascii?Q?iMR4xj7feB77FATJkedUWJrDzvw+o/vnM9QLNm/VU98NSefgd7eebE6S4mlY?=
+ =?us-ascii?Q?EuzfaFfW2AS6mLncg7rWpukHltjXuEwQzs13srApeEnMAuPs6c4uWERv3d+5?=
+ =?us-ascii?Q?Ln3lovLnu/kp4dYSakLtlUD/Z3JpmA57bvnl5eNEcpYg+rjlHsMCW7AtqSMK?=
+ =?us-ascii?Q?/pXvxZTJtPrhdZ4hCspYwBxjnq9SqGgbP5liCvIb4y5h91IAQVxSaAYe11+2?=
+ =?us-ascii?Q?J464aZYaPuqzd6BMCRXQKHsI33r9vHvIMpFHMhPIkR3JJqP2N7J4YwDN+2nx?=
+ =?us-ascii?Q?PqoJFG437BSmau/mZSKs32vGoI0WqgZLeP5MM6NwC+gsPJS2vcLljxnYE/ru?=
+ =?us-ascii?Q?rkyaVh8sGR2XnQSUmH0wyVV29eDYjPv/FOlXFbrq1P0VCs8+nwOLehuOeB9G?=
+ =?us-ascii?Q?GUHLsLIa2YsdcUMETHkUWYdt/trvkXY7uGZgq7+1fZq/vBi47+kY5Ps2MSOa?=
+ =?us-ascii?Q?3iW79JrnxflI05zt+8a1UbbVZpfYQrp50/Lce2epbbQyU5++aaHSOxJWhpPj?=
+ =?us-ascii?Q?MoTe1RPiUPUeDQ1P07mj46T2PfYRuwYLBniN4sXbQlmsNGWPLKsJ4KfJsVzO?=
+ =?us-ascii?Q?Vh4jgEo3au/qPgezcc8Pp1gv2QZGJbw1Xngi28ai2QsTGH0umpalQfgU3xct?=
+ =?us-ascii?Q?r6l/EwPrN2eiuBCYAk3nAonlAH+K3cYl6dAOyXj6EU+f3vYrhQhOTeQ920Fg?=
+ =?us-ascii?Q?JbOieITjwdh9MiT6+eNFVEbbQrVbVL09ZElgkOldlwprOdHywUmTBj4QJysd?=
+ =?us-ascii?Q?5j8AyRCL5EcPrJk6sRP1SDttbgfyxh81TF4kn/DBFaquo4dEuqFzb0TO8wSa?=
+ =?us-ascii?Q?8mxepAENuLUiRCPM8a0622wtM/TTXrPAsMAega1EuXQJWPY7moN9wEITDpBz?=
+ =?us-ascii?Q?9aYbDLNb06dN0JKy5hhlwu9IE6Q3zQwn4fst5bpSO3z6epb2DLprvE/HtTLg?=
+ =?us-ascii?Q?6uvuwgxV1EHbKNlWJc4/NCEsWwrzT4TbvxhlIfJFOv3yf+5Eus1b+j4Rp/z3?=
+ =?us-ascii?Q?oEWccxN8vz8RjYj2+GaZKdblx9RHW3WmZT+wNLgKQTSiV9BGPVkCtPoB0bLa?=
+ =?us-ascii?Q?PluDsx54MdDSYTX4ca3sjQnYKxo0+raG+ZyELwhEJv3In2iWGX4poxzOfJVM?=
+ =?us-ascii?Q?kDk3IkgfQywGd3YgxbF6lpYYP+YZXca2C68DI40iZda2QzDReEmvZq0YBNDX?=
+ =?us-ascii?Q?t3BjdboVAHFrD34rY4hHuVr+ShtcZVV9jdMbSkBZvSSQ2l8lkseJjdaZl/sa?=
+ =?us-ascii?Q?KKZQk/ouDqeq5QwhxeVsVBFCDK2Iq8ahuNewqn3XzBKF8rHKYfbuZIOxbC1x?=
+ =?us-ascii?Q?0SwVBu0FX5HSwkShnlXH2aHPuSlWCxakdxFBo3WqXPQ/CYDvgifufcIKlq5F?=
+ =?us-ascii?Q?VDuTuYwsmxfTZlLnCfVOFH1xBJt8tT5oc26+oS0SL0C5yD6uuNGEjFEU7iH0?=
+ =?us-ascii?Q?HONFtmL3MNysn2lnhPa/Z4qL3CpW2HgS9mU9H7JBrwuMw40WpGDBVsfZAe+i?=
+X-MS-Exchange-AntiSpam-MessageData-1: /V/Xm1AzgRj55Lb23YDGNd5Qcj0rXWbsGTs=
 X-Exchange-RoutingPolicyChecked:
-	ikwq5eKM4OkKbCuQMnEClMwHUg0oiMVQ31ike3KXn7mCWJ8WXE0+dgb7Ehnlx3OGdAESpEVqJnJUozflukmdQSTb3ZMKDyOxPz/uzRf3hklVYbk0eVAz/6LpGWrAKQx+iskV9OQDsC2X7HgbjwQnuleR8Wzx9tRXJKSmeLOSRh1C93Z87fALzvIwHB0TPfHFOXPtSH+cqGPMQ2O9KAkJSB08jT2LMkpvLGpng61VLM0HQPM5WPfH3EDHkvS/pSbPx+KyxHIOgB/nQgl0cee3Gz/DaHMpcAo1xLlsQ13fFBxByLGGopB6xTZGeJ7t3k9vToYGvZAYxGCO20dMv4Q01w==
+	UO4NYpapfzX1mqDTB8Yl0SU8ZpuUr6GYr05yeRzu+uHeGUSHlXa7k7aCKnVkZk1Qx2ibyYsbNHeWwmw6q7N6BzQBBTNlP5Sc3FcwZbgPiEkJq4ZkvDPxum1/Q7QQ1aSs/2PWuVgAtPVaCOz8Ukv77Fu+1hR+2yH7Pg+gZwVIfaCRU4PysYAi1THG/kO9U+oo/8K6hj+2AmFgzoq8k0JnokluHzEvXUz7q4LQ4eBUBatp30pYXCVzxBNGhqL3cawJnzKhdH3rZ3AmzdPcP3bUiiQ57tLjlb0EBfGP89n6LnuKma0caL+H/6U/ur/g75GutDDodrITGpYQ3iTNzpW0WQ==
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4c88a8b-f711-4d5a-b474-08de86c18b39
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b04b361-f118-445a-e482-08de86c18c96
 X-MS-Exchange-CrossTenant-AuthSource: SJ2PR11MB7546.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 20:44:55.7164
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2026 20:44:58.0042
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: UCOOW0dPRkBAskLuS7okNqLmdSW3lIV4tBjdwRckeLSYN0NBfjXvOvQE5eDE6oGgzcoLnhGaN1yaTJJEXH4XbudQn/mZJ9AnyGMmFEe1hFI=
+X-MS-Exchange-CrossTenant-UserPrincipalName: cujCmCTOl5yw5y0Jz4T3UQRQAmDOr/hWUu5eAH+ILsfgI3lrE+CWbQS+iEkHDQDTd8S3ZXweQCZZO0s9+WKrZTs0Dt7X51iMB5OyoGeJO4A=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8695
-X-Authority-Analysis: v=2.4 cv=CekFJbrl c=1 sm=1 tr=0 ts=69bdb1c9 cx=c_pps
- a=OGRNNHJcR/XwrOfql3gobQ==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
+X-Authority-Analysis: v=2.4 cv=CekFJbrl c=1 sm=1 tr=0 ts=69bdb1cb cx=c_pps
+ a=xkZeeFpQnwfNeFRS3gkPQw==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
  a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
  a=xqWC_Br6kY4A:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
  a=bi6dqmuHe4P4UrxVR6um:22 a=HK-ge7EqtdluswH-FwHe:22 a=VwQbUJbxAAAA:8
- a=JfrnYn6hAAAA:8 a=W8OALlVFJKLW7RJGoGYA:9 a=1CNFftbPRP8L7MoqJWF3:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDE2OSBTYWx0ZWRfX6ANZaI5FDO/f
- oOYebyDhfJEcOT0qFYyiWcmN5gcQzm6Tj6jssAAZOyUEKoZC6ZpAdf3KApiA4eSr95oYZhlOgN0
- EgDfFNjR6dXAa7rg53BQ7aRLOwXK41mv3F5FtrEfPyhi7L377fvVGaAUvo9o01dDMxzs++78IPe
- sIg6c5tQaD9PLC1qZU0QpBKSWfIMFI9kZ7Hpy0gkvAbtQYlE2eZ6YXfLm8HiLC/6dMGC/TwzQfR
- n/QPUC9v0nyRTyCihpv5H7cE8rmfGInbtEXahogKDDad6UhmIwfDFb2r1qanIK/Q49O06/wmIM9
- diXIr+vLRZS58f345nLRkAwroX1ukacf0NCNfxd3pL94B9uEcn/9QrVvHyran0uYyivorAUfG01
- Ne9p6IgHLTEVkmJstaiFQpieMeghIc7YRdQfRNdri6OauiSQDX28wpkz4AwQE3qITc+gPardFdV
- ftAo2QpeVx5ocPfbtdw==
-X-Proofpoint-GUID: XcvlhxTfJGdX187zX38XEXKeRbdqSElY
-X-Proofpoint-ORIG-GUID: XcvlhxTfJGdX187zX38XEXKeRbdqSElY
+ a=QyXUC8HyAAAA:8 a=cDCvB4DnJeAfrRTg3j8A:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzIwMDE2OSBTYWx0ZWRfX4rooyvIMk5+7
+ vEwpY/xg+y9hIsT9+HPRAAFoUOJhSeUswcZ8h/rYWfB+qK1WT00gVdM9twF3Doq28yuflrBHsmT
+ 7LR6bltnNEP8cGZrRs6uYFlj2T3R4WBKVo9NSN2nk8fBJY52hyJZVXQKWETHhYxXT4YvW7pae3G
+ zcm7NYHyxTyJykZNKubaZBiAArqtrx1krUVmbp8SoGV3woR4SNnU90QxwTDrA+Gz+mVab5R7igb
+ 8C2deLlsns5l+jWUAkNkcp2Iupol/Wlq8Rw1lWrSGrm7Enror5kpavk8045N7Z80mSI+5572uE5
+ L2+1kTBNFd1uiYSo4D+Bxzntz2i/fghR9EwgOife80cv/ne6vA9Ds5QdWsofuVZ0WurYcchszM1
+ u2VmgOOqIqtXPVov9I8YePH2Vs59YmtT0KHRWyDsCZKFAzKDtvXSE3rUkl6hmb/kft1RQ3ZX+0S
+ sLUv2W+IERBBvgiq8rw==
+X-Proofpoint-GUID: 3WKcZcPENUywTxO80HtTyTnax8OjnJPT
+X-Proofpoint-ORIG-GUID: 3WKcZcPENUywTxO80HtTyTnax8OjnJPT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-20_03,2026-03-20_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  phishscore=0 spamscore=0 suspectscore=0 adultscore=0 impostorscore=0
- malwarescore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
+ malwarescore=0 clxscore=1011 lowpriorityscore=0 bulkscore=0
  priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2603050001
  definitions=main-2603200169
 X-Spamd-Result: default: False [1.34 / 15.00];
 	ARC_REJECT(1.00)[cv is fail on i=2];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[windriver.com,reject];
 	R_DKIM_ALLOW(-0.20)[windriver.com:s=PPS06212021];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227622-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227619-lists,stable=lfdr.de];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,windriver.com:dkim,windriver.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[windriver.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[ionut.nechita@windriver.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_NONE(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,windriver.com:dkim,windriver.com:mid,linutronix.de:email,infradead.org:email];
 	TAGGED_RCPT(0.00)[stable];
 	RCVD_COUNT_SEVEN(0.00)[7]
-X-Rspamd-Queue-Id: F1E6B2E1007
+X-Rspamd-Queue-Id: 8B57A2E0FA5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-Use the correct kernel-doc notation for nested structs/unions to
-eliminate warnings:
+The group's ignore flag is:
 
-timer_migration.h:119: warning: Incorrect use of kernel-doc format:          * struct - split state of tmigr_group
-timer_migration.h:134: warning: Function parameter or struct member 'active' not described in 'tmigr_state'
-timer_migration.h:134: warning: Function parameter or struct member 'migrator' not described in 'tmigr_state'
-timer_migration.h:134: warning: Function parameter or struct member 'seq' not described in 'tmigr_state'
+_ read under the group's lock (idle entry, remote expiry)
+_ turned on/off under the group's lock (idle entry, remote expiry)
+_ turned on locklessly on idle exit
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+When idle entry or remote expiry clear the "ignore" flag of a group, the
+operation must be synchronized against other concurrent idle entry or
+remote expiry to make sure the related group timer is never missed. To
+enforce this synchronization, both "ignore" clear and read are
+performed under the group lock.
+
+On the contrary, whether idle entry or remote expiry manage to observe
+the "ignore" flag turned on by a CPU exiting idle is a matter of
+optimization. If that flag set is missed or cleared concurrently, the
+worst outcome is a migrator wasting time remotely handling a "ghost"
+timer. This is why the ignore flag can be set locklessly.
+
+Unfortunately, the related lockless accesses are bare and miss
+appropriate annotations. KCSAN rightfully complains:
+
+		 BUG: KCSAN: data-race in __tmigr_cpu_activate / print_report
+
+		 write to 0xffff88842fc28004 of 1 bytes by task 0 on cpu 0:
+		 __tmigr_cpu_activate
+		 tmigr_cpu_activate
+		 timer_clear_idle
+		 tick_nohz_restart_sched_tick
+		 tick_nohz_idle_exit
+		 do_idle
+		 cpu_startup_entry
+		 kernel_init
+		 do_initcalls
+		 clear_bss
+		 reserve_bios_regions
+		 common_startup_64
+
+		 read to 0xffff88842fc28004 of 1 bytes by task 0 on cpu 1:
+		 print_report
+		 kcsan_report_known_origin
+		 kcsan_setup_watchpoint
+		 tmigr_next_groupevt
+		 tmigr_update_events
+		 tmigr_inactive_up
+		 __walk_groups+0x50/0x77
+		 walk_groups
+		 __tmigr_cpu_deactivate
+		 tmigr_cpu_deactivate
+		 __get_next_timer_interrupt
+		 timer_base_try_to_set_idle
+		 tick_nohz_stop_tick
+		 tick_nohz_idle_stop_tick
+		 cpuidle_idle_call
+		 do_idle
+
+Although the relevant accesses could be marked as data_race(), the
+"ignore" flag being read several times within the same
+tmigr_update_events() function is confusing and error prone. Prefer
+reading it once in that function and make use of similar/paired accesses
+elsewhere with appropriate comments when necessary.
+
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250111063156.910903-1-rdunlap@infradead.org
+Link: https://lore.kernel.org/all/20250114231507.21672-4-frederic@kernel.org
+Closes: https://lore.kernel.org/oe-lkp/202501031612.62e0c498-lkp@intel.com
 ---
- kernel/time/timer_migration.h | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+ kernel/time/timer_migration.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/time/timer_migration.h b/kernel/time/timer_migration.h
-index 154accc7a543c..ae19f70f8170f 100644
---- a/kernel/time/timer_migration.h
-+++ b/kernel/time/timer_migration.h
-@@ -110,22 +110,19 @@ struct tmigr_cpu {
-  * union tmigr_state - state of tmigr_group
-  * @state:	Combined version of the state - only used for atomic
-  *		read/cmpxchg function
-- * @struct:	Split version of the state - only use the struct members to
-+ * &anon struct: Split version of the state - only use the struct members to
-  *		update information to stay independent of endianness
-+ * @active:	Contains each mask bit of the active children
-+ * @migrator:	Contains mask of the child which is migrator
-+ * @seq:	Sequence counter needs to be increased when an update
-+ *		to the tmigr_state is done. It prevents a race when
-+ *		updates in the child groups are propagated in changed
-+ *		order. Detailed information about the scenario is
-+ *		given in the documentation at the begin of
-+ *		timer_migration.c.
-  */
- union tmigr_state {
- 	u32 state;
--	/**
--	 * struct - split state of tmigr_group
--	 * @active:	Contains each mask bit of the active children
--	 * @migrator:	Contains mask of the child which is migrator
--	 * @seq:	Sequence counter needs to be increased when an update
--	 *		to the tmigr_state is done. It prevents a race when
--	 *		updates in the child groups are propagated in changed
--	 *		order. Detailed information about the scenario is
--	 *		given in the documentation at the begin of
--	 *		timer_migration.c.
--	 */
- 	struct {
- 		u8	active;
- 		u8	migrator;
+diff --git a/kernel/time/timer_migration.c b/kernel/time/timer_migration.c
+index 72538baa7a1fb..0707f1ef05f7e 100644
+--- a/kernel/time/timer_migration.c
++++ b/kernel/time/timer_migration.c
+@@ -569,7 +569,7 @@ static struct tmigr_event *tmigr_next_groupevt(struct tmigr_group *group)
+ 	while ((node = timerqueue_getnext(&group->events))) {
+ 		evt = container_of(node, struct tmigr_event, nextevt);
+ 
+-		if (!evt->ignore) {
++		if (!READ_ONCE(evt->ignore)) {
+ 			WRITE_ONCE(group->next_expiry, evt->nextevt.expires);
+ 			return evt;
+ 		}
+@@ -665,7 +665,7 @@ static bool tmigr_active_up(struct tmigr_group *group,
+ 	 * lock is held while updating the ignore flag in idle path. So this
+ 	 * state change will not be lost.
+ 	 */
+-	group->groupevt.ignore = true;
++	WRITE_ONCE(group->groupevt.ignore, true);
+ 
+ 	return walk_done;
+ }
+@@ -726,6 +726,7 @@ bool tmigr_update_events(struct tmigr_group *group, struct tmigr_group *child,
+ 	union tmigr_state childstate, groupstate;
+ 	bool remote = data->remote;
+ 	bool walk_done = false;
++	bool ignore;
+ 	u64 nextexp;
+ 
+ 	if (child) {
+@@ -744,11 +745,19 @@ bool tmigr_update_events(struct tmigr_group *group, struct tmigr_group *child,
+ 		nextexp = child->next_expiry;
+ 		evt = &child->groupevt;
+ 
+-		evt->ignore = (nextexp == KTIME_MAX) ? true : false;
++		/*
++		 * This can race with concurrent idle exit (activate).
++		 * If the current writer wins, a useless remote expiration may
++		 * be scheduled. If the activate wins, the event is properly
++		 * ignored.
++		 */
++		ignore = (nextexp == KTIME_MAX) ? true : false;
++		WRITE_ONCE(evt->ignore, ignore);
+ 	} else {
+ 		nextexp = data->nextexp;
+ 
+ 		first_childevt = evt = data->evt;
++		ignore = evt->ignore;
+ 
+ 		/*
+ 		 * Walking the hierarchy is required in any case when a
+@@ -774,7 +783,7 @@ bool tmigr_update_events(struct tmigr_group *group, struct tmigr_group *child,
+ 		 * first event information of the group is updated properly and
+ 		 * also handled properly, so skip this fast return path.
+ 		 */
+-		if (evt->ignore && !remote && group->parent)
++		if (ignore && !remote && group->parent)
+ 			return true;
+ 
+ 		raw_spin_lock(&group->lock);
+@@ -788,7 +797,7 @@ bool tmigr_update_events(struct tmigr_group *group, struct tmigr_group *child,
+ 	 * queue when the expiry time changed only or when it could be ignored.
+ 	 */
+ 	if (timerqueue_node_queued(&evt->nextevt)) {
+-		if ((evt->nextevt.expires == nextexp) && !evt->ignore) {
++		if ((evt->nextevt.expires == nextexp) && !ignore) {
+ 			/* Make sure not to miss a new CPU event with the same expiry */
+ 			evt->cpu = first_childevt->cpu;
+ 			goto check_toplvl;
+@@ -798,7 +807,7 @@ bool tmigr_update_events(struct tmigr_group *group, struct tmigr_group *child,
+ 			WRITE_ONCE(group->next_expiry, KTIME_MAX);
+ 	}
+ 
+-	if (evt->ignore) {
++	if (ignore) {
+ 		/*
+ 		 * When the next child event could be ignored (nextexp is
+ 		 * KTIME_MAX) and there was no remote timer handling before or
 -- 
 2.53.0
 
