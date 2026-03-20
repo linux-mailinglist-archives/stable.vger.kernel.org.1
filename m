@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-227409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCcABDCqvGmk1wIAu9opvQ
-	(envelope-from <stable+bounces-227409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:00:16 +0100
+	id MBXmBmCqvGmk1wIAu9opvQ
+	(envelope-from <stable+bounces-227410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:01:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D3E2D4F67
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:00:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E7182D4F79
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 03:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD49230328B8
-	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 01:59:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 53E693010271
+	for <lists+stable@lfdr.de>; Fri, 20 Mar 2026 02:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF70C3128BE;
-	Fri, 20 Mar 2026 01:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A1430AD15;
+	Fri, 20 Mar 2026 02:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="KQFdPjaJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAuVR5In"
 X-Original-To: stable@vger.kernel.org
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4D41DB95E;
-	Fri, 20 Mar 2026 01:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C2C30F53C;
+	Fri, 20 Mar 2026 02:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773971943; cv=none; b=VathG3PZyBFua4QEYftZPefSLkAW7Jd9qkrTj0je/xWofEugfDHuq5kcg8g5pfyH1uwj7Ry5vWeakxZxCtzLf5GlqkD/+/sB9A6dtF+Mfgf1qgy8gXPKIq6iUnhyExJHv2aSdTAGWsjK/wvbl9adXCsMar2I05dcwlW7iH2pWoM=
+	t=1773972060; cv=none; b=pYiWyIKCQgkAoXlS+CCdsYe8/eZwJ490+bp+eFkyruIKvIedAtAdYCqHPjXJz/ELR7mV2+Y24e32mr4x1iWYFCbcdD2jFHv3I7MQ4iiP8lyjSpuQh+FXsaJ+OC737Aha3pb4SgoTu2/5rAiw670diuAt4uZqrMFU/LcjHkhxS2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773971943; c=relaxed/simple;
-	bh=q7BIV0f9uh9UO6U+lPe/81tyE64RSWoZSgt8NXkumSg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HwqRjSxQU4t+/wwPi3Q8QJ40QWdwktTI8vDkftcKB5aq8RhzOZk2RBqDL4C01hDAS9dVThlMeBxsEKb5lD0/fwLs7vtMTNSxo2u4nN7imLVH6EabcmK0hHlgtUE+yY/M7Bo5oIjXYJ7BOkoNYETufPdeFcJlLc0BCBoNswvMaaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=KQFdPjaJ; arc=none smtp.client-ip=220.197.31.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=fU
-	3gFdWhksndp8ua90z3+ckJW7q7uK0NJ919E6T35Yk=; b=KQFdPjaJoN0MR8rTEi
-	VmZGT0GlnG5z+LMorwPSmvOSqZFGh0GJkNUt0sDReI79KmZonqsJxAiy2P63x5WB
-	bFRnidW5guK7/g2hVAzr9SXZNiNjiFMkxAHOAF17dMjg8HbTi5YQDgKFi8/kQPOV
-	j75ChbX46etRrrGm1uTMlu2y8=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wD333G6qbxpkTUqAQ--.53736S2;
-	Fri, 20 Mar 2026 09:58:20 +0800 (CST)
-From: Yang Xiuwei <yangxiuwei@kylinos.cn>
-To: "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>
-Cc: linux-scsi@vger.kernel.org,
-	Ming Lei <ming.lei@redhat.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Yang Xiuwei <yangxiuwei@kylinos.cn>,
+	s=arc-20240116; t=1773972060; c=relaxed/simple;
+	bh=OradEm4zShh8J5nFxSUtOySkpjsYIi4uei72JjD05AQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ER2JvO8fWcJeYOVd4x7dWpRlGip3C6/Wi6Ma9sKkOg5h88g0tFxWSYl+k5SAxw4Vock/yslH1LZdy6R0k2Tm9d4jE6RGQ+qtCrEzfZZLM1r1euUVdZbWoxek1Y2B8Sf0XQMf1rDZZVLEjFQN6pwCe/oc+Mkan/767CLVKh4J8uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAuVR5In; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F723C19424;
+	Fri, 20 Mar 2026 02:00:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773972059;
+	bh=OradEm4zShh8J5nFxSUtOySkpjsYIi4uei72JjD05AQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=PAuVR5InUxHN1otPcHeOXsOMHzuamEHIiJZkY/FvUupDRiBoo9IY9XfbQK143C0T2
+	 uU8nDMLM4vY2I4DlmHg4/oWD/jpf2LVcQmsBXamZY94qnBAjh3b6P9KblRrinwiUqo
+	 DVtweS3pUPq9SA0GPMiG/CYS8XzGuoiDeiGv9MaFul0VamsWNkzsk9KcNkD4y2rtTx
+	 ZKEU565XnYd86fNlfl6n2ejBfkNthFTDS/OdrXWEY4RG5lu8h/3/j1Hgp2uBC5iE1V
+	 zyl494t/yqlNpYVBFGxxaFOumtlLzckIS0+ckFA+UJaMq7flSaI/XrsKQ4dK56ovB0
+	 9im6sXoDxxyyA==
+From: SeongJae Park <sj@kernel.org>
+To: Josh Law <objecting@objecting.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2] scsi: sd: fix missing put_disk() in sd_probe() error path
-Date: Fri, 20 Mar 2026 09:58:17 +0800
-Message-Id: <20260320015817.4080359-1-yangxiuwei@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: Re: [PATCH 1/4] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
+Date: Thu, 19 Mar 2026 19:00:54 -0700
+Message-ID: <20260320020056.835-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260319155742.186627-2-objecting@objecting.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,70 +65,116 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wD333G6qbxpkTUqAQ--.53736S2
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XFyktw15CF1ruF18Gw4kWFg_yoW3urg_Cw
-	4jv3s7Xr4jyFn3twn3ur4avryv9rnFgrZYkrsYqF9ay39xXr90gFy5uFnYya18WrsIyr18
-	X3Z0qwnYyw4DtjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU1-txJUUUUU==
-Sender: yangxiuwei2025@163.com
-X-CM-SenderInfo: p1dqw55lxzvxisqskqqrwthudrp/xtbC6Rwjs2m8qbwjpAAA3i
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[163.com:s=s110527];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227409-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227410-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kylinos.cn];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[163.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[yangxiuwei@kylinos.cn,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-0.984];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kylinos.cn:email,kylinos.cn:mid]
-X-Rspamd-Queue-Id: C9D3E2D4F67
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,objecting.org:email]
+X-Rspamd-Queue-Id: 5E7182D4F79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Call put_disk(gd) when device_add(&sdkp->disk_dev) fails in sd_probe()
-to keep error-path cleanup balanced.
+On Thu, 19 Mar 2026 15:57:39 +0000 Josh Law <objecting@objecting.org> wrote:
 
-The issue was found while studying the code.
+> When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
+> param_ctx is leaked because the early return skips the cleanup at the
+> out label. Destroy param_ctx before returning.
 
-Fixes: 265dfe8ebbab ("scsi: sd: Free scsi_disk device via put_device()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yang Xiuwei <yangxiuwei@kylinos.cn>
----
-v2: Update commit message (add Fixes, Cc stable, and how the issue was found).
+Nice catch, thank you!
 
- drivers/scsi/sd.c | 1 +
- 1 file changed, 1 insertion(+)
+The problematic failure can happen only when the arguably too small to fail
+allocations fail.  So, the user impact may be not big.  But, still the
+consequence is bad.  I think it is better to add Fixes: and Cc stable@, as
+below.
 
-diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
-index 628a1d0a74ba..aba22060fcd5 100644
---- a/drivers/scsi/sd.c
-+++ b/drivers/scsi/sd.c
-@@ -4018,6 +4018,7 @@ static int sd_probe(struct scsi_device *sdp)
- 	error = device_add(&sdkp->disk_dev);
- 	if (error) {
- 		put_device(&sdkp->disk_dev);
-+		put_disk(gd);
- 		goto out;
- 	}
- 
--- 
-2.25.1
+Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
+Cc: <stable@vger.kernel.org> # 6.18.x
 
+> 
+> Signed-off-by: Josh Law <objecting@objecting.org>
+
+Other than the above,
+
+Reviewed-by: SeongJae Park <sj@kernel.org>
+
+> ---
+>  mm/damon/sysfs.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
+> index 576d1ddd736b..b573b9d60784 100644
+> --- a/mm/damon/sysfs.c
+> +++ b/mm/damon/sysfs.c
+> @@ -1524,8 +1524,10 @@ static int damon_sysfs_commit_input(void *data)
+>  	if (IS_ERR(param_ctx))
+>  		return PTR_ERR(param_ctx);
+>  	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
+> -	if (!test_ctx)
+> +	if (!test_ctx) {
+> +		damon_destroy_ctx(param_ctx);
+>  		return -ENOMEM;
+> +	}
+>  	err = damon_commit_ctx(test_ctx, param_ctx);
+>  	if (err)
+>  		goto out;
+
+Sashiko added below comment.  But that's orthogonal to this patch, so never a
+blocker of this patch.
+
+: If damon_commit_ctx() fails midway through damon_commit_targets(), could
+: struct pid references be leaked?
+: 
+: When transitioning a DAMON context from DAMON_OPS_PADDR to DAMON_OPS_VADDR,
+: param_ctx is built with VADDR ops, while test_ctx inherits PADDR ops from
+: the running context.
+: 
+: Inside damon_commit_targets(), it iterates over targets and calls get_pid()
+: for each target since param_ctx has VADDR ops, adding them to test_ctx.
+: 
+: If a subsequent target fails to allocate memory (like -ENOMEM in
+: damon_commit_target_regions()), damon_commit_ctx() returns early and skips
+: the dst->ops = src->ops assignment.
+: 
+: This leaves test_ctx->ops as PADDR, which lacks a cleanup_target callback.
+: 
+: When the error path jumps to the out label and calls
+: damon_destroy_ctx(test_ctx), put_pid() is skipped for the partially
+: committed targets because the context still has PADDR ops, permanently
+: leaking the struct pid references.
+: 
+: Is there a way to ensure test_ctx is cleaned up with the correct ops
+: if damon_commit_ctx() fails?
+
+# review url: https://sashiko.dev/#/patchset/20260319155742.186627-2-objecting@objecting.org
+
+Sounds like correct.  But defninitely orthogonal to this patch, so no blocker
+for this patch.  I will work on this later.
+
+
+Thanks,
+SJ
+
+[...]
 
