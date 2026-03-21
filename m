@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-227777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227778-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cFWsLo7FvmkabQMAu9opvQ
-	(envelope-from <stable+bounces-227777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:21:34 +0100
+	id eIlTFODHvmlLbwMAu9opvQ
+	(envelope-from <stable+bounces-227778-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:31:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15ECA2E64FA
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:21:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A037F2E6547
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:31:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF74E300EABC
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 16:21:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58732300EF9A
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 16:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329FF318EE7;
-	Sat, 21 Mar 2026 16:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9592673B0;
+	Sat, 21 Mar 2026 16:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nyVZg/JS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HklxB+Et"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0D2309DDB
-	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 16:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8CC2236E8
+	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 16:31:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774110084; cv=none; b=cB9k0tUyH7lvdfm4jbN+T2mBlG5dabAh9tuJzOZSn9ROWftd/jhZ9uX0dGiVs2VZtLxeDzwt3tnAhnWRgMQbuamXUAkY2MqF2m2B9ca4nM8WIUtCafffCFdwEvMfd6AW03d2zCb2QaENCZPPXG1HRUSrXxyN3uCgdLJfk1uy+mI=
+	t=1774110685; cv=none; b=mCajqMsEAjbaRbGPOMz0CihOIf9YQ7N82qewY1xF4LTvED9T03B8oqQAsZ8ErVMoLFFwACab/7uPfe4waz5PJC3DbIQLemzAUtlDQK26oKHqcb9Ehnx8GQkaIBoyLMh7hYX9OB+YURm1oozPHjdP1SvmdlRy5C2yx7KBwA8JA0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774110084; c=relaxed/simple;
-	bh=WiXHLoUfdnz18l7dN5o3cDMn2wfVPmL2MRcWPDNSWrA=;
+	s=arc-20240116; t=1774110685; c=relaxed/simple;
+	bh=9GYT4lJB/cSji853mxQrPFwB+jo2P2Xb2ufywJHWRx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XSPNTi7hud32yhwDshGTKg85m4/KCLrMjgqHeQjwuYzP4OYRymaSIynTIu4G82touTWwRz5JvGclFZbG9yrBEylvyHCtNb/oWdHewlkM04miRZ/uQIcH1azkplS4hTOovIG/KNeHoUfDr8l2KU+hVA3KMbhoSKh1I5Z7P1Uw5NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nyVZg/JS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11133C19421;
-	Sat, 21 Mar 2026 16:21:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Bb8OgUVSDkmEI0kJyzzqyTyJqKF/iDLyyEXj1yRCaiP+O7SP5U5bzpmmcsUE63OFY7K61+MIme5ZjAr1yDGffDIWq2SNdC0xelp+X13JH9ikO3YyR3kg1UrpBReiNEVzKVtZBJy6kpqSihLMDyUzuXlCC/hNy/tXNE0RJwBaxqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HklxB+Et; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7198C19421;
+	Sat, 21 Mar 2026 16:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774110083;
-	bh=WiXHLoUfdnz18l7dN5o3cDMn2wfVPmL2MRcWPDNSWrA=;
+	s=k20201202; t=1774110685;
+	bh=9GYT4lJB/cSji853mxQrPFwB+jo2P2Xb2ufywJHWRx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyVZg/JS4HM6v2HabHLT0womt9ICnZwQab88vytm9EnU+qX/+9Std1WXNgijE8IuM
-	 q5xwP5ubXgNL2JCDimUcPy5Ws3zg0jKu0fY4UH9+FY1fSQp9O0NiOp90K4e5vCalwc
-	 XGdBVe2JfHOvqNPBCm5deZeCnLaTRqRCXgV8ivhwn8qb95yw+rytQ45F7gMJV06lTu
-	 A/NlgOlbhMISuhWIxFLr1yu1G2Tea3kBXYi+5QyRMGF4UJBSqgaEL2sD/CLoO6gk4u
-	 5NT5L2Wo0oVAhgrntrNtAvQzB4K93kvDsDtQXM2/N59bxo7eeqa2riWO2qFd+5sqNt
-	 wOpQmUR7ZLVuQ==
+	b=HklxB+Et1JDU3RulJrJR5M00T3FcLj1L+Yte36dzYF0IQj6S8uNSBkyIUD82BpQ5j
+	 yH/Pt0m24YvMmr28U/FJyGBjjTF9hT5rexdKGxUhjsCun/FtLVyXo5ko3eO5mObkP+
+	 Yraqhdtjtb2reiFLUzeqZQ+JndtVeoloaZzIQxPQQR5IqMn0E5l3Qg36PQRI0NiZCZ
+	 /BO+MQ1MNAuWCbY2jBr630gbUDsqJ9x4jsxhyszLVnzP1mJpdDHVsbBL1eLFb6rWav
+	 7RXNwmNoP3JAQmOnja83cCZjkoaw+uYAR1aji4BB02FM3uJRmuE8QKX36da0G4mX6I
+	 /XHKaIe/LFKZQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Maarten Lankhorst <dev@lankhorst.se>,
 	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug
-Date: Sat, 21 Mar 2026 12:21:21 -0400
-Message-ID: <20260321162121.485641-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug
+Date: Sat, 21 Mar 2026 12:31:22 -0400
+Message-ID: <20260321163122.490593-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026032137-eaten-citric-2753@gregkh>
-References: <2026032137-eaten-citric-2753@gregkh>
+In-Reply-To: <2026032140-choosing-coconut-38a2@gregkh>
+References: <2026032140-choosing-coconut-38a2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,12 +67,12 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227777-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227778-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
@@ -87,9 +87,9 @@ X-Spamd-Result: default: False [-1.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email,lankhorst.se:email]
-X-Rspamd-Queue-Id: 15ECA2E64FA
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,lankhorst.se:email,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: A037F2E6547
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -351,10 +351,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 10 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
-index d6a0572984b54..3722c796e632f 100644
+index 5062f13808f20..24f1839e76902 100644
 --- a/drivers/gpu/drm/drm_file.c
 +++ b/drivers/gpu/drm/drm_file.c
-@@ -239,6 +239,7 @@ static void drm_events_release(struct drm_file *file_pr=
+@@ -244,6 +244,7 @@ static void drm_events_release(struct drm_file *file_pr=
 iv)
  void drm_file_free(struct drm_file *file)
  {
@@ -363,7 +363,7 @@ iv)
 =20
  	if (!file)
  		return;
-@@ -264,9 +265,11 @@ void drm_file_free(struct drm_file *file)
+@@ -269,9 +270,11 @@ void drm_file_free(struct drm_file *file)
 =20
  	drm_events_release(file);
 =20
@@ -378,10 +378,10 @@ iv)
  	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
 diff --git a/drivers/gpu/drm/drm_mode_config.c b/drivers/gpu/drm/drm_mode_c=
 onfig.c
-index 8525ef8515406..8c844bce4f28a 100644
+index 1bd4f0b2cc4d3..f85be2cc39443 100644
 --- a/drivers/gpu/drm/drm_mode_config.c
 +++ b/drivers/gpu/drm/drm_mode_config.c
-@@ -544,10 +544,13 @@ void drm_mode_config_cleanup(struct drm_device *dev)
+@@ -543,10 +543,13 @@ void drm_mode_config_cleanup(struct drm_device *dev)
  	 */
  	WARN_ON(!list_empty(&dev->mode_config.fb_list));
  	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
