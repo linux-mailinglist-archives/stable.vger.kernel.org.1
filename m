@@ -1,93 +1,105 @@
-Return-Path: <stable+bounces-227654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227655-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GyZE7MqvmlkIAMAu9opvQ
-	(envelope-from <stable+bounces-227654-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 06:20:51 +0100
+	id oMc/IVkvvmn3IgMAu9opvQ
+	(envelope-from <stable+bounces-227655-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 06:40:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92FA2E3590
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 06:20:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD1C2E36E6
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 06:40:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5108E3005AA2
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 05:20:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D2DC53038160
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 05:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3376E2EBBAF;
-	Sat, 21 Mar 2026 05:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE8D359A7C;
+	Sat, 21 Mar 2026 05:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EgnQn96e"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l5RgWuaK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D532E0901
-	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 05:20:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EEAD2848AA
+	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 05:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774070449; cv=none; b=H7iVL2NK6y3qnDMUO8jlB0naiXB/O+waXe4Hvns/j9Pu76YJ/QDR1In/oZqGEEL488xdAjEq60ScfiZU4grLtQ5NxXHaYKwTNcMmqQZGyyIxjC+NSkayWvO9IVubtFEc52UHAfUMAI7lifgms3YbLMj5rVix8Np/HRB4e/L3cHI=
+	t=1774071580; cv=none; b=O87liwgSZlMG4JILGTm8D527CuQPGdbqiIbljDWPkMhYYVAlWsGOThCIQzD8dcuLckEHuAUcF8VCkiDdH3GYOrsfozvO02q8q9lNjVJmwloHs9GLXNBfyGDusf9AHVI1ChleseF4M6d/M7z9rxwBagt96EQgaJVePhASqsynsMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774070449; c=relaxed/simple;
-	bh=0HlEjlh9o1lgGMMom2cutQKWfoE7OmxJMcZAedt8JfM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MxoZG60mGl9+aQHP05A8UHYSXk4YvAwAl4Ac6KsMTYMtMtN6OR5aQFMNKmTCvuhQUXLm47DzbdiVU6Dana0wURLmubmhFLfDvNxYKEXlDFdXnMNSNIzCd1jVyuqEYA9/jqrJYVd7lFhctkFzI3hxsnfm7eBgOUI8YjIxbZJbPP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EgnQn96e; arc=none smtp.client-ip=209.85.128.45
+	s=arc-20240116; t=1774071580; c=relaxed/simple;
+	bh=HYPV5+I8fH/ypfF2AgO784OuRVVErSIU/yP/DXliX8E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gXXyD1rGOtVcbPZNRWsqmz2z9mekgN8Yydxcct9dcmxE1oO2iLJSRkABncmF+LzBe1hvlMSP83kzithbH6kLD7n+CvW5Cio6C/E2fCHkeAM80iR6n5WPWIOIxgYh4daa4m9zZhMm0rEFFw3mVyQ6pnivQwp+NbWzJhkLsScWOLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l5RgWuaK; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-486b96760easo28702035e9.2
-        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 22:20:47 -0700 (PDT)
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-35a1230c60eso613133a91.3
+        for <stable@vger.kernel.org>; Fri, 20 Mar 2026 22:39:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774070446; x=1774675246; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1774071578; x=1774676378; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1EKq1vLfgwYt/zYwN9FJYIigJVZ+pwHlskrnj75NFik=;
-        b=EgnQn96eOOylYH42hNztxrVwvanZeOpuw6n/cVVZ5AWWgIl9JLCHtPwRmRhrqAIFBv
-         Fo1oviwdLvgg2hGDB4rjmtgN0ypX15sNketrseJUlbe9fZUBgog1z5Po6GeMRaQCiDai
-         78dHIgUsEFvXVbMPg0v2ACd61Yy8oUjtbCcKmuv2GdN5MOdW1FP2bbx1SQRNn0i9lH6Z
-         oIn5iXqmvwjNUAoi2dMt7IezyYMfK9ZF9kNL/p6RRPmYft7R7srFV0PGjq+nVZgSPBx6
-         iWikD1/7MgJHbWyb2iLO7rsUZjpEQ3bwS8CIoD1cnHUQ2W15HuA46bYSqKu6oJupg/Bf
-         TceQ==
+        bh=7vLQwDdr1oGsaR2KdQZstZjQxIdivEgvuuhjfe9IBVw=;
+        b=l5RgWuaK8nGr3MfLf5HRHrRqSweWoTQ8Fd263KKjtuQHl2Wme/pUs7mA0CyvAoxWVP
+         nHRs4Crn7SJRVgFIfRJv2uaZOMYYNoj3oe2RO+A21NBQnsYQF1Qt0CHn7d6PSbX+4ehj
+         pQktXM6ZvoJzfClFxPCfiGfgrpELfntjKNKMfiqihB8Ul5g2O4yyNOPmyXN7g72JcOPa
+         g9AgZwZ0utmhAv/7CCNDlL/jH9+O/ahYBLwGdTDzpNlJnOc3mGz1vSz7DlNMFQHEPr+/
+         r0skttNVEivTtfXdtjbdsWoXV4hL9C2qWY9cBeYtT9pmzZcESjYv7Nt+DLCAr7IWzds3
+         ssvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774070446; x=1774675246;
+        d=1e100.net; s=20251104; t=1774071578; x=1774676378;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1EKq1vLfgwYt/zYwN9FJYIigJVZ+pwHlskrnj75NFik=;
-        b=pVDSMLlZ3Qa6RKry+7NyngbN6juj88j/BsCHLNOfLITy2AcoXVSoosrGoWqqS0G4hg
-         s/KzId1Eu+EHFjdi61YYE7DuFLlJjpPrvyTxtafSneaTH3GuVaZyTVoknd0XTixvnE2K
-         asKg+T7lJdz8WI+joIaxWcAl8x4JS91NMvleuFaPu+D7mFwY2WBXvm+jUT5tOmql72v8
-         KKdKaBVcNoFM8r4w+WeqT6U5j2PovWUD/yyOifNEyOusNDQTQcIC+7E4yAsQ/Q1w1JeI
-         weakLp/hGEX47y7z1AB02gmVtJWh7Rwms/Sn3uqlipW/hlVmmnXpEFcm4xoafAMKgzjT
-         e1jQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV1pyBvpgdBABez3NXIAusE/xCYvYBajukViI5zJbkRrVH7aC/TySLQ1Tuc34P9UFU9E635hlY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXx7z8RH7oZZNgINyq9dX478P0obeQp+ttR4U2AwnQ2Fd1ZIJS
-	H1nOgrUxifCmwxBnaxx1rwRpnl9Pz39iZll/9VN+ciob/J5yZCaAiOVd
-X-Gm-Gg: ATEYQzyn/CTtmBYk85n9c2gD+zizr/EWs0fr3tjTbu33j4bbdufw7ep2S+YyRWVMJ0w
-	vyrHC1/qNRX11aXMgNaA1OTLE2CxmZTxNwIDNbdiB05TUIpKKedkJx5DzaEeevwED5EU2vW8az4
-	qgFg0Hfa8b8Z/jJg+/yiDYz4EI0y8K1qFKZ3/+QAvNef+qxPy8o7hc9g86r0E7OJsdV/u6Kn967
-	DgXVitBPEn71RjH42HkdAFZ+nC8EQd2JuYV0QFi3Q2yB8mteZK5cysqpTC05a3IYOCT49tpr4F9
-	4gVfKF1YSnpUkVKWtE4Lg06OzSWvLxUiRgGaY5nGoEJ5Tfdtlwy60pJiKn+fYN5iitsAyIHymGX
-	eIacwsJvMfHe+PIjygGNTDrBG7twL+9qzJGjb293R5OWO5AfstL+OHSvNVEFvD20Rdl0tdNk73Y
-	vw/B+cIQh51AjJztjJE9wp1MIvSVngUg4rOxhVpx24S05j944ypLC4mJP8aa5vzSkKdLR4vxoQF
-	nNpkgN/uSTqsMGPLEjab34w9PeFj6/wii5/zvElhc9+pJ2s5a/vHmeX5pmzytzpDGfL
-X-Received: by 2002:a05:600c:3b07:b0:485:5ba3:37d8 with SMTP id 5b1f17b1804b1-486fedab1e5mr73958065e9.5.1774070445643;
-        Fri, 20 Mar 2026 22:20:45 -0700 (PDT)
-Received: from groovy.localdomain (dynamic-2a02-3100-5a1e-5a00-2fe0-b647-7443-5e95.310.pool.telefonica.de. [2a02:3100:5a1e:5a00:2fe0:b647:7443:5e95])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-486fe032a55sm208361275e9.7.2026.03.20.22.20.44
+        bh=7vLQwDdr1oGsaR2KdQZstZjQxIdivEgvuuhjfe9IBVw=;
+        b=jgyzsSP1Ujtthf/FXt22ZqL7QGN9fSbRS/s7K6Z9SICpTgPgoALNB/HiV8Wms0oSez
+         l6rTdKxy/5ielW/L3UpZNBN3W7dkhnwiOTDGwZ6qVcHcwcknBnWZeq81R7ktGeOqB4wo
+         VE4y04P/ztcwNi/TnvJUkKruBj2MesCW+Nv1PbgOu961mII+sWmcnPcqDcBWmitrcipa
+         uNhs62lgW8j8nbsRe9HrbpFAmqT/jXgYTrnnVul8MaycV8+9oTyQrUNtvaHfZWrchknU
+         FmDPp1iQGeG4vldSKKKUiviPJFDJ2ke2dNI4OltytanYeHOjX6nUOEXvk1W+uwM3AqEf
+         mfWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVAhFtZfVRRe6jhCJnLlvNZYzR5WuSPEtbHGUuwptBjh2A2Y4TUqiKYzVBrBwafxkRZPjQJSKM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJtgNT55xQolCocjzE8/WFmnu3KO95XIyuocG/vIdpVvIdCA+6
+	w97bBQ/RqAdDU4oP4NRgl+I2OaA019+UXh3QPi8JVyNTOAy9njTghar7
+X-Gm-Gg: ATEYQzzkl3G5ChU/tQoD7i8bWkTh5QtlwQlSQ2P1hZr8YtR1vwEQXgoizbb070L8pSo
+	tcVCVYn0Yzg+L/w71IwzpYYxNVEKDsfn+4hnvkBv53fSwxeOSZrZlNdpNEbvKrKpND4B0w4HJuF
+	0F9Y4MONBc8EvnmKmsBfSySg5R5tiS0765vs60e6UI8RGInlTExrq8uGTLsLMl+BwXnpBdoJRdi
+	1oqCG7mgqI3MfSfetC63/eOMVnbUIxFh1Ta52kfPMi8ogASfWL0QJ9/wFRm0zNAHVpLvyTseClV
+	mVghrFez9w9ZDvSxZg1lhrXYdw5YdjT/MCYbtWrmEFy3tOHBhYlYuv0wC/AaVWzC8+aruzAlmSL
+	rcOhgtAOyjJuHol/Y2X3bX+lfcacxOLP0w29gD7hvKDLqVmq1VNanEzILK9/p6y2MOQEnmPtArq
+	zwq0mzadFAso7edjUbXRNT
+X-Received: by 2002:a17:90b:2884:b0:359:f77f:8cff with SMTP id 98e67ed59e1d1-35bd2c9b202mr4116462a91.19.1774071577781;
+        Fri, 20 Mar 2026 22:39:37 -0700 (PDT)
+Received: from lgs.. ([223.80.110.53])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd36bc5desm1294856a91.13.2026.03.20.22.39.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Mar 2026 22:20:45 -0700 (PDT)
-From: Mario Kleiner <mario.kleiner.de@gmail.com>
-To: amd-gfx@lists.freedesktop.org
-Cc: dri-devel@lists.freedesktop.org,
-	mario.kleiner.de@gmail.com,
-	stable@vger.kernel.org,
-	Aric Cyr <aric.cyr@amd.com>,
-	Anthony Koo <anthony.koo@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Krunoslav Kovac <krunoslav.kovac@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH] drm/amd/display: Change dither policy for 10 bpc output back to dithering
-Date: Sat, 21 Mar 2026 06:20:33 +0100
-Message-ID: <20260321052033.23472-1-mario.kleiner.de@gmail.com>
+        Fri, 20 Mar 2026 22:39:37 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Aditya Garg <gargaditya@linux.microsoft.com>,
+	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net: mana: fix use-after-free in add_adev() error path
+Date: Sat, 21 Mar 2026 13:39:18 +0800
+Message-ID: <20260321053918.791068-1-lgs201920130244@gmail.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -96,117 +108,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[lists.freedesktop.org,gmail.com,vger.kernel.org,amd.com];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227654-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	FREEMAIL_FROM(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[22];
+	TAGGED_FROM(0.00)[bounces-227655-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[mariokleinerde@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,netdev];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E92FA2E3590
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1AD1C2E36E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit d5df648ec830 ("drm/amd/display: Change dither policy for 10bpc to
-round") degraded display of 12 bpc color precision output to 10 bpc sinks
-by switching 10 bpc output from dithering to "truncate to 10 bpc".
+If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
+auxiliary_device_uninit(adev).
 
-I don't find the argumentation in that commit convincing, but the
-consequences highly unfortunate, especially for applications that
-require effective > 10 bpc precision output of > 10 bpc framebuffers.
+The auxiliary device has its release callback set to adev_release(),
+which frees the containing struct mana_adev. Since adev is embedded in
+struct mana_adev, the subsequent fall-through to init_fail and access
+to adev->id may result in a use-after-free.
 
-The argument wasn't something strong like "there are hardware design
-defects or limitations which require us to work around broken dithering
-to 10 bpc", or "there are some special use cases which do require
-truncation to 10 bpc", but essentially "at some point in the past we
-used truncation in Polaris/Vega times and it looks like it got
-inadvertently changed for Navi, so let's do that again". I couldn't find
-evidence for that in the git commit logs for this. The commit message also
-acknowledges that using dithering "...makes some sense for FP16...
-...but not for ARGB2101010 surfaces..."
+Fix this by saving the allocated auxiliary device id in a local
+variable before calling auxiliary_device_add(), and use that saved id
+in the cleanup path after auxiliary_device_uninit().
 
-The problem with this is that it makes fp16 surfaces, and especially
-rgba16 fixed point surfaces, less useful. These are now well
-supported by Mesa 25.3 and later via OpenGL + EGL, Vulkan/WSI, and by
-OSS AMDVLK Vulkan/WSI/display, and also by GNOME 50 mutter under Wayland,
-and they used to provide more than 10 bpc effective precision at the
-output.
-
-Even for 8 or 10 bpc surfaces, the color pipeline behind the framebuffer,
-e.g., gamma tables, CTM, can be used for color correction and will
-benefit from an effective > 10 bpc output precision via dithering,
-retaining some precision that would get lost on the way through the
-pipeline, e.g., due to non-linear gamma functions.
-
-Scientific apps rely on this for > 10 bpc display precision. Truncating
-to 10 bpc, instead of dithering the pipeline internal 12 bpc precision
-down to 10 bpc, causes a serious loss of precision. This also creates the
-undesirable and slightly absurd situation that using a cheap monitor
-with only 8 bpc input and display panel will yield roughly 12 bpc
-precision via dithering from 12 -> 8 bpc, whereas investment into a
-more expensive monitor with 10 bpc input and native 10 bpc display will
-only yield 10 bpc, even if a fp16 or rgb16 framebuffer and/or a properly
-set up color pipeline (gamma tables, CTM's etc. with more than 10 bpc out
-precision) would allow effective 12 bpc precision output.
-
-Therefore this patch proposes reverting that commit and going back to
-dithering down to 10 bpc, consistent with the behaviour for 6 bpc or 8 bpc
-output.
-
-Successfully tested on AMD Polaris DCE 11.2 and Raven Ridge DCN 1.0 with
-a native 10 bpc capable monitor, outputting a RGBA16 unorm framebuffer and
-measuring resulting color precision with a photometer. No apparent visual
-artifacts or problems were observed, and effective precision was measured
-to be 12 bpc again, as expected.
-
-Fixes: d5df648ec830 ("drm/amd/display: Change dither policy for 10bpc to round")
-Signed-off-by: Mario Kleiner <mario.kleiner.de@gmail.com>
-Tested-by: Mario Kleiner <mario.kleiner.de@gmail.com>
+Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
 Cc: stable@vger.kernel.org
-Cc: Aric Cyr <aric.cyr@amd.com>
-Cc: Anthony Koo <anthony.koo@amd.com>
-Cc: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Cc: Krunoslav Kovac <krunoslav.kovac@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2:
+  - explain the UAF in more detail
+  - retarget to net
+  - preserve reverse xmas tree order for local variables
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index c9fbb64d706a..29db5404c4a0 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -5056,7 +5056,7 @@ void resource_build_bit_depth_reduction_params(struct dc_stream_state *stream,
- 			option = DITHER_OPTION_SPATIAL8;
- 			break;
- 		case COLOR_DEPTH_101010:
--			option = DITHER_OPTION_TRUN10;
-+			option = DITHER_OPTION_SPATIAL10;
- 			break;
- 		default:
- 			option = DITHER_OPTION_DISABLE;
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 1ad154f9db1a..70d71594c599 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -3362,6 +3362,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ {
+ 	struct auxiliary_device *adev;
+ 	struct mana_adev *madev;
++	int id;
+ 	int ret;
+ 
+ 	madev = kzalloc(sizeof(*madev), GFP_KERNEL);
+@@ -3372,7 +3373,8 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	ret = mana_adev_idx_alloc();
+ 	if (ret < 0)
+ 		goto idx_fail;
+-	adev->id = ret;
++	id = ret;
++	adev->id = id;
+ 
+ 	adev->name = name;
+ 	adev->dev.parent = gd->gdma_context->dev;
+@@ -3398,7 +3400,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
+ 	auxiliary_device_uninit(adev);
+ 
+ init_fail:
+-	mana_adev_idx_free(adev->id);
++	mana_adev_idx_free(id);
+ 
+ idx_fail:
+ 	kfree(madev);
 -- 
 2.43.0
 
