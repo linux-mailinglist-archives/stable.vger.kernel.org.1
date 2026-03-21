@@ -1,163 +1,123 @@
-Return-Path: <stable+bounces-227780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227781-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LnQIGHavmnZfgMAu9opvQ
-	(envelope-from <stable+bounces-227780-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 18:50:25 +0100
+	id WNDGFWvbvmnZfgMAu9opvQ
+	(envelope-from <stable+bounces-227781-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 18:54:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A402F2E698C
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 18:50:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F802E69D3
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 18:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3E4C300F5CE
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:50:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A79D3018095
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08DF3112C1;
-	Sat, 21 Mar 2026 17:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B1833BBCD;
+	Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="W+CZCQhK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wn8hxWdj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9396019C566;
-	Sat, 21 Mar 2026 17:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF1A326D65;
+	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774115418; cv=none; b=cDdhZOnctc2Q1qCqN08PuNKNicOJ7ixI+L8oxa2XbOrNDSzCl8PLExO4psGX5QCDUV5gV/upqDMzu7xy42AfgfkKwssdq7IpOV4mw8GS4v1wAIvSXpQq1QZt9SzIIn8aokKtD2i9WMe4vKkrblZf7VRNSJwtWGd4x41Yv9P07F4=
+	t=1774115675; cv=none; b=GFq0Bec+oENeuPYqG3YEqgWQXAYK+rwoKQsRHZfpg9F6tcBUtNhUsmL5ulQiZHfwPpuPwcaDLHfIN7M4sqlfxQ98IIWTXdEtpLop8YS98y8QJRWbfdOY/d0GT9MO06GXlwQbQIrw86pnETHs5EiQoZSIvH+IIW1oVmr97SjGOKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774115418; c=relaxed/simple;
-	bh=xXzonp7D10Cz5jJkv0m/d5dQVZX/TtxiWY9SFWMPM6s=;
-	h=Date:To:From:Subject:Message-Id; b=eBohPRdAjpsj8ePokWTqWEG4ujnRXwttc2a7Ky0d2DRx5zrKH5mpdgMqm1ogSqlNc5Q8mQqCN6ocoZJ16XculjoYiOvOl1Gh6plr2YY51iMXUp8syaDhnk0UHG2IR9xoPP9swFxTgOnC9w0N70FvsJR+6dWbAkVsavJt3j0+gR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=W+CZCQhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0E7C19421;
-	Sat, 21 Mar 2026 17:50:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774115418;
-	bh=xXzonp7D10Cz5jJkv0m/d5dQVZX/TtxiWY9SFWMPM6s=;
-	h=Date:To:From:Subject:From;
-	b=W+CZCQhK/MJ4CA4yMq1O/VhrIgVlOl66utZC5MmTvCgyc9NdRTdwqV28sZzV7MU7l
-	 I6pcj9U0V/LU/ioHejY7p1S8HhsAfdtx9t5GqYsssT6B9IOD/oS6lIN2+W6wiL/LzC
-	 jGQCgX3kVUYQUgVZFN/JQOCl4ZFLRo/Ni8KmByEA=
-Date: Sat, 21 Mar 2026 10:50:17 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,senozhatsky@chromium.org,minchan@kernel.org,mark-pk.tsai@mediatek.com,syoshida@redhat.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-zsmalloc-copy-kmsan-metadata-in-zs_page_migrate.patch added to mm-new branch
-Message-Id: <20260321175018.5B0E7C19421@smtp.kernel.org>
+	s=arc-20240116; t=1774115675; c=relaxed/simple;
+	bh=YoReG2ITY2y0HZje9C+bQfiynbTvb6Sk5IqZjXN4jgA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RcNkHdbgtFp0v0ZMv8raT06DCi6/lhnBnbNi1GFqkWUeEyKkMi/McWGaYjjyRL6/NhYRxsqnz0ab5btSBTbqpLbPLescyRWGVsuW3BOwaZVFsGakNtZwvTBeJvlGXbmN3YeXxT5IFlHfJArrAO+TCDkfMXQgyS+GDnYORkELhiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wn8hxWdj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82F0EC2BCAF;
+	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774115675;
+	bh=YoReG2ITY2y0HZje9C+bQfiynbTvb6Sk5IqZjXN4jgA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Wn8hxWdjY8nwvWguSRylu6QdUeIm950qxeCvN+XJLKNCFiGT1rvu2S3BS5RXw2cxt
+	 Esz/AQ9kDq9aoqZS2gvlm/exy7gvh/sPZQYJmZLwErh98XF2l1RsLHDkI0Am6AeDtV
+	 JF79+nbLaPdKFb+mn1AH21nzU/DA/fPW4L0XALHGz/6vJxNMRkCE7RaNZ6tyS1CxOY
+	 fe4GrcRbccmK+BX5mC2TDQiN1yAcXHtY6AtKZM7AOe6ofrFZl07nsuJrlM4M2fc/Nt
+	 pX3SCOAdu21ChF8POhoezaza/gcja1Matw0PGMPkd0Ez9SaxagAGL0AlFW4Ar+RSOk
+	 cUCw7yXoHy9bw==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 18 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v3 0/3] mm/damon/sysfs: fix memory leak and NULL dereference issues
+Date: Sat, 21 Mar 2026 10:54:23 -0700
+Message-ID: <20260321175427.86000-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	TAGGED_FROM(0.00)[bounces-227780-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227781-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.997];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:email,mediatek.com:email]
-X-Rspamd-Queue-Id: A402F2E698C
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E9F802E69D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+DAMON_SYSFS can leak memory under allocation failure, and do NULL
+pointer dereference when a privileged user make wrong sequences of
+control.  Fix those.
 
-The patch titled
-     Subject: mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
-has been added to the -mm mm-new branch.  Its filename is
-     mm-zsmalloc-copy-kmsan-metadata-in-zs_page_migrate.patch
+Changes from v2
+(https://lore.kernel.org/20260320163559.178101-1-objecting@objecting.org)
+- Wordsmith second patch commit message.
+- Add NULL dereference trigger steps on the commit messages.
+- Collect the valid Reviewed-by: from SJ for the second patch.
+- Rebased to latest mm-new.
+Changes from v1
+(https://lore.kernel.org/20260319155742.186627-1-objecting@objecting.org)
+- Check kdamond->contexts->nr from damon_sysfs_handle_cmd()
+- Collect Reviewed-by: from SJ for the first and the third patch.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-zsmalloc-copy-kmsan-metadata-in-zs_page_migrate.patch
+Josh Law (3):
+  mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx()
+    failure
+  mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
+  mm/damon/sysfs: check contexts->nr in repeat_call_fn
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+ mm/damon/sysfs.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
 
-The mm-new branch of mm.git is not included in linux-next
-
-If a few days of testing in mm-new is successful, the patch will me moved
-into mm.git's mm-unstable branch, which is included in linux-next
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Shigeru Yoshida <syoshida@redhat.com>
-Subject: mm/zsmalloc: copy KMSAN metadata in zs_page_migrate()
-Date: Sat, 21 Mar 2026 22:29:11 +0900
-
-zs_page_migrate() uses copy_page() to copy the contents of a zspage page
-during migration.  However, copy_page() is not instrumented by KMSAN, so
-the shadow and origin metadata of the destination page are not updated.
-
-As a result, subsequent accesses to the migrated page are reported as
-use-after-free by KMSAN, despite the data being correctly copied.
-
-Add a kmsan_copy_page_meta() call after copy_page() to propagate the KMSAN
-metadata to the new page, matching what copy_highpage() does internally.
-
-Link: https://lkml.kernel.org/r/20260321132912.93434-1-syoshida@redhat.com
-Fixes: afb2d666d025 ("zsmalloc: use copy_page for full page copy")
-Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
-Cc: Mark-PK Tsai <mark-pk.tsai@mediatek.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/zsmalloc.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/mm/zsmalloc.c~mm-zsmalloc-copy-kmsan-metadata-in-zs_page_migrate
-+++ a/mm/zsmalloc.c
-@@ -1753,6 +1753,7 @@ static int zs_page_migrate(struct page *
- 	 */
- 	d_addr = kmap_local_zpdesc(newzpdesc);
- 	copy_page(d_addr, s_addr);
-+	kmsan_copy_page_meta(zpdesc_page(newzpdesc), zpdesc_page(zpdesc));
- 	kunmap_local(d_addr);
- 
- 	for (addr = s_addr + offset; addr < s_addr + PAGE_SIZE;
-_
-
-Patches currently in -mm which might be from syoshida@redhat.com are
-
-mm-zsmalloc-copy-kmsan-metadata-in-zs_page_migrate.patch
-
+base-commit: 42bc5b563370622d688719aa248a4c861839373a
+-- 
+2.47.3
 
