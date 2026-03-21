@@ -1,181 +1,178 @@
-Return-Path: <stable+bounces-227647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6Ns/HpQBvmkaFQMAu9opvQ
-	(envelope-from <stable+bounces-227647-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 03:25:24 +0100
+	id IMkWLfwKvmk/FwMAu9opvQ
+	(envelope-from <stable+bounces-227648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 04:05:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C74212E2E7F
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 03:25:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977102E2FFC
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 04:05:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C603303C637
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 02:25:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7934730219C5
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 03:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F53429BD88;
-	Sat, 21 Mar 2026 02:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A1D2EB5A6;
+	Sat, 21 Mar 2026 03:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e+/9ST3P"
+	dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b="fVBcEMd9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-181.mta1.migadu.com (out-181.mta1.migadu.com [95.215.58.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61846175A8A;
-	Sat, 21 Mar 2026 02:25:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960212C17A0
+	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 03:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774059918; cv=none; b=DjifxSPJmASfenhYdnVl6qT9HyhZW9LjCfxpp6QqCTj/h25Hw2ViSFg/qLYfQs7IP0H2HbWMNd1GeTa/cNLSisZ6sKyQeZN26Ux3oP6YpNf7KEKOEC2gR7Y+dB8IqkNpPIYQlKNCJBMaDrrki1Bl693Wfi0syTj9eqIuV4tvn7o=
+	t=1774062326; cv=none; b=C/Yv+zbCPdqhim0HWkUHy2HguPePyIAvIwOO//v3UlZOlqmseC5DXK2SQTQvJEPYoXHcwxA+OOdMzUkOs7VMIu6XoIjRhJI01DFR3koq/HfwF0X9dRBKjeVhg6tVl14KxNk2qAzoGHFhVPzjVdSD9KMPGUwOpXiYsAqFmig4fLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774059918; c=relaxed/simple;
-	bh=odSqb8C84HqMzpdiY32+MdnK999M7twGXHvwdKhHd58=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rr89QeMHnftPOuPH+yuUGnBxprs3m4qNUj+lYWiPuwltaaEM/qX/iNsJ2DZbNRmNbbEncR3Y0XsidF6KZgH674ziPwHpL+9TbvjBOZK2LTMiZlFF+NwPRHHP1gGmEN+QpjIAbtcfRtlCTYEkiwOAkdpUoEV7PizaH6lMdAyspYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e+/9ST3P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC94DC4CEF7;
-	Sat, 21 Mar 2026 02:25:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774059918;
-	bh=odSqb8C84HqMzpdiY32+MdnK999M7twGXHvwdKhHd58=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+/9ST3PGkPi1y5hG0RIrAS/NuJn6hslhp3Gipi/d9GijnRwr2umKOd8vR8sHoAmz
-	 O7lUlcHrso/j4ZRWPjacyR/UOTGBjKqnpjkMF2FXF/yBsvNmDzLBH6uoSNthDMK2Sl
-	 jfoIbroFu8FIx4yh5ZoyzsG/CQExbhl8lynXDfYvu98Yjvy6ZDJZ50VWdxO8Vu7rmc
-	 D36WHitrvXq7Bb7Nw4/TEp4De02IWlJ+1LjzOie5vWv4L/dC9ZPQ9ucn3EkQQLbztY
-	 2+SKiyOrW0r9ugf0EdULJTTU3F8XIJEXOdiz3LB2Hzua7iDs8bYbTUtCp9jNvfDIjX
-	 Vmsbly21Hloqg==
-From: SeongJae Park <sj@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	"# 6 . 15 . x" <stable@vger.kernel.org>,
-	damon@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH] mm/damon/core: avoid use of half-online-committed context
-Date: Fri, 20 Mar 2026 19:25:10 -0700
-Message-ID: <20260321022510.79038-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260321021628.78887-1-sj@kernel.org>
-References: 
+	s=arc-20240116; t=1774062326; c=relaxed/simple;
+	bh=hkEbWHvoyfi4N2vi01N5wh/+M84rhTi8RB7e+26RNm8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TOwiHR8JV+mH+ZTRRSMZApz5t5a+vWwykRdAXHiXDdjYOAx9p21ng3+j0jnFZmB0zirPnqP2W6Uq0mPXB1wflT1zkaEfQeHjRfFpefGXc8aR/bnK+SouNy3azqawm2LIym+Ik1yYJuZ80v6/HIE+iGvA63HWx0rIg8VOCARFf9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool; spf=pass smtp.mailfrom=packett.cool; dkim=pass (2048-bit key) header.d=packett.cool header.i=@packett.cool header.b=fVBcEMd9; arc=none smtp.client-ip=95.215.58.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=packett.cool
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=packett.cool
+Message-ID: <2d0ca19b-9b8b-4cca-9679-56983ae75b99@packett.cool>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=packett.cool;
+	s=key1; t=1774062312;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZXbJCxPsCXe3gsiN6EBXHO7z8maO4HKWRtMFfUGI4KM=;
+	b=fVBcEMd9yEFI3jf8A/z7nxnlZMEmz4yTOmzHKogS4+FtOL7Ny0USYNvvotZHinWUAQKVg4
+	gEOc7sRm9P36Qx903N8JR4Q3KZFe6CmPL+1mtUJ7p6tGK1iBVSqs9Xz0whu+QrPOmjswPk
+	ogQhAbrqirF10XpeOJEpFUr//t2GM5xRnIo+6zSwl5S8HiDSDFom/6SO5z7eIKwR7TLcsu
+	XXGzZ7vHFpj6Zsm16SXXtgTvWHADnNkC0PO1D/ipqUHnvqCvmqmhufN2PNV/XMfRjPCVuL
+	r6KI/AWZR7Kz8U2wWl9mEwgeUtxhq5DsNypCzk8a7FGVL7YdtprBRjcF9iVWXQ==
+Date: Sat, 21 Mar 2026 00:04:55 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH v1] spi: geni-qcom: Fix CPHA and CPOL mode change
+ detection
+To: Jonathan Marek <jonathan@marek.ca>,
+ Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>,
+ Mark Brown <broonie@kernel.org>, konrad.dybcio@oss.qualcomm.com
+Cc: kernel@quicinc.com, linux-arm-msm@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, dmitry.baryshkov@oss.qualcomm.com,
+ bjorande@quicinc.com, mukesh.savaliya@oss.qualcomm.com,
+ praveen.talari@oss.qualcomm.com, jyothi.seerapu@oss.qualcomm.com
+References: <20260316-spi-geni-cpha-cpol-fix-v1-1-4cb44c176b79@oss.qualcomm.com>
+ <4a7d89ef-0f63-a7c3-e996-ff9fc476a04e@marek.ca>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Val Packett <val@packett.cool>
+In-Reply-To: <4a7d89ef-0f63-a7c3-e996-ff9fc476a04e@marek.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Migadu-Flow: FLOW_OUT
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[packett.cool,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[packett.cool:s=key1];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227647-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-227648-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[packett.cool:+];
+	MISSING_XM_UA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[val@packett.cool,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
-X-Rspamd-Queue-Id: C74212E2E7F
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qualcomm.com:email,marek.ca:email]
+X-Rspamd-Queue-Id: 977102E2FFC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, 20 Mar 2026 19:16:27 -0700 SeongJae Park <sj@kernel.org> wrote:
 
-> On Thu, 19 Mar 2026 19:48:49 -0700 Andrew Morton <akpm@linux-foundation.org> wrote:
-> 
-> > On Thu, 19 Mar 2026 07:52:17 -0700 SeongJae Park <sj@kernel.org> wrote:
-> > 
-> > > One major usage of damon_call() is online DAMON parameters update.  It
-> > > is done by calling damon_commit_ctx() inside the damon_call() callback
-> > > function.  damon_commit_ctx() can fail for two reasons: 1) invalid
-> > > parameters and 2) internal memory allocation failures.  In case of
-> > > failures, the damon_ctx that attempted to be updated (commit
-> > > destination) can be partially updated (or, corrupted from a
-> > > perspective), and therefore shouldn't be used anymore.  The function
-> > > only ensures the damon_ctx object can safely deallocated using
-> > > damon_destroy_ctx().
-> > > 
-> > > The API callers are, however, calling damon_commit_ctx() only after
-> > > asserting the parameters are valid, to avoid damon_commit_ctx() fails
-> > > due to invalid input parameters.  But it can still theoretically fail if
-> > > the internal memory allocation fails.  In the case, DAMON may run with
-> > > the partially updated damon_ctx.  This can result in unexpected
-> > > behaviors including even NULL pointer dereference in case of
-> > > damos_commit_dests() failure [1].  Such allocation failure is arguably
-> > > too small to fail, so the real world impact would be rare.  But, given
-> > > the bad consequence, this needs to be fixed.
-> > > 
-> > > Avoid such partially-committed (maybe-corrupted) damon_ctx use by saving
-> > > the damon_commit_ctx() failure on the damon_ctx object.  For this,
-> > > introduce damon_ctx->maybe_corrupted field.  damon_commit_ctx() sets it
-> > > when it is failed.  kdamond_call() checks if the field is set after each
-> > > damon_call_control->fn() is executed.  If it is set, ignore remaining
-> > > callback requests and return.  All kdamond_call() callers including
-> > > kdamond_fn() also check the maybe_corrupted field right after
-> > > kdamond_call() invocations.  If the field is set, break the
-> > > kdamond_fn() main loop so that DAMON sill doesn't use the context that
-> > > might be corrupted.
-> > 
-> > I guess you saw the AI review?
-> > 	https://sashiko.dev/#/patchset/20260319145218.86197-1-sj%40kernel.org
-> 
-> By the way, I am also doing monitoring of sashiko.dev for all DAMON patches.
-> It will be much easier once sashiko.dev's email feature is ready, since I
-> already onboarded DAMON for that.
-> 
-> Meanwhile, the monitoring using web browser is somewhat tedious for me, so I
-> just implemented an hkml feature, namely
-> 'hkml patch sashiko_dev --thread_status'.  It receives a message id of a mail,
-> and prints the review status/result of all patches of the thread.
-> 
-> E.g.,
-> 
->     $ hkml patch sashiko_dev --thread_status 20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com
->     - [PATCH RFC v2 1/7] mm: memory_failure: Clarify the MF_DELAYED definition
->       - Reviewed (Review completed successfully.)
->     - [PATCH RFC v2 2/7] mm: memory_failure: Allow truncate_error_folio to return MF_DELAYED
->       - Reviewed (Review completed successfully.)
->     - [PATCH RFC v2 3/7] mm: shmem: Update shmem handler to the MF_DELAYED definition
->       - Reviewed (Review completed successfully.)
->     - [PATCH RFC v2 4/7] mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED cases
->       - Pending (None)
->     - [PATCH RFC v2 4/7] mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED cases
->       - Reviewed (Review completed successfully.)
->     - [PATCH RFC v2 5/7] mm: selftests: Add shmem memory failure test
->       - Reviewed (Review completed successfully.)
->     - [PATCH RFC v2 6/7] KVM: selftests: Add memory failure tests in guest_memfd_test
->       - Reviewed (Review completed successfully.)
->     - [PATCH RFC v2 7/7] KVM: selftests: Test guest_memfd behavior with respect to stage 2 page tables
->       - Reviewed (Review completed successfully.)
-> 
-> I'm planning to implement another feature for formatting and sending the review
-> result and inline comments as emails, probably this weekend.
+On 3/16/26 2:13 PM, Jonathan Marek wrote:
+> Reviewed-by: Jonathan Marek <jonathan@marek.ca>
+>
+> at least it doesn't look like this stupid mistake breaks anything 
+> upstream (no spi-cpha/spi-cpol in any qcom dts)
 
-I wanted to add the link to the commit that implementing the feature, but
-forgot that, sorry.  Here it is:
-https://github.com/sjp38/hackermail/commit/cf1b4e167067e5684823137c5296dfb268364175
+There might not have been any users upstream but you never know what 
+people are working on :)
 
-FWIW, iiuc, 'b4 review' should also provide similar or better feature.
+Looks like this might've unblocked my progress with one of the phones I 
+have WIP for (sm6115-motorola-guamp) which has a Himax touchscreen 
+(yuck[1]) that uses SPI mode 3. Only tested quickly but at least one 
+reply in the early init sequence makes sense now!
+
+Before:
+
+hx83102j spi0.0: himax_spi_read: xfer_tx_data: f3 08 00
+hx83102j spi0.0: himax_spi_read: xfer_rx_data: 08 00 00 00
+hx83102j spi0.0: hx83102j_sense_off: Do not need wait FW, Status = 0x08!
+[..]
+hx83102j spi0.0: himax_spi_read: xfer_tx_data: f3 08 00
+hx83102j spi0.0: himax_spi_read: xfer_rx_data: 18 00 00 00
+
+After:
+
+hx83102j spi0.0: himax_spi_read: xfer_tx_data: f3 08 00
+hx83102j spi0.0: himax_spi_read: xfer_rx_data: 04 00 00 00
+hx83102j spi0.0: hx83102j_sense_off: Do not need wait FW, Status = 0x04!
+[..]
+hx83102j spi0.0: himax_spi_read: xfer_tx_data: f3 08 00
+hx83102j spi0.0: himax_spi_read: xfer_rx_data: 0c 00 00 00
+hx83102j spi0.0: hx83102j_sense_off: Safe mode entered
+
+So that's a very late
+
+Tested-by: Val Packett <val@packett.cool>
 
 
-Thanks,
-SJ
+BTW, spi-cpha/spi-cpol in DTS is not an entirely reliable indicator it 
+seems? Loooots of drivers set SPI_MODE_x in code explicitly, my 
+understanding is that that overrides dts.
 
-[...]
+
+[1]: 
+https://lore.kernel.org/all/TY0PR06MB561105A3386E9D76F429110D9E0F2@TY0PR06MB5611.apcprd06.prod.outlook.com/
+
+> On 3/16/26 9:23 AM, Maramaina Naresh wrote:
+>> setup_fifo_params computes mode_changed from spi->mode flags but tests
+>> it against SE_SPI_CPHA and SE_SPI_CPOL, which are register offsets,
+>> not SPI mode bits. This causes CPHA and CPOL updates to be skipped
+>> on mode switches, leaving the controller with stale clock phase
+>> and polarity settings.
+>>
+>> Fix this by using SPI_CPHA and SPI_CPOL to detect mode changes before
+>> updating the corresponding registers.
+>>
+>> Fixes: 781c3e71c94c ("spi: spi-geni-qcom: rework setup_fifo_params")
+>> Signed-off-by: Maramaina Naresh <naresh.maramaina@oss.qualcomm.com>
+>> ---
+>> This patch fixes SPI mode change detection in the spi-geni-qcom driver.
+>>
+>> setup_fifo_params compared spi->mode against SE_SPI_CPHA/SE_SPI_CPOL,
+>> which are register offsets instead of SPI_CPHA/SPI_CPOL mode bits.
+>> This could skip CPHA/CPOL updates on mode switches and leave stale
+>> clock configuration.
+>> […]
+
+Thanks a lot for finding this!!
+
+~val
+
 
