@@ -1,288 +1,164 @@
-Return-Path: <stable+bounces-227743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227744-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBYhIyZevmnxNgMAu9opvQ
-	(envelope-from <stable+bounces-227743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 10:00:22 +0100
+	id GOnaHlBivmnDOAMAu9opvQ
+	(envelope-from <stable+bounces-227744-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 10:18:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E60A2E449E
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 10:00:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6692E4569
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 10:18:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3F508303C60A
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 08:58:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14B7E3023059
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 09:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E30142D238F;
-	Sat, 21 Mar 2026 08:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD3931195A;
+	Sat, 21 Mar 2026 09:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQWM+2+0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ck5quWWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4169346A1F
-	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 08:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE732494F0;
+	Sat, 21 Mar 2026 09:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774083508; cv=none; b=iLOnl1sJAtfyW2pQyr5lM7rDvOsUc832NyJhgrBNKA29xsbZdGCLosXyChjD3+3T41vrVG37ZJk3PAjmXPUm95IUIFqseBUCQQ5qxBY61NDkkgD90bNbPjyt7tJ7PMxi+siMEygSabwm3Gf0qyY3wUE/85F1jTF8CtXZPFHoqmk=
+	t=1774084680; cv=none; b=UCYpbbid1eDMY1zDtdhBadun1CXQeJc5nZpmTD499QnOaz7VG62VAjXOGf8IrsBBw9rVpGaHqdYhDQX+i9rq1w5OLgN4ySKnbUBEEQvSo1Yb8D3WavpYHmH6jk7q2X/g62OR6JgQuMwtphE4xX8e45KWrPtY6D2KzroM2Rd7ulI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774083508; c=relaxed/simple;
-	bh=2XHxbPwnxKukyNT67I5mzcaAWXGuDcV1AruFyiB0Bd8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XePL1MjhxffURrnZn91jJvXWCwIrJAA0QbYs0RdqdMKtYnX3PQl3dVC6tLJ3mYMwe+Uh3Tm4wL/QvuK0J8ZGX1Y4DvHwTZrefyof6tYUlA2l4k2GXYXusRGxnLfFNXWoQiEO5C7Cmie+mqa4AOKhBQU8gbGmounLhFyOM9fjk+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQWM+2+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B0AC2BCB1
-	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 08:58:28 +0000 (UTC)
+	s=arc-20240116; t=1774084680; c=relaxed/simple;
+	bh=oa4pCeGObUtEmfpti4pdZQ10bKk+YYr47M7vQbAVYYM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i7+oW6jWTVG9EoFT9/9HWt89U3cf80Ps7nL5hRQJoMOVbH0Ri/QbLC2CrU+heyWYJpDUyz1GntKBx5/KdaFcKRtaQvIXytfmljxE1YoyY620S9rTksTDfpUR7FRlGotscUZoLbFztqwsC136iVWXzdPiCz3mLiYT3I0aMXCxRgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ck5quWWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81CFDC19421;
+	Sat, 21 Mar 2026 09:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774083508;
-	bh=2XHxbPwnxKukyNT67I5mzcaAWXGuDcV1AruFyiB0Bd8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=oQWM+2+0a1J0ixRPtxTmIis0R0JYOZWP3n3HX53iAsns6Xreszyeocic6+Og5dA8q
-	 +BzkRwqNK4th/1cnSrp2IfAfO6yfTt461eeP2KIABBn93jUh5gyDI+0osVbU6nFg6c
-	 +jYvDo35Bjm50kNARQNpaX0nmbYS7zx5oJeB/gI8VZGEhuEtchSeNbTzMYyjuMhL1U
-	 86OTRfeqxae7bXerF/ntdYbRqEcRFxixCU5VCj8kvoq2cduL1gBWVLXZAmMqapdMak
-	 WC+mrY6kn1iHoUbm/4lBCZKt2a/RdMTrvvSbWLs5aOSmi5VNwMmRnX5Cz6TD4gUUdS
-	 k5kTl0SyQjfyQ==
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5a142464316so2923063e87.1
-        for <stable@vger.kernel.org>; Sat, 21 Mar 2026 01:58:28 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXMkmZBNsA79INELxXSb3xT9GyCwFGrXINwH77saHggDfT5aTydmFeFCJVKjR6VM1lyt8Aap3k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwanI62qF86rjupr8+3/aJfDtAVkhWF6ZUJCMTxq932NKhRGuGg
-	UnjPpbHnt6T2f3Xb2yM4uahJ5mD7srZvb3CP1edFLx95oTCgN0t/CJuwR1cqPe967HfFKnr2y8d
-	J7TFDyphR7V9NJ9yDYPZo1WjzjkgJzHs=
-X-Received: by 2002:a05:6512:3b0a:b0:5a1:d34e:25d with SMTP id
- 2adb3069b0e04-5a285b071camr1756554e87.18.1774083506738; Sat, 21 Mar 2026
- 01:58:26 -0700 (PDT)
+	s=k20201202; t=1774084680;
+	bh=oa4pCeGObUtEmfpti4pdZQ10bKk+YYr47M7vQbAVYYM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ck5quWWHUFYlP4Evri1ddtI3Hvyf3AKxDDkWR6oOf/vzlL40QEX/GODXybpTmPHN+
+	 zcBgNvuS/Q1b28wywTWhz5gKRLcKnATDnYif0RlLD6HD9sc8rm3ypfQP5bQM3ZYZXQ
+	 4Wphk8whbbg3E6vpPI8bQYCk5jVyRlIYCYIfMKZ4RUIeB8phnDfydVpe+G0xQ+UF13
+	 iuC3mBBFCZTCqY81qOaQqPAhsswpIAXMJlUYzevmnLcmWzofwLmRfK2Pm2OaZEBCCt
+	 xGl+23YrSMocPQjJdoxpKPDxdO5trFINJU2Cj9T8mc1GLJWs4opNpReHEzTGJdOpj3
+	 MJejaBfjs3cJA==
+Date: Sat, 21 Mar 2026 09:17:53 +0000
+From: Simon Horman <horms@kernel.org>
+To: "Tantilov, Emil S" <emil.s.tantilov@intel.com>
+Cc: daniel@iogearbox.net, ast@kernel.org, willemb@google.com,
+	stable@vger.kernel.org, decot@google.com, bpf@vger.kernel.org,
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+	intel-wired-lan@lists.osuosl.org, edumazet@google.com,
+	netdev@vger.kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+	kuba@kernel.org, davem@davemloft.net, sdf@fomichev.me,
+	aleksandr.loktionov@intel.com, aleksander.lobakin@intel.com,
+	john.fastabend@gmail.com, hawk@kernel.org
+Subject: Re: [PATCH iwl-net v2] idpf: fix xdp crash in soft reset error path
+Message-ID: <20260321091753.GT74886@horms.kernel.org>
+References: <20260319224159.23885-1-emil.s.tantilov@intel.com>
+ <20260320174843.137651-1-horms@kernel.org>
+ <0275cffc-7a61-46fb-9d1e-c309ac680b80@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAGp9LzqLbdEb25ocObMMuFPZitrL-UnC7uhaLOkYQN=TgSTmnA@mail.gmail.com>
- <20260319203854.30479-1-lucid_duck@justthetip.ca>
-In-Reply-To: <20260319203854.30479-1-lucid_duck@justthetip.ca>
-From: Sean Wang <sean.wang@kernel.org>
-Date: Sat, 21 Mar 2026 03:58:15 -0500
-X-Gmail-Original-Message-ID: <CAGp9LzpVYj=FVyJX+mm0vSsJL52WEPi=L-6Ev3taViJZ+xL_vw@mail.gmail.com>
-X-Gm-Features: AaiRm52CEIxpNeBsnDo08uYM5XfWpwvzEeFcNwWJAwhqs_1O6X-L42sdV8KzR9E
-Message-ID: <CAGp9LzpVYj=FVyJX+mm0vSsJL52WEPi=L-6Ev3taViJZ+xL_vw@mail.gmail.com>
-Subject: Re: [PATCH v4] wifi: mt76: mt7921: fix txpower reporting from rate
- power configuration
-To: Lucid Duck <lucid_duck@justthetip.ca>
-Cc: Felix Fietkau <nbd@nbd.name>, Lorenzo Bianconi <lorenzo@kernel.org>, linux-wireless@vger.kernel.org, 
-	linux-mediatek@lists.infradead.org, morrownr@gmail.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0275cffc-7a61-46fb-9d1e-c309ac680b80@intel.com>
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	FREEMAIL_CC(0.00)[nbd.name,kernel.org,vger.kernel.org,lists.infradead.org,gmail.com];
+	TAGGED_FROM(0.00)[bounces-227744-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227743-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	FREEMAIL_CC(0.00)[iogearbox.net,kernel.org,google.com,vger.kernel.org,intel.com,lists.osuosl.org,redhat.com,lunn.ch,davemloft.net,fomichev.me,gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[21];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sean.wang@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[horms@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2E60A2E449E
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,horms.kernel.org:mid,linux.dev:url]
+X-Rspamd-Queue-Id: ED6692E4569
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi,
+On Fri, Mar 20, 2026 at 02:35:42PM -0700, Tantilov, Emil S wrote:
+> 
+> 
+> On 3/20/2026 10:48 AM, Simon Horman wrote:
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > 
+> > For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> > ---
+> > idpf: fix xdp crash in soft reset error path
+> > 
+> > This commit fixes a NULL pointer dereference that occurs when
+> > idpf_vport_open() fails during soft reset. The fix restores
+> > vport->xdp_prog in the error path and updates the restart check in
+> > idpf_xsk_pool_setup() to use IDPF_VPORT_UP instead of netif_running().
+> > 
+> > > Fixes: 3d57b2c00f09 ("idpf: add XSk pool initialization")
+> > 
+> > The Fixes: tag may not be targeting the correct commit. The primary bug
+> > being fixed is the NULL pointer dereference crash in idpf_xdp_setup_prog()
+> > that occurs when soft reset fails and vport->xdp_prog is not restored.
+> 
+> This is not exactly true, this is just one of the instances that would
+> cause idpf_qp_switch() to be called. [1]
+> 
+> > 
+> > Looking at the git history, this missing restoration was introduced in
+> > commit 705457e7211f ("idpf: implement XDP_SETUP_PROG in ndo_bpf for
+> > splitq"), where idpf_xdp_setup_prog() was first implemented. While commit
+> > 3d57b2c00f09 introduced the secondary issue with the netif_running()
+> > check, the main crash fix addresses code from commit 705457e7211f.
+> > 
+> > Should the Fixes: tag point to commit 705457e7211f instead?
+> 
+> The reason I chose commit 3d57b2c00f09 is because it is the commit
+> introducing the function where the crash is occurring:
+> [ 3179.284770] RIP: 0010:idpf_find_rxq_vec+0x17/0x30 [idpf]
+> ...
+> [ 3179.291937] Call Trace:
+> [ 3179.292392]  <TASK>
+> [ 3179.292843]  idpf_qp_switch+0x25/0x820 [idpf]
+> 
+> The setting of the restart variable is where the above commits "meet",
+> in that both conditions - netif_ruinning() and idpf_xdp_enabled() [1]
+> can be wrong:
+> https://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue.git/tree/drivers/net/ethernet/intel/idpf/xsk.c#n571
+> 
+> which would end up calling idpf_qp_switch() instead of taking the
+> alternate path:
+> 	restart = idpf_xdp_enabled(vport) && netif_running(vport->netdev);
+> 	if (!restart)
+> 		goto pool;
+> 
+> Which was introduced by 3d57b2c00f09.
 
-On Thu, Mar 19, 2026 at 3:39=E2=80=AFPM Lucid Duck <lucid_duck@justthetip.c=
-a> wrote:
->
-> The mt7921 driver never updates phy->txpower_cur from the rate power
-> configuration sent to firmware, causing mt76_get_txpower() to report
-> bogus values to userspace (typically 3 dBm) regardless of actual
-> regulatory or SAR limits.
->
-> Two issues are addressed:
->
-> 1. The rate power loop in mt76_connac_mcu_rate_txpower_band() computes
->    the correct bounded TX power per channel via
->    mt76_get_rate_power_limits() but discards the return value. Capture
->    it and store to phy->txpower_cur when processing the current
->    channel, matching how mt7915 handles this in
->    mt7915_mcu_set_txpower_sku(). Subtract the multi-chain path delta
->    before storing, since mt76_get_txpower() adds it back when
->    reporting -- consistent with mt7915's use of mt76_get_power_bound()
->    which performs the same subtraction.
->
-> 2. mt7921 uses the chanctx model but its add_chanctx callback does not
->    update phy->chandef, leaving it stale after association. The rate
->    power loop's channel comparison then fails silently. Sync
->    phy->chandef from ctx->def in add_chanctx and change_chanctx, and
->    recompute txpower_cur via a lightweight helper that performs the
->    same bounded power calculation for the current channel without
->    reprogramming firmware rate tables.
->
-> Tested on Alfa AWUS036AXML (MT7921AU), kernel 6.19.8, Canada:
->
->   Before: iw dev wlan0 info shows "txpower 3.00 dBm" (wrong)
->   After:  2.4GHz 36 dBm, 5GHz 23 dBm, 6GHz 12 dBm (match regulatory)
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1c099ab44727 ("mt76: mt7921: add MAC support")
-> Signed-off-by: Lucid Duck <lucid_duck@justthetip.ca>
-> ---
-> Changes since v3:
-> - Removed mt7921_set_tx_sar_pwr() from add_chanctx and change_chanctx.
->   Channel transitions don't change underlying power constraints, so
->   reprogramming the full rate table is unnecessary. Replaced with a
->   lightweight helper that recomputes txpower_cur locally.
-> - Removed IEEE80211_CONF_CHANGE_CHANNEL trigger from config().
-> - Removed BSS_CHANGED_TXPOWER handler from bss_info_changed(). Writing
->   per-vif txpower into per-HW hw->conf.power_level breaks multi-vif
->   semantics. User txpower limits need a different approach (follow-up).
-> - Subtracted path delta before storing txpower_cur. The connac rate
->   loop stores total bounded power, but mt76_get_txpower() adds the
->   multi-chain path delta when reporting. mt7915 accounts for this via
->   mt76_get_power_bound(), which subtracts the delta before storing.
->   Without the same subtraction, reported values were inflated by 3 dBm
->   on 2x2 devices.
->
->  .../wireless/mediatek/mt76/mt76_connac_mcu.c  | 14 +++++++--
->  .../net/wireless/mediatek/mt76/mt7921/main.c  | 30 +++++++++++++++++++
->  2 files changed, 41 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c b/drive=
-rs/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> index 16db0f208..e26a2cb39 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mcu.c
-> @@ -2193,14 +2193,22 @@ mt76_connac_mcu_rate_txpower_band(struct mt76_phy=
- *phy,
->                                 .hw_value =3D ch_list[idx],
->                                 .band =3D band,
->                         };
-> -                       s8 reg_power, sar_power;
-> +                       s8 reg_power, sar_power, max_power;
->
->                         reg_power =3D mt76_connac_get_ch_power(phy, &chan=
-,
->                                                              tx_power);
->                         sar_power =3D mt76_get_sar_power(phy, &chan, reg_=
-power);
->
-> -                       mt76_get_rate_power_limits(phy, &chan, limits,
-> -                                                  sar_power);
-> +                       max_power =3D mt76_get_rate_power_limits(phy, &ch=
-an,
-> +                                                              limits,
-> +                                                              sar_power)=
-;
-> +
-> +                       if (phy->chandef.chan &&
-> +                           phy->chandef.chan->hw_value =3D=3D ch_list[id=
-x] &&
-> +                           phy->chandef.chan->band =3D=3D band)
-> +                               phy->txpower_cur =3D max_power -
-> +                                       mt76_tx_power_path_delta(
-> +                                               hweight16(phy->chainmask)=
-);
->
->                         tx_power_tlv.last_msg =3D ch_list[idx] =3D=3D las=
-t_ch;
->                         sku_tlbv.channel =3D ch_list[idx];
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/n=
-et/wireless/mediatek/mt76/mt7921/main.c
-> index 5881040ac..a77ae5791 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-> @@ -1355,13 +1355,39 @@ mt7921_stop_ap(struct ieee80211_hw *hw, struct ie=
-ee80211_vif *vif,
->         mt792x_mutex_release(dev);
->  }
->
-> +static void mt7921_update_txpower_cur(struct mt76_phy *phy)
-> +{
-> +       struct mt76_power_limits limits;
-> +       struct ieee80211_channel *chan =3D phy->chandef.chan;
-> +       int n_chains =3D hweight16(phy->chainmask);
-> +       s8 reg_power, sar_power, max_power;
-> +       int tx_power;
-> +
-> +       if (!chan)
-> +               return;
-> +
-> +       tx_power =3D 2 * phy->hw->conf.power_level;
-> +       if (!tx_power)
-> +               tx_power =3D 127;
-> +
-> +       reg_power =3D mt76_connac_get_ch_power(phy, chan, tx_power);
-> +       sar_power =3D mt76_get_sar_power(phy, chan, reg_power);
-> +       max_power =3D mt76_get_rate_power_limits(phy, chan, &limits, sar_=
-power);
-> +
-> +       phy->txpower_cur =3D max_power - mt76_tx_power_path_delta(n_chain=
-s);
-> +}
-> +
->  static int
->  mt7921_add_chanctx(struct ieee80211_hw *hw,
->                    struct ieee80211_chanctx_conf *ctx)
->  {
->         struct mt792x_dev *dev =3D mt792x_hw_dev(hw);
-> +       struct mt76_phy *mphy =3D hw->priv;
->
->         dev->new_ctx =3D ctx;
-> +       mphy->chandef =3D ctx->def;
-> +       mt7921_update_txpower_cur(mphy);
-> +
+Thanks for the clarification.
+I agree that using 3d57b2c00f09 makes sense.
 
-I don't think this is the right fix.
-
-This mixes multiple things in one patch and duplicates the same power
-limit calculation in shared connac code and mt7921-specific code.
-
-The issue is in txpower reporting. A channel context is just a view of
-the current PHY configuration and should not be used to overwrite PHY
-state.
-
-I think this needs to be reworked in a cleaner way, with the shared
-logic kept in shared code and the reporting side fixed in the common
-mt792x path so it can apply cleanly to both mt7921 and mt7925.
-
-Given the points above, I'd prefer not to keep iterating on the current
-approach for v5. I'll try to rework this along the lines above and send
-an updated version.
-
->         return 0;
->  }
->
-> @@ -1396,6 +1422,10 @@ mt7921_change_chanctx(struct ieee80211_hw *hw,
->                 mt7921_mcu_config_sniffer(mvif, ctx);
->         else
->                 mt76_connac_mcu_uni_set_chctx(mvif->phy->mt76, &mvif->bss=
-_conf.mt76, ctx);
-> +
-> +       phy->mt76->chandef =3D ctx->def;
-> +       mt7921_update_txpower_cur(phy->mt76);
-> +
->         mt792x_mutex_release(phy->dev);
->  }
->
-> --
-> 2.53.0
->
+...
 
