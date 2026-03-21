@@ -1,63 +1,53 @@
-Return-Path: <stable+bounces-227644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227645-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICj4MiPtvWkwDwMAu9opvQ
-	(envelope-from <stable+bounces-227644-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 01:58:11 +0100
+	id SNBuLa/0vWlQEQMAu9opvQ
+	(envelope-from <stable+bounces-227645-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 02:30:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 544342E2B6E
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 01:58:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D7A72E2C95
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 02:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C4043060ADF
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 00:56:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48156302003A
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 01:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03AE13290D5;
-	Sat, 21 Mar 2026 00:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966082EC08C;
+	Sat, 21 Mar 2026 01:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t/WQDoj+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T6m1S1kA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB062DCBE3;
-	Sat, 21 Mar 2026 00:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58276258EC2;
+	Sat, 21 Mar 2026 01:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774054591; cv=none; b=r/rkyXih61kDWrWO+BcpR3XAh5lalh7vNt34o6zHI5GG3OisIyPbwP7lnhir6tcgCsOsiT8eTpAbp/2X1zCA9MkEENTLBJDNZCn6A/5FNWXta23QMJqBrW7thSq74ZBOTcZGjoUgjvPDd4Nysu9CcfLyGF/HHxnc6Vwae5+0ybw=
+	t=1774056618; cv=none; b=aHal9EAzOcPtXTl7K1PS8UaXoVXXk7jxL0sWIYbV/B0qeYiuREzKxOhgr4sl8hCjVgA7rpq1E1zph1ajbkx20peRKtvyud9mQGVT+Ze+7M/OgSrHZk26CS+PAgoEPjAsJ/Wcc6kfPWrdzGFhwAdGcveDMP/VODCwxqChqI9xwjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774054591; c=relaxed/simple;
-	bh=X5LAPF88+rblE8Ugn+wC0BXFx9Vjd5ZwEootGLaNZDA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxkqdX1si7y4AY5QGurmaYaRc0vkMU0om7lt+zrHGO31+B+LabFUbNA6AM0PSxPXQq9oPafk87OXbigahuY8D/tGS5CREcnl7kcpHz7ona1TYeaIYwXkfnkGxKLP9zxPxyZYPg+bnbDBWOZsY7E3CHXTGFudLn16wHus/c+oSRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t/WQDoj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39195C4CEF7;
-	Sat, 21 Mar 2026 00:56:31 +0000 (UTC)
+	s=arc-20240116; t=1774056618; c=relaxed/simple;
+	bh=tbbADfwDugUUyAle0siqsujkIcegPl5hAPJQz8FE9dw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=ut0UuP1kzP1HassyBpsfdQ59B94ENyNNHtG85dUQRYlD9fgNRnDki3D1F/iysUw6rY1yYMxZJCbKsRncJNhOvwBHRWle6mvVCoeiyPMGxYy40XocXCd72V4Ymlw9+m8HKeRuiTu5x3ifX03+I/wxT7wIj7V0wyLPauvFAkVtPFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T6m1S1kA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D49C4CEF7;
+	Sat, 21 Mar 2026 01:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774054591;
-	bh=X5LAPF88+rblE8Ugn+wC0BXFx9Vjd5ZwEootGLaNZDA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t/WQDoj+g2goXyVhP60iGs5t0CgWyN7V18mpDPFP6D5P2HlOh8dkKjK1BEzDFiVJ/
-	 75NDU9mFh/kOZWiAqvcTTZAQmwT88dvsTmLhl+9vNhUH5PCacQEztEMfCHqUakGkN/
-	 Bmbgp04vjr/yxrQjf1FsuEmJqSn0AmEFLsQKXr80QmIvTxhRsCOIsA26tzVLNy6hAE
-	 OJZjVx8sK6/0nFvDzjdGnOrs1BCVrXHyWdM4jdOyTmtarK3tzrKG7FariCB6PYB0Fc
-	 6g3GASyo1Gvl7aBeZYajLcYE2RTqG+I7bhdZejqGa/fBXX6y/e5UQQcTR2+7KtoZw3
-	 ustmc459kTnyg==
-From: SeongJae Park <sj@kernel.org>
-To: Josh Law <objecting@objecting.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
-Date: Fri, 20 Mar 2026 17:56:20 -0700
-Message-ID: <20260321005622.81193-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260320163559.178101-2-objecting@objecting.org>
-References: 
+	s=k20201202; t=1774056618;
+	bh=tbbADfwDugUUyAle0siqsujkIcegPl5hAPJQz8FE9dw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=T6m1S1kA61Ndi9veXqUrSqU0sCNUjKsZ6CHEByqEPULAMq5WkKJ6bvspbzxqd5Gs/
+	 b42/AGvyOks8vNsG1z0YU9FkxNGZoxxRKWQsB62CbJIpdRuUpoJqzupYR7sp61Q3VA
+	 Mjit37fJgjK81zuHiRg224wvS+86quWEdE96n0V91Y+sQ+DKgth1l65NNrcikIR+LF
+	 DGMHYIeERWolzIuYGTa8nzGaTOe2awn1zT9AifY2usyffrA5NuOozf++ndzd+HD0F9
+	 STyCdvwEVfkwO5Kbl21s1kMGiCnA6HfTwX3q870GoJKcaP1yHlWXX7If9tQKJn2woq
+	 fbQLv8U0AIgBA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE993808200;
+	Sat, 21 Mar 2026 01:30:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,101 +55,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/2] net: macb: Fix two lock warnings when WOL is
+ used
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177405660804.2716872.14224968446088280176.git-patchwork-notify@kernel.org>
+Date: Sat, 21 Mar 2026 01:30:08 +0000
+References: <20260318-macb-irq-v2-0-f1179768ab24@gmail.com>
+In-Reply-To: <20260318-macb-irq-v2-0-f1179768ab24@gmail.com>
+To: Kevin Hao <haokexin@gmail.com>
+Cc: netdev@vger.kernel.org, nicolas.ferre@microchip.com,
+ claudiu.beznea@tuxon.dev, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ vineeth.karumanchi@amd.com, harini.katakam@amd.com, theo.lebrun@bootlin.com,
+ stable@vger.kernel.org
 X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_NEQ_ENVFROM(0.00)[patchwork-bot@kernel.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-227645-lists,stable=lfdr.de,netdevbpf];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227644-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	NEURAL_HAM(-0.00)[-0.997];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	FROM_NO_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[objecting.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 544342E2B6E
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[lunn.ch:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 1D7A72E2C95
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+Hello:
 
-On Fri, 20 Mar 2026 16:35:58 +0000 Josh Law <objecting@objecting.org> wrote:
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-> Multiple sysfs command paths dereference contexts_arr[0] without first
-> verifying that nr_contexts >= 1.
-
-Nit.  There is no 'nr_contexts' in the code.  Let's use kdamond->contexts->nr
-or contexts->nr instead.
-
-> A user can set nr_contexts to 0 via
-> sysfs while DAMON is running, causing NULL pointer dereferences.
-
-It would be nice to explain how users can reproducer the issue.  Could you
-please add below to this part of the commit message?
-
-'''
-The issue can be triggered by privileged users like below.
-
-First, start DAMON and make contexts directory empty (kdamond->contexts->nr ==
-0).
-
-    # damo start
-    # cd /sys/kernel/mm/damon/admin/kdamonds/0
-    # echo 0 > contexts/nr_contexts
-
-Then, any of below commands will cause the NULL pointer dereference.
-
-    # echo update_schemes_stats > state
-    # echo update_schemes_tried_regions > state
-    # echo update_schemes_tried_bytes > state
-    # echo update_schemes_effective_quotas > state
-    # echo update_tuned_intervals > state
-'''
-
->
-> Guard all commands (except OFF) at the entry point of
-> damon_sysfs_handle_cmd().
->
-> Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
-> Cc: <stable@vger.kernel.org>  # 5.18.x
-> Signed-off-by: Josh Law <objecting@objecting.org>
-> Reviewed-by: SeongJae Park <sj@kernel.org>
-
-I suggested [1] this patch.  But I didn't give you 'Revied-by:' tag.  So the
-above Reviewed-by: is not valid.
-
-And this patch looks good to me, so please take my valid Reviewed-by: tag.
-
-Reviewed-by: SeongJae Park <sj@kernel.org>
-
+On Wed, 18 Mar 2026 14:36:57 +0800 you wrote:
+> Hi,
+> 
+> This patch series addresses two lock warnings that occur when using WOL as a
+> wakeup source on my AMD ZynqMP board.
+> 
 > ---
+> Cc: Nicolas Ferre <nicolas.ferre@microchip.com>
+> Cc: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+> Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+> Cc: Harini Katakam <harini.katakam@amd.com>
+> Cc: Théo Lebrun <theo.lebrun@bootlin.com>
+> 
+> [...]
 
-From the next time, please add patch version changelog [2] here.
+Here is the summary with links:
+  - [net,v2,1/2] net: macb: Move devm_{free,request}_irq() out of spin lock area
+    https://git.kernel.org/netdev/net/c/317e49358ebb
+  - [net,v2,2/2] net: macb: Protect access to net_device::ip_ptr with RCU lock
+    https://git.kernel.org/netdev/net/c/baa35a698cea
 
-I added this patch into my tree after resolving the trivial things I mentioned
-above.  I will post it as v3 tomorrow, unless Andrew add this to mm.git after
-resolving the trivial things as I mentioned.
-
-[1] https://lore.kernel.org/20260320155115.101025-1-sj@kernel.org
-[2] https://docs.kernel.org/process/submitting-patches.html#commentary
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Thanks,
-SJ
-
-[...]
 
