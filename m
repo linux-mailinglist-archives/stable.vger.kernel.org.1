@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-227672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EG2TK3o4vmlGJwMAu9opvQ
-	(envelope-from <stable+bounces-227672-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:19:38 +0100
+	id cBc5NWQ4vmlGJwMAu9opvQ
+	(envelope-from <stable+bounces-227667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:19:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1502E3938
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:19:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6453E2E38D5
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 628D5303CC14
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 06:19:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E5F243019B8A
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 06:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81BB347503;
-	Sat, 21 Mar 2026 06:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB181347503;
+	Sat, 21 Mar 2026 06:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzghiyVi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFwNA1/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7364936DA1A
-	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 06:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB54362149
+	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 06:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774073950; cv=none; b=ce+2eclFHqDJ2UywSpSisKmWEEjCRPrIGM6O7fKKOQFw0XZCfV1bsNkrKf60HWnoDMA4TdcL5lLfFMZuzthFaF+SrZr/huaxkAcv7wCYAb0ZQDF7Rvk/bOwJ/qdLEthrZjXwag66rmBAp9hahdSdKSdGzh9cEaW1u3Kf/qR3SqM=
+	t=1774073949; cv=none; b=FI9QkuQ7V+kLiM9EHHEs1RHUKrYhG545I3JXBu7VjLAy5bnbFr4bsDahUp4IYpamMsZJHy7GVYe2vNYbclImphivjP2T5k0owJKP//vQT2KM4G4ytyWjcoYuAcTuOBvvlyP57mbyr2uDHmMaqE9VLXZ3O/jhM5ivGDNJ7qj5nmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774073950; c=relaxed/simple;
+	s=arc-20240116; t=1774073949; c=relaxed/simple;
 	bh=4CZwcsNBMK561lizDhxzRP2Gf/ggRNaaRoBI3K5dM0I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WBEP2AedU1A/TA4TQcyFukXzWAkvDSa8WMpAzRd1hWrindrPNyh0fI9HEhLMa/HWNbxwo/Dx8jX2GDpSVJCVRoK2Kc+Av04G2+0GLGGt6hBng+pRQ9d+eBdUJJ9fEUpOBRsnCtaGSq15Nhn78Ze6x8qwOja26+JB/2BleaoFMGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzghiyVi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEDD0C2BCAF;
-	Sat, 21 Mar 2026 06:19:09 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=g1gR44IQu2rgAiE4I5YcjOYKcPxOaP1M8ktIru48J/W/RVzyhbNCTf35A4Dd/Jb2a4kO8BAXwvuZcEWgYrtBKMNqlpLX0Br4s80jILPR1gbdmbx5kqMWeKeZ/48f015veQd2E1KUZMkFG2v3cSrMGcmilx1r5315ivNQKVbcf08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFwNA1/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A2DC2BCAF;
+	Sat, 21 Mar 2026 06:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774073950;
+	s=korg; t=1774073949;
 	bh=4CZwcsNBMK561lizDhxzRP2Gf/ggRNaaRoBI3K5dM0I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZzghiyVik0hK0UkO9zCoYm5TJHh3Qlj9p11uQsQcsGToj27PYpTANfnxKZjgdI3HH
-	 OY2PZAJUNtFCUv2A4V9XzNRpceKLlqhhOVc5b8jhi8IfQh9eAvtHz8kpcYpfZkN2Ga
-	 wnI4gUgILUqoV6Wybkcgbfo0uxqgteJmM6MprxlU=
+	b=oFwNA1/ea7g4wvjZcc1wVVCW+ONtSI6+jqLVMnAbNxaYOjsmZoQv4q9MPT3IL0nVy
+	 3Y/UB8pr5iy58WyU7moQ4cPeDKHAQDihWudqos/2CU7BpbMWI7pcjlZTZCtH2LKwRh
+	 J04WilYOuzcX68olZntA50sOIitcNF6jMr76gAWc=
 Date: Sat, 21 Mar 2026 07:11:32 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Jens Axboe <axboe@kernel.dk>
@@ -65,12 +65,12 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227672-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227667-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -83,11 +83,11 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: 6B1502E3938
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6453E2E38D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
