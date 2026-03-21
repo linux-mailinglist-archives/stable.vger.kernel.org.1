@@ -1,234 +1,250 @@
-Return-Path: <stable+bounces-227732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YFdtJmpQvmnsMQMAu9opvQ
-	(envelope-from <stable+bounces-227732-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 09:01:46 +0100
+	id AH3+KXRRvmnsMQMAu9opvQ
+	(envelope-from <stable+bounces-227733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 09:06:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E42452E4175
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 09:01:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17EDE2E41CF
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 09:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD31730209FE
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 08:01:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 253B53021B28
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 08:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152F4305057;
-	Sat, 21 Mar 2026 08:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FB96349AE0;
+	Sat, 21 Mar 2026 08:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="OsUveB8e"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TCv74/lk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52E72741C9;
-	Sat, 21 Mar 2026 08:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA672C11D1
+	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 08:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774080099; cv=none; b=U64q5yXFTT7QK4hQ4SJZumqI9b+/FjgDxCpetLAuPnuAEl4nHGM3tlxTJ2Yk11JRabtJTpE9WP75kA7IrLyMOxV9MGNh9n0Kr1kS5YAW6jTICJHlujLglqZYUJ9Hw0inMPBC1bI1kmKenhBpK1iNOGNiGIoDncBR1guBNtERTPU=
+	t=1774080367; cv=none; b=pFeXr6eHBalCZS0Awuv/gjhHYldUrvdCMh8wNLBHd5M7QGSX2k9AbAQFVjmOhev06PHTmR0HXHq5PgwQq1Azony58L0brt2JbCs4TSz0Q79UQSHCMCc+xZ4TySdJt1IFC5wxaogLvvU4D2vxoKC38aX4osRm6T9/qlawWRhWa9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774080099; c=relaxed/simple;
-	bh=DmiItKPQ9EHlZvu5av+MtnBOpWDzI1clnWp2NdKde3o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OyTw3WZEWrC/dXDlyPloK1piUV1JBCiB9Ntas9odpXoS3kR4dX4jXz79ci3j5k3evFaJuEHj9nPmVPJLbvECyHUXr6GUw75GJ5diNWR2rhSojO0mwoofUwb5fHrvvHW5eHyrRfPTDZ0VDDfYJoVf11A4U/561GCc4Nvx4hV9woI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=OsUveB8e; arc=none smtp.client-ip=45.254.49.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
-Received: from DESKTOP-SUEFNF9.tailb3ad3b.ts.net (unknown [222.191.246.242])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 37c8ce11d;
-	Sat, 21 Mar 2026 16:01:33 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: slava.dubeyko@ibm.com
-Cc: akpm@linux-foundation.org,
-	frank.li@vivo.com,
-	glaubitz@physik.fu-berlin.de,
-	jianhao.xu@seu.edu.cn,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	slava@dubeyko.com,
-	zilin@seu.edu.cn,
-	stable@vger.kernel.org
-Subject: [PATCH v4 1/2] hfsplus: fix held lock freed on hfsplus_fill_super()
-Date: Sat, 21 Mar 2026 16:01:29 +0800
-Message-Id: <20260321080130.1292216-2-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260321080130.1292216-1-zilin@seu.edu.cn>
-References: <20260321080130.1292216-1-zilin@seu.edu.cn>
+	s=arc-20240116; t=1774080367; c=relaxed/simple;
+	bh=2s68hzYNGh4mCdQSBcdofjVj6JnV9wGLi01EF10aUdk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pq4XHwm8DCQ2Y5KmGUpJzLDlJa2XyvAQmtje/xNcbZRQKOWTcw8e7yBb4PxVootsRNruN8QPbp5LJTcAeg6IzF+VCQbq4l0QpaJ1EGkdRXMReFgnW/5nmFULj7RNE/mWjFTnHUkUr3bmmpRLLecPPTsVpLW2Z3LgLvNs8XWRgxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=TCv74/lk; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-6686fbdbe2eso3256276a12.1
+        for <stable@vger.kernel.org>; Sat, 21 Mar 2026 01:06:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1774080363; x=1774685163; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GPwatB8nwbheTC/o1xIGXmmqpvBr+XI1waV3gj8TSWU=;
+        b=TCv74/lkgTqXvD8M+LixGUCNPpxMizlfdsd0FB1tprO7/5oKlHN52tPWwmQPFsm5HZ
+         CP3CNLx+n919BGpfJLsH41Kfk4DTFES95rlNI+q4Cy11qNPH9h1EKXPFUVfcRHS7tvdb
+         ZkdlmZ2JRTFx+QoeeFH6Zw8FlamTfxEdPuDJo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774080363; x=1774685163;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GPwatB8nwbheTC/o1xIGXmmqpvBr+XI1waV3gj8TSWU=;
+        b=l+DvSPr4O/7GRUuOL+Dx0cF3szCigXlNaDbPVWu7BIazw3RpJZWGQ6N/oWZwwd7X/g
+         0ybGZSrtmST+5RphnK34r/qjeFQu7ebq1F+bmqWI+8l7b0Ob+heh8CO55uYD0nHKKDA3
+         wotw7CEnz429HzfWE4je13ZdLOus0NLuCwPvEfzEocoWNgvO8o04Tf8ALaWKpclKG4VL
+         tfZiVCdFD5a3t4CI3eSGJ0RSF2H/1e4GXpJzjve8sjg7/2ECdSxIDuOU/iVmoTu3LWpZ
+         zk4iawh+UHWyhtERpw1mKqdisbTEtzw6jrCU921MzVRwwKv3Jjz3cbEDgFXJOkWmRKpM
+         tlTw==
+X-Forwarded-Encrypted: i=1; AJvYcCVldCbyqumphNcErkwgY8zPBnGxMUyTAfWrkb8VS06wYpFop1b7QpffXlAd8k0s2QaiHMKhaRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwyBSbgIP5JPyInabg7CZAEySWpjZLTHxYL0CRQSo5vOs3dreo2
+	mn5qsRuQ08npM7GsHTNeSfvAGuq+eOD1/EH9qsLPKLwi+1mwgDcH7Qg5xQiKNtRARC18aYrD6ZT
+	79tSTC1Lt
+X-Gm-Gg: ATEYQzzqGzAv1k7TSMU7qT/Sn7mldslKohQK7NM8XkOGde6Ey/GntF7UmdFsZaXUQEk
+	CSoQhHK+BLmVsn3QbgpSefKPOjyjeXMUmUi4VmboRh1KWWjOFCT0WJp04XR4tpr8CT3kie1AqMw
+	2W4jHd64b9UhJXiWP7utcgt5rGmwz3KuLgq0PmU9dq4iW+16y9Hb1ee3hlR3+6KWYVNgMBMPNho
+	ntFR91Q/B5i1D2GEBfqUrmjWNigBL1LOz0WYIybAFhMb78gczfHuC1i7gaBmv82qX8g7F79FOhl
+	GYWZnFUQbQFOQzTGlxIfp+LtnQxN3y7BIl3DTwWrZvaJGMRsku1XfFiKq9iU3zWh5bFTQS51oDl
+	MnebIHVWtEOdasbi36MbILxcCJDiizrVS59Gt/3DCJtuQSvAPJJAnIiue6JofaQ0gaHC1b6VvAa
+	7e9TOPFPvAy0KboCxbZShOZBdaDL0+cvtcDl/ohxbhorwGWrY/6CN96QrTWzi15A==
+X-Received: by 2002:a17:906:174f:b0:b98:42de:3700 with SMTP id a640c23a62f3a-b9842de3755mr168814066b.17.1774080362476;
+        Sat, 21 Mar 2026 01:06:02 -0700 (PDT)
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com. [209.85.221.52])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9832f8db2fsm253863866b.23.2026.03.21.01.06.01
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Mar 2026 01:06:01 -0700 (PDT)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-43b3d9d0695so2414468f8f.0
+        for <stable@vger.kernel.org>; Sat, 21 Mar 2026 01:06:01 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXsW5iZRkH5GtXPaNsrbMmUrpFkYgw4uM9oqJKA9hC2qavKWrSE0cT9CNYQ4fC2AqkW7F1ArCk=@vger.kernel.org
+X-Received: by 2002:a05:6000:2409:b0:439:c078:9a57 with SMTP id
+ ffacd0b85a97d-43b6428769cmr10495014f8f.25.1774080360308; Sat, 21 Mar 2026
+ 01:06:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9d0f69edfe03a1kunmf3bcb71e291d72
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDHk8YVh8fT0tMTUNCGElDTlYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSUJDQ0xVSktLVU
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=OsUveB8eIBa1OWLyHk7rxUPnKQuzEGE3s2l2saDS/StuXFQLCBr4EU7YEOwOkPFZcNMx4JU+YNFThVhdZ2G/49XtYjSjpiDQSsh+2ZvXPi7qnmEUINaThrcLFJHP47yL2ecY71+HZY8hOFFZWIGZlrTjYTMfhGJbQbE5YNfmINU=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=f78VzEoA9VVNkvocFaYeL3bbNDA+AApacm2I3szd6Ok=;
-	h=date:mime-version:subject:message-id:from;
-X-Spamd-Result: default: False [-0.66 / 15.00];
+References: <20260320200656.RFC.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+ <2026032152-getting-carmaker-29d5@gregkh> <CAD=FV=Wag5qx9RXkAHrf+zbwtQgVQW1UUc6DRhUzudBtjbD8ug@mail.gmail.com>
+ <2026032114-unlocked-unmoving-091b@gregkh>
+In-Reply-To: <2026032114-unlocked-unmoving-091b@gregkh>
+From: Doug Anderson <dianders@chromium.org>
+Date: Sat, 21 Mar 2026 01:05:48 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WPD5DueD5iGvsxZYUGy7XAQ2NQ2BTJTyVSVNtYYrWOHQ@mail.gmail.com>
+X-Gm-Features: AaiRm52s-9URaw6TU84sMrns19yrErBQbts8yoJ0kNLkR9r4G1S7vxdHuEDDBiQ
+Message-ID: <CAD=FV=WPD5DueD5iGvsxZYUGy7XAQ2NQ2BTJTyVSVNtYYrWOHQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] driver core: Don't link the device to the bus until
+ we're ready to probe
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Danilo Krummrich <dakr@kernel.org>, 
+	Alan Stern <stern@rowland.harvard.edu>, Saravana Kannan <saravanak@kernel.org>, stable@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227732-lists,stable=lfdr.de];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[seu.edu.cn:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid]
-X-Rspamd-Queue-Id: E42452E4175
+	DKIM_TRACE(0.00)[chromium.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227733-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,linuxfoundation.org:email,chromium.org:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 17EDE2E41CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-hfsplus_fill_super() calls hfs_find_init() to initialize a search
-structure, which acquires tree->tree_lock. If the subsequent call to
-hfsplus_cat_build_key() fails, the function jumps to the out_put_root
-error label without releasing the lock. The later cleanup path then
-frees the tree data structure with the lock still held, triggering a
-held lock freed warning.
+Hi,
 
-Fix this by adding the missing hfs_find_exit(&fd) call before jumping
-to the out_put_root error label. This ensures that tree->tree_lock is
-properly released on the error path.
+On Sat, Mar 21, 2026 at 12:42=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sat, Mar 21, 2026 at 12:35:32AM -0700, Doug Anderson wrote:
+> > Hi,
+> >
+> > On Fri, Mar 20, 2026 at 10:41=E2=80=AFPM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > On Fri, Mar 20, 2026 at 08:06:58PM -0700, Douglas Anderson wrote:
+> > > > The moment we link a "struct device" into the list of devices for t=
+he
+> > > > bus, it's possible probe can happen. This is because another thread
+> > > > can load the driver at any time and that can cause the device to
+> > > > probe. This has been seen in practice with a stack crawl that looks
+> > > > like this [1]:
+> > > >
+> > > >   really_probe()
+> > > >   __driver_probe_device()
+> > > >   driver_probe_device()
+> > > >   __driver_attach()
+> > > >   bus_for_each_dev()
+> > > >   driver_attach()
+> > > >   bus_add_driver()
+> > > >   driver_register()
+> > > >   __platform_driver_register()
+> > > >   init_module() [some module]
+> > > >   do_one_initcall()
+> > > >   do_init_module()
+> > > >   load_module()
+> > > >   __arm64_sys_finit_module()
+> > > >   invoke_syscall()
+> > >
+> > > Are you sure this isn't just a platform bus issue?  A bus should NOT =
+be
+> > > allowing a driver to be added at the same time a device is being adde=
+d
+> > > for that bus, ideally there should be a bus-specific lock somewhere f=
+or
+> > > this.
+> >
+> > Sure, if the right fix for this is somewhere in the platform bus code
+> > then I'd be happy with a patch there to fix it. ...but from my quick
+> > glance (admittedly, it's Friday night and I'm tired), it seems like
+> > the problem is just with driver_register() being called at the same
+> > time as device_add().
+> >
+> > Certainly adding some sort of locking could be a solution (happy for
+> > someone to tell me where to place them), but we'd have to make sure we
+> > aren't regressing performance for the normal case...
+> >
+> >
+> > > When a device is added to the bus, yes, a probe can happen, and is
+> > > expected to happen, for that device, so this feels odd.
+> > >
+> > > that being said, your patch does seem sane, and I don't see anything
+> > > obviously wrong with it.  But it feels odd that this is just now show=
+ing
+> > > up for something that has been this way for a few decades...
+> >
+> > I suspect it's a latent bug that was triggered by a new Android
+> > feature. It's showing up on phones that have
+> > "ro.boot.load_modules_parallel" set. I think you can get to the
+> > relevant source code at:
+> >
+> > https://cs.android.com/android/platform/superproject/main/+/main:system=
+/core/libmodprobe/libmodprobe.cpp?q=3DLoadModulesParallel
+> >
+> > I suspect the bug is never triggered with more normal module loading
+> > schemes. Indeed, one phone that has nearly the same set of drivers but
+> > has parallel module loading turned off has no reports of this
+> > problem...
+>
+> Ah, I think we always assumed that modules can NOT be loaded in
+> parallel, isn't there an internal module lock that prevents this from
+> happening?
+>
+> So yes, that might be the root problem here.
 
-The bug was originally detected on v6.13-rc1 using an experimental
-static analysis tool we are developing, and we have verified that the
-issue persists in the latest mainline kernel. The tool is specifically
-designed to detect memory management issues. It is currently under active
-development and not yet publicly available.
+It's late Friday night for me (technically Saturday morning), so I'm
+not going to dig now. ...but I'm fairly certain that Android isn't
+using any downstream kernel patches to accomplish its "parallel module
+loading". It's just userspace jamming modules in as fast as it can.
+Userspace loading modules quickly shouldn't cause the kernel to behave
+badly.
 
-We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
-lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
-used GDB to dynamically shrink the max_unistr_len parameter to 1 before
-hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
-return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
-exercises the faulty error path. The following warning was observed
-during mount:
+If the right solution is to add more locking to the kernel to slow
+userspace down, that is also something I could try. It will likely end
+up impacting boot speed, but of course correctness comes first. Let me
+know if this is a direction I should dig (or someone is free to post a
+patch and I can test it).
 
-	=========================
-	WARNING: held lock freed!
-	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
-	-------------------------
-	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
-	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
-	2 locks held by mount/174:
-	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
-	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
 
-	stack backtrace:
-	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
-	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
-	Call Trace:
-	<TASK>
-	dump_stack_lvl+0x82/0xd0
-	debug_check_no_locks_freed+0x13a/0x180
-	kfree+0x16b/0x510
-	? hfsplus_fill_super+0xcb4/0x18a0
-	hfsplus_fill_super+0xcb4/0x18a0
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x65f/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? pointer+0x4ce/0xbf0
-	? trace_contention_end+0x11c/0x150
-	? __pfx_pointer+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? bdev_open+0x79b/0xc30
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? vsnprintf+0x6da/0x1270
-	? srso_return_thunk+0x5/0x5f
-	? __mutex_unlock_slowpath+0x157/0x740
-	? __pfx_vsnprintf+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? mark_held_locks+0x49/0x80
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? irqentry_exit+0x17b/0x5e0
-	? trace_irq_disable.constprop.0+0x116/0x150
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	? __pfx_hfsplus_fill_super+0x10/0x10
-	get_tree_bdev_flags+0x302/0x580
-	? __pfx_get_tree_bdev_flags+0x10/0x10
-	? vfs_parse_fs_qstr+0x129/0x1a0
-	? __pfx_vfs_parse_fs_qstr+0x3/0x10
-	vfs_get_tree+0x89/0x320
-	fc_mount+0x10/0x1d0
-	path_mount+0x5c5/0x21c0
-	? __pfx_path_mount+0x10/0x10
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	? srso_return_thunk+0x5/0x5f
-	? kmem_cache_free+0x307/0x540
-	? user_path_at+0x51/0x60
-	? __x64_sys_mount+0x212/0x280
-	? srso_return_thunk+0x5/0x5f
-	__x64_sys_mount+0x212/0x280
-	? __pfx___x64_sys_mount+0x10/0x10
-	? srso_return_thunk+0x5/0x5f
-	? trace_irq_enable.constprop.0+0x116/0x150
-	? srso_return_thunk+0x5/0x5f
-	do_syscall_64+0x111/0x680
-	entry_SYSCALL_64_after_hwframe+0x77/0x7f
-	RIP: 0033:0x7ffacad55eae
-	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
-	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
-	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
-	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
-	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
-	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
-	</TASK>
+> > I'd also note that the only actual symptom we're seeing is with
+> > fw_devlink misbehaving (because dev->fwnode->dev wasn't set early
+> > enough). fw_devlink is a "new" (ish) feature, is officially optional,
+> > and isn't used on all hardware.
+>
+> That's true too, can we set that earlier?
 
-After applying this patch, the warning no longer appears.
+Yes, I can post a patch that _just_ moves the set of dev->fwnode->dev
+earlier, and that will probably fix my symptoms (I'll need to test).
+This patch already moves it a bit earlier, but if we don't break the
+linking out as a separate step it would need to move even higher up in
+the function.
 
-Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
-CC: stable@vger.kernel.org
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
----
- fs/hfsplus/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Originally, I was going to just propose that, but then I realized that
+some of the other code in device_add() probably also ought to run
+before we let the driver probe, and hence I ended up with this patch.
 
-diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
-index 7229a8ae89f9..f396fee19ab8 100644
---- a/fs/hfsplus/super.c
-+++ b/fs/hfsplus/super.c
-@@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
- 	if (err)
- 		goto out_put_root;
- 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
--	if (unlikely(err < 0))
-+	if (unlikely(err < 0)) {
-+		hfs_find_exit(&fd);
- 		goto out_put_root;
-+	}
- 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
- 		hfs_find_exit(&fd);
- 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
--- 
-2.34.1
-
+-Doug
 
