@@ -1,101 +1,105 @@
-Return-Path: <stable+bounces-227772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIVNKHiuvmmEWgMAu9opvQ
-	(envelope-from <stable+bounces-227772-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 15:43:04 +0100
+	id 8J22M32uvmmEWgMAu9opvQ
+	(envelope-from <stable+bounces-227773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 15:43:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20EA42E5DC5
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 15:43:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 335E32E5DCC
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 15:43:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3E2130125EF
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 14:41:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE9CE3013785
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 14:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4551D2DF6F6;
-	Sat, 21 Mar 2026 14:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B592A38B7A1;
+	Sat, 21 Mar 2026 14:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="snbMPCL8";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="1oKKQP//"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="q+fY9dl5";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FZXd19gB"
 X-Original-To: stable@vger.kernel.org
 Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A452E88BB
-	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 14:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E124E18E025
+	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 14:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774104105; cv=none; b=r2FHCFTAh25cJrIZ2Bx91XUiNVT9jsfBBNPZN5//GBB+Fjo/YO2+f6KDkzE5i4Vh6X2h6hdHQi7VpFLHRWj7OuJoQLG4kziodJMbm2HtB34rQsyZw1gzbVle60FSxV1/T/GVVGNl0Tc1y9VFxim3GKnYB5aTIDpY+KOrk5xlULA=
+	t=1774104108; cv=none; b=Kz54z1Tf/otD3hxLPkWv87riebH0704vLeXDV86dmUZGMjvocp85sWhJyhEj/qAX/prYcIyi9HnAvziZ4L9btZNhnZQFxEnM6wO4ynlwa09uKHp/UJ4DybTPCet/OSbZ4p9lYvWVBxuB7lc6mS3rwF+nW0Yt4vAVUDdnNT0++Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774104105; c=relaxed/simple;
-	bh=iiZM9nn75YnDZ9jdNZeZvOd+xgAvVQjuyNGjxWUyglo=;
+	s=arc-20240116; t=1774104108; c=relaxed/simple;
+	bh=otlrnFYwqW7SyRjKhiIpkawbb0aXuLiHS6mj87l6HvA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UWrptmQqy9Nlvhk/c0eRD/efZzRM84VKwhmJtxWQ+clM98eqVqUDbXYVreEAIkLqE/YhjfQ05YD2g1iljQWz2926brj3im4/hNwiaRd3HYUXKNO7JIcX5KAx7h7cl6Qsbql5mMwefbuQ8DbDlNfqOrOKbRV+KXpxgRn710bX2AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=snbMPCL8; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=1oKKQP//; arc=none smtp.client-ip=202.12.124.149
+	 Content-Type:Content-Disposition:In-Reply-To; b=SLkxocs6K9OYOUEnAON4NNbb9WMjetopYLE4PZk+sqVVT1WwEFybHHIOm8bgcdAhWIn9R2WWCt93FIoK44MJz9573+UyQjBuSAl8g+rGPXxYstj+XnO1v/D9sA6sl0HeRxG7nMA7W12d4MDNhH9X/8JdiAo5xFzcGwXT3O9D838=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=q+fY9dl5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FZXd19gB; arc=none smtp.client-ip=202.12.124.149
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfout.stl.internal (Postfix) with ESMTP id 06BDE1D00010;
-	Sat, 21 Mar 2026 10:41:41 -0400 (EDT)
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfout.stl.internal (Postfix) with ESMTP id DDB381D000C0;
+	Sat, 21 Mar 2026 10:41:45 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Sat, 21 Mar 2026 10:41:42 -0400
+  by phl-compute-10.internal (MEProxy); Sat, 21 Mar 2026 10:41:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
 	:cc:content-type:content-type:date:date:from:from:in-reply-to
 	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1774104101; x=1774190501; bh=nrXblXiegA
-	tOQBdvOQbz/uv3Jk5t5WraFHP9dtcADz8=; b=snbMPCL8EFWB10ECVZURKMnsQr
-	hhGU25j9EgZiBT76ie+tKHqYyPgeY6jKcShTEWLGW6u7DRaxQyaD7IdTibA6z3eM
-	Z09Nck2gaqJHOxP0WOrK2xCESarzuzbiPhIpjA8pDgdlamWVsjRF7otTw+45zKqm
-	YXQrZV4oaxdHxqtUYLxi6hUx3tCMtLZdpTAo4jzfu8v0SW2DqqpcqAZtyLRdLADy
-	ChIWLzj3Nnm9atWHeox1Sgy7vYjWvWAXDOP70R11VArZYNma66C3yUVOxeH6l6D0
-	iCL1OCj3rAScFAN+UduLMgUQm2035WrCVQS2WK+qBHzyEUEplOPlrIPHyS1w==
+	:subject:to:to; s=fm1; t=1774104105; x=1774190505; bh=B3jo0wppSA
+	rFw+urp5dykTcT7QS2boDqPdugo+o7BIM=; b=q+fY9dl50FUoFfBSX4l/SCpnws
+	fCUAEVrE7+CSYcG182PWF9C5kupQcrUBzBYiRnEkqyhAvFQgzVicotkgZ3iHJmJz
+	BWZrRK0u1b2MyNHFIY0ROlDJ6gEB2s0jMxkIFC3gL93WBKqvbovxytOvwkS95ezS
+	CFQwGSjTGUGvjXx0MF4ZuJ5uIcde0DPh8R1+t5qVxN1w2Cp7WeeBTSiuZIJ9+fw0
+	EWrg6LJPcAJ/K0F1rjR4jYSaoOiqZ0jYi8OrEjqBkMH+qbjlS6MELsDLOxmJoALc
+	gk3HcnkslEfzutMun3MI5JU7+y4CkHrY1SG2UQdFl901o8HMx8ovQNLvxtkA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1774104101; x=1774190501; bh=nrXblXiegAtOQBdvOQbz/uv3Jk5t5WraFHP
-	9dtcADz8=; b=1oKKQP//IlyR7Xyu6YdPpqnON6nGkHO9OSbujoQ44OBX3XJex8o
-	c/sAsvj4md5Wb/jnvDb5u80FYziQVqlJ9ydPIsLOUjXkNzFQki0/zixTl+kerHUY
-	TKsTEsgZgXnzGzVGRnYTlKmg8MD5UyrVuaxDxfkWjg1K2VmspYwUzmXq2MWuSb30
-	3LzoHbYrm8ALR22HmGEl9mQe3yXrZ16BRhaAZkTxTNT+Z1XV6K4+8MzTnl9u1zt9
-	kG4XShMyyPlwTQYGFn6pbPog2WkM1/E4hzcDqN2FBXwX7XdPJz2GfpvvvXvcRDF4
-	Mi0LNhlksoqk/928IOYKAzmGf0t6d6TaGeg==
-X-ME-Sender: <xms:Ja6-aeZ6cd0Wp5RL95lQ7cwQIaEczrhrcJDZ_hAFybej5Adj5xIwrQ>
-    <xme:Ja6-abYVrXJ_e1erDfkB_FKAKTY4rWMphv6tYoJIWy__AMughJeoOiUsgVI-l5Lbi
-    -Kjz6KkTCh83Mky9-pnxUnSZ07LOODLLvF4L9LLDWkDAEje>
-X-ME-Received: <xmr:Ja6-aflQOlU5BOjDD6ddtrfClBYIQE6KSU-Yem5LwNgauTN-Aq4bz6j-m0CrZcMcJ71DgNM7_Qdx5GOf>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefudefudduucetufdoteggodetrf
+	1774104105; x=1774190505; bh=B3jo0wppSArFw+urp5dykTcT7QS2boDqPdu
+	go+o7BIM=; b=FZXd19gBivqZGl/6MGm2VOJKaUrG2T4HA1GDud7zVjoB/7pQGxv
+	OL8MsbbEXCd596SY0IMnWaGI1n03leu5QlzH+FYS0RFY4+yB9EwZ3QPoD34u6Wp8
+	+0SO3hY7PksLYSveocmQ1afljWQ5gzARIm+pVqRLXYuTcDMg8d6w7essMZFo/tal
+	lr6xUikF//Fd34nC6j1Pnix1wrRDQSfKM2rd2xWA/rvxAsn1oZivzi1+HNjzXYGG
+	x1bAGbyCzDsHNopeRFcAF6Tqaz4jth7xvdc6QLYHAmuhzEMwVUmmc7MGmIxGe5kZ
+	QludU8h9gEuUBXGI53NqTD7eHKA20ESMFjQ==
+X-ME-Sender: <xms:KK6-aaIloVI-bru_RqVs3e9BPOH0thKsrvTqCK8H4uVsWbwBxAFwjg>
+    <xme:KK6-aegRpWS_MLjJlt8HLi-TOZGEOtQX9oKJ6OYtXJTR829G1xPkGicqPQn4556uG
+    vVB1RPvhxhtd-YuDcWsbFh38hK9zZIlnb_LN-Ah6LI5oTcJOg>
+X-ME-Received: <xmr:KK6-afKg-hwT-T7FfzhZUbG7KOekdCZOZmG0LW3IPaGZb6LlMIO_BZt776lIEvLvaTN6ccATNAD6IWgF>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefudefuddvucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfm
-    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepgeehueehgf
-    dtledutdelkeefgeejteegieekheefudeiffdvudeffeelvedttddvnecuffhomhgrihhn
-    pehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepkedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshgrshhhrghlsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegulhgvmhhorghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtrghssh
-    gvlheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:Ja6-ae0t2CLlrcyWDpkaiNobpdGZOtRdyORqP6Mciv7FhQoWREmb-A>
-    <xmx:Ja6-aX3MjW6MtcR_5Og77nIUI9-BxRStk5GImICCxtGfLP5HTeBXZQ>
-    <xmx:Ja6-aYo_CJSwhbHu3d60ng87H670R2QGXWDUfKfLTd94go9gO3xE6Q>
-    <xmx:Ja6-abje7ja80Qfh6EaBNX9_uy-QlM-AinQM8Bwv9f8Zjld7K6WmtQ>
-    <xmx:Ja6-aTDk4bh4QwYbDcek3wFCMvMAfr3NxtYqUYpAZvOm2yp54SDP8tfD>
+    jfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvd
+    eljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgv
+    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
+    gtohhmpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthht
+    ohepshgrshhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopeihihdriihhrghngheshhhurgif
+    vghirdgtohhmpdhrtghpthhtohepohhjrghsfihinheslhhinhhugidrihgsmhdrtghomh
+    dprhgtphhtthhopehlihgsrghokhhunhdusehhuhgrfigvihdrtghomhdprhgtphhtthho
+    pehsthgrsghlvgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepthihthhsohesmhhith
+    drvgguuh
+X-ME-Proxy: <xmx:KK6-adgHnUWFOsjlMzUAxDkeWSEa9neafbIiQmtaIlDs6h9il58xcQ>
+    <xmx:KK6-ad0Gz_C1NLzEzHXmh9tsBRsJB-TuMYDvIltBcE0pVGeGybVAOA>
+    <xmx:KK6-aTiec504R-W1uLpsuhDb9XzI7j9hF66LLbHW_AtHqlIpQotF6w>
+    <xmx:KK6-ae-yK-pcqvOPyIIdDor4fxfO7vn0hnMfUNu7r_SSmZGLAYruzQ>
+    <xmx:Ka6-aYEahhSUSd4d6haeBj2QaHsH3iddoMfk6Umy_J5ml2JhlztuCSx6>
 Feedback-ID: i787e41f1:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 21 Mar 2026 10:41:40 -0400 (EDT)
-Date: Sat, 21 Mar 2026 15:39:06 +0100
+ 21 Mar 2026 10:41:44 -0400 (EDT)
+Date: Sat, 21 Mar 2026 15:39:24 +0100
 From: Greg KH <greg@kroah.com>
 To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: Re: [PATCH 6.12.y 1/2] ata: libata-scsi: Return residual for
- emulated SCSI commands
-Message-ID: <2026032154-malformed-muster-43bb@gregkh>
-References: <2026032032-sludge-profanity-a10a@gregkh>
- <20260320215445.132838-1-sashal@kernel.org>
+Cc: stable@vger.kernel.org, Zhang Yi <yi.zhang@huawei.com>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Baokun Li <libaokun1@huawei.com>, stable@kernel.org,
+	Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH 6.1.y] ext4: don't set EXT4_GET_BLOCKS_CONVERT when
+ splitting before submitting I/O
+Message-ID: <2026032119-chevy-unsmooth-a3a4@gregkh>
+References: <2026022422-humorous-scam-a54d@gregkh>
+ <20260225025732.3839126-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,66 +108,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260320215445.132838-1-sashal@kernel.org>
+In-Reply-To: <20260225025732.3839126-1-sashal@kernel.org>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227772-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227773-lists,stable=lfdr.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kroah.com:dkim,messagingengine.com:dkim]
-X-Rspamd-Queue-Id: 20EA42E5DC5
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[messagingengine.com:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kroah.com:dkim,huawei.com:email,huaweicloud.com:email]
+X-Rspamd-Queue-Id: 335E32E5DCC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Fri, Mar 20, 2026 at 05:54:44PM -0400, Sasha Levin wrote:
-> From: Damien Le Moal <dlemoal@kernel.org>
+On Tue, Feb 24, 2026 at 09:57:32PM -0500, Sasha Levin wrote:
+> From: Zhang Yi <yi.zhang@huawei.com>
 > 
-> [ Upstream commit 5251ae224d8d3caa21b28d12408062b6e75cffad ]
+> [ Upstream commit feaf2a80e78f89ee8a3464126077ba8683b62791 ]
 > 
-> The function ata_scsi_rbuf_fill() used to fill the reply buffer of
-> emulated SCSI commands always copies the ATA reply buffer
-> (ata_scsi_rbuf) up to the size of the SCSI command buffer (the transfer
-> length for the command), even if the reply is shorter than the SCSI
-> command buffer. This leads to issuers of the SCSI command to always get
-> a result without any residual (resid is always 0) despite the
-> potentially shorter reply for the command.
+> When allocating blocks during within-EOF DIO and writeback with
+> dioread_nolock enabled, EXT4_GET_BLOCKS_PRE_IO was set to split an
+> existing large unwritten extent. However, EXT4_GET_BLOCKS_CONVERT was
+> set when calling ext4_split_convert_extents(), which may potentially
+> result in stale data issues.
 > 
-> Modify all fill actors used by ata_scsi_rbuf_fill() to return the number
-> of bytes filled for the reply and 0 in case of error. Using this value,
-> add a call to scsi_set_resid() in ata_scsi_rbuf_fill() to set the
-> correct residual for the SCSI command when the reply length is shorter
-> than the command buffer.
+> Assume we have an unwritten extent, and then DIO writes the second half.
 > 
-> Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-> Link: https://lore.kernel.org/r/20241022024537.251905-7-dlemoal@kernel.org
-> Signed-off-by: Niklas Cassel <cassel@kernel.org>
-> Stable-dep-of: e6d7eba23b66 ("ata: libata-scsi: report correct sense field pointer in ata_scsiop_maint_in()")
+>    [UUUUUUUUUUUUUUUU] on-disk extent        U: unwritten extent
+>    [UUUUUUUUUUUUUUUU] extent status tree
+>             |<-   ->| ----> dio write this range
+> 
+> First, ext4_iomap_alloc() call ext4_map_blocks() with
+> EXT4_GET_BLOCKS_PRE_IO, EXT4_GET_BLOCKS_UNWRIT_EXT and
+> EXT4_GET_BLOCKS_CREATE flags set. ext4_map_blocks() find this extent and
+> call ext4_split_convert_extents() with EXT4_GET_BLOCKS_CONVERT and the
+> above flags set.
+> 
+> Then, ext4_split_convert_extents() calls ext4_split_extent() with
+> EXT4_EXT_MAY_ZEROOUT, EXT4_EXT_MARK_UNWRIT2 and EXT4_EXT_DATA_VALID2
+> flags set, and it calls ext4_split_extent_at() to split the second half
+> with EXT4_EXT_DATA_VALID2, EXT4_EXT_MARK_UNWRIT1, EXT4_EXT_MAY_ZEROOUT
+> and EXT4_EXT_MARK_UNWRIT2 flags set. However, ext4_split_extent_at()
+> failed to insert extent since a temporary lack -ENOSPC. It zeroes out
+> the first half but convert the entire on-disk extent to written since
+> the EXT4_EXT_DATA_VALID2 flag set, but left the second half as unwritten
+> in the extent status tree.
+> 
+>    [0000000000SSSSSS]  data                S: stale data, 0: zeroed
+>    [WWWWWWWWWWWWWWWW]  on-disk extent      W: written extent
+>    [WWWWWWWWWWUUUUUU]  extent status tree
+> 
+> Finally, if the DIO failed to write data to the disk, the stale data in
+> the second half will be exposed once the cached extent entry is gone.
+> 
+> Fix this issue by not passing EXT4_GET_BLOCKS_CONVERT when splitting
+> an unwritten extent before submitting I/O, and make
+> ext4_split_convert_extents() to zero out the entire extent range
+> to zero for this case, and also mark the extent in the extent status
+> tree for consistency.
+> 
+> Fixes: b8a8684502a0 ("ext4: Introduce FALLOC_FL_ZERO_RANGE flag for fallocate")
+> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+> Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+> Reviewed-by: Baokun Li <libaokun1@huawei.com>
+> Cc: stable@kernel.org
+> Message-ID: <20251129103247.686136-4-yi.zhang@huaweicloud.com>
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> [ different function signatures ]
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  drivers/ata/libata-scsi.c | 81 +++++++++++++++++++++++----------------
->  1 file changed, 47 insertions(+), 34 deletions(-)
+>  fs/ext4/extents.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+> index 1aad4ae0e7ae4..dfc365b021094 100644
+> --- a/fs/ext4/extents.c
+> +++ b/fs/ext4/extents.c
+> @@ -3705,11 +3705,15 @@ static int ext4_split_convert_extents(handle_t *handle,
+>  	/* Convert to unwritten */
+>  	if (flags & EXT4_GET_BLOCKS_CONVERT_UNWRITTEN) {
+>  		split_flag |= EXT4_EXT_DATA_VALID1;
+> -	/* Convert to initialized */
+> -	} else if (flags & EXT4_GET_BLOCKS_CONVERT) {
+> +	/* Split the existing unwritten extent */
+> +	} else if (flags & (EXT4_GET_BLOCKS_UNWRIT_EXT |
+> +			    EXT4_GET_BLOCKS_CONVERT)) {
+>  		split_flag |= ee_block + ee_len <= eof_block ?
+>  			      EXT4_EXT_MAY_ZEROOUT : 0;
+> -		split_flag |= (EXT4_EXT_MARK_UNWRIT2 | EXT4_EXT_DATA_VALID2);
+> +		split_flag |= EXT4_EXT_MARK_UNWRIT2;
+> +		/* Convert to initialized */
+> +		if (flags & EXT4_GET_BLOCKS_CONVERT)
+> +			split_flag |= EXT4_EXT_DATA_VALID2;
+>  	}
+>  	flags |= EXT4_GET_BLOCKS_PRE_IO;
+>  	return ext4_split_extent(handle, inode, ppath, map, split_flag, flags);
+> @@ -3874,7 +3878,7 @@ ext4_ext_handle_unwritten_extents(handle_t *handle, struct inode *inode,
+>  	/* get_block() before submitting IO, split the extent */
+>  	if (flags & EXT4_GET_BLOCKS_PRE_IO) {
+>  		ret = ext4_split_convert_extents(handle, inode, map, ppath,
+> -					 flags | EXT4_GET_BLOCKS_CONVERT);
+> +					 flags);
+>  		if (ret < 0) {
+>  			err = ret;
+>  			goto out2;
+> -- 
+> 2.51.0
+> 
 > 
 
-BOth of these don't apply :(
+Does not apply :(
 
