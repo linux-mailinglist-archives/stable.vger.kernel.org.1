@@ -1,91 +1,59 @@
-Return-Path: <stable+bounces-227731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oHIVGQdMvmkRMAMAu9opvQ
-	(envelope-from <stable+bounces-227731-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 08:43:03 +0100
+	id YFdtJmpQvmnsMQMAu9opvQ
+	(envelope-from <stable+bounces-227732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 09:01:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582EE2E4022
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 08:43:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E42452E4175
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 09:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6433A30185E1
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:42:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD31730209FE
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 08:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D2333F58F;
-	Sat, 21 Mar 2026 07:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 152F4305057;
+	Sat, 21 Mar 2026 08:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P9sJq04d"
+	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="OsUveB8e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m49198.qiye.163.com (mail-m49198.qiye.163.com [45.254.49.198])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38569319617
-	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 07:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52E72741C9;
+	Sat, 21 Mar 2026 08:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774078977; cv=none; b=Gvz7U6nPA3bXVZarU0XVSMnjH4m0rCrGa+GNbOt8R8blV6a7p/caVEYkor4gQk+lHCRhf9sSJSWTMJpPWMC4ALrLWPvJwUbSwlVNrmnykDTi6JymM9s0hrujLw3DftyIiMm7Ws/RM/Nyt3MAB/5NuZDuhPlWYJ3J8GpsK9uxOMg=
+	t=1774080099; cv=none; b=U64q5yXFTT7QK4hQ4SJZumqI9b+/FjgDxCpetLAuPnuAEl4nHGM3tlxTJ2Yk11JRabtJTpE9WP75kA7IrLyMOxV9MGNh9n0Kr1kS5YAW6jTICJHlujLglqZYUJ9Hw0inMPBC1bI1kmKenhBpK1iNOGNiGIoDncBR1guBNtERTPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774078977; c=relaxed/simple;
-	bh=/fcUHnLNge6SFLxWrM+8HK1LoLEPvUarIqtfQwLEGr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qTPJSGwA1ofSNsq5bX+xP89XOQvrf3R10J7PWTicbE8/RnCOY28ePdqUhVnLBC8IzRskSQmAlsI1F6D0SEcDeexo/xKgFZoF/+l6Z05WU4WPKpOOiPDIUQCdlGml+cyryzoM87DW1cE7Y8aQBBtUzpnw7I+eth4wMTNK60WrSDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P9sJq04d; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-824c9da9928so2705718b3a.3
-        for <stable@vger.kernel.org>; Sat, 21 Mar 2026 00:42:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774078975; x=1774683775; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+aCGxNHjQ3qWf5BFAN3CZ7YhrlhC9KiBN8YYYpfvlgw=;
-        b=P9sJq04dZxfWtXbIKWXrakom2/SlFtQKQ4nujOlYU4AZi7AY8+sPGLTekXMccqFrlF
-         yMPtK7bRXbRdwmWnGIzGU+FGg8ZmtKJxLgO1C2+S1jbpTYx6J5/G3A2VmDV5+FuizOcN
-         H8AJv0K4uZErU9ruIl4TRojh+6Sr1inWgSlnb6UhB5i2kc0hNVnIp6dwPVxt9aHMO1Qn
-         aeeJ5w3Us0fQTtCyk/3hM9HikyMTG44PMkgESrRQPXsRdiktjyXRwBgb4SlU1S8hd+KS
-         ejAcCsP+r84F/DxlXoLnRpYROwgsJrmRdxefFRLG3xPOPU1eONjkkB0/19FhbdCUhBFa
-         eLSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774078975; x=1774683775;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+aCGxNHjQ3qWf5BFAN3CZ7YhrlhC9KiBN8YYYpfvlgw=;
-        b=L3WDXpYFUdcBbNcIQmfJYC/4xh3SjBUUlU1ozGuUTvdj77EinRpoFph9wyKGzCfyET
-         k4IiJlPKRIMiC/rjW3fzv5GbJ515hHY/GUBWPTWl/czmTQUShfTFhXrGFtgl9PQCs+mB
-         pj24sjphPpzI0fmvRMIRwvTU5OuS59Ni7M8tX4gmuGcfhmUDxOlVo82on4+o/iy7dyE8
-         GQbcytpsWL03Z8qHmFw9KVlnx81c8EOJ/xUvLWRDeKbmayjhB6PQlby+vrWdlyZ/JOpz
-         nxlxB9RdvSELUH9mfcSR4nk1/WYGgUxILuaF3EP68xolYHY0i/tcVsaN3yLkFl8AKdUG
-         Ze9A==
-X-Forwarded-Encrypted: i=1; AJvYcCV8xtqnLj5mUdRyBJOUAW4ii5I4e1ekN64mP47xIbH07MSYODj6AB//xoeVn6qqGABRFzslMyw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhdTIJzYNWzrq/h9/HYH2NhxtSM4QV7Aelf8OGIqE0/lBMYnND
-	gkoLpzeiV/09iJpxeB0eeLiTmI6+G344kjk/egUcGvALAz/aBCECz9r4
-X-Gm-Gg: ATEYQzzDmFFSeM8kcO2GV85zrsqMMye7MYynqjyf2TrK5X3tugUbMQhs0d8YTGRiFOk
-	6bZCyt8wdT1CIiqHRJgOjBp7cOgGV8c+4lJYsgLvGIA4RGGsIAJS1211B0VIOEP/qdsI7/PQOXd
-	Hq5xPNj8I9MqKudPDHZiIVzUF+c3AyxfduqA1zebJTL05pmCEqiqbkRHDmxsV02jV9hUV/V3Sfr
-	H1iNAnNwyoojqXPjMKhUdbgdY9hxuYQOckTKnRIaiD0vLAQKpFeM6qt6NU2uwz10u579KM5tAa2
-	1l5rAmFHPFTWpGHI8Ug4zi5WB1ffwz6u82jOw78PUuaTf9gAQNUSZZcmNF8wTpantIe4CcGB05X
-	hwo+vOV3Q6vJpLroy5GdcTI5gr2JgPGSdq34eb5+Tk/5VGA5byuxFPHR5fa60vQRKDNekmZhX7f
-	IorzHLj7TadSp81aU=
-X-Received: by 2002:aa7:9e41:0:b0:82b:4a85:3e2f with SMTP id d2e1a72fcca58-82b4a854131mr2881784b3a.41.1774078975582;
-        Sat, 21 Mar 2026 00:42:55 -0700 (PDT)
-Received: from lgs.. ([199.182.234.55])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82c212ac8a2sm3503489b3a.17.2026.03.21.00.42.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 00:42:55 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: Philipp Zabel <p.zabel@pengutronix.de>,
-	Linus Walleij <linusw@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Bartosz Golaszewski <brgl@kernel.org>,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	s=arc-20240116; t=1774080099; c=relaxed/simple;
+	bh=DmiItKPQ9EHlZvu5av+MtnBOpWDzI1clnWp2NdKde3o=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=OyTw3WZEWrC/dXDlyPloK1piUV1JBCiB9Ntas9odpXoS3kR4dX4jXz79ci3j5k3evFaJuEHj9nPmVPJLbvECyHUXr6GUw75GJ5diNWR2rhSojO0mwoofUwb5fHrvvHW5eHyrRfPTDZ0VDDfYJoVf11A4U/561GCc4Nvx4hV9woI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=OsUveB8e; arc=none smtp.client-ip=45.254.49.198
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+Received: from DESKTOP-SUEFNF9.tailb3ad3b.ts.net (unknown [222.191.246.242])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 37c8ce11d;
+	Sat, 21 Mar 2026 16:01:33 +0800 (GMT+08:00)
+From: Zilin Guan <zilin@seu.edu.cn>
+To: slava.dubeyko@ibm.com
+Cc: akpm@linux-foundation.org,
+	frank.li@vivo.com,
+	glaubitz@physik.fu-berlin.de,
+	jianhao.xu@seu.edu.cn,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	slava@dubeyko.com,
+	zilin@seu.edu.cn,
 	stable@vger.kernel.org
-Subject: [PATCH] reset: gpio: fix double free in reset_add_gpio_aux_device() error path
-Date: Sat, 21 Mar 2026 15:42:40 +0800
-Message-ID: <20260321074240.796922-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v4 1/2] hfsplus: fix held lock freed on hfsplus_fill_super()
+Date: Sat, 21 Mar 2026 16:01:29 +0800
+Message-Id: <20260321080130.1292216-2-zilin@seu.edu.cn>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260321080130.1292216-1-zilin@seu.edu.cn>
+References: <20260321080130.1292216-1-zilin@seu.edu.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,69 +61,174 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9d0f69edfe03a1kunmf3bcb71e291d72
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDHk8YVh8fT0tMTUNCGElDTlYeHw5VEwETFhoSFy
+	QUDg9ZV1kYEgtZQVlJSUlVSkJKVUlPTVVJT0lZV1kWGg8SFR0UWUFZT0tIVUpLSUJDQ0xVSktLVU
+	tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=OsUveB8eIBa1OWLyHk7rxUPnKQuzEGE3s2l2saDS/StuXFQLCBr4EU7YEOwOkPFZcNMx4JU+YNFThVhdZ2G/49XtYjSjpiDQSsh+2ZvXPi7qnmEUINaThrcLFJHP47yL2ecY71+HZY8hOFFZWIGZlrTjYTMfhGJbQbE5YNfmINU=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
+	bh=f78VzEoA9VVNkvocFaYeL3bbNDA+AApacm2I3szd6Ok=;
+	h=date:mime-version:subject:message-id:from;
 X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	DMARC_POLICY_ALLOW(-0.50)[seu.edu.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[seu.edu.cn:s=default];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-227731-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-227732-lists,stable=lfdr.de];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FROM_NEQ_ENVFROM(0.00)[zilin@seu.edu.cn,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	DKIM_TRACE(0.00)[seu.edu.cn:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 582EE2E4022
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,seu.edu.cn:dkim,seu.edu.cn:email,seu.edu.cn:mid]
+X-Rspamd-Queue-Id: E42452E4175
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When __auxiliary_device_add() fails, reset_add_gpio_aux_device()
-calls auxiliary_device_uninit(adev).
+hfsplus_fill_super() calls hfs_find_init() to initialize a search
+structure, which acquires tree->tree_lock. If the subsequent call to
+hfsplus_cat_build_key() fails, the function jumps to the out_put_root
+error label without releasing the lock. The later cleanup path then
+frees the tree data structure with the lock still held, triggering a
+held lock freed warning.
 
-The device release callback reset_gpio_aux_device_release() frees
-adev, but the current error path then calls kfree(adev) again,
-causing a double free.
+Fix this by adding the missing hfs_find_exit(&fd) call before jumping
+to the out_put_root error label. This ensures that tree->tree_lock is
+properly released on the error path.
 
-Keep kfree(adev) for the auxiliary_device_init() failure path, but
-avoid freeing adev after auxiliary_device_uninit().
+The bug was originally detected on v6.13-rc1 using an experimental
+static analysis tool we are developing, and we have verified that the
+issue persists in the latest mainline kernel. The tool is specifically
+designed to detect memory management issues. It is currently under active
+development and not yet publicly available.
 
-Fixes: 5fc4e4cf7a22 ("reset: gpio: use software nodes to setup the GPIO lookup")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+We confirmed the bug by runtime testing under QEMU with x86_64 defconfig,
+lockdep enabled, and CONFIG_HFSPLUS_FS=y. To trigger the error path, we
+used GDB to dynamically shrink the max_unistr_len parameter to 1 before
+hfsplus_asc2uni() is called. This forces hfsplus_asc2uni() to naturally
+return -ENAMETOOLONG, which propagates to hfsplus_cat_build_key() and
+exercises the faulty error path. The following warning was observed
+during mount:
+
+	=========================
+	WARNING: held lock freed!
+	7.0.0-rc3-00016-gb4f0dd314b39 #4 Not tainted
+	-------------------------
+	mount/174 is freeing memory ffff888103f92000-ffff888103f92fff, with a lock still held there!
+	ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+	2 locks held by mount/174:
+	#0: ffff888103f960e0 (&type->s_umount_key#42/1){+.+.}-{4:4}, at: alloc_super.constprop.0+0x167/0xa40
+	#1: ffff888103f920b0 (&tree->tree_lock){+.+.}-{4:4}, at: hfsplus_find_init+0x154/0x1e0
+
+	stack backtrace:
+	CPU: 2 UID: 0 PID: 174 Comm: mount Not tainted 7.0.0-rc3-00016-gb4f0dd314b39 #4 PREEMPT(lazy)
+	Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+	Call Trace:
+	<TASK>
+	dump_stack_lvl+0x82/0xd0
+	debug_check_no_locks_freed+0x13a/0x180
+	kfree+0x16b/0x510
+	? hfsplus_fill_super+0xcb4/0x18a0
+	hfsplus_fill_super+0xcb4/0x18a0
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x65f/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? pointer+0x4ce/0xbf0
+	? trace_contention_end+0x11c/0x150
+	? __pfx_pointer+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? bdev_open+0x79b/0xc30
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? vsnprintf+0x6da/0x1270
+	? srso_return_thunk+0x5/0x5f
+	? __mutex_unlock_slowpath+0x157/0x740
+	? __pfx_vsnprintf+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? mark_held_locks+0x49/0x80
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? irqentry_exit+0x17b/0x5e0
+	? trace_irq_disable.constprop.0+0x116/0x150
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	? __pfx_hfsplus_fill_super+0x10/0x10
+	get_tree_bdev_flags+0x302/0x580
+	? __pfx_get_tree_bdev_flags+0x10/0x10
+	? vfs_parse_fs_qstr+0x129/0x1a0
+	? __pfx_vfs_parse_fs_qstr+0x3/0x10
+	vfs_get_tree+0x89/0x320
+	fc_mount+0x10/0x1d0
+	path_mount+0x5c5/0x21c0
+	? __pfx_path_mount+0x10/0x10
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	? srso_return_thunk+0x5/0x5f
+	? kmem_cache_free+0x307/0x540
+	? user_path_at+0x51/0x60
+	? __x64_sys_mount+0x212/0x280
+	? srso_return_thunk+0x5/0x5f
+	__x64_sys_mount+0x212/0x280
+	? __pfx___x64_sys_mount+0x10/0x10
+	? srso_return_thunk+0x5/0x5f
+	? trace_irq_enable.constprop.0+0x116/0x150
+	? srso_return_thunk+0x5/0x5f
+	do_syscall_64+0x111/0x680
+	entry_SYSCALL_64_after_hwframe+0x77/0x7f
+	RIP: 0033:0x7ffacad55eae
+	Code: 48 8b 0d 85 1f 0f 00 f7 d8 64 89 01 48 83 c8 ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 49 89 ca b8 a5 00 00 8
+	RSP: 002b:00007fff1ab55718 EFLAGS: 00000246 ORIG_RAX: 00000000000000a5
+	RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ffacad55eae
+	RDX: 000055740c64e5b0 RSI: 000055740c64e630 RDI: 000055740c651ab0
+	RBP: 000055740c64e380 R08: 0000000000000000 R09: 0000000000000001
+	R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+	R13: 000055740c64e5b0 R14: 000055740c651ab0 R15: 000055740c64e380
+	</TASK>
+
+After applying this patch, the warning no longer appears.
+
+Fixes: 89ac9b4d3d1a ("hfsplus: fix longname handling")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 ---
- drivers/reset/core.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/hfsplus/super.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/reset/core.c b/drivers/reset/core.c
-index 0135dd0ae204..58ecde760b6e 100644
---- a/drivers/reset/core.c
-+++ b/drivers/reset/core.c
-@@ -856,7 +856,6 @@ static int reset_add_gpio_aux_device(struct device *parent,
- 	ret = __auxiliary_device_add(adev, "reset");
- 	if (ret) {
- 		auxiliary_device_uninit(adev);
--		kfree(adev);
- 		return ret;
- 	}
- 
+diff --git a/fs/hfsplus/super.c b/fs/hfsplus/super.c
+index 7229a8ae89f9..f396fee19ab8 100644
+--- a/fs/hfsplus/super.c
++++ b/fs/hfsplus/super.c
+@@ -569,8 +569,10 @@ static int hfsplus_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	if (err)
+ 		goto out_put_root;
+ 	err = hfsplus_cat_build_key(sb, fd.search_key, HFSPLUS_ROOT_CNID, &str);
+-	if (unlikely(err < 0))
++	if (unlikely(err < 0)) {
++		hfs_find_exit(&fd);
+ 		goto out_put_root;
++	}
+ 	if (!hfs_brec_read(&fd, &entry, sizeof(entry))) {
+ 		hfs_find_exit(&fd);
+ 		if (entry.type != cpu_to_be16(HFSPLUS_FOLDER)) {
 -- 
-2.43.0
+2.34.1
 
 
