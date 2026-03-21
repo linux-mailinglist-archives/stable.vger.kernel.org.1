@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-227783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227782-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GOGMYHbvmnZfgMAu9opvQ
-	(envelope-from <stable+bounces-227783-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 18:55:13 +0100
+	id aIndMH3bvmnZfgMAu9opvQ
+	(envelope-from <stable+bounces-227782-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 18:55:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EC82E69F8
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 18:55:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 669232E69EF
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 18:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B44C301F9C7
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EA98301E95B
 	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B5933FE10;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DA133C528;
 	Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tgu/N2qJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JCIHzKeX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D5833D511;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CC733D4FA;
 	Sat, 21 Mar 2026 17:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774115676; cv=none; b=ZtFrNMJsKhN+v7THcGIGTc38AnEdXlSg1UTRmT3jd2KgiN5PqUXovuJWfCAKt5Is4hSgB3CHizs+R9wyifPO2nOKiD0tJ2PD83w8iEl6uGc9QHPf2qKj2GopFl4pBR3SI3tVijWvzMdWsumllJ+7NAW06TsRTvP3LZBv4wGdgLA=
+	t=1774115676; cv=none; b=UuvnVYl7QRZmjGDcXGwPursyh3kJIB2WEMzVp0ABtdEaKh22529yP6dkj44LcMpGAo9Dczd0K7vJbeVtOVjq+S9623vxXXctIClUIo3e/65MmXvOrvIRol1FGiv3c8tGxmfIIemfPeKPUSzvKpkCRLSxNKdNhCVH2UVCobg05fQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774115676; c=relaxed/simple;
-	bh=kqdEPb3iNN0fFsVK6m3M9gMdlpedC9f1qzwxe6K56h4=;
+	bh=ozaZfolHMPA3TCsXC61RgAmpZFbdf9+Z14L9tHNxdsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SpOzFGSU/HJNFZlWZqo1LcStNKthZY8fxUEzzNozSnA2DmofchF4EkQt+/rmK0w6rRf4YCsult7vc51aXnA4Ym90S1ldo9BDvBxZ+f3gDVOubHRhDW8rqrnquj7Am4QtsV4jyD1+i7GUaPaYlIr5gZQ6a43/RZ3JPsIQZwgdQak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tgu/N2qJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC19C2BCB2;
+	 MIME-Version; b=B1dnZrvG+NaAOoWnVR75WCNOxFblggyQMUeJxma4ZSuxR8Qi8ch2vAh47Z82VNgHZ08+O2J62mrmKms/Km/2JFGy6KJRTkq62FJWTtqA6g+4Lzq7bevlLu2FcQ7aaHc324X2TGcTccTDZ1cVoqFqzXnIUYzI2T9iOXNH1+rzOsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JCIHzKeX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0406CC2BCB1;
 	Sat, 21 Mar 2026 17:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774115675;
-	bh=kqdEPb3iNN0fFsVK6m3M9gMdlpedC9f1qzwxe6K56h4=;
+	s=k20201202; t=1774115676;
+	bh=ozaZfolHMPA3TCsXC61RgAmpZFbdf9+Z14L9tHNxdsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tgu/N2qJidFELa4r9BzD1WwU6563wFyYLpFeqzAZwcZHxbUQJikNm03IhG6ga4O0P
-	 4gkR7H8AeiwT7Q79DF5fBsXfw5MoTmKsIriNGT+uKc7s2Sr47yau3UxeyboKCyUNdA
-	 VHVtnCqKX7sB07ZBJrzXivgN8FdeB9gmCP2WUdCom/uNzGv82jAsM3B+kH6UczvgrJ
-	 K8FLKphL9mP90Y0th/QZNJhCYCQoiW1KQhQ32+FNA0GXtd2ARWr47W5nlxXUDUhvow
-	 cEFGjDgpkRYCMhjQLpwv7cpwXYW4UxUZXNvMrDeBZ0tPyNsHa0UdkaUZxRzrajinW0
-	 AWj8UgrMbuYww==
+	b=JCIHzKeX5pvZa/pwEj3y0EPD5StACRN04orUN65Kdv1WXpLao9Dujx/qWb/mXU4+C
+	 RVus4wCtn5m7UE7RqBn42VtY5j9UsdYWu1juthqS5tAfl5+UpXVYz7n1nn0uMaqh2L
+	 d0G5RwzGCzVI+SAvT6EVzdyKpu7150vdTBnFLBktJ8ZJnh/KP+hZa/jy/ocj33DodK
+	 MfA3LgZbo0y5KgbHsEJFWJQZJtbssPudiDvd0u58tn5HsXH1rP+itsnU9dCrSLUdyq
+	 tocW0aUsuhxVLw8eshlOWJLk3oKuRZx80ObGUz5H61jxy340nZPrKjLz7h3MRPlEeU
+	 qZGrGlBzTQx8g==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Josh Law <objecting@objecting.org>,
-	"# 6 . 18 . x" <stable@vger.kernel.org>,
+	"# 5 . 18 . x" <stable@vger.kernel.org>,
 	SeongJae Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH v3 1/3] mm/damon/sysfs: fix param_ctx leak on damon_sysfs_new_test_ctx() failure
-Date: Sat, 21 Mar 2026 10:54:24 -0700
-Message-ID: <20260321175427.86000-2-sj@kernel.org>
+Subject: [PATCH v3 2/3] mm/damon/sysfs: check contexts->nr before accessing contexts_arr[0]
+Date: Sat, 21 Mar 2026 10:54:25 -0700
+Message-ID: <20260321175427.86000-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260321175427.86000-1-sj@kernel.org>
 References: <20260321175427.86000-1-sj@kernel.org>
@@ -70,13 +70,13 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227783-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227782-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
@@ -90,43 +90,63 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[objecting.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 73EC82E69F8
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,objecting.org:email]
+X-Rspamd-Queue-Id: 669232E69EF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Josh Law <objecting@objecting.org>
 
-When damon_sysfs_new_test_ctx() fails in damon_sysfs_commit_input(),
-param_ctx is leaked because the early return skips the cleanup at the
-out label. Destroy param_ctx before returning.
+Multiple sysfs command paths dereference contexts_arr[0] without first
+verifying that kdamond->contexts->nr == 1.  A user can set nr_contexts
+to 0 via sysfs while DAMON is running, causing NULL pointer
+dereferences.
 
-Fixes: f0c5118ebb0e ("mm/damon/sysfs: catch commit test ctx alloc failure")
-Cc: <stable@vger.kernel.org> # 6.18.x
+In more detail, the issue can be triggered by privileged users like
+below.
+
+First, start DAMON and make contexts directory empty
+(kdamond->contexts->nr == 0).
+
+    # damo start
+    # cd /sys/kernel/mm/damon/admin/kdamonds/0
+    # echo 0 > contexts/nr_contexts
+
+Then, each of below commands will cause the NULL pointer dereference.
+
+    # echo update_schemes_stats > state
+    # echo update_schemes_tried_regions > state
+    # echo update_schemes_tried_bytes > state
+    # echo update_schemes_effective_quotas > state
+    # echo update_tuned_intervals > state
+
+Guard all commands (except OFF) at the entry point of
+damon_sysfs_handle_cmd().
+
+Fixes: 0ac32b8affb5 ("mm/damon/sysfs: support DAMOS stats")
+Cc: <stable@vger.kernel.org>	# 5.18.x
 Signed-off-by: Josh Law <objecting@objecting.org>
 Reviewed-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/sysfs.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/damon/sysfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 576d1ddd736bf..b573b9d607848 100644
+index b573b9d607848..ddc30586c0e61 100644
 --- a/mm/damon/sysfs.c
 +++ b/mm/damon/sysfs.c
-@@ -1524,8 +1524,10 @@ static int damon_sysfs_commit_input(void *data)
- 	if (IS_ERR(param_ctx))
- 		return PTR_ERR(param_ctx);
- 	test_ctx = damon_sysfs_new_test_ctx(kdamond->damon_ctx);
--	if (!test_ctx)
-+	if (!test_ctx) {
-+		damon_destroy_ctx(param_ctx);
- 		return -ENOMEM;
-+	}
- 	err = damon_commit_ctx(test_ctx, param_ctx);
- 	if (err)
- 		goto out;
+@@ -1749,6 +1749,9 @@ static int damon_sysfs_update_schemes_tried_regions(
+ static int damon_sysfs_handle_cmd(enum damon_sysfs_cmd cmd,
+ 		struct damon_sysfs_kdamond *kdamond)
+ {
++	if (cmd != DAMON_SYSFS_CMD_OFF && kdamond->contexts->nr != 1)
++		return -EINVAL;
++
+ 	switch (cmd) {
+ 	case DAMON_SYSFS_CMD_ON:
+ 		return damon_sysfs_turn_damon_on(kdamond);
 -- 
 2.47.3
 
