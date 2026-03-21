@@ -1,262 +1,405 @@
-Return-Path: <stable+bounces-227774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YMT/HGi/vmmFZwMAu9opvQ
-	(envelope-from <stable+bounces-227774-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 16:55:20 +0100
+	id eKFnEE/DvmkKawMAu9opvQ
+	(envelope-from <stable+bounces-227775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:11:59 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7BA2E63BA
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 16:55:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D972E647A
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 17:11:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85C423024148
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 15:54:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53A9F300F10D
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 16:11:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD079396579;
-	Sat, 21 Mar 2026 15:54:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3E42F1FD0;
+	Sat, 21 Mar 2026 16:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="NN5OSXfM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iTMvKEwK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1675131690A
-	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 15:54:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6C8283FDD
+	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 16:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774108446; cv=none; b=Dtz5pC8zjd+aePgZnz++X332xUS3E9wVQbnrcMZd8aWCqXYqdrj9AUUPDg4CkP2aC6pEqwUeJRcMzv7pra7+TYtzbkrL4tk11E6XIW9CnH9TAVxHMhk/6PjSOEX3yEP1HK6oHG7r1Jdi/zvHy4Zb1MsTxnaUUK3mEK8GFmN77Uw=
+	t=1774109494; cv=none; b=iJMO5s4cOILluCCZW3cNdkGJHMWk3HeP+3kkornBHJeIDDk9asrQiO/D1OlLJI3FTUkaRls56nPV0M4Xz/VtMxZ2jWbIaTuVxRf92GS88the6fbQNxg57H52sdi6JePscGmJc5+fM4TJkd4T4w+s6F7V6wRT9eWsWNymGsZlhS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774108446; c=relaxed/simple;
-	bh=lThbFxLQM35GPCAzqXWnZ0lGAfqN2/K8/Rfkj2JsO4g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I5NafelyDMB1R00MHfiZnsKRy+8jlX6cdljfoS4GOEXq2ul6WZ0hzSEKVsc3p6cZzoe150F2LEMl3XWUu7Ew6nzcNdJprx0R2nPcSAikGZ8X8V1COoicoH1X4D7BYVA0sDol94YNTYY2lykX8g145xEyBnsS70UbotCyp7XjjPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=NN5OSXfM; arc=none smtp.client-ip=209.85.222.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8cd8576a512so446117785a.0
-        for <stable@vger.kernel.org>; Sat, 21 Mar 2026 08:54:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1774108444; x=1774713244; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=PjkElUreCSm3Pff79vFh1ZyOTyQLwaGB7r9je7XctHE=;
-        b=NN5OSXfM1Y0ylOIRSC4WIwQ1/Le0y6zdLhjPSvNAm7PLrlSNs45Ha0/BarAcTN2A/x
-         6P2QnUVKhcUPh8GxukOH2+IyfnGwcFuPNS7A6nSCWDv/0BsfEhAVO5L18jDMpUvCDXIB
-         aHanx35S8+X8g4KQ3QqMYxyuk3Vz9a4Dp0UQ6aKcGBnunCxkLXs1mSQM7k414JS3UCyE
-         pAwdZUiz29wMnWPcnhEcLR6gXE26dCaD6a3BHcLX6FlwxJd6kkUN6ID3wnliy1q6FGcL
-         oOKHoewTyJzsWLWJxYkedWfBKT/1HdXQG/nmdLXwSXo8/A9tzH9KNlcOtSGcHj5eyOBG
-         HS8A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774108444; x=1774713244;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PjkElUreCSm3Pff79vFh1ZyOTyQLwaGB7r9je7XctHE=;
-        b=hLImocMfHV2tqDgO6RAl5t54AhU+c+D1d38gqnU0ON6jnsOl5vtRtRCDRsm7nXVj7f
-         06XBikE+Mt7qt0aBcRvA7ghfJdGFcya4fOSUalpB/2QGmDC5OXKqln1CWFl3KHJYsSdo
-         3EJdxMTyxcF3L0FOr0jOAlfykwd7hysV2KY5VJtOZoZLNAwWVSqEz5tyZIvSnXd+XKGG
-         U7ehZEoAbkKw8RBZIVMDR2AiAV4B+xQK57JfpenkBIdiEo7AQ8WsLWhGWpnq0XuRRpGz
-         28J2ophoNWZA8HWpDto2hIgQwkidpJ4qBjXWvNy0xPT4bTWol16Cnwf98Pv0lRkV4gug
-         DSCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXkSAPcj5T/3RRvYmYwV/quBREJx5LwnxYOOh/yOmX6P+OG/+nevJrdMkeCyDwg8mwm/+kUxYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQYfosz7J/Y3llIl/K2sSjA+VQglVTMA7P43ZNYo5O6d6iQb49
-	+fzlUZtTn4zO0Jj2GxXbUgW1XVxrAknQecpokshVNUubHyI9LQJObdVOLhOWFd26mQ==
-X-Gm-Gg: ATEYQzwV8EwN4raasMffk6vxBYuR+57G4D9QzDJvcstE24lnOR6xmCorPBxS8GGJ+Sw
-	DCVafjbE84aexhK0WiSvmo8libVxZp4G43u9XWMr0clojF2w1g6vJNpfAyzxY2W23/Ta7njpdzV
-	k/XSug5pvr3wQqRItAKBbo0yxYpTVZTx0gi+RDNCAnIIAAIC/x2tDcZEt8oUWqjrcSlYKA3CU+R
-	vC4DUJFNqiNBkv5/PpnhkfKJe5NdzrqJz4ft2115LE1gwoxREHOyVKKjftPfC1R/4egwQHvQLHm
-	HiH81Nck9FGA5gOhyHznTbk/NI1Jq3CxYMjiMit7+a8imByeDcQ/8/YsmxB5Kye883AJCIbRX6F
-	tqgpuk+BYZpXxIe19l2gXLLs4SQ3dtcWpfqqn/r+Cs/lOZ/m6LFaRFBeZJ3XU5rjdQuLliB/1nH
-	NejoZAW697MiGoOKQ+h3Oib0A=
-X-Received: by 2002:a05:620a:4694:b0:8cf:d1fa:7b41 with SMTP id af79cd13be357-8cfd1fa7dfdmr652813185a.34.1774108443943;
-        Sat, 21 Mar 2026 08:54:03 -0700 (PDT)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210::b00])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cfc8f94b04sm423144585a.17.2026.03.21.08.54.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 08:54:03 -0700 (PDT)
-Date: Sat, 21 Mar 2026 11:54:00 -0400
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Doug Anderson <dianders@chromium.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Saravana Kannan <saravanak@kernel.org>, stable@vger.kernel.org,
-	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] driver core: Don't link the device to the bus until
- we're ready to probe
-Message-ID: <6ff1444b-f83e-47f6-ab0d-6745738523ba@rowland.harvard.edu>
-References: <20260320200656.RFC.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
- <2026032152-getting-carmaker-29d5@gregkh>
- <CAD=FV=Wag5qx9RXkAHrf+zbwtQgVQW1UUc6DRhUzudBtjbD8ug@mail.gmail.com>
- <2026032114-unlocked-unmoving-091b@gregkh>
- <CAD=FV=WPD5DueD5iGvsxZYUGy7XAQ2NQ2BTJTyVSVNtYYrWOHQ@mail.gmail.com>
+	s=arc-20240116; t=1774109494; c=relaxed/simple;
+	bh=Z1Dtc0K9NcFpsuidCCNBoz0okQElSZeG5MLF7DLLzx8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qQY/7TYatnputS5PfOBhVuSoV3jcXJ2lwtdqcTskjw+kb93aEr+4kVg58gI+qbsqS6d1E+fWOdLq/s5dpR0rMiABu9ZZRlOwNTtnsHznBE32tvjCmj5Htm64wsFpOxyAc+1Z2HVPMHZHBmm+0VbNm6QdE34vkCDNHOB930qUpYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iTMvKEwK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F2BC19421;
+	Sat, 21 Mar 2026 16:11:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774109494;
+	bh=Z1Dtc0K9NcFpsuidCCNBoz0okQElSZeG5MLF7DLLzx8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=iTMvKEwKa7YVSd9NhkKUc1BhxB2g6b5ihm43VWHeljU+/myAcyOFb4NBt3miSovWe
+	 y5PR9FqA8wtVQiJhfuyS+YSXzmzatzq+huOeHLYvATmJVQsiy2j9+wQT8iiYm0K1W8
+	 pCGoWq+Z7B5tWhVnLNM/7DI3DO/bpUC1aRDJXPozuXFw9tyWBNJWyIit3ExAY/DMFN
+	 PNYHX6RRgWOJk1r0eQmEpKC+AHeVO3xFt/BcjxwyrttY09BmjmdJgW1u4EevweImkz
+	 Em+Qb+s5edJW27J7nTPQuCPUlzut1iOrS6zHkZiXBmyXLohBlQ1dHP6t/vD7z4npd7
+	 MschdRPWCPpRQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Maarten Lankhorst <dev@lankhorst.se>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6.y] drm: Fix use-after-free on framebuffers and property blobs when calling drm_dev_unplug
+Date: Sat, 21 Mar 2026 12:11:32 -0400
+Message-ID: <20260321161132.415965-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026032134-vista-portfolio-d866@gregkh>
+References: <2026032134-vista-portfolio-d866@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAD=FV=WPD5DueD5iGvsxZYUGy7XAQ2NQ2BTJTyVSVNtYYrWOHQ@mail.gmail.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[rowland.harvard.edu,none];
-	R_DKIM_ALLOW(-0.20)[rowland.harvard.edu:s=google];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[rowland.harvard.edu:+];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227774-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227775-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[stern@rowland.harvard.edu,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,android.com:url,rowland.harvard.edu:dkim,rowland.harvard.edu:mid,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: CD7BA2E63BA
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 94D972E647A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Mar 21, 2026 at 01:05:48AM -0700, Doug Anderson wrote:
-> Hi,
-> 
-> On Sat, Mar 21, 2026 at 12:42 AM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sat, Mar 21, 2026 at 12:35:32AM -0700, Doug Anderson wrote:
-> > > Hi,
-> > >
-> > > On Fri, Mar 20, 2026 at 10:41 PM Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Fri, Mar 20, 2026 at 08:06:58PM -0700, Douglas Anderson wrote:
-> > > > > The moment we link a "struct device" into the list of devices for the
-> > > > > bus, it's possible probe can happen. This is because another thread
-> > > > > can load the driver at any time and that can cause the device to
-> > > > > probe. This has been seen in practice with a stack crawl that looks
-> > > > > like this [1]:
-> > > > >
-> > > > >   really_probe()
-> > > > >   __driver_probe_device()
-> > > > >   driver_probe_device()
-> > > > >   __driver_attach()
-> > > > >   bus_for_each_dev()
-> > > > >   driver_attach()
-> > > > >   bus_add_driver()
-> > > > >   driver_register()
-> > > > >   __platform_driver_register()
-> > > > >   init_module() [some module]
-> > > > >   do_one_initcall()
-> > > > >   do_init_module()
-> > > > >   load_module()
-> > > > >   __arm64_sys_finit_module()
-> > > > >   invoke_syscall()
-> > > >
-> > > > Are you sure this isn't just a platform bus issue?  A bus should NOT be
-> > > > allowing a driver to be added at the same time a device is being added
-> > > > for that bus, ideally there should be a bus-specific lock somewhere for
-> > > > this.
-> > >
-> > > Sure, if the right fix for this is somewhere in the platform bus code
-> > > then I'd be happy with a patch there to fix it. ...but from my quick
-> > > glance (admittedly, it's Friday night and I'm tired), it seems like
-> > > the problem is just with driver_register() being called at the same
-> > > time as device_add().
-> > >
-> > > Certainly adding some sort of locking could be a solution (happy for
-> > > someone to tell me where to place them), but we'd have to make sure we
-> > > aren't regressing performance for the normal case...
-> > >
-> > >
-> > > > When a device is added to the bus, yes, a probe can happen, and is
-> > > > expected to happen, for that device, so this feels odd.
-> > > >
-> > > > that being said, your patch does seem sane, and I don't see anything
-> > > > obviously wrong with it.  But it feels odd that this is just now showing
-> > > > up for something that has been this way for a few decades...
-> > >
-> > > I suspect it's a latent bug that was triggered by a new Android
-> > > feature. It's showing up on phones that have
-> > > "ro.boot.load_modules_parallel" set. I think you can get to the
-> > > relevant source code at:
-> > >
-> > > https://cs.android.com/android/platform/superproject/main/+/main:system/core/libmodprobe/libmodprobe.cpp?q=LoadModulesParallel
-> > >
-> > > I suspect the bug is never triggered with more normal module loading
-> > > schemes. Indeed, one phone that has nearly the same set of drivers but
-> > > has parallel module loading turned off has no reports of this
-> > > problem...
-> >
-> > Ah, I think we always assumed that modules can NOT be loaded in
-> > parallel, isn't there an internal module lock that prevents this from
-> > happening?
-> >
-> > So yes, that might be the root problem here.
-> 
-> It's late Friday night for me (technically Saturday morning), so I'm
-> not going to dig now. ...but I'm fairly certain that Android isn't
-> using any downstream kernel patches to accomplish its "parallel module
-> loading". It's just userspace jamming modules in as fast as it can.
-> Userspace loading modules quickly shouldn't cause the kernel to behave
-> badly.
-> 
-> If the right solution is to add more locking to the kernel to slow
-> userspace down, that is also something I could try. It will likely end
-> up impacting boot speed, but of course correctness comes first. Let me
-> know if this is a direction I should dig (or someone is free to post a
-> patch and I can test it).
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-As far as I know, there's no particular reason why modules shouldn't be 
-loaded in parallel, or at least, in very quick succession.  Locking 
-shouldn't matter either -- that is, the existing locks ought to be 
-adequate.
+[ Upstream commit 6bee098b91417654703e17eb5c1822c6dfd0c01d ]
 
-> > > I'd also note that the only actual symptom we're seeing is with
-> > > fw_devlink misbehaving (because dev->fwnode->dev wasn't set early
-> > > enough). fw_devlink is a "new" (ish) feature, is officially optional,
-> > > and isn't used on all hardware.
-> >
-> > That's true too, can we set that earlier?
-> 
-> Yes, I can post a patch that _just_ moves the set of dev->fwnode->dev
-> earlier, and that will probably fix my symptoms (I'll need to test).
-> This patch already moves it a bit earlier, but if we don't break the
-> linking out as a separate step it would need to move even higher up in
-> the function.
-> 
-> Originally, I was going to just propose that, but then I realized that
-> some of the other code in device_add() probably also ought to run
-> before we let the driver probe, and hence I ended up with this patch.
+When trying to do a rather aggressive test of igt's "xe_module_load
+--r reload" with a full desktop environment and game running I noticed
+a few OOPSes when dereferencing freed pointers, related to
+framebuffers and property blobs after the compositor exits.
 
-This sounds like a more generic problem.  A bunch of things happen after 
-bus_add_device() that should be completed before probing can start; the 
-firmware node stuff is just one of them.
+Solve this by guarding the freeing in drm_file with drm_dev_enter/exit,
+and immediately put the references from struct drm_file objects during
+drm_dev_unplug().
 
-Splitting bus_add_device() in two sounds reasonable, although I would 
-rename the old routine to bus_link_device, since all it does it add some 
-groups and symlinks.  The new routine can be called bus_add_device().
+Related warnings for framebuffers on the subtest:
+[  739.713076] ------------[ cut here ]------------
+               WARN_ON(!list_empty(&dev->mode_config.fb_list))
+[  739.713079] WARNING: drivers/gpu/drm/drm_mode_config.c:584 at drm_mode_c=
+onfig_cleanup+0x30b/0x320 [drm], CPU#12: xe_module_load/13145
+....
+[  739.713328] Call Trace:
+[  739.713330]  <TASK>
+[  739.713335]  ? intel_pmdemand_destroy_state+0x11/0x20 [xe]
+[  739.713574]  ? intel_atomic_global_obj_cleanup+0xe4/0x1a0 [xe]
+[  739.713794]  intel_display_driver_remove_noirq+0x51/0xb0 [xe]
+[  739.714041]  xe_display_fini_early+0x33/0x50 [xe]
+[  739.714284]  devm_action_release+0xf/0x20
+[  739.714294]  devres_release_all+0xad/0xf0
+[  739.714301]  device_unbind_cleanup+0x12/0xa0
+[  739.714305]  device_release_driver_internal+0x1b7/0x210
+[  739.714311]  device_driver_detach+0x14/0x20
+[  739.714315]  unbind_store+0xa6/0xb0
+[  739.714319]  drv_attr_store+0x21/0x30
+[  739.714322]  sysfs_kf_write+0x48/0x60
+[  739.714328]  kernfs_fop_write_iter+0x16b/0x240
+[  739.714333]  vfs_write+0x266/0x520
+[  739.714341]  ksys_write+0x72/0xe0
+[  739.714345]  __x64_sys_write+0x19/0x20
+[  739.714347]  x64_sys_call+0xa15/0xa30
+[  739.714355]  do_syscall_64+0xd8/0xab0
+[  739.714361]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
 
-The real question is whether any of the other stuff that happens before 
-bus_probe_device() needs to come after the device is added to the bus's 
-list.  The bus_notify() and kobject_uevent() calls are good examples; I 
-don't know what their requirements are.  Should they be moved down, 
-between the new bus_add_device() and bus_probe_device()?
+and
 
-Alan Stern
+[  739.714459] ------------[ cut here ]------------
+[  739.714461] xe 0000:67:00.0: [drm] drm_WARN_ON(!list_empty(&fb->filp_hea=
+d))
+[  739.714464] WARNING: drivers/gpu/drm/drm_framebuffer.c:833 at drm_frameb=
+uffer_free+0x6c/0x90 [drm], CPU#12: xe_module_load/13145
+[  739.714715] RIP: 0010:drm_framebuffer_free+0x7a/0x90 [drm]
+...
+[  739.714869] Call Trace:
+[  739.714871]  <TASK>
+[  739.714876]  drm_mode_config_cleanup+0x26a/0x320 [drm]
+[  739.714998]  ? __drm_printfn_seq_file+0x20/0x20 [drm]
+[  739.715115]  ? drm_mode_config_cleanup+0x207/0x320 [drm]
+[  739.715235]  intel_display_driver_remove_noirq+0x51/0xb0 [xe]
+[  739.715576]  xe_display_fini_early+0x33/0x50 [xe]
+[  739.715821]  devm_action_release+0xf/0x20
+[  739.715828]  devres_release_all+0xad/0xf0
+[  739.715843]  device_unbind_cleanup+0x12/0xa0
+[  739.715850]  device_release_driver_internal+0x1b7/0x210
+[  739.715856]  device_driver_detach+0x14/0x20
+[  739.715860]  unbind_store+0xa6/0xb0
+[  739.715865]  drv_attr_store+0x21/0x30
+[  739.715868]  sysfs_kf_write+0x48/0x60
+[  739.715873]  kernfs_fop_write_iter+0x16b/0x240
+[  739.715878]  vfs_write+0x266/0x520
+[  739.715886]  ksys_write+0x72/0xe0
+[  739.715890]  __x64_sys_write+0x19/0x20
+[  739.715893]  x64_sys_call+0xa15/0xa30
+[  739.715900]  do_syscall_64+0xd8/0xab0
+[  739.715905]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+and then finally file close blows up:
+
+[  743.186530] Oops: general protection fault, probably for non-canonical a=
+ddress 0xdead000000000122: 0000 [#1] SMP
+[  743.186535] CPU: 3 UID: 1000 PID: 3453 Comm: kwin_wayland Tainted: G    =
+    W           7.0.0-rc1-valkyria+ #110 PREEMPT_{RT,(lazy)}
+[  743.186537] Tainted: [W]=3DWARN
+[  743.186538] Hardware name: Gigabyte Technology Co., Ltd. X299 AORUS Gami=
+ng 3/X299 AORUS Gaming 3-CF, BIOS F8n 12/06/2021
+[  743.186539] RIP: 0010:drm_framebuffer_cleanup+0x55/0xc0 [drm]
+[  743.186588] Code: d8 72 73 0f b6 42 05 ff c3 39 c3 72 e8 49 8d bd 50 07 =
+00 00 31 f6 e8 3a 80 d3 e1 49 8b 44 24 10 49 8d 7c 24 08 49 8b 54 24 08 <48=
+> 3b 38 0f 85 95 7f 02 00 48 3b 7a 08 0f 85 8b 7f 02 00 48 89 42
+[  743.186589] RSP: 0018:ffffc900085e3cf8 EFLAGS: 00010202
+[  743.186591] RAX: dead000000000122 RBX: 0000000000000001 RCX: ffffffff821=
+7ed03
+[  743.186592] RDX: dead000000000100 RSI: 0000000000000000 RDI: ffff8881467=
+5ba08
+[  743.186593] RBP: ffffc900085e3d10 R08: 0000000000000000 R09: 00000000000=
+00000
+[  743.186593] R10: 0000000000000000 R11: 0000000000000000 R12: ffff8881467=
+5ba00
+[  743.186594] R13: ffff88810d778000 R14: ffff888119f6dca0 R15: ffff88810c6=
+60bb0
+[  743.186595] FS:  00007ff377d21280(0000) GS:ffff888cec3f8000(0000) knlGS:=
+0000000000000000
+[  743.186596] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  743.186596] CR2: 000055690b55e000 CR3: 0000000113586003 CR4: 00000000003=
+706f0
+[  743.186597] Call Trace:
+[  743.186598]  <TASK>
+[  743.186603]  intel_user_framebuffer_destroy+0x12/0x90 [xe]
+[  743.186722]  drm_framebuffer_free+0x3a/0x90 [drm]
+[  743.186750]  ? trace_hardirqs_on+0x5f/0x120
+[  743.186754]  drm_mode_object_put+0x51/0x70 [drm]
+[  743.186786]  drm_fb_release+0x105/0x190 [drm]
+[  743.186812]  ? rt_mutex_slowunlock+0x3aa/0x410
+[  743.186817]  ? rt_spin_lock+0xea/0x1b0
+[  743.186819]  drm_file_free+0x1e0/0x2c0 [drm]
+[  743.186843]  drm_release_noglobal+0x91/0xf0 [drm]
+[  743.186865]  __fput+0x100/0x2e0
+[  743.186869]  fput_close_sync+0x40/0xa0
+[  743.186870]  __x64_sys_close+0x3e/0x80
+[  743.186873]  x64_sys_call+0xa07/0xa30
+[  743.186879]  do_syscall_64+0xd8/0xab0
+[  743.186881]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[  743.186882] RIP: 0033:0x7ff37e567732
+[  743.186884] Code: 08 0f 85 a1 38 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 =
+ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3=
+> 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 55 bf 01 00
+[  743.186885] RSP: 002b:00007ffc818169a8 EFLAGS: 00000246 ORIG_RAX: 000000=
+0000000003
+[  743.186886] RAX: ffffffffffffffda RBX: 00007ffc81816a30 RCX: 00007ff37e5=
+67732
+[  743.186887] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000000=
+00012
+[  743.186888] RBP: 00007ffc818169d0 R08: 0000000000000000 R09: 00000000000=
+00000
+[  743.186889] R10: 0000000000000000 R11: 0000000000000246 R12: 000055d60a7=
+996e0
+[  743.186889] R13: 00007ffc81816a90 R14: 00007ffc81816a90 R15: 000055d60a7=
+82a30
+[  743.186892]  </TASK>
+[  743.186893] Modules linked in: rfcomm snd_hrtimer xt_CHECKSUM xt_MASQUER=
+ADE xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp xt_addrtype nft_compat=
+ x_tables nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 n=
+f_tables overlay cfg80211 bnep mtd_intel_dg snd_hda_codec_intelhdmi mtd snd=
+_hda_codec_hdmi nls_utf8 mxm_wmi intel_wmi_thunderbolt gigabyte_wmi wmi_bmo=
+f xe drm_gpuvm drm_gpusvm_helper i2c_algo_bit drm_buddy drm_ttm_helper ttm =
+video drm_suballoc_helper gpu_sched drm_client_lib drm_exec drm_display_hel=
+per cec drm_kunit_helpers drm_kms_helper kunit x86_pkg_temp_thermal intel_p=
+owerclamp coretemp snd_hda_codec_alc882 snd_hda_codec_realtek_lib snd_hda_c=
+odec_generic snd_hda_intel snd_soc_avs snd_soc_hda_codec snd_hda_ext_core s=
+nd_hda_codec snd_hwdep snd_hda_core snd_intel_dspcfg snd_soc_core snd_compr=
+ess ac97_bus snd_pcm snd_seq snd_seq_device snd_timer i2c_i801 i2c_mux snd =
+i2c_smbus btusb btrtl btbcm btmtk btintel bluetooth ecdh_generic rfkill ecc=
+ mei_me mei ioatdma dca wmi nfsd drm i2c_dev fuse nfnetlink
+[  743.186938] ---[ end trace 0000000000000000 ]---
+
+And for property blobs:
+
+void drm_mode_config_cleanup(struct drm_device *dev)
+{
+...
+	list_for_each_entry_safe(blob, bt, &dev->mode_config.property_blob_list,
+				 head_global) {
+		drm_property_blob_put(blob);
+	}
+
+Resulting in:
+
+[  371.072940] BUG: unable to handle page fault for address: 000001ffffffff=
+ff
+[  371.072944] #PF: supervisor read access in kernel mode
+[  371.072945] #PF: error_code(0x0000) - not-present page
+[  371.072947] PGD 0 P4D 0
+[  371.072950] Oops: Oops: 0000 [#1] SMP
+[  371.072953] CPU: 0 UID: 1000 PID: 3693 Comm: kwin_wayland Not tainted 7.=
+0.0-rc1-valkyria+ #111 PREEMPT_{RT,(lazy)}
+[  371.072956] Hardware name: Gigabyte Technology Co., Ltd. X299 AORUS Gami=
+ng 3/X299 AORUS Gaming 3-CF, BIOS F8n 12/06/2021
+[  371.072957] RIP: 0010:drm_property_destroy_user_blobs+0x3b/0x90 [drm]
+[  371.073019] Code: 00 00 48 83 ec 10 48 8b 86 30 01 00 00 48 39 c3 74 59 =
+48 89 c2 48 8d 48 c8 48 8b 00 4c 8d 60 c8 eb 04 4c 8d 60 c8 48 8b 71 40 <48=
+> 39 16 0f 85 39 32 01 00 48 3b 50 08 0f 85 2f 32 01 00 48 89 70
+[  371.073021] RSP: 0018:ffffc90006a73de8 EFLAGS: 00010293
+[  371.073022] RAX: 000001ffffffffff RBX: ffff888118a1a930 RCX: ffff8881b92=
+355c0
+[  371.073024] RDX: ffff8881b92355f8 RSI: 000001ffffffffff RDI: ffff888118b=
+e4000
+[  371.073025] RBP: ffffc90006a73e08 R08: ffff8881009b7300 R09: ffff888cecc=
+5b000
+[  371.073026] R10: ffffc90006a73e90 R11: 0000000000000002 R12: 000001fffff=
+fffc7
+[  371.073027] R13: ffff888118a1a980 R14: ffff88810b366d20 R15: ffff888118a=
+1a970
+[  371.073028] FS:  00007f1faccbb280(0000) GS:ffff888cec2db000(0000) knlGS:=
+0000000000000000
+[  371.073029] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  371.073030] CR2: 000001ffffffffff CR3: 000000010655c001 CR4: 00000000003=
+706f0
+[  371.073031] Call Trace:
+[  371.073033]  <TASK>
+[  371.073036]  drm_file_free+0x1df/0x2a0 [drm]
+[  371.073077]  drm_release_noglobal+0x7a/0xe0 [drm]
+[  371.073113]  __fput+0xe2/0x2b0
+[  371.073118]  fput_close_sync+0x40/0xa0
+[  371.073119]  __x64_sys_close+0x3e/0x80
+[  371.073122]  x64_sys_call+0xa07/0xa30
+[  371.073126]  do_syscall_64+0xc0/0x840
+[  371.073130]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[  371.073132] RIP: 0033:0x7f1fb3501732
+[  371.073133] Code: 08 0f 85 a1 38 ff ff 49 89 fb 48 89 f0 48 89 d7 48 89 =
+ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3=
+> 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa 55 bf 01 00
+[  371.073135] RSP: 002b:00007ffe8e6f0278 EFLAGS: 00000246 ORIG_RAX: 000000=
+0000000003
+[  371.073136] RAX: ffffffffffffffda RBX: 00007ffe8e6f0300 RCX: 00007f1fb35=
+01732
+[  371.073137] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00000000000=
+00012
+[  371.073138] RBP: 00007ffe8e6f02a0 R08: 0000000000000000 R09: 00000000000=
+00000
+[  371.073139] R10: 0000000000000000 R11: 0000000000000246 R12: 00005585ba4=
+6eea0
+[  371.073140] R13: 00007ffe8e6f0360 R14: 00007ffe8e6f0360 R15: 00005585ba4=
+58a30
+[  371.073143]  </TASK>
+[  371.073144] Modules linked in: rfcomm snd_hrtimer xt_addrtype xt_CHECKSU=
+M xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 xt_tcpudp nft_compat=
+ x_tables nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 n=
+f_tables overlay cfg80211 bnep snd_hda_codec_intelhdmi snd_hda_codec_hdmi m=
+td_intel_dg mtd nls_utf8 wmi_bmof mxm_wmi gigabyte_wmi intel_wmi_thunderbol=
+t xe drm_gpuvm drm_gpusvm_helper i2c_algo_bit drm_buddy drm_ttm_helper ttm =
+video drm_suballoc_helper gpu_sched drm_client_lib drm_exec drm_display_hel=
+per cec drm_kunit_helpers drm_kms_helper kunit x86_pkg_temp_thermal intel_p=
+owerclamp coretemp snd_hda_codec_alc882 snd_hda_codec_realtek_lib snd_hda_c=
+odec_generic snd_hda_intel snd_soc_avs snd_soc_hda_codec snd_hda_ext_core s=
+nd_hda_codec snd_hwdep snd_hda_core snd_intel_dspcfg snd_soc_core snd_compr=
+ess ac97_bus snd_pcm snd_seq snd_seq_device snd_timer i2c_i801 btusb i2c_mu=
+x i2c_smbus btrtl snd btbcm btmtk btintel bluetooth ecdh_generic rfkill ecc=
+ mei_me mei ioatdma dca wmi nfsd drm i2c_dev fuse nfnetlink
+[  371.073198] CR2: 000001ffffffffff
+[  371.073199] ---[ end trace 0000000000000000 ]---
+
+Add a guard around file close, and ensure the warnings from drm_mode_config
+do not trigger. Fix those by allowing an open reference to the file descrip=
+tor
+and cleaning up the file linked list entry in drm_mode_config_cleanup().
+
+Cc: <stable@vger.kernel.org> # v4.18+
+Fixes: bee330f3d672 ("drm: Use srcu to protect drm_device.unplugged")
+Cc: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+Reviewed-by: Thomas Hellstr=C3=B6m <thomas.hellstrom@linux.intel.com>
+Link: https://patch.msgid.link/20260313151728.14990-4-dev@lankhorst.se
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+[ adapted drm_dbg_printer(dev, DRM_UT_KMS, ...) call to older drm_debug_pri=
+nter(...) API ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/drm_file.c        | 5 ++++-
+ drivers/gpu/drm/drm_mode_config.c | 9 ++++++---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_file.c b/drivers/gpu/drm/drm_file.c
+index b943221b238f8..b5a5cede4d3d8 100644
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -243,6 +243,7 @@ static void drm_events_release(struct drm_file *file_pr=
+iv)
+ void drm_file_free(struct drm_file *file)
+ {
+ 	struct drm_device *dev;
++	int idx;
+=20
+ 	if (!file)
+ 		return;
+@@ -268,9 +269,11 @@ void drm_file_free(struct drm_file *file)
+=20
+ 	drm_events_release(file);
+=20
+-	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
++	if (drm_core_check_feature(dev, DRIVER_MODESET) &&
++	    drm_dev_enter(dev, &idx)) {
+ 		drm_fb_release(file);
+ 		drm_property_destroy_user_blobs(dev, file);
++		drm_dev_exit(idx);
+ 	}
+=20
+ 	if (drm_core_check_feature(dev, DRIVER_SYNCOBJ))
+diff --git a/drivers/gpu/drm/drm_mode_config.c b/drivers/gpu/drm/drm_mode_c=
+onfig.c
+index 87eb591fe9b5b..f09137046c2bd 100644
+--- a/drivers/gpu/drm/drm_mode_config.c
++++ b/drivers/gpu/drm/drm_mode_config.c
+@@ -546,10 +546,13 @@ void drm_mode_config_cleanup(struct drm_device *dev)
+ 	 */
+ 	WARN_ON(!list_empty(&dev->mode_config.fb_list));
+ 	list_for_each_entry_safe(fb, fbt, &dev->mode_config.fb_list, head) {
+-		struct drm_printer p =3D drm_debug_printer("[leaked fb]");
++		if (list_empty(&fb->filp_head) || drm_framebuffer_read_refcount(fb) > 1)=
+ {
++			struct drm_printer p =3D drm_debug_printer("[leaked fb]");
+=20
+-		drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
+-		drm_framebuffer_print_info(&p, 1, fb);
++			drm_printf(&p, "framebuffer[%u]:\n", fb->base.id);
++			drm_framebuffer_print_info(&p, 1, fb);
++		}
++		list_del_init(&fb->filp_head);
+ 		drm_framebuffer_free(&fb->base.refcount);
+ 	}
+=20
+--=20
+2.51.0
+
 
