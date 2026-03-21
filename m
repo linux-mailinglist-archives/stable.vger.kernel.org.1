@@ -1,27 +1,27 @@
-Return-Path: <stable+bounces-227690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IE0DA8M4vmlGJwMAu9opvQ
-	(envelope-from <stable+bounces-227690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:20:51 +0100
+	id mOrVJMU4vmlQJwMAu9opvQ
+	(envelope-from <stable+bounces-227692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:20:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF9372E39B4
-	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:20:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4153C2E39BB
+	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 07:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 127F4304D262
+	by sea.lore.kernel.org (Postfix) with ESMTP id 317F4304E0E6
 	for <lists+stable@lfdr.de>; Sat, 21 Mar 2026 06:19:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F178C370D59;
-	Sat, 21 Mar 2026 06:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9FB36827B;
+	Sat, 21 Mar 2026 06:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
 	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTEc9xC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B063336DA0C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76BD314D08
 	for <stable@vger.kernel.org>; Sat, 21 Mar 2026 06:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
@@ -32,8 +32,8 @@ ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
 	 Content-Type:Content-Disposition:In-Reply-To; b=HIJuq7IrBoReAMck8quyGEwz9xUxNOBStMXDH8Vqiv5OOpTMqIsCJYK2vvDT15TcwF73tYXwGKJm+k4VeDY9Iwee9lz0BAv56utFeE3BX8JSerdWZZlHrNBiji2TWbOlzVOkz1YQtRloFvBA4BYZhYHUxrvAMOsOBHx1ls24AyU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTEc9xC6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFFCC4AF09;
-	Sat, 21 Mar 2026 06:19:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34426C2BCB3;
+	Sat, 21 Mar 2026 06:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
 	s=korg; t=1774073953;
 	bh=X71ADP0/DusaTMDtog/eJbWmX8FOQ7pzH3Y1fE638is=;
@@ -70,7 +70,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227690-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227692-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -87,7 +87,7 @@ X-Spamd-Result: default: False [2.34 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: CF9372E39B4
+X-Rspamd-Queue-Id: 4153C2E39BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
