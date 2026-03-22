@@ -1,174 +1,129 @@
-Return-Path: <stable+bounces-227825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBEOOGnNv2nC8gMAu9opvQ
-	(envelope-from <stable+bounces-227825-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 12:07:21 +0100
+	id AIjdCH7qv2l0/wMAu9opvQ
+	(envelope-from <stable+bounces-227826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:11:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E162E8E41
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 12:07:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3FF2E959A
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:11:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 53B93300ECA2
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 11:07:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B8D58300DA72
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4B92C0298;
-	Sun, 22 Mar 2026 11:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5785B2EC553;
+	Sun, 22 Mar 2026 13:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fFVRr+bj"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="aoBPG9Q1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0505030499A
-	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 11:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774177639; cv=pass; b=OMdS9alfvJY9Qz8vsagSTfdFVEGExbycZCs7T6cYNFA855xNCeMFSGGvK07gGMie/QmwTSeUoxGMtXWLyzeIw1U95HdKRECXSwcmbAiDVbgdlPAypCokrwxsKNtP/hmCFCyd1RpqSK4UV4UHNtfYhfL7Kak5+vL11uofpyhvxjQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774177639; c=relaxed/simple;
-	bh=gvtTpkQne7LV/j8cKiXI+qrmKSSfF7shyrzLqW2IuWI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lCFXuOvFKNoXSujtJw5rIzDx0ix2rWklJ3k1OCmOV/qvtFlaht6uVreYKSP7NPMbrr53Rd28plakKycEd57kN/mGriVBLcLNUMMeH71jZCOjbvNq3AWQhakEmNLKU5ZOC+EvexVfY+MzCJUbqnpbXkw/lOr7iKJsrVdjappTdgc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fFVRr+bj; arc=pass smtp.client-ip=209.85.221.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43b44c0bcdbso3376651f8f.1
-        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 04:07:17 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774177636; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YJIte20/n343koLgWIbsFSYhYMsGDwnm8b9YI8V9KeBVSXJp0m7yyLDb4Edaj1dYOv
-         /KGKhA4QiY36VNAHeBXA28J3LGZCuHw4kwxg2eHP/kj8mj+kuqcNHOLF1n/bGDbQm1qJ
-         C33znYiMobtJlq+yA2EDIwZrdleMEpJsTd3UHLjRaCdnsGflPDxRMXeDMKYBtyhCYkn5
-         d90BD2KId4zJps98wOLsDSxgsSF2Bkti8e/dgqpj146qsEqS8UAKR2Qu4RDYgHoVOY4K
-         oSrZ+e40Wlmx6YIAJuhRUD/xu9WRhbrh7bA8CEGPWJIaidpOZr5n2BjwE6D/Q9p5KpUT
-         oqyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=gvtTpkQne7LV/j8cKiXI+qrmKSSfF7shyrzLqW2IuWI=;
-        fh=CNMN0U5KI0qqU8ljedSSTRfMWWL9TUumkQolBzekNuc=;
-        b=V2UANQ/nvSmsn1DMh1lb8TRpDH/RFPdxzwC01e5B4XliYgnSOYJKzGSsHTo759SR6c
-         QWhLBZbc/w9TRSifPPIZmjLJWxup7qfp5rYygnHUoOxhteX8F1QeqrZu1T+dZs+u4DI9
-         CGx7KjFkZ8xOdeHLiAkQ1VizMiMYpFNnJWbp/FLPGQbvKmtOznEbaiiP3IMxCodLGGzp
-         u5KbLxUwpZvTSFLS8/tRrbOz+9wQoPNHUAaIGc1BpYoBiHqeGdL92VeCFUyGhrluy0+u
-         3sYU5qjj2lsLS+yUFAxsGZwLZMly3U0P8+4sjML73W8VNC4/1QPkkqF8QXjjNo4Hm4jb
-         59fA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774177636; x=1774782436; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gvtTpkQne7LV/j8cKiXI+qrmKSSfF7shyrzLqW2IuWI=;
-        b=fFVRr+bjUjwjFv6Pee7sHlmI7jO6DLjc3xDpaU5X9zKKU5TRicFOkVLdC5MqMk3EeN
-         3nftd3NwDPV80eNNaQu7M7j+25A3HOnRLVqFxaAz3UDcWFvPj6ZW+4+8m3h1SsANEKhr
-         XIbDGJE2jZXrdD1mveoi8hQqYZcLjvlPlxSi602UXQxIy7uSe6WBTQGm6Uu7KzLziKRS
-         QijBy3qm2IFDKwoeGRoPoRHfM3V8a5jsPTay2YP6LpKqTmS+3ftYvrCAqmM8rzPvrhhh
-         2NkgA/WlY82ilN0N2FCJ741XWr60tCRacAG+MwiFxd04Us5OqfsIdNO0+P7ngwOUplqS
-         S22w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774177636; x=1774782436;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gvtTpkQne7LV/j8cKiXI+qrmKSSfF7shyrzLqW2IuWI=;
-        b=ZIzcS3u3XPBLRDorHaLb3EjEYiCQXrw25wGyhazl9MAwYXYbA5BnDULHh/GWkp1DnY
-         aOkYRC1JHZtgMagKpWOcBHDCGjR/hM/cegLMqQAkrP4ALZZ9k/KBXd6wzD2v8m+MklKp
-         ZALdBn99oGyaSJ4MqZtbQGV0Ocwqa6beXc87EQnkZn9LZK1qR8X6P5eSa02TviWswS2r
-         prPlIZICqAXyoYYPz8SknNw38rc5E8DeXVR3IUcQ3bnbe1TDJ/fE/fviqIv6DuhD8SxS
-         /RnNzSM27q0NfVMi+c2v9qv4Svlpu6WItEXlpn+97VhI9zKqPQaWLhfs+hhpV5X4fieE
-         KxPw==
-X-Forwarded-Encrypted: i=1; AJvYcCUkytD4VS/gWFHEQUK3Rzb3LyzpBdvrs5cF85npSDxSRGRYRyQBF3yQeKD2fgs3Jrtf8dVl0G8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0hl9PbvrfRmeTmXEQI3/TnBZfYO5X9zHWOWPExiDwfuwfPp/D
-	ySPkJHzgmke7rZJCa+84QJ0CmE6zz+6a9CV6dIkpjJ0kKiDfoFAU5pSQQWq2DPrgh1wNuoVgmeR
-	gtmq86Xazf9p7Ma5iKDnmAdHcz2gMYXACM/QiRpbn
-X-Gm-Gg: ATEYQzwfbaIE6BhmHtgoN+ulOsh6ReX0M2FCXT73bPiwT+1bdF8oecvfdw+UaTGqCCs
-	Bw+aGChn4yt8zebVYjNAs1JSJPHMutWYrh1Utas5MJPOx86B1MMdZs7aeR+Zk6vv5XnTAPo6oQ3
-	dWQhRPFOVfhCvUmQ2QbBTXFa0pv/L7V8yPcpZBe9sU7g/0P8T/tPtcbDFR7cvKxx9WGo5dyeUQa
-	NFCYxNNIoqy5OF5iZpf5ali45rjH/zdmuWvoxWDflbgFtE5CkfQEtbze3SFXpjS2Ii6AhUm+NEx
-	Ul1lE+kO4f9T0fSDP/EqIfze0v0koRToQk/48Oj1+wPh5hXA
-X-Received: by 2002:a05:6000:420a:b0:43b:498f:dcec with SMTP id
- ffacd0b85a97d-43b6423287dmr13588528f8f.3.1774177636049; Sun, 22 Mar 2026
- 04:07:16 -0700 (PDT)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1376C2E2665;
+	Sun, 22 Mar 2026 13:11:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774185080; cv=none; b=EFCY1KnKTpLHNf9qNnkCxsmry3JlnkQ9110E8L6H6NjwG6Hy5m7OqNSfwJ4fE3UxJU8paPRrnV22fHjvPEi6oKlxxF2vYdRKU/uL6yTevnGz87kLMuwdob8KnxrkyozVn1b2g4Nq5uuFTruTc0hdHTXynLgWbtXmzZ3Yzwtuqak=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774185080; c=relaxed/simple;
+	bh=L06mMv13leSJidJpgulaO5FBALi9cUTwx4gGFd0q7as=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ElZdKpakd9WxPYcfxlCXYojK/eWW8i0WWof9MFTWS8NiQvF7MemM8zTv3KW55m9KrQqGZBsGBEnL4c72rqG7it9CKgV04r6AdfeWtVkhsK0LxjQ0UEy7ovAkJIxygfLU7km5Z6CE9p1v7tYvO9HFYLAvbVWqXLkagv/cr0A8zJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=aoBPG9Q1; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
+	by linux.microsoft.com (Postfix) with ESMTPSA id CB8E220B710C;
+	Sun, 22 Mar 2026 06:11:07 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CB8E220B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1774185067;
+	bh=TnvIecdWPOnc/JdZh2X2csrYBPQtgwy00+VNBTpbbfU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=aoBPG9Q1b3b0vm51kmGXY5j0baDy/VH1glvCjgjObRIaN9Bgj3miWHd+RvrDbA+fO
+	 3l7Fyn+ECkMx8waAmtkUmRy+M4KqW2a2868ZCkN02iLSowXYFOEAHZ4Mvc/tvn9QhG
+	 qxSgwKawewNpqzbvkuQdNqFj+of7y4Pqa+I5/9CU=
+From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+To: ptsm@linux.microsoft.com,
+	shubhrajyoti.datta@amd.com,
+	bp@alien8.de,
+	tony.luck@intel.com,
+	linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH 1/5] EDAC/versalnet: Fix teardown ordering in mc_remove()
+Date: Sun, 22 Mar 2026 06:11:07 -0700
+Message-ID: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260321172749.592387-1-dakr@kernel.org>
-In-Reply-To: <20260321172749.592387-1-dakr@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sun, 22 Mar 2026 12:07:03 +0100
-X-Gm-Features: AQROBzBApyQfE-ScLGU2x2ibUvgga-dh4itt4h7qwXjWFehs-qG5x3_XOAmIH2U
-Message-ID: <CAH5fLghK2q4Du+74ctWftbDXrS4E4uPsuOrsOwxbs=HGm5CX6g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rust: dma: remove DMA_ATTR_NO_KERNEL_MAPPING from
- public attrs
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com, 
-	robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org, 
-	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	lossin@kernel.org, tmgross@umich.edu, driver-core@lists.linux.dev, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227825-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FREEMAIL_CC(0.00)[gmail.com,collabora.com,arm.com,kernel.org,garyguo.net,protonmail.com,umich.edu,lists.linux.dev,vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[google.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-227826-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
-X-Rspamd-Queue-Id: 73E162E8E41
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8E3FF2E959A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sat, Mar 21, 2026 at 6:27=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> When DMA_ATTR_NO_KERNEL_MAPPING is passed to dma_alloc_attrs(), the
-> returned CPU address is not a pointer to the allocated memory but an
-> opaque handle (e.g. struct page *).
->
-> Coherent<T> (or CoherentAllocation<T> respectively) stores this value as
-> NonNull<T> and exposes methods that dereference it and even modify its
-> contents.
->
-> Remove the flag from the public attrs module such that drivers cannot
-> pass it to Coherent<T> (or CoherentAllocation<T> respectively) in the
-> first place.
->
-> Instead DMA_ATTR_NO_KERNEL_MAPPING can be supported with an additional
-> opaque type (e.g. CoherentHandle) which does not provide access to the
-> allocated memory.
->
-> Cc: stable@vger.kernel.org
-> Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+The teardown sequence in mc_remove() does not mirror the reverse of the
+initialization order in mc_probe(). In particular,
+unregister_rpmsg_driver() is called before remove_versalnet(), and
+cdx_mcdi_finish() is called after rproc_shutdown().
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Reorder mc_remove() to reverse the probe initialization sequence,
+consistent with the probe error-unwind paths.
+
+Fixes: d5fe2fec6c40d ("EDAC: Add a driver for the AMD Versal NET DDR controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+---
+ drivers/edac/versalnet_edac.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/edac/versalnet_edac.c b/drivers/edac/versalnet_edac.c
+index 0b47ed7fed63..f70243bc8a7a 100644
+--- a/drivers/edac/versalnet_edac.c
++++ b/drivers/edac/versalnet_edac.c
+@@ -954,10 +954,10 @@ static void mc_remove(struct platform_device *pdev)
+ {
+ 	struct mc_priv *priv = platform_get_drvdata(pdev);
+ 
+-	unregister_rpmsg_driver(&amd_rpmsg_driver);
+ 	remove_versalnet(priv);
+-	rproc_shutdown(priv->mcdi->r5_rproc);
+ 	cdx_mcdi_finish(priv->mcdi);
++	unregister_rpmsg_driver(&amd_rpmsg_driver);
++	rproc_shutdown(priv->mcdi->r5_rproc);
+ }
+ 
+ static const struct of_device_id amd_edac_match[] = {
+-- 
+2.49.0
+
 
