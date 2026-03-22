@@ -1,182 +1,174 @@
-Return-Path: <stable+bounces-227824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Ok5BJf2zv2kb7wMAu9opvQ
-	(envelope-from <stable+bounces-227824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 10:18:53 +0100
+	id MBEOOGnNv2nC8gMAu9opvQ
+	(envelope-from <stable+bounces-227825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 12:07:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D38CB2E8B32
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 10:18:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E162E8E41
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 12:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6E9B5300F9CD
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 09:18:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 53B93300ECA2
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 11:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D3A2D77F7;
-	Sun, 22 Mar 2026 09:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4B92C0298;
+	Sun, 22 Mar 2026 11:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="cW4/ckiX";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="4WG+Ux8M"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fFVRr+bj"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4C11D7E41
-	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 09:18:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774171128; cv=none; b=aAWRG4gEJImcH7obXEb3m/OLGmDt4rXThA+HnVFqveHhUPJPF4p69O1GlccZSm70mA+GgCRKyxOfmAdwF5ApKugsMXuUEZiKqTW1m7CSPNGRsI77W6izpossfAQqRDlPnj4xoa8ADPpOwgu1gKEIgoo8L1S23VTgA7t4DMAPnPU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774171128; c=relaxed/simple;
-	bh=DoRJ6IZNknFJUlmqDY1ByglGu/uMlEGw73d/nYzf+pI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U5VoT/HSOXDAjJR10nyrMy2Fd8S8fLjHtBI1KMt3MvaV7tFJbDs5Wcy9vXUP5GgRM4aN069j3nyKfiRVeUWjEdY81eW51ma6oanL3iUF2oJOSpwQFg3fnsQKbQdIQrJpfX4yiPpP995QIizh4QCJOo6JBNGLkcXhOyNWWjBUm78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=cW4/ckiX; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=4WG+Ux8M; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 6FEBB140021B;
-	Sun, 22 Mar 2026 05:18:45 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Sun, 22 Mar 2026 05:18:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1774171125; x=1774257525; bh=YL7tMpEnwf
-	+TLfWo6RsWwqUaD/xfeKjDCvzRXvkkBt0=; b=cW4/ckiXH5yF7HSyY7GF9Rr/tk
-	PmWcsdt4L0XLRiSu11IDMa9zlK7MhkcbWnfx6NLS87ZW3ViwpUE7CrG1z36ETLk+
-	ak3OOil0/MJC815DiEnoemXuX72BYPoj/XTYXB9W9d8OyN8lRazdshNpCmd2t+2c
-	Ra17igmhj8/rl9Fj5jIRSLz9SfatgtSt7be341O8bNocKkVY0r7ibp+AI3CdDZM+
-	H7KnDT4N0TUSeCJo8+zLjV1XnU06GgsMRXeLiFaTpssGxK0TQWuw7J5gGXwrocec
-	RGAMqS7Y0yxsT2fFmY7hv4MnaFhDCvnJUxQTwk5fJVshWdFJ5rPfbl3A55bA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1774171125; x=1774257525; bh=YL7tMpEnwf+TLfWo6RsWwqUaD/xfeKjDCvz
-	RXvkkBt0=; b=4WG+Ux8M0QjVpSDnEvfLH74ihEC5pPss/08QJO0slrfmROh7goj
-	YObat0WLPdP96Medx9ExHbufLPvGnui5ZedTo5S1fViHgZAIjF8O0K2KMqMy8QUv
-	L1hXR/tR9Qr0ha6Nta5cYixph1MYYP1fNaO4DauTjWGbUWWiNTMnGHEcwPYTKbhG
-	KtW81sjI/WhLyt76+JxeNjJ8aqtwkc7Pc3aH5UPSqnqOyDvjBnrgoeiQiy+CR6U+
-	emALzKmdaIGEme+t27X/upoJ5R4NlolAUKBP1szIHjO2wiFXU5pvGiGVf8cZwU+Q
-	OT17GKYNjxcpESxs7jVUQKuaM7dO+pQyByQ==
-X-ME-Sender: <xms:9bO_aeMlnS8tFVLjz6HRRSHDF_dXX25vwKhrXacn3KBiY5Kavg_orA>
-    <xme:9bO_aawhVxaCRURum4N1q9OeAwaQMfQRQN4cXlYlppl6X4D2Ptv_zT1Qqr13EeLAI
-    IOUJfNC_Vw-vy0yV9_XistAkWcRgHv18i-_Dc5K-cKY2akzOw>
-X-ME-Received: <xmr:9bO_afsTK6sTQc3MS21k54HrQAMxF97Qc1BiV0UUllQTvmB2BBdUyQgORD79zGMj0ypcWsFsN_di0zAW>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdefudehgedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
-    dttddvnecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeen
-    ucggtffrrghtthgvrhhnpeegheeuhefgtdeluddtleekfeegjeetgeeikeehfeduieffvd
-    dufeefleevtddtvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgv
-    rhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrd
-    gtohhmpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthho
-    pehlghhsvddtudelvddtudeftddvgeegsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsh
-    htrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:9bO_ab5RRfnZoXw7bo60wKIHcGB3fP_gkZdKhrxlKjcOwMOXARH_ng>
-    <xmx:9bO_aWSVBxHS36CW7RPDEa17xg5jFwCFUk6ywcv77y9UFcsBchRHuA>
-    <xmx:9bO_aSpaz5taL5C8gIpx9P-hBd8KMbzBpEtcrBuAwBkZSA1ObAZYaA>
-    <xmx:9bO_acKyFdD-IuW3kqaoJlEMVHguy1JIVLwAm7VTz3pXwpApOfuJIQ>
-    <xmx:9bO_aRK-vowlpnN0lfysBHr3L_JlRbTbw6DOXPtstwrkqzv1bGr42TpZ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 22 Mar 2026 05:18:44 -0400 (EDT)
-Date: Sun, 22 Mar 2026 10:18:42 +0100
-From: Greg KH <greg@kroah.com>
-To: Guangshuo Li <lgs201920130244@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] maple: Fix refcount leak in maple_attach_driver() error
- path
-Message-ID: <2026032237-acid-cradle-6b86@gregkh>
-References: <20260322084405.868743-1-lgs201920130244@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0505030499A
+	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 11:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774177639; cv=pass; b=OMdS9alfvJY9Qz8vsagSTfdFVEGExbycZCs7T6cYNFA855xNCeMFSGGvK07gGMie/QmwTSeUoxGMtXWLyzeIw1U95HdKRECXSwcmbAiDVbgdlPAypCokrwxsKNtP/hmCFCyd1RpqSK4UV4UHNtfYhfL7Kak5+vL11uofpyhvxjQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774177639; c=relaxed/simple;
+	bh=gvtTpkQne7LV/j8cKiXI+qrmKSSfF7shyrzLqW2IuWI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lCFXuOvFKNoXSujtJw5rIzDx0ix2rWklJ3k1OCmOV/qvtFlaht6uVreYKSP7NPMbrr53Rd28plakKycEd57kN/mGriVBLcLNUMMeH71jZCOjbvNq3AWQhakEmNLKU5ZOC+EvexVfY+MzCJUbqnpbXkw/lOr7iKJsrVdjappTdgc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fFVRr+bj; arc=pass smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-43b44c0bcdbso3376651f8f.1
+        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 04:07:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774177636; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YJIte20/n343koLgWIbsFSYhYMsGDwnm8b9YI8V9KeBVSXJp0m7yyLDb4Edaj1dYOv
+         /KGKhA4QiY36VNAHeBXA28J3LGZCuHw4kwxg2eHP/kj8mj+kuqcNHOLF1n/bGDbQm1qJ
+         C33znYiMobtJlq+yA2EDIwZrdleMEpJsTd3UHLjRaCdnsGflPDxRMXeDMKYBtyhCYkn5
+         d90BD2KId4zJps98wOLsDSxgsSF2Bkti8e/dgqpj146qsEqS8UAKR2Qu4RDYgHoVOY4K
+         oSrZ+e40Wlmx6YIAJuhRUD/xu9WRhbrh7bA8CEGPWJIaidpOZr5n2BjwE6D/Q9p5KpUT
+         oqyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=gvtTpkQne7LV/j8cKiXI+qrmKSSfF7shyrzLqW2IuWI=;
+        fh=CNMN0U5KI0qqU8ljedSSTRfMWWL9TUumkQolBzekNuc=;
+        b=V2UANQ/nvSmsn1DMh1lb8TRpDH/RFPdxzwC01e5B4XliYgnSOYJKzGSsHTo759SR6c
+         QWhLBZbc/w9TRSifPPIZmjLJWxup7qfp5rYygnHUoOxhteX8F1QeqrZu1T+dZs+u4DI9
+         CGx7KjFkZ8xOdeHLiAkQ1VizMiMYpFNnJWbp/FLPGQbvKmtOznEbaiiP3IMxCodLGGzp
+         u5KbLxUwpZvTSFLS8/tRrbOz+9wQoPNHUAaIGc1BpYoBiHqeGdL92VeCFUyGhrluy0+u
+         3sYU5qjj2lsLS+yUFAxsGZwLZMly3U0P8+4sjML73W8VNC4/1QPkkqF8QXjjNo4Hm4jb
+         59fA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1774177636; x=1774782436; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gvtTpkQne7LV/j8cKiXI+qrmKSSfF7shyrzLqW2IuWI=;
+        b=fFVRr+bjUjwjFv6Pee7sHlmI7jO6DLjc3xDpaU5X9zKKU5TRicFOkVLdC5MqMk3EeN
+         3nftd3NwDPV80eNNaQu7M7j+25A3HOnRLVqFxaAz3UDcWFvPj6ZW+4+8m3h1SsANEKhr
+         XIbDGJE2jZXrdD1mveoi8hQqYZcLjvlPlxSi602UXQxIy7uSe6WBTQGm6Uu7KzLziKRS
+         QijBy3qm2IFDKwoeGRoPoRHfM3V8a5jsPTay2YP6LpKqTmS+3ftYvrCAqmM8rzPvrhhh
+         2NkgA/WlY82ilN0N2FCJ741XWr60tCRacAG+MwiFxd04Us5OqfsIdNO0+P7ngwOUplqS
+         S22w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774177636; x=1774782436;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=gvtTpkQne7LV/j8cKiXI+qrmKSSfF7shyrzLqW2IuWI=;
+        b=ZIzcS3u3XPBLRDorHaLb3EjEYiCQXrw25wGyhazl9MAwYXYbA5BnDULHh/GWkp1DnY
+         aOkYRC1JHZtgMagKpWOcBHDCGjR/hM/cegLMqQAkrP4ALZZ9k/KBXd6wzD2v8m+MklKp
+         ZALdBn99oGyaSJ4MqZtbQGV0Ocwqa6beXc87EQnkZn9LZK1qR8X6P5eSa02TviWswS2r
+         prPlIZICqAXyoYYPz8SknNw38rc5E8DeXVR3IUcQ3bnbe1TDJ/fE/fviqIv6DuhD8SxS
+         /RnNzSM27q0NfVMi+c2v9qv4Svlpu6WItEXlpn+97VhI9zKqPQaWLhfs+hhpV5X4fieE
+         KxPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUkytD4VS/gWFHEQUK3Rzb3LyzpBdvrs5cF85npSDxSRGRYRyQBF3yQeKD2fgs3Jrtf8dVl0G8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw0hl9PbvrfRmeTmXEQI3/TnBZfYO5X9zHWOWPExiDwfuwfPp/D
+	ySPkJHzgmke7rZJCa+84QJ0CmE6zz+6a9CV6dIkpjJ0kKiDfoFAU5pSQQWq2DPrgh1wNuoVgmeR
+	gtmq86Xazf9p7Ma5iKDnmAdHcz2gMYXACM/QiRpbn
+X-Gm-Gg: ATEYQzwfbaIE6BhmHtgoN+ulOsh6ReX0M2FCXT73bPiwT+1bdF8oecvfdw+UaTGqCCs
+	Bw+aGChn4yt8zebVYjNAs1JSJPHMutWYrh1Utas5MJPOx86B1MMdZs7aeR+Zk6vv5XnTAPo6oQ3
+	dWQhRPFOVfhCvUmQ2QbBTXFa0pv/L7V8yPcpZBe9sU7g/0P8T/tPtcbDFR7cvKxx9WGo5dyeUQa
+	NFCYxNNIoqy5OF5iZpf5ali45rjH/zdmuWvoxWDflbgFtE5CkfQEtbze3SFXpjS2Ii6AhUm+NEx
+	Ul1lE+kO4f9T0fSDP/EqIfze0v0koRToQk/48Oj1+wPh5hXA
+X-Received: by 2002:a05:6000:420a:b0:43b:498f:dcec with SMTP id
+ ffacd0b85a97d-43b6423287dmr13588528f8f.3.1774177636049; Sun, 22 Mar 2026
+ 04:07:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260322084405.868743-1-lgs201920130244@gmail.com>
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kroah.com,none];
-	R_DKIM_ALLOW(-0.20)[kroah.com:s=fm1,messagingengine.com:s=fm1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+References: <20260321172749.592387-1-dakr@kernel.org>
+In-Reply-To: <20260321172749.592387-1-dakr@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Sun, 22 Mar 2026 12:07:03 +0100
+X-Gm-Features: AQROBzBApyQfE-ScLGU2x2ibUvgga-dh4itt4h7qwXjWFehs-qG5x3_XOAmIH2U
+Message-ID: <CAH5fLghK2q4Du+74ctWftbDXrS4E4uPsuOrsOwxbs=HGm5CX6g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: dma: remove DMA_ATTR_NO_KERNEL_MAPPING from
+ public attrs
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: abdiel.janulgue@gmail.com, daniel.almeida@collabora.com, 
+	robin.murphy@arm.com, a.hindborg@kernel.org, ojeda@kernel.org, 
+	boqun@kernel.org, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	lossin@kernel.org, tmgross@umich.edu, driver-core@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227824-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227825-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[kroah.com:+,messagingengine.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[greg@kroah.com,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: D38CB2E8B32
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	FREEMAIL_CC(0.00)[gmail.com,collabora.com,arm.com,kernel.org,garyguo.net,protonmail.com,umich.edu,lists.linux.dev,vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aliceryhl@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[google.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 73E162E8E41
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 22, 2026 at 04:44:05PM +0800, Guangshuo Li wrote:
-> As device_register() calls device_initialize() before device_add(), the
-> failure path in maple_attach_driver() is reached after the embedded
-> struct device has already been initialized and its lifetime is expected
-> to be managed through the device core reference counting. However, that
-> path frees mdev and its associated resources directly via
-> maple_free_dev(), rather than releasing them through put_device() and
-> the normal release path. This may leave the reference count of the
-> embedded struct device unbalanced, resulting in a refcount leak and
-> potentially leading to a use-after-free.
-> 
-> A possible fix would be to use put_device() in the error path and let
-> maple_release_device() handle the final cleanup.
-> 
-> Fixes: b3c69e248176 ("maple: more robust device detection.")
+On Sat, Mar 21, 2026 at 6:27=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> When DMA_ATTR_NO_KERNEL_MAPPING is passed to dma_alloc_attrs(), the
+> returned CPU address is not a pointer to the allocated memory but an
+> opaque handle (e.g. struct page *).
+>
+> Coherent<T> (or CoherentAllocation<T> respectively) stores this value as
+> NonNull<T> and exposes methods that dereference it and even modify its
+> contents.
+>
+> Remove the flag from the public attrs module such that drivers cannot
+> pass it to Coherent<T> (or CoherentAllocation<T> respectively) in the
+> first place.
+>
+> Instead DMA_ATTR_NO_KERNEL_MAPPING can be supported with an additional
+> opaque type (e.g. CoherentHandle) which does not provide access to the
+> allocated memory.
+>
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-> ---
->  drivers/sh/maple/maple.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/sh/maple/maple.c b/drivers/sh/maple/maple.c
-> index 6dc0549f7900..20b7c2cd852b 100644
-> --- a/drivers/sh/maple/maple.c
-> +++ b/drivers/sh/maple/maple.c
-> @@ -393,7 +393,7 @@ static void maple_attach_driver(struct maple_device *mdev)
->  		dev_warn(&mdev->dev, "could not register device at"
->  			" (%d, %d), with error 0x%X\n", mdev->unit,
->  			mdev->port, error);
-> -		maple_free_dev(mdev);
-> +		put_device(&mdev->dev);
->  		mdev = NULL;
->  		return;
->  	}
-> -- 
-> 2.43.0
-> 
-> 
+> Fixes: ad2907b4e308 ("rust: add dma coherent allocator abstraction")
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
