@@ -1,148 +1,142 @@
-Return-Path: <stable+bounces-227831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227832-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCvfJ4nxv2moAwQAu9opvQ
-	(envelope-from <stable+bounces-227831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:41:29 +0100
+	id EHr5K7Pzv2l7BQQAu9opvQ
+	(envelope-from <stable+bounces-227832-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:50:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF072E97FD
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:41:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C13B2E9849
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E112F300D968
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:41:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE26A302207D
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B07B346E50;
-	Sun, 22 Mar 2026 13:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EC2E358373;
+	Sun, 22 Mar 2026 13:49:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b="RwgNt6HM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEC732D7FF;
-	Sun, 22 Mar 2026 13:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87EE358364;
+	Sun, 22 Mar 2026 13:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.210.214.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774186870; cv=none; b=uI6RuFQd/d0XU4YS+VNlJIdAjZzAlsSJNmMGnpAjGbNBS9UWoeSeEn+EWxaOQYS1PcwQ61MnnuqpgORYYmx+8xJMgEEDChY5BSxPZ13HkqSY7Ot/HbwhR6GtBNLVbLxtEE71mYHxmdySaxn78QERyCG0QY8GN2P31KGazCMxhec=
+	t=1774187387; cv=none; b=ZFiLQNFH8RevCTPW/vE2nI6lUL/s3RL2SP3GOarBIrkTDJQ0A22Zd6g8kycFv9+fvj/c9JcqfTRI7jtFhXCENPRHe8dWPZTkq70xmmcfZADgTYvihvy2ONkB4niIBP6/qxYYEe8FNg1naDvT57+Wx3eqk/4RXmgXRXm+BHKrLxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774186870; c=relaxed/simple;
-	bh=eCEkiN58Xyxy1hwGJsCam4Mju4eWxjo/7smrhQqR7BA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Sq1oi8oenxpb7KYz5z7pBxl1d0Wd9W2tuwBQql7uEVV3v6tvXX4GoLMkI1fEYMY8NZFcUbpFD7G9kctV6onA/xtr4dE31fZQTFzulEXyImGgnPsET+tnlL33M/9+NO7WMpg4IJ2EDGUg550svz8v+WON92Gb+v90LYSF/epoMFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3112FC19424;
-	Sun, 22 Mar 2026 13:41:06 +0000 (UTC)
-From: colyli@fnnas.com
-To: axboe@kernel.org
-Cc: linux-bcache@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	Mingzhe Zou <mingzhe.zou@easystack.cn>,
-	stable@vger.kernel.org,
-	Coly Li <colyli@fnnas.com>
-Subject: [PATCH v2] bcache: fix cached_dev.sb_bio use-after-free and crash
-Date: Sun, 22 Mar 2026 21:41:02 +0800
-Message-ID: <20260322134102.480107-1-colyli@fnnas.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1774187387; c=relaxed/simple;
+	bh=FVSkFX/IqiP5IlFX9L4xYVKjveHVRLXWHfeKXfoWQps=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QIWY1Wd7yBUezRLkhG9iQAcU565AijiVfch2JVNpfyECV1ah6NMks6Ksq4Z0UgJUwgKbT0geHzuiGro8Kce61bhVFLM+SanDMlYAIgRBXx/D+vL5I4y6rKRXvM49yDINxDqxiwKb4WmbGklJpcbpbLXxr+ktsuGnyR1jt2i4Igk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org; spf=pass smtp.mailfrom=codewreck.org; dkim=pass (2048-bit key) header.d=codewreck.org header.i=@codewreck.org header.b=RwgNt6HM; arc=none smtp.client-ip=62.210.214.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codewreck.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codewreck.org
+Received: from gaia.codewreck.org (localhost [127.0.0.1])
+	by submarine.notk.org (Postfix) with ESMTPS id 59CC214C2D6;
+	Sun, 22 Mar 2026 14:49:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
+	s=2; t=1774187384;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VMfKtiW8+Sifw4U7XzgrxZNwyJwOmTDkHgh5A/ifgf0=;
+	b=RwgNt6HMuaPOAHdcU8YhJGrVXhKsNcdq9hy1/Rp3HbQ1W1Y54BbVAkwxghcRxoZ6+bCRxq
+	+cohryg5leFymBaYVmxbA4hiun/IK3XCO8vhibIy+yDJC4MG9OzkCxa3iR4pUo4lJcpwBr
+	ONdP5BzAKHYMlnhvr0QgdR0yI1L4Ner3Iej5tEPfLKyo1z8r97N9Ponbav4NG+wzEbiJlJ
+	n54ZQ0qF9QWlIkL9pRtznspsRq7QxyuVjaHUHRf9liNFf2fs0oXQeh3SPzgbtMufaHe3IT
+	xEh9t0209qUIwZcj4SibOg2ElunERI+yUnayC9mNYqv9iZj5OrFGiDpOWcu3Cg==
+Received: from localhost (gaia.codewreck.org [local])
+	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 7eb25bd0;
+	Sun, 22 Mar 2026 13:49:39 +0000 (UTC)
+Date: Sun, 22 Mar 2026 22:49:24 +0900
+From: Dominique Martinet <asmadeus@codewreck.org>
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Hyungjung Joo <jhj140711@gmail.com>, v9fs@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 00/11] net/9p/usbg: series of fixes
+Message-ID: <ab_zZHWcM0UaIfPC@codewreck.org>
+References: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.04 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260319-9pfixes-v1-0-c977a7433185@pengutronix.de>
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[codewreck.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[codewreck.org:s=2];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227831-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[fnnas.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[codewreck.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,ionkov.net,crudebyte.com,linuxfoundation.org,gmail.com,lists.linux.dev,vger.kernel.org,pengutronix.de];
+	TAGGED_FROM(0.00)[bounces-227832-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[colyli@fnnas.com,stable@vger.kernel.org];
-	FROM_NO_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[asmadeus@codewreck.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	R_DKIM_NA(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,easystack.cn:email,fnnas.com:email,fnnas.com:mid]
-X-Rspamd-Queue-Id: EFF072E97FD
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,sashiko.dev:url]
+X-Rspamd-Queue-Id: 0C13B2E9849
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Michael Grzeschik wrote on Thu, Mar 19, 2026 at 10:35:57AM +0100:
+> This series contains a bunch of patches to make the trans_usbg
+> interface more reliable. It adds some extra checks on critical
+> pathes and also solves the overall synchronisation of the daemon
+> with the gadget. The forwarder script also gained the daemon mode to
+> be run and recover any kind of disconnection.
 
-In our production environment, we have received multiple crash reports
-regarding libceph, which have caught our attention:
+Thanks for the patches
 
-```
-[6888366.280350] Call Trace:
-[6888366.280452]  blk_update_request+0x14e/0x370
-[6888366.280561]  blk_mq_end_request+0x1a/0x130
-[6888366.280671]  rbd_img_handle_request+0x1a0/0x1b0 [rbd]
-[6888366.280792]  rbd_obj_handle_request+0x32/0x40 [rbd]
-[6888366.280903]  __complete_request+0x22/0x70 [libceph]
-[6888366.281032]  osd_dispatch+0x15e/0xb40 [libceph]
-[6888366.281164]  ? inet_recvmsg+0x5b/0xd0
-[6888366.281272]  ? ceph_tcp_recvmsg+0x6f/0xa0 [libceph]
-[6888366.281405]  ceph_con_process_message+0x79/0x140 [libceph]
-[6888366.281534]  ceph_con_v1_try_read+0x5d7/0xf30 [libceph]
-[6888366.281661]  ceph_con_workfn+0x329/0x680 [libceph]
-```
+I don't have much time to review right now, but I'll try to take a
+look... I still haven't gotten around to figure out how to make this
+work with qemu or taken the time to set it up on $work boards two years
+later so I'll have to trust you on actual tests, but it can't hurt to
+review.
 
-After analyzing the coredump file, we found that the address of
-dc->sb_bio has been freed. We know that cached_dev is only freed when it
-is stopped.
+While I'm buying time here, I'm not one to praise our new robot
+overlords but since it made the news I had a look and noticed
+sashiko.dev ran on the patches:
+https://sashiko.dev/#/patchset/20260319-9pfixes-v1-0-c977a7433185%40pengutronix.de
 
-Since sb_bio is a part of struct cached_dev, rather than an alloc every
-time.  If the device is stopped while writing to the superblock, the
-released address will be accessed at endio.
+From a quick look of the above there are a lot of questions raised and I
+don't think it's necessarily worth the time to answer all of them, but
+if you have time to skim through them and pick up anything interesting
+please say so
+(as far as I'm concerned the usb setup is intended for a mostly trusted
+setup in the first place... But then again this patch series started
+with a security concern, so where do we start considering races could be
+an issue?)
 
-This patch hopes to wait for sb_write to complete in cached_dev_free.
 
-It should be noted that we analyzed the cause of the problem, then tell
-all details to the QWEN and adopted the modifications it made.
-
-Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-Fixes: cafe563591446 ("bcache: A block layer cache")
-Cc: stable@vger.kernel.org # 3.10+
-Signed-off-by: Coly Li <colyli@fnnas.com>
----
-Change log,
-v2, fix emiail address type to stable kerenl.
-v1, initial version.
-
- drivers/md/bcache/super.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
-index 64bb38c95895..6627a381f65a 100644
---- a/drivers/md/bcache/super.c
-+++ b/drivers/md/bcache/super.c
-@@ -1373,6 +1373,13 @@ static CLOSURE_CALLBACK(cached_dev_free)
- 
- 	mutex_unlock(&bch_register_lock);
- 
-+	/*
-+	 * Wait for any pending sb_write to complete before free.
-+	 * The sb_bio is embedded in struct cached_dev, so we must
-+	 * ensure no I/O is in progress.
-+	 */
-+	closure_sync(&dc->sb_write);
-+
- 	if (dc->sb_disk)
- 		folio_put(virt_to_folio(dc->sb_disk));
- 
+Thanks,
 -- 
-2.47.3
-
+Dominique Martinet | Asmadeus
 
