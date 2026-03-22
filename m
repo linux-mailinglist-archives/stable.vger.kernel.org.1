@@ -1,134 +1,115 @@
-Return-Path: <stable+bounces-227843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eB4BNqEVwGnMDQQAu9opvQ
-	(envelope-from <stable+bounces-227843-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 17:15:29 +0100
+	id yPIHOOAWwGmJDgQAu9opvQ
+	(envelope-from <stable+bounces-227844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 17:20:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463042E9F57
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 17:15:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260D82E9FB3
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 17:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3C66300B98E
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 16:15:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8172300B12E
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 16:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28261A682A;
-	Sun, 22 Mar 2026 16:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D05DA363C61;
+	Sun, 22 Mar 2026 16:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="RR7w2fnT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="x4Beti0b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D589F1E49F;
-	Sun, 22 Mar 2026 16:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902BB363098
+	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 16:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774196122; cv=none; b=WiZKHmJueL3VAldM1GEvYkvphPiMGhieYTeW7sCAD/NSkyCEZdJ/0YxBXmsoBAgaHp4YYLN8WQmOG+H1SDkDaTcnUAoKI8gvRgsrpbLo6DpVJoszuGk3fRFazWEmVjYcHEW1STHn94P/WGThDsvC9VvvcDlbxgwaTH19UvUuEvY=
+	t=1774196444; cv=none; b=gZX4gy/vJr37U1FSE9nt8eWBO71oGGLcFt5d3vy5H5LpD7D/wVkaSj7OsecYTVCViTOxGJDZuY5g0kgoS3H7VKiRm6hdLF/a/S5gK8uhMqvBKNLAHxPtq7TUBwvVIZVf82zVMLmaRK7eQ65XpAFZeD4QDsqZchCelXBDKHKmkhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774196122; c=relaxed/simple;
-	bh=V/vWTaJCpXakGe39KWaGEGCkk+F95Fqxb5spvgx3Tdg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fdGXOnDiR38d63jeM36I5CCbo5IQTT66lnLTs3K1TBZKzXnfH30ems1PZvi6+bkoOM06i5My0jJk1z2A3AsJqh1Kg5i4x1su5oyxw1XXAktfscLZt58WORdH3QJavcoFqqOHz9gJkcr9iTiZWYVAALDW26+hqmO+BznTd3LsvDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=RR7w2fnT; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id D934940E0163;
-	Sun, 22 Mar 2026 16:15:16 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id f8o9yzRBOPU1; Sun, 22 Mar 2026 16:15:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774196113; bh=E0xC9iuncRCEDg2/ntU6JAxl0SLVJB0pCmZt/v2cnQQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RR7w2fnTS55PPTT0ZuU1qXxVzJd+bEeAqKXmSi+tYxlrj5Pd4elnhaExXzWrAgzSc
-	 8LXYJ1DZ3WkuCAZNhdtDIN7nqErZheMqpPwkS/L8suiEQYDWwMUt/6rHTQyCJ9oYFx
-	 YTjQ84otw+Gqy8RQDS+RVUzYYtFsz4Ubc46DOvBM4RgI6wZJDteGn46s7EhGPsL1Xr
-	 P+fA4/ft3/AEiCZLRl0gPhFshCK+2Fkh/F/4n3wBK2Bo3rbPZynQFB6GJOJaLYQcG5
-	 gVlWhsMeuqWSxhgO8wrCNC2IOB4gpBz1Zdjn4+8OKOZjLzZ34Pdo8CFnUawJT9V69q
-	 7ouaRu3QAc5rruB4rN5Jnx2lbl6MfcuGMH03OZf/+jI4PGasUpkX8dfospTHysrmPQ
-	 2fjaBpqkn87oXX8+VeQLLeFGT9NPSArVCmcD6amVGo4ZfNh5cOnzAkZ+2u44p5CdJg
-	 bPdCHa2zz20sKADbS6HNQLwQAp6YXg3nkf7kG4d3KHEVMWsVqQ0BAVA1hzThOtsa0X
-	 6U0Ggkps0R0fyrvoHMEW5jYgKEZwS/bzT0LIOjRPRwGs+Hw4lih8dIMYUYD5b7wgte
-	 2ObbwKJjadn2OBpvyHiOY7+HQKo2aRKKp0Dc2C1rNkKXkMmuhfKXgf+aLLJ5X68w9F
-	 HJGpPP6ndiiyRFccjlxL4oXc=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 0F08A40E0031;
-	Sun, 22 Mar 2026 16:15:07 +0000 (UTC)
-Date: Sun, 22 Mar 2026 17:15:06 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-Cc: shubhrajyoti.datta@amd.com, tony.luck@intel.com,
-	linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 5/5] EDAC/versalnet: Fix device name memory leak
-Message-ID: <20260322161506.GBacAViv5G6Ul-0WUX@fat_crate.local>
-References: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
- <20260322131149.1684771-1-ptsm@linux.microsoft.com>
+	s=arc-20240116; t=1774196444; c=relaxed/simple;
+	bh=dU2o8wRx1HOs7mgfEPnSerwmS4CS6CKsYEE58CKSmrM=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=OJfNNSZYbpHMRGvUYLjWl+42YQO3jafzBscdQGL6rB23a/njOFcAsR35xKmN6OsmsVsWycCGLP6dtOdKU4CGrw5Vq6LTZQvxNha9eylmZ3yp4g66592tyQaIg3MT5/k7I/59klBSZvRHfzKOjIj0PwA1Lgf9TJ05AuxP5xvWriQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=x4Beti0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42C1C19424;
+	Sun, 22 Mar 2026 16:20:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774196444;
+	bh=dU2o8wRx1HOs7mgfEPnSerwmS4CS6CKsYEE58CKSmrM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=x4Beti0bAIFXJZCsIQLIajgVFAzEa0qdtKEWq9THzOedt0ZqKENKQ5iMKA3gbvAEm
+	 RJZA3LZIGvQz2IJTEJIH0cWxdzCRELUFVSKoW0dQbQO0FeEODCuGQ5yWRN6RruagQi
+	 RshVPIalu5SMQMFk/KlrdoeSCAEzf7Olx3lWiqEk=
+Date: Sun, 22 Mar 2026 09:20:43 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, linux-mm@kvack.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
+ mem_cgroup_css_online() error path
+Message-Id: <20260322092043.2c411821c2b883ba86c7cbd9@linux-foundation.org>
+In-Reply-To: <20260322080142.5834-1-devnexen@gmail.com>
+References: <20260322080142.5834-1-devnexen@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260322131149.1684771-1-ptsm@linux.microsoft.com>
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
-	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227843-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-227844-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[alien8.de:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 463042E9F57
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:mid]
+X-Rspamd-Queue-Id: 260D82E9FB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 22, 2026 at 06:11:49AM -0700, Prasanna Kumar T S M wrote:
-> The device name allocated via kzalloc() in init_one_mc() is assigned to
-> dev->init_name but never freed on the normal removal path.
-> device_register() copies init_name and then sets dev->init_name to NULL,
-> so the name pointer becomes unreachable from the device. Thus leaking
-> memory.
+On Sun, 22 Mar 2026 08:01:42 +0000 David Carlier <devnexen@gmail.com> wrote:
+
+> When obj_cgroup_alloc() fails partway through the NUMA node loop in
+> mem_cgroup_css_online(), the free_objcg error path drops the extra
+> reference held by pn->orig_objcg but never kills the initial percpu_ref
+> from obj_cgroup_alloc() stored in pn->objcg.
 > 
-> Track the name pointer in mc_priv and free it in remove_one_mc().
+> Since css_offline is never called when css_online fails,
+> memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
+> normally drops this initial reference never executes. The obj_cgroup and
+> its per-cpu ref allocations are leaked.
+> 
+> Add the missing percpu_ref_kill() in the error path, matching the normal
+> teardown sequence in memcg_reparent_objcgs().
+> 
 
-No, get rid of the name allocation and allocate a char name[MC_NAME_LEN] on the
-stack in init_one_mc() which you pass into device_register(), it copies it and
-we forget about it.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Thanks.  Some questions from the AI reviewbot:
+	https://sashiko.dev/#/patchset/20260322080142.5834-1-devnexen@gmail.com
 
