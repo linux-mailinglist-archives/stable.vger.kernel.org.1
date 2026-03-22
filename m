@@ -1,247 +1,158 @@
-Return-Path: <stable+bounces-227802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCMdEN05v2nxzQMAu9opvQ
-	(envelope-from <stable+bounces-227802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 01:37:49 +0100
+	id D9nNGgtBv2md0QMAu9opvQ
+	(envelope-from <stable+bounces-227803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 02:08:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99FD32E7C13
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 01:37:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B71B02E7D73
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 02:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F936301A905
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 00:37:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 498E130086F7
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 01:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2422364E9E;
-	Sun, 22 Mar 2026 00:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B38C372681;
+	Sun, 22 Mar 2026 01:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="auDUJkjt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fzfsEGEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C70E364E8D;
-	Sun, 22 Mar 2026 00:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F5D0364EA4
+	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 01:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774139856; cv=none; b=rtLWdB/a9bKHY8ndkgKwna/xvtvt4Z6/AfJzjiWIOdZE0jNeCXD2shFdODeuj2FiDbuluoNfUmN1zQHaTCOGV6x+D2bnOEmyS3z8DkbZRhk6CnhkB9sX5VnHMP/cK7mR5IS5t9ABRdW7KLqYzlpbnW0n38agg9eApWTY8aidiSc=
+	t=1774141702; cv=none; b=tfnfsgk+W5UMUcBHGWobgDGbtRLiemFqQd5ZaEvYPTtbug1ullHhtTzsUOKhd2faG5U/BrNb/3SKriX9kMkYmA45CgqXQM2YBtnxcN6zQSI5DByzUW6QB44WAx2GfyPsjp9ZvarmEBYYh34TDvwen3SPabJAMGlCr0a8bOCQ0VM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774139856; c=relaxed/simple;
-	bh=6CLhz8D4dlxPVJk/yJR3f6hq4yU+SqS3nGfE0GSiRsE=;
-	h=Date:To:From:Subject:Message-Id; b=NU3XdZ5ei5xEp5tlv0ONKEaPeYoETFKze6WXRUAcelCTmkIbSliaT64os072KDRslrQZ2l5lO+cFenWYMlQz9dZehUtoX3nDTuWZwxwmJLk1XYCh19KwisDl1lQPOzsyfYrhDFXZJh0mAQ/7S/d3OOJOSJ752vjPJ7vZZyNllGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=auDUJkjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BFCC19421;
-	Sun, 22 Mar 2026 00:37:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1774139856;
-	bh=6CLhz8D4dlxPVJk/yJR3f6hq4yU+SqS3nGfE0GSiRsE=;
-	h=Date:To:From:Subject:From;
-	b=auDUJkjt9yuUKlxqKf0tAOXup2dn+tSQgPhRwC1VM/cMLlURoGSHDE5cia5pfkmZ1
-	 Ai04YzjE/hpGyrJBcdiJng7bSShRUqnCoCe42agflWfoOay4f1Sxit5eMOVpoJa2MJ
-	 GXQDyMs14LpJwyc5hje9VtWyHc9kFv/L7mXNxpWQ=
-Date: Sat, 21 Mar 2026 17:37:35 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sj@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-damon-stat-monitor-all-system-ram-resources.patch removed from -mm tree
-Message-Id: <20260322003736.46BFCC19421@smtp.kernel.org>
+	s=arc-20240116; t=1774141702; c=relaxed/simple;
+	bh=quWxLoKr/9bNEohB0JgorfKpK0OyKcmrydVwaLOBD5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uDXqvUcysR8cEUfuW8THEbBPHLeRiTF2x7l4xUsvRAKSJd408WtgE6zPTj3HitmlbiDB5QFaACzSiOZLPLSYraEZ7bB8UBBI4uZsxJUJ3KzMxg4yacYX5dhmuU0I/Xlqbs7oFja6QvGpoj8jY45sZOTqkFOotUwzkC9ddvTFcb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fzfsEGEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326E8C19421;
+	Sun, 22 Mar 2026 01:08:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774141701;
+	bh=quWxLoKr/9bNEohB0JgorfKpK0OyKcmrydVwaLOBD5g=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=fzfsEGErgcJ5EpkChdYrwtuhiSp4d4PXz05+Qg2057GAkKT4RvB6lOyKAM+F3u8pb
+	 ToPATDV634ZbyVu/FY7g3bi5SsRSikL4uofrah7o82t4SK5ed3op9BY/XtL1iLYNGF
+	 HE7yqIhmu595PnpyDnUvi3IGRKRLXqb/VKyBAlmeM0kbYkng5sPWGmku/l/YAxzvXH
+	 pJkh6rBaH26ONB0X+H1G2O5DEIaViXs1VxMPstB3etmUtwvDbqLd1MZmhKteiVaAHQ
+	 GUbSVYoBvlTlnmb2cVSKfkUTq9YIuVvCqBl6OtWcbgS2UiUY93mAPLo9rWYXNlr48j
+	 BxGbUUYWJDssA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] Bluetooth: L2CAP: Fix accepting multiple L2CAP_ECRED_CONN_REQ
+Date: Sat, 21 Mar 2026 21:08:19 -0400
+Message-ID: <20260322010819.636183-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026032112-bakery-province-fb96@gregkh>
+References: <2026032112-bakery-province-fb96@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-X-Spamd-Result: default: False [-1.16 / 15.00];
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227802-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[linux-foundation.org];
-	DKIM_TRACE(0.00)[linux-foundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_NONE(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FREEMAIL_CC(0.00)[intel.com,gmail.com,kernel.org];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,smtp.kernel.org:mid,linux-foundation.org:dkim,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 99FD32E7C13
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227803-lists,stable=lfdr.de];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
+	HAS_WP_URI(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: B71B02E7D73
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-The quilt patch titled
-     Subject: mm/damon/stat: monitor all System RAM resources
-has been removed from the -mm tree.  Its filename was
-     mm-damon-stat-monitor-all-system-ram-resources.patch
+[ Upstream commit 5b3e2052334f2ff6d5200e952f4aa66994d09899 ]
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Currently the code attempts to accept requests regardless of the
+command identifier which may cause multiple requests to be marked
+as pending (FLAG_DEFER_SETUP) which can cause more than
+L2CAP_ECRED_MAX_CID(5) to be allocated in l2cap_ecred_rsp_defer
+causing an overflow.
 
-------------------------------------------------------
-From: SeongJae Park <sj@kernel.org>
-Subject: mm/damon/stat: monitor all System RAM resources
-Date: Mon, 16 Mar 2026 16:51:17 -0700
+The spec is quite clear that the same identifier shall not be used on
+subsequent requests:
 
-DAMON_STAT usage document (Documentation/admin-guide/mm/damon/stat.rst)
-says it monitors the system's entire physical memory.  But, it is
-monitoring only the biggest System RAM resource of the system.  When there
-are multiple System RAM resources, this results in monitoring only an
-unexpectedly small fraction of the physical memory.  For example, suppose
-the system has a 500 GiB System RAM, 10 MiB non-System RAM, and 500 GiB
-System RAM resources in order on the physical address space.  DAMON_STAT
-will monitor only the first 500 GiB System RAM.  This situation is
-particularly common on NUMA systems.
+'Within each signaling channel a different Identifier shall be used
+for each successive request or indication.'
+https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-62/out/en/host/logical-link-control-and-adaptation-protocol-specification.html#UUID-32a25a06-4aa4-c6c7-77c5-dcfe3682355d
 
-Select a physical address range that covers all System RAM areas of the
-system, to fix this issue and make it work as documented.
+So this attempts to check if there are any channels pending with the
+same identifier and rejects if any are found.
 
-[sj@kernel.org: return error if monitoring target region is invalid]
-  Link: https://lkml.kernel.org/r/20260317053631.87907-1-sj@kernel.org
-Link: https://lkml.kernel.org/r/20260316235118.873-1-sj@kernel.org
-Fixes: 369c415e6073 ("mm/damon: introduce DAMON_STAT module")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: <stable@vger.kernel.org>	[6.17+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ adapted variable names ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
+ net/bluetooth/l2cap_core.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
- mm/damon/stat.c |   53 +++++++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 50 insertions(+), 3 deletions(-)
-
---- a/mm/damon/stat.c~mm-damon-stat-monitor-all-system-ram-resources
-+++ a/mm/damon/stat.c
-@@ -145,12 +145,59 @@ static int damon_stat_damon_call_fn(void
- 	return 0;
- }
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 7cb438c4ed0d0..c85357f4e4de3 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6060,7 +6060,7 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
+ 	u16 mtu, mps;
+ 	__le16 psm;
+ 	u8 result, len = 0;
+-	int i, num_scid;
++	int i, num_scid = 0;
+ 	bool defer = false;
  
-+struct damon_stat_system_ram_range_walk_arg {
-+	bool walked;
-+	struct resource res;
-+};
-+
-+static int damon_stat_system_ram_walk_fn(struct resource *res, void *arg)
-+{
-+	struct damon_stat_system_ram_range_walk_arg *a = arg;
-+
-+	if (!a->walked) {
-+		a->walked = true;
-+		a->res.start = res->start;
+ 	if (!enable_ecred)
+@@ -6071,6 +6071,14 @@ static inline int l2cap_ecred_conn_req(struct l2cap_conn *conn,
+ 		goto response;
+ 	}
+ 
++	/* Check if there are no pending channels with the same ident */
++	__l2cap_chan_list_id(conn, cmd->ident, l2cap_ecred_list_defer,
++			     &num_scid);
++	if (num_scid) {
++		result = L2CAP_CR_LE_INVALID_PARAMS;
++		goto response;
 +	}
-+	a->res.end = res->end;
-+	return 0;
-+}
 +
-+static unsigned long damon_stat_res_to_core_addr(resource_size_t ra,
-+		unsigned long addr_unit)
-+{
-+	/*
-+	 * Use div_u64() for avoiding linking errors related with __udivdi3,
-+	 * __aeabi_uldivmod, or similar problems.  This should also improve the
-+	 * performance optimization (read div_u64() comment for the detail).
-+	 */
-+	if (sizeof(ra) == 8 && sizeof(addr_unit) == 4)
-+		return div_u64(ra, addr_unit);
-+	return ra / addr_unit;
-+}
-+
-+static int damon_stat_set_monitoring_region(struct damon_target *t,
-+		unsigned long addr_unit, unsigned long min_region_sz)
-+{
-+	struct damon_addr_range addr_range;
-+	struct damon_stat_system_ram_range_walk_arg arg = {};
-+
-+	walk_system_ram_res(0, -1, &arg, damon_stat_system_ram_walk_fn);
-+	if (!arg.walked)
-+		return -EINVAL;
-+	addr_range.start = damon_stat_res_to_core_addr(
-+			arg.res.start, addr_unit);
-+	addr_range.end = damon_stat_res_to_core_addr(
-+			arg.res.end + 1, addr_unit);
-+	if (addr_range.end <= addr_range.start)
-+		return -EINVAL;
-+	return damon_set_regions(t, &addr_range, 1, min_region_sz);
-+}
-+
- static struct damon_ctx *damon_stat_build_ctx(void)
- {
- 	struct damon_ctx *ctx;
- 	struct damon_attrs attrs;
- 	struct damon_target *target;
--	unsigned long start = 0, end = 0;
+ 	cmd_len -= sizeof(*req);
+ 	num_scid = cmd_len / sizeof(u16);
  
- 	ctx = damon_new_ctx();
- 	if (!ctx)
-@@ -180,8 +227,8 @@ static struct damon_ctx *damon_stat_buil
- 	if (!target)
- 		goto free_out;
- 	damon_add_target(ctx, target);
--	if (damon_set_region_biggest_system_ram_default(target, &start, &end,
--							ctx->min_region_sz))
-+	if (damon_stat_set_monitoring_region(target, ctx->addr_unit,
-+				ctx->min_region_sz))
- 		goto free_out;
- 	return ctx;
- free_out:
-_
-
-Patches currently in -mm which might be from sj@kernel.org are
-
-mm-damon-core-set-quota-score-histogram-with-core-filters.patch
-mm-damon-core-do-non-safe-region-walk-on-kdamond_apply_schemes.patch
-mm-damon-core-split-regions-for-min_nr_regions.patch
-mm-damon-vaddr-do-not-split-regions-for-min_nr_regions.patch
-mm-damon-test-core-kunit-add-damon_apply_min_nr_regions-test.patch
-mm-damon-add-config_damon_debug_sanity.patch
-mm-damon-core-add-damon_new_region-debug_sanity-check.patch
-mm-damon-core-add-damon_del_region-debug_sanity-check.patch
-mm-damon-core-add-damon_nr_regions-debug_sanity-check.patch
-mm-damon-core-add-damon_merge_two_regions-debug_sanity-check.patch
-mm-damon-core-add-damon_merge_regions_of-debug_sanity-check.patch
-mm-damon-core-add-damon_split_region_at-debug_sanity-check.patch
-mm-damon-core-add-damon_reset_aggregated-debug_sanity-check.patch
-mm-damon-tests-kunitconifg-enable-damon_debug_sanity.patch
-selftests-damon-config-enable-damon_debug_sanity.patch
-mm-damon-tests-core-kunit-add-a-test-for-damon_commit_ctx.patch
-docs-mm-damon-design-document-the-power-of-two-limitation-for-addr_unit.patch
-mm-damon-core-remove-damos_set_next_apply_sis-duplicates.patch
-mm-damon-core-use-time_before-for-next_apply_sis.patch
-mm-damon-core-use-time_after_eq-in-kdamond_fn.patch
-mm-damon-core-use-mult_frac.patch
-mm-damon-tests-core-kunit-add-a-test-for-damon_is_last_region.patch
-mm-damon-core-clarify-damon_set_attrs-usages.patch
-mm-damon-document-non-zero-length-damon_region-assumption.patch
-docs-admin-guide-mm-damn-lru_sort-fix-intervals-autotune-parameter-name.patch
-docs-mm-damon-maintainer-profile-use-flexible-review-cadence.patch
-docs-mm-damon-index-fix-typo-autoamted-automated.patch
-mm-damon-core-introduce-damos_quota_goal_tuner.patch
-mm-damon-core-allow-quota-goals-set-zero-effective-size-quota.patch
-mm-damon-core-introduce-damos_quota_goal_tuner_temporal.patch
-mm-damon-sysfs-schemes-implement-quotas-goal_tuner-file.patch
-docs-mm-damon-design-document-the-goal-based-quota-tuner-selections.patch
-docs-admin-guide-mm-damon-usage-document-goal_tuner-sysfs-file.patch
-docs-abi-damon-update-for-goal_tuner.patch
-mm-damon-tests-core-kunit-test-goal_tuner-commit.patch
-selftests-damon-_damon_sysfs-support-goal_tuner-setup.patch
-selftests-damon-drgn_dump_damon_status-support-quota-goal_tuner-dumping.patch
-selftests-damon-sysfspy-test-goal_tuner-commit.patch
-mm-damon-core-fix-wrong-end-address-assignment-on-walk_system_ram.patch
-mm-damon-core-support-addr_unit-on-damon_find_biggest_system_ram.patch
-mm-damon-core-support-addr_unit-on-damon_find_biggest_system_ram-fix.patch
-mm-damon-core-receive-addr_unit-on-damon_set_region_biggest_system_ram_default.patch
-mm-damon-core-receive-addr_unit-on-damon_set_region_biggest_system_ram_default-fix.patch
-mm-damon-reclaim-respect-addr_unit-on-default-monitoring-region-setup.patch
-mm-damon-lru_sort-respect-addr_unit-on-default-monitoring-region-setup.patch
+-- 
+2.51.0
 
 
