@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-227829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227830-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJiZLtzqv2my/wMAu9opvQ
-	(envelope-from <stable+bounces-227829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:13:00 +0100
+	id kLx7Mv/qv2my/wMAu9opvQ
+	(envelope-from <stable+bounces-227830-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:13:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C1EE2E95EC
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:13:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D5652E95FC
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:13:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 621BD301F4B1
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:11:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D99D030269ED
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E16A82E2665;
-	Sun, 22 Mar 2026 13:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9659F2F12CE;
+	Sun, 22 Mar 2026 13:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="UYVkt68M"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="R65anVT5"
 X-Original-To: stable@vger.kernel.org
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1582ECE9B;
-	Sun, 22 Mar 2026 13:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519222EAB72;
+	Sun, 22 Mar 2026 13:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774185106; cv=none; b=S5T2FUEY2sZyA1wyNL0Z2FdvK5xNj06En19PTQiXKc2Prx+w5LH/b9de0c5SsrRnMZ0ftwSpFVekvPFeQgLhMy2dCwk0NQah3dx7s57tc+nbCQsWlkgrNLjVMMsmv45YpmABFJSOkccvkQU7MQazbncoJX3RI/JrSkBFkiJ4vM8=
+	t=1774185111; cv=none; b=oSD1v7PkLOHKmLN5BA0bn7df1wmUhwZARb3zv2QNJtBGAFEqi+dQdX2wmNE4z9wzaWItenBf8t5JQjeLY7hei0hR9kTlLN57rZ3nnBV2LqbmYBXB8JSdrYLJmoWFvUTIBmt+bdYq6DeOnSHQ2q4mWmoXTxNZnI+5cYc8EHsmGQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774185106; c=relaxed/simple;
-	bh=JlJMxGdckNnvDSmKsHS+ovLiN2WFqaP3Xh0e+Bhm5g8=;
+	s=arc-20240116; t=1774185111; c=relaxed/simple;
+	bh=XFBzyNHO0rvoBArV4mhU4c1nqKKNBxVUYP7xbf1rpTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCf6v8gum/gy6yIYeMLY9wmIKyNnZK8p5Q164r/NAP/Epn9vMGL3HNl497/v0UgHb+W/fTvlUn3sdaS6eSXZoBQonxgzg1v/Bo/C/Bt7BL3YjfBIxorViSMpvwZ4TNQcbBoHcHQSh1KhnjOnfOc+jlgrB7zCxsz3PHi2Djbvrbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=UYVkt68M; arc=none smtp.client-ip=13.77.154.182
+	 MIME-Version; b=KtWiKmTxhXFCM1d7YFrZAyACEWKQjPeSdtTfUVQ691EVvbUUifZzN9KQkoJeF2M8qgYieqcknh7Dim9NyobP1UDG5vk7s7xGm/vR13BX7yWDxz81KpLJ09szkS9YaT4Ncch/HImBhx51ACt4/JznLd+81CjrZr2CdaVJg38XCYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=R65anVT5; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 68DB320B7129;
-	Sun, 22 Mar 2026 06:11:45 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 68DB320B7129
+	by linux.microsoft.com (Postfix) with ESMTPSA id C91F820B7128;
+	Sun, 22 Mar 2026 06:11:49 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C91F820B7128
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774185105;
-	bh=YUSjsxMb1Qlb5AfAu427DsuO/MxFoG7htH8lXZE7gm0=;
+	s=default; t=1774185109;
+	bh=ocyEm7WS8jTD7BYGdRkpkFKVoDvTJEuDspiSXUm105A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYVkt68MYf4B1k6k0KjtXQ1xPES6yaFUDC7wzvmEQxXwA6rMSlGlIv1VYxjz0TSIT
-	 09MXvFf71WUFAVT48dvyLjTn6ItQiDjcXMKOnye4SQu/PVVsxIfXIFJ3HaL5f2UeUI
-	 2YbvioWt2lbcsK4tMt8r7yHoRe+DH7gEu4vhoZWM=
+	b=R65anVT5i/I6cmXq4gxSsFSC420LKgmbLexmy8RAH/s9GgFp1a8yhJDYROgbP4r2m
+	 tapezZtMuBdMZIZGNSDQ6Xvd0WVQrReojaTgyLIlYc7gd/lhtM3/gqJb6MlyQ1/e5T
+	 6wPLqIlBP3Bp6FoBOtGnYIQYfkVxxrlU4Af0ZOjs=
 From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
 To: ptsm@linux.microsoft.com,
 	shubhrajyoti.datta@amd.com,
@@ -51,9 +51,9 @@ To: ptsm@linux.microsoft.com,
 	linux-edac@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org
-Subject: [PATCH 4/5] EDAC/versalnet: Fix device_register() error handling in init_one_mc()
-Date: Sun, 22 Mar 2026 06:11:45 -0700
-Message-ID: <20260322131145.1684744-1-ptsm@linux.microsoft.com>
+Subject: [PATCH 5/5] EDAC/versalnet: Fix device name memory leak
+Date: Sun, 22 Mar 2026 06:11:49 -0700
+Message-ID: <20260322131149.1684771-1-ptsm@linux.microsoft.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
 References: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
@@ -77,7 +77,7 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linux.microsoft.com:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-227829-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227830-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
@@ -91,71 +91,60 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.microsoft.com:dkim,linux.microsoft.com:mid]
-X-Rspamd-Queue-Id: 7C1EE2E95EC
+X-Rspamd-Queue-Id: 4D5652E95FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When device_register() fails, it must be followed by put_device()
-rather than kfree(), because device_register() calls
-device_initialize() which sets up the device refcount. The matching
-release function versal_edac_release() handles the actual kfree().
+The device name allocated via kzalloc() in init_one_mc() is assigned to
+dev->init_name but never freed on the normal removal path.
+device_register() copies init_name and then sets dev->init_name to NULL,
+so the name pointer becomes unreachable from the device. Thus leaking
+memory.
 
-Also reorder the dev allocation to after edac_mc_alloc() so the error
-path no longer needs a separate err_dev_free label.
+Track the name pointer in mc_priv and free it in remove_one_mc().
 
 Fixes: d5fe2fec6c40d ("EDAC: Add a driver for the AMD Versal NET DDR controller")
 Cc: stable@vger.kernel.org
 Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
 ---
- drivers/edac/versalnet_edac.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/edac/versalnet_edac.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/drivers/edac/versalnet_edac.c b/drivers/edac/versalnet_edac.c
-index acd51b492772..6463e88ed3d3 100644
+index 6463e88ed3d3..17a5c8f416b9 100644
 --- a/drivers/edac/versalnet_edac.c
 +++ b/drivers/edac/versalnet_edac.c
-@@ -817,24 +817,26 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
- 	if (!name)
- 		return rc;
+@@ -158,6 +158,7 @@ struct mc_priv {
+ 	u32 regs[REG_MAX];
+ 	u32 adec[ADEC_MAX];
+ 	struct mem_ctl_info *mci[NUM_CONTROLLERS];
++	char *mci_name[NUM_CONTROLLERS];
+ 	struct rpmsg_endpoint *ept;
+ 	struct cdx_mcdi *mcdi;
+ };
+@@ -765,11 +766,14 @@ static void versal_edac_release(struct device *dev)
+ static void remove_one_mc(struct mc_priv *priv, int i)
+ {
+ 	struct mem_ctl_info *mci;
++	char *mci_name;
  
--	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
--	if (!dev)
--		goto err_name_free;
--
- 	mci = edac_mc_alloc(i, ARRAY_SIZE(layers), layers, sizeof(struct mc_priv));
- 	if (!mci) {
- 		edac_printk(KERN_ERR, EDAC_MC, "Failed memory allocation for MC%d\n", i);
--		goto err_dev_free;
-+		goto err_name_free;
+ 	mci = priv->mci[i];
+ 	device_unregister(mci->pdev);
+ 	edac_mc_del_mc(mci->pdev);
+ 	edac_mc_free(mci);
++	mci_name = priv->mci_name[i];
++	kfree(mci_name);
+ }
+ 
+ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i)
+@@ -848,6 +852,7 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
  	}
  
-+	dev = kzalloc(sizeof(*dev), GFP_KERNEL);
-+	if (!dev)
-+		goto err_mc_free;
-+
- 	sprintf(name, "versal-net-ddrmc5-edac-%d", i);
+ 	priv->mci[i] = mci;
++	priv->mci_name[i] = name;
+ 	priv->dwidth = dt;
  
- 	dev->init_name = name;
- 	dev->release = versal_edac_release;
- 
- 	rc = device_register(dev);
--	if (rc)
-+	if (rc) {
-+		put_device(dev);
- 		goto err_mc_free;
-+	}
- 
- 	mci->pdev = dev;
- 	mc_init(mci, dev);
-@@ -856,8 +858,6 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
- 	device_unregister(mci->pdev);
- err_mc_free:
- 	edac_mc_free(mci);
--err_dev_free:
--	kfree(dev);
- err_name_free:
- 	kfree(name);
- 
+ 	platform_set_drvdata(pdev, priv);
 -- 
 2.49.0
 
