@@ -1,62 +1,47 @@
-Return-Path: <stable+bounces-227830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227831-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLx7Mv/qv2my/wMAu9opvQ
-	(envelope-from <stable+bounces-227830-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:13:35 +0100
+	id KCvfJ4nxv2moAwQAu9opvQ
+	(envelope-from <stable+bounces-227831-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:41:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5652E95FC
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:13:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF072E97FD
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D99D030269ED
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:11:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E112F300D968
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9659F2F12CE;
-	Sun, 22 Mar 2026 13:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="R65anVT5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B07B346E50;
+	Sun, 22 Mar 2026 13:41:10 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519222EAB72;
-	Sun, 22 Mar 2026 13:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BEC732D7FF;
+	Sun, 22 Mar 2026 13:41:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774185111; cv=none; b=oSD1v7PkLOHKmLN5BA0bn7df1wmUhwZARb3zv2QNJtBGAFEqi+dQdX2wmNE4z9wzaWItenBf8t5JQjeLY7hei0hR9kTlLN57rZ3nnBV2LqbmYBXB8JSdrYLJmoWFvUTIBmt+bdYq6DeOnSHQ2q4mWmoXTxNZnI+5cYc8EHsmGQ4=
+	t=1774186870; cv=none; b=uI6RuFQd/d0XU4YS+VNlJIdAjZzAlsSJNmMGnpAjGbNBS9UWoeSeEn+EWxaOQYS1PcwQ61MnnuqpgORYYmx+8xJMgEEDChY5BSxPZ13HkqSY7Ot/HbwhR6GtBNLVbLxtEE71mYHxmdySaxn78QERyCG0QY8GN2P31KGazCMxhec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774185111; c=relaxed/simple;
-	bh=XFBzyNHO0rvoBArV4mhU4c1nqKKNBxVUYP7xbf1rpTk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtWiKmTxhXFCM1d7YFrZAyACEWKQjPeSdtTfUVQ691EVvbUUifZzN9KQkoJeF2M8qgYieqcknh7Dim9NyobP1UDG5vk7s7xGm/vR13BX7yWDxz81KpLJ09szkS9YaT4Ncch/HImBhx51ACt4/JznLd+81CjrZr2CdaVJg38XCYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=R65anVT5; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net (linux.microsoft.com [13.77.154.182])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C91F820B7128;
-	Sun, 22 Mar 2026 06:11:49 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C91F820B7128
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774185109;
-	bh=ocyEm7WS8jTD7BYGdRkpkFKVoDvTJEuDspiSXUm105A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R65anVT5i/I6cmXq4gxSsFSC420LKgmbLexmy8RAH/s9GgFp1a8yhJDYROgbP4r2m
-	 tapezZtMuBdMZIZGNSDQ6Xvd0WVQrReojaTgyLIlYc7gd/lhtM3/gqJb6MlyQ1/e5T
-	 6wPLqIlBP3Bp6FoBOtGnYIQYfkVxxrlU4Af0ZOjs=
-From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-To: ptsm@linux.microsoft.com,
-	shubhrajyoti.datta@amd.com,
-	bp@alien8.de,
-	tony.luck@intel.com,
-	linux-edac@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH 5/5] EDAC/versalnet: Fix device name memory leak
-Date: Sun, 22 Mar 2026 06:11:49 -0700
-Message-ID: <20260322131149.1684771-1-ptsm@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
-References: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
+	s=arc-20240116; t=1774186870; c=relaxed/simple;
+	bh=eCEkiN58Xyxy1hwGJsCam4Mju4eWxjo/7smrhQqR7BA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Sq1oi8oenxpb7KYz5z7pBxl1d0Wd9W2tuwBQql7uEVV3v6tvXX4GoLMkI1fEYMY8NZFcUbpFD7G9kctV6onA/xtr4dE31fZQTFzulEXyImGgnPsET+tnlL33M/9+NO7WMpg4IJ2EDGUg550svz8v+WON92Gb+v90LYSF/epoMFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3112FC19424;
+	Sun, 22 Mar 2026 13:41:06 +0000 (UTC)
+From: colyli@fnnas.com
+To: axboe@kernel.org
+Cc: linux-bcache@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	Mingzhe Zou <mingzhe.zou@easystack.cn>,
+	stable@vger.kernel.org,
+	Coly Li <colyli@fnnas.com>
+Subject: [PATCH v2] bcache: fix cached_dev.sb_bio use-after-free and crash
+Date: Sun, 22 Mar 2026 21:41:02 +0800
+Message-ID: <20260322134102.480107-1-colyli@fnnas.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,88 +49,100 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-227830-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227831-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[fnnas.com];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[colyli@fnnas.com,stable@vger.kernel.org];
+	FROM_NO_DN(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linux.microsoft.com:dkim,linux.microsoft.com:mid]
-X-Rspamd-Queue-Id: 4D5652E95FC
+	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,easystack.cn:email,fnnas.com:email,fnnas.com:mid]
+X-Rspamd-Queue-Id: EFF072E97FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The device name allocated via kzalloc() in init_one_mc() is assigned to
-dev->init_name but never freed on the normal removal path.
-device_register() copies init_name and then sets dev->init_name to NULL,
-so the name pointer becomes unreachable from the device. Thus leaking
-memory.
+From: Mingzhe Zou <mingzhe.zou@easystack.cn>
 
-Track the name pointer in mc_priv and free it in remove_one_mc().
+In our production environment, we have received multiple crash reports
+regarding libceph, which have caught our attention:
 
-Fixes: d5fe2fec6c40d ("EDAC: Add a driver for the AMD Versal NET DDR controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
+```
+[6888366.280350] Call Trace:
+[6888366.280452]  blk_update_request+0x14e/0x370
+[6888366.280561]  blk_mq_end_request+0x1a/0x130
+[6888366.280671]  rbd_img_handle_request+0x1a0/0x1b0 [rbd]
+[6888366.280792]  rbd_obj_handle_request+0x32/0x40 [rbd]
+[6888366.280903]  __complete_request+0x22/0x70 [libceph]
+[6888366.281032]  osd_dispatch+0x15e/0xb40 [libceph]
+[6888366.281164]  ? inet_recvmsg+0x5b/0xd0
+[6888366.281272]  ? ceph_tcp_recvmsg+0x6f/0xa0 [libceph]
+[6888366.281405]  ceph_con_process_message+0x79/0x140 [libceph]
+[6888366.281534]  ceph_con_v1_try_read+0x5d7/0xf30 [libceph]
+[6888366.281661]  ceph_con_workfn+0x329/0x680 [libceph]
+```
+
+After analyzing the coredump file, we found that the address of
+dc->sb_bio has been freed. We know that cached_dev is only freed when it
+is stopped.
+
+Since sb_bio is a part of struct cached_dev, rather than an alloc every
+time.  If the device is stopped while writing to the superblock, the
+released address will be accessed at endio.
+
+This patch hopes to wait for sb_write to complete in cached_dev_free.
+
+It should be noted that we analyzed the cause of the problem, then tell
+all details to the QWEN and adopted the modifications it made.
+
+Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Fixes: cafe563591446 ("bcache: A block layer cache")
+Cc: stable@vger.kernel.org # 3.10+
+Signed-off-by: Coly Li <colyli@fnnas.com>
 ---
- drivers/edac/versalnet_edac.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Change log,
+v2, fix emiail address type to stable kerenl.
+v1, initial version.
 
-diff --git a/drivers/edac/versalnet_edac.c b/drivers/edac/versalnet_edac.c
-index 6463e88ed3d3..17a5c8f416b9 100644
---- a/drivers/edac/versalnet_edac.c
-+++ b/drivers/edac/versalnet_edac.c
-@@ -158,6 +158,7 @@ struct mc_priv {
- 	u32 regs[REG_MAX];
- 	u32 adec[ADEC_MAX];
- 	struct mem_ctl_info *mci[NUM_CONTROLLERS];
-+	char *mci_name[NUM_CONTROLLERS];
- 	struct rpmsg_endpoint *ept;
- 	struct cdx_mcdi *mcdi;
- };
-@@ -765,11 +766,14 @@ static void versal_edac_release(struct device *dev)
- static void remove_one_mc(struct mc_priv *priv, int i)
- {
- 	struct mem_ctl_info *mci;
-+	char *mci_name;
+ drivers/md/bcache/super.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+index 64bb38c95895..6627a381f65a 100644
+--- a/drivers/md/bcache/super.c
++++ b/drivers/md/bcache/super.c
+@@ -1373,6 +1373,13 @@ static CLOSURE_CALLBACK(cached_dev_free)
  
- 	mci = priv->mci[i];
- 	device_unregister(mci->pdev);
- 	edac_mc_del_mc(mci->pdev);
- 	edac_mc_free(mci);
-+	mci_name = priv->mci_name[i];
-+	kfree(mci_name);
- }
+ 	mutex_unlock(&bch_register_lock);
  
- static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i)
-@@ -848,6 +852,7 @@ static int init_one_mc(struct mc_priv *priv, struct platform_device *pdev, int i
- 	}
++	/*
++	 * Wait for any pending sb_write to complete before free.
++	 * The sb_bio is embedded in struct cached_dev, so we must
++	 * ensure no I/O is in progress.
++	 */
++	closure_sync(&dc->sb_write);
++
+ 	if (dc->sb_disk)
+ 		folio_put(virt_to_folio(dc->sb_disk));
  
- 	priv->mci[i] = mci;
-+	priv->mci_name[i] = name;
- 	priv->dwidth = dt;
- 
- 	platform_set_drvdata(pdev, priv);
 -- 
-2.49.0
+2.47.3
 
 
