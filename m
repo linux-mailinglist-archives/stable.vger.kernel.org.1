@@ -1,162 +1,135 @@
-Return-Path: <stable+bounces-227817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iDaMClt8v2ls5QMAu9opvQ
-	(envelope-from <stable+bounces-227817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 06:21:31 +0100
+	id VZQKOxWTv2mo6QMAu9opvQ
+	(envelope-from <stable+bounces-227818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 07:58:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA56E2E8407
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 06:21:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B87E2E8737
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 07:58:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EF76F3006696
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 05:21:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B96C301412A
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 06:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C84A2857FA;
-	Sun, 22 Mar 2026 05:21:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FD234CFC5;
+	Sun, 22 Mar 2026 06:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZtLM8DVR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RW09B80N"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7D770808
-	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 05:21:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9C43382F7;
+	Sun, 22 Mar 2026 06:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774156888; cv=none; b=mSadJ/OQdozsq/kMAk7b1ybauooxsu89sdVseJ/pl3wk3LjDcsk5UeHbqF7Qm6crO95K6KQxZOOTdsRn2aajE+AYpS0BdwqfUpDftxuE9qH+HJ6vI0INKLe2UlGYhxl3dK+3wvFzs4PwuL2yoVqvwxnF7qsroPauBLEvl4F4Rto=
+	t=1774162701; cv=none; b=lwGZhpN3Ytg+Ty7i5vXoKEIyjj4onXiMgtaaaf2nANHtYOlkhVCPGO4KGL31VAMJ4JyOrki7xap2raO7WAq2vjLXLuX/Il9Gj6aZCjfee4YgzOB3pMHq72HHiK5v7c2ahAJxVQWT9xIT9fvSaxwu/iMY1vC+3D6BlXO0Vy0xpXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774156888; c=relaxed/simple;
-	bh=mxzSb9+OwfykPBvJNQU2/8e5LLlhHkhSiQjzPwBRR0U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cadr7Z0eIGnvOu/6mtYljfFk/sQeE4ekYX+IOiwKhyE/CULocmMDOjf1ee7X/JPcmvszetcMD/tM5e5qXLylNo4fpxkgH56DX+szrwh43fuCG+iJMyIRbeVKbvxkrOlpIu+rpU7+WXHdqSIR4iIQtv4KtoogVQ+R6SIVk+5lxzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZtLM8DVR; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-439c9bdc1eeso3151513f8f.3
-        for <stable@vger.kernel.org>; Sat, 21 Mar 2026 22:21:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774156885; x=1774761685; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lc7WXv5QbRK7FJAPa9CcSx+GAiaj9ytLHKKih0IedjA=;
-        b=ZtLM8DVR+B1V7is668hA9V50W8S+FKSiJmBaXeSK3rjng2iLthpUITXIJHZ842hMv/
-         8Sz6xjq3i/T/7RVZufNqfHdPJCrzn6HCbcNfE41CF8UAsNyCtp9XGA5/Dvv4nu7cT9lz
-         7D+UJexWL3tIDZ0YIOj4FwMYFM2BQS5C6W39sSsdMyPERiIBElN/pWm0ZHj1HUCqGPcT
-         WcRA0VqUBOeJS9MkODNlBY8/KAIwgLCP1iQFjGmUufTMSP4NVGMbOivs6usg2U6hg7zA
-         XLzWG+OiRm5JxzbNDvl0E5gnRrQOGJLalmZ08Gl2irLtZVyCAcYZF9pID7lIRV9HuW7/
-         uLTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774156885; x=1774761685;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lc7WXv5QbRK7FJAPa9CcSx+GAiaj9ytLHKKih0IedjA=;
-        b=afqbUGOSt6kB8zHjyNcrtAk2gFtClBPczotJDGoaXotHSeJsmX8lBHESOzKUIB/MJk
-         vBn5i0Y3TxdpLChW5rpyscs9Lrp8jedNUkyQS3xj1KbhmPYXGSSmI1kPnPHIYA7QwlPS
-         lZrc4kfAqrORFRvK/4EHZ2tITkEp4UwYx7LHVLmSyCST0ogrljcA2M+MW4uuOy93ZiED
-         84eHJtEPYyD9EwDsA6uQX5AYHog22zo/9r3ZTXmc2eRaLQmmS9cv4gey4vcanU7JqnhC
-         MWZnCGUI1ArXDnUdY58/Qu9ef6tN2t6Z07Wl6Ht5Q3yVQAboYXkRXE8bqBGx0stQ2kur
-         voIg==
-X-Forwarded-Encrypted: i=1; AJvYcCXfQ80X8sJD+h/Xg4lV/w0EoxNw/JVBWPuSem0qBMLxy6LGegOa9rywoJ6a2WkfJr0jCXUQy6w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyUkBqH+FcIOMbN5We9bkq15ekuxISKaShK8etqJNOa0Bu9CNhX
-	0m4OA9Dpq4SmFwkLGonV4JSeydUOES9JS57ul3PrqUaki2QYowugicnB
-X-Gm-Gg: ATEYQzxR2gOjMBwbLC8uviUoTCjwJrTOPd/D5C67TcQHygcGZsCIT/UlZeRUD56GiK9
-	AZXJwi5ixMmh+FJ3JerSqgtsRX34DN5y0KzE/n0MjCfgrlRAymspsC1YoY8k+tWDstFUrTQk3X6
-	+G3WBFRNSFwVIC8N5ybBZHQAwiy1NNraB18GGEIwRAyWYAfmbOpIzK76x68zgW0/k447jWJ53kB
-	4IugMg+uDZjxBJBCDXjpF+ShFXwoWIW86QmcXXgCtiY0cCTUJzPTxzdySsnikw6nam7ZRtVlxU7
-	MxSRJnHz+kCG/ZqcAasISBkD4BQaM4iNF2r7sRtcZjNJW8eYNti6mFLIVpZvAvk1Kk2lCEXz45r
-	9XbzqBJhka99EKwm1IHOOzRjOLpTaTzO95IUKAuvf+B8WYVofUXR/D/nriABw/zu/QUe2WcEDD9
-	6eqRlnKYxBR97aUdLSb++FtnEBn4CH3TRYTuc+bU2aoBN7wfBJu3GCb6c6EQbVuj7C11IFr2Rkj
-	ECsWA+DYS23
-X-Received: by 2002:a05:6000:26c2:b0:43b:3d44:6624 with SMTP id ffacd0b85a97d-43b64232862mr12944534f8f.2.1774156884544;
-        Sat, 21 Mar 2026 22:21:24 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b646b0d3dsm19494208f8f.16.2026.03.21.22.21.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2026 22:21:23 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	YueHaibing <yuehaibing@huawei.com>,
-	Mina Almasry <almasrymina@google.com>
-Cc: linux-mm@kvack.org,
-	David Carlier <devnexen@gmail.com>,
+	s=arc-20240116; t=1774162701; c=relaxed/simple;
+	bh=J0oBN7mLaCh0P3ukmH4JfbB6/WVDt4bg5xlG51w0gkU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cwT29wZC5ET5LL+0S7HCe9s/laJiQtHFxisiTuciJOXbfuYgrAruGIgo9CtBZMHy+MmA/l6CNEBw6sLE40PgReIO5R44VwSMSYTIBz+x16Qlg7ojBMSGZvMbDRsFK5yQhSUJZKPmRJHwddj7cOlzysydG4larf0TBvbswDZlL8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RW09B80N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7219C19424;
+	Sun, 22 Mar 2026 06:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774162701;
+	bh=J0oBN7mLaCh0P3ukmH4JfbB6/WVDt4bg5xlG51w0gkU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RW09B80NewEr4+1f/Osk33PN82xXXfxO25hunasttlPxf604ED3qxGuwu8o8TKWQH
+	 tczxqj0fAJP8IAI7n3gp4Hh8ml2BMJkAdGzDRoW2N8rCB82KhnunsKRESx++5R0Utx
+	 edq7YYXAVpThuWADs3Qb2zreAEQMwbYmt9qGbBb9J4dVskU/JzHr8URUUFWke04fRC
+	 vR15cpT9G2h0siSFjnz/VFNwJuCH1/uLb0aEw0sogjpRgzall6GSPnpo/20J70W3/9
+	 h6p75Ia0gNnApdSZUA2cpiaHGmJ7Frdi9M//aBIh+MU5AJeJVTKsxNzVgWAVPnZaqC
+	 zNVsbDL/Dfy1Q==
+From: William Breathitt Gray <wbg@kernel.org>
+To: Cosmin Tanislav <cosmin-gabriel.tanislav.xa@renesas.com>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	linux-iio@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-pwm@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] mm/hugetlb: restore reservation on error in hugetlb_mfill_atomic_pte() resubmission path
-Date: Sun, 22 Mar 2026 05:21:20 +0000
-Message-ID: <20260322052120.14021-1-devnexen@gmail.com>
+Subject: Re: [PATCH 5/5] counter: rz-mtu3-cnt: do not use struct rz_mtu3_channel's dev member
+Date: Sun, 22 Mar 2026 15:58:11 +0900
+Message-ID: <20260322065813.264398-1-wbg@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260130122353.2263273-6-cosmin-gabriel.tanislav.xa@renesas.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1244; i=wbg@kernel.org; h=from:subject; bh=J0oBN7mLaCh0P3ukmH4JfbB6/WVDt4bg5xlG51w0gkU=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDJn7J132EdTIjTz28cnXxvqfcZrMBXK2rO6y+2eHv8yLO ml77/+9jlIWBjEuBlkxRZZe87N3H1xS1fjxYv42mDmsTCBDGLg4BWAiU54xMizf/zHeYVVGy7Sa xvdsq+Z3fpWr+2Ddd0+neeKv5Z9MYicx/M/sf5P9QSTpZLZbH+uNQI7PjL48e6u3Xz5xburJ4zI ZhlwA
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+X-Spamd-Result: default: False [0.84 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[kernel.org,bp.renesas.com,gmail.com,vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_CC(0.00)[kvack.org,gmail.com,vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227817-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-227818-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wbg@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AA56E2E8407
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6B87E2E8737
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
-hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. If
-copy_user_large_folio() subsequently fails, folio_put() restores the global
-hugetlb pool count through free_huge_folio(), but the per-VMA reservation
-map entry is left in an inconsistent state.
+On Fri, Jan 30, 2026 at 02:23:53PM +0200, Cosmin Tanislav wrote:
+> The counter driver can use HW channels 1 and 2, while the PWM driver can
+> use HW channels 0, 1, 2, 3, 4, 6, 7.
+> 
+> The dev member is assigned both by the counter driver and the PWM driver
+> for channels 1 and 2, to their own struct device instance, overwriting
+> the previous value.
+> 
+> The sub-drivers race to assign their own struct device pointer to the
+> same struct rz_mtu3_channel's dev member.
+> 
+> The dev member of struct rz_mtu3_channel is used by the counter
+> sub-driver for runtime PM.
+> 
+> Depending on the probe order of the counter and PWM sub-drivers, the
+> dev member may point to the wrong struct device instance, causing the
+> counter sub-driver to do runtime PM actions on the wrong device.
+> 
+> To fix this, use the parent pointer of the counter, which is assigned
+> during probe to the correct struct device, not the struct device pointer
+> inside the shared struct rz_mtu3_channel.
 
-Add the missing restore_reserve_on_error() call before folio_put(), matching
-the first-attempt error path which already handles this correctly.
+It looks like you replace every instance of ch->dev in the file,
+except in rz_mtu3_cnt_probe where it is initially set as ch->dev = dev.
+Is that line in rz_mtu3_cnt_probe still needed, or can it now be removed
+too?
 
-Fixes: 8cc5fcbb5be8 ("mm, hugetlb: fix racy resv_huge_pages underflow on UFFDIO_COPY")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/hugetlb.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 88009cd2a846..d6ea11113f1d 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -6295,6 +6295,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
- 		folio_put(*foliop);
- 		*foliop = NULL;
- 		if (ret) {
-+			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
- 			folio_put(folio);
- 			goto out;
- 		}
--- 
-2.53.0
-
+William Breathitt Gray
 
