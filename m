@@ -1,191 +1,199 @@
-Return-Path: <stable+bounces-227858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 1S+oJcpEwGnXFQQAu9opvQ
-	(envelope-from <stable+bounces-227858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:36:42 +0100
+	id kOoyL1ZiwGkHHQQAu9opvQ
+	(envelope-from <stable+bounces-227859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 22:42:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3ACA2EA81B
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:36:41 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F2D2EAE58
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 22:42:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 622053008749
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 19:36:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B1E103002F6E
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 21:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A0E32860F;
-	Sun, 22 Mar 2026 19:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5880D136672;
+	Sun, 22 Mar 2026 21:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b5YNxORD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0NLdGuB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 342E0C14A
-	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 19:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A49D3B7A8;
+	Sun, 22 Mar 2026 21:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774208198; cv=none; b=BrgOpSh8oT6hqP+pqDKBM/8fCCaRny4ZB3a9VlpH744Z80gCCT+tFMYVfgceHm5g7JLrW0kmDVJyls+0TEUFqkoiQ06JlUwINNAAez+Yjw20Sk33M0VtIff0L5bFQpMdhwj4eyEAKJAsHRipW1CS+QHAPW4rEROlQOV4iVUbvLI=
+	t=1774215759; cv=none; b=SC94BXdg3E/c7AFyyzcTOy3hdiLglFmb+IpMhGeK+tNo9ick8XpnkA8Y7KMPldM2m8tDGKlrAHg+DcY0c7JHCyXrMT7dvC64vJlHwbctSefOm6lDhte1tdObxy+whj/WknQ8NMKYQrRohPcStKtz6RjJYnJlrb725RvHvjiAMuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774208198; c=relaxed/simple;
-	bh=VZaN6lNZZBS+1rSrx0q5Xehr6MmHVXDCHWOgf9+gbYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMcG+lpIgHegrlbT4fZxX6NVgvhKlaIVpEksfBY+klmOF9EIyzq+/pGUGNlfdxj+TyLUt2rPYTPCFr5ikvJRJ/HdGjK6u0+IqHTKDdjQowkul7uxXar1RV/X1cAxGf0dQLAAt0M35pQEbGaxbHzMnX5qcKc9GSu4vPHpjCPui3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b5YNxORD; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-43b40003d13so2084291f8f.2
-        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 12:36:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774208196; x=1774812996; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z5NkvB6rUQmujjUBlOsuvgVhbuKs5zhTZMlpuU7ZH9E=;
-        b=b5YNxORDqz+61TuptwONRK5mUWpJ3SvrznPOrOWueLQ00eO4PWT7uc9K0FI9gK0o0y
-         82blOCvGgESxjfKkW9UoR3cZ14JlwVkmguWdXptVYjm6QOvcsdoQYyo9Ht2ZAfqjlOZy
-         0s1Y9Zc26NH5571e+kbvm8kIfPuhjLUDcSm7E9ZiAfBvfLkuBTqBhSD08KEjUw15WiRf
-         tWi+OWJ7Tt3B4ukcXYE0GANsXdeip4s5BtbKgKz0F3wu++zAC17k+M2OlJb6ZLjB9YFS
-         qRXbmGxn8fOpV2IOHYzuXv/kNFB9NNKSYuxFft2JlPTfh8WLMWvxNyMkDTGc86XKG52j
-         9wGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774208196; x=1774812996;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Z5NkvB6rUQmujjUBlOsuvgVhbuKs5zhTZMlpuU7ZH9E=;
-        b=HSyEIwx7pClVFwxtTVyhNwcqVtrO3V/3Nq2I0TCkQ7ZXAQ5+nvPKIMhYVp1nt8Ey1f
-         Mgpj55tccC4kfER/o1wdEsme6IGVPrH8RIKipSeRocDv0wtYaVVEFORsyiPiaLkoc5N7
-         BJSPwAm0lvl4pmcPm3iUWirLqTXcxUfhzBpIRJNiiEj0qZdkwBdUupy4UK+PlN0fZGs5
-         GiXu55QonQtCmkzCv54ehnQrkhqqjx2Q5DazG5zddG2ZzkGkMPopZXVfzSyfOXk1Ivmf
-         xpztU6Sloo/Kyxz5/AqaZW6A0ITwa1uP+tkJer+VatPLLZ+k1nG1J+JZqLa9eaZ0lPyA
-         65tw==
-X-Forwarded-Encrypted: i=1; AJvYcCWAes/zVxOO/4ZeiovvQenyY9Sa5tPJBtwLhNdWnrFLlmcfK0SEl0wJehK8s2KIXU5vYf+f7KA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwP31hlUT7qwRIVlBpOjJzd88Dlc0AP+ayhnA4EgI5YVEmHEDto
-	m2C2+TBzlSJG0uvPmS23aWhR5NP7/Uq9NYFEy+BSvgL163WvB0+8dLphZAI18Cz1
-X-Gm-Gg: ATEYQzw6Jm9+uEOhkNiUsP5avSbuhfqPMiQDjWBSZ7QPrcBOoJdlyG2KsIsLWUCYxvA
-	B9expr7+DaBcfSP4oKZl7FbaD54HE5qCemPI+lKh3H1ehyvxuvx1iHFz3XV1C2ZHOZkIaIMB3WU
-	KomGxNGv7ZG03ZirhrqaQertQC/TlE0Xf4HoG5RfvGb0FolTObCGr3Dmndffvc7Bg3S6wHvyw0i
-	wZ7oFTNxL+kQIKUwDyD0V1K1YaOHBtZZdzDAZS1YBXIVaLOerc4vjbI2+a0pZ5qr5GIq1e9CnfH
-	xH3Rd3mE+IaXR1msPjGR8boy2YPGTePY1uV0PAf+C0gQIW/UlZvHRbq2PIwOSI1g+7Vk9tVvXHm
-	/EfQODNK3zFNbm7UKiHQyCS9qLcoQnncpxOHtahf5TAZaCh+3mPSX0Oy2Ay7wUnTuUsa/QkO+8q
-	cESrFPYBpnNV09MyrNVPjnFSAvsq4g2NB2AIDkGcmRSpvyxaBlY3eJxM4ANAt3543X214iMIWtd
-	tf4wAfSmAIXvGn9wm+TlqY=
-X-Received: by 2002:a05:6000:2407:b0:43b:6345:8d72 with SMTP id ffacd0b85a97d-43b6424ac69mr17019251f8f.12.1774208195393;
-        Sun, 22 Mar 2026 12:36:35 -0700 (PDT)
-Received: from dohko.chello.ie (188-141-5-72.dynamic.upc.ie. [188.141.5.72])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43b64717e97sm25121657f8f.35.2026.03.22.12.36.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 12:36:34 -0700 (PDT)
-From: David Carlier <devnexen@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: linux-mm@kvack.org,
-	David Carlier <devnexen@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online() error path
-Date: Sun, 22 Mar 2026 19:36:31 +0000
-Message-ID: <20260322193631.45457-1-devnexen@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260322080142.5834-1-devnexen@gmail.com>
-References: <20260322080142.5834-1-devnexen@gmail.com>
+	s=arc-20240116; t=1774215759; c=relaxed/simple;
+	bh=ooMoZ9jh24CJIzH3d+V2rP+5LA0wTUI70qyRaaUcwfw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Y8VsBX+bPozJxOf/g5E3kKvVqnhER1Ckg4+NIXeyPYpuFLQYxOlBiph4Qfo6gAo0Gs9/zuYS5LKQ3PbD7ySzTa3LFgpMr6m7/5XTsZ5LzP665Gql7HMFw4Egxam8iL4uRV99P4kbBT/hs5OGwYKrMSytqXZWBadjhJSiuGlk5bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0NLdGuB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3828DC19424;
+	Sun, 22 Mar 2026 21:42:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774215758;
+	bh=ooMoZ9jh24CJIzH3d+V2rP+5LA0wTUI70qyRaaUcwfw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=f0NLdGuBd8WWucri/vvQc6MkkpydN2mIlO3h9Yjht+gJHhWg6ANBgi7Ah/e0ERa4s
+	 cWtXLwNdd9L0B2BaYJwcFrlvQXsqoyb2EK8FqLSu5Oj5YkYcP72+VNaeQCiWXnd5os
+	 LZu1WWmMmjxCVIDI0HnzwZWUi2bU+W8Tm2ucy1/dMDARnH5ho6QplDDiLFQUHo2EqQ
+	 YYOwrPcpfL/LbAJVNxq/LVGMWsJnmOvLG/sbeC993jzjJl0cmPnMkz72OGd1ZaqX4+
+	 Pn9jB9XXDyDL+o8b3aEVTXOfwAenqE6mulnDnwgeetuclKZ/I+PaOT7fWV2VfMaauV
+	 xHghLq1/QI5rA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Hao-Yu Yang <naup96721@gmail.com>, security@kernel.org
+Cc: mingo@redhat.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
+ and vma_replace_policy
+In-Reply-To: <ab8wX/vk3An6bFA8@naup-virtual-machine>
+References: <20260313124756.52461-1-naup96721@gmail.com>
+ <ab8wX/vk3An6bFA8@naup-virtual-machine>
+Date: Sun, 22 Mar 2026 22:42:35 +0100
+Message-ID: <87cy0vilro.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[kvack.org,gmail.com,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-227858-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227859-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E3ACA2EA81B
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: C0F2D2EAE58
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When obj_cgroup_alloc() fails partway through the NUMA node loop in
-mem_cgroup_css_online(), the free_objcg error path drops the extra
-reference held by pn->orig_objcg but never kills the initial percpu_ref
-from obj_cgroup_alloc() stored in pn->objcg.
+On Sun, Mar 22 2026 at 07:57, Hao-Yu Yang wrote:
 
-Since css_offline is never called when css_online fails,
-memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
-normally drops this initial reference never executes. The obj_cgroup and
-its per-cpu ref allocations are leaked.
+> On Fri, Mar 13, 2026 at 08:47:56PM +0800, Hao-Yu Yang wrote:
+>> During futex_key_to_node_opt() execution, vma->vm_policy is read under
+>> speculative mmap lock and RCU. Concurrently, mbind() may call
+>> vma_replace_policy() which frees the old mempolicy immediately via
+>> kmem_cache_free().
+>>=20
+>> This creates a race where __futex_key_to_node() dereferences a freed
+>> mempolicy pointer, causing a use-after-free read of mpol->mode.
+>>=20
+>> [  151.412631] BUG: KASAN: slab-use-after-free in __futex_key_to_node (k=
+ernel/futex/core.c:349)
+>> [  151.414046] Read of size 2 at addr ffff888001c49634 by task e/87
+>> [  151.414476]
+>> [  151.415431] CPU: 1 UID: 1000 PID: 87 Comm: e Not tainted 7.0.0-rc3-g0=
+257f64bdac7 #1 PREEMPT(lazy)
+>> [  151.415758] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BI=
+OS 1.15.0-1 04/01/2014
+>> [  151.415969] Call Trace:
+>> [  151.416059]  <TASK>
+>> [  151.416161]  dump_stack_lvl (lib/dump_stack.c:123)
+>> [  151.416299]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:48=
+2)
+>> [  151.416359]  ? __virt_addr_valid (./include/linux/mmzone.h:2046 ./inc=
+lude/linux/mmzone.h:2198 arch/x86/mm/physaddr.c:54)
+>> [  151.416412]  ? __futex_key_to_node (kernel/futex/core.c:349)
+>> [  151.416517]  ? kasan_complete_mode_report_info (mm/kasan/report_gener=
+ic.c:182)
+>> [  151.416583]  ? __futex_key_to_node (kernel/futex/core.c:349)
+>> [  151.416631]  kasan_report (mm/kasan/report.c:597)
+>> [  151.416677]  ? __futex_key_to_node (kernel/futex/core.c:349)
+>> [  151.416732]  __asan_load2 (mm/kasan/generic.c:271)
+>> [  151.416777]  __futex_key_to_node (kernel/futex/core.c:349)
+>> [  151.416822]  get_futex_key (kernel/futex/core.c:374 kernel/futex/core=
+.c:386 kernel/futex/core.c:593)
+>> [  151.416871]  ? __pfx_get_futex_key (kernel/futex/core.c:550)
+>> [  151.416927]  futex_wake (kernel/futex/waitwake.c:165)
+>> [  151.416976]  ? __pfx_futex_wake (kernel/futex/waitwake.c:156)
+>> [  151.417022]  ? __pfx___x64_sys_futex_wait (kernel/futex/syscalls.c:39=
+8)
+>> [  151.417081]  __x64_sys_futex_wake (kernel/futex/syscalls.c:382 kernel=
+/futex/syscalls.c:366 kernel/futex/syscalls.c:366)
+>> [  151.417129]  x64_sys_call (arch/x86/entry/syscall_64.c:41)
+>> [  151.417236]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/e=
+ntry/syscall_64.c:94)
+>> [  151.417342]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.=
+S:130)
+>> [  151.418312]  </TASK>
+>>=20
+>> Fix by adding rcu to __mpol_put().
+>>=20
+>> change-log:
+>>  v2-v1: add rcu to __mpol_put
+>>=20
+>> Fixes: c042c505210d ("futex: Implement FUTEX2_MPOL")
+>> Reported-by: Hao-Yu Yang <naup96721@gmail.com>
+>> Signed-off-by: Hao-Yu Yang <naup96721@gmail.com>
+>> ---
+>>  include/linux/mempolicy.h | 1 +
+>>  mm/mempolicy.c            | 2 +-
+>>  2 files changed, 2 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
+>> index 0fe96f3ab3ef..65c732d440d2 100644
+>> --- a/include/linux/mempolicy.h
+>> +++ b/include/linux/mempolicy.h
+>> @@ -55,6 +55,7 @@ struct mempolicy {
+>>  		nodemask_t cpuset_mems_allowed;	/* relative to these nodes */
+>>  		nodemask_t user_nodemask;	/* nodemask passed by user */
+>>  	} w;
+>> +	struct rcu_head rcu;
+>>  };
+>>=20=20
+>>  /*
+>> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
+>> index 0e5175f1c767..6dc61a3d4a32 100644
+>> --- a/mm/mempolicy.c
+>> +++ b/mm/mempolicy.c
+>> @@ -487,7 +487,7 @@ void __mpol_put(struct mempolicy *pol)
+>>  {
+>>  	if (!atomic_dec_and_test(&pol->refcnt))
+>>  		return;
+>> -	kmem_cache_free(policy_cache, pol);
+>> +	kfree_rcu(pol, rcu);
+>>  }
+>>  EXPORT_SYMBOL_FOR_MODULES(__mpol_put, "kvm");
+>>=20=20
+>> --=20
+>> 2.34.1
+>>=20
+>
+> Hi, I=E2=80=99d like to kindly ask if there=E2=80=99s an update on when t=
+his patch might be merged.
 
-Clear pn->objcg via rcu_replace_pointer() and add the missing
-percpu_ref_kill() in the error path, matching the normal teardown
-sequence in memcg_reparent_objcgs().
+Thanks for the reminder. I'll take care of it tomorrow
 
-Also add a NULL check for pn in __mem_cgroup_free() to prevent a NULL
-pointer dereference when alloc_mem_cgroup_per_node_info() fails partway
-through the node loop in mem_cgroup_alloc().
+Thanks,
 
-Fixes: 098fad3e1621 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Carlier <devnexen@gmail.com>
----
- mm/memcontrol.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index a47fb68dd65f..00b3bb81aee4 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3936,6 +3936,8 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
- 
- 	for_each_node(node) {
- 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[node];
-+		if (!pn)
-+			continue;
- 
- 		obj_cgroup_put(pn->orig_objcg);
- 		free_mem_cgroup_per_node_info(pn);
-@@ -4137,8 +4139,11 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
- free_objcg:
- 	for_each_node(nid) {
- 		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
-+		objcg = rcu_replace_pointer(pn->objcg, NULL, true);
-+		if (objcg)
-+			percpu_ref_kill(&objcg->refcnt);
- 
--		if (pn && pn->orig_objcg) {
-+		if (pn->orig_objcg) {
- 			obj_cgroup_put(pn->orig_objcg);
- 			/*
- 			 * Reset pn->orig_objcg to NULL to prevent
--- 
-2.53.0
-
+        tglx
 
