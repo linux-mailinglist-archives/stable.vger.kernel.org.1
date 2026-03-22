@@ -1,64 +1,65 @@
-Return-Path: <stable+bounces-227808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227809-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHDBN3xdv2ku3gMAu9opvQ
-	(envelope-from <stable+bounces-227808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 04:09:48 +0100
+	id gJBWIIBdv2ku3gMAu9opvQ
+	(envelope-from <stable+bounces-227809-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 04:09:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C4082E80C5
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 04:09:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19EB22E80CE
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 04:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 634ED300EFAD
+	by sea.lore.kernel.org (Postfix) with ESMTP id 887CF301778E
 	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 03:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5390E37DEAD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6033837DEAE;
 	Sun, 22 Mar 2026 03:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t1JFfRde"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="St4VISp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1698A37106D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAD737C92D;
 	Sun, 22 Mar 2026 03:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774148974; cv=none; b=r5TZZJu5UQ9k1AhFYqfwiQVb37BGDXei3aQ5KxFGwBbFhs91r8DwRANpV+hKm/AVJGI8lKXLPyl3C6Yri0FZXfvvjFNqwSch37N/Z3oDMVw0J/T3/UVp/m+PBNMBBRV9vLqS9dl73KYA6x5cMixSfMgJ1JlkKcKlB81qkfCnv6Y=
+	t=1774148974; cv=none; b=hHUaowAFXKr/rE/FMz9/bFMUFWfPzlYcUQbrOipmCYHRx0W6UbxpAjPXOdVcKIr0JCQ2r57fjNZ2+1h/3Z1bHRz6QhJzmDo45Wjlayt/TwABpdmRHcdhqckV9T4mE6qH8BEAl2nPzTVacyj1MGSglSdx9d5E/zhhVb5mDSD/l9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1774148974; c=relaxed/simple;
-	bh=8Uh/2C2chpwUjdNna2gkJd6YPMWhIiCHZHB2dwFsr64=;
+	bh=qtH6bG4u2QFvuoi0sHppW45t1BcXTOUZnSN9m4ZE0F8=;
 	h=Message-ID:Date:From:To:Cc:Subject:References:MIME-Version:
-	 Content-Type; b=DawPGAPqyKdy3kF4sWR6+zV1JtgjnGYLIh/+VeeHeslvWdha8A+4OMWAYOYLxYA09Q9jrBk5NXX+Zh6uDtb9MZTm1+FmMkAfOrjuLDUl9ncIPMSDLW0IVxNr+Xlm5Ufntdcd/ppeOJyj3HH8hcRCq0QgEGmfTT5RyjpBl8VdRiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t1JFfRde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B2BC2BCB4;
+	 Content-Type; b=Q7My+2b4A3vNv/d7Wlk94A8w2bOLXjLLCDHeam/QB8ZPP6pPLnAS05OpUTBjyNdFn1kIku3pz8iKcc8oUq9E152Z1zTiRCPARK4G1NbmrKtF2NeoHq+KJNRJmdmKlFJBSWPakNEJfzXOLIBPdBK1u+4x/66Y6D4+dHbXYPa5foY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=St4VISp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFBEEC2BCB7;
 	Sun, 22 Mar 2026 03:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774148973;
-	bh=8Uh/2C2chpwUjdNna2gkJd6YPMWhIiCHZHB2dwFsr64=;
+	s=k20201202; t=1774148974;
+	bh=qtH6bG4u2QFvuoi0sHppW45t1BcXTOUZnSN9m4ZE0F8=;
 	h=Date:From:To:Cc:Subject:References:From;
-	b=t1JFfRde5MmXavnxWQsfvd0KCUteupz0nTfbJOYGVCHgqZdNk8MxdYU/q8M7vVLsG
-	 ibtH6KCeLFlCenMAvCy7tDqjEEIL6xrX334mXemNIf7yhr7/kchdIYkU2D61cWcjz7
-	 yDt8t8mDS9FzfOBA0Cz9LIfg8CA7/Mdf/egAZsIuIhaVjWgJoC7VNt70gXdJio4Aj8
-	 o5TAT7GRrmmtzo8O4Kaw4KTpsSxPOWXHS7PgKF06RJHWmIAt/wDGEWeFz8sAlylPGs
-	 dOUjZJE1Sk0mAdVLfWxAF9m0LTRSPK1KV/81IayE+SjUXK1ezrH4x0+jbKowu+u20o
-	 c9Jly58edVJPg==
+	b=St4VISp/eESYD9sFLI8+jZcJ+y51aMmXU8RaUbgrIBErHzVXw2bMy04DDTSf8C5qh
+	 CiN6Xt8KdWyi3gFjBw5vs6Zmc3oFAcfiZITcDNbSvhwRvrhmFOsFDFQ27yrmKWCOeF
+	 lTxveF0SexiCdf5FLt7wXqtF7snosM9BGbOvHyyHznG8FezG78siG3GFBjcACxlZ4X
+	 hewim5eoKKFuAzqmkDd5+NZuGlMmWArnWG0J0wnoAT4CSiKOaKtwTJmw/kGyCvHPvo
+	 HpXoVov9K/WQDC/ZQTOI6VREFHxUkLoU82eNZDqZq35/dytlqrayR8Su+y5GZS52ly
+	 ohWuN9+grUDdg==
 Received: from rostedt by gandalf with local (Exim 4.99.1)
 	(envelope-from <rostedt@kernel.org>)
-	id 1w49Cc-0000000B7jn-1T1A;
+	id 1w49Cc-0000000B7kH-2AUe;
 	Sat, 21 Mar 2026 23:10:10 -0400
-Message-ID: <20260322031010.191529722@kernel.org>
+Message-ID: <20260322031010.367354466@kernel.org>
 User-Agent: quilt/0.69
-Date: Sat, 21 Mar 2026 23:09:56 -0400
+Date: Sat, 21 Mar 2026 23:09:57 -0400
 From: Steven Rostedt <rostedt@kernel.org>
 To: linux-kernel@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>,
  Mark Rutland <mark.rutland@arm.com>,
  Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
  Andrew Morton <akpm@linux-foundation.org>,
- stable@vger.kernel.org
-Subject: [for-linus][PATCH 2/5] tracing: Fix failure to read user space from system call trace events
+ stable@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+Subject: [for-linus][PATCH 3/5] tracing: Fix trace_marker copy link list updates
 References: <20260322030954.198361547@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -70,127 +71,124 @@ Content-Type: text/plain; charset=UTF-8
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227808-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227809-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[rostedt@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	DBL_BLOCKED_OPENRESOLVER(0.00)[efficios.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7C4082E80C5
+X-Rspamd-Queue-Id: 19EB22E80CE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
 From: Steven Rostedt <rostedt@goodmis.org>
 
-The system call trace events call trace_user_fault_read() to read the user
-space part of some system calls. This is done by grabbing a per-cpu
-buffer, disabling migration, enabling preemption, calling
-copy_from_user(), disabling preemption, enabling migration and checking if
-the task was preempted while preemption was enabled. If it was, the buffer
-is considered corrupted and it tries again.
+When the "copy_trace_marker" option is enabled for an instance, anything
+written into /sys/kernel/tracing/trace_marker is also copied into that
+instances buffer. When the option is set, that instance's trace_array
+descriptor is added to the marker_copies link list. This list is protected
+by RCU, as all iterations uses an RCU protected list traversal.
 
-There's a safety mechanism that will fail out of this loop if it fails 100
-times (with a warning). That warning message was triggered in some
-pi_futex stress tests. Enabling the sched_switch trace event and
-traceoff_on_warning, showed the problem:
+When the instance is deleted, all the flags that were enabled are cleared.
+This also clears the copy_trace_marker flag and removes the trace_array
+descriptor from the list.
 
- pi_mutex_hammer-1375    [006] d..21   138.981648: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981651: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981656: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981659: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981664: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981667: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981671: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981675: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981679: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981682: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981687: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981690: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981695: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981698: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981703: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981706: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981711: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981714: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981719: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981722: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981727: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981730: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
- pi_mutex_hammer-1375    [006] d..21   138.981735: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
-     migration/6-47      [006] d..2.   138.981738: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+The issue is after the flags are called, a direct call to
+update_marker_trace() is performed to clear the flag. This function
+returns true if the state of the flag changed and false otherwise. If it
+returns true here, synchronize_rcu() is called to make sure all readers
+see that its removed from the list.
 
-What happened was the task 1375 was flagged to be migrated. When
-preemption was enabled, the migration thread woke up to migrate that task,
-but failed because migration for that task was disabled. This caused the
-loop to fail to exit because the task scheduled out while trying to read
-user space.
+But since the flag was already cleared, the state does not change and the
+synchronization is never called, leaving a possible UAF bug.
 
-Every time the task enabled preemption the migration thread would schedule
-in, try to migrate the task, fail and let the task continue. But because
-the loop would only enable preemption with migration disabled, it would
-always fail because each time it enabled preemption to read user space,
-the migration thread would try to migrate it.
+Move the clearing of all flags below the updating of the copy_trace_marker
+option which then makes sure the synchronization is performed.
 
-To solve this, when the loop fails to read user space without being
-scheduled out, enabled and disable preemption with migration enabled. This
-will allow the migration task to successfully migrate the task and the
-next loop should succeed to read user space without being scheduled out.
+Also use the flag for checking the state in update_marker_trace() instead
+of looking at if the list is empty.
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260316130734.1858a998@gandalf.local.home
-Fixes: 64cf7d058a005 ("tracing: Have trace_marker use per-cpu data to read user space")
+Link: https://patch.msgid.link/20260318185512.1b6c7db4@gandalf.local.home
+Fixes: 7b382efd5e8a ("tracing: Allow the top level trace_marker to write into another instances")
+Reported-by: Sasha Levin <sashal@kernel.org>
+Closes: https://lore.kernel.org/all/20260225133122.237275-1-sashal@kernel.org/
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/trace.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ kernel/trace/trace.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
 diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index ebd996f8710e..bb4a62f4b953 100644
+index bb4a62f4b953..a626211ceb9a 100644
 --- a/kernel/trace/trace.c
 +++ b/kernel/trace/trace.c
-@@ -6783,6 +6783,23 @@ char *trace_user_fault_read(struct trace_user_buf_info *tinfo,
- 	 */
+@@ -555,7 +555,7 @@ static bool update_marker_trace(struct trace_array *tr, int enabled)
+ 	lockdep_assert_held(&event_mutex);
  
- 	do {
-+		/*
-+		 * It is possible that something is trying to migrate this
-+		 * task. What happens then, is when preemption is enabled,
-+		 * the migration thread will preempt this task, try to
-+		 * migrate it, fail, then let it run again. That will
-+		 * cause this to loop again and never succeed.
-+		 * On failures, enabled and disable preemption with
-+		 * migration enabled, to allow the migration thread to
-+		 * migrate this task.
-+		 */
-+		if (trys) {
-+			preempt_enable_notrace();
-+			preempt_disable_notrace();
-+			cpu = smp_processor_id();
-+			buffer = per_cpu_ptr(tinfo->tbuf, cpu)->buf;
-+		}
+ 	if (enabled) {
+-		if (!list_empty(&tr->marker_list))
++		if (tr->trace_flags & TRACE_ITER(COPY_MARKER))
+ 			return false;
+ 
+ 		list_add_rcu(&tr->marker_list, &marker_copies);
+@@ -563,10 +563,10 @@ static bool update_marker_trace(struct trace_array *tr, int enabled)
+ 		return true;
+ 	}
+ 
+-	if (list_empty(&tr->marker_list))
++	if (!(tr->trace_flags & TRACE_ITER(COPY_MARKER)))
+ 		return false;
+ 
+-	list_del_init(&tr->marker_list);
++	list_del_rcu(&tr->marker_list);
+ 	tr->trace_flags &= ~TRACE_ITER(COPY_MARKER);
+ 	return true;
+ }
+@@ -9761,18 +9761,19 @@ static int __remove_instance(struct trace_array *tr)
+ 
+ 	list_del(&tr->list);
+ 
+-	/* Disable all the flags that were enabled coming in */
+-	for (i = 0; i < TRACE_FLAGS_MAX_SIZE; i++) {
+-		if ((1ULL << i) & ZEROED_TRACE_FLAGS)
+-			set_tracer_flag(tr, 1ULL << i, 0);
+-	}
+-
+ 	if (printk_trace == tr)
+ 		update_printk_trace(&global_trace);
+ 
++	/* Must be done before disabling all the flags */
+ 	if (update_marker_trace(tr, 0))
+ 		synchronize_rcu();
+ 
++	/* Disable all the flags that were enabled coming in */
++	for (i = 0; i < TRACE_FLAGS_MAX_SIZE; i++) {
++		if ((1ULL << i) & ZEROED_TRACE_FLAGS)
++			set_tracer_flag(tr, 1ULL << i, 0);
++	}
 +
- 		/*
- 		 * If for some reason, copy_from_user() always causes a context
- 		 * switch, this would then cause an infinite loop.
+ 	tracing_set_nop(tr);
+ 	clear_ftrace_function_probes(tr);
+ 	event_trace_del_tracer(tr);
 -- 
 2.51.0
 
