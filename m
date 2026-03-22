@@ -1,79 +1,81 @@
-Return-Path: <stable+bounces-227866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id DPymJD5ywGmDHwQAu9opvQ
-	(envelope-from <stable+bounces-227866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 23:50:38 +0100
+	id SGJoOFNywGmDHwQAu9opvQ
+	(envelope-from <stable+bounces-227867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 23:50:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05ED02EB101
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 23:50:37 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88C22EB130
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 23:50:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A0D7E300767F
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 22:50:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D7B030137B0
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 22:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CEDA30C62E;
-	Sun, 22 Mar 2026 22:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB85372EF7;
+	Sun, 22 Mar 2026 22:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b="z2XWmGKp"
+	dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b="qHpxKKTn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD76279DA6
-	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 22:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B227A37E2E9
+	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 22:50:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774219835; cv=none; b=Fa4Dr4EKImAFqkczHiP/3Z1LJZ5Mf97linDrGhP33nPRfZUI0yYcMcbZ5/2hRudA5ttuPWctRiE5ZSldMcXYbsIgOODCbrauCIgyia5Mj1Tu5X8cXyEckhoyGZLvPCi9+dJfO1BW8ItbNUEoVw0Exb1lwJeVVwYO6XjLnQ848eU=
+	t=1774219838; cv=none; b=FxQ+PEg3QhZY+Ayj2L2OCnzaJR+HoYAjQnovbbrn78RuReghDCUw0BbFcryMXcEpOu36jNLB5mYKklXe0WNWNvlQhxmUa2TR4z97FNBgU6ckRFPjBBUFYjhoQuDe0s6dgX5EF8pLEtQcJVTSgdYBzwMvux9fyCydGv0YYnnAzGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774219835; c=relaxed/simple;
-	bh=0rBP9cmP3Rq9XVksFITPmsWOgg65fxpyDfXQOlq5fX0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WemmGM9kRf3Yy+PclsJgmscLvdMdHFR4N4skJU6kT1YJ2PJ4ZkRuGIeditySMVyM73ENxS6xlRERT+6C2UUMqNwmoCLBlFPmSrc99gficlM7vrPvxf+CgwcSErq0F7r4B6wi/6NxZGaqTP/d4A3BcKMA/ScpE6N5rHaN7tnu/so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com; spf=pass smtp.mailfrom=jphein.com; dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b=z2XWmGKp; arc=none smtp.client-ip=74.125.82.177
+	s=arc-20240116; t=1774219838; c=relaxed/simple;
+	bh=NKt2CmEWcZXfwziTA/rm+SpSsbUmPomDYqEGhX+nbPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CnhEYT/A6WrwxVNIZdamioHb5iB/fiAlhpg4x9HrMLyXof4JOflE2Qy44tqbwGQqYlMFe6NZjRYoo4zLgRcCRL/oYWmSDmNpD2xGCOgaZa4YRGKOJmrJtqaFtGW4zU/fv1mbcw5v4YIbBgocLUOyok5YHWGMOChnxaK9v3KuToI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com; spf=pass smtp.mailfrom=jphein.com; dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b=qHpxKKTn; arc=none smtp.client-ip=74.125.82.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jphein.com
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2c0ea57fea7so4224362eec.0
-        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 15:50:33 -0700 (PDT)
+Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-2c0bcd8f194so4085198eec.1
+        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 15:50:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jphein.com; s=google; t=1774219833; x=1774824633; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nUoyhbPcIc2EMQIlt76bSFYcSIJJ4Un7MV9DQ53afaM=;
-        b=z2XWmGKpJraYTn2kyGrsxQMAG1glpDCkGtmHAeyFXyOJc9spdTOkWirOjegwJUI48y
-         4oCCHqCv5X85ZFM3YBhqapdfLO3R8Z6FfVW+aGuk7QY2Yn1lo06fYJVB8r0BbGaq7ujU
-         2mVBMJzk7MnNz4MWqvpwfm83hPDzQf5uZKNtjMyOygkd/Yg55G67nD7fUkvurPUPOHx8
-         /Bv8WRr15RqK9gLjXfkHA3/+B8jc82TTUUMu+ncyrvfSx6XWVNr9pJQjGyF7grnITJj5
-         KTAvMC/eQhSktskUgeLZKMGa9heHb+MvgkBQemuX6Y1QO/OYcNkEiCIxM9j0UqHOrocb
-         6/eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774219833; x=1774824633;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=jphein.com; s=google; t=1774219836; x=1774824636; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nUoyhbPcIc2EMQIlt76bSFYcSIJJ4Un7MV9DQ53afaM=;
-        b=iIuqG74RJmhvLOye31eirzEppN1kbfrJTsrQXPV52u58mCWX/7l1v8gbh6253lf8/+
-         1QOBoe86YUEghrhLmGkY6UV52/4Us+/CgSAcJ9cHDpukM8GJwHVwhwLPRZUbsVNLo3JB
-         nzm+b3wghlpLhAI+MWO/Wox4nnqOIswefj+yxtQ1TyveJZbaYwCHlyp6wzNyxxsimctn
-         KAicqT0RQ0wi/f5nEdUUsnLDYeKA8zI9Gx8Yx3yhDIQH9V3Tc3QdfVTP9/wVyrbF3iw1
-         lBpinb7KdjRGgIDrSI8M2x6JIHhdp2frZCqO9FInIGfGUXON0SKgFrKQPvfHjIf3VQHX
-         6qaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZfkOo9nKchfj74Ve4N/sDs0z1Xkw4/M7dl4bBvptFzbDSk8AVbTHh7ZbBueVotGBsXVfAuRE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWhSb8W5PJmV/T1/w1DWObO0XRrJO6KvPDmWEOS4iWnTJFFCza
-	VsDQikZtEf3RmIsEIejep82Pf6QZNMyskz1ww0+k4s0+vvH+1YKEKMzoczKofrqAcg==
-X-Gm-Gg: ATEYQzxF/xivaR3txEzKcuQC0MZaaqru15n01szU0BmxhWuJTGxFFAiEnv622TJvTZK
-	sTiA2IYcKWceGch69wx/xXOKxBV97cGWbnz5SDLEadqWuOvT2+jCOtAi9D7t9p+ih2VscSY7dkv
-	lRjCaXOUxaMKB7RglDPhQy3PTsIcjKE4TbfezMXcn1M29gOKIDB92QNrQSfuMQsjNXc6PvnGCQW
-	qTCQ76Lxly23aCbNNStz/a/ggAl4LXKFOIu6Tsm88m+fsO3N6tP840dUarFVg3OPHm1XF16pkPN
-	EX1/FQJQDP46WWU9IRDpPiKLfXr5LLcevf/LpNOatsSur6J9WZgyfP6oXSo69WcGhFx8NpDR0sm
-	E52UuOMMrJfYU8xQThNG3frZTYR5FdMY4FQVlvGeu4QB3toqT7v5utn5H5ZnG+/bN+2OD8xu55B
-	dNRSvdSXei
-X-Received: by 2002:a05:7301:1f15:b0:2be:884e:17c3 with SMTP id 5a478bee46e88-2c1095a7a7amr4111742eec.7.1774219832489;
-        Sun, 22 Mar 2026 15:50:32 -0700 (PDT)
+        bh=wBcqWFVY3mntUXBUlKC2Ful/A4x09kKb7ZTmoHge9Jw=;
+        b=qHpxKKTny7Ty4lMXmjMeLHOcAmQ54z37ZpyZaiOBrbR7v9fvjRLJR05E4FHZhO9/R0
+         +7bJ3f7y054KkeEhXV0V1siJ8URhrInJCHZfDKoNyGXubwXj4Xf52HpQrBcGsEy5bLrK
+         6HZIxCcpojx8tr9j8vLyEbskyN1c07N7wZi4feDnCJHgocX5fprW79d8+lolGU2gX9dI
+         z+WM32wkRRCwYFoW1jxqzrQemAI2w5pW2J1Ez1ThGWah+Gn4gxu0p4TDUWg5Fe4EhA+M
+         xR+2pkM1aPfnffQv9VvxxNoZ79Ec+Q79VtDZaWM0tqS7nJ24oqqATCF7GXh/QFzqPJ2L
+         1Dng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774219836; x=1774824636;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=wBcqWFVY3mntUXBUlKC2Ful/A4x09kKb7ZTmoHge9Jw=;
+        b=BJLUG1sKKWQOsmgtK3VeGGZgaKzZRFrAiPwAxxdS07vegGozZYRda6zOBLoUM02HIs
+         /6YCwSkxGpZgIbZhfkEf4PAE+43ShS9FnqAY0Z3A1oSFVKgd6oYagZCSyarXodrNAS8c
+         rSJ0oQskotstzeOjBvk7ep0tWsMp8TNVs2ewN5Ocqx4QNNmuaoY+SKVUEz+ucA4yGvRY
+         6+sdja+7JV6DMz61SnGp/OXNzp65ftMW/rjs2RVxK0kzq/mV1+NnE3tx/Vt6N9qh9akt
+         v4GmOHM9m4gj/LxCPJqkAY0S3h7QFXEVo9AmdkKNK8sbZFad8ryUAde30oq5oNBuJRhL
+         Rdnw==
+X-Forwarded-Encrypted: i=1; AJvYcCWaHiKMAyFNB2H2ARtdbDtw+XJzX8ddOF6mmJvAOcClx6uKvKTtoyR0zr7aOfvTP2N2UZr8GnA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKjxojs+V70SuBGLJrUX8duLHR8diyELa99A67XZgpjBJk8KAz
+	IAFMvffs6zMFFpMIhIQXCbbQ11xIDWVYo+Ct2xYCu3LZrrvOn2Q4rXO+DQ12P36sBg==
+X-Gm-Gg: ATEYQzx+0Nm5lrmcFhkMLbCdb1Twp+BfVh8DuDsvRdqi0PWQ/IWAaLhXesvulfQUF0p
+	9DEzLckLjZMnNlSN0EfUxuiXEOHJHUbk6toFwA5sRLj1GwCnk+RQUJZwILoDuyb9LflZzcvWO+5
+	sgBcss+eMzE8mfoFhn/XarpzzSZXgKuDOhDD7Wc8VRxI1BZlyjUk/LEJ6TF2XDPBz8RkQJq6riI
+	f+HJo8nxPpPRhEOwLdb7sYixBFmxRaglbluj5NuEovvrEGN1Ubnl0v24Jpn8WsdjtR3LIxAkCry
+	m2KZ5O2Mn4nkHRCa/lNSnsQcwJ2/BWuA9wi0TgApkXpnnkUOK2JMMWinOU0d+myb+znMq6jWhx0
+	zhBow2HBbtZaZ6vcCOJlqtmK3lmYbT7pSR5h0M5n8MQ8TMSlQn8Tmn7MDALi5LgWETIu9DF7OyJ
+	D+da4+bFaw
+X-Received: by 2002:a05:7301:1406:b0:2c1:3f85:756 with SMTP id 5a478bee46e88-2c13f850ae6mr38940eec.11.1774219835785;
+        Sun, 22 Mar 2026 15:50:35 -0700 (PDT)
 Received: from katana.lan ([108.74.4.89])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b31ebd5sm10928052eec.27.2026.03.22.15.50.31
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2c10b31ebd5sm10928052eec.27.2026.03.22.15.50.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 15:50:32 -0700 (PDT)
+        Sun, 22 Mar 2026 15:50:35 -0700 (PDT)
 From: JP Hein <jp@jphein.com>
 To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans de Goede <hansg@kernel.org>,
@@ -82,10 +84,12 @@ Cc: linux-media@vger.kernel.org,
 	linux-usb@vger.kernel.org,
 	stable@vger.kernel.org,
 	JP Hein <jp@jphein.com>
-Subject: [PATCH v4 0/3] USB/UVC: Add quirks to prevent Razer Kiyo Pro xHCI cascade failure
-Date: Sun, 22 Mar 2026 15:50:09 -0700
-Message-ID: <20260322225012.1817920-1-jp@jphein.com>
+Subject: [PATCH v4 1/3] USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
+Date: Sun, 22 Mar 2026 15:50:10 -0700
+Message-ID: <20260322225012.1817920-2-jp@jphein.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260322225012.1817920-1-jp@jphein.com>
+References: <20260322225012.1817920-1-jp@jphein.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -99,19 +103,19 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[jphein.com,reject];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[jphein.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[jp@jphein.com,stable@vger.kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227866-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227867-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[jphein.com:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -119,70 +123,51 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 05ED02EB101
+X-Rspamd-Queue-Id: A88C22EB130
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-The Razer Kiyo Pro (1532:0e05) is a USB 3.0 webcam whose firmware has a
-well-documented failure mode that cascades into complete xHCI host
-controller death, disconnecting every USB device on the bus -- including
-keyboards and mice, requiring a hard reboot.
+The Razer Kiyo Pro (1532:0e05) is a USB 3.0 UVC webcam whose firmware
+does not handle USB Link Power Management transitions reliably. When LPM
+is active, the device can enter a state where it fails to respond to
+control transfers, producing EPIPE (-32) errors on UVC probe control
+SET_CUR requests. In the worst case, the stalled endpoint triggers an
+xHCI stop-endpoint command that times out, causing the host controller
+to be declared dead and every USB device on the bus to be disconnected.
 
-The device has two crash triggers:
+This has been reported as Ubuntu Launchpad Bug #2061177. The failure
+mode is:
 
-  1. LPM/autosuspend resume: Device enters LPM or autosuspend, fails to
-     reinitialize on resume, producing EPIPE (-32) on UVC SET_CUR. The
-     stalled endpoint triggers an xHCI stop-endpoint timeout, and the
-     kernel declares the host controller dead.
+  1. UVC probe control SET_CUR returns -32 (EPIPE)
+  2. xHCI host not responding to stop endpoint command
+  3. xHCI host controller not responding, assume dead
+  4. All USB devices on the affected xHCI controller disconnect
 
-  2. Rapid control transfers: sustained rapid UVC SET_CUR operations
-     (hundreds over several seconds) overwhelm the firmware. The error-code query
-     (GET_CUR on UVC_VC_REQUEST_ERROR_CODE_CONTROL) amplifies the
-     failure by sending a second transfer to the already-stalling device,
-     pushing it into a full lockup and xHCI controller death.
+Disabling LPM prevents the firmware from entering the problematic low-
+power states that precede the stall. This is the same approach used for
+other webcams with similar firmware issues (e.g., Logitech HD Webcam C270).
 
-This has been reported as Ubuntu Launchpad Bug #2061177, with reports
-across kernel versions 6.5 through 6.8. There are
-currently no device-specific quirks for this webcam in either the USB
-core quirks table or the UVC driver device table.
+Cc: stable@vger.kernel.org
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2061177
+Signed-off-by: JP Hein <jp@jphein.com>
+---
+ drivers/usb/core/quirks.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-This series adds three patches:
+diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
+index 9e7e49712..7c4038a1e 100644
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -480,6 +480,8 @@ static const struct usb_device_id usb_quirk_list[] = {
+ 	/* Razer - Razer Blade Keyboard */
+ 	{ USB_DEVICE(0x1532, 0x0116), .driver_info =
+ 			USB_QUIRK_LINEAR_UFRAME_INTR_BINTERVAL },
++	/* Razer - Razer Kiyo Pro Webcam */
++	{ USB_DEVICE(0x1532, 0x0e05), .driver_info = USB_QUIRK_NO_LPM },
+ 
+ 	/* Lenovo ThinkPad OneLink+ Dock twin hub controllers (VIA Labs VL812) */
+ 	{ USB_DEVICE(0x17ef, 0x1018), .driver_info = USB_QUIRK_RESET_RESUME },
+-- 
+2.43.0
 
-Patch 1: USB core -- USB_QUIRK_NO_LPM to prevent Link Power Management
-  transitions that destabilize the device firmware.
-
-Patch 2: UVC driver -- introduce UVC_QUIRK_CTRL_THROTTLE to rate-limit
-  SET_CUR control transfers (50ms minimum interval) and skip the
-  error-code query after EPIPE errors on affected devices.
-
-Patch 3: UVC driver -- add Razer Kiyo Pro device table entry with
-  UVC_QUIRK_CTRL_THROTTLE, UVC_QUIRK_DISABLE_AUTOSUSPEND, and
-  UVC_QUIRK_NO_RESET_RESUME to address both crash triggers.
-
-Together, these keep the device in a stable active state, prevent rapid
-control transfer crashes, and avoid the power management transitions
-that trigger the firmware bug.
-
-Changes since v3:
-  - Regenerated patches against media-committers next branch to fix
-    context mismatch (v3 was based on Ubuntu 6.8 source)
-
-Tested on:
-  - Kernel: 6.8.0-106-generic (Ubuntu 24.04)
-  - Hardware: Intel Cannon Lake PCH xHCI (8086:a36d)
-  - Device: Razer Kiyo Pro (1532:0e05), firmware 8.21
-  - Stress test: 50 rounds of rapid UVC control changes, 0 failures
-
-Stress test and crash evidence: https://github.com/jphein/kiyo-xhci-fix
-
-JP Hein (3):
-  USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
-  media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for fragile firmware
-  media: uvcvideo: add quirks for Razer Kiyo Pro webcam
-
- drivers/media/usb/uvc/uvc_driver.c | 17 ++++++++++++++++
- drivers/media/usb/uvc/uvc_video.c  | 32 ++++++++++++++++++++++++++++++
- drivers/media/usb/uvc/uvcvideo.h   |  3 +++
- drivers/usb/core/quirks.c          |  2 ++
- 4 files changed, 54 insertions(+)
 
