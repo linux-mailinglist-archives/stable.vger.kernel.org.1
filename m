@@ -1,199 +1,185 @@
-Return-Path: <stable+bounces-227859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOoyL1ZiwGkHHQQAu9opvQ
-	(envelope-from <stable+bounces-227859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 22:42:46 +0100
+	id R3YALbJowGlkHgQAu9opvQ
+	(envelope-from <stable+bounces-227860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 23:09:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F2D2EAE58
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 22:42:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 329232EAF3F
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 23:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B1E103002F6E
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 21:42:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 191A7300A74C
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 22:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5880D136672;
-	Sun, 22 Mar 2026 21:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043FA373BE0;
+	Sun, 22 Mar 2026 22:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0NLdGuB"
+	dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b="gdNOrHad"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A49D3B7A8;
-	Sun, 22 Mar 2026 21:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50D431F98E
+	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 22:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774215759; cv=none; b=SC94BXdg3E/c7AFyyzcTOy3hdiLglFmb+IpMhGeK+tNo9ick8XpnkA8Y7KMPldM2m8tDGKlrAHg+DcY0c7JHCyXrMT7dvC64vJlHwbctSefOm6lDhte1tdObxy+whj/WknQ8NMKYQrRohPcStKtz6RjJYnJlrb725RvHvjiAMuo=
+	t=1774217388; cv=none; b=i5Nz+iqOfaf3cgHzK7lcjvpQ8tLa6p51mKG7pQW1MwFXRxPEXRvG8QULZ5V8XxVnhmzYVC1VjhdzmmzKJ4lvSS6f8PFpXmGYbair9doF74U/7a2zw6c+7a8q63Iy6SZZ+SbyMqgSCdw2NjzNnqNXQB1qrZHkgIA0/wGAQJWq9DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774215759; c=relaxed/simple;
-	bh=ooMoZ9jh24CJIzH3d+V2rP+5LA0wTUI70qyRaaUcwfw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Y8VsBX+bPozJxOf/g5E3kKvVqnhER1Ckg4+NIXeyPYpuFLQYxOlBiph4Qfo6gAo0Gs9/zuYS5LKQ3PbD7ySzTa3LFgpMr6m7/5XTsZ5LzP665Gql7HMFw4Egxam8iL4uRV99P4kbBT/hs5OGwYKrMSytqXZWBadjhJSiuGlk5bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0NLdGuB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3828DC19424;
-	Sun, 22 Mar 2026 21:42:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774215758;
-	bh=ooMoZ9jh24CJIzH3d+V2rP+5LA0wTUI70qyRaaUcwfw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=f0NLdGuBd8WWucri/vvQc6MkkpydN2mIlO3h9Yjht+gJHhWg6ANBgi7Ah/e0ERa4s
-	 cWtXLwNdd9L0B2BaYJwcFrlvQXsqoyb2EK8FqLSu5Oj5YkYcP72+VNaeQCiWXnd5os
-	 LZu1WWmMmjxCVIDI0HnzwZWUi2bU+W8Tm2ucy1/dMDARnH5ho6QplDDiLFQUHo2EqQ
-	 YYOwrPcpfL/LbAJVNxq/LVGMWsJnmOvLG/sbeC993jzjJl0cmPnMkz72OGd1ZaqX4+
-	 Pn9jB9XXDyDL+o8b3aEVTXOfwAenqE6mulnDnwgeetuclKZ/I+PaOT7fWV2VfMaauV
-	 xHghLq1/QI5rA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Hao-Yu Yang <naup96721@gmail.com>, security@kernel.org
-Cc: mingo@redhat.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH v2] futex: Use-after-free between futex_key_to_node_opt
- and vma_replace_policy
-In-Reply-To: <ab8wX/vk3An6bFA8@naup-virtual-machine>
-References: <20260313124756.52461-1-naup96721@gmail.com>
- <ab8wX/vk3An6bFA8@naup-virtual-machine>
-Date: Sun, 22 Mar 2026 22:42:35 +0100
-Message-ID: <87cy0vilro.ffs@tglx>
+	s=arc-20240116; t=1774217388; c=relaxed/simple;
+	bh=C+AbGO+IXiAylnzIXV7KY8aH2ceP+5Q/0HArBOMbwhw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PwiWEr8oOwiWJaaCThFkwRwV8b3aZlyY6AyfJBUrp4Ie+Q5Ls4RD00W6ZfH5ZUM2vkuKFVpTdjlocZ7Is6r353lSBGGtFKSa2Hcc9r0SZbYLpzjyrNkbmCiZ2MR1Ssz5xDPqm10DpX6cZ+OUTp2Csvrdgij1xe2fYbdVJKEDuXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com; spf=pass smtp.mailfrom=jphein.com; dkim=pass (2048-bit key) header.d=jphein.com header.i=@jphein.com header.b=gdNOrHad; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=jphein.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jphein.com
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-1274204434bso3567101c88.1
+        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 15:09:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jphein.com; s=google; t=1774217387; x=1774822187; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KiiQQ0nYA7Fu3VA4AXEfqp4dM8kdCa/UiUZIcb5KPa4=;
+        b=gdNOrHadXKfyHbpaGzaxn3KF/3INj8H6mt7V7TIF05awTRMnFlugX+4lgpg/B39CPW
+         4Np5XV6yU2DsEPbaocd3sDaSRI+xHZCOrwPEgM7SUju2dyM3LzuJLIx1a9hbzsfe6rjc
+         pKn9hbbBfR0NCYgItS6FG+HCuPcGPI6eooi3NM/nhRmkxia68vfHH6hRBoMidxn+/OCn
+         ub+48bEP8rYV+NsZ5jV0MH/A4IeNfVEXP1iC81kU4JaLf/531GVWQbm/jQG6SenwanV2
+         hWsOGA5YQF8MZ7n2mhf2tvF+W1hSDldlEWkDMZEyJswIPWq+Bokc+HWsMwjsXTLVvXQf
+         SOQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774217387; x=1774822187;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KiiQQ0nYA7Fu3VA4AXEfqp4dM8kdCa/UiUZIcb5KPa4=;
+        b=HBLXyqLJUhmQJM68yBVwl/xoe58ffn8rAY1L/jcj5Bdswk36p4otjAG7un9O56jHNH
+         YRIou5k2xtzBer47bnvzdWY9tSFIbQW66QJZDsym1zw9+COZy5dCU3rbGdhNvzVLTfxY
+         +dVStdQekiaAph2jMls2TVL8R+J9WamQVhdX+BM/QWOGNXqLqt/519xpdHe1wLuBRxqY
+         ZbBQwkNovIojBq0P9vRMeV0a1NRmvXzna0tmvC0rqusMTEC89rXsgRJhOdi3IXMzebkp
+         PcOiTVCSgT2xqlwwT3pblWQiF6BlG6RwIbe3tLT15o56wljVtKOioM5JZ/26CuW32aZP
+         x4og==
+X-Forwarded-Encrypted: i=1; AJvYcCVf0gyRnoZxG+15XtLj0seOrMo9+zSNnaj/0DedSUU/Zozen7DtOXDs0mNlO+PBQWD96Kkc8uA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjRPnDyljqQiNcQjWOZbp8wySKYlHpUl4ub8D2JLsNqU4Hc4Gw
+	FlRaK4M75B+8vS+atFSLFlRDWRXZ0FNv9JjMO7nBW9VhlzWANX0xIqDDMDBXfGNUFw==
+X-Gm-Gg: ATEYQzwXjLqhLfoR3hRMRUqvfbryfkwEVHVnMmj6gi8EPmUKZG2vAKVVJ9uy/GjBxc1
+	u0ZOaq0ArLPPnpzqA2N3h1I3bl5t1IY2pvHPd2NZwl5TLqnW6k9R2pbRMKaw9R0Ej4WjLA/eky+
+	DpupOPlcN++0DJ2C3xVSB74ub3j0tF2Ov2WgMdQt9jcLACuUrQwDH8XNMjFP8cgnt8mR3x0rAZs
+	WQsGHrYWTAtQzkFms9PVCpS/DXY8jBDmzlT5oWid6n5OrR+SQUG/LBxAH2AySFrAT1Mo9Z/wXHG
+	jn6Tmx9cWo5JTXVIRoH4VnYlVHQB7IkM/1fngD9hUsykN1bHC8+RhgRynb5YSKSN5iacaIgGxxS
+	juBvsnSiMnwC+jCIhWUmuPvvKmSlazoyk4X7cjId9VWfI2KprH5rBTnlwJUPaItsMaRkUYMU3DE
+	MW7cuEhZ8i
+X-Received: by 2002:a05:7022:6894:b0:128:cdb7:76e1 with SMTP id a92af1059eb24-12a72326a69mr3580238c88.13.1774217386408;
+        Sun, 22 Mar 2026 15:09:46 -0700 (PDT)
+Received: from katana.lan ([108.74.4.89])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12a7330d1c5sm7707766c88.0.2026.03.22.15.09.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Mar 2026 15:09:45 -0700 (PDT)
+From: JP Hein <jp@jphein.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-media@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	stable@vger.kernel.org,
+	JP Hein <jp@jphein.com>
+Subject: [PATCH v3 0/3] USB/UVC: Add quirks to prevent Razer Kiyo Pro xHCI cascade failure
+Date: Sun, 22 Mar 2026 15:09:37 -0700
+Message-ID: <20260322220940.1462189-1-jp@jphein.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [2.34 / 15.00];
-	MID_END_EQ_FROM_USER_PART(4.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_RHS_NOT_FQDN(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[jphein.com,reject];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[jphein.com:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FREEMAIL_TO(0.00)[gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227859-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[jphein.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227860-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tglx@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C0F2D2EAE58
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jp@jphein.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 329232EAF3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 22 2026 at 07:57, Hao-Yu Yang wrote:
+The Razer Kiyo Pro (1532:0e05) is a USB 3.0 webcam whose firmware has a
+well-documented failure mode that cascades into complete xHCI host
+controller death, disconnecting every USB device on the bus -- including
+keyboards and mice, requiring a hard reboot.
 
-> On Fri, Mar 13, 2026 at 08:47:56PM +0800, Hao-Yu Yang wrote:
->> During futex_key_to_node_opt() execution, vma->vm_policy is read under
->> speculative mmap lock and RCU. Concurrently, mbind() may call
->> vma_replace_policy() which frees the old mempolicy immediately via
->> kmem_cache_free().
->>=20
->> This creates a race where __futex_key_to_node() dereferences a freed
->> mempolicy pointer, causing a use-after-free read of mpol->mode.
->>=20
->> [  151.412631] BUG: KASAN: slab-use-after-free in __futex_key_to_node (k=
-ernel/futex/core.c:349)
->> [  151.414046] Read of size 2 at addr ffff888001c49634 by task e/87
->> [  151.414476]
->> [  151.415431] CPU: 1 UID: 1000 PID: 87 Comm: e Not tainted 7.0.0-rc3-g0=
-257f64bdac7 #1 PREEMPT(lazy)
->> [  151.415758] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BI=
-OS 1.15.0-1 04/01/2014
->> [  151.415969] Call Trace:
->> [  151.416059]  <TASK>
->> [  151.416161]  dump_stack_lvl (lib/dump_stack.c:123)
->> [  151.416299]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:48=
-2)
->> [  151.416359]  ? __virt_addr_valid (./include/linux/mmzone.h:2046 ./inc=
-lude/linux/mmzone.h:2198 arch/x86/mm/physaddr.c:54)
->> [  151.416412]  ? __futex_key_to_node (kernel/futex/core.c:349)
->> [  151.416517]  ? kasan_complete_mode_report_info (mm/kasan/report_gener=
-ic.c:182)
->> [  151.416583]  ? __futex_key_to_node (kernel/futex/core.c:349)
->> [  151.416631]  kasan_report (mm/kasan/report.c:597)
->> [  151.416677]  ? __futex_key_to_node (kernel/futex/core.c:349)
->> [  151.416732]  __asan_load2 (mm/kasan/generic.c:271)
->> [  151.416777]  __futex_key_to_node (kernel/futex/core.c:349)
->> [  151.416822]  get_futex_key (kernel/futex/core.c:374 kernel/futex/core=
-.c:386 kernel/futex/core.c:593)
->> [  151.416871]  ? __pfx_get_futex_key (kernel/futex/core.c:550)
->> [  151.416927]  futex_wake (kernel/futex/waitwake.c:165)
->> [  151.416976]  ? __pfx_futex_wake (kernel/futex/waitwake.c:156)
->> [  151.417022]  ? __pfx___x64_sys_futex_wait (kernel/futex/syscalls.c:39=
-8)
->> [  151.417081]  __x64_sys_futex_wake (kernel/futex/syscalls.c:382 kernel=
-/futex/syscalls.c:366 kernel/futex/syscalls.c:366)
->> [  151.417129]  x64_sys_call (arch/x86/entry/syscall_64.c:41)
->> [  151.417236]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 arch/x86/e=
-ntry/syscall_64.c:94)
->> [  151.417342]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.=
-S:130)
->> [  151.418312]  </TASK>
->>=20
->> Fix by adding rcu to __mpol_put().
->>=20
->> change-log:
->>  v2-v1: add rcu to __mpol_put
->>=20
->> Fixes: c042c505210d ("futex: Implement FUTEX2_MPOL")
->> Reported-by: Hao-Yu Yang <naup96721@gmail.com>
->> Signed-off-by: Hao-Yu Yang <naup96721@gmail.com>
->> ---
->>  include/linux/mempolicy.h | 1 +
->>  mm/mempolicy.c            | 2 +-
->>  2 files changed, 2 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/include/linux/mempolicy.h b/include/linux/mempolicy.h
->> index 0fe96f3ab3ef..65c732d440d2 100644
->> --- a/include/linux/mempolicy.h
->> +++ b/include/linux/mempolicy.h
->> @@ -55,6 +55,7 @@ struct mempolicy {
->>  		nodemask_t cpuset_mems_allowed;	/* relative to these nodes */
->>  		nodemask_t user_nodemask;	/* nodemask passed by user */
->>  	} w;
->> +	struct rcu_head rcu;
->>  };
->>=20=20
->>  /*
->> diff --git a/mm/mempolicy.c b/mm/mempolicy.c
->> index 0e5175f1c767..6dc61a3d4a32 100644
->> --- a/mm/mempolicy.c
->> +++ b/mm/mempolicy.c
->> @@ -487,7 +487,7 @@ void __mpol_put(struct mempolicy *pol)
->>  {
->>  	if (!atomic_dec_and_test(&pol->refcnt))
->>  		return;
->> -	kmem_cache_free(policy_cache, pol);
->> +	kfree_rcu(pol, rcu);
->>  }
->>  EXPORT_SYMBOL_FOR_MODULES(__mpol_put, "kvm");
->>=20=20
->> --=20
->> 2.34.1
->>=20
->
-> Hi, I=E2=80=99d like to kindly ask if there=E2=80=99s an update on when t=
-his patch might be merged.
+The device has two crash triggers:
 
-Thanks for the reminder. I'll take care of it tomorrow
+  1. LPM/autosuspend resume: Device enters LPM or autosuspend, fails to
+     reinitialize on resume, producing EPIPE (-32) on UVC SET_CUR. The
+     stalled endpoint triggers an xHCI stop-endpoint timeout, and the
+     kernel declares the host controller dead.
 
-Thanks,
+  2. Rapid control transfers: sustained rapid UVC SET_CUR operations
+     (hundreds over several seconds) overwhelm the firmware. The error-code query
+     (GET_CUR on UVC_VC_REQUEST_ERROR_CODE_CONTROL) amplifies the
+     failure by sending a second transfer to the already-stalling device,
+     pushing it into a full lockup and xHCI controller death.
 
-        tglx
+This has been reported as Ubuntu Launchpad Bug #2061177, with reports
+across kernel versions 6.5 through 6.8. There are
+currently no device-specific quirks for this webcam in either the USB
+core quirks table or the UVC driver device table.
+
+This series adds three patches:
+
+Patch 1: USB core -- USB_QUIRK_NO_LPM to prevent Link Power Management
+  transitions that destabilize the device firmware.
+
+Patch 2: UVC driver -- introduce UVC_QUIRK_CTRL_THROTTLE to rate-limit
+  SET_CUR control transfers (50ms minimum interval) and skip the
+  error-code query after EPIPE errors on affected devices.
+
+Patch 3: UVC driver -- add Razer Kiyo Pro device table entry with
+  UVC_QUIRK_CTRL_THROTTLE, UVC_QUIRK_DISABLE_AUTOSUSPEND, and
+  UVC_QUIRK_NO_RESET_RESUME to address both crash triggers.
+
+Together, these keep the device in a stable active state, prevent rapid
+control transfer crashes, and avoid the power management transitions
+that trigger the firmware bug.
+
+Tested on:
+  - Kernel: 6.8.0-106-generic (Ubuntu 24.04)
+  - Hardware: Intel Cannon Lake PCH xHCI (8086:a36d)
+  - Device: Razer Kiyo Pro (1532:0e05), firmware 8.21
+  - Stress test: 50 rounds of rapid UVC control changes, 0 failures
+
+Stress test and crash evidence: https://github.com/jphein/kiyo-xhci-fix
+
+JP Hein (3):
+  USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
+  media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for fragile firmware
+  media: uvcvideo: add quirks for Razer Kiyo Pro webcam
+
+ drivers/media/usb/uvc/uvc_driver.c | 17 +++++++++++++++++
+ drivers/media/usb/uvc/uvc_video.c  | 33 +++++++++++++++++++++++++++++++++
+ drivers/media/usb/uvc/uvcvideo.h   |  3 +++
+ drivers/usb/core/quirks.c          |  2 ++
+ 4 files changed, 55 insertions(+)
 
