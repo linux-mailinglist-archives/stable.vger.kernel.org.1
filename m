@@ -1,157 +1,180 @@
-Return-Path: <stable+bounces-227854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227855-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8NGjEvg/wGkfFQQAu9opvQ
-	(envelope-from <stable+bounces-227854-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:16:08 +0100
+	id MurXNXlCwGmHFQQAu9opvQ
+	(envelope-from <stable+bounces-227855-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:26:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E97DA2EA739
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:16:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5B22EA7C4
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:26:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 76E2630086F4
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 19:16:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B09F630078F4
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 19:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D4336C5A9;
-	Sun, 22 Mar 2026 19:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94FB36AB5E;
+	Sun, 22 Mar 2026 19:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="cNptiEzJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NbIqkTh7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6DF13B7A3;
-	Sun, 22 Mar 2026 19:16:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774206962; cv=none; b=EXw9/rFgWYOv68oBe54J5wEedUw8MLScOv+OVy1jgKiEYAO4M+PHIFGwgf7TZnessrUjBiuuluXE5IOTj/qd1sbvzbBpBJmwJk3+PIqvu6lHgK0bbUkEXw5N34q2O6JyRA1bRJT0mUyv+Mf8yMoejrFRM23sqqEosGc5TrVpJ48=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774206962; c=relaxed/simple;
-	bh=zNPLqiXxhVKdNAUaMWTGGgtQBj2CU19ItjbK2o3KWGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lDYFPEivPl6rfYzjQxZiqSxvqTag5zt88FRbxTBIknKUAStoN/weeE+YQ093H+jGSQVlOd2cM2wtZXvSypccEJoJ401o2vhcFU9SvRjvIezElXEW2k8GRNO6Vk3ZERM79tVcztn00iifH7iP6rR3FGsYOaZPkbRPOVoYzgJsL6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=cNptiEzJ; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id ACFED40E0163;
-	Sun, 22 Mar 2026 19:15:58 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id lKGcwnqbCalT; Sun, 22 Mar 2026 19:15:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1774206954; bh=a1z4AYb28keHnvNJY04uO0aUOdav31v/0VGhVxqqSNc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cNptiEzJaN7Tmc9Jfzav4QIM3/Yg+Yce8S5Y59ExyzCxCrfIZjlN8Mzaw0t0GHVfx
-	 btaLS4MlsxALbdOlimO2a4f4+DoJVUyltU6NUMxl01gxfdtFkaTD9A3qeuHAXt0O5u
-	 rAew48w+XJ5eu2y6GlhYF9JVNGW5o8r8gbqMMUO+1q+a8+ocD96mX5dnR7wxy2N4Wq
-	 t50CFxpCpInVhB1lojJHSkdIRU/vWLukHxT83dVJ5XxYFazB0lY9RTXnfU5EIL/mZq
-	 Q8eVTTYbFPRmy2u6T88KuiN0seBYgIZCSo0k7VjFWTHhnZD13E9vZqsDglHhbrP2rk
-	 mJFoHFc1KS5eMUIx352UiD6Z44Ovku/YRIUtACZkmtsLFAKYiwiu0nSoXJUuA24AG6
-	 On68buQOuDaArlT3zcFmVIgTZl09Vsfu31n4xIagLyrRXBprftziIxCG5eCL0oQD/g
-	 8aIg+F7BXW8mkF3wMkKmCe+9Ey467MsnAgQq/zahqr2P2F/FDOIlRkrJf70huXPk2G
-	 V0zuyalv27Mj76OFCt5T/vV9Z0HIJUBzqZq0H6kCXW2gktu7uS2Ye99JwaDhGfP/Bf
-	 +0VDnRnOBgao3capPGsczGuCl3FcqS3c6LLAXkUbevZcnwRvZTqArCJmNATfF1vji2
-	 ceg+aBiXBqQNNYUyJSyuXyWk=
-Received: from zn.tnic (p5de8e020.dip0.t-ipconnect.de [93.232.224.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 33BBE40E0140;
-	Sun, 22 Mar 2026 19:15:48 +0000 (UTC)
-Date: Sun, 22 Mar 2026 20:15:41 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-Cc: shubhrajyoti.datta@amd.com, tony.luck@intel.com,
-	linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 3/5] EDAC/versalnet: Fix memory leak in remove and probe
- error paths
-Message-ID: <20260322191541.GBacA_3QA1ZL4Yw-3m@fat_crate.local>
-References: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
- <20260322131139.1684716-1-ptsm@linux.microsoft.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5875C1A2C0B
+	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 19:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774207606; cv=pass; b=QHkox2xLnHCPIZeLDFCfFLA3Qlbv3yqg9bOSASOShQzYcM/Asatl/0jkxP3KjxUkWSYJG7QaOqmN6xd5LFHkh6+nQMjsh2UsHFa8qGWCyEDCF23J8TCVG/Riy2s+7yehDnNYqiKU49ivtBYOU94ac5lnI074jbSHArX7YX+1kS8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774207606; c=relaxed/simple;
+	bh=tkIqX90KMvJAYj3he47Jtl9R0pKV+NaauyYiOTpKerk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fDlNJaeTyCFE3J5Gk+vwcaWECjQoantzJ0C18057VPNoZVH1LpRE/t1PaU7IDiQZ7iEYJZbjwZQAc6jmFHw47KsAFNtTrZsH6OKIqPPMC19nZAWZbWcdeTsum9WUXvyIpP0BEM2dPiBm4WtR5eXviKg3rrZpHc80Yt0uFHHn1n8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NbIqkTh7; arc=pass smtp.client-ip=209.85.160.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-4152698e745so745968fac.1
+        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 12:26:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774207604; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AWBOGfGrgJYHbrcdpGsVr4xn2+hq2K/DcHAlZKzqqG0JqcShGtwp5xlfygJpAI+l4N
+         0be0GqiEYIQyiMQ/6RQ4kNe5s0MvEDvlcvOfsJAX/JmeUwa1j0ER1WWAR402z/1wgU5o
+         RYdvj1L8wUoN8GQmlq3uUK7XkMc3XTC7AhGbbv9Jv5/cU/FHBcle93l8TKVB20NSji0g
+         naOMupub59jRK03wXtsXjjogHAQsh8B0kYn8DW5rYKHwCtAmK6XHi5Ulv39iUc9m7abU
+         RrwPfySnoFQlsdUT2g9ggWPm4zjpEefq/EDhIa7bcMss7tuBz/fP92e9z5/eF0wQoSbX
+         R/PQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Bgdggyq0/oyLyjb2FYH8nUxRMH811f0m3byMmRZLmjk=;
+        fh=FzudBUNZD2R4zkhX446GDiMKc7AEY36xx2/Kuz1PAis=;
+        b=LbUbywnSKmwk7fKcCZbDfvhA1H/+ZK3Kb9jFDLAZ2YN0zBZHCgfrXukaeHoWLePaRM
+         3SOI2QI3dZj9aVQXsTyATYVfzW6lljOB6TFfy+cz+a49mmKwVjyZDl17NcyNrxaVUnNe
+         MOPkCQiCV9tJPs84OGSii6fvPMVU8W43Xu04UzqOX/wxmZihzTH0990Jn7oUS0TNqJX4
+         E5bKRguwxJwv2TP1Xdl1DqETrhip5kaOJkfXHf70BdY3XTE3PPK1GM8eqHqWyWQpJ63l
+         O7yXaWVWllstu6hUe8IP+TOg1d9GFN3CFL/hsmaTrHHQQYeSLlA4E83BsvZZu6gJfWBo
+         FiVQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774207604; x=1774812404; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bgdggyq0/oyLyjb2FYH8nUxRMH811f0m3byMmRZLmjk=;
+        b=NbIqkTh7xWQwgjRIVNMQDT6435lEINoRMV8U1PlLaY1Wdmayti4dYNBUO/IB0TExxk
+         NDhf/aC/3XfdfVHjrL30EHqZV5CaV7QvvVca4lLKl6+1eqO0ct5Gje1ai9WzPhlG5jl6
+         1ULg83ClUea5KwhKQenBpXsE30RWSNYC2lj27nnz/4QiT0q6J+urP/dpKk3qbeawnZjP
+         ehYIw2hB9mF9bg+J0V9c6OBo6vCOvChhYEDvQHAz0oAcw/mXpjJDa3s+Onfxkh849n5a
+         3l+rWwaEqyfbVgMW176aasCvg55mbCVTOWhkR593yU4q/gUkRk+lRfiMsW+Wfj+tUSQU
+         Kgsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774207604; x=1774812404;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bgdggyq0/oyLyjb2FYH8nUxRMH811f0m3byMmRZLmjk=;
+        b=kReADjDrZ8EQ8WoNtPJ7X0KlvrrJMwQnEfyqggR6xBdX80pAEXe3DSuNTP5ZgV1Bvb
+         DFPAmL+oeV9IrKz6e13vloCHYhkyMTTvSDMEze9tKncdsNKjrxx+0H88tqc8N7GCMCW9
+         CyqmJxxbqcR7U3ytHygFmVjG/ATVWV8NX3U1fj3Q4VZIIoq+usQ2yXKKfQgjHN40CGBY
+         U9cLXP9M70y73qCnjC+kkSd6l8a5QR8BvBtf4T2wc9J/3bbfa9Xp59uWrP1CWVwXU7bA
+         UwxSXO1VfVvoB2cEdMoZhzzfhKRdo0bbMsvogRMwgKusnvNlm/dw2X/sN01T7rjbMLJP
+         neoA==
+X-Forwarded-Encrypted: i=1; AJvYcCX/1b/b9adV8CMNfOdHtGu1L1evXiSzCIXm0HKW4GWxqEbDbQHUm/gABB+t6WR2zW0aM5zWujA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1kt8gF36d6PscLJyggaEbt9tz288pbv/Gn5oHjtMmiJMth1n2
+	A2PJ2124BLaYsZumaKuP4FF4TortkQ+lm00J64OTFr8N2FqN5iyvsst8WfdlR68fxPSmz4QDEdg
+	PSeLvvhj5/NpRiK/GpBRNOjIRzcoEGSc=
+X-Gm-Gg: ATEYQzwnfqAM/ZOeWfbMZMZ5xLlrNnJXZOlfUC//sku8FrC9UuefBRFgqPrb0huczL+
+	Qy/qlS/r83rbT0DjrFYRTvfEiUH2o1paEf/CQME8Vh7Ph5isOgP1iiGQZsUsEm93Khg3YQll9LJ
+	26ESepjF0aIaXAb6fKtuuo6dBhi/eutMH9jMyOwR9WW5PrmL/VBP84lnDqBlMvSeQRgBVwlRc+T
+	Z51haVYHRDM8u5/nZKyC2Mg9ITpS45Pugv/lE3rSHrtwQmuccVAAu7YI76kSyYafyotdUzuLMZj
+	Fvak9qVT+mQ899NJCkFuf75+RhjvblHSLhYvcg==
+X-Received: by 2002:a05:6870:8988:b0:40e:b6b2:b97a with SMTP id
+ 586e51a60fabf-41c112c7312mr5973280fac.51.1774207604139; Sun, 22 Mar 2026
+ 12:26:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260322131139.1684716-1-ptsm@linux.microsoft.com>
+References: <20260322080142.5834-1-devnexen@gmail.com> <20260322164943.37460-1-devnexen@gmail.com>
+ <20260322115452.29f2ce981610faf2d7b8df32@linux-foundation.org>
+In-Reply-To: <20260322115452.29f2ce981610faf2d7b8df32@linux-foundation.org>
+From: David CARLIER <devnexen@gmail.com>
+Date: Sun, 22 Mar 2026 19:26:33 +0000
+X-Gm-Features: AaiRm52rCpQ5CDXjSzyYVhuRvJs0IHy18nzsUG2phl57c5Mq-e1Jp1XNV3VRxnA
+Message-ID: <CA+XhMqx+5WSxpvHdjC4iwhVTq5ETYfn56dHMT6TbBY-7H1CtoA@mail.gmail.com>
+Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online()
+ error path
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-mm@kvack.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[alien8.de,none];
-	R_DKIM_ALLOW(-0.20)[alien8.de:s=alien8];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227854-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227855-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[alien8.de:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[bp@alien8.de,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	TAGGED_RCPT(0.00)[stable];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[alien8.de:dkim,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E97DA2EA739
+	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 2E5B22EA7C4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 22, 2026 at 06:11:39AM -0700, Prasanna Kumar T S M wrote:
-> The mcdi object allocated using kzalloc() in the setup_mcdi() is not
-> freed in the remove path or in probe's error handling path leading to
-> memory leak. Fix the memory leak by freeing the allocated memory.
-> 
-> Fixes: d5fe2fec6c40d ("EDAC: Add a driver for the AMD Versal NET DDR controller")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-> ---
->  drivers/edac/versalnet_edac.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/edac/versalnet_edac.c b/drivers/edac/versalnet_edac.c
-> index 28f5036f381c..acd51b492772 100644
-> --- a/drivers/edac/versalnet_edac.c
-> +++ b/drivers/edac/versalnet_edac.c
-> @@ -937,6 +937,7 @@ static int mc_probe(struct platform_device *pdev)
->  
->  err_init:
->  	cdx_mcdi_finish(priv->mcdi);
-> +	kfree(priv->mcdi);
->  
->  err_unreg:
->  	unregister_rpmsg_driver(&amd_rpmsg_driver);
-> @@ -959,6 +960,7 @@ static void mc_remove(struct platform_device *pdev)
->  	unregister_rpmsg_driver(&amd_rpmsg_driver);
->  	rproc_shutdown(priv->mcdi->r5_rproc);
->  	rproc_put(priv->mcdi->r5_rproc);
-> +	kfree(priv->mcdi);
->  }
->  
->  static const struct of_device_id amd_edac_match[] = {
-> -- 
+Both good points. I'll address them in a v3:
 
-Applied, thanks.
+  - Drop the redundant pn NULL check in the free_objcg error path.
+  - Add a NULL check for pn in __mem_cgroup_free() to guard against
+    partial alloc_mem_cgroup_per_node_info() failure.
 
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+On Sun, 22 Mar 2026 at 18:54, Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+> On Sun, 22 Mar 2026 16:49:43 +0000 David Carlier <devnexen@gmail.com> wrote:
+>
+> > When obj_cgroup_alloc() fails partway through the NUMA node loop in
+> > mem_cgroup_css_online(), the free_objcg error path drops the extra
+> > reference held by pn->orig_objcg but never kills the initial percpu_ref
+> > from obj_cgroup_alloc() stored in pn->objcg.
+> >
+> > Since css_offline is never called when css_online fails,
+> > memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
+> > normally drops this initial reference never executes. The obj_cgroup and
+> > its per-cpu ref allocations are leaked.
+> >
+> > Clear pn->objcg via rcu_replace_pointer() and add the missing
+> > percpu_ref_kill() in the error path, matching the normal teardown
+> > sequence in memcg_reparent_objcgs().
+> >
+> > Fixes: 098fad3e1621 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
+>
+> Thanks.  Sashiko review of this patch claims to have found another bug
+> in 098fad3e1621:
+>
+>         https://sashiko.dev/#/patchset/20260322164943.37460-1-devnexen@gmail.com
+>
+> > Cc: stable@vger.kernel.org
+>
 
