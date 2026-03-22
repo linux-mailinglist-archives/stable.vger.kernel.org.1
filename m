@@ -1,152 +1,171 @@
-Return-Path: <stable+bounces-227848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227849-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sDXrBqkgwGkOEAQAu9opvQ
-	(envelope-from <stable+bounces-227848-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 18:02:33 +0100
+	id mEZQHM8jwGmgEAQAu9opvQ
+	(envelope-from <stable+bounces-227849-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 18:15:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16C82EA19A
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 18:02:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B342EA252
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 18:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 63CCB3006125
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 17:02:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C0353014BC8
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 17:15:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06FA4310651;
-	Sun, 22 Mar 2026 17:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651E936AB7C;
+	Sun, 22 Mar 2026 17:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="Z65NM3eO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TJsPnn7W"
 X-Original-To: stable@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4417C175A7B;
-	Sun, 22 Mar 2026 17:02:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7ECC1B7F4
+	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 17:15:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774198944; cv=none; b=aO+9mf/asbGbBLrFtjmKY+/l6krMwv00JDTTZMpEIre7u0ysXqS4TVi2s9OxW483aZQolqXSLFePY48h3LOxsSW6/FmYow/ezhWhZmf08Jh8KO/T9gSu7j9Wt58ssClUk+9IBIv4jcKABFQPgVIA4rMjTIYt4pyz5QF0uL/MEH4=
+	t=1774199741; cv=none; b=qILs4k2YGsyf2v8Wm6qMQwLyz+cgTnVQKVCCBY2zv4EEXBypVQ4ziq9Cxg2Czm1lb/AmrM7NBm2wWCfsYU1k1w9scmFpPc3yLF1dvuWWyV4ao7zKXIW+4IPJ6/lvbTFa58CR9X26mt3NJxuG9IYNN3leUohVk1yjiV1EB+s20J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774198944; c=relaxed/simple;
-	bh=iW7rNRh2ArJWOxm9/fuOocPIaTFuDAFc1tz6G/PVRKU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uxkJi5jmjwJrNM0/bggrgGWXBA20a0hpbUQkCsO4oo9UXtwsNEL6KZRbAtl2UskQ+JsPlI1HaijxXY8smY9qDGHWQ1gzEXPsUjdC8WvFPWAdIF8yq8Dj4D/fU7Onr20TFpSYH6ts1ckRDQIz0inZsMGSK5vXsq4DG3FnyLZRTvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=Z65NM3eO; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id D260B26E75;
-	Sun, 22 Mar 2026 18:02:21 +0100 (CET)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id uLtavyJ539ik; Sun, 22 Mar 2026 18:02:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1774198940; bh=iW7rNRh2ArJWOxm9/fuOocPIaTFuDAFc1tz6G/PVRKU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Z65NM3eObpu8kyaSTYSY8vm83xcXAschgnwWAP8aqijIT8g+lO+PO0AxfFkv4kKmr
-	 oxeVq8sEwLyWztt44CcSCrcsT8e6gQN7nHtrrJrnygWNO2u27Y3j7JDulv9SPllLpr
-	 EE8D6G2IFdCGBtLe6tIFEkfgFlubHag6jYCRJlzcInMOvH5C8lzkZNBdjHhFIuZKTv
-	 FiITvi3xRJ1xkXA/2S+U7WWRxEYwVcrbDV1uFBeIyyyURPbIwDREmRHSVS8pUB6LmB
-	 7XO8hMVjcIy1k+IWlslTBM0oS3XKHsTYkl9w4frUSzIK0ZhQGx/9CUL85s3B0ObR+G
-	 7E0TBy1lD4nyA==
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-Date: Sun, 22 Mar 2026 22:32:06 +0530
-Subject: [PATCH RESEND v2 1/2] drm/bridge: samsung-dsim: enable MFLUSH_VS
- for Exynos 7870 DSIM
+	s=arc-20240116; t=1774199741; c=relaxed/simple;
+	bh=fFSlrcEVQawiYuoqQ6PivLQ+WfvKiPRgnAp5zV8TqjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fEH61CKk4vPp2Ce2dTxMSrkSTe6Qy5Ctcv1gn8igl7y0JiZ/ELwPtN7EHHfxctc0UjsJ5/LHSgr8xvydfliQlbyErby8keYhYwxL6TRsZYJGDuR0YgkC9GrZ9l3FiuNCNhwQqZBe69lrHEfMmh6SWfxDBid+af6BzWKTaIOka4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TJsPnn7W; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-89cab686a9bso263786d6.2
+        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 10:15:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774199738; x=1774804538; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0AJDTQx4Fo0qs6sgUSUPoNfGP6EMtKuFzwsXYq6U9jE=;
+        b=TJsPnn7WQAjkzssR8hFid5FTCYu/IKbGqmRdliR/lxqPNmPCaMWedQZS7HEfvY1unA
+         t7GcKuJAUcpo5+lMbfLKczzROQ32h6bgwyTTsa9GDEW00T7rK0Wk4Qe+wKpMCaXmlQXG
+         9oIEKl+3mtK4ptkRBFMfLV5oWgymZ+UdSOYjn4z84iAqZvxvVvbIXnKVrjtYWz9rbVaG
+         zthgC2tYdjsQljheoLXWXlj33/0WIHh05G50t3oIA5x5Frgt4TVZBrm3zsr1OTCSoCsP
+         7XWkd7Jrr4zknpm857yzvtENg9sQuJftqm3vwrE7HdUf25xNemOmeX2ywxu6dKd8hv0E
+         g/hg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774199738; x=1774804538;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0AJDTQx4Fo0qs6sgUSUPoNfGP6EMtKuFzwsXYq6U9jE=;
+        b=pY2BXhOsfTGMUq/dP64JK/tQdDi+qLL1oIrcECXpXgaOGUaYbgiuuFLxXs50Q9D/tt
+         152rZ1IcD+x+Zv4kDNnY7WwHHQKWHCRUjhCNCyPnRW+i5fjFmMaNkqZ4PieUW606Xlze
+         X+GD/83+LpqaVZnmCifmE5dVaCoTjb88TvrmebQGSDT595ndb9u4skE1pc5tudeDi13r
+         97q+DS1kWIAZYUPavqO9dWSKJxrbikbFEVV0rrEb0eTZIJ0UZbPLVwBSvGia00j1J6r5
+         2TyPlizI2lEXUqg4q6CnFrArVwz0uwO8YHwoyZiN5A3fA/QaWhAWcefsnhh8wbIoOqk9
+         hMkw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmKCMluS1X5ji9qSFLKq8gEoOhNtk5/Boki2c/cuhYFYipa4xki7lzq+142aNzTevnemtn0x8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPGWctgogwAoK3AINJQWmuYfTA3FF3Rsy3H6WFz/p8Rs5XHGJ1
+	UtZIoaWD5XCcxW2FVj2zmIZgzp6j8SYw9RhHoOn12QAiEFFZu60330UR
+X-Gm-Gg: ATEYQzzUp4SQsFxD43F4qh7usfEgzBTV3oq9COjIO7LCt2LcHwx2Bd15IabHgZvZMMs
+	j1+/yjJf7kdfirdpEAGdSkup6PRoQb8KGP7636JC12F+7XCXesiSgIEWRX2bo5bvaOMoHbciS//
+	sDUJLjakazwGJe/VVeAxfHdLfBdJycM3HwotQFvnYYPHiRO+KYX/4LlY22Ll8SuZAHAwhspNAZo
+	pkwzxRJufLGEheSR6nZByOMBds2sqXWaTQLHwfnC4mVWSDNnw/ghSmAhROxkI2TncpYTHHErJBS
+	8P7FZ0+i8b2cXxrB+W6k8VJPLmo/6GwRN3gtBdPu82b9m9z4Hji8qCjCTQFZLHVsNbkmUynGDWL
+	2rplmSkanT6S7YF+0HSpIOcnn0/JhM+S2LpqzWxZvWFhJKSIOv6yiWB2+iugIvnkmHwtKn6s2EE
+	QYXVKHd/fJAaOaZr2LOdR4t+zoUebpnqbeldFVIVg/j4oQHRa9WyUbKokMaQxkcqLutxTwd0OFn
+	yoc4YsT2WMcPw==
+X-Received: by 2002:a05:6214:d87:b0:899:f1c1:dda8 with SMTP id 6a1803df08f44-89c859fa4damr166241696d6.13.1774199737628;
+        Sun, 22 Mar 2026 10:15:37 -0700 (PDT)
+Received: from Desktop-PC.. (wnpgmb0311w-ds01-161-217-39.dynamic.bellmts.net. [142.161.217.39])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89c85335464sm67001966d6.31.2026.03.22.10.15.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Mar 2026 10:15:36 -0700 (PDT)
+From: jassisinghbrar@gmail.com
+To: tglx@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Cc: dianders@chromium.org,
+	shawn.guo@linaro.org,
+	maz@kernel.org,
+	stable@vger.kernel.org,
+	andersson@kernel.org,
+	Jassi Brar <jassisinghbrar@gmail.com>
+Subject: [PATCHv2] irqchip/qcom-mpm: Fix missing mailbox TX done acknowledgment
+Date: Sun, 22 Mar 2026 12:15:33 -0500
+Message-ID: <20260322171533.608436-1-jassisinghbrar@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260322-exynos-dsim-fixes-v2-1-0069c9e1d9bf@disroot.org>
-References: <20260322-exynos-dsim-fixes-v2-0-0069c9e1d9bf@disroot.org>
-In-Reply-To: <20260322-exynos-dsim-fixes-v2-0-0069c9e1d9bf@disroot.org>
-To: Inki Dae <inki.dae@samsung.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- Kaustabh Chakraborty <kauschluss@disroot.org>, stable@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[disroot.org,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[disroot.org:s=mail];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227848-lists,stable=lfdr.de];
-	FREEMAIL_TO(0.00)[samsung.com,amarulasolutions.com,intel.com,linaro.org,kernel.org,ideasonboard.com,kwiboo.se,gmail.com,linux.intel.com,suse.de,ffwll.ch];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[chromium.org,linaro.org,kernel.org,vger.kernel.org,gmail.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227849-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NO_DN(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[kauschluss@disroot.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[disroot.org:+];
+	FROM_NEQ_ENVFROM(0.00)[jassisinghbrar@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A16C82EA19A
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[chromium.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D8B342EA252
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Commit a36c533ad3e1 ("drm/bridge: samsung-dsim: Always flush display
-FIFO on vsync pulse") intends to enable FIFO flushing at v-sync pulse by
-not setting the active-low MFLUSH_VS bit.
+From: Jassi Brar <jassisinghbrar@gmail.com>
 
-However, in Exynos 7870 DSIM, the MFLUSH_VS bit is active-high. There is
-no publicly available documentation to the best of my knowledge, but
-downstream kernel code [1] supports this claim. Enable the bit for
-Exynos 7870.
+The mbox_client for qcom-mpm sends NULL doorbell messages via
+mbox_send_message() but never signals TX completion.
+Set knows_txdone=true and call mbox_client_txdone() after a
+successful send, matching the pattern used by other Qualcomm
+mailbox clients (smp2p, smsm, qcom_aoss etc).
 
-Cc: stable@vger.kernel.org # v6.17 and later
-Link: https://github.com/samsungexynos7870/android_kernel_samsung_exynos7870/blob/a3762bb1761ae/drivers/video/fbdev/exynos/decon_7870/dsim_reg_7870.c#L699 [1]
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+Fixes: a6199bb514d8a6 "irqchip: Add Qualcomm MPM controller driver"
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/irqchip/irq-qcom-mpm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/samsung-dsim.c b/drivers/gpu/drm/bridge/samsung-dsim.c
-index 1d85e706c74b9..70f8946ad3b24 100644
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -1089,6 +1089,13 @@ static int samsung_dsim_init_link(struct samsung_dsim *dsi)
- 			reg |= DSIM_HBP_DISABLE_MODE;
- 		if (dsi->mode_flags & MIPI_DSI_MODE_VIDEO_NO_HSA)
- 			reg |= DSIM_HSA_DISABLE_MODE;
+diff --git a/drivers/irqchip/irq-qcom-mpm.c b/drivers/irqchip/irq-qcom-mpm.c
+index 83f31ea657b7..181320528a47 100644
+--- a/drivers/irqchip/irq-qcom-mpm.c
++++ b/drivers/irqchip/irq-qcom-mpm.c
+@@ -306,6 +306,8 @@ static int mpm_pd_power_off(struct generic_pm_domain *genpd)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	mbox_client_txdone(priv->mbox_chan, 0);
 +
-+		/*
-+		 * For some hardware types, DSIM_MFLUSH_VS bit needs to be
-+		 * enabled explicitly.
-+		 */
-+		if (dsi->plat_data->hw_type == DSIM_TYPE_EXYNOS7870)
-+			reg |= DSIM_MFLUSH_VS;
+ 	return 0;
+ }
+ 
+@@ -434,6 +436,7 @@ static int qcom_mpm_probe(struct platform_device *pdev, struct device_node *pare
  	}
  
- 	if (dsi->mode_flags & MIPI_DSI_MODE_NO_EOT_PACKET)
-
+ 	priv->mbox_client.dev = dev;
++	priv->mbox_client.knows_txdone = true;
+ 	priv->mbox_chan = mbox_request_channel(&priv->mbox_client, 0);
+ 	if (IS_ERR(priv->mbox_chan)) {
+ 		ret = PTR_ERR(priv->mbox_chan);
 -- 
-2.53.0
+2.43.0
 
 
