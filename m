@@ -1,180 +1,143 @@
-Return-Path: <stable+bounces-227855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227856-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MurXNXlCwGmHFQQAu9opvQ
-	(envelope-from <stable+bounces-227855-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:26:49 +0100
+	id AOTBGH1CwGmHFQQAu9opvQ
+	(envelope-from <stable+bounces-227856-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:26:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5B22EA7C4
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:26:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A1642EA7CB
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 20:26:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B09F630078F4
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 19:26:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B168F3007C9A
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 19:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C94FB36AB5E;
-	Sun, 22 Mar 2026 19:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B7436C9D5;
+	Sun, 22 Mar 2026 19:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NbIqkTh7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UiZD1+x/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5875C1A2C0B
-	for <stable@vger.kernel.org>; Sun, 22 Mar 2026 19:26:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774207606; cv=pass; b=QHkox2xLnHCPIZeLDFCfFLA3Qlbv3yqg9bOSASOShQzYcM/Asatl/0jkxP3KjxUkWSYJG7QaOqmN6xd5LFHkh6+nQMjsh2UsHFa8qGWCyEDCF23J8TCVG/Riy2s+7yehDnNYqiKU49ivtBYOU94ac5lnI074jbSHArX7YX+1kS8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774207606; c=relaxed/simple;
-	bh=tkIqX90KMvJAYj3he47Jtl9R0pKV+NaauyYiOTpKerk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fDlNJaeTyCFE3J5Gk+vwcaWECjQoantzJ0C18057VPNoZVH1LpRE/t1PaU7IDiQZ7iEYJZbjwZQAc6jmFHw47KsAFNtTrZsH6OKIqPPMC19nZAWZbWcdeTsum9WUXvyIpP0BEM2dPiBm4WtR5eXviKg3rrZpHc80Yt0uFHHn1n8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NbIqkTh7; arc=pass smtp.client-ip=209.85.160.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-4152698e745so745968fac.1
-        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 12:26:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774207604; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AWBOGfGrgJYHbrcdpGsVr4xn2+hq2K/DcHAlZKzqqG0JqcShGtwp5xlfygJpAI+l4N
-         0be0GqiEYIQyiMQ/6RQ4kNe5s0MvEDvlcvOfsJAX/JmeUwa1j0ER1WWAR402z/1wgU5o
-         RYdvj1L8wUoN8GQmlq3uUK7XkMc3XTC7AhGbbv9Jv5/cU/FHBcle93l8TKVB20NSji0g
-         naOMupub59jRK03wXtsXjjogHAQsh8B0kYn8DW5rYKHwCtAmK6XHi5Ulv39iUc9m7abU
-         RrwPfySnoFQlsdUT2g9ggWPm4zjpEefq/EDhIa7bcMss7tuBz/fP92e9z5/eF0wQoSbX
-         R/PQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=Bgdggyq0/oyLyjb2FYH8nUxRMH811f0m3byMmRZLmjk=;
-        fh=FzudBUNZD2R4zkhX446GDiMKc7AEY36xx2/Kuz1PAis=;
-        b=LbUbywnSKmwk7fKcCZbDfvhA1H/+ZK3Kb9jFDLAZ2YN0zBZHCgfrXukaeHoWLePaRM
-         3SOI2QI3dZj9aVQXsTyATYVfzW6lljOB6TFfy+cz+a49mmKwVjyZDl17NcyNrxaVUnNe
-         MOPkCQiCV9tJPs84OGSii6fvPMVU8W43Xu04UzqOX/wxmZihzTH0990Jn7oUS0TNqJX4
-         E5bKRguwxJwv2TP1Xdl1DqETrhip5kaOJkfXHf70BdY3XTE3PPK1GM8eqHqWyWQpJ63l
-         O7yXaWVWllstu6hUe8IP+TOg1d9GFN3CFL/hsmaTrHHQQYeSLlA4E83BsvZZu6gJfWBo
-         FiVQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774207604; x=1774812404; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bgdggyq0/oyLyjb2FYH8nUxRMH811f0m3byMmRZLmjk=;
-        b=NbIqkTh7xWQwgjRIVNMQDT6435lEINoRMV8U1PlLaY1Wdmayti4dYNBUO/IB0TExxk
-         NDhf/aC/3XfdfVHjrL30EHqZV5CaV7QvvVca4lLKl6+1eqO0ct5Gje1ai9WzPhlG5jl6
-         1ULg83ClUea5KwhKQenBpXsE30RWSNYC2lj27nnz/4QiT0q6J+urP/dpKk3qbeawnZjP
-         ehYIw2hB9mF9bg+J0V9c6OBo6vCOvChhYEDvQHAz0oAcw/mXpjJDa3s+Onfxkh849n5a
-         3l+rWwaEqyfbVgMW176aasCvg55mbCVTOWhkR593yU4q/gUkRk+lRfiMsW+Wfj+tUSQU
-         Kgsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774207604; x=1774812404;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bgdggyq0/oyLyjb2FYH8nUxRMH811f0m3byMmRZLmjk=;
-        b=kReADjDrZ8EQ8WoNtPJ7X0KlvrrJMwQnEfyqggR6xBdX80pAEXe3DSuNTP5ZgV1Bvb
-         DFPAmL+oeV9IrKz6e13vloCHYhkyMTTvSDMEze9tKncdsNKjrxx+0H88tqc8N7GCMCW9
-         CyqmJxxbqcR7U3ytHygFmVjG/ATVWV8NX3U1fj3Q4VZIIoq+usQ2yXKKfQgjHN40CGBY
-         U9cLXP9M70y73qCnjC+kkSd6l8a5QR8BvBtf4T2wc9J/3bbfa9Xp59uWrP1CWVwXU7bA
-         UwxSXO1VfVvoB2cEdMoZhzzfhKRdo0bbMsvogRMwgKusnvNlm/dw2X/sN01T7rjbMLJP
-         neoA==
-X-Forwarded-Encrypted: i=1; AJvYcCX/1b/b9adV8CMNfOdHtGu1L1evXiSzCIXm0HKW4GWxqEbDbQHUm/gABB+t6WR2zW0aM5zWujA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1kt8gF36d6PscLJyggaEbt9tz288pbv/Gn5oHjtMmiJMth1n2
-	A2PJ2124BLaYsZumaKuP4FF4TortkQ+lm00J64OTFr8N2FqN5iyvsst8WfdlR68fxPSmz4QDEdg
-	PSeLvvhj5/NpRiK/GpBRNOjIRzcoEGSc=
-X-Gm-Gg: ATEYQzwnfqAM/ZOeWfbMZMZ5xLlrNnJXZOlfUC//sku8FrC9UuefBRFgqPrb0huczL+
-	Qy/qlS/r83rbT0DjrFYRTvfEiUH2o1paEf/CQME8Vh7Ph5isOgP1iiGQZsUsEm93Khg3YQll9LJ
-	26ESepjF0aIaXAb6fKtuuo6dBhi/eutMH9jMyOwR9WW5PrmL/VBP84lnDqBlMvSeQRgBVwlRc+T
-	Z51haVYHRDM8u5/nZKyC2Mg9ITpS45Pugv/lE3rSHrtwQmuccVAAu7YI76kSyYafyotdUzuLMZj
-	Fvak9qVT+mQ899NJCkFuf75+RhjvblHSLhYvcg==
-X-Received: by 2002:a05:6870:8988:b0:40e:b6b2:b97a with SMTP id
- 586e51a60fabf-41c112c7312mr5973280fac.51.1774207604139; Sun, 22 Mar 2026
- 12:26:44 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7F61A2C0B;
+	Sun, 22 Mar 2026 19:26:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774207608; cv=none; b=t8AZjvgnxZSlaEtC3RlMx/pZxiDdaRxjw3MhaWoz+ILwn/WV7zWNke2rU3U/VoNuwY4cG/icBzCsp1BLl+DQbImGSsAHYaluao9dF5c42Uq6F588YpcOnb1bSSn4rhDYmHFz1POvgcL1dwYr78iCGVUNgBRhyAhi3WbPcJ9eA70=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774207608; c=relaxed/simple;
+	bh=X2DK8H4FcYtPiwS5iIb457FtPn7QN07ZkhbMOTso2XE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cYCpyGQO1iJFNtPVpf3GmYFQTiDslaVIjC4tnnCznBNVp191kbw+iQLkWTCIEMaP0Iq02Npecpm15r8n2DH9Jzc8VnbErRmH9tHIzko92xA5QMNauAn0JQEcpHojX0BkywYtAzKRZPIGwgJ8zreO8LX2sGGj0wyQaGN0uJU7hBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UiZD1+x/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACB1C19424;
+	Sun, 22 Mar 2026 19:26:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774207608;
+	bh=X2DK8H4FcYtPiwS5iIb457FtPn7QN07ZkhbMOTso2XE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UiZD1+x/nVOYnkRO5qYh824b+4jHHTlKk0D8ItIlwe6xN878lJgYIeLdhlrMnIT3m
+	 RMe8k6LPrBU5LA0ckrvSPYCU7l3PIE7ABUVuU9E+B7W5QfGLG/4PSrBhWsAX5RKmSz
+	 o3qrMQvaL/KvVM4jFc1ilhEmqkK7ZzoVpw4QaShx/p4G737WNesAnW8Ck33sV3FP70
+	 r0rKJgsMjEWE+pZ82cUiiKzHemb60reqp8ODiBFS5EtojiM9tQV3ftjA00FTgxfmWI
+	 pcd2OUb9Y10IpYCrlf8IxEwu6RCjnA4fiHL5yMvuu5GOGZpNWlLDkfJqCQidVSnm+A
+	 advWRx6HtLSXw==
+From: SeongJae Park <sj@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	"# 6 . 15 . x" <stable@vger.kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon/core: avoid use of half-online-committed context
+Date: Sun, 22 Mar 2026 12:26:40 -0700
+Message-ID: <20260322192641.87848-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260321021628.78887-1-sj@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260322080142.5834-1-devnexen@gmail.com> <20260322164943.37460-1-devnexen@gmail.com>
- <20260322115452.29f2ce981610faf2d7b8df32@linux-foundation.org>
-In-Reply-To: <20260322115452.29f2ce981610faf2d7b8df32@linux-foundation.org>
-From: David CARLIER <devnexen@gmail.com>
-Date: Sun, 22 Mar 2026 19:26:33 +0000
-X-Gm-Features: AaiRm52rCpQ5CDXjSzyYVhuRvJs0IHy18nzsUG2phl57c5Mq-e1Jp1XNV3VRxnA
-Message-ID: <CA+XhMqx+5WSxpvHdjC4iwhVTq5ETYfn56dHMT6TbBY-7H1CtoA@mail.gmail.com>
-Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in mem_cgroup_css_online()
- error path
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>, linux-mm@kvack.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227855-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227856-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[devnexen@gmail.com,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sj@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 2E5B22EA7C4
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sashiko.dev:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0A1642EA7CB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Both good points. I'll address them in a v3:
+On Fri, 20 Mar 2026 19:16:35 SeongJae Park <sj@kernel.org> wrote:
+[...]
+> By the way, I am also doing monitoring of sashiko.dev for all DAMON patches.
+> It will be much easier once sashiko.dev's email feature is ready, since I
+> already onboarded DAMON for that.
+> 
+> Meanwhile, the monitoring using web browser is somewhat tedious for me, so I
+> just implemented an hkml feature, namely
+> 'hkml patch sashiko_dev --thread_status'.  It receives a message id of a mail,
+> and prints the review status/result of all patches of the thread.
+> 
+> E.g.,
+> 
+>     $ hkml patch sashiko_dev --thread_status 20260319-memory-failure-mf-delayed-fix-rfc-v2-v2-0-92c596402a7a@google.com
+>     - [PATCH RFC v2 1/7] mm: memory_failure: Clarify the MF_DELAYED definition
+>       - Reviewed (Review completed successfully.)
+>     - [PATCH RFC v2 2/7] mm: memory_failure: Allow truncate_error_folio to return MF_DELAYED
+>       - Reviewed (Review completed successfully.)
+>     - [PATCH RFC v2 3/7] mm: shmem: Update shmem handler to the MF_DELAYED definition
+>       - Reviewed (Review completed successfully.)
+>     - [PATCH RFC v2 4/7] mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED cases
+>       - Pending (None)
+>     - [PATCH RFC v2 4/7] mm: memory_failure: Generalize extra_pins handling to all MF_DELAYED cases
+>       - Reviewed (Review completed successfully.)
+>     - [PATCH RFC v2 5/7] mm: selftests: Add shmem memory failure test
+>       - Reviewed (Review completed successfully.)
+>     - [PATCH RFC v2 6/7] KVM: selftests: Add memory failure tests in guest_memfd_test
+>       - Reviewed (Review completed successfully.)
+>     - [PATCH RFC v2 7/7] KVM: selftests: Test guest_memfd behavior with respect to stage 2 page tables
+>       - Reviewed (Review completed successfully.)
+> 
+> I'm planning to implement another feature for formatting and sending the review
+> result and inline comments as emails, probably this weekend.
 
-  - Drop the redundant pn NULL check in the free_objcg error path.
-  - Add a NULL check for pn in __mem_cgroup_free() to guard against
-    partial alloc_mem_cgroup_per_node_info() failure.
+Now the feature is available on 'master' branch of hkml.  I started using it
+since yesterday for DAMON patches, and it works for at least my workflow.  The
+documentation is also updated [1].
 
-On Sun, 22 Mar 2026 at 18:54, Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> On Sun, 22 Mar 2026 16:49:43 +0000 David Carlier <devnexen@gmail.com> wrote:
->
-> > When obj_cgroup_alloc() fails partway through the NUMA node loop in
-> > mem_cgroup_css_online(), the free_objcg error path drops the extra
-> > reference held by pn->orig_objcg but never kills the initial percpu_ref
-> > from obj_cgroup_alloc() stored in pn->objcg.
-> >
-> > Since css_offline is never called when css_online fails,
-> > memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
-> > normally drops this initial reference never executes. The obj_cgroup and
-> > its per-cpu ref allocations are leaked.
-> >
-> > Clear pn->objcg via rcu_replace_pointer() and add the missing
-> > percpu_ref_kill() in the error path, matching the normal teardown
-> > sequence in memcg_reparent_objcgs().
-> >
-> > Fixes: 098fad3e1621 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
->
-> Thanks.  Sashiko review of this patch claims to have found another bug
-> in 098fad3e1621:
->
->         https://sashiko.dev/#/patchset/20260322164943.37460-1-devnexen@gmail.com
->
-> > Cc: stable@vger.kernel.org
->
+[1] https://github.com/sjp38/hackermail/blob/test/USAGE.md#forwarding-sashikodev-statuscomments-to-mailing-list
+
+
+Thanks,
+SJ
+
+[...]
 
