@@ -1,40 +1,41 @@
-Return-Path: <stable+bounces-227833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227834-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCsnBZL0v2l7BQQAu9opvQ
-	(envelope-from <stable+bounces-227833-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:54:26 +0100
+	id oEtZLsX0v2l7BQQAu9opvQ
+	(envelope-from <stable+bounces-227834-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:55:17 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7220E2E987B
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:54:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C4262E9899
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 14:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 92C92300E257
-	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:54:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBC4D302415E
+	for <lists+stable@lfdr.de>; Sun, 22 Mar 2026 13:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0388835DA61;
-	Sun, 22 Mar 2026 13:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A02935F18A;
+	Sun, 22 Mar 2026 13:54:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D384740DFCE;
-	Sun, 22 Mar 2026 13:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F8B31B81CA;
+	Sun, 22 Mar 2026 13:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774187657; cv=none; b=cPoaPuz1okzrhhwJUhIsJeNS3pTavODtToQwMKS8Q0tJ4tdL+zar56U4Tv1t4zKM9gmgwoJuiXa7Zz5JHb7LfhlghGugG+U2PuYqyMLwlhLJGMJ8Qk1dRMBno4zloRuNBxvlkGDIiZYMRv7gmEVTdwhH/7wVZBUHaDAeC7nTRxo=
+	t=1774187658; cv=none; b=BoL8fY/84ua9+wQeBId6PPLaVc+DYZGvSCzQr0f5Qf+7CqtDYc66e90BkA+o+l0To1lWTIXP3ZfYSSdrnFG9IemUnapejHWVhJgBGC0AAnsDGSGPD/zkUevkEjdnylHtheShnnJ5HQfm6q18sQ22ZQXQrZk/jT8ceSXYgcmz6Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774187657; c=relaxed/simple;
-	bh=AfWL8r2fVLOSiaFfp1K/VGEB5sEJdcb/ggopn4COiRo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e4Epu5pTEkv0elh8e7Z7wjsuA3K6ZuVpTQW9qerLw37MxFLhldH/qjtYqSsrSmPVkN9PgSMj564hXjutpjrKEQgoPyuT/dm8JxCmswM1T8Qji/KqSemE6k2FTwJGbazb7Hc0tUZv3LyRMMs9/q0aUsMIm8DsflFOXfS43VTkiOo=
+	s=arc-20240116; t=1774187658; c=relaxed/simple;
+	bh=yk2/iPYEy+ynM7ehu4Ubr2FwrKv8PEKe91/P/QkZhqk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oUK01DcN5RbTI85KFQFLHkkDOT4Q19Msv8ehorCH1Bj30Vocp3goGkeR4RlmJaiGoU/0K8oQ7n+fb09cvFfAeyl/4MWEcEEBWXKMXUvhC4tswlvwdLNHDCPGYqvM1vMYqkZSql9fP2U03WD5tRugSocYCijpqhy4TyzRdRK01d8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [223.64.68.17])
-	by gateway (Coremail) with SMTP id _____8AxQcB89L9piosdAA--.25814S3;
-	Sun, 22 Mar 2026 21:54:04 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8AxjsOC9L9pkYsdAA--.19906S3;
+	Sun, 22 Mar 2026 21:54:10 +0800 (CST)
 Received: from kernelserver (unknown [223.64.68.17])
-	by front1 (Coremail) with SMTP id qMiowJAxIMNw9L9pDsVaAA--.39100S2;
-	Sun, 22 Mar 2026 21:53:59 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJAxIMNw9L9pDsVaAA--.39100S3;
+	Sun, 22 Mar 2026 21:54:09 +0800 (CST)
 From: Huacai Chen <chenhuacai@loongson.cn>
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	Huacai Chen <chenhuacai@kernel.org>,
@@ -48,10 +49,12 @@ Cc: kvm@vger.kernel.org,
 	Huacai Chen <chenhuacai@loongson.cn>,
 	stable@vger.kernel.org,
 	Aurelien Jarno <aurel32@debian.org>
-Subject: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more robust
-Date: Sun, 22 Mar 2026 21:53:45 +0800
-Message-ID: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+Subject: [PATCH 2/2] LoongArch: KVM: Handle the case that EIOINTC's coremap is empty
+Date: Sun, 22 Mar 2026 21:53:46 +0800
+Message-ID: <20260322135346.3720577-2-chenhuacai@loongson.cn>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,25 +62,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxIMNw9L9pDsVaAA--.39100S2
+X-CM-TRANSID:qMiowJAxIMNw9L9pDsVaAA--.39100S3
 X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj9xXoWrtw15uw4kAryfuF1DZFyUXFc_yoWDZrc_Gw
-	1fta4YgrZ7CF10qr4q9ayfGF13J3yrAF4a9rZav343CasrJr1DW39Igw15ZryIgrW8CFs8
-	Aa1qy3sxC342yosvyTuYvTs0mTUanT9S1TB71UUUUj7qnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbfxYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8
-	JVW8Jr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2
-	x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r126r1D
-	McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr4
-	1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_
-	Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67
-	AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8I
-	cVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI
-	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v2
-	6r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUUUU=
+X-Coremail-Antispam: 1Uk129KBj93XoW7XFyUCr4DCry5KrW8AF1kWFX_yoW8Jr1kpF
+	W7C39ak3y5GFy3Xa4vqayfWF47Ar95Wr1IqF1UKFyUAFn8XF1rZrWrZr4DXFn0k34rGr40
+	qr1xKw1Fva1UAacCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUtVWr
+	XwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
+	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8_gA5UUUUU==
 X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	MID_CONTAINS_FROM(1.00)[];
@@ -92,50 +95,49 @@ X-Spamd-Result: default: False [0.04 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWELVE(0.00)[12];
-	TAGGED_FROM(0.00)[bounces-227833-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227834-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	FROM_NEQ_ENVFROM(0.00)[chenhuacai@loongson.cn,stable@vger.kernel.org];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 7220E2E987B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:email,loongson.cn:mid]
+X-Rspamd-Queue-Id: 1C4262E9899
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
-cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
-case so as to make it more robust.
+EIOINTC's coremap in eiointc_update_sw_coremap() can be empty, currently
+we get a cpuid with -1 in this case, but we actually need 0 because it's
+similar as the case that cpuid >= 4.
 
 This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
 
 Cc: <stable@vger.kernel.org>
-Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical cpuid")
+Fixes: 3956a52bc05bd81 ("LoongArch: KVM: Add EIOINTC read and write functions")
 Reported-by: Aurelien Jarno <aurel32@debian.org>
 Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- arch/loongarch/kvm/vcpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/loongarch/kvm/intc/eiointc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 8ffd50a470e6..831f381a8fd1 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
- {
- 	struct kvm_phyid_map *map;
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index d2acb4d09e73..c7badc813923 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -83,7 +83,7 @@ static inline void eiointc_update_sw_coremap(struct loongarch_eiointc *s,
  
-+	if (cpuid < 0)
-+		return NULL;
-+
- 	if (cpuid >= KVM_MAX_PHYID)
- 		return NULL;
+ 		if (!(s->status & BIT(EIOINTC_ENABLE_CPU_ENCODE))) {
+ 			cpuid = ffs(cpuid) - 1;
+-			cpuid = (cpuid >= 4) ? 0 : cpuid;
++			cpuid = ((cpuid < 0) || (cpuid >= 4)) ? 0 : cpuid;
+ 		}
  
+ 		vcpu = kvm_get_vcpu_by_cpuid(s->kvm, cpuid);
 -- 
 2.52.0
 
