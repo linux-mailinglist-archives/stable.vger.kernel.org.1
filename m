@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228488-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAaHIChswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229558-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:56 +0100
+	id qL2bMFFOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228488-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24012F8707
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 883082F49A5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 463433068ADD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25B07303BD3B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181B53A960E;
-	Mon, 23 Mar 2026 16:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E632B3AEF23;
+	Mon, 23 Mar 2026 14:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKjKRstf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Td9JwyfE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C5E3AC0D3;
-	Mon, 23 Mar 2026 16:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98EE3AD52E;
+	Mon, 23 Mar 2026 14:14:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282245; cv=none; b=m2GpmluKY1A7IuF+MszGADbQJpSRxYpO2m2kvVLNPZtyHc6nE6gfH5+OZx8pJMpVHZln0S71eeoZlFqCl9v9nNbhHWxjcxcp5d/TydEw1pp0w5lsIsJVp+csXU2etXHfz7Hqw8xGtE0iVMuV30sIsV3DP3H2noxePKJdl4/1vPM=
+	t=1774275265; cv=none; b=G6sCZlHiDUMMXyBUZx8SdquolUbs+Qfr9RLp88pIJRjjjGSQb1Y6PBdzRtphEz4wtELTNOVSQJ9EiKcKZJbX99v/3og4vUOyN7i0vtHxhPk+H9WtToFZWMNI6l5/AyVwQZzMZnCNvRg23PXCBetwyVzGHzrhhsFajQIoKUQ2IMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282245; c=relaxed/simple;
-	bh=zdManzZpe2MUMLbbh7v5Gethcb/9etrvOKevD3uaBkQ=;
+	s=arc-20240116; t=1774275265; c=relaxed/simple;
+	bh=rMQgwa3XH+1QInWILY81WGNs0BQ+GHvtsOQhPYNYdnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ml+lWktLnuIVo801cEO4pgMngMw/k5NuvDRq1gf0cwYs6Aw6a/cg1jbNjHPErV6HXSG/HGFvtFInguFSI7dFKEUFBsmmhJpohFwAtBW/aZnOY6cceLFecj9xnhO6V6+sIxwd0N46K/D8h7XcJ2w5mAGivQAXfvj25biTICCH+t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKjKRstf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30E0FC4CEF7;
-	Mon, 23 Mar 2026 16:10:45 +0000 (UTC)
+	 MIME-Version; b=KuMW73zqlBlYSOUtn8ADt+F4u01oL1V8GKsJ7bdgCPqWukrhUugbhMfXyjhhnSz6edhGcOKAmTEyuGnKnAG2hyeKeeBCpYod9vdTRXrGS7iQaoG+gPTwQE9sjlXrSbqE5vmI6fYUZtYREJSfyYl72nBF0uo1w/wX/5Sl2iZDeKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Td9JwyfE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410D0C4CEF7;
+	Mon, 23 Mar 2026 14:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282245;
-	bh=zdManzZpe2MUMLbbh7v5Gethcb/9etrvOKevD3uaBkQ=;
+	s=korg; t=1774275265;
+	bh=rMQgwa3XH+1QInWILY81WGNs0BQ+GHvtsOQhPYNYdnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKjKRstf7e14pZSW2UTq9XyM6PpNkf0VtMg+SsCLHTjX674GVYXsfJ+83sEJ7FNOp
-	 cT3Oh0P6X77PhV4YbkNRcRTcn4RtSSTIXjVgE76qZIc6XhLCSvVVsez911yXWQb0k5
-	 NBXR2Bsh3pxtoNvBkfHl5buaVa+R/SqqUfO5uWis=
+	b=Td9JwyfEa4RQprwEGUmk2oa4csTEGVvbgQDKqV4Zp8j+Z3rl/cKGlZE7oqSg2z6sd
+	 62oIPUFW8DUcgIiIOQGebOuuLeGm/IGKDZweeyCrNXMgRC1Y7AVs8hm/X/85XGATYu
+	 CGbNmu0utC4IpKiq7A7NbU36aPuOzOd0LSiNsuSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/481] ext4: remove unnecessary e4b->bd_buddy_page check in ext4_mb_load_buddy_gfp
+Subject: [PATCH 6.12 034/460] bonding: handle BOND_LINK_FAIL, BOND_LINK_BACK as valid link states
 Date: Mon, 23 Mar 2026 14:40:30 +0100
-Message-ID: <20260323134526.402114313@linuxfoundation.org>
+Message-ID: <20260323134527.543015226@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +66,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229558-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-228488-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E24012F8707
+X-Rspamd-Queue-Id: 883082F49A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 285164b80175157c18a06425cf25591c9f942b1a ]
+[ Upstream commit 3348be7978f450ede0c308a4e8416ac716cf1015 ]
 
-e4b->bd_buddy_page is only set if we initialize ext4_buddy successfully. So
-e4b->bd_buddy_page is always NULL in error handle branch. Just remove the
-dead check.
+Before the fixed commit, we check slave->new_link during commit
+state, which values are only BOND_LINK_{NOCHANGE, UP, DOWN}. After
+the commit, we start using slave->link_new_state, which state also could
+be BOND_LINK_{FAIL, BACK}.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://lore.kernel.org/r/20230303172120.3800725-11-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: bdc56a9c46b2 ("ext4: fix e4b bitmap inconsistency reports")
+For example, when we set updelay/downdelay, after a failover,
+the slave->link_new_state could be set to BOND_LINK_{FAIL, BACK} in
+bond_miimon_inspect(). And later in bond_miimon_commit(), it will treat
+it as invalid and print an error, which would cause confusion for users.
+
+[  106.440254] bond0: (slave veth2): link status down for interface, disabling it in 200 ms
+[  106.440265] bond0: (slave veth2): invalid new link 1 on slave
+[  106.648276] bond0: (slave veth2): link status definitely down, disabling slave
+[  107.480271] bond0: (slave veth2): link status up, enabling it in 200 ms
+[  107.480288] bond0: (slave veth2): invalid new link 3 on slave
+[  107.688302] bond0: (slave veth2): link status definitely up, 10000 Mbps full duplex
+
+Let's handle BOND_LINK_{FAIL, BACK} as valid link states.
+
+Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitoring")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20260304-b4-bond_updelay-v1-2-f72eb2e454d0@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 71e15007ffdf4..7431ff97a68c8 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1599,8 +1599,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 		put_page(page);
- 	if (e4b->bd_bitmap_page)
- 		put_page(e4b->bd_bitmap_page);
--	if (e4b->bd_buddy_page)
--		put_page(e4b->bd_buddy_page);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 2ac455a9d1bb1..c71b52e2966fc 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -2936,8 +2936,14 @@ static void bond_miimon_commit(struct bonding *bond)
+ 
+ 			continue;
+ 
++		case BOND_LINK_FAIL:
++		case BOND_LINK_BACK:
++			slave_dbg(bond->dev, slave->dev, "link_new_state %d on slave\n",
++				  slave->link_new_state);
++			continue;
 +
- 	e4b->bd_buddy = NULL;
- 	e4b->bd_bitmap = NULL;
- 	return ret;
+ 		default:
+-			slave_err(bond->dev, slave->dev, "invalid new link %d on slave\n",
++			slave_err(bond->dev, slave->dev, "invalid link_new_state %d on slave\n",
+ 				  slave->link_new_state);
+ 			bond_propose_link_state(slave, BOND_LINK_NOCHANGE);
+ 
 -- 
 2.51.0
 
