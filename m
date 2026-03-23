@@ -1,89 +1,68 @@
-Return-Path: <stable+bounces-227897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AOzeDN7rwGmROgQAu9opvQ
-	(envelope-from <stable+bounces-227897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:29:34 +0100
+	id 0JmUBljqwGl6OQQAu9opvQ
+	(envelope-from <stable+bounces-227894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:23:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FCAE2ED9F6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:29:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982972ED7D5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 52770300D0F8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:27:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 025BC305E9F3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4844035F5E6;
-	Mon, 23 Mar 2026 07:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D36935F5EC;
+	Mon, 23 Mar 2026 07:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dHbLkvav"
+	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Qjb0yY6B"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E0233C53F
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 07:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+Received: from n169-112.mail.139.com (n169-112.mail.139.com [120.232.169.112])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C496B35E937;
+	Mon, 23 Mar 2026 07:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774250842; cv=none; b=lLLcOemGpmbglqsFEoIK/OOVyjM33ZK/tOqT/xU2zmBFfAWgXpdL6Tcf4wYBKkVvVq3QtfzCIJNYym9PXVwajf3i4Q4Kig/4uDlfmt190C/jsCDSy/1lz6SnMFqUCibsKy0VV2udizHuDr4Ckzd6nh6RmzmI3ZEabvn7gDaK4N8=
+	t=1774250062; cv=none; b=W8CiMr5rt9uX/4jCM0JqubJd0f/Z7/yE11J+zSpqazvmQlboNdi5JxfqdyOvQzWAUuhSjgxLewkxvo6VMzRJC2Y/o7IG4oKDVB+PlExH4fWw9AfUw022SrHoOZE6sabgZ7KFgZucRLiBWh4xMndIkhBCi+ravmmxjfPAsDuHYCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774250842; c=relaxed/simple;
-	bh=7WPWs1Sp1g3Vl1AoHyo6/B00u7Vy9BnNDHYKrKY47ok=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=apr71PTc3SiJ9/vlLa5l1BoufQy/on5e1OSwJmAhS4c14a8Q5aIVcIL1Ln7ySWoSJirv1KzOp//ijMIWZy+kqZaW8R5QQWs+CUDnuxmFbUrGDQkwfmQoey4lOHX3CUTBHNEtbEb5WFWCMFRKuVHCZpePAEtlNGhL6l5xUlgHQio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dHbLkvav; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-82c20b9fb16so869596b3a.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 00:27:19 -0700 (PDT)
+	s=arc-20240116; t=1774250062; c=relaxed/simple;
+	bh=NF6nNzU/zFiq2eQA6Z8WTaoY9/W/gmTBJvRtLaQWLfA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=NZp1QDsnDhxRPuSRXnSwttPmcSpDYMaDIMZkjEJdDWb3dZIotnDzoyzy45SBHgJhm2wDKE+qGGM0Ps6f9iFwE/ax+/CCspKRdAiPiscOQyOm0aeauZgF6VOfXo0IOgxbkx1Fuifw/3Ty3F97Qj3OR/s2TOGYypTudRgCSyn0mNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Qjb0yY6B; arc=none smtp.client-ip=120.232.169.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774250839; x=1774855639; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HyN15G+MEDzt2QKd8l7H0bzTezImqr3C5TjJ8HaJLCg=;
-        b=dHbLkvavK8hiB0mZq62JFtDHaaCwcZTq2ar5ujnBjh8qfQ1yAoOn+RZhXM/hEYGWEr
-         KtTq7RizxKxt56I8rCXaiBbbPj+MeISlutNH478JKy9M9phykRjdnDii+2VQcK2lFEUf
-         VBGjtCKOX96Sgh9DKFwRuaXKzHcLuRfnuh89NcxYlip6rnDit2PNxRGaRnz2GMTxVyRm
-         rcwqk8wiXK7eEZcOlUxfnKwfaC/k9VEysxhmOxyMj5xYhVfkepb5Dr1dTwDA3rhMIYqq
-         wnd+KX/7R+OWSzpe3v8Uoc87xBTdECrZdE90p86BkzOgWUgyzBEnyG4rACVfpQMsa4sP
-         M9Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774250839; x=1774855639;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HyN15G+MEDzt2QKd8l7H0bzTezImqr3C5TjJ8HaJLCg=;
-        b=Taj+RqDjqFxHlf349q/+sLaBdPPcemWtTE15U+3ih9KiaBPKsdTu0xig/muLKmPd4G
-         wGDOsO1m4IWbD/0inIhJO0HvnInmlJ922Lws1FDw7x7gfNWyO4yPjJZRJE9b7a+IhAEm
-         htikjmToAsUdkGcOwxu2cIsmgkjsFkAN7cLeRuQ0rzpnWuvw++LM/jA42Q7ACLgBJt4H
-         KgH1GJ+AMEWrCk7qzZ40v8MEKhGEWuZQEDu6GZoek/MNPFQ1SPzYbcwuAPlD46Uu/HMX
-         lBUA7SOJDkShKMvJPSwOpkFNjNYDJqp0KsbjEneR/mggnPc7zu+QbK8yx/EXuT0EscP+
-         Y0yA==
-X-Forwarded-Encrypted: i=1; AJvYcCVf6xNQUQl5u3RsqqxYf8Cpj9tEV0V5kDEUQBaAW55CWW6YVvtADpgMTYSYg56YOfH2WWoiy6U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYFlPIZR+oMC0ZZu/x7Yf8hz6vJUMLyg7vqgyoXFaMAeNbJKbh
-	7yeDdqz9Gvoiz8+4BuOXtwuDPZcRu8TMxFV1g3PhDStX6s93MEMqWBvI
-X-Gm-Gg: ATEYQzxz9TKMHD4ddSOGGS+8b6dohMfmW1ng68wIAjANBo9w1Tw10KzE4UUA71DRqhv
-	JTZyURSOHLGfwJbes+t21j44K8TL28R6sh39S6dF5tBHLnvVYRxUo2ez2CMutYV5+SYZ7Eu1mBw
-	K+p8D/C0A6S/I044GV53PhmmqEDuz28qmTWvsb1GftCB1Zhg4PIBSwpmwt2VJ2/y3p1Dluaykn8
-	3CCxibQ4l8tCZWh5kcP6teHbiY0c9NqpFVrzVxesL3wM7zUiCFpDWMJyWM6igBtQGxSVT8pvNLp
-	00TWrx7hGuKwoBH0JeDIPnKcQklTmTkh5c9BhGcasj9srKaKrd7+VvWgNWRNkzZZgtF0kw70i6w
-	S5evcMMWITkUXlPWa7EIROXzV8rLW4Tl9WurLAC3GwbJz5qiJpprkizhJ1qRWA6wBKnghrO67rJ
-	1/E4wKts3P631tjqNnPw==
-X-Received: by 2002:a05:6a00:2349:b0:824:4a22:ec02 with SMTP id d2e1a72fcca58-82a8c3878camr9366286b3a.42.1774250839210;
-        Mon, 23 Mar 2026 00:27:19 -0700 (PDT)
-Received: from localhost ([111.228.63.84])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b03aa5aa7sm8476962b3a.1.2026.03.23.00.27.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 00:27:18 -0700 (PDT)
-From: Cen Zhang <zzzccc427@gmail.com>
-To: cem@kernel.org
-Cc: linux-xfs@vger.kernel.org,
+	d=139.com; s=dkim; l=0;
+	h=from:subject:message-id:to:cc:mime-version;
+	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
+	b=Qjb0yY6B7X0bw5KlbHxtQX35mPUQPswgg5F+lvaIzO7V5Hqc2YhkiDQ1+zUZRgVIoXE1VQkogm1vm
+	 dMnHnoLdXl5UQWh0t+0Bu94Y4+Z2shJ0ShjnTYU4Nno+uPa/9DOcxWjuDqZ/IR6+WDIAP30PbRfq5u
+	 l+R3pVyfFLlVby9k=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG:00000000
+Received:from NTT-kernel-dev (unknown[60.247.85.88])
+	by rmsmtp-lg-appmail-24-12027 (RichMail) with SMTP id 2efb69c0e77a297-0029b;
+	Mon, 23 Mar 2026 15:10:53 +0800 (CST)
+X-RM-TRANSID:2efb69c0e77a297-0029b
+From: Li hongliang <1468888505@139.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	srinivasan.shanmugam@amd.com
+Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Cen Zhang <zzzccc427@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] xfs: use xfs_trans_ail_copy_lsn for lockless li_lsn read in CIL formatting
-Date: Mon, 23 Mar 2026 15:09:49 +0800
-Message-Id: <20260323070949.3769170-1-zzzccc427@gmail.com>
+	alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	sashal@kernel.org,
+	guchun.chen@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH 6.1.y] drm/amdgpu: Fix potential out-of-bounds access in 'amdgpu_discovery_reg_base_init()'
+Date: Mon, 23 Mar 2026 15:10:52 +0800
+Message-Id: <20260323071052.4068410-1-1468888505@139.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -91,88 +70,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [0.54 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
+	R_DKIM_REJECT(1.00)[139.com:s=dkim];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227897-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmail.com];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227894-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,amd.com,gmail.com,ffwll.ch,kernel.org,lists.freedesktop.org];
+	DMARC_NA(0.00)[139.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	FROM_NEQ_ENVFROM(0.00)[1468888505@139.com,stable@vger.kernel.org];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zzzccc427@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[139.com:-];
+	TO_DN_NONE(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1FCAE2ED9F6
+	NEURAL_HAM(-0.00)[-0.369];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[139.com]
+X-Rspamd-Queue-Id: 982972ED7D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-xfs_inode_item_format_core() reads lip->li_lsn without holding any lock
-to embed the last on-disk LSN into the log dinode during CIL commit:
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-    xfs_inode_to_log_dinode(ip, dic, ip->i_itemp->ili_item.li_lsn);
+[ Upstream commit cdb637d339572398821204a1142d8d615668f1e9 ]
 
-Concurrently, xfs_trans_ail_update_bulk() writes lip->li_lsn under
-ail_lock when inserting items into the AIL after log IO completion:
+The issue arises when the array 'adev->vcn.vcn_config' is accessed
+before checking if the index 'adev->vcn.num_vcn_inst' is within the
+bounds of the array.
 
-    lip->li_lsn = lsn;
+The fix involves moving the bounds check before the array access. This
+ensures that 'adev->vcn.num_vcn_inst' is within the bounds of the array
+before it is used as an index.
 
-The CIL context lock (xc_ctx_lock) and the AIL lock (ail_lock) are
-independent and provide no mutual exclusion between these paths.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c:1289 amdgpu_discovery_reg_base_init() error: testing array offset 'adev->vcn.num_vcn_inst' after use.
 
-On 64-bit architectures this is benign since li_lsn monotonically
-increases and both old/new values are valid checkpoint LSNs.  On 32-bit
-architectures the 64-bit xfs_lsn_t can be torn into two 32-bit loads,
-producing a bogus LSN that could cause log recovery to make incorrect
-replay decisions.
-
-Use xfs_trans_ail_copy_lsn() to safely snapshot li_lsn, which takes
-ail_lock on 32-bit architectures to prevent torn reads.
-
-Fixes: 93f958f9c41f ("xfs: cull unnecessary icdinode fields")
-Cc: stable@vger.kernel.org
-Signed-off-by: Cen Zhang <zzzccc427@gmail.com>
+Fixes: a0ccc717c4ab ("drm/amdgpu/discovery: validate VCN and SDMA instances")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 ---
- fs/xfs/xfs_inode_item.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/xfs/xfs_inode_item.c b/fs/xfs/xfs_inode_item.c
-index 8913036b8024..0171f4527f40 100644
---- a/fs/xfs/xfs_inode_item.c
-+++ b/fs/xfs/xfs_inode_item.c
-@@ -622,9 +622,12 @@ xfs_inode_item_format_core(
- 	struct xlog_format_buf	*lfb)
- {
- 	struct xfs_log_dinode	*dic;
-+	xfs_lsn_t		lsn;
- 
-+	xfs_trans_ail_copy_lsn(ip->i_mount->m_ail, &lsn,
-+				&ip->i_itemp->ili_item.li_lsn);
- 	dic = xlog_format_start(lfb, XLOG_REG_TYPE_ICORE);
--	xfs_inode_to_log_dinode(ip, dic, ip->i_itemp->ili_item.li_lsn);
-+	xfs_inode_to_log_dinode(ip, dic, lsn);
- 	xlog_format_commit(lfb, xfs_log_dinode_size(ip->i_mount));
- }
- 
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+index 9b1c4d5be61f..a1e006d238cf 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_discovery.c
+@@ -1128,15 +1128,15 @@ static int amdgpu_discovery_reg_base_init(struct amdgpu_device *adev)
+ 				 *     0b10 : encode is disabled
+ 				 *     0b01 : decode is disabled
+ 				 */
+-				adev->vcn.vcn_config[adev->vcn.num_vcn_inst] =
+-					ip->revision & 0xc0;
+-				ip->revision &= ~0xc0;
+-				if (adev->vcn.num_vcn_inst < AMDGPU_MAX_VCN_INSTANCES)
++				if (adev->vcn.num_vcn_inst < AMDGPU_MAX_VCN_INSTANCES) {
++					adev->vcn.vcn_config[adev->vcn.num_vcn_inst] =
++						ip->revision & 0xc0;
+ 					adev->vcn.num_vcn_inst++;
+-				else
++				} else
+ 					dev_err(adev->dev, "Too many VCN instances: %d vs %d\n",
+ 						adev->vcn.num_vcn_inst + 1,
+ 						AMDGPU_MAX_VCN_INSTANCES);
++				ip->revision &= ~0xc0;
+ 			}
+ 			if (le16_to_cpu(ip->hw_id) == SDMA0_HWID ||
+ 			    le16_to_cpu(ip->hw_id) == SDMA1_HWID ||
 -- 
 2.34.1
+
 
 
