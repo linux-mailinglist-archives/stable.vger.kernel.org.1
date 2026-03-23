@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228844-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IC8TFnlLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:29 +0100
+	id cEWNA7BVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228844-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB6E22F418D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5FC42F5A12
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 635D5314B0E5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9AE2B30D7FB9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6C0C145;
-	Mon, 23 Mar 2026 14:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92CF124E4D4;
+	Mon, 23 Mar 2026 14:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njNC9ikb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VosB/RHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6201387563;
-	Mon, 23 Mar 2026 14:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56346241695;
+	Mon, 23 Mar 2026 14:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274807; cv=none; b=pBeEBM9PR5n2BIWSZoskhOizauHMjMNH5uW+Js9GUwQXrbB0FVGXsss7WHm0o8e19kMui7L0ea4Yx+axiSZDXPAw1vZYB8BmL0sqSdZzMW3wp42WOrX80GJVRDtNR9q5gdgD5gV2bMQ3If9PfrYbG29WfCEc0c2c4MDfNn4/WBY=
+	t=1774277284; cv=none; b=BOHtAdhzfuElQ9c2u1FbTxvIGxBJoywtG7q+sa720qVF5Jj7WIuFfYZRYiOF9ouDAhzFE0TZg7PLzCvS7EX9N5tb2bM6PxagmW6LdDtRwS6KtThoMxpforVAQXegTZv0higpPTkZJti1uxTg8XMjo8QOrCE8/5PjeG6T2L+FuXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274807; c=relaxed/simple;
-	bh=NHDZO5dJYU0mMWz/itVtQwLFWFWVz9NSmaahRgh26Kg=;
+	s=arc-20240116; t=1774277284; c=relaxed/simple;
+	bh=OZ9j9OK6HyY5GHUbmMQ54Rb+ikvZFut84S8Q6zcPqIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DahVnDqcNW871tDIpd7EHu8FB/3eeSlW+e6fWdejtsJhg4kopCDvKk0otuK3kyzsMdOTGOIyGqitMmc01/psxeubhZgCN+qas57MP/uehPWXwxZEY3U/mAyl7yxczW2ZpU+vZKgtJiS7g5Nm99kP+k+iv1QUobTzNm70ybOFDqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njNC9ikb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5710CC4CEF7;
-	Mon, 23 Mar 2026 14:06:47 +0000 (UTC)
+	 MIME-Version; b=gPJd5+pCt9NCA4Y1zFuDB9MyskckoXRxbEDcHKnHyHMYHuHaBaTo0NhfmjoqRIVEjSQc04BlcMX9ijPi+Dlnc/E9z8U19SjaGfHrMCIx9/OBtKEGxE6QoYyYvqqC26O/9n51m8MOBUreNPS2WDVsbJR+/RD2hxlDOxf+jzhloLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VosB/RHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF1DEC4CEF7;
+	Mon, 23 Mar 2026 14:48:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274807;
-	bh=NHDZO5dJYU0mMWz/itVtQwLFWFWVz9NSmaahRgh26Kg=;
+	s=korg; t=1774277284;
+	bh=OZ9j9OK6HyY5GHUbmMQ54Rb+ikvZFut84S8Q6zcPqIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njNC9ikbZkzj8UQTysjrssqQUALAdjX8rNtZ2RI9rcymQGJDeC43YtCtTjS1LZ41W
-	 D+wgoi75W5r7rXLeqyDRPNLIvR0nZlfa93Cs4uBNcrOklsrCoV9PMFdBNYLWfmrlB5
-	 fVKg8CS6J7dlN9Pd4j1OFyMo/QSx7SXlx5s66v24=
+	b=VosB/RHCPyA2jX1izh9eBN/59zoj26KfVXFHphbnbR+WEhG/DL+3XJ7AnPMY9/PPp
+	 vuYI3f8hAlhOvtZkOXo3W41oXmaN5VVoOAnR9gV7a0y/p0MWEcdfSOBHlMmjviEgCY
+	 8NWwVDZSSeLUqaQxQ61+E6DNuGzPy15fhUvP21ps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 114/212] arm64: dts: renesas: r9a09g057: Add RTC node
+	David Jander <david@protonic.nl>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 339/460] spi: fix statistics allocation
 Date: Mon, 23 Mar 2026 14:45:35 +0100
-Message-ID: <20260323134507.379115286@linuxfoundation.org>
+Message-ID: <20260323134534.859974257@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +64,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228323-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228844-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[johan.kernel.org:query timed out,broonie.kernel.org:query timed out];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AB6E22F418D
+X-Rspamd-Queue-Id: C5FC42F5A12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit cfc733da4e79018f88d8ac5f3a5306abbba8ef89 ]
+commit dee0774bbb2abb172e9069ce5ffef579b12b3ae9 upstream.
 
-Add RTC node to Renesas RZ/V2H ("R9A09G057") SoC DTSI.
+The controller per-cpu statistics is not allocated until after the
+controller has been registered with driver core, which leaves a window
+where accessing the sysfs attributes can trigger a NULL-pointer
+dereference.
 
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20251107210706.45044-4-ovidiu.panait.rb@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Stable-dep-of: a3f34651de42 ("arm64: dts: renesas: r9a09g057: Remove wdt{0,2,3} nodes")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by moving the statistics allocation to controller allocation
+while tying its lifetime to that of the controller (rather than using
+implicit devres).
+
+Fixes: 6598b91b5ac3 ("spi: spi.c: Convert statistics to per-cpu u64_stats_t")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: David Jander <david@protonic.nl>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260312151817.32100-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/renesas/r9a09g057.dtsi | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/spi/spi.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-index 630f7a98df386..f59c3040f536a 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-@@ -586,6 +586,21 @@ wdt3: watchdog@13000400 {
- 			status = "disabled";
- 		};
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2940,6 +2940,8 @@ static void spi_controller_release(struc
+ 	struct spi_controller *ctlr;
  
-+		rtc: rtc@11c00800 {
-+			compatible = "renesas,r9a09g057-rtca3", "renesas,rz-rtca3";
-+			reg = <0 0x11c00800 0 0x400>;
-+			interrupts = <GIC_SPI 524 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 525 IRQ_TYPE_EDGE_RISING>,
-+				     <GIC_SPI 526 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "alarm", "period", "carry";
-+			clocks = <&cpg CPG_MOD 0x53>, <&rtxin_clk>;
-+			clock-names = "bus", "counter";
-+			power-domains = <&cpg>;
-+			resets = <&cpg 0x79>, <&cpg 0x7a>;
-+			reset-names = "rtc", "rtest";
-+			status = "disabled";
-+		};
+ 	ctlr = container_of(dev, struct spi_controller, dev);
 +
- 		scif: serial@11c01400 {
- 			compatible = "renesas,scif-r9a09g057";
- 			reg = <0 0x11c01400 0 0x400>;
--- 
-2.51.0
-
++	free_percpu(ctlr->pcpu_statistics);
+ 	kfree(ctlr);
+ }
+ 
+@@ -3080,6 +3082,12 @@ struct spi_controller *__spi_alloc_contr
+ 	if (!ctlr)
+ 		return NULL;
+ 
++	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(NULL);
++	if (!ctlr->pcpu_statistics) {
++		kfree(ctlr);
++		return NULL;
++	}
++
+ 	device_initialize(&ctlr->dev);
+ 	INIT_LIST_HEAD(&ctlr->queue);
+ 	spin_lock_init(&ctlr->queue_lock);
+@@ -3370,13 +3378,6 @@ int spi_register_controller(struct spi_c
+ 		if (status)
+ 			goto del_ctrl;
+ 	}
+-	/* Add statistics */
+-	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(dev);
+-	if (!ctlr->pcpu_statistics) {
+-		dev_err(dev, "Error allocating per-cpu statistics\n");
+-		status = -ENOMEM;
+-		goto destroy_queue;
+-	}
+ 
+ 	mutex_lock(&board_lock);
+ 	list_add_tail(&ctlr->list, &spi_controller_list);
+@@ -3389,8 +3390,6 @@ int spi_register_controller(struct spi_c
+ 	acpi_register_spi_devices(ctlr);
+ 	return status;
+ 
+-destroy_queue:
+-	spi_destroy_queue(ctlr);
+ del_ctrl:
+ 	device_del(&ctlr->dev);
+ free_bus_id:
 
 
 
