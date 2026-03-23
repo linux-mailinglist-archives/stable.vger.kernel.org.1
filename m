@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-229380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228332-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGykHVtiwWnnSgQAu9opvQ
-	(envelope-from <stable+bounces-229380-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:55:07 +0100
+	id 2CxLFCFMwWmKSAQAu9opvQ
+	(envelope-from <stable+bounces-228332-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29CCB2F71CB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:55:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B4A2F43A3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BC9E830259AD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 172583061147
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 855683B5302;
-	Mon, 23 Mar 2026 15:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00C73B2FCA;
+	Mon, 23 Mar 2026 14:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHG4Xa6/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBt2iTml"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436673B95EB;
-	Mon, 23 Mar 2026 15:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931273B2FC1;
+	Mon, 23 Mar 2026 14:07:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278933; cv=none; b=Hy7NHX3zhvyhPWQ1zboEXwl8Fphv0vInSp3WClwOhHOfL7zbw5kxe9H6O9eRmhlXMof/3XxE5ZS+1EndUA4UpMCBnNEiQclW/CJfY7h9Sq7hrfLXBxqlncUzPMWCyA4LG0w+SZdih4JWWnoFBbEUcpMmK7sdqS8UMY12E/uUQcQ=
+	t=1774274835; cv=none; b=YR+Cx6cK9iRhh/jDoXPN3f+yiwgjtX/KteCImSFRSH3SBO7kX/QUe8KeIku4Vofa9fDy8oux+q+A3RHaQICFTCuTbmHZgloeWZS5/BvsImbOY5+N3fAuIjtUMPlUoQ/mnTVK140yysj0IfPTLeUgUIRr1ohjYRO6pDEeb7BYf94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278933; c=relaxed/simple;
-	bh=FR+xJpa0UruSvCkOHg7QvDfRkITs647WFokf7GpWgWQ=;
+	s=arc-20240116; t=1774274835; c=relaxed/simple;
+	bh=EoJToR9SnxbCKQVUK/Ey/OIv4Tt09t/xstUl4o8t3Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kk06hbmmAUq7dokxIexsrT5dZZ+5mml3j5XLKeIq60u0oqPexhxIjkABaCZxy74c3OeyGdUG6UdD+FwtAzh0gemmtVGXcTJ1uLXofShWYbaqFknck2dXWB+E/LwLLyefnJ00RFLLd/CS1vXMhU0vlk1V/IaSQpNVJA6d+z4xb8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHG4Xa6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D412C2BC9E;
-	Mon, 23 Mar 2026 15:15:32 +0000 (UTC)
+	 MIME-Version; b=sigr4vTNudNrP4buH1TN+XiEk8Ql/Z4WQP9QqfIQK2RZI/vbzcGz0EziGHwIS8hB8lJPlZmVMfSmvkwl2dLr8z/nC1p+DLf0+eTjXZUYOM602joNiIcp3OvE4m+F2zF8IPxLKfjU+YqUq0MdEvRsvvwwCmfv/ivJzqsBtLmbXIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBt2iTml; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F37C4CEF7;
+	Mon, 23 Mar 2026 14:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278933;
-	bh=FR+xJpa0UruSvCkOHg7QvDfRkITs647WFokf7GpWgWQ=;
+	s=korg; t=1774274835;
+	bh=EoJToR9SnxbCKQVUK/Ey/OIv4Tt09t/xstUl4o8t3Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHG4Xa6/KAL50S9zsbuJS5h04erE7tyjvtgjBq8uIgJLdOpxP5ZiZz7rwq2X0HdpH
-	 yKI5PKP0yh2J/RVTdkqcQ6tkOygAHNzju+CbZ9gXLqmaoclzqL1T/x4gBHJ6N6WudK
-	 SB7UobZe7O6ySEIxOOC75h3HRTV5ew76Xi9IRIgg=
+	b=wBt2iTml1AoC0RH9rHSGQvxhM4C9eJSqKQxnDT2/C6XHEloz812EMIxk90vdbZRKf
+	 +/RQR2HObPX79hXslrKdc5+ZiP/UJx8nNIN6yhrm3/tzRoAA9CcgnKYNlWe+K0F0S4
+	 ZhP7ePG6LMIocB094wzLNxuJTVlGkGWOB1fvXkKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Yao Kai <yaokai34@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Leon Chen <leonchen.oss@139.com>
-Subject: [PATCH 6.6 423/567] tracing: Add recursion protection in kernel stack trace recording
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 122/212] Bluetooth: LE L2CAP: Disconnect if received packets SDU exceeds IMTU
 Date: Mon, 23 Mar 2026 14:45:43 +0100
-Message-ID: <20260323134544.354050710@linuxfoundation.org>
+Message-ID: <20260323134507.625539787@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,129 +64,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229380-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,joelfernandes.org,gmail.com,huawei.com,goodmis.org,139.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228332-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,huawei.com:email,efficios.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,139.com:email,joelfernandes.org:email,goodmis.org:email]
-X-Rspamd-Queue-Id: 29CCB2F71CB
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,arri.de:email]
+X-Rspamd-Queue-Id: 18B4A2F43A3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 5f1ef0dfcb5b7f4a91a9b0e0ba533efd9f7e2cdb ]
+[ Upstream commit e1d9a66889867c232657a9b6f25d451d7c3ab96f ]
 
-A bug was reported about an infinite recursion caused by tracing the rcu
-events with the kernel stack trace trigger enabled. The stack trace code
-called back into RCU which then called the stack trace again.
+Core 6.0, Vol 3, Part A, 3.4.3:
+"If the SDU length field value exceeds the receiver's MTU, the receiver
+shall disconnect the channel..."
 
-Expand the ftrace recursion protection to add a set of bits to protect
-events from recursion. Each bit represents the context that the event is
-in (normal, softirq, interrupt and NMI).
+This fixes L2CAP/LE/CFC/BV-26-C (running together with 'l2test -r -P
+0x0027 -V le_public -I 100').
 
-Have the stack trace code use the interrupt context to protect against
-recursion.
-
-Note, the bug showed an issue in both the RCU code as well as the tracing
-stacktrace code. This only handles the tracing stack trace side of the
-bug. The RCU fix will be handled separately.
-
-Link: https://lore.kernel.org/all/20260102122807.7025fc87@gandalf.local.home/
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20260105203141.515cd49f@gandalf.local.home
-Reported-by: Yao Kai <yaokai34@huawei.com>
-Tested-by: Yao Kai <yaokai34@huawei.com>
-Fixes: 5f5fa7ea89dc ("rcu: Don't use negative nesting depth in __rcu_read_unlock()")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Leon Chen <leonchen.oss@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_recursion.h |    9 +++++++++
- kernel/trace/trace.c            |    6 ++++++
- 2 files changed, 15 insertions(+)
+ net/bluetooth/l2cap_core.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/include/linux/trace_recursion.h
-+++ b/include/linux/trace_recursion.h
-@@ -34,6 +34,13 @@ enum {
- 	TRACE_INTERNAL_SIRQ_BIT,
- 	TRACE_INTERNAL_TRANSITION_BIT,
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 319c87bd795d5..1618fe98dce71 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6654,8 +6654,10 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		return -ENOBUFS;
+ 	}
  
-+	/* Internal event use recursion bits */
-+	TRACE_INTERNAL_EVENT_BIT,
-+	TRACE_INTERNAL_EVENT_NMI_BIT,
-+	TRACE_INTERNAL_EVENT_IRQ_BIT,
-+	TRACE_INTERNAL_EVENT_SIRQ_BIT,
-+	TRACE_INTERNAL_EVENT_TRANSITION_BIT,
-+
- 	TRACE_BRANCH_BIT,
- /*
-  * Abuse of the trace_recursion.
-@@ -97,6 +104,8 @@ enum {
+-	if (chan->imtu < skb->len) {
+-		BT_ERR("Too big LE L2CAP PDU");
++	if (skb->len > chan->imtu) {
++		BT_ERR("Too big LE L2CAP PDU: len %u > %u", skb->len,
++		       chan->imtu);
++		l2cap_send_disconn_req(chan, ECONNRESET);
+ 		return -ENOBUFS;
+ 	}
  
- #define TRACE_LIST_START	TRACE_INTERNAL_BIT
+@@ -6681,7 +6683,9 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		       sdu_len, skb->len, chan->imtu);
  
-+#define TRACE_EVENT_START	TRACE_INTERNAL_EVENT_BIT
-+
- #define TRACE_CONTEXT_MASK	((1 << (TRACE_LIST_START + TRACE_CONTEXT_BITS)) - 1)
- 
- /*
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -3105,6 +3105,11 @@ static void __ftrace_trace_stack(struct
- 	struct ftrace_stack *fstack;
- 	struct stack_entry *entry;
- 	int stackidx;
-+	int bit;
-+
-+	bit = trace_test_and_set_recursion(_THIS_IP_, _RET_IP_, TRACE_EVENT_START);
-+	if (bit < 0)
-+		return;
- 
- 	/*
- 	 * Add one, for this function and the call to save_stack_trace()
-@@ -3162,6 +3167,7 @@ static void __ftrace_trace_stack(struct
- 	__this_cpu_dec(ftrace_stack_reserve);
- 	preempt_enable_notrace();
- 
-+	trace_clear_recursion(bit);
- }
- 
- static inline void ftrace_trace_stack(struct trace_array *tr,
+ 		if (sdu_len > chan->imtu) {
+-			BT_ERR("Too big LE L2CAP SDU length received");
++			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
++			       skb->len, sdu_len);
++			l2cap_send_disconn_req(chan, ECONNRESET);
+ 			err = -EMSGSIZE;
+ 			goto failed;
+ 		}
+-- 
+2.51.0
+
 
 
 
