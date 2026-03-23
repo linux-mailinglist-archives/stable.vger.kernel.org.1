@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGcUKR5zwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229596-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:38 +0100
+	id cH+sGMlRwWnqSAQAu9opvQ
+	(envelope-from <stable+bounces-228561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10E42F9745
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E212F515C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2C7B230C23F2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C9C93156F8D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AB93BA226;
-	Mon, 23 Mar 2026 16:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25062369204;
+	Mon, 23 Mar 2026 14:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oM1M//Yb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWKVRCoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EE53B9611;
-	Mon, 23 Mar 2026 16:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB895175A80;
+	Mon, 23 Mar 2026 14:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282347; cv=none; b=XhSAgfzVTRtTHNJBhYLmhNUA/fSg7eB9Tj9eaJmh0kLGJYjPaDFhqW5fN2gbeO1N0rPUJeErzwoT5fQ3JYoEnyXavVkHwp9l3vz1pZ73EOubX5IWI81JpYuQcHWbBMR0k0+uc9d2VKpbceYnPPQ/3qbNxBwnnG7KM+PH+sA0o2s=
+	t=1774275456; cv=none; b=WYQkLSfy4VUiexq1A4OmCf+Zaj9/EKPenH/Zqi5yhrM9YR/QP7HIrMP5M8+x1e01p8nCCjNvYlnnn2nErtfwr3VsvGlKJqtZH1k49Xfgleb7C1JoFBtEuQ0PCObvb8o8fSovNrCgEJ2z/uTiJBNTdC0j55sXex20ogfNIM8ewhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282347; c=relaxed/simple;
-	bh=YuMDg4l/mQ5PCMcLY0aG5CBCSWVCzAdwe7ZPpr8rXDw=;
+	s=arc-20240116; t=1774275456; c=relaxed/simple;
+	bh=D1dl4trwH3apMoYVG93IdO/1/YRduwbWLvGQlB4Y/Ag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwSu+WNcfdKWzsfWUabGhmYVgx/gz2aGfE5uwFdxw8Lh0VWyk1Hh4GP6Vg9ahrF282Y/MaQ6/p1iQ9RO6rvRBMbpjvxGfHAPYSumYzhzqxFTVTggWc2rkCC3qdLs9HlJDHm7gpoHCWWCmbyvEN1mVOcVsrsFuHHIISrssCxquSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oM1M//Yb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9C2C4CEF7;
-	Mon, 23 Mar 2026 16:12:26 +0000 (UTC)
+	 MIME-Version; b=WOub2kwsxc6Kp11KlIHypKR3qlvhhgosudOBwjKL2osJeN424XBz7jLfcH6G9f3AR6BnL6G9RdUDFPuwTOInPSouuGhszmi1VSBq6ugfkUxJD71wcs/o6g0RjhsgLSJii+e21Pbt/+omNJX+O0NR04lajyI/IYbYVlzYEmBtQK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWKVRCoQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5F8C4CEF7;
+	Mon, 23 Mar 2026 14:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282347;
-	bh=YuMDg4l/mQ5PCMcLY0aG5CBCSWVCzAdwe7ZPpr8rXDw=;
+	s=korg; t=1774275456;
+	bh=D1dl4trwH3apMoYVG93IdO/1/YRduwbWLvGQlB4Y/Ag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oM1M//YbigUCLjMEVh0xP1+mOHjY7TQpY52Bs86C2C6/UfIY2KdFOmFOM8jKfBL+R
-	 QJHw09zfaPWDIBqqCbhfk1KaRZsfsbb9Twwh4oTCXpojlXCHuqbauJjoGR3P0lUKqN
-	 wmx1AWMmWCN/END3+7pAh1yTHI9ueJxWw1H5DwJg=
+	b=uWKVRCoQtDilOXkJxyCm+YhvyESGG1hopB59rEdXMz2eGHt8rnXmuMqT9GCcfZrZm
+	 2pmvEnajQdAeLN6j6/KEmJg+ssgK2iT0PRVGKF629/EeSsr+t0ox8J7LFyueqbxcZA
+	 O1jqvR5Ab7WkpPFIZz7b/ivaVq9cNaYnBFtozNxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/481] wifi: wlcore: Fix a locking bug
+	stable <stable@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Arnaud Ferraris <arnaud.ferraris@collabora.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.12 108/460] usb: roles: get usb role switch from parent only for usb-b-connector
 Date: Mon, 23 Mar 2026 14:41:44 +0100
-Message-ID: <20260323134528.257896798@linuxfoundation.org>
+Message-ID: <20260323134529.297726265@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +67,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229596-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228561-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B10E42F9745
+X-Rspamd-Queue-Id: F1E212F515C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 72c6df8f284b3a49812ce2ac136727ace70acc7c ]
+commit 8345b1539faa49fcf9c9439c3cbd97dac6eca171 upstream.
 
-Make sure that wl->mutex is locked before it is unlocked. This has been
-detected by the Clang thread-safety analyzer.
+usb_role_switch_is_parent() was walking up to the parent node and checking
+for the "usb-role-switch" property regardless of the type of the passed
+fwnode. This could cause unrelated device nodes to be probed as potential
+role switch parent, leading to spurious matches and "-EPROBE_DEFER" being
+returned infinitely.
 
-Fixes: 45aa7f071b06 ("wlcore: Use generic runtime pm calls for wowlan elp configuration")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260223220102.2158611-26-bart.vanassche@linux.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Till now only Type-B connector node will have a parent node which may
+present "usb-role-switch" property and register the role switch device.
+For Type-C connector node, its parent node will always be a Type-C chip
+device which will never register the role switch device. However, it may
+still present a non-boolean "usb-role-switch = <&usb_controller>" property
+for historical compatibility.
+
+So restrict the helper to only operate on Type-B connector when attempting
+to get the role switch from parent node.
+
+Fixes: 6fadd72943b8 ("usb: roles: get usb-role-switch from parent")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Tested-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260309074313.2809867-3-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ti/wlcore/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/roles/class.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/main.c b/drivers/net/wireless/ti/wlcore/main.c
-index b88ceb1f9800c..95de73f4a7dfd 100644
---- a/drivers/net/wireless/ti/wlcore/main.c
-+++ b/drivers/net/wireless/ti/wlcore/main.c
-@@ -1800,6 +1800,8 @@ static int __maybe_unused wl1271_op_resume(struct ieee80211_hw *hw)
- 		     wl->wow_enabled);
- 	WARN_ON(!wl->wow_enabled);
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -139,9 +139,14 @@ static void *usb_role_switch_match(const
+ static struct usb_role_switch *
+ usb_role_switch_is_parent(struct fwnode_handle *fwnode)
+ {
+-	struct fwnode_handle *parent = fwnode_get_parent(fwnode);
++	struct fwnode_handle *parent;
+ 	struct device *dev;
  
-+	mutex_lock(&wl->mutex);
++	if (!fwnode_device_is_compatible(fwnode, "usb-b-connector"))
++		return NULL;
 +
- 	ret = pm_runtime_force_resume(wl->dev);
- 	if (ret < 0) {
- 		wl1271_error("ELP wakeup failure!");
-@@ -1816,8 +1818,6 @@ static int __maybe_unused wl1271_op_resume(struct ieee80211_hw *hw)
- 		run_irq_work = true;
- 	spin_unlock_irqrestore(&wl->wl_lock, flags);
- 
--	mutex_lock(&wl->mutex);
--
- 	/* test the recovery flag before calling any SDIO functions */
- 	pending_recovery = test_bit(WL1271_FLAG_RECOVERY_IN_PROGRESS,
- 				    &wl->flags);
--- 
-2.51.0
-
++	parent = fwnode_get_parent(fwnode);
++
+ 	if (!fwnode_property_present(parent, "usb-role-switch")) {
+ 		fwnode_handle_put(parent);
+ 		return NULL;
 
 
 
