@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-229430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229929-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOyHHEliwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229430-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:54:49 +0100
+	id qAF0Gfd8wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229929-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5A72F71A8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0509C2FA6EA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D18EF3288DA1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 517083230F28
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55B23BD62E;
-	Mon, 23 Mar 2026 15:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744873BF682;
+	Mon, 23 Mar 2026 16:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyeP9axB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zr5s+wCY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769C53B47FE;
-	Mon, 23 Mar 2026 15:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303032550D5;
+	Mon, 23 Mar 2026 16:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279221; cv=none; b=j8Jq68/e34fnytjcr0hwAqjExcR4ayXH/DT7ZSK/EmpBD1PreNwLbGD8VT5Q429ScxAKtF/3Xfqr7v9KTHQESB8tW89w7B0WFFmqM9UaiVginYqd6COwcjJL311nJPItDeXXX8p2qCqzpryiSeplHJtgb1kBM/TOQ0JVJoSx530=
+	t=1774283244; cv=none; b=XS/7jpeDE+PHLLOBJdBbncKWGbHSaafGBHMe7D7H/tlQG6j/TxetSN9hzkcPowtAa9eocosr+F2O3APGELwYCEgdfYcFptQPlN4ejlAJB8jFumqA5G0/J16FhvtJJy4vnvB12M/QynMkjxoUAN6YikAspMU/e96W7E0Frwy5tXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279221; c=relaxed/simple;
-	bh=e8bSwvkmXKw005kE+Eto/zc7wTE1uoCca+9C1y/NwH8=;
+	s=arc-20240116; t=1774283244; c=relaxed/simple;
+	bh=YvDbJvSLHxdnlF6Bkli3DJtOFhqFDZjVuxz3kVx0Q5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hh3GzsN2eBLBzPGOWWM8TucgcKCwgQKpjEej59x8efEUoTpoRDrcLItW/rpAVMh/lhUnqVGEqzASl0fs9zKhmW9uoqEb0rUhPWZSKBSB4J0kFxtmvVcV2E0ZjErIVKejMeKqXXJrNmS1zQwOeHr+0bDOgbK7elwpXONT34wMpsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyeP9axB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30D9C2BCB3;
-	Mon, 23 Mar 2026 15:20:20 +0000 (UTC)
+	 MIME-Version; b=hcad9atPWN7H21/qeia/PfXotuOt26KlQz5mdcgRxeFAn0jTw9BmMFEthboicEKnTahEgX/0VEbRsCUEqVg3x+YUfBh/t9GsGvlX760hh5I8pWuWvCsUlV6wCUWFCuax5w3Bsbxd4EvdbCLyzV6BgwlwaY5Jd+6WWHxh9PpMfSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zr5s+wCY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B303EC4CEF7;
+	Mon, 23 Mar 2026 16:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279221;
-	bh=e8bSwvkmXKw005kE+Eto/zc7wTE1uoCca+9C1y/NwH8=;
+	s=korg; t=1774283244;
+	bh=YvDbJvSLHxdnlF6Bkli3DJtOFhqFDZjVuxz3kVx0Q5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CyeP9axBD4uf3rehfB4YKib5efD72B2Z8QoRLhah57e56NFCl/ytAoQdoircDMyYT
-	 8MjXe/3Xes1RkPzTlPKA5aimt8uwjJFkwtAFxEY7hjRd5ayOIXUSn36agW/t7EqG7t
-	 s4oueS2QN/lVjN2fVPTbJ3/yUjFxjG3Qqq7rNZd4=
+	b=Zr5s+wCYUin8bgQrWZ1PQfGiRuY9gd7KZ+zrjR5+8dbVZhOVUXPEafnWFjEsWNcda
+	 guj18+r6NcgbnQ3IfeWkZoEChaGpA2k2TVScLh03pk59YACRd8VIDYyRn8ReZuKurV
+	 oe9GJ/e1MjmtT/mgUOyBpMy+3b00XVCP78aOypSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 516/567] netfilter: nf_conntrack_h323: fix OOB read in decode_int() CONS case
+	Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.1 454/481] netfilter: nf_tables: de-constify set commit ops function argument
 Date: Mon, 23 Mar 2026 14:47:16 +0100
-Message-ID: <20260323134546.779918555@linuxfoundation.org>
+Message-ID: <20260323134536.274851010@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +61,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229430-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229929-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DB5A72F71A8
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 0509C2FA6EA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 1e3a3593162c96e8a8de48b1e14f60c3b57fca8a ]
+commit 256001672153af5786c6ca148114693d7d76d836 upstream.
 
-In decode_int(), the CONS case calls get_bits(bs, 2) to read a length
-value, then calls get_uint(bs, len) without checking that len bytes
-remain in the buffer. The existing boundary check only validates the
-2 bits for get_bits(), not the subsequent 1-4 bytes that get_uint()
-reads. This allows a malformed H.323/RAS packet to cause a 1-4 byte
-slab-out-of-bounds read.
+The set backend using this already has to work around this via ugly
+cast, don't spread this pattern.
 
-Add a boundary check for len bytes after get_bits() and before
-get_uint().
-
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
 Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/net/netfilter/nf_tables.h |    2 +-
+ net/netfilter/nft_set_pipapo.c    |    7 +++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index 62aa22a078769..c972e9488e16f 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -331,6 +331,8 @@ static int decode_int(struct bitstr *bs, const struct field_t *f,
- 		if (nf_h323_error_boundary(bs, 0, 2))
- 			return H323_ERROR_BOUND;
- 		len = get_bits(bs, 2) + 1;
-+		if (nf_h323_error_boundary(bs, len, 0))
-+			return H323_ERROR_BOUND;
- 		BYTE_ALIGN(bs);
- 		if (base && (f->attr & DECODE)) {	/* timeToLive */
- 			unsigned int v = get_uint(bs, len) + f->lb;
--- 
-2.51.0
-
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -470,7 +470,7 @@ struct nft_set_ops {
+ 					       const struct nft_set *set,
+ 					       const struct nft_set_elem *elem,
+ 					       unsigned int flags);
+-	void				(*commit)(const struct nft_set *set);
++	void				(*commit)(struct nft_set *set);
+ 	void				(*abort)(const struct nft_set *set);
+ 	u64				(*privsize)(const struct nlattr * const nla[],
+ 						    const struct nft_set_desc *desc);
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1587,12 +1587,11 @@ static void nft_pipapo_gc_deactivate(str
+ 
+ /**
+  * pipapo_gc() - Drop expired entries from set, destroy start and end elements
+- * @_set:	nftables API set representation
++ * @set:	nftables API set representation
+  * @m:		Matching data
+  */
+-static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
++static void pipapo_gc(struct nft_set *set, struct nft_pipapo_match *m)
+ {
+-	struct nft_set *set = (struct nft_set *) _set;
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct net *net = read_pnet(&set->net);
+ 	u64 tstamp = nft_net_tstamp(net);
+@@ -1707,7 +1706,7 @@ static void pipapo_reclaim_match(struct
+  * We also need to create a new working copy for subsequent insertions and
+  * deletions.
+  */
+-static void nft_pipapo_commit(const struct nft_set *set)
++static void nft_pipapo_commit(struct nft_set *set)
+ {
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+ 	struct nft_pipapo_match *new_clone, *old;
 
 
 
