@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228875-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFDhCONNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228394-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:47 +0100
+	id 2IkVEDFqwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-228875-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:28:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 849252F4896
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 967722F8249
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 65C52323245E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 718403272074
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 803B33B27FA;
-	Mon, 23 Mar 2026 14:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445633B0AD1;
+	Mon, 23 Mar 2026 14:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdGxvmcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yxEUyEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436EB3A9D9D;
-	Mon, 23 Mar 2026 14:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C433E3AF672;
+	Mon, 23 Mar 2026 14:49:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274994; cv=none; b=WEGiiexVPcb449zLjjUtzKjZfuwQIAhhnQquKPKd9qFQ4h2+evfxtSmO75du3OuIaDZ+GvKEo43JKrOtqGqJJffTaPGrJzwhuBFm6bpIMmLBU3k1os7Xi+OfS3f9ZWeAweilmbIKv2aItPRpMlmi8+8yU6XUKa/V5AOWQU/xBWg=
+	t=1774277370; cv=none; b=lTzb6EVbMNiFjBb1pJQ/PVpinS9WptiTprpTFjHcpql8da4Cs14n22cHAavCGsSbK+M/G5pIi/rr2BDD1COYREtOLBG9V31ew9J4wq0n9+kbeBgGjsV8ep2AB/ihpSLMW/hIWoY8wV9H6qM4bDP0AIbjWnZ4vO6GJXpOWRDon7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274994; c=relaxed/simple;
-	bh=5kzcS3rLebeHSo93wDQHsDnHagSOBfBkgdVhQRsKr3k=;
+	s=arc-20240116; t=1774277370; c=relaxed/simple;
+	bh=6+ttoRRmly0kXpRS4+B6XrAX95X1b7OQjdUbUkBAQ5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eYoPOff1L0Pk9RYs0ij60SVXaKcwuAa64LziEYsjuavRS1DwVzLopvtqBBa7xl79R/IplDYAGLBXJHxVN/GIyMKGlAYTd9eFUaGr4MUk4M/oKdfIIwAmfAU5IT15i1s2CmkPsjffx+HLXQSC9edE1zPnS7U+vC8JUHTbqlffJkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdGxvmcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD92DC4CEF7;
-	Mon, 23 Mar 2026 14:09:53 +0000 (UTC)
+	 MIME-Version; b=BIqtvUZ20OKUzUdcbWwu5G97QYf2FHo085Dp8N8wlr4vDvwUaeXqYjAsktY5Ut8852YuH8i92+OF88g3GoHi74PUIdtlgHhtWjQCroXWK9wyoU+p6jYwWmpcn9BDo53RuO4sE8gIlSeS9pq5hn1bz9fglOZQPpL7EVR1EdPjef0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yxEUyEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E060C2BC9E;
+	Mon, 23 Mar 2026 14:49:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274994;
-	bh=5kzcS3rLebeHSo93wDQHsDnHagSOBfBkgdVhQRsKr3k=;
+	s=korg; t=1774277370;
+	bh=6+ttoRRmly0kXpRS4+B6XrAX95X1b7OQjdUbUkBAQ5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gdGxvmcbxcEBUJPItvNCtVZzZVV3yTHslVF3rrC8Olciy4tFns3doNMYven0gmVEM
-	 LzDUlA/V3KS1tEykbfdDhjKwmLQNnO3yUIDsGKo1Y5TfScaekRvl6sBYRWfUNrB+4R
-	 DkOuQzDThsXYDvrMiGp83JBV/HRyqd0W2WEus7eE=
+	b=0yxEUyEf0PyOY2KGV1MUe6I5cJpHi2DjxuOpBvzdRuJY+vCcc1K0RD4/LLDKqLROx
+	 v/dIDPzKGMEfBgu2paN0hZ/PwY1FrQEKVD1Vbk5vIX8oOzwUo4QnCpAS47P9+hEtZl
+	 nEG2L9mX926lKOmSSRh9GdXdpeLa5UhwtqGNPPaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linusw@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.18 187/212] i2c: pxa: defer reset on Armada 3700 when recovery is used
-Date: Mon, 23 Mar 2026 14:46:48 +0100
-Message-ID: <20260323134509.652151262@linuxfoundation.org>
+	Tobi Gaertner <tob.gaertner@me.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 413/460] net: usb: cdc_ncm: add ndpoffset to NDP32 nframes bounds check
+Date: Mon, 23 Mar 2026 14:46:49 +0100
+Message-ID: <20260323134536.698195360@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,164 +66,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228875-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228394-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sartura.hr,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 849252F4896
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,me.com:email]
+X-Rspamd-Queue-Id: 967722F8249
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Tobi Gaertner <tob.gaertner@me.com>
 
-commit 78a6ee14f8b9e1c8f7c77612122444f3be8dc8cc upstream.
+[ Upstream commit 77914255155e68a20aa41175edeecf8121dac391 ]
 
-The I2C communication is completely broken on the Armada 3700 platform
-since commit 0b01392c18b9 ("i2c: pxa: move to generic GPIO recovery").
+The same bounds-check bug fixed for NDP16 in the previous patch also
+exists in cdc_ncm_rx_verify_ndp32(). The DPE array size is validated
+against the total skb length without accounting for ndpoffset, allowing
+out-of-bounds reads when the NDP32 is placed near the end of the NTB.
 
-For example, on the Methode uDPU board, probing of the two onboard
-temperature sensors fails ...
+Add ndpoffset to the nframes bounds check and use struct_size_t() to
+express the NDP-plus-DPE-array size more clearly.
 
-  [    7.271713] i2c i2c-0: using pinctrl states for GPIO recovery
-  [    7.277503] i2c i2c-0:  PXA I2C adapter
-  [    7.282199] i2c i2c-1: using pinctrl states for GPIO recovery
-  [    7.288241] i2c i2c-1:  PXA I2C adapter
-  [    7.292947] sfp sfp-eth1: Host maximum power 3.0W
-  [    7.299614] sfp sfp-eth0: Host maximum power 3.0W
-  [    7.308178] lm75 1-0048: supply vs not found, using dummy regulator
-  [   32.489631] lm75 1-0048: probe with driver lm75 failed with error -121
-  [   32.496833] lm75 1-0049: supply vs not found, using dummy regulator
-  [   82.890614] lm75 1-0049: probe with driver lm75 failed with error -121
+Compile-tested only.
 
-... and accessing the plugged-in SFP modules also does not work:
-
-  [  511.298537] sfp sfp-eth1: please wait, module slow to respond
-  [  536.488530] sfp sfp-eth0: please wait, module slow to respond
-  ...
-  [ 1065.688536] sfp sfp-eth1: failed to read EEPROM: -EREMOTEIO
-  [ 1090.888532] sfp sfp-eth0: failed to read EEPROM: -EREMOTEIO
-
-After a discussion [1], there was an attempt to fix the problem by
-reverting the offending change by commit 7b211c767121 ("Revert "i2c:
-pxa: move to generic GPIO recovery""), but that only helped to fix
-the issue in the 6.1.y stable tree. The reason behind the partial succes
-is that there was another change in commit 20cb3fce4d60 ("i2c: Set i2c
-pinctrl recovery info from it's device pinctrl") in the 6.3-rc1 cycle
-which broke things further.
-
-The cause of the problem is the same in case of both offending commits
-mentioned above. Namely, the I2C core code changes the pinctrl state to
-GPIO while running the recovery initialization code. Although the PXA
-specific initialization also does this, but the key difference is that
-it happens before the controller is getting enabled in i2c_pxa_reset(),
-whereas in the case of the generic initialization it happens after that.
-
-Change the code to reset the controller only before the first transfer
-instead of before registering the controller. This ensures that the
-controller is not enabled at the time when the generic recovery code
-performs the pinctrl state changes, thus avoids the problem described
-above.
-
-As the result this change restores the original behaviour, which in
-turn makes the I2C communication to work again as it can be seen from
-the following log:
-
-  [    7.363250] i2c i2c-0: using pinctrl states for GPIO recovery
-  [    7.369041] i2c i2c-0:  PXA I2C adapter
-  [    7.373673] i2c i2c-1: using pinctrl states for GPIO recovery
-  [    7.379742] i2c i2c-1:  PXA I2C adapter
-  [    7.384506] sfp sfp-eth1: Host maximum power 3.0W
-  [    7.393013] sfp sfp-eth0: Host maximum power 3.0W
-  [    7.399266] lm75 1-0048: supply vs not found, using dummy regulator
-  [    7.407257] hwmon hwmon0: temp1_input not attached to any thermal zone
-  [    7.413863] lm75 1-0048: hwmon0: sensor 'tmp75c'
-  [    7.418746] lm75 1-0049: supply vs not found, using dummy regulator
-  [    7.426371] hwmon hwmon1: temp1_input not attached to any thermal zone
-  [    7.432972] lm75 1-0049: hwmon1: sensor 'tmp75c'
-  [    7.755092] sfp sfp-eth1: module MENTECHOPTO      POS22-LDCC-KR    rev 1.0  sn MNC208U90009     dc 200828
-  [    7.764997] mvneta d0040000.ethernet eth1: unsupported SFP module: no common interface modes
-  [    7.785362] sfp sfp-eth0: module Mikrotik         S-RJ01           rev 1.0  sn 61B103C55C58     dc 201022
-  [    7.803426] hwmon hwmon2: temp1_input not attached to any thermal zone
-
-Link: https://lore.kernel.org/r/20230926160255.330417-1-robert.marko@sartura.hr #1
-
-Cc: stable@vger.kernel.org # 6.3+
-Fixes: 20cb3fce4d60 ("i2c: Set i2c pinctrl recovery info from it's device pinctrl")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Tested-by: Robert Marko <robert.marko@sartura.hr>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260226-i2c-pxa-fix-i2c-communication-v4-1-797a091dae87@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0fa81b304a79 ("cdc_ncm: Implement the 32-bit version of NCM Transfer Block")
+Signed-off-by: Tobi Gaertner <tob.gaertner@me.com>
+Link: https://patch.msgid.link/20260314054640.2895026-3-tob.gaertner@me.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pxa.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/usb/cdc_ncm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -268,6 +268,7 @@ struct pxa_i2c {
- 	struct pinctrl		*pinctrl;
- 	struct pinctrl_state	*pinctrl_default;
- 	struct pinctrl_state	*pinctrl_recovery;
-+	bool			reset_before_xfer;
- };
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index a006583e8e085..c00699cd3e350 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -1694,6 +1694,7 @@ int cdc_ncm_rx_verify_ndp32(struct sk_buff *skb_in, int ndpoffset)
+ 	struct usbnet *dev = netdev_priv(skb_in->dev);
+ 	struct usb_cdc_ncm_ndp32 *ndp32;
+ 	int ret = -EINVAL;
++	size_t ndp_len;
  
- #define _IBMR(i2c)	((i2c)->reg_ibmr)
-@@ -1144,6 +1145,11 @@ static int i2c_pxa_xfer(struct i2c_adapt
- {
- 	struct pxa_i2c *i2c = adap->algo_data;
+ 	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp32)) > skb_in->len) {
+ 		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
+@@ -1713,8 +1714,8 @@ int cdc_ncm_rx_verify_ndp32(struct sk_buff *skb_in, int ndpoffset)
+ 					sizeof(struct usb_cdc_ncm_dpe32));
+ 	ret--; /* we process NDP entries except for the last one */
  
-+	if (i2c->reset_before_xfer) {
-+		i2c_pxa_reset(i2c);
-+		i2c->reset_before_xfer = false;
-+	}
-+
- 	return i2c_pxa_internal_xfer(i2c, msgs, num, i2c_pxa_do_xfer);
- }
- 
-@@ -1521,7 +1527,16 @@ static int i2c_pxa_probe(struct platform
- 		}
+-	if ((sizeof(struct usb_cdc_ncm_ndp32) +
+-	     ret * (sizeof(struct usb_cdc_ncm_dpe32))) > skb_in->len) {
++	ndp_len = struct_size_t(struct usb_cdc_ncm_ndp32, dpe32, ret);
++	if (ndpoffset + ndp_len > skb_in->len) {
+ 		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
+ 		ret = -EINVAL;
  	}
- 
--	i2c_pxa_reset(i2c);
-+	/*
-+	 * Skip reset on Armada 3700 when recovery is used to avoid
-+	 * controller hang due to the pinctrl state changes done by
-+	 * the generic recovery initialization code. The reset will
-+	 * be performed later, prior to the first transfer.
-+	 */
-+	if (i2c_type == REGS_A3700 && i2c->adap.bus_recovery_info)
-+		i2c->reset_before_xfer = true;
-+	else
-+		i2c_pxa_reset(i2c);
- 
- 	ret = i2c_add_numbered_adapter(&i2c->adap);
- 	if (ret < 0)
+-- 
+2.51.0
+
 
 
 
