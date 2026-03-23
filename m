@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228284-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGP+EKFewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229331-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:13 +0100
+	id GGP9DtRLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228284-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24102F6A5D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F752F4299
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 27CB332542E8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D49A23019829
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61AF280309;
-	Mon, 23 Mar 2026 15:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD751EB9F2;
+	Mon, 23 Mar 2026 14:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+JbiDyA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gG3GBXWU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A5E22FE0A;
-	Mon, 23 Mar 2026 15:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BFB324B16;
+	Mon, 23 Mar 2026 14:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278781; cv=none; b=tOjcpmnq5XkqIphwkArPWRk6dVKdLGKyxraL5HIgOt7KJh4unePTybysqIy0K7A2atKKsiqOV33kl+fN7s2Kb6CN+4176clTzvqwApT2W1l/XRtKXRLYcdRMB6PlS0gie69AzNeobXBWI+jh4lm1vUon/y7G8+m5p1z2bkCnp6Q=
+	t=1774274686; cv=none; b=ftEubtN46NXpvtQq/c4vDw2Usa3CHRAdIGnYEsUsA/i+526ajL5Rw7kxP38E4NuE8wJzwYRd+7hKglnR+/+7gkwjJU70L3FvyB1ZKg6x9q/l9Aj/Ek72nI3hKl/lny8+nACnSQ67RMaHpEEyguhv2W7fWZcT+X7qapmdK3pY058=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278781; c=relaxed/simple;
-	bh=ftLIXGUTL7dagXZlIK5J84ygE6NjYc1/a5XRK5C+UIg=;
+	s=arc-20240116; t=1774274686; c=relaxed/simple;
+	bh=YwF6OKexYZBwAx6aHMZagUY3Z/hDoycPG5FUQtq4x64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atQPKHyBZP1A7anPoFQNzgTSBHhcv0l/diI4w9kTx0gVnTXU48EDmi4iIcVeds3zgs8Vg6Tscx24aNcftffcVu9Vc3V5Br0juYKQq6enHm2Zhg6qrR+3izdyv5w7Q+Hc8jDF/V4O+1D7BEoi/puzlOxykjj3maKqzkdUj+RERa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+JbiDyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C84C4CEF7;
-	Mon, 23 Mar 2026 15:13:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ozegMx6tbYXUmepoFvA37l59Uw23Dpha9V6E51xYVyrXdIsunu8b1q1r3zmvK4kEwpV/GRpcnJGGWaApBnZVhnT5uoB/DDdR+ARWT8J2Gwx2sG+3z4bK0Jj9ieZpD0kCiqT1YeMtwKdw1HbZ8gVQBEtakSTFPdfQJWjkHbHqY1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gG3GBXWU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4544C4CEF7;
+	Mon, 23 Mar 2026 14:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278781;
-	bh=ftLIXGUTL7dagXZlIK5J84ygE6NjYc1/a5XRK5C+UIg=;
+	s=korg; t=1774274686;
+	bh=YwF6OKexYZBwAx6aHMZagUY3Z/hDoycPG5FUQtq4x64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+JbiDyAPs1hym+srV0CqMScDJLSaxDT3EWO4YNZEnCD2EgiFsuhxMVdIBcPwbE9s
-	 LyUXq/TSXzm8hjHFI1ztKxSWLlhqpHcKjY+XYto2d2ajOqgGSE/y0LfJb4dfzPn9Yh
-	 VUyYoBV/CTRh/9Q5ozH3+nsbeWeK65/cAYH2ssc4=
+	b=gG3GBXWUPN8OulHq8dg+VS3PXm7BU3ZSKwdpsr38AFBMUc4BQ5Kz83MEw+uOo3cu9
+	 fthU3Nzm5yJWi/IlO17XwhTK/4dT845vEujV04OwEQ2i7kiTHKtMTiOxLFke5jr85F
+	 iL8cVFyrObSJ7bbBH7rzPml2rP18gY02NnPAVpUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 375/567] mptcp: pm: in-kernel: always mark signal+subflow endp as used
+	stable <stable@kernel.org>,
+	"Bandal, Shankar" <shankar.bandal@intel.com>,
+	"Murthy, Shanth" <shanth.murthy@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.18 074/212] serial: 8250_dw: Rework IIR_NO_INT handling to stop interrupt storm
 Date: Mon, 23 Mar 2026 14:44:55 +0100
-Message-ID: <20260323134543.112549711@linuxfoundation.org>
+Message-ID: <20260323134506.105342235@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,158 +65,224 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229331-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-228284-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A24102F6A5D
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 17F752F4299
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 579a752464a64cb5f9139102f0e6b90a1f595ceb ]
+commit 73a4ed8f9efaaaf8207614ccc1c9d5ca1888f23a upstream.
 
-Syzkaller managed to find a combination of actions that was generating
-this warning:
+INTC10EE UART can end up into an interrupt storm where it reports
+IIR_NO_INT (0x1). If the storm happens during active UART operation, it
+is promptly stopped by IIR value change due to Rx or Tx events.
+However, when there is no activity, either due to idle serial line or
+due to specific circumstances such as during shutdown that writes
+IER=0, there is nothing to stop the storm.
 
-  msk->pm.local_addr_used == 0
-  WARNING: net/mptcp/pm_kernel.c:1071 at __mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline], CPU#1: syz.2.17/961
-  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline], CPU#1: syz.2.17/961
-  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210, CPU#1: syz.2.17/961
-  Modules linked in:
-  CPU: 1 UID: 0 PID: 961 Comm: syz.2.17 Not tainted 6.19.0-08368-gfafda3b4b06b #22 PREEMPT(full)
-  Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.17.0-debian-1.17.0-1build1 04/01/2014
-  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline]
-  RIP: 0010:mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline]
-  RIP: 0010:mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210
-  Code: 89 c5 e8 46 30 6f fe e9 21 fd ff ff 49 83 ed 80 e8 38 30 6f fe 4c 89 ef be 03 00 00 00 e8 db 49 df fe eb ac e8 24 30 6f fe 90 <0f> 0b 90 e9 1d ff ff ff e8 16 30 6f fe eb 05 e8 0f 30 6f fe e8 9a
-  RSP: 0018:ffffc90001663880 EFLAGS: 00010293
-  RAX: ffffffff82de1a6c RBX: 0000000000000000 RCX: ffff88800722b500
-  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: ffff8880158b22d0 R08: 0000000000010425 R09: ffffffffffffffff
-  R10: ffffffff82de18ba R11: 0000000000000000 R12: ffff88800641a640
-  R13: ffff8880158b1880 R14: ffff88801ec3c900 R15: ffff88800641a650
-  FS:  00005555722c3500(0000) GS:ffff8880f909d000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 00007f66346e0f60 CR3: 000000001607c000 CR4: 0000000000350ef0
-  Call Trace:
-   <TASK>
-   genl_family_rcv_msg_doit+0x117/0x180 net/netlink/genetlink.c:1115
-   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-   genl_rcv_msg+0x3a8/0x3f0 net/netlink/genetlink.c:1210
-   netlink_rcv_skb+0x16d/0x240 net/netlink/af_netlink.c:2550
-   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
-   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-   netlink_unicast+0x3e9/0x4c0 net/netlink/af_netlink.c:1344
-   netlink_sendmsg+0x4aa/0x5b0 net/netlink/af_netlink.c:1894
-   sock_sendmsg_nosec net/socket.c:727 [inline]
-   __sock_sendmsg+0xc9/0xf0 net/socket.c:742
-   ____sys_sendmsg+0x272/0x3b0 net/socket.c:2592
-   ___sys_sendmsg+0x2de/0x320 net/socket.c:2646
-   __sys_sendmsg net/socket.c:2678 [inline]
-   __do_sys_sendmsg net/socket.c:2683 [inline]
-   __se_sys_sendmsg net/socket.c:2681 [inline]
-   __x64_sys_sendmsg+0x110/0x1a0 net/socket.c:2681
-   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-   do_syscall_64+0x143/0x440 arch/x86/entry/syscall_64.c:94
-   entry_SYSCALL_64_after_hwframe+0x77/0x7f
-  RIP: 0033:0x7f66346f826d
-  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-  RSP: 002b:00007ffc83d8bdc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-  RAX: ffffffffffffffda RBX: 00007f6634985fa0 RCX: 00007f66346f826d
-  RDX: 00000000040000b0 RSI: 0000200000000740 RDI: 0000000000000007
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f6634985fa8
-  R13: 00007f6634985fac R14: 0000000000000000 R15: 0000000000001770
-   </TASK>
+During shutdown the storm is particularly problematic because
+serial8250_do_shutdown() calls synchronize_irq() that will hang in
+waiting for the storm to finish which never happens.
 
-The actions that caused that seem to be:
+This problem can also result in triggering a warning:
 
- - Set the MPTCP subflows limit to 0
- - Create an MPTCP endpoint with both the 'signal' and 'subflow' flags
- - Create a new MPTCP connection from a different address: an ADD_ADDR
-   linked to the MPTCP endpoint will be sent ('signal' flag), but no
-   subflows is initiated ('subflow' flag)
- - Remove the MPTCP endpoint
+  irq 45: nobody cared (try booting with the "irqpoll" option)
+  [...snip...]
+  handlers:
+    serial8250_interrupt
+  Disabling IRQ #45
 
-In this case, msk->pm.local_addr_used has been kept to 0 -- because no
-subflows have been created -- but the corresponding bit in
-msk->pm.id_avail_bitmap has been cleared when the ADD_ADDR has been
-sent. This later causes a splat when removing the MPTCP endpoint because
-msk->pm.local_addr_used has been kept to 0.
+Normal means to reset interrupt status by reading LSR, MSR, USR, or RX
+register do not result in the UART deasserting the IRQ.
 
-Now, if an endpoint has both the signal and subflow flags, but it is not
-possible to create subflows because of the limits or the c-flag case,
-then the local endpoint counter is still incremented: the endpoint is
-used at the end. This avoids issues later when removing the endpoint and
-calling __mark_subflow_endp_available(), which expects
-msk->pm.local_addr_used to have been previously incremented if the
-endpoint was marked as used according to msk->pm.id_avail_bitmap.
+Add a quirk to INTC10EE UARTs to enable Tx interrupts if UART's Tx is
+currently empty and inactive. Rework IIR_NO_INT to keep track of the
+number of consecutive IIR_NO_INT, and on fourth one perform the quirk.
+Enabling Tx interrupts should change IIR value from IIR_NO_INT to
+IIR_THRI which has been observed to stop the storm.
 
-Note that signal_and_subflow variable is reset to false when the limits
-and the c-flag case allows subflows creation. Also, local_addr_used is
-only incremented for non ID0 subflows.
-
-Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
-Cc: stable@vger.kernel.org
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/613
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-4-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ pm_kernel.c => pm_netlink.c ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e92fad024929 ("serial: 8250_dw: Add ACPI ID for Granite Rapids-D UART")
+Cc: stable <stable@kernel.org>
+Reported-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260203171049.4353-6-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/tty/serial/8250/8250_dw.c |   67 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 63 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -662,6 +662,15 @@ subflow:
- 	}
- 
- exit:
-+	/* If an endpoint has both the signal and subflow flags, but it is not
-+	 * possible to create subflows -- the 'while' loop body above never
-+	 * executed --  then still mark the endp as used, which is somehow the
-+	 * case. This avoids issues later when removing the endpoint and calling
-+	 * __mark_subflow_endp_available(), which expects the increment here.
-+	 */
-+	if (signal_and_subflow && local.addr.id != msk->mpc_endpoint_id)
-+		msk->pm.local_addr_used++;
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -61,6 +61,13 @@
+ #define DW_UART_QUIRK_IS_DMA_FC		BIT(3)
+ #define DW_UART_QUIRK_APMC0D08		BIT(4)
+ #define DW_UART_QUIRK_CPR_VALUE		BIT(5)
++#define DW_UART_QUIRK_IER_KICK		BIT(6)
 +
- 	mptcp_pm_nl_check_work_pending(msk);
++/*
++ * Number of consecutive IIR_NO_INT interrupts required to trigger interrupt
++ * storm prevention code.
++ */
++#define DW_UART_QUIRK_IER_KICK_THRES	4
+ 
+ struct dw8250_platform_data {
+ 	u8 usr_reg;
+@@ -82,6 +89,8 @@ struct dw8250_data {
+ 
+ 	unsigned int		skip_autocfg:1;
+ 	unsigned int		uart_16550_compatible:1;
++
++	u8			no_int_count;
+ };
+ 
+ static inline struct dw8250_data *to_dw8250_data(struct dw8250_port_data *data)
+@@ -308,6 +317,29 @@ static u32 dw8250_serial_in32be(struct u
+        return dw8250_modify_msr(p, offset, value);
  }
  
++/*
++ * INTC10EE UART can IRQ storm while reporting IIR_NO_INT. Inducing IIR value
++ * change has been observed to break the storm.
++ *
++ * If Tx is empty (THRE asserted), we use here IER_THRI to cause IIR_NO_INT ->
++ * IIR_THRI transition.
++ */
++static void dw8250_quirk_ier_kick(struct uart_port *p)
++{
++	struct uart_8250_port *up = up_to_u8250p(p);
++	u32 lsr;
++
++	if (up->ier & UART_IER_THRI)
++		return;
++
++	lsr = serial_lsr_in(up);
++	if (!(lsr & UART_LSR_THRE))
++		return;
++
++	serial_port_out(p, UART_IER, up->ier | UART_IER_THRI);
++	serial_port_in(p, UART_LCR);		/* safe, no side-effects */
++	serial_port_out(p, UART_IER, up->ier);
++}
+ 
+ static int dw8250_handle_irq(struct uart_port *p)
+ {
+@@ -318,18 +350,30 @@ static int dw8250_handle_irq(struct uart
+ 	unsigned int quirks = d->pdata->quirks;
+ 	unsigned int status;
+ 
++	guard(uart_port_lock_irqsave)(p);
++
+ 	switch (FIELD_GET(DW_UART_IIR_IID, iir)) {
+ 	case UART_IIR_NO_INT:
++		if (d->uart_16550_compatible || up->dma)
++			return 0;
++
++		if (quirks & DW_UART_QUIRK_IER_KICK &&
++		    d->no_int_count == (DW_UART_QUIRK_IER_KICK_THRES - 1))
++			dw8250_quirk_ier_kick(p);
++		d->no_int_count = (d->no_int_count + 1) % DW_UART_QUIRK_IER_KICK_THRES;
++
+ 		return 0;
+ 
+ 	case UART_IIR_BUSY:
+ 		/* Clear the USR */
+ 		serial_port_in(p, d->pdata->usr_reg);
+ 
++		d->no_int_count = 0;
++
+ 		return 1;
+ 	}
+ 
+-	guard(uart_port_lock_irqsave)(p);
++	d->no_int_count = 0;
+ 
+ 	/*
+ 	 * There are ways to get Designware-based UARTs into a state where
+@@ -562,6 +606,14 @@ static void dw8250_reset_control_assert(
+ 	reset_control_assert(data);
+ }
+ 
++static void dw8250_shutdown(struct uart_port *port)
++{
++	struct dw8250_data *d = to_dw8250_data(port->private_data);
++
++	serial8250_do_shutdown(port);
++	d->no_int_count = 0;
++}
++
+ static int dw8250_probe(struct platform_device *pdev)
+ {
+ 	struct uart_8250_port uart = {}, *up = &uart;
+@@ -685,10 +737,12 @@ static int dw8250_probe(struct platform_
+ 		dw8250_quirks(p, data);
+ 
+ 	/* If the Busy Functionality is not implemented, don't handle it */
+-	if (data->uart_16550_compatible)
++	if (data->uart_16550_compatible) {
+ 		p->handle_irq = NULL;
+-	else if (data->pdata)
++	} else if (data->pdata) {
+ 		p->handle_irq = dw8250_handle_irq;
++		p->shutdown = dw8250_shutdown;
++	}
+ 
+ 	dw8250_setup_dma_filter(p, data);
+ 
+@@ -822,6 +876,11 @@ static const struct dw8250_platform_data
+ 	.quirks = DW_UART_QUIRK_SKIP_SET_RATE,
+ };
+ 
++static const struct dw8250_platform_data dw8250_intc10ee = {
++	.usr_reg = DW_UART_USR,
++	.quirks = DW_UART_QUIRK_IER_KICK,
++};
++
+ static const struct of_device_id dw8250_of_match[] = {
+ 	{ .compatible = "snps,dw-apb-uart", .data = &dw8250_dw_apb },
+ 	{ .compatible = "cavium,octeon-3860-uart", .data = &dw8250_octeon_3860_data },
+@@ -851,7 +910,7 @@ static const struct acpi_device_id dw825
+ 	{ "INT33C5", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "INT3434", (kernel_ulong_t)&dw8250_dw_apb },
+ 	{ "INT3435", (kernel_ulong_t)&dw8250_dw_apb },
+-	{ "INTC10EE", (kernel_ulong_t)&dw8250_dw_apb },
++	{ "INTC10EE", (kernel_ulong_t)&dw8250_intc10ee },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(acpi, dw8250_acpi_match);
 
 
 
