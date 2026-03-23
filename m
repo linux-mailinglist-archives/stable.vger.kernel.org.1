@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229854-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wAfpIchJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228169-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:16 +0100
+	id CKyPOTh+wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229854-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:54:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34072F3ECA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A91A2FA940
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EBD4E31761EF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:01:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2FC4630E8516
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E32623B6363;
-	Mon, 23 Mar 2026 13:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239C63B8D4F;
+	Mon, 23 Mar 2026 16:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R8zknkgy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhbjZT9D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73293B635F;
-	Mon, 23 Mar 2026 13:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D858E3B9D85;
+	Mon, 23 Mar 2026 16:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274335; cv=none; b=YfaINBXyKLUChdFm/6rrGNauIaAK2D7m7cYE8gFjDGc22tiXNacwcts1yp91DkKZuKgRvvUHgoJVtOmzy8M0mPpI3WW3CouZEeh24gMmA8G4G7p1WMo9TSnG9R1ATqUfTIKj83DjQpodeWQ8RSxVFiiJSU7UDt+m29SCgFD9NYM=
+	t=1774283041; cv=none; b=uUQZhnRiWa//9r4VzYeSIFdeUkK6RhM7riMHZDRjLiOmE0z3gnDCeCBIulsVrjp4uGlarYXtt9zsJ6n3sgBvdJ2mdKqAx0odaIIIToRyw7P0E2pxw93q1QRYbA5l0LQg4SOn3r+F0oNcnzwsvoAQtPYz7AzfxjgOsOxpob0uQuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274335; c=relaxed/simple;
-	bh=nrwbwbKG9D8G0vkJIDqKGlpwu4rjG1pbovAQxz1Si1E=;
+	s=arc-20240116; t=1774283041; c=relaxed/simple;
+	bh=jmKf0lqshLQLL3DN/8KBmWPbNkET/qy9QxuS46krRWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hp32byFSL+DBCXqo/nUv2UZ307ja6Akp7E9/n6GXeKzhTtUkVR0Bs963wY2K+YBLE5Tym+EgaGLQTCSm6tfi1GWGmY6l2tygX5GfY9NX94PAMX8OBpa//kVgpOpHbI9Kl/gUFXVRlA3jMQWytwzEZy2DxnYdIfHg+LQMznGXDPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R8zknkgy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388F3C2BC9E;
-	Mon, 23 Mar 2026 13:58:55 +0000 (UTC)
+	 MIME-Version; b=svH4bEQqZpmPJeWatZyE4buqbDrpRlLPI1NCh6L+jir6awPu0VPDmgZHdU5nr7f3ttFulNucol1mvPV5PS4oAedBj9T3s/UyJgA4dP1BO9bQS6yxVbkOXBRH8UqD86gKUkD8X/IiVllYhfChLBq20KgkSbkLRHcPiK2kWGeR4FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhbjZT9D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723D7C4CEF7;
+	Mon, 23 Mar 2026 16:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274335;
-	bh=nrwbwbKG9D8G0vkJIDqKGlpwu4rjG1pbovAQxz1Si1E=;
+	s=korg; t=1774283041;
+	bh=jmKf0lqshLQLL3DN/8KBmWPbNkET/qy9QxuS46krRWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R8zknkgy/dYTHlv+HrhCLKG7Dkz3twGHqz3xW6EN/A1RNRHs0PfOBocZ/eQbSi88S
-	 lsbF8ZD8lGf4cX4lMbsJ2Q9zModUlHl9Axcf97Y01MJKumVzkZpX2WcVdmUChPNMsZ
-	 A2sy5Dfzt7S8wOysactslinIyWMxoTL5H2HQEJYY=
+	b=XhbjZT9DcK+N+fd5Gme4fP48eezlvmcv6w00hI+JBKz17waGvcS6eW2bKXP6dpamR
+	 TIz2+CtuFVohrJB5jZ5Eqco74ISYPrmxx7B/Bz6sHXSZ5FYKZv+8KRCza19eXQg4Bi
+	 lj2Tb5i8soMN1fZZ/9UL3L1gsEQSsCW2lauu3oBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <bence98@sch.bme.hu>,
-	Johan Hovold <johan@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.19 186/220] i2c: cp2615: fix serial string NULL-deref at probe
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 6.1 381/481] net: add skb_header_pointer_careful() helper
 Date: Mon, 23 Mar 2026 14:46:03 +0100
-Message-ID: <20260323134510.456877153@linuxfoundation.org>
+Message-ID: <20260323134534.419114830@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228169-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229854-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: F34072F3ECA
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 4A91A2FA940
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit aa79f996eb41e95aed85a1bd7f56bcd6a3842008 upstream.
+[ Upstream commit 13e00fdc9236bd4d0bff4109d2983171fbcb74c4 ]
 
-The cp2615 driver uses the USB device serial string as the i2c adapter
-name but does not make sure that the string exists.
+This variant of skb_header_pointer() should be used in contexts
+where @offset argument is user-controlled and could be negative.
 
-Verify that the device has a serial number before accessing it to avoid
-triggering a NULL-pointer dereference (e.g. with malicious devices).
+Negative offsets are supported, as long as the zone starts
+between skb->head and skb->data.
 
-Fixes: 4a7695429ead ("i2c: cp2615: add i2c driver for Silicon Labs' CP2615 Digital Audio Bridge")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Bence Csókás <bence98@sch.bme.hu>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Bence Csókás <bence98@sch.bme.hu>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260309075016.25612-1-johan@kernel.org
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260128141539.3404400-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-cp2615.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/skbuff.h |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/i2c/busses/i2c-cp2615.c
-+++ b/drivers/i2c/busses/i2c-cp2615.c
-@@ -298,6 +298,9 @@ cp2615_i2c_probe(struct usb_interface *u
- 	if (!adap)
- 		return -ENOMEM;
+--- a/include/linux/skbuff.h
++++ b/include/linux/skbuff.h
+@@ -4113,6 +4113,18 @@ skb_header_pointer(const struct sk_buff
+ 				    skb_headlen(skb), buffer);
+ }
  
-+	if (!usbdev->serial)
-+		return -EINVAL;
++/* Variant of skb_header_pointer() where @offset is user-controlled
++ * and potentially negative.
++ */
++static inline void * __must_check
++skb_header_pointer_careful(const struct sk_buff *skb, int offset,
++			   int len, void *buffer)
++{
++	if (unlikely(offset < 0 && -offset > skb_headroom(skb)))
++		return NULL;
++	return skb_header_pointer(skb, offset, len, buffer);
++}
 +
- 	strscpy(adap->name, usbdev->serial, sizeof(adap->name));
- 	adap->owner = THIS_MODULE;
- 	adap->dev.parent = &usbif->dev;
+ /**
+  *	skb_needs_linearize - check if we need to linearize a given skb
+  *			      depending on the given device features.
 
 
 
