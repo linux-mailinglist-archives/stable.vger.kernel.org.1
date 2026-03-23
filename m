@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229695-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MLw+DLFIwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228062-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:37 +0100
+	id GENUMiVuwWnVTAQAu9opvQ
+	(envelope-from <stable+bounces-229695-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A092F3CA9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D172F8BE3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E6CB030CBE10
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5EEFF310D110
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B823AD527;
-	Mon, 23 Mar 2026 13:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8553C061B;
+	Mon, 23 Mar 2026 16:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8Frv1Lv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sB7fCZH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13EC1A6818;
-	Mon, 23 Mar 2026 13:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABA43C060B;
+	Mon, 23 Mar 2026 16:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274013; cv=none; b=hFmbvf+Rq0GmN1stRheAJtFL1nuzNhp9SrzFljZxFI2xznc6Vh2m8TvTzJWlpo33blrEbKTopscmpnQNiKfm+rRF7qHedwbKKCV+zxTqZ9CNpS7xsv2FLqQkX6EFY4z9gpzEKub3EObM3zjJure7mJyBR59PDJPWQfsB1CdPH8w=
+	t=1774282618; cv=none; b=p5R3jhYyz8EEY0oAzrZrdDUZW75wuEYO9H6oy5ZMbAoFbH89OV8RG+wBVDW10dD3pYdDWNil8nsq1+9L/yAQRSdyO6uVbr5317XcRm/JQ0cEeGDWodh3CznC8nt+rrsumunwnQ1yclnXoayZoTpRXAdGdh/3o+F9NWV+YwY5ms4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274013; c=relaxed/simple;
-	bh=QEV+jNtm9geICJlKV6qjmbg1X3oHEDpczTky+NTgN+E=;
+	s=arc-20240116; t=1774282618; c=relaxed/simple;
+	bh=n6xcYK2nGJ8es1RYXk0d4H65BR7tCt7OYEJ0hc1FCZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BbpLszEYGuWZQ5mZChPGtBE2Nl7I1zc+18ByhlPhjGQmtZiyRikTrS+H7vhRMp8jMSRo4PjSXTq/F7ZdKlqM1ZHbIa9M2p0IGUJn+5ncwCzQH6OrqPW4Opn4DdE8+26N2avwYut5585Lua/IRF/BpGQ1UQZMsTBNVFwX7bn5Pn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8Frv1Lv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5621CC2BC9E;
-	Mon, 23 Mar 2026 13:53:33 +0000 (UTC)
+	 MIME-Version; b=cFZf3Gqvf0kzoRegpfNd3f7ktiFlfIhCdzRat5FJp/e049GdlmUDE3ls939V48b96TtkpjwdbwCB5dEh62n6c2KB3OmESCSkSMAxRhsDFBh/kJaHgUspzHOL4O43FkXDj7AlNwQHGFAFe9kE+jS8/v7SQlhoRHFqsgj3xAwrWDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sB7fCZH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E36C4CEF7;
+	Mon, 23 Mar 2026 16:16:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274013;
-	bh=QEV+jNtm9geICJlKV6qjmbg1X3oHEDpczTky+NTgN+E=;
+	s=korg; t=1774282617;
+	bh=n6xcYK2nGJ8es1RYXk0d4H65BR7tCt7OYEJ0hc1FCZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8Frv1LvWNh151+5MZCdPUvZ7UwiQunxwFnlhZUi5d05SUQtLUWZ402EiJkErw4gq
-	 3SHCqvdr/sdDShH0jdhmaRWImad+atK423bhZ93LVoV0OAjZVYWW5/x2Qs8TAjDQf0
-	 U9hnFqWsb0VFjhTz7LfKQJx+222Yamny7dwAQxYI=
+	b=sB7fCZH4f794Pe305ZDjNytWSON2OocejW4cDVnBVKqSr6jagJLAx9knj+ZQ871gU
+	 JT+uAA2rb/XjkdYKhJZYyueG1IYf0qX9t4QXrXJina36Q+lRgOeDmDsaPqe40Fte13
+	 Z3XrG69l+gsXV57yvhS5qqyWqf6V7yVMTmklf5OU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.19 027/220] drm/i915/dsc: Add Selective Update register definitions
+	Mehul Rao <mehulrao@gmail.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 222/481] tipc: fix divide-by-zero in tipc_sk_filter_connect()
 Date: Mon, 23 Mar 2026 14:43:24 +0100
-Message-ID: <20260323134505.436780871@linuxfoundation.org>
+Message-ID: <20260323134530.559590679@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228062-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229695-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,est.tech,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ursulin.net:email,intel.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: A4A092F3CA9
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 65D172F8BE3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Mehul Rao <mehulrao@gmail.com>
 
-commit c2c79c6d5b939ae8a42ddb884f576bddae685672 upstream.
+commit 6c5a9baa15de240e747263aba435a0951da8d8d2 upstream.
 
-Add definitions for DSC_SU_PARAMETER_SET_0_DSC0 and
-DSC_SU_PARAMETER_SET_0_DSC1 registers. These are for Selective Update Early
-Transport configuration.
+A user can set conn_timeout to any value via
+setsockopt(TIPC_CONN_TIMEOUT), including values less than 4.  When a
+SYN is rejected with TIPC_ERR_OVERLOAD and the retry path in
+tipc_sk_filter_connect() executes:
 
-Bspec: 71709
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patch.msgid.link/20260304113011.626542-3-jouni.hogander@intel.com
-(cherry picked from commit 24f96d903daf3dcf8fafe84d3d22b80ef47ba493)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+    delay %= (tsk->conn_timeout / 4);
+
+If conn_timeout is in the range [0, 3], the integer division yields 0,
+and the modulo operation triggers a divide-by-zero exception, causing a
+kernel oops/panic.
+
+Fix this by clamping conn_timeout to a minimum of 4 at the point of use
+in tipc_sk_filter_connect().
+
+Oops: divide error: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 119 Comm: poc-F144 Not tainted 7.0.0-rc2+
+RIP: 0010:tipc_sk_filter_rcv (net/tipc/socket.c:2236 net/tipc/socket.c:2362)
+Call Trace:
+ tipc_sk_backlog_rcv (include/linux/instrumented.h:82 include/linux/atomic/atomic-instrumented.h:32 include/net/sock.h:2357 net/tipc/socket.c:2406)
+ __release_sock (include/net/sock.h:1185 net/core/sock.c:3213)
+ release_sock (net/core/sock.c:3797)
+ tipc_connect (net/tipc/socket.c:2570)
+ __sys_connect (include/linux/file.h:62 include/linux/file.h:83 net/socket.c:2098)
+
+Fixes: 6787927475e5 ("tipc: buffer overflow handling in listener socket")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mehul Rao <mehulrao@gmail.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20260310170730.28841-1-mehulrao@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_vdsc_regs.h |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/tipc/socket.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/i915/display/intel_vdsc_regs.h
-+++ b/drivers/gpu/drm/i915/display/intel_vdsc_regs.h
-@@ -196,6 +196,18 @@
- #define   DSC_PPS18_NSL_BPG_OFFSET(offset)	REG_FIELD_PREP(DSC_PPS18_NSL_BPG_OFFSET_MASK, offset)
- #define   DSC_PPS18_SL_OFFSET_ADJ(offset)	REG_FIELD_PREP(DSC_PPS18_SL_OFFSET_ADJ_MASK, offset)
- 
-+#define _LNL_DSC0_SU_PARAMETER_SET_0_PA		0x78064
-+#define _LNL_DSC1_SU_PARAMETER_SET_0_PA		0x78164
-+#define _LNL_DSC0_SU_PARAMETER_SET_0_PB		0x78264
-+#define _LNL_DSC1_SU_PARAMETER_SET_0_PB		0x78364
-+#define LNL_DSC0_SU_PARAMETER_SET_0(pipe)	_MMIO_PIPE((pipe), _LNL_DSC0_SU_PARAMETER_SET_0_PA, _LNL_DSC0_SU_PARAMETER_SET_0_PB)
-+#define LNL_DSC1_SU_PARAMETER_SET_0(pipe)	_MMIO_PIPE((pipe), _LNL_DSC1_SU_PARAMETER_SET_0_PA, _LNL_DSC1_SU_PARAMETER_SET_0_PB)
-+
-+#define   DSC_SUPS0_SU_SLICE_ROW_PER_FRAME_MASK		REG_GENMASK(31, 20)
-+#define   DSC_SUPS0_SU_SLICE_ROW_PER_FRAME(rows)	REG_FIELD_PREP(DSC_SUPS0_SU_SLICE_ROW_PER_FRAME_MASK, (rows))
-+#define   DSC_SUPS0_SU_PIC_HEIGHT_MASK			REG_GENMASK(15, 0)
-+#define   DSC_SUPS0_SU_PIC_HEIGHT(h)			REG_FIELD_PREP(DSC_SUPS0_SU_PIC_HEIGHT_MASK, (h))
-+
- /* Icelake Rate Control Buffer Threshold Registers */
- #define DSCA_RC_BUF_THRESH_0			_MMIO(0x6B230)
- #define DSCA_RC_BUF_THRESH_0_UDW		_MMIO(0x6B230 + 4)
+--- a/net/tipc/socket.c
++++ b/net/tipc/socket.c
+@@ -2235,6 +2235,8 @@ static bool tipc_sk_filter_connect(struc
+ 		if (skb_queue_empty(&sk->sk_write_queue))
+ 			break;
+ 		get_random_bytes(&delay, 2);
++		if (tsk->conn_timeout < 4)
++			tsk->conn_timeout = 4;
+ 		delay %= (tsk->conn_timeout / 4);
+ 		delay = msecs_to_jiffies(delay + 100);
+ 		sk_reset_timer(sk, &sk->sk_timer, jiffies + delay);
 
 
 
