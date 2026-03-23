@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229800-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iJ2ZNuJHwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228068-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:10 +0100
+	id WFfSBbJywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229800-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:50 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B4862F3ABE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FCA2F9645
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 273FC305DD60
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5219317B34D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FE63ACA68;
-	Mon, 23 Mar 2026 13:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454DF29ACC5;
+	Mon, 23 Mar 2026 16:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLIUO5M9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKZ4xUcQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5983A21D00A;
-	Mon, 23 Mar 2026 13:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DC7282F35;
+	Mon, 23 Mar 2026 16:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274032; cv=none; b=KSXWpL0ORF8mYSMelBn5s+lH7aGXtQElGYg0CXIe5QMO57TzcV2U/gxQq4UoONCR2qKXdycCw+ZFWJAgaZAWd/Xxcr0K5HYOYfqdw5bpga28wva++FwCbL+Dnsukmlrbk2zdZ9gHi2FnzoV1HMQGqzEg/Vy5QAMU1HlAh/KmO/U=
+	t=1774282899; cv=none; b=cCutmh9nRlkKCi+qMyhghKfBs26p2BdvG0mMiX41BQphqC1K/V+h4SOiZLB1su4Vetx8W9s1ZBhO6iw7kGU9F22Dt/H2nOhQurM01SQaiNB6SjyF/dqLTVEP8C/LCRO7BSZU/yBVYLhIFo6Umo3UbkoMJyjSB1sPK6ODI/3XrIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274032; c=relaxed/simple;
-	bh=ROO00yyzXyFXoPQ0QMWPP4EdPbgGkE3v4WpzQzvcD5I=;
+	s=arc-20240116; t=1774282899; c=relaxed/simple;
+	bh=zIonWaKb5tzsp1WWBpx1H+nEtTyjP1KgUKKR2nsIxEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oxB0g3jGl8KrZlI0sq13YbfN0QGC8CC2080xpR+6ruELLuDr/iirSI+bUaSPcVgbIkqs+JjZY2k1wAbqApnd3wMXEE7CNm2ur1NWUMBDGdHDz4+RDGy75dQsP6u6V0XLmgGWiK4lki60RRCZYFTeD5QWVqXJ3whGGvcCEH4usgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLIUO5M9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF45AC4CEF7;
-	Mon, 23 Mar 2026 13:53:51 +0000 (UTC)
+	 MIME-Version; b=kwJ8e3GcYRNRoQQMzsMzwDKmx8hMGiSJdTYnXwIqklPJ2F73ZAxUvBg4vZdnTRsN7IXamtTG73WOUVjF+fmEdmL3rk+80VqO2wHyKg+doHXVvCjYt/XtJXCOGm8PbH/sbq2pQjO921UQFk8UlZwvdHaR36rQ+6S+1lEAvyEmRnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKZ4xUcQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE86C4CEF7;
+	Mon, 23 Mar 2026 16:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274032;
-	bh=ROO00yyzXyFXoPQ0QMWPP4EdPbgGkE3v4WpzQzvcD5I=;
+	s=korg; t=1774282898;
+	bh=zIonWaKb5tzsp1WWBpx1H+nEtTyjP1KgUKKR2nsIxEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLIUO5M9dfYczDPjOpi/oBP6XhECccmr7ni0gumJA9PKmzW5YTx95tSkFk7MC6p/1
-	 kyi+CFI/TOT202+hqvxiB9jXzNYhnYPspzQQ9rwDt2iglOXq8J5cOhw6Yh9UyQ+gCe
-	 ZkmFCGcsx5UbEKCvQkspgwdXYmxGIHw5HScJuv90=
+	b=RKZ4xUcQo9XvbUHY5Z0HM9Sw7bKCXsSDfkrEh9AXah+utI35Iov8NgG2aDYFQezos
+	 OWSpF7CY3Ckbq/UO/flmO6BlVSRLjCefhQMRxB6aB+4I8cjGr6kuR86S8cNaJfbOt+
+	 uffO1LXbjjMLVT1LsP/VYfYwmwNcn3HMVA1Jvhfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.19 088/220] drm/i915/psr: Disable PSR on update_m_n and update_lrr
+	Dingisoul <dingiso.kernel@gmail.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 6.1 283/481] nvdimm/bus: Fix potential use after free in asynchronous initialization
 Date: Mon, 23 Mar 2026 14:44:25 +0100
-Message-ID: <20260323134507.374642720@linuxfoundation.org>
+Message-ID: <20260323134532.010226589@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,26 +63,26 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[gitlab.freedesktop.org:query timed out];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228068-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229800-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,48 +90,66 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,gitlab.freedesktop.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 8B4862F3ABE
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 95FCA2F9645
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Ira Weiny <ira.weiny@intel.com>
 
-commit b0a4dba7b623aa7cbc9efcc56b4af2ec8b274f3e upstream.
+commit a8aec14230322ed8f1e8042b6d656c1631d41163 upstream.
 
-PSR/PR parameters might change based on update_m_n or update_lrr. Disable
-on update_m_n and update_lrr to ensure proper parameters are taken into use
-on next PSR enable in intel_psr_post_plane_update.
+Dingisoul with KASAN reports a use after free if device_add() fails in
+nd_async_device_register().
 
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15771
-Fixes: 2bc98c6f97af ("drm/i915/alpm: Compute ALPM parameters into crtc_state->alpm_state")
-Cc: <stable@vger.kernel.org> # v6.19+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260312083710.1593781-2-jouni.hogander@intel.com
-(cherry picked from commit 65852b56bfa929f99e28c96fd98b02058959da7f)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Commit b6eae0f61db2 ("libnvdimm: Hold reference on parent while
+scheduling async init") correctly added a reference on the parent device
+to be held until asynchronous initialization was complete.  However, if
+device_add() results in an allocation failure the ref count of the
+device drops to 0 prior to the parent pointer being accessed.  Thus
+resulting in use after free.
+
+The bug bot AI correctly identified the fix.  Save a reference to the
+parent pointer to be used to drop the parent reference regardless of the
+outcome of device_add().
+
+Reported-by: Dingisoul <dingiso.kernel@gmail.com>
+Closes: http://lore.kernel.org/8855544b-be9e-4153-aa55-0bc328b13733@gmail.com
+Fixes: b6eae0f61db2 ("libnvdimm: Hold reference on parent while scheduling async init")
+Cc: stable@vger.kernel.org
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20260306-fix-uaf-async-init-v1-1-a28fd7526723@intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_psr.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvdimm/bus.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -3087,6 +3087,8 @@ void intel_psr_pre_plane_update(struct i
- 			 * - Display WA #1136: skl, bxt
- 			 */
- 			if (intel_crtc_needs_modeset(new_crtc_state) ||
-+			    new_crtc_state->update_m_n ||
-+			    new_crtc_state->update_lrr ||
- 			    !new_crtc_state->has_psr ||
- 			    !new_crtc_state->active_planes ||
- 			    new_crtc_state->has_sel_update != psr->sel_update_enabled ||
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -486,14 +486,15 @@ EXPORT_SYMBOL_GPL(nd_synchronize);
+ static void nd_async_device_register(void *d, async_cookie_t cookie)
+ {
+ 	struct device *dev = d;
++	struct device *parent = dev->parent;
+ 
+ 	if (device_add(dev) != 0) {
+ 		dev_err(dev, "%s: failed\n", __func__);
+ 		put_device(dev);
+ 	}
+ 	put_device(dev);
+-	if (dev->parent)
+-		put_device(dev->parent);
++	if (parent)
++		put_device(parent);
+ }
+ 
+ static void nd_async_device_unregister(void *d, async_cookie_t cookie)
 
 
 
