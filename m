@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EHYqHVJXwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228795-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:02 +0100
+	id EAmAKlZIwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:04:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C920B2F5D20
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD592F3BE9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:04:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2423331958B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 920D130D20E1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B42A23EABA;
-	Mon, 23 Mar 2026 14:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E78C3AD53C;
+	Mon, 23 Mar 2026 13:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJukN0y8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AqKPTiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D88A23EAB4;
-	Mon, 23 Mar 2026 14:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D6A21D00A;
+	Mon, 23 Mar 2026 13:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277148; cv=none; b=gRVQ+vbMBf0QmjxQ1RxkIJ6MBuzrmw1k733BHwmDdp0va/DVKTX0Kcv1lKfTq0UBofONFgPytFtMqjloFrImg3SgEI2STy3wULIEZD/ujda0mAoPcpiyEi0x4XDHeHDzLrVN4EkiWvpJqhcpVGkHw9wg7ftkNP2lH2qbPuoHicQ=
+	t=1774274112; cv=none; b=pDcn5SVbUTPTKnRmHqbEmrZn8lcucoxw3B4/CrZ5aiVC2/sBY3HimldAVy2fXKCsvaOXJMHRSQSh+iH1gzsFWeTpNCoD5aDkb/M8jb2IEGo6rqf8KXgfrwMONYj4tKsXqZ2gjgSecNazKKLuBcg3YE55WfITivsTM2A0Bm8DXOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277148; c=relaxed/simple;
-	bh=pu4dcSzh09w8o0avmYk+SI/CK1mY55ATH91BzklwOqo=;
+	s=arc-20240116; t=1774274112; c=relaxed/simple;
+	bh=+Le1MsX4y863X0slZHAB3Dj5aQyThl8mWw8BfN2meAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1Y8qbekWScS9GHJhHw8MCLKiEIQ5ddF4K8su4acwW/DwnjauIJCyiOeL8ViiS1c3yEHrL+pp7ECwhAQaNpFsOsz3nyyXbx0kafSLxPnBhMrl1dnlR6OvSmQqiYqQILyNheT58G3GaHk5E7nOKk9U8AL+FKecfzuDOFkm+gsetk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJukN0y8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57224C4CEF7;
-	Mon, 23 Mar 2026 14:45:47 +0000 (UTC)
+	 MIME-Version; b=eAqgNlgxWdzeRkquB1vTYqzzBu03vnG6vfhIOylFrqE4uKeHkEA5Fg9Q4mml2ryCxiqJJNxe3K5g+J6/0ii6fnM8kpcE+8QOiqkDdezCFouVrbXyA8b9H4ScsnTmnsf5FW8vir9HpgrmcjCys3McngF3bOJtBVqZZYfwRMo2Y+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AqKPTiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C76C2BC9E;
+	Mon, 23 Mar 2026 13:55:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277147;
-	bh=pu4dcSzh09w8o0avmYk+SI/CK1mY55ATH91BzklwOqo=;
+	s=korg; t=1774274112;
+	bh=+Le1MsX4y863X0slZHAB3Dj5aQyThl8mWw8BfN2meAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJukN0y8RmjzjKaNPwD2ZmpLCCGL3/5oWfpWOzs/epFJBpYaRjH9s0k/rFqci3xap
-	 WSqB9tNmSfM8y7XbRakeuSLFJbcdLiGWFSlJ1ttSg+XNf1bCVDtn4j8PmLLW3SKXWP
-	 4PvX1zNTSK/TIVqblqN4LR6T1rd3P640QYi39cn0=
+	b=2AqKPTizG1blU+IZappM1RnDAVw+b//Nk56oD0OvCdpgTI4PScKLU1hDTAuEoHhkn
+	 jqnsQMjBJvbqrcemWmPRVOSU+49CDdyaWXsSlp8VVKNfEF6nEjbmfg+213bKcr+OUC
+	 v8lADohG2XI89U0/lZ5b7O4NrriApov8kiWueCA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Zilin Guan" <zilin@seu.edu.cn>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Robert Garcia <rob_garcia@163.com>
-Subject: [PATCH 6.12 292/460] binfmt_misc: restore write access before closing files opened by open_exec()
-Date: Mon, 23 Mar 2026 14:44:48 +0100
-Message-ID: <20260323134533.657827566@linuxfoundation.org>
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 112/220] arm64: dts: renesas: r9a09g087: Fix CPG register region sizes
+Date: Mon, 23 Mar 2026 14:44:49 +0100
+Message-ID: <20260323134508.137845103@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228795-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228096-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	DBL_PROHIBIT(0.00)[0.0.0.3:email];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,renesas];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C920B2F5D20
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,4.200.249.192:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,renesas.com:email,glider.be:email]
+X-Rspamd-Queue-Id: 1DD592F3BE9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-[ Upstream commit 90f601b497d76f40fa66795c3ecf625b6aced9fd ]
+[ Upstream commit f459672cf3ffd3c062973838951418271aa2ceef ]
 
-bm_register_write() opens an executable file using open_exec(), which
-internally calls do_open_execat() and denies write access on the file to
-avoid modification while it is being executed.
+The CPG register regions were incorrectly sized.  Update them to match
+the actual hardware specification:
+  - First region (0x80280000): 0x1000 -> 0x10000 (64kiB)
+  - Second region (0x81280000): 0x9000 -> 0x10000 (64kiB)
 
-However, when an error occurs, bm_register_write() closes the file using
-filp_close() directly. This does not restore the write permission, which
-may cause subsequent write operations on the same file to fail.
-
-Fix this by calling exe_file_allow_write_access() before filp_close() to
-restore the write permission properly.
-
-Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Use allow_write_access() instead of exe_file_allow_write_access()
-according to commit 0357ef03c94ef
-("fs: don't block write during exec on pre-content watched files"). ]
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4b3d31f0b81fe ("arm64: dts: renesas: Add initial SoC DTSI for the RZ/N2H SoC")
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260213131742.3606334-3-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_misc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r9a09g087.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -875,8 +875,10 @@ out:
- 	inode_unlock(d_inode(root));
+diff --git a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
+index 361a9235f00d9..46f2b1fd98dc3 100644
+--- a/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a09g087.dtsi
+@@ -750,8 +750,8 @@ mii_conv3: mii-conv@3 {
  
- 	if (err) {
--		if (f)
-+		if (f) {
-+			allow_write_access(f);
- 			filp_close(f, NULL);
-+		}
- 		kfree(e);
- 		return err;
- 	}
+ 		cpg: clock-controller@80280000 {
+ 			compatible = "renesas,r9a09g087-cpg-mssr";
+-			reg = <0 0x80280000 0 0x1000>,
+-			      <0 0x81280000 0 0x9000>;
++			reg = <0 0x80280000 0 0x10000>,
++			      <0 0x81280000 0 0x10000>;
+ 			clocks = <&extal_clk>;
+ 			clock-names = "extal";
+ 			#clock-cells = <2>;
+-- 
+2.51.0
+
 
 
 
