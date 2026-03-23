@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-229419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228410-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YE5lMt9hwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229419-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:53:03 +0100
+	id iNr4IY9NwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228410-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 578212F70D5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:53:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DF82F479D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A92A03555EC3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5C6603089566
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E9D3BB9EE;
-	Mon, 23 Mar 2026 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7F93AE1AA;
+	Mon, 23 Mar 2026 14:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Wh0xnye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDrh3Z6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3F13B27C5;
-	Mon, 23 Mar 2026 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8303E286417;
+	Mon, 23 Mar 2026 14:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279187; cv=none; b=LG1xno4UjdtuUXMbiIFDccnqf5TTlFCibKl2uHCNnwTq4mA1J5CAp3tEk+8JR4CLjNHHQMB3qEQyMsqzmwBJwNhJ4DxmKa/EXxmidYNgFHcUjvSFYrI3JwKLyDvtuoWVXbdSlG0aUnkHEcyj3O4Fc3G8mSO497chcIGcbCfQLJM=
+	t=1774275041; cv=none; b=ex2D6hDeKP0z0CrcoCNbQ6LfWB4jeQpLCGyVliOGCXUU5TxE88P/9LJs3hrQ/FITK9yXiDy4DwbqLmG6wXhQSmKAp2iLsZCqiVFqPi3auitNi0HyTXYm2yFEBnq6kzg+k5b4hpwXHLXNXfwET3dlNcVtyXM0A7wez1FJfXO26/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279187; c=relaxed/simple;
-	bh=k8KHGLCUXyhHfiFHHCaAZmdcg16OYJjmRgNNYab6OGc=;
+	s=arc-20240116; t=1774275041; c=relaxed/simple;
+	bh=guCbcVhY/clzBgURMbmNrP2yFcLyziaFYmnKtOT+AfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEx2t8YWoP4uMxiN5KDfQrFLa+xd90YwVNaq9G3FjUBvvi/6twhV07lmgwg/5SMZo1qZ/30DlYmqVSOshtS0xrLWCklVx7Yq/bf89F73bJYqHDM56nNV9lpuu2fnhDcUJ4TVc011gZjKNZI+CTXxKdShS1k8ClGsqp5JtYWeS/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Wh0xnye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29AAC2BC9E;
-	Mon, 23 Mar 2026 15:19:46 +0000 (UTC)
+	 MIME-Version; b=PVgrEuCyBGqVXVcAu9TH5kmuaN3xELqLvumYwOyS9CKwF2Lya/K5KqqmRxD0oO2K0HFot6JMxaT2X2iS83PtwHIOU7b1BD84nrChiZT9AyLvEnCDmWFoqp2QVWJhtvoJGoeyH9IGqwXUROgExpDyKgpl2UhrHJzFRvJMriw46zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDrh3Z6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AC8C4CEF7;
+	Mon, 23 Mar 2026 14:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279187;
-	bh=k8KHGLCUXyhHfiFHHCaAZmdcg16OYJjmRgNNYab6OGc=;
+	s=korg; t=1774275041;
+	bh=guCbcVhY/clzBgURMbmNrP2yFcLyziaFYmnKtOT+AfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Wh0xnyeI739ukvEZHiDVPVbgKJH+3mG4rtUSLZwkj9Vvk15tSe27bZMfWvC3K2As
-	 Kkoc4YaqXbelPgbnBXAdTxM1mRsSzecMm9y9rsAW8dtpJquwHFGIKu64iHOqelrJJl
-	 HmQS4pXk0CMycypgprgL7rTVBP+zp1pIiyj1sDLU=
+	b=dDrh3Z6hAMy1joOuWEpxFYHFBB2LSg1auVEDju5CE9G0Sv6SFtJy28rtLFL/LbH7T
+	 3QRu7FA29tb6ZVTMLygglZL95QydxwwZfIcq4RGQhoi67a9VqE02BniGax6xv7E+8j
+	 geHK3ab+rUTYOfGqtIdDjMFOaQLAUQjYmteh8rc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 502/567] firmware: arm_scpi: Fix device_node reference leak in probe path
+Subject: [PATCH 6.18 201/212] iommu/sva: Fix crash in iommu_sva_unbind_device()
 Date: Mon, 23 Mar 2026 14:47:02 +0100
-Message-ID: <20260323134546.440865513@linuxfoundation.org>
+Message-ID: <20260323134510.141122535@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,93 +68,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229419-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228410-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 578212F70D5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 28DF82F479D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 879c001afbac3df94160334fe5117c0c83b2cf48 ]
+[ Upstream commit 06e14c36e20b48171df13d51b89fe67c594ed07a ]
 
-A device_node reference obtained from the device tree is not released
-on all error paths in the arm_scpi probe path. Specifically, a node
-returned by of_parse_phandle() could be leaked when the probe failed
-after the node was acquired. The probe function returns early and
-the shmem reference is not released.
+domain->mm->iommu_mm can be freed by iommu_domain_free():
+  iommu_domain_free()
+    mmdrop()
+      __mmdrop()
+        mm_pasid_drop()
+After iommu_domain_free() returns, accessing domain->mm->iommu_mm may
+dereference a freed mm structure, leading to a crash.
 
-Use __free(device_node) scope-based cleanup to automatically release
-the reference when the variable goes out of scope.
+Fix this by moving the code that accesses domain->mm->iommu_mm to before
+the call to iommu_domain_free().
 
-Fixes: ed7ecb883901 ("firmware: arm_scpi: Add compatibility checks for shmem node")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Message-Id: <20260121-arm_scpi_2-v2-1-702d7fa84acb@gmail.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Fixes: e37d5a2d60a3 ("iommu/sva: invalidate stale IOTLB entries for kernel address space")
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scpi.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/iommu/iommu-sva.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
-index 3de25e9d18ef8..2d85e783ae267 100644
---- a/drivers/firmware/arm_scpi.c
-+++ b/drivers/firmware/arm_scpi.c
-@@ -18,6 +18,7 @@
+diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
+index e1e63c2be82b2..fd735aaae9e3f 100644
+--- a/drivers/iommu/iommu-sva.c
++++ b/drivers/iommu/iommu-sva.c
+@@ -182,13 +182,13 @@ void iommu_sva_unbind_device(struct iommu_sva *handle)
+ 	iommu_detach_device_pasid(domain, dev, iommu_mm->pasid);
+ 	if (--domain->users == 0) {
+ 		list_del(&domain->next);
+-		iommu_domain_free(domain);
+-	}
++		if (list_empty(&iommu_mm->sva_domains)) {
++			list_del(&iommu_mm->mm_list_elm);
++			if (list_empty(&iommu_sva_mms))
++				iommu_sva_present = false;
++		}
  
- #include <linux/bitmap.h>
- #include <linux/bitfield.h>
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/err.h>
- #include <linux/export.h>
-@@ -945,13 +946,13 @@ static int scpi_probe(struct platform_device *pdev)
- 		int idx = scpi_drvinfo->num_chans;
- 		struct scpi_chan *pchan = scpi_drvinfo->channels + idx;
- 		struct mbox_client *cl = &pchan->cl;
--		struct device_node *shmem = of_parse_phandle(np, "shmem", idx);
-+		struct device_node *shmem __free(device_node) =
-+			of_parse_phandle(np, "shmem", idx);
+-	if (list_empty(&iommu_mm->sva_domains)) {
+-		list_del(&iommu_mm->mm_list_elm);
+-		if (list_empty(&iommu_sva_mms))
+-			iommu_sva_present = false;
++		iommu_domain_free(domain);
+ 	}
  
- 		if (!of_match_node(shmem_of_match, shmem))
- 			return -ENXIO;
- 
- 		ret = of_address_to_resource(shmem, 0, &res);
--		of_node_put(shmem);
- 		if (ret) {
- 			dev_err(dev, "failed to get SCPI payload mem resource\n");
- 			return ret;
+ 	mutex_unlock(&iommu_sva_lock);
 -- 
 2.51.0
 
