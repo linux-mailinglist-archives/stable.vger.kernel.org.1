@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-228283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229786-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2CgdANRLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:00 +0100
+	id uHAPE5dywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229786-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D053A2F4292
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C44D2F9611
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 25C3F307763C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0C31532E58EE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EC83B38B9;
-	Mon, 23 Mar 2026 14:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5640E3B95E4;
+	Mon, 23 Mar 2026 16:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loCMInXk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAf4aTeS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F05C1EB9F2;
-	Mon, 23 Mar 2026 14:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BC3285417;
+	Mon, 23 Mar 2026 16:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274683; cv=none; b=ARCOn0Y0jAmVaRrpTCdRI/BUXk9O1ZhAzXZbg7Tl2N05fivS9X8jAvFtlDdF/BpqeB8xC5v6dB/lozKPrctJOLU3uYt+cDneBFW0BkdbDf9oKU036pdVFHunL4MZAAlu4gYyL+QAHZCA2vhagR1ZtRSDGkG+DIv5t97GfPm8Hgw=
+	t=1774282861; cv=none; b=JGaaU1nY//fO6hTX4gW7YCN1KcK4NifafnZ+TLJoLpBjKNBIIfdAKBNrciaQZJ4nPSCN7zAkepzZwKqCzvrQV6VNuD+S3KzLqAQDPX+Bv6QsT33g1SxuOK/xGT6zd9K2vy2+CVPy9UKwUyYRftCyct91E9eui+jxEqb3LkrpgnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274683; c=relaxed/simple;
-	bh=bp1mBU1r0dQCPG6Eq6Hqgh4Noc2bTg6zzH0Hmu1L6sE=;
+	s=arc-20240116; t=1774282861; c=relaxed/simple;
+	bh=uY67VM6Y5Dkb+ctMjYbwNFpC1bxjGr55r5zielkdAmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gaKrPMsF/YH8dS7zV0pbuGwbhjMIJpdrvEOcS1Z+UiAB0UzrU0yzy5BM6lsIIm2mcbWBHJ/OoPfTrGrv7AcW37RYp6THquMOaCVOJdZYOqEbgdSq2yAGMEnPPgaiKHDbg9frgdvnVMHLlVdf8ACojZBFVjA/qEY7s+1xQIq1LS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loCMInXk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96865C4CEF7;
-	Mon, 23 Mar 2026 14:04:42 +0000 (UTC)
+	 MIME-Version; b=h2h9VJnqws8BdU27Me2+YrE4RZ5d8VqCiy/s3AbmsW1Ta/q5FTN1+f+x20SCmwNyBghxmcu0Qpsg2dzfEmIF5dEKNws/fVqxn1UkCFTB6vO2daq5vqiRiaJTKhs2YTLN/F0/VyQ5xffvj1Zp/g0v8jURnaHGeiKVSl6NG4nnC9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAf4aTeS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739DDC4CEF7;
+	Mon, 23 Mar 2026 16:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274683;
-	bh=bp1mBU1r0dQCPG6Eq6Hqgh4Noc2bTg6zzH0Hmu1L6sE=;
+	s=korg; t=1774282861;
+	bh=uY67VM6Y5Dkb+ctMjYbwNFpC1bxjGr55r5zielkdAmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=loCMInXkAKCk2xccfWTEkmPl+eF6ZScN/W/GqU7k9TQPWf1vVtUDm2sBEz9iYYmEM
-	 aH2BREtTAKHILNiSy+SvjcuJPoPyZEgmgJEnuQXR+Mvw/lnDZ5P72IS5DyVjPvvHj9
-	 hxpMhBMBAB5KOwzekqxa02Ftci7HWMUOJDd65JCc=
+	b=bAf4aTeSENgyclgR/CFCRiwSfkKQGv01j0/3aqdpiNVzwEYMnvE7DtyiU97O9wOad
+	 1RgKos6Wm7oPb8z2jce3d7uIFfXOoOq+3gYZfK6+hXANi8zHWVVpcOIctZz/ov6lse
+	 COD7uH8LypdoZ+Bo62TTEYPGn9TSsGjV/awZ7sCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.18 073/212] serial: 8250_dw: Rework dw8250_handle_irq() locking and IIR handling
+	"David Hildenbrand (Red Hat)" <david@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Laurence Oberman <loberman@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Liu Shixin <liushixin2@huawei.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Uschakow, Stanislav" <suschako@amazon.de>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 312/481] mm/hugetlb: fix two comments related to huge_pmd_unshare()
 Date: Mon, 23 Mar 2026 14:44:54 +0100
-Message-ID: <20260323134506.074155377@linuxfoundation.org>
+Message-ID: <20260323134532.705657781@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,167 +70,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228283-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229786-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: D053A2F4292
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2C44D2F9611
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: David Hildenbrand (Red Hat) <david@kernel.org>
 
-commit 883c5a2bc934c165c4491d1ef7da0ac4e9765077 upstream.
+commit 3937027caecb4f8251e82dd857ba1d749bb5a428 upstream.
 
-dw8250_handle_irq() takes port's lock multiple times with no good
-reason to release it in between and calls serial8250_handle_irq()
-that also takes port's lock.
+Ever since we stopped using the page count to detect shared PMD page
+tables, these comments are outdated.
 
-Take port's lock only once in dw8250_handle_irq() and use
-serial8250_handle_irq_locked() to avoid releasing port's lock in
-between.
+The only reason we have to flush the TLB early is because once we drop the
+i_mmap_rwsem, the previously shared page table could get freed (to then
+get reallocated and used for other purpose).  So we really have to flush
+the TLB before that could happen.
 
-As IIR_NO_INT check in serial8250_handle_irq() was outside of port's
-lock, it has to be done already in dw8250_handle_irq().
+So let's simplify the comments a bit.
 
-DW UART can, in addition to IIR_NO_INT, report BUSY_DETECT (0x7) which
-collided with the IIR_NO_INT (0x1) check in serial8250_handle_irq()
-(because & is used instead of ==) meaning that no other work is done by
-serial8250_handle_irq() during an BUSY_DETECT interrupt.
+The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
+part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
+correctly after huge_pmd_unshare") was confusing: sure it is recorded in
+the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do anything.
+So let's drop that comment while at it as well.
 
-This allows reorganizing code in dw8250_handle_irq() to do both
-IIR_NO_INT and BUSY_DETECT handling right at the start simplifying
-the logic.
+We'll centralize these comments in a single helper as we rework the code
+next.
 
-Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260203171049.4353-5-ilpo.jarvinen@linux.intel.com
+Link: https://lkml.kernel.org/r/20251223214037.580860-3-david@kernel.org
+Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
+Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
+Cc: Liu Shixin <liushixin2@huawei.com>
+Cc: Lance Yang <lance.yang@linux.dev>
+Cc: "Uschakow, Stanislav" <suschako@amazon.de>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |   37 +++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+ mm/hugetlb.c |   24 ++++++++----------------
+ 1 file changed, 8 insertions(+), 16 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -9,6 +9,9 @@
-  * LCR is written whilst busy.  If it is, then a busy detect interrupt is
-  * raised, the LCR needs to be rewritten and the uart status register read.
-  */
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-@@ -40,6 +43,8 @@
- #define RZN1_UART_RDMACR 0x110 /* DMA Control Register Receive Mode */
- 
- /* DesignWare specific register fields */
-+#define DW_UART_IIR_IID			GENMASK(3, 0)
-+
- #define DW_UART_MCR_SIRE		BIT(6)
- 
- /* Renesas specific register fields */
-@@ -312,7 +317,19 @@ static int dw8250_handle_irq(struct uart
- 	bool rx_timeout = (iir & 0x3f) == UART_IIR_RX_TIMEOUT;
- 	unsigned int quirks = d->pdata->quirks;
- 	unsigned int status;
--	unsigned long flags;
-+
-+	switch (FIELD_GET(DW_UART_IIR_IID, iir)) {
-+	case UART_IIR_NO_INT:
-+		return 0;
-+
-+	case UART_IIR_BUSY:
-+		/* Clear the USR */
-+		serial_port_in(p, d->pdata->usr_reg);
-+
-+		return 1;
-+	}
-+
-+	guard(uart_port_lock_irqsave)(p);
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -5432,17 +5432,10 @@ static void __unmap_hugepage_range(struc
+ 	tlb_end_vma(tlb, vma);
  
  	/*
- 	 * There are ways to get Designware-based UARTs into a state where
-@@ -325,20 +342,15 @@ static int dw8250_handle_irq(struct uart
- 	 * so we limit the workaround only to non-DMA mode.
+-	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
+-	 * could defer the flush until now, since by holding i_mmap_rwsem we
+-	 * guaranteed that the last refernece would not be dropped. But we must
+-	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
+-	 * dropped and the last reference to the shared PMDs page might be
+-	 * dropped as well.
+-	 *
+-	 * In theory we could defer the freeing of the PMD pages as well, but
+-	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
+-	 * detect sharing, so we cannot defer the release of the page either.
+-	 * Instead, do flush now.
++	 * There is nothing protecting a previously-shared page table that we
++	 * unshared through huge_pmd_unshare() from getting freed after we
++	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
++	 * succeeded, flush the range corresponding to the pud.
  	 */
- 	if (!up->dma && rx_timeout) {
--		uart_port_lock_irqsave(p, &flags);
- 		status = serial_lsr_in(up);
- 
- 		if (!(status & (UART_LSR_DR | UART_LSR_BI)))
- 			serial_port_in(p, UART_RX);
--
--		uart_port_unlock_irqrestore(p, flags);
+ 	if (force_flush)
+ 		tlb_flush_mmu_tlbonly(tlb);
+@@ -6781,11 +6774,10 @@ long hugetlb_change_protection(struct vm
+ 		cond_resched();
  	}
- 
- 	/* Manually stop the Rx DMA transfer when acting as flow controller */
- 	if (quirks & DW_UART_QUIRK_IS_DMA_FC && up->dma && up->dma->rx_running && rx_timeout) {
--		uart_port_lock_irqsave(p, &flags);
- 		status = serial_lsr_in(up);
--		uart_port_unlock_irqrestore(p, flags);
- 
- 		if (status & (UART_LSR_DR | UART_LSR_BI)) {
- 			dw8250_writel_ext(p, RZN1_UART_RDMACR, 0);
-@@ -346,17 +358,9 @@ static int dw8250_handle_irq(struct uart
- 		}
- 	}
- 
--	if (serial8250_handle_irq(p, iir))
--		return 1;
--
--	if ((iir & UART_IIR_BUSY) == UART_IIR_BUSY) {
--		/* Clear the USR */
--		serial_port_in(p, d->pdata->usr_reg);
-+	serial8250_handle_irq_locked(p, iir);
- 
--		return 1;
--	}
--
--	return 0;
-+	return 1;
- }
- 
- static void dw8250_clk_work_cb(struct work_struct *work)
-@@ -865,6 +869,7 @@ static struct platform_driver dw8250_pla
- 
- module_platform_driver(dw8250_platform_driver);
- 
-+MODULE_IMPORT_NS("SERIAL_8250");
- MODULE_AUTHOR("Jamie Iles");
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Synopsys DesignWare 8250 serial port driver");
+ 	/*
+-	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
+-	 * may have cleared our pud entry and done put_page on the page table:
+-	 * once we release i_mmap_rwsem, another task can do the final put_page
+-	 * and that page table be reused and filled with junk.  If we actually
+-	 * did unshare a page of pmds, flush the range corresponding to the pud.
++	 * There is nothing protecting a previously-shared page table that we
++	 * unshared through huge_pmd_unshare() from getting freed after we
++	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
++	 * succeeded, flush the range corresponding to the pud.
+ 	 */
+ 	if (shared_pmd)
+ 		flush_hugetlb_tlb_range(vma, range.start, range.end);
 
 
 
