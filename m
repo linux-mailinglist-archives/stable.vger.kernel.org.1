@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-229094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229591-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNKMAMVWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-229094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:41 +0100
+	id iFNGOBRzwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229591-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A762F5C17
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5D32F9730
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F15F4300C0C6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9FF723158FFE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8A822FE0A;
-	Mon, 23 Mar 2026 15:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 436A23BD62B;
+	Mon, 23 Mar 2026 16:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHWJW0UH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lltY1Uct"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9A71A3029;
-	Mon, 23 Mar 2026 15:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057123BD655;
+	Mon, 23 Mar 2026 16:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278041; cv=none; b=JA5WsH6xxJoesQNySL4KCxj68oxsvzZafVDiJpnhi0hlDjYWAgqwdYSO8ILGILBmEpufASNL1r+XZYmTU0y/syL0e0bHq8iqVhLocMUW5d1NmzyigQOeUV54TCB/PYKUxmoP2mWIMJKluZaCyNYCm/tjJUbr7nSzb5O3h//tvbg=
+	t=1774282334; cv=none; b=bLMHZhc+pyxgcDo60v6dQ9UxWPRGEiegTQ5akYQlgFNRD8FlCRyZd1P8vfNnWbgezoauYCWxQSlyIGDe237X3oSSnBD+S3JYSDMqQjlx0uvPTtEoikRYA/gsZFS3X1048h4r6ypQuZSanp+SrBhHZMtSNBc/6Z2SdV0fRiD2OCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278041; c=relaxed/simple;
-	bh=cI27jRhyQHKDu/JRNTqsBO8r71BxIm3wRnhdwf5i1IA=;
+	s=arc-20240116; t=1774282334; c=relaxed/simple;
+	bh=Sj69weSCJPLnw5ozyoJDoeSBoUceqdwKkxb0zhTYudA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q5lRmbujBOPCz/Nn7bDY+66tH49LKbK3FOiXl5e67yk5YI70FkiNMfILJVTtDbc/qzKsBXYvuNvd+jNWYPf/RQ/amBNxWmiGjM4Djpxv4Lwn/CPjpXs1jgHG9srFMTRJd8oMHFmlUleBnkywQIISj9D3d71zFXbmRKVh8x539mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHWJW0UH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C66C4CEF7;
-	Mon, 23 Mar 2026 15:00:40 +0000 (UTC)
+	 MIME-Version; b=Xx/pA3Ad3PNtiYWXOMHbPeoPAK0hYaKOkhgYgPH5h5aLlW/P7dQLF3mHiFArFU5KCoMvMudPY1ESxbAoMLtSHm5OjUV3QImuNB5R5G1TQbwrCb0FIMK7T44DIBNKjed1cqJ+btCDEdtHdgQ6O8eR3WLcuDLGH4dEJpGc8zyBqvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lltY1Uct; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76974C4CEF7;
+	Mon, 23 Mar 2026 16:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278041;
-	bh=cI27jRhyQHKDu/JRNTqsBO8r71BxIm3wRnhdwf5i1IA=;
+	s=korg; t=1774282333;
+	bh=Sj69weSCJPLnw5ozyoJDoeSBoUceqdwKkxb0zhTYudA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oHWJW0UHhxjxEup4CUdolpj8fCDK3tu9PhIp12W+mvi0roRzl3i6g8TiLie3f4Zn+
-	 04Jw6SAGVoKncr8KrRBoLGPkrhm6Iv6GGzZtdhhuK/zA9CQ3qx8hmXPuW/MuYo4muS
-	 FrNOccOV+fuIf7vjxW7eizCq9rNS+Pek+yDNL3xs=
+	b=lltY1Uctub4iijbfaRNiCd2/h5yBQbDC2F9RlEJaAKsuhrhTu61+CuEaOterqvMv9
+	 1gqmBOVFeJn85c6iSvzn6kAxXvTlJR895s5WWShtX1/vvbUiNI3gAbrHRgXrp6Qehp
+	 nOPGxilRcM2ofAnwEmi/YVeHC5Kfx8SoffQ8bMcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Mieczyslaw Nalewaj <namiltd@yahoo.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
+	Linus Walleij <linusw@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/567] i40e: fix registering XDP RxQ info
+Subject: [PATCH 6.1 118/481] net: dsa: realtek: rtl8365mb: fix rtl8365mb_phy_ocp_write return value
 Date: Mon, 23 Mar 2026 14:41:40 +0100
-Message-ID: <20260323134538.300081654@linuxfoundation.org>
+Message-ID: <20260323134528.160275652@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,171 +72,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229094-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229591-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yahoo.com,lunn.ch,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 90A762F5C17
+X-Rspamd-Queue-Id: DF5D32F9730
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 
-[ Upstream commit 8f497dc8a61429cc004720aa8e713743355d80cf ]
+[ Upstream commit 7cbe98f7bef965241a5908d50d557008cf998aee ]
 
-Current way of handling XDP RxQ info in i40e has a problem, where frag_size
-is not updated when xsk_buff_pool is detached or when MTU is changed, this
-leads to growing tail always failing for multi-buffer packets.
+Function rtl8365mb_phy_ocp_write() always returns 0, even when an error
+occurs during register access. This patch fixes the return value to
+propagate the actual error code from regmap operations.
 
-Couple XDP RxQ info registering with buffer allocations and unregistering
-with cleaning the ring.
-
-Fixes: a045d2f2d03d ("i40e: set xdp_rxq_info::frag_size")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Link: https://patch.msgid.link/20260305111253.2317394-6-larysa.zaremba@intel.com
+Link: https://lore.kernel.org/netdev/a2dfde3c-d46f-434b-9d16-1e251e449068@yahoo.com/
+Fixes: 2796728460b8 ("net: dsa: realtek: rtl8365mb: serialize indirect PHY register access")
+Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20260301-realtek_namiltd_fix1-v1-1-43a6bb707f9c@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 34 ++++++++++++---------
- drivers/net/ethernet/intel/i40e/i40e_txrx.c |  5 +--
- 2 files changed, 22 insertions(+), 17 deletions(-)
+ drivers/net/dsa/realtek/rtl8365mb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 1f233fac9d4e3..ca35979482c67 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -3637,18 +3637,8 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
- 	if (ring->vsi->type != I40E_VSI_MAIN)
- 		goto skip;
+diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
+index da31d8b839ac6..abdff73aa9c32 100644
+--- a/drivers/net/dsa/realtek/rtl8365mb.c
++++ b/drivers/net/dsa/realtek/rtl8365mb.c
+@@ -764,7 +764,7 @@ static int rtl8365mb_phy_ocp_write(struct realtek_priv *priv, int phy,
+ out:
+ 	mutex_unlock(&priv->map_lock);
  
--	if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
--		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
--					 ring->queue_index,
--					 ring->q_vector->napi.napi_id,
--					 ring->rx_buf_len);
--		if (err)
--			return err;
--	}
--
- 	ring->xsk_pool = i40e_xsk_pool(ring);
- 	if (ring->xsk_pool) {
--		xdp_rxq_info_unreg(&ring->xdp_rxq);
- 		ring->rx_buf_len = xsk_pool_get_rx_frame_size(ring->xsk_pool);
- 		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
- 					 ring->queue_index,
-@@ -3660,17 +3650,23 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
- 						 MEM_TYPE_XSK_BUFF_POOL,
- 						 NULL);
- 		if (err)
--			return err;
-+			goto unreg_xdp;
- 		dev_info(&vsi->back->pdev->dev,
- 			 "Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring %d\n",
- 			 ring->queue_index);
- 
- 	} else {
-+		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
-+					 ring->queue_index,
-+					 ring->q_vector->napi.napi_id,
-+					 ring->rx_buf_len);
-+		if (err)
-+			return err;
- 		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
- 						 MEM_TYPE_PAGE_SHARED,
- 						 NULL);
- 		if (err)
--			return err;
-+			goto unreg_xdp;
- 	}
- 
- skip:
-@@ -3708,7 +3704,8 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
- 		dev_info(&vsi->back->pdev->dev,
- 			 "Failed to clear LAN Rx queue context on Rx ring %d (pf_q %d), error: %d\n",
- 			 ring->queue_index, pf_q, err);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto unreg_xdp;
- 	}
- 
- 	/* set the context in the HMC */
-@@ -3717,7 +3714,8 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
- 		dev_info(&vsi->back->pdev->dev,
- 			 "Failed to set LAN Rx queue context on Rx ring %d (pf_q %d), error: %d\n",
- 			 ring->queue_index, pf_q, err);
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto unreg_xdp;
- 	}
- 
- 	/* configure Rx buffer alignment */
-@@ -3725,7 +3723,8 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
- 		if (I40E_2K_TOO_SMALL_WITH_PADDING) {
- 			dev_info(&vsi->back->pdev->dev,
- 				 "2k Rx buffer is too small to fit standard MTU and skb_shared_info\n");
--			return -EOPNOTSUPP;
-+			err = -EOPNOTSUPP;
-+			goto unreg_xdp;
- 		}
- 		clear_ring_build_skb_enabled(ring);
- 	} else {
-@@ -3755,6 +3754,11 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
- 	}
- 
- 	return 0;
-+unreg_xdp:
-+	if (ring->vsi->type == I40E_VSI_MAIN)
-+		xdp_rxq_info_unreg(&ring->xdp_rxq);
-+
-+	return err;
+-	return 0;
++	return ret;
  }
  
- /**
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-index 99604379c87b6..873fd080de939 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
-@@ -1473,6 +1473,9 @@ void i40e_clean_rx_ring(struct i40e_ring *rx_ring)
- 	if (!rx_ring->rx_bi)
- 		return;
- 
-+	if (xdp_rxq_info_is_reg(&rx_ring->xdp_rxq))
-+		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
-+
- 	if (rx_ring->xsk_pool) {
- 		i40e_xsk_clean_rx_ring(rx_ring);
- 		goto skip_free;
-@@ -1530,8 +1533,6 @@ void i40e_clean_rx_ring(struct i40e_ring *rx_ring)
- void i40e_free_rx_resources(struct i40e_ring *rx_ring)
- {
- 	i40e_clean_rx_ring(rx_ring);
--	if (rx_ring->vsi->type == I40E_VSI_MAIN)
--		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
- 	rx_ring->xdp_prog = NULL;
- 	kfree(rx_ring->rx_bi);
- 	rx_ring->rx_bi = NULL;
+ static int rtl8365mb_phy_read(struct realtek_priv *priv, int phy, int regnum)
 -- 
 2.51.0
 
