@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228474-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IGRDlxjwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229500-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:24 +0100
+	id QAnxEIVTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228474-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A59C2F7385
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 981AF2F5510
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44A5A3428464
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 949483100A95
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D6B3BF692;
-	Mon, 23 Mar 2026 15:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29513AEF21;
+	Mon, 23 Mar 2026 14:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qk1CdL3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Wpi+Hpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E33BF685;
-	Mon, 23 Mar 2026 15:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A0538C41E;
+	Mon, 23 Mar 2026 14:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279432; cv=none; b=ZygQGuE1etfssEq9iZ0NqW0LnMi4mMnMq51nqnomQvGubJo2387O/Y4qbPbqGyFP09mHEJMuewpJNcZuM5FkFFiqS9HeRG8r+LDs25j0UYcMiicwbG6DYKHHUDZoth6WFiGtHWrge0aP7qki0cNdn5DEvXamXlvtKxXbez8X8ss=
+	t=1774275230; cv=none; b=ToJoFiWdGZCrGd6lS0dzd+8eZ6YvI10QJsFXTEAvHjX4sU0JvaazOfuN39aWwY9Oqjm0qc9idsWneluhCnSl87LOII8R1jzyNHEEgBFYgs/cYNAlTB0z8mhF8XUD8NqNdrOs1mWIex1vRC8s/ZN9xrmrGZGyDnroZMN+kiUF5qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279432; c=relaxed/simple;
-	bh=TteG2VwSszXE0131B6otfJFhqA+o16uAp8Y4RSiFekc=;
+	s=arc-20240116; t=1774275230; c=relaxed/simple;
+	bh=hwIQSdPdckF5tmUHUKHNieGqkCB06SyI/HzU+kc4dUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ca4La3iFGS+KSBpDt/Vys/rPu23PCSA712Ec0oFEOVy6arQOC3fbBzqtL46RDW5Ql+erI7bl37H1lFvVoc9Bx4eZHDI1hciBpMNLpOdtjMVV5VEm8IaWFzKN0jsIU+dXQaFB+KdtL9eQwC6Y/F0TFfNOBVEMY4H7545BRdeLrwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qk1CdL3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CE0C2BC9E;
-	Mon, 23 Mar 2026 15:23:51 +0000 (UTC)
+	 MIME-Version; b=QHnlpWOksBX3cdp7tPBq8kecrS20U08d/9waR9rH3pdUullncRkiSx2oopa2uvNg7mJmSRFTc9cp3pKSmnWTDaFwsaOlFLU7OT6SGrPSKtuhYwgZ6syx8ye8OxdaJgH1KrIvCQSNMCSKfv+BJ9Fmp9TtpYKayXHHMRH1P+Ykz/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Wpi+Hpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A8CC4CEF7;
+	Mon, 23 Mar 2026 14:13:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279431;
-	bh=TteG2VwSszXE0131B6otfJFhqA+o16uAp8Y4RSiFekc=;
+	s=korg; t=1774275230;
+	bh=hwIQSdPdckF5tmUHUKHNieGqkCB06SyI/HzU+kc4dUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qk1CdL3Gyr4ckgvWmOeknYnCXB7O3WHSstRQYuFJ6u+DTQrdRypzyrR/M8CamdDMu
-	 iEjXCK91V7oJHHtDzVgWo2b71mmFcL72/GZdH4dymWPoWVU2oSpoILYAEiHlRQBUO3
-	 zCKNl6CyXDfq7MFXX7vHH9+7d5a+XrFVfiV5pmdM=
+	b=2Wpi+HpeqN7AM+N9RB7xZnez1ULnYQfqqe+mzAf+4xMmTZmWcpqwEl4JTuMatuidn
+	 8jElfJSsA00D1fEPD8F627IwJoQF0NxsoTjkE79XVJLGj8YSECbsTVElFLgi8od4OZ
+	 tHUgWn+sabvX+1H9q5Ql7uZESzMGnWn33hDRQJko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessandro Ratti <alessandro@0x65c.net>,
-	syzbot+1522459a74d26b0ac33a@syzkaller.appspotmail.com,
-	Sean Christopherson <seanjc@google.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Chris Lew <christopher.lew@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/481] KVM: x86: Ignore -EBUSY when checking nested events from vcpu_block()
+Subject: [PATCH 6.12 021/460] remoteproc: sysmon: Correct subsys_name_len type in QMI request
 Date: Mon, 23 Mar 2026 14:40:17 +0100
-Message-ID: <20260323134526.093335094@linuxfoundation.org>
+Message-ID: <20260323134527.209047398@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,8 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
@@ -75,82 +74,70 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229500-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228474-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,1522459a74d26b0ac33a];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,0x65c.net:email]
-X-Rspamd-Queue-Id: 8A59C2F7385
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 981AF2F5510
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit ead63640d4e72e6f6d464f4e31f7fecb79af8869 ]
+[ Upstream commit da994db94e60f9a9411108ddf4d1836147ad4c9c ]
 
-Ignore -EBUSY when checking nested events after exiting a blocking state
-while L2 is active, as exiting to userspace will generate a spurious
-userspace exit, usually with KVM_EXIT_UNKNOWN, and likely lead to the VM's
-demise.  Continuing with the wakeup isn't perfect either, as *something*
-has gone sideways if a vCPU is awakened in L2 with an injected event (or
-worse, a nested run pending), but continuing on gives the VM a decent
-chance of surviving without any major side effects.
+The QMI message encoder has up until recently read a single byte (as
+elem_size == 1), but with the introduction of big endian support it's
+become apparent that this field is expected to be a full u32 -
+regardless of the size of the length in the encoded message (which is
+what elem_size specifies).
 
-As explained in the Fixes commits, it _should_ be impossible for a vCPU to
-be put into a blocking state with an already-injected event (exception,
-IRQ, or NMI).  Unfortunately, userspace can stuff MP_STATE and/or injected
-events, and thus put the vCPU into what should be an impossible state.
+The result is that the encoder now reads past the length byte and
+rejects the unreasonably large length formed when including the
+following 3 bytes from the subsys_name array.
 
-Don't bother trying to preserve the WARN, e.g. with an anti-syzkaller
-Kconfig, as WARNs can (hopefully) be added in paths where _KVM_ would be
-violating x86 architecture, e.g. by WARNing if KVM attempts to inject an
-exception or interrupt while the vCPU isn't running.
+Fix this by changing to the expected type.
 
-Cc: Alessandro Ratti <alessandro@0x65c.net>
-Cc: stable@vger.kernel.org
-Fixes: 26844fee6ade ("KVM: x86: never write to memory from kvm_vcpu_check_block()")
-Fixes: 45405155d876 ("KVM: x86: WARN if a vCPU gets a valid wakeup that KVM can't yet inject")
-Link: https://syzkaller.appspot.com/text?tag=ReproC&x=10d4261a580000
-Reported-by: syzbot+1522459a74d26b0ac33a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/671bc7a7.050a0220.455e8.022a.GAE@google.com
-Link: https://patch.msgid.link/20260109030657.994759-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 1fb82ee806d1 ("remoteproc: qcom: Introduce sysmon")
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Chris Lew <christopher.lew@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260220-qmi-encode-invalid-length-v2-1-5674be35ab29@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/x86.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/remoteproc/qcom_sysmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 824844a7c6e88..8617f7fec9643 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -11066,8 +11066,7 @@ static inline int vcpu_block(struct kvm_vcpu *vcpu)
- 	if (is_guest_mode(vcpu)) {
- 		int r = kvm_check_nested_events(vcpu);
+diff --git a/drivers/remoteproc/qcom_sysmon.c b/drivers/remoteproc/qcom_sysmon.c
+index c24e4a8828738..db33a41051a3e 100644
+--- a/drivers/remoteproc/qcom_sysmon.c
++++ b/drivers/remoteproc/qcom_sysmon.c
+@@ -203,7 +203,7 @@ static const struct qmi_elem_info ssctl_shutdown_resp_ei[] = {
+ };
  
--		WARN_ON_ONCE(r == -EBUSY);
--		if (r < 0)
-+		if (r < 0 && r != -EBUSY)
- 			return 0;
- 	}
- 
+ struct ssctl_subsys_event_req {
+-	u8 subsys_name_len;
++	u32 subsys_name_len;
+ 	char subsys_name[SSCTL_SUBSYS_NAME_LENGTH];
+ 	u32 event;
+ 	u8 evt_driven_valid;
 -- 
 2.51.0
 
