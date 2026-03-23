@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229760-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eEpPDMhcwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229265-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:20 +0100
+	id yJqUHEpywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229760-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2042F667E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F65E2F958B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4EC4C30BCB74
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B42332D65D8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6343F3B47CE;
-	Mon, 23 Mar 2026 15:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313383BD22C;
+	Mon, 23 Mar 2026 16:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsPI5wjt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la1jPUuv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0743B3C1D;
-	Mon, 23 Mar 2026 15:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC33537B03B;
+	Mon, 23 Mar 2026 16:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278575; cv=none; b=tK5JClBbqqRdXlfCqHhoFHsTpaDFwYFtDOhJbLgrBfVfLevZJOTprjPWuCWFysgv/dByQ/lKk4a3V+rr196b9IgQQsOFHASvv8iDaRMQu+zPYI0umJsgVZ9phvpkxThXpDROCrjcHQtftLdobpmaraFP5GzwSHB16wLiolaavfI=
+	t=1774282794; cv=none; b=OKxTCLQ5N/0iGQLWPZI9ORurA4kgsu72kOWJ1mhTM+nwURL0GG0j5xl4fNHlKxPhcQyIdr1FiTIGUpgzdUgF5qAOFaUU0AH7ZlC9MaYq9WeQnd0quR03PxnaxHImQGr6aKS9TyV0cb+FR4le95K/G+ij1sogz5ZQjuDsieLJ3nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278575; c=relaxed/simple;
-	bh=07AQdiML0RskApom3OJ8weM1AO3tgfvLIM7Cx5QrHYA=;
+	s=arc-20240116; t=1774282794; c=relaxed/simple;
+	bh=Tc070GCS/F2sDLOD5vpdnsDhr0/Xhv6nejzaJojK5yE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rForgGWinw7d4cBcUDL+mzS8KXjQduIp1a6Zrm+//08g6IkZ6guvrU8FfJfEKaCgaJtmNFSg5LPAO+G4NXsx3BEIgca87gyAW28YXZXkjo5d8jThb1jy/bGc/2t4z6bvsYg3TM7BO5ZDSsh2DMCLPqClhPCHAR78EUvWVDS8JK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsPI5wjt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D23EC4CEF7;
-	Mon, 23 Mar 2026 15:09:34 +0000 (UTC)
+	 MIME-Version; b=p9hBQrrxdEE5gWjmMkTGFkp1x3y5jCE3uqfmNE0fnWYAl+p5CZN2D814mFQO1qvtbxc7I0Su3wyjeekzNEYVcmKL10Dqn473KAl+FhgXWEJxIvGfc1gi+/ko7Tbv5bfN15jiXTO3zn4BvrgDYh6uE7MYkWXSM4IjS9Aywb2o92g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la1jPUuv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C840C4CEF7;
+	Mon, 23 Mar 2026 16:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278574;
-	bh=07AQdiML0RskApom3OJ8weM1AO3tgfvLIM7Cx5QrHYA=;
+	s=korg; t=1774282794;
+	bh=Tc070GCS/F2sDLOD5vpdnsDhr0/Xhv6nejzaJojK5yE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OsPI5wjtWeiq45+6eWtCVUR/qq8jfQ713kzrZ5PrzoonETy//MKt0v2Hoi3vy1mCX
-	 6QLejF3cN8oXocWvyUDGx9RhlPSXdNDTAAMNZWNeJMlqGl2s8YRpbTdH8hEm0EFiaK
-	 Vw3x6Syq3NWqPJW7Y/emKpN4eA8+5e5/vHm3ya8c=
+	b=la1jPUuvb3BHdBbmpIhwZ4LXoJEnr7pBqTz2Ehr5qdCwQX7uC8dfJIUllsqvEcP2I
+	 CI2HeIV7HY8bze4TvSLQ3VhRL24/Jh/gNNTP6S6QnOEBB3xQP9Rv1rESxbZDe+eehg
+	 e5K3yITGQnQdNHWkEn0y0UGbyJC+0NhdwVoQMGis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <asj@kernel.org>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 351/567] btrfs: abort transaction on failure to update root in the received subvol ioctl
+	Oscar Santos <ossantos@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 289/481] smb: client: fix krb5 mount with username option
 Date: Mon, 23 Mar 2026 14:44:31 +0100
-Message-ID: <20260323134542.520587125@linuxfoundation.org>
+Message-ID: <20260323134532.154001720@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +68,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229265-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229760-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DA2042F667E
+X-Rspamd-Queue-Id: 9F65E2F958B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-commit 0f475ee0ebce5c9492b260027cd95270191675fa upstream.
+commit 12b4c5d98cd7ca46d5035a57bcd995df614c14e1 upstream.
 
-If we failed to update the root we don't abort the transaction, which is
-wrong since we already used the transaction to remove an item from the
-uuid tree.
+Customer reported that some of their krb5 mounts were failing against
+a single server as the client was trying to mount the shares with
+wrong credentials.  It turned out the client was reusing SMB session
+from first mount to try mounting the other shares, even though a
+different username= option had been specified to the other mounts.
 
-Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
-CC: stable@vger.kernel.org # 3.12+
-Reviewed-by: Anand Jain <asj@kernel.org>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+By using username mount option along with sec=krb5 to search for
+principals from keytab is supported by cifs.upcall(8) since
+cifs-utils-4.8.  So fix this by matching username mount option in
+match_session() even with Kerberos.
+
+For example, the second mount below should fail with -ENOKEY as there
+is no 'foobar' principal in keytab (/etc/krb5.keytab).  The client
+ends up reusing SMB session from first mount to perform the second
+one, which is wrong.
+
+```
+$ ktutil
+ktutil:  add_entry -password -p testuser -k 1 -e aes256-cts
+Password for testuser@ZELDA.TEST:
+ktutil:  write_kt /etc/krb5.keytab
+ktutil:  quit
+$ klist -ke
+Keytab name: FILE:/etc/krb5.keytab
+KVNO Principal
+ ---- ----------------------------------------------------------------
+   1 testuser@ZELDA.TEST (aes256-cts-hmac-sha1-96)
+$ mount.cifs //w22-root2/scratch /mnt/1 -o sec=krb5,username=testuser
+$ mount.cifs //w22-root2/scratch /mnt/2 -o sec=krb5,username=foobar
+$ mount -t cifs | grep -Po 'username=\K\w+'
+testuser
+testuser
+```
+
+Reported-by: Oscar Santos <ossantos@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/connect.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -4037,7 +4037,8 @@ static long _btrfs_ioctl_set_received_su
- 
- 	ret = btrfs_update_root(trans, fs_info->tree_root,
- 				&root->root_key, &root->root_item);
--	if (ret < 0) {
-+	if (unlikely(ret < 0)) {
-+		btrfs_abort_transaction(trans, ret);
- 		btrfs_end_transaction(trans);
- 		goto out;
- 	}
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1909,6 +1909,10 @@ static int match_session(struct cifs_ses
+ 	case Kerberos:
+ 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
+ 			return 0;
++		if (strncmp(ses->user_name ?: "",
++			    ctx->username ?: "",
++			    CIFS_MAX_USERNAME_LEN))
++			return 0;
+ 		break;
+ 	case NTLMv2:
+ 	case RawNTLMSSP:
 
 
 
