@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228323-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QGlXJ999wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229826-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:52:31 +0100
+	id IC8TFnlLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228323-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 332DC2FA895
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:52:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB6E22F418D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 49BB330440BE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 635D5314B0E5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC8B3AF662;
-	Mon, 23 Mar 2026 16:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6C0C145;
+	Mon, 23 Mar 2026 14:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZV9C7DS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njNC9ikb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B028D38B7C4;
-	Mon, 23 Mar 2026 16:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6201387563;
+	Mon, 23 Mar 2026 14:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282969; cv=none; b=JypoD7p6RQJRAA9u/YW6xKW5xBkW14UlVqVPeSh6plc4MgyEXM/ds0vORkvuYL2JOTxZXJzdsKKsXl2oLPYD0Ewlp6dOMEmj0HYSbEsSZ1Z+RhjF2ShkKUyOi7hU/Yec55gI3uhdAdhlFw5CkiDhVOyD5DIyJyKqtrd3cN7I0Aw=
+	t=1774274807; cv=none; b=pBeEBM9PR5n2BIWSZoskhOizauHMjMNH5uW+Js9GUwQXrbB0FVGXsss7WHm0o8e19kMui7L0ea4Yx+axiSZDXPAw1vZYB8BmL0sqSdZzMW3wp42WOrX80GJVRDtNR9q5gdgD5gV2bMQ3If9PfrYbG29WfCEc0c2c4MDfNn4/WBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282969; c=relaxed/simple;
-	bh=Axh1fa6YYkn+vloxTwthY7OBr4ouC6a7xr220QHJoE8=;
+	s=arc-20240116; t=1774274807; c=relaxed/simple;
+	bh=NHDZO5dJYU0mMWz/itVtQwLFWFWVz9NSmaahRgh26Kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bK3UMf5BSrYyr7w9BOr10bf0eU1vn2eGzTF9/x9ULviiDx9uSVmrRrFkzXqTacP0dMiAquLeR8yORcNFc5CgpRH38wAJawl/LbI3mqyiyiReC82BkXBlxSbzMoJx+rlTcpva1p4Ybftdo31ZYwHG8wDBNFkk1DT/QmpeTEOavWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZV9C7DS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4128EC4CEF7;
-	Mon, 23 Mar 2026 16:22:49 +0000 (UTC)
+	 MIME-Version; b=DahVnDqcNW871tDIpd7EHu8FB/3eeSlW+e6fWdejtsJhg4kopCDvKk0otuK3kyzsMdOTGOIyGqitMmc01/psxeubhZgCN+qas57MP/uehPWXwxZEY3U/mAyl7yxczW2ZpU+vZKgtJiS7g5Nm99kP+k+iv1QUobTzNm70ybOFDqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njNC9ikb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5710CC4CEF7;
+	Mon, 23 Mar 2026 14:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282969;
-	bh=Axh1fa6YYkn+vloxTwthY7OBr4ouC6a7xr220QHJoE8=;
+	s=korg; t=1774274807;
+	bh=NHDZO5dJYU0mMWz/itVtQwLFWFWVz9NSmaahRgh26Kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZV9C7DSbKuZcktGB82qHd2uoV8takjFmB1W/6jUeqRkU5RQiEu3YPqOokro22eDk
-	 aE0yXT0jcMUcS+mNtV0zeApa8gPEM1TgticpgiBTP38Zuirm7Q4twlpYHkBWWRb7h+
-	 wzRgZ5Rt4uyBWkiSa9IFz+W6o4bgGMSrYh12hndI=
+	b=njNC9ikbZkzj8UQTysjrssqQUALAdjX8rNtZ2RI9rcymQGJDeC43YtCtTjS1LZ41W
+	 D+wgoi75W5r7rXLeqyDRPNLIvR0nZlfa93Cs4uBNcrOklsrCoV9PMFdBNYLWfmrlB5
+	 fVKg8CS6J7dlN9Pd4j1OFyMo/QSx7SXlx5s66v24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 353/481] iio: buffer: Fix wait_queue not being removed
+Subject: [PATCH 6.18 114/212] arm64: dts: renesas: r9a09g057: Add RTC node
 Date: Mon, 23 Mar 2026 14:45:35 +0100
-Message-ID: <20260323134533.712304537@linuxfoundation.org>
+Message-ID: <20260323134507.379115286@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +63,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229826-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228323-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,analog.com:email]
-X-Rspamd-Queue-Id: 332DC2FA895
+	TAGGED_RCPT(0.00)[stable,renesas];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AB6E22F418D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sá <nuno.sa@analog.com>
+From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
 
-[ Upstream commit 064234044056c93a3719d6893e6e5a26a94a61b6 ]
+[ Upstream commit cfc733da4e79018f88d8ac5f3a5306abbba8ef89 ]
 
-In the edge case where the IIO device is unregistered while we're
-buffering, we were directly returning an error without removing the wait
-queue. Instead, set 'ret' and break out of the loop.
+Add RTC node to Renesas RZ/V2H ("R9A09G057") SoC DTSI.
 
-Fixes: 9eeee3b0bf19 ("iio: Add output buffer support")
-Signed-off-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20251107210706.45044-4-ovidiu.panait.rb@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: a3f34651de42 ("arm64: dts: renesas: r9a09g057: Remove wdt{0,2,3} nodes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/industrialio-buffer.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/renesas/r9a09g057.dtsi | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -194,8 +194,10 @@ static ssize_t iio_buffer_write(struct f
- 	written = 0;
- 	add_wait_queue(&rb->pollq, &wait);
- 	do {
--		if (!indio_dev->info)
--			return -ENODEV;
-+		if (!indio_dev->info) {
-+			ret = -ENODEV;
-+			break;
-+		}
+diff --git a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
+index 630f7a98df386..f59c3040f536a 100644
+--- a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
+@@ -586,6 +586,21 @@ wdt3: watchdog@13000400 {
+ 			status = "disabled";
+ 		};
  
- 		if (!iio_buffer_space_available(rb)) {
- 			if (signal_pending(current)) {
++		rtc: rtc@11c00800 {
++			compatible = "renesas,r9a09g057-rtca3", "renesas,rz-rtca3";
++			reg = <0 0x11c00800 0 0x400>;
++			interrupts = <GIC_SPI 524 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 525 IRQ_TYPE_EDGE_RISING>,
++				     <GIC_SPI 526 IRQ_TYPE_EDGE_RISING>;
++			interrupt-names = "alarm", "period", "carry";
++			clocks = <&cpg CPG_MOD 0x53>, <&rtxin_clk>;
++			clock-names = "bus", "counter";
++			power-domains = <&cpg>;
++			resets = <&cpg 0x79>, <&cpg 0x7a>;
++			reset-names = "rtc", "rtest";
++			status = "disabled";
++		};
++
+ 		scif: serial@11c01400 {
+ 			compatible = "renesas,scif-r9a09g057";
+ 			reg = <0 0x11c01400 0 0x400>;
+-- 
+2.51.0
+
 
 
 
