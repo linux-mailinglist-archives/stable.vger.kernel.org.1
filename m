@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229566-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mBZvLfBOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228490-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:16 +0100
+	id YKU9FypywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229566-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6252F4AFB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4AA02F9559
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8CAF30474C7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 653BA3059DFE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247673AA4FD;
-	Mon, 23 Mar 2026 14:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224E128506C;
+	Mon, 23 Mar 2026 16:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGDYmAI4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IE8x6Y4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB0A3803EF;
-	Mon, 23 Mar 2026 14:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AA2284881;
+	Mon, 23 Mar 2026 16:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275270; cv=none; b=Ia2UUmw+Rl8wLSojBLpSqgsdtzEQ+aKvmq/FQdlTCy/h90FN6b8Akl0Fg6P+EbByksU84+NlOXSs5RUGibrbRO0sdAw+oedPbMRNtdti3G+JEPDs3Uk1WjNQEBrJ5VLXp//isl5PLICMf6fE31rrmlDTT0bN09UAVO5sHFo857w=
+	t=1774282267; cv=none; b=UegOJK/eUSU9pRg1Y37sMAmh5pqhDvsAWhLrNftKnuuSqmyeHT1BjE1KjuNQf0Ugsj+uwgA1Q6y42NQP+2Bj/nMcqh1TvMcU4yjhnUshwt3SL7nSqjnNpWFnSPbnVwa0cv8XOLwApnhCPep+lst8EOi8pffisc0bbwc6ns5SH3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275270; c=relaxed/simple;
-	bh=mOqh5RsOFJRynXRvEpPKSICtMm4ObOnTTjjsTvJOuA0=;
+	s=arc-20240116; t=1774282267; c=relaxed/simple;
+	bh=CaKjdepu4vgGoQgmu54JWLJPXS8ysGGaYA0b36EhQJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GYrIaT/gw0qmAT0JWmJNtmSIUQEhO71Bo3Sx95miyRXFfwazgFIRx8CqQxaM8RvHmQxTw3nfoAMZDei5MhEvC12DI4YqA9gvMNKwbcn83YYfA1JnOyQOGXI+OwZf4Fw5aO4aWTKwN8EZwCpD7iRtPXco16NpAdLfQ4q84/92eFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGDYmAI4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E882C4CEF7;
-	Mon, 23 Mar 2026 14:14:30 +0000 (UTC)
+	 MIME-Version; b=Zr7NokTorLO4XQlNspfmM+jeH33+mBBi7JpM6dcVdQ3YgK3heOa1GJTcwa1OjSZB2Fj99mLORotmqqQW/1ZU/WF+BVbT1SgeTPQ9NwyTEKJMbK5//OJoYZGULf/0e9464dVs3B34Sj2SM4TFBd7UtP9tdAkDGi1WAm48TBjKFlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IE8x6Y4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F23AC4CEF7;
+	Mon, 23 Mar 2026 16:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275270;
-	bh=mOqh5RsOFJRynXRvEpPKSICtMm4ObOnTTjjsTvJOuA0=;
+	s=korg; t=1774282267;
+	bh=CaKjdepu4vgGoQgmu54JWLJPXS8ysGGaYA0b36EhQJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yGDYmAI4kA8I5zJJczX36U4dmtQdV9wkA5WTTl224ztC4voNc4ujPKdbV1LmYYech
-	 1jBH2ujkYo4PdxBAhXw4/GXo4tA+WW/6X1537C3DMB83fmx35a6dqL1faBgDx0GE78
-	 hx7t8Vo7KI2ikyy7eSxHsjf6hes0QnfWEp9kfpP0=
+	b=IE8x6Y4AsBZ59WGQ3EifF3wHddJO0BY7Eg3MZrGhWAQibLwzsWTHGNZmE3r6FBjuz
+	 x1xgGgx6j5O2gEhtLCemOkW1pw6TYAVk32uBf2kPqm5uLGR4WjgP601Yp77lmifo74
+	 z4MFJIqaeT4jpG5MppGgkBnOP9bEvYtPJOMHgBFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Jurgens <danielj@nvidia.com>,
-	William Tu <witu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Gou Hao <gouhao@uniontech.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/460] net/mlx5: Query to see if host PF is disabled
+Subject: [PATCH 6.1 050/481] ext4: delete redundant calculations in ext4_mb_get_buddy_page_lock()
 Date: Mon, 23 Mar 2026 14:40:32 +0100
-Message-ID: <20260323134527.595250571@linuxfoundation.org>
+Message-ID: <20260323134526.447604596@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,107 +70,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228490-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229566-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3E6252F4AFB
+X-Rspamd-Queue-Id: E4AA02F9559
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Jurgens <danielj@nvidia.com>
+From: Gou Hao <gouhao@uniontech.com>
 
-[ Upstream commit 9e84de72aef9bcf0e751a0bff3ac91b0cf52366f ]
+[ Upstream commit f2fec3e99a32d7c14dbf63c824f8286ebc94b18d ]
 
-The host PF can be disabled, query firmware to check if the host PF of
-this function exists.
+'blocks_per_page' is always 1 after 'if (blocks_per_page >= 2)',
+'pnum' and 'block' are equal in this case.
 
-Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-Reviewed-by: William Tu <witu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1755112796-467444-2-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: aed763abf0e9 ("net/mlx5: Fix deadlock between devlink lock and esw->wq")
+Signed-off-by: Gou Hao <gouhao@uniontech.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231024035215.29474-1-gouhao@uniontech.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: bdc56a9c46b2 ("ext4: fix e4b bitmap inconsistency reports")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c | 23 +++++++++++++++++++
- .../net/ethernet/mellanox/mlx5/core/eswitch.h |  1 +
- 2 files changed, 24 insertions(+)
+ fs/ext4/mballoc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 6544546a1153f..b26ab78006ea0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1038,6 +1038,25 @@ const u32 *mlx5_esw_query_functions(struct mlx5_core_dev *dev)
- 	return ERR_PTR(err);
- }
- 
-+static int mlx5_esw_host_functions_enabled_query(struct mlx5_eswitch *esw)
-+{
-+	const u32 *query_host_out;
-+
-+	if (!mlx5_core_is_ecpf_esw_manager(esw->dev))
-+		return 0;
-+
-+	query_host_out = mlx5_esw_query_functions(esw->dev);
-+	if (IS_ERR(query_host_out))
-+		return PTR_ERR(query_host_out);
-+
-+	esw->esw_funcs.host_funcs_disabled =
-+		MLX5_GET(query_esw_functions_out, query_host_out,
-+			 host_params_context.host_pf_not_exist);
-+
-+	kvfree(query_host_out);
-+	return 0;
-+}
-+
- static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
- {
- 	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev)) {
-@@ -1871,6 +1890,10 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
- 		goto abort;
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 2a385dc610704..899d7eb6df3dc 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1370,9 +1370,8 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
+ 		return 0;
  	}
  
-+	err = mlx5_esw_host_functions_enabled_query(esw);
-+	if (err)
-+		goto abort;
-+
- 	err = mlx5_esw_vports_init(esw);
- 	if (err)
- 		goto abort;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index 48fd0400ffd4e..be6e60d961689 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -316,6 +316,7 @@ struct mlx5_host_work {
- 
- struct mlx5_esw_functions {
- 	struct mlx5_nb		nb;
-+	bool			host_funcs_disabled;
- 	u16			num_vfs;
- 	u16			num_ec_vfs;
- };
+-	block++;
+-	pnum = block / blocks_per_page;
+-	page = find_or_create_page(inode->i_mapping, pnum, gfp);
++	/* blocks_per_page == 1, hence we need another page for the buddy */
++	page = find_or_create_page(inode->i_mapping, block + 1, gfp);
+ 	if (!page)
+ 		return -ENOMEM;
+ 	BUG_ON(page->mapping != inode->i_mapping);
 -- 
 2.51.0
 
