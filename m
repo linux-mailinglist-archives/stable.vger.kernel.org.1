@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228663-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GENUMiVuwWnVTAQAu9opvQ
-	(envelope-from <stable+bounces-229695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:25 +0100
+	id SAynIn1VwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228663-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D172F8BE3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB862F59DC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5EEFF310D110
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 91EFC31F2764
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8553C061B;
-	Mon, 23 Mar 2026 16:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291A61FFC48;
+	Mon, 23 Mar 2026 14:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sB7fCZH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ewTqoA/Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABA43C060B;
-	Mon, 23 Mar 2026 16:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E139E1F91F6;
+	Mon, 23 Mar 2026 14:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282618; cv=none; b=p5R3jhYyz8EEY0oAzrZrdDUZW75wuEYO9H6oy5ZMbAoFbH89OV8RG+wBVDW10dD3pYdDWNil8nsq1+9L/yAQRSdyO6uVbr5317XcRm/JQ0cEeGDWodh3CznC8nt+rrsumunwnQ1yclnXoayZoTpRXAdGdh/3o+F9NWV+YwY5ms4=
+	t=1774275756; cv=none; b=REWXn1aIVFJ0HW3DR5+evPeEJTNECBM+30ybTjpf1A1PgAGEdUXy+tvHIyU31I9xk7CmHe+Ynymtyp+cnJzAPXq54LTNDTjGa8Y/YAUaRV+jz2KhAh1XGK9+zBSXKJww/26KSvAGf/AnCon1ZG3BzlfjAEKsfIkQlcTnEKNr2Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282618; c=relaxed/simple;
-	bh=n6xcYK2nGJ8es1RYXk0d4H65BR7tCt7OYEJ0hc1FCZI=;
+	s=arc-20240116; t=1774275756; c=relaxed/simple;
+	bh=tedPrA1sfzn6+B7JZFUuTYlwc21ixOjM7WgXsq+9LkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFZf3Gqvf0kzoRegpfNd3f7ktiFlfIhCdzRat5FJp/e049GdlmUDE3ls939V48b96TtkpjwdbwCB5dEh62n6c2KB3OmESCSkSMAxRhsDFBh/kJaHgUspzHOL4O43FkXDj7AlNwQHGFAFe9kE+jS8/v7SQlhoRHFqsgj3xAwrWDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sB7fCZH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E36C4CEF7;
-	Mon, 23 Mar 2026 16:16:57 +0000 (UTC)
+	 MIME-Version; b=cjznTWgHRfa2GfY0mzPEvJLEOXWiZGrYuoG5K74K9WBE1fN+dYkrGcoJEmh5dGyWHGGkmiMm91+8qEDUbwhe3ON/SioGhOzkHhN5JhGS+iC/MPuQANhGPlQdnTHbB+CEDyGl64vMA+LWhXeax+qQ9MLTshQJKGyzMJxYtKBPJp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ewTqoA/Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5342BC4CEF7;
+	Mon, 23 Mar 2026 14:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282617;
-	bh=n6xcYK2nGJ8es1RYXk0d4H65BR7tCt7OYEJ0hc1FCZI=;
+	s=korg; t=1774275755;
+	bh=tedPrA1sfzn6+B7JZFUuTYlwc21ixOjM7WgXsq+9LkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sB7fCZH4f794Pe305ZDjNytWSON2OocejW4cDVnBVKqSr6jagJLAx9knj+ZQ871gU
-	 JT+uAA2rb/XjkdYKhJZYyueG1IYf0qX9t4QXrXJina36Q+lRgOeDmDsaPqe40Fte13
-	 Z3XrG69l+gsXV57yvhS5qqyWqf6V7yVMTmklf5OU=
+	b=ewTqoA/Q5cxJfL+lbJiIFs+TyMawFYNa5r3sum/Awy8KKwvlo09pSrwvbQKNcUaT2
+	 7QM+BV5p0f8xlR/m5wd56HWyf+zNWP8Y6vAmI9EphJzTIYfOySYBmJk9TyVtc1+UBE
+	 8LcSfYy6VYXqRQcaMchq7qnp/VKse25Qv8drWO5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehul Rao <mehulrao@gmail.com>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 222/481] tipc: fix divide-by-zero in tipc_sk_filter_connect()
+	Chris Spencer <spencercw@gmail.com>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 208/460] iio: chemical: bme680: Fix measurement wait duration calculation
 Date: Mon, 23 Mar 2026 14:43:24 +0100
-Message-ID: <20260323134530.559590679@linuxfoundation.org>
+Message-ID: <20260323134531.634438427@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,20 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229695-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,est.tech,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228663-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.972];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -91,64 +91,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 65D172F8BE3
+X-Rspamd-Queue-Id: ECB862F59DC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehul Rao <mehulrao@gmail.com>
+From: Chris Spencer <spencercw@gmail.com>
 
-commit 6c5a9baa15de240e747263aba435a0951da8d8d2 upstream.
+commit f55b9510cd9437da3a0efa08b089caeb47595ff1 upstream.
 
-A user can set conn_timeout to any value via
-setsockopt(TIPC_CONN_TIMEOUT), including values less than 4.  When a
-SYN is rejected with TIPC_ERR_OVERLOAD and the retry path in
-tipc_sk_filter_connect() executes:
+This function refers to the Bosch BME680 API as the source of the
+calculation, but one of the constants does not match the Bosch
+implementation. This appears to be a simple transposition of two digits,
+resulting in a wait time that is too short. This can cause the following
+'device measurement cycle incomplete' check to occasionally fail, returning
+EBUSY to user space.
 
-    delay %= (tsk->conn_timeout / 4);
+Adjust the constant to match the Bosch implementation and resolve the EBUSY
+errors.
 
-If conn_timeout is in the range [0, 3], the integer division yields 0,
-and the modulo operation triggers a divide-by-zero exception, causing a
-kernel oops/panic.
-
-Fix this by clamping conn_timeout to a minimum of 4 at the point of use
-in tipc_sk_filter_connect().
-
-Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 119 Comm: poc-F144 Not tainted 7.0.0-rc2+
-RIP: 0010:tipc_sk_filter_rcv (net/tipc/socket.c:2236 net/tipc/socket.c:2362)
-Call Trace:
- tipc_sk_backlog_rcv (include/linux/instrumented.h:82 include/linux/atomic/atomic-instrumented.h:32 include/net/sock.h:2357 net/tipc/socket.c:2406)
- __release_sock (include/net/sock.h:1185 net/core/sock.c:3213)
- release_sock (net/core/sock.c:3797)
- tipc_connect (net/tipc/socket.c:2570)
- __sys_connect (include/linux/file.h:62 include/linux/file.h:83 net/socket.c:2098)
-
-Fixes: 6787927475e5 ("tipc: buffer overflow handling in listener socket")
+Fixes: 4241665e6ea0 ("iio: chemical: bme680: Fix sensor data read operation")
+Link: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L521
+Signed-off-by: Chris Spencer <spencercw@gmail.com>
+Acked-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mehul Rao <mehulrao@gmail.com>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20260310170730.28841-1-mehulrao@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/socket.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/iio/chemical/bme680_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -2235,6 +2235,8 @@ static bool tipc_sk_filter_connect(struc
- 		if (skb_queue_empty(&sk->sk_write_queue))
- 			break;
- 		get_random_bytes(&delay, 2);
-+		if (tsk->conn_timeout < 4)
-+			tsk->conn_timeout = 4;
- 		delay %= (tsk->conn_timeout / 4);
- 		delay = msecs_to_jiffies(delay + 100);
- 		sk_reset_timer(sk, &sk->sk_timer, jiffies + delay);
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -543,7 +543,7 @@ static int bme680_wait_for_eoc(struct bm
+ 	 * + heater duration
+ 	 */
+ 	int wait_eoc_us = ((data->oversampling_temp + data->oversampling_press +
+-			   data->oversampling_humid) * 1936) + (477 * 4) +
++			   data->oversampling_humid) * 1963) + (477 * 4) +
+ 			   (477 * 5) + 1000 + (data->heater_dur * 1000);
+ 
+ 	usleep_range(wait_eoc_us, wait_eoc_us + 100);
 
 
 
