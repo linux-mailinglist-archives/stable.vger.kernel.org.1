@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228343-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +JZdLKZHwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:10 +0100
+	id 0GZ2AlJSwWn+SAQAu9opvQ
+	(envelope-from <stable+bounces-228343-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24042F3A25
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F702F52C8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B3A6030311AF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:59:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 27389322096F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511D33B27D0;
-	Mon, 23 Mar 2026 13:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E361C3B6342;
+	Mon, 23 Mar 2026 14:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VA42G72j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX3ZSy5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5BF3B27C2;
-	Mon, 23 Mar 2026 13:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B0736F414;
+	Mon, 23 Mar 2026 14:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274317; cv=none; b=S/FdbLSvVMJkLmY/MEhfua9NELVdyl2hgypmRWlb8pyuOBUrspCdcVWzprNQAuOGuDPUBQBhHZLi3WgvvNdxXq+fDm5+w8gFzvJyDoVeEVI2IGx5UjEo2CJCf0XMRcyJY6DHthxlLZHiFmqJw5pgyL2k8lPa3aOArYoS4osX80g=
+	t=1774274863; cv=none; b=DpsbGzy8AnXvpqMwKXI8BFyoRTlT7pp9hqhK/ZtJX5oRZoC/Bj4/H0iy//+uFIC/eLoGt6aYWByPvx3/5Ri8rA03mxj2szWqScGO8IIbBIqONTzdqd0EGxvtLyIlSRpcB5AFKCWlakauRt0M+ZefgTGHFupxg8ZaqV/x5JCcFKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274317; c=relaxed/simple;
-	bh=qLZisz5uU3HiSDhUDvvnsnfbDAnHwk1herdKf1Jr/rY=;
+	s=arc-20240116; t=1774274863; c=relaxed/simple;
+	bh=Y9hnJvaRUzAx89XnlU56jfqrV6/f4Xhv7HcVCnDcbHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIuZjpNpg8Vf8jaMlWxGZb5girBALSkg7vtd9x1VSEBvMWqwV34JVKD9yVuuPQAuIQt6XuLJk9tIpH9zYatj6XHzUmG5w2uZ0DkKmANzR9p7MnlXnhUpZNT4d0AV1fg6lRP8y43ROpe05c8bSkNzg8Fvgf9OUf1abd52uvpguAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VA42G72j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED03C2BCB5;
-	Mon, 23 Mar 2026 13:58:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZSllIuQTc+bleGEQd/bYcvS3O/TgrELJB0AgBUQBhvQ2j4mGNJ1bctQ1pVprxRGUSbp3U31+TwQ83R2NbFBEU4WQHs9X5NkziTGor4Q5d/xfcS/ekxUJsImTbCuQScufH2XlRPklTNPbqFxGNkrCNy7lJbJeCI61vH0ZLADKNws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX3ZSy5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20686C4CEF7;
+	Mon, 23 Mar 2026 14:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274316;
-	bh=qLZisz5uU3HiSDhUDvvnsnfbDAnHwk1herdKf1Jr/rY=;
+	s=korg; t=1774274863;
+	bh=Y9hnJvaRUzAx89XnlU56jfqrV6/f4Xhv7HcVCnDcbHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VA42G72jMItpzcxosMgrOpzcwZg/nfAQrjrvQ1GXa01DF2vpSpi8GPTeNvvpSJs1z
-	 fYtYVu1B8F3jCMFfh8ljG6cHJN8Y5i9aPds9ceSoEnklPo9QlPXtSv7NCDb420/ctH
-	 sUaVeMKZHwxw2+9y3qMSlKlr3T1aqL5KYKaHQ080=
+	b=HX3ZSy5DBR1WgsiK7N5gqIkAt64QGHBVNXf8xEiCZtgS/FamNFSgoCJJgQ9bzT+TU
+	 VotsYj8ovUCggafhzMdJ4IPizRvIfMdZKNq9BXXHZhp34pRdTUVko2Lv5kb5wXInMZ
+	 zxM9iNNj76p1Ww9VZTW3r/uiQDcpWJa4AyfRdLKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 180/220] icmp: fix NULL pointer dereference in icmp_tag_validation()
+Subject: [PATCH 6.18 136/212] netfilter: nf_conntrack_h323: fix OOB read in decode_int() CONS case
 Date: Mon, 23 Mar 2026 14:45:57 +0100
-Message-ID: <20260323134510.262171521@linuxfoundation.org>
+Message-ID: <20260323134508.067301563@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +65,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228163-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228343-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RSPAMD_EMAILBL_FAIL(0.00)[xmei5.asu.edu:query timed out];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,asu.edu:email]
-X-Rspamd-Queue-Id: A24042F3A25
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 89F702F52C8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 614aefe56af8e13331e50220c936fc0689cf5675 ]
+[ Upstream commit 1e3a3593162c96e8a8de48b1e14f60c3b57fca8a ]
 
-icmp_tag_validation() unconditionally dereferences the result of
-rcu_dereference(inet_protos[proto]) without checking for NULL.
-The inet_protos[] array is sparse -- only about 15 of 256 protocol
-numbers have registered handlers. When ip_no_pmtu_disc is set to 3
-(hardened PMTU mode) and the kernel receives an ICMP Fragmentation
-Needed error with a quoted inner IP header containing an unregistered
-protocol number, the NULL dereference causes a kernel panic in
-softirq context.
+In decode_int(), the CONS case calls get_bits(bs, 2) to read a length
+value, then calls get_uint(bs, len) without checking that len bytes
+remain in the buffer. The existing boundary check only validates the
+2 bits for get_bits(), not the subsequent 1-4 bytes that get_uint()
+reads. This allows a malformed H.323/RAS packet to cause a 1-4 byte
+slab-out-of-bounds read.
 
- Oops: general protection fault, probably for non-canonical address 0xdffffc0000000002: 0000 [#1] SMP KASAN NOPTI
- KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
- RIP: 0010:icmp_unreach (net/ipv4/icmp.c:1085 net/ipv4/icmp.c:1143)
- Call Trace:
-  <IRQ>
-  icmp_rcv (net/ipv4/icmp.c:1527)
-  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
-  ip_local_deliver_finish (net/ipv4/ip_input.c:242)
-  ip_local_deliver (net/ipv4/ip_input.c:262)
-  ip_rcv (net/ipv4/ip_input.c:573)
-  __netif_receive_skb_one_core (net/core/dev.c:6164)
-  process_backlog (net/core/dev.c:6628)
-  handle_softirqs (kernel/softirq.c:561)
-  </IRQ>
+Add a boundary check for len bytes after get_bits() and before
+get_uint().
 
-Add a NULL check before accessing icmp_strict_tag_validation. If the
-protocol has no registered handler, return false since it cannot
-perform strict tag validation.
-
-Fixes: 8ed1dc44d3e9 ("ipv4: introduce hardened ip_no_pmtu_disc mode")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Link: https://patch.msgid.link/20260318130558.1050247-4-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/icmp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 471dd862f6639..e619b73f5063e 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -1067,10 +1067,12 @@ static void icmp_socket_deliver(struct sk_buff *skb, u32 info)
- 
- static bool icmp_tag_validation(int proto)
- {
-+	const struct net_protocol *ipprot;
- 	bool ok;
- 
- 	rcu_read_lock();
--	ok = rcu_dereference(inet_protos[proto])->icmp_strict_tag_validation;
-+	ipprot = rcu_dereference(inet_protos[proto]);
-+	ok = ipprot ? ipprot->icmp_strict_tag_validation : false;
- 	rcu_read_unlock();
- 	return ok;
- }
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index 62aa22a078769..c972e9488e16f 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -331,6 +331,8 @@ static int decode_int(struct bitstr *bs, const struct field_t *f,
+ 		if (nf_h323_error_boundary(bs, 0, 2))
+ 			return H323_ERROR_BOUND;
+ 		len = get_bits(bs, 2) + 1;
++		if (nf_h323_error_boundary(bs, len, 0))
++			return H323_ERROR_BOUND;
+ 		BYTE_ALIGN(bs);
+ 		if (base && (f->attr & DECODE)) {	/* timeToLive */
+ 			unsigned int v = get_uint(bs, len) + f->lb;
 -- 
 2.51.0
 
