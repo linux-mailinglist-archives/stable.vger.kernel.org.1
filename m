@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228212-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KP8VJ4RwwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229889-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:32 +0100
+	id 6DNWGpNKwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228212-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327792F91B2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FA52F3FDF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3BBFC31A2C57
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AC108315E5AC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3BB3B38A4;
-	Mon, 23 Mar 2026 16:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B1A3AEF21;
+	Mon, 23 Mar 2026 14:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE6b9OSE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQ7rFxQ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E4037B02A;
-	Mon, 23 Mar 2026 16:25:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE523BADAC;
+	Mon, 23 Mar 2026 14:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283136; cv=none; b=JzkTUtLbuFlfDPFAb5WBwtgovVQODjvivWACL7L4mXLvP/EUY9diw9TXpd8ZroOx3CBzkInjS7g2WZDDa4a7pJrGyGf6n36sDNkQWra7aFphY8y1h3IztevtmUA7I467UU6/EnebS43cUpa7o2S8K5X9kPAbCrDFhc/BepZKaVo=
+	t=1774274464; cv=none; b=CfPumj7UzgMuhvKNA1tjlBzUmDwlZLBDI7bajdL+rOXSKFf/w+FHUhIyPW+nPanT26cWrE1axjngKTDGFa0bwvWdcyMFcEsqBkbJdo/V/BctceMLpygpkW4+tcBJhy4K/nCb1p61gD5gHgjATBthwZgrFlv971dzEjXSy0dK5oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283136; c=relaxed/simple;
-	bh=I86M6LaDHe8nPInOsY7nL7cZU9EVBBDTZw4opVg5m6Y=;
+	s=arc-20240116; t=1774274464; c=relaxed/simple;
+	bh=Y7cNYwuCgIXiRJVc4twunvwbJP6jmBgrJGE20m5nejA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FsMH9mPK3n7lYYVK1sbvZMUrOygMsAuro8Pr4S5ea4U8n1kBynsp19kBi8KE8LzimuTYPvT6jWUBwA9Ev7jbU2Q/KPR7nG9UB21TW5jjyBmjE1Eii+MndQIbL893+udGTzo2cehaoEDV+Tl8AqG71cWWK2OmMcBf47gK93HnbL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE6b9OSE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27347C4CEF7;
-	Mon, 23 Mar 2026 16:25:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rQKIA5rnnXG+ubiM3wipkRQjFIKJH4KBRncZngtHBte0Y049On7jy5FfFb4I7NWCeClZn2AbAvHbcOTuYdTvR+HQAYZbXWp5K0trajTwiJssucvPfzFssvvqOjxjrz/kbuvuZxRuAK8o05aPgqfaMnBLB0pbnoKNmkHhWwtl1nM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQ7rFxQ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218ADC2BC9E;
+	Mon, 23 Mar 2026 14:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283136;
-	bh=I86M6LaDHe8nPInOsY7nL7cZU9EVBBDTZw4opVg5m6Y=;
+	s=korg; t=1774274464;
+	bh=Y7cNYwuCgIXiRJVc4twunvwbJP6jmBgrJGE20m5nejA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fE6b9OSEdj0dub3PSKoCfcZULXwDoPpUr/RN0Q4MiW1o4dlyD1kU0NVnjPtv1T3DX
-	 kIWfF4cWG1HksPeVhHIs1BlJu8Z5MMXEkzYQe0CepEsdcO/cMU9zVCMbXM8s70untk
-	 4rMeDnHh7ag27ykdGAgyY0yPtxbbvluIKuUjuE1g=
+	b=cQ7rFxQ6xi2vfeqxD6OegYpw2cHz5OkpQYFqKItLUKnhwDDzjiQ/MAS7z95JHE6fz
+	 zOaqNB2KAaccBluW3ej/Yg265PUVeV6F5k1j9N6u4zBoVhK8NpG62EjEYBpqybXqpl
+	 5Ytx1cD24rJmKORxPOnBHFk6J527mqAMl7DryEmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
-	Florian Westphal <fw@strlen.de>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 413/481] netfilter: nf_conntrack_sip: fix Content-Length u32 truncation in sip_help_tcp()
-Date: Mon, 23 Mar 2026 14:46:35 +0100
-Message-ID: <20260323134535.248270644@linuxfoundation.org>
+Subject: [PATCH 6.19 219/220] drm/xe/guc: Fail immediately on GuC load error
+Date: Mon, 23 Mar 2026 14:46:36 +0100
+Message-ID: <20260323134511.423617505@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,12 +70,12 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229889-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228212-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -82,76 +84,77 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 327792F91B2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B7FA52F3FDF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Johannes Möller <research@johannes-moeller.dev>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-[ Upstream commit fbce58e719a17aa215c724473fd5baaa4a8dc57c ]
+[ Upstream commit 9b72283ec9b8685acdb3467de8fbc3352fdb70bb ]
 
-sip_help_tcp() parses the SIP Content-Length header with
-simple_strtoul(), which returns unsigned long, but stores the result in
-unsigned int clen.  On 64-bit systems, values exceeding UINT_MAX are
-silently truncated before computing the SIP message boundary.
+By using the same variable for both the return of poll_timeout_us and
+the return of the polled function guc_wait_ucode, the return value of
+the latter is overwritten and lost after exiting the polling loop. Since
+guc_wait_ucode returns -1 on GuC load failure, we lose that information
+and always continue as if the GuC had been loaded correctly.
 
-For example, Content-Length 4294967328 (2^32 + 32) is truncated to 32,
-causing the parser to miscalculate where the current message ends.  The
-loop then treats trailing data in the TCP segment as a second SIP
-message and processes it through the SDP parser.
+This is fixed by simply using 2 separate variables.
 
-Fix this by changing clen to unsigned long to match the return type of
-simple_strtoul(), and reject Content-Length values that exceed the
-remaining TCP payload length.
-
-Fixes: f5b321bd37fb ("netfilter: nf_conntrack_sip: add TCP support")
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: a4916b4da448 ("drm/xe/guc: Refactor GuC load to use poll_timeout_us()")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Link: https://patch.msgid.link/20260303001732.2540493-2-daniele.ceraolospurio@intel.com
+(cherry picked from commit c85ec5c5753a46b5c2aea1292536487be9470ffe)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_sip.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_guc.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index d0eac27f6ba03..657839a58782a 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1534,11 +1534,12 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
- {
- 	struct tcphdr *th, _tcph;
- 	unsigned int dataoff, datalen;
--	unsigned int matchoff, matchlen, clen;
-+	unsigned int matchoff, matchlen;
- 	unsigned int msglen, origlen;
- 	const char *dptr, *end;
- 	s16 diff, tdiff = 0;
- 	int ret = NF_ACCEPT;
-+	unsigned long clen;
- 	bool term;
+diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+index edb939f262685..2eaa009ba2d8d 100644
+--- a/drivers/gpu/drm/xe/xe_guc.c
++++ b/drivers/gpu/drm/xe/xe_guc.c
+@@ -1121,14 +1121,14 @@ static int guc_wait_ucode(struct xe_guc *guc)
+ 	struct xe_guc_pc *guc_pc = &gt->uc.guc.pc;
+ 	u32 before_freq, act_freq, cur_freq;
+ 	u32 status = 0, tries = 0;
++	int load_result, ret;
+ 	ktime_t before;
+ 	u64 delta_ms;
+-	int ret;
  
- 	if (ctinfo != IP_CT_ESTABLISHED &&
-@@ -1573,6 +1574,9 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
- 		if (dptr + matchoff == end)
- 			break;
+ 	before_freq = xe_guc_pc_get_act_freq(guc_pc);
+ 	before = ktime_get();
  
-+		if (clen > datalen)
-+			break;
-+
- 		term = false;
- 		for (; end + strlen("\r\n\r\n") <= dptr + datalen; end++) {
- 			if (end[0] == '\r' && end[1] == '\n' &&
+-	ret = poll_timeout_us(ret = guc_load_done(gt, &status, &tries), ret,
++	ret = poll_timeout_us(load_result = guc_load_done(gt, &status, &tries), load_result,
+ 			      10 * USEC_PER_MSEC,
+ 			      GUC_LOAD_TIMEOUT_SEC * USEC_PER_SEC, false);
+ 
+@@ -1136,7 +1136,7 @@ static int guc_wait_ucode(struct xe_guc *guc)
+ 	act_freq = xe_guc_pc_get_act_freq(guc_pc);
+ 	cur_freq = xe_guc_pc_get_cur_freq_fw(guc_pc);
+ 
+-	if (ret) {
++	if (ret || load_result <= 0) {
+ 		xe_gt_err(gt, "load failed: status = 0x%08X, time = %lldms, freq = %dMHz (req %dMHz)\n",
+ 			  status, delta_ms, xe_guc_pc_get_act_freq(guc_pc),
+ 			  xe_guc_pc_get_cur_freq_fw(guc_pc));
 -- 
 2.51.0
 
