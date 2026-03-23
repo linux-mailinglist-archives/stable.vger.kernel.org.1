@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228426-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ILStCptwwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229892-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:55 +0100
+	id SBIRJr1NwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228426-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FFC2F91F4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3810D2F483D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 32DCC31A2C7B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 42B1E30D0BC0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E883B388C;
-	Mon, 23 Mar 2026 16:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8BC3ACA68;
+	Mon, 23 Mar 2026 14:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLNAdwUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zaULGoMd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463BC39A7EF;
-	Mon, 23 Mar 2026 16:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436BC3AEF3F;
+	Mon, 23 Mar 2026 14:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283144; cv=none; b=lwpj4Gv65UANUSBjgyBB7lEsPTm4LZd69qAET41rCWrmV/X4zQATsTQCNz8oUKYOiPfkhvXporykCxIvXvV69OGCEqqRPhXAeP4YPj8VlOemSmJiPODpQbcKPxMhfcTzTFSOTuSXz8WSb2ixgtVzKiqpLnHS36cakXjoDMrcO5M=
+	t=1774275094; cv=none; b=dVOlmR2Jj8DExHkx2bNy89QAqCFEycWC/l+iZitV76yZ+GQKFIBWg7ezxt1dlwiUoP7ZVnKTdapcFnZcsyDJyQO5HsPzm1WMcZT+81Yb7TFZqb595+hvdRpJt0LNATrp6NJAOlaFuRN2Fr/PZDzyYnS3LnxtYK8RXzX9wG5h8KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283144; c=relaxed/simple;
-	bh=kDnytxX5FcU/ziN4F5v2iR2gQojDID0AH2N2RI9SB4k=;
+	s=arc-20240116; t=1774275094; c=relaxed/simple;
+	bh=vQAtLb22AFsx56keQYyzrh8bBq1oI2dQO+bLNyHvvts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6Heu2xVhPVhxjExgoCxkMLKya8aZdklPMpBr4DbHDe6KFehhv5DTEZudjIOySsYIYcBP8tGCECBAnFD9ZtiSnrP0mxRGS5+j5Pa0mdHY3gO8dYnHthtoGtiQot7tRklck646w2gPpDhXrEP4weUKO0OI8uOGq6z6s43aZe2LMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLNAdwUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32DEC4CEF7;
-	Mon, 23 Mar 2026 16:25:43 +0000 (UTC)
+	 MIME-Version; b=fTBSsYcznxAanm7Uh0XWmxgxX6otg5k94dgqtoX5jFxsouA8QptnBJUAFt/IdWFZGQvAuSo8AJ2tT+tt8ONCWHAYsmDXY5DcRHeMSWi+0ZSXv6zVh8i8xZ6Wp6KCujX0fHeAd+7RAROW3Q3sTWx+0NBcJDlvnm+1/bTGKnK/H7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zaULGoMd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3E90C4CEF7;
+	Mon, 23 Mar 2026 14:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283144;
-	bh=kDnytxX5FcU/ziN4F5v2iR2gQojDID0AH2N2RI9SB4k=;
+	s=korg; t=1774275094;
+	bh=vQAtLb22AFsx56keQYyzrh8bBq1oI2dQO+bLNyHvvts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zLNAdwUo4o0YLXtrz3AgoGZ4N5csqB9uXkgz9hwTfSOb7hhJXpFBAcqkQwPl0PyrM
-	 PREcdIakdMFR2LU0b3EiZ3oRqffUpw1Ijfunner9/5cn2j1/8aaglBPQitz8gUW8FW
-	 7brZFcbpAikNN+xGI5j2ggWUCtBs7xeMca3g2lYQ=
+	b=zaULGoMdEl9wE5iP31olHqB6FZ434q1qyZ2PkWFx8cp1mngA6Jedi/QXaQaSSXVtZ
+	 Vf0W/6r1ZvPD13iCaaWBE+0iEVcBkyA7NjQNQZNxniGsfC4JHCeGTGnMNCceDo6M/v
+	 X7+q+OJ1OaeKRsxfVAr23EU/Qw/GdXzR7dAw1PXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Anas Iqbal <mohd.abd.6602@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 416/481] netfilter: nft_ct: drop pending enqueued packets on removal
+Subject: [PATCH 6.18 177/212] net: dsa: bcm_sf2: fix missing clk_disable_unprepare() in error paths
 Date: Mon, 23 Mar 2026 14:46:38 +0100
-Message-ID: <20260323134535.326872401@linuxfoundation.org>
+Message-ID: <20260323134509.354777265@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +66,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229892-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228426-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D9FFC2F91F4
+X-Rspamd-Queue-Id: 3810D2F483D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Anas Iqbal <mohd.abd.6602@gmail.com>
 
-[ Upstream commit 36eae0956f659e48d5366d9b083d9417f3263ddc ]
+[ Upstream commit b48731849609cbd8c53785a48976850b443153fd ]
 
-Packets sitting in nfqueue might hold a reference to:
+Smatch reports:
+drivers/net/dsa/bcm_sf2.c:997 bcm_sf2_sw_resume() warn:
+'priv->clk' from clk_prepare_enable() not released on lines: 983,990.
 
-- templates that specify the conntrack zone, because a percpu area is
-  used and module removal is possible.
-- conntrack timeout policies and helper, where object removal leave
-  a stale reference.
+The clock enabled by clk_prepare_enable() in bcm_sf2_sw_resume()
+is not released if bcm_sf2_sw_rst() or bcm_sf2_cfp_resume() fails.
 
-Since these objects can just go away, drop enqueued packets to avoid
-stale reference to them.
+Add the missing clk_disable_unprepare() calls in the error paths
+to properly release the clock resource.
 
-If there is a need for finer grain removal, this logic can be revisited
-to make selective packet drop upon dependencies.
-
-Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
+Link: https://patch.msgid.link/20260318084212.1287-1-mohd.abd.6602@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_ct.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/dsa/bcm_sf2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 70783671a2b01..c5d78f2525226 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -23,6 +23,7 @@
- #include <net/netfilter/nf_conntrack_l4proto.h>
- #include <net/netfilter/nf_conntrack_expect.h>
- #include <net/netfilter/nf_conntrack_seqadj.h>
-+#include "nf_internals.h"
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index 960685596093b..de3efa3ce9a75 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -980,15 +980,19 @@ static int bcm_sf2_sw_resume(struct dsa_switch *ds)
+ 	ret = bcm_sf2_sw_rst(priv);
+ 	if (ret) {
+ 		pr_err("%s: failed to software reset switch\n", __func__);
++		if (!priv->wol_ports_mask)
++			clk_disable_unprepare(priv->clk);
+ 		return ret;
+ 	}
  
- struct nft_ct {
- 	enum nft_ct_keys	key:8;
-@@ -537,6 +538,7 @@ static void __nft_ct_set_destroy(const struct nft_ctx *ctx, struct nft_ct *priv)
- #endif
- #ifdef CONFIG_NF_CONNTRACK_ZONES
- 	case NFT_CT_ZONE:
-+		nf_queue_nf_hook_drop(ctx->net);
- 		mutex_lock(&nft_ct_pcpu_mutex);
- 		if (--nft_ct_pcpu_template_refcnt == 0)
- 			nft_ct_tmpl_put_pcpu();
-@@ -980,6 +982,7 @@ static void nft_ct_timeout_obj_destroy(const struct nft_ctx *ctx,
- 	struct nft_ct_timeout_obj *priv = nft_obj_data(obj);
- 	struct nf_ct_timeout *timeout = priv->timeout;
+ 	bcm_sf2_crossbar_setup(priv);
  
-+	nf_queue_nf_hook_drop(ctx->net);
- 	nf_ct_untimeout(ctx->net, timeout);
- 	nf_ct_netns_put(ctx->net, ctx->family);
- 	kfree(priv->timeout);
-@@ -1112,6 +1115,7 @@ static void nft_ct_helper_obj_destroy(const struct nft_ctx *ctx,
- {
- 	struct nft_ct_helper_obj *priv = nft_obj_data(obj);
+ 	ret = bcm_sf2_cfp_resume(ds);
+-	if (ret)
++	if (ret) {
++		if (!priv->wol_ports_mask)
++			clk_disable_unprepare(priv->clk);
+ 		return ret;
+-
++	}
+ 	if (priv->hw_params.num_gphy == 1)
+ 		bcm_sf2_gphy_enable_set(ds, true);
  
-+	nf_queue_nf_hook_drop(ctx->net);
- 	if (priv->helper4)
- 		nf_conntrack_helper_put(priv->helper4);
- 	if (priv->helper6)
 -- 
 2.51.0
 
