@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-228739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228262-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EzhCLNTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228739-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:35 +0100
+	id 2KjELaBMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228262-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E14832F558D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 342E52F44E6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 480C330224CA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E45D630F74B6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF143B0AF0;
-	Mon, 23 Mar 2026 14:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D67E3B2FEC;
+	Mon, 23 Mar 2026 14:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6ZfBVno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lABRVRjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41246399352;
-	Mon, 23 Mar 2026 14:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F195B3B2FDC;
+	Mon, 23 Mar 2026 14:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276992; cv=none; b=NtL5RwABE2ctoI2Jl2dh8Ja/IEVI0bhWiPrwNzpG3YcoFf/CGInjYxuZF7jE3KCVzZO57qUBKzGAZZ9Eetee16YdXeEjwnTsWYdWJLOV1u6VK62fkX9Z3i3zmnls1vuQPYe08TvTzaLZa5fYGAuuigbfVHCBcO2EWgrI6L527MM=
+	t=1774274618; cv=none; b=WZkKyuQeQ7NHQcYxzBzkPnrWroU2OOij8u/EGNtaMtvn2pB8AJ3A/ZrQNAjT/wfU1ZdENmPQ/oJq+VgyJ1hEIM0cXDiGxR+jxC3LBHZGKvNDw6rEiu+yYJULPP+sxkUFe2VRxDw4nkSLgKTVXtHZNdzSJWIaJ5W9P+eIN74pJgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276992; c=relaxed/simple;
-	bh=ZT2tpfoqCBSeOmNtCg8xBulrOENYZnCg/2Z5QmKezsE=;
+	s=arc-20240116; t=1774274618; c=relaxed/simple;
+	bh=6Kco3REkF+CFkxcKDp9bBPpQj7pJkGqR5w2kIgDwrLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nz3NB5yUv+A7AqMuyU4zD11LS6cY2+ZQPcV31p7yeAQjTrcuhNYdizQ58/Xpj09oRllvV5emMJ+GWV1Be/dBwuYC+xD8sNq/JO88I4mNa/07McjZb+LuP/eKG9qWyIFcMde/5X6Ez1004GYxQ3zznkduYPrBe2U7njrV4kl/X4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6ZfBVno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E94BC4CEF7;
-	Mon, 23 Mar 2026 14:43:11 +0000 (UTC)
+	 MIME-Version; b=M+5cKKKo2XuptIrZJ/nDEZQ1nUqz+FdW7sH0L+/4cPDyzWzmvoTYjp/V0lqWJDi6VngcPEIw422XX3hV9cWxSl9QoGxtQB+2Qlrb1pdB4idRnwB55KCJNFGrrLS/UomlZyPBc7pfNeRjsJYypTosGS1swckjJEZF/VKzBdg1Og0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lABRVRjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791EEC2BC9E;
+	Mon, 23 Mar 2026 14:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276992;
-	bh=ZT2tpfoqCBSeOmNtCg8xBulrOENYZnCg/2Z5QmKezsE=;
+	s=korg; t=1774274617;
+	bh=6Kco3REkF+CFkxcKDp9bBPpQj7pJkGqR5w2kIgDwrLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6ZfBVnoPTHRvxgaTS+ROxSlLspo+UPdgUA1pCP/hG7BxtkCrrmPufbW87qMqovNF
-	 7sC6S0/5stkQyG/v9NXkdsNexm9pwjAbybFZCt4gw/BnwIWLrWGWqicq8Z1DMxteP0
-	 nkk45muqbR0LlMhlZkmmsR+06FKtwY+12TM8TwuE=
+	b=lABRVRjtBuCedzBSYrmI/V4ZIZN0Fq5YWPEv0YCV8vZMk4mAYoRk9v5K1XG9FYZY7
+	 lZWjftpGviHwFGPkQvjeSlTCyWBSvWH+1cuGRHlmRk2B2YO1HNuDYClJ/UwlyOLH4z
+	 dGWGbN9zzj9xVskfw3Qz94blU6qupjkMT93EzYRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Yao Kai <yaokai34@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Leon Chen <leonchen.oss@139.com>
-Subject: [PATCH 6.12 279/460] tracing: Add recursion protection in kernel stack trace recording
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 054/212] mmc: sdhci: fix timing selection for 1-bit bus width
 Date: Mon, 23 Mar 2026 14:44:35 +0100
-Message-ID: <20260323134533.333321346@linuxfoundation.org>
+Message-ID: <20260323134505.476354829@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,128 +64,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,joelfernandes.org,gmail.com,huawei.com,goodmis.org,139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228739-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228262-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E14832F558D
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,nxp.com:email]
+X-Rspamd-Queue-Id: 342E52F44E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-[ Upstream commit 5f1ef0dfcb5b7f4a91a9b0e0ba533efd9f7e2cdb ]
+commit 5e3486e64094c28a526543f1e8aa0d5964b7f02d upstream.
 
-A bug was reported about an infinite recursion caused by tracing the rcu
-events with the kernel stack trace trigger enabled. The stack trace code
-called back into RCU which then called the stack trace again.
+When 1-bit bus width is used with HS200/HS400 capabilities set,
+mmc_select_hs200() returns 0 without actually switching. This
+causes mmc_select_timing() to skip mmc_select_hs(), leaving eMMC
+in legacy mode (26MHz) instead of High Speed SDR (52MHz).
 
-Expand the ftrace recursion protection to add a set of bits to protect
-events from recursion. Each bit represents the context that the event is
-in (normal, softirq, interrupt and NMI).
+Per JEDEC eMMC spec section 5.3.2, 1-bit mode supports High Speed
+SDR. Drop incompatible HS200/HS400/UHS/DDR caps early so timing
+selection falls through to mmc_select_hs() correctly.
 
-Have the stack trace code use the interrupt context to protect against
-recursion.
-
-Note, the bug showed an issue in both the RCU code as well as the tracing
-stacktrace code. This only handles the tracing stack trace side of the
-bug. The RCU fix will be handled separately.
-
-Link: https://lore.kernel.org/all/20260102122807.7025fc87@gandalf.local.home/
-
+Fixes: f2119df6b764 ("mmc: sd: add support for signal voltage switch procedure")
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Link: https://patch.msgid.link/20260105203141.515cd49f@gandalf.local.home
-Reported-by: Yao Kai <yaokai34@huawei.com>
-Tested-by: Yao Kai <yaokai34@huawei.com>
-Fixes: 5f5fa7ea89dc ("rcu: Don't use negative nesting depth in __rcu_read_unlock()")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Leon Chen <leonchen.oss@139.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/trace_recursion.h |    9 +++++++++
- kernel/trace/trace.c            |    6 ++++++
- 2 files changed, 15 insertions(+)
+ drivers/mmc/host/sdhci.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/include/linux/trace_recursion.h
-+++ b/include/linux/trace_recursion.h
-@@ -34,6 +34,13 @@ enum {
- 	TRACE_INTERNAL_SIRQ_BIT,
- 	TRACE_INTERNAL_TRANSITION_BIT,
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -4532,8 +4532,15 @@ int sdhci_setup_host(struct sdhci_host *
+ 	 * their platform code before calling sdhci_add_host(), and we
+ 	 * won't assume 8-bit width for hosts without that CAP.
+ 	 */
+-	if (!(host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA))
++	if (host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA) {
++		host->caps1 &= ~(SDHCI_SUPPORT_SDR104 | SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_DDR50);
++		if (host->quirks2 & SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400)
++			host->caps1 &= ~SDHCI_SUPPORT_HS400;
++		mmc->caps2 &= ~(MMC_CAP2_HS200 | MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
++		mmc->caps &= ~(MMC_CAP_DDR | MMC_CAP_UHS);
++	} else {
+ 		mmc->caps |= MMC_CAP_4_BIT_DATA;
++	}
  
-+	/* Internal event use recursion bits */
-+	TRACE_INTERNAL_EVENT_BIT,
-+	TRACE_INTERNAL_EVENT_NMI_BIT,
-+	TRACE_INTERNAL_EVENT_IRQ_BIT,
-+	TRACE_INTERNAL_EVENT_SIRQ_BIT,
-+	TRACE_INTERNAL_EVENT_TRANSITION_BIT,
-+
- 	TRACE_BRANCH_BIT,
- /*
-  * Abuse of the trace_recursion.
-@@ -58,6 +65,8 @@ enum {
- 
- #define TRACE_LIST_START	TRACE_INTERNAL_BIT
- 
-+#define TRACE_EVENT_START	TRACE_INTERNAL_EVENT_BIT
-+
- #define TRACE_CONTEXT_MASK	((1 << (TRACE_LIST_START + TRACE_CONTEXT_BITS)) - 1)
- 
- /*
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -2944,6 +2944,11 @@ static void __ftrace_trace_stack(struct
- 	struct ftrace_stack *fstack;
- 	struct stack_entry *entry;
- 	int stackidx;
-+	int bit;
-+
-+	bit = trace_test_and_set_recursion(_THIS_IP_, _RET_IP_, TRACE_EVENT_START);
-+	if (bit < 0)
-+		return;
- 
- 	/*
- 	 * Add one, for this function and the call to save_stack_trace()
-@@ -3015,6 +3020,7 @@ static void __ftrace_trace_stack(struct
- 	__this_cpu_dec(ftrace_stack_reserve);
- 	preempt_enable_notrace();
- 
-+	trace_clear_recursion(bit);
- }
- 
- static inline void ftrace_trace_stack(struct trace_array *tr,
+ 	if (host->quirks2 & SDHCI_QUIRK2_HOST_NO_CMD23)
+ 		mmc->caps &= ~MMC_CAP_CMD23;
 
 
 
