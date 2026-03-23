@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-228297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cAeXCk9LwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228297-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:47 +0100
+	id kDcpMrVIwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A470C2F4126
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53262F3CB1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 435BC317F980
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9146C300F2B6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCDD93AF67D;
-	Mon, 23 Mar 2026 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD903AE6F7;
+	Mon, 23 Mar 2026 13:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLVOzNKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Rv/TDjc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E37B3AE1A8;
-	Mon, 23 Mar 2026 14:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4A33AE18C;
+	Mon, 23 Mar 2026 13:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274727; cv=none; b=Vm6wTpdGgsv289y2bFAfykZLd9KOTDFWsQLzXooRQcIxhu58MfE4Zxz8knFPMYbjfO6E9oF5Jyciyw3ItcAejTXNN9HtJYOr1SFr9yv5naJZxUIk33VMnGm/WjZr7eT1lQjPeDrwTRU+HbXoSbLWR/tI4t/Ff4V2dU/deOPySSM=
+	t=1774274174; cv=none; b=ax3ed+zR/NROrMXG7SHtqYIC3mJ4wUDf7sMImk3niWxpVWvjym9+LENBIkR+LLNdfe/3Wej92+vN9CMxfm3Kc32r593n5f0LCBMbt7JxomHblmfCJ+IQ6P9S29x/2IpfLw7Jd0TEIJnhw8G8HsfXrQOUiYBNy9NSqTxFIgWGia8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274727; c=relaxed/simple;
-	bh=Y4C4tPZWzq8+CMfOuvnnko7yCM8gGAk8Kyv0Cim0Rg8=;
+	s=arc-20240116; t=1774274174; c=relaxed/simple;
+	bh=mlKYnV4pGP2gfWPzjQqTLwoeDm6ugKsaY+qZiOgy+HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oC39wwy9vimMo/suTP6AaZQrzRFJrJFfjShtifFvEcvjJuOX4ot4YixuqXaGs9qkdWo2KdK40O0/UqR4d/RRbMM5EVZWDdR6DtJpAdTspsthrr9jh5lR1jMuW091m8UYgoG87YHDbakoSc2yRnZv7C9c6xj8px9bUfJt3ydVemM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLVOzNKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE976C4CEF7;
-	Mon, 23 Mar 2026 14:05:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qYIRFfviraM72kXeyZDyNrz4wS3YTE2l3QTs8lkJTjfhr+U4GYkx6R1GF9aNKM85/JXL0w7vjLK3XGcl0gpYC2WrZ769xkb3Q7a/BInWkq32J39Bt6LKePkMrb58CaqGgEaC/d/aHlZ3DcpRGfmXxbYy5Im2UhAXQYyF5zOgazM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Rv/TDjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852B6C2BC9E;
+	Mon, 23 Mar 2026 13:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274727;
-	bh=Y4C4tPZWzq8+CMfOuvnnko7yCM8gGAk8Kyv0Cim0Rg8=;
+	s=korg; t=1774274173;
+	bh=mlKYnV4pGP2gfWPzjQqTLwoeDm6ugKsaY+qZiOgy+HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLVOzNKwnZ1Ir0tFCsRzdF2OuOFM0MdaTu9b7TU/6n5W/H7r6tcRmWJ87DJbQRfnv
-	 ctMtYsQUNjVIzDydgL+q2J6vSyOtbL6dpBUTo9Ses0tODhtSUJfNVVPEAYwgrPJOaQ
-	 +yCRe4ZUPzMPvF3o08KGqs20izUIu4PLIKg5nd1M=
+	b=0Rv/TDjcPXx3XatlLCEDGFWLcRkJzMhd17BXp8QQ5CyvfeOVWnuQyrhboXMLXbxRh
+	 8pYtzhPX+YsHKndeRgxYMPWe/0k/R4xAIjWMQ9vaH0DkdXcLA5+0Puk0KntcJERCmB
+	 sToBH9VQxitybV3kUwGzYArIIEC7XZNBIpSONT+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 090/212] drm/radeon: apply state adjust rules to some additional HAINAN vairants
+	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 134/220] netfilter: nf_conntrack_sip: fix Content-Length u32 truncation in sip_help_tcp()
 Date: Mon, 23 Mar 2026 14:45:11 +0100
-Message-ID: <20260323134506.622641343@linuxfoundation.org>
+Message-ID: <20260323134508.814584602@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +63,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228297-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228117-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gitlab.freedesktop.org:url]
-X-Rspamd-Queue-Id: A470C2F4126
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,strlen.de:email,johannes-moeller.dev:email]
+X-Rspamd-Queue-Id: D53262F3CB1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Lukas Johannes Möller <research@johannes-moeller.dev>
 
-commit 86650ee2241ff84207eaa298ab318533f3c21a38 upstream.
+[ Upstream commit fbce58e719a17aa215c724473fd5baaa4a8dc57c ]
 
-They need a similar workaround.
+sip_help_tcp() parses the SIP Content-Length header with
+simple_strtoul(), which returns unsigned long, but stores the result in
+unsigned int clen.  On 64-bit systems, values exceeding UINT_MAX are
+silently truncated before computing the SIP message boundary.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1839
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 87327658c848f56eac166cb382b57b83bf06c5ac)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example, Content-Length 4294967328 (2^32 + 32) is truncated to 32,
+causing the parser to miscalculate where the current message ends.  The
+loop then treats trailing data in the TCP segment as a second SIP
+message and processes it through the SDP parser.
+
+Fix this by changing clen to unsigned long to match the return type of
+simple_strtoul(), and reject Content-Length values that exceed the
+remaining TCP payload length.
+
+Fixes: f5b321bd37fb ("netfilter: nf_conntrack_sip: add TCP support")
+Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/si_dpm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_sip.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/radeon/si_dpm.c
-+++ b/drivers/gpu/drm/radeon/si_dpm.c
-@@ -2915,9 +2915,11 @@ static void si_apply_state_adjust_rules(
- 	if (rdev->family == CHIP_HAINAN) {
- 		if ((rdev->pdev->revision == 0x81) ||
- 		    (rdev->pdev->revision == 0xC3) ||
-+		    (rdev->pdev->device == 0x6660) ||
- 		    (rdev->pdev->device == 0x6664) ||
- 		    (rdev->pdev->device == 0x6665) ||
--		    (rdev->pdev->device == 0x6667)) {
-+		    (rdev->pdev->device == 0x6667) ||
-+		    (rdev->pdev->device == 0x666F)) {
- 			max_sclk = 75000;
- 		}
- 		if ((rdev->pdev->revision == 0xC3) ||
+diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
+index ca748f8dbff13..4ab5ef71d96db 100644
+--- a/net/netfilter/nf_conntrack_sip.c
++++ b/net/netfilter/nf_conntrack_sip.c
+@@ -1534,11 +1534,12 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
+ {
+ 	struct tcphdr *th, _tcph;
+ 	unsigned int dataoff, datalen;
+-	unsigned int matchoff, matchlen, clen;
++	unsigned int matchoff, matchlen;
+ 	unsigned int msglen, origlen;
+ 	const char *dptr, *end;
+ 	s16 diff, tdiff = 0;
+ 	int ret = NF_ACCEPT;
++	unsigned long clen;
+ 	bool term;
+ 
+ 	if (ctinfo != IP_CT_ESTABLISHED &&
+@@ -1573,6 +1574,9 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
+ 		if (dptr + matchoff == end)
+ 			break;
+ 
++		if (clen > datalen)
++			break;
++
+ 		term = false;
+ 		for (; end + strlen("\r\n\r\n") <= dptr + datalen; end++) {
+ 			if (end[0] == '\r' && end[1] == '\n' &&
+-- 
+2.51.0
+
 
 
 
