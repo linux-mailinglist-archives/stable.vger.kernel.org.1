@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-228805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229835-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIfOM0hpwWmoSwQAu9opvQ
-	(envelope-from <stable+bounces-228805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:40 +0100
+	id kJvNBll1wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229835-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:16:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F4A92F807A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 264F32F9A87
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1F64632161ED
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DB9BC3058FF9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF504265CA8;
-	Mon, 23 Mar 2026 14:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D0D3B2FDF;
+	Mon, 23 Mar 2026 16:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPNhR3ia"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/3lELOy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5DE23B62C;
-	Mon, 23 Mar 2026 14:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B403AEF5C;
+	Mon, 23 Mar 2026 16:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277178; cv=none; b=O0Kl1YQHlFmiFo6v6N7xwUVeKBH/JDCCiZ32K49wk437yL/Mwsl23pmOpICGP6s7pz7603oYK+GZ+u1NIGvLWFhck6WeA9hOJltS0DqHJqy4NGUoa0twPQnLZO+M8iFflm9TIyBdlp2VICgUqg1DSmBixmuJl6uSEo3Ol0DZwp0=
+	t=1774282994; cv=none; b=sSZGDT68QwaPlGXqy2oQuERSinCSRV9O2WgvKsQcOsHn3oL1TQ/8pBUFchcTh/HQw4xphPJBKILq6LOnYTO5mlKrvURNgXLvtSP+0I2YPLnay37qO8lbSPOMxlxWqf0AU1WUAtIUFg9aWWYckxrvOVE7vTMNqucD1y8urG0ZheM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277178; c=relaxed/simple;
-	bh=MDCfz7qGMKe+62ZP4i/CQfsMicI54B1MBm0vxf1CHKk=;
+	s=arc-20240116; t=1774282994; c=relaxed/simple;
+	bh=XvJ94rgwDsAcimeQ/LZp4dB8ovQe4VCJCsYma8FZUbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gfC25LTeYnfD6sInPz/p4gVrHSw8xOXxW9Ltg1udZFn4G1JobeQ2KqLFppXroXmYnTEcE5YxgPmGDm5GjBhRttCezALJMHQmpfne1wgwzgCt9t3ApmaSI8pzGlFWV/vJreVnbu9uVU5lV4hp97zV2yq6NYXmhEU8ehC4OyAiTw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPNhR3ia; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2232CC4CEF7;
-	Mon, 23 Mar 2026 14:46:17 +0000 (UTC)
+	 MIME-Version; b=e/uh2iYxJ+BjWi8kU94QbLb6BuHEJuxWSzXCFpE21C7yQ6GmZth3/exItyvq7Ubtjtcii3maeekUDXjjbKevxEskY9keRfxeplL+OwKNqZg9MZ1jWFxbuT/4E5rrh3lC2bgXd/wU2gAR7iCKKGElooQgfXF2dx/huRdGLdokkzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/3lELOy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7567DC4CEF7;
+	Mon, 23 Mar 2026 16:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277178;
-	bh=MDCfz7qGMKe+62ZP4i/CQfsMicI54B1MBm0vxf1CHKk=;
+	s=korg; t=1774282993;
+	bh=XvJ94rgwDsAcimeQ/LZp4dB8ovQe4VCJCsYma8FZUbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPNhR3iaM1TZxZUn8oIM52LypV3CIax1e1I7b6B2xXewktFIEdelQg/NFGfZthJTt
-	 pB6ObEU5556HrxcEvfZBFQODmtfN4V3X2TM3BPNNeMw1ROaj7Rc1QdOdxopfkCB/XY
-	 KCwxwhMsu0lcpgO1b1AVhn8iy4hvjLKlfgHCFzKQ=
+	b=p/3lELOyCzblcGGosWJ/JOFkyc5/+iWTCfNDqNL4ixwsfrDKaV4cmG3ntFGXVC334
+	 pV6fTmTsO768y52ppkzfLSEoFRPfuEuniY5msmFP4eyKQXhf8nPzpBqswQVXG/7h2T
+	 GxjO1rc0vn/q0dcEeXJdKrGIKdOYn4obTM5fyNkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
-Subject: [PATCH 6.12 347/460] serial: uartlite: fix PM runtime usage count underflow on probe
+	Harini Katakam <harini.katakam@amd.com>,
+	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 361/481] net: macb: queue tie-off or disable during WOL suspend
 Date: Mon, 23 Mar 2026 14:45:43 +0100
-Message-ID: <20260323134535.074073277@linuxfoundation.org>
+Message-ID: <20260323134533.905419184@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,85 +71,218 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229835-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228805-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,m-works.net:email]
-X-Rspamd-Queue-Id: 4F4A92F807A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 264F32F9A87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
+From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 
-commit d54801cd509515f674a5aac1d3ea1401d2a05863 upstream.
+[ Upstream commit 759cc793ebfc2d1a02f357ae97e5dcdcd63f758f ]
 
-ulite_probe() calls pm_runtime_put_autosuspend() at the end of probe
-without holding a corresponding PM runtime reference for non-console
-ports.
+When GEM is used as a wake device, it is not mandatory for the RX DMA
+to be active. The RX engine in IP only needs to receive and identify
+a wake packet through an interrupt. The wake packet is of no further
+significance; hence, it is not required to be copied into memory.
+By disabling RX DMA during suspend, we can avoid unnecessary DMA
+processing of any incoming traffic.
 
-During ulite_assign(), uart_add_one_port() triggers uart_configure_port()
-which calls ulite_pm() via uart_change_pm(). For non-console ports, the
-UART core performs a balanced get/put cycle:
+During suspend, perform either of the below operations:
 
-  uart_change_pm(ON)  -> ulite_pm() -> pm_runtime_get_sync()        +1
-  uart_change_pm(OFF) -> ulite_pm() -> pm_runtime_put_autosuspend() -1
+- tie-off/dummy descriptor: Disable unused queues by connecting
+  them to a looped descriptor chain without free slots.
 
-This leaves no spare reference for the pm_runtime_put_autosuspend() at
-the end of probe. The PM runtime core prevents the count from actually
-going below zero, and instead triggers a
-"Runtime PM usage count underflow!" warning.
+- queue disable: The newer IP version allows disabling individual queues.
 
-For console ports the bug is masked: the UART core skips the
-uart_change_pm(OFF) call, so the UART core's unbalanced get happens to
-pair with probe's trailing put.
-
-Add pm_runtime_get_noresume() before pm_runtime_enable() to take an
-explicit probe-owned reference that the trailing
-pm_runtime_put_autosuspend() can release. This ensures a correct usage
-count regardless of whether the port is a console.
-
-Fixes: 5bbe10a6942d ("tty: serial: uartlite: Add runtime pm support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
-Link: https://patch.msgid.link/20260305123746.4152800-1-maciej.andrzejewski@m-works.net
+Co-developed-by: Harini Katakam <harini.katakam@amd.com>
+Signed-off-by: Harini Katakam <harini.katakam@amd.com>
+Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Tested-by: Claudiu Beznea <claudiu.beznea@tuxon.dev> # on SAMA7G5
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 718d0766ce4c ("net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/uartlite.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/cadence/macb.h      |    7 +++
+ drivers/net/ethernet/cadence/macb_main.c |   60 +++++++++++++++++++++++++++++--
+ 2 files changed, 64 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/uartlite.c
-+++ b/drivers/tty/serial/uartlite.c
-@@ -878,6 +878,7 @@ of_err:
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, UART_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_get_noresume(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -636,6 +636,10 @@
+ #define GEM_T2OFST_OFFSET			0 /* offset value */
+ #define GEM_T2OFST_SIZE				7
  
- 	ret = ulite_assign(&pdev->dev, id, res->start, irq, pdata);
++/* Bitfields in queue pointer registers */
++#define MACB_QUEUE_DISABLE_OFFSET		0 /* disable queue */
++#define MACB_QUEUE_DISABLE_SIZE			1
++
+ /* Offset for screener type 2 compare values (T2CMPOFST).
+  * Note the offset is applied after the specified point,
+  * e.g. GEM_T2COMPOFST_ETYPE denotes the EtherType field, so an offset
+@@ -722,6 +726,7 @@
+ #define MACB_CAPS_NEEDS_RSTONUBR		0x00000100
+ #define MACB_CAPS_MIIONRGMII			0x00000200
+ #define MACB_CAPS_NEED_TSUCLK			0x00000400
++#define MACB_CAPS_QUEUE_DISABLE			0x00000800
+ #define MACB_CAPS_PCS				0x01000000
+ #define MACB_CAPS_HIGH_SPEED			0x02000000
+ #define MACB_CAPS_CLK_HW_CHG			0x04000000
+@@ -1254,6 +1259,8 @@ struct macb {
+ 	u32	(*macb_reg_readl)(struct macb *bp, int offset);
+ 	void	(*macb_reg_writel)(struct macb *bp, int offset, u32 value);
+ 
++	struct macb_dma_desc	*rx_ring_tieoff;
++	dma_addr_t		rx_ring_tieoff_dma;
+ 	size_t			rx_buffer_size;
+ 
+ 	unsigned int		rx_ring_size;
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -2511,6 +2511,12 @@ static void macb_free_consistent(struct
+ 	unsigned int q;
+ 	int size;
+ 
++	if (bp->rx_ring_tieoff) {
++		dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
++				  bp->rx_ring_tieoff, bp->rx_ring_tieoff_dma);
++		bp->rx_ring_tieoff = NULL;
++	}
++
+ 	bp->macbgem_ops.mog_free_rx_buffers(bp);
+ 
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+@@ -2602,6 +2608,16 @@ static int macb_alloc_consistent(struct
+ 	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
+ 		goto out_err;
+ 
++	/* Required for tie off descriptor for PM cases */
++	if (!(bp->caps & MACB_CAPS_QUEUE_DISABLE)) {
++		bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
++							macb_dma_desc_get_size(bp),
++							&bp->rx_ring_tieoff_dma,
++							GFP_KERNEL);
++		if (!bp->rx_ring_tieoff)
++			goto out_err;
++	}
++
+ 	return 0;
+ 
+ out_err:
+@@ -2609,6 +2625,19 @@ out_err:
+ 	return -ENOMEM;
+ }
+ 
++static void macb_init_tieoff(struct macb *bp)
++{
++	struct macb_dma_desc *desc = bp->rx_ring_tieoff;
++
++	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
++		return;
++	/* Setup a wrapping descriptor with no free slots
++	 * (WRAP and USED) to tie off/disable unused RX queues.
++	 */
++	macb_set_addr(bp, desc, MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
++	desc->ctrl = 0;
++}
++
+ static void gem_init_rings(struct macb *bp)
+ {
+ 	struct macb_queue *queue;
+@@ -2632,6 +2661,7 @@ static void gem_init_rings(struct macb *
+ 		gem_rx_refill(queue);
+ 	}
+ 
++	macb_init_tieoff(bp);
+ }
+ 
+ static void macb_init_rings(struct macb *bp)
+@@ -2649,6 +2679,8 @@ static void macb_init_rings(struct macb
+ 	bp->queues[0].tx_head = 0;
+ 	bp->queues[0].tx_tail = 0;
+ 	desc->ctrl |= MACB_BIT(TX_WRAP);
++
++	macb_init_tieoff(bp);
+ }
+ 
+ static void macb_reset_hw(struct macb *bp)
+@@ -5188,6 +5220,7 @@ static int __maybe_unused macb_suspend(s
+ 	unsigned long flags;
+ 	unsigned int q;
+ 	int err;
++	u32 tmp;
+ 
+ 	if (!device_may_wakeup(&bp->dev->dev))
+ 		phy_exit(bp->sgmii_phy);
+@@ -5197,17 +5230,38 @@ static int __maybe_unused macb_suspend(s
+ 
+ 	if (bp->wol & MACB_WOL_ENABLED) {
+ 		spin_lock_irqsave(&bp->lock, flags);
+-		/* Flush all status bits */
+-		macb_writel(bp, TSR, -1);
+-		macb_writel(bp, RSR, -1);
++
++		/* Disable Tx and Rx engines before  disabling the queues,
++		 * this is mandatory as per the IP spec sheet
++		 */
++		tmp = macb_readl(bp, NCR);
++		macb_writel(bp, NCR, tmp & ~(MACB_BIT(TE) | MACB_BIT(RE)));
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues;
+ 		     ++q, ++queue) {
++			/* Disable RX queues */
++			if (bp->caps & MACB_CAPS_QUEUE_DISABLE) {
++				queue_writel(queue, RBQP, MACB_BIT(QUEUE_DISABLE));
++			} else {
++				/* Tie off RX queues */
++				queue_writel(queue, RBQP,
++					     lower_32_bits(bp->rx_ring_tieoff_dma));
++#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
++				queue_writel(queue, RBQPH,
++					     upper_32_bits(bp->rx_ring_tieoff_dma));
++#endif
++			}
+ 			/* Disable all interrupts */
+ 			queue_writel(queue, IDR, -1);
+ 			queue_readl(queue, ISR);
+ 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 				queue_writel(queue, ISR, -1);
+ 		}
++		/* Enable Receive engine */
++		macb_writel(bp, NCR, tmp | MACB_BIT(RE));
++		/* Flush all status bits */
++		macb_writel(bp, TSR, -1);
++		macb_writel(bp, RSR, -1);
++
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+ 		 */
 
 
 
