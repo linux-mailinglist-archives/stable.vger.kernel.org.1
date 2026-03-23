@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-228610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229643-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIcbMmxMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:32 +0100
+	id WJ0lEqBrwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229643-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F7C2F4451
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3CBC2F8580
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 201483017A92
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2A0E032AD1EE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C7B1FFC48;
-	Mon, 23 Mar 2026 14:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160493B38A0;
+	Mon, 23 Mar 2026 16:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/5q6bDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiYmyG59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065BB1A6808;
-	Mon, 23 Mar 2026 14:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD049396B85;
+	Mon, 23 Mar 2026 16:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275597; cv=none; b=jalZHtDh4SsGMUicqzc2BHEjBYiQMlAm1NRHiRZl2mCPlv05RBV1KjhlSoQDTVCQYFEm3R6D8+XVAwcs3f+lswIJ1yep0qaGlN+N0ULBl0HnpTFysu1XXxAMIXhd+bTa0MmV4rhros6oHnC2AaS06EQxwF/Uj5lMd2eNoizFy9U=
+	t=1774282477; cv=none; b=ffv1vfFOBRoxnIIGV/6IW3tDVIpvgpixIg3fVw7gYHaQS2EbBe8LUlLRAe6hPKupq2Z7z2HEbKzKyYBHEhBFObhIgxQhBlZdeOKH/ZHQ0TPRj8Je/bGGrTD1I3llgowwuauyY5aTXoWZ20q5XmUt7uMELLmc++31qy6QS8/VNmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275597; c=relaxed/simple;
-	bh=gxp62u7qtudAJKii2uIKD6iBCHpSYDv8beT/ZmHLFQk=;
+	s=arc-20240116; t=1774282477; c=relaxed/simple;
+	bh=pjytYdGb+uh8058AD5oKer1+41NSrUDtJNBG77mhGyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDF431NMRGb1nGtP/IkER3jr6NOFC9IK6IizbecRwyMeijb3PHTJb+hn+arEDL2tHMc5H80gcCZMRtWzOEt6HcCYUkphHUY0sF2iKhvw5JUojkUAjJnTftPu6JDHdUvMzp5v01tEfzuuvrzbwEDERaLfO+MiTP1ZLOxLQ7EA7Vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/5q6bDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB1CC2BC9E;
-	Mon, 23 Mar 2026 14:19:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KwUMffNB79JZOOPAgug++tt0IfPr1Jhwh6RDcrhJ6kYCG6/J3rzCC9ToeYoijZEf4a0UZGTJ100vjhLNboWpdTy9ITi2rRwMej5l9i2T6LxrmcxZi+y/NrIv7HTRcvKtlgBXMCOu47z3rCa5+wEJ0XNTdbYgZRZRImsNhVO7nRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiYmyG59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F86DC4CEF7;
+	Mon, 23 Mar 2026 16:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275596;
-	bh=gxp62u7qtudAJKii2uIKD6iBCHpSYDv8beT/ZmHLFQk=;
+	s=korg; t=1774282477;
+	bh=pjytYdGb+uh8058AD5oKer1+41NSrUDtJNBG77mhGyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/5q6bDSOZ9BThGLaUzMA1X/fIKI/KHbPAB/SdXJO0xByT0NrWmAUesdRo7PcQOsh
-	 CN7lcg3VagwaoQtKEa/ldKxcw7udvMm4KNtMyvxOCHWLFHM7eyBixtD2jrPUyfdqr8
-	 eRJwyPbPG9iy2aJT7Ud8AFzQPEd5COEJqVezsLMw=
+	b=QiYmyG59/oBuS1suWNLkBiic6rP51Uxwl6imaHe8kMuR1QcFsJ15SppvMX+FaCopH
+	 6Lhpy5iUg+2p+EmYd2YyJSJQXQIq2fQQx3WgaRvt/zdDv6z2TkzN0w7izimfx9FTyy
+	 +BKFzAhKe3xIxdc1ctE+5zmSsxy0l3L8RyP6InGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 156/460] ice: fix retry for AQ command 0x06EE
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 170/481] ASoC: core: Do not call link_exit() on uninitialized rtd objects
 Date: Mon, 23 Mar 2026 14:42:32 +0100
-Message-ID: <20260323134530.397965651@linuxfoundation.org>
+Message-ID: <20260323134529.366025805@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,141 +64,148 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[sin.lore.kernel.org:server fail,linuxfoundation.org:server fail,intel.com:server fail,mpg.de:server fail];
-	TAGGED_FROM(0.00)[bounces-228610-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229643-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,intel.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E2F7C2F4451
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: B3CBC2F8580
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-commit fb4903b3354aed4a2301180cf991226f896c87ed upstream.
+[ Upstream commit dd9f9cc1e6b9391140afa5cf27bb47c9e2a08d02 ]
 
-Executing ethtool -m can fail reporting a netlink I/O error while firmware
-link management holds the i2c bus used to communicate with the module.
+On init we have sequence:
 
-According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
-Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
-request should to be retried upon receiving EBUSY from firmware.
+	for_each_card_prelinks(card, i, dai_link) {
+		ret = snd_soc_add_pcm_runtime(card, dai_link);
 
-Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-implemented it only for part of ice_get_module_eeprom(), leaving all other
-calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
-EBUSY without retrying.
+	ret = init_some_other_things(...);
+	if (ret)
+		goto probe_end:
 
-Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
-(AQ) command with opcode 0x06EE to the list of commands that should be
-retried on receiving EBUSY from firmware.
+	for_each_card_rtds(card, rtd) {
+		ret = soc_init_pcm_runtime(card, rtd);
 
-Cc: stable@vger.kernel.org
-Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
-Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+probe_end:
+
+while on exit:
+	for_each_card_rtds(card, rtd)
+		snd_soc_link_exit(rtd);
+
+If init_some_other_things() step fails due to error we end up with
+not fully setup rtds and try to call snd_soc_link_exit on them, which
+depending on contents on .link_exit handler, can end up dereferencing
+NULL pointer.
+
+Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20230929103243.705433-2-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 95bc5c225513 ("ASoC: soc-core: flush delayed work before removing DAIs and widgets")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c  |    1 
- drivers/net/ethernet/intel/ice/ice_ethtool.c |   35 ++++++++++-----------------
- 2 files changed, 15 insertions(+), 21 deletions(-)
+ include/sound/soc.h  |  2 ++
+ sound/soc/soc-core.c | 20 +++++++++++++++-----
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1554,6 +1554,7 @@ static bool ice_should_retry_sq_send_cmd
- 	case ice_aqc_opc_lldp_stop:
- 	case ice_aqc_opc_lldp_start:
- 	case ice_aqc_opc_lldp_filter_ctrl:
-+	case ice_aqc_opc_sff_eeprom:
- 		return true;
+diff --git a/include/sound/soc.h b/include/sound/soc.h
+index d63ac6d9fbdc4..015d5fff397fa 100644
+--- a/include/sound/soc.h
++++ b/include/sound/soc.h
+@@ -1110,6 +1110,8 @@ struct snd_soc_pcm_runtime {
+ 	unsigned int pop_wait:1;
+ 	unsigned int fe_compr:1; /* for Dynamic PCM */
+ 
++	bool initialized;
++
+ 	int num_components;
+ 	struct snd_soc_component *components[]; /* CPU/Codec/Platform */
+ };
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index d42cba7de0a3b..835a9251c074b 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1256,7 +1256,7 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
+ 	snd_soc_runtime_get_dai_fmt(rtd);
+ 	ret = snd_soc_runtime_set_dai_fmt(rtd, dai_link->dai_fmt);
+ 	if (ret)
+-		return ret;
++		goto err;
+ 
+ 	/* add DPCM sysfs entries */
+ 	soc_dpcm_debugfs_add(rtd);
+@@ -1281,17 +1281,26 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
+ 	/* create compress_device if possible */
+ 	ret = snd_soc_dai_compress_new(cpu_dai, rtd, num);
+ 	if (ret != -ENOTSUPP)
+-		return ret;
++		goto err;
+ 
+ 	/* create the pcm */
+ 	ret = soc_new_pcm(rtd, num);
+ 	if (ret < 0) {
+ 		dev_err(card->dev, "ASoC: can't create pcm %s :%d\n",
+ 			dai_link->stream_name, ret);
+-		return ret;
++		goto err;
  	}
  
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -4528,7 +4528,7 @@ ice_get_module_eeprom(struct net_device
- 	struct ice_pf *pf = vsi->back;
- 	struct ice_hw *hw = &pf->hw;
- 	bool is_sfp = false;
--	unsigned int i, j;
-+	unsigned int i;
- 	u16 offset = 0;
- 	u8 page = 0;
- 	int status;
-@@ -4570,26 +4570,19 @@ ice_get_module_eeprom(struct net_device
- 		if (page == 0 || !(data[0x2] & 0x4)) {
- 			u32 copy_len;
+-	return snd_soc_pcm_dai_new(rtd);
++	ret = snd_soc_pcm_dai_new(rtd);
++	if (ret < 0)
++		goto err;
++
++	rtd->initialized = true;
++
++	return 0;
++err:
++	snd_soc_link_exit(rtd);
++	return ret;
+ }
  
--			/* If i2c bus is busy due to slow page change or
--			 * link management access, call can fail. This is normal.
--			 * So we retry this a few times.
--			 */
--			for (j = 0; j < 4; j++) {
--				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
--							   !is_sfp, value,
--							   SFF_READ_BLOCK_SIZE,
--							   0, NULL);
--				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
--					   addr, offset, page, is_sfp,
--					   value[0], value[1], value[2], value[3],
--					   value[4], value[5], value[6], value[7],
--					   status);
--				if (status) {
--					usleep_range(1500, 2500);
--					memset(value, 0, SFF_READ_BLOCK_SIZE);
--					continue;
--				}
--				break;
-+			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
-+						   !is_sfp, value,
-+						   SFF_READ_BLOCK_SIZE,
-+						   0, NULL);
-+			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
-+				   addr, offset, page, is_sfp,
-+				   value[0], value[1], value[2], value[3],
-+				   value[4], value[5], value[6], value[7],
-+				   ERR_PTR(status));
-+			if (status) {
-+				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
-+					   __func__, ERR_PTR(status));
-+				return status;
- 			}
+ static void soc_set_name_prefix(struct snd_soc_card *card,
+@@ -1894,7 +1903,8 @@ static void soc_cleanup_card_resources(struct snd_soc_card *card)
  
- 			/* Make sure we have enough room for the new block */
+ 	/* release machine specific resources */
+ 	for_each_card_rtds(card, rtd)
+-		snd_soc_link_exit(rtd);
++		if (rtd->initialized)
++			snd_soc_link_exit(rtd);
+ 	/* remove and free each DAI */
+ 	soc_remove_link_dais(card);
+ 	soc_remove_link_components(card);
+-- 
+2.51.0
+
 
 
 
