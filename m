@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBojI3NJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:51 +0100
+	id GPv8AwtMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E05962F3E3F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8772F435F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 23EE13050D76
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 83329303E7F5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C243AB29B;
-	Mon, 23 Mar 2026 13:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1603B4E8E;
+	Mon, 23 Mar 2026 14:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzsjKN/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0NtNGsN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71B5286A4;
-	Mon, 23 Mar 2026 13:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8CA3AE1A6;
+	Mon, 23 Mar 2026 14:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274236; cv=none; b=nb+na9CJ742atDAR1m48B5+VUb0kyF+EEfw02qIbf+khMCBfcyRxrkigaTJWEmpTm4QHF6vM2EG3/6ICpJh/9gmmraF/2JYE/c/hyqi3tv/BUYaH0GmQvzQm+tyNS09zi5CTSJ4yWO0X9qRAAx5r8VTjB34c+Um47m1X3zPN1FU=
+	t=1774274789; cv=none; b=L9YYSNlMTjD0UX7pO4FrAbVQS8srYKxwbsECchEtFWnEBO5T9Oh0KmiBeljM2BEAyONlLFXgsnM52okKNLfAqy9oYSF63J7uPLUzUvOPLEMygw8P4fGUab8vZ29QM23QRA/M7eESXDVrfw3Q0oNYQRoLF5SHPSHCBEuz3QoVYuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274236; c=relaxed/simple;
-	bh=qK5+I27ULJOvzgO9fvgDBMYadE/ZFZDox570ZVjDUDs=;
+	s=arc-20240116; t=1774274789; c=relaxed/simple;
+	bh=MkD1E/W8P2NWyhDrJABLnCXyxl+8PIb4kQN6iONP1lU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbz4wiulA77jx+8mV2LB/YVjuT3M4O3lnrSwrM6xnlfyKT+8xnOK1Cn6qTUAHYHecUrKWKk4sznNRnJcMMGMYbHMWT5xHAim1Mu8Jupp0/RSiB7i0PvlAY7dc36FDJ66PIoswR/thWosgp2eNvg0kFGoUamAL8q44zIw3KKKyJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzsjKN/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39559C4CEF7;
-	Mon, 23 Mar 2026 13:57:16 +0000 (UTC)
+	 MIME-Version; b=XbAF2xbEghWwN2cxV1grzuP57HVSw73RH98IypHMCq9IUPKuBALVRnBWWLmOe38MFwKNiuvJT/OB8CaK3MgZ+jtpxp8/Ybn8zYEcWmsAyG7QUNfC4uElvBThF8PfPlBmeJ0kCDlWYYjCeRid98NIBReu8U1b2hZrFPXOFt13RwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0NtNGsN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65A0C2BCB3;
+	Mon, 23 Mar 2026 14:06:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274236;
-	bh=qK5+I27ULJOvzgO9fvgDBMYadE/ZFZDox570ZVjDUDs=;
+	s=korg; t=1774274789;
+	bh=MkD1E/W8P2NWyhDrJABLnCXyxl+8PIb4kQN6iONP1lU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzsjKN/RgkC7xObX19R96t+E9qIuOnAp4FFg7KC0b0X5eu7TirUkDS2ccZITWAvV5
-	 2NSTKcTae6IYMzGZR7haMGSB/7ZiOMXRT9ZmtNMwtfGIgmkzmKnyTwis5z91QJEYo7
-	 tTYcLjaLk0TVPczKbulWOprN6rj2qjdX7ZOrvgMs=
+	b=L0NtNGsN8cAda7Qjq79pRvgYu6JCqVg0Uc+ru1OmkRjPnMSKweo2cz6eUXw/4gcR7
+	 bh/s2ymo0KjA0Vt0v5etEF8qZW8SQqBTPdZEgGzFb1AJT8UFs5lbNr8AxKrIwfM0bL
+	 h82o83ORvVd3lW2ahzUlM62b/2cua2HesyedVucY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tobi Gaertner <tob.gaertner@me.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 152/220] net: usb: cdc_ncm: add ndpoffset to NDP16 nframes bounds check
+Subject: [PATCH 6.18 108/212] wifi: mac80211: remove keys after disabling beaconing
 Date: Mon, 23 Mar 2026 14:45:29 +0100
-Message-ID: <20260323134509.385767030@linuxfoundation.org>
+Message-ID: <20260323134507.194296317@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,94 +69,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228137-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228317-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.971];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,me.com:email]
-X-Rspamd-Queue-Id: E05962F3E3F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DF8772F435F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tobi Gaertner <tob.gaertner@me.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 2aa8a4fa8d5b7d0e1ebcec100e1a4d80a1f4b21a ]
+[ Upstream commit 708bbb45537780a8d3721ca1e0cf1932c1d1bf5f ]
 
-cdc_ncm_rx_verify_ndp16() validates that the NDP header and its DPE
-entries fit within the skb. The first check correctly accounts for
-ndpoffset:
+We shouldn't remove keys before disable beaconing, at least when
+beacon protection is used, since that would remove keys that are
+still used for beacon transmission at the same time. Stop before
+removing keys so there's no race.
 
-  if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len)
-
-but the second check omits it:
-
-  if ((sizeof(struct usb_cdc_ncm_ndp16) +
-       ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len)
-
-This validates the DPE array size against the total skb length as if
-the NDP were at offset 0, rather than at ndpoffset. When the NDP is
-placed near the end of the NTB (large wNdpIndex), the DPE entries can
-extend past the skb data buffer even though the check passes.
-cdc_ncm_rx_fixup() then reads out-of-bounds memory when iterating
-the DPE array.
-
-Add ndpoffset to the nframes bounds check and use struct_size_t() to
-express the NDP-plus-DPE-array size more clearly.
-
-Fixes: ff06ab13a4cc ("net: cdc_ncm: splitting rx_fixup for code reuse")
-Signed-off-by: Tobi Gaertner <tob.gaertner@me.com>
-Link: https://patch.msgid.link/20260314054640.2895026-2-tob.gaertner@me.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260303150339.574e7887b3ab.I50d708f5aa22584506a91d0da7f8a73ba39fceac@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/cdc_ncm.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/mac80211/cfg.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index 5d123df0a866b..a9d0162b5ee01 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -1656,6 +1656,7 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
- 	struct usbnet *dev = netdev_priv(skb_in->dev);
- 	struct usb_cdc_ncm_ndp16 *ndp16;
- 	int ret = -EINVAL;
-+	size_t ndp_len;
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index e18df59951a82..d32eacbb7517d 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1872,12 +1872,6 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
  
- 	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len) {
- 		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
-@@ -1675,8 +1676,8 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
- 					sizeof(struct usb_cdc_ncm_dpe16));
- 	ret--; /* we process NDP entries except for the last one */
+ 	__sta_info_flush(sdata, true, link_id, NULL);
  
--	if ((sizeof(struct usb_cdc_ncm_ndp16) +
--	     ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len) {
-+	ndp_len = struct_size_t(struct usb_cdc_ncm_ndp16, dpe16, ret);
-+	if (ndpoffset + ndp_len > skb_in->len) {
- 		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
- 		ret = -EINVAL;
- 	}
+-	ieee80211_remove_link_keys(link, &keys);
+-	if (!list_empty(&keys)) {
+-		synchronize_net();
+-		ieee80211_free_key_list(local, &keys);
+-	}
+-
+ 	ieee80211_stop_mbssid(sdata);
+ 	RCU_INIT_POINTER(link_conf->tx_bss_conf, NULL);
+ 
+@@ -1889,6 +1883,12 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	ieee80211_link_info_change_notify(sdata, link,
+ 					  BSS_CHANGED_BEACON_ENABLED);
+ 
++	ieee80211_remove_link_keys(link, &keys);
++	if (!list_empty(&keys)) {
++		synchronize_net();
++		ieee80211_free_key_list(local, &keys);
++	}
++
+ 	if (sdata->wdev.links[link_id].cac_started) {
+ 		chandef = link_conf->chanreq.oper;
+ 		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
 -- 
 2.51.0
 
