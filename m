@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229735-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yNCGCItWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228749-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:43 +0100
+	id KPA4LJJswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229735-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757872F5B7E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F30242F8826
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3645931EEA2E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 366D2321FD11
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F323AF647;
-	Mon, 23 Mar 2026 14:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84CAE3AF647;
+	Mon, 23 Mar 2026 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVrRm4Dk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoaIynIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEE939EF1E;
-	Mon, 23 Mar 2026 14:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474E937B03B;
+	Mon, 23 Mar 2026 16:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277019; cv=none; b=tmnJgAUL0Ayj5VFzDFJGpOWZ2lJSXmvTfWJmuDns5nb9jzdzMtHjz7ZobYK/RnHO6A9w8ZlXzksQb5+KbvBS8wO8wQsakGTTzFyE6fcN7Ic4uMHXRROE80L3QET9ar8VCTyi5HpJNxI68H5Cjsi72w5hAaHT8ciZLVsC8CF/7yg=
+	t=1774282726; cv=none; b=eS6N3OhSRl38i9XRS8He90cayBTL31bUrYo8yIpar3udqcmj5WGsZmWMH3nfDutt7I2/tt9ocX8ncSPbVdUGoIhkLV2uxsM01PFP04P1v6hYVrQqu3CFR+89FtbMCB0242b3YCM79SZd5SAUL5zG1GOa1sDNTMWpPX0W8YyHozI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277019; c=relaxed/simple;
-	bh=3r85FM79r8VvIMm/lL2RzBClF5vT5nK/6w897MvIBOY=;
+	s=arc-20240116; t=1774282726; c=relaxed/simple;
+	bh=WpI0OAZq1vq/c8hj2e6l32Nabud2AOgUYdLpXwEN7Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SsPpgqKGNUcg5b03O8hKGAFxVa+IENk98wDjIk9tfQd3WfmASVsto9U8k3paPEP54H7Icgon9egvR/RSt8VMllZ0GlI8v/rgmwOS2u9N/OkU8VpSTaixSdYzBaZOXR/fBTW4SXXU0oMrm/a37kg8XBQ5HKBHYgzLDe32ckdQOyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVrRm4Dk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307BFC4CEF7;
-	Mon, 23 Mar 2026 14:43:39 +0000 (UTC)
+	 MIME-Version; b=LpvXpbcGMPxQEh+4HcDDcK6IApWC98FXf1LW5/bzC0HbLgLc0XyjOE4pozI4mtz3BjkL3N9/26boJ6CXYciVUD1FOTCjPSpKvjGkfNM4C6tLHG5JyT/K5PzlJMxdNcpiectEOrvIudbafolMqBKh5Xrp8YlYZhuIZCGgt15AC44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoaIynIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE2EC4CEF7;
+	Mon, 23 Mar 2026 16:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277019;
-	bh=3r85FM79r8VvIMm/lL2RzBClF5vT5nK/6w897MvIBOY=;
+	s=korg; t=1774282726;
+	bh=WpI0OAZq1vq/c8hj2e6l32Nabud2AOgUYdLpXwEN7Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lVrRm4DkkoxM6X3iN7rpX7/jWlVW2ibbSw4dkeGQSEtpwCjTTF35Q23lUsUw5kUcl
-	 p6qGtRaiIQ66xs/pw+eqj7Ny+DyLAPPl472BH7flPz6Tr12reomXsQBXCuIxukwgeH
-	 7hsqhRH6Sm9XlaH+1uT6cEz6w4HEx/+dQN7yobzo=
+	b=HoaIynIcNA3UolaeobDT3FD5tqvn3lc0wVIJVqs7A9Cp/Vph4TZv3AwQVOloHCZJX
+	 8MH5dYOFN8tJDwISqqPXM1gcOpBNleIDvOLXU8qAEy7rfvKnKYWoxs8GZ8NuIHBaPn
+	 tnetxY65MHdbFDIAZS3GR+E2MGkHf3SMhFJi2i0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 247/460] mmc: dw_mmc-rockchip: use modern PM macros
-Date: Mon, 23 Mar 2026 14:44:03 +0100
-Message-ID: <20260323134532.567489090@linuxfoundation.org>
+	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
+	Enzo Matsumiya <ematsumiya@suse.de>,
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 262/481] smb: client: fix iface port assignment in parse_server_interfaces
+Date: Mon, 23 Mar 2026 14:44:04 +0100
+Message-ID: <20260323134531.531352131@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,85 +67,107 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228749-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229735-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 757872F5B7E
+X-Rspamd-Queue-Id: F30242F8826
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Henrique Carvalho <henrique.carvalho@suse.com>
 
-[ Upstream commit 4b43f2bcc84dd550c1a847318db02165d2829573 ]
+commit d4c7210d2f3ea481a6481f03040a64d9077a6172 upstream.
 
-Use the modern PM macros for the suspend and resume functions to be
-automatically dropped by the compiler when CONFIG_PM or
-CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
+parse_server_interfaces() initializes interface socket addresses with
+CIFS_PORT. When the mount uses a non-default port this overwrites the
+configured destination port.
 
-This has the advantage of always compiling these functions in,
-independently of any Kconfig option. Thanks to that, bugs and other
-regressions are subsequently easier to catch.
+Later, cifs_chan_update_iface() copies this sockaddr into server->dstaddr,
+causing reconnect attempts to use the wrong port after server interface
+updates.
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://lore.kernel.org/r/20250815013413.28641-39-jszhang@kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 6465a8bbb0f6 ("mmc: dw_mmc-rockchip: Fix runtime PM support for internal phase support")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use the existing port from server->dstaddr instead.
+
+Cc: stable@vger.kernel.org
+Fixes: fe856be475f7 ("CIFS: parse and store info on iface queries")
+Tested-by: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
+Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
+Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/dw_mmc-rockchip.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ fs/smb/client/smb2ops.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/dw_mmc-rockchip.c
-+++ b/drivers/mmc/host/dw_mmc-rockchip.c
-@@ -568,11 +568,8 @@ static void dw_mci_rockchip_remove(struc
- }
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -569,6 +569,7 @@ parse_server_interfaces(struct network_i
+ 	struct iface_info_ipv6 *p6;
+ 	struct cifs_server_iface *info = NULL, *iface = NULL, *niface = NULL;
+ 	struct cifs_server_iface tmp_iface;
++	__be16 port;
+ 	ssize_t bytes_left;
+ 	size_t next = 0;
+ 	int nb_iface = 0;
+@@ -610,6 +611,15 @@ parse_server_interfaces(struct network_i
+ 		goto out;
+ 	}
  
- static const struct dev_pm_ops dw_mci_rockchip_dev_pm_ops = {
--	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
--				pm_runtime_force_resume)
--	SET_RUNTIME_PM_OPS(dw_mci_runtime_suspend,
--			   dw_mci_runtime_resume,
--			   NULL)
-+	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-+	RUNTIME_PM_OPS(dw_mci_runtime_suspend, dw_mci_runtime_resume, NULL)
- };
++	spin_lock(&ses->server->srv_lock);
++	if (ses->server->dstaddr.ss_family == AF_INET)
++		port = ((struct sockaddr_in *)&ses->server->dstaddr)->sin_port;
++	else if (ses->server->dstaddr.ss_family == AF_INET6)
++		port = ((struct sockaddr_in6 *)&ses->server->dstaddr)->sin6_port;
++	else
++		port = cpu_to_be16(CIFS_PORT);
++	spin_unlock(&ses->server->srv_lock);
++
+ 	while (bytes_left >= (ssize_t)sizeof(*p)) {
+ 		memset(&tmp_iface, 0, sizeof(tmp_iface));
+ 		/* default to 1Gbps when link speed is unset */
+@@ -630,7 +640,7 @@ parse_server_interfaces(struct network_i
+ 			memcpy(&addr4->sin_addr, &p4->IPv4Address, 4);
  
- static struct platform_driver dw_mci_rockchip_pltfm_driver = {
-@@ -582,7 +579,7 @@ static struct platform_driver dw_mci_roc
- 		.name		= "dwmmc_rockchip",
- 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
- 		.of_match_table	= dw_mci_rockchip_match,
--		.pm		= &dw_mci_rockchip_dev_pm_ops,
-+		.pm		= pm_ptr(&dw_mci_rockchip_dev_pm_ops),
- 	},
- };
+ 			/* [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these */
+-			addr4->sin_port = cpu_to_be16(CIFS_PORT);
++			addr4->sin_port = port;
  
+ 			cifs_dbg(FYI, "%s: ipv4 %pI4\n", __func__,
+ 				 &addr4->sin_addr);
+@@ -644,7 +654,7 @@ parse_server_interfaces(struct network_i
+ 			/* [MS-SMB2] 2.2.32.5.1.2 Clients MUST ignore these */
+ 			addr6->sin6_flowinfo = 0;
+ 			addr6->sin6_scope_id = 0;
+-			addr6->sin6_port = cpu_to_be16(CIFS_PORT);
++			addr6->sin6_port = port;
+ 
+ 			cifs_dbg(FYI, "%s: ipv6 %pI6\n", __func__,
+ 				 &addr6->sin6_addr);
 
 
 
