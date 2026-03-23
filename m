@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-229790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229334-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ABEoJptywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:27 +0100
+	id QHj4K6tewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229334-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165E42F9619
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198432F6A76
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 562B93058478
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 20DCB3472176
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FF883AF678;
-	Mon, 23 Mar 2026 16:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4953B636A;
+	Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0jhOOWR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPJpiziW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333BC284881;
-	Mon, 23 Mar 2026 16:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFAE3B3C18;
+	Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282872; cv=none; b=jSm1em9KkSREFl7/7bNIH2tpn9StFrFUwDCZS3qUZiysF58SSRwUBMPlTbA5qkOzpUOe3vcNBhec6plLLpUKCQUkZubgCfN6hkBUdTjfaOX+yVbZGHe3lAdmRho44LH8/vxTQgZa2V2U9bSkCyYQLLNN5kygHo0xMRKRtjRLUlU=
+	t=1774278790; cv=none; b=lAGuxxRyNUesqxoaIF7isXnWJPAUv3Qn87/3Yju1D7xCHuTNU/ma2Xey8qf6ddSqvjrPJD/6a+OzG/Fuppi8TQs3UGQEMnqPHv1gcbhnmOwhEX3+815S9SPHco/xnUIMgQglcL9T3YPeYDF9XiHxuFhk5/HGQYrsqziXffdEGuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282872; c=relaxed/simple;
-	bh=vt0A5XXcITZJvYKEUl2sMY4D5KtCQ9qvabWGBtdclds=;
+	s=arc-20240116; t=1774278790; c=relaxed/simple;
+	bh=EXRK55SKgHWb3VGOA7oIlelQpxNCGxUx5AEXSvpSfMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uk9Glt6GfAdZwe8gzfy9vUO+6bfznb8qSI57326rdZZ5/50kUUbIyON4WsfH0VvcSxdkPAVUpCAFSYRF4MWx0n1zkxYqApn2CmN7FvpMMJD7OEp7eK4FBbP9z0Nt00Kprk5+H6zJoVk4jawlbTpa1kJN00sr7v0iAQPcL2UfZsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0jhOOWR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86C3C4CEF7;
-	Mon, 23 Mar 2026 16:21:11 +0000 (UTC)
+	 MIME-Version; b=jT4w/pyElOQMj/qXhOEmCmQOZCiMUatPbZK/Pue3QFjtrVwsrR72XZxnDtiYOVfZvpSyU4S+/45rwWJMror6L97nE+ERe5nITk/002oi1a8Suasz/VOnTpvfFStaD1Oh70YxFEf6CQ1JWxlpLM/jbPz2eRaaxFzViuktVaKRvhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPJpiziW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339AAC2BCB6;
+	Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282872;
-	bh=vt0A5XXcITZJvYKEUl2sMY4D5KtCQ9qvabWGBtdclds=;
+	s=korg; t=1774278790;
+	bh=EXRK55SKgHWb3VGOA7oIlelQpxNCGxUx5AEXSvpSfMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0jhOOWRtoxLZXyxr2sztzMa5HjVwGffkra/quNQNteC07kUC9W8YiiAxV9wRrI2g
-	 txDTvu3bGaKwEHZe8OB5dY0fCuzKBb2W97ddOEVoeW/KHIfMlQraLCe5OyBvi/KzzS
-	 59X9om+VOAJ7kM5puRSeCreTgMs2C1AeT6lF5Ov4=
+	b=VPJpiziWCnX5W4u+3KefaFu/cDjG/Uf1nRXGyXo1K6dVDXVoR34kcK0rN0IOVUVyp
+	 8dNPPxfo4/VCBtt+j6yt/wou83M7qu9S60Pd5QM1dk16Qg9cmLhhbnAJlDMD4vo9hU
+	 XxHAARw6NhGpcPnWJRK8J3g0chzDqbx9c/9eOEaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Pedro Falcato <pfalcato@suse.de>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>,
+	Michal Suchanek <msuchanek@suse.de>,
+	Rainer Fiebig <jrf@mailbox.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nicolas Schier <nsc@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 316/481] ext4: always allocate blocks only from groups inode can use
+Subject: [PATCH 6.6 378/567] kbuild: Leave objtool binary around with make clean
 Date: Mon, 23 Mar 2026 14:44:58 +0100
-Message-ID: <20260323134532.802853873@linuxfoundation.org>
+Message-ID: <20260323134543.188844541@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,18 +73,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229790-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229334-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -94,77 +94,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 165E42F9619
+X-Rspamd-Queue-Id: 198432F6A76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 4865c768b563deff1b6a6384e74a62f143427b42 ]
+[ Upstream commit fdb12c8a24a453bdd6759979b6ef1e04ebd4beb4 ]
 
-For filesystems with more than 2^32 blocks inodes using indirect block
-based format cannot use blocks beyond the 32-bit limit.
-ext4_mb_scan_groups_linear() takes care to not select these unsupported
-groups for such inodes however other functions selecting groups for
-allocation don't. So far this is harmless because the other selection
-functions are used only with mb_optimize_scan and this is currently
-disabled for inodes with indirect blocks however in the following patch
-we want to enable mb_optimize_scan regardless of inode format.
+The difference between 'make clean' and 'make mrproper' is documented in
+'make help' as:
 
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-Cc: stable@kernel.org
-Link: https://patch.msgid.link/20260114182836.14120-3-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-[ Drop a few hunks not needed in older trees ]
+  clean     - Remove most generated files but keep the config and
+              enough build support to build external modules
+  mrproper  - Remove all generated files + config + various backup files
+
+After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
+target"), running 'make clean' then attempting to build an external
+module with the resulting build directory fails with
+
+  $ make ARCH=x86_64 O=build clean
+
+  $ make -C build M=... MO=...
+  ...
+  /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
+
+as 'make clean' removes the objtool binary.
+
+Split the objtool clean target into mrproper and clean like Kbuild does
+and remove all generated artifacts with 'make clean' except for the
+objtool binary, which is removed with 'make mrproper'. To avoid a small
+race when running the objtool clean target through both objtool_mrproper
+and objtool_clean when running 'make mrproper', modify objtool's clean
+up find command to avoid using find's '-delete' command by piping the
+files into 'xargs rm -f' like the rest of Kbuild does.
+
+Cc: stable@vger.kernel.org
+Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
+Reported-by: Michal Suchanek <msuchanek@suse.de>
+Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
+Reported-by: Rainer Fiebig <jrf@mailbox.org>
+Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Nicolas Schier <nsc@kernel.org>
+Tested-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |   20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ Makefile               |    8 ++++----
+ tools/objtool/Makefile |    8 +++++---
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -871,6 +871,21 @@ mb_update_avg_fragment_size(struct super
- 	}
- }
+--- a/Makefile
++++ b/Makefile
+@@ -1356,13 +1356,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
+ 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
+ endif
  
-+static ext4_group_t ext4_get_allocation_groups_count(
-+				struct ext4_allocation_context *ac)
-+{
-+	ext4_group_t ngroups = ext4_get_groups_count(ac->ac_sb);
-+
-+	/* non-extent files are limited to low blocks/groups */
-+	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
-+		ngroups = EXT4_SB(ac->ac_sb)->s_blockfile_groups;
-+
-+	/* Pairs with smp_wmb() in ext4_update_super() */
-+	smp_rmb();
-+
-+	return ngroups;
-+}
-+
- /*
-  * Choose next group by traversing largest_free_order lists. Updates *new_cr if
-  * cr level needs an update.
-@@ -2672,10 +2687,7 @@ ext4_mb_regular_allocator(struct ext4_al
+-PHONY += objtool_clean
++PHONY += objtool_clean objtool_mrproper
  
- 	sb = ac->ac_sb;
- 	sbi = EXT4_SB(sb);
--	ngroups = ext4_get_groups_count(sb);
--	/* non-extent files are limited to low blocks/groups */
--	if (!(ext4_test_inode_flag(ac->ac_inode, EXT4_INODE_EXTENTS)))
--		ngroups = sbi->s_blockfile_groups;
-+	ngroups = ext4_get_allocation_groups_count(ac);
+ objtool_O = $(abspath $(objtree))/tools/objtool
  
- 	BUG_ON(ac->ac_status == AC_STATUS_FOUND);
+-objtool_clean:
++objtool_clean objtool_mrproper:
+ ifneq ($(wildcard $(objtool_O)),)
+-	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
++	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) $(patsubst objtool_%,%,$@)
+ endif
  
+ tools/: FORCE
+@@ -1529,7 +1529,7 @@ PHONY += $(mrproper-dirs) mrproper
+ $(mrproper-dirs):
+ 	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
+ 
+-mrproper: clean $(mrproper-dirs)
++mrproper: clean objtool_mrproper $(mrproper-dirs)
+ 	$(call cmd,rmfiles)
+ 	@find . $(RCS_FIND_IGNORE) \
+ 		\( -name '*.rmeta' \) \
+--- a/tools/objtool/Makefile
++++ b/tools/objtool/Makefile
+@@ -87,10 +87,12 @@ $(LIBSUBCMD)-clean:
+ 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
+ 
+ clean: $(LIBSUBCMD)-clean
+-	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+-	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
++	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
+ 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
+ 
++mrproper: clean
++	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
++
+ FORCE:
+ 
+-.PHONY: clean FORCE
++.PHONY: clean mrproper FORCE
 
 
 
