@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229314-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yPvfMxNvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229809-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:23 +0100
+	id SHh+EZhfwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229314-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:43:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71C8E2F8DBE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D41602F6C6D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:43:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9A9F7316B81A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC6D9307B6B4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02BD3B0ACC;
-	Mon, 23 Mar 2026 16:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B832798EA;
+	Mon, 23 Mar 2026 15:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gA77Fz2a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slzl9el5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82695258CD9;
-	Mon, 23 Mar 2026 16:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E12242D60;
+	Mon, 23 Mar 2026 15:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282923; cv=none; b=GUaPX5ejcgpr7yqyQ6/g7Uoy17Hp51SlkboeJXQrMjwNLLqj+p38IXBDBDbc6Byb9L1X5E1WwbuXBfNfMAB+jEUK3vG5lYwgGp9zT0djcuUL5pG8nAh0v55gc5ZSmMr9Kicj0PAsq72i0T+ej/ZFGV/vvlzgEosWRsD9ZhPcfO4=
+	t=1774278727; cv=none; b=HGV5zmIjy57FFUDido3w0MZxwBj6yzWNEOfHsAp0nwL7GH5wzCAlA8Q0qxe6Db/Xuss4H+OTet9JPjfhFZrC0WG2kFvMyHwcVEaE/N9kGShujHJo7w+3GrzPUhPvN4Wem6viO+VH1GQOaKPk70eiRU9wu2BLL9jNRuHUpms9fM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282923; c=relaxed/simple;
-	bh=q18FpWW7s2SZmIAqyKpyY1Q0JWWI8sxK5nYyRb46Etc=;
+	s=arc-20240116; t=1774278727; c=relaxed/simple;
+	bh=S9NDBUMsxmdmIcTrZOVeOv6aO11bvV5qghHzxKg8kXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQbsCR7n7X3xP6Ri135Ihd5y4SMt1YLVfMsiF+TWBktb74E8DTtYwOWiPiRGpysKsZXxVK9kE64eVbNTiGUpBtcs+uxyemoCClNZKNvd4hkiiMq7tBfEpd1deE6DFRo6RTNGqeNhEVT95JKqcz6o62J3PYniSSqWFzdVPIGVKFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gA77Fz2a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125C7C4CEF7;
-	Mon, 23 Mar 2026 16:22:02 +0000 (UTC)
+	 MIME-Version; b=OZP8kZXohPaERdu4v8zC0w0BbfL3Q5uGp5izW1mXspGTG39WIYTrfH7ipXxRbn9zXhZHHdgiAbuBlaT94zJqlxF1ZCtALTAo2xTn5VmuTvMuATR3fufVEiS5QJbo6bmBhm46Kdez58uyOVqdt6ZbJs9AHcShSUQWgN8RNAP02kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slzl9el5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1BCC2BC9E;
+	Mon, 23 Mar 2026 15:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282923;
-	bh=q18FpWW7s2SZmIAqyKpyY1Q0JWWI8sxK5nYyRb46Etc=;
+	s=korg; t=1774278727;
+	bh=S9NDBUMsxmdmIcTrZOVeOv6aO11bvV5qghHzxKg8kXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gA77Fz2anGQ45vCfUP3k6dlvHC3LB8z9p3axjhKBWe0FZoeQmD/QqzMcRdp79xIGV
-	 ymN2cqXXqag2ST4FXC5vJ8vbsk+8zg3qd/TSM3N9RPSPHG0IFpFjJPuPjXPb8IT8K/
-	 9pEic1CkTGrdPkHZFswEsQQ+XRewyYsrHMP6gMt4=
+	b=slzl9el5FXh92CKxYZADSYnf2KPndLk0Kcn9Z72CNqr+Vrrzs2lkP1M80neuDrQLG
+	 PtxX7xzooklnNpP5623MTpmFKRX8dlpywvQT+PRU8b1fXnBcOhT1NvP5n4nIDPrln6
+	 liUGVNKu8rTzEcqnL4oM8T9ysgGf1QO6LpZkvv4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Huiwen He <hehuiwen@kylinos.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Brian Foster <bfoster@redhat.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 337/481] tracing: Fix syscall events activation by ensuring refcount hits zero
+Subject: [PATCH 6.6 399/567] ext4: fix dirtyclusters double decrement on fs shutdown
 Date: Mon, 23 Mar 2026 14:45:19 +0100
-Message-ID: <20260323134533.308137486@linuxfoundation.org>
+Message-ID: <20260323134543.737971649@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229809-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229314-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,129 +92,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 71C8E2F8DBE
+X-Rspamd-Queue-Id: D41602F6C6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huiwen He <hehuiwen@kylinos.cn>
+From: Brian Foster <bfoster@redhat.com>
 
-[ Upstream commit 0a663b764dbdf135a126284f454c9f01f95a87d4 ]
+[ Upstream commit 94a8cea54cd935c54fa2fba70354757c0fc245e3 ]
 
-When multiple syscall events are specified in the kernel command line
-(e.g., trace_event=syscalls:sys_enter_openat,syscalls:sys_enter_close),
-they are often not captured after boot, even though they appear enabled
-in the tracing/set_event file.
+fstests test generic/388 occasionally reproduces a warning in
+ext4_put_super() associated with the dirty clusters count:
 
-The issue stems from how syscall events are initialized. Syscall
-tracepoints require the global reference count (sys_tracepoint_refcount)
-to transition from 0 to 1 to trigger the registration of the syscall
-work (TIF_SYSCALL_TRACEPOINT) for tasks, including the init process (pid 1).
+  WARNING: CPU: 7 PID: 76064 at fs/ext4/super.c:1324 ext4_put_super+0x48c/0x590 [ext4]
 
-The current implementation of early_enable_events() with disable_first=true
-used an interleaved sequence of "Disable A -> Enable A -> Disable B -> Enable B".
-If multiple syscalls are enabled, the refcount never drops to zero,
-preventing the 0->1 transition that triggers actual registration.
+Tracing the failure shows that the warning fires due to an
+s_dirtyclusters_counter value of -1. IOW, this appears to be a
+spurious decrement as opposed to some sort of leak. Further tracing
+of the dirty cluster count deltas and an LLM scan of the resulting
+output identified the cause as a double decrement in the error path
+between ext4_mb_mark_diskspace_used() and the caller
+ext4_mb_new_blocks().
 
-Fix this by splitting early_enable_events() into two distinct phases:
-1. Disable all events specified in the buffer.
-2. Enable all events specified in the buffer.
+First, note that generic/388 is a shutdown vs. fsstress test and so
+produces a random set of operations and shutdown injections. In the
+problematic case, the shutdown triggers an error return from the
+ext4_handle_dirty_metadata() call(s) made from
+ext4_mb_mark_context(). The changed value is non-zero at this point,
+so ext4_mb_mark_diskspace_used() does not exit after the error
+bubbles up from ext4_mb_mark_context(). Instead, the former
+decrements both cluster counters and returns the error up to
+ext4_mb_new_blocks(). The latter falls into the !ar->len out path
+which decrements the dirty clusters counter a second time, creating
+the inconsistency.
 
-This ensures the refcount hits zero before re-enabling, allowing syscall
-events to be properly activated during early boot.
+To avoid this problem and simplify ownership of the cluster
+reservation in this codepath, lift the counter reduction to a single
+place in the caller. This makes it more clear that
+ext4_mb_new_blocks() is responsible for acquiring cluster
+reservation (via ext4_claim_free_clusters()) in the !delalloc case
+as well as releasing it, regardless of whether it ends up consumed
+or returned due to failure.
 
-The code is also refactored to use a helper function to avoid logic
-duplication between the disable and enable phases.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260224023544.1250787-1-hehuiwen@kylinos.cn
-Fixes: ce1039bd3a89 ("tracing: Fix enabling of syscall events on the command line")
-Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 0087d9fb3f29 ("ext4: Fix s_dirty_blocks_counter if block allocation failed with nodelalloc")
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20260113171905.118284-1-bfoster@redhat.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+[ Drop mballoc-test changes ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events.c |   51 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 36 insertions(+), 15 deletions(-)
+ fs/ext4/mballoc.c |   21 +++++----------------
+ 1 file changed, 5 insertions(+), 16 deletions(-)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -3862,27 +3862,23 @@ static __init int event_trace_memsetup(v
- 	return 0;
- }
- 
--static __init void
--early_enable_events(struct trace_array *tr, bool disable_first)
-+/*
-+ * Helper function to enable or disable a comma-separated list of events
-+ * from the bootup buffer.
-+ */
-+static __init void __early_set_events(struct trace_array *tr, bool enable)
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -3999,8 +3999,7 @@ void ext4_exit_mballoc(void)
+  * Returns 0 if success or error code
+  */
+ static noinline_for_stack int
+-ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
+-				handle_t *handle, unsigned int reserv_clstrs)
++ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac, handle_t *handle)
  {
- 	char *buf = bootup_event_buf;
- 	char *token;
--	int ret;
--
--	while (true) {
--		token = strsep(&buf, ",");
--
--		if (!token)
--			break;
+ 	struct buffer_head *bitmap_bh = NULL;
+ 	struct ext4_group_desc *gdp;
+@@ -4086,13 +4085,6 @@ ext4_mb_mark_diskspace_used(struct ext4_
  
-+	while ((token = strsep(&buf, ","))) {
- 		if (*token) {
--			/* Restarting syscalls requires that we stop them first */
--			if (disable_first)
-+			if (enable) {
-+				if (ftrace_set_clr_event(tr, token, 1))
-+					pr_warn("Failed to enable trace event: %s\n", token);
-+			} else {
- 				ftrace_set_clr_event(tr, token, 0);
--
--			ret = ftrace_set_clr_event(tr, token, 1);
--			if (ret)
--				pr_warn("Failed to enable trace event: %s\n", token);
-+			}
- 		}
+ 	ext4_unlock_group(sb, ac->ac_b_ex.fe_group);
+ 	percpu_counter_sub(&sbi->s_freeclusters_counter, ac->ac_b_ex.fe_len);
+-	/*
+-	 * Now reduce the dirty block count also. Should not go negative
+-	 */
+-	if (!(ac->ac_flags & EXT4_MB_DELALLOC_RESERVED))
+-		/* release all the reserved blocks if non delalloc */
+-		percpu_counter_sub(&sbi->s_dirtyclusters_counter,
+-				   reserv_clstrs);
  
- 		/* Put back the comma to allow this to be called again */
-@@ -3891,6 +3887,31 @@ early_enable_events(struct trace_array *
+ 	if (sbi->s_log_groups_per_flex) {
+ 		ext4_group_t flex_group = ext4_flex_group(sbi,
+@@ -6265,7 +6257,7 @@ repeat:
+ 			ext4_mb_pa_put_free(ac);
  	}
- }
+ 	if (likely(ac->ac_status == AC_STATUS_FOUND)) {
+-		*errp = ext4_mb_mark_diskspace_used(ac, handle, reserv_clstrs);
++		*errp = ext4_mb_mark_diskspace_used(ac, handle);
+ 		if (*errp) {
+ 			ext4_discard_allocated_blocks(ac);
+ 			goto errout;
+@@ -6296,12 +6288,9 @@ errout:
+ out:
+ 	if (inquota && ar->len < inquota)
+ 		dquot_free_block(ar->inode, EXT4_C2B(sbi, inquota - ar->len));
+-	if (!ar->len) {
+-		if ((ar->flags & EXT4_MB_DELALLOC_RESERVED) == 0)
+-			/* release all the reserved blocks if non delalloc */
+-			percpu_counter_sub(&sbi->s_dirtyclusters_counter,
+-						reserv_clstrs);
+-	}
++	/* release any reserved blocks */
++	if (reserv_clstrs)
++		percpu_counter_sub(&sbi->s_dirtyclusters_counter, reserv_clstrs);
  
-+/**
-+ * early_enable_events - enable events from the bootup buffer
-+ * @tr: The trace array to enable the events in
-+ * @disable_first: If true, disable all events before enabling them
-+ *
-+ * This function enables events from the bootup buffer. If @disable_first
-+ * is true, it will first disable all events in the buffer before enabling
-+ * them.
-+ *
-+ * For syscall events, which rely on a global refcount to register the
-+ * SYSCALL_WORK_SYSCALL_TRACEPOINT flag (especially for pid 1), we must
-+ * ensure the refcount hits zero before re-enabling them. A simple
-+ * "disable then enable" per-event is not enough if multiple syscalls are
-+ * used, as the refcount will stay above zero. Thus, we need a two-phase
-+ * approach: disable all, then enable all.
-+ */
-+static __init void
-+early_enable_events(struct trace_array *tr, bool disable_first)
-+{
-+	if (disable_first)
-+		__early_set_events(tr, false);
-+
-+	__early_set_events(tr, true);
-+}
-+
- static __init int event_trace_enable(void)
- {
- 	struct trace_array *tr = top_trace_array();
+ 	trace_ext4_allocate_blocks(ar, (unsigned long long)block);
+ 
 
 
 
