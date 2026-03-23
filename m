@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-229956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228915-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4IbpMbpxwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229956-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:42 +0100
+	id AIcaLHZWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228915-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62192F9476
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5ABA2F5B54
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6698A315FBB1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 855C8308AC82
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0D63C13F9;
-	Mon, 23 Mar 2026 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1E53AC0EB;
+	Mon, 23 Mar 2026 14:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ViMgJJww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOGGqrf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60183BC666;
-	Mon, 23 Mar 2026 16:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2104242D9D;
+	Mon, 23 Mar 2026 14:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283361; cv=none; b=QT6NeKmwQrgJG65EHcH26nF0n3lNqt+ko2XWWxx1Yg9bvhZI5HuXgqHEH1/riL8MgkUyQtCKcXOHjzYSF+Sm9gXzGMgoPsbWVbUxuPhhrKS6z2lkS5R3ImPXiwCCZHQxDmFfJ0o3J6Pi0AggsLiBC6AAeOwA469UgFSveTjQt0c=
+	t=1774277477; cv=none; b=LAP1vsGQgo6JyHKdAjGrZfB1EWKzYHvaefyTIZIRCbxWTmik10i+/ZorwzaGoSsARULQGwGR8+uz5/DxllsDTMbYbLs9azcPhac+yNdwIzV29GleHUiOOkTy14yGDRrA3dFwQ0qYvkpFXF5DoaEeCcwBlg8Kafq1aObcgdt/ruU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283361; c=relaxed/simple;
-	bh=paEX3DabM3vKS9FUF1cBv73PIJI1Z+t1iFAyjzOEIF0=;
+	s=arc-20240116; t=1774277477; c=relaxed/simple;
+	bh=D2yHhazTbF+Q1wsKmg1jNRXwxBxjV/frl7QSZ17jAIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JSvNYca8wstoVaQTdk93GvSvk+UPBFpPzAIK48Qq0sdsQKTKrDtQ2CagK2o85ZdeWzBrSEshrFLu4yDdzlL7vzc5tYxQpxymIk7foasFKo+93kHCPFk/JIGb/N3UXNsqEJWY6ZVyoOMc8IgG1+GS6ynRMXsU3baI3nitIlNfagA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ViMgJJww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 388E7C4CEF7;
-	Mon, 23 Mar 2026 16:29:21 +0000 (UTC)
+	 MIME-Version; b=Zu7mvlKEw1oma0Hct8bp3f4SnkRiW9t6Nnmm5iv/wmIDwEA/FQaFl8TQkQgUbUoEtV366C/AZB7PA1qHoXlH+4IyyRrTAvbv/5J981AD+wK30fuWVoadpo5A54EL9NgJfNPX+tH6GQ2k7UyxvoCQNU0bwVcqg1Q6WtBHM9M+3GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOGGqrf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FFAC4CEF7;
+	Mon, 23 Mar 2026 14:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283361;
-	bh=paEX3DabM3vKS9FUF1cBv73PIJI1Z+t1iFAyjzOEIF0=;
+	s=korg; t=1774277476;
+	bh=D2yHhazTbF+Q1wsKmg1jNRXwxBxjV/frl7QSZ17jAIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ViMgJJwwz2Leb2bA6ohnlJXwV4oKC6xbm2wOTLQ12rKmNUCdUOG8qMHoBt/L+mydq
-	 6uw5ZR0d4nDhv1Hw+mMXeuYY7cx8DD59Bs24GLIYwzPTCuwc2IgdoeH03zeAT/7/Ro
-	 txG1emF7wqdEyHrcq9rCz/0sTZUFjkPnF3ZXLCFU=
+	b=MOGGqrf2scj3ZDx89m190BXxJmD2LTfKFuV6Ng7kEmdNliX3FE3NMkITLjkP3JzXm
+	 EhSZSzmW2jZ8zDe9JVW21mgclx/MMBl+8jdy1DIQ7HJGWvdbxiyIZpEKjnSTmXTRbs
+	 eS9qDvkd/YBps8UCQplpvS6gZd43AZK2hPL/paqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Casey Chen <cachen@purestorage.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1 468/481] nvme: fix admin request_queue lifetime
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 454/460] ksmbd: fix use-after-free in durable v2 replay of active file handles
 Date: Mon, 23 Mar 2026 14:47:30 +0100
-Message-ID: <20260323134536.623356162@linuxfoundation.org>
+Message-ID: <20260323134537.734062801@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,124 +67,162 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229956-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,purestorage.com,lst.de,suse.de,redhat.com,nvidia.com,kernel.org,163.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[lst.de:query timed out];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228915-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B62192F9476
+X-Rspamd-Queue-Id: B5ABA2F5B54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 03b3bcd319b3ab5182bc9aaa0421351572c78ac0 ]
+[ Upstream commit b425e4d0eb321a1116ddbf39636333181675d8f4 ]
 
-The namespaces can access the controller's admin request_queue, and
-stale references on the namespaces may exist after tearing down the
-controller. Ensure the admin request_queue is active by moving the
-controller's 'put' to after all controller references have been released
-to ensure no one is can access the request_queue. This fixes a reported
-use-after-free bug:
+parse_durable_handle_context() unconditionally assigns dh_info->fp->conn
+to the current connection when handling a DURABLE_REQ_V2 context with
+SMB2_FLAGS_REPLAY_OPERATION. ksmbd_lookup_fd_cguid() does not filter by
+fp->conn, so it returns file handles that are already actively connected.
+The unconditional overwrite replaces fp->conn, and when the overwriting
+connection is subsequently freed, __ksmbd_close_fd() dereferences the
+stale fp->conn via spin_lock(&fp->conn->llist_lock), causing a
+use-after-free.
 
-  BUG: KASAN: slab-use-after-free in blk_queue_enter+0x41c/0x4a0
-  Read of size 8 at addr ffff88c0a53819f8 by task nvme/3287
-  CPU: 67 UID: 0 PID: 3287 Comm: nvme Tainted: G            E       6.13.2-ga1582f1a031e #15
-  Tainted: [E]=UNSIGNED_MODULE
-  Hardware name: Jabil /EGS 2S MB1, BIOS 1.00 06/18/2025
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x4f/0x60
-   print_report+0xc4/0x620
-   ? _raw_spin_lock_irqsave+0x70/0xb0
-   ? _raw_read_unlock_irqrestore+0x30/0x30
-   ? blk_queue_enter+0x41c/0x4a0
-   kasan_report+0xab/0xe0
-   ? blk_queue_enter+0x41c/0x4a0
-   blk_queue_enter+0x41c/0x4a0
-   ? __irq_work_queue_local+0x75/0x1d0
-   ? blk_queue_start_drain+0x70/0x70
-   ? irq_work_queue+0x18/0x20
-   ? vprintk_emit.part.0+0x1cc/0x350
-   ? wake_up_klogd_work_func+0x60/0x60
-   blk_mq_alloc_request+0x2b7/0x6b0
-   ? __blk_mq_alloc_requests+0x1060/0x1060
-   ? __switch_to+0x5b7/0x1060
-   nvme_submit_user_cmd+0xa9/0x330
-   nvme_user_cmd.isra.0+0x240/0x3f0
-   ? force_sigsegv+0xe0/0xe0
-   ? nvme_user_cmd64+0x400/0x400
-   ? vfs_fileattr_set+0x9b0/0x9b0
-   ? cgroup_update_frozen_flag+0x24/0x1c0
-   ? cgroup_leave_frozen+0x204/0x330
-   ? nvme_ioctl+0x7c/0x2c0
-   blkdev_ioctl+0x1a8/0x4d0
-   ? blkdev_common_ioctl+0x1930/0x1930
-   ? fdget+0x54/0x380
-   __x64_sys_ioctl+0x129/0x190
-   do_syscall_64+0x5b/0x160
-   entry_SYSCALL_64_after_hwframe+0x4b/0x53
-  RIP: 0033:0x7f765f703b0b
-  Code: ff ff ff 85 c0 79 9b 49 c7 c4 ff ff ff ff 5b 5d 4c 89 e0 41 5c c3 66 0f 1f 84 00 00 00 00 00 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d dd 52 0f 00 f7 d8 64 89 01 48
-  RSP: 002b:00007ffe2cefe808 EFLAGS: 00000202 ORIG_RAX: 0000000000000010
-  RAX: ffffffffffffffda RBX: 00007ffe2cefe860 RCX: 00007f765f703b0b
-  RDX: 00007ffe2cefe860 RSI: 00000000c0484e41 RDI: 0000000000000003
-  RBP: 0000000000000000 R08: 0000000000000003 R09: 0000000000000000
-  R10: 00007f765f611d50 R11: 0000000000000202 R12: 0000000000000003
-  R13: 00000000c0484e41 R14: 0000000000000001 R15: 00007ffe2cefea60
-   </TASK>
+KASAN report:
 
-Reported-by: Casey Chen <cachen@purestorage.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[ The context change is due to the commit 2b3f056f72e5
-("blk-mq: move the call to blk_put_queue out of blk_mq_destroy_queue")
-in v6.2 which is irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    7.349357] ==================================================================
+[    7.349607] BUG: KASAN: slab-use-after-free in _raw_spin_lock+0x75/0xe0
+[    7.349811] Write of size 4 at addr ffff8881056ac18c by task kworker/1:2/108
+[    7.350010]
+[    7.350064] CPU: 1 UID: 0 PID: 108 Comm: kworker/1:2 Not tainted 7.0.0-rc3+ #58 PREEMPTLAZY
+[    7.350068] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    7.350070] Workqueue: ksmbd-io handle_ksmbd_work
+[    7.350083] Call Trace:
+[    7.350087]  <TASK>
+[    7.350087]  dump_stack_lvl+0x64/0x80
+[    7.350094]  print_report+0xce/0x660
+[    7.350100]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[    7.350101]  ? __pfx___mod_timer+0x10/0x10
+[    7.350106]  ? _raw_spin_lock+0x75/0xe0
+[    7.350108]  kasan_report+0xce/0x100
+[    7.350109]  ? _raw_spin_lock+0x75/0xe0
+[    7.350114]  kasan_check_range+0x105/0x1b0
+[    7.350116]  _raw_spin_lock+0x75/0xe0
+[    7.350118]  ? __pfx__raw_spin_lock+0x10/0x10
+[    7.350119]  ? __call_rcu_common.constprop.0+0x25e/0x780
+[    7.350125]  ? close_id_del_oplock+0x2cc/0x4e0
+[    7.350128]  __ksmbd_close_fd+0x27f/0xaf0
+[    7.350131]  ksmbd_close_fd+0x135/0x1b0
+[    7.350133]  smb2_close+0xb19/0x15b0
+[    7.350142]  ? __pfx_smb2_close+0x10/0x10
+[    7.350143]  ? xas_load+0x18/0x270
+[    7.350146]  ? _raw_spin_lock+0x84/0xe0
+[    7.350148]  ? __pfx__raw_spin_lock+0x10/0x10
+[    7.350150]  ? _raw_spin_unlock+0xe/0x30
+[    7.350151]  ? ksmbd_smb2_check_message+0xeb2/0x24c0
+[    7.350153]  ? ksmbd_tree_conn_lookup+0xcd/0xf0
+[    7.350154]  handle_ksmbd_work+0x40f/0x1080
+[    7.350156]  process_one_work+0x5fa/0xef0
+[    7.350162]  ? assign_work+0x122/0x3e0
+[    7.350163]  worker_thread+0x54b/0xf70
+[    7.350165]  ? __pfx_worker_thread+0x10/0x10
+[    7.350166]  kthread+0x346/0x470
+[    7.350170]  ? recalc_sigpending+0x19b/0x230
+[    7.350176]  ? __pfx_kthread+0x10/0x10
+[    7.350178]  ret_from_fork+0x4fb/0x6c0
+[    7.350183]  ? __pfx_ret_from_fork+0x10/0x10
+[    7.350185]  ? __switch_to+0x36c/0xbe0
+[    7.350188]  ? __pfx_kthread+0x10/0x10
+[    7.350190]  ret_from_fork_asm+0x1a/0x30
+[    7.350197]  </TASK>
+[    7.350197]
+[    7.355160] Allocated by task 123:
+[    7.355261]  kasan_save_stack+0x33/0x60
+[    7.355373]  kasan_save_track+0x14/0x30
+[    7.355484]  __kasan_kmalloc+0x8f/0xa0
+[    7.355593]  ksmbd_conn_alloc+0x44/0x6d0
+[    7.355711]  ksmbd_kthread_fn+0x243/0xd70
+[    7.355839]  kthread+0x346/0x470
+[    7.355942]  ret_from_fork+0x4fb/0x6c0
+[    7.356051]  ret_from_fork_asm+0x1a/0x30
+[    7.356164]
+[    7.356214] Freed by task 134:
+[    7.356305]  kasan_save_stack+0x33/0x60
+[    7.356416]  kasan_save_track+0x14/0x30
+[    7.356527]  kasan_save_free_info+0x3b/0x60
+[    7.356646]  __kasan_slab_free+0x43/0x70
+[    7.356761]  kfree+0x1ca/0x430
+[    7.356862]  ksmbd_tcp_disconnect+0x59/0xe0
+[    7.356993]  ksmbd_conn_handler_loop+0x77e/0xd40
+[    7.357138]  kthread+0x346/0x470
+[    7.357240]  ret_from_fork+0x4fb/0x6c0
+[    7.357350]  ret_from_fork_asm+0x1a/0x30
+[    7.357463]
+[    7.357513] The buggy address belongs to the object at ffff8881056ac000
+[    7.357513]  which belongs to the cache kmalloc-1k of size 1024
+[    7.357857] The buggy address is located 396 bytes inside of
+[    7.357857]  freed 1024-byte region [ffff8881056ac000, ffff8881056ac400)
+
+Fix by removing the unconditional fp->conn assignment and rejecting the
+replay when fp->conn is non-NULL. This is consistent with
+ksmbd_lookup_durable_fd(), which also rejects file handles with a
+non-NULL fp->conn. For disconnected file handles (fp->conn == NULL),
+ksmbd_reopen_durable_fd() handles setting fp->conn.
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/smb2pdu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -5180,6 +5180,8 @@ static void nvme_free_ctrl(struct device
- 		container_of(dev, struct nvme_ctrl, ctrl_device);
- 	struct nvme_subsystem *subsys = ctrl->subsys;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 9902f77d10483..63c092328752e 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2835,7 +2835,11 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
+ 						goto out;
+ 					}
  
-+	if (ctrl->admin_q)
-+		blk_put_queue(ctrl->admin_q);
- 	if (!subsys || ctrl->instance != subsys->instance)
- 		ida_free(&nvme_instance_ida, ctrl->instance);
- 
+-					dh_info->fp->conn = conn;
++					if (dh_info->fp->conn) {
++						ksmbd_put_durable_fd(dh_info->fp);
++						err = -EBADF;
++						goto out;
++					}
+ 					dh_info->reconnected = true;
+ 					goto out;
+ 				}
+-- 
+2.51.0
+
 
 
 
