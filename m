@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-227995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228698-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8OXDGldFwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-227995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:19 +0100
+	id 4K9vHgpTwWkPSQQAu9opvQ
+	(envelope-from <stable+bounces-228698-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 052032F357F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 186132F53FE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D0FF30266D1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 87B44303F439
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF96E3AC0DB;
-	Mon, 23 Mar 2026 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404503B38B1;
+	Mon, 23 Mar 2026 14:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQOmUGqQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6das8au"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35CF3AD52E;
-	Mon, 23 Mar 2026 13:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9133D3B38A4;
+	Mon, 23 Mar 2026 14:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273806; cv=none; b=RlSoWG5GgegDA1crrM5qa+Eu05V5CJj4eUFbwIqjT0sUnywQDMxUvUbUIDxN9AIodjJy/5cWsdpsYo+ZJ36JSEmwClqnFsbcHkRqqtJlHGyLdkxrzvLk1UlvZXKXO8sWHANwYOCkBDrKDfmVp12djQomNqJigIWFEBiqqN9mQFQ=
+	t=1774276883; cv=none; b=VBSPQdmsPM+vTpHWAV69WsEOy+Buxi6k5Sk2gKYeWvvalzyJgxeV3RGYgo+52kYS4fFaC2EziGTFFC9NPbQmr/WyGQfG0sVbmuqYyLVxFhh38GdQqSYbOQ5EzUwtpjUboZviC/W1L8SWQAVr7NHe/jinbKUQlOPYi/cruCMWgMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273806; c=relaxed/simple;
-	bh=pWYdnexzQH/JsnE684Ws1uf6XCF3MzlRWW7lbrrMcaM=;
+	s=arc-20240116; t=1774276883; c=relaxed/simple;
+	bh=ZD8cKvpNcJkyAI4++Gg9qLCE0N8qPj9ulSQuJhZkQok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MG7tG+ovthzWoFQ7pIktPkSDbh7cDDfEZmUmomJFsd5NJwm799prQJdiEgI7fGqMNYN65umXOudblu3bY6Wr4IUymSVemcRRWhNibKKFEnIBFPMCdZYUPjLI6b5jeP4TYAFpXgNA1pL1SZpaU/PxSMHgblYdwT4ejoaBdxso/X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQOmUGqQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729A2C4CEF7;
-	Mon, 23 Mar 2026 13:50:05 +0000 (UTC)
+	 MIME-Version; b=Zt4trmlqoIj/bktdH7HZHnI89XEDvm0JUnT/9LdGexWb3dFVGv8UYxxMkrjmNnrYg7kIhMUWj8y7amWoV+iDxAie0Q5Kcora1HJOn9jEP2tOf90yeWfTcnZyJ+i+pYyRV94G3uZOJUqpmzvUkj8FK0yV4LnGtRfVLGbuPnOr2N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6das8au; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E989CC4CEF7;
+	Mon, 23 Mar 2026 14:41:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273806;
-	bh=pWYdnexzQH/JsnE684Ws1uf6XCF3MzlRWW7lbrrMcaM=;
+	s=korg; t=1774276883;
+	bh=ZD8cKvpNcJkyAI4++Gg9qLCE0N8qPj9ulSQuJhZkQok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQOmUGqQgUkf0yMua07LN0qrWpxNScwivoRtQuhwe2HHOSMxqg7aCmQ39DJdyh533
-	 g+A+qZ9+Yk8mdrleD9Oysp52yRFYKZasUA3Nrc979bGOiWU62ksIBEpzgW3NcBs+SW
-	 DHng3jVrh+xPuv/4mNIERXiGr2Xd7Ycw+aZHasuQ=
+	b=G6das8auqI8vrAtVrapQsPgpUCKgMwulQpBSihbIBoFYUGv/0KIBLinoyoK4Io4V8
+	 mBbAGoTANRQGhLGOnxGNohP9t9Ns4uGvFw7YyeaThJZIEbi4WIuo5PxbqW9Pf7nU8p
+	 TlhAAorx6Lt0C03CevXwnQnZc3T7Ky02IDOKx+7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 015/220] net: macb: fix use-after-free access to PTP clock
+	Josh Law <objecting@objecting.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 6.12 196/460] lib/bootconfig: check bounds before writing in __xbc_open_brace()
 Date: Mon, 23 Mar 2026 14:43:12 +0100
-Message-ID: <20260323134505.059746043@linuxfoundation.org>
+Message-ID: <20260323134531.361510975@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,162 +65,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228698-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227995-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,qemu.org:url,ispras.ru:email]
-X-Rspamd-Queue-Id: 052032F357F
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 186132F53FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Josh Law <objecting@objecting.org>
 
-commit 8da13e6d63c1a97f7302d342c89c4a56a55c7015 upstream.
+commit 560f763baa0f2c9a44da4294c06af071405ac46f upstream.
 
-PTP clock is registered on every opening of the interface and destroyed on
-every closing.  However it may be accessed via get_ts_info ethtool call
-which is possible while the interface is just present in the kernel.
+The bounds check for brace_index happens after the array write.
+While the current call pattern prevents an actual out-of-bounds
+access (the previous call would have returned an error), the
+write-before-check pattern is fragile and would become a real
+out-of-bounds write if the error return were ever not propagated.
 
-BUG: KASAN: use-after-free in ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
-Read of size 4 at addr ffff8880194345cc by task syz.0.6/948
+Move the bounds check before the array write so the function is
+self-contained and safe regardless of caller behavior.
 
-CPU: 1 PID: 948 Comm: syz.0.6 Not tainted 6.1.164+ #109
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8d/0xba lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:316 [inline]
- print_report+0x17f/0x496 mm/kasan/report.c:420
- kasan_report+0xd9/0x180 mm/kasan/report.c:524
- ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
- gem_get_ts_info+0x138/0x1e0 drivers/net/ethernet/cadence/macb_main.c:3349
- macb_get_ts_info+0x68/0xb0 drivers/net/ethernet/cadence/macb_main.c:3371
- __ethtool_get_ts_info+0x17c/0x260 net/ethtool/common.c:558
- ethtool_get_ts_info net/ethtool/ioctl.c:2367 [inline]
- __dev_ethtool net/ethtool/ioctl.c:3017 [inline]
- dev_ethtool+0x2b05/0x6290 net/ethtool/ioctl.c:3095
- dev_ioctl+0x637/0x1070 net/core/dev_ioctl.c:510
- sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
- sock_ioctl+0x577/0x6d0 net/socket.c:1320
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl fs/ioctl.c:856 [inline]
- __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:46 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
- </TASK>
+Link: https://lore.kernel.org/all/20260312191143.28719-3-objecting@objecting.org/
 
-Allocated by task 457:
- kmalloc include/linux/slab.h:563 [inline]
- kzalloc include/linux/slab.h:699 [inline]
- ptp_clock_register+0x144/0x10e0 drivers/ptp/ptp_clock.c:235
- gem_ptp_init+0x46f/0x930 drivers/net/ethernet/cadence/macb_ptp.c:375
- macb_open+0x901/0xd10 drivers/net/ethernet/cadence/macb_main.c:2920
- __dev_open+0x2ce/0x500 net/core/dev.c:1501
- __dev_change_flags+0x56a/0x740 net/core/dev.c:8651
- dev_change_flags+0x92/0x170 net/core/dev.c:8722
- do_setlink+0xaf8/0x3a80 net/core/rtnetlink.c:2833
- __rtnl_newlink+0xbf4/0x1940 net/core/rtnetlink.c:3608
- rtnl_newlink+0x63/0xa0 net/core/rtnetlink.c:3655
- rtnetlink_rcv_msg+0x3c6/0xed0 net/core/rtnetlink.c:6150
- netlink_rcv_skb+0x15d/0x430 net/netlink/af_netlink.c:2511
- netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
- netlink_unicast+0x6d7/0xa30 net/netlink/af_netlink.c:1344
- netlink_sendmsg+0x97e/0xeb0 net/netlink/af_netlink.c:1872
- sock_sendmsg_nosec net/socket.c:718 [inline]
- __sock_sendmsg+0x14b/0x180 net/socket.c:730
- __sys_sendto+0x320/0x3b0 net/socket.c:2152
- __do_sys_sendto net/socket.c:2164 [inline]
- __se_sys_sendto net/socket.c:2160 [inline]
- __x64_sys_sendto+0xdc/0x1b0 net/socket.c:2160
- do_syscall_x64 arch/x86/entry/common.c:46 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Freed by task 938:
- kasan_slab_free include/linux/kasan.h:177 [inline]
- slab_free_hook mm/slub.c:1729 [inline]
- slab_free_freelist_hook mm/slub.c:1755 [inline]
- slab_free mm/slub.c:3687 [inline]
- __kmem_cache_free+0xbc/0x320 mm/slub.c:3700
- device_release+0xa0/0x240 drivers/base/core.c:2507
- kobject_cleanup lib/kobject.c:681 [inline]
- kobject_release lib/kobject.c:712 [inline]
- kref_put include/linux/kref.h:65 [inline]
- kobject_put+0x1cd/0x350 lib/kobject.c:729
- put_device+0x1b/0x30 drivers/base/core.c:3805
- ptp_clock_unregister+0x171/0x270 drivers/ptp/ptp_clock.c:391
- gem_ptp_remove+0x4e/0x1f0 drivers/net/ethernet/cadence/macb_ptp.c:404
- macb_close+0x1c8/0x270 drivers/net/ethernet/cadence/macb_main.c:2966
- __dev_close_many+0x1b9/0x310 net/core/dev.c:1585
- __dev_close net/core/dev.c:1597 [inline]
- __dev_change_flags+0x2bb/0x740 net/core/dev.c:8649
- dev_change_flags+0x92/0x170 net/core/dev.c:8722
- dev_ifsioc+0x151/0xe00 net/core/dev_ioctl.c:326
- dev_ioctl+0x33e/0x1070 net/core/dev_ioctl.c:572
- sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
- sock_ioctl+0x577/0x6d0 net/socket.c:1320
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl fs/ioctl.c:856 [inline]
- __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:46 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Set the PTP clock pointer to NULL after unregistering.
-
-Fixes: c2594d804d5c ("macb: Common code to enable ptp support for MACB/GEM")
+Fixes: ead1e19ad905 ("lib/bootconfig: Fix a bug of breaking existing tree nodes")
 Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20260316103826.74506-1-pchelkin@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Josh Law <objecting@objecting.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_ptp.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ lib/bootconfig.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/cadence/macb_ptp.c
-+++ b/drivers/net/ethernet/cadence/macb_ptp.c
-@@ -357,8 +357,10 @@ void gem_ptp_remove(struct net_device *n
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -532,9 +532,9 @@ static char *skip_spaces_until_newline(c
+ static int __init __xbc_open_brace(char *p)
  {
- 	struct macb *bp = netdev_priv(ndev);
+ 	/* Push the last key as open brace */
+-	open_brace[brace_index++] = xbc_node_index(last_parent);
+ 	if (brace_index >= XBC_DEPTH_MAX)
+ 		return xbc_parse_error("Exceed max depth of braces", p);
++	open_brace[brace_index++] = xbc_node_index(last_parent);
  
--	if (bp->ptp_clock)
-+	if (bp->ptp_clock) {
- 		ptp_clock_unregister(bp->ptp_clock);
-+		bp->ptp_clock = NULL;
-+	}
- 
- 	gem_ptp_clear_timer(bp);
- 
+ 	return 0;
+ }
 
 
 
