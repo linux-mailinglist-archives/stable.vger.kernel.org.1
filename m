@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229848-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mFbhNPlowWmoSwQAu9opvQ
-	(envelope-from <stable+bounces-228776-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:23:21 +0100
+	id QJRGOid+wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229848-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:53:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 490D22F7FD1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:23:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 580052FA928
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E77833123EEF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D97330D7DFF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C353ACEED;
-	Mon, 23 Mar 2026 14:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF653BD232;
+	Mon, 23 Mar 2026 16:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIrPQm4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MglfbDQ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F1B3AF645;
-	Mon, 23 Mar 2026 14:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF903B5825;
+	Mon, 23 Mar 2026 16:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277093; cv=none; b=anKps2rVM5Ve8epNvttgXFli9BDXLs75HjV4AgjnWWnwp0gHkotlOU36r5YQHHJJE90AhptzCvew2rb9kpkAQ1zG2ivsNNGFVaLLO+v9QsrahaPSLCRUJwDcAGYD006G63WGgnFWqWRnBlQFBXlLBpxHJ0aYgCXRIIquj+kxa/8=
+	t=1774283028; cv=none; b=Pu0l2BTS2cDu2zi6I3BQtoFRFY4AXHBCibCM1OxO93ZSqWUQQ+vVfynv5pq2E9NqVAtDu7469P2VsYqUtMsTx0yInfcv3cGsjNwTolHSvPs3XLnVboPermfu6dkMN6bEcvLw+TbROUHoFOZigixVfpdBBFW1qbw3yGBawmgdn54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277093; c=relaxed/simple;
-	bh=KalMEQBT0+XzQkwuPepHhygWn8Ugy6K3q0B44WUY0eA=;
+	s=arc-20240116; t=1774283028; c=relaxed/simple;
+	bh=pIEgZYZbrTlFP+N1igHrAqE/unPYyiIAmLQHu3vqv1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RmGSmR2nyMb9rbWRlnQU4hKGwSnFfnaZn4aqJyJm3T9N7mrPq4KrJXHPgN4r7F7uQU2xKxOm6ckjPNfr82iTT5hu4OaM3+Va78erZxFVCjozbzvgiFAjZ8gnaqDy+31Q0MbdV88GUXyoQy3193XE84y+6NZyvU2cU/ai7ZaicGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIrPQm4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74808C4CEF7;
-	Mon, 23 Mar 2026 14:44:52 +0000 (UTC)
+	 MIME-Version; b=bquhnKWb7T7XS/JLhPlUkYy6IQx1f0DpPLBAYfq+jczVt9IQ3VqQn+S/HATeiLr0JlOz6KcOI7OQ+WaOes4LIjkZi4DKmC/xIc2SAvZSQAZ7yjtpcpVRf2n0ceS5JOQu0eKqVYTU/xW0tNUn6C44VP+z2XpV3uqvYWEfDOBlEX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MglfbDQ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0B0C4CEF7;
+	Mon, 23 Mar 2026 16:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277092;
-	bh=KalMEQBT0+XzQkwuPepHhygWn8Ugy6K3q0B44WUY0eA=;
+	s=korg; t=1774283027;
+	bh=pIEgZYZbrTlFP+N1igHrAqE/unPYyiIAmLQHu3vqv1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIrPQm4eH740FZXgLCFi7aBGzHKKNYhYOTcA72Lye5Q8ywcStbr5GrdDP6tnExYmM
-	 eRkdwXM6+DtK3XsAmkLRcQSQz1NmvR+XgeR97efuXMi058GsqCLUWbyOHqyTk8hikF
-	 Ijx0mLMcmof681y73T74X4D67KfNF3rTfOXd72CU=
+	b=MglfbDQ7rLUbf8xf3w1jNqAV14oOauVAUBJ5YXfC63QtWE2fbm0/Wp14PnslAfdcZ
+	 UA5eLPmhViZMZ3bg7viiTdZeh2qAYQpIKnGOlL5H/EDd3y3WOm0Tm96FEPn0suQFlP
+	 p/rNsxYfoepI+le1u7Exa4jVqRrUDZR2+TskxC5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 317/460] Bluetooth: L2CAP: Fix type confusion in l2cap_ecred_reconf_rsp()
+	stable <stable@kernel.org>,
+	Jiasheng Jiang <jiashengjiangcool@gmail.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 331/481] usb: gadget: f_tcm: Fix NULL pointer dereferences in nexus handling
 Date: Mon, 23 Mar 2026 14:45:13 +0100
-Message-ID: <20260323134534.291929868@linuxfoundation.org>
+Message-ID: <20260323134533.168831359@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +64,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228776-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,synopsys.com];
+	TAGGED_FROM(0.00)[bounces-229848-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,johannes-moeller.dev:email]
-X-Rspamd-Queue-Id: 490D22F7FD1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 580052FA928
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Johannes Möller <research@johannes-moeller.dev>
+From: Jiasheng Jiang <jiashengjiangcool@gmail.com>
 
-commit 15145675690cab2de1056e7ed68e59cbd0452529 upstream.
+[ Upstream commit b9fde507355342a2d64225d582dc8b98ff5ecb19 ]
 
-l2cap_ecred_reconf_rsp() casts the incoming data to struct
-l2cap_ecred_conn_rsp (the ECRED *connection* response, 8 bytes with
-result at offset 6) instead of struct l2cap_ecred_reconf_rsp (2 bytes
-with result at offset 0).
+The `tpg->tpg_nexus` pointer in the USB Target driver is dynamically
+managed and tied to userspace configuration via ConfigFS. It can be
+NULL if the USB host sends requests before the nexus is fully
+established or immediately after it is dropped.
 
-This causes two problems:
+Currently, functions like `bot_submit_command()` and the data
+transfer paths retrieve `tv_nexus = tpg->tpg_nexus` and immediately
+dereference `tv_nexus->tvn_se_sess` without any validation. If a
+malicious or misconfigured USB host sends a BOT (Bulk-Only Transport)
+command during this race window, it triggers a NULL pointer
+dereference, leading to a kernel panic (local DoS).
 
- - The sizeof(*rsp) length check requires 8 bytes instead of the
-   correct 2, so valid L2CAP_ECRED_RECONF_RSP packets are rejected
-   with -EPROTO.
+This exposes an inconsistent API usage within the module, as peer
+functions like `usbg_submit_command()` and `bot_send_bad_response()`
+correctly implement a NULL check for `tv_nexus` before proceeding.
 
- - rsp->result reads from offset 6 instead of offset 0, returning
-   wrong data when the packet is large enough to pass the check.
+Fix this by bringing consistency to the nexus handling. Add the
+missing `if (!tv_nexus)` checks to the vulnerable BOT command and
+request processing paths, aborting the command gracefully with an
+error instead of crashing the system.
 
-Fix by using the correct type.  Also pass the already byte-swapped
-result variable to BT_DBG instead of the raw __le16 field.
-
-Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: c52661d60f63 ("usb-gadget: Initial merge of target module for UASP + BOT")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jiasheng Jiang <jiashengjiangcool@gmail.com>
+Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20260219023834.17976-1-jiashengjiangcool@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/function/f_tcm.c |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5373,7 +5373,7 @@ static inline int l2cap_ecred_reconf_rsp
- 					 u8 *data)
- {
- 	struct l2cap_chan *chan, *tmp;
--	struct l2cap_ecred_conn_rsp *rsp = (void *) data;
-+	struct l2cap_ecred_reconf_rsp *rsp = (void *)data;
- 	u16 result;
- 
- 	if (cmd_len < sizeof(*rsp))
-@@ -5381,7 +5381,7 @@ static inline int l2cap_ecred_reconf_rsp
- 
- 	result = __le16_to_cpu(rsp->result);
- 
--	BT_DBG("result 0x%4.4x", rsp->result);
-+	BT_DBG("result 0x%4.4x", result);
- 
- 	if (!result)
- 		return 0;
+--- a/drivers/usb/gadget/function/f_tcm.c
++++ b/drivers/usb/gadget/function/f_tcm.c
+@@ -1032,6 +1032,13 @@ static void usbg_cmd_work(struct work_st
+ 	se_cmd = &cmd->se_cmd;
+ 	tpg = cmd->fu->tpg;
+ 	tv_nexus = tpg->tpg_nexus;
++	if (!tv_nexus) {
++		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
++
++		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
++		return;
++	}
++
+ 	dir = get_cmd_dir(cmd->cmd_buf);
+ 	if (dir < 0) {
+ 		__target_init_cmd(se_cmd,
+@@ -1160,6 +1167,13 @@ static void bot_cmd_work(struct work_str
+ 	se_cmd = &cmd->se_cmd;
+ 	tpg = cmd->fu->tpg;
+ 	tv_nexus = tpg->tpg_nexus;
++	if (!tv_nexus) {
++		struct usb_gadget *gadget = fuas_to_gadget(cmd->fu);
++
++		dev_err(&gadget->dev, "Missing nexus, ignoring command\n");
++		return;
++	}
++
+ 	dir = get_cmd_dir(cmd->cmd_buf);
+ 	if (dir < 0) {
+ 		__target_init_cmd(se_cmd,
 
 
 
