@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-229262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229803-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKg/HE1vwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229262-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:21 +0100
+	id uGnGDbpywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229803-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBFE52F8E2C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C262F965A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1331F334F2F8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B5154322D33A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A127A3B3BF1;
-	Mon, 23 Mar 2026 15:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0764E35958;
+	Mon, 23 Mar 2026 16:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+sgwnBT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kdLtrM/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E853B38BC;
-	Mon, 23 Mar 2026 15:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECD7285417;
+	Mon, 23 Mar 2026 16:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278565; cv=none; b=jOyltN70ZtK1KkcpWnWP7G+NEeoc8SeIPolOU6R+n+ZxKZUw6jTSVUG1PeFoMe82aSRVOGfVMbI4eq+C+vYguL76mlGtxVx5aoxshqJ6KfveC3nXi6Xyfbewysrjfl04UiClYvjVXatZHSGi6vhLCo+M3S0G2FgKMesMpT5l6U8=
+	t=1774282906; cv=none; b=OOQjcyRX8VqqgVPuZ8jN4dcJPpC4iSvEnFGRlghAyLAry//dg3EiIiRMQt1saqMKGMKKqysUq2hCvKRuPatgHiVxoTLaP0wqVnWFWEzTKfZBhIKD1LMpf5XBIXhqCDkBYZgo8MzjsmHvoDsSZ7G8q8hYXPN3ZMtivJ6I96dEG/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278565; c=relaxed/simple;
-	bh=+PPZewh7xgbfrkahx/fUymZmQXyBbwQTCfZ9IR2KjnI=;
+	s=arc-20240116; t=1774282906; c=relaxed/simple;
+	bh=X8ykuWGP4lrdJ+vExtecDC4sH7HbP2mRVvMQ4oyAikk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QLjh+dcOfmh1Aw4mIcER7EZjaqxJ2yyEbvTszQhPLoMTe4RetI4/b45le0spfckJn/93VAYI4I6p524d2OHvIvHjY7qJnPg+RQ0KprDUvSGbtjk55gR2yXkFUemgtW3Ire4wAEKWWR4KPi27cA/ZnaOkJquhKTF5lvFvJYWGZp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+sgwnBT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D5AC4CEF7;
-	Mon, 23 Mar 2026 15:09:24 +0000 (UTC)
+	 MIME-Version; b=Py0g9AQEUNgSdnMuYmPaMjRFjqsr4qgMqHSBRpYbZAVTyPrRTkzxAIa/iJ4fh+Hq8Rcxibl80C8ANJ/q2k3tJoc+NRy3Xfz01QPvUBrKLNO0VBlTt7UNq4J0q5XLBkRAZSD9NO6Nf23JFYTXVIus63FewsynTIRArpZR4pPMK34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kdLtrM/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59644C4CEF7;
+	Mon, 23 Mar 2026 16:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278565;
-	bh=+PPZewh7xgbfrkahx/fUymZmQXyBbwQTCfZ9IR2KjnI=;
+	s=korg; t=1774282906;
+	bh=X8ykuWGP4lrdJ+vExtecDC4sH7HbP2mRVvMQ4oyAikk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m+sgwnBTNfkZlyCuSHAZzDYBUzTjM8WTvh0FKoFJYYzHD8GtoOpvtFS9svCWGefGj
-	 STmx9/1qIDDiKq9+RcpK3+D9j/hRx61LUfU7ZzQXrlDwO17z7/3yDbWzurTs5qBtpb
-	 LG51nF+E3/HOujlPm0LxC8Gb0IQA2d73YKD2OKPk=
+	b=kdLtrM/r6CRG/rodszV1GHPF9yx/fRYtT/TWQKd/Vlg7AV4OHOc73FQL8jcx6gtlI
+	 ASeQnfdXw8AhTjQv5C0Ox0UpLazlDLHBHQCNNJKuO1+j7fwt0thPKBvPfSKNvXEvf/
+	 5ku2cDcbiXLFio4zyFiJwcKOtPW1GCVTrQtZnDFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 348/567] smb: client: fix atomic open with O_DIRECT & O_SYNC
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 286/481] net: macb: fix use-after-free access to PTP clock
 Date: Mon, 23 Mar 2026 14:44:28 +0100
-Message-ID: <20260323134542.445302689@linuxfoundation.org>
+Message-ID: <20260323134532.081710471@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,135 +65,161 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229262-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229803-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EBFE52F8E2C
+X-Rspamd-Queue-Id: 74C262F965A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 4a7d2729dc99437dbb880a64c47828c0d191b308 upstream.
+commit 8da13e6d63c1a97f7302d342c89c4a56a55c7015 upstream.
 
-When user application requests O_DIRECT|O_SYNC along with O_CREAT on
-open(2), CREATE_NO_BUFFER and CREATE_WRITE_THROUGH bits were missed in
-CREATE request when performing an atomic open, thus leading to
-potentially data integrity issues.
+PTP clock is registered on every opening of the interface and destroyed on
+every closing.  However it may be accessed via get_ts_info ethtool call
+which is possible while the interface is just present in the kernel.
 
-Fix this by setting those missing bits in CREATE request when
-O_DIRECT|O_SYNC has been specified in cifs_do_create().
+BUG: KASAN: use-after-free in ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
+Read of size 4 at addr ffff8880194345cc by task syz.0.6/948
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
+CPU: 1 PID: 948 Comm: syz.0.6 Not tainted 6.1.164+ #109
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x8d/0xba lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:316 [inline]
+ print_report+0x17f/0x496 mm/kasan/report.c:420
+ kasan_report+0xd9/0x180 mm/kasan/report.c:524
+ ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
+ gem_get_ts_info+0x138/0x1e0 drivers/net/ethernet/cadence/macb_main.c:3349
+ macb_get_ts_info+0x68/0xb0 drivers/net/ethernet/cadence/macb_main.c:3371
+ __ethtool_get_ts_info+0x17c/0x260 net/ethtool/common.c:558
+ ethtool_get_ts_info net/ethtool/ioctl.c:2367 [inline]
+ __dev_ethtool net/ethtool/ioctl.c:3017 [inline]
+ dev_ethtool+0x2b05/0x6290 net/ethtool/ioctl.c:3095
+ dev_ioctl+0x637/0x1070 net/core/dev_ioctl.c:510
+ sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
+ sock_ioctl+0x577/0x6d0 net/socket.c:1320
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ </TASK>
+
+Allocated by task 457:
+ kmalloc include/linux/slab.h:563 [inline]
+ kzalloc include/linux/slab.h:699 [inline]
+ ptp_clock_register+0x144/0x10e0 drivers/ptp/ptp_clock.c:235
+ gem_ptp_init+0x46f/0x930 drivers/net/ethernet/cadence/macb_ptp.c:375
+ macb_open+0x901/0xd10 drivers/net/ethernet/cadence/macb_main.c:2920
+ __dev_open+0x2ce/0x500 net/core/dev.c:1501
+ __dev_change_flags+0x56a/0x740 net/core/dev.c:8651
+ dev_change_flags+0x92/0x170 net/core/dev.c:8722
+ do_setlink+0xaf8/0x3a80 net/core/rtnetlink.c:2833
+ __rtnl_newlink+0xbf4/0x1940 net/core/rtnetlink.c:3608
+ rtnl_newlink+0x63/0xa0 net/core/rtnetlink.c:3655
+ rtnetlink_rcv_msg+0x3c6/0xed0 net/core/rtnetlink.c:6150
+ netlink_rcv_skb+0x15d/0x430 net/netlink/af_netlink.c:2511
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x6d7/0xa30 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x97e/0xeb0 net/netlink/af_netlink.c:1872
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg+0x14b/0x180 net/socket.c:730
+ __sys_sendto+0x320/0x3b0 net/socket.c:2152
+ __do_sys_sendto net/socket.c:2164 [inline]
+ __se_sys_sendto net/socket.c:2160 [inline]
+ __x64_sys_sendto+0xdc/0x1b0 net/socket.c:2160
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Freed by task 938:
+ kasan_slab_free include/linux/kasan.h:177 [inline]
+ slab_free_hook mm/slub.c:1729 [inline]
+ slab_free_freelist_hook mm/slub.c:1755 [inline]
+ slab_free mm/slub.c:3687 [inline]
+ __kmem_cache_free+0xbc/0x320 mm/slub.c:3700
+ device_release+0xa0/0x240 drivers/base/core.c:2507
+ kobject_cleanup lib/kobject.c:681 [inline]
+ kobject_release lib/kobject.c:712 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1cd/0x350 lib/kobject.c:729
+ put_device+0x1b/0x30 drivers/base/core.c:3805
+ ptp_clock_unregister+0x171/0x270 drivers/ptp/ptp_clock.c:391
+ gem_ptp_remove+0x4e/0x1f0 drivers/net/ethernet/cadence/macb_ptp.c:404
+ macb_close+0x1c8/0x270 drivers/net/ethernet/cadence/macb_main.c:2966
+ __dev_close_many+0x1b9/0x310 net/core/dev.c:1585
+ __dev_close net/core/dev.c:1597 [inline]
+ __dev_change_flags+0x2bb/0x740 net/core/dev.c:8649
+ dev_change_flags+0x92/0x170 net/core/dev.c:8722
+ dev_ifsioc+0x151/0xe00 net/core/dev_ioctl.c:326
+ dev_ioctl+0x33e/0x1070 net/core/dev_ioctl.c:572
+ sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
+ sock_ioctl+0x577/0x6d0 net/socket.c:1320
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Set the PTP clock pointer to NULL after unregistering.
+
+Fixes: c2594d804d5c ("macb: Common code to enable ptp support for MACB/GEM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20260316103826.74506-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |   11 +++++++++++
- fs/smb/client/dir.c      |    1 +
- fs/smb/client/file.c     |   18 +++---------------
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/cadence/macb_ptp.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -20,6 +20,7 @@
- #include <linux/utsname.h>
- #include <linux/sched/mm.h>
- #include <linux/netfs.h>
-+#include <linux/fcntl.h>
- #include "cifs_fs_sb.h"
- #include "cifsacl.h"
- #include <crypto/internal/hash.h>
-@@ -2354,4 +2355,14 @@ static inline bool cifs_ses_exiting(stru
- 	return ret;
- }
+--- a/drivers/net/ethernet/cadence/macb_ptp.c
++++ b/drivers/net/ethernet/cadence/macb_ptp.c
+@@ -400,8 +400,10 @@ void gem_ptp_remove(struct net_device *n
+ {
+ 	struct macb *bp = netdev_priv(ndev);
  
-+static inline int cifs_open_create_options(unsigned int oflags, int opts)
-+{
-+	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
-+	if (oflags & O_SYNC)
-+		opts |= CREATE_WRITE_THROUGH;
-+	if (oflags & O_DIRECT)
-+		opts |= CREATE_NO_BUFFER;
-+	return opts;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
---- a/fs/smb/client/dir.c
-+++ b/fs/smb/client/dir.c
-@@ -304,6 +304,7 @@ static int cifs_do_create(struct inode *
- 		goto out;
- 	}
+-	if (bp->ptp_clock)
++	if (bp->ptp_clock) {
+ 		ptp_clock_unregister(bp->ptp_clock);
++		bp->ptp_clock = NULL;
++	}
  
-+	create_options |= cifs_open_create_options(oflags, create_options);
- 	/*
- 	 * if we're not using unix extensions, see if we need to set
- 	 * ATTR_READONLY on the create call
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -459,15 +459,8 @@ static int cifs_nt_open(const char *full
-  *********************************************************************/
+ 	gem_ptp_clear_timer(bp);
  
- 	disposition = cifs_get_disposition(f_flags);
--
- 	/* BB pass O_SYNC flag through on file attributes .. BB */
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(f_flags, create_options);
- 
- retry_open:
- 	oparms = (struct cifs_open_parms) {
-@@ -1117,13 +1110,8 @@ cifs_reopen_file(struct cifsFileInfo *cf
- 		rdwr_for_fscache = 1;
- 
- 	desired_access = cifs_convert_flags(cfile->f_flags, rdwr_for_fscache);
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (cfile->f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (cfile->f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(cfile->f_flags,
-+						   create_options);
- 
- 	if (server->ops->get_lease_key)
- 		server->ops->get_lease_key(inode, &cfile->fid);
 
 
 
