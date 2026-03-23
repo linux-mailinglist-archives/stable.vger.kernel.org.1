@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228397-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +HNhFIZ+wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229901-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:55:18 +0100
+	id gMUiAexLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228397-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E002FA9FA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:55:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2BE2F42DB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6838D313313D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9137A316414F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E358B3B19A2;
-	Mon, 23 Mar 2026 16:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9E13B27EF;
+	Mon, 23 Mar 2026 14:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itTWSfnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYcfrUv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A553D3AE6F8;
-	Mon, 23 Mar 2026 16:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607F540DFC4;
+	Mon, 23 Mar 2026 14:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283167; cv=none; b=XeL2kALClQxOCKUQj3OuithI5l60ZRzek0Wu7VApqo3YcEO5b+KQSdWoWYyXqtR3iXi2dGz5/DzbzKVPwPteT300/SJ4EtblEDXy60EI7K50AGcw9SQ2y3l8jHqQhrRcmJxixygkROMwg9igbGTa+r6WEvv1GGWV7XetXwBssnY=
+	t=1774275002; cv=none; b=aJ2j96yIMSJvEkPpFZ6pWYlhlxVsSi7u0A8X0V09pF9EWpq8j9nwqlA7bgPM0Kx74vefPnWYnEQrRwUsS9wkWcTsjlk6skmw2pzrvHWfyel+KFsIPm9Cudrq9cVB/7BfA3wOL3xQDL8oyT0Upq3d8C2Er4/aPbRKnKQm1zbS6WY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283167; c=relaxed/simple;
-	bh=BmAnpSekfieo57XQBkJNMZeevncd//jqXlXNdiTivTA=;
+	s=arc-20240116; t=1774275002; c=relaxed/simple;
+	bh=WHFe3ifQo4sDWuqLuGIIYgz5lui+FMDWvh2SmKLad3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQkPG1swEIEzstzhDvEWKCyBkcgDmWB6CRCCU3KeTEYVtO2vFfoH/J8b1JTiSEegNcWS+G2BAXTz3/ndFWkLQG7zn5pmBYj1SF0LWuu1lHLsW8IHXKPeV1Co5TvC5STXoczSq8Sg8jIr0dLtDh01JYsek2bJBN/l2RXpa8RUNBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itTWSfnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EDEFC4CEF7;
-	Mon, 23 Mar 2026 16:26:06 +0000 (UTC)
+	 MIME-Version; b=WRAQwsX7Vk3I/avIg/8may5HP7Mun+6F8z8CDcpP7ad1m2jxxCuub8ZSKH9XkSGTfP7OScg1e5v/pQ3zYIUBpfTcWPcMF9TiUPYF4S+E+Yv0TjHPuE2w+m6pCxlcckBfwnWOSURm/9dFI4aykYCkLhR4gPGYlZXrTOKD2mw9MvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYcfrUv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959FEC2BC9E;
+	Mon, 23 Mar 2026 14:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283167;
-	bh=BmAnpSekfieo57XQBkJNMZeevncd//jqXlXNdiTivTA=;
+	s=korg; t=1774275001;
+	bh=WHFe3ifQo4sDWuqLuGIIYgz5lui+FMDWvh2SmKLad3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itTWSfnIx362P/JVL8GoRaAGcqWLxJhFzSkWUXNVxB+0UYatf4+xcKNjHDPnv7n9A
-	 zYBCwr1t+OuqGJFXL0jHFdaLIgkgPMcWPyclH5+F/+ZkLChYcifntxGGBp+GArHWNl
-	 cSfZ+mVUB4Z9LyWD72BXnIIeXfxhcJ5GAVcdRrCc=
+	b=DYcfrUv/0h7qB8V0x5IC7aDl3T7js5KVtHrAaomFCTyMj4nCL/IsNC7cjUwIP/Mua
+	 twevtX/HSt++mgF9HkSugLQTVb81TEwxuvHjCd6AwSAKheaOYZG5q9zxe+JLhtbveK
+	 31XEjoS0IqY9F44mUQseSrU3SAVDV6QG8mwzjI1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Oros <poros@redhat.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 428/481] iavf: fix VLAN filter lost on add/delete race
+	Xudong Hao <xudong.hao@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.18 189/212] perf/x86/intel: Add missing branch counters constraint apply
 Date: Mon, 23 Mar 2026 14:46:50 +0100
-Message-ID: <20260323134535.632392477@linuxfoundation.org>
+Message-ID: <20260323134509.711728882@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,104 +66,138 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229901-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228397-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: C7E002FA9FA
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6E2BE2F42DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-[ Upstream commit fc9c69be594756b81b54c6bc40803fa6052f35ae ]
+commit 1d07bbd7ea36ea0b8dfa8068dbe67eb3a32d9590 upstream.
 
-When iavf_add_vlan() finds an existing filter in IAVF_VLAN_REMOVE
-state, it transitions the filter to IAVF_VLAN_ACTIVE assuming the
-pending delete can simply be cancelled. However, there is no guarantee
-that iavf_del_vlans() has not already processed the delete AQ request
-and removed the filter from the PF. In that case the filter remains in
-the driver's list as IAVF_VLAN_ACTIVE but is no longer programmed on
-the NIC. Since iavf_add_vlans() only picks up filters in
-IAVF_VLAN_ADD state, the filter is never re-added, and spoof checking
-drops all traffic for that VLAN.
+When running the command:
+'perf record -e "{instructions,instructions:p}" -j any,counter sleep 1',
+a "shift-out-of-bounds" warning is reported on CWF.
 
-  CPU0                       CPU1                     Workqueue
-  ----                       ----                     ---------
-  iavf_del_vlan(vlan 100)
-    f->state = REMOVE
-    schedule AQ_DEL_VLAN
-                             iavf_add_vlan(vlan 100)
-                               f->state = ACTIVE
-                                                      iavf_del_vlans()
-                                                        f is ACTIVE, skip
-                                                      iavf_add_vlans()
-                                                        f is ACTIVE, skip
+  UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
+  shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+  ......
+  intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
+  intel_pmu_lbr_save_brstack+0xc0/0x4c0
+  setup_arch_pebs_sample_data+0x114b/0x2400
 
-  Filter is ACTIVE in driver but absent from NIC.
+The warning occurs because the second "instructions:p" event, which
+involves branch counters sampling, is incorrectly programmed to fixed
+counter 0 instead of the general-purpose (GP) counters 0-3 that support
+branch counters sampling. Currently only GP counters 0-3 support branch
+counters sampling on CWF, any event involving branch counters sampling
+should be programed on GP counters 0-3. Since the counter index of fixed
+counter 0 is 32, it leads to the "src" value in below code is right
+shifted 64 bits and trigger the "shift-out-of-bounds" warning.
 
-Transition to IAVF_VLAN_ADD instead and schedule
-IAVF_FLAG_AQ_ADD_VLAN_FILTER so iavf_add_vlans() re-programs the
-filter.  A duplicate add is idempotent on the PF.
+cnt = (src >> (order[j] * LBR_INFO_BR_CNTR_BITS)) & LBR_INFO_BR_CNTR_MASK;
 
-Fixes: 0c0da0e95105 ("iavf: refactor VLAN filter states")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The root cause is the loss of the branch counters constraint for the
+new event in the branch counters sampling event group. Since it isn't
+yet part of the sibling list. This results in the second
+"instructions:p" event being programmed on fixed counter 0 incorrectly
+instead of the appropriate GP counters 0-3.
+
+To address this, we apply the missing branch counters constraint for
+the last event in the group. Additionally, we introduce a new function,
+`intel_set_branch_counter_constr()`, to apply the branch counters
+constraint and avoid code duplication.
+
+Fixes: 33744916196b ("perf/x86/intel: Support branch counters logging")
+Reported-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260228053320.140406-2-dapeng1.mi@linux.intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/iavf/iavf_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/x86/events/intel/core.c |   31 +++++++++++++++++++++----------
+ 1 file changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 467ad433a47b9..667949e8833bf 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -831,10 +831,13 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
- 		adapter->num_vlan_filters++;
- 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
- 	} else if (f->state == IAVF_VLAN_REMOVE) {
--		/* IAVF_VLAN_REMOVE means that VLAN wasn't yet removed.
--		 * We can safely only change the state here.
-+		/* Re-add the filter since we cannot tell whether the
-+		 * pending delete has already been processed by the PF.
-+		 * A duplicate add is harmless.
- 		 */
--		f->state = IAVF_VLAN_ACTIVE;
-+		f->state = IAVF_VLAN_ADD;
-+		iavf_schedule_aq_request(adapter,
-+					 IAVF_FLAG_AQ_ADD_VLAN_FILTER);
- 	}
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4224,6 +4224,19 @@ static inline void intel_pmu_set_acr_cau
+ 		event->hw.dyn_constraint &= hybrid(event->pmu, acr_cause_mask64);
+ }
  
- clearout:
--- 
-2.51.0
-
++static inline int intel_set_branch_counter_constr(struct perf_event *event,
++						  int *num)
++{
++	if (branch_sample_call_stack(event))
++		return -EINVAL;
++	if (branch_sample_counters(event)) {
++		(*num)++;
++		event->hw.dyn_constraint &= x86_pmu.lbr_counters;
++	}
++
++	return 0;
++}
++
+ static int intel_pmu_hw_config(struct perf_event *event)
+ {
+ 	int ret = x86_pmu_hw_config(event);
+@@ -4283,21 +4296,19 @@ static int intel_pmu_hw_config(struct pe
+ 		 * group, which requires the extra space to store the counters.
+ 		 */
+ 		leader = event->group_leader;
+-		if (branch_sample_call_stack(leader))
++		if (intel_set_branch_counter_constr(leader, &num))
+ 			return -EINVAL;
+-		if (branch_sample_counters(leader)) {
+-			num++;
+-			leader->hw.dyn_constraint &= x86_pmu.lbr_counters;
+-		}
+ 		leader->hw.flags |= PERF_X86_EVENT_BRANCH_COUNTERS;
+ 
+ 		for_each_sibling_event(sibling, leader) {
+-			if (branch_sample_call_stack(sibling))
++			if (intel_set_branch_counter_constr(sibling, &num))
++				return -EINVAL;
++		}
++
++		/* event isn't installed as a sibling yet. */
++		if (event != leader) {
++			if (intel_set_branch_counter_constr(event, &num))
+ 				return -EINVAL;
+-			if (branch_sample_counters(sibling)) {
+-				num++;
+-				sibling->hw.dyn_constraint &= x86_pmu.lbr_counters;
+-			}
+ 		}
+ 
+ 		if (num > fls(x86_pmu.lbr_counters))
 
 
 
