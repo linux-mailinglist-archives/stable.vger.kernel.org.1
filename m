@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228418-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DYFHcxVwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:32 +0100
+	id YA3CDEFPwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228418-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180482F5A4A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5AD42F4BAC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A10E30707BD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B201F301CFDB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7167533E344;
-	Mon, 23 Mar 2026 14:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485323ACA62;
+	Mon, 23 Mar 2026 14:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrxUdFoU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0kVBdmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E4324E4D4;
-	Mon, 23 Mar 2026 14:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE3F3AA4FD;
+	Mon, 23 Mar 2026 14:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277324; cv=none; b=Jv6kDFnoou/BhTdtpLcEk1eF7eXHPNcGwe/j8vF//vFYpxhl7t6PAQFYPkARfydIpa5Z1K3IqUCYeWg4998HU3es9AiCTwrhnvvSB8ByziIxWUVcsi1h+MbS35rZ62NKylHqLF56MLUVV9ZL/T/ywHGmLTSFm9vjPmFP68gV5PY=
+	t=1774275068; cv=none; b=UViGK4tl+xFxdhw2624i+Ck9Gzg8cXupQSIYd6/JbiRRtEnH1SXJ5SovFdvNeGaT5uvlez3Na3UQSp123jHZnftcl+y2bQHaHCUC6MsKi3QjBmPSL79GLxEonA3Y+jOXTyntA4uO7Vp02XC8Wd3g+rjH5btbPmFrwcbpDtF9fok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277324; c=relaxed/simple;
-	bh=XhI2NC7a4JiFIA33LWJtC4ZeS4b5ovL7i7xlSqZkS3Q=;
+	s=arc-20240116; t=1774275068; c=relaxed/simple;
+	bh=+FWItamq3sh6sPF5VR5ecF9cySshWJ+EwSUQcRfMilM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=brAsvh489l5qBVXbB6tbL1OrOXhW/p9j3GI3ruExtWMNrqgbVodEL52Bf0wjd/5ed38MFCEe0z+YoQqeMws2wnAN+GyR+EbSEXYZjA9FeuxbKQUXOeGIYS5m64rTGCKO2tNLaoN3UXMg+Du5mgw7qWUl8jEreGY0Ta28sPzVC8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrxUdFoU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A784C2BC9E;
-	Mon, 23 Mar 2026 14:48:43 +0000 (UTC)
+	 MIME-Version; b=fGRo/ni/digI+oJOeQBnATNB6cud0+vI6Xover2a6l5Oa7HffSmmoNu88Bp0+XsRFrnJrPrmoz/ocLWqhh78XbKlMOp5uc52m9s2yVgrDKyCzZU93lBK6Cze6gnVi9xgPcburlIVOF+H2QNnQkwIOEqqgMk/UgSGzhJiIZJPEHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0kVBdmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE60C4CEF7;
+	Mon, 23 Mar 2026 14:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277323;
-	bh=XhI2NC7a4JiFIA33LWJtC4ZeS4b5ovL7i7xlSqZkS3Q=;
+	s=korg; t=1774275067;
+	bh=+FWItamq3sh6sPF5VR5ecF9cySshWJ+EwSUQcRfMilM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrxUdFoUlo54sSjOsx5ayyEWwX6GdFdGeEwo+aQkx7lOzVZC+zpb0snoUsvp3Fsb4
-	 kCGDZOXlp0dFAVwooV20xvxGRfy+aQqf1nHIPceP/QcTEyQ6kUrFxhQdd2yKI0krSk
-	 NMDZGuCrSqnXobxlgfZEaRhXv1VZzQcWBbOzamJ4=
+	b=t0kVBdmR+SV+AItyK+kD2FgO9t4jkE1e4RcdFAuW8EXJg3arpdl7JmZJ9bvLe72iO
+	 iFIPhh06E7ukhIPRLAHJ5vBJBXObX2v2KKm5NWsaxaS4Y8XEdAxW1KM0sFKMAbZXBI
+	 d23q0Emx1aV3EvrmfbPaVZKYcPA+seS9U8PZ5RMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
 	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 398/460] netfilter: xt_CT: drop pending enqueued packets on template removal
+Subject: [PATCH 6.18 173/212] nfnetlink_osf: validate individual option lengths in fingerprints
 Date: Mon, 23 Mar 2026 14:46:34 +0100
-Message-ID: <20260323134536.345309064@linuxfoundation.org>
+Message-ID: <20260323134509.235868984@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,87 +67,114 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228858-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	RSPAMD_URIBL_FAIL(0.00)[netfilter.org:query timed out];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228418-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[fw.strlen.de:query timed out,pablo.netfilter.org:query timed out];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 180482F5A4A
+X-Rspamd-Queue-Id: B5AD42F4BAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit f62a218a946b19bb59abdd5361da85fa4606b96b ]
+[ Upstream commit dbdfaae9609629a9569362e3b8f33d0a20fd783c ]
 
-Templates refer to objects that can go away while packets are sitting in
-nfqueue refer to:
+nfnl_osf_add_callback() validates opt_num bounds and string
+NUL-termination but does not check individual option length fields.
+A zero-length option causes nf_osf_match_one() to enter the option
+matching loop even when foptsize sums to zero, which matches packets
+with no TCP options where ctx->optp is NULL:
 
-- helper, this can be an issue on module removal.
-- timeout policy, nfnetlink_cttimeout might remove it.
+ Oops: general protection fault
+ KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:nf_osf_match_one (net/netfilter/nfnetlink_osf.c:98)
+ Call Trace:
+  nf_osf_match (net/netfilter/nfnetlink_osf.c:227)
+  xt_osf_match_packet (net/netfilter/xt_osf.c:32)
+  ipt_do_table (net/ipv4/netfilter/ip_tables.c:293)
+  nf_hook_slow (net/netfilter/core.c:623)
+  ip_local_deliver (net/ipv4/ip_input.c:262)
+  ip_rcv (net/ipv4/ip_input.c:573)
 
-The use of templates with zone and event cache filter are safe, since
-this just copies values.
+Additionally, an MSS option (kind=2) with length < 4 causes
+out-of-bounds reads when nf_osf_match_one() unconditionally accesses
+optp[2] and optp[3] for MSS value extraction.  While RFC 9293
+section 3.2 specifies that the MSS option is always exactly 4
+bytes (Kind=2, Length=4), the check uses "< 4" rather than
+"!= 4" because lengths greater than 4 do not cause memory
+safety issues -- the buffer is guaranteed to be at least
+foptsize bytes by the ctx->optsize == foptsize check.
 
-Flush these enqueued packets in case the template rule gets removed.
+Reject fingerprints where any option has zero length, or where an MSS
+option has length less than 4, at add time rather than trusting these
+values in the packet matching hot path.
 
-Fixes: 24de58f46516 ("netfilter: xt_CT: allow to attach timeout policy + glue code")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_CT.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/netfilter/nfnetlink_osf.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/netfilter/xt_CT.c b/net/netfilter/xt_CT.c
-index 3ba94c34297cf..498f5871c84a0 100644
---- a/net/netfilter/xt_CT.c
-+++ b/net/netfilter/xt_CT.c
-@@ -16,6 +16,7 @@
- #include <net/netfilter/nf_conntrack_ecache.h>
- #include <net/netfilter/nf_conntrack_timeout.h>
- #include <net/netfilter/nf_conntrack_zones.h>
-+#include "nf_internals.h"
- 
- static inline int xt_ct_target(struct sk_buff *skb, struct nf_conn *ct)
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index c0fc431991e88..9fc9544d4bc53 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -302,7 +302,9 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
  {
-@@ -283,6 +284,9 @@ static void xt_ct_tg_destroy(const struct xt_tgdtor_param *par,
- 	struct nf_conn_help *help;
+ 	struct nf_osf_user_finger *f;
+ 	struct nf_osf_finger *kf = NULL, *sf;
++	unsigned int tot_opt_len = 0;
+ 	int err = 0;
++	int i;
  
- 	if (ct) {
-+		if (info->helper[0] || info->timeout[0])
-+			nf_queue_nf_hook_drop(par->net);
+ 	if (!capable(CAP_NET_ADMIN))
+ 		return -EPERM;
+@@ -318,6 +320,17 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
+ 	if (f->opt_num > ARRAY_SIZE(f->opt))
+ 		return -EINVAL;
+ 
++	for (i = 0; i < f->opt_num; i++) {
++		if (!f->opt[i].length || f->opt[i].length > MAX_IPOPTLEN)
++			return -EINVAL;
++		if (f->opt[i].kind == OSFOPT_MSS && f->opt[i].length < 4)
++			return -EINVAL;
 +
- 		help = nfct_help(ct);
- 		xt_ct_put_helper(help);
- 
++		tot_opt_len += f->opt[i].length;
++		if (tot_opt_len > MAX_IPOPTLEN)
++			return -EINVAL;
++	}
++
+ 	if (!memchr(f->genre, 0, MAXGENRELEN) ||
+ 	    !memchr(f->subtype, 0, MAXGENRELEN) ||
+ 	    !memchr(f->version, 0, MAXGENRELEN))
 -- 
 2.51.0
 
