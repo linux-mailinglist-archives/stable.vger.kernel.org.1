@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229827-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHplAstGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228115-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:31 +0100
+	id iHYULkF1wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229827-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B4482F37B4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7F262F9A5B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6C1B830255D4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2B194313CB73
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24B4E3ACA62;
-	Mon, 23 Mar 2026 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B903B775A;
+	Mon, 23 Mar 2026 16:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vENcUOjK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkVuhlrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D061A680D;
-	Mon, 23 Mar 2026 13:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8283E3AEF5C;
+	Mon, 23 Mar 2026 16:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274167; cv=none; b=m4dNKxxH6BUBx20oCXMFkqS/VjdjogJ2gNzUbzHvwzac0LN6GZ9Tz/ZDMLHWnPBKtUb5yDERehTIj64uH2PP461dJpDoL/DWRV4hs089ozhDVuU9rB/oBx7RyhlPzx1Oh8Df7ys5c/Pa9c1XQUk9meerG7Termlorr8fz7MgMdw=
+	t=1774282972; cv=none; b=E5jcab2stspN5g1Z2o2IpI4VT4/vmKvjYSCDKmsnsvgS6oSXFTMg+klHZuGK7yxI7k6EUBBTs1RpPk62NV8Yeb4cUCAy1QjNG9FxmlB5TqDKJkYtVZbRRzdpNKEDKieEQj48RWDMrMvE4W6ciBtX/QEZes2J0tKKobBUuC7Abtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274167; c=relaxed/simple;
-	bh=lIso+3JQqj6ehbGK1bvVVqJKutTd8FP+OAVTSrn26Vg=;
+	s=arc-20240116; t=1774282972; c=relaxed/simple;
+	bh=2Lol6uKFcFLIUY/CVnW8F0+zXfoblw2T3gZ6NtmBllo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VN6CbUcOdnJqU9Lwu3azSVU2X3oa36Q79ME3BUDLBZ9+h5WzYR1XfLFCSnKFPJ+3tw2EkodKu+NgqwwDsnXbLqwCXy8HmSsVEF3FOpGNKX8t0hj0chBM1L30yKliy+YqNjgBhFg/UTLDHw3qAWYhN02oOoA8jGjlVyq4lfAbvsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vENcUOjK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B2A9C4CEF7;
-	Mon, 23 Mar 2026 13:56:07 +0000 (UTC)
+	 MIME-Version; b=o1AVPxi8RZk6HJgFY0aHZMtfoduYCeRnH/TW0jcyE/ZXlwuPWsrOByZWsaN7clG3vz7+TpiIeo4rXe9EMOxPuKrcMQ6XF0PK+NzAg/KDHFEF6iBNOjVhcaghbmiZzGqEXUr3JVhh82XXYGFl3RXF6TRx5y9pFu8kn/PrEAlPv3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkVuhlrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CED96C4CEF7;
+	Mon, 23 Mar 2026 16:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274167;
-	bh=lIso+3JQqj6ehbGK1bvVVqJKutTd8FP+OAVTSrn26Vg=;
+	s=korg; t=1774282972;
+	bh=2Lol6uKFcFLIUY/CVnW8F0+zXfoblw2T3gZ6NtmBllo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vENcUOjKqDAaJYwfzXL+w+t3ygzyb3VySVD1mK7a2dZlwqaSU5UlD1MX56B9ufjaz
-	 cb52/oqxFdfQIydrfSmIJwOp+/SFemn4S0MVKYl33lOG3EFXnsWFLWuxBLgGd7hF7Q
-	 /OTwSGpMYOkkglasOq3EBO8OCHupI6lJyhyHG18k=
+	b=LkVuhlrWg2zGfDDqEJYSjJQeTNHANGiJ622yUxkEde48SrOj29g1LxULoc62kaQT3
+	 cuZKC3XkKY59USZS0u4OUQJrLJ9U9heyJ0GE3JIAOXSVowi6Bh+YpwrXOSNlDrgb9i
+	 rDjNkYaBLDzoZbOA3b6Pzi3m7iYPaClHhNKpVRGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 132/220] netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()
+Subject: [PATCH 6.1 327/481] ALSA: pcm: fix wait_time calculations
 Date: Mon, 23 Mar 2026 14:45:09 +0100
-Message-ID: <20260323134508.751492569@linuxfoundation.org>
+Message-ID: <20260323134533.074024119@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,155 +69,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228115-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229827-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,suse.de,kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9B4482F37B4
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E7F262F9A5B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
 
-[ Upstream commit 5cb81eeda909dbb2def209dd10636b51549a3f8a ]
+[ Upstream commit 3ed2b549b39f57239aad50a255ece353997183fd ]
 
-ctnetlink_dump_exp_ct() stores a conntrack pointer in cb->data for the
-netlink dump callback ctnetlink_exp_ct_dump_table(), but drops the
-conntrack reference immediately after netlink_dump_start().  When the
-dump spans multiple rounds, the second recvmsg() triggers the dump
-callback which dereferences the now-freed conntrack via nfct_help(ct),
-leading to a use-after-free on ct->ext.
+... in wait_for_avail() and snd_pcm_drain().
 
-The bug is that the netlink_dump_control has no .start or .done
-callbacks to manage the conntrack reference across dump rounds.  Other
-dump functions in the same file (e.g. ctnetlink_get_conntrack) properly
-use .start/.done callbacks for this purpose.
+t was calculated in seconds, so it would be pretty much always zero, to
+be subsequently de-facto ignored due to being max(t, 10)'d. And then it
+(i.e., 10) would be treated as secs, which doesn't seem right.
 
-Fix this by adding .start and .done callbacks that hold and release the
-conntrack reference for the duration of the dump, and move the
-nfct_help() call after the cb->args[0] early-return check in the dump
-callback to avoid dereferencing ct->ext unnecessarily.
+However, fixing it to properly calculate msecs would potentially cause
+timeouts when using twice the period size for the default timeout (which
+seems reasonable to me), so instead use the buffer size plus 10 percent
+to be on the safe side ... but that still seems insufficient, presumably
+because the hardware typically needs a moment to fire up. To compensate
+for this, we up the minimal timeout to 100ms, which is still two orders
+of magnitude less than the bogus minimum.
 
- BUG: KASAN: slab-use-after-free in ctnetlink_exp_ct_dump_table+0x4f/0x2e0
- Read of size 8 at addr ffff88810597ebf0 by task ctnetlink_poc/133
+substream->wait_time was also misinterpreted as jiffies, despite being
+documented as being in msecs. Only the soc/sof driver sets it - to 500,
+which looks very much like msecs were intended.
 
- CPU: 1 UID: 0 PID: 133 Comm: ctnetlink_poc Not tainted 7.0.0-rc2+ #3 PREEMPTLAZY
- Call Trace:
-  <TASK>
-  ctnetlink_exp_ct_dump_table+0x4f/0x2e0
-  netlink_dump+0x333/0x880
-  netlink_recvmsg+0x3e2/0x4b0
-  ? aa_sk_perm+0x184/0x450
-  sock_recvmsg+0xde/0xf0
+Speaking of which, shouldn't snd_pcm_drain() also use substream->
+wait_time?
 
- Allocated by task 133:
-  kmem_cache_alloc_noprof+0x134/0x440
-  __nf_conntrack_alloc+0xa8/0x2b0
-  ctnetlink_create_conntrack+0xa1/0x900
-  ctnetlink_new_conntrack+0x3cf/0x7d0
-  nfnetlink_rcv_msg+0x48e/0x510
-  netlink_rcv_skb+0xc9/0x1f0
-  nfnetlink_rcv+0xdb/0x220
-  netlink_unicast+0x3ec/0x590
-  netlink_sendmsg+0x397/0x690
-  __sys_sendmsg+0xf4/0x180
+As a drive-by, make the debug messages on timeout less confusing.
 
- Freed by task 0:
-  slab_free_after_rcu_debug+0xad/0x1e0
-  rcu_core+0x5c3/0x9c0
-
-Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+Link: https://lore.kernel.org/r/20230405201219.2197774-1-oswald.buddenhagen@gmx.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 9b1dbd69ba6f ("ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ sound/core/pcm_lib.c    |   11 +++++------
+ sound/core/pcm_native.c |    8 ++++----
+ 2 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 3a04665adf992..f261dd48973fe 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3211,7 +3211,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	struct nf_conn *ct = cb->data;
--	struct nf_conn_help *help = nfct_help(ct);
-+	struct nf_conn_help *help;
- 	u_int8_t l3proto = nfmsg->nfgen_family;
- 	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_expect *exp;
-@@ -3219,6 +3219,10 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (cb->args[0])
- 		return 0;
+--- a/sound/core/pcm_lib.c
++++ b/sound/core/pcm_lib.c
+@@ -1878,15 +1878,14 @@ static int wait_for_avail(struct snd_pcm
+ 		if (substream->wait_time) {
+ 			wait_time = substream->wait_time;
+ 		} else {
+-			wait_time = 10;
++			wait_time = 100;
  
-+	help = nfct_help(ct);
-+	if (!help)
-+		return 0;
-+
- 	rcu_read_lock();
+ 			if (runtime->rate) {
+-				long t = runtime->period_size * 2 /
+-					 runtime->rate;
++				long t = runtime->buffer_size * 1100 / runtime->rate;
+ 				wait_time = max(t, wait_time);
+ 			}
+-			wait_time = msecs_to_jiffies(wait_time * 1000);
+ 		}
++		wait_time = msecs_to_jiffies(wait_time);
+ 	}
  
- restart:
-@@ -3248,6 +3252,24 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
- }
+ 	for (;;) {
+@@ -1934,8 +1933,8 @@ static int wait_for_avail(struct snd_pcm
+ 		}
+ 		if (!tout) {
+ 			pcm_dbg(substream->pcm,
+-				"%s write error (DMA or IRQ trouble?)\n",
+-				is_playback ? "playback" : "capture");
++				"%s timeout (DMA or IRQ trouble?)\n",
++				is_playback ? "playback write" : "capture read");
+ 			err = -EIO;
+ 			break;
+ 		}
+--- a/sound/core/pcm_native.c
++++ b/sound/core/pcm_native.c
+@@ -2172,12 +2172,12 @@ static int snd_pcm_drain(struct snd_pcm_
+ 		if (runtime->no_period_wakeup)
+ 			tout = MAX_SCHEDULE_TIMEOUT;
+ 		else {
+-			tout = 10;
++			tout = 100;
+ 			if (runtime->rate) {
+-				long t = runtime->period_size * 2 / runtime->rate;
++				long t = runtime->buffer_size * 1100 / runtime->rate;
+ 				tout = max(t, tout);
+ 			}
+-			tout = msecs_to_jiffies(tout * 1000);
++			tout = msecs_to_jiffies(tout);
+ 		}
+ 		tout = schedule_timeout(tout);
  
-+static int ctnetlink_dump_exp_ct_start(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (!refcount_inc_not_zero(&ct->ct_general.use))
-+		return -ENOENT;
-+	return 0;
-+}
-+
-+static int ctnetlink_dump_exp_ct_done(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (ct)
-+		nf_ct_put(ct);
-+	return 0;
-+}
-+
- static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 				 struct sk_buff *skb,
- 				 const struct nlmsghdr *nlh,
-@@ -3263,6 +3285,8 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 	struct nf_conntrack_zone zone;
- 	struct netlink_dump_control c = {
- 		.dump = ctnetlink_exp_ct_dump_table,
-+		.start = ctnetlink_dump_exp_ct_start,
-+		.done = ctnetlink_dump_exp_ct_done,
- 	};
- 
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
--- 
-2.51.0
-
+@@ -2200,7 +2200,7 @@ static int snd_pcm_drain(struct snd_pcm_
+ 				result = -ESTRPIPE;
+ 			else {
+ 				dev_dbg(substream->pcm->card->dev,
+-					"playback drain error (DMA or IRQ trouble?)\n");
++					"playback drain timeout (DMA or IRQ trouble?)\n");
+ 				snd_pcm_stop(substream, SNDRV_PCM_STATE_SETUP);
+ 				result = -EIO;
+ 			}
 
 
 
