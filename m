@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229237-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBmhASpIwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228047-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:22 +0100
+	id UMpNLlVcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229237-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A2852F3B91
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 397B92F65B3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E151F3069257
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2CF130950BF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81E73AD51A;
-	Mon, 23 Mar 2026 13:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75CB33DEF9;
+	Mon, 23 Mar 2026 15:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wa9mYQMm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="txGFysmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5503AC0C9;
-	Mon, 23 Mar 2026 13:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ADCD2BEC3F;
+	Mon, 23 Mar 2026 15:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273967; cv=none; b=EncJomxHivcwQVEc2ry7I+T9TW1QSRKo+jsO8P/yHkQLWu9v3hDBnUDCDMfUWO2hjKhsPCA91edmtGlqGn+p8IWUKXszSxG2M3/7PFkGlxWN7qwE8XtKhD7W7VtHZ5MytItHvH85NuZqJfU8o2YizeoayflcUoGvaFQfXXiUKLU=
+	t=1774278491; cv=none; b=UP8Li2TTXw6gOg9yq+Z43JDn2lQlcNLjy2CHs2wq56ujL+y/balee9XCGT/9X5Dl3bkd/rVFWudHZGk+8DCCw3mfIoThVw+06FjBdwHJrzceGsVRRr+CurTkd6xR1tH62IHY+qRKj4tGtr+kwX2bJ3t4I948kTQ0wHgAPVjgdSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273967; c=relaxed/simple;
-	bh=T9gI/5wRMpe6HkPeWuFDtuEzj8lCnl0H5a/9zSFDv2o=;
+	s=arc-20240116; t=1774278491; c=relaxed/simple;
+	bh=m434Ct8Jr+lIQU8DdNKTlGgAqy062bGAnOmHXv7IHIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TWPPOyTzbZDgZq8QomVUbCDKP4icycbcxvEovfGfJOfuB9nYA1xWhXT4z1CrJU+fBsZwPrmsMLVSib38nhQb0lTN1rI6kmD6ikdAMIHdifFfMFDu1UKvDgkdVocfTpI0v7QPbKg8TUSGBLCAxrvdoyzcs/Pq6b3xkkeAdi6GDWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wa9mYQMm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E551EC4CEF7;
-	Mon, 23 Mar 2026 13:52:46 +0000 (UTC)
+	 MIME-Version; b=W3wM1u5SvWXESWV+lPzF5ev+3ou0bFGxMmBJwZKtxYVlo9+GRxz6M/114d0G06jz6etxBDkLVKCUtRSK9k1f+g0N+efuMr33Z+yZlI0iG4ifpDB44d4N9u+f2OrWqD1hxnawRD6eITSLLEX5gOSRxxLpNSgsHXOTZDfZla1HE7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=txGFysmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4865C4CEF7;
+	Mon, 23 Mar 2026 15:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273967;
-	bh=T9gI/5wRMpe6HkPeWuFDtuEzj8lCnl0H5a/9zSFDv2o=;
+	s=korg; t=1774278491;
+	bh=m434Ct8Jr+lIQU8DdNKTlGgAqy062bGAnOmHXv7IHIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wa9mYQMmaZg98PwE9ixRylRIn6vmCxogLnucJ44pK/TgcPVnOHNa6XIt2w9Aglat2
-	 io23syVJeIjY1hvZ1MEH5UV7qXJrtchw53lkfn1dX1A+NcDgAlKxZkaHQiWVwvyOKS
-	 5yCK1+X+PvM0nBTeVq8BNPfN1eRumh64m0Qg1pKs=
+	b=txGFysmUkOSRjPFZkcGgmfjPBwDtqhLHb4UIkE/2kdHJxaHbvtSg4EGuovoGMMhCd
+	 QBc5ci2qj5So2Ra8KYUg9pnENV5pg5/vlCA7NIrdwj/nvF5otZKPNbKAvBR4YA0QJl
+	 2HM/afQqoCvdXtNfM3au6G4poTxLzmIIIUDaqlYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.19 065/220] serial: 8250_dw: Rework dw8250_handle_irq() locking and IIR handling
+	Lyude Paul <lyude@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 322/567] nouveau/dpcd: return EBUSY for aux xfer if the device is asleep
 Date: Mon, 23 Mar 2026 14:44:02 +0100
-Message-ID: <20260323134506.648371362@linuxfoundation.org>
+Message-ID: <20260323134541.799146898@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,168 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228047-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229237-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 3A2852F3B91
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 397B92F65B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Dave Airlie <airlied@redhat.com>
 
-commit 883c5a2bc934c165c4491d1ef7da0ac4e9765077 upstream.
+commit 8f3c6f08ababad2e3bdd239728cf66a9949446b4 upstream.
 
-dw8250_handle_irq() takes port's lock multiple times with no good
-reason to release it in between and calls serial8250_handle_irq()
-that also takes port's lock.
+If we have runtime suspended, and userspace wants to use /dev/drm_dp_*
+then just tell it the device is busy instead of crashing in the GSP
+code.
 
-Take port's lock only once in dw8250_handle_irq() and use
-serial8250_handle_irq_locked() to avoid releasing port's lock in
-between.
+WARNING: CPU: 2 PID: 565741 at drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c:164 r535_gsp_msgq_wait+0x9a/0xb0 [nouveau]
+CPU: 2 UID: 0 PID: 565741 Comm: fwupd Not tainted 6.18.10-200.fc43.x86_64 #1 PREEMPT(lazy)
+Hardware name: LENOVO 20QTS0PQ00/20QTS0PQ00, BIOS N2OET65W (1.52 ) 08/05/2024
+RIP: 0010:r535_gsp_msgq_wait+0x9a/0xb0 [nouveau]
 
-As IIR_NO_INT check in serial8250_handle_irq() was outside of port's
-lock, it has to be done already in dw8250_handle_irq().
+This is a simple fix to get backported. We should probably engineer a
+proper power domain solution to wake up devices and keep them awake
+while fw updates are happening.
 
-DW UART can, in addition to IIR_NO_INT, report BUSY_DETECT (0x7) which
-collided with the IIR_NO_INT (0x1) check in serial8250_handle_irq()
-(because & is used instead of ==) meaning that no other work is done by
-serial8250_handle_irq() during an BUSY_DETECT interrupt.
-
-This allows reorganizing code in dw8250_handle_irq() to do both
-IIR_NO_INT and BUSY_DETECT handling right at the start simplifying
-the logic.
-
-Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260203171049.4353-5-ilpo.jarvinen@linux.intel.com
+Cc: stable@vger.kernel.org
+Fixes: 8894f4919bc4 ("drm/nouveau: register a drm_dp_aux channel for each dp connector")
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20260224031750.791621-1-airlied@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |   37 +++++++++++++++++++++----------------
- 1 file changed, 21 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -9,6 +9,9 @@
-  * LCR is written whilst busy.  If it is, then a busy detect interrupt is
-  * raised, the LCR needs to be rewritten and the uart status register read.
-  */
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/device.h>
-@@ -40,6 +43,8 @@
- #define RZN1_UART_RDMACR 0x110 /* DMA Control Register Receive Mode */
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -1212,6 +1212,9 @@ nouveau_connector_aux_xfer(struct drm_dp
+ 	u8 size = msg->size;
+ 	int ret;
  
- /* DesignWare specific register fields */
-+#define DW_UART_IIR_IID			GENMASK(3, 0)
++	if (pm_runtime_suspended(nv_connector->base.dev->dev))
++		return -EBUSY;
 +
- #define DW_UART_MCR_SIRE		BIT(6)
- 
- /* Renesas specific register fields */
-@@ -312,7 +317,19 @@ static int dw8250_handle_irq(struct uart
- 	bool rx_timeout = (iir & 0x3f) == UART_IIR_RX_TIMEOUT;
- 	unsigned int quirks = d->pdata->quirks;
- 	unsigned int status;
--	unsigned long flags;
-+
-+	switch (FIELD_GET(DW_UART_IIR_IID, iir)) {
-+	case UART_IIR_NO_INT:
-+		return 0;
-+
-+	case UART_IIR_BUSY:
-+		/* Clear the USR */
-+		serial_port_in(p, d->pdata->usr_reg);
-+
-+		return 1;
-+	}
-+
-+	guard(uart_port_lock_irqsave)(p);
- 
- 	/*
- 	 * There are ways to get Designware-based UARTs into a state where
-@@ -325,20 +342,15 @@ static int dw8250_handle_irq(struct uart
- 	 * so we limit the workaround only to non-DMA mode.
- 	 */
- 	if (!up->dma && rx_timeout) {
--		uart_port_lock_irqsave(p, &flags);
- 		status = serial_lsr_in(up);
- 
- 		if (!(status & (UART_LSR_DR | UART_LSR_BI)))
- 			serial_port_in(p, UART_RX);
--
--		uart_port_unlock_irqrestore(p, flags);
- 	}
- 
- 	/* Manually stop the Rx DMA transfer when acting as flow controller */
- 	if (quirks & DW_UART_QUIRK_IS_DMA_FC && up->dma && up->dma->rx_running && rx_timeout) {
--		uart_port_lock_irqsave(p, &flags);
- 		status = serial_lsr_in(up);
--		uart_port_unlock_irqrestore(p, flags);
- 
- 		if (status & (UART_LSR_DR | UART_LSR_BI)) {
- 			dw8250_writel_ext(p, RZN1_UART_RDMACR, 0);
-@@ -346,17 +358,9 @@ static int dw8250_handle_irq(struct uart
- 		}
- 	}
- 
--	if (serial8250_handle_irq(p, iir))
--		return 1;
--
--	if ((iir & UART_IIR_BUSY) == UART_IIR_BUSY) {
--		/* Clear the USR */
--		serial_port_in(p, d->pdata->usr_reg);
-+	serial8250_handle_irq_locked(p, iir);
- 
--		return 1;
--	}
--
--	return 0;
-+	return 1;
- }
- 
- static void dw8250_clk_work_cb(struct work_struct *work)
-@@ -865,6 +869,7 @@ static struct platform_driver dw8250_pla
- 
- module_platform_driver(dw8250_platform_driver);
- 
-+MODULE_IMPORT_NS("SERIAL_8250");
- MODULE_AUTHOR("Jamie Iles");
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Synopsys DesignWare 8250 serial port driver");
+ 	nv_encoder = find_encoder(&nv_connector->base, DCB_OUTPUT_DP);
+ 	if (!nv_encoder || !(aux = nv_encoder->aux))
+ 		return -ENODEV;
 
 
 
