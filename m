@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227990-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPToEw9TwWkPSQQAu9opvQ
-	(envelope-from <stable+bounces-228703-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:51 +0100
+	id mI3JM7dGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-227990-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096342F5425
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C4D2F378F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDA85308A7B7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7A8BE304A101
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FAF33B2FEB;
-	Mon, 23 Mar 2026 14:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3E33ACA5C;
+	Mon, 23 Mar 2026 13:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KY1k1p9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cgPMQWHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B0A387593;
-	Mon, 23 Mar 2026 14:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF6A3AD517;
+	Mon, 23 Mar 2026 13:49:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276896; cv=none; b=Q+ZTgRdgzjsWR6xVOe2F3WRuwpUAkAitk3yOYMylfFN4pdSX7qGrOFhquUsQ8XEWIxoyQrr/2/6NhdDN84St9mSMw1HSzV5ltCPpWvxJz4/xWX1+VMw0AzFVrrEFSPDmHIwDVwsqgM8rKvW2XQlZL3OvFRys/JOWXETNcZ4LDwI=
+	t=1774273790; cv=none; b=dJUVM84VaCryaD38FsygAsjjlyU8D4sQYM68/ZuxsRYwFmHL5fXYSaFGRqXj36IG86twNqCAvMssb8bf4Br/LceSH2lPfSqAFEUap3q+fuvmlKN+dJk4/qRv9az2fGmHulIUSnek9019q1Ud7Zgr479S9hQTcASf+N3qw7DkbtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276896; c=relaxed/simple;
-	bh=YrqcFDENyNTIDeEqs7h/fqKJnF+RmsvPidVpiS93egk=;
+	s=arc-20240116; t=1774273790; c=relaxed/simple;
+	bh=z2y+bztiQ2rRcDpQSnhzx0SRk4wxHpXI2j3AGTJklJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kZxOr0yUmC/eX84w3yH9g6l/EiB2hBt2A7J6noG2ff9171O7JMO/5e+/DTqITJnKoA11fG1pPVNLDqVOIitLiFxxuIgZuFYSnjXhyXmvbbtJpJ7OFq1/O161rXc61SNJ+fZKxf3ydIIMZLKs1kva8Ez9q3hy59yviG0xQBI4sxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KY1k1p9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3DFAC4CEF7;
-	Mon, 23 Mar 2026 14:41:35 +0000 (UTC)
+	 MIME-Version; b=IG2z6XE8Ooymezn+2V4AF1+Eca2aYsu2nHveywE3m4C6wqQCEI0QeF6es+2SKX+OIKFIDbCgPRr85SdrWK7oqJ98Em7P60Ewmcfsptq2ub3R/KZFlyxRm0WXvjpbEZFUJr1rmc+egKheRmxP9/bwrd2sOHxhzz7WSPX1pR1hmns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cgPMQWHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB7BC4CEF7;
+	Mon, 23 Mar 2026 13:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276896;
-	bh=YrqcFDENyNTIDeEqs7h/fqKJnF+RmsvPidVpiS93egk=;
+	s=korg; t=1774273790;
+	bh=z2y+bztiQ2rRcDpQSnhzx0SRk4wxHpXI2j3AGTJklJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KY1k1p9J85mxwKdIoAkyftIWPJ4HQYPuSiatq7KImUOAE1bX6J4CaVGHXB6zQi53G
-	 8JBweZB+yjj0Ah6T6Y2HQyGUnnGXVrP5SysVZjGY9l8vSiWUGGmkaY7UEa59I6g3nu
-	 StbJbmP55aFrykndaIgKPpEoo0wGARbyorVtDwSE=
+	b=cgPMQWHFzXwgRDl35bAxRoe6jtdbLDBZD2QDR956HF3LT/zxXSBegD3dniPXp5pp9
+	 gAqtpvBBjzw1V9WLQpKVk/UPYEqseJpTZjhrUC914STG3gau6ACDQ1bkcHBQauB/lX
+	 8xttS/TDeEU8TGBVSzzF/AXPUh8X3yOTNkQc1938=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Hoeppner <hoeppner@linux.ibm.com>,
-	Eduard Shishkin <edward6@linux.ibm.com>,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 191/460] s390/dasd: Copy detected format information to secondary device
+	Chris Down <chris@chrisdown.name>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.19 010/220] mm/huge_memory: fix use of NULL folio in move_pages_huge_pmd()
 Date: Mon, 23 Mar 2026 14:43:07 +0100
-Message-ID: <20260323134531.241162497@linuxfoundation.org>
+Message-ID: <20260323134504.908002929@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +69,96 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228703-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227990-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 096342F5425
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chrisdown.name:email]
+X-Rspamd-Queue-Id: 43C4D2F378F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Chris Down <chris@chrisdown.name>
 
-commit 4c527c7e030672efd788d0806d7a68972a7ba3c1 upstream.
+commit fae654083bfa409bb2244f390232e2be47f05bfc upstream.
 
-During online processing for a DASD device an IO operation is started to
-determine the format of the device. CDL format contains specifically
-sized blocks at the beginning of the disk.
+move_pages_huge_pmd() handles UFFDIO_MOVE for both normal THPs and huge
+zero pages.  For the huge zero page path, src_folio is explicitly set to
+NULL, and is used as a sentinel to skip folio operations like lock and
+rmap.
 
-For a PPRC secondary device no real IO operation is possible therefore
-this IO request can not be started and this step is skipped for online
-processing of secondary devices. This is generally fine since the
-secondary is a copy of the primary device.
+In the huge zero page branch, src_folio is NULL, so folio_mk_pmd(NULL,
+pgprot) passes NULL through folio_pfn() and page_to_pfn().  With
+SPARSEMEM_VMEMMAP this silently produces a bogus PFN, installing a PMD
+pointing to non-existent physical memory.  On other memory models it is a
+NULL dereference.
 
-In case of an additional partition detection that is run after a swap
-operation the format information is needed to properly drive partition
-detection IO.
+Use page_folio(src_page) to obtain the valid huge zero folio from the
+page, which was obtained from pmd_page() and remains valid throughout.
 
-Currently the information is not passed leading to IO errors during
-partition detection and a wrongly detected partition table which in turn
-might lead to data corruption on the disk with the wrong partition table.
+After commit d82d09e48219 ("mm/huge_memory: mark PMD mappings of the huge
+zero folio special"), moved huge zero PMDs must remain special so
+vm_normal_page_pmd() continues to treat them as special mappings.
 
-Fix by passing the format information from primary to secondary device.
+move_pages_huge_pmd() currently reconstructs the destination PMD in the
+huge zero page branch, which drops PMD state such as pmd_special() on
+architectures with CONFIG_ARCH_HAS_PTE_SPECIAL.  As a result,
+vm_normal_page_pmd() can treat the moved huge zero PMD as a normal page
+and corrupt its refcount.
 
-Fixes: 413862caad6f ("s390/dasd: add copy pair swap capability")
-Cc: stable@vger.kernel.org #6.1
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Acked-by: Eduard Shishkin <edward6@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://patch.msgid.link/20260310142330.4080106-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Instead of reconstructing the PMD from the folio, derive the destination
+entry from src_pmdval after pmdp_huge_clear_flush(), then handle the PMD
+metadata the same way move_huge_pmd() does for moved entries by marking it
+soft-dirty and clearing uffd-wp.
+
+Link: https://lkml.kernel.org/r/a1e787dd-b911-474d-8570-f37685357d86@lucifer.local
+Fixes: e3981db444a0 ("mm: add folio_mk_pmd()")
+Signed-off-by: Chris Down <chris@chrisdown.name>
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Tested-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_eckd.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ mm/huge_memory.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/s390/block/dasd_eckd.c
-+++ b/drivers/s390/block/dasd_eckd.c
-@@ -6145,6 +6145,7 @@ static void copy_pair_set_active(struct
- static int dasd_eckd_copy_pair_swap(struct dasd_device *device, char *prim_busid,
- 				    char *sec_busid)
- {
-+	struct dasd_eckd_private *prim_priv, *sec_priv;
- 	struct dasd_device *primary, *secondary;
- 	struct dasd_copy_relation *copy;
- 	struct dasd_block *block;
-@@ -6165,6 +6166,9 @@ static int dasd_eckd_copy_pair_swap(stru
- 	if (!secondary)
- 		return DASD_COPYPAIRSWAP_SECONDARY;
- 
-+	prim_priv = primary->private;
-+	sec_priv = secondary->private;
-+
- 	/*
- 	 * usually the device should be quiesced for swap
- 	 * for paranoia stop device and requeue requests again
-@@ -6197,6 +6201,13 @@ static int dasd_eckd_copy_pair_swap(stru
- 		dasd_device_remove_stop_bits(primary, DASD_STOPPED_QUIESCE);
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2797,7 +2797,8 @@ int move_pages_huge_pmd(struct mm_struct
+ 		_dst_pmd = pmd_mkwrite(pmd_mkdirty(_dst_pmd), dst_vma);
+ 	} else {
+ 		src_pmdval = pmdp_huge_clear_flush(src_vma, src_addr, src_pmd);
+-		_dst_pmd = folio_mk_pmd(src_folio, dst_vma->vm_page_prot);
++		_dst_pmd = move_soft_dirty_pmd(src_pmdval);
++		_dst_pmd = clear_uffd_wp_pmd(_dst_pmd);
  	}
+ 	set_pmd_at(mm, dst_addr, dst_pmd, _dst_pmd);
  
-+	/*
-+	 * The secondary device never got through format detection, but since it
-+	 * is a copy of the primary device, the format is exactly the same;
-+	 * therefore, the detected layout can simply be copied.
-+	 */
-+	sec_priv->uses_cdl = prim_priv->uses_cdl;
-+
- 	/* re-enable device */
- 	dasd_device_remove_stop_bits(primary, DASD_STOPPED_PPRC);
- 	dasd_device_remove_stop_bits(secondary, DASD_STOPPED_PPRC);
 
 
 
