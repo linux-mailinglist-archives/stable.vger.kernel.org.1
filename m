@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228131-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHoFMxNpwWliSwQAu9opvQ
-	(envelope-from <stable+bounces-228787-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:23:47 +0100
+	id MMlKG6dJwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228131-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CF792F801F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:23:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8F32F3E96
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3AC24304C12F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B03083033D3C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3141A5B84;
-	Mon, 23 Mar 2026 14:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B72EB21D00A;
+	Mon, 23 Mar 2026 13:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTG97zMm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX3Nu9bT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDB922CBC6;
-	Mon, 23 Mar 2026 14:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B348286A4;
+	Mon, 23 Mar 2026 13:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277125; cv=none; b=BILmLVyyDowgXqC9yu+x1ByYdELMMenOk27sjC7KoWg5dwxcBGtKPxI6PoyBxac81eYypVI3mZYrlXge9bUwRYONy4mMQOGlAiWYP3vGtXvXgUqZZezeGMVlw9Nz3fAjWdSQMBYmCkfmE7XAbPq5WKcNvYxzdziGa8/b0j+Dl0g=
+	t=1774274218; cv=none; b=PGdU4AaRHkjuM/6mkQFLgudbEJJkCH3SRBODOOPLQbR1kmyvbpxw8wurRvmBB9GSb7Gpv/pMEL97hxaYjdzbE5Jo3WEqwx4jSnO2Y4rswKD5ogmFPBqQeCySPhp68DckjIIw9HDNXq2sz/pH/5JZ/jEP4Lb4xsJyh1uKGX3UNv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277125; c=relaxed/simple;
-	bh=ONMZovV10ElPfDthSBE4ixvIsabWpGcjbY4b81KYSRY=;
+	s=arc-20240116; t=1774274218; c=relaxed/simple;
+	bh=2efKX7Rj+MkxEknm2fPVXZ81O0NyVbc1cpTzPmLE36I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhnX5Yzwq4z6lvQV7KOlJ4btmNc98NHi2O6BBBOfIipc7Bdkpby60UeWTXgDo2iWyHij0pP9VNA5rptTEZLiq4XIsHcmiuaOa/RAklVCWs99yM57bwLeFND+f7+eSok9jvBtqdNuVfl7t1EpDU44hwjoH4cce0s+ucSaZw5k9fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTG97zMm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7FFC4CEF7;
-	Mon, 23 Mar 2026 14:45:24 +0000 (UTC)
+	 MIME-Version; b=MGmvemZVRB/7H8DKGA5vVQTDeApy/EMykADlJRa0fy8BWdg1AGGArJdMevh6bqOkQ+ubf5YETczPjdHO+di7TSo3lxGFa/v89VT73xpm3U/noG0X+VurwjMkYS7duww9d0mqC2g9RAxzfMnbvHRIgLLuTh9xfH4la5Vi7ompFXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX3Nu9bT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC898C2BCB1;
+	Mon, 23 Mar 2026 13:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277125;
-	bh=ONMZovV10ElPfDthSBE4ixvIsabWpGcjbY4b81KYSRY=;
+	s=korg; t=1774274218;
+	bh=2efKX7Rj+MkxEknm2fPVXZ81O0NyVbc1cpTzPmLE36I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTG97zMm+xzzib1LtS3l4C3Qc4fhBhrYdTNgU6LPtc1vBtaW6XVQpv9ONINRQ8EnG
-	 B2TN4t3OuxaRMlnpvck8bqiyw2htnZCbj5wflothcnQnGtENLCniL3+J5rdxnW4qGd
-	 vr/KyqQxzpnegzInmh2nhOAvnoV0MqFYCSk2IPro=
+	b=PX3Nu9bTq9o8mRqX/lLou1hkd9ykI1iWWbOXI6EFkO+9802ct5N5eF71nLPWhjXyX
+	 uIcJ7gwnytJ3ri2AC/5yeNYkZY/mlcDj1VefQF6Xt/FnRqGco3Fo/53ksHDu4FCf2f
+	 XBZbdZuCeEKLXf5jf0X03QQqTIgRUgk+Rfp/xXDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 327/460] powerpc64/bpf: fix kfunc call support
-Date: Mon, 23 Mar 2026 14:45:23 +0100
-Message-ID: <20260323134534.551198600@linuxfoundation.org>
+Subject: [PATCH 6.19 147/220] PM: runtime: Fix a race condition related to device removal
+Date: Mon, 23 Mar 2026 14:45:24 +0100
+Message-ID: <20260323134509.233692659@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,204 +66,162 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228787-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228131-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3CF792F801F
+	TAGGED_RCPT(0.00)[stable,6c905ab800f20cf4086c];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AF8F32F3E96
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Bathini <hbathini@linux.ibm.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 01b6ac72729610ae732ca2a66e3a642e23f6cd60 ]
+[ Upstream commit 29ab768277617452d88c0607c9299cdc63b6e9ff ]
 
-Commit 61688a82e047 ("powerpc/bpf: enable kfunc call") inadvertently
-enabled kfunc call support for 32-bit powerpc but that support will
-not be possible until ABI mismatch between 32-bit powerpc and eBPF is
-handled in 32-bit powerpc JIT code. Till then, advertise support only
-for 64-bit powerpc. Also, in powerpc ABI, caller needs to extend the
-arguments properly based on signedness. The JIT code is responsible
-for handling this explicitly for kfunc calls as verifier can't handle
-this for each architecture-specific ABI needs. But this was not taken
-care of while kfunc call support was enabled for powerpc. Fix it by
-handling this with bpf_jit_find_kfunc_model() and using zero_extend()
-& sign_extend() helper functions.
+The following code in pm_runtime_work() may dereference the dev->parent
+pointer after the parent device has been freed:
 
-Fixes: 61688a82e047 ("powerpc/bpf: enable kfunc call")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260303181031.390073-7-hbathini@linux.ibm.com
+	/* Maybe the parent is now able to suspend. */
+	if (parent && !parent->power.ignore_children) {
+		spin_unlock(&dev->power.lock);
+
+		spin_lock(&parent->power.lock);
+		rpm_idle(parent, RPM_ASYNC);
+		spin_unlock(&parent->power.lock);
+
+		spin_lock(&dev->power.lock);
+	}
+
+Fix this by inserting a flush_work() call in pm_runtime_remove().
+
+Without this patch blktest block/001 triggers the following complaint
+sporadically:
+
+BUG: KASAN: slab-use-after-free in lock_acquire+0x70/0x160
+Read of size 1 at addr ffff88812bef7198 by task kworker/u553:1/3081
+Workqueue: pm pm_runtime_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x61/0x80
+ print_address_description.constprop.0+0x8b/0x310
+ print_report+0xfd/0x1d7
+ kasan_report+0xd8/0x1d0
+ __kasan_check_byte+0x42/0x60
+ lock_acquire.part.0+0x38/0x230
+ lock_acquire+0x70/0x160
+ _raw_spin_lock+0x36/0x50
+ rpm_suspend+0xc6a/0xfe0
+ rpm_idle+0x578/0x770
+ pm_runtime_work+0xee/0x120
+ process_one_work+0xde3/0x1410
+ worker_thread+0x5eb/0xfe0
+ kthread+0x37b/0x480
+ ret_from_fork+0x6cb/0x920
+ ret_from_fork_asm+0x11/0x20
+ </TASK>
+
+Allocated by task 4314:
+ kasan_save_stack+0x2a/0x50
+ kasan_save_track+0x18/0x40
+ kasan_save_alloc_info+0x3d/0x50
+ __kasan_kmalloc+0xa0/0xb0
+ __kmalloc_noprof+0x311/0x990
+ scsi_alloc_target+0x122/0xb60 [scsi_mod]
+ __scsi_scan_target+0x101/0x460 [scsi_mod]
+ scsi_scan_channel+0x179/0x1c0 [scsi_mod]
+ scsi_scan_host_selected+0x259/0x2d0 [scsi_mod]
+ store_scan+0x2d2/0x390 [scsi_mod]
+ dev_attr_store+0x43/0x80
+ sysfs_kf_write+0xde/0x140
+ kernfs_fop_write_iter+0x3ef/0x670
+ vfs_write+0x506/0x1470
+ ksys_write+0xfd/0x230
+ __x64_sys_write+0x76/0xc0
+ x64_sys_call+0x213/0x1810
+ do_syscall_64+0xee/0xfc0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Freed by task 4314:
+ kasan_save_stack+0x2a/0x50
+ kasan_save_track+0x18/0x40
+ kasan_save_free_info+0x3f/0x50
+ __kasan_slab_free+0x67/0x80
+ kfree+0x225/0x6c0
+ scsi_target_dev_release+0x3d/0x60 [scsi_mod]
+ device_release+0xa3/0x220
+ kobject_cleanup+0x105/0x3a0
+ kobject_put+0x72/0xd0
+ put_device+0x17/0x20
+ scsi_device_dev_release+0xacf/0x12c0 [scsi_mod]
+ device_release+0xa3/0x220
+ kobject_cleanup+0x105/0x3a0
+ kobject_put+0x72/0xd0
+ put_device+0x17/0x20
+ scsi_device_put+0x7f/0xc0 [scsi_mod]
+ sdev_store_delete+0xa5/0x120 [scsi_mod]
+ dev_attr_store+0x43/0x80
+ sysfs_kf_write+0xde/0x140
+ kernfs_fop_write_iter+0x3ef/0x670
+ vfs_write+0x506/0x1470
+ ksys_write+0xfd/0x230
+ __x64_sys_write+0x76/0xc0
+ x64_sys_call+0x213/0x1810
+
+Reported-by: Ming Lei <ming.lei@redhat.com>
+Closes: https://lore.kernel.org/all/ZxdNvLNI8QaOfD2d@fedora/
+Reported-by: syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68c13942.050a0220.2ff435.000b.GAE@google.com/
+Fixes: 5e928f77a09a ("PM: Introduce core framework for run-time PM of I/O devices (rev. 17)")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260312182720.2776083-1-bvanassche@acm.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/net/bpf_jit_comp.c   |    2 
- arch/powerpc/net/bpf_jit_comp64.c |  101 ++++++++++++++++++++++++++++++++++----
- 2 files changed, 94 insertions(+), 9 deletions(-)
+ drivers/base/power/runtime.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -362,7 +362,7 @@ void bpf_jit_free(struct bpf_prog *fp)
- 
- bool bpf_jit_supports_kfunc_call(void)
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 0ee8ea971aa46..335288e8b5b31 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1895,6 +1895,7 @@ void pm_runtime_reinit(struct device *dev)
+ void pm_runtime_remove(struct device *dev)
  {
--	return true;
-+	return IS_ENABLED(CONFIG_PPC64);
+ 	__pm_runtime_disable(dev, false);
++	flush_work(&dev->power.work);
+ 	pm_runtime_reinit(dev);
  }
  
- bool bpf_jit_supports_far_kfunc_call(void)
---- a/arch/powerpc/net/bpf_jit_comp64.c
-+++ b/arch/powerpc/net/bpf_jit_comp64.c
-@@ -293,6 +293,83 @@ int bpf_jit_emit_func_call_rel(u32 *imag
- 	return 0;
- }
- 
-+static int zero_extend(u32 *image, struct codegen_context *ctx, u32 src_reg, u32 dst_reg, u32 size)
-+{
-+	switch (size) {
-+	case 1:
-+		 /* zero-extend 8 bits into 64 bits */
-+		EMIT(PPC_RAW_RLDICL(dst_reg, src_reg, 0, 56));
-+		return 0;
-+	case 2:
-+		 /* zero-extend 16 bits into 64 bits */
-+		EMIT(PPC_RAW_RLDICL(dst_reg, src_reg, 0, 48));
-+		return 0;
-+	case 4:
-+		 /* zero-extend 32 bits into 64 bits */
-+		EMIT(PPC_RAW_RLDICL(dst_reg, src_reg, 0, 32));
-+		fallthrough;
-+	case 8:
-+		/* Nothing to do */
-+		return 0;
-+	default:
-+		return -1;
-+	}
-+}
-+
-+static int sign_extend(u32 *image, struct codegen_context *ctx, u32 src_reg, u32 dst_reg, u32 size)
-+{
-+	switch (size) {
-+	case 1:
-+		 /* sign-extend 8 bits into 64 bits */
-+		EMIT(PPC_RAW_EXTSB(dst_reg, src_reg));
-+		return 0;
-+	case 2:
-+		 /* sign-extend 16 bits into 64 bits */
-+		EMIT(PPC_RAW_EXTSH(dst_reg, src_reg));
-+		return 0;
-+	case 4:
-+		 /* sign-extend 32 bits into 64 bits */
-+		EMIT(PPC_RAW_EXTSW(dst_reg, src_reg));
-+		fallthrough;
-+	case 8:
-+		/* Nothing to do */
-+		return 0;
-+	default:
-+		return -1;
-+	}
-+}
-+
-+/*
-+ * Handle powerpc ABI expectations from caller:
-+ *   - Unsigned arguments are zero-extended.
-+ *   - Signed arguments are sign-extended.
-+ */
-+static int prepare_for_kfunc_call(const struct bpf_prog *fp, u32 *image,
-+				  struct codegen_context *ctx,
-+				  const struct bpf_insn *insn)
-+{
-+	const struct btf_func_model *m = bpf_jit_find_kfunc_model(fp, insn);
-+	int i;
-+
-+	if (!m)
-+		return -1;
-+
-+	for (i = 0; i < m->nr_args; i++) {
-+		/* Note that BPF ABI only allows up to 5 args for kfuncs */
-+		u32 reg = bpf_to_ppc(BPF_REG_1 + i), size = m->arg_size[i];
-+
-+		if (!(m->arg_flags[i] & BTF_FMODEL_SIGNED_ARG)) {
-+			if (zero_extend(image, ctx, reg, reg, size))
-+				return -1;
-+		} else {
-+			if (sign_extend(image, ctx, reg, reg, size))
-+				return -1;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static int bpf_jit_emit_tail_call(u32 *image, struct codegen_context *ctx, u32 out)
- {
- 	/*
-@@ -678,14 +755,16 @@ int bpf_jit_build_body(struct bpf_prog *
- 				/* special mov32 for zext */
- 				EMIT(PPC_RAW_RLWINM(dst_reg, dst_reg, 0, 0, 31));
- 				break;
--			} else if (off == 8) {
--				EMIT(PPC_RAW_EXTSB(dst_reg, src_reg));
--			} else if (off == 16) {
--				EMIT(PPC_RAW_EXTSH(dst_reg, src_reg));
--			} else if (off == 32) {
--				EMIT(PPC_RAW_EXTSW(dst_reg, src_reg));
--			} else if (dst_reg != src_reg)
--				EMIT(PPC_RAW_MR(dst_reg, src_reg));
-+			}
-+			if (off == 0) {
-+				/* MOV */
-+				if (dst_reg != src_reg)
-+					EMIT(PPC_RAW_MR(dst_reg, src_reg));
-+			} else {
-+				/* MOVSX: dst = (s8,s16,s32)src (off = 8,16,32) */
-+				if (sign_extend(image, ctx, src_reg, dst_reg, off / 8))
-+					return -1;
-+			}
- 			goto bpf_alu32_trunc;
- 		case BPF_ALU | BPF_MOV | BPF_K: /* (u32) dst = imm */
- 		case BPF_ALU64 | BPF_MOV | BPF_K: /* dst = (s64) imm */
-@@ -1079,6 +1158,12 @@ emit_clear:
- 			if (ret < 0)
- 				return ret;
- 
-+			/* Take care of powerpc ABI requirements before kfunc call */
-+			if (insn[i].src_reg == BPF_PSEUDO_KFUNC_CALL) {
-+				if (prepare_for_kfunc_call(fp, image, ctx, &insn[i]))
-+					return -1;
-+			}
-+
- 			ret = bpf_jit_emit_func_call_rel(image, fimage, ctx, func_addr);
- 			if (ret)
- 				return ret;
+-- 
+2.51.0
+
 
 
 
