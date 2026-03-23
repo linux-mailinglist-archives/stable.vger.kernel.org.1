@@ -1,142 +1,138 @@
-Return-Path: <stable+bounces-227962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ANUOFygtwWmbRAQAu9opvQ
-	(envelope-from <stable+bounces-227962-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:08:08 +0100
+	id sKOPNdoswWmbRAQAu9opvQ
+	(envelope-from <stable+bounces-227963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:06:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3552F1AAF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:08:07 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735752F1A5C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 46B603036EC1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 12:00:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF63A300CA08
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 12:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826EF37C90E;
-	Mon, 23 Mar 2026 12:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83483396B66;
+	Mon, 23 Mar 2026 12:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FAGvZ4oK"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D949738654A;
-	Mon, 23 Mar 2026 12:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4577937F721;
+	Mon, 23 Mar 2026 12:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774267244; cv=none; b=EKBubRVeeW0tFFgKnPDMWyFY0xAuTbmd6eQAsM1BnfVVWfXAnnbJIGbMEZpNqsKo7o0pXJahSK+YEb4UIpmvlBfnr4tDE/xZRCqDBWln1NJQPyCBc8/v1q6uTMqZcKWQMJbSuuNW4ZjUNlhA+nbo06Lq6p2aycLi4M68SYYjmaI=
+	t=1774267608; cv=none; b=VuUgE5+gOk5aQlqdESCQhZYbLJEITqe2g0hZo1fb7jwJNuagcs+AQTGcvxqqHyHm541xsyeHoDs4i6X0Yhi5BxiUPUDwit5vSs3MiLE9jfjG68oVbi9t1awy2Ke11na6gMkD+SEjeEtv9YTh8xJpGERpjYxjfUWeeiElWykjTI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774267244; c=relaxed/simple;
-	bh=DcxRYRNdYwZfYPexQSZiTBmbCbm56NCY5EQJTOmVzKo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pbco3TlpeRN/vi6spf9F8JbN7G9XgEU3E2I/hKocaoPHl1JpJ9/oKCfScrUZDsIA9o/gmzNG7kbVqS7H2e4XPyiOyitV1MDKK9/eYUzg3UNtaPJ8Qr5WEy7hGhPzfSaHv4Dp/tPgsXapXRVKyE98SucY+urHue3hCFstYlZctFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from yzs (unknown [115.192.255.131])
-	by APP-05 (Coremail) with SMTP id zQCowAD3hAhEK8Fp9qw5Cw--.39901S2;
-	Mon, 23 Mar 2026 20:00:04 +0800 (CST)
-From: Zishun Yi <vulab@iscas.ac.cn>
-To: Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexandre Ghiti <alex@ghiti.fr>,
-	Atish Patra <atish.patra@linux.dev>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Zishun Yi <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] riscv: cacheinfo: Fix node reference leak in populate_cache_leaves
-Date: Mon, 23 Mar 2026 19:59:57 +0800
-Message-ID: <20260323115957.38348-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.51.2
+	s=arc-20240116; t=1774267608; c=relaxed/simple;
+	bh=G9WmYiLeswQv6Ve1LoG1uvOvj989vX1oUK2ETCU2J9o=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=tpGJj2kZTGGR78D2zKaVH8tvsBiYOMIXskg7G32MeOKIJxnD2S+S3JO4W2Lud1Hsd+rDC8Hdz5AKl7GoDfhHRJj2SzdIu8nb42mGJpsmeINsntBBRQdPtP7jZncJXKz1jFwP7Iu3iEp+09Dld493UIoO+W3tC8G1G1wR+Ee1W7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FAGvZ4oK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A87C2BCB6;
+	Mon, 23 Mar 2026 12:06:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774267607;
+	bh=G9WmYiLeswQv6Ve1LoG1uvOvj989vX1oUK2ETCU2J9o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FAGvZ4oKAXzn89bVfmJwx36J+WLBB9JqLS26s5DZ3196PgmbMyv0qN8iyM0GgRXVD
+	 AvuBq40yjlJH5KHLVncQtPIl87b4fG8A5Jzx9/gPZlwvd9EbFCkvE8xExW70b7h136
+	 QOZKqXpmfeZ+u98/8ougbVxTh++6xKcTz9mfASbth5NBeCDntYRYVPTqXv2qeRtQ1D
+	 f6oa8yDVW8Sc0l0lFmETFJqCxGesqYKi+72T58hHA7jGJJ8dfzAE608KtKTMKA6y8K
+	 xy7eKpTBD9TpjVA0CzieNU6dF1ivluUXeAZPHyh9HodET+i+14/gRkt4eVyFLHWU4j
+	 Gbp1My3/gkliw==
+Date: Mon, 23 Mar 2026 21:06:43 +0900
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+To: Martin Kaiser <martin@kaiser.cx>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, linux-trace-kernel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] tracing: fprobe: fix the length of unused fgraph_data
+Message-Id: <20260323210643.2b43b307f0348623d680b098@kernel.org>
+In-Reply-To: <20260323102020.239567-1-martin@kaiser.cx>
+References: <20260323102020.239567-1-martin@kaiser.cx>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAD3hAhEK8Fp9qw5Cw--.39901S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tw4Duw18XF4rKF4xtw13Jwb_yoW8JFy3pr
-	W2krWYyry8Gr4xKa4Iyrs7W3y0qas7WrsxC3Z7CF1UZwsxXry5Xwn5X34YqrnYvFyrZryS
-	vr1UKw4Ivwn5A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
-	6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI
-	0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y
-	0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1l
-	IxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbGQ6JUUUU
-	U==
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgsPA2nA5q74rwABs2
-X-Spamd-Result: default: False [0.04 / 15.00];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	MV_CASE(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227962-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[iscas.ac.cn];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-227963-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[vulab@iscas.ac.cn,stable@vger.kernel.org];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mhiramat@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[iscas.ac.cn:email,iscas.ac.cn:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AD3552F1AAF
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,kaiser.cx:email]
+X-Rspamd-Queue-Id: 735752F1A5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Currently, the while loop drops the reference to prev in each iteration.
-If the loop terminates early due to a break, the final of_node_put(np)
-correctly drops the reference to the current node.
+On Mon, 23 Mar 2026 11:19:36 +0100
+Martin Kaiser <martin@kaiser.cx> wrote:
 
-However, if the loop terminates naturally because np == NULL, calling
-of_node_put(np) is a no-op. This leaves the last valid node stored in
-prev without its reference dropped, resulting in a node reference leak.
+> If fprobe_entry does not fill the allocated fgraph_data completely, the
+> unused part is zeroed with memset.
+> 
+> Fix the length for this memset call. Both reserved_words and used are in
+> units of return stack words, but memset needs the number of bytes.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
+> Signed-off-by: Martin Kaiser <martin@kaiser.cx>
 
-Fix this by changing the final `of_node_put(np)` to `of_node_put(prev)`.
+Good catch!
 
-Fixes: 94f9bf118f1e ("RISC-V: Fix of_node_* refcount")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zishun Yi <vulab@iscas.ac.cn>
----
-I saw 37233169a6ea ("riscv: Prevent a bad reference count on CPU nodes")
-added the stable tag and fixed a similar issue, so I included it here as
-well.
+Thanks,
 
- arch/riscv/kernel/cacheinfo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> ---
+>  kernel/trace/fprobe.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
+> index dcadf1d23b8a..6a1192515afd 100644
+> --- a/kernel/trace/fprobe.c
+> +++ b/kernel/trace/fprobe.c
+> @@ -451,7 +451,7 @@ static int fprobe_fgraph_entry(struct ftrace_graph_ent *trace, struct fgraph_ops
+>  		}
+>  	}
+>  	if (used < reserved_words)
+> -		memset(fgraph_data + used, 0, reserved_words - used);
+> +		memset(fgraph_data + used, 0, (reserved_words - used) * sizeof(long));
+>  
+>  	/* If any exit_handler is set, data must be used. */
+>  	return used != 0;
+> -- 
+> 2.43.7
+> 
 
-diff --git a/arch/riscv/kernel/cacheinfo.c b/arch/riscv/kernel/cacheinfo.c
-index 26b085dbdd07..6c9a1ef2d45a 100644
---- a/arch/riscv/kernel/cacheinfo.c
-+++ b/arch/riscv/kernel/cacheinfo.c
-@@ -133,7 +133,7 @@ int populate_cache_leaves(unsigned int cpu)
- 			ci_leaf_init(this_leaf++, CACHE_TYPE_DATA, level);
- 		levels = level;
- 	}
--	of_node_put(np);
-+	of_node_put(prev);
- 
- 	return 0;
- }
+
 -- 
-2.51.2
-
+Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
