@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-229586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229089-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id lzbjG9pywWlkTQQAu9opvQ
-	(envelope-from <stable+bounces-229586-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:05:30 +0100
+	id mC0RAVRdwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229089-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:33:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AA52F9699
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:05:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 004742F6788
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:33:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 624F0312AFDB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A19F030B4996
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B34A03B9611;
-	Mon, 23 Mar 2026 16:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C50335959;
+	Mon, 23 Mar 2026 15:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Al6jiacH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxclhewd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70ACF3B19AC;
-	Mon, 23 Mar 2026 16:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FFE1A00F0;
+	Mon, 23 Mar 2026 15:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282320; cv=none; b=peTOxrVeGmpTQXLb0HOwvPrRg1WolrrIVTpAqC4+NIhp7kw2RxA7+ISwYbnJTz7OFGKTExLCRsmzUAhXK8NKaldB1pEU8QYdOoGT7EFl2Gd+HvltIQSXOLiK6IdVJ/J3OKf/8BgEs3sMhHOr7o8kPjWgvYlHUAQy5TQ/9TdnrXo=
+	t=1774278025; cv=none; b=PnyFQ5IsLs2lQLD6MUZ90tEyClRY2Gzui87HTxvTevlKBXgBgQG+EdS9l6mfy9WRnRYRQUc2gAUfNgjloIc7683q4rOVPUQHzhw+lhbkt06Fq4p8BKxRmdU3Jiw7n0iZzG45UshHQ4Ilwpu5EeGcn2HFU5o0UJoEfdlnxRxQscE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282320; c=relaxed/simple;
-	bh=crQ0ukg+C4Qtjw44S7OUGVDvsqjI1hkruQVnct5y1zQ=;
+	s=arc-20240116; t=1774278025; c=relaxed/simple;
+	bh=H75s8/kZ/P6rcJ+HWuPc1KkrEt8TGAh3VpYjc2+HKJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mrCmE5c52sOFcx0q9J2VFwurIvqKmeRM169S5VgSjYD6T7uYoKvjybU33qqZFOxCFSwftxUEwgUo0awhay8OgrASHAYMKNyXn/+ncakGkgbXYA6EjOqbxkH6X7Qq+FfViQe+N9c9wyzU3AacviVXDVzKV8AwszMWU3Ax5JdEU2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Al6jiacH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DA4C2BC9E;
-	Mon, 23 Mar 2026 16:11:59 +0000 (UTC)
+	 MIME-Version; b=GaAP6yh/ZcsyAm6kkWL9rpMjdHQEYzDbHljt2D4RD9LX27G3828F0ePBs/1OxIZOwkLWMgQ5A0kdwXE3G4jhJHoqtMaoOwTHf7S7WPX+GUpanczjnJG3muP4X4IKSrjICmeGZwPnR5ZtlvoT2ATbaIrRSZa9wep1+1rNRgRPO3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxclhewd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7E3C4CEF7;
+	Mon, 23 Mar 2026 15:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282320;
-	bh=crQ0ukg+C4Qtjw44S7OUGVDvsqjI1hkruQVnct5y1zQ=;
+	s=korg; t=1774278025;
+	bh=H75s8/kZ/P6rcJ+HWuPc1KkrEt8TGAh3VpYjc2+HKJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Al6jiacH2GIkGuMurmA15ALAe8sJVy9X+yh37deLjfhxbSaKEAZ+SRKKYKuvBD7Nw
-	 U+v3JBkVbqdbD712Z01I5vq1NHuQ0htSydrd5dqjL4k58kAAs28o7h/83GytEQ3Cxl
-	 JCatFtRQZgQtvyFBnolUgQgE0mD8LEzup364SqRY=
+	b=fxclhewdZZ1/vcptchsI8xg+i+Qgn9YWBfDO4qQinRutYauNvqtt7dPffGLXghC0o
+	 mdjc0IR7KtVescmj986gCJFj1SV/VZgDl6ADKVi+tG8icNpDDHYit/7Ypa2SVEeFFD
+	 7Ic9CC24lCsQeZDzXHBHXeSVUiPZP/e/ZXIl3k9c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Pantyukhin <apantykhin@gmail.com>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/481] kunit: kunit.py extract handlers
-Date: Mon, 23 Mar 2026 14:41:35 +0100
-Message-ID: <20260323134528.035773992@linuxfoundation.org>
+Subject: [PATCH 6.6 176/567] net: ipv6: fix panic when IPv4 route references loopback IPv6 nexthop
+Date: Mon, 23 Mar 2026 14:41:36 +0100
+Message-ID: <20260323134538.194196887@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,7 +67,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
@@ -74,238 +77,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229586-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229089-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,334190e097a98a1b81bb];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 67AA52F9699
+X-Rspamd-Queue-Id: 004742F6788
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Pantyukhin <apantykhin@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 2dc9d6ca52a47fd00822e818c2a5e48fc5fbbd53 ]
+[ Upstream commit 21ec92774d1536f71bdc90b0e3d052eff99cf093 ]
 
-The main function contains a wide if-elif block that handles different
-subcommands. It's possible to make code refactoring to extract
-subcommands handlers.
+When a standalone IPv6 nexthop object is created with a loopback device
+(e.g., "ip -6 nexthop add id 100 dev lo"), fib6_nh_init() misclassifies
+it as a reject route. This is because nexthop objects have no destination
+prefix (fc_dst=::), causing fib6_is_reject() to match any loopback
+nexthop. The reject path skips fib_nh_common_init(), leaving
+nhc_pcpu_rth_output unallocated. If an IPv4 route later references this
+nexthop, __mkroute_output() dereferences NULL nhc_pcpu_rth_output and
+panics.
 
-Fixed commit summary line.
-Shuah Khan <skhan@linuxfoundation.org>
+Simplify the check in fib6_nh_init() to only match explicit reject
+routes (RTF_REJECT) instead of using fib6_is_reject(). The loopback
+promotion heuristic in fib6_is_reject() is handled separately by
+ip6_route_info_create_nh(). After this change, the three cases behave
+as follows:
 
-Signed-off-by: Alexander Pantyukhin <apantykhin@gmail.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: 40804c4974b8 ("kunit: tool: copy caller args in run_kernel to prevent mutation")
+1. Explicit reject route ("ip -6 route add unreachable 2001:db8::/64"):
+   RTF_REJECT is set, enters reject path, skips fib_nh_common_init().
+   No behavior change.
+
+2. Implicit loopback reject route ("ip -6 route add 2001:db8::/32 dev lo"):
+   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
+   called. ip6_route_info_create_nh() still promotes it to reject
+   afterward. nhc_pcpu_rth_output is allocated but unused, which is
+   harmless.
+
+3. Standalone nexthop object ("ip -6 nexthop add id 100 dev lo"):
+   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
+   called. nhc_pcpu_rth_output is properly allocated, fixing the crash
+   when IPv4 routes reference this nexthop.
+
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
+Reported-by: syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/698f8482.a70a0220.2c38d7.00ca.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260304113817.294966-2-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/kunit/kunit.py | 167 ++++++++++++++++++++---------------
- 1 file changed, 96 insertions(+), 71 deletions(-)
+ net/ipv6/route.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/kunit/kunit.py b/tools/testing/kunit/kunit.py
-index 43fbe96318fe1..8cd8188675047 100755
---- a/tools/testing/kunit/kunit.py
-+++ b/tools/testing/kunit/kunit.py
-@@ -395,6 +395,95 @@ def tree_from_args(cli_args: argparse.Namespace) -> kunit_kernel.LinuxSourceTree
- 			extra_qemu_args=qemu_args)
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 72853ef73e821..7a91e539bbd14 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3567,7 +3567,6 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 	netdevice_tracker *dev_tracker = &fib6_nh->fib_nh_dev_tracker;
+ 	struct net_device *dev = NULL;
+ 	struct inet6_dev *idev = NULL;
+-	int addr_type;
+ 	int err;
  
+ 	fib6_nh->fib_nh_family = AF_INET6;
+@@ -3609,11 +3608,10 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
  
-+def run_handler(cli_args):
-+	if not os.path.exists(cli_args.build_dir):
-+		os.mkdir(cli_args.build_dir)
-+
-+	linux = tree_from_args(cli_args)
-+	request = KunitRequest(build_dir=cli_args.build_dir,
-+					make_options=cli_args.make_options,
-+					jobs=cli_args.jobs,
-+					raw_output=cli_args.raw_output,
-+					json=cli_args.json,
-+					timeout=cli_args.timeout,
-+					filter_glob=cli_args.filter_glob,
-+					kernel_args=cli_args.kernel_args,
-+					run_isolated=cli_args.run_isolated)
-+	result = run_tests(linux, request)
-+	if result.status != KunitStatus.SUCCESS:
-+		sys.exit(1)
-+
-+
-+def config_handler(cli_args):
-+	if cli_args.build_dir and (
-+			not os.path.exists(cli_args.build_dir)):
-+		os.mkdir(cli_args.build_dir)
-+
-+	linux = tree_from_args(cli_args)
-+	request = KunitConfigRequest(build_dir=cli_args.build_dir,
-+						make_options=cli_args.make_options)
-+	result = config_tests(linux, request)
-+	stdout.print_with_timestamp((
-+		'Elapsed time: %.3fs\n') % (
-+			result.elapsed_time))
-+	if result.status != KunitStatus.SUCCESS:
-+		sys.exit(1)
-+
-+
-+def build_handler(cli_args):
-+	linux = tree_from_args(cli_args)
-+	request = KunitBuildRequest(build_dir=cli_args.build_dir,
-+					make_options=cli_args.make_options,
-+					jobs=cli_args.jobs)
-+	result = config_and_build_tests(linux, request)
-+	stdout.print_with_timestamp((
-+		'Elapsed time: %.3fs\n') % (
-+			result.elapsed_time))
-+	if result.status != KunitStatus.SUCCESS:
-+		sys.exit(1)
-+
-+
-+def exec_handler(cli_args):
-+	linux = tree_from_args(cli_args)
-+	exec_request = KunitExecRequest(raw_output=cli_args.raw_output,
-+					build_dir=cli_args.build_dir,
-+					json=cli_args.json,
-+					timeout=cli_args.timeout,
-+					filter_glob=cli_args.filter_glob,
-+					kernel_args=cli_args.kernel_args,
-+					run_isolated=cli_args.run_isolated)
-+	result = exec_tests(linux, exec_request)
-+	stdout.print_with_timestamp((
-+		'Elapsed time: %.3fs\n') % (result.elapsed_time))
-+	if result.status != KunitStatus.SUCCESS:
-+		sys.exit(1)
-+
-+
-+def parse_handler(cli_args):
-+	if cli_args.file is None:
-+		sys.stdin.reconfigure(errors='backslashreplace')  # pytype: disable=attribute-error
-+		kunit_output = sys.stdin
-+	else:
-+		with open(cli_args.file, 'r', errors='backslashreplace') as f:
-+			kunit_output = f.read().splitlines()
-+	# We know nothing about how the result was created!
-+	metadata = kunit_json.Metadata()
-+	request = KunitParseRequest(raw_output=cli_args.raw_output,
-+					json=cli_args.json)
-+	result, _ = parse_tests(request, metadata, kunit_output)
-+	if result.status != KunitStatus.SUCCESS:
-+		sys.exit(1)
-+
-+
-+subcommand_handlers_map = {
-+	'run': run_handler,
-+	'config': config_handler,
-+	'build': build_handler,
-+	'exec': exec_handler,
-+	'parse': parse_handler
-+}
-+
-+
- def main(argv):
- 	parser = argparse.ArgumentParser(
- 			description='Helps writing and running KUnit tests.')
-@@ -438,78 +527,14 @@ def main(argv):
- 	if get_kernel_root_path():
- 		os.chdir(get_kernel_root_path())
+ 	fib6_nh->fib_nh_weight = 1;
  
--	if cli_args.subcommand == 'run':
--		if not os.path.exists(cli_args.build_dir):
--			os.mkdir(cli_args.build_dir)
--
--		linux = tree_from_args(cli_args)
--		request = KunitRequest(build_dir=cli_args.build_dir,
--				       make_options=cli_args.make_options,
--				       jobs=cli_args.jobs,
--				       raw_output=cli_args.raw_output,
--				       json=cli_args.json,
--				       timeout=cli_args.timeout,
--				       filter_glob=cli_args.filter_glob,
--				       kernel_args=cli_args.kernel_args,
--				       run_isolated=cli_args.run_isolated)
--		result = run_tests(linux, request)
--		if result.status != KunitStatus.SUCCESS:
--			sys.exit(1)
--	elif cli_args.subcommand == 'config':
--		if cli_args.build_dir and (
--				not os.path.exists(cli_args.build_dir)):
--			os.mkdir(cli_args.build_dir)
--
--		linux = tree_from_args(cli_args)
--		request = KunitConfigRequest(build_dir=cli_args.build_dir,
--					     make_options=cli_args.make_options)
--		result = config_tests(linux, request)
--		stdout.print_with_timestamp((
--			'Elapsed time: %.3fs\n') % (
--				result.elapsed_time))
--		if result.status != KunitStatus.SUCCESS:
--			sys.exit(1)
--	elif cli_args.subcommand == 'build':
--		linux = tree_from_args(cli_args)
--		request = KunitBuildRequest(build_dir=cli_args.build_dir,
--					    make_options=cli_args.make_options,
--					    jobs=cli_args.jobs)
--		result = config_and_build_tests(linux, request)
--		stdout.print_with_timestamp((
--			'Elapsed time: %.3fs\n') % (
--				result.elapsed_time))
--		if result.status != KunitStatus.SUCCESS:
--			sys.exit(1)
--	elif cli_args.subcommand == 'exec':
--		linux = tree_from_args(cli_args)
--		exec_request = KunitExecRequest(raw_output=cli_args.raw_output,
--						build_dir=cli_args.build_dir,
--						json=cli_args.json,
--						timeout=cli_args.timeout,
--						filter_glob=cli_args.filter_glob,
--						kernel_args=cli_args.kernel_args,
--						run_isolated=cli_args.run_isolated)
--		result = exec_tests(linux, exec_request)
--		stdout.print_with_timestamp((
--			'Elapsed time: %.3fs\n') % (result.elapsed_time))
--		if result.status != KunitStatus.SUCCESS:
--			sys.exit(1)
--	elif cli_args.subcommand == 'parse':
--		if cli_args.file is None:
--			sys.stdin.reconfigure(errors='backslashreplace')  # pytype: disable=attribute-error
--			kunit_output = sys.stdin
--		else:
--			with open(cli_args.file, 'r', errors='backslashreplace') as f:
--				kunit_output = f.read().splitlines()
--		# We know nothing about how the result was created!
--		metadata = kunit_json.Metadata()
--		request = KunitParseRequest(raw_output=cli_args.raw_output,
--					    json=cli_args.json)
--		result, _ = parse_tests(request, metadata, kunit_output)
--		if result.status != KunitStatus.SUCCESS:
--			sys.exit(1)
--	else:
-+	subcomand_handler = subcommand_handlers_map.get(cli_args.subcommand, None)
-+
-+	if subcomand_handler is None:
- 		parser.print_help()
-+		return
-+
-+	subcomand_handler(cli_args)
-+
- 
- if __name__ == '__main__':
- 	main(sys.argv[1:])
+-	/* We cannot add true routes via loopback here,
+-	 * they would result in kernel looping; promote them to reject routes
++	/* Reset the nexthop device to the loopback device in case of reject
++	 * routes.
+ 	 */
+-	addr_type = ipv6_addr_type(&cfg->fc_dst);
+-	if (fib6_is_reject(cfg->fc_flags, dev, addr_type)) {
++	if (cfg->fc_flags & RTF_REJECT) {
+ 		/* hold loopback dev/idev if we haven't done so. */
+ 		if (dev != net->loopback_dev) {
+ 			if (dev) {
 -- 
 2.51.0
 
