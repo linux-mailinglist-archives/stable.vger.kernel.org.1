@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yFC5CvBfwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229498-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:44:48 +0100
+	id yDqXM5VcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C52252F6D2D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:44:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1162F6618
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F74C30FDAAC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ECB2F3044604
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4A3282F0B;
-	Mon, 23 Mar 2026 15:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C63387599;
+	Mon, 23 Mar 2026 14:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZvAXnDn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lphWPA4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F54242D7B;
-	Mon, 23 Mar 2026 15:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFED1DE4E0;
+	Mon, 23 Mar 2026 14:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279425; cv=none; b=lbnYAX+kGx7rj141TXV/4+/TYDcLm+aR0D5DmW9yEPw3kuUNJmlJ0/UeK90Fq2tZ0TH08Jk43eA+x8LuL3gD359Akoo9eccNSF/rVumR88tJIrruWKcxoQNPM/H4LNY031gYkf19CeoyiIrOC6pPe4W4TwTOPmhwruhLG/4YEVs=
+	t=1774277815; cv=none; b=fpUs38rFu/1oXEFTEsWqxzCAs7FLzai56fQjf1f99bZQAaPeH9ULgE1DDsGsNqUe6dXFXHm4LwiyTm2Nhm3kBUSpFnVlkGwwOE4AYwenCT3oKm6O3MwpdhYnkxV2agPyzByB7bWs91PpxU41H6wIvkQWVBgdqsk4koQimxPZN+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279425; c=relaxed/simple;
-	bh=AWJcvE5eQv7pSQEdgpl8uXe+AXTpHCSDrzfSr9O/zIM=;
+	s=arc-20240116; t=1774277815; c=relaxed/simple;
+	bh=W5f31ixmXji09/6s8eDnMrnweP+wrTStkdqJUjiKzR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=miAeJsmBt+h9jmeqUWuEyIJlRC62BaYF4OdNTiQalkh/vHky6V4SZ8EGd2ubuwUaxmhDGHhWg70dLgcL08RD5aasup+u/mA5N2Zh5bqpC/PLZV8jx0328QDyT2D6+xQ47sJqVqrFFU6nnUvNbsLwgDfMyNousk4HPBaECSkALKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZvAXnDn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32502C4CEF7;
-	Mon, 23 Mar 2026 15:23:45 +0000 (UTC)
+	 MIME-Version; b=mQIocY4PgfqzHir1NvDJGK/Y15owsLF2iycfx/Qb1+Hjd5ESgVYtFMM8BeKFhUWCrHdz0kn3acjmsB6nKSg2YDlpROJuZ5b7At0FNCWRsnyAoxu6N2OVlLkN+XbKbJqfFPkKYeuDZnl4ltRNrJ+9WY18A9yCMbLIRGBpW0tcWR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lphWPA4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F00C4CEF7;
+	Mon, 23 Mar 2026 14:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279425;
-	bh=AWJcvE5eQv7pSQEdgpl8uXe+AXTpHCSDrzfSr9O/zIM=;
+	s=korg; t=1774277815;
+	bh=W5f31ixmXji09/6s8eDnMrnweP+wrTStkdqJUjiKzR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZvAXnDnABviKRkDZLOKoyO5Du78TraEDOfgNKsd5rq8F9+sR+CIwYNp2EcDf/bQF
-	 M3nZmXR4+Zw7b2y6Tufqh8KW5tNQB6Og1jVFVgMmM05w97zH+/d/mCGZBobsColX/i
-	 DHauLW29JP0iqu9VxDXsVedBIMCS6W7PLdSaOy2E=
+	b=lphWPA4r/jl2zhwQ5gQeQUrxI9e0upHmZgyGJyZUsC2cQJi7QVuwmJDzCR6M/n5Wv
+	 CvR/Gsmi6KIg6gqbWAzk5IuHkxokHgGV2/YJKDoNTv7nzqZ6PMtY11TosjTUgCJ/zQ
+	 Nxg8YP935UoeBQCIKgd2Ysgb7mD/WPVb5Hmn9MuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alper Ak <alperyasinak1@gmail.com>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Bryan ODonoghue <bod@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/481] media: qcom: camss: vfe: Fix out-of-bounds access in vfe_isr_reg_update()
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 095/567] can: ucan: Fix infinite loop from zero-length messages
 Date: Mon, 23 Mar 2026 14:40:15 +0100
-Message-ID: <20260323134526.045502264@linuxfoundation.org>
+Message-ID: <20260323134536.178623756@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +64,78 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linaro.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229498-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-229024-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,cisco];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C52252F6D2D
+X-Rspamd-Queue-Id: BF1162F6618
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alper Ak <alperyasinak1@gmail.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit d965919af524e68cb2ab1a685872050ad2ee933d ]
+commit 1e446fd0582ad8be9f6dafb115fc2e7245f9bea7 upstream.
 
-vfe_isr() iterates using MSM_VFE_IMAGE_MASTERS_NUM(7) as the loop
-bound and passes the index to vfe_isr_reg_update(). However,
-vfe->line[] array is defined with VFE_LINE_NUM_MAX(4):
+If a broken ucan device gets a message with the message length field set
+to 0, then the driver will loop for forever in
+ucan_read_bulk_callback(), hanging the system.  If the length is 0, just
+skip the message and go on to the next one.
 
-    struct vfe_line line[VFE_LINE_NUM_MAX];
+This has been fixed in the kvaser_usb driver in the past in commit
+0c73772cd2b8 ("can: kvaser_usb: leaf: Fix potential infinite loop in
+command parsers"), so there must be some broken devices out there like
+this somewhere.
 
-When index is 4, 5, 6, the access to vfe->line[line_id] exceeds
-the array bounds and resulting in out-of-bounds memory access.
-
-Fix this by using separate loops for output lines and write masters.
-
-Fixes: 4edc8eae715c ("media: camss: Add initial support for VFE hardware version Titan 480")
-Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Vincent Mailhol <mailhol@kernel.org>
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026022319-huff-absurd-6a18@gregkh
+Fixes: 9f2d3eae88d2 ("can: ucan: add driver for Theobroma Systems UCAN devices")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/camss/camss-vfe-480.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/can/usb/ucan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss-vfe-480.c b/drivers/media/platform/qcom/camss/camss-vfe-480.c
-index 0063e36a30e05..fa818517ab0da 100644
---- a/drivers/media/platform/qcom/camss/camss-vfe-480.c
-+++ b/drivers/media/platform/qcom/camss/camss-vfe-480.c
-@@ -223,11 +223,13 @@ static irqreturn_t vfe_isr(int irq, void *dev)
- 		writel_relaxed(status, vfe->base + VFE_BUS_IRQ_CLEAR(0));
- 		writel_relaxed(1, vfe->base + VFE_BUS_IRQ_CLEAR_GLOBAL);
+--- a/drivers/net/can/usb/ucan.c
++++ b/drivers/net/can/usb/ucan.c
+@@ -749,7 +749,7 @@ static void ucan_read_bulk_callback(stru
+ 		len = le16_to_cpu(m->len);
  
--		/* Loop through all WMs IRQs */
--		for (i = 0; i < MSM_VFE_IMAGE_MASTERS_NUM; i++) {
-+		for (i = 0; i < MAX_VFE_OUTPUT_LINES; i++) {
- 			if (status & BUS_IRQ_MASK_0_RDI_RUP(vfe, i))
- 				vfe_isr_reg_update(vfe, i);
-+		}
- 
-+		/* Loop through all WMs IRQs */
-+		for (i = 0; i < MSM_VFE_IMAGE_MASTERS_NUM; i++) {
- 			if (status & BUS_IRQ_MASK_0_COMP_DONE(vfe, RDI_COMP_GROUP(i)))
- 				vfe_isr_wm_done(vfe, i);
- 		}
--- 
-2.51.0
-
+ 		/* check sanity (length of content) */
+-		if (urb->actual_length - pos < len) {
++		if ((len == 0) || (urb->actual_length - pos < len)) {
+ 			netdev_warn(up->netdev,
+ 				    "invalid message (short; no data; l:%d)\n",
+ 				    urb->actual_length);
 
 
 
