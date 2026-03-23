@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229393-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIq/AVBYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:16 +0100
+	id QDf0KrViwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229393-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3FD82F5F3A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCA22F725B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7459F331A30B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:50:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CFAE8306E047
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBB033DEF9;
-	Mon, 23 Mar 2026 14:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027403BF685;
+	Mon, 23 Mar 2026 15:16:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIDIhoZL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgFugTnn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A71C26D4F9;
-	Mon, 23 Mar 2026 14:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92C735959;
+	Mon, 23 Mar 2026 15:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277410; cv=none; b=JIwlq1rKnUSuUBnUn1RUly1BDouAGLtQP0OzmjenZjKyKCSZu/O0aWF5GibH8pZLVmwEVRIdCzC1sSGEBedLf7woFW9/k1VKgpmSG0W19Flirnkq5sX2U0YMmcXdrrBVQpx7mtfosTCKHXCHLaLXyD+ytIZZBlK2BPJATt+GUdw=
+	t=1774278973; cv=none; b=KdXguf0fClsFLS31o5MIZM15tim0YES9Jc/m7UxZUg/LUZOckHIV07GJ68u0QrBL3qoALPwa8lJuQn6fn4sHS0KDccrN+bwcPCQPpCPpmNvvrN0HovHwkmcWk+T9LjLi3M+WUdB3trlvC5okmRsAF2ip9jjdi/CCEYYX9Z7Ps9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277410; c=relaxed/simple;
-	bh=NxRrME8uV0AlI95HG+DmFzOvJowEHAsZSq8aMVjVoP8=;
+	s=arc-20240116; t=1774278973; c=relaxed/simple;
+	bh=s5FJcUZoPLWYk84xyQlrsFNTEV+Pja7E98BNt7kDAhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyJodGvuz3gY3khu3qKdq4z7LAb1OSTkezosdnOzM6+XZQ+h6yyRGXoB6+qrSx/W3A52TanUjrPrH5WHDG+3sL/FKGb7Yd0F584WNsIwbhsoA/YVN/PobBzwLVdCbuCVbSAcUHThTUMo0D+V37yfhDQDhTfBcLxzzLPWHCZqv2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIDIhoZL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247A9C4CEF7;
-	Mon, 23 Mar 2026 14:50:09 +0000 (UTC)
+	 MIME-Version; b=FefRDnVF0p3dHT8LChupG7dP/gTBBi0VDd+NJPHHFL0Jm1tX51bgCKPiYMlX6DmIcc92yQv8CgUGfKkB6Xe3beYL3k+8Gow97OEzmHx7UvtIEx8GfhKXPmhnUusbpQgQNL0UR5w0cRgLE5c12VfPtcozNssmJbZrizfH4/15hsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgFugTnn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4153FC2BCB1;
+	Mon, 23 Mar 2026 15:16:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277410;
-	bh=NxRrME8uV0AlI95HG+DmFzOvJowEHAsZSq8aMVjVoP8=;
+	s=korg; t=1774278973;
+	bh=s5FJcUZoPLWYk84xyQlrsFNTEV+Pja7E98BNt7kDAhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIDIhoZLHA3EutaZ3oBWPNxMVJAA1SIOsKKnpH1DK4hBKt/+G1/IMU0aVmee71mix
-	 lw5dFuVoqPK4APdoH0CKCiPbvYmXwZItl/qS6yxSe7BUBWQoGtnbgRozhc4GpHkO3D
-	 wnXUjZcOmmBWxuAH0z0Srw7rcWRF+aEg8q0GJXMw=
+	b=pgFugTnnmZcD8/C2f4M6c8psWFgg0g+cxRS4pBLvGHSn71vC9RUsooX6l1A8b6Qj1
+	 CLj01vxYZrsLPJMW68qGv0gvwBxCZCR1MLH/P7gwK03Hiy5K+Xfx66AkZ7QXXiW+Zx
+	 H1JE/HzszeNaPVPvUtVuENcvZy6U+zCeBeHZ0zxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Tao <wangtao554@huawei.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 385/460] Bluetooth: MGMT: Fix list corruption and UAF in command complete handlers
+	Oscar Santos <ossantos@redhat.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	David Howells <dhowells@redhat.com>,
+	linux-cifs@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 461/567] smb: client: fix krb5 mount with username option
 Date: Mon, 23 Mar 2026 14:46:21 +0100
-Message-ID: <20260323134536.029610250@linuxfoundation.org>
+Message-ID: <20260323134545.388984932@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,99 +68,101 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228890-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229393-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A3FD82F5F3A
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,manguebit.org:email]
+X-Rspamd-Queue-Id: ACCA22F725B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Tao <wangtao554@huawei.com>
+From: Paulo Alcantara <pc@manguebit.org>
 
-[ Upstream commit 17f89341cb4281d1da0e2fb0de5406ab7c4e25ef ]
+commit 12b4c5d98cd7ca46d5035a57bcd995df614c14e1 upstream.
 
-Commit 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs") introduced
-mgmt_pending_valid(), which not only validates the pending command but
-also unlinks it from the pending list if it is valid. This change in
-semantics requires updates to several completion handlers to avoid list
-corruption and memory safety issues.
+Customer reported that some of their krb5 mounts were failing against
+a single server as the client was trying to mount the shares with
+wrong credentials.  It turned out the client was reusing SMB session
+from first mount to try mounting the other shares, even though a
+different username= option had been specified to the other mounts.
 
-This patch addresses two left-over issues from the aforementioned rework:
+By using username mount option along with sec=krb5 to search for
+principals from keytab is supported by cifs.upcall(8) since
+cifs-utils-4.8.  So fix this by matching username mount option in
+match_session() even with Kerberos.
 
-1. In mgmt_add_adv_patterns_monitor_complete(), mgmt_pending_remove()
-is replaced with mgmt_pending_free() in the success path. Since
-mgmt_pending_valid() already unlinks the command at the beginning of
-the function, calling mgmt_pending_remove() leads to a double list_del()
-and subsequent list corruption/kernel panic.
+For example, the second mount below should fail with -ENOKEY as there
+is no 'foobar' principal in keytab (/etc/krb5.keytab).  The client
+ends up reusing SMB session from first mount to perform the second
+one, which is wrong.
 
-2. In set_mesh_complete(), the use of mgmt_pending_foreach() in the error
-path is removed. Since the current command is already unlinked by
-mgmt_pending_valid(), this foreach loop would incorrectly target other
-pending mesh commands, potentially freeing them while they are still being
-processed concurrently (leading to UAFs). The redundant mgmt_cmd_status()
-is also simplified to use cmd->opcode directly.
+```
+$ ktutil
+ktutil:  add_entry -password -p testuser -k 1 -e aes256-cts
+Password for testuser@ZELDA.TEST:
+ktutil:  write_kt /etc/krb5.keytab
+ktutil:  quit
+$ klist -ke
+Keytab name: FILE:/etc/krb5.keytab
+KVNO Principal
+ ---- ----------------------------------------------------------------
+   1 testuser@ZELDA.TEST (aes256-cts-hmac-sha1-96)
+$ mount.cifs //w22-root2/scratch /mnt/1 -o sec=krb5,username=testuser
+$ mount.cifs //w22-root2/scratch /mnt/2 -o sec=krb5,username=foobar
+$ mount -t cifs | grep -Po 'username=\K\w+'
+testuser
+testuser
+```
 
-Fixes: 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs")
-Signed-off-by: Wang Tao <wangtao554@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Oscar Santos <ossantos@redhat.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Cc: David Howells <dhowells@redhat.com>
+Cc: linux-cifs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ fs/smb/client/connect.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 4894e6444900a..b1df591a53805 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2172,10 +2172,7 @@ static void set_mesh_complete(struct hci_dev *hdev, void *data, int err)
- 	sk = cmd->sk;
- 
- 	if (status) {
--		mgmt_cmd_status(cmd->sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
--				status);
--		mgmt_pending_foreach(MGMT_OP_SET_MESH_RECEIVER, hdev, true,
--				     cmd_status_rsp, &status);
-+		mgmt_cmd_status(cmd->sk, hdev->id, cmd->opcode, status);
- 		goto done;
- 	}
- 
-@@ -5354,7 +5351,7 @@ static void mgmt_add_adv_patterns_monitor_complete(struct hci_dev *hdev,
- 
- 	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 			  mgmt_status(status), &rp, sizeof(rp));
--	mgmt_pending_remove(cmd);
-+	mgmt_pending_free(cmd);
- 
- 	hci_dev_unlock(hdev);
- 	bt_dev_dbg(hdev, "add monitor %d complete, status %d",
--- 
-2.51.0
-
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -1922,6 +1922,10 @@ static int match_session(struct cifs_ses
+ 	case Kerberos:
+ 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
+ 			return 0;
++		if (strncmp(ses->user_name ?: "",
++			    ctx->username ?: "",
++			    CIFS_MAX_USERNAME_LEN))
++			return 0;
+ 		break;
+ 	case NTLMv2:
+ 	case RawNTLMSSP:
 
 
 
