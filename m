@@ -1,59 +1,68 @@
-Return-Path: <stable+bounces-229738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228708-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wP8xHZ1swWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229738-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:53 +0100
+	id iO+qI3ZowWliSwQAu9opvQ
+	(envelope-from <stable+bounces-228708-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:21:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB98E2F8852
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF08E2F7ED2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:21:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 189AB314A3B3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DC5A31BEBA5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1203BE64D;
-	Mon, 23 Mar 2026 16:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9393AF65F;
+	Mon, 23 Mar 2026 14:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfblRFDJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17zkPtIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E144C3BE63F;
-	Mon, 23 Mar 2026 16:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC6C3AEF58;
+	Mon, 23 Mar 2026 14:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282735; cv=none; b=XBs5q6gSFd+9fNfGUyzHhbkodluIni7CuCRb+twbKb3D1bKPN5ayGlG4Gxxgr13bT3i1Fv8NJGVm5cQLpmI0WTOz49o7hBMBtJDBf0oxMc+nFAMVWWuBQd8Gnl2WIQ5or1kZ7LcbVBoPc259qkHlNy1x0tLG+4+NeEINTOr65aI=
+	t=1774276909; cv=none; b=ij5fmMiDI2+rrCs+kKUv4ZM3zvwr7zjyBM3N5DZHW+D89V/8qCBN8qzR45w2t1V5PZHOFGh0V31rlLcBw6K0J2oB97lPFb6smxRa1nwIRYn8MgpP98BP0ZHNTg/fAEDlDmaVbWnZWTqh+diS7vyXIhIer46/jN4e9IwBWGvIaLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282735; c=relaxed/simple;
-	bh=G+/NpwCzktAm77zb4tkBaG0Q5sfhWsb46XBIK8RXy0k=;
+	s=arc-20240116; t=1774276909; c=relaxed/simple;
+	bh=IrToXQ465yMUQBZMIIygpor/0WLLTSGWx7GfBs9GO+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhmxRcpnnSdS59fcTf14Zfeg94JSuOZmRgC57cJHD36g/2muAi0HNhiVXLo1+ENV1Ak1FtyKNbLqFRiI+6Aq0AxFm8i4/CspPTEs3QCzTkT6sD0CKPa3rtgchXY63dL0RyLF2beV4kxJ0OCJprTwanO6Z3+na+I+x4PnGp8E2R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfblRFDJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FBC7C2BC9E;
-	Mon, 23 Mar 2026 16:18:54 +0000 (UTC)
+	 MIME-Version; b=kCvUNSqCow6D+/80mOXRf32N72HujQeXCYpWGiafx7VSNkWEH2BeSarKnbKG6vxdlHpTHLzgUnqjUASThMnO1b0PEQYdCv6Vac0inv8NU2AEFDsmva87KEjFRYK6+BfpW0Q67+tmZAd0V+C/1fDcjMFTERjSi6Z7mL5cFRe2RuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17zkPtIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E26C4CEF7;
+	Mon, 23 Mar 2026 14:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282734;
-	bh=G+/NpwCzktAm77zb4tkBaG0Q5sfhWsb46XBIK8RXy0k=;
+	s=korg; t=1774276909;
+	bh=IrToXQ465yMUQBZMIIygpor/0WLLTSGWx7GfBs9GO+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfblRFDJNmsNj7TH7k0UZyIExAIBGoKgFRFENbKVTfuSyGXEb/6/6ML93RQ7Ts8e0
-	 pj3l3zF7ziPCtcIbBjWFAF3Q/nybOWf3FpUh58KIfjH9NvlJoVz64BgRZVdOlDMvnW
-	 xveoJ/O0fBXkZs5KjptHrKslTxzYnC12RQH0vqpY=
+	b=17zkPtIFfXpcxlDDjh9a/lccrHWqAT6GRUbB1A8C0yv7GH+QKvCYgSA+FBTXr24JD
+	 1CC8RnUYqyhjPJ99JUqrML9OGOcQKDDyRHsKBgysY5PLI0pCaZ/vZiri4gfsEf61Bg
+	 exVnZKPmRFi5tn+PBPND8cfo2I3ssZIaLbAYFurE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 265/481] iio: dac: ds4424: reject -128 RAW value
+	David Hildenbrand <david@redhat.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Oscar Salvador <osalvador@suse.de>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 251/460] mm/page_alloc: sort out the alloc_contig_range() gfp flags mess
 Date: Mon, 23 Mar 2026 14:44:07 +0100
-Message-ID: <20260323134531.601218908@linuxfoundation.org>
+Message-ID: <20260323134532.660932120@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +73,168 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229738-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TAGGED_FROM(0.00)[bounces-228708-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,nvidia.com,suse.cz,suse.de,csgroup.eu,linux.ibm.com,ellerman.id.au,kernel.org,gmail.com,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DB98E2F8852
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:email,nvidia.com:email,suse.cz:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DF08E2F7ED2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+From: David Hildenbrand <david@redhat.com>
 
-commit 5187e03b817c26c1c3bcb2645a612ea935c4be89 upstream.
+[ Upstream commit f6037a4a686523dee1967ef7620349822e019ff8 ]
 
-The DS442x DAC uses sign-magnitude encoding, so -128 cannot be represented
-in hardware (7-bit magnitude).
+It's all a bit complicated for alloc_contig_range().  For example, we
+don't support many flags, so let's start bailing out on unsupported ones
+-- ignoring the placement hints, as we are already given the range to
+allocate.
 
-Previously, passing -128 resulted in a truncated value that programmed
-0mA (magnitude 0) instead of the expected maximum negative current,
-effectively failing silently.
+While we currently set cc.gfp_mask, in __alloc_contig_migrate_range() we
+simply create yet another GFP mask whereby we ignore the reclaim flags
+specify by the caller.  That looks very inconsistent.
 
-Reject -128 to avoid producing the wrong current.
+Let's clean it up, constructing the gfp flags used for
+compaction/migration exactly once.  Update the documentation of the
+gfp_mask parameter for alloc_contig_range() and alloc_contig_pages().
 
-Fixes: d632a2bd8ffc ("iio: dac: ds4422/ds4424 dac driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://lkml.kernel.org/r/20241203094732.200195-5-david@redhat.com
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d155aab90fff ("mm/kfence: fix KASAN hardware tag faults during late enablement")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/dac/ds4424.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/page_alloc.c |   48 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 44 insertions(+), 4 deletions(-)
 
---- a/drivers/iio/dac/ds4424.c
-+++ b/drivers/iio/dac/ds4424.c
-@@ -141,7 +141,7 @@ static int ds4424_write_raw(struct iio_d
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -6509,7 +6509,7 @@ int __alloc_contig_migrate_range(struct
+ 	int ret = 0;
+ 	struct migration_target_control mtc = {
+ 		.nid = zone_to_nid(cc->zone),
+-		.gfp_mask = GFP_USER | __GFP_MOVABLE | __GFP_RETRY_MAYFAIL,
++		.gfp_mask = cc->gfp_mask,
+ 		.reason = MR_CONTIG_RANGE,
+ 	};
+ 	struct page *page;
+@@ -6605,6 +6605,39 @@ static void split_free_pages(struct list
+ 	}
+ }
  
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		if (val < S8_MIN || val > S8_MAX)
-+		if (val <= S8_MIN || val > S8_MAX)
- 			return -EINVAL;
++static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
++{
++	const gfp_t reclaim_mask = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
++	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
++	const gfp_t cc_action_mask = __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
++
++	/*
++	 * We are given the range to allocate; node, mobility and placement
++	 * hints are irrelevant at this point. We'll simply ignore them.
++	 */
++	gfp_mask &= ~(GFP_ZONEMASK | __GFP_RECLAIMABLE | __GFP_WRITE |
++		      __GFP_HARDWALL | __GFP_THISNODE | __GFP_MOVABLE);
++
++	/*
++	 * We only support most reclaim flags (but not NOFAIL/NORETRY), and
++	 * selected action flags.
++	 */
++	if (gfp_mask & ~(reclaim_mask | action_mask))
++		return -EINVAL;
++
++	/*
++	 * Flags to control page compaction/migration/reclaim, to free up our
++	 * page range. Migratable pages are movable, __GFP_MOVABLE is implied
++	 * for them.
++	 *
++	 * Traditionally we always had __GFP_HARDWALL|__GFP_RETRY_MAYFAIL set,
++	 * keep doing that to not degrade callers.
++	 */
++	*gfp_cc_mask = (gfp_mask & (reclaim_mask | cc_action_mask)) |
++			__GFP_HARDWALL | __GFP_MOVABLE | __GFP_RETRY_MAYFAIL;
++	return 0;
++}
++
+ /**
+  * alloc_contig_range() -- tries to allocate given range of pages
+  * @start:	start PFN to allocate
+@@ -6613,7 +6646,9 @@ static void split_free_pages(struct list
+  *			#MIGRATE_MOVABLE or #MIGRATE_CMA).  All pageblocks
+  *			in range must have the same migratetype and it must
+  *			be either of the two.
+- * @gfp_mask:	GFP mask to use during compaction
++ * @gfp_mask:	GFP mask. Node/zone/placement hints are ignored; only some
++ *		action and reclaim modifiers are supported. Reclaim modifiers
++ *		control allocation behavior during compaction/migration/reclaim.
+  *
+  * The PFN range does not have to be pageblock aligned. The PFN range must
+  * belong to a single zone.
+@@ -6639,11 +6674,14 @@ int alloc_contig_range_noprof(unsigned l
+ 		.mode = MIGRATE_SYNC,
+ 		.ignore_skip_hint = true,
+ 		.no_set_skip_hint = true,
+-		.gfp_mask = current_gfp_context(gfp_mask),
+ 		.alloc_contig = true,
+ 	};
+ 	INIT_LIST_HEAD(&cc.migratepages);
  
- 		if (val > 0) {
++	gfp_mask = current_gfp_context(gfp_mask);
++	if (__alloc_contig_verify_gfp_mask(gfp_mask, (gfp_t *)&cc.gfp_mask))
++		return -EINVAL;
++
+ 	/*
+ 	 * What we do here is we mark all pageblocks in range as
+ 	 * MIGRATE_ISOLATE.  Because pageblock and max order pages may
+@@ -6785,7 +6823,9 @@ static bool zone_spans_last_pfn(const st
+ /**
+  * alloc_contig_pages() -- tries to find and allocate contiguous range of pages
+  * @nr_pages:	Number of contiguous pages to allocate
+- * @gfp_mask:	GFP mask to limit search and used during compaction
++ * @gfp_mask:	GFP mask. Node/zone/placement hints limit the search; only some
++ *		action and reclaim modifiers are supported. Reclaim modifiers
++ *		control allocation behavior during compaction/migration/reclaim.
+  * @nid:	Target node
+  * @nodemask:	Mask for other possible nodes
+  *
 
 
 
