@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228993-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJzEAPxSwWkPSQQAu9opvQ
-	(envelope-from <stable+bounces-228432-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:32 +0100
+	id WKZ6Di9ZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228993-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:59 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FBF02F53DA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B89372F6128
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9191830F5E76
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:13:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E75733367862
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD5B3AE70E;
-	Mon, 23 Mar 2026 14:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C261839A805;
+	Mon, 23 Mar 2026 14:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLmKWEy7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4cBxM39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8CB3B27E5;
-	Mon, 23 Mar 2026 14:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85CF637E30F;
+	Mon, 23 Mar 2026 14:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275110; cv=none; b=ZdnDEQwE/yUdW29LipUSzNwL4hWnXAsRenEvDjQCaNW9piQX4Ab6KolQpNKb+a00Jwbn/cxuLqnMmi8rMqWfEixyeSyOoOT4zYxANUxMGaUptU6wy87Nrqg2AFCiljbfOeKID54MYmgw+LIqamsQLWE1R3n39IbRDox5yGOl1ns=
+	t=1774277719; cv=none; b=NjrY7h0r6STt2aQ8ICVFERnKg/bSJNkRh+yUkgckXMu/w07wlOLVGSCCgtaSKrnMTPsH+DEsiS5z0uj5whh8IPgo0aRl1UTwaOoQg74WWQLS2ihRN/xyvQDVilAjLUUn2JlNAxTrgkhXLRr89S4waqj6NQl5c+V/Qyx4HITBgew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275110; c=relaxed/simple;
-	bh=JJJPRhmFdVOmOUfDUXTTzUP05PoByBuSAwwSOtvA8I0=;
+	s=arc-20240116; t=1774277719; c=relaxed/simple;
+	bh=nMrioSRLQxibBMdKBN9JCFAPvBg5AbyybmF9ux3573g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rCgrrd80mBgydyReMZ9nYg1Mb5Vok0w6vGPR3qDsccZUzo/5YCyibHnhwgVDwRgUMpRZUdAbMVx+PmgT/UdnF88uzLWi2CKuXr9du2UdXaB1dp50+CyplBjNspUOBwqCqEY1xVHAHcpPJIg0K+ESkAs1UKlfu0iXyInft7aDzuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLmKWEy7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5330C2BC9E;
-	Mon, 23 Mar 2026 14:11:49 +0000 (UTC)
+	 MIME-Version; b=qKDtK8eukCD5T/n1XQ+eM1sKjvjHHbRmdn2Xeq9NFXog3EgCelGwdRPJk1fbuozNSDsTrhYyKm5GXmUmtXAXJ4Uk7nmZVoXORgacwhoINn+I8fr6gKj+vjIvCRoRQIAaXxAeBnkdRc1f8k067H1k3fGlhtzbfw91Xrd/J7sGq+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4cBxM39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE73C4CEF7;
+	Mon, 23 Mar 2026 14:55:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275110;
-	bh=JJJPRhmFdVOmOUfDUXTTzUP05PoByBuSAwwSOtvA8I0=;
+	s=korg; t=1774277719;
+	bh=nMrioSRLQxibBMdKBN9JCFAPvBg5AbyybmF9ux3573g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WLmKWEy7TxBFC00cflnttaLdLjHqGm4MLxxIhK2Spl7B2ph4cgEhxl3XwPkV3aHYo
-	 sLtcFLZ5EurFklTUnwxiQiN9XM+3AWoqbXf+LtSlcHj6Ohay5WvIg5pXyCgOorwlvY
-	 r2Ecjd4THCxKVwl5F6GJq+TX27/kO3BoIxJJ/uog=
+	b=q4cBxM39yFWURsGVUVc95XXt8J+09MNI/35LaQhFrDfE5LP1njhEwadcR6oBscf4p
+	 6OStmII6L20iD7+3ODlpkqv/yP3H2v128eEygKbTQbM3NhtXJcaqJB4KGAJt8SwocL
+	 fQeYzJbp/+ZMeszE//o3866ZJu7y2GCanhk2ehUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.com>,
-	Sean Rhodes <sean@starlabs.systems>,
-	Takashi Iwai <tiwai@suse.de>,
+	Cal Peake <cp@absolutedigital.net>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 004/460] ALSA: hda/realtek: Fix speaker pop on Star Labs StarFighter
+Subject: [PATCH 6.6 080/567] drm/amd: Fix hang on amdgpu unload by using pci_dev_is_disconnected()
 Date: Mon, 23 Mar 2026 14:40:00 +0100
-Message-ID: <20260323134526.759335448@linuxfoundation.org>
+Message-ID: <20260323134535.806303704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228432-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228993-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -84,119 +84,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7FBF02F53DA
+X-Rspamd-Queue-Id: B89372F6128
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Rhodes <sean@starlabs.systems>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 1cb3c20688fc8380c9b365d03aea7e84faf6a9fd ]
+[ Upstream commit f7afda7fcd169a9168695247d07ad94cf7b9798f ]
 
-On Star Labs StarFighter (Realtek ALC233/235), the internal speakers can
-emit an audible pop when entering or leaving runtime suspend.
+The commit 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise
+disconnect") introduced early KFD cleanup when drm_dev_is_unplugged()
+returns true. However, this causes hangs during normal module unload
+(rmmod amdgpu).
 
-Mute the speaker output paths via snd_hda_gen_shutup_speakers() in the
-Realtek shutup callback before the codec is powered down.
+The issue occurs because drm_dev_unplug() is called in amdgpu_pci_remove()
+for all removal scenarios, not just surprise disconnects. This was done
+intentionally in commit 39934d3ed572 ("Revert "drm/amdgpu: TA unload
+messages are not actually sent to psp when amdgpu is uninstalled"") to
+fix IGT PCI software unplug test failures. As a result,
+drm_dev_is_unplugged() returns true even during normal module unload,
+triggering the early KFD cleanup inappropriately.
 
-This is enough to avoid the pop without special EAPD handling.
+The correct check should distinguish between:
+- Actual surprise disconnect (eGPU unplugged): pci_dev_is_disconnected()
+  returns true
+- Normal module unload (rmmod): pci_dev_is_disconnected() returns false
 
-Test results:
-- runtime PM pop fixed
-- still reaches D3 (PCI 0000:00:1f.3 power_state=D3hot)
-- does not address pops on cold boot (G3 exit) or around display manager
-  start/shutdown
+Replace drm_dev_is_unplugged() with pci_dev_is_disconnected() to ensure
+the early cleanup only happens during true hardware disconnect events.
 
-journalctl -k (boot):
-- snd_hda_codec_alc269 hdaudioC0D0: ALC233: picked fixup for PCI SSID
-  7017:2014
-- snd_hda_codec_alc269 hdaudioC0D0: autoconfig for ALC233: line_outs=1
-  (0x1b/0x0/0x0/0x0/0x0) type:speaker
-
-Suggested-by: Takashi Iwai <tiwai@suse.com>
-Tested-by: Sean Rhodes <sean@starlabs.systems>
-Signed-off-by: Sean Rhodes <sean@starlabs.systems>
-Link: https://patch.msgid.link/4d5fb71b132bb283fd41c622b8413770b2065242.1771532060.git.sean@starlabs.systems
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Reported-by: Cal Peake <cp@absolutedigital.net>
+Closes: https://lore.kernel.org/all/b0c22deb-c0fa-3343-33cf-fd9a77d7db99@absolutedigital.net/
+Fixes: 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise disconnect")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index c13def0f1e1a4..cb6ff3c36c5f0 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -4164,6 +4164,24 @@ static int alc269_resume(struct hda_codec *codec)
- 	return 0;
- }
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 9481d450809b5..1251303b52d21 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4034,7 +4034,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
+ 	 * before ip_fini_early to prevent kfd locking refcount issues by calling
+ 	 * amdgpu_amdkfd_suspend()
+ 	 */
+-	if (drm_dev_is_unplugged(adev_to_drm(adev)))
++	if (pci_dev_is_disconnected(adev->pdev))
+ 		amdgpu_amdkfd_device_fini_sw(adev);
  
-+#define STARLABS_STARFIGHTER_SHUTUP_DELAY_MS	30
-+
-+static void starlabs_starfighter_shutup(struct hda_codec *codec)
-+{
-+	if (snd_hda_gen_shutup_speakers(codec))
-+		msleep(STARLABS_STARFIGHTER_SHUTUP_DELAY_MS);
-+}
-+
-+static void alc233_fixup_starlabs_starfighter(struct hda_codec *codec,
-+					      const struct hda_fixup *fix,
-+					      int action)
-+{
-+	struct alc_spec *spec = codec->spec;
-+
-+	if (action == HDA_FIXUP_ACT_PRE_PROBE)
-+		spec->shutup = starlabs_starfighter_shutup;
-+}
-+
- static void alc269_fixup_pincfg_no_hp_to_lineout(struct hda_codec *codec,
- 						 const struct hda_fixup *fix, int action)
- {
-@@ -8203,6 +8221,7 @@ enum {
- 	ALC245_FIXUP_CLEVO_NOISY_MIC,
- 	ALC269_FIXUP_VAIO_VJFH52_MIC_NO_PRESENCE,
- 	ALC233_FIXUP_MEDION_MTL_SPK,
-+	ALC233_FIXUP_STARLABS_STARFIGHTER,
- 	ALC294_FIXUP_BASS_SPEAKER_15,
- 	ALC283_FIXUP_DELL_HP_RESUME,
- 	ALC294_FIXUP_ASUS_CS35L41_SPI_2,
-@@ -10591,6 +10610,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 			{ }
- 		},
- 	},
-+	[ALC233_FIXUP_STARLABS_STARFIGHTER] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = alc233_fixup_starlabs_starfighter,
-+	},
- 	[ALC294_FIXUP_BASS_SPEAKER_15] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc294_fixup_bass_speaker_15,
-@@ -11606,6 +11629,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x2782, 0x1705, "MEDION E15433", ALC269VC_FIXUP_INFINIX_Y4_MAX),
- 	SND_PCI_QUIRK(0x2782, 0x1707, "Vaio VJFE-ADL", ALC298_FIXUP_SPK_VOLUME),
- 	SND_PCI_QUIRK(0x2782, 0x4900, "MEDION E15443", ALC233_FIXUP_MEDION_MTL_SPK),
-+	SND_PCI_QUIRK(0x7017, 0x2014, "Star Labs StarFighter", ALC233_FIXUP_STARLABS_STARFIGHTER),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
-@@ -11702,6 +11726,7 @@ static const struct hda_model_fixup alc269_fixup_models[] = {
- 	{.id = ALC298_FIXUP_TPT470_DOCK_FIX, .name = "tpt470-dock-fix"},
- 	{.id = ALC298_FIXUP_TPT470_DOCK, .name = "tpt470-dock"},
- 	{.id = ALC233_FIXUP_LENOVO_MULTI_CODECS, .name = "dual-codecs"},
-+	{.id = ALC233_FIXUP_STARLABS_STARFIGHTER, .name = "starlabs-starfighter"},
- 	{.id = ALC700_FIXUP_INTEL_REFERENCE, .name = "alc700-ref"},
- 	{.id = ALC269_FIXUP_SONY_VAIO, .name = "vaio"},
- 	{.id = ALC269_FIXUP_DELL_M101Z, .name = "dell-m101z"},
+ 	amdgpu_device_ip_fini_early(adev);
+@@ -4046,7 +4046,7 @@ void amdgpu_device_fini_hw(struct amdgpu_device *adev)
+ 
+ 	amdgpu_gart_dummy_page_fini(adev);
+ 
+-	if (drm_dev_is_unplugged(adev_to_drm(adev)))
++	if (pci_dev_is_disconnected(adev->pdev))
+ 		amdgpu_device_unmap_mmio(adev);
+ 
+ }
 -- 
 2.51.0
 
