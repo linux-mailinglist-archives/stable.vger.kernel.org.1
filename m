@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229460-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gA/yFEV/wWl2TgQAu9opvQ
-	(envelope-from <stable+bounces-229951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:58:29 +0100
+	id yJnSKjZhwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229460-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:50:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF0D2FAB8E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:58:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC622F6FEC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:50:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFD71332B702
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4060B30B78E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC483ACA5C;
-	Mon, 23 Mar 2026 16:29:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0E63B8D4F;
+	Mon, 23 Mar 2026 15:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiVUwap6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nuv0dvJx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4AF73BD62F;
-	Mon, 23 Mar 2026 16:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FDE27E1A1;
+	Mon, 23 Mar 2026 15:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283348; cv=none; b=B9aIWypC+eV3DG6YrZQDiqa6fH/gXIx4PqT5nPIe1ejQ1nLUuJaoT+Lk/AWIaAvfNHzUUiVOqxBZa4ebF+Z+S0+Y55f1BuhvgNDSZ1ssJKCx+9ArbdOdnEFnbxZIEbxsKzYu60tcZdS7zLME7DvZWGOHUDp5fAk5NgkvEdH62P4=
+	t=1774279303; cv=none; b=OgAeexM2bzJfSZ3MPFQNBoEEIM4Z2nI15TjeCRZaY91lvAhfKLTqrZYOaW9PF3IjULhX1J4ghw0geR04W8ZU5E/cYb3zbu90QQVRQQrtaAyGBuvlB/5QfSKSpT4LMtN8BAi3FKv6rz2MB90D6ahw6J6fcRBXAAL8/1CbGRilLdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283348; c=relaxed/simple;
-	bh=7W//A6DjHP4WEWF4322FKgWnnT7DH0MCrwZoptsgsck=;
+	s=arc-20240116; t=1774279303; c=relaxed/simple;
+	bh=oXlKOJ9JxYDviLkAD3YymJBAV23mOaksRim9czH+OwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T9N3d4c3DrKr517t/we0CjSzi33oxUqXwaMzXvXJKmWU5evdiXIJ/7YIp9Pb6R4N6RlUF7HKEqhMSTq1t1i9PrMuBs3TdgowwIzFMtzd4KCKZdkgn+fVr7kI7uanJdtt0gsBb0ljAy7RBhpqIoDgQMaWpJ0awfgCcrnYsZrE2Z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiVUwap6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285F2C4CEF7;
-	Mon, 23 Mar 2026 16:29:07 +0000 (UTC)
+	 MIME-Version; b=XWoAcmFFhEdhJKiwTINRnOPPKskbAHamkIsuskb0z1qMwimOgSjeQXLZSMQesP2JxyLB+7tVmk2hgdepfN0nnKvTYYleRWHgp4g/0v9twN09X07ZDHKCLxw1vzXZPSauObIH3/OXia5L32ZfJUBnDBaXK+ii6iBjuzFbBIhCH8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nuv0dvJx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BF2C4CEF7;
+	Mon, 23 Mar 2026 15:21:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283347;
-	bh=7W//A6DjHP4WEWF4322FKgWnnT7DH0MCrwZoptsgsck=;
+	s=korg; t=1774279303;
+	bh=oXlKOJ9JxYDviLkAD3YymJBAV23mOaksRim9czH+OwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiVUwap6C4MRp/EDzweD7wwTtijZlYyHJpzASIaJdvF4hGZpb5MKv/GMfsc5e3XZt
-	 sS7Iy4jKHQpHya8c3Td8d1ZkD6D+fqFajevckKK3jlAL5uCZex+q0/iJUecMT9Z4Na
-	 Z9lFjZOrWTXJEsAfQ84TEQ7zB0IiyCbsMhsIw12Q=
+	b=nuv0dvJxSkCEXlL7pL7YQxfEEEXLHmrSt+3UL3HqJyiQGhHtSr2GRT9WVzZksXqS7
+	 ASoaPWfJ6goDgcxP+po99STvE6bzdG0QMgT9YJ7vsdny2YvV8IahIV3hqWFq+CcItT
+	 r3OUgiK7PKlr75GnW64DUkAqZkD3zpemX6/bSwUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <bence98@sch.bme.hu>,
-	Johan Hovold <johan@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 478/481] i2c: cp2615: fix serial string NULL-deref at probe
+Subject: [PATCH 6.6 540/567] net/mlx5e: Fix race condition during IPSec ESN update
 Date: Mon, 23 Mar 2026 14:47:40 +0100
-Message-ID: <20260323134536.869479088@linuxfoundation.org>
+Message-ID: <20260323134547.366984708@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +65,165 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229951-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229460-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bme.hu:email]
-X-Rspamd-Queue-Id: ABF0D2FAB8E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email]
+X-Rspamd-Queue-Id: 4DC622F6FEC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit aa79f996eb41e95aed85a1bd7f56bcd6a3842008 ]
+[ Upstream commit beb6e2e5976a128b0cccf10d158124422210c5ef ]
 
-The cp2615 driver uses the USB device serial string as the i2c adapter
-name but does not make sure that the string exists.
+In IPSec full offload mode, the device reports an ESN (Extended
+Sequence Number) wrap event to the driver. The driver validates this
+event by querying the IPSec ASO and checking that the esn_event_arm
+field is 0x0, which indicates an event has occurred. After handling
+the event, the driver must re-arm the context by setting esn_event_arm
+back to 0x1.
 
-Verify that the device has a serial number before accessing it to avoid
-triggering a NULL-pointer dereference (e.g. with malicious devices).
+A race condition exists in this handling path. After validating the
+event, the driver calls mlx5_accel_esp_modify_xfrm() to update the
+kernel's xfrm state. This function temporarily releases and
+re-acquires the xfrm state lock.
 
-Fixes: 4a7695429ead ("i2c: cp2615: add i2c driver for Silicon Labs' CP2615 Digital Audio Bridge")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Bence Csókás <bence98@sch.bme.hu>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Bence Csókás <bence98@sch.bme.hu>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260309075016.25612-1-johan@kernel.org
+So, need to acknowledge the event first by setting esn_event_arm to
+0x1. This prevents the driver from reprocessing the same ESN update if
+the hardware sends events for other reason. Since the next ESN update
+only occurs after nearly 2^31 packets are received, there's no risk of
+missing an update, as it will happen long after this handling has
+finished.
+
+Processing the event twice causes the ESN high-order bits (esn_msb) to
+be incremented incorrectly. The driver then programs the hardware with
+this invalid ESN state, which leads to anti-replay failures and a
+complete halt of IPSec traffic.
+
+Fix this by re-arming the ESN event immediately after it is validated,
+before calling mlx5_accel_esp_modify_xfrm(). This ensures that any
+spurious, duplicate events are correctly ignored, closing the race
+window.
+
+Fixes: fef06678931f ("net/mlx5e: Fix ESN update kernel panic")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260316094603.6999-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-cp2615.c |    3 +++
- 1 file changed, 3 insertions(+)
+ .../mlx5/core/en_accel/ipsec_offload.c        | 33 ++++++++-----------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
---- a/drivers/i2c/busses/i2c-cp2615.c
-+++ b/drivers/i2c/busses/i2c-cp2615.c
-@@ -298,6 +298,9 @@ cp2615_i2c_probe(struct usb_interface *u
- 	if (!adap)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index eab368dea0e27..fd03aa4f47b5a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -309,10 +309,11 @@ static void mlx5e_ipsec_aso_update(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 	mlx5e_ipsec_aso_query(sa_entry, data);
+ }
  
-+	if (!usbdev->serial)
-+		return -EINVAL;
+-static void mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
+-					 u32 mode_param)
++static void
++mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
++			     u32 mode_param,
++			     struct mlx5_accel_esp_xfrm_attrs *attrs)
+ {
+-	struct mlx5_accel_esp_xfrm_attrs attrs = {};
+ 	struct mlx5_wqe_aso_ctrl_seg data = {};
+ 
+ 	if (mode_param < MLX5E_IPSEC_ESN_SCOPE_MID) {
+@@ -322,18 +323,7 @@ static void mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 		sa_entry->esn_state.overlap = 1;
+ 	}
+ 
+-	mlx5e_ipsec_build_accel_xfrm_attrs(sa_entry, &attrs);
+-
+-	/* It is safe to execute the modify below unlocked since the only flows
+-	 * that could affect this HW object, are create, destroy and this work.
+-	 *
+-	 * Creation flow can't co-exist with this modify work, the destruction
+-	 * flow would cancel this work, and this work is a single entity that
+-	 * can't conflict with it self.
+-	 */
+-	spin_unlock_bh(&sa_entry->x->lock);
+-	mlx5_accel_esp_modify_xfrm(sa_entry, &attrs);
+-	spin_lock_bh(&sa_entry->x->lock);
++	mlx5e_ipsec_build_accel_xfrm_attrs(sa_entry, attrs);
+ 
+ 	data.data_offset_condition_operand =
+ 		MLX5_IPSEC_ASO_REMOVE_FLOW_PKT_CNT_OFFSET;
+@@ -450,7 +440,9 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 	struct mlx5e_ipsec_work *work =
+ 		container_of(_work, struct mlx5e_ipsec_work, work);
+ 	struct mlx5e_ipsec_sa_entry *sa_entry = work->data;
++	struct mlx5_accel_esp_xfrm_attrs tmp = {};
+ 	struct mlx5_accel_esp_xfrm_attrs *attrs;
++	bool need_modify = false;
+ 	int ret;
+ 
+ 	attrs = &sa_entry->attrs;
+@@ -460,19 +452,22 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 	if (ret)
+ 		goto unlock;
+ 
++	if (attrs->lft.soft_packet_limit != XFRM_INF)
++		mlx5e_ipsec_handle_limits(sa_entry);
 +
- 	strscpy(adap->name, usbdev->serial, sizeof(adap->name));
- 	adap->owner = THIS_MODULE;
- 	adap->dev.parent = &usbif->dev;
+ 	if (attrs->replay_esn.trigger &&
+ 	    !MLX5_GET(ipsec_aso, sa_entry->ctx, esn_event_arm)) {
+ 		u32 mode_param = MLX5_GET(ipsec_aso, sa_entry->ctx,
+ 					  mode_parameter);
+ 
+-		mlx5e_ipsec_update_esn_state(sa_entry, mode_param);
++		mlx5e_ipsec_update_esn_state(sa_entry, mode_param, &tmp);
++		need_modify = true;
+ 	}
+ 
+-	if (attrs->lft.soft_packet_limit != XFRM_INF)
+-		mlx5e_ipsec_handle_limits(sa_entry);
+-
+ unlock:
+ 	spin_unlock_bh(&sa_entry->x->lock);
++	if (need_modify)
++		mlx5_accel_esp_modify_xfrm(sa_entry, &tmp);
+ 	kfree(work);
+ }
+ 
+-- 
+2.51.0
+
 
 
 
