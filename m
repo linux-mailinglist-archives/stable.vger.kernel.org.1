@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WNZwODtHwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228039-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:23 +0100
+	id 0AiFEH90wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:12:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E1892F395B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7282F9948
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:12:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEBEB308DE22
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 354DD30AA0F4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454423AC0D2;
-	Mon, 23 Mar 2026 13:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86DB728751B;
+	Mon, 23 Mar 2026 16:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AYQAZcY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pyhaj2W4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089F91E7C03;
-	Mon, 23 Mar 2026 13:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C273BD25D;
+	Mon, 23 Mar 2026 16:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273943; cv=none; b=WPiScioDwg7Zb9R3+iEI5o5MQ+XaUUQuno2DSRr68xIO6JdTD1j+3X59/0xb7qpBO3pynay3JLUQWjtkb7KrszrgV5PCuqszjcT/brBfbhYEZ2RWnic7QNIjnqQpqbzN31ZHHDmUq8XcvDS0vCcGsGmE1eVpZ/bPyUW57H2q3Gc=
+	t=1774282696; cv=none; b=jFy3VyP5Aoc0LN9roRYkxGC/V/4Ajy2UaXer5q47lwlUWCQN0+teVt+UE7o2kBBU1beG+IKu78fE69QH50+lAOtsQi/bmJ4kowo+0cXrXfXZCWYmGwxyo2HVKHHVvNE0PV0ej4w2fwyu34st+KfC4+jA98/cHUxFf8oH0uQdB8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273943; c=relaxed/simple;
-	bh=5qVB2AckEStOUgJ5yZmfhV7Q+Taav5aKQNf7oBpj7Lo=;
+	s=arc-20240116; t=1774282696; c=relaxed/simple;
+	bh=2tMW+LeuuGvquACjhba452C38lWmQONr82fqS1EYbf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+ZIsF6jUcihBi/mVZSxKpVjIhbFEj/Zyo+dGHpGw5K7DS2UaVgDybe9MfOU318OEDu0lJcdh79jIEqCysmgxJ9YdHMI5abh5bcIOhvXgoIlcSTxHShcc0Uf+UysAM9HmwLMGLd/xD476qoo+K22CaIW9tTmkMvuWsCGspeTUio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AYQAZcY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82675C4CEF7;
-	Mon, 23 Mar 2026 13:52:22 +0000 (UTC)
+	 MIME-Version; b=F+uhaWXkqiU6PN74E3VmQK2EtzrriRgqH3zSxC5/ymk5VMxXpBQViSlJMEs50GO7E5esZTnv8BdVV1p0OCgDoZpvVEeu1sf8Zp3hQe6yY0L3MgQ92b07hfiCNUc3+P3FFnFCtBI/+VVan2idrVNDAYbmA4AJ2kIHq8rrIQ7ew0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pyhaj2W4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA858C2BC9E;
+	Mon, 23 Mar 2026 16:18:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273942;
-	bh=5qVB2AckEStOUgJ5yZmfhV7Q+Taav5aKQNf7oBpj7Lo=;
+	s=korg; t=1774282696;
+	bh=2tMW+LeuuGvquACjhba452C38lWmQONr82fqS1EYbf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0AYQAZcYcRAS7zTWYhFqaWJRavO4kk4aYoK56b4293KFFPNvjsNB0EoC8SEuMpgFn
-	 hbujCl6VwesvnRo5rhCAOb7tFOcaZZGVwAFiUKmTk5KMddWfQUP/xbxdqPuyyEQ6k5
-	 ZrBFonlhPGksRYuSCqFqB11o5HMZh2wvOYALrMhk=
+	b=Pyhaj2W4ErO75MC8MQqe5gv8MyYjONyB5ViOkRMZLrKYPrbcd+oad6yFst3tSq9dW
+	 jiw+dQbkte8iVDyzwlH6M/6ptY56I6qiYmGs00LeIV5ePAolxGmWMPpWD3/d//CSEd
+	 Gs3swH6MxJzKyips33kvBZK++DvC3LaDkbtE9ZOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Michaelis <code@mgjm.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.19 057/220] io_uring/kbuf: propagate BUF_MORE through early buffer commit path
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Calvin Owens <calvin@wbinvd.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 252/481] tracing: Fix trace_buf_size= cmdline parameter with sizes >= 2G
 Date: Mon, 23 Mar 2026 14:43:54 +0100
-Message-ID: <20260323134506.391713507@linuxfoundation.org>
+Message-ID: <20260323134531.297076103@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +69,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229724-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228039-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,kernel.dk:email,mgjm.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 5E1892F395B
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4D7282F9948
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Calvin Owens <calvin@wbinvd.org>
 
-commit 418eab7a6f3c002d8e64d6e95ec27118017019af upstream.
+commit d008ba8be8984760e36d7dcd4adbd5a41a645708 upstream.
 
-When io_should_commit() returns true (eg for non-pollable files), buffer
-commit happens at buffer selection time and sel->buf_list is set to
-NULL. When __io_put_kbufs() generates CQE flags at completion time, it
-calls __io_put_kbuf_ring() which finds a NULL buffer_list and hence
-cannot determine whether the buffer was consumed or not. This means that
-IORING_CQE_F_BUF_MORE is never set for non-pollable input with
-incrementally consumed buffers.
+Some of the sizing logic through tracer_alloc_buffers() uses int
+internally, causing unexpected behavior if the user passes a value that
+does not fit in an int (on my x86 machine, the result is uselessly tiny
+buffers).
 
-Likewise for io_buffers_select(), which always commits upfront and
-discards the return value of io_kbuf_commit().
+Fix by plumbing the parameter's real type (unsigned long) through to the
+ring buffer allocation functions, which already use unsigned long.
 
-Add REQ_F_BUF_MORE to store the result of io_kbuf_commit() during early
-commit. Then __io_put_kbuf_ring() can check this flag and set
-IORING_F_BUF_MORE accordingy.
+It has always been possible to create larger ring buffers via the sysfs
+interface: this only affects the cmdline parameter.
 
-Reported-by: Martin Michaelis <code@mgjm.de>
 Cc: stable@vger.kernel.org
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://github.com/axboe/liburing/issues/1553
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/bff42a4288aada08bdf74da3f5b67a2c28b761f8.1772852067.git.calvin@wbinvd.org
+Fixes: 73c5162aa362 ("tracing: keep ring buffer to minimum size till used")
+Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |    3 +++
- io_uring/kbuf.c                |   10 +++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ kernel/trace/trace.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -524,6 +524,7 @@ enum {
- 	REQ_F_BL_NO_RECYCLE_BIT,
- 	REQ_F_BUFFERS_COMMIT_BIT,
- 	REQ_F_BUF_NODE_BIT,
-+	REQ_F_BUF_MORE_BIT,
- 	REQ_F_HAS_METADATA_BIT,
- 	REQ_F_IMPORT_BUFFER_BIT,
- 	REQ_F_SQE_COPIED_BIT,
-@@ -609,6 +610,8 @@ enum {
- 	REQ_F_BUFFERS_COMMIT	= IO_REQ_FLAG(REQ_F_BUFFERS_COMMIT_BIT),
- 	/* buf node is valid */
- 	REQ_F_BUF_NODE		= IO_REQ_FLAG(REQ_F_BUF_NODE_BIT),
-+	/* incremental buffer consumption, more space available */
-+	REQ_F_BUF_MORE		= IO_REQ_FLAG(REQ_F_BUF_MORE_BIT),
- 	/* request has read/write metadata assigned */
- 	REQ_F_HAS_METADATA	= IO_REQ_FLAG(REQ_F_HAS_METADATA_BIT),
- 	/*
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -216,7 +216,8 @@ static struct io_br_sel io_ring_buffer_s
- 	sel.addr = u64_to_user_ptr(READ_ONCE(buf->addr));
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -9298,7 +9298,7 @@ static void
+ init_tracer_tracefs(struct trace_array *tr, struct dentry *d_tracer);
  
- 	if (io_should_commit(req, issue_flags)) {
--		io_kbuf_commit(req, sel.buf_list, *len, 1);
-+		if (!io_kbuf_commit(req, sel.buf_list, *len, 1))
-+			req->flags |= REQ_F_BUF_MORE;
- 		sel.buf_list = NULL;
+ static int
+-allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size)
++allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, unsigned long size)
+ {
+ 	enum ring_buffer_flags rb_flags;
+ 
+@@ -9334,7 +9334,7 @@ static void free_trace_buffer(struct arr
  	}
- 	return sel;
-@@ -349,7 +350,8 @@ int io_buffers_select(struct io_kiocb *r
- 		 */
- 		if (ret > 0) {
- 			req->flags |= REQ_F_BUFFERS_COMMIT | REQ_F_BL_NO_RECYCLE;
--			io_kbuf_commit(req, sel->buf_list, arg->out_len, ret);
-+			if (!io_kbuf_commit(req, sel->buf_list, arg->out_len, ret))
-+				req->flags |= REQ_F_BUF_MORE;
- 		}
- 	} else {
- 		ret = io_provided_buffers_select(req, &arg->out_len, sel->buf_list, arg->iovs);
-@@ -395,8 +397,10 @@ static inline bool __io_put_kbuf_ring(st
- 
- 	if (bl)
- 		ret = io_kbuf_commit(req, bl, len, nr);
-+	if (ret && (req->flags & REQ_F_BUF_MORE))
-+		ret = false;
- 
--	req->flags &= ~REQ_F_BUFFER_RING;
-+	req->flags &= ~(REQ_F_BUFFER_RING | REQ_F_BUF_MORE);
- 	return ret;
  }
+ 
+-static int allocate_trace_buffers(struct trace_array *tr, int size)
++static int allocate_trace_buffers(struct trace_array *tr, unsigned long size)
+ {
+ 	int ret;
+ 
+@@ -10278,7 +10278,7 @@ out:
+ 
+ __init static int tracer_alloc_buffers(void)
+ {
+-	int ring_buf_size;
++	unsigned long ring_buf_size;
+ 	int ret = -ENOMEM;
+ 
  
 
 
