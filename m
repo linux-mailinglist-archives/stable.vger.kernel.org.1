@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228575-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGRkA25rwWlMTAQAu9opvQ
-	(envelope-from <stable+bounces-229610-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:50 +0100
+	id qI5YORNPwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228575-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A12082F852D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:49 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8122F4B43
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FA103107BAA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E5FA5305A0D0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C38E3BD240;
-	Mon, 23 Mar 2026 16:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78121F91F6;
+	Mon, 23 Mar 2026 14:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAjDFcYs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qVdn5IdT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FAD3B9D80;
-	Mon, 23 Mar 2026 16:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB4421A680B;
+	Mon, 23 Mar 2026 14:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282384; cv=none; b=V99ITrWXrz4SbAlNmhimh6sgfIbaSMIcAbcx7L1AXobyuwxyx6HRou7guUZvgCi+tQSkDLmA0BdaDGWuNaHr2Znl1VL8rpQw+d9FL2/8Zoh5hUX+mWZEp9gxgA5XY6doo/cd3BmWdvT+Jpasi17d/rS+m528CaOZ4ZERAjC0HiU=
+	t=1774275492; cv=none; b=Q7eJDY55GDhS5YIebVgxHGDw8EtcIohswcAH0b5nyHFy+206lZMpWqJeVjZgJSjhi81p0KoLAV/fGOimc5CP6cWlPCkxhzTFeB5FAtl/ZTcozWyCEYsb78B8yWlnGcBiIfzdoogqh6ykvjA0xjy1rYPqPysobBlglYIkPCEus5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282384; c=relaxed/simple;
-	bh=qdiGpizDhd5JaMVqEaoRgf5CYWUd1o9H1VEbdGAymJA=;
+	s=arc-20240116; t=1774275492; c=relaxed/simple;
+	bh=hqU8OiT1DlHxTg5SP0qQhdHVmaC5WJId0QDqgAc07R8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfRkVFr0kFXEzAB4vixw0RHNYdDF4yV8vpqAD6lpgGNZcqrF5sxZAYWRqFLFoLssg0ZVVcTdkk4s9SijlqcV1tWlnwGQilWFCh4/SIzBTH7pITF0qmegpIVVYXz5d4WI0p6Me5RWZ80wJKI47I8iUBE+ie/1gayYaiBrNUKiQfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAjDFcYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C749BC4CEF7;
-	Mon, 23 Mar 2026 16:13:03 +0000 (UTC)
+	 MIME-Version; b=aRtZtMgVwC9ji+cGmcoTdeUraeUZewmMF2Q5Q/IdmPvhdbrBk7XB0IUilpb1UEK5fV5oqCWWPT0/Mmq4etMliE/2SIDhjNO2blvSU2GxmXs7THH2EVZetb7PGWZelvu4Yb0gZg0wj1SDOghYcsbEn09xHMIFW9MpUejbR4anJHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qVdn5IdT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C33C4CEF7;
+	Mon, 23 Mar 2026 14:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282384;
-	bh=qdiGpizDhd5JaMVqEaoRgf5CYWUd1o9H1VEbdGAymJA=;
+	s=korg; t=1774275492;
+	bh=hqU8OiT1DlHxTg5SP0qQhdHVmaC5WJId0QDqgAc07R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAjDFcYsjmkyviQfGUcSNeYqEm50O0DK8jIXnAwUo6zJAu9FdJOIr0pQiDX4XTL92
-	 oci+/X2flea2diGxP1S9HL77rIriCcUB63PgoaRhEKkMppOQzy7gZ6/67XFynHt80a
-	 +yjptRBoXS1yfzjMpJMXpsoFRFPeqCd77Wbvk6A0=
+	b=qVdn5IdT6DenE11+iF0iv5TyMCbuY80vFVI4xEh7ABpQgsOH008B2bc19QON3WLF0
+	 RyndMWwrK36uANCXV8Pqa/fUF+dNX1FLGe97gjlt6HlTGyPrLD4DxHjBgSWdqKA+DB
+	 ajKzQOkh03NafEdqDC9WsLFadqd9ro8fBtAuZpz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/481] net: stmmac: Fix error handling in VLAN add and delete paths
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Penghe Geng <pgeng@nvidia.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 121/460] mmc: core: Avoid bitfield RMW for claim/retune flags
 Date: Mon, 23 Mar 2026 14:41:57 +0100
-Message-ID: <20260323134528.554532293@linuxfoundation.org>
+Message-ID: <20260323134529.599647629@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +66,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228575-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229610-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,renesas.com:email]
-X-Rspamd-Queue-Id: A12082F852D
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8E8122F4B43
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+From: Penghe Geng <pgeng@nvidia.com>
 
-[ Upstream commit 35dfedce442c4060cfe5b98368bc9643fb995716 ]
+commit 901084c51a0a8fb42a3f37d2e9c62083c495f824 upstream.
 
-stmmac_vlan_rx_add_vid() updates active_vlans and the VLAN hash
-register before writing the HW filter entry. If the filter write
-fails, it leaves a stale VID in active_vlans and the hash register.
+Move claimed and retune control flags out of the bitfield word to
+avoid unrelated RMW side effects in asynchronous contexts.
 
-stmmac_vlan_rx_kill_vid() has the reverse problem: it clears
-active_vlans before removing the HW filter. On failure, the VID is
-gone from active_vlans but still present in the HW filter table.
+The host->claimed bit shared a word with retune flags. Writes to claimed
+in __mmc_claim_host() or retune_now in mmc_mq_queue_rq() can overwrite
+other bits when concurrent updates happen in other contexts, triggering
+spurious WARN_ON(!host->claimed). Convert claimed, can_retune,
+retune_now and retune_paused to bool to remove shared-word coupling.
 
-To fix this, reorder the operations to update the hash table first,
-then attempt the HW filter operation. If the HW filter fails, roll
-back both the active_vlans bitmap and the hash table by calling
-stmmac_vlan_update() again.
-
-Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Link: https://patch.msgid.link/20260303145828.7845-2-ovidiu.panait.rb@renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6c0cedd1ef952 ("mmc: core: Introduce host claiming by context")
+Fixes: 1e8e55b67030c ("mmc: block: Add CQE support")
+Cc: stable@vger.kernel.org
+Suggested-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Penghe Geng <pgeng@nvidia.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c  | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ include/linux/mmc/host.h |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index b5de07b84f77b..1b3ea615cbba2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6451,9 +6451,13 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+--- a/include/linux/mmc/host.h
++++ b/include/linux/mmc/host.h
+@@ -423,14 +423,12 @@ struct mmc_host {
  
- 	if (priv->hw->num_vlan) {
- 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
--		if (ret)
-+		if (ret) {
-+			clear_bit(vid, priv->active_vlans);
-+			stmmac_vlan_update(priv, is_double);
- 			goto err_pm_put;
-+		}
- 	}
+ 	struct mmc_ios		ios;		/* current io bus settings */
+ 
++	bool			claimed;	/* host exclusively claimed */
 +
- err_pm_put:
- 	pm_runtime_put(priv->device);
+ 	/* group bitfields together to minimize padding */
+ 	unsigned int		use_spi_crc:1;
+-	unsigned int		claimed:1;	/* host exclusively claimed */
+ 	unsigned int		doing_init_tune:1; /* initial tuning in progress */
+-	unsigned int		can_retune:1;	/* re-tuning can be used */
+ 	unsigned int		doing_retune:1;	/* re-tuning in progress */
+-	unsigned int		retune_now:1;	/* do re-tuning at next req */
+-	unsigned int		retune_paused:1; /* re-tuning is temporarily disabled */
+ 	unsigned int		retune_crc_disable:1; /* don't trigger retune upon crc */
+ 	unsigned int		can_dma_map_merge:1; /* merging can be used */
+ 	unsigned int		vqmmc_enabled:1; /* vqmmc regulator is enabled */
+@@ -438,6 +436,9 @@ struct mmc_host {
+ 	int			rescan_disable;	/* disable card detection */
+ 	int			rescan_entered;	/* used with nonremovable devices */
  
-@@ -6474,15 +6478,21 @@ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vi
- 		is_double = true;
- 
- 	clear_bit(vid, priv->active_vlans);
-+	ret = stmmac_vlan_update(priv, is_double);
-+	if (ret) {
-+		set_bit(vid, priv->active_vlans);
-+		goto del_vlan_error;
-+	}
- 
- 	if (priv->hw->num_vlan) {
- 		ret = stmmac_del_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
--		if (ret)
-+		if (ret) {
-+			set_bit(vid, priv->active_vlans);
-+			stmmac_vlan_update(priv, is_double);
- 			goto del_vlan_error;
-+		}
- 	}
- 
--	ret = stmmac_vlan_update(priv, is_double);
--
- del_vlan_error:
- 	pm_runtime_put(priv->device);
- 
--- 
-2.51.0
-
++	bool			can_retune;	/* re-tuning can be used */
++	bool			retune_now;	/* do re-tuning at next req */
++	bool			retune_paused;	/* re-tuning is temporarily disabled */
+ 	int			need_retune;	/* re-tuning is needed */
+ 	int			hold_retune;	/* hold off re-tuning */
+ 	unsigned int		retune_period;	/* re-tuning period in secs */
 
 
 
