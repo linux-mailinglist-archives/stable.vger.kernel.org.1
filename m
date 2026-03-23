@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228720-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLqwJaRbwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:28 +0100
+	id 6GOyM+5UwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228720-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55DCB2F6496
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A3D52F5853
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 112CE300461F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E8AA23092EF9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDA53B19D8;
-	Mon, 23 Mar 2026 15:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB963B19D5;
+	Mon, 23 Mar 2026 14:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pl2u9lOv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0wvLm77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0FBD3B19B8;
-	Mon, 23 Mar 2026 15:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39FE399352;
+	Mon, 23 Mar 2026 14:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278531; cv=none; b=cv5HKGBKmHsywin0/BkivL2qUTnYvOqP0YfsT2QqACs/VCP9EuYM5VukYdRVyQgj5fCUOaZpAtTwkzNkHCDgelHq//+XqcXfdGlZ0GvdM2+ID6S51kxZ3A6zZPBZyVx4earTyea+WGtzQJXPe+343EWoyYYlz2qMlU1NR84hL9Q=
+	t=1774276939; cv=none; b=OD1wipB6FThBkJngvIDrObuS3qAtZbqIlde4/1NBF1zpxMpMiSNfpOmiswjPyJBJ3asBsQvCXV6jafsCpgOJnN/hODbwbqYv0vmpEArqYfCyHA1DjQAvYb/sdzElqwc/DXZCT6pi4+aW/4a0sZogjmYqjeJ/u4H3AloqkAP19nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278531; c=relaxed/simple;
-	bh=Rpf4ssqDtXQM/3SJRT1W7y2evNQPr/kGfMKPsixhiWw=;
+	s=arc-20240116; t=1774276939; c=relaxed/simple;
+	bh=Qr5DbG0KPSWCH+ZnzwtBcsrUs0H8H2Wk0hhHbiZkm78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PJgA+SaBL6sDQ6pMvT0vBdGGsSwZ5Oth5Oxk6hxGX0D5HLpSp/TLLigvsEXLV75g8xXJIMa+pOPN8QE/LlthL2wmhBQkhGrJL6KY6n6HM7HLB32N7nP39koZAFweXhqq5HZQ/ofTEFRZqvcF4p7FzEOQBexthMlB2si4E9gU/nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pl2u9lOv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102CFC4CEF7;
-	Mon, 23 Mar 2026 15:08:50 +0000 (UTC)
+	 MIME-Version; b=Krqm+Ui8C183FwLlmZY6JDAVQ6OveqfMAh2v4ewsASNi8Qi9cUAJ7nw91jvQ6T21XeIX6AL/YYnTOrH/nQINMdVInHC7D2E35Gnl5XKWl9ClmCD23X0bVxy9YgBliYwQY/I2KxiTDrhEMzLTXiyJOEwMLbWHreiV0aq1oSv1Sec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0wvLm77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6DAC4CEF7;
+	Mon, 23 Mar 2026 14:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278531;
-	bh=Rpf4ssqDtXQM/3SJRT1W7y2evNQPr/kGfMKPsixhiWw=;
+	s=korg; t=1774276939;
+	bh=Qr5DbG0KPSWCH+ZnzwtBcsrUs0H8H2Wk0hhHbiZkm78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pl2u9lOvrm4qR5YdLVENexYJPz/gYVwMw2yKWfHZRRi10k2YLE4UMFNHFWuOUBvDX
-	 gKoDZkhfiZLrRz4ahfTZS93XNbywkuBUCKKZhPd+qdfj9WMbcb7Kz8yF/t582GyjtV
-	 nnQMTK6qQS66o56t+hNPtlfPTKNYVr9J/40A+BgY=
+	b=G0wvLm77GzY91/qVho0oj3rDeHN4cph/4xCCOeyKaJtz/dkSG9qEq/UebwxMPyr/Y
+	 YpJfvJk53N3yDk6nsaQ4xb3oqYB4yYH12xx27swnzfNdielnWp48NwfeNsJO60D1ng
+	 rkLhlYE2+Qg1O4pcFhp6Ydy0/N84oy4ahx2gjkEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Calvin Owens <calvin@wbinvd.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 338/567] tracing: Fix trace_buf_size= cmdline parameter with sizes >= 2G
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 262/460] KVM: x86: Allow vendor code to disable quirks
 Date: Mon, 23 Mar 2026 14:44:18 +0100
-Message-ID: <20260323134542.198159871@linuxfoundation.org>
+Message-ID: <20260323134532.923863678@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +65,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229250-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228720-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[pbonzini.redhat.com:query timed out];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 55DCB2F6496
+X-Rspamd-Queue-Id: 2A3D52F5853
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Calvin Owens <calvin@wbinvd.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-commit d008ba8be8984760e36d7dcd4adbd5a41a645708 upstream.
+[ Upstream commit a4dae7c7a41d803a05192015b2d47aca8aca4abf ]
 
-Some of the sizing logic through tracer_alloc_buffers() uses int
-internally, causing unexpected behavior if the user passes a value that
-does not fit in an int (on my x86 machine, the result is uselessly tiny
-buffers).
+In some cases, the handling of quirks is split between platform-specific
+code and generic code, or it is done entirely in generic code, but the
+relevant bug does not trigger on some platforms; for example,
+this will be the case for "ignore guest PAT".  Allow unaffected vendor
+modules to disable handling of a quirk for all VMs via a new entry in
+kvm_caps.
 
-Fix by plumbing the parameter's real type (unsigned long) through to the
-ring buffer allocation functions, which already use unsigned long.
+Such quirks remain available in KVM_CAP_DISABLE_QUIRKS2, because that API
+tells userspace that KVM *knows* that some of its past behavior was bogus
+or just undesirable.  In other words, it's plausible for userspace to
+refuse to run if a quirk is not listed by KVM_CAP_DISABLE_QUIRKS2, so
+preserve that and make it part of the API.
 
-It has always been possible to create larger ring buffers via the sysfs
-interface: this only affects the cmdline parameter.
+As an example, mark KVM_X86_QUIRK_CD_NW_CLEARED as auto-disabled on
+Intel systems.
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/bff42a4288aada08bdf74da3f5b67a2c28b761f8.1772852067.git.calvin@wbinvd.org
-Fixes: 73c5162aa362 ("tracing: keep ring buffer to minimum size till used")
-Signed-off-by: Calvin Owens <calvin@wbinvd.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: e2ffe85b6d2b ("KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/kvm_host.h |    3 +++
+ arch/x86/kvm/svm/svm.c          |    1 +
+ arch/x86/kvm/x86.c              |    2 ++
+ arch/x86/kvm/x86.h              |    1 +
+ 4 files changed, 7 insertions(+)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -9271,7 +9271,7 @@ static void
- init_tracer_tracefs(struct trace_array *tr, struct dentry *d_tracer);
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2388,6 +2388,9 @@ int memslot_rmap_alloc(struct kvm_memory
+ 	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
+ 	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS)
  
- static int
--allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size)
-+allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, unsigned long size)
- {
- 	enum ring_buffer_flags rb_flags;
++#define KVM_X86_CONDITIONAL_QUIRKS		\
++	 KVM_X86_QUIRK_CD_NW_CLEARED
++
+ /*
+  * KVM previously used a u32 field in kvm_run to indicate the hypercall was
+  * initiated from long mode. KVM now sets bit 0 to indicate long mode, but the
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -5563,6 +5563,7 @@ static __init int svm_hardware_setup(voi
+ 	 */
+ 	allow_smaller_maxphyaddr = !npt_enabled;
  
-@@ -9307,7 +9307,7 @@ static void free_trace_buffer(struct arr
++	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_CD_NW_CLEARED;
+ 	return 0;
+ 
+ err:
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9782,6 +9782,7 @@ int kvm_x86_vendor_init(struct kvm_x86_i
+ 		kvm_host.xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
+ 		kvm_caps.supported_xcr0 = kvm_host.xcr0 & KVM_SUPPORTED_XCR0;
  	}
- }
++	kvm_caps.inapplicable_quirks = KVM_X86_CONDITIONAL_QUIRKS;
  
--static int allocate_trace_buffers(struct trace_array *tr, int size)
-+static int allocate_trace_buffers(struct trace_array *tr, unsigned long size)
- {
- 	int ret;
+ 	rdmsrl_safe(MSR_EFER, &kvm_host.efer);
  
-@@ -10330,7 +10330,7 @@ __init static void enable_instances(void
+@@ -12780,6 +12781,7 @@ int kvm_arch_init_vm(struct kvm *kvm, un
+ 	/* Decided by the vendor code for other VM types.  */
+ 	kvm->arch.pre_fault_allowed =
+ 		type == KVM_X86_DEFAULT_VM || type == KVM_X86_SW_PROTECTED_VM;
++	kvm->arch.disabled_quirks = kvm_caps.inapplicable_quirks;
  
- __init static int tracer_alloc_buffers(void)
- {
--	int ring_buf_size;
-+	unsigned long ring_buf_size;
- 	int ret = -ENOMEM;
+ 	ret = kvm_page_track_init(kvm);
+ 	if (ret)
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -32,6 +32,7 @@ struct kvm_caps {
+ 	u64 supported_xcr0;
+ 	u64 supported_xss;
+ 	u64 supported_perf_cap;
++	u64 inapplicable_quirks;
+ };
  
- 
+ struct kvm_host_values {
 
 
 
