@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228665-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KP7cM5xxwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:12 +0100
+	id +DfKGYRVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228665-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91CBE2F944C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA652F59ED
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C3FBE30F8CA6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5263B31F382A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19AC13AF647;
-	Mon, 23 Mar 2026 16:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56E2369204;
+	Mon, 23 Mar 2026 14:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le0LcL0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGYUyBwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A15D3BC67C;
-	Mon, 23 Mar 2026 16:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787EE1FFC48;
+	Mon, 23 Mar 2026 14:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282626; cv=none; b=DhxZ4hh5XyNAG7qPLyTCvKiVQ0HNNBXJhLK7Qk90Q/cd2taYsbqBOmbJqQx04qX2BH+BH2O/2LbcnQkGfm8GH/M2F440bt6D2ksfmalKtSQfvDNncu9rgFS47yXNVnSQaTGBe4z57ezlgAYuMxyFRzoOPb9/0RO20j6v/9oSUsg=
+	t=1774275762; cv=none; b=Y6b5BdD6jeReq6+g0Ch/notQcRxEumW02dXNgqgCrCPWH816Vm+3/8t//uHbmRP/NUxOlO3OOFl+h+b8BDLykm36LAag1tmnLanDaevXmksl7L2Wkn8qBtMSegVsK1ObVY2F7FCGyMluoeaHaVZrult+uuGlVcva+OyPAAURey4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282626; c=relaxed/simple;
-	bh=OqvMPpUfNEt/wYk7yQHZ5r4MGIEZI3ifVklz8j5/EHs=;
+	s=arc-20240116; t=1774275762; c=relaxed/simple;
+	bh=yFMXBRcDVDw9G1z8b4lHqLW8/Am9IWI7f2Wi8cSOMsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBIGk/KvytiX44s3zbUf1JhpltTArrfE9cgNTe8xCmnTsH7Dkq/xPfvsL/MRlSjO5Od7tzyXW7eZyOzgU/prHSFTR4LIBJxaIiF/zu9fQGz7DEXvt/SQ/wZ9e+2hU0PQFpvCKxks4h41ICGC64I7mdmCSoql4jzw6TWboU1iRTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le0LcL0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6406C4CEF7;
-	Mon, 23 Mar 2026 16:17:05 +0000 (UTC)
+	 MIME-Version; b=OAlAc4qNee9PqXD5Q/R561bDGYTHrcx63t46OHB7Yod3GchU4kKsNUrfKVytHHenkX/meAD3H/OysXNLkTEDqjllcjKlFjUovGaB8/NHH4dixLbSt/4C0J8u/ue03ECnqO3vdsCvuEqR9MMBbFgyGTnN3F67j0xmj/tCB7oJ/n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGYUyBwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3950C4CEF7;
+	Mon, 23 Mar 2026 14:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282626;
-	bh=OqvMPpUfNEt/wYk7yQHZ5r4MGIEZI3ifVklz8j5/EHs=;
+	s=korg; t=1774275762;
+	bh=yFMXBRcDVDw9G1z8b4lHqLW8/Am9IWI7f2Wi8cSOMsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Le0LcL0NXvHrQ0iM6RTmohOXWpwUH35vITv/Yji8lmmukdNwwS4pF94EfqVhSpS5S
-	 vA7iz2tVwmoxG3ZIaaGp24QDviwDr6aSmNBc4do4jeKz9yCUbHa4XJo1tG5X4VSTUW
-	 MJgcMA1ZffOS59tdCK0TDcPzQfp8LlwdUvS1sZto=
+	b=AGYUyBwGD0LzVyKf6XGbKoLXeLxr+dVatmPudpxQvznwnDdclJSSsLanDPuwGzWUu
+	 aEN7ZQt06s4TPMM+wSwl2mFngaiAY3dQKmKFZoXg1CFdmQJeo9sXkR9B4okRyG3XtE
+	 OPZJxjfP2KJ8J1v8RynUSxTWhi7IVE8vRjRNUdNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Alex Markuze <amarkuze@redhat.com>
-Subject: [PATCH 6.1 224/481] libceph: reject preamble if control segment is empty
+	Linus Walleij <linusw@kernel.org>,
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 210/460] iio: gyro: mpu3050-core: fix pm_runtime error handling
 Date: Mon, 23 Mar 2026 14:43:26 +0100
-Message-ID: <20260323134530.607239477@linuxfoundation.org>
+Message-ID: <20260323134531.679139155@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +67,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229698-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228665-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 91CBE2F944C
+X-Rspamd-Queue-Id: ECA652F59ED
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit c4c22b846eceff05b1129b8844a80310e55a7f87 upstream.
+commit acc3949aab3e8094641a9c7c2768de1958c88378 upstream.
 
-While head_onwire_len() has a branch to handle ctrl_len == 0 case,
-prepare_read_control() always sets up a kvec for the CRC meaning that
-a non-empty control segment is effectively assumed.  All frames that
-clients deal with meet that assumption, so let's make it official and
-treat the preamble with an empty control segment as malformed.
+The return value of pm_runtime_get_sync() is not checked, allowing
+the driver to access hardware that may fail to resume. The device
+usage count is also unconditionally incremented. Use
+pm_runtime_resume_and_get() which propagates errors and avoids
+incrementing the usage count on failure.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Alex Markuze <amarkuze@redhat.com>
+In preenable, add pm_runtime_put_autosuspend() on set_8khz_samplerate()
+failure since postdisable does not run when preenable fails.
+
+Fixes: 3904b28efb2c ("iio: gyro: Add driver for the MPU-3050 gyroscope")
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/messenger_v2.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ drivers/iio/gyro/mpu3050-core.c |   18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/net/ceph/messenger_v2.c
-+++ b/net/ceph/messenger_v2.c
-@@ -392,7 +392,7 @@ static int head_onwire_len(int ctrl_len,
- 	int head_len;
- 	int rem_len;
- 
--	BUG_ON(ctrl_len < 0 || ctrl_len > CEPH_MSG_MAX_CONTROL_LEN);
-+	BUG_ON(ctrl_len < 1 || ctrl_len > CEPH_MSG_MAX_CONTROL_LEN);
- 
- 	if (secure) {
- 		head_len = CEPH_PREAMBLE_SECURE_LEN;
-@@ -401,9 +401,7 @@ static int head_onwire_len(int ctrl_len,
- 			head_len += padded_len(rem_len) + CEPH_GCM_TAG_LEN;
+--- a/drivers/iio/gyro/mpu3050-core.c
++++ b/drivers/iio/gyro/mpu3050-core.c
+@@ -322,7 +322,9 @@ static int mpu3050_read_raw(struct iio_d
  		}
- 	} else {
--		head_len = CEPH_PREAMBLE_PLAIN_LEN;
--		if (ctrl_len)
--			head_len += ctrl_len + CEPH_CRC_LEN;
-+		head_len = CEPH_PREAMBLE_PLAIN_LEN + ctrl_len + CEPH_CRC_LEN;
- 	}
- 	return head_len;
+ 	case IIO_CHAN_INFO_RAW:
+ 		/* Resume device */
+-		pm_runtime_get_sync(mpu3050->dev);
++		ret = pm_runtime_resume_and_get(mpu3050->dev);
++		if (ret)
++			return ret;
+ 		mutex_lock(&mpu3050->lock);
+ 
+ 		ret = mpu3050_set_8khz_samplerate(mpu3050);
+@@ -648,14 +650,20 @@ out_trigger_unlock:
+ static int mpu3050_buffer_preenable(struct iio_dev *indio_dev)
+ {
+ 	struct mpu3050 *mpu3050 = iio_priv(indio_dev);
++	int ret;
+ 
+-	pm_runtime_get_sync(mpu3050->dev);
++	ret = pm_runtime_resume_and_get(mpu3050->dev);
++	if (ret)
++		return ret;
+ 
+ 	/* Unless we have OUR trigger active, run at full speed */
+-	if (!mpu3050->hw_irq_trigger)
+-		return mpu3050_set_8khz_samplerate(mpu3050);
++	if (!mpu3050->hw_irq_trigger) {
++		ret = mpu3050_set_8khz_samplerate(mpu3050);
++		if (ret)
++			pm_runtime_put_autosuspend(mpu3050->dev);
++	}
+ 
+-	return 0;
++	return ret;
  }
-@@ -528,11 +526,16 @@ static int decode_preamble(void *p, stru
- 		desc->fd_aligns[i] = ceph_decode_16(&p);
- 	}
  
--	if (desc->fd_lens[0] < 0 ||
-+	/*
-+	 * This would fire for FRAME_TAG_WAIT (it has one empty
-+	 * segment), but we should never get it as client.
-+	 */
-+	if (desc->fd_lens[0] < 1 ||
- 	    desc->fd_lens[0] > CEPH_MSG_MAX_CONTROL_LEN) {
- 		pr_err("bad control segment length %d\n", desc->fd_lens[0]);
- 		return -EINVAL;
- 	}
-+
- 	if (desc->fd_lens[1] < 0 ||
- 	    desc->fd_lens[1] > CEPH_MSG_MAX_FRONT_LEN) {
- 		pr_err("bad front segment length %d\n", desc->fd_lens[1]);
-@@ -549,10 +552,6 @@ static int decode_preamble(void *p, stru
- 		return -EINVAL;
- 	}
- 
--	/*
--	 * This would fire for FRAME_TAG_WAIT (it has one empty
--	 * segment), but we should never get it as client.
--	 */
- 	if (!desc->fd_lens[desc->fd_seg_cnt - 1]) {
- 		pr_err("last segment empty, segment count %d\n",
- 		       desc->fd_seg_cnt);
+ static int mpu3050_buffer_postdisable(struct iio_dev *indio_dev)
 
 
 
