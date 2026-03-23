@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-228602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228603-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLcDHjJMwWmKSAQAu9opvQ
-	(envelope-from <stable+bounces-228602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:34 +0100
+	id SIUgCD9SwWn+SAQAu9opvQ
+	(envelope-from <stable+bounces-228603-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2A62F43D5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91D502F527D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C52B83008D0C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2DD7930A896D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C421E5B88;
-	Mon, 23 Mar 2026 14:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CDD1A680D;
+	Mon, 23 Mar 2026 14:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwoBoa77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zr9uqKBp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C622823DD;
-	Mon, 23 Mar 2026 14:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA0F3C07A;
+	Mon, 23 Mar 2026 14:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275571; cv=none; b=ukwWh6Y2I33Hoi4Kf8CH+3z34bAAGzh5kadYA8aVPnDj3Q7S/ack2A2sQSQrgCIeUhosTMNGdZJp6zSUrQlTZs9ws94MrUeCeSUcyokEMPQmI7uH9jvc7dkBGBRKJUEaoFwUePd/HMQGbiTiyK/lLGArVmNs2HUKa8hQX6fGQjQ=
+	t=1774275574; cv=none; b=gyoI4AX1fRJZwTQ8MG8vsJvsOaRhXB5dyLsXzor8+ypm26rT3zbm3yz7Szlvg+RxsnRu7OU4Z+bpxBbHLVKny10E0bhr5DocBf7pXc9DBVgDN+nvmILAc80p0iXvg8Z2bY05GpMgAMO9xyHI2vi3LyVe9nJqRWZJCbZrmVyjtwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275571; c=relaxed/simple;
-	bh=iblsEpQca5t5AecYe+LPlAQ5v65dLvQXo5FySdS5pjc=;
+	s=arc-20240116; t=1774275574; c=relaxed/simple;
+	bh=ZCh/EoHX5STux1KL3jH08nhiGQKiJGbwXgULxI4wRag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxTErLzq2WMh3+LQo198bqVY3KdfJg0hqN1BHF68zW/h3C7ImttCe0W5Xxo8ZCafMeKbRmOguPib1fP+AHn539kBZcuhMYoibv/uyHcQOGZHf+XZ9TInaKw45BkuXtc1e+RzTZajE0VlsrW99qySok/dlHv33BM0xeanbYYD4GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwoBoa77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00120C4CEF7;
-	Mon, 23 Mar 2026 14:19:30 +0000 (UTC)
+	 MIME-Version; b=e2XfjLA3l0z3+GMwMxrWTuPhWz1yF4Q4MVKfLI5KP+yEN10htdROzleaZysiP6dRln7gaAlpTw8WLluJ5VoMaVJYt/ENdVMsToRiz627cPV4iPyG6dWc4gqqrDUGsdqzm5Z/WCAF5TKDAyZ8BZta07KMUl/D/y6/SIR7+flWNAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zr9uqKBp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA99C4CEF7;
+	Mon, 23 Mar 2026 14:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275571;
-	bh=iblsEpQca5t5AecYe+LPlAQ5v65dLvQXo5FySdS5pjc=;
+	s=korg; t=1774275574;
+	bh=ZCh/EoHX5STux1KL3jH08nhiGQKiJGbwXgULxI4wRag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwoBoa77sAWv7+K2ErZEgocmvDHHoqsUp/zg1z8lNUy7uUZlFFEszpPM3SctYqC15
-	 cJTgtzeb6bkWXBfZiaxv0Hm/dumKkPWi+1cGlOrhIx1kVPcdUaNa0uxsDNzQrWJFy/
-	 NXKp69Tmh3yykHQmL2zZ5zqJgZim1EuooT91/sr8=
+	b=zr9uqKBpC+Biw9P3ivtr56tiS6QBAdbRUokB4rqv++aNyKf4IMhYAc7LHcKspIeKQ
+	 WPb2sreA/MUQiUR96HkJdbJtdUdxCXQZQItrNDquMnjEF+uUZszqgnCUuR1EONid3A
+	 00J52cFzpQoRZy+j2vLzRdw+wtWOvGN+FYwwfAhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.12 103/460] usb: yurex: fix race in probe
-Date: Mon, 23 Mar 2026 14:41:39 +0100
-Message-ID: <20260323134529.181834918@linuxfoundation.org>
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.12 104/460] usb: dwc3: pci: add support for the Intel Nova Lake -H
+Date: Mon, 23 Mar 2026 14:41:40 +0100
+Message-ID: <20260323134529.204111076@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
 References: <20260323134526.647552166@linuxfoundation.org>
@@ -68,30 +69,28 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228602-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[sin.lore.kernel.org:server fail,msgid.link:server fail,suse.com:server fail];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228603-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email]
-X-Rspamd-Queue-Id: 7D2A62F43D5
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 91D502F527D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,42 +98,40 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-commit 7a875c09899ba0404844abfd8f0d54cdc481c151 upstream.
+commit 17ab4d4078e22be7fd8fd6fc710c15c085a4cb1b upstream.
 
-The bbu member of the descriptor must be set to the value
-standing for uninitialized values before the URB whose
-completion handler sets bbu is submitted. Otherwise there is
-a window during which probing can overwrite already retrieved
-data.
+This patch adds the necessary PCI ID for Intel Nova Lake -H
+devices.
 
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20260209143720.1507500-1-oneukum@suse.com
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20260309130204.208661-1-heikki.krogerus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/yurex.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-pci.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -272,6 +272,7 @@ static int yurex_probe(struct usb_interf
- 			 dev->int_buffer, YUREX_BUF_SIZE, yurex_interrupt,
- 			 dev, 1);
- 	dev->urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
-+	dev->bbu = -1;
- 	if (usb_submit_urb(dev->urb, GFP_KERNEL)) {
- 		retval = -EIO;
- 		dev_err(&interface->dev, "Could not submitting URB\n");
-@@ -280,7 +281,6 @@ static int yurex_probe(struct usb_interf
- 
- 	/* save our data pointer in this interface device */
- 	usb_set_intfdata(interface, dev);
--	dev->bbu = -1;
- 
- 	/* we can register the device now, as it is ready */
- 	retval = usb_register_dev(interface, &yurex_class);
+--- a/drivers/usb/dwc3/dwc3-pci.c
++++ b/drivers/usb/dwc3/dwc3-pci.c
+@@ -56,6 +56,7 @@
+ #define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
+ #define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
+ #define PCI_DEVICE_ID_INTEL_RPL			0xa70e
++#define PCI_DEVICE_ID_INTEL_NVLH		0xd37f
+ #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
+ #define PCI_DEVICE_ID_INTEL_PTLH_PCH		0xe37e
+ #define PCI_DEVICE_ID_INTEL_PTLU		0xe432
+@@ -448,6 +449,7 @@ static const struct pci_device_id dwc3_p
+ 	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
++	{ PCI_DEVICE_DATA(INTEL, NVLH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLH_PCH, &dwc3_pci_intel_swnode) },
+ 	{ PCI_DEVICE_DATA(INTEL, PTLU, &dwc3_pci_intel_swnode) },
 
 
 
