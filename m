@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228447-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QJF7EihrwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-228980-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:32:40 +0100
+	id GDwFLpVOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228447-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:45 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B954F2F847E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:32:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1825E2F4A37
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 732103313378
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:54:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53BE8316D621
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4FB3AF645;
-	Mon, 23 Mar 2026 14:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B884A3B0AC2;
+	Mon, 23 Mar 2026 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgxVnPvj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QQjwhFK/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FB83AE70F;
-	Mon, 23 Mar 2026 14:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B83E3AF66E;
+	Mon, 23 Mar 2026 14:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277678; cv=none; b=XKqyJYbcY1R3kF3NCq9T52JygnZegU8a6dkUxT1I1VbrcJwQV7oLz/6H4CnIkOOOq3noc88l4OfSdf8qhBPaX2G6cvONWO+MnYjSKVLfRQ0pKAAo04BYGN6zvecg3NCVq74hHDpBG6wte9nnP23JMChKdFpR+WC7y2lAkBQSO4o=
+	t=1774275156; cv=none; b=F9Uvjm1n9o5P8lD3z9IFfW3ulI2D8Nuj9hbYo04Qx4ypwYlMnNAa2a/MiNoAGlCyfBECDiztzX5EaqTOR8SxSmsPk7DS+VgLL79Q53d63FVrAMZ3CsEBFnyTfYOa9w0DUacZn2yBbef/gWwsUHG3/tpt6XICOvLyyJLjMwc0ITI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277678; c=relaxed/simple;
-	bh=Wj/ejgB4YCkld6AcLLi26AGQP4klXgCFvzWHiInBPZk=;
+	s=arc-20240116; t=1774275156; c=relaxed/simple;
+	bh=MKHx/V7XYpdVorn9KndU5N5xWvdZ2OBY6+v13spQGvE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3frAKg8JjJkfgWkVYRdnuKHmG4B4Pzjf4ddVdB+KiEPP80qgjY9St5e6DMp3PiZp0xNPHXogiH+S22LdSwYZJFH0lSdU94Q9E4X7AMkKrgOfBbsl2gsEXD03+iifaMl2+jIlQ19/hwaU1h2OQyTmhVPUDbEZypez/kqY225c+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgxVnPvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E7CC4CEF7;
-	Mon, 23 Mar 2026 14:54:37 +0000 (UTC)
+	 MIME-Version; b=rWUsmcZqrBSzlUkyfV2L1nONT+MjZkMs/DVrS6OR06PNmDEnn6woSBPVWSNRS5ehKPKlZrqytEnJ+7Nmk7tILBhseOZe8RFIQAA49zphLE4BVbfX0Me5x0KdLSZ8j7KLOYHQh9TJHh2ripOkAbf949rSybE8iadd8bPdeZg2hFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QQjwhFK/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0074DC4CEF7;
+	Mon, 23 Mar 2026 14:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277678;
-	bh=Wj/ejgB4YCkld6AcLLi26AGQP4klXgCFvzWHiInBPZk=;
+	s=korg; t=1774275156;
+	bh=MKHx/V7XYpdVorn9KndU5N5xWvdZ2OBY6+v13spQGvE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgxVnPvjcMrMrgpiyv+NnuqR5iGwVAIsqoX8pTSMiAnmRL0t7lzprdzgDIgCMPkgj
-	 RyynHwS42KKswK6+ekcZyBJq3HhC66wPoADX2Wa0pUgWIvGU+c7jQ2rxMRm5fqp4i/
-	 7cdznK3Lcw9P46k2F4j8PXED54FVWR+8O/n0oudQ=
+	b=QQjwhFK/+TCpb4cjQTTod+MEXkC7+Qx7zVNRQ+K08a71hT52rfMXX72GTmc+osZIA
+	 p298P/4edgV/eCgFFrmn+YADi1Nsrn429eXviycVN1ZyWYOg6yl05U1gg0nQvey+4d
+	 AXe1qp6tTyKhXU+2YQ5cOB4b1uZK/55lwRxNXJyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Theodore Tso <tytso@mit.edu>,
+	Salomon Dushimirimana <salomondush@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/567] ext4: convert bd_bitmap_page to bd_bitmap_folio
+Subject: [PATCH 6.1 006/481] scsi: pm8001: Fix use-after-free in pm8001_queue_command()
 Date: Mon, 23 Mar 2026 14:39:48 +0100
-Message-ID: <20260323134535.504070080@linuxfoundation.org>
+Message-ID: <20260323134525.413598844@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,295 +69,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228447-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228980-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,infradead.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: B954F2F847E
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1825E2F4A37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Salomon Dushimirimana <salomondush@google.com>
 
-[ Upstream commit 99b150d84e4939735cfce245e32e3d29312c68ec ]
+[ Upstream commit 38353c26db28efd984f51d426eac2396d299cca7 ]
 
-There is no need to make this a multi-page folio, so leave all the
-infrastructure around it in pages.  But since we're locking it, playing
-with its refcount and checking whether it's uptodate, it needs to move
-to the folio API.
+Commit e29c47fe8946 ("scsi: pm8001: Simplify pm8001_task_exec()") refactors
+pm8001_queue_command(), however it introduces a potential cause of a double
+free scenario when it changes the function to return -ENODEV in case of phy
+down/device gone state.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20240416172900.244637-2-willy@infradead.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: bdc56a9c46b2 ("ext4: fix e4b bitmap inconsistency reports")
+In this path, pm8001_queue_command() updates task status and calls
+task_done to indicate to upper layer that the task has been handled.
+However, this also frees the underlying SAS task. A -ENODEV is then
+returned to the caller. When libsas sas_ata_qc_issue() receives this error
+value, it assumes the task wasn't handled/queued by LLDD and proceeds to
+clean up and free the task again, resulting in a double free.
+
+Since pm8001_queue_command() handles the SAS task in this case, it should
+return 0 to the caller indicating that the task has been handled.
+
+Fixes: e29c47fe8946 ("scsi: pm8001: Simplify pm8001_task_exec()")
+Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://patch.msgid.link/20260213192806.439432-1-salomondush@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 98 ++++++++++++++++++++++++-----------------------
- fs/ext4/mballoc.h |  2 +-
- 2 files changed, 52 insertions(+), 48 deletions(-)
+ drivers/scsi/pm8001/pm8001_sas.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index ade2090155c1c..b5a5b89dfc98f 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1461,9 +1461,10 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
- 	int block, pnum, poff;
- 	int blocks_per_page;
- 	struct page *page;
-+	struct folio *folio;
- 
- 	e4b->bd_buddy_page = NULL;
--	e4b->bd_bitmap_page = NULL;
-+	e4b->bd_bitmap_folio = NULL;
- 
- 	blocks_per_page = PAGE_SIZE / sb->s_blocksize;
- 	/*
-@@ -1474,12 +1475,13 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
- 	block = group * 2;
- 	pnum = block / blocks_per_page;
- 	poff = block % blocks_per_page;
--	page = find_or_create_page(inode->i_mapping, pnum, gfp);
--	if (!page)
--		return -ENOMEM;
--	BUG_ON(page->mapping != inode->i_mapping);
--	e4b->bd_bitmap_page = page;
--	e4b->bd_bitmap = page_address(page) + (poff * sb->s_blocksize);
-+	folio = __filemap_get_folio(inode->i_mapping, pnum,
-+			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
-+	if (IS_ERR(folio))
-+		return PTR_ERR(folio);
-+	BUG_ON(folio->mapping != inode->i_mapping);
-+	e4b->bd_bitmap_folio = folio;
-+	e4b->bd_bitmap = folio_address(folio) + (poff * sb->s_blocksize);
- 
- 	if (blocks_per_page >= 2) {
- 		/* buddy and bitmap are on the same page */
-@@ -1497,9 +1499,9 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
- 
- static void ext4_mb_put_buddy_page_lock(struct ext4_buddy *e4b)
- {
--	if (e4b->bd_bitmap_page) {
--		unlock_page(e4b->bd_bitmap_page);
--		put_page(e4b->bd_bitmap_page);
-+	if (e4b->bd_bitmap_folio) {
-+		folio_unlock(e4b->bd_bitmap_folio);
-+		folio_put(e4b->bd_bitmap_folio);
- 	}
- 	if (e4b->bd_buddy_page) {
- 		unlock_page(e4b->bd_buddy_page);
-@@ -1519,6 +1521,7 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
- 	struct ext4_group_info *this_grp;
- 	struct ext4_buddy e4b;
- 	struct page *page;
-+	struct folio *folio;
- 	int ret = 0;
- 
- 	might_sleep();
-@@ -1545,11 +1548,11 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
- 		goto err;
- 	}
- 
--	page = e4b.bd_bitmap_page;
--	ret = ext4_mb_init_cache(page, NULL, gfp);
-+	folio = e4b.bd_bitmap_folio;
-+	ret = ext4_mb_init_cache(&folio->page, NULL, gfp);
- 	if (ret)
- 		goto err;
--	if (!PageUptodate(page)) {
-+	if (!folio_test_uptodate(folio)) {
- 		ret = -EIO;
- 		goto err;
- 	}
-@@ -1591,6 +1594,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	int pnum;
- 	int poff;
- 	struct page *page;
-+	struct folio *folio;
- 	int ret;
- 	struct ext4_group_info *grp;
- 	struct ext4_sb_info *sbi = EXT4_SB(sb);
-@@ -1609,7 +1613,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	e4b->bd_sb = sb;
- 	e4b->bd_group = group;
- 	e4b->bd_buddy_page = NULL;
--	e4b->bd_bitmap_page = NULL;
-+	e4b->bd_bitmap_folio = NULL;
- 
- 	if (unlikely(EXT4_MB_GRP_NEED_INIT(grp))) {
- 		/*
-@@ -1630,53 +1634,53 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	pnum = block / blocks_per_page;
- 	poff = block % blocks_per_page;
- 
--	/* we could use find_or_create_page(), but it locks page
--	 * what we'd like to avoid in fast path ... */
--	page = find_get_page_flags(inode->i_mapping, pnum, FGP_ACCESSED);
--	if (page == NULL || !PageUptodate(page)) {
--		if (page)
-+	/* Avoid locking the folio in the fast path ... */
-+	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
-+	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
-+		if (!IS_ERR(folio))
- 			/*
--			 * drop the page reference and try
--			 * to get the page with lock. If we
-+			 * drop the folio reference and try
-+			 * to get the folio with lock. If we
- 			 * are not uptodate that implies
--			 * somebody just created the page but
--			 * is yet to initialize the same. So
-+			 * somebody just created the folio but
-+			 * is yet to initialize it. So
- 			 * wait for it to initialize.
- 			 */
--			put_page(page);
--		page = find_or_create_page(inode->i_mapping, pnum, gfp);
--		if (page) {
--			if (WARN_RATELIMIT(page->mapping != inode->i_mapping,
--	"ext4: bitmap's paging->mapping != inode->i_mapping\n")) {
-+			folio_put(folio);
-+		folio = __filemap_get_folio(inode->i_mapping, pnum,
-+				FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
-+		if (!IS_ERR(folio)) {
-+			if (WARN_RATELIMIT(folio->mapping != inode->i_mapping,
-+	"ext4: bitmap's mapping != inode->i_mapping\n")) {
- 				/* should never happen */
--				unlock_page(page);
-+				folio_unlock(folio);
- 				ret = -EINVAL;
- 				goto err;
- 			}
--			if (!PageUptodate(page)) {
--				ret = ext4_mb_init_cache(page, NULL, gfp);
-+			if (!folio_test_uptodate(folio)) {
-+				ret = ext4_mb_init_cache(&folio->page, NULL, gfp);
- 				if (ret) {
--					unlock_page(page);
-+					folio_unlock(folio);
- 					goto err;
- 				}
--				mb_cmp_bitmaps(e4b, page_address(page) +
-+				mb_cmp_bitmaps(e4b, folio_address(folio) +
- 					       (poff * sb->s_blocksize));
- 			}
--			unlock_page(page);
-+			folio_unlock(folio);
+diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
+index 4cd648be68dde..e416cabbea4a2 100644
+--- a/drivers/scsi/pm8001/pm8001_sas.c
++++ b/drivers/scsi/pm8001/pm8001_sas.c
+@@ -467,8 +467,9 @@ int pm8001_queue_command(struct sas_task *task, gfp_t gfp_flags)
+ 		} else {
+ 			task->task_done(task);
  		}
- 	}
--	if (page == NULL) {
--		ret = -ENOMEM;
-+	if (IS_ERR(folio)) {
-+		ret = PTR_ERR(folio);
- 		goto err;
- 	}
--	if (!PageUptodate(page)) {
-+	if (!folio_test_uptodate(folio)) {
- 		ret = -EIO;
- 		goto err;
+-		rc = -ENODEV;
+-		goto err_out;
++		spin_unlock_irqrestore(&pm8001_ha->lock, flags);
++		pm8001_dbg(pm8001_ha, IO, "pm8001_task_exec device gone\n");
++		return 0;
  	}
  
- 	/* Pages marked accessed already */
--	e4b->bd_bitmap_page = page;
--	e4b->bd_bitmap = page_address(page) + (poff * sb->s_blocksize);
-+	e4b->bd_bitmap_folio = folio;
-+	e4b->bd_bitmap = folio_address(folio) + (poff * sb->s_blocksize);
- 
- 	block++;
- 	pnum = block / blocks_per_page;
-@@ -1724,8 +1728,8 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- err:
- 	if (page)
- 		put_page(page);
--	if (e4b->bd_bitmap_page)
--		put_page(e4b->bd_bitmap_page);
-+	if (e4b->bd_bitmap_folio)
-+		folio_put(e4b->bd_bitmap_folio);
- 
- 	e4b->bd_buddy = NULL;
- 	e4b->bd_bitmap = NULL;
-@@ -1740,8 +1744,8 @@ static int ext4_mb_load_buddy(struct super_block *sb, ext4_group_t group,
- 
- static void ext4_mb_unload_buddy(struct ext4_buddy *e4b)
- {
--	if (e4b->bd_bitmap_page)
--		put_page(e4b->bd_bitmap_page);
-+	if (e4b->bd_bitmap_folio)
-+		folio_put(e4b->bd_bitmap_folio);
- 	if (e4b->bd_buddy_page)
- 		put_page(e4b->bd_buddy_page);
- }
-@@ -2167,7 +2171,7 @@ static void ext4_mb_use_best_found(struct ext4_allocation_context *ac,
- 	 * double allocate blocks. The reference is dropped
- 	 * in ext4_mb_release_context
- 	 */
--	ac->ac_bitmap_page = e4b->bd_bitmap_page;
-+	ac->ac_bitmap_page = &e4b->bd_bitmap_folio->page;
- 	get_page(ac->ac_bitmap_page);
- 	ac->ac_buddy_page = e4b->bd_buddy_page;
- 	get_page(ac->ac_buddy_page);
-@@ -3902,7 +3906,7 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
- 		 * balance refcounts from ext4_mb_free_metadata()
- 		 */
- 		put_page(e4b.bd_buddy_page);
--		put_page(e4b.bd_bitmap_page);
-+		folio_put(e4b.bd_bitmap_folio);
- 	}
- 	ext4_unlock_group(sb, entry->efd_group);
- 	ext4_mb_unload_buddy(&e4b);
-@@ -6348,7 +6352,7 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
- 	struct rb_node *parent = NULL, *new_node;
- 
- 	BUG_ON(!ext4_handle_valid(handle));
--	BUG_ON(e4b->bd_bitmap_page == NULL);
-+	BUG_ON(e4b->bd_bitmap_folio == NULL);
- 	BUG_ON(e4b->bd_buddy_page == NULL);
- 
- 	new_node = &new_entry->efd_node;
-@@ -6361,7 +6365,7 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
- 		 * on-disk bitmap and lose not-yet-available
- 		 * blocks */
- 		get_page(e4b->bd_buddy_page);
--		get_page(e4b->bd_bitmap_page);
-+		folio_get(e4b->bd_bitmap_folio);
- 	}
- 	while (*n) {
- 		parent = *n;
-diff --git a/fs/ext4/mballoc.h b/fs/ext4/mballoc.h
-index dd16050022f52..2d0aca8dc02e8 100644
---- a/fs/ext4/mballoc.h
-+++ b/fs/ext4/mballoc.h
-@@ -218,7 +218,7 @@ struct ext4_allocation_context {
- struct ext4_buddy {
- 	struct page *bd_buddy_page;
- 	void *bd_buddy;
--	struct page *bd_bitmap_page;
-+	struct folio *bd_bitmap_folio;
- 	void *bd_bitmap;
- 	struct ext4_group_info *bd_info;
- 	struct super_block *bd_sb;
+ 	ccb = pm8001_ccb_alloc(pm8001_ha, pm8001_dev, task);
 -- 
 2.51.0
 
