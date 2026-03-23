@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-229958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229451-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEAHLRp3wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229958-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:23:38 +0100
+	id eHCCOilhwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229451-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:50:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E1E2F9D6B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:23:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7952C2F6FC5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:50:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BADF830F8F37
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6BA6031AF3EB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E333C196D;
-	Mon, 23 Mar 2026 16:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5AE63BE140;
+	Mon, 23 Mar 2026 15:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swb+SXou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nz4ZVTUz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF86E3C1410;
-	Mon, 23 Mar 2026 16:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FD33B52E2;
+	Mon, 23 Mar 2026 15:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283366; cv=none; b=g0TbT1NQBdOsB1M8oJj2lCm5g8L0JYp3vAk0pvTHq1RrrgRBvncTqjUukE77WGstl9Q/m1J3R2iA/2zhkSBO6hacKjC0o5yS6jz58prlIYuoRIvAg9S8Jr23r1+d7uA7SBARquYYCQuURqV7mH7NLEZ3I2pmFBH/2XCZyHA1JuI=
+	t=1774279275; cv=none; b=BrQkrlJixmcP8Ln2E/1Au/8R1TvDxkBoX9MQm5eAds8vrf5H5mY+hseA1C2Y6IhH3cI2kouQ8N2OrGnsOB72X/dXxu2vPSK+n57hn8rRv0keaQ/QjDbCIpUi2r0I5V1ipR2V5lQ/UQkQxR+aVV07k6LUUbeQAHGatiGASasTPP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283366; c=relaxed/simple;
-	bh=9ah/OBXbN7VZMreGQyyzC/coEBY9K5h9y47q1Oal2pI=;
+	s=arc-20240116; t=1774279275; c=relaxed/simple;
+	bh=vlmvF6TzT4g/EQDOrX4qQ7d5aRE4DDVhZ7JAcE/SWQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EysEexcVpAgct2FMMgbzFNnu4M+MBromDZTbB5fw0lw8o2flAOKS3Gx0uzFgZeehYMfxkyi/ztFu8PTM4hci83kL52/77uj1guWxIuZTnOgd98+ZPrWOmpYCzo3gMB9m4eDOuQhDUvB6lDsZ0eMmfJAoaPtng69UgtpSMIaa+Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swb+SXou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F2DC4CEF7;
-	Mon, 23 Mar 2026 16:29:26 +0000 (UTC)
+	 MIME-Version; b=nNKNitixNYoFeNtSqOjVdqqrRUX391kLIVdcFr7KgRPjp4hd1CJwtTm6T2JWa5WuxuCPwn0Uea3Splx6UlI3Z2fkeiE7A+RvGJmv/+eepbmmWJuxCcGLRCGYzCo8DPF1P/dGP1Py/uGgcflpiy+FpKGUhYb5LUqYGlkLajU9b8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nz4ZVTUz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B775C4CEF7;
+	Mon, 23 Mar 2026 15:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283366;
-	bh=9ah/OBXbN7VZMreGQyyzC/coEBY9K5h9y47q1Oal2pI=;
+	s=korg; t=1774279275;
+	bh=vlmvF6TzT4g/EQDOrX4qQ7d5aRE4DDVhZ7JAcE/SWQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swb+SXoubn/FCKe1K4994vA1t0YFeWSsRAd6zwGdHnAlkq4iVzwMzb1FSaemHs6CR
-	 zIBwm1MYwSzQyyInXLO5I+rqbB4n9wskOaeOfGC/xGY7TRtbjO0yRjwdKxCD6SVE+m
-	 V5TogZgeVsJT07FuPeXF4Vgg/8A4JQZkHzyngfec=
+	b=nz4ZVTUziyAiZ+2bL1WXp2u00qn6AWddgq59aJ5J0V0WUyiiuRdZHshPk+b4TB/rS
+	 eYNATwhB0Gg/33Jxld4BWdJD/fqIblMZE4i9Few7kdoYgjSVDb1zQYsSG8I8YrtZZD
+	 IR6FgEdbDCAK8WcbKg+dkMry+UknJ5p6ZSgaKPA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Furong Xu <0x1207@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1 470/481] net: stmmac: fix TSO DMA API usage causing oops
+	Kohei Enju <kohei@enjuk.jp>,
+	Simon Horman <horms@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 532/567] igc: fix missing update of skb->tail in igc_xmit_frame()
 Date: Mon, 23 Mar 2026 14:47:32 +0100
-Message-ID: <20260323134536.672365608@linuxfoundation.org>
+Message-ID: <20260323134547.160574654@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,121 +67,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,gmail.com,armlinux.org.uk,kernel.org,163.com];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229451-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229958-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B4E1E2F9D6B
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,mpg.de:email]
+X-Rspamd-Queue-Id: 7952C2F6FC5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+From: Kohei Enju <kohei@enjuk.jp>
 
-[ Upstream commit 4c49f38e20a57f8abaebdf95b369295b153d1f8e ]
+[ Upstream commit 0ffba246652faf4a36aedc66059c2f94e4c83ea5 ]
 
-Commit 66600fac7a98 ("net: stmmac: TSO: Fix unbalanced DMA map/unmap
-for non-paged SKB data") moved the assignment of tx_skbuff_dma[]'s
-members to be later in stmmac_tso_xmit().
+igc_xmit_frame() misses updating skb->tail when the packet size is
+shorter than the minimum one.
+Use skb_put_padto() in alignment with other Intel Ethernet drivers.
 
-The buf (dma cookie) and len stored in this structure are passed to
-dma_unmap_single() by stmmac_tx_clean(). The DMA API requires that
-the dma cookie passed to dma_unmap_single() is the same as the value
-returned from dma_map_single(). However, by moving the assignment
-later, this is not the case when priv->dma_cap.addr64 > 32 as "des"
-is offset by proto_hdr_len.
-
-This causes problems such as:
-
-  dwc-eth-dwmac 2490000.ethernet eth0: Tx DMA map failed
-
-and with DMA_API_DEBUG enabled:
-
-  DMA-API: dwc-eth-dwmac 2490000.ethernet: device driver tries to +free DMA memory it has not allocated [device address=0x000000ffffcf65c0] [size=66 bytes]
-
-Fix this by maintaining "des" as the original DMA cookie, and use
-tso_des to pass the offset DMA cookie to stmmac_tso_allocator().
-
-Full details of the crashes can be found at:
-https://lore.kernel.org/all/d8112193-0386-4e14-b516-37c2d838171a@nvidia.com/
-https://lore.kernel.org/all/klkzp5yn5kq5efgtrow6wbvnc46bcqfxs65nz3qy77ujr5turc@bwwhelz2l4dw/
-
-Reported-by: Jon Hunter <jonathanh@nvidia.com>
-Reported-by: Thierry Reding <thierry.reding@gmail.com>
-Fixes: 66600fac7a98 ("net: stmmac: TSO: Fix unbalanced DMA map/unmap for non-paged SKB data")
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Reviewed-by: Furong Xu <0x1207@gmail.com>
-Link: https://patch.msgid.link/E1tJXcx-006N4Z-PC@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ The context change is due to the commit 041cc86b3653
-("net: stmmac: Enable TSO on VLANs") in v6.11 which is irrelevant to
-the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0507ef8a0372 ("igc: Add transmit and receive fastpath and interrupt handlers")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4091,10 +4091,10 @@ static netdev_tx_t stmmac_tso_xmit(struc
- 	int tmp_pay_len = 0, first_tx;
- 	struct stmmac_tx_queue *tx_q;
- 	bool has_vlan, set_ic;
-+	dma_addr_t tso_des, des;
- 	u8 proto_hdr_len, hdr;
- 	unsigned long flags;
- 	u32 pay_len, mss;
--	dma_addr_t des;
- 	int i;
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 3e1408e1c1fcf..13c41facfc976 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1700,11 +1700,8 @@ static netdev_tx_t igc_xmit_frame(struct sk_buff *skb,
+ 	/* The minimum packet size with TCTL.PSP set is 17 so pad the skb
+ 	 * in order to meet this minimum size requirement.
+ 	 */
+-	if (skb->len < 17) {
+-		if (skb_padto(skb, 17))
+-			return NETDEV_TX_OK;
+-		skb->len = 17;
+-	}
++	if (skb_put_padto(skb, 17))
++		return NETDEV_TX_OK;
  
- 	tx_q = &priv->dma_conf.tx_queue[queue];
-@@ -4179,14 +4179,15 @@ static netdev_tx_t stmmac_tso_xmit(struc
- 
- 		/* If needed take extra descriptors to fill the remaining payload */
- 		tmp_pay_len = pay_len - TSO_MAX_BUFF_SIZE;
-+		tso_des = des;
- 	} else {
- 		stmmac_set_desc_addr(priv, first, des);
- 		tmp_pay_len = pay_len;
--		des += proto_hdr_len;
-+		tso_des = des + proto_hdr_len;
- 		pay_len = 0;
- 	}
- 
--	stmmac_tso_allocator(priv, des, tmp_pay_len, (nfrags == 0), queue);
-+	stmmac_tso_allocator(priv, tso_des, tmp_pay_len, (nfrags == 0), queue);
- 
- 	/* In case two or more DMA transmit descriptors are allocated for this
- 	 * non-paged SKB data, the DMA buffer address should be saved to
+ 	return igc_xmit_frame_ring(skb, igc_tx_queue_mapping(adapter, skb));
+ }
+-- 
+2.51.0
+
 
 
 
