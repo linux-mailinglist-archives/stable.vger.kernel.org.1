@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229814-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sISTD/tLwWmKSAQAu9opvQ
-	(envelope-from <stable+bounces-228311-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:39 +0100
+	id WDC4ABtvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229814-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BCE2F4324
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71F382F8DD5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 707F2304E7BA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE4E130CF6F8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E275F3B0AEF;
-	Mon, 23 Mar 2026 14:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F5335958;
+	Mon, 23 Mar 2026 16:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt/4D+uH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acLQmQ9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BA03ACEFE;
-	Mon, 23 Mar 2026 14:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5AE12CDA5;
+	Mon, 23 Mar 2026 16:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274770; cv=none; b=N9SKjhCL1t1D4DIoHCKfsIBqoFpMhIgOLhVlLga0k9mUZDY5Hgag6FKblCyUWyDLqK4E1pZZCVbDayBZ3xL/MVo2QKBaX6mRibtI0TKgITy1GeKGHdlzDcmTdxwyQ3wjD2fKAKWNYDw7zKgq1nvahUy4P/2+CPK3kGcZ6BZjlLc=
+	t=1774282937; cv=none; b=doR709PR1yUJQUgQ9JWYl9pWCdqRvdbnJpWOxhrfCHGNZlzq8ZfTD9mdBHhrV9yeBS1PoYbt+vQzMLFavBfXR4IBkXwtie5QH4Re/H/26q580+tIW+Vej/xj9FZB7o1AM4ZGuOgtJldnqWdOKV4WpFvfsRLSGfylEAj/l/T0Wjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274770; c=relaxed/simple;
-	bh=8YIBspWmxh/uF8V/a0BmR7osRhRoEFP58kD4q+YITos=;
+	s=arc-20240116; t=1774282937; c=relaxed/simple;
+	bh=ql1C9y9yNEtrUXFoWW91kfu1m2OlJ4UDRNxXBB+yg34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k0x02973a00xLrxeo3w6WQxp4Sr5Ph14Sm5PJPB01WZlfYz5UGl51P1/eXlg1/PAq3GlvgoqfX7lYkqbB5/C9JeGJW3MXTrXSjGfsiPzkLRqUPM6HKlDeRksVE0hcslXHQBP/teLWUU6T20qT5DosNzbPiUXkcBjrsgkTdv6CKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt/4D+uH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27357C4CEF7;
-	Mon, 23 Mar 2026 14:06:09 +0000 (UTC)
+	 MIME-Version; b=iczTRHKJ5V7RyaW21uXdLOAzz+i19bOEUnweaFfyLtUGvOWEE+M2ogMcoqrAODdTK3M1TO0mSLDsIi19ERFyEC49e/ETRDk7Uu4yP+W27t8VtR/OfaPYQGxCbYmOOR5bjsqYVp72MttKnpaPqt3ur45wopnAEJcpL3WNBqo7aOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acLQmQ9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0929C4CEF7;
+	Mon, 23 Mar 2026 16:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274770;
-	bh=8YIBspWmxh/uF8V/a0BmR7osRhRoEFP58kD4q+YITos=;
+	s=korg; t=1774282937;
+	bh=ql1C9y9yNEtrUXFoWW91kfu1m2OlJ4UDRNxXBB+yg34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pt/4D+uHPNimO7beJy7pPqMaC6XfYLBHkeLzy8SOzF/zWupavEg8ti9f5ce7vWMMA
-	 evvCBQ8glFcTKamdZ65vQo2docezzzzkQmhClKsEiQtOpWtxyRLirKcgfRIeEu1YTL
-	 Oreg0uzfddyIkANI07KBXRpPS7+d1LJmYW/Te+GA=
+	b=acLQmQ9saFi9dyPKFxhjjaftRfVCS7WJwlhL64iVZFzgff0jOH3e7rsPDXNHZfO1s
+	 TFFhTNSj+e19NIIwINn8UaQ17fKBlh7FRwnEoIDUF09RIWfvWO4mJ40PP0Oq+3ZHGV
+	 18Z1TFgqmhz+WYZjovw7zVCHaZ4EfCSGdbF+0xbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 103/212] cache: ax45mp: Fix device node reference leak in ax45mp_cache_init()
+Subject: [PATCH 6.1 342/481] drm/msm: Fix dma_free_attrs() buffer size
 Date: Mon, 23 Mar 2026 14:45:24 +0100
-Message-ID: <20260323134507.035142065@linuxfoundation.org>
+Message-ID: <20260323134533.434562575@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,78 +70,71 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228311-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microchip.com,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229814-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-0.976];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D7BCE2F4324
+X-Rspamd-Queue-Id: 71F382F8DD5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 0528a348b04b327a4611e29589beb4c9ae81304a ]
+[ Upstream commit e4eb6e4dd6348dd00e19c2275e3fbaed304ca3bd ]
 
-In ax45mp_cache_init(), of_find_matching_node() returns a device node
-with an incremented reference count that must be released with
-of_node_put(). The current code fails to call of_node_put() which
-causes a reference leak.
+The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
+a2xx_gpummu_new() but freed with size TABLE_SIZE in
+a2xx_gpummu_destroy().
 
-Use the __free(device_node) attribute to ensure automatic cleanup when
-the variable goes out of scope.
+Change the free size to match the allocation.
 
-Fixes: d34599bcd2e4 ("cache: Add L2 cache management for Andes AX45MP RISC-V core")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/707340/
+Message-ID: <20260226095714.12126-2-fourier.thomas@gmail.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cache/ax45mp_cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_gpummu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cache/ax45mp_cache.c b/drivers/cache/ax45mp_cache.c
-index 1d7dd3d2c101c..934c5087ec2bd 100644
---- a/drivers/cache/ax45mp_cache.c
-+++ b/drivers/cache/ax45mp_cache.c
-@@ -178,11 +178,11 @@ static const struct of_device_id ax45mp_cache_ids[] = {
- 
- static int __init ax45mp_cache_init(void)
+--- a/drivers/gpu/drm/msm/msm_gpummu.c
++++ b/drivers/gpu/drm/msm/msm_gpummu.c
+@@ -76,7 +76,7 @@ static void msm_gpummu_destroy(struct ms
  {
--	struct device_node *np;
- 	struct resource res;
- 	int ret;
+ 	struct msm_gpummu *gpummu = to_msm_gpummu(mmu);
  
--	np = of_find_matching_node(NULL, ax45mp_cache_ids);
-+	struct device_node *np __free(device_node) =
-+		of_find_matching_node(NULL, ax45mp_cache_ids);
- 	if (!of_device_is_available(np))
- 		return -ENODEV;
+-	dma_free_attrs(mmu->dev, TABLE_SIZE, gpummu->table, gpummu->pt_base,
++	dma_free_attrs(mmu->dev, TABLE_SIZE + 32, gpummu->table, gpummu->pt_base,
+ 		DMA_ATTR_FORCE_CONTIGUOUS);
  
--- 
-2.51.0
-
+ 	kfree(gpummu);
 
 
 
