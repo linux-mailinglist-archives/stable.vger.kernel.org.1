@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228792-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJMxLspLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228274-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:50 +0100
+	id OJJpK11UwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228792-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6922F4268
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407082F56FB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D038B307716C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4C9B630E0463
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0D63B38A4;
-	Mon, 23 Mar 2026 14:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB6823BCED;
+	Mon, 23 Mar 2026 14:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqPAJ+Rd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPCQhf0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB968397E84;
-	Mon, 23 Mar 2026 14:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7310C23A561;
+	Mon, 23 Mar 2026 14:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274655; cv=none; b=d1MCdYfOa13hDB2iWar53B/w8NJWEiT8NnaLcD44ncai3Rt2DFZtpdatFU4HxQRLszKqD5GKvR/TDCA4UWuBh5UxuyZ1gTCgti7ux0yOB1RWWufVNi2oer7xHZL+tPiPC2xucdvzGzRGSNvYOdZPizvPGWf4ZN/BjWw/EGAqexU=
+	t=1774277141; cv=none; b=TRQrXSuu8JOOzPmzhWZ8VLDj0zYKoA4GeeuCuqztbzAi2CCCs8Waz10Y5Nko0NktzlfQ8Z/2+y4G/8mYMYXjxxedDrYcs2AdtTjBE02mcc5tzzQEdpkqrh8vRXTuQ4EoqMfrbkc9Z34NW+jUcAIRfzq5cmKxSZCntQTcMyIXU10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274655; c=relaxed/simple;
-	bh=j8AXq12N6GuRIn3hcNu2b9aNf6xytIuU/QFAobSKAIA=;
+	s=arc-20240116; t=1774277141; c=relaxed/simple;
+	bh=H9TZuWIm6Tew4pZZ/poOtnVi71foDmVrkbXhd9SHHhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ISA4MZMWe2MfL2ViEtctl1HcLkwOj6xcR6EzLnVjzgtZwNr5/RBPuVszP/a9gv/wIZiHqc5yJ3/WLSKt0m6g1WtdZbORBPHxFmIwMzJ5qpGzkyTd4i+z+fCyRVHKi7OdNVreiGawiEql3KVYJT7l3/BMoi14V2Jbtz/dnqXIk+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqPAJ+Rd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD33C4CEF7;
-	Mon, 23 Mar 2026 14:04:14 +0000 (UTC)
+	 MIME-Version; b=N0lQnEuIs+fcTrWkXJjatJsSrShvIuuaDHYwYR0H7p1r0QoimeO4/TJD56OVDQ45KHW/nsj8odPwEseDyN/tVk1yWkc7ydE1dSWD4adRG57/5DSEbe+bFQNNkR/XFqnLjCqCgcXBh9NZkDDxdE0uxj55s8P2vc8EbboZfcTk3C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPCQhf0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD06C2BCB1;
+	Mon, 23 Mar 2026 14:45:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274654;
-	bh=j8AXq12N6GuRIn3hcNu2b9aNf6xytIuU/QFAobSKAIA=;
+	s=korg; t=1774277141;
+	bh=H9TZuWIm6Tew4pZZ/poOtnVi71foDmVrkbXhd9SHHhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xqPAJ+RdX1zFtcD7QP+ukiG9Uhk17B6vC3GSDp+tTJXbdzL8Sl1tK8FOM3Oi116hN
-	 1nvIFpLZYPAbR9tm4ZUnCDJUVIVKXKOoHzZqj8gDNSfR1ETHt+u+tNo5YGueAXzzcP
-	 CxTHj/vyWBg9ngQuGhBSJ2YHzsS1YeGszj+sF2J0=
+	b=bPCQhf0PIU1gzzXSKGenocrf10t3x1BDardWvP9299bO5r4IjCg/AjOozMbBOoTa7
+	 Q781LO8TUMmXLhBH/fMscAgvjfgJKcMqkhJzHy2J2tG0rP822y4hkxAmti+PKb4WiG
+	 MSX/+Y7w0XoCxRAfcZHeuhrV0MViFydnMfQaZwUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Michaelis <code@mgjm.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.18 065/212] io_uring/kbuf: propagate BUF_MORE through early buffer commit path
+	Juan Li <lijuan@linux.spacemit.com>,
+	Guodong Xu <guodong@riscstar.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 6.12 290/460] dmaengine: mmp_pdma: Fix race condition in mmp_pdma_residue()
 Date: Mon, 23 Mar 2026 14:44:46 +0100
-Message-ID: <20260323134505.827133664@linuxfoundation.org>
+Message-ID: <20260323134533.606695224@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,121 +67,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228274-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228792-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.spacemit.com,riscstar.com,kernel.org,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7D6922F4268
+X-Rspamd-Queue-Id: 407082F56FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Guodong Xu <guodong@riscstar.com>
 
-commit 418eab7a6f3c002d8e64d6e95ec27118017019af upstream.
+[ Upstream commit a143545855bc2c6e1330f6f57ae375ac44af00a7 ]
 
-When io_should_commit() returns true (eg for non-pollable files), buffer
-commit happens at buffer selection time and sel->buf_list is set to
-NULL. When __io_put_kbufs() generates CQE flags at completion time, it
-calls __io_put_kbuf_ring() which finds a NULL buffer_list and hence
-cannot determine whether the buffer was consumed or not. This means that
-IORING_CQE_F_BUF_MORE is never set for non-pollable input with
-incrementally consumed buffers.
+Add proper locking in mmp_pdma_residue() to prevent use-after-free when
+accessing descriptor list and descriptor contents.
 
-Likewise for io_buffers_select(), which always commits upfront and
-discards the return value of io_kbuf_commit().
+The race occurs when multiple threads call tx_status() while the tasklet
+on another CPU is freeing completed descriptors:
 
-Add REQ_F_BUF_MORE to store the result of io_kbuf_commit() during early
-commit. Then __io_put_kbuf_ring() can check this flag and set
-IORING_F_BUF_MORE accordingy.
+CPU 0                              CPU 1
+-----                              -----
+mmp_pdma_tx_status()
+mmp_pdma_residue()
+  -> NO LOCK held
+     list_for_each_entry(sw, ..)
+                                   DMA interrupt
+                                   dma_do_tasklet()
+                                     -> spin_lock(&desc_lock)
+                                        list_move(sw->node, ...)
+                                        spin_unlock(&desc_lock)
+  |                                     dma_pool_free(sw) <- FREED!
+  -> access sw->desc <- UAF!
 
-Reported-by: Martin Michaelis <code@mgjm.de>
-Cc: stable@vger.kernel.org
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://github.com/axboe/liburing/issues/1553
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This issue can be reproduced when running dmatest on the same channel with
+multiple threads (threads_per_chan > 1).
+
+Fix by protecting the chain_running list iteration and descriptor access
+with the chan->desc_lock spinlock.
+
+Signed-off-by: Juan Li <lijuan@linux.spacemit.com>
+Signed-off-by: Guodong Xu <guodong@riscstar.com>
+Link: https://patch.msgid.link/20251216-mmp-pdma-race-v1-1-976a224bb622@riscstar.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+[ Minor context conflict resolved. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |    3 +++
- io_uring/kbuf.c                |   10 +++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/dma/mmp_pdma.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -518,6 +518,7 @@ enum {
- 	REQ_F_BL_NO_RECYCLE_BIT,
- 	REQ_F_BUFFERS_COMMIT_BIT,
- 	REQ_F_BUF_NODE_BIT,
-+	REQ_F_BUF_MORE_BIT,
- 	REQ_F_HAS_METADATA_BIT,
- 	REQ_F_IMPORT_BUFFER_BIT,
- 	REQ_F_SQE_COPIED_BIT,
-@@ -603,6 +604,8 @@ enum {
- 	REQ_F_BUFFERS_COMMIT	= IO_REQ_FLAG(REQ_F_BUFFERS_COMMIT_BIT),
- 	/* buf node is valid */
- 	REQ_F_BUF_NODE		= IO_REQ_FLAG(REQ_F_BUF_NODE_BIT),
-+	/* incremental buffer consumption, more space available */
-+	REQ_F_BUF_MORE		= IO_REQ_FLAG(REQ_F_BUF_MORE_BIT),
- 	/* request has read/write metadata assigned */
- 	REQ_F_HAS_METADATA	= IO_REQ_FLAG(REQ_F_HAS_METADATA_BIT),
- 	/*
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -216,7 +216,8 @@ static struct io_br_sel io_ring_buffer_s
- 	sel.addr = u64_to_user_ptr(READ_ONCE(buf->addr));
+--- a/drivers/dma/mmp_pdma.c
++++ b/drivers/dma/mmp_pdma.c
+@@ -763,6 +763,7 @@ static unsigned int mmp_pdma_residue(str
+ {
+ 	struct mmp_pdma_desc_sw *sw;
+ 	u32 curr, residue = 0;
++	unsigned long flags;
+ 	bool passed = false;
+ 	bool cyclic = chan->cyclic_first != NULL;
  
- 	if (io_should_commit(req, issue_flags)) {
--		io_kbuf_commit(req, sel.buf_list, *len, 1);
-+		if (!io_kbuf_commit(req, sel.buf_list, *len, 1))
-+			req->flags |= REQ_F_BUF_MORE;
- 		sel.buf_list = NULL;
- 	}
- 	return sel;
-@@ -349,7 +350,8 @@ int io_buffers_select(struct io_kiocb *r
- 		 */
- 		if (ret > 0) {
- 			req->flags |= REQ_F_BUFFERS_COMMIT | REQ_F_BL_NO_RECYCLE;
--			io_kbuf_commit(req, sel->buf_list, arg->out_len, ret);
-+			if (!io_kbuf_commit(req, sel->buf_list, arg->out_len, ret))
-+				req->flags |= REQ_F_BUF_MORE;
+@@ -778,6 +779,8 @@ static unsigned int mmp_pdma_residue(str
+ 	else
+ 		curr = readl(chan->phy->base + DSADR(chan->phy->idx));
+ 
++	spin_lock_irqsave(&chan->desc_lock, flags);
++
+ 	list_for_each_entry(sw, &chan->chain_running, node) {
+ 		u32 start, end, len;
+ 
+@@ -821,6 +824,7 @@ static unsigned int mmp_pdma_residue(str
+ 			continue;
+ 
+ 		if (sw->async_tx.cookie == cookie) {
++			spin_unlock_irqrestore(&chan->desc_lock, flags);
+ 			return residue;
+ 		} else {
+ 			residue = 0;
+@@ -828,6 +832,8 @@ static unsigned int mmp_pdma_residue(str
  		}
- 	} else {
- 		ret = io_provided_buffers_select(req, &arg->out_len, sel->buf_list, arg->iovs);
-@@ -395,8 +397,10 @@ static inline bool __io_put_kbuf_ring(st
+ 	}
  
- 	if (bl)
- 		ret = io_kbuf_commit(req, bl, len, nr);
-+	if (ret && (req->flags & REQ_F_BUF_MORE))
-+		ret = false;
- 
--	req->flags &= ~REQ_F_BUFFER_RING;
-+	req->flags &= ~(REQ_F_BUFFER_RING | REQ_F_BUF_MORE);
- 	return ret;
++	spin_unlock_irqrestore(&chan->desc_lock, flags);
++
+ 	/* We should only get here in case of cyclic transactions */
+ 	return residue;
  }
- 
 
 
 
