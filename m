@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-229042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228524-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNyHOcpcwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229042-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:22 +0100
+	id ABAJBRJUwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228524-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068E22F6686
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 852F22F564D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4C7F8303BEA8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D7EC31902C4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B4339182F;
-	Mon, 23 Mar 2026 14:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C00B3AF679;
+	Mon, 23 Mar 2026 14:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lH8k7Kxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZaE1+xD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD502737EB;
-	Mon, 23 Mar 2026 14:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6D63AF670;
+	Mon, 23 Mar 2026 14:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277875; cv=none; b=BF75D6NTeQ/mjOysQ4IcmQuzGuAGGrlnpFyDroAymmfKiVZwzG2lx5cF/M02klXRJLxZQ1GwjjJ5Vt3u+k6VqKdFhAwFFHQt1bP5niZiLeim7tMqY4PR8Phha6ytHK98cfzl7Tjq6iHwjQjiYTXkZ/YoknkY/6rAG6QcLB/A/x0=
+	t=1774275360; cv=none; b=b5rgT8lUgrmvw5q9aTyyfztKKDYkkr2zDiegnPySr0Qw8arRW54YfHtkSQIbVZ2ncHOxz7HC3FYlcCYuqIXilax0xsF9WK16zT5J6625z4pEvwcL9sp+im6hqheCvfnMPiXX0tJdgUKqVOahQP6MnCULS/pTa4hZbeELZTEagmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277875; c=relaxed/simple;
-	bh=B9Dq+jzg9vCijCaCGH2rDd43/+BdMLeJ0kZAETSvz8U=;
+	s=arc-20240116; t=1774275360; c=relaxed/simple;
+	bh=VE0MPR4gzswpVwSJaeotmU+UTWXBcUQsOl7/IH9QFJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WupzmSXI0SQ3A0gk6axIOk8ASTLwFSqQXl+PMLtyYXQTPVWTkYDqOnFlitB28wVjHNJULdps7+8v0riSzQ+KC/KgtE31XezMbmxSNuceM+AVOI0FUHDOvDzskgOcFxHNb+S7iFKxhZHGv1UbGX/HjISnIWkzfe/a0+It2CKCeeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lH8k7Kxf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C473FC2BCB1;
-	Mon, 23 Mar 2026 14:57:54 +0000 (UTC)
+	 MIME-Version; b=kdLH/1HQm2Fm9+XCgWsw+hf2WBbXBxNsYGNVETPVFh0rijDNz7LC1xVshzEM74Y2IPZliZGHGonlFkyS104xxfz3SPH3/KA4RlAgaO6Ipqy06ltlG/eCifIZOFRvoL3QKOn67EhEX5Gyd1kJByfO+w80SAhPeTP8BcpkAw2RItY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZaE1+xD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94823C2BC9E;
+	Mon, 23 Mar 2026 14:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277875;
-	bh=B9Dq+jzg9vCijCaCGH2rDd43/+BdMLeJ0kZAETSvz8U=;
+	s=korg; t=1774275359;
+	bh=VE0MPR4gzswpVwSJaeotmU+UTWXBcUQsOl7/IH9QFJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lH8k7KxfIS/NnSYMU1W9Zv8WR3VKRYsAopYLcQnXw9qlfAv87W8BbuNTIsyWUedek
-	 UVKM5Z49ESXNji0qa0yyWIbSWbPRgrRKtCHy/X1AG0+T9DLA/4Vc3E1ZmmKjw2Qe9g
-	 w4NYEZ9qzIfjjRRfwwM32Ua0CTw0lytXrEK+8rCs=
+	b=PZaE1+xDu3aApNME+1LXj3qSm5p9lCpLWTnMh+mtFWv+sV6JNZOInIRi6rjxZrkA7
+	 +hcoxaPwyE6SFrEa08kQfECs2J3bK5erTpOrNQnPXQ5JLJtzJ60/aBuwHifdcd1G3T
+	 +qbD56PanBdoQH2DiZ40mtHM/h+jqMGXTVU6HAiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Avigail Dahan <avigailx.dahan@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/567] e1000e: clear DPG_EN after reset to avoid autonomous power-gating
+Subject: [PATCH 6.12 053/460] net: add a common function to compute features for upper devices
 Date: Mon, 23 Mar 2026 14:40:49 +0100
-Message-ID: <20260323134536.997417987@linuxfoundation.org>
+Message-ID: <20260323134528.012775955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,89 +72,203 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229042-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228524-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,gmail.com,queasysnail.net,nvidia.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 068E22F6686
+X-Rspamd-Queue-Id: 852F22F564D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 0942fc6d324eb9c6b16187b2aa994c0823557f06 ]
+[ Upstream commit 28098defc79fe7d29e6bfe4eb6312991f6bdc3d3 ]
 
-Panther Lake systems introduced an autonomous power gating feature for
-the integrated Gigabit Ethernet in shutdown state (S5) state. As part of
-it, the reset value of DPG_EN bit was changed to 1. Clear this bit after
-performing hardware reset to avoid errors such as Tx/Rx hangs, or packet
-loss/corruption.
+Some high level software drivers need to compute features from lower
+devices. But each has their own implementations and may lost some
+feature compute. Let's use one common function to compute features
+for kinds of these devices.
 
-Fixes: 0c9183ce61bc ("e1000e: Add support for the next LOM generation")
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+The new helper uses the current bond implementation as the reference
+one, as the latter already handles all the relevant aspects: netdev
+features, TSO limits and dst retention.
+
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://patch.msgid.link/20251017034155.61990-2-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/defines.h | 1 +
- drivers/net/ethernet/intel/e1000e/ich8lan.c | 9 +++++++++
- 2 files changed, 10 insertions(+)
+ include/linux/netdev_features.h | 18 +++++++
+ include/linux/netdevice.h       |  1 +
+ net/core/dev.c                  | 88 +++++++++++++++++++++++++++++++++
+ 3 files changed, 107 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/defines.h b/drivers/net/ethernet/intel/e1000e/defines.h
-index 955bb11618572..c4db2927c6c42 100644
---- a/drivers/net/ethernet/intel/e1000e/defines.h
-+++ b/drivers/net/ethernet/intel/e1000e/defines.h
-@@ -33,6 +33,7 @@
+diff --git a/include/linux/netdev_features.h b/include/linux/netdev_features.h
+index 11be70a7929f2..2f4243b61a525 100644
+--- a/include/linux/netdev_features.h
++++ b/include/linux/netdev_features.h
+@@ -253,6 +253,24 @@ static inline int find_next_netdev_feature(u64 feature, unsigned long start)
+ 				 NETIF_F_GSO_UDP_TUNNEL |		\
+ 				 NETIF_F_GSO_UDP_TUNNEL_CSUM)
  
- /* Extended Device Control */
- #define E1000_CTRL_EXT_LPCD  0x00000004     /* LCD Power Cycle Done */
-+#define E1000_CTRL_EXT_DPG_EN	0x00000008 /* Dynamic Power Gating Enable */
- #define E1000_CTRL_EXT_SDP3_DATA 0x00000080 /* Value of SW Definable Pin 3 */
- #define E1000_CTRL_EXT_FORCE_SMBUS 0x00000800 /* Force SMBus mode */
- #define E1000_CTRL_EXT_EE_RST    0x00002000 /* Reinitialize from EEPROM */
-diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-index df4e7d781cb1c..f9328caefe44b 100644
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -4925,6 +4925,15 @@ static s32 e1000_reset_hw_ich8lan(struct e1000_hw *hw)
- 	reg |= E1000_KABGTXD_BGSQLBIAS;
- 	ew32(KABGTXD, reg);
++/* virtual device features */
++#define MASTER_UPPER_DEV_VLAN_FEATURES	 (NETIF_F_HW_CSUM | NETIF_F_SG | \
++					  NETIF_F_FRAGLIST | NETIF_F_GSO_SOFTWARE | \
++					  NETIF_F_GSO_ENCAP_ALL | \
++					  NETIF_F_HIGHDMA | NETIF_F_LRO)
++
++#define MASTER_UPPER_DEV_ENC_FEATURES	 (NETIF_F_HW_CSUM | NETIF_F_SG | \
++					  NETIF_F_RXCSUM | NETIF_F_GSO_SOFTWARE | \
++					  NETIF_F_GSO_PARTIAL)
++
++#define MASTER_UPPER_DEV_MPLS_FEATURES	 (NETIF_F_HW_CSUM | NETIF_F_SG | \
++					  NETIF_F_GSO_SOFTWARE)
++
++#define MASTER_UPPER_DEV_XFRM_FEATURES	 (NETIF_F_HW_ESP | NETIF_F_HW_ESP_TX_CSUM | \
++					  NETIF_F_GSO_ESP)
++
++#define MASTER_UPPER_DEV_GSO_PARTIAL_FEATURES (NETIF_F_GSO_ESP)
++
+ static inline netdev_features_t netdev_base_features(netdev_features_t features)
+ {
+ 	features &= ~NETIF_F_ONE_FOR_ALL;
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 77a99c8ab01c7..3699c43731ccf 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -4993,6 +4993,7 @@ static inline netdev_features_t netdev_add_tso_features(netdev_features_t featur
+ int __netdev_update_features(struct net_device *dev);
+ void netdev_update_features(struct net_device *dev);
+ void netdev_change_features(struct net_device *dev);
++void netdev_compute_master_upper_features(struct net_device *dev, bool update_header);
  
-+	/* The hardware reset value of the DPG_EN bit is 1.
-+	 * Clear DPG_EN to prevent unexpected autonomous power gating.
-+	 */
-+	if (hw->mac.type >= e1000_pch_ptp) {
-+		reg = er32(CTRL_EXT);
-+		reg &= ~E1000_CTRL_EXT_DPG_EN;
-+		ew32(CTRL_EXT, reg);
+ void netif_stacked_transfer_operstate(const struct net_device *rootdev,
+ 					struct net_device *dev);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index e7127eca1afc5..a855cee5e5aeb 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11851,6 +11851,94 @@ netdev_features_t netdev_increment_features(netdev_features_t all,
+ }
+ EXPORT_SYMBOL(netdev_increment_features);
+ 
++/**
++ *	netdev_compute_master_upper_features - compute feature from lowers
++ *	@dev: the upper device
++ *	@update_header: whether to update upper device's header_len/headroom/tailroom
++ *
++ *	Recompute the upper device's feature based on all lower devices.
++ */
++void netdev_compute_master_upper_features(struct net_device *dev, bool update_header)
++{
++	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM;
++	netdev_features_t gso_partial_features = MASTER_UPPER_DEV_GSO_PARTIAL_FEATURES;
++	netdev_features_t xfrm_features = MASTER_UPPER_DEV_XFRM_FEATURES;
++	netdev_features_t mpls_features = MASTER_UPPER_DEV_MPLS_FEATURES;
++	netdev_features_t vlan_features = MASTER_UPPER_DEV_VLAN_FEATURES;
++	netdev_features_t enc_features = MASTER_UPPER_DEV_ENC_FEATURES;
++	unsigned short max_header_len = ETH_HLEN;
++	unsigned int tso_max_size = TSO_MAX_SIZE;
++	unsigned short max_headroom = 0;
++	unsigned short max_tailroom = 0;
++	u16 tso_max_segs = TSO_MAX_SEGS;
++	struct net_device *lower_dev;
++	struct list_head *iter;
++
++	mpls_features = netdev_base_features(mpls_features);
++	vlan_features = netdev_base_features(vlan_features);
++	enc_features = netdev_base_features(enc_features);
++
++	netdev_for_each_lower_dev(dev, lower_dev, iter) {
++		gso_partial_features = netdev_increment_features(gso_partial_features,
++								 lower_dev->gso_partial_features,
++								 MASTER_UPPER_DEV_GSO_PARTIAL_FEATURES);
++
++		vlan_features = netdev_increment_features(vlan_features,
++							  lower_dev->vlan_features,
++							  MASTER_UPPER_DEV_VLAN_FEATURES);
++
++		enc_features = netdev_increment_features(enc_features,
++							 lower_dev->hw_enc_features,
++							 MASTER_UPPER_DEV_ENC_FEATURES);
++
++		if (IS_ENABLED(CONFIG_XFRM_OFFLOAD))
++			xfrm_features = netdev_increment_features(xfrm_features,
++								  lower_dev->hw_enc_features,
++								  MASTER_UPPER_DEV_XFRM_FEATURES);
++
++		mpls_features = netdev_increment_features(mpls_features,
++							  lower_dev->mpls_features,
++							  MASTER_UPPER_DEV_MPLS_FEATURES);
++
++		dst_release_flag &= lower_dev->priv_flags;
++
++		if (update_header) {
++			max_header_len = max(max_header_len, lower_dev->hard_header_len);
++			max_headroom = max(max_headroom, lower_dev->needed_headroom);
++			max_tailroom = max(max_tailroom, lower_dev->needed_tailroom);
++		}
++
++		tso_max_size = min(tso_max_size, lower_dev->tso_max_size);
++		tso_max_segs = min(tso_max_segs, lower_dev->tso_max_segs);
 +	}
 +
- 	return 0;
- }
- 
++	dev->gso_partial_features = gso_partial_features;
++	dev->vlan_features = vlan_features;
++	dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL |
++			       NETIF_F_HW_VLAN_CTAG_TX |
++			       NETIF_F_HW_VLAN_STAG_TX;
++	if (IS_ENABLED(CONFIG_XFRM_OFFLOAD))
++		dev->hw_enc_features |= xfrm_features;
++	dev->mpls_features = mpls_features;
++
++	dev->priv_flags &= ~IFF_XMIT_DST_RELEASE;
++	if ((dev->priv_flags & IFF_XMIT_DST_RELEASE_PERM) &&
++	    dst_release_flag == (IFF_XMIT_DST_RELEASE | IFF_XMIT_DST_RELEASE_PERM))
++		dev->priv_flags |= IFF_XMIT_DST_RELEASE;
++
++	if (update_header) {
++		dev->hard_header_len = max_header_len;
++		dev->needed_headroom = max_headroom;
++		dev->needed_tailroom = max_tailroom;
++	}
++
++	netif_set_tso_max_segs(dev, tso_max_segs);
++	netif_set_tso_max_size(dev, tso_max_size);
++
++	netdev_change_features(dev);
++}
++EXPORT_SYMBOL(netdev_compute_master_upper_features);
++
+ static struct hlist_head * __net_init netdev_create_hash(void)
+ {
+ 	int i;
 -- 
 2.51.0
 
