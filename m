@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-228859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJo/JLFWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228859-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:21 +0100
+	id uE1HHMJJwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9352E2F5BD5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B30FE2F3EB3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 68FF13079E4F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CE1243066C2D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7542023B612;
-	Mon, 23 Mar 2026 14:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897393B9D83;
+	Mon, 23 Mar 2026 13:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVRGjJAr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afEV+9NW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FEF264A86;
-	Mon, 23 Mar 2026 14:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9973B9611;
+	Mon, 23 Mar 2026 13:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277327; cv=none; b=V7jqe2xyGaNFZCiz+LNJFyP6SqYzXe394jdLMbnOiQl9IqXfk/ABx6X1i1SDeRIbhPlA429whltPEtRoYYFuAQmMTje17v8+xIe0yFBc8kHga5Ksnc29V0NHX71rlRSBWQHFhXA+rQ8tuQSzYbSFAWdpWAS2DAGov4CqjIg1QII=
+	t=1774274386; cv=none; b=uZVuxsrKrtNyLTG1gcT7l88NnrW3zoFHHw0i/+T3RlyO3fNH9f2qcIPPDXkgP4EIDo7zuUPCWzM5iIZUx9RCp5BjVYaOR/sAAi/+YgkyQ+mBoIJz1AISky2+dxKeA8t7lmRVsLx3ML1tzlwgF4dvTrAj8sp2/3mmMqkoHpuW11Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277327; c=relaxed/simple;
-	bh=90tVMNW0P2hgMevGrE/jsRMMu66sSIJ41msPIvV3M8Y=;
+	s=arc-20240116; t=1774274386; c=relaxed/simple;
+	bh=ZJDpME7DHtiVK//m6YaaGGgSG3MS2VqgNCnPo6OGbwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E1/O4vpNLRYhI1/Ja1l6u2V6yEyBtWf6SauilAYCS0iihkNNzrMgRN0FH16EhbSryA1UCFUMSRgfUlwcpkxb+B7MV7+Yr9r13PTEREpVxx42vip+WfKAfqXwM+emKI22rkLfiOTzzIH4q+UWhFeL6UGf4ZUBX+TBqUKtY+bNiGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVRGjJAr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB04C4CEF7;
-	Mon, 23 Mar 2026 14:48:46 +0000 (UTC)
+	 MIME-Version; b=qCbdOrsuSoiASJq5Gdq1r7hfskt61o0w7FUy7dcQrKPCDSLGtt3zlKqGeibSYj8IyReC6uAX1Vy8PaAgVQ/R4N2C0QhayXWz+R4r8jx25LhHE99WtkpcvFhcg+gwd4KQNwjIxRkevtq8pdAq/ggFcQMJd6bMYqjjlu5OJXnGuGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afEV+9NW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A19C2BC9E;
+	Mon, 23 Mar 2026 13:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277326;
-	bh=90tVMNW0P2hgMevGrE/jsRMMu66sSIJ41msPIvV3M8Y=;
+	s=korg; t=1774274386;
+	bh=ZJDpME7DHtiVK//m6YaaGGgSG3MS2VqgNCnPo6OGbwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lVRGjJArHu5FubKdH9yDNpPz53mV9SNdi71ZijFm5U6J5lHezUuRvaVQATDK+cQdk
-	 twJgb4rnPjEFMeyOo/AazljIvSrdVqJ9jiMdY1Js8m4I77dw+VFmyGNf5S5/XmoMTb
-	 JYS/T9QX+r3nqWNIjrKSjrC+pDcxIKKw4bhjjLKw=
+	b=afEV+9NWUBGWXoH4AddEamY4V7sUOpgGyix6WUuXMot4h3q5SlsSkWTholo7w5QC0
+	 YeCQJJX3HWFVPglzCC/wtb20GJPWscv58S3rm300+DkORjtud0lugU9HDuovCowHev
+	 Iq5uM9Ko9XzXGAv4JoaUDnZWFaPNIs0MjwvcBKAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 381/460] Bluetooth: LE L2CAP: Disconnect if sum of payload sizes exceed SDU
+	Mukesh Rathor <mrathor@linux.microsoft.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	linux-hyperv@vger.kernel.org,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>
+Subject: [PATCH 6.19 200/220] x86/hyperv: Use __naked attribute to fix stackless C function
 Date: Mon, 23 Mar 2026 14:46:17 +0100
-Message-ID: <20260323134535.934208171@linuxfoundation.org>
+Message-ID: <20260323134510.896373557@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +70,190 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228859-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228186-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.microsoft.com,gmail.com,kernel.org,vger.kernel.org,citrix.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9352E2F5BD5
+X-Rspamd-Queue-Id: B30FE2F3EB3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Ard Biesheuvel <ardb@kernel.org>
 
-[ Upstream commit b6a2bf43aa37670432843bc73ae2a6288ba4d6f8 ]
+[ Upstream commit 3fde5281b805370a6c3bd2ef462ebff70a0ea2c6 ]
 
-Core 6.0, Vol 3, Part A, 3.4.3:
-"... If the sum of the payload sizes for the K-frames exceeds the
-specified SDU length, the receiver shall disconnect the channel."
+hv_crash_c_entry() is a C function that is entered without a stack,
+and this is only allowed for functions that have the __naked attribute,
+which informs the compiler that it must not emit the usual prologue and
+epilogue or emit any other kind of instrumentation that relies on a
+stack frame.
 
-This fixes L2CAP/LE/CFC/BV-27-C (running together with 'l2test -r -P
-0x0027 -V le_public').
+So split up the function, and set the __naked attribute on the initial
+part that sets up the stack, GDT, IDT and other pieces that are needed
+for ordinary C execution. Given that function calls are not permitted
+either, use the existing long return coded in an asm() block to call the
+second part of the function, which is an ordinary function that is
+permitted to call other functions as usual.
 
-Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Andrew Cooper <andrew.cooper3@citrix.com> # asm parts, not hv parts
+Reviewed-by: Mukesh Rathor <mrathor@linux.microsoft.com>
+Acked-by: Uros Bizjak <ubizjak@gmail.com>
+Cc: Wei Liu <wei.liu@kernel.org>
+Cc: linux-hyperv@vger.kernel.org
+Fixes: 94212d34618c ("x86/hyperv: Implement hypervisor RAM collection into vmcore")
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/hyperv/hv_crash.c | 82 ++++++++++++++++++++------------------
+ 1 file changed, 43 insertions(+), 39 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index de8e18fe50557..560a17d36f7fa 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6686,6 +6686,7 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+diff --git a/arch/x86/hyperv/hv_crash.c b/arch/x86/hyperv/hv_crash.c
+index a78e4fed57203..1d91051daa3de 100644
+--- a/arch/x86/hyperv/hv_crash.c
++++ b/arch/x86/hyperv/hv_crash.c
+@@ -107,14 +107,12 @@ static void __noreturn hv_panic_timeout_reboot(void)
+ 		cpu_relax();
+ }
  
- 	if (chan->sdu->len + skb->len > chan->sdu_len) {
- 		BT_ERR("Too much LE L2CAP data received");
-+		l2cap_send_disconn_req(chan, ECONNRESET);
- 		err = -EINVAL;
- 		goto failed;
- 	}
+-/* This cannot be inlined as it needs stack */
+-static noinline __noclone void hv_crash_restore_tss(void)
++static void hv_crash_restore_tss(void)
+ {
+ 	load_TR_desc();
+ }
+ 
+-/* This cannot be inlined as it needs stack */
+-static noinline void hv_crash_clear_kernpt(void)
++static void hv_crash_clear_kernpt(void)
+ {
+ 	pgd_t *pgd;
+ 	p4d_t *p4d;
+@@ -125,6 +123,25 @@ static noinline void hv_crash_clear_kernpt(void)
+ 	native_p4d_clear(p4d);
+ }
+ 
++
++static void __noreturn hv_crash_handle(void)
++{
++	hv_crash_restore_tss();
++	hv_crash_clear_kernpt();
++
++	/* we are now fully in devirtualized normal kernel mode */
++	__crash_kexec(NULL);
++
++	hv_panic_timeout_reboot();
++}
++
++/*
++ * __naked functions do not permit function calls, not even to __always_inline
++ * functions that only contain asm() blocks themselves. So use a macro instead.
++ */
++#define hv_wrmsr(msr, val) \
++	asm volatile("wrmsr" :: "c"(msr), "a"((u32)val), "d"((u32)(val >> 32)) : "memory")
++
+ /*
+  * This is the C entry point from the asm glue code after the disable hypercall.
+  * We enter here in IA32-e long mode, ie, full 64bit mode running on kernel
+@@ -133,51 +150,38 @@ static noinline void hv_crash_clear_kernpt(void)
+  * available. We restore kernel GDT, and rest of the context, and continue
+  * to kexec.
+  */
+-static asmlinkage void __noreturn hv_crash_c_entry(void)
++static void __naked hv_crash_c_entry(void)
+ {
+-	struct hv_crash_ctxt *ctxt = &hv_crash_ctxt;
+-
+ 	/* first thing, restore kernel gdt */
+-	native_load_gdt(&ctxt->gdtr);
++	asm volatile("lgdt %0" : : "m" (hv_crash_ctxt.gdtr));
+ 
+-	asm volatile("movw %%ax, %%ss" : : "a"(ctxt->ss));
+-	asm volatile("movq %0, %%rsp" : : "m"(ctxt->rsp));
++	asm volatile("movw %0, %%ss\n\t"
++		     "movq %1, %%rsp"
++		     :: "m"(hv_crash_ctxt.ss), "m"(hv_crash_ctxt.rsp));
+ 
+-	asm volatile("movw %%ax, %%ds" : : "a"(ctxt->ds));
+-	asm volatile("movw %%ax, %%es" : : "a"(ctxt->es));
+-	asm volatile("movw %%ax, %%fs" : : "a"(ctxt->fs));
+-	asm volatile("movw %%ax, %%gs" : : "a"(ctxt->gs));
++	asm volatile("movw %0, %%ds" : : "m"(hv_crash_ctxt.ds));
++	asm volatile("movw %0, %%es" : : "m"(hv_crash_ctxt.es));
++	asm volatile("movw %0, %%fs" : : "m"(hv_crash_ctxt.fs));
++	asm volatile("movw %0, %%gs" : : "m"(hv_crash_ctxt.gs));
+ 
+-	native_wrmsrq(MSR_IA32_CR_PAT, ctxt->pat);
+-	asm volatile("movq %0, %%cr0" : : "r"(ctxt->cr0));
++	hv_wrmsr(MSR_IA32_CR_PAT, hv_crash_ctxt.pat);
++	asm volatile("movq %0, %%cr0" : : "r"(hv_crash_ctxt.cr0));
+ 
+-	asm volatile("movq %0, %%cr8" : : "r"(ctxt->cr8));
+-	asm volatile("movq %0, %%cr4" : : "r"(ctxt->cr4));
+-	asm volatile("movq %0, %%cr2" : : "r"(ctxt->cr4));
++	asm volatile("movq %0, %%cr8" : : "r"(hv_crash_ctxt.cr8));
++	asm volatile("movq %0, %%cr4" : : "r"(hv_crash_ctxt.cr4));
++	asm volatile("movq %0, %%cr2" : : "r"(hv_crash_ctxt.cr2));
+ 
+-	native_load_idt(&ctxt->idtr);
+-	native_wrmsrq(MSR_GS_BASE, ctxt->gsbase);
+-	native_wrmsrq(MSR_EFER, ctxt->efer);
++	asm volatile("lidt %0" : : "m" (hv_crash_ctxt.idtr));
++	hv_wrmsr(MSR_GS_BASE, hv_crash_ctxt.gsbase);
++	hv_wrmsr(MSR_EFER, hv_crash_ctxt.efer);
+ 
+ 	/* restore the original kernel CS now via far return */
+-	asm volatile("movzwq %0, %%rax\n\t"
+-		     "pushq %%rax\n\t"
+-		     "pushq $1f\n\t"
+-		     "lretq\n\t"
+-		     "1:nop\n\t" : : "m"(ctxt->cs) : "rax");
+-
+-	/* We are in asmlinkage without stack frame, hence make C function
+-	 * calls which will buy stack frames.
+-	 */
+-	hv_crash_restore_tss();
+-	hv_crash_clear_kernpt();
+-
+-	/* we are now fully in devirtualized normal kernel mode */
+-	__crash_kexec(NULL);
+-
+-	hv_panic_timeout_reboot();
++	asm volatile("pushq %q0\n\t"
++		     "pushq %q1\n\t"
++		     "lretq"
++		     :: "r"(hv_crash_ctxt.cs), "r"(hv_crash_handle));
+ }
+-/* Tell gcc we are using lretq long jump in the above function intentionally */
++/* Tell objtool we are using lretq long jump in the above function intentionally */
+ STACK_FRAME_NON_STANDARD(hv_crash_c_entry);
+ 
+ static void hv_mark_tss_not_busy(void)
 -- 
 2.51.0
 
