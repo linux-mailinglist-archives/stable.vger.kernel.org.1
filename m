@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229963-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eFeXETlgwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229446-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:01 +0100
+	id 2HDrL9l2wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229963-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:22:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE8502F6DDA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE382F9CE4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:22:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 95D9D306FE96
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C143435E561D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43363B4EBC;
-	Mon, 23 Mar 2026 15:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370893BE634;
+	Mon, 23 Mar 2026 16:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0Wyvm+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHGu0vPv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863253AE1BB;
-	Mon, 23 Mar 2026 15:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51323C2764;
+	Mon, 23 Mar 2026 16:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279259; cv=none; b=S863iGrTphJtRQKl/HfqPpD0YDIY+qb58KQ9yCsFYf910I5HFfgxQZcurYs+YkUt7WbVNuib3zSkf3TbN7P5E2XXUDoV+YmFoPmol7/vlB9t1tDI7pQ0E23c/1XsehcXf3fpZdwL7m9dkzG1B1K2V4FOPuGxWYb+SxcxXveJ0kE=
+	t=1774283380; cv=none; b=Xs26Oil6xHjcZ2QfbAj00HEyy7cozUvCJHW2uhBjx46lOywXbKkU6zTKnLV1zUpM6oX9aaZ0re4xeDJQE9Jio/0D0ZjbGSTPpQrn88imuEAOKe7VuhesZaWBnbU8ssAx/M8zBiQzsRXkTI/3WxbvgbAje+purnEvEYSVYTqHvn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279259; c=relaxed/simple;
-	bh=GboXEh5Bge0ppgN7uucdr++YUSDiP2lDu8IgfKbaCYQ=;
+	s=arc-20240116; t=1774283380; c=relaxed/simple;
+	bh=+j2+syTLgW6wYaFmPS3EYLBE2xoQYhMx20Ca8waVSyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VgT7QEBqKPuVdPhXIMKNZ7vcbFjO5H/s06PnoihZ4Uj865inGcAIE/8Gc3FnOCxvPWaeSuRuRKg8xvePparPuuT7fRVhinQMC4LqEkBFwzo2M/B3qf4Inot05nmX2VbbqSIp5/HCD7Heibgq4M21mS7phhHJl1LUKWpnR+ZXNww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0Wyvm+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A91C4CEF7;
-	Mon, 23 Mar 2026 15:20:58 +0000 (UTC)
+	 MIME-Version; b=WytGMkt1qAYz1oS6DDxfvHh7OkL6bN2POpDdMhlzAceN+WnXTnhZbHG8Fi1IeimjWVzICojKCSUbY5XWqcItS+WH3QY6lyphZGL37wTXN3cpxjujxvxjbGw/BweFYoEIqY+Fpfs+hxFZ/X+YGYcNWDqiwR0wBVmNHXMxHB952kQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHGu0vPv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BBAC4CEF7;
+	Mon, 23 Mar 2026 16:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279259;
-	bh=GboXEh5Bge0ppgN7uucdr++YUSDiP2lDu8IgfKbaCYQ=;
+	s=korg; t=1774283380;
+	bh=+j2+syTLgW6wYaFmPS3EYLBE2xoQYhMx20Ca8waVSyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0Wyvm+cRoBLt9IFusFrlejXbHUg7qvjGVo5fOeMCgZUvc+jVylWlCghYZratnABY
-	 T0xfhb1Mz91WgOWYI5dXfKrKAymsMPNoxsw/yQ9dR6wR6/Kakj1WdbfHRh7iKrtzEZ
-	 bWYPofXfybHwa7uiRpd00PLn74kE8xVjNL62p1pU=
+	b=pHGu0vPvaKq4DKmLEibudwAt6DU+C7fnl1QX9yWRtEtSp6os6SUSLtOe5Cqwuo2jd
+	 3Ryr2Vn4LDVEhrl/M3Kj3JJLhc8/3C2ifSkVE10Oin0DSQk3ozCcUQcd5E6l436Di5
+	 QzQ/R/UMGSTqdE9kIqrtDAGQxOhKiQcHOgfQtMvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianrui Dong <keenanat2000@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 527/567] net/sched: teql: Fix double-free in teql_master_xmit
+	Jibin Zhang <jibin.zhang@mediatek.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.1 465/481] net: fix segmentation of forwarding fraglist GRO
 Date: Mon, 23 Mar 2026 14:47:27 +0100
-Message-ID: <20260323134547.039859300@linuxfoundation.org>
+Message-ID: <20260323134536.544791211@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,236 +66,134 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229446-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229963-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mediatek.com,redhat.com,139.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DE8502F6DDA
+X-Rspamd-Queue-Id: 1EE382F9CE4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Jibin Zhang <jibin.zhang@mediatek.com>
 
-[ Upstream commit 66360460cab63c248ca5b1070a01c0c29133b960 ]
+[ Upstream commit 426ca15c7f6cb6562a081341ca88893a50c59fa2 ]
 
-Whenever a TEQL devices has a lockless Qdisc as root, qdisc_reset should
-be called using the seq_lock to avoid racing with the datapath. Failure
-to do so may cause crashes like the following:
+This patch enhances GSO segment handling by properly checking
+the SKB_GSO_DODGY flag for frag_list GSO packets, addressing
+low throughput issues observed when a station accesses IPv4
+servers via hotspots with an IPv6-only upstream interface.
 
-[  238.028993][  T318] BUG: KASAN: double-free in skb_release_data (net/core/skbuff.c:1139)
-[  238.029328][  T318] Free of addr ffff88810c67ec00 by task poc_teql_uaf_ke/318
-[  238.029749][  T318]
-[  238.029900][  T318] CPU: 3 UID: 0 PID: 318 Comm: poc_teql_ke Not tainted 7.0.0-rc3-00149-ge5b31d988a41 #704 PREEMPT(full)
-[  238.029906][  T318] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[  238.029910][  T318] Call Trace:
-[  238.029913][  T318]  <TASK>
-[  238.029916][  T318]  dump_stack_lvl (lib/dump_stack.c:122)
-[  238.029928][  T318]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
-[  238.029940][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
-[  238.029944][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-...
-[  238.029957][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
-[  238.029969][  T318]  kasan_report_invalid_free (mm/kasan/report.c:221 mm/kasan/report.c:563)
-[  238.029979][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
-[  238.029989][  T318]  check_slab_allocation (mm/kasan/common.c:231)
-[  238.029995][  T318]  kmem_cache_free (mm/slub.c:2637 (discriminator 1) mm/slub.c:6168 (discriminator 1) mm/slub.c:6298 (discriminator 1))
-[  238.030004][  T318]  skb_release_data (net/core/skbuff.c:1139)
-...
-[  238.030025][  T318]  sk_skb_reason_drop (net/core/skbuff.c:1256)
-[  238.030032][  T318]  pfifo_fast_reset (./include/linux/ptr_ring.h:171 ./include/linux/ptr_ring.h:309 ./include/linux/skb_array.h:98 net/sched/sch_generic.c:827)
-[  238.030039][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-...
-[  238.030054][  T318]  qdisc_reset (net/sched/sch_generic.c:1034)
-[  238.030062][  T318]  teql_destroy (./include/linux/spinlock.h:395 net/sched/sch_teql.c:157)
-[  238.030071][  T318]  __qdisc_destroy (./include/net/pkt_sched.h:328 net/sched/sch_generic.c:1077)
-[  238.030077][  T318]  qdisc_graft (net/sched/sch_api.c:1062 net/sched/sch_api.c:1053 net/sched/sch_api.c:1159)
-[  238.030089][  T318]  ? __pfx_qdisc_graft (net/sched/sch_api.c:1091)
-[  238.030095][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  238.030102][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  238.030106][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  238.030114][  T318]  tc_get_qdisc (net/sched/sch_api.c:1529 net/sched/sch_api.c:1556)
-...
-[  238.072958][  T318] Allocated by task 303 on cpu 5 at 238.026275s:
-[  238.073392][  T318]  kasan_save_stack (mm/kasan/common.c:58)
-[  238.073884][  T318]  kasan_save_track (mm/kasan/common.c:64 (discriminator 5) mm/kasan/common.c:79 (discriminator 5))
-[  238.074230][  T318]  __kasan_slab_alloc (mm/kasan/common.c:369)
-[  238.074578][  T318]  kmem_cache_alloc_node_noprof (./include/linux/kasan.h:253 mm/slub.c:4542 mm/slub.c:4869 mm/slub.c:4921)
-[  238.076091][  T318]  kmalloc_reserve (net/core/skbuff.c:616 (discriminator 107))
-[  238.076450][  T318]  __alloc_skb (net/core/skbuff.c:713)
-[  238.076834][  T318]  alloc_skb_with_frags (./include/linux/skbuff.h:1383 net/core/skbuff.c:6763)
-[  238.077178][  T318]  sock_alloc_send_pskb (net/core/sock.c:2997)
-[  238.077520][  T318]  packet_sendmsg (net/packet/af_packet.c:2926 net/packet/af_packet.c:3019 net/packet/af_packet.c:3108)
-[  238.081469][  T318]
-[  238.081870][  T318] Freed by task 299 on cpu 1 at 238.028496s:
-[  238.082761][  T318]  kasan_save_stack (mm/kasan/common.c:58)
-[  238.083481][  T318]  kasan_save_track (mm/kasan/common.c:64 (discriminator 5) mm/kasan/common.c:79 (discriminator 5))
-[  238.085348][  T318]  kasan_save_free_info (mm/kasan/generic.c:587 (discriminator 1))
-[  238.085900][  T318]  __kasan_slab_free (mm/kasan/common.c:287)
-[  238.086439][  T318]  kmem_cache_free (mm/slub.c:6168 (discriminator 3) mm/slub.c:6298 (discriminator 3))
-[  238.087007][  T318]  skb_release_data (net/core/skbuff.c:1139)
-[  238.087491][  T318]  consume_skb (net/core/skbuff.c:1451)
-[  238.087757][  T318]  teql_master_xmit (net/sched/sch_teql.c:358)
-[  238.088116][  T318]  dev_hard_start_xmit (./include/linux/netdevice.h:5324 ./include/linux/netdevice.h:5333 net/core/dev.c:3871 net/core/dev.c:3887)
-[  238.088468][  T318]  sch_direct_xmit (net/sched/sch_generic.c:347)
-[  238.088820][  T318]  __qdisc_run (net/sched/sch_generic.c:420 (discriminator 1))
-[  238.089166][  T318]  __dev_queue_xmit (./include/net/sch_generic.h:229 ./include/net/pkt_sched.h:121 ./include/net/pkt_sched.h:117 net/core/dev.c:4196 net/core/dev.c:4802)
+Specifically, it fixes a bug in GSO segmentation when forwarding
+GRO packets containing a frag_list. The function skb_segment_list
+cannot correctly process GRO skbs that have been converted by XLAT,
+since XLAT only translates the header of the head skb. Consequently,
+skbs in the frag_list may remain untranslated, resulting in protocol
+inconsistencies and reduced throughput.
 
-Workflow to reproduce:
-1. Initialize a TEQL topology (dummy0 and ifb0 as slaves, teql0 up).
-2. Start multiple sender workers continuously transmitting packets
-   through teql0 to drive teql_master_xmit().
-3. In parallel, repeatedly delete and re-add the root qdisc on
-   dummy0 and ifb0 via RTNETLINK, forcing frequent teardown and reset activity
-   (teql_destroy() / qdisc_reset()).
-4. After running both workloads concurrently for several iterations,
-   KASAN reports slab-use-after-free or double-free in the skb free path.
+To address this, the patch explicitly sets the SKB_GSO_DODGY flag
+for GSO packets in XLAT's IPv4/IPv6 protocol translation helpers
+(bpf_skb_proto_4_to_6 and bpf_skb_proto_6_to_4). This marks GSO
+packets as potentially modified after protocol translation. As a
+result, GSO segmentation will avoid using skb_segment_list and
+instead falls back to skb_segment for packets with the SKB_GSO_DODGY
+flag. This ensures that only safe and fully translated frag_list
+packets are processed by skb_segment_list, resolving protocol
+inconsistencies and improving throughput when forwarding GRO packets
+converted by XLAT.
 
-Fix this by moving dev_reset_queue to sch_generic.h and calling it, instead
-of qdisc_reset, in teql_destroy since it handles both the lock and lockless
-cases correctly for root qdiscs.
-
-Fixes: 96009c7d500e ("sched: replace __QDISC_STATE_RUNNING bit with a spin lock")
-Reported-by: Xianrui Dong <keenanat2000@gmail.com>
-Tested-by: Xianrui Dong <keenanat2000@gmail.com>
-Co-developed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260315155422.147256-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jibin Zhang <jibin.zhang@mediatek.com>
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260126152114.1211-1-jibin.zhang@mediatek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sch_generic.h | 28 ++++++++++++++++++++++++++++
- net/sched/sch_generic.c   | 27 ---------------------------
- net/sched/sch_teql.c      |  7 ++-----
- 3 files changed, 30 insertions(+), 32 deletions(-)
+ net/core/filter.c        |    2 ++
+ net/ipv4/tcp_offload.c   |    3 ++-
+ net/ipv4/udp_offload.c   |    3 ++-
+ net/ipv6/tcpv6_offload.c |    3 ++-
+ 4 files changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 232b7b22e993a..15f4a0548d824 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -694,6 +694,34 @@ void qdisc_destroy(struct Qdisc *qdisc);
- void qdisc_put(struct Qdisc *qdisc);
- void qdisc_put_unlocked(struct Qdisc *qdisc);
- void qdisc_tree_reduce_backlog(struct Qdisc *qdisc, int n, int len);
-+
-+static inline void dev_reset_queue(struct net_device *dev,
-+				   struct netdev_queue *dev_queue,
-+				   void *_unused)
-+{
-+	struct Qdisc *qdisc;
-+	bool nolock;
-+
-+	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
-+	if (!qdisc)
-+		return;
-+
-+	nolock = qdisc->flags & TCQ_F_NOLOCK;
-+
-+	if (nolock)
-+		spin_lock_bh(&qdisc->seqlock);
-+	spin_lock_bh(qdisc_lock(qdisc));
-+
-+	qdisc_reset(qdisc);
-+
-+	spin_unlock_bh(qdisc_lock(qdisc));
-+	if (nolock) {
-+		clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
-+		clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
-+		spin_unlock_bh(&qdisc->seqlock);
-+	}
-+}
-+
- #ifdef CONFIG_NET_SCHED
- int qdisc_offload_dump_helper(struct Qdisc *q, enum tc_setup_type type,
- 			      void *type_data);
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index c1c67da2d3fc4..714e51f8d46e9 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -1290,33 +1290,6 @@ static void dev_deactivate_queue(struct net_device *dev,
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3333,6 +3333,7 @@ static int bpf_skb_proto_4_to_6(struct s
+ 			shinfo->gso_type &= ~SKB_GSO_TCPV4;
+ 			shinfo->gso_type |=  SKB_GSO_TCPV6;
+ 		}
++		shinfo->gso_type |=  SKB_GSO_DODGY;
  	}
- }
  
--static void dev_reset_queue(struct net_device *dev,
--			    struct netdev_queue *dev_queue,
--			    void *_unused)
--{
--	struct Qdisc *qdisc;
--	bool nolock;
--
--	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
--	if (!qdisc)
--		return;
--
--	nolock = qdisc->flags & TCQ_F_NOLOCK;
--
--	if (nolock)
--		spin_lock_bh(&qdisc->seqlock);
--	spin_lock_bh(qdisc_lock(qdisc));
--
--	qdisc_reset(qdisc);
--
--	spin_unlock_bh(qdisc_lock(qdisc));
--	if (nolock) {
--		clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
--		clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
--		spin_unlock_bh(&qdisc->seqlock);
--	}
--}
--
- static bool some_qdisc_is_busy(struct net_device *dev)
- {
- 	unsigned int i;
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index c89cb6eba27da..efcca26966213 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -146,15 +146,12 @@ teql_destroy(struct Qdisc *sch)
- 					master->slaves = NEXT_SLAVE(q);
- 					if (q == master->slaves) {
- 						struct netdev_queue *txq;
--						spinlock_t *root_lock;
+ 	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+@@ -3363,6 +3364,7 @@ static int bpf_skb_proto_6_to_4(struct s
+ 			shinfo->gso_type &= ~SKB_GSO_TCPV6;
+ 			shinfo->gso_type |=  SKB_GSO_TCPV4;
+ 		}
++		shinfo->gso_type |=  SKB_GSO_DODGY;
+ 	}
  
- 						txq = netdev_get_tx_queue(master->dev, 0);
- 						master->slaves = NULL;
+ 	bpf_skb_change_protocol(skb, ETH_P_IP);
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -106,7 +106,8 @@ static struct sk_buff *tcp4_gso_segment(
+ 	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
+ 		struct tcphdr *th = tcp_hdr(skb);
  
--						root_lock = qdisc_root_sleeping_lock(rtnl_dereference(txq->qdisc));
--						spin_lock_bh(root_lock);
--						qdisc_reset(rtnl_dereference(txq->qdisc));
--						spin_unlock_bh(root_lock);
-+						dev_reset_queue(master->dev,
-+								txq, NULL);
- 					}
- 				}
- 				skb_queue_purge(&dat->q);
--- 
-2.51.0
-
+-		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
++		if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
++		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
+ 			return __tcp4_gso_segment_list(skb, features);
+ 
+ 		skb->ip_summed = CHECKSUM_NONE;
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -351,7 +351,8 @@ struct sk_buff *__udp_gso_segment(struct
+ 
+ 	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
+ 		 /* Detect modified geometry and pass those to skb_segment. */
+-		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
++		if ((skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size) &&
++		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY))
+ 			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
+ 
+ 		ret = __skb_linearize(gso_skb);
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -108,7 +108,8 @@ static struct sk_buff *tcp6_gso_segment(
+ 	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
+ 		struct tcphdr *th = tcp_hdr(skb);
+ 
+-		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
++		if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
++		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
+ 			return __tcp6_gso_segment_list(skb, features);
+ 
+ 		skb->ip_summed = CHECKSUM_NONE;
 
 
 
