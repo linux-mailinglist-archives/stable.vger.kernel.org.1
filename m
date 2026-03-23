@@ -1,289 +1,245 @@
-Return-Path: <stable+bounces-227934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227936-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YK3oHVELwWmtPwQAu9opvQ
-	(envelope-from <stable+bounces-227934-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:43:45 +0100
+	id cCgtOp0MwWngQAQAu9opvQ
+	(envelope-from <stable+bounces-227936-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:49:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 119B82EF43C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:43:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55DF32EF544
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:49:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9E89303B146
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 09:40:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74E76305E152
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 09:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8324386C14;
-	Mon, 23 Mar 2026 09:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VaCXrhFW"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A6E386C0E;
+	Mon, 23 Mar 2026 09:43:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD7129992B
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 09:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 888B6386C3D;
+	Mon, 23 Mar 2026 09:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774258822; cv=none; b=H22g3LviJHb9YysBA2ICbmdmbgQ0ijVUb8IqsP305WYfDQteW/XTn9ctuzrHcrTwbFSinGMvqRB9MI+EQKIjoLmXk1xnerCTBdtDDG8n8K06fbepHMdXY650FS0WlX6i38NWlEglKduw/41tlX1RBIgx4ahE4+sUNE4QfsSPph0=
+	t=1774259030; cv=none; b=tyoBLRjjQsJf9NeVAYiyo4fd6/1sFDAWiyogfDCr0oOZZdxHwymgfgQ8V2WW6LqOYHGRSIfIpJt5aop/DOGg8IUNJYgsAviz27g5Xp1zp7YcJTOsxvNDHd1ybg5mTrBm418c5z97riDdAaasod9x+MbPeBMKurLc4UoY2q2Kb0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774258822; c=relaxed/simple;
-	bh=QMhP9ISMPM6kCpLiQYJSezS8/ndakvzCzC0hZ3AYsuc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=L4gAP4NRRBTI3J2u2Xsq5nOF5I90toGfRaXr25wXormgNw5D3VE0jhsZR5Psnglu7TuP/l6ivxNcnASstylQ0cHkuvcBjGCgYECp86xRLt+J497qND9eikIFGvoI0n/edFcycTaKggPR3FvRFWJuB+JPC+lvbl7u0ZcjOhQ4Chc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VaCXrhFW; arc=none smtp.client-ip=209.85.128.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-79ab5fd969aso6459757b3.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 02:40:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774258820; x=1774863620; darn=vger.kernel.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ek3QMzzuCdQ2kmTVHTH653xAneszL99lr6ZT2m0+zdo=;
-        b=VaCXrhFW3thS7V/v3Qm/6pH/np5PzuUbffymxJT1msQ5NZvFRKXnzK8FHIOJ8miyr3
-         srTx+MfH7UDZGTQ2VVhpJcldHNy1WdI9ZgXUJ7+LB7Cynk6mAJL/vyE5lOTS1Yr/bwHo
-         8K8qzWc9GtCQpjKWL3/p6/YeV+BcoCBfT+hLOPPgg8vjDSSBbrfia9ycdr09/JCqntUw
-         GXi4W+6GjCVv3B/k6ZS0U2TuhPBfO7rMTZWka++OV5f/EbO7H++NXruDlN+q8ayYOG1j
-         8JKD351Q/TlnOTOpF7z47MItwew0CiV+7ZC+Z35xjhOT6a8LbDiRESmVmVtLEqRzjq/P
-         sqiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774258820; x=1774863620;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ek3QMzzuCdQ2kmTVHTH653xAneszL99lr6ZT2m0+zdo=;
-        b=mJvX05iKq40pwWS6IVJE2DInUyoeHg6kyMz00NVKxehzPmoS09v3mB9fYk2SXZZFbG
-         /caGaFTp6BLy5qAmexUrFly/PWmc5AARn9o35zmAAPr9ok9smKppimmwnPP63B7y7Fet
-         k3B6eM0LpsXO5J8SOiDvVUuFxTdTK3zMDjp7Zra0Qxb/IhYo9Uyqb8pi89bO1HOUmXFj
-         09gFplo/OuxB7Fi2U6GPs04oLc5YG5kFA1hWXbFl+YgHY1NVADWM6kYaTl/d4LajfYQe
-         xXZ3dsfqEycJWLFIS5qGjnvvMG9S5lGCnqbOwDBQ3RsIqPj4HELtyiN0e0LFHQbutIXK
-         213A==
-X-Forwarded-Encrypted: i=1; AJvYcCUrtFuNlt+zTxClpIfOQVVoFZti8qRIamvpN+O1lHa/cX0EAQ+T+Ixy//tV7Js9yhaqH3jrFYQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXm4oUGDAaNqU8wWqnz9EsfMn+n23WJo/bZhr5bTJvY6ORKsoK
-	P8IRHp50ACLeRVK2+JZjSFYNoVy/NBw3iGH/6IxdZsNLQsnTqUwX/uH3IrZcETZwGA==
-X-Gm-Gg: ATEYQzwwd7PvE1QH/bLyB9MG2Qg4xRDGc9bZfbuhr3/F6qhX7q5O1qsrWq4xp73wXPk
-	wciPk5AfW00D4YxS67KP1SWelBjaAgmIKfJHUy4ct68H7VpBKF7YvYSBvvjUMrpexMndNkvqfUe
-	+CrSnJxV2LUI/X09s+jgh5bIx46F/ii2HAHcLooVcC60rQLIjA34y7KMtTx6WHDijYUj8UX4coT
-	3ICtSM3tsD9Ibku2LAk3Ce4V6t1UStWqFMXsDvG9l8ss8kFHlFwuoRM88EqLxKp/HmVU0Do/BP0
-	vG4mQiRbe1UiGG9A8Q7YlituxfBPEqeanrG9/7i+55SQsz8JW99g9pqZp3XBjBNotns9OOBynvx
-	jMdvblCssh42rxkAAJH3VNYI62zgz55Rqz30aw7ovaCht6LrpQXO57F0lQr39NqcdFMprdjqdIz
-	awKiffD/kpkfh6UZ5GtdE1jqKaopDy1xBW0o1wF+HLwNZMrX/MA/JhDZlABkOhpOwYcswDbV2cR
-	ajt1ccWol3vjcbU9pndJA==
-X-Received: by 2002:a05:690c:f14:b0:79a:4f03:b2a4 with SMTP id 00721157ae682-79a90bd0735mr123494717b3.29.1774258819463;
-        Mon, 23 Mar 2026 02:40:19 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-79a90554a03sm54544347b3.23.2026.03.23.02.40.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 02:40:19 -0700 (PDT)
-Date: Mon, 23 Mar 2026 02:40:16 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, Baoquan He <bhe@redhat.com>, 
-    Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-    David Hildenbrand <david@kernel.org>, Dev Jain <dev.jain@arm.com>, 
-    Greg Thelen <gthelen@google.com>, Guenter Roeck <groeck@google.com>, 
-    Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-    Lance Yang <lance.yang@linux.dev>, Matthew Wilcox <willy@infradead.org>, 
-    Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org, stable@vger.kernel.org
-Subject: [PATCH 6.12.y 3/4] mm/shmem, swap: improve cached mTHP handling and
- fix potential hang
-In-Reply-To: <a07eace6-82f2-32a8-0cbc-85972d4b1eee@google.com>
-Message-ID: <318493ca-2bc3-acad-43bf-b9f694e643b0@google.com>
-References: <a07eace6-82f2-32a8-0cbc-85972d4b1eee@google.com>
+	s=arc-20240116; t=1774259030; c=relaxed/simple;
+	bh=7KYvyCCikdDKG4hHpc4BcGJc8BqrgUaiJZNMZuspKIA=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=GJQHGjzO9Lm5ftzSf5545Ak4B3+yBRsxEY6jauee+FjL12dgDQyhNHVGLsCiVitS1I5TiQp/9HwCvFVZT15ppeZ+4p+xmm25WcS9XqW99w9wWxEjE5BA9m/KxJ7BgW4Fcu16JNVfykyri+kH3VCq26qcjPLKa9Ynn5fivi/u+vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Dx_6tQC8Fpl78dAA--.26309S3;
+	Mon, 23 Mar 2026 17:43:44 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJAxGMFEC8FpmUJbAA--.29160S3;
+	Mon, 23 Mar 2026 17:43:34 +0800 (CST)
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more
+ robust
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini
+ <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
+ kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org,
+ Aurelien Jarno <aurel32@debian.org>
+References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+ <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
+ <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
+ <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
+ <CAAhV-H43BrbWseejgrmtsBRbkbsMVOX0FaHvYOXfr-R9Y2g1Fw@mail.gmail.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <40a172b3-1b8c-3cd6-97dd-64abb7502555@loongson.cn>
+Date: Mon, 23 Mar 2026 17:40:48 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-2.16 / 15.00];
+In-Reply-To: <CAAhV-H43BrbWseejgrmtsBRbkbsMVOX0FaHvYOXfr-R9Y2g1Fw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxGMFEC8FpmUJbAA--.29160S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWrWUtr4fKFWrAFyfur1UXFc_yoWrCFy8p3
+	yjyayDArWrKr4IgrW0q3WkXF4aqrnrWr1kZF1Yga4Fyr1qvw1rAr1kAr1DCFyUuw1qkF40
+	gF15Jw1avF1UXwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
+	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
+	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
+	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
+	Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
+X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[google.com,linux-foundation.org,linux.alibaba.com,redhat.com,kernel.org,arm.com,tencent.com,huaweicloud.com,linux.dev,infradead.org,gmail.com,kvack.org,vger.kernel.org];
-	TAGGED_FROM(0.00)[bounces-227934-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[google.com:+];
-	RCPT_COUNT_TWELVE(0.00)[18];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[hughd@google.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,loongson.cn:email,loongson.cn:mid];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tencent.com:email,arm.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,huaweicloud.com:email,alibaba.com:email,infradead.org:email,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 119B82EF43C
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[loongson.cn];
+	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227936-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 55DF32EF544
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Kairui Song <kasong@tencent.com>
 
-commit 5c241ed8d031693dadf33dd98ed2e7cc363e9b66 upstream.
 
-The current swap-in code assumes that, when a swap entry in shmem mapping
-is order 0, its cached folios (if present) must be order 0 too, which
-turns out not always correct.
+On 2026/3/23 下午4:14, Huacai Chen wrote:
+> On Mon, Mar 23, 2026 at 3:59 PM Bibo Mao <maobibo@loongson.cn> wrote:
+>>
+>>
+>>
+>> On 2026/3/23 下午3:08, Huacai Chen wrote:
+>>> On Mon, Mar 23, 2026 at 11:16 AM Bibo Mao <maobibo@loongson.cn> wrote:
+>>>>
+>>>>
+>>>>
+>>>> On 2026/3/22 下午9:53, Huacai Chen wrote:
+>>>>> kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
+>>>>> cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
+>>>>> case so as to make it more robust.
+>>>>>
+>>>>> This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
+>>>>>
+>>>>> Cc: <stable@vger.kernel.org>
+>>>>> Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical cpuid")
+>>>>> Reported-by: Aurelien Jarno <aurel32@debian.org>
+>>>>> Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+>>>>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>>>>> ---
+>>>>>     arch/loongarch/kvm/vcpu.c | 3 +++
+>>>>>     1 file changed, 3 insertions(+)
+>>>>>
+>>>>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+>>>>> index 8ffd50a470e6..831f381a8fd1 100644
+>>>>> --- a/arch/loongarch/kvm/vcpu.c
+>>>>> +++ b/arch/loongarch/kvm/vcpu.c
+>>>>> @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
+>>>>>     {
+>>>>>         struct kvm_phyid_map *map;
+>>>>>
+>>>>> +     if (cpuid < 0)
+>>>>> +             return NULL;
+>>>>> +
+>>>>>         if (cpuid >= KVM_MAX_PHYID)
+>>>>>                 return NULL;
+>>>>>
+>>>>>
+>>>>
+>>>> if (cpuid < 0 || cpuid >= KVM_MAX_PHYID)?
+>>>> however both are OK for me.
+>>> I use a similar style as kvm_get_vcpu_by_id(). :)
+>>>
+>>> But there is another warning which can't be solved by this series (and
+>>> I doubt whether it can be solved unless revert 01a8e68396a6d51f5b).
+>>> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+>>
+>> what is the kernel config file with bug
+>>      https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+> I don't know exactly, but it needs CONFIG_FORTIFY_SOURCE.
+With CONFIG_FORTIFY_SOURCE enabled, this bug can be reproduced. It seems 
+that it actually need be converted to void * before arithmetic operation.
 
-The problem is shmem_split_large_entry is called before verifying the
-folio will eventually be swapped in, one possible race is:
+Regards
+Bibo Mao
+> 
+> Huacai
+> 
+>>
+>> kvm_eiointc_regs_access() seems has problem, it need convert to void *
+>> before arithmetic operation. I do not know whether this patch can solve
+>> this bug.
+>>
+>> diff --git a/arch/loongarch/kvm/intc/eiointc.c
+>> b/arch/loongarch/kvm/intc/eiointc.c
+>> index d2acb4d09e73..71bd67b57338 100644
+>> --- a/arch/loongarch/kvm/intc/eiointc.c
+>> +++ b/arch/loongarch/kvm/intc/eiointc.c
+>> @@ -472,34 +472,34 @@ static int kvm_eiointc_regs_access(struct
+>> kvm_device *dev,
+>>           switch (addr) {
+>>           case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
+>>                   offset = (addr - EIOINTC_NODETYPE_START) / 4;
+>> -               p = s->nodetype + offset * 4;
+>> +               p = (void *)s->nodetype + offset * 4;
+>>                   break;
+>>           case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
+>>                   offset = (addr - EIOINTC_IPMAP_START) / 4;
+>> -               p = &s->ipmap + offset * 4;
+>> +               p = (void *)&s->ipmap + offset * 4;
+>>                   break;
+>>           case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
+>>                   offset = (addr - EIOINTC_ENABLE_START) / 4;
+>> -               p = s->enable + offset * 4;
+>> +               p = (void *)s->enable + offset * 4;
+>>                   break;
+>>           case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
+>>                   offset = (addr - EIOINTC_BOUNCE_START) / 4;
+>> -               p = s->bounce + offset * 4;
+>> +               p = (void *)s->bounce + offset * 4;
+>>                   break;
+>>           case EIOINTC_ISR_START ... EIOINTC_ISR_END:
+>>                   offset = (addr - EIOINTC_ISR_START) / 4;
+>> -               p = s->isr + offset * 4;
+>> +               p = (void *)s->isr + offset * 4;
+>>                   break;
+>>           case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
+>>                   if (cpu >= s->num_cpu)
+>>                           return -EINVAL;
+>>
+>>                   offset = (addr - EIOINTC_COREISR_START) / 4;
+>> -               p = s->coreisr[cpu] + offset * 4;
+>> +               p = (void *)s->coreisr[cpu] + offset * 4;
+>>                   break;
+>>           case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
+>>                   offset = (addr - EIOINTC_COREMAP_START) / 4;
+>> -               p = s->coremap + offset * 4;
+>> +               p = (void *)s->coremap + offset * 4;
+>>                   break;
+>>           default:
+>>                   kvm_err("%s: unknown eiointc register, addr = %d\n",
+>> __func__, addr);
+>>
+>>
+>> Regards
+>> Bibo Mao
+>>>
+>>> Huacai
+>>>
+>>>>
+>>>> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
+>>>>
+>>
+>>
 
-    CPU1                          CPU2
-shmem_swapin_folio
-/* swap in of order > 0 swap entry S1 */
-  folio = swap_cache_get_folio
-  /* folio = NULL */
-  order = xa_get_order
-  /* order > 0 */
-  folio = shmem_swap_alloc_folio
-  /* mTHP alloc failure, folio = NULL */
-  <... Interrupted ...>
-                                 shmem_swapin_folio
-                                 /* S1 is swapped in */
-                                 shmem_writeout
-                                 /* S1 is swapped out, folio cached */
-  shmem_split_large_entry(..., S1)
-  /* S1 is split, but the folio covering it has order > 0 now */
-
-Now any following swapin of S1 will hang: `xa_get_order` returns 0, and
-folio lookup will return a folio with order > 0.  The
-`xa_get_order(&mapping->i_pages, index) != folio_order(folio)` will always
-return false causing swap-in to return -EEXIST.
-
-And this looks fragile.  So fix this up by allowing seeing a larger folio
-in swap cache, and check the whole shmem mapping range covered by the
-swapin have the right swap value upon inserting the folio.  And drop the
-redundant tree walks before the insertion.
-
-This will actually improve performance, as it avoids two redundant Xarray
-tree walks in the hot path, and the only side effect is that in the
-failure path, shmem may redundantly reallocate a few folios causing
-temporary slight memory pressure.
-
-And worth noting, it may seems the order and value check before inserting
-might help reducing the lock contention, which is not true.  The swap
-cache layer ensures raced swapin will either see a swap cache folio or
-failed to do a swapin (we have SWAP_HAS_CACHE bit even if swap cache is
-bypassed), so holding the folio lock and checking the folio flag is
-already good enough for avoiding the lock contention.  The chance that a
-folio passes the swap entry value check but the shmem mapping slot has
-changed should be very low.
-
-Link: https://lkml.kernel.org/r/20250728075306.12704-1-ryncsn@gmail.com
-Link: https://lkml.kernel.org/r/20250728075306.12704-2-ryncsn@gmail.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Kairui Song <kasong@tencent.com>
-Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Nhat Pham <nphamcs@gmail.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-[ hughd: removed skip_swapcache dependencies ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
----
- mm/shmem.c | 39 ++++++++++++++++++++++++++++++---------
- 1 file changed, 30 insertions(+), 9 deletions(-)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 9b7df8397efc..1b95e8e7d68d 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -794,7 +794,9 @@ static int shmem_add_to_page_cache(struct folio *folio,
- 				   pgoff_t index, void *expected, gfp_t gfp)
- {
- 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
--	long nr = folio_nr_pages(folio);
-+	unsigned long nr = folio_nr_pages(folio);
-+	swp_entry_t iter, swap;
-+	void *entry;
- 
- 	VM_BUG_ON_FOLIO(index != round_down(index, nr), folio);
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-@@ -806,14 +808,25 @@ static int shmem_add_to_page_cache(struct folio *folio,
- 
- 	gfp &= GFP_RECLAIM_MASK;
- 	folio_throttle_swaprate(folio, gfp);
-+	swap = radix_to_swp_entry(expected);
- 
- 	do {
-+		iter = swap;
- 		xas_lock_irq(&xas);
--		if (expected != xas_find_conflict(&xas)) {
--			xas_set_err(&xas, -EEXIST);
--			goto unlock;
-+		xas_for_each_conflict(&xas, entry) {
-+			/*
-+			 * The range must either be empty, or filled with
-+			 * expected swap entries. Shmem swap entries are never
-+			 * partially freed without split of both entry and
-+			 * folio, so there shouldn't be any holes.
-+			 */
-+			if (!expected || entry != swp_to_radix_entry(iter)) {
-+				xas_set_err(&xas, -EEXIST);
-+				goto unlock;
-+			}
-+			iter.val += 1 << xas_get_order(&xas);
- 		}
--		if (expected && xas_find_conflict(&xas)) {
-+		if (expected && iter.val - nr != swap.val) {
- 			xas_set_err(&xas, -EEXIST);
- 			goto unlock;
- 		}
-@@ -2189,7 +2202,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 			error = -ENOMEM;
- 			goto failed;
- 		}
--	} else if (order != folio_order(folio)) {
-+	} else if (order > folio_order(folio)) {
- 		/*
- 		 * Swap readahead may swap in order 0 folios into swapcache
- 		 * asynchronously, while the shmem mapping can still stores
-@@ -2214,14 +2227,22 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 
- 			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
- 		}
-+	} else if (order < folio_order(folio)) {
-+		swap.val = round_down(swap.val, 1 << folio_order(folio));
-+		index = round_down(index, 1 << folio_order(folio));
- 	}
- 
--	/* We have to do this with folio locked to prevent races */
-+	/*
-+	 * We have to do this with the folio locked to prevent races.
-+	 * The shmem_confirm_swap below only checks if the first swap
-+	 * entry matches the folio, that's enough to ensure the folio
-+	 * is not used outside of shmem, as shmem swap entries
-+	 * and swap cache folios are never partially freed.
-+	 */
- 	folio_lock(folio);
- 	if (!folio_test_swapcache(folio) ||
--	    folio->swap.val != swap.val ||
- 	    !shmem_confirm_swap(mapping, index, swap) ||
--	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
-+	    folio->swap.val != swap.val) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
 
