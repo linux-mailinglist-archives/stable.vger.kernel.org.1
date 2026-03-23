@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229037-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +AVoCB97wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:47 +0100
+	id iKJcBbtVwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229037-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741D92FA2AD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01C942F5A29
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 205AE30D9E28
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA87730255DD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523632773FF;
-	Mon, 23 Mar 2026 16:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C26C387599;
+	Mon, 23 Mar 2026 14:57:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XT9e07F6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/cuSj9j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EB012CDA5;
-	Mon, 23 Mar 2026 16:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40C61DA0E1;
+	Mon, 23 Mar 2026 14:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282181; cv=none; b=cnwc0bNBTwnMgQxNO2g40oT26NgdjPhLKMQXDaqEvcExn2MP5hH0CzDICc+NO8a4z9ab/k0x0siYk8AJN+040o1TxXZnM/SREHD/xIyFdZuEtroGUH3c2wlEcIu4IgnHitObtXtDe3rAic/dmpwLcwGSqjf3I/X9CJsSqheuJLI=
+	t=1774277858; cv=none; b=J+e0gVebPYGZU8cVc+LTQoLcLFkkUW7lBLO626KZlFFBcA6CPpMFDkug4xlMmpTW/LL+0EK3bSHKP6s9/Y7MQ/ZOCG7ULU+cRiQLItgkMFfJXtgBmx2KipwF7+E1AnjHG/oy84zzx1/s7o52qSTd8eMiB8QaILGfaJ2F59YSn0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282181; c=relaxed/simple;
-	bh=t/DF04G4JQz0rRLCjJnzDxvlPOAZbFS5lWlb/l4kfgI=;
+	s=arc-20240116; t=1774277858; c=relaxed/simple;
+	bh=DfE8TQvetqxIdBrEwqRir87VFl6HWnp6nkcgkvHilhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EE7ZwM49LWnYabUsIZXYGZrTswa3OzGO7Ht5FoffNYL3ZfNIr3uZVpZSGg3bCSPBiwsdoFlGPdjFeu8GWcPNe9bpHY4Vplb+0IsDmdujRrTb9iGeDeoeMgoRUI14oTYBfRVQuZRhWBefgRXRsOwo/cTo6TwX42zQ5Fx7RY9QpQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XT9e07F6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CE0C4CEF7;
-	Mon, 23 Mar 2026 16:09:39 +0000 (UTC)
+	 MIME-Version; b=BGCOOzFNvc/vthXFq43u4SwTXQ0Rogz7jMdX98Nkbd5xTTTNs2/0vrzNGvRZOYvCvzwkXTwoKA5AnfEo985+YgFa4vvt2iDzyVKwmpXn1PeTu8SZtWQGhO71Nmca5wIuvXSNUulnrp/2+rQELehewLgUVhpAFkD5CN+CkwROVX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/cuSj9j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483A6C4CEF7;
+	Mon, 23 Mar 2026 14:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282180;
-	bh=t/DF04G4JQz0rRLCjJnzDxvlPOAZbFS5lWlb/l4kfgI=;
+	s=korg; t=1774277858;
+	bh=DfE8TQvetqxIdBrEwqRir87VFl6HWnp6nkcgkvHilhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XT9e07F6kSMtFKj5s2WhJh+QmLvl5SdBiMyTPY1d/Ye0jdfnYwfO6oefu/G0xRW4e
-	 OMUnuOmZefURRHxZOXpxj6Kl7RJ/+nISr6aw2A4k8hOTlWh1PvcZ4MUH9l94SuHQL0
-	 1dxGFYWlGxhQ71SPNRXJylur4GJx84XPaVTsZbqY=
+	b=Z/cuSj9jN1XKs9MdCaG7D8grkko+J8VVD/e6MnZrSF3vHcICPK199twwT2zp3crMc
+	 PnM+goOXS+SMdOZmcZZkHfk2nW3eMMy4wxdaZrDUrW9T9621LU/iOrMWc8tpWWcTQg
+	 SQuPL9ZupcaxpTximeWWc4jnsrv827JTss0m+Amo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	"Thomas Richard (TI)" <thomas.richard@bootlin.com>,
-	Peter Chen <peter.chen@kernel.org>,
+	Florian Eckert <fe@dev.tdt.de>,
+	Linus Walleij <linusw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/481] usb: cdns3: fix role switching during resume
+Subject: [PATCH 6.6 124/567] pinctrl: equilibrium: rename irq_chip function callbacks
 Date: Mon, 23 Mar 2026 14:40:44 +0100
-Message-ID: <20260323134526.734450788@linuxfoundation.org>
+Message-ID: <20260323134536.878082277@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,124 +66,124 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229534-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229037-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[fe.dev.tdt.de:query timed out,linusw.kernel.org:query timed out];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 741D92FA2AD
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 01C942F5A29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Richard (TI) <thomas.richard@bootlin.com>
+From: Florian Eckert <fe@dev.tdt.de>
 
-[ Upstream commit 87e4b043b98a1d269be0b812f383881abee0ca45 ]
+[ Upstream commit 1f96b84835eafb3e6f366dc3a66c0e69504cec9d ]
 
-If the role change while we are suspended, the cdns3 driver switches to the
-new mode during resume. However, switching to host mode in this context
-causes a NULL pointer dereference.
+Renaming of the irq_chip callback functions to improve clarity.
 
-The host role's start() operation registers a xhci-hcd device, but its
-probe is deferred while we are in the resume path. The host role's resume()
-operation assumes the xhci-hcd device is already probed, which is not the
-case, leading to the dereference. Since the start() operation of the new
-role is already called, the resume operation can be skipped.
-
-So skip the resume operation for the new role if a role switch occurs
-during resume. Once the resume sequence is complete, the xhci-hcd device
-can be probed in case of host mode.
-
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
-Mem abort info:
-...
-Data abort info:
-...
-[0000000000000208] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 0000000096000004 [#1]  SMP
-Modules linked in:
-CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
-6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
-Hardware name: Texas Instruments J7200 EVM (DT)
-pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : usb_hcd_is_primary_hcd+0x0/0x1c
-lr : cdns_host_resume+0x24/0x5c
-...
-Call trace:
- usb_hcd_is_primary_hcd+0x0/0x1c (P)
- cdns_resume+0x6c/0xbc
- cdns3_controller_resume.isra.0+0xe8/0x17c
- cdns3_plat_resume+0x18/0x24
- platform_pm_resume+0x2c/0x68
- dpm_run_callback+0x90/0x248
- device_resume+0x100/0x24c
- dpm_resume+0x190/0x2ec
- dpm_resume_end+0x18/0x34
- suspend_devices_and_enter+0x2b0/0xa44
- pm_suspend+0x16c/0x5fc
- state_store+0x80/0xec
- kobj_attr_store+0x18/0x2c
- sysfs_kf_write+0x7c/0x94
- kernfs_fop_write_iter+0x130/0x1dc
- vfs_write+0x240/0x370
- ksys_write+0x70/0x108
- __arm64_sys_write+0x1c/0x28
- invoke_syscall+0x48/0x10c
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x34/0x108
- el0t_64_sync_handler+0xa0/0xe4
- el0t_64_sync+0x198/0x19c
-Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
----[ end trace 0000000000000000 ]---
-
-Cc: stable <stable@kernel.org>
-Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
-Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://patch.msgid.link/20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Florian Eckert <fe@dev.tdt.de>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Stable-dep-of: 3e00b1b332e5 ("pinctrl: equilibrium: fix warning trace on load")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-equilibrium.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index 8e46fd36b0e56..93e93bb9a314f 100644
---- a/drivers/usb/cdns3/core.c
-+++ b/drivers/usb/cdns3/core.c
-@@ -550,7 +550,7 @@ int cdns_resume(struct cdns *cdns)
- 		}
- 	}
+diff --git a/drivers/pinctrl/pinctrl-equilibrium.c b/drivers/pinctrl/pinctrl-equilibrium.c
+index d7c89c310b373..a5f7e34146c7c 100644
+--- a/drivers/pinctrl/pinctrl-equilibrium.c
++++ b/drivers/pinctrl/pinctrl-equilibrium.c
+@@ -22,7 +22,7 @@
+ #define PIN_NAME_LEN	10
+ #define PAD_REG_OFF	0x100
  
--	if (cdns->roles[cdns->role]->resume)
-+	if (!role_changed && cdns->roles[cdns->role]->resume)
- 		cdns->roles[cdns->role]->resume(cdns, power_lost);
+-static void eqbr_gpio_disable_irq(struct irq_data *d)
++static void eqbr_irq_mask(struct irq_data *d)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
+@@ -35,7 +35,7 @@ static void eqbr_gpio_disable_irq(struct irq_data *d)
+ 	gpiochip_disable_irq(gc, offset);
+ }
  
+-static void eqbr_gpio_enable_irq(struct irq_data *d)
++static void eqbr_irq_unmask(struct irq_data *d)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
+@@ -49,7 +49,7 @@ static void eqbr_gpio_enable_irq(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&gctrl->lock, flags);
+ }
+ 
+-static void eqbr_gpio_ack_irq(struct irq_data *d)
++static void eqbr_irq_ack(struct irq_data *d)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
+@@ -61,10 +61,10 @@ static void eqbr_gpio_ack_irq(struct irq_data *d)
+ 	raw_spin_unlock_irqrestore(&gctrl->lock, flags);
+ }
+ 
+-static void eqbr_gpio_mask_ack_irq(struct irq_data *d)
++static void eqbr_irq_mask_ack(struct irq_data *d)
+ {
+-	eqbr_gpio_disable_irq(d);
+-	eqbr_gpio_ack_irq(d);
++	eqbr_irq_mask(d);
++	eqbr_irq_ack(d);
+ }
+ 
+ static inline void eqbr_cfg_bit(void __iomem *addr,
+@@ -91,7 +91,7 @@ static int eqbr_irq_type_cfg(struct gpio_irq_type *type,
  	return 0;
+ }
+ 
+-static int eqbr_gpio_set_irq_type(struct irq_data *d, unsigned int type)
++static int eqbr_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
+@@ -165,11 +165,11 @@ static void eqbr_irq_handler(struct irq_desc *desc)
+ 
+ static const struct irq_chip eqbr_irq_chip = {
+ 	.name = "gpio_irq",
+-	.irq_mask = eqbr_gpio_disable_irq,
+-	.irq_unmask = eqbr_gpio_enable_irq,
+-	.irq_ack = eqbr_gpio_ack_irq,
+-	.irq_mask_ack = eqbr_gpio_mask_ack_irq,
+-	.irq_set_type = eqbr_gpio_set_irq_type,
++	.irq_ack = eqbr_irq_ack,
++	.irq_mask = eqbr_irq_mask,
++	.irq_mask_ack = eqbr_irq_mask_ack,
++	.irq_unmask = eqbr_irq_unmask,
++	.irq_set_type = eqbr_irq_set_type,
+ 	.flags = IRQCHIP_IMMUTABLE,
+ 	GPIOCHIP_IRQ_RESOURCE_HELPERS,
+ };
 -- 
 2.51.0
 
