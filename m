@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-229871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OEZeKMh1wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229871-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:18:00 +0100
+	id AAvWHuVXwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:29 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BA4D2F9B32
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:17:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D4B2F5E8B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 70B0F31BD938
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B3E530E6D7B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8160F3B8959;
-	Mon, 23 Mar 2026 16:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981F13B3885;
+	Mon, 23 Mar 2026 14:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blVG5iHW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKauHyR5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B30381AEB;
-	Mon, 23 Mar 2026 16:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578553B2FFC;
+	Mon, 23 Mar 2026 14:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283088; cv=none; b=iIfN3WE6AHd9CF7Irk4UYaggnC3Q+RHU53ojenhAtzICtdp5GWckzsGmMPpbzGUoTKdhvD3/r+8cnxdTiFzWN5DWA0CPImaliysXkS0mAGRNL5OsYHMkWhvQKozs6GSM6LgiO8NjuyGvJnSpg+mpyej/uedeHsTYYcAp7Wdf30U=
+	t=1774277386; cv=none; b=aBfk1fUlTToecZNWg3vdolxxBZyUSAhylLJolhVFyOlM1gOBSxx7mIKoNyZ1EUdoYlJG/Gq+Dm1di039LnEw4KcGbNBmRYiyMIPr8waGMtLEHKgxKjtVqRSQXl6W86GAPhSiPkWG1g6JfLlQGwC6qjgh8S8nYGdDQaVJIYlIDw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283088; c=relaxed/simple;
-	bh=cTk8uFniVRrVLRreLUqMoTrHZeE7I+YRWIu8dYNf1yE=;
+	s=arc-20240116; t=1774277386; c=relaxed/simple;
+	bh=KMz5i571M73eZmOyHJIsRPiW9pUFIJULhJRzpM5eQKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FlyHMYMtdzo5oLvv4Xi27MDrkA8Divc90X8MbbgSTp60JigpylwuzaOgCUBw7EI4emIjqf3x+7qnZzM+WfKNSbL56VusY5T7xDSAf790mpeTw0abu36eFmmcuHKPM20caEcotDCbniN+I/mcjlQ0hJEgaVZpJufoCGrrmu0isEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blVG5iHW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3860C4CEF7;
-	Mon, 23 Mar 2026 16:24:47 +0000 (UTC)
+	 MIME-Version; b=Y0qXwyP9tJXRdvXYA0Rf5NIOVkEMGW0zfKxnnV2SxIywia587g/euuI89RSR1KcSQN2V7X2fOUh/O+yXSygpgf6KkHp9Q62GTYZ/SOIr8Hiaon0lDM1Qv1WLY7I3p0CLIUKJtEFQCMENGedLkyTo9nFEvVe7EbKHH9XQrlxCJ/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKauHyR5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FD0C4CEF7;
+	Mon, 23 Mar 2026 14:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283088;
-	bh=cTk8uFniVRrVLRreLUqMoTrHZeE7I+YRWIu8dYNf1yE=;
+	s=korg; t=1774277386;
+	bh=KMz5i571M73eZmOyHJIsRPiW9pUFIJULhJRzpM5eQKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blVG5iHWzdQ1wu1Cogl8bNcc4sJHuau2gj54lacOXFL0+U3XN0uAvwttoRb0RC34W
-	 n2YSuIFK9cf8/YggN9wCBHFUbz3A9BqXsnYAyrTdXGnpAsprWF905U+sJHvOhG0TV9
-	 QtuqBcV2IEzlwc25kc/4+qUc2VxsxTAcqtpCgHxs=
+	b=mKauHyR5XqAYXHnu0nDlElO1/UpjyUhuRZF3mkiYn0zLLYBJLkChTKm/1B5m7KXO4
+	 FtynWtVrTkQ6QnecB11fY/7s12nQC7lKX8ySQ6QzrnBAlJwW7Mek+tR/ngf6RETJ+P
+	 gRTQD2MavYmIepNKQET1Tw744mhZ1ZD0MmLo32Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?H=C3=A5kon=20Bugge?= <haakon.bugge@oracle.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.1 397/481] PCI/ACPI: Restrict program_hpx_type2() to AER bits
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 383/460] Bluetooth: ISO: Fix defer tests being unstable
 Date: Mon, 23 Mar 2026 14:46:19 +0100
-Message-ID: <20260323134534.840522691@linuxfoundation.org>
+Message-ID: <20260323134535.980379965@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,226 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229871-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228881-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 9BA4D2F9B32
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 74D4B2F5E8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Håkon Bugge <haakon.bugge@oracle.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 9abf79c8d7b40db0e5a34aa8c744ea60ff9a3fcf upstream.
+[ Upstream commit 62bcaa6b351b6dc400f6c6b83762001fd9f5c12d ]
 
-Previously program_hpx_type2() applied PCIe settings unconditionally,
-which could incorrectly change bits like Extended Tag Field Enable and
-Enable Relaxed Ordering.
+iso-tester defer tests seem to fail with hci_conn_hash_lookup_cig
+being unable to resolve a cig in set_cig_params_sync due a race
+where it is run immediatelly before hci_bind_cis is able to set
+the QoS settings into the hci_conn object.
 
-When _HPX was added to ACPI r3.0, the intent of the PCIe Setting
-Record (Type 2) in sec 6.2.7.3 was to configure AER registers when the
-OS does not own the AER Capability:
+So this moves the assigning of the QoS settings to be done directly
+by hci_le_set_cig_params to prevent that from happening again.
 
-  The PCI Express setting record contains ... [the AER] Uncorrectable
-  Error Mask, Uncorrectable Error Severity, Correctable Error Mask
-  ... to be used when configuring registers in the Advanced Error
-  Reporting Extended Capability Structure ...
-
-  OSPM [1] will only evaluate _HPX with Setting Record – Type 2 if
-  OSPM is not controlling the PCI Express Advanced Error Reporting
-  capability.
-
-ACPI r3.0b, sec 6.2.7.3, added more AER registers, including registers
-in the PCIe Capability with AER-related bits, and the restriction that
-the OS use this only when it owns PCIe native hotplug:
-
-  ... when configuring PCI Express registers in the Advanced Error
-  Reporting Extended Capability Structure *or PCI Express Capability
-  Structure* ...
-
-  An OS that has assumed ownership of native hot plug but does not
-  ... have ownership of the AER register set must use ... the Type 2
-  record to program the AER registers ...
-
-  However, since the Type 2 record also includes register bits that
-  have functions other than AER, the OS must ignore values ... that
-  are not applicable.
-
-Restrict program_hpx_type2() to only the intended purpose:
-
-  - Apply settings only when OS owns PCIe native hotplug but not AER,
-
-  - Only touch the AER-related bits (Error Reporting Enables) in Device
-    Control
-
-  - Don't touch Link Control at all, since nothing there seems AER-related,
-    but log _HPX settings for debugging purposes
-
-Note that Read Completion Boundary is now configured elsewhere, since it is
-unrelated to _HPX.
-
-[1] Operating System-directed configuration and Power Management
-
-Fixes: 40abb96c51bb ("[PATCH] pciehp: Fix programming hotplug parameters")
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20260129175237.727059-3-haakon.bugge@oracle.com
-[ Conflict in drivers/pci.h because the context has changed. ]
-Signed-off-by: Håkon Bugge <haakon.bugge@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-acpi.c |   59 +++++++++++++++++++------------------------------
- drivers/pci/pci.h      |    3 ++
- drivers/pci/pcie/aer.c |    3 --
- 3 files changed, 27 insertions(+), 38 deletions(-)
+ net/bluetooth/hci_conn.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/pci-acpi.c
-+++ b/drivers/pci/pci-acpi.c
-@@ -246,21 +246,6 @@ static acpi_status decode_type1_hpx_reco
- 	return AE_OK;
- }
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index fa74fac5af778..447d29c67e7c1 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1868,6 +1868,8 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 		return false;
  
--static bool pcie_root_rcb_set(struct pci_dev *dev)
--{
--	struct pci_dev *rp = pcie_find_root_port(dev);
--	u16 lnkctl;
--
--	if (!rp)
--		return false;
--
--	pcie_capability_read_word(rp, PCI_EXP_LNKCTL, &lnkctl);
--	if (lnkctl & PCI_EXP_LNKCTL_RCB)
--		return true;
--
--	return false;
--}
--
- /* _HPX PCI Express Setting Record (Type 2) */
- struct hpx_type2 {
- 	u32 revision;
-@@ -286,6 +271,7 @@ static void program_hpx_type2(struct pci
- {
- 	int pos;
- 	u32 reg32;
-+	const struct pci_host_bridge *host;
- 
- 	if (!hpx)
- 		return;
-@@ -293,6 +279,15 @@ static void program_hpx_type2(struct pci
- 	if (!pci_is_pcie(dev))
- 		return;
- 
-+	host = pci_find_host_bridge(dev->bus);
+ done:
++	conn->iso_qos = *qos;
 +
-+	/*
-+	 * Only do the _HPX Type 2 programming if OS owns PCIe native
-+	 * hotplug but not AER.
-+	 */
-+	if (!host->native_pcie_hotplug || host->native_aer)
-+		return;
-+
- 	if (hpx->revision > 1) {
- 		pci_warn(dev, "PCIe settings rev %d not supported\n",
- 			 hpx->revision);
-@@ -300,33 +295,27 @@ static void program_hpx_type2(struct pci
+ 	if (hci_cmd_sync_queue(hdev, set_cig_params_sync,
+ 			       UINT_PTR(qos->ucast.cig), NULL) < 0)
+ 		return false;
+@@ -1934,8 +1936,6 @@ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
  	}
  
- 	/*
--	 * Don't allow _HPX to change MPS or MRRS settings.  We manage
--	 * those to make sure they're consistent with the rest of the
--	 * platform.
-+	 * We only allow _HPX to program DEVCTL bits related to AER, namely
-+	 * PCI_EXP_DEVCTL_CERE, PCI_EXP_DEVCTL_NFERE, PCI_EXP_DEVCTL_FERE,
-+	 * and PCI_EXP_DEVCTL_URRE.
-+	 *
-+	 * The rest of DEVCTL is managed by the OS to make sure it's
-+	 * consistent with the rest of the platform.
- 	 */
--	hpx->pci_exp_devctl_and |= PCI_EXP_DEVCTL_PAYLOAD |
--				    PCI_EXP_DEVCTL_READRQ;
--	hpx->pci_exp_devctl_or &= ~(PCI_EXP_DEVCTL_PAYLOAD |
--				    PCI_EXP_DEVCTL_READRQ);
-+	hpx->pci_exp_devctl_and |= ~PCI_EXP_AER_FLAGS;
-+	hpx->pci_exp_devctl_or &= PCI_EXP_AER_FLAGS;
- 
- 	/* Initialize Device Control Register */
- 	pcie_capability_clear_and_set_word(dev, PCI_EXP_DEVCTL,
- 			~hpx->pci_exp_devctl_and, hpx->pci_exp_devctl_or);
- 
--	/* Initialize Link Control Register */
-+	/* Log if _HPX attempts to modify Link Control Register */
- 	if (pcie_cap_has_lnkctl(dev)) {
+ 	hci_conn_hold(cis);
 -
--		/*
--		 * If the Root Port supports Read Completion Boundary of
--		 * 128, set RCB to 128.  Otherwise, clear it.
--		 */
--		hpx->pci_exp_lnkctl_and |= PCI_EXP_LNKCTL_RCB;
--		hpx->pci_exp_lnkctl_or &= ~PCI_EXP_LNKCTL_RCB;
--		if (pcie_root_rcb_set(dev))
--			hpx->pci_exp_lnkctl_or |= PCI_EXP_LNKCTL_RCB;
--
--		pcie_capability_clear_and_set_word(dev, PCI_EXP_LNKCTL,
--			~hpx->pci_exp_lnkctl_and, hpx->pci_exp_lnkctl_or);
-+		if (hpx->pci_exp_lnkctl_and != 0xffff ||
-+		    hpx->pci_exp_lnkctl_or != 0)
-+			pci_info(dev, "_HPX attempts Link Control setting (AND %#06x OR %#06x)\n",
-+				 hpx->pci_exp_lnkctl_and,
-+				 hpx->pci_exp_lnkctl_or);
- 	}
+-	cis->iso_qos = *qos;
+ 	cis->state = BT_BOUND;
  
- 	/* Find Advanced Error Reporting Enhanced Capability */
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -11,6 +11,9 @@
- 
- #define PCI_VSEC_ID_INTEL_TBT	0x1234	/* Thunderbolt */
- 
-+#define PCI_EXP_AER_FLAGS	(PCI_EXP_DEVCTL_CERE | PCI_EXP_DEVCTL_NFERE | \
-+				 PCI_EXP_DEVCTL_FERE | PCI_EXP_DEVCTL_URRE)
-+
- extern const unsigned char pcie_link_speed[];
- extern bool pci_early_dump;
- 
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -214,9 +214,6 @@ void pcie_ecrc_get_policy(char *str)
- }
- #endif	/* CONFIG_PCIE_ECRC */
- 
--#define	PCI_EXP_AER_FLAGS	(PCI_EXP_DEVCTL_CERE | PCI_EXP_DEVCTL_NFERE | \
--				 PCI_EXP_DEVCTL_FERE | PCI_EXP_DEVCTL_URRE)
--
- int pcie_aer_is_native(struct pci_dev *dev)
- {
- 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+ 	return cis;
+-- 
+2.51.0
+
 
 
 
