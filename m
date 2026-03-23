@@ -1,162 +1,149 @@
-Return-Path: <stable+bounces-230012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aL3DJfKqwWmUUQQAu9opvQ
-	(envelope-from <stable+bounces-230012-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:04:50 +0100
+	id OEztELeuwWmUUQQAu9opvQ
+	(envelope-from <stable+bounces-230013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:20:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C4F2FD8FC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:04:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB3762FDB14
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:20:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DCBE4308FBF9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 21:01:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 87F763044B9D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 21:20:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E43953603F7;
-	Mon, 23 Mar 2026 21:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8AE37DEB8;
+	Mon, 23 Mar 2026 21:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C6HLOjIc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kKvrDH6b"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8813B372661
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 21:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7686237CD55;
+	Mon, 23 Mar 2026 21:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774299692; cv=none; b=YdcEeNHyhGca1rY1/lEUjF+VzI/1XrA/fpkHkGCagHQQ3kQ05dnFzaEyCUn7AtoPuBgk0aCUjKuZ+S8jDVhz2KPaQqXnAQWFIaYRk6zyqjFjBHYLKWJTqqubnINJGQJdLz7QfNMbGmPDaWOaFvrUc1pz04vfBovCcA6MllE92bQ=
+	t=1774300806; cv=none; b=bkQZqU/wI9OtIBQSheJqlBkG6hG50JPluBbaosvA3nx93TfvN1rTglUNxw7XkLaFD0KQLC7woWAaqdQ9taF9fevfWF77y6GLvjSqvshI8pEbAZbry/rhftUNRyOuoaFutcsB6N8BkOOM6B/v8aoWJlux+d+BCbhCYL27X8KrGiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774299692; c=relaxed/simple;
-	bh=1ggRSxfqVjf+Nkyd6/5CnLXPxn5r8Z7UtuC7H2J1Yi8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SV0LFeyP9RnvBZai3tp59z3fDBdq6rxBDSP0/HkRk5iT4BzzjDVHOh4Go8qzVzYVu9kZxI/Rw5SPA7Sl2TseTl2v03pHWAb7Iwk8c2mSvj2mhP21ayp9G2idgvieHfRy/nZbBdGWpWJcvC/cpFR1JrJNjyU4T4JnuIsG4JkZ3GU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C6HLOjIc; arc=none smtp.client-ip=209.85.219.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-89c5340fed0so49259346d6.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 14:01:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1774299690; x=1774904490; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=x7OYuNJrumOUG8swZz30U31phe5D0Nn9dOcsToznFEA=;
-        b=C6HLOjIcIrrEYXfXq5X7ifC+5rg60p+vbeMje/q/WuJwgF6p1B52Xd/32OkHdq/X1G
-         23lRUTUvYBwhyxAhoC+Bkp7W5K1XAPjLLHXumf1LhwObBcTAMfokA6qDupsxgOr+kWFb
-         N3Taxry/MrmD8GPycKxPt+qfvYDyD9V8NhGSQYZ3kb9IPedEKSIlggKU7VCXHWe6e7Sc
-         +9C0z3Vp1Bvf7+WoGlRTAwwizeT5V68k1OuZxzLOLAaPq2WHPNFIob3GfJ6GKrRlTjKM
-         jcwUyOJSfvlahuccY4+XWKp+e/uAJH9kiIFXaF3YXpQirIRYHUH+PXHlssmk9nDqgBGX
-         trag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774299690; x=1774904490;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x7OYuNJrumOUG8swZz30U31phe5D0Nn9dOcsToznFEA=;
-        b=eTj3pKTobYda8B2gyUVQIAYr8kBuyjL7hU8YwDzRGbDIJAujHt7hVBl/nVWx5WiXQi
-         ub8nMILtGkXLTc+qS53xNGMzPg0LDl9vtnwMkJ54lUjMted+GLjzUSW9BCzI44KbReVW
-         AL8QtorE9xnbw1J52W0KEqzFtapvephMPIvRwvHL8JlVg+tPnB/WrxjKQaiUtaFeiPs4
-         O/QjUprMxnOVV1UY64X5W1Gbjrd22YCSdH2IWa/NjxdBsGV6fxxyeXvcqNLDrhN794fA
-         +ARW0CuPfHvt3cUTs6czaXRJTuVnfJ9dn1+4iPvlYoHSGtmHJ7YS91ksgxW30yVB5DPP
-         b5Ag==
-X-Forwarded-Encrypted: i=1; AJvYcCXFMScZOmVzfdkGHpc6DkrwTXmua3hPBAqhqraZWyFg6RaRcwOymeLVVRqktP2vil59y0PSteM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyrYCTbFS3Sle17vV54HDAJOqerCEVEVmw9C2aOxckV58iSotNW
-	61Ar1KzlLeurru1Htnr2/wMAj8ooa8BR8ADMIEY+O7AEl2FOHgcDH0Dp
-X-Gm-Gg: ATEYQzy+EQToDbOFtbP8iNUycPGjKTIst25XK2wSOtzFUS80xK3CcVEFd5Xl6pA8IkJ
-	BKDcd0/bBRISDUc34FYkrfI+s0+9BHEWBlf2eB6bUM8VrwlUYCshJojoS0pyIGuLSaFem1LkyIo
-	nlMHhkqYj/QhbhfWhcD/eJ7MHikedpoj3oPzgccoqQvBLvJtrMynq1xychr6CudWZ/8GecLLJNk
-	X418Scmuo8AJjeUH2dQrwaz/Vwovsrl6WJ+//ewC+hBAThFCsLfA0dAyuLNwfKrOXcnkDWIezgp
-	7EU/w//26quOxSOPL9npck3XObyWgJBdA43ObKw1SJEvsQpQHq8/UD6TAGul3PRi/UjP82xnuqm
-	AJ+7qoic80GYORGT3eeycU/OLuIvykAKGZo77er+54nEfUD1aVTAfg6LT0S5uxfol7zQMGPwucD
-	JXriqmN6aDQI1+NaukuPEZXWkeB3C5cTO+jE2fORPCsW7U6v8HZw==
-X-Received: by 2002:ad4:5b8e:0:b0:89a:1c81:65a6 with SMTP id 6a1803df08f44-89cb4e708f6mr16097336d6.17.1774299690158;
-        Mon, 23 Mar 2026 14:01:30 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89c852148a5sm116660896d6.1.2026.03.23.14.01.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 14:01:29 -0700 (PDT)
-Message-ID: <10619618-8256-4fed-974d-361fa12b12db@gmail.com>
-Date: Mon, 23 Mar 2026 14:01:26 -0700
+	s=arc-20240116; t=1774300806; c=relaxed/simple;
+	bh=HonpmE9sD5pe374xwAXzKjkB5sBO/ZduWmCfRwistFM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a0r/4cnmLjibxKHu9SEK56j3XA2UlsDBF34JnLUzXQ/h5sqCHBktTo55+k6uBDXFwteUr7z3sHaJgbLISOOFA3qehdqwxPFYxfL/GBzMXY1og1ykxj+uFfq2/loWdc/450uSLqTr2x+CSbr/Nab7oc2nPc4LqHYuzW1pxeaWG54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kKvrDH6b; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774300806; x=1805836806;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HonpmE9sD5pe374xwAXzKjkB5sBO/ZduWmCfRwistFM=;
+  b=kKvrDH6bmU7AMrEumtNXtv7pFHYn2nZIsd1MAzEkpVW+2BSRut3n/N9Z
+   t+MWrFawZI0tTG7fIU08VQf4PKecW4czyUKWHSXIToFvmE7G5YEDHk/hg
+   MzDHtri/m+zhETM/jzik8k1NuGerzHRWTaQdV5f1LMwX/q6W+rrdqsFW4
+   4zr7Fr+UNVzCdi0nLOUZBOIFBuAou/+qumC4OizfQgKmNOaDgBosCMuyO
+   nesDqZ7aWDik6BU8FdzraP0x2omMAiPwOjnAA6ot9js59OtcTNJskmF/v
+   Br0OuTT8oMZP55xfyxFuLQfcmyFzZspnGOp7mQgbapHTngzX4iptxertP
+   w==;
+X-CSE-ConnectionGUID: IbN2XjY7QaKp0idIYCxmHQ==
+X-CSE-MsgGUID: 8FCx3AyvTKCelchgHhyisw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="100762180"
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="100762180"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 14:20:05 -0700
+X-CSE-ConnectionGUID: XFgdg1YRT5qrYQe/rXCg/g==
+X-CSE-MsgGUID: 3Ym9iAEFQ+aarZBIZN+QwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
+   d="scan'208";a="223211274"
+Received: from lkp-server01.sh.intel.com (HELO 3905d212be1b) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 23 Mar 2026 14:20:01 -0700
+Received: from kbuild by 3905d212be1b with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1w4mgo-000000003Ev-3N1U;
+	Mon, 23 Mar 2026 21:19:58 +0000
+Date: Tue, 24 Mar 2026 05:19:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel J Blueman <daniel@quora.org>,
+	Chris Mason <chris.mason@fusionio.com>,
+	David Sterba <dsterba@suse.com>, Qu Wenruo <wqu@suse.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, Daniel J Blueman <daniel@quora.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] btrfs: Fix BTRFS arm64 tagged KASAN false-positive
+Message-ID: <202603240559.BNndaqHO-lkp@intel.com>
+References: <20260323061827.22903-1-daniel@quora.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.19 000/220] 6.19.10-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260323134504.575022936@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323061827.22903-1-daniel@quora.org>
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-230012-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[19];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_FROM(0.00)[bounces-230013-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[gmail.com:+];
+	FROM_NEQ_ENVFROM(0.00)[lkp@intel.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,broadcom.com:email]
-X-Rspamd-Queue-Id: 30C4F2FD8FC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:dkim,intel.com:email,intel.com:mid]
+X-Rspamd-Queue-Id: CB3762FDB14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/23/26 06:42, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.19.10 release.
-> There are 220 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.19.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+Hi Daniel,
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+kernel test robot noticed the following build errors:
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+[auto build test ERROR on kdave/for-next]
+[also build test ERROR on linus/master v7.0-rc5 next-20260323]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-J-Blueman/btrfs-Fix-BTRFS-arm64-tagged-KASAN-false-positive/20260323-181717
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/kdave/linux.git for-next
+patch link:    https://lore.kernel.org/r/20260323061827.22903-1-daniel%40quora.org
+patch subject: [PATCH v2] btrfs: Fix BTRFS arm64 tagged KASAN false-positive
+config: x86_64-randconfig-001-20260323 (https://download.01.org/0day-ci/archive/20260324/202603240559.BNndaqHO-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260324/202603240559.BNndaqHO-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603240559.BNndaqHO-lkp@intel.com/
+
+All errors (new ones prefixed by >>, old ones prefixed by <<):
+
+>> ERROR: modpost: "__kasan_unpoison_range" [fs/btrfs/btrfs.ko] undefined!
+
 -- 
-Florian
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
