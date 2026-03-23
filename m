@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-229399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228390-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEJ8NRFhwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229399-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:49:37 +0100
+	id ILHMOZ9SwWkPSQQAu9opvQ
+	(envelope-from <stable+bounces-228390-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:47:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0DB32F6F92
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:49:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7823D2F5345
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:47:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6C2AF307E8D3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12B77317606D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D134027EFF7;
-	Mon, 23 Mar 2026 15:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239583B27ED;
+	Mon, 23 Mar 2026 14:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oFMK9Luz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXiIkpxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941FD280A21;
-	Mon, 23 Mar 2026 15:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5838C145;
+	Mon, 23 Mar 2026 14:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278992; cv=none; b=fa6QqOnw6e2YxIN/Kx2UYjYNWEcfOcVZ0LACiy+q8NSZpFxoq8b2bpQD3KQAhtIKPNC/mPj6bSf+XZU6FbI52KZ9q3Ne6Bb2Kk6U0jHA2W7AGlxN7h1jeVrnzpOoQhnsqYcYQ3FVDnQORkOC51BB3BrmqfOgfL7L8CUcdLA0e8Q=
+	t=1774274983; cv=none; b=Z4oGNg5gYbdNVgp856Ia8PC87PVThxhrVRHL3Fo2pdHvS4p2LNfQEGY0ui7e7G7Xs9QvayUaxSFjV72nvgwK43evVPndQRHD9gtWVX6xwjjnEefUMDlbWHvjUBlbqcYifB1vM5C8UJeOZglDA8QTC1J6Im/4P5nP6bZ3OWxuYFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278992; c=relaxed/simple;
-	bh=cNF1KNa1r8F9EqXL3hEBOSVBuZoA5SluspZUn53McjQ=;
+	s=arc-20240116; t=1774274983; c=relaxed/simple;
+	bh=VMr3eWMKWVciBCFUV0fgsK17k8AyqUhwBp4Zlyg1Pcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ReNx5n/rswqJU3Hpqlurqa7BnsuVRYtAu6nhkn+aHrvHejLGDPiR4ILDncouJp8BdMeaYpGDimOowFD2u7vXGtIFEoLlTl1edVrVwzF6MDtMI+6Zhk2k3NjXb4K4FyLTNzOAitHn3vixTF7/2o66jTM8QRdiEKkxr/jsjArSJLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oFMK9Luz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9300C4CEF7;
-	Mon, 23 Mar 2026 15:16:31 +0000 (UTC)
+	 MIME-Version; b=Mi9b4G01J/rGD/KXs11mqBpAonH6KpCyokfTpNjZdbYmVeINwshb3qv2efMVNT2piKW9LiBDBBnP22vKOtPBvU+5TbArVH2EX2bo9ogzJJ4VXBQ4DPprXL6YELcTBonR7Eczh8NHTllEm2Ius/haNKmlvdnOKK6sAcPzp7tadIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXiIkpxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F603C4CEF7;
+	Mon, 23 Mar 2026 14:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278992;
-	bh=cNF1KNa1r8F9EqXL3hEBOSVBuZoA5SluspZUn53McjQ=;
+	s=korg; t=1774274983;
+	bh=VMr3eWMKWVciBCFUV0fgsK17k8AyqUhwBp4Zlyg1Pcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oFMK9Luz5iq+DZrDwKNo6a0SXj1r4ESudcLKHNA3GqO5eMk9hHXVNZzpqDU28Hg2q
-	 xp65Jokj6oV9lAJFHx0qcQJCGGbG5mMR7DjmtDz1wC29D40Ah5aFcVsN0eoK5pUOAm
-	 VGVKLIeE4N8VB9wetf/1kpd8wkCbOa2W0dZYJWOI=
+	b=uXiIkpxZTJR0RjCgveQMjCQHmnjnPiezZGl34HHP3w5U4Ng0YbMBNiCbWLUqhWdwe
+	 5LHXc+stjKUPw0ThJoClViD5eh97vL4LXkW8LRFZH58P91OA1316GgqJLy3BBdbrOP
+	 pkxcV2FFCo6MdS+/Y/fW3vk+OSeBkuqHTcbJj6Ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Raul E Rangel <rrangel@google.com>
-Subject: [PATCH 6.6 484/567] serial: 8250: Fix TX deadlock when using DMA
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 183/212] hwmon: (pmbus/isl68137) Fix unchecked return value and use sysfs_emit()
 Date: Mon, 23 Mar 2026 14:46:44 +0100
-Message-ID: <20260323134545.954844686@linuxfoundation.org>
+Message-ID: <20260323134509.528496148@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,88 +65,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228390-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229399-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,chromium.org:email]
-X-Rspamd-Queue-Id: D0DB32F6F92
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7823D2F5345
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raul E Rangel <rrangel@chromium.org>
+From: Sanman Pradhan <psanman@juniper.net>
 
-commit a424a34b8faddf97b5af41689087e7a230f79ba7 upstream.
+commit 86259558e422b250aa6aa57163a6d759074573f5 upstream.
 
-`dmaengine_terminate_async` does not guarantee that the
-`__dma_tx_complete` callback will run. The callback is currently the
-only place where `dma->tx_running` gets cleared. If the transaction is
-canceled and the callback never runs, then `dma->tx_running` will never
-get cleared and we will never schedule new TX DMA transactions again.
+isl68137_avs_enable_show_page() uses the return value of
+pmbus_read_byte_data() without checking for errors. If the I2C transaction
+fails, a negative error code is passed through bitwise operations,
+producing incorrect output.
 
-This change makes it so we clear `dma->tx_running` after we terminate
-the DMA transaction. This is "safe" because `serial8250_tx_dma_flush`
-is holding the UART port lock. The first thing the callback does is also
-grab the UART port lock, so access to `dma->tx_running` is serialized.
+Add an error check to propagate the return value if it is negative.
+Additionally, modernize the callback by replacing sprintf()
+with sysfs_emit().
 
-Fixes: 9e512eaaf8f4 ("serial: 8250: Fix fifo underflow on flush")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Raul E Rangel <rrangel@google.com>
-Link: https://patch.msgid.link/20260209135815.1.I16366ecb0f62f3c96fe3dd5763fcf6f3c2b4d8cd@changeid
+Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260318193952.47908-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dma.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/hwmon/pmbus/isl68137.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -152,7 +152,22 @@ void serial8250_tx_dma_flush(struct uart
- 	 */
- 	dma->tx_size = 0;
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -96,8 +96,11 @@ static ssize_t isl68137_avs_enable_show_
+ {
+ 	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
  
-+	/*
-+	 * We can't use `dmaengine_terminate_sync` because `uart_flush_buffer` is
-+	 * holding the uart port spinlock.
-+	 */
- 	dmaengine_terminate_async(dma->txchan);
+-	return sprintf(buf, "%d\n",
+-		       (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS ? 1 : 0);
++	if (val < 0)
++		return val;
 +
-+	/*
-+	 * The callback might or might not run. If it doesn't run, we need to ensure
-+	 * that `tx_running` is cleared so that we can schedule new transactions.
-+	 * If it does run, then the zombie callback will clear `tx_running` again
-+	 * and perform a no-op since `tx_size` was cleared above.
-+	 *
-+	 * In either case, we ASSUME the DMA transaction will terminate before we
-+	 * issue a new `serial8250_tx_dma`.
-+	 */
-+	dma->tx_running = 0;
++	return sysfs_emit(buf, "%d\n",
++			   (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS);
  }
  
- int serial8250_rx_dma(struct uart_8250_port *p)
+ static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
 
 
 
