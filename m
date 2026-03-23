@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228357-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJSdG3hwwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229365-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:20 +0100
+	id EC1WMMhOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228357-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF4582F9199
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0142F4A87
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BB4134A0FE9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 22AFD3089A0A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8795D3BC69A;
-	Mon, 23 Mar 2026 15:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F42293AF647;
+	Mon, 23 Mar 2026 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5d8jIxy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppQxPJFF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2CA3B776C;
-	Mon, 23 Mar 2026 15:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A913AE18A;
+	Mon, 23 Mar 2026 14:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278886; cv=none; b=PUoSF3TxHWr+yxtLf0TtCvT5Go/pLgIeBq7Kj6WEPLFCVilsrT/BMRrerGfp35eeqb1XKML2IBsmmOu9tahK9tXC066UMi6LNAKRQ35GAN9ybPSMvaGBG6bhKZRf+ElEOKv7mNvttnhY5mhKFhK1iWj9s6R27bynfcQ/PSyDots=
+	t=1774274899; cv=none; b=UjhoTNwY1Wpevin3glRDibBrdtGYMALCDQ3GdBlc496dzEw6+vvsLFvmOl5KwSw32PVQPl+u+ROolnDccOlkfQLH9ga1VIepPTyM9ckZ/UbLANG2n8k4Fbj6e6n/FCyURFUJgGit75yzYAUgby/SF0WbIDr5LsGdbUKo7MzRxDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278886; c=relaxed/simple;
-	bh=kDr7jdhNI1Nsq7Qs8homPMKE7eWwcB/vx72JmDtEb4w=;
+	s=arc-20240116; t=1774274899; c=relaxed/simple;
+	bh=AWwkxctdNBwuq7xjfF38KyKMCeT1/pg/u6su1EffBR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=US+lz3Us68lRG8JX9Qp9DwNcRxGo2VRFZ7a2nZz7WILucO2x+9gU2wum4t7DeDC1fWfCnq3zZJtZR4nXgSAL95nFuKWF0lTidq44snT0XmKXHYInjbewAJh3F7BI6RUWLtY+qEenRy72uiHxkvB17UySvp73uH9Fn3qcblU5ooE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5d8jIxy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031CBC2BCB7;
-	Mon, 23 Mar 2026 15:14:44 +0000 (UTC)
+	 MIME-Version; b=i6OHb80X7Z5KKYYGoN9sJhkvijqL6csRtHaPHt4Dz0WLqrVZ/4NnVnPdq+AH1XAZ813BjaaYwJ8iHR5QIA7G5x7Em0x+j95y5s57KGFGI9OJJ365zaa353J3F3kaJBmAfRtHbW/CExSUBUIdyW3uH1YeQVs26ZQLuraWjTWaU5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppQxPJFF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D38C4CEF7;
+	Mon, 23 Mar 2026 14:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278885;
-	bh=kDr7jdhNI1Nsq7Qs8homPMKE7eWwcB/vx72JmDtEb4w=;
+	s=korg; t=1774274899;
+	bh=AWwkxctdNBwuq7xjfF38KyKMCeT1/pg/u6su1EffBR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5d8jIxyNU/x0ZG/I+PmzKuLgX5fwptxAiha6niRsl4pryyDEyy+3T5P1kF/s5qf+
-	 ViQgXXUzrA/HSs0MeSaFV89dTab8kCycd/we/KNr02fROU5MX/HwT5RCc5eHC78+6+
-	 nZXmFDYEw5v6iFS82/9es670fSQ59DphAzhLHj98=
+	b=ppQxPJFFCrsshRPrF3EWFPzM9Yu8RYYYnSTdoKtqqnUsFEwskUltZlpiMnN5MU2er
+	 94nVge8TBAYmRdC5OPRUE/oph15v2Je7py7FICBn8fyVY+pwXI4DVczC1pKRkuFkYb
+	 VYCdeBSQxhIoM4J3MbNtgOkgiGKgfEgAg/BsOwzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Xianrui Dong <keenanat2000@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 449/567] s390/zcrypt: Enable AUTOSEL_DOM for CCA serialnr sysfs attribute
-Date: Mon, 23 Mar 2026 14:46:09 +0100
-Message-ID: <20260323134545.091449461@linuxfoundation.org>
+Subject: [PATCH 6.18 149/212] net/sched: teql: Fix double-free in teql_master_xmit
+Date: Mon, 23 Mar 2026 14:46:10 +0100
+Message-ID: <20260323134508.474565097@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,100 +71,233 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229365-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228357-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EF4582F9199
+X-Rspamd-Queue-Id: 3A0142F4A87
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit 598bbefa8032cc58b564a81d1ad68bd815c8dc0f upstream.
+[ Upstream commit 66360460cab63c248ca5b1070a01c0c29133b960 ]
 
-The serialnr sysfs attribute for CCA cards when queried always
-used the default domain for sending the request down to the card.
-If for any reason exactly this default domain is disabled then
-the attribute code fails to retrieve the CCA info and the sysfs
-entry shows an empty string. Works as designed but the serial
-number is a card attribute and thus it does not matter which
-domain is used for the query. So if there are other domains on
-this card available, these could be used.
+Whenever a TEQL devices has a lockless Qdisc as root, qdisc_reset should
+be called using the seq_lock to avoid racing with the datapath. Failure
+to do so may cause crashes like the following:
 
-So extend the code to use AUTOSEL_DOM for the domain value to
-address any online domain within the card for querying the cca
-info and thus show the serialnr as long as there is one domain
-usable regardless of the default domain setting.
+[  238.028993][  T318] BUG: KASAN: double-free in skb_release_data (net/core/skbuff.c:1139)
+[  238.029328][  T318] Free of addr ffff88810c67ec00 by task poc_teql_uaf_ke/318
+[  238.029749][  T318]
+[  238.029900][  T318] CPU: 3 UID: 0 PID: 318 Comm: poc_teql_ke Not tainted 7.0.0-rc3-00149-ge5b31d988a41 #704 PREEMPT(full)
+[  238.029906][  T318] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  238.029910][  T318] Call Trace:
+[  238.029913][  T318]  <TASK>
+[  238.029916][  T318]  dump_stack_lvl (lib/dump_stack.c:122)
+[  238.029928][  T318]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
+[  238.029940][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
+[  238.029944][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+...
+[  238.029957][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
+[  238.029969][  T318]  kasan_report_invalid_free (mm/kasan/report.c:221 mm/kasan/report.c:563)
+[  238.029979][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
+[  238.029989][  T318]  check_slab_allocation (mm/kasan/common.c:231)
+[  238.029995][  T318]  kmem_cache_free (mm/slub.c:2637 (discriminator 1) mm/slub.c:6168 (discriminator 1) mm/slub.c:6298 (discriminator 1))
+[  238.030004][  T318]  skb_release_data (net/core/skbuff.c:1139)
+...
+[  238.030025][  T318]  sk_skb_reason_drop (net/core/skbuff.c:1256)
+[  238.030032][  T318]  pfifo_fast_reset (./include/linux/ptr_ring.h:171 ./include/linux/ptr_ring.h:309 ./include/linux/skb_array.h:98 net/sched/sch_generic.c:827)
+[  238.030039][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+...
+[  238.030054][  T318]  qdisc_reset (net/sched/sch_generic.c:1034)
+[  238.030062][  T318]  teql_destroy (./include/linux/spinlock.h:395 net/sched/sch_teql.c:157)
+[  238.030071][  T318]  __qdisc_destroy (./include/net/pkt_sched.h:328 net/sched/sch_generic.c:1077)
+[  238.030077][  T318]  qdisc_graft (net/sched/sch_api.c:1062 net/sched/sch_api.c:1053 net/sched/sch_api.c:1159)
+[  238.030089][  T318]  ? __pfx_qdisc_graft (net/sched/sch_api.c:1091)
+[  238.030095][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  238.030102][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  238.030106][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  238.030114][  T318]  tc_get_qdisc (net/sched/sch_api.c:1529 net/sched/sch_api.c:1556)
+...
+[  238.072958][  T318] Allocated by task 303 on cpu 5 at 238.026275s:
+[  238.073392][  T318]  kasan_save_stack (mm/kasan/common.c:58)
+[  238.073884][  T318]  kasan_save_track (mm/kasan/common.c:64 (discriminator 5) mm/kasan/common.c:79 (discriminator 5))
+[  238.074230][  T318]  __kasan_slab_alloc (mm/kasan/common.c:369)
+[  238.074578][  T318]  kmem_cache_alloc_node_noprof (./include/linux/kasan.h:253 mm/slub.c:4542 mm/slub.c:4869 mm/slub.c:4921)
+[  238.076091][  T318]  kmalloc_reserve (net/core/skbuff.c:616 (discriminator 107))
+[  238.076450][  T318]  __alloc_skb (net/core/skbuff.c:713)
+[  238.076834][  T318]  alloc_skb_with_frags (./include/linux/skbuff.h:1383 net/core/skbuff.c:6763)
+[  238.077178][  T318]  sock_alloc_send_pskb (net/core/sock.c:2997)
+[  238.077520][  T318]  packet_sendmsg (net/packet/af_packet.c:2926 net/packet/af_packet.c:3019 net/packet/af_packet.c:3108)
+[  238.081469][  T318]
+[  238.081870][  T318] Freed by task 299 on cpu 1 at 238.028496s:
+[  238.082761][  T318]  kasan_save_stack (mm/kasan/common.c:58)
+[  238.083481][  T318]  kasan_save_track (mm/kasan/common.c:64 (discriminator 5) mm/kasan/common.c:79 (discriminator 5))
+[  238.085348][  T318]  kasan_save_free_info (mm/kasan/generic.c:587 (discriminator 1))
+[  238.085900][  T318]  __kasan_slab_free (mm/kasan/common.c:287)
+[  238.086439][  T318]  kmem_cache_free (mm/slub.c:6168 (discriminator 3) mm/slub.c:6298 (discriminator 3))
+[  238.087007][  T318]  skb_release_data (net/core/skbuff.c:1139)
+[  238.087491][  T318]  consume_skb (net/core/skbuff.c:1451)
+[  238.087757][  T318]  teql_master_xmit (net/sched/sch_teql.c:358)
+[  238.088116][  T318]  dev_hard_start_xmit (./include/linux/netdevice.h:5324 ./include/linux/netdevice.h:5333 net/core/dev.c:3871 net/core/dev.c:3887)
+[  238.088468][  T318]  sch_direct_xmit (net/sched/sch_generic.c:347)
+[  238.088820][  T318]  __qdisc_run (net/sched/sch_generic.c:420 (discriminator 1))
+[  238.089166][  T318]  __dev_queue_xmit (./include/net/sch_generic.h:229 ./include/net/pkt_sched.h:121 ./include/net/pkt_sched.h:117 net/core/dev.c:4196 net/core/dev.c:4802)
 
-Fixes: 8f291ebf3270 ("s390/zcrypt: enable card/domain autoselect on ep11 cprbs")
-Suggested-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-[ preserved zc->online as the fourth argument to cca_get_info() ]
+Workflow to reproduce:
+1. Initialize a TEQL topology (dummy0 and ifb0 as slaves, teql0 up).
+2. Start multiple sender workers continuously transmitting packets
+   through teql0 to drive teql_master_xmit().
+3. In parallel, repeatedly delete and re-add the root qdisc on
+   dummy0 and ifb0 via RTNETLINK, forcing frequent teardown and reset activity
+   (teql_destroy() / qdisc_reset()).
+4. After running both workloads concurrently for several iterations,
+   KASAN reports slab-use-after-free or double-free in the skb free path.
+
+Fix this by moving dev_reset_queue to sch_generic.h and calling it, instead
+of qdisc_reset, in teql_destroy since it handles both the lock and lockless
+cases correctly for root qdiscs.
+
+Fixes: 96009c7d500e ("sched: replace __QDISC_STATE_RUNNING bit with a spin lock")
+Reported-by: Xianrui Dong <keenanat2000@gmail.com>
+Tested-by: Xianrui Dong <keenanat2000@gmail.com>
+Co-developed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260315155422.147256-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/zcrypt_ccamisc.c |   12 +++++++-----
- drivers/s390/crypto/zcrypt_cex4.c    |    3 +--
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ include/net/sch_generic.h | 28 ++++++++++++++++++++++++++++
+ net/sched/sch_generic.c   | 27 ---------------------------
+ net/sched/sch_teql.c      |  7 ++-----
+ 3 files changed, 30 insertions(+), 32 deletions(-)
 
---- a/drivers/s390/crypto/zcrypt_ccamisc.c
-+++ b/drivers/s390/crypto/zcrypt_ccamisc.c
-@@ -1687,11 +1687,13 @@ static int fetch_cca_info(u16 cardnr, u1
- 
- 	memset(ci, 0, sizeof(*ci));
- 
--	/* get first info from zcrypt device driver about this apqn */
--	rc = zcrypt_device_status_ext(cardnr, domain, &devstat);
--	if (rc)
--		return rc;
--	ci->hwtype = devstat.hwtype;
-+	/* if specific domain given, fetch status and hw info for this apqn */
-+	if (domain != AUTOSEL_DOM) {
-+		rc = zcrypt_device_status_ext(cardnr, domain, &devstat);
-+		if (rc)
-+			return rc;
-+		ci->hwtype = devstat.hwtype;
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 1518454c906e1..84c86decebdfa 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -696,6 +696,34 @@ void qdisc_destroy(struct Qdisc *qdisc);
+ void qdisc_put(struct Qdisc *qdisc);
+ void qdisc_put_unlocked(struct Qdisc *qdisc);
+ void qdisc_tree_reduce_backlog(struct Qdisc *qdisc, int n, int len);
++
++static inline void dev_reset_queue(struct net_device *dev,
++				   struct netdev_queue *dev_queue,
++				   void *_unused)
++{
++	struct Qdisc *qdisc;
++	bool nolock;
++
++	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
++	if (!qdisc)
++		return;
++
++	nolock = qdisc->flags & TCQ_F_NOLOCK;
++
++	if (nolock)
++		spin_lock_bh(&qdisc->seqlock);
++	spin_lock_bh(qdisc_lock(qdisc));
++
++	qdisc_reset(qdisc);
++
++	spin_unlock_bh(qdisc_lock(qdisc));
++	if (nolock) {
++		clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
++		clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
++		spin_unlock_bh(&qdisc->seqlock);
 +	}
- 
- 	/* prep page for rule array and var array use */
- 	pg = (u8 *)__get_free_page(GFP_KERNEL);
---- a/drivers/s390/crypto/zcrypt_cex4.c
-+++ b/drivers/s390/crypto/zcrypt_cex4.c
-@@ -85,8 +85,7 @@ static ssize_t cca_serialnr_show(struct
- 
- 	memset(&ci, 0, sizeof(ci));
- 
--	if (ap_domain_index >= 0)
--		cca_get_info(ac->id, ap_domain_index, &ci, zc->online);
-+	cca_get_info(ac->id, AUTOSEL_DOM, &ci, zc->online);
- 
- 	return sysfs_emit(buf, "%s\n", ci.serial);
++}
++
+ #ifdef CONFIG_NET_SCHED
+ int qdisc_offload_dump_helper(struct Qdisc *q, enum tc_setup_type type,
+ 			      void *type_data);
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index 7dee9748a56be..30d77ad7b81d2 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -1297,33 +1297,6 @@ static void dev_deactivate_queue(struct net_device *dev,
+ 	}
  }
+ 
+-static void dev_reset_queue(struct net_device *dev,
+-			    struct netdev_queue *dev_queue,
+-			    void *_unused)
+-{
+-	struct Qdisc *qdisc;
+-	bool nolock;
+-
+-	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
+-	if (!qdisc)
+-		return;
+-
+-	nolock = qdisc->flags & TCQ_F_NOLOCK;
+-
+-	if (nolock)
+-		spin_lock_bh(&qdisc->seqlock);
+-	spin_lock_bh(qdisc_lock(qdisc));
+-
+-	qdisc_reset(qdisc);
+-
+-	spin_unlock_bh(qdisc_lock(qdisc));
+-	if (nolock) {
+-		clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
+-		clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
+-		spin_unlock_bh(&qdisc->seqlock);
+-	}
+-}
+-
+ static bool some_qdisc_is_busy(struct net_device *dev)
+ {
+ 	unsigned int i;
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 783300d8b0197..ec4039a201a2c 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -146,15 +146,12 @@ teql_destroy(struct Qdisc *sch)
+ 					master->slaves = NEXT_SLAVE(q);
+ 					if (q == master->slaves) {
+ 						struct netdev_queue *txq;
+-						spinlock_t *root_lock;
+ 
+ 						txq = netdev_get_tx_queue(master->dev, 0);
+ 						master->slaves = NULL;
+ 
+-						root_lock = qdisc_root_sleeping_lock(rtnl_dereference(txq->qdisc));
+-						spin_lock_bh(root_lock);
+-						qdisc_reset(rtnl_dereference(txq->qdisc));
+-						spin_unlock_bh(root_lock);
++						dev_reset_queue(master->dev,
++								txq, NULL);
+ 					}
+ 				}
+ 				skb_queue_purge(&dat->q);
+-- 
+2.51.0
+
 
 
 
