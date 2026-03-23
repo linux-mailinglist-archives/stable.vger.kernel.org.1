@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +ITTBGhNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228191-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:44 +0100
+	id UIq/AVBYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD722F46FE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FD82F5F3A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 394873028E81
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7459F331A30B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F3173B2FF5;
-	Mon, 23 Mar 2026 13:59:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBB033DEF9;
+	Mon, 23 Mar 2026 14:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpBXYG5s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIDIhoZL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F34381B03;
-	Mon, 23 Mar 2026 13:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A71C26D4F9;
+	Mon, 23 Mar 2026 14:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274398; cv=none; b=fRargaZyLC3+/OEZZssJAJ7ytRucXW8RqpTjpIbyONzmLXZO5T9sWVbzKEFiouQbG3vT+8UgmRtqDvGRX5nngUkJKsn+4LMJBvm1/vhM9o8Rl47mSQtXrIWJegJ5IVYEpI+c1y50qOcTK9XNJtmrddf2tyJGZv5acnqa/vURnnM=
+	t=1774277410; cv=none; b=JIwlq1rKnUSuUBnUn1RUly1BDouAGLtQP0OzmjenZjKyKCSZu/O0aWF5GibH8pZLVmwEVRIdCzC1sSGEBedLf7woFW9/k1VKgpmSG0W19Flirnkq5sX2U0YMmcXdrrBVQpx7mtfosTCKHXCHLaLXyD+ytIZZBlK2BPJATt+GUdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274398; c=relaxed/simple;
-	bh=jqLV8td1CH9wKICFIDxRC/4XQ+mOQ1LxRIV3kBZcyl8=;
+	s=arc-20240116; t=1774277410; c=relaxed/simple;
+	bh=NxRrME8uV0AlI95HG+DmFzOvJowEHAsZSq8aMVjVoP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pekRUBzPHRtdhczxbfrrzx8kXpZJQUiX7Wh2Wbh3+G6t34dgVYc3aVrlI7RKozee68VDMDxU8wyZgA8MqYmRweF6SWMA8wZ2Z9DMNpE2B9A8dgQGbMO1Z093TBr1qkb8ijdYv+x3fL/Kxwvh8Gf4BU0QVVyNICiHRYGWAmbTqLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpBXYG5s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EAFC2BCB4;
-	Mon, 23 Mar 2026 13:59:57 +0000 (UTC)
+	 MIME-Version; b=VyJodGvuz3gY3khu3qKdq4z7LAb1OSTkezosdnOzM6+XZQ+h6yyRGXoB6+qrSx/W3A52TanUjrPrH5WHDG+3sL/FKGb7Yd0F584WNsIwbhsoA/YVN/PobBzwLVdCbuCVbSAcUHThTUMo0D+V37yfhDQDhTfBcLxzzLPWHCZqv2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIDIhoZL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247A9C4CEF7;
+	Mon, 23 Mar 2026 14:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274398;
-	bh=jqLV8td1CH9wKICFIDxRC/4XQ+mOQ1LxRIV3kBZcyl8=;
+	s=korg; t=1774277410;
+	bh=NxRrME8uV0AlI95HG+DmFzOvJowEHAsZSq8aMVjVoP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpBXYG5sRm2wmrkBgKM15TzMphOomRwC7Aqqg746B7Cg1nIBB5WmKOwZaDtE6b38f
-	 Mj/ghYD8oujdZMi2CKV8VnMm+l9OUBKCx5LI9sIA/LrvZklDJHhPsg/EIAlaE3smTU
-	 tugwMmyuW3o/8I2k7Ih02kAFbO+vTjM3CHdnl3c8=
+	b=EIDIhoZLHA3EutaZ3oBWPNxMVJAA1SIOsKKnpH1DK4hBKt/+G1/IMU0aVmee71mix
+	 lw5dFuVoqPK4APdoH0CKCiPbvYmXwZItl/qS6yxSe7BUBWQoGtnbgRozhc4GpHkO3D
+	 wnXUjZcOmmBWxuAH0z0Srw7rcWRF+aEg8q0GJXMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Wang Tao <wangtao554@huawei.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 204/220] spi: amlogic-spisg: Fix memory leak in aml_spisg_probe()
+Subject: [PATCH 6.12 385/460] Bluetooth: MGMT: Fix list corruption and UAF in command complete handlers
 Date: Mon, 23 Mar 2026 14:46:21 +0100
-Message-ID: <20260323134511.015509800@linuxfoundation.org>
+Message-ID: <20260323134536.029610250@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +64,98 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228191-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228890-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6AD722F46FE
+X-Rspamd-Queue-Id: A3FD82F5F3A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Wang Tao <wangtao554@huawei.com>
 
-[ Upstream commit b8db9552997924b750e727a625a30eaa4603bbb9 ]
+[ Upstream commit 17f89341cb4281d1da0e2fb0de5406ab7c4e25ef ]
 
-In aml_spisg_probe(), ctlr is allocated by
-spi_alloc_target()/spi_alloc_host(), but fails to call
-spi_controller_put() in several error paths. This leads
-to a memory leak whenever the driver fails to probe after
-the initial allocation.
+Commit 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs") introduced
+mgmt_pending_valid(), which not only validates the pending command but
+also unlinks it from the pending list if it is valid. This change in
+semantics requires updates to several completion handlers to avoid list
+corruption and memory safety issues.
 
-Convert to use devm_spi_alloc_host()/devm_spi_alloc_target()
-to fix the memory leak.
+This patch addresses two left-over issues from the aforementioned rework:
 
-Fixes: cef9991e04ae ("spi: Add Amlogic SPISG driver")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Link: https://patch.msgid.link/20260308-spisg-v1-1-2cace5cafc24@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+1. In mgmt_add_adv_patterns_monitor_complete(), mgmt_pending_remove()
+is replaced with mgmt_pending_free() in the success path. Since
+mgmt_pending_valid() already unlinks the command at the beginning of
+the function, calling mgmt_pending_remove() leads to a double list_del()
+and subsequent list corruption/kernel panic.
+
+2. In set_mesh_complete(), the use of mgmt_pending_foreach() in the error
+path is removed. Since the current command is already unlinked by
+mgmt_pending_valid(), this foreach loop would incorrectly target other
+pending mesh commands, potentially freeing them while they are still being
+processed concurrently (leading to UAFs). The redundant mgmt_cmd_status()
+is also simplified to use cmd->opcode directly.
+
+Fixes: 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs")
+Signed-off-by: Wang Tao <wangtao554@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-amlogic-spisg.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ net/bluetooth/mgmt.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/spi/spi-amlogic-spisg.c b/drivers/spi/spi-amlogic-spisg.c
-index bcd7ec291ad07..6045c89c37c83 100644
---- a/drivers/spi/spi-amlogic-spisg.c
-+++ b/drivers/spi/spi-amlogic-spisg.c
-@@ -729,9 +729,9 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 	};
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 4894e6444900a..b1df591a53805 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2172,10 +2172,7 @@ static void set_mesh_complete(struct hci_dev *hdev, void *data, int err)
+ 	sk = cmd->sk;
  
- 	if (of_property_read_bool(dev->of_node, "spi-slave"))
--		ctlr = spi_alloc_target(dev, sizeof(*spisg));
-+		ctlr = devm_spi_alloc_target(dev, sizeof(*spisg));
- 	else
--		ctlr = spi_alloc_host(dev, sizeof(*spisg));
-+		ctlr = devm_spi_alloc_host(dev, sizeof(*spisg));
- 	if (!ctlr)
- 		return -ENOMEM;
+ 	if (status) {
+-		mgmt_cmd_status(cmd->sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
+-				status);
+-		mgmt_pending_foreach(MGMT_OP_SET_MESH_RECEIVER, hdev, true,
+-				     cmd_status_rsp, &status);
++		mgmt_cmd_status(cmd->sk, hdev->id, cmd->opcode, status);
+ 		goto done;
+ 	}
  
-@@ -750,10 +750,8 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 		return dev_err_probe(dev, PTR_ERR(spisg->map), "regmap init failed\n");
+@@ -5354,7 +5351,7 @@ static void mgmt_add_adv_patterns_monitor_complete(struct hci_dev *hdev,
  
- 	irq = platform_get_irq(pdev, 0);
--	if (irq < 0) {
--		ret = irq;
--		goto out_controller;
--	}
-+	if (irq < 0)
-+		return irq;
+ 	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
+ 			  mgmt_status(status), &rp, sizeof(rp));
+-	mgmt_pending_remove(cmd);
++	mgmt_pending_free(cmd);
  
- 	ret = device_reset_optional(dev);
- 	if (ret)
-@@ -818,8 +816,6 @@ static int aml_spisg_probe(struct platform_device *pdev)
- 	if (spisg->core)
- 		clk_disable_unprepare(spisg->core);
- 	clk_disable_unprepare(spisg->pclk);
--out_controller:
--	spi_controller_put(ctlr);
- 
- 	return ret;
- }
+ 	hci_dev_unlock(hdev);
+ 	bt_dev_dbg(hdev, "add monitor %d complete, status %d",
 -- 
 2.51.0
 
