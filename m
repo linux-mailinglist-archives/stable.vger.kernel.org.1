@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-228936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228941-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIGcKxlXwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228936-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:05 +0100
+	id 8H+LO1JXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228941-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0162F5CC0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C5E62F5D21
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B884D312D697
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:52:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5B48830A7329
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F0432470A;
-	Mon, 23 Mar 2026 14:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22FC3AF668;
+	Mon, 23 Mar 2026 14:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cp6uQ/ey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AKcacgYE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB4323B62C;
-	Mon, 23 Mar 2026 14:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54BD26A08F;
+	Mon, 23 Mar 2026 14:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277539; cv=none; b=ERbbfMxV6dvrU4fLvxxnMq7PfyEiYp/KdmTSzAvbmy2qKzB7p3LaP8ULYvrWi+to1aXLHmbCB/VH7pYBV2jtYXEKGbXfMYfP4XStgJN446Kjhx7rW9Gila7+BAwyZSiRfXXc9i5u25I8WFWpZ/4jHndFuFYuhEwjxl3Q2B640EA=
+	t=1774277554; cv=none; b=ehU7VfgID6R5Q4y6w69VHyGQV+1be/3/b2UzOdBeub1cReHEOlQUa9uDuPSdcO0jGNaX5XmwlpMPS1//lSieCCtkS9Ztv8qqqeYgYk3RRjLWFJD/ndy7HqThh1kmQUxvWKx+9f9pg16gfxCl3lcLGCVyem92feHVBu8E6r3f66k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277539; c=relaxed/simple;
-	bh=OPkzWhV50w1j6dvubLraBzqiy5peUF/SZNnIw9BBOhM=;
+	s=arc-20240116; t=1774277554; c=relaxed/simple;
+	bh=+HDwDEzzWTWpmHIB94UYN2BiS83mbJAxu+DxZjh0x8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cLhBEqzwmXS73kfIeqMXrHhEp7+6j15dNq2c0pXW7pVefDqv8WCSxX7iTrqtIt2iAOXdUx1k5HGla0AORcxhJ2xdDKA6mRsQqbq/5qRnUSo2Dgi4VWkIGBbEsv3j8ihxqdDATz9ONR+NqLl9K8Y00yvl3ycLRV1femIDlDJAoPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cp6uQ/ey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6568AC2BCB3;
-	Mon, 23 Mar 2026 14:52:18 +0000 (UTC)
+	 MIME-Version; b=Ch4pJvkpW8HA326qOVXGgRw3amkFSUM7B1kZBwQtaTLSxySas95HHHxuMSKhFrFNh67MgtrBJdofjMPVB+2f3NmSAfP8b6UikfbPfwrpbnWnt1N2WNYnxEcZMcRTD1f37BdlrU8OdGcwUFLXP6s4/DaWlbA/RBPtk4lWIuFdotc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AKcacgYE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D946C4CEF7;
+	Mon, 23 Mar 2026 14:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277538;
-	bh=OPkzWhV50w1j6dvubLraBzqiy5peUF/SZNnIw9BBOhM=;
+	s=korg; t=1774277554;
+	bh=+HDwDEzzWTWpmHIB94UYN2BiS83mbJAxu+DxZjh0x8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cp6uQ/eyq2l2dRhcvU9NNKnc5ktc88oKs79Uc4Rff5TNgA4mijDWwmom+6cF/OK0h
-	 GpXg628QIijeHbWj+d9A5my5W+l3p0eD7rDQzsIXiTycb5OVkARTt1rra34vsGcEgS
-	 AIP4l6awa1mTolNo9uYKX7U3SpSHEpXnc/13gikg=
+	b=AKcacgYEzOrHy+SY8nJ6KgA+Z6tN0320C4AI2MqK9Hd5esP41q+gq4C/VGkkaQ52w
+	 dxoMoBKImI9pbHML70KP9Kz8zQ9XobiCOvoiKBmpnF8VlPt9hsAPkt+qdfdgq041ga
+	 d3wnURGJRJdsB4k4AENa/Fztc3b6XttASSuw9Omk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	Josef Bacik <josef@toxicpanda.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 017/567] btrfs: move btrfs_extref_hash into inode-item.h
-Date: Mon, 23 Mar 2026 14:38:57 +0100
-Message-ID: <20260323134534.192225007@linuxfoundation.org>
+Subject: [PATCH 6.6 018/567] btrfs: add raid stripe tree definitions
+Date: Mon, 23 Mar 2026 14:38:58 +0100
+Message-ID: <20260323134534.216086213@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -68,31 +66,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228936-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228941-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2C0162F5CC0
+X-Rspamd-Queue-Id: 6C5E62F5D21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,70 +98,113 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 98e4f060c4f565a3b62e8cdfe6b89f59167312b6 ]
+[ Upstream commit ee1293308e01d359688243d665138f35a6f1f9b8 ]
 
-Ideally this would be un-inlined, but that is a cleanup for later.  For
-now move this into inode-item.h, which is where the extref code lives.
+Add definitions for the raid stripe tree. This tree will hold information
+about the on-disk layout of the stripes in a RAID set.
 
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Each stripe extent has a 1:1 relationship with an on-disk extent item and
+is doing the logical to per-drive physical address translation for the
+extent item in question.
+
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Stable-dep-of: 511dc8912ae3 ("btrfs: fix incorrect key offset in error message in check_dev_extent_item()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/ctree.h      | 9 ---------
- fs/btrfs/inode-item.h | 7 +++++++
- 2 files changed, 7 insertions(+), 9 deletions(-)
+ fs/btrfs/accessors.h            |  8 ++++++++
+ fs/btrfs/locking.c              |  1 +
+ include/uapi/linux/btrfs_tree.h | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 38 insertions(+)
 
-diff --git a/fs/btrfs/ctree.h b/fs/btrfs/ctree.h
-index 11691c70ba791..1743aa21fa6e5 100644
---- a/fs/btrfs/ctree.h
-+++ b/fs/btrfs/ctree.h
-@@ -477,15 +477,6 @@ static inline u64 btrfs_name_hash(const char *name, int len)
-        return crc32c((u32)~1, name, len);
- }
+diff --git a/fs/btrfs/accessors.h b/fs/btrfs/accessors.h
+index 8cfc8214109ca..341c07b4c2272 100644
+--- a/fs/btrfs/accessors.h
++++ b/fs/btrfs/accessors.h
+@@ -305,6 +305,14 @@ BTRFS_SETGET_FUNCS(timespec_nsec, struct btrfs_timespec, nsec, 32);
+ BTRFS_SETGET_STACK_FUNCS(stack_timespec_sec, struct btrfs_timespec, sec, 64);
+ BTRFS_SETGET_STACK_FUNCS(stack_timespec_nsec, struct btrfs_timespec, nsec, 32);
  
--/*
-- * Figure the key offset of an extended inode ref
-- */
--static inline u64 btrfs_extref_hash(u64 parent_objectid, const char *name,
--                                   int len)
--{
--       return (u64) crc32c(parent_objectid, name, len);
--}
--
- static inline gfp_t btrfs_alloc_write_mask(struct address_space *mapping)
- {
- 	return mapping_gfp_constraint(mapping, ~__GFP_FS);
-diff --git a/fs/btrfs/inode-item.h b/fs/btrfs/inode-item.h
-index d43633d5620f2..0f1730dabce6d 100644
---- a/fs/btrfs/inode-item.h
-+++ b/fs/btrfs/inode-item.h
-@@ -4,6 +4,7 @@
- #define BTRFS_INODE_ITEM_H
- 
- #include <linux/types.h>
-+#include <linux/crc32c.h>
- 
- struct btrfs_trans_handle;
- struct btrfs_root;
-@@ -76,6 +77,12 @@ static inline void btrfs_inode_split_flags(u64 inode_item_flags,
- 	*ro_flags = (u32)(inode_item_flags >> 32);
- }
- 
-+/* Figure the key offset of an extended inode ref. */
-+static inline u64 btrfs_extref_hash(u64 parent_objectid, const char *name, int len)
-+{
-+       return (u64)crc32c(parent_objectid, name, len);
-+}
++BTRFS_SETGET_FUNCS(stripe_extent_encoding, struct btrfs_stripe_extent, encoding, 8);
++BTRFS_SETGET_FUNCS(raid_stride_devid, struct btrfs_raid_stride, devid, 64);
++BTRFS_SETGET_FUNCS(raid_stride_physical, struct btrfs_raid_stride, physical, 64);
++BTRFS_SETGET_STACK_FUNCS(stack_stripe_extent_encoding,
++			 struct btrfs_stripe_extent, encoding, 8);
++BTRFS_SETGET_STACK_FUNCS(stack_raid_stride_devid, struct btrfs_raid_stride, devid, 64);
++BTRFS_SETGET_STACK_FUNCS(stack_raid_stride_physical, struct btrfs_raid_stride, physical, 64);
 +
- int btrfs_truncate_inode_items(struct btrfs_trans_handle *trans,
- 			       struct btrfs_root *root,
- 			       struct btrfs_truncate_control *control);
+ /* struct btrfs_dev_extent */
+ BTRFS_SETGET_FUNCS(dev_extent_chunk_tree, struct btrfs_dev_extent, chunk_tree, 64);
+ BTRFS_SETGET_FUNCS(dev_extent_chunk_objectid, struct btrfs_dev_extent,
+diff --git a/fs/btrfs/locking.c b/fs/btrfs/locking.c
+index 7979449a58d6b..51737e7350669 100644
+--- a/fs/btrfs/locking.c
++++ b/fs/btrfs/locking.c
+@@ -73,6 +73,7 @@ static struct btrfs_lockdep_keyset {
+ 	{ .id = BTRFS_UUID_TREE_OBJECTID,	DEFINE_NAME("uuid")	},
+ 	{ .id = BTRFS_FREE_SPACE_TREE_OBJECTID,	DEFINE_NAME("free-space") },
+ 	{ .id = BTRFS_BLOCK_GROUP_TREE_OBJECTID, DEFINE_NAME("block-group") },
++	{ .id = BTRFS_RAID_STRIPE_TREE_OBJECTID, DEFINE_NAME("raid-stripe") },
+ 	{ .id = 0,				DEFINE_NAME("tree")	},
+ };
+ 
+diff --git a/include/uapi/linux/btrfs_tree.h b/include/uapi/linux/btrfs_tree.h
+index fc3c32186d7eb..ca65d7b7a6ca1 100644
+--- a/include/uapi/linux/btrfs_tree.h
++++ b/include/uapi/linux/btrfs_tree.h
+@@ -73,6 +73,9 @@
+ /* Holds the block group items for extent tree v2. */
+ #define BTRFS_BLOCK_GROUP_TREE_OBJECTID 11ULL
+ 
++/* Tracks RAID stripes in block groups. */
++#define BTRFS_RAID_STRIPE_TREE_OBJECTID 12ULL
++
+ /* device stats in the device tree */
+ #define BTRFS_DEV_STATS_OBJECTID 0ULL
+ 
+@@ -261,6 +264,8 @@
+ #define BTRFS_DEV_ITEM_KEY	216
+ #define BTRFS_CHUNK_ITEM_KEY	228
+ 
++#define BTRFS_RAID_STRIPE_KEY	230
++
+ /*
+  * Records the overall state of the qgroups.
+  * There's only one instance of this key present,
+@@ -719,6 +724,30 @@ struct btrfs_free_space_header {
+ 	__le64 num_bitmaps;
+ } __attribute__ ((__packed__));
+ 
++struct btrfs_raid_stride {
++	/* The id of device this raid extent lives on. */
++	__le64 devid;
++	/* The physical location on disk. */
++	__le64 physical;
++} __attribute__ ((__packed__));
++
++/* The stripe_extent::encoding, 1:1 mapping of enum btrfs_raid_types. */
++#define BTRFS_STRIPE_RAID0	1
++#define BTRFS_STRIPE_RAID1	2
++#define BTRFS_STRIPE_DUP	3
++#define BTRFS_STRIPE_RAID10	4
++#define BTRFS_STRIPE_RAID5	5
++#define BTRFS_STRIPE_RAID6	6
++#define BTRFS_STRIPE_RAID1C3	7
++#define BTRFS_STRIPE_RAID1C4	8
++
++struct btrfs_stripe_extent {
++	__u8 encoding;
++	__u8 reserved[7];
++	/* An array of raid strides this stripe is composed of. */
++	struct btrfs_raid_stride strides[];
++} __attribute__ ((__packed__));
++
+ #define BTRFS_HEADER_FLAG_WRITTEN	(1ULL << 0)
+ #define BTRFS_HEADER_FLAG_RELOC		(1ULL << 1)
+ 
 -- 
 2.51.0
 
