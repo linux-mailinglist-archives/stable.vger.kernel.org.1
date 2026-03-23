@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229583-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8DxlHf1YwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229085-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:09 +0100
+	id AOhCNGdrwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229583-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B64BC2F60D3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CECCB2F850B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EEBBF3044172
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F35903086E90
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D77E242D60;
-	Mon, 23 Mar 2026 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC943B8BD5;
+	Mon, 23 Mar 2026 16:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGjAlhVa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5/Cgl7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EAD241C8C;
-	Mon, 23 Mar 2026 15:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A0723AD539;
+	Mon, 23 Mar 2026 16:11:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278013; cv=none; b=tzBBeW4SPueb2cRk/XXt1pzDzUTCd3nqxXvSMYD8MciEQp2++pRjgj158uKQ7ae6DHzL8IfIheJ3TkoseOp37bNs30yqiWMiaR58qrkqOMx0Q+92wVud88G1HnJgrVRFEI/eW4bmsgCX1p20UP1gtiRxwzEmwevUxyuDUXvJCKM=
+	t=1774282312; cv=none; b=HjxnSi/rN7O4Bh3cS8S4hC3nMUqxMYMSuqgzd/UXdT88Z/KcjSEZVDr523FIpSPxDGtgrkMjM0OgJVd8vArGN+pJXEPk8Cil3bEikNz3nMD0peXQIXJcbY1jVacAcgaXD7B/MdvTkkltUCf9MifvBpZSLqB6YFTYWIOn4b3WYdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278013; c=relaxed/simple;
-	bh=+uDTEb8dh4AxPYSWLRlbRCZlV2G/ZlBtJCB0woJOOMw=;
+	s=arc-20240116; t=1774282312; c=relaxed/simple;
+	bh=5MUeUEeEe55UjLw2G0kZg9lWAQCf1XY3n9jPXrtlu8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2ChvvwajwPgfLfRVc6lbO1bTJBkSahFjSR3JwhQlUHyRDkKKTZgbBbO3yGHlexDEIIGMoMtwof0KK08gucUuNqPUqTeXpYFxl8lnDyXOmbW5lJf9WK0whH6E6ocN8l62wct/V5OaKzYL1sUZxOjusCGbHh//WOJPehZ9ukDpc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGjAlhVa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B409DC4CEF7;
-	Mon, 23 Mar 2026 15:00:12 +0000 (UTC)
+	 MIME-Version; b=bDkYH7ONrTRl5EEAtoTuVFZdrFlOVNHibIl7Arzh0PyLgmuZbyCR86vhoyt2a/12YMgByU37M7EWUkwfvfc1KB7SFk09lR0OvhidvuIfla44Qh6AkQksGRotb15P8yw5wXMVhIq/Zu/cZsGrAwzyA05POniOTAGNkLYdWjaO4Os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5/Cgl7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D462AC4CEF7;
+	Mon, 23 Mar 2026 16:11:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278013;
-	bh=+uDTEb8dh4AxPYSWLRlbRCZlV2G/ZlBtJCB0woJOOMw=;
+	s=korg; t=1774282312;
+	bh=5MUeUEeEe55UjLw2G0kZg9lWAQCf1XY3n9jPXrtlu8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CGjAlhVaTnZTlh6Q1ljZtaMhnKz3Mb1DWLgTBXth9zXBkJcEE4//MB5yDBKDD8kZo
-	 yYUN8SRaxFzAl5f43DnuhBQyWGf0VfkeGn61eIX5YAyC1kUYbf2Ua0WdAqK0emgFgX
-	 1UpkZlYyW5gj/yx1DYVrazRatkTKkuJoweBnXWHE=
+	b=S5/Cgl7JzVUybz7fM7t2JKb5bw2TlC/WLhAf0daAlN1idZ08niDVxzsMKmXVZ6PW3
+	 Px7yAUNcR5tB5Yn2yxRmFQl7vXkFKHrHmeZ8owfS/unjTwhbZkNIcx7Y5/iyQzUHuQ
+	 eTPsWf7UZfCZ4NR0F2FVdv2CSB3RBLF9gyfxYxwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rae Moar <rmoar@google.com>,
+	Daniel Latypov <dlatypov@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/567] net: stmmac: Fix error handling in VLAN add and delete paths
+Subject: [PATCH 6.1 110/481] kunit: tool: parse KTAP compliant test output
 Date: Mon, 23 Mar 2026 14:41:32 +0100
-Message-ID: <20260323134538.088827409@linuxfoundation.org>
+Message-ID: <20260323134527.963358077@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,108 +68,343 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229085-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229583-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B64BC2F60D3
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,test.name:url]
+X-Rspamd-Queue-Id: CECCB2F850B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+From: Rae Moar <rmoar@google.com>
 
-[ Upstream commit 35dfedce442c4060cfe5b98368bc9643fb995716 ]
+[ Upstream commit 434498a6bee3db729dbdb7f131f3506f4dca85e8 ]
 
-stmmac_vlan_rx_add_vid() updates active_vlans and the VLAN hash
-register before writing the HW filter entry. If the filter write
-fails, it leaves a stale VID in active_vlans and the hash register.
+Change the KUnit parser to be able to parse test output that complies with
+the KTAP version 1 specification format found here:
+https://kernel.org/doc/html/latest/dev-tools/ktap.html. Ensure the parser
+is able to parse tests with the original KUnit test output format as
+well.
 
-stmmac_vlan_rx_kill_vid() has the reverse problem: it clears
-active_vlans before removing the HW filter. On failure, the VID is
-gone from active_vlans but still present in the HW filter table.
+KUnit parser now accepts any of the following test output formats:
 
-To fix this, reorder the operations to update the hash table first,
-then attempt the HW filter operation. If the HW filter fails, roll
-back both the active_vlans bitmap and the hash table by calling
-stmmac_vlan_update() again.
+Original KUnit test output format:
 
-Fixes: ed64639bc1e0 ("net: stmmac: Add support for VLAN Rx filtering")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Link: https://patch.msgid.link/20260303145828.7845-2-ovidiu.panait.rb@renesas.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+ TAP version 14
+ 1..1
+   # Subtest: kunit-test-suite
+   1..3
+   ok 1 - kunit_test_1
+   ok 2 - kunit_test_2
+   ok 3 - kunit_test_3
+ # kunit-test-suite: pass:3 fail:0 skip:0 total:3
+ # Totals: pass:3 fail:0 skip:0 total:3
+ ok 1 - kunit-test-suite
+
+KTAP version 1 test output format:
+
+ KTAP version 1
+ 1..1
+   KTAP version 1
+   1..3
+   ok 1 kunit_test_1
+   ok 2 kunit_test_2
+   ok 3 kunit_test_3
+ ok 1 kunit-test-suite
+
+New KUnit test output format (changes made in the next patch of
+this series):
+
+ KTAP version 1
+ 1..1
+   KTAP version 1
+   # Subtest: kunit-test-suite
+   1..3
+   ok 1 kunit_test_1
+   ok 2 kunit_test_2
+   ok 3 kunit_test_3
+ # kunit-test-suite: pass:3 fail:0 skip:0 total:3
+ # Totals: pass:3 fail:0 skip:0 total:3
+ ok 1 kunit-test-suite
+
+Signed-off-by: Rae Moar <rmoar@google.com>
+Reviewed-by: Daniel Latypov <dlatypov@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: 40804c4974b8 ("kunit: tool: copy caller args in run_kernel to prevent mutation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c  | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ tools/testing/kunit/kunit_parser.py           | 79 ++++++++++++-------
+ tools/testing/kunit/kunit_tool_test.py        | 14 ++++
+ .../test_data/test_parse_ktap_output.log      |  8 ++
+ .../test_data/test_parse_subtest_header.log   |  7 ++
+ 4 files changed, 80 insertions(+), 28 deletions(-)
+ create mode 100644 tools/testing/kunit/test_data/test_parse_ktap_output.log
+ create mode 100644 tools/testing/kunit/test_data/test_parse_subtest_header.log
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 7a8861d77e047..42df435c4d838 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -6549,9 +6549,13 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
+diff --git a/tools/testing/kunit/kunit_parser.py b/tools/testing/kunit/kunit_parser.py
+index 94dba66feec50..259ce7696587b 100644
+--- a/tools/testing/kunit/kunit_parser.py
++++ b/tools/testing/kunit/kunit_parser.py
+@@ -450,6 +450,7 @@ def parse_diagnostic(lines: LineStream) -> List[str]:
+ 	- '# Subtest: [test name]'
+ 	- '[ok|not ok] [test number] [-] [test name] [optional skip
+ 		directive]'
++	- 'KTAP version [version number]'
  
- 	if (priv->hw->num_vlan) {
- 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
--		if (ret)
-+		if (ret) {
-+			clear_bit(vid, priv->active_vlans);
-+			stmmac_vlan_update(priv, is_double);
- 			goto err_pm_put;
-+		}
- 	}
+ 	Parameters:
+ 	lines - LineStream of KTAP output to parse
+@@ -458,8 +459,9 @@ def parse_diagnostic(lines: LineStream) -> List[str]:
+ 	Log of diagnostic lines
+ 	"""
+ 	log = []  # type: List[str]
+-	while lines and not TEST_RESULT.match(lines.peek()) and not \
+-			TEST_HEADER.match(lines.peek()):
++	non_diagnostic_lines = [TEST_RESULT, TEST_HEADER, KTAP_START]
++	while lines and not any(re.match(lines.peek())
++			for re in non_diagnostic_lines):
+ 		log.append(lines.pop())
+ 	return log
+ 
+@@ -505,11 +507,15 @@ def print_test_header(test: Test) -> None:
+ 	test - Test object representing current test being printed
+ 	"""
+ 	message = test.name
++	if message != "":
++		# Add a leading space before the subtest counts only if a test name
++		# is provided using a "# Subtest" header line.
++		message += " "
+ 	if test.expected_count:
+ 		if test.expected_count == 1:
+-			message += ' (1 subtest)'
++			message += '(1 subtest)'
+ 		else:
+-			message += f' ({test.expected_count} subtests)'
++			message += f'({test.expected_count} subtests)'
+ 	stdout.print_with_timestamp(format_test_divider(message, len(message)))
+ 
+ def print_log(log: Iterable[str]) -> None:
+@@ -656,7 +662,7 @@ def bubble_up_test_results(test: Test) -> None:
+ 	elif test.counts.get_status() == TestStatus.TEST_CRASHED:
+ 		test.status = TestStatus.TEST_CRASHED
+ 
+-def parse_test(lines: LineStream, expected_num: int, log: List[str]) -> Test:
++def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest: bool) -> Test:
+ 	"""
+ 	Finds next test to parse in LineStream, creates new Test object,
+ 	parses any subtests of the test, populates Test object with all
+@@ -674,15 +680,32 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str]) -> Test:
+ 	1..4
+ 	[subtests]
+ 
+-	- Subtest header line
++	- Subtest header (must include either the KTAP version line or
++	  "# Subtest" header line)
+ 
+-	Example:
++	Example (preferred format with both KTAP version line and
++	"# Subtest" line):
 +
- err_pm_put:
- 	pm_runtime_put(priv->device);
++	KTAP version 1
++	# Subtest: name
++	1..3
++	[subtests]
++	ok 1 name
++
++	Example (only "# Subtest" line):
  
-@@ -6572,15 +6576,21 @@ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vi
- 		is_double = true;
+ 	# Subtest: name
+ 	1..3
+ 	[subtests]
+ 	ok 1 name
  
- 	clear_bit(vid, priv->active_vlans);
-+	ret = stmmac_vlan_update(priv, is_double);
-+	if (ret) {
-+		set_bit(vid, priv->active_vlans);
-+		goto del_vlan_error;
-+	}
++	Example (only KTAP version line, compliant with KTAP v1 spec):
++
++	KTAP version 1
++	1..3
++	[subtests]
++	ok 1 name
++
+ 	- Test result line
  
- 	if (priv->hw->num_vlan) {
- 		ret = stmmac_del_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto, vid);
--		if (ret)
-+		if (ret) {
-+			set_bit(vid, priv->active_vlans);
-+			stmmac_vlan_update(priv, is_double);
- 			goto del_vlan_error;
-+		}
- 	}
+ 	Example:
+@@ -694,28 +717,29 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str]) -> Test:
+ 	expected_num - expected test number for test to be parsed
+ 	log - list of strings containing any preceding diagnostic lines
+ 		corresponding to the current test
++	is_subtest - boolean indicating whether test is a subtest
  
--	ret = stmmac_vlan_update(priv, is_double);
--
- del_vlan_error:
- 	pm_runtime_put(priv->device);
+ 	Return:
+ 	Test object populated with characteristics and any subtests
+ 	"""
+ 	test = Test()
+ 	test.log.extend(log)
+-	parent_test = False
+-	main = parse_ktap_header(lines, test)
+-	if main:
+-		# If KTAP/TAP header is found, attempt to parse
++	if not is_subtest:
++		# If parsing the main/top-level test, parse KTAP version line and
+ 		# test plan
+ 		test.name = "main"
++		ktap_line = parse_ktap_header(lines, test)
+ 		parse_test_plan(lines, test)
+ 		parent_test = True
+ 	else:
+-		# If KTAP/TAP header is not found, test must be subtest
+-		# header or test result line so parse attempt to parser
+-		# subtest header
+-		parent_test = parse_test_header(lines, test)
++		# If not the main test, attempt to parse a test header containing
++		# the KTAP version line and/or subtest header line
++		ktap_line = parse_ktap_header(lines, test)
++		subtest_line = parse_test_header(lines, test)
++		parent_test = (ktap_line or subtest_line)
+ 		if parent_test:
+-			# If subtest header is found, attempt to parse
+-			# test plan and print header
++			# If KTAP version line and/or subtest header is found, attempt
++			# to parse test plan and print test header
+ 			parse_test_plan(lines, test)
+ 			print_test_header(test)
+ 	expected_count = test.expected_count
+@@ -730,7 +754,7 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str]) -> Test:
+ 		sub_log = parse_diagnostic(lines)
+ 		sub_test = Test()
+ 		if not lines or (peek_test_name_match(lines, test) and
+-				not main):
++				is_subtest):
+ 			if expected_count and test_num <= expected_count:
+ 				# If parser reaches end of test before
+ 				# parsing expected number of subtests, print
+@@ -744,20 +768,19 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str]) -> Test:
+ 				test.log.extend(sub_log)
+ 				break
+ 		else:
+-			sub_test = parse_test(lines, test_num, sub_log)
++			sub_test = parse_test(lines, test_num, sub_log, True)
+ 		subtests.append(sub_test)
+ 		test_num += 1
+ 	test.subtests = subtests
+-	if not main:
++	if is_subtest:
+ 		# If not main test, look for test result line
+ 		test.log.extend(parse_diagnostic(lines))
+-		if (parent_test and peek_test_name_match(lines, test)) or \
+-				not parent_test:
+-			parse_test_result(lines, test, expected_num)
+-		else:
++		if test.name != "" and not peek_test_name_match(lines, test):
+ 			test.add_error('missing subtest result line!')
++		else:
++			parse_test_result(lines, test, expected_num)
  
+-	# Check for there being no tests
++	# Check for there being no subtests within parent test
+ 	if parent_test and len(subtests) == 0:
+ 		# Don't override a bad status if this test had one reported.
+ 		# Assumption: no subtests means CRASHED is from Test.__init__()
+@@ -767,11 +790,11 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str]) -> Test:
+ 
+ 	# Add statuses to TestCounts attribute in Test object
+ 	bubble_up_test_results(test)
+-	if parent_test and not main:
++	if parent_test and is_subtest:
+ 		# If test has subtests and is not the main test object, print
+ 		# footer.
+ 		print_test_footer(test)
+-	elif not main:
++	elif is_subtest:
+ 		print_test_result(test)
+ 	return test
+ 
+@@ -794,7 +817,7 @@ def parse_run_tests(kernel_output: Iterable[str]) -> Test:
+ 		test.add_error('could not find any KTAP output!')
+ 		test.status = TestStatus.FAILURE_TO_PARSE_TESTS
+ 	else:
+-		test = parse_test(lines, 0, [])
++		test = parse_test(lines, 0, [], False)
+ 		if test.status != TestStatus.NO_TESTS:
+ 			test.status = test.counts.get_status()
+ 	stdout.print_with_timestamp(DIVIDER)
+diff --git a/tools/testing/kunit/kunit_tool_test.py b/tools/testing/kunit/kunit_tool_test.py
+index 42cbf28bfa6c6..8334d660753c4 100755
+--- a/tools/testing/kunit/kunit_tool_test.py
++++ b/tools/testing/kunit/kunit_tool_test.py
+@@ -330,6 +330,20 @@ class KUnitParserTest(unittest.TestCase):
+ 		self.assertEqual(kunit_parser._summarize_failed_tests(result),
+ 			'Failures: all_failed_suite, some_failed_suite.test2')
+ 
++	def test_ktap_format(self):
++		ktap_log = test_data_path('test_parse_ktap_output.log')
++		with open(ktap_log) as file:
++			result = kunit_parser.parse_run_tests(file.readlines())
++		self.assertEqual(result.counts, kunit_parser.TestCounts(passed=3))
++		self.assertEqual('suite', result.subtests[0].name)
++		self.assertEqual('case_1', result.subtests[0].subtests[0].name)
++		self.assertEqual('case_2', result.subtests[0].subtests[1].name)
++
++	def test_parse_subtest_header(self):
++		ktap_log = test_data_path('test_parse_subtest_header.log')
++		with open(ktap_log) as file:
++			result = kunit_parser.parse_run_tests(file.readlines())
++		self.print_mock.assert_any_call(StrContains('suite (1 subtest)'))
+ 
+ def line_stream_from_strs(strs: Iterable[str]) -> kunit_parser.LineStream:
+ 	return kunit_parser.LineStream(enumerate(strs, start=1))
+diff --git a/tools/testing/kunit/test_data/test_parse_ktap_output.log b/tools/testing/kunit/test_data/test_parse_ktap_output.log
+new file mode 100644
+index 0000000000000..ccdf244e53039
+--- /dev/null
++++ b/tools/testing/kunit/test_data/test_parse_ktap_output.log
+@@ -0,0 +1,8 @@
++KTAP version 1
++1..1
++  KTAP version 1
++  1..3
++  ok 1 case_1
++  ok 2 case_2
++  ok 3 case_3
++ok 1 suite
+diff --git a/tools/testing/kunit/test_data/test_parse_subtest_header.log b/tools/testing/kunit/test_data/test_parse_subtest_header.log
+new file mode 100644
+index 0000000000000..216631092e7b1
+--- /dev/null
++++ b/tools/testing/kunit/test_data/test_parse_subtest_header.log
+@@ -0,0 +1,7 @@
++KTAP version 1
++1..1
++  KTAP version 1
++  # Subtest: suite
++  1..1
++  ok 1 test
++ok 1 suite
+\ No newline at end of file
 -- 
 2.51.0
 
