@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229109-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDPYF0lswWlMTAQAu9opvQ
-	(envelope-from <stable+bounces-229663-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:29 +0100
+	id sAW9D4hZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229109-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 961A82F874D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13772F6183
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 588E63125407
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 53639320781D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E6C43BBA1C;
-	Mon, 23 Mar 2026 16:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BC8825785D;
+	Mon, 23 Mar 2026 15:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iKCyhYs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJreKPCr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623F23B8D4F;
-	Mon, 23 Mar 2026 16:15:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAC725782D;
+	Mon, 23 Mar 2026 15:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282531; cv=none; b=lBAMRgSHfO28krZx1IfxGkIqvC1A7Z5QcTEO7KzBKrUW1jXSkfprC0YpnBaJzlY1CE0NlF5glOkKbd6vr7+KYcEtNs2mM89152QdH0DvKmf+wyQv6P2eyN5AwwPG1SJNwIewbsvrLEhYxlMToePlqOcEIEH4Hd3SVEJJYfmfJVM=
+	t=1774278088; cv=none; b=FSwM8orYWz8+bpG6BXvKobDqk6HWcCtxowGXWqf1nlTQ1wJ3AJdLeV2RixCKBDMDXpkqdFQZ5ZsC3axI2EC+Jylgi81NXo49vqOdY/VQ2NrfRjEU80tAJRf/PLSL4/mgK6yq/M5F7lT10QQfOhjuMOw6cXjo6qXKVo3XC6bramA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282531; c=relaxed/simple;
-	bh=0k2Hq2TsMGq6LwX5UEwG/5rddOrWoD6wRi08WmrArMM=;
+	s=arc-20240116; t=1774278088; c=relaxed/simple;
+	bh=gLwkZgDe8nNTK3kubJk5M0sQqopkpVL1Re8W+2HcD7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BcD166cTvmqDQ93tRGn+/sXgwozasJ4f8A0KaC3eZ3egLf8BgSdZYCQAAUtd36LAtk00uYiU2TJB5lMNDiVYSeYnHtgWeFqgtSbkg/5481lYBRsi6rkQJLpuYPrfxqhsik7Ae4nH9AmECB9XSETF3JgDn8BvTpXxdvR/71onnpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iKCyhYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D7BC4CEF7;
-	Mon, 23 Mar 2026 16:15:30 +0000 (UTC)
+	 MIME-Version; b=VwPIu0qHd5FrjbcMsPjzW5e0N5pX4lWwP910XFK1ESZEQnoHs3WuJGfLClXy7tHqQHtUKIDrdmKQYopnJkt6VNitlc1v97kSBksQmR53LTyME1KV2FRYDIiiLrSKKoZ4lflrmG69kWfQTSTyD3mBNWxGfrQ0L/5Y3Xa8rPf8LEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJreKPCr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5050AC4CEF7;
+	Mon, 23 Mar 2026 15:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282531;
-	bh=0k2Hq2TsMGq6LwX5UEwG/5rddOrWoD6wRi08WmrArMM=;
+	s=korg; t=1774278087;
+	bh=gLwkZgDe8nNTK3kubJk5M0sQqopkpVL1Re8W+2HcD7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2iKCyhYsz3uDNRLcwXn41v06Iw3WQ9hDH19CDgti8/wmzsM2ZCEqBCa1V3G34OBtm
-	 M7iiyWI84A7dGvEuf0AOiAlgwaGJ7Kild1Bb6nZA0/XmvW/3IGSGO+Z7V58kpfW8Bq
-	 4kCcpN1trVeOfbWk9+p4/DGYuaHhIfbd++LsmKs8=
+	b=JJreKPCrUUiwDh1K2jIi0MvNEzmqOSYvKqMD5Px36/ptk5s7TNzq4K8oSeNTVlQtX
+	 XC2BICeBKSvvCp4SevBeEo19MzHFMdjg0upeL8a/4xsmvbZa0e/dFbHLCTlvLLd/39
+	 yRoaTFSbmVrUK+c4WYHTuz/J5qscYI0aWkt5yJfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Valerio <pvalerio@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>,
+	Florian Bezdeka <florian.bezdeka@siemens.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 136/481] net: ethernet: mtk_eth_soc: Reset prog ptr to old_prog in case of error in mtk_xdp_setup()
+Subject: [PATCH 6.6 198/567] scsi: storvsc: Fix scheduling while atomic on PREEMPT_RT
 Date: Mon, 23 Mar 2026 14:41:58 +0100
-Message-ID: <20260323134528.577733359@linuxfoundation.org>
+Message-ID: <20260323134538.747579285@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,81 +71,137 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229663-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229109-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,siemens.com,outlook.com,oracle.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 961A82F874D
+X-Rspamd-Queue-Id: A13772F6183
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Jan Kiszka <jan.kiszka@siemens.com>
 
-[ Upstream commit 0abc73c8a40fd64ac1739c90bb4f42c418d27a5e ]
+[ Upstream commit 57297736c08233987e5d29ce6584c6ca2a831b12 ]
 
-Reset eBPF program pointer to old_prog and do not decrease its ref-count
-if mtk_open routine in mtk_xdp_setup() fails.
+This resolves the follow splat and lock-up when running with PREEMPT_RT
+enabled on Hyper-V:
 
-Fixes: 7c26c20da5d42 ("net: ethernet: mtk_eth_soc: add basic XDP support")
-Suggested-by: Paolo Valerio <pvalerio@redhat.com>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260303-mtk-xdp-prog-ptr-fix-v2-1-97b6dbbe240f@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[  415.140818] BUG: scheduling while atomic: stress-ng-iomix/1048/0x00000002
+[  415.140822] INFO: lockdep is turned off.
+[  415.140823] Modules linked in: intel_rapl_msr intel_rapl_common intel_uncore_frequency_common intel_pmc_core pmt_telemetry pmt_discovery pmt_class intel_pmc_ssram_telemetry intel_vsec ghash_clmulni_intel aesni_intel rapl binfmt_misc nls_ascii nls_cp437 vfat fat snd_pcm hyperv_drm snd_timer drm_client_lib drm_shmem_helper snd sg soundcore drm_kms_helper pcspkr hv_balloon hv_utils evdev joydev drm configfs efi_pstore nfnetlink vsock_loopback vmw_vsock_virtio_transport_common hv_sock vmw_vsock_vmci_transport vsock vmw_vmci efivarfs autofs4 ext4 crc16 mbcache jbd2 sr_mod sd_mod cdrom hv_storvsc serio_raw hid_generic scsi_transport_fc hid_hyperv scsi_mod hid hv_netvsc hyperv_keyboard scsi_common
+[  415.140846] Preemption disabled at:
+[  415.140847] [<ffffffffc0656171>] storvsc_queuecommand+0x2e1/0xbe0 [hv_storvsc]
+[  415.140854] CPU: 8 UID: 0 PID: 1048 Comm: stress-ng-iomix Not tainted 6.19.0-rc7 #30 PREEMPT_{RT,(full)}
+[  415.140856] Hardware name: Microsoft Corporation Virtual Machine/Virtual Machine, BIOS Hyper-V UEFI Release v4.1 09/04/2024
+[  415.140857] Call Trace:
+[  415.140861]  <TASK>
+[  415.140861]  ? storvsc_queuecommand+0x2e1/0xbe0 [hv_storvsc]
+[  415.140863]  dump_stack_lvl+0x91/0xb0
+[  415.140870]  __schedule_bug+0x9c/0xc0
+[  415.140875]  __schedule+0xdf6/0x1300
+[  415.140877]  ? rtlock_slowlock_locked+0x56c/0x1980
+[  415.140879]  ? rcu_is_watching+0x12/0x60
+[  415.140883]  schedule_rtlock+0x21/0x40
+[  415.140885]  rtlock_slowlock_locked+0x502/0x1980
+[  415.140891]  rt_spin_lock+0x89/0x1e0
+[  415.140893]  hv_ringbuffer_write+0x87/0x2a0
+[  415.140899]  vmbus_sendpacket_mpb_desc+0xb6/0xe0
+[  415.140900]  ? rcu_is_watching+0x12/0x60
+[  415.140902]  storvsc_queuecommand+0x669/0xbe0 [hv_storvsc]
+[  415.140904]  ? HARDIRQ_verbose+0x10/0x10
+[  415.140908]  ? __rq_qos_issue+0x28/0x40
+[  415.140911]  scsi_queue_rq+0x760/0xd80 [scsi_mod]
+[  415.140926]  __blk_mq_issue_directly+0x4a/0xc0
+[  415.140928]  blk_mq_issue_direct+0x87/0x2b0
+[  415.140931]  blk_mq_dispatch_queue_requests+0x120/0x440
+[  415.140933]  blk_mq_flush_plug_list+0x7a/0x1a0
+[  415.140935]  __blk_flush_plug+0xf4/0x150
+[  415.140940]  __submit_bio+0x2b2/0x5c0
+[  415.140944]  ? submit_bio_noacct_nocheck+0x272/0x360
+[  415.140946]  submit_bio_noacct_nocheck+0x272/0x360
+[  415.140951]  ext4_read_bh_lock+0x3e/0x60 [ext4]
+[  415.140995]  ext4_block_write_begin+0x396/0x650 [ext4]
+[  415.141018]  ? __pfx_ext4_da_get_block_prep+0x10/0x10 [ext4]
+[  415.141038]  ext4_da_write_begin+0x1c4/0x350 [ext4]
+[  415.141060]  generic_perform_write+0x14e/0x2c0
+[  415.141065]  ext4_buffered_write_iter+0x6b/0x120 [ext4]
+[  415.141083]  vfs_write+0x2ca/0x570
+[  415.141087]  ksys_write+0x76/0xf0
+[  415.141089]  do_syscall_64+0x99/0x1490
+[  415.141093]  ? rcu_is_watching+0x12/0x60
+[  415.141095]  ? finish_task_switch.isra.0+0xdf/0x3d0
+[  415.141097]  ? rcu_is_watching+0x12/0x60
+[  415.141098]  ? lock_release+0x1f0/0x2a0
+[  415.141100]  ? rcu_is_watching+0x12/0x60
+[  415.141101]  ? finish_task_switch.isra.0+0xe4/0x3d0
+[  415.141103]  ? rcu_is_watching+0x12/0x60
+[  415.141104]  ? __schedule+0xb34/0x1300
+[  415.141106]  ? hrtimer_try_to_cancel+0x1d/0x170
+[  415.141109]  ? do_nanosleep+0x8b/0x160
+[  415.141111]  ? hrtimer_nanosleep+0x89/0x100
+[  415.141114]  ? __pfx_hrtimer_wakeup+0x10/0x10
+[  415.141116]  ? xfd_validate_state+0x26/0x90
+[  415.141118]  ? rcu_is_watching+0x12/0x60
+[  415.141120]  ? do_syscall_64+0x1e0/0x1490
+[  415.141121]  ? do_syscall_64+0x1e0/0x1490
+[  415.141123]  ? rcu_is_watching+0x12/0x60
+[  415.141124]  ? do_syscall_64+0x1e0/0x1490
+[  415.141125]  ? do_syscall_64+0x1e0/0x1490
+[  415.141127]  ? irqentry_exit+0x140/0x7e0
+[  415.141129]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+get_cpu() disables preemption while the spinlock hv_ringbuffer_write is
+using is converted to an rt-mutex under PREEMPT_RT.
+
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Tested-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://patch.msgid.link/0c7fb5cd-fb21-4760-8593-e04bade84744@siemens.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/scsi/storvsc_drv.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 3f2f725ccceb3..20d14e3ae6efd 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -3119,12 +3119,21 @@ static int mtk_xdp_setup(struct net_device *dev, struct bpf_prog *prog,
- 		mtk_stop(dev);
+diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
+index 9dcad02ce4895..106bccaac4276 100644
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -1861,8 +1861,9 @@ static int storvsc_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *scmnd)
+ 	cmd_request->payload_sz = payload_sz;
  
- 	old_prog = rcu_replace_pointer(eth->prog, prog, lockdep_rtnl_is_held());
-+
-+	if (netif_running(dev) && need_update) {
-+		int err;
-+
-+		err = mtk_open(dev);
-+		if (err) {
-+			rcu_assign_pointer(eth->prog, old_prog);
-+
-+			return err;
-+		}
-+	}
-+
- 	if (old_prog)
- 		bpf_prog_put(old_prog);
+ 	/* Invokes the vsc to start an IO */
+-	ret = storvsc_do_io(dev, cmd_request, get_cpu());
+-	put_cpu();
++	migrate_disable();
++	ret = storvsc_do_io(dev, cmd_request, smp_processor_id());
++	migrate_enable();
  
--	if (netif_running(dev) && need_update)
--		return mtk_open(dev);
--
- 	return 0;
- }
- 
+ 	if (ret)
+ 		scsi_dma_unmap(scmnd);
 -- 
 2.51.0
 
