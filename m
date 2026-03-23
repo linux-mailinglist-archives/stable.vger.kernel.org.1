@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229168-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB3eEIRNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:12 +0100
+	id 8IQeEvZewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229168-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A682F4769
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45C1E2F6B28
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6C398303A443
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A3537315A50B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322D03A9D9D;
-	Mon, 23 Mar 2026 14:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF3A3AC0C2;
+	Mon, 23 Mar 2026 15:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWBSqjCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wLlJ1+G2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E847F3AE6E1;
-	Mon, 23 Mar 2026 14:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B1225393B;
+	Mon, 23 Mar 2026 15:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275678; cv=none; b=coYi/GRAzVwdXBxy+o2dAo+jUYxDsgPT51bjVubD9jHW7G8sBBIaa3WH/hqN4iWMwdPWLknucfzvp26wZcSqj7I88wl0DB4D0YWH/g9S4pyzhKlNbzRpj8wNKyUFyQk8oo5Iuku/UetC2HeKcPZA1Oh7v3Oejj2H3SRoQHzU8V8=
+	t=1774278275; cv=none; b=Xneo4w5CIFEkk4nIiiFz+QZgNIslybxHkMhaayB7VGEXyZpNiYvz6nEgbQkKMz9G6HlYy7xteGc2/vSK+ysb70L3U7pG6M3fCD4wbQnXWlmjt5ZCZHuSufphnwUwu9KORvCrtTY3EyW9U3Fv2vi5LwTLqUfm8r4JvH0XVUDTVyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275678; c=relaxed/simple;
-	bh=LkEa7slegrk/wAQezVnv0xHhtooTfvwqJcjz8M2CxEM=;
+	s=arc-20240116; t=1774278275; c=relaxed/simple;
+	bh=a2J2MLKjia16i1IGTJngHWosd1A9DiWhlUnMj/ai5vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YyryNxsGwwbSts9nuMXNeeWIKPn9JRci1XN/3PEUobMakUpZzuLnI+aG+Z/F3Ylemi5jhbL7m21M+6fYZVyaZfjKQqYA82lgYO8VPzrIUAHI4s11r32PzDW/JHslR2A3UvpjLoTqOP/EsTTnqOpVGPZkFXbpUvWqQH6AJz2R13U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWBSqjCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58055C2BC9E;
-	Mon, 23 Mar 2026 14:21:17 +0000 (UTC)
+	 MIME-Version; b=WMZM+QUXq0y5v7k4Fii61O1ELR9c/R/kvczRbHviA/SEXxUcxTVXM4Ypey2rWmnzhN8GkhnXOaJ461+sWfcSaJdB68wazXEurNEnMD+Ftn/5ADv1uuQtjzBwxgc5hS5JhPbY38gzz/WL6FNPaUkxJex94G62juKl+uPh5E7nTY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wLlJ1+G2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA445C4CEF7;
+	Mon, 23 Mar 2026 15:04:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275677;
-	bh=LkEa7slegrk/wAQezVnv0xHhtooTfvwqJcjz8M2CxEM=;
+	s=korg; t=1774278275;
+	bh=a2J2MLKjia16i1IGTJngHWosd1A9DiWhlUnMj/ai5vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWBSqjCiF6B4rMmY18KW20ZlOGIf49qf/C+GCsmRuzIeV0ijQq9uUaUlIUEHSWueI
-	 Jqk7RRssSI4WLWdGT7D+99iuCoW1Xkt8/q9LvEG50/r6m9gOKOgT2V/3r+VP75qG0M
-	 u+n1jynIJcz1HG2OvzjXa3PDEayDyqAD9Dr4Evog=
+	b=wLlJ1+G2APUvNJndg5fwhu57PWUuX7L34sNz/GNMVlLv61xkPf9myH7N1jCeWKsqT
+	 2VqL0gex8aAGb0HVEG4ijkNFK4Jr26Fv0R872wgPrrcTLjx9/LQjgHoT+7e6ufhQMN
+	 SjB/uboZ6R2KLA727YUdZcvp7i+iIM02AH5p0FkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.12 180/460] drm/bridge: ti-sn65dsi83: fix CHA_DSI_CLK_RANGE rounding
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 256/567] octeontx2-af: devlink: fix NIX RAS reporter recovery condition
 Date: Mon, 23 Mar 2026 14:42:56 +0100
-Message-ID: <20260323134530.963988066@linuxfoundation.org>
+Message-ID: <20260323134540.165636820@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,14 +74,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228637-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229168-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,59 +90,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 56A682F4769
+X-Rspamd-Queue-Id: 45C1E2F6B28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 2f22702dc0fee06a240404e0f7ead5b789b253d8 upstream.
+[ Upstream commit dc26ca99b835e21e76a58b1463b84adb0ca34f58 ]
 
-The DSI frequency must be in the range:
+The NIX RAS health reporter recovery routine checks nix_af_rvu_int to
+decide whether to re-enable NIX_AF_RAS interrupts. This is the RVU
+interrupt status field and is unrelated to RAS events, so the recovery
+flow may incorrectly skip re-enabling NIX_AF_RAS interrupts.
 
-  (CHA_DSI_CLK_RANGE * 5 MHz) <= DSI freq < ((CHA_DSI_CLK_RANGE + 1) * 5 MHz)
+Check nix_af_rvu_ras instead before writing NIX_AF_RAS_ENA_W1S.
 
-So the register value should point to the lower range value, but
-DIV_ROUND_UP() rounds the division to the higher range value, resulting in
-an excess of 1 (unless the frequency is an exact multiple of 5 MHz).
-
-For example for a 437100000 MHz clock CHA_DSI_CLK_RANGE should be 87 (0x57):
-
-  (87 * 5 = 435) <= 437.1 < (88 * 5 = 440)
-
-but current code returns 88 (0x58).
-
-Fix the computation by removing the DIV_ROUND_UP().
-
-Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
-Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-1-2e15f5a9a6a0@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20260310184824.1183651-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -303,9 +303,9 @@ static u8 sn65dsi83_get_dsi_range(struct
- 	 *  DSI_CLK = mode clock * bpp / dsi_data_lanes / 2
- 	 * the 2 is there because the bus is DDR.
- 	 */
--	return DIV_ROUND_UP(clamp((unsigned int)mode->clock *
--			    mipi_dsi_pixel_format_to_bpp(ctx->dsi->format) /
--			    ctx->dsi->lanes / 2, 40000U, 500000U), 5000U);
-+	return clamp((unsigned int)mode->clock *
-+		     mipi_dsi_pixel_format_to_bpp(ctx->dsi->format) /
-+		     ctx->dsi->lanes / 2, 40000U, 500000U) / 5000U;
- }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index 774d8b034725d..3f86e0c3fa7a8 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -579,7 +579,7 @@ static int rvu_hw_nix_ras_recover(struct devlink_health_reporter *reporter,
+ 	if (blkaddr < 0)
+ 		return blkaddr;
  
- static u8 sn65dsi83_get_dsi_div(struct sn65dsi83 *ctx)
+-	if (nix_event_ctx->nix_af_rvu_int)
++	if (nix_event_ctx->nix_af_rvu_ras)
+ 		rvu_write64(rvu, blkaddr, NIX_AF_RAS_ENA_W1S, ~0ULL);
+ 
+ 	return 0;
+-- 
+2.51.0
+
 
 
 
