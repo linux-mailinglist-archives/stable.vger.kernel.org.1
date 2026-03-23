@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228113-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2L8RJAVdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:21 +0100
+	id AFIzEeZIwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228113-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:30 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058EC2F6710
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF5822F3D47
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CFEC330DFB3D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A81130565DF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED63D3B5306;
-	Mon, 23 Mar 2026 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BDB3ACA68;
+	Mon, 23 Mar 2026 13:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFHdy9Uz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Def3D7Dh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D2725392A;
-	Mon, 23 Mar 2026 15:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FBF1D5CF2;
+	Mon, 23 Mar 2026 13:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278684; cv=none; b=CgGpHWAHYy2+xilgc26/j42x54ubx9EdSKO9/3YOjFfxfOSMDPGNMfzwMhDKjb+U3PVDHRJxuEuGlBq3irLS1j1lu47RcVMaZDAOWM4oXKVAAj93lYLUBTNuUU2UiFRU+gLgYiWIoJHeUELSxWuIl7/l3623UF4IoQLhhA/8Bvs=
+	t=1774274161; cv=none; b=UoWKjPNjd3o4xKVVfAQTdSpwvln3r5Om5UR8/rBFzE3LcAs9RI35EHTb+OWlo8a3imynMuX7FcuTRM8McExCKofhlhM5eNUQP3zCC5wOluU+oNXqhKfrnME+y16brP4fAH8CkID7LwDVZJOa+g+S1kdm0lO6G/+Sk+A/ew/jkSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278684; c=relaxed/simple;
-	bh=dqvrWmMIL4NOHrbNNpsSmoulsEReZFjfzXYNk8MKwt4=;
+	s=arc-20240116; t=1774274161; c=relaxed/simple;
+	bh=NPMvhvUGAhUiuPc0jf3LHyahIzMo6uyYyOll9z0r6jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AI7pZWIWBPef834JIYkX3p2k0qiBS5IR4soXk4xpa2wZLCR1S5nPLuRJt2QRcojl/06dGgRPJU8nKRZRf0p68bVXLvuuEnbJIJdZ0GiEWPzulYcmWQbG8R+TTwbbIyYvzvqqYo51tBHFUiovyHfNMlYA0/RJAK/n9HCCFnOsK/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFHdy9Uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7A2C4CEF7;
-	Mon, 23 Mar 2026 15:11:23 +0000 (UTC)
+	 MIME-Version; b=H0n7ETOA0MiAx31o/1XCKsAiDb54iQ1dCWGGWF/+2EoMYHGHhpt+TU/V7hxEKgEuLB+0EkhL84GbhliVFSy/3Txg3biqv1lzJVZz6jKmXtokVkZIFJ266X6F4DdgLKbrdxR4jxDAXV6kmOoNNjJE1ThQs8PRB2BE+vJoArk/Iec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Def3D7Dh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3373FC2BCB3;
+	Mon, 23 Mar 2026 13:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278684;
-	bh=dqvrWmMIL4NOHrbNNpsSmoulsEReZFjfzXYNk8MKwt4=;
+	s=korg; t=1774274161;
+	bh=NPMvhvUGAhUiuPc0jf3LHyahIzMo6uyYyOll9z0r6jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFHdy9UzJFEaEvDGCyUrGqmj0wtNRhF/Q6nhW5eoiA40jFR5y1Wim2RxQRg2catzQ
-	 fzNHiPQLmjvpBPKrX/kdx7//zmHKUe8wSj7m6ekRa1BAAFhoX4eDm/+aWUYn137t52
-	 r7llRZGiqS5HeMWvfIgoafCbSxF9JojyFstn0LTo=
+	b=Def3D7Dh4ZEzsZUW7th6FB7BKzisgqY8rFFe/FhGAyKUje75sdt0XJJeFbkpBmKqv
+	 2O6ttF5UwG7F9eSDMPwWciUx9fwQMj4gyd6rCmjg8noI+HI9ETqasTuodaAWnZktdI
+	 GuTQ1qXWu+63si0Hms73jtq2N0VU4+qGbFe0Hgc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 387/567] ksmbd: Dont log keys in SMB3 signing and encryption key generation
+Subject: [PATCH 6.19 130/220] ip_tunnel: adapt iptunnel_xmit_stats() to NETDEV_PCPU_STAT_DSTATS
 Date: Mon, 23 Mar 2026 14:45:07 +0100
-Message-ID: <20260323134543.428664081@linuxfoundation.org>
+Message-ID: <20260323134508.695450734@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,97 +69,132 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229300-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228113-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 058EC2F6710
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: AF5822F3D47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 441336115df26b966575de56daf7107ed474faed ]
+[ Upstream commit 8431c602f551549f082bbfa67f3003f2d8e3e132 ]
 
-When KSMBD_DEBUG_AUTH logging is enabled, generate_smb3signingkey() and
-generate_smb3encryptionkey() log the session, signing, encryption, and
-decryption key bytes. Remove the logs to avoid exposing credentials.
+Blamed commits forgot that vxlan/geneve use udp_tunnel[6]_xmit_skb() which
+call iptunnel_xmit_stats().
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ Context ]
+iptunnel_xmit_stats() was assuming tunnels were only using
+NETDEV_PCPU_STAT_TSTATS.
+
+@syncp offset in pcpu_sw_netstats and pcpu_dstats is different.
+
+32bit kernels would either have corruptions or freezes if the syncp
+sequence was overwritten.
+
+This patch also moves pcpu_stat_type closer to dev->{t,d}stats to avoid
+a potential cache line miss since iptunnel_xmit_stats() needs to read it.
+
+Fixes: 6fa6de302246 ("geneve: Handle stats using NETDEV_PCPU_STAT_DSTATS.")
+Fixes: be226352e8dc ("vxlan: Handle stats using NETDEV_PCPU_STAT_DSTATS.")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://patch.msgid.link/20260311123110.1471930-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/auth.c |   22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ include/linux/netdevice.h |  3 +--
+ include/net/ip_tunnels.h  | 30 +++++++++++++++++++++++-------
+ 2 files changed, 24 insertions(+), 9 deletions(-)
 
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -797,12 +797,8 @@ static int generate_smb3signingkey(struc
- 	if (!(conn->dialect >= SMB30_PROT_ID && signing->binding))
- 		memcpy(chann->smb3signingkey, key, SMB3_SIGN_KEY_SIZE);
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 65d85dc9c8f05..444e52eb8ed99 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2153,6 +2153,7 @@ struct net_device {
+ 	unsigned long		state;
+ 	unsigned int		flags;
+ 	unsigned short		hard_header_len;
++	enum netdev_stat_type	pcpu_stat_type:8;
+ 	netdev_features_t	features;
+ 	struct inet6_dev __rcu	*ip6_ptr;
+ 	__cacheline_group_end(net_device_read_txrx);
+@@ -2401,8 +2402,6 @@ struct net_device {
+ 	void				*ml_priv;
+ 	enum netdev_ml_priv_type	ml_priv_type;
  
--	ksmbd_debug(AUTH, "dumping generated AES signing keys\n");
-+	ksmbd_debug(AUTH, "generated SMB3 signing key\n");
- 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
--	ksmbd_debug(AUTH, "Session Key   %*ph\n",
--		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
--	ksmbd_debug(AUTH, "Signing Key   %*ph\n",
--		    SMB3_SIGN_KEY_SIZE, key);
- 	return 0;
- }
+-	enum netdev_stat_type		pcpu_stat_type:8;
+-
+ #if IS_ENABLED(CONFIG_GARP)
+ 	struct garp_port __rcu	*garp_port;
+ #endif
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index 80662f8120803..1f577a4f8ce9b 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -665,13 +665,29 @@ static inline int iptunnel_pull_offloads(struct sk_buff *skb)
+ static inline void iptunnel_xmit_stats(struct net_device *dev, int pkt_len)
+ {
+ 	if (pkt_len > 0) {
+-		struct pcpu_sw_netstats *tstats = get_cpu_ptr(dev->tstats);
+-
+-		u64_stats_update_begin(&tstats->syncp);
+-		u64_stats_add(&tstats->tx_bytes, pkt_len);
+-		u64_stats_inc(&tstats->tx_packets);
+-		u64_stats_update_end(&tstats->syncp);
+-		put_cpu_ptr(tstats);
++		if (dev->pcpu_stat_type == NETDEV_PCPU_STAT_DSTATS) {
++			struct pcpu_dstats *dstats = get_cpu_ptr(dev->dstats);
++
++			u64_stats_update_begin(&dstats->syncp);
++			u64_stats_add(&dstats->tx_bytes, pkt_len);
++			u64_stats_inc(&dstats->tx_packets);
++			u64_stats_update_end(&dstats->syncp);
++			put_cpu_ptr(dstats);
++			return;
++		}
++		if (dev->pcpu_stat_type == NETDEV_PCPU_STAT_TSTATS) {
++			struct pcpu_sw_netstats *tstats = get_cpu_ptr(dev->tstats);
++
++			u64_stats_update_begin(&tstats->syncp);
++			u64_stats_add(&tstats->tx_bytes, pkt_len);
++			u64_stats_inc(&tstats->tx_packets);
++			u64_stats_update_end(&tstats->syncp);
++			put_cpu_ptr(tstats);
++			return;
++		}
++		pr_err_once("iptunnel_xmit_stats pcpu_stat_type=%d\n",
++			    dev->pcpu_stat_type);
++		WARN_ON_ONCE(1);
+ 		return;
+ 	}
  
-@@ -866,23 +862,9 @@ static int generate_smb3encryptionkey(st
- 	if (rc)
- 		return rc;
- 
--	ksmbd_debug(AUTH, "dumping generated AES encryption keys\n");
-+	ksmbd_debug(AUTH, "generated SMB3 encryption/decryption keys\n");
- 	ksmbd_debug(AUTH, "Cipher type   %d\n", conn->cipher_type);
- 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
--	ksmbd_debug(AUTH, "Session Key   %*ph\n",
--		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
--	if (conn->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
--	    conn->cipher_type == SMB2_ENCRYPTION_AES256_GCM) {
--		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
--			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3encryptionkey);
--		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
--			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3decryptionkey);
--	} else {
--		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
--			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3encryptionkey);
--		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
--			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3decryptionkey);
--	}
- 	return 0;
- }
- 
+-- 
+2.51.0
+
 
 
 
