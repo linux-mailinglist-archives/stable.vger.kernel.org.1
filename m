@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-228777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229850-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJN1EO5WwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228777-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:22 +0100
+	id cDgfLuFvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229850-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECCA2F5C76
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 672AC2F8FC3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEBDD3124964
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3FC0831823E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001E0175A80;
-	Mon, 23 Mar 2026 14:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E9F13BED0E;
+	Mon, 23 Mar 2026 16:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4LmGgIW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZFdpFb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C33A9D9D;
-	Mon, 23 Mar 2026 14:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E566F3BE65C;
+	Mon, 23 Mar 2026 16:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277095; cv=none; b=B4LHPBYhjeT8S/+XvjvDbyLb1Bp3Q+dcCbAk+hpOH1jkU/4PdmwnSIOL+GcrOy4HtF5NdvycTTTzaaW6WTq70mL6LPo83XnNXjUfgFa87E3TYugUa497akfaghLuDvI/MfuxYQQpTl44vQPAslPdDkahgBz64sIsKKf2gfy53fU=
+	t=1774283031; cv=none; b=ItCOwToMnwf2Ob8YE7MK1F61O8tXYyKwj+/6JJ0IkXAtTScoSoJhXTtAw8e8E5vHeqyRvEkWOrplSIk/BkN2yjuhN2m3S0ZKl97rJi/Be4Lz0NC208rHny8xrkbv7Vj4jP4KAsc+Let74tf2yIQxQSIDszoCJqffIQr6OHo2y+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277095; c=relaxed/simple;
-	bh=1BIQ0L+q98Bi1XEPRRxFUNY/9L6b139P8tA7cGgrmcE=;
+	s=arc-20240116; t=1774283031; c=relaxed/simple;
+	bh=OQCfr5GHFZKTgE4Q9hn2nXv23DnpgrHIvlkiZZfyubc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fn5+nRt1J5UiE6SDDnxlMDrxGVWRWEgDneyS762iqlVui/PXAG02OJ+XZT2vnIMGExjxmAe91ryexk34uBRmEFcRc50ZosiERNA1yH5rd9yFh+TbHW4MRQQ2+Nez1qu05xQmPAej0C0/sl9GKKB3vlpjxQPp5ZdARFhDgLXAAIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4LmGgIW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49846C4CEF7;
-	Mon, 23 Mar 2026 14:44:55 +0000 (UTC)
+	 MIME-Version; b=Rs7FBW6mlahH2wA38A5GBGSQ/dbVW4LiDLz29rMuY/C0bsa8Xt2SSlNixGa6Ro7wOTex+52msBSTgFynk0nmUXYP/n1gZf6EPzTcQIOrZ+TRSJmMaM5y5awMXqnnOWlFAlcGJEsxwfR+w4P9kgZRgFhBhgm2aNE4AyK8v++xyfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZFdpFb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75CDBC4CEF7;
+	Mon, 23 Mar 2026 16:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277095;
-	bh=1BIQ0L+q98Bi1XEPRRxFUNY/9L6b139P8tA7cGgrmcE=;
+	s=korg; t=1774283030;
+	bh=OQCfr5GHFZKTgE4Q9hn2nXv23DnpgrHIvlkiZZfyubc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4LmGgIWErE+TV9DUlGEU5O7D8POvNOKCo4araGtKKuWKuatOXRI70hY4yOALXK+J
-	 K9HFWPtgjMublZ2MxI0vpe9yVZFZLbDYc2iCeQ613evcu+uTGc3y7jKjWjjchI+lIG
-	 +niIHRu1lR45sNC+RK8tEV15z5SsoooYydNLb+NU=
+	b=tZFdpFb6OdWaA2eKKn2TEKoTldIIMBjWBfHXesCamgA5j30fYN4X9wIDwlJ2gzrtU
+	 S+dHwWUu/Tzf+IPPO5xQa9xIXKQDyM1Dp7xomTUs7hnEEtLUHFJ9vmuoyuZv4AjcwQ
+	 OicIpFIVsXNevAVGOP5jN7tHzOt/j/GtGJK2HF5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.12 318/460] Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
+	stable <stable@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Arnaud Ferraris <arnaud.ferraris@collabora.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 332/481] usb: roles: get usb role switch from parent only for usb-b-connector
 Date: Mon, 23 Mar 2026 14:45:14 +0100
-Message-ID: <20260323134534.317849855@linuxfoundation.org>
+Message-ID: <20260323134533.191607371@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +65,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228777-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229850-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 8ECCA2F5C76
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 672AC2F8FC3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Johannes Möller <research@johannes-moeller.dev>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit dd815e6e3918dc75a49aaabac36e4f024d675101 upstream.
+[ Upstream commit 8345b1539faa49fcf9c9439c3cbd97dac6eca171 ]
 
-l2cap_information_rsp() checks that cmd_len covers the fixed
-l2cap_info_rsp header (type + result, 4 bytes) but then reads
-rsp->data without verifying that the payload is present:
+usb_role_switch_is_parent() was walking up to the parent node and checking
+for the "usb-role-switch" property regardless of the type of the passed
+fwnode. This could cause unrelated device nodes to be probed as potential
+role switch parent, leading to spurious matches and "-EPROBE_DEFER" being
+returned infinitely.
 
- - L2CAP_IT_FEAT_MASK calls get_unaligned_le32(rsp->data), which reads
-   4 bytes past the header (needs cmd_len >= 8).
+Till now only Type-B connector node will have a parent node which may
+present "usb-role-switch" property and register the role switch device.
+For Type-C connector node, its parent node will always be a Type-C chip
+device which will never register the role switch device. However, it may
+still present a non-boolean "usb-role-switch = <&usb_controller>" property
+for historical compatibility.
 
- - L2CAP_IT_FIXED_CHAN reads rsp->data[0], 1 byte past the header
-   (needs cmd_len >= 5).
+So restrict the helper to only operate on Type-B connector when attempting
+to get the role switch from parent node.
 
-A truncated L2CAP_INFO_RSP with result == L2CAP_IR_SUCCESS triggers an
-out-of-bounds read of adjacent skb data.
-
-Guard each data access with the required payload length check.  If the
-payload is too short, skip the read and let the state machine complete
-with safe defaults (feat_mask and remote_fixed_chan remain zero from
-kzalloc), so the info timer cleanup and l2cap_conn_start() still run
-and the connection is not stalled.
-
-Fixes: 4e8402a3f884 ("[Bluetooth] Retrieve L2CAP features mask on connection setup")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 6fadd72943b8 ("usb: roles: get usb-role-switch from parent")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Tested-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://patch.msgid.link/20260309074313.2809867-3-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ replace fwnode_device_is_compatible() call with it's expansion ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/roles/class.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4587,7 +4587,8 @@ static inline int l2cap_information_rsp(
+--- a/drivers/usb/roles/class.c
++++ b/drivers/usb/roles/class.c
+@@ -108,9 +108,14 @@ static void *usb_role_switch_match(struc
+ static struct usb_role_switch *
+ usb_role_switch_is_parent(struct fwnode_handle *fwnode)
+ {
+-	struct fwnode_handle *parent = fwnode_get_parent(fwnode);
++	struct fwnode_handle *parent;
+ 	struct device *dev;
  
- 	switch (type) {
- 	case L2CAP_IT_FEAT_MASK:
--		conn->feat_mask = get_unaligned_le32(rsp->data);
-+		if (cmd_len >= sizeof(*rsp) + sizeof(u32))
-+			conn->feat_mask = get_unaligned_le32(rsp->data);
- 
- 		if (conn->feat_mask & L2CAP_FEAT_FIXED_CHAN) {
- 			struct l2cap_info_req req;
-@@ -4606,7 +4607,8 @@ static inline int l2cap_information_rsp(
- 		break;
- 
- 	case L2CAP_IT_FIXED_CHAN:
--		conn->remote_fixed_chan = rsp->data[0];
-+		if (cmd_len >= sizeof(*rsp) + sizeof(rsp->data[0]))
-+			conn->remote_fixed_chan = rsp->data[0];
- 		conn->info_state |= L2CAP_INFO_FEAT_MASK_REQ_DONE;
- 		conn->info_ident = 0;
- 
++	if (fwnode_property_match_string(fwnode, "compatible", "usb-b-connector") < 0)
++		return NULL;
++
++	parent = fwnode_get_parent(fwnode);
++
+ 	if (!fwnode_property_present(parent, "usb-role-switch")) {
+ 		fwnode_handle_put(parent);
+ 		return NULL;
 
 
 
