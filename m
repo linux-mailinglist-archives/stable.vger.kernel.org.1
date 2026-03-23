@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229829-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KKt2LlxewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229359-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:04 +0100
+	id cGQCAWRvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229829-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8EC2F699D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DCB2F8E61
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB40230298BB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A66A31740F0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F843B3889;
-	Mon, 23 Mar 2026 15:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F2423B612;
+	Mon, 23 Mar 2026 16:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDt3KfM5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzuHx9/V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0EA3B3888;
-	Mon, 23 Mar 2026 15:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C50282F35;
+	Mon, 23 Mar 2026 16:22:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278867; cv=none; b=M4BMFKF0W+ZpM1w12C4Yz0Kf5TIdKNBVat1pntw/lukETJUFpDFPZ85ZHQX9aHe9ubUPzc4onFqMez7sTVjRLp7jPFMkZSegTFO02BjJ3VQty3rNA8ZhutezQvZjl04XGoC5a1woCl5kWx1v/mC9vj7WmDV7VhQwMQDm/5LYXZI=
+	t=1774282977; cv=none; b=V++HLP+Bv7H2SPl8nantUUVQLfmrMGvZ0oYgteIPfzerzRkMhOcgSTY18CNbKIlp65xGeWtQ+ZeidRj1R1cSEzsC/6KqZMUZDvn2wuQ/YY8c24YrAQXPg1zUWx53EkSYhnkx7oWDUgDZI7KsJrXRgwi4rn+LRFtrRk1JQ2aToac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278867; c=relaxed/simple;
-	bh=/ch01L6Lv5GkUAOjFge5oofQCfQhwGhYf/+te668+Hs=;
+	s=arc-20240116; t=1774282977; c=relaxed/simple;
+	bh=9ohquUWFz0TgjZNXm5OBsUBVb9mneefhsGETz6Lj5R0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XHYrPOqor/tL2/Alzl6D7w5cu/G2FmZnnAui7N2REDEB1heneF6HwKw6zL2shEtGYYFMDMs6WQqLcZ+9h06RtAAVRYz1s9N7ks43JpLPJzaaRlSO0aX26PaXge8Mjc0u5eY2ggY12zkMV3b5Lfpn46HVTSBjt07DwUJReegoLgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDt3KfM5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3D1C2BC9E;
-	Mon, 23 Mar 2026 15:14:25 +0000 (UTC)
+	 MIME-Version; b=GKc0BHAEFHw6yI1F3sxxeZxsM0uGcgpuoxNZD1YX5ED8rVVvxmzeXqDL7KY7bYqtyb7CEZg2eS+HpKghOOq6Sl4r9idnhvVVcCKV42DdfUKv90NfGC7JMD/4E5G/+NaLSJLABYBRRUlLyB2lNJPQKLl1Fi7PldIFc6bPmekllDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzuHx9/V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374C4C4CEF7;
+	Mon, 23 Mar 2026 16:22:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278866;
-	bh=/ch01L6Lv5GkUAOjFge5oofQCfQhwGhYf/+te668+Hs=;
+	s=korg; t=1774282977;
+	bh=9ohquUWFz0TgjZNXm5OBsUBVb9mneefhsGETz6Lj5R0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SDt3KfM5xBeTv3KYave0DYfatnn0KyBsKailPUexwjCtc3ssYHUXr0AYqm/jH7j4d
-	 krOJLAW5nY+6qak6Rc4kSpk5Or0wfdlk8e9r4aeIhyqYcGlp1L325KeBDmHwy7Kzaj
-	 Nc+TFqO1Y2TF9d36rkpyZCjvKBa2royb+eIhz89U=
+	b=pzuHx9/VL+aTgNRWA5t2Svd5IWjDszk5otDNxaWsVz608Yoc4DWy2OWDEhdNeE3W4
+	 OGbnT0BAKIuekb4yHvbhLBcHKDoKnSHYTIQ16G7/0bLueNqDWZo3GBHFf1fd6Ecqne
+	 py5dTrtk4yQdfBr+WzYRW46uqrfkTXFsFz2d255Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.6 417/567] x86/sev: Check for MWAITX and MONITORX opcodes in the #VC handler
+	Anand Jain <asj@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 355/481] btrfs: fix transaction abort on set received ioctl due to item overflow
 Date: Mon, 23 Mar 2026 14:45:37 +0100
-Message-ID: <20260323134544.208669159@linuxfoundation.org>
+Message-ID: <20260323134533.759655322@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +67,176 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229359-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,alien8.de,163.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229829-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6F8EC2F699D
+X-Rspamd-Queue-Id: D8DCB2F8E61
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Lendacky <thomas.lendacky@amd.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit e70316d17f6ab49a6038ffd115397fd68f8c7be8 ]
+[ Upstream commit 87f2c46003fce4d739138aab4af1942b1afdadac ]
 
-The MWAITX and MONITORX instructions generate the same #VC error code as
-the MWAIT and MONITOR instructions, respectively. Update the #VC handler
-opcode checking to also support the MWAITX and MONITORX opcodes.
+If the set received ioctl fails due to an item overflow when attempting to
+add the BTRFS_UUID_KEY_RECEIVED_SUBVOL we have to abort the transaction
+since we did some metadata updates before.
 
-Fixes: e3ef461af35a ("x86/sev: Harden #VC instruction emulation somewhat")
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/453d5a7cfb4b9fe818b6fb67f93ae25468bc9e23.1713793161.git.thomas.lendacky@amd.com
-Signed-off-by: Wenshan Lan <jetlan9@163.com>
+This means that if a user calls this ioctl with the same received UUID
+field for a lot of subvolumes, we will hit the overflow, trigger the
+transaction abort and turn the filesystem into RO mode. A malicious user
+could exploit this, and this ioctl does not even requires that a user
+has admin privileges (CAP_SYS_ADMIN), only that he/she owns the subvolume.
+
+Fix this by doing an early check for item overflow before starting a
+transaction. This is also race safe because we are holding the subvol_sem
+semaphore in exclusive (write) mode.
+
+A test case for fstests will follow soon.
+
+Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
+CC: stable@vger.kernel.org # 3.12+
+Reviewed-by: Anand Jain <asj@kernel.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ A whole bunch of small things :) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/sev-shared.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/ctree.h     |    2 ++
+ fs/btrfs/ioctl.c     |   21 +++++++++++++++++++--
+ fs/btrfs/uuid-tree.c |   46 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 67 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/sev-shared.c
-+++ b/arch/x86/kernel/sev-shared.c
-@@ -1237,12 +1237,14 @@ static enum es_result vc_check_opcode_by
- 		break;
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -3210,6 +3210,8 @@ int btrfs_uuid_tree_add(struct btrfs_tra
+ 			u64 subid);
+ int btrfs_uuid_tree_remove(struct btrfs_trans_handle *trans, u8 *uuid, u8 type,
+ 			u64 subid);
++int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
++				   u8 *uuid, u8 type);
+ int btrfs_uuid_tree_iterate(struct btrfs_fs_info *fs_info);
  
- 	case SVM_EXIT_MONITOR:
--		if (opcode == 0x010f && modrm == 0xc8)
-+		/* MONITOR and MONITORX instructions generate the same error code */
-+		if (opcode == 0x010f && (modrm == 0xc8 || modrm == 0xfa))
- 			return ES_OK;
- 		break;
+ /* dir-item.c */
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4883,6 +4883,25 @@ static long _btrfs_ioctl_set_received_su
+ 		goto out;
+ 	}
  
- 	case SVM_EXIT_MWAIT:
--		if (opcode == 0x010f && modrm == 0xc9)
-+		/* MWAIT and MWAITX instructions generate the same error code */
-+		if (opcode == 0x010f && (modrm == 0xc9 || modrm == 0xfb))
- 			return ES_OK;
- 		break;
++	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
++				       BTRFS_UUID_SIZE);
++
++	/*
++	 * Before we attempt to add the new received uuid, check if we have room
++	 * for it in case there's already an item. If the size of the existing
++	 * item plus this root's ID (u64) exceeds the maximum item size, we can
++	 * return here without the need to abort a transaction. If we don't do
++	 * this check, the btrfs_uuid_tree_add() call below would fail with
++	 * -EOVERFLOW and result in a transaction abort. Malicious users could
++	 * exploit this to turn the fs into RO mode.
++	 */
++	if (received_uuid_changed && !btrfs_is_empty_uuid(sa->uuid)) {
++		ret = btrfs_uuid_tree_check_overflow(fs_info, sa->uuid,
++						     BTRFS_UUID_KEY_RECEIVED_SUBVOL);
++		if (ret < 0)
++			goto out;
++	}
++
+ 	/*
+ 	 * 1 - root item
+ 	 * 2 - uuid items (received uuid + subvol uuid)
+@@ -4898,8 +4917,6 @@ static long _btrfs_ioctl_set_received_su
+ 	sa->rtime.sec = ct.tv_sec;
+ 	sa->rtime.nsec = ct.tv_nsec;
  
+-	received_uuid_changed = memcmp(root_item->received_uuid, sa->uuid,
+-				       BTRFS_UUID_SIZE);
+ 	if (received_uuid_changed &&
+ 	    !btrfs_is_empty_uuid(root_item->received_uuid)) {
+ 		ret = btrfs_uuid_tree_remove(trans, root_item->received_uuid,
+--- a/fs/btrfs/uuid-tree.c
++++ b/fs/btrfs/uuid-tree.c
+@@ -225,6 +225,52 @@ out:
+ 	return ret;
+ }
+ 
++/*
++ * Check if we can add one root ID to a UUID key.
++ * If the key does not yet exists, we can, otherwise only if extended item does
++ * not exceeds the maximum item size permitted by the leaf size.
++ *
++ * Returns 0 on success, negative value on error.
++ */
++int btrfs_uuid_tree_check_overflow(struct btrfs_fs_info *fs_info,
++				   u8 *uuid, u8 type)
++{
++	struct btrfs_path *path = NULL;
++	int ret;
++	u32 item_size;
++	struct btrfs_key key;
++
++	if (WARN_ON_ONCE(!fs_info->uuid_root)) {
++		ret = -EINVAL;
++		goto out;
++	}
++
++	path = btrfs_alloc_path();
++	if (!path) {
++		ret = -ENOMEM;
++		goto out;
++	}
++
++	btrfs_uuid_to_key(uuid, type, &key);
++	ret = btrfs_search_slot(NULL, fs_info->uuid_root, &key, path, 0, 0);
++	if (ret < 0)
++		goto out;
++	if (ret > 0) {
++		ret = 0;
++		goto out;
++	}
++
++	item_size = btrfs_item_size(path->nodes[0], path->slots[0]);
++
++	if (sizeof(struct btrfs_item) + item_size + sizeof(u64) >
++	    BTRFS_LEAF_DATA_SIZE(fs_info))
++		ret = -EOVERFLOW;
++
++out:
++	btrfs_free_path(path);
++	return ret;
++}
++
+ static int btrfs_uuid_iter_rem(struct btrfs_root *uuid_root, u8 *uuid, u8 type,
+ 			       u64 subid)
+ {
 
 
 
