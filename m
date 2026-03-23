@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228337-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFIzEeZIwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228113-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:30 +0100
+	id GGtOJHNNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228337-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF5822F3D47
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCAB22F4713
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4A81130565DF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86EB0321FFAE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BDB3ACA68;
-	Mon, 23 Mar 2026 13:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77CFA3AD53C;
+	Mon, 23 Mar 2026 14:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Def3D7Dh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYyuT3ov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FBF1D5CF2;
-	Mon, 23 Mar 2026 13:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA333AEF4F;
+	Mon, 23 Mar 2026 14:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274161; cv=none; b=UoWKjPNjd3o4xKVVfAQTdSpwvln3r5Om5UR8/rBFzE3LcAs9RI35EHTb+OWlo8a3imynMuX7FcuTRM8McExCKofhlhM5eNUQP3zCC5wOluU+oNXqhKfrnME+y16brP4fAH8CkID7LwDVZJOa+g+S1kdm0lO6G/+Sk+A/ew/jkSg=
+	t=1774274848; cv=none; b=njXwWXilkbwl8wOoFoDvH6SoT7P58tnVl1Dc5YuAz9FzzHVJi/b6fWIm7cWNkhAGkBbHevkDVPz1iYwDC8f4QU6Si8R4+wNJ3lBaEobOq91bIN24dizC4bQnb6hc/PY4xz6zdDRq1ivAnBOfY8gnHZcA/LVr3q5PPu2LGmwoWFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274161; c=relaxed/simple;
-	bh=NPMvhvUGAhUiuPc0jf3LHyahIzMo6uyYyOll9z0r6jc=;
+	s=arc-20240116; t=1774274848; c=relaxed/simple;
+	bh=bSlnFl9xpSVMsJhR4JOgIJjUsxyBORNfemUveAomOEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0n7ETOA0MiAx31o/1XCKsAiDb54iQ1dCWGGWF/+2EoMYHGHhpt+TU/V7hxEKgEuLB+0EkhL84GbhliVFSy/3Txg3biqv1lzJVZz6jKmXtokVkZIFJ266X6F4DdgLKbrdxR4jxDAXV6kmOoNNjJE1ThQs8PRB2BE+vJoArk/Iec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Def3D7Dh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3373FC2BCB3;
-	Mon, 23 Mar 2026 13:56:01 +0000 (UTC)
+	 MIME-Version; b=hDiPO7gS8/djgEYwHLsFnIfTJN8lA3A4J9Ew74Gu/xZKYMWJSU1Zz23ADPpWfLeNjxNXEn5O0PiYlfSmrFHngZQKjhhbR1QWvcpbJSBQGGTYCv8BBUmBLNkEw178aH3Ans/EyVxmOnaMN81kcOIV6johVsUk1DlSNtDe8tZboxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYyuT3ov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01ABC2BC9E;
+	Mon, 23 Mar 2026 14:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274161;
-	bh=NPMvhvUGAhUiuPc0jf3LHyahIzMo6uyYyOll9z0r6jc=;
+	s=korg; t=1774274848;
+	bh=bSlnFl9xpSVMsJhR4JOgIJjUsxyBORNfemUveAomOEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Def3D7Dh4ZEzsZUW7th6FB7BKzisgqY8rFFe/FhGAyKUje75sdt0XJJeFbkpBmKqv
-	 2O6ttF5UwG7F9eSDMPwWciUx9fwQMj4gyd6rCmjg8noI+HI9ETqasTuodaAWnZktdI
-	 GuTQ1qXWu+63si0Hms73jtq2N0VU4+qGbFe0Hgc4=
+	b=bYyuT3ovx/lk381ZV/Vaz4xBF0L40+I06iR6Rqe+0ykbpcvVAIftd6xAoNz32KqiM
+	 TEFq1KsAY46wRcpg6R9r5vJOR6UGxqtqX3ABgrZusu/2mCMPXXEiTIF5cODGmqJ/xW
+	 OIiNKSQbPPRY/MfJT6a6bI0kNpr+NvixmCmh84ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 130/220] ip_tunnel: adapt iptunnel_xmit_stats() to NETDEV_PCPU_STAT_DSTATS
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.18 086/212] drm/amdgpu/mmhub3.0: add bounds checking for cid
 Date: Mon, 23 Mar 2026 14:45:07 +0100
-Message-ID: <20260323134508.695450734@linuxfoundation.org>
+Message-ID: <20260323134506.491869542@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,134 +65,67 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228113-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228337-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: AF5822F3D47
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DCAB22F4713
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 8431c602f551549f082bbfa67f3003f2d8e3e132 ]
+commit cdb82ecbeccb55fae75a3c956b605f7801a30db1 upstream.
 
-Blamed commits forgot that vxlan/geneve use udp_tunnel[6]_xmit_skb() which
-call iptunnel_xmit_stats().
+The value should never exceed the array size as those
+are the only values the hardware is expected to return,
+but add checks anyway.
 
-iptunnel_xmit_stats() was assuming tunnels were only using
-NETDEV_PCPU_STAT_TSTATS.
-
-@syncp offset in pcpu_sw_netstats and pcpu_dstats is different.
-
-32bit kernels would either have corruptions or freezes if the syncp
-sequence was overwritten.
-
-This patch also moves pcpu_stat_type closer to dev->{t,d}stats to avoid
-a potential cache line miss since iptunnel_xmit_stats() needs to read it.
-
-Fixes: 6fa6de302246 ("geneve: Handle stats using NETDEV_PCPU_STAT_DSTATS.")
-Fixes: be226352e8dc ("vxlan: Handle stats using NETDEV_PCPU_STAT_DSTATS.")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20260311123110.1471930-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit f14f27bbe2a3ed7af32d5f6eaf3f417139f45253)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netdevice.h |  3 +--
- include/net/ip_tunnels.h  | 30 +++++++++++++++++++++++-------
- 2 files changed, 24 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v3_0.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 65d85dc9c8f05..444e52eb8ed99 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -2153,6 +2153,7 @@ struct net_device {
- 	unsigned long		state;
- 	unsigned int		flags;
- 	unsigned short		hard_header_len;
-+	enum netdev_stat_type	pcpu_stat_type:8;
- 	netdev_features_t	features;
- 	struct inet6_dev __rcu	*ip6_ptr;
- 	__cacheline_group_end(net_device_read_txrx);
-@@ -2401,8 +2402,6 @@ struct net_device {
- 	void				*ml_priv;
- 	enum netdev_ml_priv_type	ml_priv_type;
- 
--	enum netdev_stat_type		pcpu_stat_type:8;
--
- #if IS_ENABLED(CONFIG_GARP)
- 	struct garp_port __rcu	*garp_port;
- #endif
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 80662f8120803..1f577a4f8ce9b 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -665,13 +665,29 @@ static inline int iptunnel_pull_offloads(struct sk_buff *skb)
- static inline void iptunnel_xmit_stats(struct net_device *dev, int pkt_len)
- {
- 	if (pkt_len > 0) {
--		struct pcpu_sw_netstats *tstats = get_cpu_ptr(dev->tstats);
--
--		u64_stats_update_begin(&tstats->syncp);
--		u64_stats_add(&tstats->tx_bytes, pkt_len);
--		u64_stats_inc(&tstats->tx_packets);
--		u64_stats_update_end(&tstats->syncp);
--		put_cpu_ptr(tstats);
-+		if (dev->pcpu_stat_type == NETDEV_PCPU_STAT_DSTATS) {
-+			struct pcpu_dstats *dstats = get_cpu_ptr(dev->dstats);
-+
-+			u64_stats_update_begin(&dstats->syncp);
-+			u64_stats_add(&dstats->tx_bytes, pkt_len);
-+			u64_stats_inc(&dstats->tx_packets);
-+			u64_stats_update_end(&dstats->syncp);
-+			put_cpu_ptr(dstats);
-+			return;
-+		}
-+		if (dev->pcpu_stat_type == NETDEV_PCPU_STAT_TSTATS) {
-+			struct pcpu_sw_netstats *tstats = get_cpu_ptr(dev->tstats);
-+
-+			u64_stats_update_begin(&tstats->syncp);
-+			u64_stats_add(&tstats->tx_bytes, pkt_len);
-+			u64_stats_inc(&tstats->tx_packets);
-+			u64_stats_update_end(&tstats->syncp);
-+			put_cpu_ptr(tstats);
-+			return;
-+		}
-+		pr_err_once("iptunnel_xmit_stats pcpu_stat_type=%d\n",
-+			    dev->pcpu_stat_type);
-+		WARN_ON_ONCE(1);
- 		return;
- 	}
- 
--- 
-2.51.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0.c
+@@ -110,7 +110,8 @@ mmhub_v3_0_print_l2_protection_fault_sta
+ 	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
+ 	case IP_VERSION(3, 0, 0):
+ 	case IP_VERSION(3, 0, 1):
+-		mmhub_cid = mmhub_client_ids_v3_0_0[cid][rw];
++		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v3_0_0) ?
++			mmhub_client_ids_v3_0_0[cid][rw] : NULL;
+ 		break;
+ 	default:
+ 		mmhub_cid = NULL;
 
 
 
