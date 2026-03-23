@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFs+Bs5vwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229332-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:30 +0100
+	id mIMGOP5IwWlmSAQAu9opvQ
+	(envelope-from <stable+bounces-228158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993452F8F87
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676112F3D83
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A61AF3252676
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3ABED300F78E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD23727FD6D;
-	Mon, 23 Mar 2026 15:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A365E3AEF35;
+	Mon, 23 Mar 2026 13:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lFwvCYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V5FFipqo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC732566D3;
-	Mon, 23 Mar 2026 15:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FC63ACF03;
+	Mon, 23 Mar 2026 13:58:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278784; cv=none; b=kSPZjA5B/65Xd/B3DR9I83kS51bbRR4ZNo2xfFYbPvbN3l7aeEGwcS7XrtO2yC+Iu3qEWeGMPknVckG7Zx+jzsOc2e/dHQKBp2kdYSqQbDPni8Wk0uFrm2ffLQm72swFBVGPkPb5+K57ITkHpHjzmiMwT1el7256XyBWmSXY2nc=
+	t=1774274301; cv=none; b=fHWcGPMuPIAMhOPjlhRoRA1KGL9/vPitnyX4Bpt4SLQYdCDszzNF0xGXXhCJvhO0Al860w4V5uvqvPqqn5H4zC4IHQHoIx7iiUyRd8S3yEY+zbhgOH6ORe7vCBtwHDSQln4j8o/kCwBEJ6awHlZbbUrbXDG1yc586eoz3PgPsUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278784; c=relaxed/simple;
-	bh=UTfAzS5hQ/Rpr7w9FLUjsOGlaKl199O42ueOEFfvsU8=;
+	s=arc-20240116; t=1774274301; c=relaxed/simple;
+	bh=B7JeFZjmn5LziKaFJzqQdrXP0uCYXpbzpUJIyLrYqJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rLhfZLgZPyA6WmON7bSReboKJDiAOZKlyoVRRZSyQb1VYXu21aeZi78nFgwxTRSnSYSvRGqooe8CKVNE7I8j6AYFnxobUZiSakEjbFT/ZOXBTtuCEvoD6JsBbAD/StoELlmjARmPTaX3pgIIJ0PnJI+IjZRSFp5FjSzPq2mdxLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lFwvCYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184C0C4CEF7;
-	Mon, 23 Mar 2026 15:13:03 +0000 (UTC)
+	 MIME-Version; b=a0scV/lH0qw6RfC0uOT9XuWrEmc/LpkED/6ddW823X58CuJq3Ib1tN064rRbzCvpG+0d3sggIHV7Y5IpEGnlk5ds3tViSxpqsBc2WBGSOK1GAxCJRm4fFLPbmJZ7oZlQajdI4uuFCRzsntXqjwX2jQ6ml0ArS9qSCmZ4Ljxel9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V5FFipqo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DACBBC4CEF7;
+	Mon, 23 Mar 2026 13:58:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278784;
-	bh=UTfAzS5hQ/Rpr7w9FLUjsOGlaKl199O42ueOEFfvsU8=;
+	s=korg; t=1774274301;
+	bh=B7JeFZjmn5LziKaFJzqQdrXP0uCYXpbzpUJIyLrYqJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2lFwvCYBswZN03y6d0zV9ma9zDc0rPChqNcj7EZBeIZM6TiDwv/pRil6k/UpNmHcX
-	 tqYx2UxFV7jRy3O7lOEBXKAHoHaiCTJ+LBjNF54ix08I9UixJ0Cj+q8q5VtR2QNjDx
-	 i8g1ealYDbQiLsPjMIug//xaoPw174vZB385PJDc=
+	b=V5FFipqoRFPCfqN3P2IoEwuwx9oM6JdDBoqdlawUu3Yvticj/1aeMejFxGcmO0CI7
+	 FF1JC7o1XgyqkOf/jq7maoONbupHWwlJounJov/QE3BkPOt196vnrWO22vpLhN2GO/
+	 4SMXe0hjYQh6MrcHKB9R+SYvIiI6+qVzw7NshR6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 376/567] selftests: mptcp: add a check for add_addr_accepted
+Subject: [PATCH 6.19 119/220] Bluetooth: LE L2CAP: Disconnect if sum of payload sizes exceed SDU
 Date: Mon, 23 Mar 2026 14:44:56 +0100
-Message-ID: <20260323134543.138424580@linuxfoundation.org>
+Message-ID: <20260323134508.362251090@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,109 +68,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229332-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228158-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 993452F8F87
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 676112F3D83
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 0eee0fdf9b7b0baf698f9b426384aa9714d76a51 ]
+[ Upstream commit b6a2bf43aa37670432843bc73ae2a6288ba4d6f8 ]
 
-The previous patch fixed an issue with the 'add_addr_accepted' counter.
-This was not spot by the test suite.
+Core 6.0, Vol 3, Part A, 3.4.3:
+"... If the sum of the payload sizes for the K-frames exceeds the
+specified SDU length, the receiver shall disconnect the channel."
 
-Check this counter and 'add_addr_signal' in MPTCP Join 'delete re-add
-signal' test. This should help spotting similar regressions later on.
-These counters are crucial for ensuring the MPTCP path manager correctly
-handles the subflow creation via 'ADD_ADDR'.
+This fixes L2CAP/LE/CFC/BV-27-C (running together with 'l2test -r -P
+0x0027 -V le_public').
 
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-11-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 560edd99b5f5 ("selftests: mptcp: join: check RM_ADDR not sent over same subflow")
+Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/bluetooth/l2cap_core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3934,38 +3934,45 @@ endpoint_tests()
- 			$ns1 10.0.2.1 id 1 flags signal
- 		chk_subflow_nr "before delete" 2
- 		chk_mptcp_info subflows 1 subflows 1
-+		chk_mptcp_info add_addr_signal 2 add_addr_accepted 1
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 1618fe98dce71..05acc2e98f58f 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6721,6 +6721,7 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
  
- 		pm_nl_del_endpoint $ns1 1 10.0.2.1
- 		pm_nl_del_endpoint $ns1 2 224.0.0.1
- 		sleep 0.5
- 		chk_subflow_nr "after delete" 1
- 		chk_mptcp_info subflows 0 subflows 0
-+		chk_mptcp_info add_addr_signal 0 add_addr_accepted 0
- 
- 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
- 		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add" 3
- 		chk_mptcp_info subflows 2 subflows 2
-+		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
- 
- 		pm_nl_del_endpoint $ns1 42 10.0.1.1
- 		sleep 0.5
- 		chk_subflow_nr "after delete ID 0" 2
- 		chk_mptcp_info subflows 2 subflows 2
-+		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add ID 0" 3
- 		chk_mptcp_info subflows 3 subflows 3
-+		chk_mptcp_info add_addr_signal 3 add_addr_accepted 2
- 
- 		pm_nl_del_endpoint $ns1 99 10.0.1.1
- 		sleep 0.5
- 		chk_subflow_nr "after re-delete ID 0" 2
- 		chk_mptcp_info subflows 2 subflows 2
-+		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 88 flags signal
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-re-add ID 0" 3
- 		chk_mptcp_info subflows 3 subflows 3
-+		chk_mptcp_info add_addr_signal 3 add_addr_accepted 2
- 		mptcp_lib_kill_group_wait $tests_pid
- 
- 		kill_events_pids
+ 	if (chan->sdu->len + skb->len > chan->sdu_len) {
+ 		BT_ERR("Too much LE L2CAP data received");
++		l2cap_send_disconn_req(chan, ECONNRESET);
+ 		err = -EINVAL;
+ 		goto failed;
+ 	}
+-- 
+2.51.0
+
 
 
 
