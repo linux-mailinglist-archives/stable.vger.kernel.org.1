@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228931-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KP8FwBTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228433-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:36 +0100
+	id WPXTOOZWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228931-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69F62F53E8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6992E2F5C68
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDEBA31146EA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:13:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7C1C4312C226
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6AE3B27EF;
-	Mon, 23 Mar 2026 14:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541172727E2;
+	Mon, 23 Mar 2026 14:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHE64WRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/erM12K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C249B3AEF4E;
-	Mon, 23 Mar 2026 14:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1541E235045;
+	Mon, 23 Mar 2026 14:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275112; cv=none; b=ShJLe423XS6BTkpYObceuDtnBAXbb2CSmA5oItqVi6JayhVHZ8jHt2hLl4cF6GlFDk72GLyvfg1nWhJH0Yn1HvemvCr0YndXUndzGcec30/SvBY22hmM1PlgCHEcUiTawQLUEfuAiib88pFysjOTgXQBSEAYmpK1ohkYibUYYXc=
+	t=1774277523; cv=none; b=qvQmXspoa13KsPzc9ywhLvgrILylstAJfcX9v61ppDrBsL62KKSegbRg/GBTgpXwoRj/EWlJIPCaJndiIVAa+ccB2EMC+pj/haxTQgydCZjIgnSwIP1PDooJHoy0UgNxYXThdIT7d5RKGIetfMFBmckMfOA2Ys2Qzt7PmTv5Y3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275112; c=relaxed/simple;
-	bh=RT3FbR1wjWaP8kJ8B9lNAdCQlr1hj40MtT9Xha7KtUQ=;
+	s=arc-20240116; t=1774277523; c=relaxed/simple;
+	bh=Vb+Ht5E1kb/6aMGr6DP9TZwHY+1E+szjSw4Upw69wk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jAbNiEMsKMIvoclLVsG5CLIW8M7euFDvrvIcVGe2aar8Z2QsrfMyntzmyp+wCjMctm+gtkCnjtxi9IaaSSXaw4g2DsrU1kx+0Vv8579Q89dFDh9TpnrRsq0jzPhbSUoJtmCKkoM0f80gzbIO4gNWKzdaMJZpXUXJh8atr7dTSP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHE64WRf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D10FC4CEF7;
-	Mon, 23 Mar 2026 14:11:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=elDGJ++7HWE0jJMX9ZD8LcI3aV8KPtqdtgSh038Ks5hRjNo31tsbLPGxPwYsa2461zElH2iJQPh30L6csG5iyHa4yEOj1ebGFWUhcBXcG0RjbtHMkKX3W0I7Hdf04OMjiI9AgJxkBEEsFtjxWUwVN4waDGcjXxx+Wz+LjG3dJJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/erM12K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5E9C4CEF7;
+	Mon, 23 Mar 2026 14:52:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275112;
-	bh=RT3FbR1wjWaP8kJ8B9lNAdCQlr1hj40MtT9Xha7KtUQ=;
+	s=korg; t=1774277523;
+	bh=Vb+Ht5E1kb/6aMGr6DP9TZwHY+1E+szjSw4Upw69wk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kHE64WRfqc1pul+OLhwo79lMiPWQoNn08i7rdPMpgyGWjuBWMgFwDbzGVs9+noaUD
-	 4FDQIqJf1FbPG+IFmbeXw2y575vfylVJdOl3U/k+G0uCFS3+Z+wfgCyC6dVS4VR8WK
-	 f/auop1vdAx1o3ECyHvc3d4AEgiqJ8BFvHJCm/q4=
+	b=a/erM12KYDFBK9odkyflcy0zFrOSKUHS1laBcI5sajTw5XwOeJZ3P2O2LSyADLbVp
+	 1UamvjAKRNJFlbO3auyzp5V8ywE2YIACSVzSZHhH5pTs9guzFDQxSDFm4H8x2RGdPP
+	 hwjM1EeadI8vTCkqClBlQF82ohqaRaj4WLPVYRCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 003/460] scsi: mpi3mr: Add NULL checks when resetting request and reply queues
+Subject: [PATCH 6.1 017/481] memory: mtk-smi: Convert to platform remove callback returning void
 Date: Mon, 23 Mar 2026 14:39:59 +0100
-Message-ID: <20260323134526.734161087@linuxfoundation.org>
+Message-ID: <20260323134525.667346623@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,121 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228931-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228433-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B69F62F53E8
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 6992E2F5C68
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit fa96392ebebc8fade2b878acb14cce0f71016503 ]
+[ Upstream commit 08c1aeaa45ce0fd18912e92c6705586c8aa5240f ]
 
-The driver encountered a crash during resource cleanup when the reply and
-request queues were NULL due to freed memory.  This issue occurred when the
-creation of reply or request queues failed, and the driver freed the memory
-first, but attempted to mem set the content of the freed memory, leading to
-a system crash.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-Add NULL pointer checks for reply and request queues before accessing the
-reply/request memory during cleanup
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://patch.msgid.link/20260212070026.30263-1-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/5c35a33cfdc359842e034ddd2e9358f10e91fa1f.1702822744.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Stable-dep-of: 6cfa038bddd7 ("memory: mtk-smi: fix device leaks on common probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 34 ++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ drivers/memory/mtk-smi.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index 4198830bf10b7..3a057a0f0d809 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -4677,21 +4677,25 @@ void mpi3mr_memset_buffers(struct mpi3mr_ioc *mrioc)
- 	}
+diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
+index 5a9754442bc75..c9c444d4a64ab 100644
+--- a/drivers/memory/mtk-smi.c
++++ b/drivers/memory/mtk-smi.c
+@@ -566,14 +566,13 @@ static int mtk_smi_larb_probe(struct platform_device *pdev)
+ 	return ret;
+ }
  
- 	for (i = 0; i < mrioc->num_queues; i++) {
--		mrioc->op_reply_qinfo[i].qid = 0;
--		mrioc->op_reply_qinfo[i].ci = 0;
--		mrioc->op_reply_qinfo[i].num_replies = 0;
--		mrioc->op_reply_qinfo[i].ephase = 0;
--		atomic_set(&mrioc->op_reply_qinfo[i].pend_ios, 0);
--		atomic_set(&mrioc->op_reply_qinfo[i].in_use, 0);
--		mpi3mr_memset_op_reply_q_buffers(mrioc, i);
--
--		mrioc->req_qinfo[i].ci = 0;
--		mrioc->req_qinfo[i].pi = 0;
--		mrioc->req_qinfo[i].num_requests = 0;
--		mrioc->req_qinfo[i].qid = 0;
--		mrioc->req_qinfo[i].reply_qid = 0;
--		spin_lock_init(&mrioc->req_qinfo[i].q_lock);
--		mpi3mr_memset_op_req_q_buffers(mrioc, i);
-+		if (mrioc->op_reply_qinfo) {
-+			mrioc->op_reply_qinfo[i].qid = 0;
-+			mrioc->op_reply_qinfo[i].ci = 0;
-+			mrioc->op_reply_qinfo[i].num_replies = 0;
-+			mrioc->op_reply_qinfo[i].ephase = 0;
-+			atomic_set(&mrioc->op_reply_qinfo[i].pend_ios, 0);
-+			atomic_set(&mrioc->op_reply_qinfo[i].in_use, 0);
-+			mpi3mr_memset_op_reply_q_buffers(mrioc, i);
-+		}
-+
-+		if (mrioc->req_qinfo) {
-+			mrioc->req_qinfo[i].ci = 0;
-+			mrioc->req_qinfo[i].pi = 0;
-+			mrioc->req_qinfo[i].num_requests = 0;
-+			mrioc->req_qinfo[i].qid = 0;
-+			mrioc->req_qinfo[i].reply_qid = 0;
-+			spin_lock_init(&mrioc->req_qinfo[i].q_lock);
-+			mpi3mr_memset_op_req_q_buffers(mrioc, i);
-+		}
- 	}
+-static int mtk_smi_larb_remove(struct platform_device *pdev)
++static void mtk_smi_larb_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_smi_larb *larb = platform_get_drvdata(pdev);
  
- 	atomic_set(&mrioc->pend_large_data_sz, 0);
+ 	device_link_remove(&pdev->dev, larb->smi_common_dev);
+ 	pm_runtime_disable(&pdev->dev);
+ 	component_del(&pdev->dev, &mtk_smi_larb_component_ops);
+-	return 0;
+ }
+ 
+ static int __maybe_unused mtk_smi_larb_resume(struct device *dev)
+@@ -616,7 +615,7 @@ static const struct dev_pm_ops smi_larb_pm_ops = {
+ 
+ static struct platform_driver mtk_smi_larb_driver = {
+ 	.probe	= mtk_smi_larb_probe,
+-	.remove	= mtk_smi_larb_remove,
++	.remove_new = mtk_smi_larb_remove,
+ 	.driver	= {
+ 		.name = "mtk-smi-larb",
+ 		.of_match_table = mtk_smi_larb_of_ids,
+@@ -789,14 +788,13 @@ static int mtk_smi_common_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static int mtk_smi_common_remove(struct platform_device *pdev)
++static void mtk_smi_common_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_smi *common = dev_get_drvdata(&pdev->dev);
+ 
+ 	if (common->plat->type == MTK_SMI_GEN2_SUB_COMM)
+ 		device_link_remove(&pdev->dev, common->smi_common_dev);
+ 	pm_runtime_disable(&pdev->dev);
+-	return 0;
+ }
+ 
+ static int __maybe_unused mtk_smi_common_resume(struct device *dev)
+@@ -836,7 +834,7 @@ static const struct dev_pm_ops smi_common_pm_ops = {
+ 
+ static struct platform_driver mtk_smi_common_driver = {
+ 	.probe	= mtk_smi_common_probe,
+-	.remove = mtk_smi_common_remove,
++	.remove_new = mtk_smi_common_remove,
+ 	.driver	= {
+ 		.name = "mtk-smi-common",
+ 		.of_match_table = mtk_smi_common_of_ids,
 -- 
 2.51.0
 
