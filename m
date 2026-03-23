@@ -1,303 +1,162 @@
-Return-Path: <stable+bounces-229994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229995-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kLm1HraQwWnFTwQAu9opvQ
-	(envelope-from <stable+bounces-229994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:12:54 +0100
+	id uEFzFdSMwWlxTwQAu9opvQ
+	(envelope-from <stable+bounces-229995-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:56:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869282FC033
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:12:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6BBE2FBB14
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 37145311AA39
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:43:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1403E30CAE78
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74043090C5;
-	Mon, 23 Mar 2026 18:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C12DECBF;
+	Mon, 23 Mar 2026 18:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gwlRP2Hh"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="rtDMhlqV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADCF2F4A0C;
-	Mon, 23 Mar 2026 18:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542B224A076
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 18:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774291434; cv=none; b=Ac2FgBKxph2fZLEnhUMMc69k4Hcf5RRWIFCSzxz9aWO6TDRitZLQYYW9KEKJFnx7ny45qDCLHoOfalADdRC1asgCM33C42dfwIT46TJXkrsIfSSM5nYaL7tlJvDPl7E8wd27Vm/13WUwA15gwcmnLi1pUnBT2EOF3lBvfXOOmR4=
+	t=1774291558; cv=none; b=JYutJ7DpWejeeznzNDr1sXL7waYYcyvzhPaA1dUdh4IJyRxPNZjO6/aND+x4AC0ZG+WkF69rgANP1TDgJLAnhfSQdt8ffvHBpv5ni2lQmaPjCRrPJwR+rQFgv0Nsr4dNbVdb4W5Ne14cRiERqESYcG0iQT6CE8HlkqP8s75dU24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774291434; c=relaxed/simple;
-	bh=BnDiV8ytQlshCFNFNCsjkLObdceDwr67Or+iSq8MRC0=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=X/SlYIpfGmKnvRq8GWZ6FRMoGwytS3R79NHbIgK1N7ah8Qt7/XOm6TuSFW+llZhFeUx7Dp0r1by/URpRK009MPEMOZS7RoBbbDE/63ysXzo/+HfYARrm66C1LEA2x2uo0OGiRukQjGQ5YUAJrGvctDvZO+P5kW4GARPGWmcJNPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gwlRP2Hh; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774291430; x=1805827430;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=BnDiV8ytQlshCFNFNCsjkLObdceDwr67Or+iSq8MRC0=;
-  b=gwlRP2HhF4QOLrnlNnRQDWV/WxYdny1S7obTIi+X1rUvRnjfb66GdS3/
-   TipAqbyVNRJbwmbJ+DNcAgZjvljtEqRnrEyC6P/NIYmNGCM6DwAmAk1jc
-   LZMCRytWgvtRHa76Br7swy5DkWwk5y/c9lEo2L/qx71j6ALph3TB82Sey
-   rf8zDIbae4EjwHwEmpEQ35SqzRaMOEZsT/N5vs1HYS+tG66YT0yvc/g2u
-   DATiZUKzo+qkM/hL2Ownkl2yQQCcl1HiiQqi2ptgkH5ZE7pyKbKaCT3Pa
-   kR5DGZy4/N5B81oEAcoVNTADQdtDT4VDw2E5Qp1klS1mD77aB7lHrnCqy
-   g==;
-X-CSE-ConnectionGUID: Nzs8be/QT3qG8LzrCx+hKA==
-X-CSE-MsgGUID: brDF7ksrQFmeDZcWWGa0xw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11738"; a="75319676"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="75319676"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 11:43:49 -0700
-X-CSE-ConnectionGUID: pMtp41bXQdO7UvfgROCi6g==
-X-CSE-MsgGUID: lsNIaCopSY2w13HeHCiJzA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="228593573"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.49])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 11:43:43 -0700
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Mon, 23 Mar 2026 20:43:34 +0200 (EET)
-To: Gerd Bayer <gbayer@linux.ibm.com>
-cc: Bjorn Helgaas <bhelgaas@google.com>, Jay Cornwall <Jay.Cornwall@amd.com>, 
-    Felix Kuehling <Felix.Kuehling@amd.com>, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Niklas Schnelle <schnelle@linux.ibm.com>, 
-    Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-    Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-    Alexander Gordeev <agordeev@linux.ibm.com>, 
-    Sven Schnelle <svens@linux.ibm.com>, Leon Romanovsky <leon@kernel.org>, 
-    Alexander Schmidt <alexs@linux.ibm.com>, linux-s390@vger.kernel.org, 
-    linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, 
-    Netdev <netdev@vger.kernel.org>, linux-rdma@vger.kernel.org, 
-    stable@vger.kernel.org
-Subject: Re: [PATCH v5 1/2] PCI: AtomicOps: Do not enable without support in
- root complex
-In-Reply-To: <20260323-fix_pciatops-v5-1-fada7233aea8@linux.ibm.com>
-Message-ID: <fc27b178-cf08-8f6a-5441-9fca908f4aa2@linux.intel.com>
-References: <20260323-fix_pciatops-v5-0-fada7233aea8@linux.ibm.com> <20260323-fix_pciatops-v5-1-fada7233aea8@linux.ibm.com>
+	s=arc-20240116; t=1774291558; c=relaxed/simple;
+	bh=xKWqh2Mq3To1C8FNyFOCYh6IisBe2esHhyb63lXCN4Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C67zWpVlmf/OPK4KhXPqbx1/cmBm/pXGJJz2/LAiZL8TIaTMqkCZzotp9sgFj06iiKHhK23J6Odtf0A5kcaLPBjBvlydBin6HHZrtp1PUdtk1UypUke9wit2NBeyixYwwMu/pMU4CVQX8SB5SW7SWuV99pOSGuQPtoVMxeYojYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=rtDMhlqV; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38a42a0d7f7so42372061fa.1
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 11:45:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20251104; t=1774291555; x=1774896355; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p5I9WcMIMbWgGzcbuEa00kzIbh/DzG5Pp6MMimlIG30=;
+        b=rtDMhlqVppyrDYiVuLUCnKpjKtxyUL55hUA8L0v9aocfcZY711cfYZ9VPxnovaaXNT
+         XdfFWimghihvd2QSEehD/DYtQwH2FIhZYcZDHjkv+Dpn1Yauf7FWAQAU/kzg20VZGLYA
+         A+mLBD6v9ILx2E3qB2Mzo/Hh2/aqYcVwp50iSoOfyJI6/OnkL2k+sygCLE7GQLHd2dNg
+         ynsS0BRlMG7aU1xILmuWPDl3V2WtvLAmDzvvLA1gtbYYIjMvyyX43vTbUt+dCV4UO1vp
+         sTFP/p9IxPAY7TDgNuynVDbMPptDfvvhDpAkOGycpaH0XB/+ziLUE3DCQKPBGpy14vXt
+         M6Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774291555; x=1774896355;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p5I9WcMIMbWgGzcbuEa00kzIbh/DzG5Pp6MMimlIG30=;
+        b=HkFBjNaDYaMND0bad9EIVI4OxxqUm+d13vMqpTjXg1S7t1vWL97DHjmVal+Vrjupn7
+         AR5gtd3y5UT3kUEPB9E7kBldprpTbbnsegAzID5M6Iy9PG1JCak9eT9vHVt9Ud2O5sSg
+         s3QrlWRcCYpWqs3pYO2B7tTWJmxc/kY11sOJi/rLWfKNThjujPES75NqZIzMfZyB1Ygu
+         DL9fzJd3LdndJVBf9Q9mIkhmuErQWWCUFxNIg4ja8Po7ezDXTwvxUN4Ze7xQ4X65A0OO
+         3arsVBgyKOvFRW7Xpd2ui/S74w5pwp7fzWMZAV3Kg0UYVcasUp+4skDFdXyA7j1Q0H77
+         sbyg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5MBuUzRixjWfdeu47oZIVQy3azjJBhcXcp9PRtQJrtJLNMBhLEQP7L+7Y0o9jYvb3/srrGEA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwevTAoVcA+aMd8jV7UtvBB6O1GC73fdvxyfiKrIjNyDshYd4lF
+	2De3KZ0IsI953Dp9GlQqqtPUgidPdrRufbtPiIm6ToXQ47n/JmfDHUY=
+X-Gm-Gg: ATEYQzxozxhJ+Kd5pYErTNXdHpl7jo4rK60KF91/U58hGmVqp0iAR5O6GLLhKIk4C6x
+	SuJ0vtA2Pv3xxvZ1aHGeuET6BPyJfO+RqP7rcNlr6crGjKnDTNXjDe9nBcz+PI9yJXV2sjdqz6s
+	cQiPiIyY6tfL4JxOa++M4EWOFsTfIdOffNNfW+x58x9PsuXiJMSIES9r9AFHh3YfSuBMumyornB
+	o1dbXWttgxMmUPkFDGJU5Ac6ZbZW5eUpuNX4Ey2/Vqvajlg/u82dAbJiUU7hX/cMAF6vSD/+CF5
+	bBgvcu5QME8gigEMXQryfoffik1Z9NTHCMxhmj88cuLAtysezZ+O0rw7C6+lhunZS1bj7eX3fDc
+	lpc9PD6jbYYSXJ1BIeZ2oOxvXMp8ByBt4e9pZXCKjr415dYL5sfPjay5tiIMXbacT0bGJatr3sI
+	CtWPJjP+wq/HrpwsZQqFt7sskNLFb66I+p8Nur0ovHXf+Zcam2W3Eiyo5UeAXytOGCSzfup0Cvp
+	g==
+X-Received: by 2002:a2e:a30e:0:b0:38b:f1c3:cfb6 with SMTP id 38308e7fff4ca-38c327e9c52mr1248601fa.4.1774291555190;
+        Mon, 23 Mar 2026 11:45:55 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2b444d.dip0.t-ipconnect.de. [91.43.68.77])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf9aa200dsm30082831fa.28.2026.03.23.11.45.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 11:45:54 -0700 (PDT)
+Message-ID: <941eaeda-94b3-4726-ba64-3223ea0cc3d2@googlemail.com>
+Date: Mon, 23 Mar 2026 19:45:53 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spamd-Result: default: False [-2.16 / 15.00];
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.18 000/212] 6.18.20-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260323134503.770111826@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.65 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229994-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[intel.com:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
+	TAGGED_FROM(0.00)[bounces-229995-lists,stable=lfdr.de];
+	FREEMAIL_FROM(0.00)[googlemail.com];
+	RCPT_COUNT_TWELVE(0.00)[20];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org];
-	MISSING_XM_UA(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[googlemail.com:+];
+	NEURAL_HAM(-0.00)[-0.999];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:dkim,linux.intel.com:mid]
-X-Rspamd-Queue-Id: 869282FC033
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,googlemail.com:dkim,googlemail.com:mid]
+X-Rspamd-Queue-Id: C6BBE2FBB14
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, 23 Mar 2026, Gerd Bayer wrote:
+Am 23.03.2026 um 14:43 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.18.20 release.
+> There are 212 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-> When inspecting the config space of a Connect-X physical function in an
-> s390 system after it was initialized by the mlx5_core device driver, we
-> found the function to be enabled to request AtomicOps despite the
-> system's root-complex lacking support for completing them:
-> 
-> 1ed0:00:00.1 Ethernet controller: Mellanox Technologies MT2894 Family [ConnectX-6 Lx]
-> 	Subsystem: Mellanox Technologies Device 0002
->   [...]
-> 	DevCtl2: Completion Timeout: 50us to 50ms, TimeoutDis-
-> 		 AtomicOpsCtl: ReqEn+
-> 		 IDOReq- IDOCompl- LTR- EmergencyPowerReductionReq-
-> 		 10BitTagReq- OBFF Disabled, EETLPPrefixBlk-
-> 
-> Turns out the device driver calls pci_enable_atomic_ops_to_root() which
-> defaulted to enable AtomicOps requests even if it had no information
-> about the root-port that the PCIe device is attached to. Similarly,
-> AtomicOps requests are enabled for root-complex integrated endpoints
-> (RCiEPs) unconditionally.
-> 
-> Change the logic of pci_enable_atomic_ops_to_root() to fully traverse the
-> PCIe tree upwards, check that the bridge devices support delivering
-> AtomicOps transactions, and finally check that there is a root-port at
-> the end that does support completing AtomicOps - or that the support for
-> completing AtomicOps at the root complex is announced through some other
-> arch-specific way.
-> 
-> This announcement is implemented through the new
-> pcibios_connects_to_atomicops_capable_rc() function - with a default
-> implementation to always return "true" to leave the semantics for RCiEPs
-> intact. For s390, override pcibios_connects_to_atomicops_capable_rc() to
-> always return "false".
-> 
-> Do not change the enablement of AtomicOps requests if there is no
-> positive confirmation that the root complex can complete PCIe AtomicOps.
-> 
-> Reported-by: Alexander Schmidt <alexs@linux.ibm.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 430a23689dea ("PCI: Add pci_enable_atomic_ops_to_root()")
-> Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
-> ---
->  arch/s390/pci/pci.c |  5 +++++
->  drivers/pci/pci.c   | 46 +++++++++++++++++++++++++++++-----------------
->  include/linux/pci.h |  1 +
->  3 files changed, 35 insertions(+), 17 deletions(-)
-> 
-> diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-> index 2a430722cbe415dd56c92fed2e513e524f46481a..a13235d3218e8ca451e25fe8d9094500fa21aa26 100644
-> --- a/arch/s390/pci/pci.c
-> +++ b/arch/s390/pci/pci.c
-> @@ -265,6 +265,11 @@ static int zpci_cfg_store(struct zpci_dev *zdev, int offset, u32 val, u8 len)
->  	return rc;
->  }
->  
-> +bool pcibios_connects_to_atomicops_capable_rc(struct pci_dev *pdev, u32 cap_mask)
-> +{
-> +	return false;
-> +}
-> +
->  resource_size_t pcibios_align_resource(void *data, const struct resource *res,
->  				       resource_size_t size,
->  				       resource_size_t align)
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 8479c2e1f74f1044416281aba11bf071ea89488a..c1143f8e6b2a0f029feb3c4390ac6f33837f6de1 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -3660,6 +3660,21 @@ void pci_acs_init(struct pci_dev *dev)
->  	pci_disable_broken_acs_cap(dev);
->  }
->  
-> +
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-Extra newline.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-> +static bool pci_is_atomicops_capable_rp(struct pci_dev *dev, u32 cap, u32 cap_mask)
-> +{
-> +	if ((!dev) ||
 
-Unnecessary parenthesis.
-
-> +	     !(pci_pcie_type(dev) != PCI_EXP_TYPE_ROOT_PORT))
-
-This fits to one line.
-
-> +		return false;
-> +
-> +	return ((cap & cap_mask) == cap_mask);
-
-Extra parenthesis.
-
-> +}
-> +
-> +bool __weak pcibios_connects_to_atomicops_capable_rc(struct pci_dev *pdev, u32 cap_mask)
-> +{
-> +	return true;
-> +}
-> +
->  /**
->   * pci_enable_atomic_ops_to_root - enable AtomicOp requests to root port
->   * @dev: the PCI device
-> @@ -3676,7 +3691,7 @@ void pci_acs_init(struct pci_dev *dev)
->  int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
->  {
->  	struct pci_bus *bus = dev->bus;
-> -	struct pci_dev *bridge;
-> +	struct pci_dev *bridge = NULL;
->  	u32 cap, ctl2;
->  
->  	/*
-> @@ -3714,29 +3729,26 @@ int pci_enable_atomic_ops_to_root(struct pci_dev *dev, u32 cap_mask)
->  		switch (pci_pcie_type(bridge)) {
->  		/* Ensure switch ports support AtomicOp routing */
->  		case PCI_EXP_TYPE_UPSTREAM:
-> -		case PCI_EXP_TYPE_DOWNSTREAM:
-> -			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-> -				return -EINVAL;
-> -			break;
-> -
-> -		/* Ensure root port supports all the sizes we care about */
-> -		case PCI_EXP_TYPE_ROOT_PORT:
-> -			if ((cap & cap_mask) != cap_mask)
-> -				return -EINVAL;
-> -			break;
-> -		}
-> -
-> -		/* Ensure upstream ports don't block AtomicOps on egress */
-> -		if (pci_pcie_type(bridge) == PCI_EXP_TYPE_UPSTREAM) {
-> +			/* Upstream ports must not block AtomicOps on egress */
->  			pcie_capability_read_dword(bridge, PCI_EXP_DEVCTL2,
->  						   &ctl2);
->  			if (ctl2 & PCI_EXP_DEVCTL2_ATOMIC_EGRESS_BLOCK)
->  				return -EINVAL;
-> +			fallthrough;
-> +		/* All switch ports need to route AtomicOps */
-> +		case PCI_EXP_TYPE_DOWNSTREAM:
-> +			if (!(cap & PCI_EXP_DEVCAP2_ATOMIC_ROUTE))
-> +				return -EINVAL;
-> +			break;
->  		}
-> -
->  		bus = bus->parent;
->  	}
->  
-> +	/* Finally, last bridge must be root port and support requested sizes */
-> +	if (!(pci_is_atomicops_capable_rp(bridge, cap, cap_mask) ||
-> +	     pcibios_connects_to_atomicops_capable_rc(dev, cap_mask)))
-> +		return -EINVAL;
-> +
->  	pcie_capability_set_word(dev, PCI_EXP_DEVCTL2,
->  				 PCI_EXP_DEVCTL2_ATOMIC_REQ);
->  	return 0;
-> @@ -3813,7 +3825,7 @@ static int __pci_request_region(struct pci_dev *pdev, int bar,
->  
->  err_out:
->  	pci_warn(pdev, "BAR %d: can't reserve %pR\n", bar,
-> -		 &pdev->resource[bar]);
-> +			&pdev->resource[bar]);
-
-Unrelated change.
-
->  	return -EBUSY;
->  }
->  
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 1c270f1d512301de4d462fe7e5097c32af5c6f8d..498f266c9838c55e9b03d03fef49a82358047f4f 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -692,6 +692,7 @@ void pci_set_host_bridge_release(struct pci_host_bridge *bridge,
->  				 void *release_data);
->  
->  int pcibios_root_bridge_prepare(struct pci_host_bridge *bridge);
-> +bool pcibios_connects_to_atomicops_capable_rc(struct pci_dev *pdev, u32 cap_mask);
->  
->  #define PCI_REGION_FLAG_MASK	0x0fU	/* These bits of resource flags tell us the PCI region flags */
->  
-> 
-> 
+Beste Grüße,
+Peter Schneider
 
 -- 
- i.
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
