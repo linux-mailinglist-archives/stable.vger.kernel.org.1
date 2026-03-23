@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228806-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uC5cCIRLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228333-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:40 +0100
+	id qGv+Bm5XwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228806-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B122D2F41B8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2002F5D72
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 318CF3151DA9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44096324B64F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448313B2FD4;
-	Mon, 23 Mar 2026 14:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D88023D288;
+	Mon, 23 Mar 2026 14:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C40LDhfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AO1Eklnr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D733C07A;
-	Mon, 23 Mar 2026 14:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EEF1A5B84;
+	Mon, 23 Mar 2026 14:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274838; cv=none; b=tW9Ivc4+/hyUrADoxmfj+OVjRxKWkdBZ9fq1v0qr9TX7UHQKHYD6sZwdcn9S46a1vKbJTWV9bU6eNnmDUMg98c2ecTzTrM3c1DNJlkSGa1gwE9hoUOEVJgr3whaIwR/q0Y/CyYwvGBmtVZikhizs28QULaTC8JMKgingSAuUun8=
+	t=1774277181; cv=none; b=ishkrQ8xlx0Fi/uAixVYAidT04VI4bMa99qAnmolI/oujxH17PUCCMGsEimQgMlLiJu3kHx/97/eiRZ5dTk1RkcJQTmyR+m2FGMGCHox/6QysTnxDOiJ2jPXQ2riT3gr/14X4mRDoslMolp9my2q44HOu0dZKQOsIP0qlWem3M0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274838; c=relaxed/simple;
-	bh=I1QJvUr4J14ZoegnuhP+Myy11veGfaX8oULfnFduPL4=;
+	s=arc-20240116; t=1774277181; c=relaxed/simple;
+	bh=G7O1XJZGXH6nC4okZtgWgeNCU/MC7H9vLZCBKTkqPjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvgYMHvJ8/yUG2hANjQGhy3m4Hh5XPFcpOcbIqRmwphINn9MfIT3k2gxidTGiOJq/PiafBQDeQmYuPwd5JuL2WiHmRM8KeAl/MiyY/fs+BnI5eXdHzqBbKpUZLPDIp1XMj5fbJGX5ybOwcRFwfHuKBxZY8pCM/v7jCBo+H81R3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C40LDhfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96634C4CEF7;
-	Mon, 23 Mar 2026 14:07:17 +0000 (UTC)
+	 MIME-Version; b=JGiaQxUlBXRN5IuM2CAki5c07ggqygrkQiRHw6HkIfcVWYfHh1UJHxIJ/3sqkNC3uuusCbdVE2P93PPJaECgutavH0dQ9+79kE2+BacCBF3KUXiIWuqgXVLXsxiK1Vj1W//xYF/2LAJ5OrK0uPNFna//0HfZ1DW4z7o1rK1wgGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AO1Eklnr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EE0C4CEF7;
+	Mon, 23 Mar 2026 14:46:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274837;
-	bh=I1QJvUr4J14ZoegnuhP+Myy11veGfaX8oULfnFduPL4=;
+	s=korg; t=1774277181;
+	bh=G7O1XJZGXH6nC4okZtgWgeNCU/MC7H9vLZCBKTkqPjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C40LDhfSuGymT5X+dDa4qKTcmkmg1OMzpdBuhAwNws4Nxgdv1YHaEjHrBsy91HCUD
-	 JPy9dCE6vDRERqgTgvDp+qZQKxB1KrGWHdtftsnQxZ8ip3cD9zwUPr8f6a1U+s0npb
-	 hTIcWx+MCM0m8eJDRs+q5T5N9P0pNivIb/bX1Vc8=
+	b=AO1EklnrrAlL1C8GGscxiIUjeg2zFwROScsAaGnFujeNwR9aWKt1rrlXnsJdyJYMB
+	 S0QLlRWomxzFSB4C3eFQK4uzImTkHRKgUmqAOz99AYxL+EIqZqhvprUWdmIHJ4RUhU
+	 Umot4ePafVcf3OS21YKZeQRgAEo3YrFJMFIA/18Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 123/212] Bluetooth: LE L2CAP: Disconnect if sum of payload sizes exceed SDU
+	Martin Michaelis <code@mgjm.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 348/460] io_uring/kbuf: propagate BUF_MORE through early buffer commit path
 Date: Mon, 23 Mar 2026 14:45:44 +0100
-Message-ID: <20260323134507.654107457@linuxfoundation.org>
+Message-ID: <20260323134535.100704458@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,69 +68,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228333-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228806-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.998];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B122D2F41B8
+X-Rspamd-Queue-Id: 6D2002F5D72
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit b6a2bf43aa37670432843bc73ae2a6288ba4d6f8 ]
+Commit 418eab7a6f3c002d8e64d6e95ec27118017019af upstream.
 
-Core 6.0, Vol 3, Part A, 3.4.3:
-"... If the sum of the payload sizes for the K-frames exceeds the
-specified SDU length, the receiver shall disconnect the channel."
+When io_should_commit() returns true (eg for non-pollable files), buffer
+commit happens at buffer selection time and sel->buf_list is set to
+NULL. When __io_put_kbufs() generates CQE flags at completion time, it
+calls __io_put_kbuf_ring() which finds a NULL buffer_list and hence
+cannot determine whether the buffer was consumed or not. This means that
+IORING_CQE_F_BUF_MORE is never set for non-pollable input with
+incrementally consumed buffers.
 
-This fixes L2CAP/LE/CFC/BV-27-C (running together with 'l2test -r -P
-0x0027 -V le_public').
+Likewise for io_buffers_select(), which always commits upfront and
+discards the return value of io_kbuf_commit().
 
-Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add REQ_F_BUF_MORE to store the result of io_kbuf_commit() during early
+commit. Then __io_put_kbuf_ring() can check this flag and set
+IORING_F_BUF_MORE accordingy.
+
+Reported-by: Martin Michaelis <code@mgjm.de>
+Cc: stable@vger.kernel.org
+Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
+Link: https://github.com/axboe/liburing/issues/1553
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/io_uring_types.h |    3 +++
+ io_uring/kbuf.c                |    6 ++++--
+ io_uring/kbuf.h                |    4 +++-
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 1618fe98dce71..05acc2e98f58f 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6721,6 +6721,7 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+--- a/include/linux/io_uring_types.h
++++ b/include/linux/io_uring_types.h
+@@ -467,6 +467,7 @@ enum {
+ 	REQ_F_BL_EMPTY_BIT,
+ 	REQ_F_BL_NO_RECYCLE_BIT,
+ 	REQ_F_BUFFERS_COMMIT_BIT,
++	REQ_F_BUF_MORE_BIT,
  
- 	if (chan->sdu->len + skb->len > chan->sdu_len) {
- 		BT_ERR("Too much LE L2CAP data received");
-+		l2cap_send_disconn_req(chan, ECONNRESET);
- 		err = -EINVAL;
- 		goto failed;
+ 	/* not a real bit, just to check we're not overflowing the space */
+ 	__REQ_F_LAST_BIT,
+@@ -547,6 +548,8 @@ enum {
+ 	REQ_F_BL_NO_RECYCLE	= IO_REQ_FLAG(REQ_F_BL_NO_RECYCLE_BIT),
+ 	/* buffer ring head needs incrementing on put */
+ 	REQ_F_BUFFERS_COMMIT	= IO_REQ_FLAG(REQ_F_BUFFERS_COMMIT_BIT),
++	/* incremental buffer consumption, more space available */
++	REQ_F_BUF_MORE		= IO_REQ_FLAG(REQ_F_BUF_MORE_BIT),
+ };
+ 
+ typedef void (*io_req_tw_func_t)(struct io_kiocb *req, struct io_tw_state *ts);
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -175,7 +175,8 @@ static void __user *io_ring_buffer_selec
+ 		 * the transfer completes (or if we get -EAGAIN and must poll of
+ 		 * retry).
+ 		 */
+-		io_kbuf_commit(req, bl, *len, 1);
++		if (!io_kbuf_commit(req, bl, *len, 1))
++			req->flags |= REQ_F_BUF_MORE;
+ 		req->buf_list = NULL;
  	}
--- 
-2.51.0
-
+ 	return ret;
+@@ -321,7 +322,8 @@ int io_buffers_select(struct io_kiocb *r
+ 		 */
+ 		if (ret > 0) {
+ 			req->flags |= REQ_F_BUFFERS_COMMIT | REQ_F_BL_NO_RECYCLE;
+-			io_kbuf_commit(req, bl, arg->out_len, ret);
++			if (!io_kbuf_commit(req, bl, arg->out_len, ret))
++				req->flags |= REQ_F_BUF_MORE;
+ 		}
+ 	} else {
+ 		ret = io_provided_buffers_select(req, &arg->out_len, bl, arg->iovs);
+--- a/io_uring/kbuf.h
++++ b/io_uring/kbuf.h
+@@ -165,7 +165,9 @@ static inline bool __io_put_kbuf_ring(st
+ 		ret = io_kbuf_commit(req, bl, len, nr);
+ 		req->buf_index = bl->bgid;
+ 	}
+-	req->flags &= ~REQ_F_BUFFER_RING;
++	if (ret && (req->flags & REQ_F_BUF_MORE))
++		ret = false;
++	req->flags &= ~(REQ_F_BUFFER_RING | REQ_F_BUF_MORE);
+ 	return ret;
+ }
+ 
 
 
 
