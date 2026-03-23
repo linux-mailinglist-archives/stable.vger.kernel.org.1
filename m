@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-228699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229684-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UA7BEgxTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228699-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:48 +0100
+	id MIUZLNZtwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229684-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35D832F540F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B0772F8B2F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4C9D93078D76
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8098830FE3EA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471513B38BF;
-	Mon, 23 Mar 2026 14:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC80A3BD22F;
+	Mon, 23 Mar 2026 16:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIkjFvRQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jsv1oOFW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5F63B2FE6;
-	Mon, 23 Mar 2026 14:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5A439A805;
+	Mon, 23 Mar 2026 16:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276886; cv=none; b=JLAOONABD7eRyFdkxJTbjrtrCaBoaOQp5jVNpU3EHCS9W28ektih6I0/CVjUpGe8GbljjFUlHkL4BRB64EFcOiRCM4rD8mdVzG1hX/kkeG9AJnVOIyuQA/DP49zeqI0lphfCEIr8Q65mZgxv+GyO9xZ0+Mbh5ciOqNyy0Cweqoo=
+	t=1774282587; cv=none; b=MDiH7VEKngTbyNbC4/UuAiOVVIKb8GIP/fLqdl3UTFV9aVoqfHnY6tP7RBD2fHhtTl1KGpYck8rzuJDkOJWTKSFlsDLQ0/oLiWA0KR297XcJMnEZBlx/XKfZZ15mgHxiRemkAideDy/Lke6DSHAeJYt+kKa8DYymkmln9AvBeUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276886; c=relaxed/simple;
-	bh=q+6h79+fnRSqIL+I7ZDJ74tjKWF7O6ydwFQINTbRyUA=;
+	s=arc-20240116; t=1774282587; c=relaxed/simple;
+	bh=EuKf7Jc516x8O0M5zTXyVvkjuNpw0+V5sVpYjqn6Pzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKrlOlB2JOcx6rm+XenZx4ntsmQYnknFpjxJ5IMAycVQFs2V7ocRwXbOjZIkhUbNtZmeXiccospleZ5f0F0TQ0NNQT4iFC61xMDMjDz68xFNasxMQb6P4rHVwdkLrBcNTQJZNynYQkKhVGssdqlrsNw21fEI+p5l9yxj/SM+tkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIkjFvRQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F14C4CEF7;
-	Mon, 23 Mar 2026 14:41:25 +0000 (UTC)
+	 MIME-Version; b=iTILptRMQo7bKbzwnLqhbYKC+nOsROuUlUenaQ7MxBiTDyU9QPV4Ng6sEYFxitHqp9XhSxHUp5LmZ7hSdVjvbewIU/XU6IgXr6MlYbQxTlENp9V4AaPFB3oAvUnr/Do36NCgsu2GKqaDZycq216PeUmZTOIf3jIDcfvntPc6JaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jsv1oOFW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B335C4CEF7;
+	Mon, 23 Mar 2026 16:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276885;
-	bh=q+6h79+fnRSqIL+I7ZDJ74tjKWF7O6ydwFQINTbRyUA=;
+	s=korg; t=1774282587;
+	bh=EuKf7Jc516x8O0M5zTXyVvkjuNpw0+V5sVpYjqn6Pzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIkjFvRQ/DIRVppidYmSkdoeDbkfiGhXShd5WDf7VDTVcbGieab+TO5/Ppvi6Kv2m
-	 Czod6tw3AXU5nVQLTH6gSbxD4ni86KnP6Yqiup7yska/2inAw7HPfYllCsi0Klcb5O
-	 RpFsKk3faG9vgvlMVuzrJ0aJfZd1leFtHZ1oSnKs=
+	b=jsv1oOFWKSCfmI7T9ClnqOC0jFOUfeaStJwUVNbSmTn/gIy12v6QvAkPcrrBg58YX
+	 1pSGHuIFfkU0JhqjD+YM5cbD+estbu31YJPVnZJdEgrDHtZ1A1LXHKW43P6fsR4XT5
+	 1ZsTBdHBWtI8HgxH0ZpTcjFQ1XV13S7PkFwDLSAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 197/460] smb: client: fix atomic open with O_DIRECT & O_SYNC
-Date: Mon, 23 Mar 2026 14:43:13 +0100
-Message-ID: <20260323134531.385492098@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.1 212/481] USB: usbcore: Introduce usb_bulk_msg_killable()
+Date: Mon, 23 Mar 2026 14:43:14 +0100
+Message-ID: <20260323134530.330293007@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,135 +65,199 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228699-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229684-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 35D832F540F
+X-Rspamd-Queue-Id: 5B0772F8B2F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 4a7d2729dc99437dbb880a64c47828c0d191b308 upstream.
+commit 416909962e7cdf29fd01ac523c953f37708df93d upstream.
 
-When user application requests O_DIRECT|O_SYNC along with O_CREAT on
-open(2), CREATE_NO_BUFFER and CREATE_WRITE_THROUGH bits were missed in
-CREATE request when performing an atomic open, thus leading to
-potentially data integrity issues.
+The synchronous message API in usbcore (usb_control_msg(),
+usb_bulk_msg(), and so on) uses uninterruptible waits.  However,
+drivers may call these routines in the context of a user thread, which
+means it ought to be possible to at least kill them.
 
-Fix this by setting those missing bits in CREATE request when
-O_DIRECT|O_SYNC has been specified in cifs_do_create().
+For this reason, introduce a new usb_bulk_msg_killable() function
+which behaves the same as usb_bulk_msg() except for using
+wait_for_completion_killable_timeout() instead of
+wait_for_completion_timeout().  The same can be done later for
+usb_control_msg() later on, if it turns out to be needed.
 
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Suggested-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/248628b4-cc83-4e81-a620-3ce4e0376d41@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |   11 +++++++++++
- fs/smb/client/dir.c      |    1 +
- fs/smb/client/file.c     |   18 +++---------------
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ drivers/usb/core/message.c |   79 +++++++++++++++++++++++++++++++++++++++------
+ include/linux/usb.h        |    5 +-
+ 2 files changed, 72 insertions(+), 12 deletions(-)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -20,6 +20,7 @@
- #include <linux/utsname.h>
- #include <linux/sched/mm.h>
- #include <linux/netfs.h>
-+#include <linux/fcntl.h>
- #include "cifs_fs_sb.h"
- #include "cifsacl.h"
- #include <crypto/internal/hash.h>
-@@ -2317,4 +2318,14 @@ static inline bool cifs_ses_exiting(stru
- 	return ret;
- }
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -41,16 +41,17 @@ static void usb_api_blocking_completion(
  
-+static inline int cifs_open_create_options(unsigned int oflags, int opts)
-+{
-+	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
-+	if (oflags & O_SYNC)
-+		opts |= CREATE_WRITE_THROUGH;
-+	if (oflags & O_DIRECT)
-+		opts |= CREATE_NO_BUFFER;
-+	return opts;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
---- a/fs/smb/client/dir.c
-+++ b/fs/smb/client/dir.c
-@@ -304,6 +304,7 @@ static int cifs_do_create(struct inode *
+ 
+ /*
+- * Starts urb and waits for completion or timeout. Note that this call
+- * is NOT interruptible. Many device driver i/o requests should be
+- * interruptible and therefore these drivers should implement their
+- * own interruptible routines.
++ * Starts urb and waits for completion or timeout.
++ * Whether or not the wait is killable depends on the flag passed in.
++ * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
+  */
+-static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length)
++static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
++		bool killable)
+ {
+ 	struct api_context ctx;
+ 	unsigned long expire;
+ 	int retval;
++	long rc;
+ 
+ 	init_completion(&ctx.done);
+ 	urb->context = &ctx;
+@@ -60,12 +61,21 @@ static int usb_start_wait_urb(struct urb
  		goto out;
- 	}
  
-+	create_options |= cifs_open_create_options(oflags, create_options);
- 	/*
- 	 * if we're not using unix extensions, see if we need to set
- 	 * ATTR_READONLY on the create call
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -570,15 +570,8 @@ static int cifs_nt_open(const char *full
-  *********************************************************************/
+ 	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
+-	if (!wait_for_completion_timeout(&ctx.done, expire)) {
++	if (killable)
++		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
++	else
++		rc = wait_for_completion_timeout(&ctx.done, expire);
++	if (rc <= 0) {
+ 		usb_kill_urb(urb);
+-		retval = (ctx.status == -ENOENT ? -ETIMEDOUT : ctx.status);
++		if (ctx.status != -ENOENT)
++			retval = ctx.status;
++		else if (rc == 0)
++			retval = -ETIMEDOUT;
++		else
++			retval = rc;
  
- 	disposition = cifs_get_disposition(f_flags);
--
- 	/* BB pass O_SYNC flag through on file attributes .. BB */
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(f_flags, create_options);
+ 		dev_dbg(&urb->dev->dev,
+-			"%s timed out on ep%d%s len=%u/%u\n",
++			"%s timed out or killed on ep%d%s len=%u/%u\n",
+ 			current->comm,
+ 			usb_endpoint_num(&urb->ep->desc),
+ 			usb_urb_dir_in(urb) ? "in" : "out",
+@@ -99,7 +109,7 @@ static int usb_internal_control_msg(stru
+ 	usb_fill_control_urb(urb, usb_dev, pipe, (unsigned char *)cmd, data,
+ 			     len, usb_api_blocking_completion, NULL);
  
- retry_open:
- 	oparms = (struct cifs_open_parms) {
-@@ -1228,13 +1221,8 @@ cifs_reopen_file(struct cifsFileInfo *cf
- 		rdwr_for_fscache = 1;
+-	retv = usb_start_wait_urb(urb, timeout, &length);
++	retv = usb_start_wait_urb(urb, timeout, &length, false);
+ 	if (retv < 0)
+ 		return retv;
+ 	else
+@@ -384,10 +394,59 @@ int usb_bulk_msg(struct usb_device *usb_
+ 		usb_fill_bulk_urb(urb, usb_dev, pipe, data, len,
+ 				usb_api_blocking_completion, NULL);
  
- 	desired_access = cifs_convert_flags(cfile->f_flags, rdwr_for_fscache);
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (cfile->f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (cfile->f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(cfile->f_flags,
-+						   create_options);
+-	return usb_start_wait_urb(urb, timeout, actual_length);
++	return usb_start_wait_urb(urb, timeout, actual_length, false);
+ }
+ EXPORT_SYMBOL_GPL(usb_bulk_msg);
  
- 	if (server->ops->get_lease_key)
- 		server->ops->get_lease_key(inode, &cfile->fid);
++/**
++ * usb_bulk_msg_killable - Builds a bulk urb, sends it off and waits for completion in a killable state
++ * @usb_dev: pointer to the usb device to send the message to
++ * @pipe: endpoint "pipe" to send the message to
++ * @data: pointer to the data to send
++ * @len: length in bytes of the data to send
++ * @actual_length: pointer to a location to put the actual length transferred
++ *	in bytes
++ * @timeout: time in msecs to wait for the message to complete before
++ *	timing out (if 0 the wait is forever)
++ *
++ * Context: task context, might sleep.
++ *
++ * This function is just like usb_blk_msg() except that it waits in a
++ * killable state.
++ *
++ * Return:
++ * If successful, 0. Otherwise a negative error number. The number of actual
++ * bytes transferred will be stored in the @actual_length parameter.
++ *
++ */
++int usb_bulk_msg_killable(struct usb_device *usb_dev, unsigned int pipe,
++		 void *data, int len, int *actual_length, int timeout)
++{
++	struct urb *urb;
++	struct usb_host_endpoint *ep;
++
++	ep = usb_pipe_endpoint(usb_dev, pipe);
++	if (!ep || len < 0)
++		return -EINVAL;
++
++	urb = usb_alloc_urb(0, GFP_KERNEL);
++	if (!urb)
++		return -ENOMEM;
++
++	if ((ep->desc.bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
++			USB_ENDPOINT_XFER_INT) {
++		pipe = (pipe & ~(3 << 30)) | (PIPE_INTERRUPT << 30);
++		usb_fill_int_urb(urb, usb_dev, pipe, data, len,
++				usb_api_blocking_completion, NULL,
++				ep->desc.bInterval);
++	} else
++		usb_fill_bulk_urb(urb, usb_dev, pipe, data, len,
++				usb_api_blocking_completion, NULL);
++
++	return usb_start_wait_urb(urb, timeout, actual_length, true);
++}
++EXPORT_SYMBOL_GPL(usb_bulk_msg_killable);
++
+ /*-------------------------------------------------------------------*/
+ 
+ static void sg_clean(struct usb_sg_request *io)
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1804,8 +1804,9 @@ extern int usb_control_msg(struct usb_de
+ extern int usb_interrupt_msg(struct usb_device *usb_dev, unsigned int pipe,
+ 	void *data, int len, int *actual_length, int timeout);
+ extern int usb_bulk_msg(struct usb_device *usb_dev, unsigned int pipe,
+-	void *data, int len, int *actual_length,
+-	int timeout);
++	void *data, int len, int *actual_length, int timeout);
++extern int usb_bulk_msg_killable(struct usb_device *usb_dev, unsigned int pipe,
++	void *data, int len, int *actual_length, int timeout);
+ 
+ /* wrappers around usb_control_msg() for the most common standard requests */
+ int usb_control_msg_send(struct usb_device *dev, __u8 endpoint, __u8 request,
 
 
 
