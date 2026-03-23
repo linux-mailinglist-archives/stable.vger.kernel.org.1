@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOjrMXx+wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229896-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:55:08 +0100
+	id EMJeLvtWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014022FA9E4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:55:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1C6B2F5C85
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9D4C3125A72
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 35944304342E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB92D3B19A2;
-	Mon, 23 Mar 2026 16:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5B8241695;
+	Mon, 23 Mar 2026 14:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5PFJnGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjZ5kzf5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E953246778;
-	Mon, 23 Mar 2026 16:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E540B23C4FF;
+	Mon, 23 Mar 2026 14:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283154; cv=none; b=I2mHbUajd6oNGADd3LDIeuQZTAoX1QJeXjL7Y42GsG+Rp6o9uCCp/qAyvWgltC5DckIJqpYf1abxR2KufkJDVqXMJ3H8YWgSSswu07iHd9cUlfJ/KSFQLR6s+AO1r1o1zej9ZxVQSxUUbgHZq0P9+HRa4dAX1gxxx25UIRAIgbw=
+	t=1774277235; cv=none; b=pM3ZA4aeWAqJQpO/Jfpv5BGmji8HVWawrHKyl4TJ0AT36z+P1kr3l/4cYO8GEjOtyWL/yLL3JqaoFPyBwcVL4VtlNyiyh7dAQtCB3/n/s3EkmomUw+/GQLsS3rd6UtBmsr6N7qXNdywYReZVYbFDKM/GOThEKkhkoZi45sx10ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283154; c=relaxed/simple;
-	bh=K5Y/5WqMqQgwq4UMb4CyTjoUGIZe+K8lt+ucjolOdyk=;
+	s=arc-20240116; t=1774277235; c=relaxed/simple;
+	bh=rDav7JuOSKWn+GTSxcYsMaTvhE2ZmtTTMqsdf8V3mSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXgMfHqH/+VM4xTHmhswHoZB3xRtCH76gzddV9Cv9KGx1kojIa1NBplDc2r13T9zJ6+Z1NApvJiUSzNqCtHbSsrdyu81us2zzard3hCtjvstgtCzFdmSZbHD7JPtV2APqotopSKx03Rtn2UN0+rfu61J/vrT520sQS/KITRmjJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5PFJnGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECA7C4CEF7;
-	Mon, 23 Mar 2026 16:25:53 +0000 (UTC)
+	 MIME-Version; b=bIKz4gFTzO+FMJKuMmVrjyHp0F/e7qPO89FI/NfJ0zazerGfungbUviKlrTYBfqxG1wrmkeaCt95ZJntjewnGAQvxipNvSWKjqRiDHsTggS0QqJayIqUbuurEGuTMX5SApJ0/Yy33KqHR3M6P6Yp609GZIO4Oqu9Wt/Jw0FeJbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjZ5kzf5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE13C4CEF7;
+	Mon, 23 Mar 2026 14:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283154;
-	bh=K5Y/5WqMqQgwq4UMb4CyTjoUGIZe+K8lt+ucjolOdyk=;
+	s=korg; t=1774277234;
+	bh=rDav7JuOSKWn+GTSxcYsMaTvhE2ZmtTTMqsdf8V3mSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5PFJnGT4Isjba+ObjAgA0Zh5/mvSsXpd2l5N1L4LTg+zz0h64Hq3XeBsYyGyhsGH
-	 ZGdS+x4ojbwtpKRS+NYBfu3t95Pfc8ZfFn9SIZgFBtbI00utKDEbVl1DoJsODMADj+
-	 LyuP1k4Lh1omGZ7dPCBFwhVsci6zwlU7IFEvMHrk=
+	b=SjZ5kzf5o+EUm7Q90dDBipDXVUug14QEnqrfLLtIRTWZ/S4oJ31WRdkKaOWJvIDgE
+	 UbxV8C08UBWO/yUigWnsdAoyeFncDXV1dCGZgjy6HR53HUZX7mPKlK8fPDXhm+ksZT
+	 oHAx/dez/RNPnkqdEaTh8kxaBENUkuQITj8Eigm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1 378/481] net: enetc: reimplement RFS/RSS memory clearing as PCI quirk
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 364/460] ata: libata-scsi: Return residual for emulated SCSI commands
 Date: Mon, 23 Mar 2026 14:46:00 +0100
-Message-ID: <20260323134534.344454915@linuxfoundation.org>
+Message-ID: <20260323134535.502692809@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,235 +66,324 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,nxp.com,davemloft.net,163.com];
-	TAGGED_FROM(0.00)[bounces-229896-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228824-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 014022FA9E4
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E1C6B2F5C85
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit f0168042a21292d20007d24ab2e4fc32f79ebf11 ]
+[ Upstream commit 5251ae224d8d3caa21b28d12408062b6e75cffad ]
 
-The workaround implemented in commit 3222b5b613db ("net: enetc:
-initialize RFS/RSS memories for unused ports too") is no longer
-effective after commit 6fffbc7ae137 ("PCI: Honor firmware's device
-disabled status"). Thus, it has introduced a regression and we see AER
-errors being reported again:
+The function ata_scsi_rbuf_fill() used to fill the reply buffer of
+emulated SCSI commands always copies the ATA reply buffer
+(ata_scsi_rbuf) up to the size of the SCSI command buffer (the transfer
+length for the command), even if the reply is shorter than the SCSI
+command buffer. This leads to issuers of the SCSI command to always get
+a result without any residual (resid is always 0) despite the
+potentially shorter reply for the command.
 
-$ ip link set sw2p0 up && dhclient -i sw2p0 && ip addr show sw2p0
-fsl_enetc 0000:00:00.2 eno2: configuring for fixed/internal link mode
-fsl_enetc 0000:00:00.2 eno2: Link is Up - 2.5Gbps/Full - flow control rx/tx
-mscc_felix 0000:00:00.5 swp2: configuring for fixed/sgmii link mode
-mscc_felix 0000:00:00.5 swp2: Link is Up - 1Gbps/Full - flow control off
-sja1105 spi2.2 sw2p0: configuring for phy/rgmii-id link mode
-sja1105 spi2.2 sw2p0: Link is Up - 1Gbps/Full - flow control off
-pcieport 0000:00:1f.0: AER: Multiple Corrected error received: 0000:00:00.0
-pcieport 0000:00:1f.0: AER: can't find device of ID0000
+Modify all fill actors used by ata_scsi_rbuf_fill() to return the number
+of bytes filled for the reply and 0 in case of error. Using this value,
+add a call to scsi_set_resid() in ata_scsi_rbuf_fill() to set the
+correct residual for the SCSI command when the reply length is shorter
+than the command buffer.
 
-Rob's suggestion is to reimplement the enetc driver workaround as a
-PCI fixup, and to modify the PCI core to run the fixups for all PCI
-functions. This change handles the first part.
-
-We refactor the common code in enetc_psi_create() and enetc_psi_destroy(),
-and use the PCI fixup only for those functions for which enetc_pf_probe()
-won't get called. This avoids some work being done twice for the PFs
-which are enabled.
-
-Fixes: 6fffbc7ae137 ("PCI: Honor firmware's device disabled status")
-Link: https://lore.kernel.org/netdev/CAL_JsqLsVYiPLx2kcHkDQ4t=hQVCR7NHziDwi9cCFUFhx48Qow@mail.gmail.com/
-Suggested-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20241022024537.251905-7-dlemoal@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Stable-dep-of: e6d7eba23b66 ("ata: libata-scsi: report correct sense field pointer in ata_scsiop_maint_in()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_pf.c |  103 +++++++++++++++++-------
- 1 file changed, 73 insertions(+), 30 deletions(-)
+ drivers/ata/libata-scsi.c |   81 ++++++++++++++++++++++++++--------------------
+ 1 file changed, 47 insertions(+), 34 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
-@@ -1236,50 +1236,81 @@ static int enetc_pf_register_with_ierb(s
- 	return ret;
- }
- 
--static int enetc_pf_probe(struct pci_dev *pdev,
--			  const struct pci_device_id *ent)
-+static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -1920,17 +1920,19 @@ static void ata_scsi_rbuf_fill(struct at
+ 		unsigned int (*actor)(struct ata_device *dev,
+ 				      struct scsi_cmnd *cmd, u8 *rbuf))
  {
--	struct device_node *node = pdev->dev.of_node;
--	struct enetc_ndev_priv *priv;
--	struct net_device *ndev;
- 	struct enetc_si *si;
--	struct enetc_pf *pf;
- 	int err;
+-	unsigned int rc;
+ 	unsigned long flags;
++	unsigned int len;
  
--	err = enetc_pf_register_with_ierb(pdev);
--	if (err == -EPROBE_DEFER)
--		return err;
--	if (err)
--		dev_warn(&pdev->dev,
--			 "Could not register with IERB driver: %pe, please update the device tree\n",
--			 ERR_PTR(err));
--
--	err = enetc_pci_probe(pdev, KBUILD_MODNAME, sizeof(*pf));
--	if (err)
--		return dev_err_probe(&pdev->dev, err, "PCI probing failed\n");
-+	err = enetc_pci_probe(pdev, KBUILD_MODNAME, sizeof(struct enetc_pf));
-+	if (err) {
-+		dev_err_probe(&pdev->dev, err, "PCI probing failed\n");
-+		goto out;
-+	}
+ 	spin_lock_irqsave(&ata_scsi_rbuf_lock, flags);
  
- 	si = pci_get_drvdata(pdev);
- 	if (!si->hw.port || !si->hw.global) {
- 		err = -ENODEV;
- 		dev_err(&pdev->dev, "could not map PF space, probing a VF?\n");
--		goto err_map_pf_space;
-+		goto out_pci_remove;
+ 	memset(ata_scsi_rbuf, 0, ATA_SCSI_RBUF_SIZE);
+-	rc = actor(dev, cmd, ata_scsi_rbuf);
+-	if (rc == 0) {
++	len = actor(dev, cmd, ata_scsi_rbuf);
++	if (len) {
+ 		sg_copy_from_buffer(scsi_sglist(cmd), scsi_sg_count(cmd),
+ 				    ata_scsi_rbuf, ATA_SCSI_RBUF_SIZE);
+ 		cmd->result = SAM_STAT_GOOD;
++		if (scsi_bufflen(cmd) > len)
++			scsi_set_resid(cmd, scsi_bufflen(cmd) - len);
  	}
  
- 	err = enetc_setup_cbdr(&pdev->dev, &si->hw, ENETC_CBDR_DEFAULT_SIZE,
- 			       &si->cbd_ring);
- 	if (err)
--		goto err_setup_cbdr;
-+		goto out_pci_remove;
+ 	spin_unlock_irqrestore(&ata_scsi_rbuf_lock, flags);
+@@ -2018,7 +2020,11 @@ static unsigned int ata_scsiop_inq_std(s
+ 	else
+ 		memcpy(rbuf + 58, versions, sizeof(versions));
  
- 	err = enetc_init_port_rfs_memory(si);
- 	if (err) {
- 		dev_err(&pdev->dev, "Failed to initialize RFS memory\n");
--		goto err_init_port_rfs;
-+		goto out_teardown_cbdr;
- 	}
- 
- 	err = enetc_init_port_rss_memory(si);
- 	if (err) {
- 		dev_err(&pdev->dev, "Failed to initialize RSS memory\n");
--		goto err_init_port_rss;
-+		goto out_teardown_cbdr;
-+	}
-+
-+	return si;
-+
-+out_teardown_cbdr:
-+	enetc_teardown_cbdr(&si->cbd_ring);
-+out_pci_remove:
-+	enetc_pci_remove(pdev);
-+out:
-+	return ERR_PTR(err);
-+}
-+
-+static void enetc_psi_destroy(struct pci_dev *pdev)
-+{
-+	struct enetc_si *si = pci_get_drvdata(pdev);
-+
-+	enetc_teardown_cbdr(&si->cbd_ring);
-+	enetc_pci_remove(pdev);
-+}
-+
-+static int enetc_pf_probe(struct pci_dev *pdev,
-+			  const struct pci_device_id *ent)
-+{
-+	struct device_node *node = pdev->dev.of_node;
-+	struct enetc_ndev_priv *priv;
-+	struct net_device *ndev;
-+	struct enetc_si *si;
-+	struct enetc_pf *pf;
-+	int err;
-+
-+	err = enetc_pf_register_with_ierb(pdev);
-+	if (err == -EPROBE_DEFER)
-+		return err;
-+	if (err)
-+		dev_warn(&pdev->dev,
-+			 "Could not register with IERB driver: %pe, please update the device tree\n",
-+			 ERR_PTR(err));
-+
-+	si = enetc_psi_create(pdev);
-+	if (IS_ERR(si)) {
-+		err = PTR_ERR(si);
-+		goto err_psi_create;
- 	}
- 
- 	if (node && !of_device_is_available(node)) {
-@@ -1365,15 +1396,10 @@ err_alloc_si_res:
- 	si->ndev = NULL;
- 	free_netdev(ndev);
- err_alloc_netdev:
--err_init_port_rss:
--err_init_port_rfs:
- err_device_disabled:
- err_setup_mac_addresses:
--	enetc_teardown_cbdr(&si->cbd_ring);
--err_setup_cbdr:
--err_map_pf_space:
--	enetc_pci_remove(pdev);
--
-+	enetc_psi_destroy(pdev);
-+err_psi_create:
- 	return err;
- }
- 
-@@ -1396,12 +1422,29 @@ static void enetc_pf_remove(struct pci_d
- 	enetc_free_msix(priv);
- 
- 	enetc_free_si_resources(priv);
--	enetc_teardown_cbdr(&si->cbd_ring);
- 
- 	free_netdev(si->ndev);
- 
--	enetc_pci_remove(pdev);
-+	enetc_psi_destroy(pdev);
-+}
-+
-+static void enetc_fixup_clear_rss_rfs(struct pci_dev *pdev)
-+{
-+	struct device_node *node = pdev->dev.of_node;
-+	struct enetc_si *si;
-+
-+	/* Only apply quirk for disabled functions. For the ones
-+	 * that are enabled, enetc_pf_probe() will apply it.
+-	return 0;
++	/*
++	 * Include all 8 possible version descriptors, even if not all of
++	 * them are popoulated.
 +	 */
-+	if (node && of_device_is_available(node))
-+		return;
-+
-+	si = enetc_psi_create(pdev);
-+	if (si)
-+		enetc_psi_destroy(pdev);
++	return 96;
  }
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, ENETC_DEV_ID_PF,
-+			enetc_fixup_clear_rss_rfs);
  
- static const struct pci_device_id enetc_pf_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_DEV_ID_PF) },
+ /**
+@@ -2055,7 +2061,8 @@ static unsigned int ata_scsiop_inq_00(st
+ 		num_pages++;
+ 	}
+ 	rbuf[3] = num_pages;	/* number of supported VPD pages */
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2082,7 +2089,8 @@ static unsigned int ata_scsiop_inq_80(st
+ 	memcpy(rbuf, hdr, sizeof(hdr));
+ 	ata_id_string(dev->id, (unsigned char *) &rbuf[4],
+ 		      ATA_ID_SERNO, ATA_ID_SERNO_LEN);
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2143,7 +2151,8 @@ static unsigned int ata_scsiop_inq_83(st
+ 		num += ATA_ID_WWN_LEN;
+ 	}
+ 	rbuf[3] = num - 4;    /* page len (assume less than 256 bytes) */
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2180,7 +2189,8 @@ static unsigned int ata_scsiop_inq_89(st
+ 	rbuf[56] = ATA_CMD_ID_ATA;
+ 
+ 	memcpy(&rbuf[60], &dev->id[0], 512);
+-	return 0;
++
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2231,7 +2241,7 @@ static unsigned int ata_scsiop_inq_b0(st
+ 		put_unaligned_be32(1, &rbuf[28]);
+ 	}
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2261,7 +2271,7 @@ static unsigned int ata_scsiop_inq_b1(st
+ 	if (zoned)
+ 		rbuf[8] = (zoned << 4);
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2284,7 +2294,7 @@ static unsigned int ata_scsiop_inq_b2(st
+ 	rbuf[3] = 0x4;
+ 	rbuf[5] = 1 << 6;	/* TPWS */
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2304,7 +2314,7 @@ static unsigned int ata_scsiop_inq_b6(st
+ {
+ 	if (!ata_dev_is_zac(dev)) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	/*
+@@ -2322,7 +2332,7 @@ static unsigned int ata_scsiop_inq_b6(st
+ 	put_unaligned_be32(dev->zac_zones_optimal_nonseq, &rbuf[12]);
+ 	put_unaligned_be32(dev->zac_zones_max_open, &rbuf[16]);
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2346,7 +2356,7 @@ static unsigned int ata_scsiop_inq_b9(st
+ 
+ 	if (!cpr_log) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	/* SCSI Concurrent Positioning Ranges VPD page: SBC-5 rev 1 or later */
+@@ -2360,7 +2370,7 @@ static unsigned int ata_scsiop_inq_b9(st
+ 		put_unaligned_be64(cpr_log->cpr[i].num_lbas, &desc[16]);
+ 	}
+ 
+-	return 0;
++	return get_unaligned_be16(&rbuf[2]) + 4;
+ }
+ 
+ /**
+@@ -2382,7 +2392,7 @@ static unsigned int ata_scsiop_inquiry(s
+ 	/* is CmdDt set?  */
+ 	if (scsicmd[1] & 2) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	/* Is EVPD clear? */
+@@ -2410,7 +2420,7 @@ static unsigned int ata_scsiop_inquiry(s
+ 		return ata_scsiop_inq_b9(dev, cmd, rbuf);
+ 	default:
+ 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ }
+ 
+@@ -2741,24 +2751,27 @@ static unsigned int ata_scsiop_mode_sens
+ 			rbuf[3] = sizeof(sat_blk_desc);
+ 			memcpy(rbuf + 4, sat_blk_desc, sizeof(sat_blk_desc));
+ 		}
+-	} else {
+-		put_unaligned_be16(p - rbuf - 2, &rbuf[0]);
+-		rbuf[3] |= dpofua;
+-		if (ebd) {
+-			rbuf[7] = sizeof(sat_blk_desc);
+-			memcpy(rbuf + 8, sat_blk_desc, sizeof(sat_blk_desc));
+-		}
++
++		return rbuf[0] + 1;
+ 	}
+-	return 0;
++
++	put_unaligned_be16(p - rbuf - 2, &rbuf[0]);
++	rbuf[3] |= dpofua;
++	if (ebd) {
++		rbuf[7] = sizeof(sat_blk_desc);
++		memcpy(rbuf + 8, sat_blk_desc, sizeof(sat_blk_desc));
++	}
++
++	return get_unaligned_be16(&rbuf[0]) + 2;
+ 
+ invalid_fld:
+ 	ata_scsi_set_invalid_field(dev, cmd, fp, bp);
+-	return 1;
++	return 0;
+ 
+ saving_not_supp:
+ 	ata_scsi_set_sense(dev, cmd, ILLEGAL_REQUEST, 0x39, 0x0);
+ 	 /* "Saving parameters not supported" */
+-	return 1;
++	return 0;
+ }
+ 
+ /**
+@@ -2801,7 +2814,7 @@ static unsigned int ata_scsiop_read_cap(
+ 		rbuf[6] = sector_size >> (8 * 1);
+ 		rbuf[7] = sector_size;
+ 
+-		return 0;
++		return 8;
+ 	}
+ 
+ 	/*
+@@ -2811,7 +2824,7 @@ static unsigned int ata_scsiop_read_cap(
+ 	if (scsicmd[0] != SERVICE_ACTION_IN_16 ||
+ 	    (scsicmd[1] & 0x1f) != SAI_READ_CAPACITY_16) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	/* sector count, 64-bit */
+@@ -2846,7 +2859,7 @@ static unsigned int ata_scsiop_read_cap(
+ 		}
+ 	}
+ 
+-	return 0;
++	return 16;
+ }
+ 
+ /**
+@@ -2865,7 +2878,7 @@ static unsigned int ata_scsiop_report_lu
+ {
+ 	rbuf[3] = 8;	/* just one lun, LUN 0, size 8 bytes */
+ 
+-	return 0;
++	return 16;
+ }
+ 
+ /*
+@@ -3593,13 +3606,13 @@ static unsigned int ata_scsiop_maint_in(
+ 
+ 	if ((cdb[1] & 0x1f) != MI_REPORT_SUPPORTED_OPERATION_CODES) {
+ 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	if (cdb[2] != 1 && cdb[2] != 3) {
+ 		ata_dev_warn(dev, "invalid command format %d\n", cdb[2]);
+ 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
+-		return 1;
++		return 0;
+ 	}
+ 
+ 	switch (cdb[3]) {
+@@ -3672,7 +3685,7 @@ static unsigned int ata_scsiop_maint_in(
+ 	rbuf[0] = rwcdlp;
+ 	rbuf[1] = cdlp | supported;
+ 
+-	return 0;
++	return 4;
+ }
+ 
+ /**
 
 
 
