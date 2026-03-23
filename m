@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-229964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229034-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KNxnAkZwwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229964-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:30 +0100
+	id sKSTHDtZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229034-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D8EE2F9101
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D1A2F6138
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4F91231EBF04
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F37D30CEBF0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF78B3BE17D;
-	Mon, 23 Mar 2026 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C666C242D7F;
+	Mon, 23 Mar 2026 14:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BA25YSQ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX2o4i+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58593BE147;
-	Mon, 23 Mar 2026 16:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89242370D76;
+	Mon, 23 Mar 2026 14:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283496; cv=none; b=C6AUMIxXyhLqSKeuD+iwgB4UB26xZ53kwfALzTF6MxNnoKwBHD8ye4h9J1nnh38VN3hw6bWrwfzcuJe4Jqpp9tv6RJXjgJZqkzAUwWyAcv17CdW2xjKKrqj9i6S84UJn7Sje6v6z+jU/lLVmAc+9ST86m3vC9WivOLwPqEf4VrY=
+	t=1774277849; cv=none; b=grj2dcL00FaBgjpZ1KOZVtFILj2ecI4Q5QyV0VVXoK85Y2J/MlhqddJIEhP/jq4PFDjGwfiImfMpNCoo+P1ceiXTYzo8JWbpg0g3ibuSD9TBlAgB7fNKqX3rpwxj+pxTNodvGRKUS+jkQroEg+c8cEIZvxchKP9ilJoannodm3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283496; c=relaxed/simple;
-	bh=XqMy07hLksKFsGi0JhpO8aVhpligLV50VP5pJbswhH4=;
+	s=arc-20240116; t=1774277849; c=relaxed/simple;
+	bh=6e+7JIHUtbks7I7kTxVf1oEENw0xWo2IBiyVippnhOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NB1tGc1Vij8EGylSF/BI2dm3KD2b4SCktXWEo6K4EfWvfE9YtGfAQrPugtWPLsHtYdYJT3vQ16TE5ypQv03VejEMldyDvmMr9RHh4CFloT2dzao7Yn/EGQmP7gOfYGJi+ARngs65c0LR4v1wiIrH1Apt/TSn04sUva62qTy/7Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BA25YSQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CE9C4CEF7;
-	Mon, 23 Mar 2026 16:31:35 +0000 (UTC)
+	 MIME-Version; b=C2XvfK67wiHD558y4tywjy7sNSchJNFp6K7JR7MpejAwrrwWc1SFvS/xOuV11j4Huk//4NCyJj3bC5x0rQKBsyBm7inoD2P5fzWGX9z4cMCiEfnNMfCSelUAcRZbEVL+EF/uvCdtxXSsoZ8zS/OBlbiCUFbAn5qbvhS9wbzh/Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX2o4i+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A93C4CEF7;
+	Mon, 23 Mar 2026 14:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283496;
-	bh=XqMy07hLksKFsGi0JhpO8aVhpligLV50VP5pJbswhH4=;
+	s=korg; t=1774277849;
+	bh=6e+7JIHUtbks7I7kTxVf1oEENw0xWo2IBiyVippnhOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BA25YSQ0GeZGKW2MTBnkHNqhgahwAlCUY1RtWbGAwglNUXG+zmpDHQU6m90BIoHrL
-	 nf1+7B5gs+SMSlqH0fbbiDgt/OTAsCC1srZcBbJXFBeJUGswLJeSJ1Jkuv60M9QuSl
-	 +a7UapFvl4ebgZ9d3QheeeySi3dds12pQB8eWoJM=
+	b=HX2o4i+sF/1Owj1Do3FL2CfAafcgwuN72XcrMnRWyMI9aPhytm67HCqJufeu/SfXE
+	 Hyjaf/FUlDVDzjvbn0XcHXD59PZ9ml8w2GlWxBPW+sfSshHbA7ggtAu2w5NE00VTo2
+	 sjVLszOIRTb5ddNvuuh6mAEjiXzP1cgJ0N3VEElk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: [PATCH 6.6 121/567] ARM: clean up the memset64() C wrapper
-Date: Mon, 23 Mar 2026 14:40:41 +0100
-Message-ID: <20260323134536.800318755@linuxfoundation.org>
+	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 122/567] hwmon: (aht10) Add support for dht20
+Date: Mon, 23 Mar 2026 14:40:42 +0100
+Message-ID: <20260323134536.824468474@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -63,34 +63,34 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229964-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229034-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 9D8EE2F9101
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C1D1A2F6138
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,55 +98,156 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
 
-commit b52343d1cb47bb27ca32a3f4952cc2fd3cd165bf upstream.
+[ Upstream commit 3eaf1b631506e8de2cb37c278d5bc042521e82c1 ]
 
-The current logic to split the 64-bit argument into its 32-bit halves is
-byte-order specific and a bit clunky.  Use a union instead which is
-easier to read and works in all cases.
+Add support for dht20 temperature and humidity sensor from Aosong.
+Modify aht10 driver to handle different init command for dht20 sensor by
+adding init_cmd entry in the driver data. dht20 sensor is compatible with
+aht10 hwmon driver with this change.
 
-GCC still generates the same machine code.
+Tested on TI am62x SK board with dht20 sensor connected at i2c-2 port.
 
-While at it, rename the arguments of the __memset64() prototype to
-actually reflect their semantics.
-
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Reported-by: Ben Hutchings <ben@decadent.org.uk> # for -stable
-Link: https://lore.kernel.org/all/1a11526ae3d8664f705b541b8d6ea57b847b49a8.camel@decadent.org.uk/
-Suggested-by: https://lore.kernel.org/all/aZonkWMwpbFhzDJq@casper.infradead.org/ # for -stable
-Link: https://lore.kernel.org/all/aZonkWMwpbFhzDJq@casper.infradead.org/
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+Link: https://lore.kernel.org/r/2025112-94320-906858@bhairav-test.ee.iitb.ac.in
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: b7497b5a99f5 ("hwmon: (aht10) Fix initialization commands for AHT20")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/string.h |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ Documentation/hwmon/aht10.rst | 10 +++++++++-
+ drivers/hwmon/Kconfig         |  6 +++---
+ drivers/hwmon/aht10.c         | 19 ++++++++++++++++---
+ 3 files changed, 28 insertions(+), 7 deletions(-)
 
---- a/arch/arm/include/asm/string.h
-+++ b/arch/arm/include/asm/string.h
-@@ -39,13 +39,17 @@ static inline void *memset32(uint32_t *p
- }
+diff --git a/Documentation/hwmon/aht10.rst b/Documentation/hwmon/aht10.rst
+index 213644b4ecba6..7903b6434326d 100644
+--- a/Documentation/hwmon/aht10.rst
++++ b/Documentation/hwmon/aht10.rst
+@@ -20,6 +20,14 @@ Supported chips:
  
- #define __HAVE_ARCH_MEMSET64
--extern void *__memset64(uint64_t *, uint32_t low, __kernel_size_t, uint32_t hi);
-+extern void *__memset64(uint64_t *, uint32_t first, __kernel_size_t, uint32_t second);
- static inline void *memset64(uint64_t *p, uint64_t v, __kernel_size_t n)
- {
--	if (IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN))
--		return __memset64(p, v, n * 8, v >> 32);
--	else
--		return __memset64(p, v >> 32, n * 8, v);
-+	union {
-+		uint64_t val;
-+		struct {
-+			uint32_t first, second;
-+		};
-+	} word = { .val = v };
+       English: http://www.aosong.com/userfiles/files/media/Data%20Sheet%20AHT20.pdf
+ 
++  * Aosong DHT20
 +
-+	return __memset64(p, word.first, n * 8, word.second);
- }
++    Prefix: 'dht20'
++
++    Addresses scanned: None
++
++    Datasheet: https://www.digikey.co.nz/en/htmldatasheets/production/9184855/0/0/1/101020932
++
+ Author: Johannes Cornelis Draaijer <jcdra1@gmail.com>
  
+ 
+@@ -33,7 +41,7 @@ The address of this i2c device may only be 0x38
+ Special Features
+ ----------------
+ 
+-AHT20 has additional CRC8 support which is sent as the last byte of the sensor
++AHT20, DHT20 has additional CRC8 support which is sent as the last byte of the sensor
+ values.
+ 
+ Usage Notes
+diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
+index a4c361b6619c1..2b090dbd836c5 100644
+--- a/drivers/hwmon/Kconfig
++++ b/drivers/hwmon/Kconfig
+@@ -257,12 +257,12 @@ config SENSORS_ADT7475
+ 	  will be called adt7475.
+ 
+ config SENSORS_AHT10
+-	tristate "Aosong AHT10, AHT20"
++	tristate "Aosong AHT10, AHT20, DHT20"
+ 	depends on I2C
+ 	select CRC8
+ 	help
+-	  If you say yes here, you get support for the Aosong AHT10 and AHT20
+-	  temperature and humidity sensors
++	  If you say yes here, you get support for the Aosong AHT10, AHT20 and
++	  DHT20 temperature and humidity sensors
+ 
+ 	  This driver can also be built as a module. If so, the module
+ 	  will be called aht10.
+diff --git a/drivers/hwmon/aht10.c b/drivers/hwmon/aht10.c
+index f136bf3ff40ad..4f235dfb260f8 100644
+--- a/drivers/hwmon/aht10.c
++++ b/drivers/hwmon/aht10.c
+@@ -37,6 +37,8 @@
+ #define AHT10_CMD_MEAS	0b10101100
+ #define AHT10_CMD_RST	0b10111010
+ 
++#define DHT20_CMD_INIT	0x71
++
  /*
+  * Flags in the answer byte/command
+  */
+@@ -48,11 +50,12 @@
+ 
+ #define AHT10_MAX_POLL_INTERVAL_LEN	30
+ 
+-enum aht10_variant { aht10, aht20 };
++enum aht10_variant { aht10, aht20, dht20};
+ 
+ static const struct i2c_device_id aht10_id[] = {
+ 	{ "aht10", aht10 },
+ 	{ "aht20", aht20 },
++	{ "dht20", dht20 },
+ 	{ },
+ };
+ MODULE_DEVICE_TABLE(i2c, aht10_id);
+@@ -77,6 +80,7 @@ MODULE_DEVICE_TABLE(i2c, aht10_id);
+  *              AHT10/AHT20
+  *   @crc8: crc8 support flag
+  *   @meas_size: measurements data size
++ *   @init_cmd: Initialization command
+  */
+ 
+ struct aht10_data {
+@@ -92,6 +96,7 @@ struct aht10_data {
+ 	int humidity;
+ 	bool crc8;
+ 	unsigned int meas_size;
++	u8 init_cmd;
+ };
+ 
+ /**
+@@ -101,13 +106,13 @@ struct aht10_data {
+  */
+ static int aht10_init(struct aht10_data *data)
+ {
+-	const u8 cmd_init[] = {AHT10_CMD_INIT, AHT10_CAL_ENABLED | AHT10_MODE_CYC,
++	const u8 cmd_init[] = {data->init_cmd, AHT10_CAL_ENABLED | AHT10_MODE_CYC,
+ 			       0x00};
+ 	int res;
+ 	u8 status;
+ 	struct i2c_client *client = data->client;
+ 
+-	res = i2c_master_send(client, cmd_init, 3);
++	res = i2c_master_send(client, cmd_init, sizeof(cmd_init));
+ 	if (res < 0)
+ 		return res;
+ 
+@@ -353,9 +358,17 @@ static int aht10_probe(struct i2c_client *client)
+ 		data->meas_size = AHT20_MEAS_SIZE;
+ 		data->crc8 = true;
+ 		crc8_populate_msb(crc8_table, AHT20_CRC8_POLY);
++		data->init_cmd = AHT10_CMD_INIT;
++		break;
++	case dht20:
++		data->meas_size = AHT20_MEAS_SIZE;
++		data->crc8 = true;
++		crc8_populate_msb(crc8_table, AHT20_CRC8_POLY);
++		data->init_cmd = DHT20_CMD_INIT;
+ 		break;
+ 	default:
+ 		data->meas_size = AHT10_MEAS_SIZE;
++		data->init_cmd = AHT10_CMD_INIT;
+ 		break;
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
