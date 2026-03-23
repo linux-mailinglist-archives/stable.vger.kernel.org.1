@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229563-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODWUHLVYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:57 +0100
+	id SPY6BJxswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229563-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E093B2F603F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C422F883E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 398B8306A4CE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5B37D303E834
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A2C32D45C;
-	Mon, 23 Mar 2026 14:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9173B8D5C;
+	Mon, 23 Mar 2026 16:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qx8oO2vD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r17ZtYky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A1EB1DA0E1;
-	Mon, 23 Mar 2026 14:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759513BA226;
+	Mon, 23 Mar 2026 16:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277936; cv=none; b=LDi94101gOb2t7gu33btbOJ+5CIbFBmkrfVQ6PNKxmbrM5qTCm2COr5TpVCEs1iPDaVRvRzyX5vLEMjliTD4wU3u7hfuN0Cj+UHD6K560P69nzVCODUpX1h9G7mlbecgqC47zI9ExWo3cmR1u3TVXY5vtQ+a9r8LPKMgZ/eleyo=
+	t=1774282259; cv=none; b=Xr08c113sjWDRlqhg7HCK/51wT3Qx0bEjJjjJLpPopucqH8ggRxGr+/vUHCIE6aihxGiuMMo4l6v4jlDM2sr1lk9Ck8ZRv9x0N81gm3Bak0wHi1F8HXbFY6tEA8Ay307LVWYLA2FMIiztMiX6hNsyk0uJArYSO6bBSEQukGEaD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277936; c=relaxed/simple;
-	bh=EpfWRMLp9EHqlLg+wIIdfkPW/ClfQsgEenrFFNVKyMM=;
+	s=arc-20240116; t=1774282259; c=relaxed/simple;
+	bh=NCWMqJjXGVG/nT9m+jfAHvolQnq5oF/QJsDC2hzumbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJ4tF6ITk4RU740cSXU9rrT8N1HbXdKEd3O4L57hZYrw+fl949qOpO9eB54kxBajN2sSEL7ax3dYDC2rMdANlD9qu9EQU5ra08EPgOxxVN8Eox9lO1STwM+dvmZXCD5wrUcqv4TobsuwDGZ7XF3vSb3/H23Xr9B8lt9wkhZHbqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qx8oO2vD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9B15C2BCB4;
-	Mon, 23 Mar 2026 14:58:55 +0000 (UTC)
+	 MIME-Version; b=Z7NKFMYhKEEESNB2hBbevBEk6D2j8dbdB3l7mX95Gpc+qpv0F6mamQp1IYJOcyN8B/QGtFf4HCxQKpRJ2QL4CVCvYZHsDJ0Xz6exiMiCPC9hciRan62KcmTRHWEqWMocjrjEQ5elS/Rm+ZHBTX1cGrvsPjst+z4XW4Wb8FPxL9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r17ZtYky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C484DC4CEF7;
+	Mon, 23 Mar 2026 16:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277936;
-	bh=EpfWRMLp9EHqlLg+wIIdfkPW/ClfQsgEenrFFNVKyMM=;
+	s=korg; t=1774282259;
+	bh=NCWMqJjXGVG/nT9m+jfAHvolQnq5oF/QJsDC2hzumbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qx8oO2vD1Zk8GNEsHU5mEum6FM4CAnv5GfkpOx+D90aD3Xmu2KoYG8aZVB1hB3hQy
-	 3uyFICW6MpGqVSIpAyRNMPq6ScMDLnkGsBYDE1ongZXsp5bUot7UUczBl3tbf2o2Q+
-	 80AgtEHNk44mcf8l79MERLsWjMqvA4ShhZ3IE8ow=
+	b=r17ZtYkycsKLBYmQesBR9D1zGNWlBeU3i1EJelsMgCxLUIe9XKOVeiVEoLPr0rUw1
+	 87VLW1wA8uYB9MPrDf8OxSSZ13F5HrOpcAjhneAXZPg4sbjUONkUDWqtd0a5nboPna
+	 hriqTMIvpitVD9xvsqRDPG9OCqAY9htvB9Pb2zEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathesh Edara <sedara@marvell.com>,
-	Shinas Rasheed <srasheed@marvell.com>,
-	Vimlesh Kumar <vimleshk@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/567] octeon_ep: avoid compiler and IQ/OQ reordering
+	syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com,
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	Dmitry Bogdanov <d.bogdanov@yadro.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 088/481] scsi: target: Fix recursive locking in __configfs_open_file()
 Date: Mon, 23 Mar 2026 14:41:10 +0100
-Message-ID: <20260323134537.543097171@linuxfoundation.org>
+Message-ID: <20260323134527.412776523@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,192 +65,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229061-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,yadro.com,oracle.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229563-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,f6e8174215573a84b797];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E093B2F603F
+X-Rspamd-Queue-Id: A2C422F883E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vimlesh Kumar <vimleshk@marvell.com>
+From: Prithvi Tambewagh <activprithvi@gmail.com>
 
-[ Upstream commit 43b3160cb639079a15daeb5f080120afbfbfc918 ]
+commit 14d4ac19d1895397532eec407433c5d74d9da53b upstream.
 
-Utilize READ_ONCE and WRITE_ONCE APIs for IO queue Tx/Rx
-variable access to prevent compiler optimization and reordering.
-Additionally, ensure IO queue OUT/IN_CNT registers are flushed
-by performing a read-back after writing.
+In flush_write_buffer, &p->frag_sem is acquired and then the loaded store
+function is called, which, here, is target_core_item_dbroot_store().  This
+function called filp_open(), following which these functions were called
+(in reverse order), according to the call trace:
 
-The compiler could reorder reads/writes to pkts_pending, last_pkt_count,
-etc., causing stale values to be used when calculating packets to process
-or register updates to send to hardware. The Octeon hardware requires a
-read-back after writing to OUT_CNT/IN_CNT registers to ensure the write
-has been flushed through any posted write buffers before the interrupt
-resend bit is set. Without this, we have observed cases where the hardware
-didn't properly update its internal state.
+  down_read
+  __configfs_open_file
+  do_dentry_open
+  vfs_open
+  do_open
+  path_openat
+  do_filp_open
+  file_open_name
+  filp_open
+  target_core_item_dbroot_store
+  flush_write_buffer
+  configfs_write_iter
 
-wmb/rmb only provides ordering guarantees but doesn't prevent the compiler
-from performing optimizations like caching in registers, load tearing etc.
+target_core_item_dbroot_store() tries to validate the new file path by
+trying to open the file path provided to it; however, in this case, the bug
+report shows:
 
-Fixes: 37d79d0596062 ("octeon_ep: add Tx/Rx processing and interrupt support")
-Signed-off-by: Sathesh Edara <sedara@marvell.com>
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
-Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
-Link: https://patch.msgid.link/20260227091402.1773833-3-vimleshk@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+db_root: not a directory: /sys/kernel/config/target/dbroot
+
+indicating that the same configfs file was tried to be opened, on which it
+is currently working on. Thus, it is trying to acquire frag_sem semaphore
+of the same file of which it already holds the semaphore obtained in
+flush_write_buffer(), leading to acquiring the semaphore in a nested manner
+and a possibility of recursive locking.
+
+Fix this by modifying target_core_item_dbroot_store() to use kern_path()
+instead of filp_open() to avoid opening the file using filesystem-specific
+function __configfs_open_file(), and further modifying it to make this fix
+compatible.
+
+Reported-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f6e8174215573a84b797
+Tested-by: syzbot+f6e8174215573a84b797@syzkaller.appspotmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
+Link: https://patch.msgid.link/20260216062002.61937-1-activprithvi@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeon_ep/octep_main.c   | 21 +++++++++------
- .../net/ethernet/marvell/octeon_ep/octep_rx.c | 27 +++++++++++++------
- 2 files changed, 32 insertions(+), 16 deletions(-)
+ drivers/target/target_core_configfs.c |   15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index 111caa5ce12fa..e4a78d5e73495 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -541,17 +541,22 @@ static void octep_clean_irqs(struct octep_device *oct)
-  */
- static void octep_update_pkt(struct octep_iq *iq, struct octep_oq *oq)
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -107,8 +107,8 @@ static ssize_t target_core_item_dbroot_s
+ 					const char *page, size_t count)
  {
--	u32 pkts_pend = oq->pkts_pending;
-+	u32 pkts_pend = READ_ONCE(oq->pkts_pending);
-+	u32 last_pkt_count = READ_ONCE(oq->last_pkt_count);
-+	u32 pkts_processed = READ_ONCE(iq->pkts_processed);
-+	u32 pkt_in_done = READ_ONCE(iq->pkt_in_done);
+ 	ssize_t read_bytes;
+-	struct file *fp;
+ 	ssize_t r = -EINVAL;
++	struct path path = {};
  
- 	netdev_dbg(iq->netdev, "enabling intr for Q-%u\n", iq->q_no);
--	if (iq->pkts_processed) {
--		writel(iq->pkts_processed, iq->inst_cnt_reg);
--		iq->pkt_in_done -= iq->pkts_processed;
--		iq->pkts_processed = 0;
-+	if (pkts_processed) {
-+		writel(pkts_processed, iq->inst_cnt_reg);
-+		readl(iq->inst_cnt_reg);
-+		WRITE_ONCE(iq->pkt_in_done, (pkt_in_done - pkts_processed));
-+		WRITE_ONCE(iq->pkts_processed, 0);
+ 	mutex_lock(&target_devices_lock);
+ 	if (target_devices) {
+@@ -130,17 +130,14 @@ static ssize_t target_core_item_dbroot_s
+ 		db_root_stage[read_bytes - 1] = '\0';
+ 
+ 	/* validate new db root before accepting it */
+-	fp = filp_open(db_root_stage, O_RDONLY, 0);
+-	if (IS_ERR(fp)) {
++	r = kern_path(db_root_stage, LOOKUP_FOLLOW | LOOKUP_DIRECTORY, &path);
++	if (r) {
+ 		pr_err("db_root: cannot open: %s\n", db_root_stage);
++		if (r == -ENOTDIR)
++			pr_err("db_root: not a directory: %s\n", db_root_stage);
+ 		goto unlock;
  	}
--	if (oq->last_pkt_count - pkts_pend) {
--		writel(oq->last_pkt_count - pkts_pend, oq->pkts_sent_reg);
--		oq->last_pkt_count = pkts_pend;
-+	if (last_pkt_count - pkts_pend) {
-+		writel(last_pkt_count - pkts_pend, oq->pkts_sent_reg);
-+		readl(oq->pkts_sent_reg);
-+		WRITE_ONCE(oq->last_pkt_count, pkts_pend);
- 	}
+-	if (!S_ISDIR(file_inode(fp)->i_mode)) {
+-		filp_close(fp, NULL);
+-		pr_err("db_root: not a directory: %s\n", db_root_stage);
+-		goto unlock;
+-	}
+-	filp_close(fp, NULL);
++	path_put(&path);
  
- 	/* Flush the previous wrties before writing to RESEND bit */
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-index 60afb6bf2f679..e0c1e13e48c02 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-@@ -323,10 +323,16 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
- 				      struct octep_oq *oq)
- {
- 	u32 pkt_count, new_pkts;
-+	u32 last_pkt_count, pkts_pending;
- 
- 	pkt_count = readl(oq->pkts_sent_reg);
--	new_pkts = pkt_count - oq->last_pkt_count;
-+	last_pkt_count = READ_ONCE(oq->last_pkt_count);
-+	new_pkts = pkt_count - last_pkt_count;
- 
-+	if (pkt_count < last_pkt_count) {
-+		dev_err(oq->dev, "OQ-%u pkt_count(%u) < oq->last_pkt_count(%u)\n",
-+			oq->q_no, pkt_count, last_pkt_count);
-+	}
- 	/* Clear the hardware packets counter register if the rx queue is
- 	 * being processed continuously with-in a single interrupt and
- 	 * reached half its max value.
-@@ -337,8 +343,9 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
- 		pkt_count = readl(oq->pkts_sent_reg);
- 		new_pkts += pkt_count;
- 	}
--	oq->last_pkt_count = pkt_count;
--	oq->pkts_pending += new_pkts;
-+	WRITE_ONCE(oq->last_pkt_count, pkt_count);
-+	pkts_pending = READ_ONCE(oq->pkts_pending);
-+	WRITE_ONCE(oq->pkts_pending, (pkts_pending + new_pkts));
- 	return new_pkts;
- }
- 
-@@ -411,7 +418,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 	u16 data_offset;
- 	u32 read_idx;
- 
--	read_idx = oq->host_read_idx;
-+	read_idx = READ_ONCE(oq->host_read_idx);
- 	rx_bytes = 0;
- 	desc_used = 0;
- 	for (pkt = 0; pkt < pkts_to_process; pkt++) {
-@@ -494,7 +501,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 		napi_gro_receive(oq->napi, skb);
- 	}
- 
--	oq->host_read_idx = read_idx;
-+	WRITE_ONCE(oq->host_read_idx, read_idx);
- 	oq->refill_count += desc_used;
- 	oq->stats.packets += pkt;
- 	oq->stats.bytes += rx_bytes;
-@@ -517,22 +524,26 @@ int octep_oq_process_rx(struct octep_oq *oq, int budget)
- {
- 	u32 pkts_available, pkts_processed, total_pkts_processed;
- 	struct octep_device *oct = oq->octep_dev;
-+	u32 pkts_pending;
- 
- 	pkts_available = 0;
- 	pkts_processed = 0;
- 	total_pkts_processed = 0;
- 	while (total_pkts_processed < budget) {
- 		 /* update pending count only when current one exhausted */
--		if (oq->pkts_pending == 0)
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
-+		if (pkts_pending == 0)
- 			octep_oq_check_hw_for_pkts(oct, oq);
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
- 		pkts_available = min(budget - total_pkts_processed,
--				     oq->pkts_pending);
-+				     pkts_pending);
- 		if (!pkts_available)
- 			break;
- 
- 		pkts_processed = __octep_oq_process_rx(oct, oq,
- 						       pkts_available);
--		oq->pkts_pending -= pkts_processed;
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
-+		WRITE_ONCE(oq->pkts_pending, (pkts_pending - pkts_processed));
- 		total_pkts_processed += pkts_processed;
- 	}
- 
--- 
-2.51.0
-
+ 	strncpy(db_root, db_root_stage, read_bytes);
+ 	pr_debug("Target_Core_ConfigFS: db_root set to %s\n", db_root);
 
 
 
