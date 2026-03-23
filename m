@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228189-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAvWHuVXwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228881-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:29 +0100
+	id QBZjD+9QwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228189-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D4B2F5E8B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96792F4F8F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B3E530E6D7B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:50:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5A605317360C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 981F13B3885;
-	Mon, 23 Mar 2026 14:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4AEF3B9D95;
+	Mon, 23 Mar 2026 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mKauHyR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1t9w0JMp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578553B2FFC;
-	Mon, 23 Mar 2026 14:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CBD3B9D8F;
+	Mon, 23 Mar 2026 13:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277386; cv=none; b=aBfk1fUlTToecZNWg3vdolxxBZyUSAhylLJolhVFyOlM1gOBSxx7mIKoNyZ1EUdoYlJG/Gq+Dm1di039LnEw4KcGbNBmRYiyMIPr8waGMtLEHKgxKjtVqRSQXl6W86GAPhSiPkWG1g6JfLlQGwC6qjgh8S8nYGdDQaVJIYlIDw4=
+	t=1774274392; cv=none; b=FSOfYMSDv2i6D/lcO9vDevwgtVE6BuHIJhLQLNVevExsSMHPoJeNYH/ahWJM6tZSxERr/Clf0k6CfylubzGmB+1PZszvWNgDvhygpVs2Wi11OtCP9XDdrX7pHKxbXbZ0behn6BLKL/ETDGEC0mbQDy4GCKxgwK+vwZTy+3ac/TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277386; c=relaxed/simple;
-	bh=KMz5i571M73eZmOyHJIsRPiW9pUFIJULhJRzpM5eQKw=;
+	s=arc-20240116; t=1774274392; c=relaxed/simple;
+	bh=x0+1FWgBQoB60MM7o5dSB/Ut5c3DqL2IRwA2XeURWCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y0qXwyP9tJXRdvXYA0Rf5NIOVkEMGW0zfKxnnV2SxIywia587g/euuI89RSR1KcSQN2V7X2fOUh/O+yXSygpgf6KkHp9Q62GTYZ/SOIr8Hiaon0lDM1Qv1WLY7I3p0CLIUKJtEFQCMENGedLkyTo9nFEvVe7EbKHH9XQrlxCJ/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mKauHyR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FD0C4CEF7;
-	Mon, 23 Mar 2026 14:49:45 +0000 (UTC)
+	 MIME-Version; b=OEtriAN9tmjcmBXfroJWlQGI8kxhr1CVIPOL4ZYa7nBZ3YPS8a279MbUqni64ZT2BFb8io95hfF7e5pmBseBPE33GhVlJzsCngumhSa+8sIjPbj0A6W8ihiHbsJylk5ibYB59M6Rf/faMuWahtXWiQKNEb2eLkInIcNW7ZbdosE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1t9w0JMp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC701C2BCB1;
+	Mon, 23 Mar 2026 13:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277386;
-	bh=KMz5i571M73eZmOyHJIsRPiW9pUFIJULhJRzpM5eQKw=;
+	s=korg; t=1774274392;
+	bh=x0+1FWgBQoB60MM7o5dSB/Ut5c3DqL2IRwA2XeURWCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mKauHyR5XqAYXHnu0nDlElO1/UpjyUhuRZF3mkiYn0zLLYBJLkChTKm/1B5m7KXO4
-	 FtynWtVrTkQ6QnecB11fY/7s12nQC7lKX8ySQ6QzrnBAlJwW7Mek+tR/ngf6RETJ+P
-	 gRTQD2MavYmIepNKQET1Tw744mhZ1ZD0MmLo32Ag=
+	b=1t9w0JMpcmwK/ipwkVaHAhY4JLB9CofquQ1Lwx8JYJo0Q8cw8VbXpBQP07ituVdtr
+	 Dd/II0BkAo5B4Xtd55Io8KMoYSBmWjUb23HxwhTZGhDhrdRVRzLZnrX/lpP1337DS0
+	 owGCXzd6/TKJfiwtmMhjPCqS0IjfX/XMawmasUEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 383/460] Bluetooth: ISO: Fix defer tests being unstable
+Subject: [PATCH 6.19 202/220] mshv: Fix use-after-free in mshv_map_user_memory error path
 Date: Mon, 23 Mar 2026 14:46:19 +0100
-Message-ID: <20260323134535.980379965@linuxfoundation.org>
+Message-ID: <20260323134510.953520770@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228881-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228189-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,55 +90,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 74D4B2F5E8B
+X-Rspamd-Queue-Id: A96792F4F8F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
 
-[ Upstream commit 62bcaa6b351b6dc400f6c6b83762001fd9f5c12d ]
+[ Upstream commit 6922db250422a0dfee34de322f86b7a73d713d33 ]
 
-iso-tester defer tests seem to fail with hci_conn_hash_lookup_cig
-being unable to resolve a cig in set_cig_params_sync due a race
-where it is run immediatelly before hci_bind_cis is able to set
-the QoS settings into the hci_conn object.
+In the error path of mshv_map_user_memory(), calling vfree() directly on
+the region leaves the MMU notifier registered. When userspace later unmaps
+the memory, the notifier fires and accesses the freed region, causing a
+use-after-free and potential kernel panic.
 
-So this moves the assigning of the QoS settings to be done directly
-by hci_le_set_cig_params to prevent that from happening again.
+Replace vfree() with mshv_partition_put() to properly unregister
+the MMU notifier before freeing the region.
 
-Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: b9a66cd5ccbb9 ("mshv: Add support for movable memory regions")
+Signed-off-by: Stanislav Kinsburskii <skinsburskii@linux.microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hv/mshv_root_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index fa74fac5af778..447d29c67e7c1 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1868,6 +1868,8 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
- 		return false;
+diff --git a/drivers/hv/mshv_root_main.c b/drivers/hv/mshv_root_main.c
+index d3e8a66443ad6..45cf086ad430d 100644
+--- a/drivers/hv/mshv_root_main.c
++++ b/drivers/hv/mshv_root_main.c
+@@ -1334,7 +1334,7 @@ mshv_map_user_memory(struct mshv_partition *partition,
+ 	return 0;
  
- done:
-+	conn->iso_qos = *qos;
-+
- 	if (hci_cmd_sync_queue(hdev, set_cig_params_sync,
- 			       UINT_PTR(qos->ucast.cig), NULL) < 0)
- 		return false;
-@@ -1934,8 +1936,6 @@ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 	}
+ errout:
+-	vfree(region);
++	mshv_region_put(region);
+ 	return ret;
+ }
  
- 	hci_conn_hold(cis);
--
--	cis->iso_qos = *qos;
- 	cis->state = BT_BOUND;
- 
- 	return cis;
 -- 
 2.51.0
 
