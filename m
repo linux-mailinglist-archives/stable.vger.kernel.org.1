@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228193-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKi/LKxLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228370-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:20 +0100
+	id yB1dOnhLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228193-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6BC2F4210
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EE72F418C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E781E303084E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5CB04319EEF9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7113AE1A8;
-	Mon, 23 Mar 2026 14:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E890E3B3888;
+	Mon, 23 Mar 2026 14:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WhUsyK3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHGrFLDO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB563AB295;
-	Mon, 23 Mar 2026 14:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5E83BA235;
+	Mon, 23 Mar 2026 14:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274932; cv=none; b=K4UbNYsQhWyxA5cGEf5JOi5Cccd5jL9pAKEzFugSOyFACH/tGIhDD8tFxzi/ARpae+I4U3gY1oI10NY80Tm5eZk4yRgi4yZl55G5IjDSsN8oAQeQgbYAUtvlv/yZDa9zTNLYZAi82rItiy0gzwG31nYlowfXodyxS8/XQ3ZTcGY=
+	t=1774274405; cv=none; b=RreR4j8e5P3og2Ek521C1vEy3tIYPuBrtrrDjDGqkDomuIehXO/xTpi3tNBPI0YsEBExz2okxh80QaLHx5egbo9FXBAvYvvPT/1oOf14i8GogrMbmij0B2Qx1MmHAcVglf+tVSHEOrocI5kKL7XBnOrBYDt7Oxv1d4mrbtdj+Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274932; c=relaxed/simple;
-	bh=eAVaQzmFjT/tuHkoJ4YJpJEX8Hh2fCt6wnRBYH9B+3M=;
+	s=arc-20240116; t=1774274405; c=relaxed/simple;
+	bh=UB2QMPaWYzT0kzkyfhKdLS3nUGijDQkfZKvz1u+uIS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3a3ZH5pnO6++MtoY0eXeG+QrXLjNFb8BvR/hRc2XJsBc34+GrgZMJBbZvz3o+cER0D3/rwkYSaXU26ycGgQ91P5lRSavUy6z37zULLkn37CUNW/2EeuMRZY4zdHctxTM56UhcJSF0QoBSpnIg2iqQKsXAwlNYY7abuGo5+J2aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WhUsyK3y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69811C4CEF7;
-	Mon, 23 Mar 2026 14:08:52 +0000 (UTC)
+	 MIME-Version; b=XAVcbD5LTCgldiIvu2RQGzM2PsS0eLg6gs2qoM6doRYu915hycu6iPWzjd7N/70FHBAtyDNaHXNCLRF+4jzQizdZp+Ok6KNA3XLH5O0HsRxORxQM+e9ShNHVYQxb9uS0sQlzQ5vlYM4cdX/5cggWxs90aqhBBWAugd6xr3vPITI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHGrFLDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F376C4CEF7;
+	Mon, 23 Mar 2026 14:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274932;
-	bh=eAVaQzmFjT/tuHkoJ4YJpJEX8Hh2fCt6wnRBYH9B+3M=;
+	s=korg; t=1774274405;
+	bh=UB2QMPaWYzT0kzkyfhKdLS3nUGijDQkfZKvz1u+uIS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WhUsyK3yFqSjD6pqiWV9DbVyzEllxw5qRuzDJEn/3lxEXxHzxUjdxXvFL1bZzqutJ
-	 rnridNKZWvyYyBme/aHd9qe3GtcMTyFxm8/6tHQWSmVoK6vUNS/um7MrtGNR4T8p8a
-	 g2dLn/CpRNdu6bG0Gaft0DTzqJnaBszTPmRe03wE=
+	b=bHGrFLDOB69AbIWAlm6yK244RYp/AxfkMjVoa0IhlLWf59bNkioL8QWM4gp96XNnI
+	 5OvAusXYLU8kFZaor4K7CRtaF/8Hug1DbhnWWbepe5bHO0sGOV1z4RDat0DdiCUhY3
+	 ZeILr0u8wNvDMjmExTuPcrT+3M1koQluyjFuwiVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Astrand <astrand@lysator.liu.se>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Antheas Kapenekakis <lkml@antheas.dev>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 161/212] wifi: wlcore: Return -ENOMEM instead of -EAGAIN if there is not enough headroom
-Date: Mon, 23 Mar 2026 14:46:22 +0100
-Message-ID: <20260323134508.832922480@linuxfoundation.org>
+Subject: [PATCH 6.19 206/220] iommu: Fix mapping check for 0x0 to avoid re-mapping it
+Date: Mon, 23 Mar 2026 14:46:23 +0100
+Message-ID: <20260323134511.073155680@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,80 +72,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228370-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228193-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2E6BC2F4210
+X-Rspamd-Queue-Id: 47EE72F418C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Antheas Kapenekakis <lkml@antheas.dev>
 
-[ Upstream commit deb353d9bb009638b7762cae2d0b6e8fdbb41a69 ]
+[ Upstream commit 0a4d00e2e99a39a5698e4b63c394415dcbb39d90 ]
 
-Since upstream commit e75665dd0968 ("wifi: wlcore: ensure skb headroom
-before skb_push"), wl1271_tx_allocate() and with it
-wl1271_prepare_tx_frame() returns -EAGAIN if pskb_expand_head() fails.
-However, in wlcore_tx_work_locked(), a return value of -EAGAIN from
-wl1271_prepare_tx_frame() is interpreted as the aggregation buffer being
-full. This causes the code to flush the buffer, put the skb back at the
-head of the queue, and immediately retry the same skb in a tight while
-loop.
+Commit 789a5913b29c ("iommu/amd: Use the generic iommu page table")
+introduces the shared iommu page table for AMD IOMMU. Some bioses
+contain an identity mapping for address 0x0, which is not parsed
+properly (e.g., certain Strix Halo devices). This causes the DMA
+components of the device to fail to initialize (e.g., the NVMe SSD
+controller), leading to a failed post.
 
-Because wlcore_tx_work_locked() holds wl->mutex, and the retry happens
-immediately with GFP_ATOMIC, this will result in an infinite loop and a
-CPU soft lockup. Return -ENOMEM instead so the packet is dropped and
-the loop terminates.
+Specifically, on the GPD Win 5, the NVME and SSD GPU fail to mount,
+making collecting errors difficult. While debugging, it was found that
+a -EADDRINUSE error was emitted and its source was traced to
+iommu_iova_to_phys(). After adding some debug prints, it was found that
+phys_addr becomes 0, which causes the code to try to re-map the 0
+address and fail, causing a cascade leading to a failed post. This is
+because the GPD Win 5 contains a 0x0-0x1 identity mapping for DMA
+devices, causing it to be repeated for each device.
 
-The problem was found by an experimental code review agent based on
-gemini-3.1-pro while reviewing backports into v6.18.y.
+The cause of this failure is the following check in
+iommu_create_device_direct_mappings(), where address aliasing is handled
+via the following check:
 
-Assisted-by: Gemini:gemini-3.1-pro
-Fixes: e75665dd0968 ("wifi: wlcore: ensure skb headroom before skb_push")
-Cc: Peter Astrand <astrand@lysator.liu.se>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://patch.msgid.link/20260318064636.3065925-1-linux@roeck-us.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+```
+phys_addr = iommu_iova_to_phys(domain, addr);
+if (!phys_addr) {
+        map_size += pg_size;
+        continue;
+}
+````
+
+Obviously, the iommu_iova_to_phys() signature is faulty and aliases
+unmapped and 0 together, causing the allocation code to try to
+re-allocate the 0 address per device. However, it has too many
+instantiations to fix. Therefore, use a ternary so that when addr
+is 0, the check is done for address 1 instead.
+
+Suggested-by: Robin Murphy <robin.murphy@arm.com>
+Fixes: 789a5913b29c ("iommu/amd: Use the generic iommu page table")
+Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ti/wlcore/tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/iommu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
-index f251627c24c6e..3c0f8f3ba2668 100644
---- a/drivers/net/wireless/ti/wlcore/tx.c
-+++ b/drivers/net/wireless/ti/wlcore/tx.c
-@@ -210,7 +210,7 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
- 		if (skb_headroom(skb) < (total_len - skb->len) &&
- 		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
- 			wl1271_free_tx_id(wl, id);
--			return -EAGAIN;
-+			return -ENOMEM;
- 		}
- 		desc = skb_push(skb, total_len - skb->len);
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 2ca990dfbb884..3a0c0e4b42fff 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -1207,7 +1207,11 @@ static int iommu_create_device_direct_mappings(struct iommu_domain *domain,
+ 			if (addr == end)
+ 				goto map_end;
  
+-			phys_addr = iommu_iova_to_phys(domain, addr);
++			/*
++			 * Return address by iommu_iova_to_phys for 0 is
++			 * ambiguous. Offset to address 1 if addr is 0.
++			 */
++			phys_addr = iommu_iova_to_phys(domain, addr ? addr : 1);
+ 			if (!phys_addr) {
+ 				map_size += pg_size;
+ 				continue;
 -- 
 2.51.0
 
