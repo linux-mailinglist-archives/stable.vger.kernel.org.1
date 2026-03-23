@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229251-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6GOyM+5UwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228720-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:50 +0100
+	id oTE8D61bwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229251-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3D52F5853
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C395F2F64BC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E8AA23092EF9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 99F643039D18
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB963B19D5;
-	Mon, 23 Mar 2026 14:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12053B27ED;
+	Mon, 23 Mar 2026 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0wvLm77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoH2DlRA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39FE399352;
-	Mon, 23 Mar 2026 14:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F04B3B27C6;
+	Mon, 23 Mar 2026 15:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276939; cv=none; b=OD1wipB6FThBkJngvIDrObuS3qAtZbqIlde4/1NBF1zpxMpMiSNfpOmiswjPyJBJ3asBsQvCXV6jafsCpgOJnN/hODbwbqYv0vmpEArqYfCyHA1DjQAvYb/sdzElqwc/DXZCT6pi4+aW/4a0sZogjmYqjeJ/u4H3AloqkAP19nI=
+	t=1774278534; cv=none; b=K9/GAlwQ0eHfxSPQoQ6ooat+ZCSa+S5LLRmWPPTEVrrl1jG1vPIaTPEvTR/VAXRvbQgAHjJuHB+PTT485qQoijN7gBEfr6Fj5T3pBR+h7mTjkaoZtJzCKIinPL5s4GT7SvjOtoRKQKDyCAK7uLngsSQNiUruKa7Tu6sfFuvhex8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276939; c=relaxed/simple;
-	bh=Qr5DbG0KPSWCH+ZnzwtBcsrUs0H8H2Wk0hhHbiZkm78=;
+	s=arc-20240116; t=1774278534; c=relaxed/simple;
+	bh=1d0PGvj2csvT2KI0ZmqJmt9YZq2bu7I7GYLvyK+B71w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Krqm+Ui8C183FwLlmZY6JDAVQ6OveqfMAh2v4ewsASNi8Qi9cUAJ7nw91jvQ6T21XeIX6AL/YYnTOrH/nQINMdVInHC7D2E35Gnl5XKWl9ClmCD23X0bVxy9YgBliYwQY/I2KxiTDrhEMzLTXiyJOEwMLbWHreiV0aq1oSv1Sec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0wvLm77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6DAC4CEF7;
-	Mon, 23 Mar 2026 14:42:19 +0000 (UTC)
+	 MIME-Version; b=oOaKa88QIIwQdiWpJlgkLLcQXHao3gRX483cTSk52PELqMTCmiI371eSDzORDpb1E+Fj5owNhmK9XLQLFcP008SR3YrJ/JMdbOPpUtDqwmLguP5NL+BzhpmGXNLdSQphE+BQ+83ZAm6CAgmZ/I4EgO0rEfCx7ymSX1WJO7ReGRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoH2DlRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23AD8C4CEF7;
+	Mon, 23 Mar 2026 15:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276939;
-	bh=Qr5DbG0KPSWCH+ZnzwtBcsrUs0H8H2Wk0hhHbiZkm78=;
+	s=korg; t=1774278534;
+	bh=1d0PGvj2csvT2KI0ZmqJmt9YZq2bu7I7GYLvyK+B71w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0wvLm77GzY91/qVho0oj3rDeHN4cph/4xCCOeyKaJtz/dkSG9qEq/UebwxMPyr/Y
-	 YpJfvJk53N3yDk6nsaQ4xb3oqYB4yYH12xx27swnzfNdielnWp48NwfeNsJO60D1ng
-	 rkLhlYE2+Qg1O4pcFhp6Ydy0/N84oy4ahx2gjkEY=
+	b=KoH2DlRARKjBv6r5LfKEBbfiKMu1kmywqqHCet+FQnzM6b4UyDw00sj2wO2cldoDP
+	 R/3LTtaGDm0GOJRiYnZdJ/OkvsChuBy9Dzue7NfnOD/T0Kxx52j3gzDNhiWOr3Qa+5
+	 jl5THhpfTQtheLlCUijeBrLC48H6yOaOPQVL/J4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 262/460] KVM: x86: Allow vendor code to disable quirks
-Date: Mon, 23 Mar 2026 14:44:18 +0100
-Message-ID: <20260323134532.923863678@linuxfoundation.org>
+	Bharath SM <bharathsm@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 339/567] cifs: make default value of retrans as zero
+Date: Mon, 23 Mar 2026 14:44:19 +0100
+Message-ID: <20260323134542.223544385@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,117 +69,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228720-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229251-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RSPAMD_EMAILBL_FAIL(0.00)[pbonzini.redhat.com:query timed out];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2A3D52F5853
+X-Rspamd-Queue-Id: C395F2F64BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Bonzini <pbonzini@redhat.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit a4dae7c7a41d803a05192015b2d47aca8aca4abf ]
+commit e3beefd3af09f8e460ddaf39063d3d7664d7ab59 upstream.
 
-In some cases, the handling of quirks is split between platform-specific
-code and generic code, or it is done entirely in generic code, but the
-relevant bug does not trigger on some platforms; for example,
-this will be the case for "ignore guest PAT".  Allow unaffected vendor
-modules to disable handling of a quirk for all VMs via a new entry in
-kvm_caps.
+When retrans mount option was introduced, the default value was set
+as 1. However, in the light of some bugs that this has exposed recently
+we should change it to 0 and retain the old behaviour before this option
+was introduced.
 
-Such quirks remain available in KVM_CAP_DISABLE_QUIRKS2, because that API
-tells userspace that KVM *knows* that some of its past behavior was bogus
-or just undesirable.  In other words, it's plausible for userspace to
-refuse to run if a quirk is not listed by KVM_CAP_DISABLE_QUIRKS2, so
-preserve that and make it part of the API.
-
-As an example, mark KVM_X86_QUIRK_CD_NW_CLEARED as auto-disabled on
-Intel systems.
-
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Stable-dep-of: e2ffe85b6d2b ("KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/kvm_host.h |    3 +++
- arch/x86/kvm/svm/svm.c          |    1 +
- arch/x86/kvm/x86.c              |    2 ++
- arch/x86/kvm/x86.h              |    1 +
- 4 files changed, 7 insertions(+)
+ fs/smb/client/fs_context.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2388,6 +2388,9 @@ int memslot_rmap_alloc(struct kvm_memory
- 	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
- 	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS)
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1809,7 +1809,7 @@ int smb3_init_fs_context(struct fs_conte
+ 	ctx->backupuid_specified = false; /* no backup intent for a user */
+ 	ctx->backupgid_specified = false; /* no backup intent for a group */
  
-+#define KVM_X86_CONDITIONAL_QUIRKS		\
-+	 KVM_X86_QUIRK_CD_NW_CLEARED
-+
+-	ctx->retrans = 1;
++	ctx->retrans = 0;
+ 	ctx->reparse_type = CIFS_REPARSE_TYPE_DEFAULT;
+ 
  /*
-  * KVM previously used a u32 field in kvm_run to indicate the hypercall was
-  * initiated from long mode. KVM now sets bit 0 to indicate long mode, but the
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5563,6 +5563,7 @@ static __init int svm_hardware_setup(voi
- 	 */
- 	allow_smaller_maxphyaddr = !npt_enabled;
- 
-+	kvm_caps.inapplicable_quirks &= ~KVM_X86_QUIRK_CD_NW_CLEARED;
- 	return 0;
- 
- err:
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9782,6 +9782,7 @@ int kvm_x86_vendor_init(struct kvm_x86_i
- 		kvm_host.xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
- 		kvm_caps.supported_xcr0 = kvm_host.xcr0 & KVM_SUPPORTED_XCR0;
- 	}
-+	kvm_caps.inapplicable_quirks = KVM_X86_CONDITIONAL_QUIRKS;
- 
- 	rdmsrl_safe(MSR_EFER, &kvm_host.efer);
- 
-@@ -12780,6 +12781,7 @@ int kvm_arch_init_vm(struct kvm *kvm, un
- 	/* Decided by the vendor code for other VM types.  */
- 	kvm->arch.pre_fault_allowed =
- 		type == KVM_X86_DEFAULT_VM || type == KVM_X86_SW_PROTECTED_VM;
-+	kvm->arch.disabled_quirks = kvm_caps.inapplicable_quirks;
- 
- 	ret = kvm_page_track_init(kvm);
- 	if (ret)
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -32,6 +32,7 @@ struct kvm_caps {
- 	u64 supported_xcr0;
- 	u64 supported_xss;
- 	u64 supported_perf_cap;
-+	u64 inapplicable_quirks;
- };
- 
- struct kvm_host_values {
 
 
 
