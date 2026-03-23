@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229324-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gM/8DT5OwWm7SAQAu9opvQ
-	(envelope-from <stable+bounces-228282-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:18 +0100
+	id +C2cGsNvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229324-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7834A2F4979
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B85022F8F45
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F187831793D7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 51D9B337131B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D4F3B38B1;
-	Mon, 23 Mar 2026 14:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCB937E30F;
+	Mon, 23 Mar 2026 15:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYQyVxfD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtUgDk5d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA60324B16;
-	Mon, 23 Mar 2026 14:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A7535957;
+	Mon, 23 Mar 2026 15:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274680; cv=none; b=eHA3Hr5u/JQKTcfrnn6b+W0QKM/v02STJhhtQhOYLfGjGVTx+IAenB8mPeBHcElYmwqXGBR9EPwBmBAqUWonne3F1j4AKWFAYzjMtxOLD/i47M6/9nvlTKSeMwbzA0P4Cug5JM89EgHZGHfuCDlYpwdJ9jbxUBtqGNLf4f2QhxA=
+	t=1774278759; cv=none; b=VxXatTPU1M9rQhxWS3DJ5g3QraQuAZv+SGuejpdNP5KJJ3RrTmRANPqel9bMcx2TlQnSkwHkMUTKa1OQJ+xhNu94Zbwmz6ntW87bmisogs3c0RiDcWcWsHizsJMC0Kya1zmANxBUaxwPYWeIX+Unzyry8UNjV2J1W62CUdhFFs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274680; c=relaxed/simple;
-	bh=xMBYXo0N8ODwCqkvcATlJbkFOnjHYMAc3GSLUf+VYNY=;
+	s=arc-20240116; t=1774278759; c=relaxed/simple;
+	bh=SBuRcldFa7m/pSdo9Au6dSFzs3vwMGpbX5ohhyoJHUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DZubov/k77h53+ddu8jAkD4j3QywbkQCzS5aYsH0yvK5uFnfTMlj5cQlIXwFWCqbkVphiNYE7NemZytODU0uhPbuIB5BFMFJotxgzJ14dIbLujESI+LPPLDtR8uBT7+zd4fiWX9PK4/4RUE9F21rW5GuXQkWdDGIvogbjtweEmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYQyVxfD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893BAC4CEF7;
-	Mon, 23 Mar 2026 14:04:39 +0000 (UTC)
+	 MIME-Version; b=RAUL3Eo7EZ1bj5BufAf+iuFyG7q2d6FiBLRhIyRL3sZLOv4dGFevFEIXdK/sXmXg/HbAJx3jZNnU0FmlYWKVqyPF8NeEOKA/fwtUC6g+cyWVrfaP8Vt1upRvvM2kxczsFnHvk70uewZiqQf3oYU+iBzCnjrHdERqKojTqv+OUfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtUgDk5d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122CCC4CEF7;
+	Mon, 23 Mar 2026 15:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274679;
-	bh=xMBYXo0N8ODwCqkvcATlJbkFOnjHYMAc3GSLUf+VYNY=;
+	s=korg; t=1774278759;
+	bh=SBuRcldFa7m/pSdo9Au6dSFzs3vwMGpbX5ohhyoJHUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYQyVxfD5M6BylY0bSyC12JstHeLRqQv1MF09f3PFPINl6APxjVHHsr1WvUkSN11y
-	 UN21VEMeafzIrRGgqPyuYQNnlEKmORcbsUu4qjO+OOxPkDMGVkDGn02+Al1MOmDtDs
-	 pFG2HfitqoUpFDDr4A2zS9sGRKQOEQkt2O5uG0ls=
+	b=gtUgDk5dbFtsvVVWWPELLrrdnt+etN84CoHzrcQgXzOjiv5WFLLuFwaR+5b73Er+f
+	 QO6UQofg+PK2Uy9Qt+FuNuyKV17nsOqocKXwlEb/rk5R26w0xbR2XnOCgqNX9d9u3z
+	 gK4MBvRWbdxFxqB9DozMO7GORcBvhCAO46N6cyl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.18 072/212] serial: 8250: Add serial8250_handle_irq_locked()
+	Natalie Vock <natalie.vock@gmx.de>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 373/567] drm/amd/display: Use GFP_ATOMIC in dc_create_stream_for_sink
 Date: Mon, 23 Mar 2026 14:44:53 +0100
-Message-ID: <20260323134506.042592145@linuxfoundation.org>
+Message-ID: <20260323134543.057952822@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,134 +63,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228282-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229324-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,amd.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 7834A2F4979
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B85022F8F45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Natalie Vock <natalie.vock@gmx.de>
 
-commit 8324a54f604da18f21070702a8ad82ab2062787b upstream.
+[ Upstream commit 28dfe4317541e57fe52f9a290394cd29c348228b ]
 
-8250_port exports serial8250_handle_irq() to HW specific 8250 drivers.
-It takes port's lock within but a HW specific 8250 driver may want to
-take port's lock itself, do something, and then call the generic
-handler in 8250_port but to do that, the caller has to release port's
-lock for no good reason.
+This can be called while preemption is disabled, for example by
+dcn32_internal_validate_bw which is called with the FPU active.
 
-Introduce serial8250_handle_irq_locked() which a HW specific driver can
-call while already holding port's lock.
+Fixes "BUG: scheduling while atomic" messages I encounter on my Navi31
+machine.
 
-As this is new export, put it straight into a namespace (where all 8250
-exports should eventually be moved).
-
-Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260203171049.4353-4-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit b42dae2ebc5c84a68de63ec4ffdfec49362d53f1)
+Cc: stable@vger.kernel.org
+[ Context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |   24 ++++++++++++++++--------
- include/linux/serial_8250.h         |    1 +
- 2 files changed, 17 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -18,6 +18,7 @@
- #include <linux/irq.h>
- #include <linux/console.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/lockdep.h>
- #include <linux/sysrq.h>
- #include <linux/delay.h>
- #include <linux/platform_device.h>
-@@ -1782,20 +1783,16 @@ static bool handle_rx_dma(struct uart_82
- }
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -164,7 +164,7 @@ struct dc_stream_state *dc_create_stream
+ 	if (sink == NULL)
+ 		return NULL;
  
- /*
-- * This handles the interrupt from one port.
-+ * Context: port's lock must be held by the caller.
-  */
--int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
-+void serial8250_handle_irq_locked(struct uart_port *port, unsigned int iir)
- {
- 	struct uart_8250_port *up = up_to_u8250p(port);
- 	struct tty_port *tport = &port->state->port;
- 	bool skip_rx = false;
--	unsigned long flags;
- 	u16 status;
+-	stream = kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
++	stream = kzalloc(sizeof(struct dc_stream_state), GFP_ATOMIC);
+ 	if (stream == NULL)
+ 		goto alloc_fail;
  
--	if (iir & UART_IIR_NO_INT)
--		return 0;
--
--	uart_port_lock_irqsave(port, &flags);
-+	lockdep_assert_held_once(&port->lock);
- 
- 	status = serial_lsr_in(up);
- 
-@@ -1828,8 +1825,19 @@ int serial8250_handle_irq(struct uart_po
- 		else if (!up->dma->tx_running)
- 			__stop_tx(up);
- 	}
-+}
-+EXPORT_SYMBOL_NS_GPL(serial8250_handle_irq_locked, "SERIAL_8250");
-+
-+/*
-+ * This handles the interrupt from one port.
-+ */
-+int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
-+{
-+	if (iir & UART_IIR_NO_INT)
-+		return 0;
- 
--	uart_unlock_and_check_sysrq_irqrestore(port, flags);
-+	guard(uart_port_lock_irqsave)(port);
-+	serial8250_handle_irq_locked(port, iir);
- 
- 	return 1;
- }
---- a/include/linux/serial_8250.h
-+++ b/include/linux/serial_8250.h
-@@ -195,6 +195,7 @@ void serial8250_do_set_mctrl(struct uart
- void serial8250_do_set_divisor(struct uart_port *port, unsigned int baud,
- 			       unsigned int quot);
- int fsl8250_handle_irq(struct uart_port *port);
-+void serial8250_handle_irq_locked(struct uart_port *port, unsigned int iir);
- int serial8250_handle_irq(struct uart_port *port, unsigned int iir);
- u16 serial8250_rx_chars(struct uart_8250_port *up, u16 lsr);
- void serial8250_read_char(struct uart_8250_port *up, u16 lsr);
 
 
 
