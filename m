@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228252-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WFfSBbJywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229800-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:50 +0100
+	id UEBkLvBKwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228252-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95FCA2F9645
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A1212F408A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A5219317B34D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BC6CD312D6B8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454DF29ACC5;
-	Mon, 23 Mar 2026 16:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6A23B7B8A;
+	Mon, 23 Mar 2026 14:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKZ4xUcQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y49nD/y/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DC7282F35;
-	Mon, 23 Mar 2026 16:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9AB3B27FB;
+	Mon, 23 Mar 2026 14:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282899; cv=none; b=cCutmh9nRlkKCi+qMyhghKfBs26p2BdvG0mMiX41BQphqC1K/V+h4SOiZLB1su4Vetx8W9s1ZBhO6iw7kGU9F22Dt/H2nOhQurM01SQaiNB6SjyF/dqLTVEP8C/LCRO7BSZU/yBVYLhIFo6Umo3UbkoMJyjSB1sPK6ODI/3XrIw=
+	t=1774274587; cv=none; b=EQmmyacEfgeBEnc66I/K1tJ/E+oSCl8HiL4L5DSeYUnUdPQkiXUHqjvCrInGJVVXy3/pt3bXi4wUi6IRE0hnkVVW/Qu51oDRsFKid+yY+BRepd/9/MXF/9ehuJQv8FBdsPWgTkhSfjT2hpVVcmMMo74oyCkLrNG2ER4oagFS95s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282899; c=relaxed/simple;
-	bh=zIonWaKb5tzsp1WWBpx1H+nEtTyjP1KgUKKR2nsIxEc=;
+	s=arc-20240116; t=1774274587; c=relaxed/simple;
+	bh=V4m2wKHCm7HLn2PQLYraIo9oPGErUOUtq3Ysgra3DCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwJ8e3GcYRNRoQQMzsMzwDKmx8hMGiSJdTYnXwIqklPJ2F73ZAxUvBg4vZdnTRsN7IXamtTG73WOUVjF+fmEdmL3rk+80VqO2wHyKg+doHXVvCjYt/XtJXCOGm8PbH/sbq2pQjO921UQFk8UlZwvdHaR36rQ+6S+1lEAvyEmRnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKZ4xUcQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE86C4CEF7;
-	Mon, 23 Mar 2026 16:21:38 +0000 (UTC)
+	 MIME-Version; b=BO3Wr8BQ+Drq80Z8sf+iK9q3wmSE2DI49o79GRCr+hbn/rwRXkckHDAoSiewv1ludlWb54NYL33P6yOcw8yiw+iqJOYQkBKGkiWiEzgXpd06h+uhby3aW1K7dUphv44kaSupl5tQl+272mbjVJCWlcNVr/VLWizFNWSxJxZf+vA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y49nD/y/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9843C4CEF7;
+	Mon, 23 Mar 2026 14:03:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282898;
-	bh=zIonWaKb5tzsp1WWBpx1H+nEtTyjP1KgUKKR2nsIxEc=;
+	s=korg; t=1774274587;
+	bh=V4m2wKHCm7HLn2PQLYraIo9oPGErUOUtq3Ysgra3DCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RKZ4xUcQo9XvbUHY5Z0HM9Sw7bKCXsSDfkrEh9AXah+utI35Iov8NgG2aDYFQezos
-	 OWSpF7CY3Ckbq/UO/flmO6BlVSRLjCefhQMRxB6aB+4I8cjGr6kuR86S8cNaJfbOt+
-	 uffO1LXbjjMLVT1LsP/VYfYwmwNcn3HMVA1Jvhfw=
+	b=Y49nD/y/I8Joj09o8fPZBPSy6pvxRmDdc1fIRp3Q95VlGtXXPMqqHrN6A4N51zsee
+	 hkG6UFePNUzD0DeCCJw1MQYctqLB9P+yqUnQyQoPmYxrkrlQ3vHLgVH5whZd0BrIIi
+	 IdTs+YylIhzDLP9EJglPL9YMZzZ8gWgc69+gj2Hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dingisoul <dingiso.kernel@gmail.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>
-Subject: [PATCH 6.1 283/481] nvdimm/bus: Fix potential use after free in asynchronous initialization
-Date: Mon, 23 Mar 2026 14:44:25 +0100
-Message-ID: <20260323134532.010226589@linuxfoundation.org>
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 045/212] sched_ext: Fix starvation of scx_enable() under fair-class saturation
+Date: Mon, 23 Mar 2026 14:44:26 +0100
+Message-ID: <20260323134505.190598580@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +63,175 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229800-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228252-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 95FCA2F9645
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3A1212F408A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ira Weiny <ira.weiny@intel.com>
+From: Tejun Heo <tj@kernel.org>
 
-commit a8aec14230322ed8f1e8042b6d656c1631d41163 upstream.
+[ Upstream commit b06ccbabe2506fd70b9167a644978b049150224a ]
 
-Dingisoul with KASAN reports a use after free if device_add() fails in
-nd_async_device_register().
+During scx_enable(), the READY -> ENABLED task switching loop changes the
+calling thread's sched_class from fair to ext. Since fair has higher
+priority than ext, saturating fair-class workloads can indefinitely starve
+the enable thread, hanging the system. This was introduced when the enable
+path switched from preempt_disable() to scx_bypass() which doesn't protect
+against fair-class starvation. Note that the original preempt_disable()
+protection wasn't complete either - in partial switch modes, the calling
+thread could still be starved after preempt_enable() as it may have been
+switched to ext class.
 
-Commit b6eae0f61db2 ("libnvdimm: Hold reference on parent while
-scheduling async init") correctly added a reference on the parent device
-to be held until asynchronous initialization was complete.  However, if
-device_add() results in an allocation failure the ref count of the
-device drops to 0 prior to the parent pointer being accessed.  Thus
-resulting in use after free.
+Fix it by offloading the enable body to a dedicated system-wide RT
+(SCHED_FIFO) kthread which cannot be starved by either fair or ext class
+tasks. scx_enable() lazily creates the kthread on first use and passes the
+ops pointer through a struct scx_enable_cmd containing the kthread_work,
+then synchronously waits for completion.
 
-The bug bot AI correctly identified the fix.  Save a reference to the
-parent pointer to be used to drop the parent reference regardless of the
-outcome of device_add().
+The workfn runs on a different kthread from sch->helper (which runs
+disable_work), so it can safely flush disable_work on the error path
+without deadlock.
 
-Reported-by: Dingisoul <dingiso.kernel@gmail.com>
-Closes: http://lore.kernel.org/8855544b-be9e-4153-aa55-0bc328b13733@gmail.com
-Fixes: b6eae0f61db2 ("libnvdimm: Hold reference on parent while scheduling async init")
-Cc: stable@vger.kernel.org
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://patch.msgid.link/20260306-fix-uaf-async-init-v1-1-a28fd7526723@intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Fixes: 8c2090c504e9 ("sched_ext: Initialize in bypass mode")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvdimm/bus.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/sched/ext.c |   66 ++++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 56 insertions(+), 10 deletions(-)
 
---- a/drivers/nvdimm/bus.c
-+++ b/drivers/nvdimm/bus.c
-@@ -486,14 +486,15 @@ EXPORT_SYMBOL_GPL(nd_synchronize);
- static void nd_async_device_register(void *d, async_cookie_t cookie)
- {
- 	struct device *dev = d;
-+	struct device *parent = dev->parent;
- 
- 	if (device_add(dev) != 0) {
- 		dev_err(dev, "%s: failed\n", __func__);
- 		put_device(dev);
- 	}
- 	put_device(dev);
--	if (dev->parent)
--		put_device(dev->parent);
-+	if (parent)
-+		put_device(parent);
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -4598,20 +4598,30 @@ static int validate_ops(struct scx_sched
+ 	return 0;
  }
  
- static void nd_async_device_unregister(void *d, async_cookie_t cookie)
+-static int scx_enable(struct sched_ext_ops *ops, struct bpf_link *link)
++/*
++ * scx_enable() is offloaded to a dedicated system-wide RT kthread to avoid
++ * starvation. During the READY -> ENABLED task switching loop, the calling
++ * thread's sched_class gets switched from fair to ext. As fair has higher
++ * priority than ext, the calling thread can be indefinitely starved under
++ * fair-class saturation, leading to a system hang.
++ */
++struct scx_enable_cmd {
++	struct kthread_work	work;
++	struct sched_ext_ops	*ops;
++	int			ret;
++};
++
++static void scx_enable_workfn(struct kthread_work *work)
+ {
++	struct scx_enable_cmd *cmd =
++		container_of(work, struct scx_enable_cmd, work);
++	struct sched_ext_ops *ops = cmd->ops;
+ 	struct scx_sched *sch;
+ 	struct scx_task_iter sti;
+ 	struct task_struct *p;
+ 	unsigned long timeout;
+ 	int i, cpu, ret;
+ 
+-	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
+-			   cpu_possible_mask)) {
+-		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
+-		return -EINVAL;
+-	}
+-
+ 	mutex_lock(&scx_enable_mutex);
+ 
+ 	if (scx_enable_state() != SCX_DISABLED) {
+@@ -4828,13 +4838,15 @@ static int scx_enable(struct sched_ext_o
+ 
+ 	atomic_long_inc(&scx_enable_seq);
+ 
+-	return 0;
++	cmd->ret = 0;
++	return;
+ 
+ err_free_pseqs:
+ 	free_kick_pseqs();
+ err_unlock:
+ 	mutex_unlock(&scx_enable_mutex);
+-	return ret;
++	cmd->ret = ret;
++	return;
+ 
+ err_disable_unlock_all:
+ 	scx_cgroup_unlock();
+@@ -4853,7 +4865,41 @@ err_disable:
+ 	 */
+ 	scx_error(sch, "scx_enable() failed (%d)", ret);
+ 	kthread_flush_work(&sch->disable_work);
+-	return 0;
++	cmd->ret = 0;
++}
++
++static int scx_enable(struct sched_ext_ops *ops, struct bpf_link *link)
++{
++	static struct kthread_worker *helper;
++	static DEFINE_MUTEX(helper_mutex);
++	struct scx_enable_cmd cmd;
++
++	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
++			   cpu_possible_mask)) {
++		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
++		return -EINVAL;
++	}
++
++	if (!READ_ONCE(helper)) {
++		mutex_lock(&helper_mutex);
++		if (!helper) {
++			helper = kthread_run_worker(0, "scx_enable_helper");
++			if (IS_ERR_OR_NULL(helper)) {
++				helper = NULL;
++				mutex_unlock(&helper_mutex);
++				return -ENOMEM;
++			}
++			sched_set_fifo(helper->task);
++		}
++		mutex_unlock(&helper_mutex);
++	}
++
++	kthread_init_work(&cmd.work, scx_enable_workfn);
++	cmd.ops = ops;
++
++	kthread_queue_work(READ_ONCE(helper), &cmd.work);
++	kthread_flush_work(&cmd.work);
++	return cmd.ret;
+ }
+ 
+ 
 
 
 
