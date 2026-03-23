@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228382-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CCbPOcdewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229345-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:51 +0100
+	id uEcxC/pOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228382-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 740652F6AB0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CCC52F4B20
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D951F333667E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F809319ACF7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8457D263F4A;
-	Mon, 23 Mar 2026 15:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D514F3B27F7;
+	Mon, 23 Mar 2026 14:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NlAz/K9I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sreo155g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487792848BA;
-	Mon, 23 Mar 2026 15:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C293B0AF0;
+	Mon, 23 Mar 2026 14:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278825; cv=none; b=iRkGbWdYbjoFD8KALFTvx988sgaMtxQ/x3FnJBwAmXsSCopyIMZVFBV8Fv1wpvDn9p6xU2h4/NflqgwcAnrcDBcfGTYVzbBITknggJAzAKVDeRWGmO+SgdL6+pRYW9UKuoYvtSVat/cBF8PdJGWAdHV7VClDrEu+ExRRkCERVqs=
+	t=1774274963; cv=none; b=XUQUSnLMY9NvSDd525qcCydYUn+m77kMlfy5EXiM+63Qx6gWlfxNrUJuho4ssoaNIgklIujom/qzjQYeYTxiDTp+bIsUuocGOKJ4UU0JshS6Zxt+NACNW4fDTChx/0HswjkSmTOdBhxwQoxVWTsvFTG5Ey3BPsWxLHkAOT4og9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278825; c=relaxed/simple;
-	bh=HP7lbw++zTOvjOIJXtNewzK1Lduss2z9DIbCMeFS4eU=;
+	s=arc-20240116; t=1774274963; c=relaxed/simple;
+	bh=G9wQW66QBPuDFvHQxMCYBZZNrm7+4c+IFr4n1yJ9XHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNnnlOUe/a1ICt1Oh9Xj67p2rl0Z6sz0Zxhk64BcaLbCqaDCNblIWKOrfZ8bOWqn90Ttvsr5o1q+7gN8xJ7xkjf3pWjkhEttBFgcJSSmLvq+4yN9NexF6r3G4tmBhHExyi/ibPdU7DQZtmFrEGI5KaNjXniIjCidILo76LHsYZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NlAz/K9I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B4CC4CEF7;
-	Mon, 23 Mar 2026 15:13:44 +0000 (UTC)
+	 MIME-Version; b=GOurW+KMJTeCkT37BQ6ppjHPL8GUN2RxG28xDaxkNZ9f03JMemN/DHJNe02ghT2xzeBMYvVGMz74Q4loCGv9mnWkyhRLK8DYQew3kHuL3GnzTSrVuRLPwMXRaYhMcZUoqlkSe9WKmzlA/rMOaxmWwmufrwV0b3KcY0OvnaIxuK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sreo155g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBBBC2BCB1;
+	Mon, 23 Mar 2026 14:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278825;
-	bh=HP7lbw++zTOvjOIJXtNewzK1Lduss2z9DIbCMeFS4eU=;
+	s=korg; t=1774274963;
+	bh=G9wQW66QBPuDFvHQxMCYBZZNrm7+4c+IFr4n1yJ9XHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NlAz/K9IHVcsu8l5p8EMDfidMUbJy7kzYVBG4nwsRiiNs3pb7iBpzxFlH15PCma2I
-	 UuAWt5bY6mW8AmBWxEH84UyAekryN+TpR3eUYSahKBDc6XukjGCLkKqtm3+nBHojji
-	 DSEZUkFHknh3uj6PwtBfbu+fuROYYrhfWevr1iSA=
+	b=Sreo155gAePXnqgcuHEy9RwxIJ12zvfsELL8+X+grlRLymz4E2atyESHQxmDouTdG
+	 gppr0qrGF/7k+yceFAHVMiUtaNUl1f/IOp7VhivQR220DGCB/r8HVbGjmW1pTkvVBe
+	 MLs0+VVkGg1EWeGMCTux3w9P5SKQFl/bcr3lCMlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.6 432/567] drm/amdgpu: Add basic validation for RAS header
-Date: Mon, 23 Mar 2026 14:45:52 +0100
-Message-ID: <20260323134544.618277614@linuxfoundation.org>
+	syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 132/212] net/rose: fix NULL pointer dereference in rose_transmit_link on reconnect
+Date: Mon, 23 Mar 2026 14:45:53 +0100
+Message-ID: <20260323134507.944509618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +66,99 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229345-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,foxmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228382-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,d00f90e0af54102fb271];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 740652F6AB0
+X-Rspamd-Queue-Id: 9CCC52F4B20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-commit 5df0d6addb7e9b6f71f7162d1253762a5be9138e upstream.
+[ Upstream commit e1f0a18c9564cdb16523c802e2c6fe5874e3d944 ]
 
-If RAS header read from EEPROM is corrupted, it could result in trying
-to allocate huge memory for reading the records. Add some validation to
-header fields.
+syzkaller reported a bug [1], and the reproducer is available at [2].
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ RAS_TABLE_VER_V3 is not supported in v6.6.y. ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ROSE sockets use four sk->sk_state values: TCP_CLOSE, TCP_LISTEN,
+TCP_SYN_SENT, and TCP_ESTABLISHED. rose_connect() already rejects
+calls for TCP_ESTABLISHED (-EISCONN) and TCP_CLOSE with SS_CONNECTING
+(-ECONNREFUSED), but lacks a check for TCP_SYN_SENT.
+
+When rose_connect() is called a second time while the first connection
+attempt is still in progress (TCP_SYN_SENT), it overwrites
+rose->neighbour via rose_get_neigh(). If that returns NULL, the socket
+is left with rose->state == ROSE_STATE_1 but rose->neighbour == NULL.
+When the socket is subsequently closed, rose_release() sees
+ROSE_STATE_1 and calls rose_write_internal() ->
+rose_transmit_link(skb, NULL), causing a NULL pointer dereference.
+
+Per connect(2), a second connect() while a connection is already in
+progress should return -EALREADY. Add this missing check for
+TCP_SYN_SENT to complete the state validation in rose_connect().
+
+[1] https://syzkaller.appspot.com/bug?extid=d00f90e0af54102fb271
+[2] https://gist.github.com/mrpre/9e6779e0d13e2c66779b1653fef80516
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0027.GAE@google.com/T/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260311070611.76913-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c |   20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ net/rose/af_rose.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-@@ -1338,15 +1338,31 @@ int amdgpu_ras_eeprom_init(struct amdgpu
- 
- 	__decode_table_header_from_buf(hdr, buf);
- 
--	if (hdr->version == RAS_TABLE_VER_V2_1) {
-+	switch (hdr->version) {
-+	case RAS_TABLE_VER_V2_1:
- 		control->ras_num_recs = RAS_NUM_RECS_V2_1(hdr);
- 		control->ras_record_offset = RAS_RECORD_START_V2_1;
- 		control->ras_max_record_count = RAS_MAX_RECORD_COUNT_V2_1;
--	} else {
-+		break;
-+	case RAS_TABLE_VER_V1:
- 		control->ras_num_recs = RAS_NUM_RECS(hdr);
- 		control->ras_record_offset = RAS_RECORD_START;
- 		control->ras_max_record_count = RAS_MAX_RECORD_COUNT;
-+		break;
-+	default:
-+		dev_err(adev->dev,
-+			"RAS header invalid, unsupported version: %u",
-+			hdr->version);
-+		return -EINVAL;
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index fad6518e6e39b..53c9bc71f813d 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -810,6 +810,11 @@ static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_le
+ 		goto out_release;
  	}
-+
-+	if (control->ras_num_recs > control->ras_max_record_count) {
-+		dev_err(adev->dev,
-+			"RAS header invalid, records in header: %u max allowed :%u",
-+			control->ras_num_recs, control->ras_max_record_count);
-+		return -EINVAL;
+ 
++	if (sk->sk_state == TCP_SYN_SENT) {
++		err = -EALREADY;
++		goto out_release;
 +	}
 +
- 	control->ras_fri = RAS_OFFSET_TO_INDEX(control, hdr->first_rec_offset);
+ 	sk->sk_state   = TCP_CLOSE;
+ 	sock->state = SS_UNCONNECTED;
  
- 	if (hdr->header == RAS_TABLE_HDR_VAL) {
+-- 
+2.51.0
+
 
 
 
