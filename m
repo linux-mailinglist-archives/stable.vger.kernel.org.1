@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228564-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFGHMp5wwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:58 +0100
+	id QEYwK4hQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228564-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F882F9213
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FE6A2F4ECA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BF99F329ADD4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 308BC323F6C3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C043BAD94;
-	Mon, 23 Mar 2026 16:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625431A680B;
+	Mon, 23 Mar 2026 14:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQZfe4Gc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A97ePqen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3913BA243;
-	Mon, 23 Mar 2026 16:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2674140DFC4;
+	Mon, 23 Mar 2026 14:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282355; cv=none; b=PQnMmxr9P7Va31cEYUknIwmsrUm5+26sXQ/KvNVJVCtlOiZou3k67JabxkFwd9+SuxkeMjRag8g3O8NrFD9xoLF5OCJRB+C2b4jJDAtziCbw5vN1eznMMhwdNrqL5rzvmREzliAh+A/WK7YoBseIkCz5gwpA/+eb34xhkfBHrRA=
+	t=1774275464; cv=none; b=mxGAbvPdZZhfS9MM6aZYqR/N4tZcSz6dg6BRy1qEKKdbX0xWtvHEKMVvuS3uKwxqW6Aa++YfWfZUJzZKRlz7kzQ/Nl12VNyAuJaLw1h7UeIc1kTa90y9D1Za8ukUBew1wHROAxMBGKJl43G2Y+4IjJmjDgtCT2vJotzXZ4NEfjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282355; c=relaxed/simple;
-	bh=nQvBCQtABAz4Mzx7OtQeDjBuZHy1V4H0hgZeoNPlSXw=;
+	s=arc-20240116; t=1774275464; c=relaxed/simple;
+	bh=0g02QUJ/NNvLWc1l+mIoARwAwboxOjekZrqMwxJz9AE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bua+6jQsFt5NM12JoL3srcxx/fl6zz4oRQHESFHZYjoZB33fxIkH1BbI0AtzerIg74+PO4yZMyXQUHwlIhOLXvqjF8s2xnNrP/Xy5M1FRq5Nz0gv3d0OK/QQeyDt+VXAKjm09g1vmfvjSHTzi5mwaCFi5RoGnfE3wplmV6JXhOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQZfe4Gc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03AEC4CEF7;
-	Mon, 23 Mar 2026 16:12:34 +0000 (UTC)
+	 MIME-Version; b=QovB/s9yMHui3OAkmi4ZPlidCHpJqPjs6SG+6OI6hjZo5Z9bpwiT06uv49VEQQ26yQOTvqRRuna+k9HwOHh6pNtosc7YMa/l8uNXXmO317H4U9CnhMpBCA62KlMrsdcJ5L/gCjAtlRVa4Ge/IdmumD63ukzW6P8hIypYcdMw9wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A97ePqen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BBFC4CEF7;
+	Mon, 23 Mar 2026 14:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282355;
-	bh=nQvBCQtABAz4Mzx7OtQeDjBuZHy1V4H0hgZeoNPlSXw=;
+	s=korg; t=1774275464;
+	bh=0g02QUJ/NNvLWc1l+mIoARwAwboxOjekZrqMwxJz9AE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KQZfe4GcpwY0K3/7BmZ0f8+jIfd78YTmv8BHmFJOdY1TWzfEWXAYlbl7Y4cTW3nlf
-	 FdsKaZs96EStTtkg6ZOfPaa3D0Pm4cjk/T5YwvLnTwU4yY4REmG01G7X5GT/Qkgmxc
-	 f2ai21PH/GD0Rslbts80lU9OI630ZajBBJmnrkXo=
+	b=A97ePqengUkAt6z/p7XLKst3CYXlCUcaRGduVBtlykgpNy4a2fLzoOCyWbpJ6FqJk
+	 WH7BUW4vdv/0I9G76dJcFJipElrnYLzqyrI+ghRgWUU7aWCoRA1hmPvFBiHLaUI2aP
+	 2lomUHUlF4AFoEkUSUa1z9SOw4buGdp3qslx44xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thomson <dt@linux-mail.net>,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/481] xen/acpi-processor: fix _CST detection using undersized evaluation buffer
+	syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.12 111/460] USB: usbtmc: Use usb_bulk_msg_killable() with user-specified timeouts
 Date: Mon, 23 Mar 2026 14:41:47 +0100
-Message-ID: <20260323134528.326445670@linuxfoundation.org>
+Message-ID: <20260323134529.365389411@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +63,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229599-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228564-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,25ba18e2c5040447585d];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 56F882F9213
+X-Rspamd-Queue-Id: 3FE6A2F4ECA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thomson <dt@linux-mail.net>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 8b57227d59a86fc06d4f09de08f98133680f2cae ]
+commit 7784caa413a89487dd14dd5c41db8753483b2acb upstream.
 
-read_acpi_id() attempts to evaluate _CST using a stack buffer of
-sizeof(union acpi_object) (48 bytes), but _CST returns a nested Package
-of sub-Packages (one per C-state, each containing a register descriptor,
-type, latency, and power) requiring hundreds of bytes. The evaluation
-always fails with AE_BUFFER_OVERFLOW.
+The usbtmc driver accepts timeout values specified by the user in an
+ioctl command, and uses these timeouts for some usb_bulk_msg() calls.
+Since the user can specify arbitrarily long timeouts and
+usb_bulk_msg() uses unkillable waits, call usb_bulk_msg_killable()
+instead to avoid the possibility of the user hanging a kernel thread
+indefinitely.
 
-On modern systems using FFH/MWAIT entry (where pblk is zero), this
-causes the function to return before setting the acpi_id_cst_present
-bit. In check_acpi_ids(), flags.power is then zero for all Phase 2 CPUs
-(physical CPUs beyond dom0's vCPU count), so push_cxx_to_hypervisor() is
-never called for them.
-
-On a system with dom0_max_vcpus=2 and 8 physical CPUs, only PCPUs 0-1
-receive C-state data. PCPUs 2-7 are stuck in C0/C1 idle, unable to
-enter C2/C3. This costs measurable wall power (4W observed on an Intel
-Core Ultra 7 265K with Xen 4.20).
-
-The function never uses the _CST return value -- it only needs to know
-whether _CST exists. Replace the broken acpi_evaluate_object() call with
-acpi_has_method(), which correctly detects _CST presence using
-acpi_get_handle() without any buffer allocation. This brings C-state
-detection to parity with the P-state path, which already works correctly
-for Phase 2 CPUs.
-
-Fixes: 59a568029181 ("xen/acpi-processor: C and P-state driver that uploads said data to hypervisor.")
-Signed-off-by: David Thomson <dt@linux-mail.net>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20260224093707.19679-1-dt@linux-mail.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/8e1c7ac5-e076-44b0-84b8-1b34b20f0ae1@suse.com/T/#t
+Tested-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/81c6fc24-0607-40f1-8c20-5270dab2fad5@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/xen/xen-acpi-processor.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/usb/class/usbtmc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/xen/xen-acpi-processor.c b/drivers/xen/xen-acpi-processor.c
-index 9cb61db67efde..12877f85bb79d 100644
---- a/drivers/xen/xen-acpi-processor.c
-+++ b/drivers/xen/xen-acpi-processor.c
-@@ -379,11 +379,8 @@ read_acpi_id(acpi_handle handle, u32 lvl, void *context, void **rv)
- 			 acpi_psd[acpi_id].domain);
- 	}
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -727,7 +727,7 @@ static int usbtmc488_ioctl_trigger(struc
+ 	buffer[1] = data->bTag;
+ 	buffer[2] = ~data->bTag;
  
--	status = acpi_evaluate_object(handle, "_CST", NULL, &buffer);
--	if (ACPI_FAILURE(status)) {
--		if (!pblk)
--			return AE_OK;
--	}
-+	if (!pblk && !acpi_has_method(handle, "_CST"))
-+		return AE_OK;
- 	/* .. and it has a C-state */
- 	__set_bit(acpi_id, acpi_id_cst_present);
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_sndbulkpipe(data->usb_dev,
+ 					      data->bulk_out),
+ 			      buffer, USBTMC_HEADER_SIZE,
+@@ -1347,7 +1347,7 @@ static int send_request_dev_dep_msg_in(s
+ 	buffer[11] = 0; /* Reserved */
  
--- 
-2.51.0
-
+ 	/* Send bulk URB */
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_sndbulkpipe(data->usb_dev,
+ 					      data->bulk_out),
+ 			      buffer, USBTMC_HEADER_SIZE,
+@@ -1419,7 +1419,7 @@ static ssize_t usbtmc_read(struct file *
+ 	actual = 0;
+ 
+ 	/* Send bulk URB */
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_rcvbulkpipe(data->usb_dev,
+ 					      data->bulk_in),
+ 			      buffer, bufsize, &actual,
 
 
 
