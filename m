@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EF6kM9FPwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228139-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:01 +0100
+	id uNiqGT5NwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:02 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650D22F4CFA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A6952F46A5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2D17830524E6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0168032105F8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A99B1F91F6;
-	Mon, 23 Mar 2026 13:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BE23B4EBC;
+	Mon, 23 Mar 2026 14:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inL62ASU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12dcSWeL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E756286A4;
-	Mon, 23 Mar 2026 13:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAF83B4EA3;
+	Mon, 23 Mar 2026 14:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274243; cv=none; b=RlYJZxDJsFZQMmieGmhs66IhZroWNF668C1xRVDSnFhgCZyH7lPtkbYRZ7zuPBuTy1Aoecn8cgEwMGdrM5pgJ5ppyd5uzy2Md1ljejIc9+0ESIIwJGJZrjrdjxYWcf60WCReEzi9aLHy57QADyS0IpYT/zfiVJ1bWIw+gqKzd1c=
+	t=1774274795; cv=none; b=QrcbD8SUo1UKh6ugocNJ8h7TtFPUvgoS51XxVBUxfylaNZ9ZpvMMlL6EtEdTPZ2duIMP/d/TJAQ07IKh33OAFMbm/AR7QSOw55X7jaDfSP3vfhGSHBwDS2TR43pm/rn3gI5rEVQzQCzCYi6oGpaso2U4CCAdV0NT7/7K0yNTsiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274243; c=relaxed/simple;
-	bh=rAFzf61TrFTOlaNSSwxbD7cnKJknnY2x2TZqRoFQ65U=;
+	s=arc-20240116; t=1774274795; c=relaxed/simple;
+	bh=DwKz7VHQKjqqSgmxby1qG+/w3lZOnDDhYBI7YtttazM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXGPSfh8sMoyS8Ofecy1FsQI95yp5ee64t4BJXMDrKiDVfDbVu3JVNM1+0hkcj5BXNzLUBRM+PcCVFUbiBAdJpAcBkzDZoXORrFChYhTMlHQYBGe/iCGdFugQZu1wU45UhsF0isDhBV3aPA9J/lyFtNFDr6uOmNUNyMDO6xWEEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inL62ASU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61210C4CEF7;
-	Mon, 23 Mar 2026 13:57:22 +0000 (UTC)
+	 MIME-Version; b=DZ1dmqgiN2JwBJ+TKccd09u8Dy+STFp3sZlcoiWl8zNJKf+mbMcZZxrkEd8G97cHIcpPU7p3yD8Sc+puKBZ7NGKelxJBll2Qm6gMJNWA5xNARlFOtCTBN9tR+VDdSgSpC2lXkDULSFmHyzId7hlQePUYmswaT3rqe9qM5mxnuFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12dcSWeL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04EC5C4CEF7;
+	Mon, 23 Mar 2026 14:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274242;
-	bh=rAFzf61TrFTOlaNSSwxbD7cnKJknnY2x2TZqRoFQ65U=;
+	s=korg; t=1774274795;
+	bh=DwKz7VHQKjqqSgmxby1qG+/w3lZOnDDhYBI7YtttazM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=inL62ASUKBrGEfHy/rGk8EK9iorsA0WLe/PfaY1426+iQG8FcTTnmUWRtpG2xWm4p
-	 fPPT3eRmWkCOSawaMmhffBhMExEHK9SPn8rv/aVwa/JyfxHhNRDxiNtYbbUzKUy4Ex
-	 FT5mMc+ymYyvbGd2MMDf3v5J1uvbiEFf+gwWHFKg=
+	b=12dcSWeLNlRJiyjJHdmXiTqyLLwvI1ZbQUAt/B1/D+ULOY+1mpLxen13Q0zdvp8th
+	 xwFOblvQw7qjkWX36zaz8kPdFKIwK+9w+Cg8nD0AF5g3aVamQUwyb/sA8Sp8JjusXz
+	 aWFv/8Nvot4lTSLRq/FF58Dr4jI5Cw/OreARGLH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 154/220] clsact: Fix use-after-free in init/destroy rollback asymmetry
+Subject: [PATCH 6.18 110/212] wifi: mac80211: Fix static_branch_dec() underflow for aql_disable.
 Date: Mon, 23 Mar 2026 14:45:31 +0100
-Message-ID: <20260323134509.441929970@linuxfoundation.org>
+Message-ID: <20260323134507.258344129@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,7 +65,8 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
@@ -75,140 +75,135 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228139-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,iogearbox.net,kernel.org,redhat.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228319-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,feb9ce36a95341bb47a4];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 650D22F4CFA
+X-Rspamd-Queue-Id: 9A6952F46A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a0671125d4f55e1e98d9bde8a0b671941987e208 ]
+[ Upstream commit b94ae8e0d5fe1bdbbfdc3854ff6ce98f6876a828 ]
 
-Fix a use-after-free in the clsact qdisc upon init/destroy rollback asymmetry.
-The latter is achieved by first fully initializing a clsact instance, and
-then in a second step having a replacement failure for the new clsact qdisc
-instance. clsact_init() initializes ingress first and then takes care of the
-egress part. This can fail midway, for example, via tcf_block_get_ext(). Upon
-failure, the kernel will trigger the clsact_destroy() callback.
+syzbot reported static_branch_dec() underflow in aql_enable_write(). [0]
 
-Commit 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry") details the
-way how the transition is happening. If tcf_block_get_ext on the q->ingress_block
-ends up failing, we took the tcx_miniq_inc reference count on the ingress
-side, but not yet on the egress side. clsact_destroy() tests whether the
-{ingress,egress}_entry was non-NULL. However, even in midway failure on the
-replacement, both are in fact non-NULL with a valid egress_entry from the
-previous clsact instance.
+The problem is that aql_enable_write() does not serialise concurrent
+write()s to the debugfs.
 
-What we really need to test for is whether the qdisc instance-specific ingress
-or egress side previously got initialized. This adds a small helper for checking
-the miniq initialization called mini_qdisc_pair_inited, and utilizes that upon
-clsact_destroy() in order to fix the use-after-free scenario. Convert the
-ingress_destroy() side as well so both are consistent to each other.
+aql_enable_write() checks static_key_false(&aql_disable.key) and
+later calls static_branch_inc() or static_branch_dec(), but the
+state may change between the two calls.
 
-Fixes: 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260313065531.98639-1-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+aql_disable does not need to track inc/dec.
+
+Let's use static_branch_enable() and static_branch_disable().
+
+[0]:
+val == 0
+WARNING: kernel/jump_label.c:311 at __static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311, CPU#0: syz.1.3155/20288
+Modules linked in:
+CPU: 0 UID: 0 PID: 20288 Comm: syz.1.3155 Tainted: G     U       L      syzkaller #0 PREEMPT(full)
+Tainted: [U]=USER, [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
+RIP: 0010:__static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311
+Code: f2 c9 ff 5b 5d c3 cc cc cc cc e8 54 f2 c9 ff 48 89 df e8 ac f9 ff ff eb ad e8 45 f2 c9 ff 90 0f 0b 90 eb a2 e8 3a f2 c9 ff 90 <0f> 0b 90 eb 97 48 89 df e8 5c 4b 33 00 e9 36 ff ff ff 0f 1f 80 00
+RSP: 0018:ffffc9000b9f7c10 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffffff9b3e5d40 RCX: ffffffff823c57b4
+RDX: ffff8880285a0000 RSI: ffffffff823c5846 RDI: ffff8880285a0000
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000000a
+R13: 1ffff9200173ef88 R14: 0000000000000001 R15: ffffc9000b9f7e98
+FS:  00007f530dd726c0(0000) GS:ffff8881245e3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000001140 CR3: 000000007cc4a000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __static_key_slow_dec_cpuslocked kernel/jump_label.c:297 [inline]
+ __static_key_slow_dec kernel/jump_label.c:321 [inline]
+ static_key_slow_dec+0x7c/0xc0 kernel/jump_label.c:336
+ aql_enable_write+0x2b2/0x310 net/mac80211/debugfs.c:343
+ short_proxy_write+0x133/0x1a0 fs/debugfs/file.c:383
+ vfs_write+0x2aa/0x1070 fs/read_write.c:684
+ ksys_pwrite64 fs/read_write.c:793 [inline]
+ __do_sys_pwrite64 fs/read_write.c:801 [inline]
+ __se_sys_pwrite64 fs/read_write.c:798 [inline]
+ __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:798
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xc9/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f530cf9aeb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f530dd72028 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
+RAX: ffffffffffffffda RBX: 00007f530d215fa0 RCX: 00007f530cf9aeb9
+RDX: 0000000000000003 RSI: 0000000000000000 RDI: 0000000000000010
+RBP: 00007f530d008c1f R08: 0000000000000000 R09: 0000000000000000
+R10: 4200000000000005 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f530d216038 R14: 00007f530d215fa0 R15: 00007ffde89fb978
+ </TASK>
+
+Fixes: e908435e402a ("mac80211: introduce aql_enable node in debugfs")
+Reported-by: syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69a8979e.a70a0220.b118c.0025.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260306072405.3649474-1-kuniyu@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h |  5 +++++
- net/sched/sch_ingress.c   | 14 ++++++++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ net/mac80211/debugfs.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index cafb266a0b80d..c3d657359a3d2 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1457,6 +1457,11 @@ void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
- void mini_qdisc_pair_block_init(struct mini_Qdisc_pair *miniqp,
- 				struct tcf_block *block);
- 
-+static inline bool mini_qdisc_pair_inited(struct mini_Qdisc_pair *miniqp)
-+{
-+	return !!miniqp->p_miniq;
-+}
-+
- void mq_change_real_num_tx(struct Qdisc *sch, unsigned int new_real_tx);
- 
- int sch_frag_xmit_hook(struct sk_buff *skb, int (*xmit)(struct sk_buff *skb));
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index cc6051d4f2ef8..c3e18bae8fbfc 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -113,14 +113,15 @@ static void ingress_destroy(struct Qdisc *sch)
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index d02f07368c511..687a66cd49433 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -320,7 +320,6 @@ static ssize_t aql_enable_read(struct file *file, char __user *user_buf,
+ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
+ 				size_t count, loff_t *ppos)
  {
- 	struct ingress_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	struct bpf_mprog_entry *entry = rtnl_dereference(dev->tcx_ingress);
-+	struct bpf_mprog_entry *entry;
+-	bool aql_disabled = static_key_false(&aql_disable.key);
+ 	char buf[3];
+ 	size_t len;
  
- 	if (sch->parent != TC_H_INGRESS)
- 		return;
+@@ -335,15 +334,12 @@ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
+ 	if (len > 0 && buf[len - 1] == '\n')
+ 		buf[len - 1] = 0;
  
- 	tcf_block_put_ext(q->block, sch, &q->block_info);
+-	if (buf[0] == '0' && buf[1] == '\0') {
+-		if (!aql_disabled)
+-			static_branch_inc(&aql_disable);
+-	} else if (buf[0] == '1' && buf[1] == '\0') {
+-		if (aql_disabled)
+-			static_branch_dec(&aql_disable);
+-	} else {
++	if (buf[0] == '0' && buf[1] == '\0')
++		static_branch_enable(&aql_disable);
++	else if (buf[0] == '1' && buf[1] == '\0')
++		static_branch_disable(&aql_disable);
++	else
+ 		return -EINVAL;
+-	}
  
--	if (entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp)) {
-+		entry = rtnl_dereference(dev->tcx_ingress);
- 		tcx_miniq_dec(entry);
- 		if (!tcx_entry_is_active(entry)) {
- 			tcx_entry_update(dev, NULL, true);
-@@ -290,10 +291,9 @@ static int clsact_init(struct Qdisc *sch, struct nlattr *opt,
- 
- static void clsact_destroy(struct Qdisc *sch)
- {
-+	struct bpf_mprog_entry *ingress_entry, *egress_entry;
- 	struct clsact_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	struct bpf_mprog_entry *ingress_entry = rtnl_dereference(dev->tcx_ingress);
--	struct bpf_mprog_entry *egress_entry = rtnl_dereference(dev->tcx_egress);
- 
- 	if (sch->parent != TC_H_CLSACT)
- 		return;
-@@ -301,7 +301,8 @@ static void clsact_destroy(struct Qdisc *sch)
- 	tcf_block_put_ext(q->ingress_block, sch, &q->ingress_block_info);
- 	tcf_block_put_ext(q->egress_block, sch, &q->egress_block_info);
- 
--	if (ingress_entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp_ingress)) {
-+		ingress_entry = rtnl_dereference(dev->tcx_ingress);
- 		tcx_miniq_dec(ingress_entry);
- 		if (!tcx_entry_is_active(ingress_entry)) {
- 			tcx_entry_update(dev, NULL, true);
-@@ -309,7 +310,8 @@ static void clsact_destroy(struct Qdisc *sch)
- 		}
- 	}
- 
--	if (egress_entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp_egress)) {
-+		egress_entry = rtnl_dereference(dev->tcx_egress);
- 		tcx_miniq_dec(egress_entry);
- 		if (!tcx_entry_is_active(egress_entry)) {
- 			tcx_entry_update(dev, NULL, false);
+ 	return count;
+ }
 -- 
 2.51.0
 
