@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-229785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228282-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJO+OpRywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229785-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:20 +0100
+	id gM/8DT5OwWm7SAQAu9opvQ
+	(envelope-from <stable+bounces-228282-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8249D2F960A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7834A2F4979
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C355B32E52F4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F187831793D7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856523B8D4F;
-	Mon, 23 Mar 2026 16:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D4F3B38B1;
+	Mon, 23 Mar 2026 14:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vDWqINm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYQyVxfD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454E612CDA5;
-	Mon, 23 Mar 2026 16:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA60324B16;
+	Mon, 23 Mar 2026 14:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282858; cv=none; b=OMkkg0dRgsQpPbtojT3WJQd9Z67rBlqshLnBnze02y8JK9VJFsGkjoRLw0TowN9QH4NaBYskOInUtPEVbvECUjC1jnJE/vfTWM+aDX/07A5E0lTRWhcNGktjEeRo9tTUm9SEBwL82HYWtERYF4JyrNvGhjWdGkkb7VoWVu2DWOk=
+	t=1774274680; cv=none; b=eHA3Hr5u/JQKTcfrnn6b+W0QKM/v02STJhhtQhOYLfGjGVTx+IAenB8mPeBHcElYmwqXGBR9EPwBmBAqUWonne3F1j4AKWFAYzjMtxOLD/i47M6/9nvlTKSeMwbzA0P4Cug5JM89EgHZGHfuCDlYpwdJ9jbxUBtqGNLf4f2QhxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282858; c=relaxed/simple;
-	bh=GNp4XM7h04k15BwMwvfyH/rkFDzMsq3p2Uupt+VUAL4=;
+	s=arc-20240116; t=1774274680; c=relaxed/simple;
+	bh=xMBYXo0N8ODwCqkvcATlJbkFOnjHYMAc3GSLUf+VYNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQFjqiyMEMQ79W0eUYtFoHVEsOc66TLEyKg89BB71FOOWoSsRrZjIOingvZ8UdFxHbMLWC5+1MJCBi5y1R7ct18ysy5sige1swvURhxlsy2Pw1jNAOGoPZ+Fc+SMYjA21sPo7i7J4+1U09gDUo47uQoVCByPiouwgBVhvnAIqFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vDWqINm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17F4C4CEF7;
-	Mon, 23 Mar 2026 16:20:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DZubov/k77h53+ddu8jAkD4j3QywbkQCzS5aYsH0yvK5uFnfTMlj5cQlIXwFWCqbkVphiNYE7NemZytODU0uhPbuIB5BFMFJotxgzJ14dIbLujESI+LPPLDtR8uBT7+zd4fiWX9PK4/4RUE9F21rW5GuXQkWdDGIvogbjtweEmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYQyVxfD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 893BAC4CEF7;
+	Mon, 23 Mar 2026 14:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282858;
-	bh=GNp4XM7h04k15BwMwvfyH/rkFDzMsq3p2Uupt+VUAL4=;
+	s=korg; t=1774274679;
+	bh=xMBYXo0N8ODwCqkvcATlJbkFOnjHYMAc3GSLUf+VYNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2vDWqINmn/cP9Jq9lOv1yCOCJNBqA2uMmCyDdiyaSBxGIibua6YLk9A/XWG7FIauQ
-	 fFiQ9GVnpBytB10cC/lN8LUgFFA464L8EzBYYE4QUY0kqc+Mb2qVYGCQt1aqTvg/XM
-	 5cr8getahyF68MXOyWblVHUeR/xJuImbrl5fMP4Y=
+	b=JYQyVxfD5M6BylY0bSyC12JstHeLRqQv1MF09f3PFPINl6APxjVHHsr1WvUkSN11y
+	 UN21VEMeafzIrRGgqPyuYQNnlEKmORcbsUu4qjO+OOxPkDMGVkDGn02+Al1MOmDtDs
+	 pFG2HfitqoUpFDDr4A2zS9sGRKQOEQkt2O5uG0ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Liu Shixin <liushixin2@huawei.com>,
-	"Uschakow, Stanislav" <suschako@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 311/481] mm/hugetlb: fix hugetlb_pmd_shared()
+	"Bandal, Shankar" <shankar.bandal@intel.com>,
+	"Murthy, Shanth" <shanth.murthy@intel.com>,
+	stable <stable@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.18 072/212] serial: 8250: Add serial8250_handle_irq_locked()
 Date: Mon, 23 Mar 2026 14:44:53 +0100
-Message-ID: <20260323134532.682948259@linuxfoundation.org>
+Message-ID: <20260323134506.042592145@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,128 +65,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229785-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228282-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8249D2F960A
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 7834A2F4979
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand (Red Hat) <david@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit ca1a47cd3f5f4c46ca188b1c9a27af87d1ab2216 upstream.
+commit 8324a54f604da18f21070702a8ad82ab2062787b upstream.
 
-Patch series "mm/hugetlb: fixes for PMD table sharing (incl.  using
-mmu_gather)", v3.
+8250_port exports serial8250_handle_irq() to HW specific 8250 drivers.
+It takes port's lock within but a HW specific 8250 driver may want to
+take port's lock itself, do something, and then call the generic
+handler in 8250_port but to do that, the caller has to release port's
+lock for no good reason.
 
-One functional fix, one performance regression fix, and two related
-comment fixes.
+Introduce serial8250_handle_irq_locked() which a HW specific driver can
+call while already holding port's lock.
 
-I cleaned up my prototype I recently shared [1] for the performance fix,
-deferring most of the cleanups I had in the prototype to a later point.
-While doing that I identified the other things.
+As this is new export, put it straight into a namespace (where all 8250
+exports should eventually be moved).
 
-The goal of this patch set is to be backported to stable trees "fairly"
-easily. At least patch #1 and #4.
-
-Patch #1 fixes hugetlb_pmd_shared() not detecting any sharing
-Patch #2 + #3 are simple comment fixes that patch #4 interacts with.
-Patch #4 is a fix for the reported performance regression due to excessive
-IPI broadcasts during fork()+exit().
-
-The last patch is all about TLB flushes, IPIs and mmu_gather.
-Read: complicated
-
-There are plenty of cleanups in the future to be had + one reasonable
-optimization on x86. But that's all out of scope for this series.
-
-Runtime tested, with a focus on fixing the performance regression using
-the original reproducer [2] on x86.
-
-
-This patch (of 4):
-
-We switched from (wrongly) using the page count to an independent shared
-count.  Now, shared page tables have a refcount of 1 (excluding
-speculative references) and instead use ptdesc->pt_share_count to identify
-sharing.
-
-We didn't convert hugetlb_pmd_shared(), so right now, we would never
-detect a shared PMD table as such, because sharing/unsharing no longer
-touches the refcount of a PMD table.
-
-Page migration, like mbind() or migrate_pages() would allow for migrating
-folios mapped into such shared PMD tables, even though the folios are not
-exclusive.  In smaps we would account them as "private" although they are
-"shared", and we would be wrongly setting the PM_MMAP_EXCLUSIVE in the
-pagemap interface.
-
-Fix it by properly using ptdesc_pmd_is_shared() in hugetlb_pmd_shared().
-
-Link: https://lkml.kernel.org/r/20251223214037.580860-1-david@kernel.org
-Link: https://lkml.kernel.org/r/20251223214037.580860-2-david@kernel.org
-Link: https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/ [1]
-Link: https://lore.kernel.org/all/8cab934d-4a56-44aa-b641-bfd7e23bd673@kernel.org/ [2]
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ David: We don't have ptdesc and the wrappers, so work directly on
-  page->pt_share_count. ]
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260203171049.4353-4-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hugetlb.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_port.c |   24 ++++++++++++++++--------
+ include/linux/serial_8250.h         |    1 +
+ 2 files changed, 17 insertions(+), 8 deletions(-)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -1241,7 +1241,7 @@ static inline __init void hugetlb_cma_re
- #ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
- static inline bool hugetlb_pmd_shared(pte_t *pte)
- {
--	return page_count(virt_to_page(pte)) > 1;
-+	return atomic_read(&virt_to_page(pte)->pt_share_count);
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -18,6 +18,7 @@
+ #include <linux/irq.h>
+ #include <linux/console.h>
+ #include <linux/gpio/consumer.h>
++#include <linux/lockdep.h>
+ #include <linux/sysrq.h>
+ #include <linux/delay.h>
+ #include <linux/platform_device.h>
+@@ -1782,20 +1783,16 @@ static bool handle_rx_dma(struct uart_82
  }
- #else
- static inline bool hugetlb_pmd_shared(pte_t *pte)
+ 
+ /*
+- * This handles the interrupt from one port.
++ * Context: port's lock must be held by the caller.
+  */
+-int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
++void serial8250_handle_irq_locked(struct uart_port *port, unsigned int iir)
+ {
+ 	struct uart_8250_port *up = up_to_u8250p(port);
+ 	struct tty_port *tport = &port->state->port;
+ 	bool skip_rx = false;
+-	unsigned long flags;
+ 	u16 status;
+ 
+-	if (iir & UART_IIR_NO_INT)
+-		return 0;
+-
+-	uart_port_lock_irqsave(port, &flags);
++	lockdep_assert_held_once(&port->lock);
+ 
+ 	status = serial_lsr_in(up);
+ 
+@@ -1828,8 +1825,19 @@ int serial8250_handle_irq(struct uart_po
+ 		else if (!up->dma->tx_running)
+ 			__stop_tx(up);
+ 	}
++}
++EXPORT_SYMBOL_NS_GPL(serial8250_handle_irq_locked, "SERIAL_8250");
++
++/*
++ * This handles the interrupt from one port.
++ */
++int serial8250_handle_irq(struct uart_port *port, unsigned int iir)
++{
++	if (iir & UART_IIR_NO_INT)
++		return 0;
+ 
+-	uart_unlock_and_check_sysrq_irqrestore(port, flags);
++	guard(uart_port_lock_irqsave)(port);
++	serial8250_handle_irq_locked(port, iir);
+ 
+ 	return 1;
+ }
+--- a/include/linux/serial_8250.h
++++ b/include/linux/serial_8250.h
+@@ -195,6 +195,7 @@ void serial8250_do_set_mctrl(struct uart
+ void serial8250_do_set_divisor(struct uart_port *port, unsigned int baud,
+ 			       unsigned int quot);
+ int fsl8250_handle_irq(struct uart_port *port);
++void serial8250_handle_irq_locked(struct uart_port *port, unsigned int iir);
+ int serial8250_handle_irq(struct uart_port *port, unsigned int iir);
+ u16 serial8250_rx_chars(struct uart_8250_port *up, u16 lsr);
+ void serial8250_read_char(struct uart_8250_port *up, u16 lsr);
 
 
 
