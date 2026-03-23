@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228642-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DtQMmh8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229669-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:16 +0100
+	id n0b0BW9UwWlVSQQAu9opvQ:T2
+	(envelope-from <stable+bounces-228642-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4DC2FA5FF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A393D2F570E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1832735992A9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9E78C31B990F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9ECC283FE5;
-	Mon, 23 Mar 2026 16:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013323AC0D2;
+	Mon, 23 Mar 2026 14:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8zzk/Sp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBWsE+rt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D66E3B9D9D;
-	Mon, 23 Mar 2026 16:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8385199FAB;
+	Mon, 23 Mar 2026 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282547; cv=none; b=WOvJGTsuGbgNMDcirk4ZxG42rxY5OBn5s8hcOhg/EKWZtvXNoRBAWuHE1B/aVPB5+xlhZfPPmUg6YxGOh9tgTsc03awwUUMN1q8jOTVqZSyoBrxaVcJfE1oX1VEpCEebiQp114Qj/0EMT3MDjtBIfE2AnUHZS576MbB2q+UKpCk=
+	t=1774275693; cv=none; b=kq72/N2orp688/YMPabClSDelj7jEuDzHY0G6/fBS8Q57BNxJZF6Oi+H7DiGfmlLBoEceTS3Wk0eS6KSNSLl5YXd2aIkZDupVNdViHjSMWymXZXGiE/+S0MXG8zj7RcPNF+fQU6zr9kInU0CsT7fFSe0rzobn4hMzJlyZ1nKtbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282547; c=relaxed/simple;
-	bh=MPtuAzuzxRw6K5ehZ9lsMCjiRB9zrgBWrCJX7WaJYHs=;
+	s=arc-20240116; t=1774275693; c=relaxed/simple;
+	bh=O254SxLn6JbhtO1ZFc1M5v3yYSdwrQ5g2djGWfYlbm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=loYORMN1rGnhfn+p58UebVhNaDtrnrM9+v+diJAiRc83gwjPJuzbrSiMqBaHYnazP5LUtJAA5qERwcMVsQ2qbdlqYRwBFHu4aTgNgbYbgI3T3ebWQqGMyUuW40rD8/dJtonFr+f7AwrPdtTa7N7HfZTCWL+MHDyhaLcVAlZ7lII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8zzk/Sp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BEBC4CEF7;
-	Mon, 23 Mar 2026 16:15:46 +0000 (UTC)
+	 MIME-Version; b=BDyR++iMzaPzjg/cqOCkVyFrlGbSRTo/4CPqxm+nZEWzMt0o8C98ee0BEWJewCOaq7U18P+gSdBZaZI542FYFP6IuJrgQcvX0h7Pf6eCFZgiqSoPsWnZNPkev93AiPm4U2xhNeixlU9phTa9agut+7PrHxmlk8fq+6GE/sAhKWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBWsE+rt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B189C4CEF7;
+	Mon, 23 Mar 2026 14:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282547;
-	bh=MPtuAzuzxRw6K5ehZ9lsMCjiRB9zrgBWrCJX7WaJYHs=;
+	s=korg; t=1774275693;
+	bh=O254SxLn6JbhtO1ZFc1M5v3yYSdwrQ5g2djGWfYlbm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8zzk/SptU7CULGEr8cJ6SBOnoE7+Cdi6PeowbUH6cqrXdmFuIejNTJmAh8EITiu1
-	 iV1aRBSRFF+faKBTPK8BgMsPYVTUUwOQPL5InqWWBGP8OnDouxne95ysRBdF2peeYb
-	 2jue2Q7+q6LhBAL6baL1nXBwETa0e57HfOAegjBI=
+	b=uBWsE+rtN+mlcd/ETN54bKQ+ZkSkSonoUcB78KYRoNG2Rk59tVN+CB8h8sMtuTSxF
+	 ITXhGYInJjrFkI4crEZbxZaQQF5vBBaAcgmRVjOz2Sp4WVTW5e+NxAhauMKFECfTJF
+	 JXZfIKbwc3lUU/7HwbtGeek5ZIHvs8haiP9Midqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com,
-	syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 198/481] ALSA: usb-audio: Check endpoint numbers at parsing Scarlett2 mixer interfaces
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Calvin Owens <calvin@wbinvd.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 184/460] tracing: Fix trace_buf_size= cmdline parameter with sizes >= 2G
 Date: Mon, 23 Mar 2026 14:43:00 +0100
-Message-ID: <20260323134530.009233525@linuxfoundation.org>
+Message-ID: <20260323134531.067899537@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,8 +65,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
@@ -74,67 +74,87 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229669-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228642-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,8f29539ef9a1c8334f42,ae893a8901067fde2741];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,appspotmail.com:email]
-X-Rspamd-Queue-Id: 2D4DC2FA5FF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A393D2F570E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Calvin Owens <calvin@wbinvd.org>
 
-commit df1d8abf36ca3681c21a6809eaa9a1e01ef897a6 upstream.
+commit d008ba8be8984760e36d7dcd4adbd5a41a645708 upstream.
 
-The Scarlett2 mixer quirk in USB-audio driver may hit a NULL
-dereference when a malformed USB descriptor is passed, since it
-assumes the presence of an endpoint in the parsed interface in
-scarlett2_find_fc_interface(), as reported by fuzzer.
+Some of the sizing logic through tracer_alloc_buffers() uses int
+internally, causing unexpected behavior if the user passes a value that
+does not fit in an int (on my x86 machine, the result is uselessly tiny
+buffers).
 
-For avoiding the NULL dereference, just add the sanity check of
-bNumEndpoints and skip the invalid interface.
+Fix by plumbing the parameter's real type (unsigned long) through to the
+ring buffer allocation functions, which already use unsigned long.
 
-Reported-by: syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/69acbbe1.050a0220.310d8.0001.GAE@google.com
-Reported-by: syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/69acf72a.050a0220.310d8.0004.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260309104632.141895-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+It has always been possible to create larger ring buffers via the sysfs
+interface: this only affects the cmdline parameter.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/bff42a4288aada08bdf74da3f5b67a2c28b761f8.1772852067.git.calvin@wbinvd.org
+Fixes: 73c5162aa362 ("tracing: keep ring buffer to minimum size till used")
+Signed-off-by: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett2.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/trace.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -3898,6 +3898,8 @@ static int scarlett2_find_fc_interface(s
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -9227,7 +9227,7 @@ static void
+ init_tracer_tracefs(struct trace_array *tr, struct dentry *d_tracer);
  
- 		if (desc->bInterfaceClass != 255)
- 			continue;
-+		if (desc->bNumEndpoints < 1)
-+			continue;
+ static int
+-allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size)
++allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, unsigned long size)
+ {
+ 	enum ring_buffer_flags rb_flags;
  
- 		epd = get_endpoint(intf->altsetting, 0);
- 		private->bInterfaceNumber = desc->bInterfaceNumber;
+@@ -9277,7 +9277,7 @@ static void free_trace_buffer(struct arr
+ 	}
+ }
+ 
+-static int allocate_trace_buffers(struct trace_array *tr, int size)
++static int allocate_trace_buffers(struct trace_array *tr, unsigned long size)
+ {
+ 	int ret;
+ 
+@@ -10479,7 +10479,7 @@ __init static void enable_instances(void
+ 
+ __init static int tracer_alloc_buffers(void)
+ {
+-	int ring_buf_size;
++	unsigned long ring_buf_size;
+ 	int ret = -ENOMEM;
+ 
+ 
 
 
 
