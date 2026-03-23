@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229048-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YBxcJ1tNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228555-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:31 +0100
+	id 6NehAoZYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229048-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536C02F46F6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1CE42F5FC7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CF75F307ECC6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 056E630E4334
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E569B3947A6;
-	Mon, 23 Mar 2026 14:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DE3387599;
+	Mon, 23 Mar 2026 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MapQdYQz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kH3hin8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83732C181;
-	Mon, 23 Mar 2026 14:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC7E2737EB;
+	Mon, 23 Mar 2026 14:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275440; cv=none; b=JF6YBOnXPJliyRLgmVQ5hqDP55P7WjLPdJ2Tf1k1dFNWsp2O1SxerNacI0jCJlN4uMLROqD30ZQZBY7HzWrqRrtyiSYF9atJL1XgLnzdvgmzxE+Rfsnbj//llYA0GsX/CmlgZTcuIPYGA1J2qlXthrCOlwEvcmYNpd9Z++4I0Ys=
+	t=1774277894; cv=none; b=dbhHJApUNEbAOoJZC1hjD5gbuLI88SSXLDZlcf6dtzDIXFRG3td+ElBGbhyTqqU97u3pPhFiqQy9RbjqkwyTAiQ0ZRhPQaFXx+d7RA/nQhjUbUCqVhFlPrBSWHDXo+O+aZz3D2mY0eh3FOW86kQqDcBYCw09TenY0a8Q3f5x4F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275440; c=relaxed/simple;
-	bh=kYSC+sA0rV/0Gbe3355CG0JMFkz56hGLsoAadqG1gKg=;
+	s=arc-20240116; t=1774277894; c=relaxed/simple;
+	bh=k6Tdl9uHpupp8pD2Zk6lgVOuf+J0Ngt/ZUMNXD+sryA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r3G/rpaVnwFR8zzA2Puiu/NL6CSblfQgSXJ1oyLQ+rkxTNFz1b13gV7oSLmreF/xcic2ZoWIJungtaisbIWtYc7Kqw7X6WqQemvEtErp/LqejieMkM5YCKJ5gP8WVnDR0WXorrXmkQjHB7q1aWqNMSOejxnZ+sCQ8muRpMYY00E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MapQdYQz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FCAC4CEF7;
-	Mon, 23 Mar 2026 14:17:20 +0000 (UTC)
+	 MIME-Version; b=i4xr/8kxTLUjUKcNXVCQjRq+2D/qFuv41uTXekgLVtMNIIu371Hjt5hy69CZlujAtTGr2KTDdBihMXYtK2/wETclEruoXrCD5wpaqZgaPOlVjd8Zt3hgh6Ru44l0muF0WlJEGqa1CfN98g92hLW9oK57gnmdnsJ8dPmi3c+wOlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kH3hin8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B82C4CEF7;
+	Mon, 23 Mar 2026 14:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275440;
-	bh=kYSC+sA0rV/0Gbe3355CG0JMFkz56hGLsoAadqG1gKg=;
+	s=korg; t=1774277894;
+	bh=k6Tdl9uHpupp8pD2Zk6lgVOuf+J0Ngt/ZUMNXD+sryA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MapQdYQzR+L5HKcylZaQ0UsOc1SA6SBB6VWivl/2qGSJH4rFkqi4pEgYoHBg75LKs
-	 54xCGDLaOCh50v4D1emY+U5ISjYpRN65pBGmoQcQTqc96ziXKmnbrZTDi6rFixjC/n
-	 zuU4FPHKpRAOmpL8LyixtbGDeURaTFpXYo+FAUDY=
+	b=kH3hin8MgQRCJA1ammJUMfoDsV8BkhF2OqhfHvLKXkXmzrPXSwCSPxvm15Ka8BIMm
+	 7Va0l/RBwqMu171P+VSQARi1b99worPGJqw+ZfoeeDdkloDzoceS5B6cexLOlZtnd9
+	 D3xmfdfmLA708KIAXg3bV74R05QRJ9+OHExKJfZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chintan Vankar <c-vankar@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/460] amd-xgbe: prevent CRC errors during RX adaptation with AN disabled
+Subject: [PATCH 6.6 134/567] net: ethernet: ti: am65-cpsw-nuss/cpsw-ale: Fix multicast entry handling in ALE table
 Date: Mon, 23 Mar 2026 14:40:54 +0100
-Message-ID: <20260323134528.133586293@linuxfoundation.org>
+Message-ID: <20260323134537.122772129@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,198 +67,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228555-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229048-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 536C02F46F6
+X-Rspamd-Queue-Id: A1CE42F5FC7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Chintan Vankar <c-vankar@ti.com>
 
-[ Upstream commit 27a4dd0c702b3b2b9cf2c045d100cc2fe8720b81 ]
+[ Upstream commit be11a537224d72b906db6b98510619770298c8a4 ]
 
-When operating in 10GBASE-KR mode with auto-negotiation disabled and RX
-adaptation enabled, CRC errors can occur during the RX adaptation
-process. This happens because the driver continues transmitting and
-receiving packets while adaptation is in progress.
+In the current implementation, flushing multicast entries in MAC mode
+incorrectly deletes entries for all ports instead of only the target port,
+disrupting multicast traffic on other ports. The cause is adding multicast
+entries by setting only host port bit, and not setting the MAC port bits.
 
-Fix this by stopping TX/RX immediately when the link goes down and RX
-adaptation needs to be re-triggered, and only re-enabling TX/RX after
-adaptation completes and the link is confirmed up. Introduce a flag to
-track whether TX/RX was disabled for adaptation so it can be restored
-correctly.
+Fix this by setting the MAC port's bit in the port mask while adding the
+multicast entry. Also fix the flush logic to preserve the host port bit
+during removal of MAC port and free ALE entries when mask contains only
+host port.
 
-This prevents packets from being transmitted or received during the RX
-adaptation window and avoids CRC errors from corrupted frames.
-
-The flag tracking the data path state is synchronized with hardware
-state in xgbe_start() to prevent stale state after device restarts.
-This ensures that after a restart cycle (where xgbe_stop disables
-TX/RX and xgbe_start re-enables them), the flag correctly reflects
-that the data path is active.
-
-Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260306111629.1515676-3-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 5c50a856d550 ("drivers: net: ethernet: cpsw: add multicast address to ALE table")
+Signed-off-by: Chintan Vankar <c-vankar@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260224181359.2055322-1-c-vankar@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c    |  4 ++
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 63 ++++++++++++++++++++-
- drivers/net/ethernet/amd/xgbe/xgbe.h        |  4 ++
- 3 files changed, 69 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
+ drivers/net/ethernet/ti/cpsw_ale.c       | 9 ++++-----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index c6fcddbff3f56..418f4513a0b95 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1338,6 +1338,10 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 28cc23736a69b..93cb4193cf0ac 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -261,7 +261,7 @@ static void am65_cpsw_nuss_ndo_slave_set_rx_mode(struct net_device *ndev)
+ 	cpsw_ale_set_allmulti(common->ale,
+ 			      ndev->flags & IFF_ALLMULTI, port->port_id);
  
- 	hw_if->enable_tx(pdata);
- 	hw_if->enable_rx(pdata);
-+	/* Synchronize flag with hardware state after enabling TX/RX.
-+	 * This prevents stale state after device restart cycles.
-+	 */
-+	pdata->data_path_stopped = false;
+-	port_mask = ALE_PORT_HOST;
++	port_mask = BIT(port->port_id) | ALE_PORT_HOST;
+ 	/* Clear all mcast from ALE */
+ 	cpsw_ale_flush_multicast(common->ale, port_mask, -1);
  
- 	udp_tunnel_nic_reset_ntf(netdev);
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 9eccc7064c2b0..bf0b2950272cf 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -422,14 +422,13 @@ static void cpsw_ale_flush_mcast(struct cpsw_ale *ale, u32 *ale_entry,
+ 				      ale->port_mask_bits);
+ 	if ((mask & port_mask) == 0)
+ 		return; /* ports dont intersect, not interested */
+-	mask &= ~port_mask;
++	mask &= (~port_mask | ALE_PORT_HOST);
  
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index 469b28c159e7d..0a99a21af5815 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -2125,6 +2125,48 @@ static void xgbe_phy_rx_adaptation(struct xgbe_prv_data *pdata)
- 	xgbe_rx_adaptation(pdata);
+-	/* free if only remaining port is host port */
+-	if (mask)
++	if (mask == 0x0 || mask == ALE_PORT_HOST)
++		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
++	else
+ 		cpsw_ale_set_port_mask(ale_entry, mask,
+ 				       ale->port_mask_bits);
+-	else
+-		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
  }
  
-+/*
-+ * xgbe_phy_stop_data_path - Stop TX/RX to prevent packet corruption
-+ * @pdata: driver private data
-+ *
-+ * This function stops the data path (TX and RX) to prevent packet
-+ * corruption during critical PHY operations like RX adaptation.
-+ * Must be called before initiating RX adaptation when link goes down.
-+ */
-+static void xgbe_phy_stop_data_path(struct xgbe_prv_data *pdata)
-+{
-+	if (pdata->data_path_stopped)
-+		return;
-+
-+	/* Stop TX/RX to prevent packet corruption during RX adaptation */
-+	pdata->hw_if.disable_tx(pdata);
-+	pdata->hw_if.disable_rx(pdata);
-+	pdata->data_path_stopped = true;
-+
-+	netif_dbg(pdata, link, pdata->netdev,
-+		  "stopping data path for RX adaptation\n");
-+}
-+
-+/*
-+ * xgbe_phy_start_data_path - Re-enable TX/RX after RX adaptation
-+ * @pdata: driver private data
-+ *
-+ * This function re-enables the data path (TX and RX) after RX adaptation
-+ * has completed successfully. Only called when link is confirmed up.
-+ */
-+static void xgbe_phy_start_data_path(struct xgbe_prv_data *pdata)
-+{
-+	if (!pdata->data_path_stopped)
-+		return;
-+
-+	pdata->hw_if.enable_rx(pdata);
-+	pdata->hw_if.enable_tx(pdata);
-+	pdata->data_path_stopped = false;
-+
-+	netif_dbg(pdata, link, pdata->netdev,
-+		  "restarting data path after RX adaptation\n");
-+}
-+
- static void xgbe_phy_rx_reset(struct xgbe_prv_data *pdata)
- {
- 	int reg;
-@@ -2918,13 +2960,27 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
- 	if (pdata->en_rx_adap) {
- 		/* if the link is available and adaptation is done,
- 		 * declare link up
-+		 *
-+		 * Note: When link is up and adaptation is done, we can
-+		 * safely re-enable the data path if it was stopped
-+		 * for adaptation.
- 		 */
--		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done)
-+		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done) {
-+			xgbe_phy_start_data_path(pdata);
- 			return 1;
-+		}
- 		/* If either link is not available or adaptation is not done,
- 		 * retrigger the adaptation logic. (if the mode is not set,
- 		 * then issue mailbox command first)
- 		 */
-+
-+		/* CRITICAL: Stop data path BEFORE triggering RX adaptation
-+		 * to prevent CRC errors from packets corrupted during
-+		 * the adaptation process. This is especially important
-+		 * when AN is OFF in 10G KR mode.
-+		 */
-+		xgbe_phy_stop_data_path(pdata);
-+
- 		if (pdata->mode_set) {
- 			xgbe_phy_rx_adaptation(pdata);
- 		} else {
-@@ -2932,8 +2988,11 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
- 			xgbe_phy_set_mode(pdata, phy_data->cur_mode);
- 		}
- 
--		if (pdata->rx_adapt_done)
-+		if (pdata->rx_adapt_done) {
-+			/* Adaptation complete, safe to re-enable data path */
-+			xgbe_phy_start_data_path(pdata);
- 			return 1;
-+		}
- 	} else if (reg & MDIO_STAT1_LSTATUS)
- 		return 1;
- 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index c98461252053f..ebe504cb9a117 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -1321,6 +1321,10 @@ struct xgbe_prv_data {
- 	bool en_rx_adap;
- 	int rx_adapt_retries;
- 	bool rx_adapt_done;
-+	/* Flag to track if data path (TX/RX) was stopped for RX adaptation.
-+	 * This prevents packet corruption during the adaptation window.
-+	 */
-+	bool data_path_stopped;
- 	bool mode_set;
- };
- 
+ int cpsw_ale_flush_multicast(struct cpsw_ale *ale, int port_mask, int vid)
 -- 
 2.51.0
 
