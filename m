@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SAtLIHlewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229313-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:33 +0100
+	id QFzHLZFGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D09AF2F69C4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55EFB2F3757
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D44234549FF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DE771301E5CB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8923B531A;
-	Mon, 23 Mar 2026 15:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349A73AEF23;
+	Mon, 23 Mar 2026 13:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rGGgyH9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpUadTNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4063B279DB3;
-	Mon, 23 Mar 2026 15:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9D23AD536;
+	Mon, 23 Mar 2026 13:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278724; cv=none; b=d1qOn8BSJw/HFVvw25f4TcjAZsJj/OGRknvjmG8IfMiNIOgtZaabfT0tK6k5yNwGI/jlHfH6Ig3l30c5Q7fKhXVj1jUfdxitZTmYyrvjqigNvZMv4jl+yXvH2uj0wNybUxp/g0u1zd2osPYmeivV9gD9ON8yNE+a0FtarmEAO4k=
+	t=1774274125; cv=none; b=HtfFVzFmXXbhW93QSyGs4BUusBxQslJe2RtC1ytlCwBz2lO8wcgGK6VJHJHheeikNPQh/w3BQ0ggRJGrBjrS4021kJrldTkTm+Fe/VZg25m69Mg/Z750CacDbKVTOmPo4TLg/iFNFwdySIHD7xcIVJnkWlkyfHmrMbRcQwZYmQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278724; c=relaxed/simple;
-	bh=CwW7jc5wnBmaVi/lDrs+zaH/08qkmDF9NyJfvkN8wPg=;
+	s=arc-20240116; t=1774274125; c=relaxed/simple;
+	bh=/3Wn+APBblgB/2oQ3VUfsUMctXkA4XwllQ4mTOjdn30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QGktkeWAimLWkkGKu28fNw3GoLXS0tqyCZnDGBgx8QEhnSKIY3sgyuX4Qp1Ylsfi0/RlXvhqve+o66Iiz9jm2jUnieB2mKTaNQBbhR3F2C+X61G4aXePdfGQxv81fw0PipeR4LrGH/sZ2YoJspVOYJzuruDfbokYrC1dD6j4qak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rGGgyH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC4EAC4CEF7;
-	Mon, 23 Mar 2026 15:12:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Bfrxe5wAmSXM3FeSf/TP+rzGZadFvzvDEGOsumsYVXEPfbpVSPBZOJwOg1GfM1Dc5LRwZ2pDXkOfs+zV76Poo6jpU1qlbeT8pLHxfQ6YIPrfFpTBlaVMYZ7GjJWS5J20K1MzupMqFI6NMCzBbcmsdbK0BTqlz1iUbcEgIa76Tqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpUadTNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC8FC4CEF7;
+	Mon, 23 Mar 2026 13:55:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278724;
-	bh=CwW7jc5wnBmaVi/lDrs+zaH/08qkmDF9NyJfvkN8wPg=;
+	s=korg; t=1774274124;
+	bh=/3Wn+APBblgB/2oQ3VUfsUMctXkA4XwllQ4mTOjdn30=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2rGGgyH96e3pZ25Qh4q37wAOQbKb39s6O8aIHcc8E2n+Tf9E4xKu3c4exvRzUc3Oo
-	 geU9twzEeKh3URKPmb24OkXIsFkxRBYcYb+polAXYm2ywC1ADrhwnEQG8QdCHRrpTb
-	 BRWb6J3GV+QYMQt3u0xymh1dg/PS+FZW+cp/ViX8=
+	b=jpUadTNu0xCgeNU6YZ/AyxtFFJlALudrmhBBppqNNdxC31IrgVzamPwukgR/yCdT2
+	 6N/82QwNIRjdyVrz04yldd8MOUY89LuNPqZtMugM+dUL4Y5G8KZ4MRLZ24YmKWd1DW
+	 gjNPZIRkxlBDYiEnwjKi8Et0YFDZX9hfKBkHmQH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 372/567] net: phy: register phy led_triggers during probe to avoid AB-BA deadlock
+Subject: [PATCH 6.19 115/220] firmware: arm_ffa: Remove vm_id argument in ffa_rxtx_unmap()
 Date: Mon, 23 Mar 2026 14:44:52 +0100
-Message-ID: <20260323134543.031512797@linuxfoundation.org>
+Message-ID: <20260323134508.236241557@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,163 +63,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229313-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,lunn.ch,redhat.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228100-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D09AF2F69C4
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 55EFB2F3757
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit c8dbdc6e380e7e96a51706db3e4b7870d8a9402d ]
+[ Upstream commit a4e8473b775160f3ce978f621cf8dea2c7250433 ]
 
-There is an AB-BA deadlock when both LEDS_TRIGGER_NETDEV and
-LED_TRIGGER_PHY are enabled:
+According to the FF-A specification (DEN0077, v1.1, §13.7), when
+FFA_RXTX_UNMAP is invoked from any instance other than non-secure
+physical, the w1 register must be zero (MBZ). If a non-zero value is
+supplied in this context, the SPMC must return FFA_INVALID_PARAMETER.
 
-[ 1362.049207] [<8054e4b8>] led_trigger_register+0x5c/0x1fc             <-- Trying to get lock "triggers_list_lock" via down_write(&triggers_list_lock);
-[ 1362.054536] [<80662830>] phy_led_triggers_register+0xd0/0x234
-[ 1362.060329] [<8065e200>] phy_attach_direct+0x33c/0x40c
-[ 1362.065489] [<80651fc4>] phylink_fwnode_phy_connect+0x15c/0x23c
-[ 1362.071480] [<8066ee18>] mtk_open+0x7c/0xba0
-[ 1362.075849] [<806d714c>] __dev_open+0x280/0x2b0
-[ 1362.080384] [<806d7668>] __dev_change_flags+0x244/0x24c
-[ 1362.085598] [<806d7698>] dev_change_flags+0x28/0x78
-[ 1362.090528] [<807150e4>] dev_ioctl+0x4c0/0x654                       <-- Hold lock "rtnl_mutex" by calling rtnl_lock();
-[ 1362.094985] [<80694360>] sock_ioctl+0x2f4/0x4e0
-[ 1362.099567] [<802e9c4c>] sys_ioctl+0x32c/0xd8c
-[ 1362.104022] [<80014504>] syscall_common+0x34/0x58
+The Arm FF-A driver operates exclusively as a guest or non-secure
+physical instance where the partition ID is always zero and is not
+invoked from a hypervisor context where w1 carries a VM ID. In this
+execution model, the partition ID observed by the driver is always zero,
+and passing a VM ID is unnecessary and potentially invalid.
 
-Here LED_TRIGGER_PHY is registering LED triggers during phy_attach
-while holding RTNL and then taking triggers_list_lock.
+Remove the vm_id parameter from ffa_rxtx_unmap() and ensure that the
+SMC call is issued with w1 implicitly zeroed, as required by the
+specification. This prevents invalid parameter errors and aligns the
+implementation with the defined FF-A ABI behavior.
 
-[ 1362.191101] [<806c2640>] register_netdevice_notifier+0x60/0x168      <-- Trying to get lock "rtnl_mutex" via rtnl_lock();
-[ 1362.197073] [<805504ac>] netdev_trig_activate+0x194/0x1e4
-[ 1362.202490] [<8054e28c>] led_trigger_set+0x1d4/0x360                 <-- Hold lock "triggers_list_lock" by down_read(&triggers_list_lock);
-[ 1362.207511] [<8054eb38>] led_trigger_write+0xd8/0x14c
-[ 1362.212566] [<80381d98>] sysfs_kf_bin_write+0x80/0xbc
-[ 1362.217688] [<8037fcd8>] kernfs_fop_write_iter+0x17c/0x28c
-[ 1362.223174] [<802cbd70>] vfs_write+0x21c/0x3c4
-[ 1362.227712] [<802cc0c4>] ksys_write+0x78/0x12c
-[ 1362.232164] [<80014504>] syscall_common+0x34/0x58
-
-Here LEDS_TRIGGER_NETDEV is being enabled on an LED. It first takes
-triggers_list_lock and then RTNL. A classical AB-BA deadlock.
-
-phy_led_triggers_registers() does not require the RTNL, it does not
-make any calls into the network stack which require protection. There
-is also no requirement the PHY has been attached to a MAC, the
-triggers only make use of phydev state. This allows the call to
-phy_led_triggers_registers() to be placed elsewhere. PHY probe() and
-release() don't hold RTNL, so solving the AB-BA deadlock.
-
-Reported-by: Shiji Yang <yangshiji66@outlook.com>
-Closes: https://lore.kernel.org/all/OS7PR01MB13602B128BA1AD3FA38B6D1FFBC69A@OS7PR01MB13602.jpnprd01.prod.outlook.com/
-Fixes: 06f502f57d0d ("leds: trigger: Introduce a NETDEV trigger")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Shiji Yang <yangshiji66@outlook.com>
-Link: https://patch.msgid.link/20260222152601.1978655-1-andrew@lunn.ch
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted condition to preserve existing `!phy_driver_is_genphy_10g(phydev)` guard ]
+Fixes: 3bbfe9871005 ("firmware: arm_ffa: Add initial Arm FFA driver support")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Message-Id: <20260304120953.847671-1-yeoreum.yun@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phy_device.c |   25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1582,8 +1582,6 @@ int phy_attach_direct(struct net_device
- 		goto error;
- 
- 	phy_resume(phydev);
--	if (!phydev->is_on_sfp_module)
--		phy_led_triggers_register(phydev);
- 
- 	/**
- 	 * If the external phy used by current mac interface is managed by
-@@ -1856,9 +1854,6 @@ void phy_detach(struct phy_device *phyde
- 	phydev->phy_link_change = NULL;
- 	phydev->phylink = NULL;
- 
--	if (!phydev->is_on_sfp_module)
--		phy_led_triggers_unregister(phydev);
--
- 	if (phydev->mdio.dev.driver)
- 		module_put(phydev->mdio.dev.driver->owner);
- 
-@@ -3402,17 +3397,28 @@ static int phy_probe(struct device *dev)
- 	/* Set the state to READY by default */
- 	phydev->state = PHY_READY;
- 
-+	/* Register the PHY LED triggers */
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_register(phydev);
-+
- 	/* Get the LEDs from the device tree, and instantiate standard
- 	 * LEDs for them.
- 	 */
- 	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev) &&
--	    !phy_driver_is_genphy_10g(phydev))
-+	    !phy_driver_is_genphy_10g(phydev)) {
- 		err = of_phy_leds(phydev);
-+		if (err)
-+			goto out;
-+	}
-+
-+	return 0;
- 
- out:
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_unregister(phydev);
-+
- 	/* Re-assert the reset signal on error */
--	if (err)
--		phy_device_reset(phydev, 1);
-+	phy_device_reset(phydev, 1);
- 
- 	return err;
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 11a702e7f641c..f6ceae987acbc 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -205,12 +205,12 @@ static int ffa_rxtx_map(phys_addr_t tx_buf, phys_addr_t rx_buf, u32 pg_cnt)
+ 	return 0;
  }
-@@ -3427,6 +3433,9 @@ static int phy_remove(struct device *dev
- 	    !phy_driver_is_genphy_10g(phydev))
- 		phy_leds_unregister(phydev);
  
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_unregister(phydev);
-+
- 	phydev->state = PHY_DOWN;
+-static int ffa_rxtx_unmap(u16 vm_id)
++static int ffa_rxtx_unmap(void)
+ {
+ 	ffa_value_t ret;
  
- 	sfp_bus_del_upstream(phydev->sfp_bus);
+ 	invoke_ffa_fn((ffa_value_t){
+-		      .a0 = FFA_RXTX_UNMAP, .a1 = PACK_TARGET_INFO(vm_id, 0),
++		      .a0 = FFA_RXTX_UNMAP,
+ 		      }, &ret);
+ 
+ 	if (ret.a0 == FFA_ERROR)
+@@ -2093,7 +2093,7 @@ static int __init ffa_init(void)
+ 
+ 	pr_err("failed to setup partitions\n");
+ 	ffa_notifications_cleanup();
+-	ffa_rxtx_unmap(drv_info->vm_id);
++	ffa_rxtx_unmap();
+ free_pages:
+ 	if (drv_info->tx_buffer)
+ 		free_pages_exact(drv_info->tx_buffer, rxtx_bufsz);
+@@ -2108,7 +2108,7 @@ static void __exit ffa_exit(void)
+ {
+ 	ffa_notifications_cleanup();
+ 	ffa_partitions_cleanup();
+-	ffa_rxtx_unmap(drv_info->vm_id);
++	ffa_rxtx_unmap();
+ 	free_pages_exact(drv_info->tx_buffer, drv_info->rxtx_bufsz);
+ 	free_pages_exact(drv_info->rx_buffer, drv_info->rxtx_bufsz);
+ 	kfree(drv_info);
+-- 
+2.51.0
+
 
 
 
