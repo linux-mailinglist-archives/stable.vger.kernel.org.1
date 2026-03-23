@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-229233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228043-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJUuAG9bwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229233-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:35 +0100
+	id sHylKAJIwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228043-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE3D2F643D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:34 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 037C52F3B16
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EC00E30AFEA6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DBAE23031DDD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6EB2284881;
-	Mon, 23 Mar 2026 15:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0313AE189;
+	Mon, 23 Mar 2026 13:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nQY1HzAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBfHFQAI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893B52737EB;
-	Mon, 23 Mar 2026 15:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F0321D00A;
+	Mon, 23 Mar 2026 13:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278478; cv=none; b=BNfQmXcsgUGWe8e6mjPoYDrnZmbUK7kJW8YDVhZe22Pb6e5VUedxYS7/pfQspp5K3NKgdmd8GwKbSs9RuED9eMTdRsQCwTCkL8+QXwWEkoX0rlF2mn9W7kjqt+CGNT8CipyjTDKAVChJEx7BUQySMLNEQrUktS5gQRDyrQ8VJgU=
+	t=1774273955; cv=none; b=UFWzvI2cOi7zkNoyn4LgRyVLi9eFNbMPQ4h/FP0rDdiUBSB/LgazZptcTnLoQ8xSng6HI0lQNfYLrkaNDTrDU8Pb2KpGHvkldEQW8er4WmYWzfhn3h5pa1Gut3rBxsYn+mWW/iSgjqKGslxk748XYLcyeRioRnMUkpM5oUe3K9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278478; c=relaxed/simple;
-	bh=vLy3rpb6dcEgjU57YBxcxDFPJQIJDiLqAzXE4C08hjU=;
+	s=arc-20240116; t=1774273955; c=relaxed/simple;
+	bh=pHBeLxE//LaKk9Cnb5KOS/WtqutLFOcPntqNBNYY/Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETX6n+1jKOOfZUEbhDAwhQyJp64Hg3NUj6In7nkQ/B5ZCHXcfrBvCgoUqJ+w40TVhNH4gq/knWLr21bCk4KbpCVnYtzJzK7jnv7K8sRT1z96I7xe7retvuQTZFpfyGSjw/Qfhfh6aK6riAGFqpn6GTPpjgQdWitrUzd+erRkAug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nQY1HzAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E78C4CEF7;
-	Mon, 23 Mar 2026 15:07:57 +0000 (UTC)
+	 MIME-Version; b=fy+8Ck8ngMmopA1ADRUY4qA3IZySjR5wkfH+71nqmBP9EddZqDtEVIg4mV/hDrKoq4p3vih2tO46X4hU9Yg00LY5HXBlWxOIyrRgOuc+Nwy7TAe1oxfJY+ZK223zvCwnq0fWvmg9QZ5epARfPv4vMP3B28ox+yLWpM1JfRn2tqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBfHFQAI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB99C4CEF7;
+	Mon, 23 Mar 2026 13:52:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278478;
-	bh=vLy3rpb6dcEgjU57YBxcxDFPJQIJDiLqAzXE4C08hjU=;
+	s=korg; t=1774273955;
+	bh=pHBeLxE//LaKk9Cnb5KOS/WtqutLFOcPntqNBNYY/Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nQY1HzAf9IRnKxj4pCQSOJiS0J6b166Bk866WyFghy+owbQdtppSPDpW9rQSw7JWb
-	 C3c1SwJSq8UJuxUv5E1o591Vbhdk5lG4e9b1YlnZxqKekF4heMQ9TbImSULMIhdzpJ
-	 WAYA9ohfprJXEKzgbsCL2In3BHFAl8JzYfblsu4o=
+	b=nBfHFQAIHD4Vr6A+89iC5DQ5JiFcmnRzDmUk4xKSLCgX5R4TWtVNhUyS5qUebGA08
+	 0KtPPws6XJ+Ea7scLL02WN2qBQqDLk3qUJuNXRsY3Bz/7DkW58GHUhxgQ39IN3PXaQ
+	 Lb1OQ0VmDbsvi6fw6liW5ybDXJwRL6RtDmlPGHso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.6 318/567] ice: fix retry for AQ command 0x06EE
+	stable <stable@kernel.org>,
+	Peng Zhang <zhangpeng.00@bytedance.com>,
+	Muchun Song <songmuchun@bytedance.com>,
+	Alban Bedel <alban.bedel@lht.dlh.de>,
+	Maximilian Lueer <maximilian.lueer@lht.dlh.de>
+Subject: [PATCH 6.19 061/220] serial: 8250: always disable IRQ during THRE test
 Date: Mon, 23 Mar 2026 14:43:58 +0100
-Message-ID: <20260323134541.697091180@linuxfoundation.org>
+Message-ID: <20260323134506.520571377@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,134 +70,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229233-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228043-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: ADE3D2F643D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,dlh.de:email]
+X-Rspamd-Queue-Id: 037C52F3B16
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+From: Peng Zhang <zhangpeng.00@bytedance.com>
 
-commit fb4903b3354aed4a2301180cf991226f896c87ed upstream.
+commit 24b98e8664e157aff0814a0f49895ee8223f382f upstream.
 
-Executing ethtool -m can fail reporting a netlink I/O error while firmware
-link management holds the i2c bus used to communicate with the module.
+commit 039d4926379b ("serial: 8250: Toggle IER bits on only after irq
+has been set up") moved IRQ setup before the THRE test, in combination
+with commit 205d300aea75 ("serial: 8250: change lock order in
+serial8250_do_startup()") the interrupt handler can run during the
+test and race with its IIR reads. This can produce wrong THRE test
+results and cause spurious registration of the
+serial8250_backup_timeout timer. Unconditionally disable the IRQ for
+the short duration of the test and re-enable it afterwards to avoid
+the race.
 
-According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
-Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
-request should to be retried upon receiving EBUSY from firmware.
-
-Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-implemented it only for part of ice_get_module_eeprom(), leaving all other
-calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
-EBUSY without retrying.
-
-Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
-(AQ) command with opcode 0x06EE to the list of commands that should be
-retried on receiving EBUSY from firmware.
-
-Cc: stable@vger.kernel.org
-Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
-Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 039d4926379b ("serial: 8250: Toggle IER bits on only after irq has been set up")
+Depends-on: 205d300aea75 ("serial: 8250: change lock order in serial8250_do_startup()")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
+Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
+Tested-by: Maximilian Lueer <maximilian.lueer@lht.dlh.de>
+Link: https://patch.msgid.link/20260224121639.579404-1-alban.bedel@lht.dlh.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c  |    1 
- drivers/net/ethernet/intel/ice/ice_ethtool.c |   35 ++++++++++-----------------
- 2 files changed, 15 insertions(+), 21 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1611,6 +1611,7 @@ static bool ice_should_retry_sq_send_cmd
- 	case ice_aqc_opc_lldp_stop:
- 	case ice_aqc_opc_lldp_start:
- 	case ice_aqc_opc_lldp_filter_ctrl:
-+	case ice_aqc_opc_sff_eeprom:
- 		return true;
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2147,8 +2147,7 @@ static void serial8250_THRE_test(struct
+ 	if (up->port.flags & UPF_NO_THRE_TEST)
+ 		return;
+ 
+-	if (port->irqflags & IRQF_SHARED)
+-		disable_irq_nosync(port->irq);
++	disable_irq(port->irq);
+ 
+ 	/*
+ 	 * Test for UARTs that do not reassert THRE when the transmitter is idle and the interrupt
+@@ -2170,8 +2169,7 @@ static void serial8250_THRE_test(struct
+ 		serial_port_out(port, UART_IER, 0);
  	}
  
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -4045,7 +4045,7 @@ ice_get_module_eeprom(struct net_device
- 	struct ice_pf *pf = vsi->back;
- 	struct ice_hw *hw = &pf->hw;
- 	bool is_sfp = false;
--	unsigned int i, j;
-+	unsigned int i;
- 	u16 offset = 0;
- 	u8 page = 0;
- 	int status;
-@@ -4087,26 +4087,19 @@ ice_get_module_eeprom(struct net_device
- 		if (page == 0 || !(data[0x2] & 0x4)) {
- 			u32 copy_len;
+-	if (port->irqflags & IRQF_SHARED)
+-		enable_irq(port->irq);
++	enable_irq(port->irq);
  
--			/* If i2c bus is busy due to slow page change or
--			 * link management access, call can fail. This is normal.
--			 * So we retry this a few times.
--			 */
--			for (j = 0; j < 4; j++) {
--				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
--							   !is_sfp, value,
--							   SFF_READ_BLOCK_SIZE,
--							   0, NULL);
--				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
--					   addr, offset, page, is_sfp,
--					   value[0], value[1], value[2], value[3],
--					   value[4], value[5], value[6], value[7],
--					   status);
--				if (status) {
--					usleep_range(1500, 2500);
--					memset(value, 0, SFF_READ_BLOCK_SIZE);
--					continue;
--				}
--				break;
-+			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
-+						   !is_sfp, value,
-+						   SFF_READ_BLOCK_SIZE,
-+						   0, NULL);
-+			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
-+				   addr, offset, page, is_sfp,
-+				   value[0], value[1], value[2], value[3],
-+				   value[4], value[5], value[6], value[7],
-+				   ERR_PTR(status));
-+			if (status) {
-+				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
-+					   __func__, ERR_PTR(status));
-+				return status;
- 			}
- 
- 			/* Make sure we have enough room for the new block */
+ 	/*
+ 	 * If the interrupt is not reasserted, or we otherwise don't trust the iir, setup a timer to
 
 
 
