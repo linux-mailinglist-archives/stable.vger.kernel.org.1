@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-229159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YEAPHuVtwWnVTAQAu9opvQ
-	(envelope-from <stable+bounces-229159-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:21 +0100
+	id iPmSBANNwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B262F8B7E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E6432F45FE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DDBA533D7899
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A1A0C302BC08
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EAE02848BA;
-	Mon, 23 Mar 2026 15:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F031A680D;
+	Mon, 23 Mar 2026 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4AvtXBy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzBNvu63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F85282F3C;
-	Mon, 23 Mar 2026 15:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0883D1A680B;
+	Mon, 23 Mar 2026 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278247; cv=none; b=qvzo0TC5XBDW5NLoY1CtvPX2fEx6qjB4mtCrvm604TiXLFzOgOPsIBM9ByC4N4UHN2iSjDtlU1GiQ5e7we3zEhxStz0aimojCnlOk58vc/oV/6x97dhYiN0YjtPwPzSqGCPsG1z73fDjOgqqJn7QlHDeQ4Rn1dhN2N4I48LG6/0=
+	t=1774275650; cv=none; b=h9h15aU9Iu4RIuG5s1lFBu8GNJt2q8EeIAWl8uKJpyB4Kq6nRjkPtK40cx4Q90REsVpvK8pNDiEhHiX3sSlDbJ5xrFB92pBQdvDgMkP2B6x2zmWAxFVmaG9cnfZs4QvLweHOD7ATKLu3wJCLyUbBG7SleEzdAm13mTzLf+Lb86Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278247; c=relaxed/simple;
-	bh=RaUv945WLp0CpQScdKAoVoiXTaiVtnL/76FsHSePaqI=;
+	s=arc-20240116; t=1774275650; c=relaxed/simple;
+	bh=Y2g9dBfX25Jl58lytbW2cf8CNMtUg7fBRbN36SJuHpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jZm4vgvmbm8doQ+P9Dq8tZV0QTRt5Hpm4k8pe5l+3FgB9FgzmjOERpL/dwQEdi2d8ph5VSE7gcVArbfnlBo8EeocUJrS7jHare2sa9fMwbMUEhh1+s0qYldTTfVwUCzksfg6Bo6JWYFo46eESblnpG5rRj8+Ul2k015VDSOfwHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4AvtXBy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C76C2BC9E;
-	Mon, 23 Mar 2026 15:04:06 +0000 (UTC)
+	 MIME-Version; b=V1SZVkkEgl3poGs95s8kXTiSSMVuN5RPZvYY21qLWJNldC1mz196uEnKIWlEW1N9wDFMPvpJGtWQ1vlnnwu2be0gECNA8zLqE/aRwRcBXtBcsURsskBJ95UXZGg62PTUD6UcIEPEblENZipKtAHLmUP7btMgrp0RsoebNIJ6nh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzBNvu63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA3CC4CEF7;
+	Mon, 23 Mar 2026 14:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278247;
-	bh=RaUv945WLp0CpQScdKAoVoiXTaiVtnL/76FsHSePaqI=;
+	s=korg; t=1774275649;
+	bh=Y2g9dBfX25Jl58lytbW2cf8CNMtUg7fBRbN36SJuHpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4AvtXByJk3Bfb0XabGVE3ULb93HG6dJgj2yr8sA1dycSQ0xMfqpGWnZNHbWUFyA6
-	 lC1Pean9PI1aeHKtafhrAYGm3EGWqCY5Jy2RFFLUF9YDogO3/xgF9RRsZR1xQ3x2XI
-	 K+CG4EBJ1Nv/TZrQ/Y8hFu/4kaQETRGQSidKL0bk=
+	b=dzBNvu635UKkoAfVHtGI42TAVpDbzslb++EK6O0mwZD95b4JvhfNl+WzuXUP597bY
+	 gaMu7A8iSo3JUknDU8b6s+zEDGnIpmrL0n8xBRAy7CiLND2rT7O44IVwxI5eA0/oYp
+	 6ns0LM/7UhBGEbV/aMKri1VWv8p5UCVKO1HXN0cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Shi <cshi008@fiu.edu>,
-	Weidong Zhu <weizhu@fiu.edu>,
-	Dave Tian <daveti@purdue.edu>,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 248/567] nvme-pci: Fix slab-out-of-bounds in nvme_dbbuf_set
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 172/460] ksmbd: fix use-after-free by using call_rcu() for oplock_info
 Date: Mon, 23 Mar 2026 14:42:48 +0100
-Message-ID: <20260323134539.971397798@linuxfoundation.org>
+Message-ID: <20260323134530.764490484@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,165 +62,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.34 / 15.00];
-	SEM_URIBL(3.50)[purdue.edu:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-229159-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	NEURAL_SPAM(0.00)[0.752];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228628-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: A4B262F8B7E
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3E6432F45FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit b4e78f1427c7d6859229ae9616df54e1fc05a516 ]
+commit 1dfd062caa165ec9d7ee0823087930f3ab8a6294 upstream.
 
-dev->online_queues is a count incremented in nvme_init_queue. Thus,
-valid indices are 0 through dev->online_queues − 1.
+ksmbd currently frees oplock_info immediately using kfree(), even
+though it is accessed under RCU read-side critical sections in places
+like opinfo_get() and proc_show_files().
 
-This patch fixes the loop condition to ensure the index stays within the
-valid range. Index 0 is excluded because it is the admin queue.
+Since there is no RCU grace period delay between nullifying the pointer
+and freeing the memory, a reader can still access oplock_info
+structure after it has been freed. This can leads to a use-after-free
+especially in opinfo_get() where atomic_inc_not_zero() is called on
+already freed memory.
 
-KASAN splat:
+Fix this by switching to deferred freeing using call_rcu().
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
-BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
-Read of size 2 at addr ffff88800592a574 by task kworker/u8:5/74
-
-CPU: 0 UID: 0 PID: 74 Comm: kworker/u8:5 Not tainted 6.19.0-dirty #10 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Workqueue: nvme-reset-wq nvme_reset_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xea/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xce/0x5d0 mm/kasan/report.c:482
- kasan_report+0xdc/0x110 mm/kasan/report.c:595
- __asan_report_load2_noabort+0x18/0x20 mm/kasan/report_generic.c:379
- nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
- nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
- nvme_reset_work+0x36b/0x8c0 drivers/nvme/host/pci.c:3252
- process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
- kthread+0x41a/0x930 kernel/kthread.c:463
- ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-
-Allocated by task 34 on cpu 1 at 4.241550s:
- kasan_save_stack+0x2c/0x60 mm/kasan/common.c:57
- kasan_save_track+0x1c/0x70 mm/kasan/common.c:78
- kasan_save_alloc_info+0x3c/0x50 mm/kasan/generic.c:570
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0xb5/0xc0 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __do_kmalloc_node mm/slub.c:5657 [inline]
- __kmalloc_node_noprof+0x2bf/0x8d0 mm/slub.c:5663
- kmalloc_array_node_noprof include/linux/slab.h:1075 [inline]
- nvme_pci_alloc_dev drivers/nvme/host/pci.c:3479 [inline]
- nvme_probe+0x2f1/0x1820 drivers/nvme/host/pci.c:3534
- local_pci_probe+0xef/0x1c0 drivers/pci/pci-driver.c:324
- pci_call_probe drivers/pci/pci-driver.c:392 [inline]
- __pci_device_probe drivers/pci/pci-driver.c:417 [inline]
- pci_device_probe+0x743/0x920 drivers/pci/pci-driver.c:451
- call_driver_probe drivers/base/dd.c:583 [inline]
- really_probe+0x29b/0xb70 drivers/base/dd.c:661
- __driver_probe_device+0x3b0/0x4a0 drivers/base/dd.c:803
- driver_probe_device+0x56/0x1f0 drivers/base/dd.c:833
- __driver_attach_async_helper+0x155/0x340 drivers/base/dd.c:1159
- async_run_entry_fn+0xa6/0x4b0 kernel/async.c:129
- process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
- kthread+0x41a/0x930 kernel/kthread.c:463
- ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
-
-The buggy address belongs to the object at ffff88800592a000
- which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 244 bytes to the right of
- allocated 1152-byte region [ffff88800592a000, ffff88800592a480)
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x5928
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-anon flags: 0xfffffc0000040(head|node=0|zone=1|lastcpupid=0x1fffff)
-page_type: f5(slab)
-raw: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
-raw: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
-head: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
-head: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
-head: 000fffffc0000003 ffffea0000164a01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff88800592a400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88800592a480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff88800592a500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                                                             ^
- ffff88800592a580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88800592a600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-
-Fixes: 0f0d2c876c96 (nvme: free sq/cq dbbuf pointers when dbbuf set fails)
-Acked-by: Chao Shi <cshi008@fiu.edu>
-Acked-by: Weidong Zhu <weizhu@fiu.edu>
-Acked-by: Dave Tian <daveti@purdue.edu>
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 18b4fac5ef17 ("ksmbd: fix use-after-free in smb_break_all_levII_oplock()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/oplock.c |   29 +++++++++++++++++++++--------
+ fs/smb/server/oplock.h |    5 +++--
+ 2 files changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 8ea38cd6ff30d..8dd1e71ee215e 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -339,7 +339,7 @@ static void nvme_dbbuf_set(struct nvme_dev *dev)
- 		/* Free memory and continue on */
- 		nvme_dbbuf_dma_free(dev);
- 
--		for (i = 1; i <= dev->online_queues; i++)
-+		for (i = 1; i < dev->online_queues; i++)
- 			nvme_dbbuf_free(&dev->queues[i]);
- 	}
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -120,7 +120,7 @@ static void free_lease(struct oplock_inf
+ 	kfree(lease);
  }
--- 
-2.51.0
-
+ 
+-static void free_opinfo(struct oplock_info *opinfo)
++static void __free_opinfo(struct oplock_info *opinfo)
+ {
+ 	if (opinfo->is_lease)
+ 		free_lease(opinfo);
+@@ -129,6 +129,18 @@ static void free_opinfo(struct oplock_in
+ 	kfree(opinfo);
+ }
+ 
++static void free_opinfo_rcu(struct rcu_head *rcu)
++{
++	struct oplock_info *opinfo = container_of(rcu, struct oplock_info, rcu);
++
++	__free_opinfo(opinfo);
++}
++
++static void free_opinfo(struct oplock_info *opinfo)
++{
++	call_rcu(&opinfo->rcu, free_opinfo_rcu);
++}
++
+ struct oplock_info *opinfo_get(struct ksmbd_file *fp)
+ {
+ 	struct oplock_info *opinfo;
+@@ -176,9 +188,9 @@ void opinfo_put(struct oplock_info *opin
+ 	free_opinfo(opinfo);
+ }
+ 
+-static void opinfo_add(struct oplock_info *opinfo)
++static void opinfo_add(struct oplock_info *opinfo, struct ksmbd_file *fp)
+ {
+-	struct ksmbd_inode *ci = opinfo->o_fp->f_ci;
++	struct ksmbd_inode *ci = fp->f_ci;
+ 
+ 	down_write(&ci->m_lock);
+ 	list_add(&opinfo->op_entry, &ci->m_op_list);
+@@ -1279,20 +1291,21 @@ set_lev:
+ 	set_oplock_level(opinfo, req_op_level, lctx);
+ 
+ out:
+-	rcu_assign_pointer(fp->f_opinfo, opinfo);
+-	opinfo->o_fp = fp;
+-
+ 	opinfo_count_inc(fp);
+-	opinfo_add(opinfo);
++	opinfo_add(opinfo, fp);
++
+ 	if (opinfo->is_lease) {
+ 		err = add_lease_global_list(opinfo);
+ 		if (err)
+ 			goto err_out;
+ 	}
+ 
++	rcu_assign_pointer(fp->f_opinfo, opinfo);
++	opinfo->o_fp = fp;
++
+ 	return 0;
+ err_out:
+-	free_opinfo(opinfo);
++	__free_opinfo(opinfo);
+ 	return err;
+ }
+ 
+--- a/fs/smb/server/oplock.h
++++ b/fs/smb/server/oplock.h
+@@ -69,8 +69,9 @@ struct oplock_info {
+ 	struct lease		*o_lease;
+ 	struct list_head        op_entry;
+ 	struct list_head        lease_entry;
+-	wait_queue_head_t oplock_q; /* Other server threads */
+-	wait_queue_head_t oplock_brk; /* oplock breaking wait */
++	wait_queue_head_t	oplock_q; /* Other server threads */
++	wait_queue_head_t	oplock_brk; /* oplock breaking wait */
++	struct rcu_head		rcu;
+ };
+ 
+ struct lease_break_info {
 
 
 
