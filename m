@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qLr/FeRYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229054-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:44 +0100
+	id kDw9Mv5fwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:45:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A1E62F60A6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C6382F6D5C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:45:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 177D130A4986
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BEAC73106F77
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472B73AF643;
-	Mon, 23 Mar 2026 14:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AFDB25785D;
+	Mon, 23 Mar 2026 15:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvqUKztp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gr8O2Z3r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094D21DA0E1;
-	Mon, 23 Mar 2026 14:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E001280309;
+	Mon, 23 Mar 2026 15:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277914; cv=none; b=kHEUiXjzwwehgy7zdiQPwADLZsoUKu3PqecoCDvtDWfQ0oLBj0IMyRkfw+m4bk4bOTnb8Jz4fnhqy+7VoCfA90SjBs0MzHVzDb9bN7L6oEm99Sj6uqoet7JIyhcIF+QKTGJ+pYz7Ei9Rqq2bD/VF6lugAB8fnRaD2+DQQPwN82c=
+	t=1774279438; cv=none; b=AMfYb1wrHG2TmJ/l2wFmE77xJY5MdpuhHTDuMY+NGuPdUmeBPRrYxHV2998CPqZXZgJGj796HuazV3lnFliBeGShwp3zYTzf2thsRS8JGGfIgf9PmyVUHs8PidnhULscNfmmNiwJP1QZRX+Q9zZVy/DPSpIWDE8W990gwSiAShA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277914; c=relaxed/simple;
-	bh=EJoB4/6S2K2JhXF7hIxOmkKY7a75/VZlB6bv5gaJcBQ=;
+	s=arc-20240116; t=1774279438; c=relaxed/simple;
+	bh=5kyWbR8lyyiCVQRBVy1mLR1qMXuFbbsMRoBTilchgts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Drz3rtl5FPc1fsOD6UAaPyegjgByhul67iyLlCOgo33vvdaMl86JGKJO8NE8t64kaygX7vVmN+FtAepRYr/Jb32SuMvMlkWgTkXB1dC+379Adr2kYsMisEBTIFiIBcc3SWWWW2ZRLjgsRlQDPLAfNIOscl+JBxvGRjpkMnqhIPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvqUKztp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A09FC4CEF7;
-	Mon, 23 Mar 2026 14:58:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VQU7+/FQ226y2tkyLYjSzuBeVsZzqJdYpZ+ORSXlRnTVjRBLoqwds4M0LkFVj0it1t4X5q0BSw6GlNRb5NpOolWVZwHpnombT9F5qrBQ7Yeq6WyIhAwTwiMF62mszOTG5Je9LqIs2BvOqiQpnqT3JfWJrdcKzyyt38glho1ppI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gr8O2Z3r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABEDFC4CEF7;
+	Mon, 23 Mar 2026 15:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277913;
-	bh=EJoB4/6S2K2JhXF7hIxOmkKY7a75/VZlB6bv5gaJcBQ=;
+	s=korg; t=1774279438;
+	bh=5kyWbR8lyyiCVQRBVy1mLR1qMXuFbbsMRoBTilchgts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvqUKztpNpEWE9aLFm2vlLTsd+/l/d3QEWxjzeZFZy50v4n7/PJHovuMZ2loZ7V1i
-	 MmYUdpHxTULIust8rvy4Q5jP1Cb+BAErLWVsOK+8qq0aD95o5YDZsX67MEq430PgJS
-	 DG2QDc4qYZ5wzzfwX1ac44FaslYfwG9piJAJ+KPY=
+	b=Gr8O2Z3rFvAc6GnBzemSBssBOSMXId9+EWOUYjVYPLy+2U7kMWnUJ7DKcV0JuMa7b
+	 gRz0wzlwJZu3SWhs2pWnqZoZBym5tauS+mds/DaUqJKYVS+WszKDWtBmx0YEZlGT0X
+	 hz9K1O8M8wnizFJg2Ox26LVI0cRYzA7slj2lTBJA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Kosina <jikos@kernel.org>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	Bastien Nocera <hadess@hadess.net>,
-	linux-input@vger.kernel.org,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 099/567] HID: Add HID_CLAIMED_INPUT guards in raw_event callbacks missing them
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 037/481] bus: omap-ocp2scp: Convert to platform remove callback returning void
 Date: Mon, 23 Mar 2026 14:40:19 +0100
-Message-ID: <20260323134536.274258546@linuxfoundation.org>
+Message-ID: <20260323134526.139703981@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,101 +62,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-229502-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229054-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8A1E62F60A6
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 5C6382F6D5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit ecfa6f34492c493a9a1dc2900f3edeb01c79946b upstream.
+[ Upstream commit 854f89a5b56354ba4135e0e1f0e57ab2caee59ee ]
 
-In commit 2ff5baa9b527 ("HID: appleir: Fix potential NULL dereference at
-raw event handle"), we handle the fact that raw event callbacks
-can happen even for a HID device that has not been "claimed" causing a
-crash if a broken device were attempted to be connected to the system.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-Fix up the remaining in-tree HID drivers that forgot to add this same
-check to resolve the same issue.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Benjamin Tissoires <bentiss@kernel.org>
-Cc: Bastien Nocera <hadess@hadess.net>
-Cc: linux-input@vger.kernel.org
-Cc: stable <stable@kernel.org>
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
+
+Link: https://lore.kernel.org/r/20231109202830.4124591-3-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Stable-dep-of: 5eb63e9bb65d ("bus: omap-ocp2scp: fix OF populate on driver rebind")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-cmedia.c          |    2 +-
- drivers/hid/hid-creative-sb0540.c |    2 +-
- drivers/hid/hid-zydacron.c        |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/bus/omap-ocp2scp.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/hid-cmedia.c
-+++ b/drivers/hid/hid-cmedia.c
-@@ -99,7 +99,7 @@ static int cmhid_raw_event(struct hid_de
+diff --git a/drivers/bus/omap-ocp2scp.c b/drivers/bus/omap-ocp2scp.c
+index e02d0656242b8..7d7479ba0a759 100644
+--- a/drivers/bus/omap-ocp2scp.c
++++ b/drivers/bus/omap-ocp2scp.c
+@@ -84,12 +84,10 @@ static int omap_ocp2scp_probe(struct platform_device *pdev)
+ 	return ret;
+ }
+ 
+-static int omap_ocp2scp_remove(struct platform_device *pdev)
++static void omap_ocp2scp_remove(struct platform_device *pdev)
  {
- 	struct cmhid *cm = hid_get_drvdata(hid);
+ 	pm_runtime_disable(&pdev->dev);
+ 	device_for_each_child(&pdev->dev, NULL, ocp2scp_remove_devices);
+-
+-	return 0;
+ }
  
--	if (len != CM6533_JD_RAWEV_LEN)
-+	if (len != CM6533_JD_RAWEV_LEN || !(hid->claimed & HID_CLAIMED_INPUT))
- 		goto out;
- 	if (memcmp(data+CM6533_JD_SFX_OFFSET, ji_sfx, sizeof(ji_sfx)))
- 		goto out;
---- a/drivers/hid/hid-creative-sb0540.c
-+++ b/drivers/hid/hid-creative-sb0540.c
-@@ -153,7 +153,7 @@ static int creative_sb0540_raw_event(str
- 	u64 code, main_code;
- 	int key;
+ #ifdef CONFIG_OF
+@@ -103,7 +101,7 @@ MODULE_DEVICE_TABLE(of, omap_ocp2scp_id_table);
  
--	if (len != 6)
-+	if (len != 6 || !(hid->claimed & HID_CLAIMED_INPUT))
- 		return 0;
- 
- 	/* From daemons/hw_hiddev.c sb0540_rec() in lirc */
---- a/drivers/hid/hid-zydacron.c
-+++ b/drivers/hid/hid-zydacron.c
-@@ -114,7 +114,7 @@ static int zc_raw_event(struct hid_devic
- 	unsigned key;
- 	unsigned short index;
- 
--	if (report->id == data[0]) {
-+	if (report->id == data[0] && (hdev->claimed & HID_CLAIMED_INPUT)) {
- 
- 		/* break keys */
- 		for (index = 0; index < 4; index++) {
+ static struct platform_driver omap_ocp2scp_driver = {
+ 	.probe		= omap_ocp2scp_probe,
+-	.remove		= omap_ocp2scp_remove,
++	.remove_new	= omap_ocp2scp_remove,
+ 	.driver		= {
+ 		.name	= "omap-ocp2scp",
+ 		.of_match_table = of_match_ptr(omap_ocp2scp_id_table),
+-- 
+2.51.0
+
 
 
 
