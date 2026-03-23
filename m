@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229119-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IJKhBklswWlMTAQAu9opvQ
-	(envelope-from <stable+bounces-229662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:29 +0100
+	id SCTyAKBXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229119-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2BB2F874B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1AD2F5DEE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3E039311FA7F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 74B3630607E3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90A03BE654;
-	Mon, 23 Mar 2026 16:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE5A2765F5;
+	Mon, 23 Mar 2026 15:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6/FFJdX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbBh0wcb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B7D3BC660;
-	Mon, 23 Mar 2026 16:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41822275AEB;
+	Mon, 23 Mar 2026 15:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282528; cv=none; b=VfBSFAUWdI64em2meGzlDcxHVDfk5VDuu/fMlHxAviYchV/Lbtz4BjDj2etMHxSO2aKXIaMCbcBkZsnLAmoClYP29S16OiisPmsD3Iohmz7CO+6UwnNRaC+nqL0xNyQL2i5YZV7xfzgbor50rAcQemBLC8V6yPFrvnm47lhOEkg=
+	t=1774278119; cv=none; b=IVV9UqTu3+gbSdSWQjXg+eO6Ex3lLXf3Sdwutf+Q2Awg1gIU+qCiNq6HgvxM8HFbjlmDaZFbaQ9A2L014It9wzxUeLjoUZALbZxdb/TLnO/wi5qi/36H7x+q53FvCzZZxu5glKcboCEjscRqwVuPYdEcuddkJvuASjrnTeyXgDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282528; c=relaxed/simple;
-	bh=RuzuViJVscIhFb/3/SseORJKZrhPNd1rBDtJBjG//bA=;
+	s=arc-20240116; t=1774278119; c=relaxed/simple;
+	bh=/CdCN24DouzjQ499tVLRSxreyLzMbNsKr6obSe47IVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECfTG0x396yC63nRnwe0cSHGmko0dMvyKme3QhtOnPYLi9IFMMjksNWnCnUlB1x1BgFqZCTN3tLXIcL4Su9NzLqIjHH9y71P/CqoXeNd+5875fc+i0ruo3YExgWQgSrI5p0PrMm/6+IzA67tmDZaUmwgWI15F9HQX0owb3/jLuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6/FFJdX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27EB0C2BCB0;
-	Mon, 23 Mar 2026 16:15:27 +0000 (UTC)
+	 MIME-Version; b=CH1rM3HuT4zj2bAtu9JFWLSmP0T8qKm0h4IBlbMi7pl1Sc/T0dJVEvpCIBDxUJ/PuidB5ZxiTDT1rOUrfmMTCohsKsp46jbc40cW/8o6d7nfSEAJzi3mS1VxNGIx6jXg9elkJavjQidQ5esAVeSC5AcJ+JoktNhruQCOkugG0pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbBh0wcb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E1DC4CEF7;
+	Mon, 23 Mar 2026 15:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282528;
-	bh=RuzuViJVscIhFb/3/SseORJKZrhPNd1rBDtJBjG//bA=;
+	s=korg; t=1774278119;
+	bh=/CdCN24DouzjQ499tVLRSxreyLzMbNsKr6obSe47IVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6/FFJdXM2ibmM87SXys7VWO3L4nRXqrSHuW11OHR+3s73kPkrgBe/YzeN6KMFZdz
-	 mzJ3odGcvD0ZvwbORwhhp5Mg6WrlCsTrwpxy76XKv+iLXFVjUeJUpD245xIsp8IvdX
-	 wIcrVIYoJol1AxXoG9HHk+A8ObkvxhIeoWgYh52Q=
+	b=bbBh0wcb372ZBO4mN1+I7xyhgnH9Jhdr5KxLH6CTKvcdl+eTCVqw5zzHVBITeZ8+y
+	 P/Uf3nOcrGAZRTlwynfrlgGqEgTVppHQFPptP9MIkAn96HpHP0Sug9FmdofUhgFHg1
+	 3EZC7s1fbXjwBFYMqXLmdySKDPbq7hZiOkh8SGcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 145/481] net: tcp: accept old ack during closing
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 207/567] scsi: ufs: core: Fix possible NULL pointer dereference in ufshcd_add_command_trace()
 Date: Mon, 23 Mar 2026 14:42:07 +0100
-Message-ID: <20260323134528.789809217@linuxfoundation.org>
+Message-ID: <20260323134538.960062388@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +65,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229662-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229119-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5D2BB2F874B
+X-Rspamd-Queue-Id: 9C1AD2F5DEE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-commit 795a7dfbc3d95e4c7c09569f319f026f8c7f5a9c upstream.
+[ Upstream commit 30df81f2228d65bddf492db3929d9fcaffd38fc5 ]
 
-For now, the packet with an old ack is not accepted if we are in
-FIN_WAIT1 state, which can cause retransmission. Taking the following
-case as an example:
+The kernel log indicates a crash in ufshcd_add_command_trace, due to a NULL
+pointer dereference when accessing hwq->id.  This can happen if
+ufshcd_mcq_req_to_hwq() returns NULL.
 
-    Client                               Server
-      |                                    |
-  FIN_WAIT1(Send FIN, seq=10)          FIN_WAIT1(Send FIN, seq=20, ack=10)
-      |                                    |
-      |                                Send ACK(seq=21, ack=11)
-   Recv ACK(seq=21, ack=11)
-      |
-   Recv FIN(seq=20, ack=10)
+This patch adds a NULL check for hwq before accessing its id field to
+prevent a kernel crash.
 
-In the case above, simultaneous close is happening, and the FIN and ACK
-packet that send from the server is out of order. Then, the FIN will be
-dropped by the client, as it has an old ack. Then, the server has to
-retransmit the FIN, which can cause delay if the server has set the
-SO_LINGER on the socket.
+Kernel log excerpt:
+[<ffffffd5d192dc4c>] notify_die+0x4c/0x8c
+[<ffffffd5d1814e58>] __die+0x60/0xb0
+[<ffffffd5d1814d64>] die+0x4c/0xe0
+[<ffffffd5d181575c>] die_kernel_fault+0x74/0x88
+[<ffffffd5d1864db4>] __do_kernel_fault+0x314/0x318
+[<ffffffd5d2a3cdf8>] do_page_fault+0xa4/0x5f8
+[<ffffffd5d2a3cd34>] do_translation_fault+0x34/0x54
+[<ffffffd5d1864524>] do_mem_abort+0x50/0xa8
+[<ffffffd5d2a297dc>] el1_abort+0x3c/0x64
+[<ffffffd5d2a29718>] el1h_64_sync_handler+0x44/0xcc
+[<ffffffd5d181133c>] el1h_64_sync+0x80/0x88
+[<ffffffd5d255c1dc>] ufshcd_add_command_trace+0x23c/0x320
+[<ffffffd5d255bad8>] ufshcd_compl_one_cqe+0xa4/0x404
+[<ffffffd5d2572968>] ufshcd_mcq_poll_cqe_lock+0xac/0x104
+[<ffffffd5d11c7460>] ufs_mtk_mcq_intr+0x54/0x74 [ufs_mediatek_mod]
+[<ffffffd5d19ab92c>] __handle_irq_event_percpu+0xc8/0x348
+[<ffffffd5d19abca8>] handle_irq_event+0x3c/0xa8
+[<ffffffd5d19b1f0c>] handle_fasteoi_irq+0xf8/0x294
+[<ffffffd5d19aa778>] generic_handle_domain_irq+0x54/0x80
+[<ffffffd5d18102bc>] gic_handle_irq+0x1d4/0x330
+[<ffffffd5d1838210>] call_on_irq_stack+0x44/0x68
+[<ffffffd5d183af30>] do_interrupt_handler+0x78/0xd8
+[<ffffffd5d2a29c00>] el1_interrupt+0x48/0xa8
+[<ffffffd5d2a29ba8>] el1h_64_irq_handler+0x14/0x24
+[<ffffffd5d18113c4>] el1h_64_irq+0x80/0x88
+[<ffffffd5d2527fb4>] arch_local_irq_enable+0x4/0x1c
+[<ffffffd5d25282e4>] cpuidle_enter+0x34/0x54
+[<ffffffd5d195a678>] do_idle+0x1dc/0x2f8
+[<ffffffd5d195a7c4>] cpu_startup_entry+0x30/0x3c
+[<ffffffd5d18155c4>] secondary_start_kernel+0x134/0x1ac
+[<ffffffd5d18640bc>] __secondary_switched+0xc4/0xcc
 
-Old ack is accepted in the ESTABLISHED and TIME_WAIT state, and I think
-it should be better to keep the same logic.
-
-In this commit, we accept old ack in FIN_WAIT1/FIN_WAIT2/CLOSING/LAST_ACK
-states. Maybe we should limit it to FIN_WAIT1 for now?
-
-Signed-off-by: Menglong Dong <menglong8.dong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20240126040519.1846345-1-menglong8.dong@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223065657.2432447-1-peter.wang@mediatek.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c |   18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ drivers/ufs/core/ufshcd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6630,17 +6630,21 @@ int tcp_rcv_state_process(struct sock *s
- 		return 0;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 0b74ef63e6721..4b34f65e6d8e2 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -461,8 +461,8 @@ static void ufshcd_add_command_trace(struct ufs_hba *hba, unsigned int tag,
  
- 	/* step 5: check the ACK field */
--	acceptable = tcp_ack(sk, skb, FLAG_SLOWPATH |
--				      FLAG_UPDATE_TS_RECENT |
--				      FLAG_NO_CHALLENGE_ACK) > 0;
-+	reason = tcp_ack(sk, skb, FLAG_SLOWPATH |
-+				  FLAG_UPDATE_TS_RECENT |
-+				  FLAG_NO_CHALLENGE_ACK);
- 
--	if (!acceptable) {
-+	if ((int)reason <= 0) {
- 		if (sk->sk_state == TCP_SYN_RECV)
- 			return 1;	/* send one RST */
--		tcp_send_challenge_ack(sk);
--		SKB_DR_SET(reason, TCP_OLD_ACK);
--		goto discard;
-+		/* accept old ack during closing */
-+		if ((int)reason < 0) {
-+			tcp_send_challenge_ack(sk);
-+			reason = -reason;
-+			goto discard;
-+		}
+ 	if (is_mcq_enabled(hba)) {
+ 		struct ufs_hw_queue *hwq = ufshcd_mcq_req_to_hwq(hba, rq);
+-
+-		hwq_id = hwq->id;
++		if (hwq)
++			hwq_id = hwq->id;
+ 	} else {
+ 		doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
  	}
-+	SKB_DR_SET(reason, NOT_SPECIFIED);
- 	switch (sk->sk_state) {
- 	case TCP_SYN_RECV:
- 		tp->delivered++; /* SYN-ACK delivery isn't tracked in tcp_ack */
+-- 
+2.51.0
+
 
 
 
