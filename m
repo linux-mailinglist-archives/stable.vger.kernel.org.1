@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229648-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WERmG71MwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228616-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:53 +0100
+	id +MmCGhZswWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229648-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C1A02F4512
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 632432F86C9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 27D4F302246E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5D64830ED9AD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5028F397E84;
-	Mon, 23 Mar 2026 14:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A10D396566;
+	Mon, 23 Mar 2026 16:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAYLdr9i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hf7zRhWG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FC21A6828;
-	Mon, 23 Mar 2026 14:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B68F3B95F2;
+	Mon, 23 Mar 2026 16:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275613; cv=none; b=JnbCHmWApSnulWYo3939eF5BDhPAsc3InJKHpr5qnG92mGXWY1k2D6P+BHvCwwRLHwkqoRDumvn1PmWp6fVUNgWj/0xwT/AWZiXLFDDQOlMGG6ksr7X/K3vl6Rphj++pvr+BlxLHxJyI8X4WiWyGwx3cBTmRrwVuN2KjxBJWqGM=
+	t=1774282491; cv=none; b=KnWdk0pfVQrU0HF2Xx5y/LO53uG0gKNYlyQKHJbL38KXe8m4pS9nwMGt8hvypA98jU5uDMcmA0TALMn9A+Nee0DCPhUU2rcFoXQJyceYdxuYyPYs1VL4T7U9/H5DB+YAMaiM7o1WDHkVyHRSecseSqYeY2jgqdagMxZIri6wCCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275613; c=relaxed/simple;
-	bh=fi+m/ZUHJOUTdtLFI0zkcL4T4MaN1KTEqrGzuv8Z8bc=;
+	s=arc-20240116; t=1774282491; c=relaxed/simple;
+	bh=GUceQ3KCw7NdEtgFivbUVo5tuiJEItdA5+fOK5YyltE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aoIvfhmyzDGD2uIe7Fp1swofuMrjdrXMZM5IVln3aB9eOcLoexaUClik8Pv3k8DBkQg0U3DDgrGMKLXDPq9cuPkIeRxpj+/8UzHMv2lRLo40aVmXXo6Jb/Sj5xoQdWiswHkpNnaqt3+XHeUoCLfVEUTz3uZO6TLDMQQKd0OrXPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAYLdr9i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891F6C4CEF7;
-	Mon, 23 Mar 2026 14:20:12 +0000 (UTC)
+	 MIME-Version; b=XarFVIMR4AtdOyMFwse4xHr8YMLkApSCdEs//IOXXHgl0bdAtSMrXObWCl3W1PA4DB61TkQDhFT7MXziQ+3F7/mwzTmzvtlG87RgWppoxalcw3cidkDHsuI03/h7U5FmzAxpxu52xRXmfn36NlqFEIIihQpSh1g8NkCtVtTEcKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hf7zRhWG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9057DC4CEF7;
+	Mon, 23 Mar 2026 16:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275613;
-	bh=fi+m/ZUHJOUTdtLFI0zkcL4T4MaN1KTEqrGzuv8Z8bc=;
+	s=korg; t=1774282490;
+	bh=GUceQ3KCw7NdEtgFivbUVo5tuiJEItdA5+fOK5YyltE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tAYLdr9imCKaYVWbv8To4UAbMGH456yIUiwh6JugP325cEMJ0PL8kGu2teqpXB7hk
-	 HzsRUSHh7y/+hALJKaAZ5VoGDxkiDCwGaiaAzB4OQgFl9y8mP8ejCLwSq36V6oBuB6
-	 VjLLtN/FTMoOsR3aY9jKcFOdYbMiKs1LAclwSd1U=
+	b=Hf7zRhWGg009d3ttGgkgG0wG3I9Ccr2M3w7sBLFjLLY0Og3fEEIwJwWC5ehK7g2zp
+	 FER64HgP9ImJZaTmJZq20pg2st7aU8N3l+fZfwYXRRMiiRD3q7tDwpFJR5nL+CKvQa
+	 rA3eS5bGFRDIB+FP7KMENMnoRqJH9yIjSo5C968c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.12 161/460] nouveau/dpcd: return EBUSY for aux xfer if the device is asleep
+	Chengfeng Ye <dg573847474@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 175/481] mctp: route: hold key->lock in mctp_flow_prepare_output()
 Date: Mon, 23 Mar 2026 14:42:37 +0100
-Message-ID: <20260323134530.514182319@linuxfoundation.org>
+Message-ID: <20260323134529.483007095@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +66,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228616-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229648-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,redhat.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 4C1A02F4512
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 632432F86C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-commit 8f3c6f08ababad2e3bdd239728cf66a9949446b4 upstream.
+[ Upstream commit 7d86aa41c073c4e7eb75fd2e674f1fd8f289728a ]
 
-If we have runtime suspended, and userspace wants to use /dev/drm_dp_*
-then just tell it the device is busy instead of crashing in the GSP
-code.
+mctp_flow_prepare_output() checks key->dev and may call
+mctp_dev_set_key(), but it does not hold key->lock while doing so.
 
-WARNING: CPU: 2 PID: 565741 at drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c:164 r535_gsp_msgq_wait+0x9a/0xb0 [nouveau]
-CPU: 2 UID: 0 PID: 565741 Comm: fwupd Not tainted 6.18.10-200.fc43.x86_64 #1 PREEMPT(lazy)
-Hardware name: LENOVO 20QTS0PQ00/20QTS0PQ00, BIOS N2OET65W (1.52 ) 08/05/2024
-RIP: 0010:r535_gsp_msgq_wait+0x9a/0xb0 [nouveau]
+mctp_dev_set_key() and mctp_dev_release_key() are annotated with
+__must_hold(&key->lock), so key->dev access is intended to be
+serialized by key->lock. The mctp_sendmsg() transmit path reaches
+mctp_flow_prepare_output() via mctp_local_output() -> mctp_dst_output()
+without holding key->lock, so the check-and-set sequence is racy.
 
-This is a simple fix to get backported. We should probably engineer a
-proper power domain solution to wake up devices and keep them awake
-while fw updates are happening.
+Example interleaving:
 
-Cc: stable@vger.kernel.org
-Fixes: 8894f4919bc4 ("drm/nouveau: register a drm_dp_aux channel for each dp connector")
-Reviewed-by: Lyude Paul <lyude@redhat.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Link: https://patch.msgid.link/20260224031750.791621-1-airlied@gmail.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  CPU0                                  CPU1
+  ----                                  ----
+  mctp_flow_prepare_output(key, devA)
+    if (!key->dev)  // sees NULL
+                                        mctp_flow_prepare_output(
+                                            key, devB)
+                                          if (!key->dev)  // still NULL
+                                          mctp_dev_set_key(devB, key)
+                                            mctp_dev_hold(devB)
+                                            key->dev = devB
+    mctp_dev_set_key(devA, key)
+      mctp_dev_hold(devA)
+      key->dev = devA   // overwrites devB
+
+Now both devA and devB references were acquired, but only the final
+key->dev value is tracked for release. One reference can be lost,
+causing a resource leak as mctp_dev_release_key() would only decrease
+the reference on one dev.
+
+Fix by taking key->lock around the key->dev check and
+mctp_dev_set_key() call.
+
+Fixes: 67737c457281 ("mctp: Pass flow data & flow release events to drivers")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://patch.msgid.link/20260306031402.857224-1-dg573847474@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/mctp/route.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_connector.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
-@@ -1229,6 +1229,9 @@ nouveau_connector_aux_xfer(struct drm_dp
- 	u8 size = msg->size;
- 	int ret;
+diff --git a/net/mctp/route.c b/net/mctp/route.c
+index 62952ad5cb636..fdeaf80691e55 100644
+--- a/net/mctp/route.c
++++ b/net/mctp/route.c
+@@ -267,6 +267,7 @@ static void mctp_flow_prepare_output(struct sk_buff *skb, struct mctp_dev *dev)
+ {
+ 	struct mctp_sk_key *key;
+ 	struct mctp_flow *flow;
++	unsigned long flags;
  
-+	if (pm_runtime_suspended(nv_connector->base.dev->dev))
-+		return -EBUSY;
+ 	flow = skb_ext_find(skb, SKB_EXT_MCTP);
+ 	if (!flow)
+@@ -274,12 +275,14 @@ static void mctp_flow_prepare_output(struct sk_buff *skb, struct mctp_dev *dev)
+ 
+ 	key = flow->key;
+ 
+-	if (key->dev) {
++	spin_lock_irqsave(&key->lock, flags);
 +
- 	nv_encoder = find_encoder(&nv_connector->base, DCB_OUTPUT_DP);
- 	if (!nv_encoder)
- 		return -ENODEV;
++	if (!key->dev)
++		mctp_dev_set_key(dev, key);
++	else
+ 		WARN_ON(key->dev != dev);
+-		return;
+-	}
+ 
+-	mctp_dev_set_key(dev, key);
++	spin_unlock_irqrestore(&key->lock, flags);
+ }
+ #else
+ static void mctp_skb_set_flow(struct sk_buff *skb, struct mctp_sk_key *key) {}
+-- 
+2.51.0
+
 
 
 
