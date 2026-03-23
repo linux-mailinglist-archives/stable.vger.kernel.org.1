@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229819-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GBH3NN1dwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229323-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:57 +0100
+	id SP7vMjF1wWl5TQQAu9opvQ
+	(envelope-from <stable+bounces-229819-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A71612F68A0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54882F9A46
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2F8D2308758F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F2EE63131139
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A705F3B6345;
-	Mon, 23 Mar 2026 15:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2330829ACC5;
+	Mon, 23 Mar 2026 16:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+njhh+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn5xL2of"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 663FA27EFEE;
-	Mon, 23 Mar 2026 15:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51A93AEF5C;
+	Mon, 23 Mar 2026 16:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278756; cv=none; b=X9T4VB9QT641y5KUia8hnD59Eyk5pyVT8q8oVAG6LsPUJYILSgXm+xzXJz89Ap2apF1StPyZZbMKBzCDA9rzDCK2wLPlyeoMybW63rzCuMHz7X9IdLozoUzja+FjZf3q+GH42l5zOo7QuRXU7IyexqAXsgD+EiuACQqAzCGXZfM=
+	t=1774282950; cv=none; b=W6T0a6kITIDdP6FzibU1/i/oTORQZCVC3b1uATvpbThYKYm6djeeG7PdeKM/y5rgQs8dTmoI67O46n4uU0WklTzA289+j806m8HDDbsekel0KxTasUQRmiKyTP/ayVtfnlXpDpUZ7EB0S9UsiIZjdP+QlJkedQ+CgglZtj+43I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278756; c=relaxed/simple;
-	bh=K4NYD5WlrM9PzLa9j6DEROVXmlWuE3/IvGUJ2mT/GE8=;
+	s=arc-20240116; t=1774282950; c=relaxed/simple;
+	bh=p+1Ft8At5YP8l1pF8JVSFtS32cnqv9sFbkQIUL0RQN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HvkHwOtRyYvaYrkbbEHyQfmA7UCIW3H4mzH+7nw1XCJ+OyqQ8JG82aW0wTF4zzdZYPU8yXKVXEDZ82wnwN96jh3NxypPYodC7kDYO+DpsTTdl5Oel6vh1QKrF+Udf/40uM4VzI0NXFDop1Vk1fGLRPye5ZvAQ45TYNCqraYvpgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+njhh+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4F5C4CEF7;
-	Mon, 23 Mar 2026 15:12:35 +0000 (UTC)
+	 MIME-Version; b=ujYbsaujxIbwMwhxGANzQesUhLW8WC9s0ghiPtHsRytVfrZc8jvpxeOK1xWHyYwSqyJW3r0S3GuLikHv9dvd7RuFe1V4eZZ78aaa1YoA2GiOYkJC3VPlcuoxmXd87D2eB7+eaXpOfcG0jiZ+yKYKV1Vc2NBb03yuPkUPzTWxFSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn5xL2of; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9C6C4CEF7;
+	Mon, 23 Mar 2026 16:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278756;
-	bh=K4NYD5WlrM9PzLa9j6DEROVXmlWuE3/IvGUJ2mT/GE8=;
+	s=korg; t=1774282950;
+	bh=p+1Ft8At5YP8l1pF8JVSFtS32cnqv9sFbkQIUL0RQN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+njhh+OLzn1URmUr6PI6y712dZVWKyctM7RWttUMAHR3sIZKl3ZOJFo1pjeAk+Fm
-	 WsItL/+D3ZVl6nCGugExhjAMhFRpeHdysmQrKGu8ZoNneSs1e3bEvR+e/bjlwWfmGl
-	 2xRTT3/j1jqjehN2QcnSayPseLZhgtUKGlwdD9Yk=
+	b=Gn5xL2ofT7VzyLBAn6ulvYTana9i2G4qM3Kq5DrRKj8svomVS2qVXCdhIJG2400vQ
+	 bkUwztTbmT+ZwTXRVdEibSoDETK5a1QOgikAK789fZur26XFYI8TyG/zWcmWp+MYTA
+	 NaaiG/I5F3GftVjQNsKZ+ZhW6UV3Z/ZJ53HxgC9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong@huaweicloud.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 408/567] NFS: Fix a deadlock involving nfs_release_folio()
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 346/481] xfs: fix integer overflow in bmap intent sort comparator
 Date: Mon, 23 Mar 2026 14:45:28 +0100
-Message-ID: <20260323134543.973692623@linuxfoundation.org>
+Message-ID: <20260323134533.533249918@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,141 +67,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229323-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,huaweicloud.com,hammerspace.com,139.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229819-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A71612F68A0
+X-Rspamd-Queue-Id: D54882F9A46
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit cce0be6eb4971456b703aaeafd571650d314bcca ]
+[ Upstream commit 362c490980867930a098b99f421268fbd7ca05fd ]
 
-Wang Zhaolong reports a deadlock involving NFSv4.1 state recovery
-waiting on kthreadd, which is attempting to reclaim memory by calling
-nfs_release_folio(). The latter cannot make progress due to state
-recovery being needed.
+xfs_bmap_update_diff_items() sorts bmap intents by inode number using
+a subtraction of two xfs_ino_t (uint64_t) values, with the result
+truncated to int. This is incorrect when two inode numbers differ by
+more than INT_MAX (2^31 - 1), which is entirely possible on large XFS
+filesystems.
 
-It seems that the only safe thing to do here is to kick off a writeback
-of the folio, without waiting for completion, or else kicking off an
-asynchronous commit.
+Fix this by replacing the subtraction with cmp_int().
 
-Reported-by: Wang Zhaolong <wangzhaolong@huaweicloud.com>
-Fixes: 96780ca55e3c ("NFS: fix up nfs_release_folio() to try to release the page")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Cc: <stable@vger.kernel.org> # v4.9
+Fixes: 9f3afb57d5f1 ("xfs: implement deferred bmbt map/unmap operations")
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ replaced `bi_entry()` macro with `container_of()` and inlined `cmp_int()` as a manual three-way comparison expression ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/file.c          |    3 ++-
- fs/nfs/nfstrace.h      |    3 +++
- fs/nfs/write.c         |   33 +++++++++++++++++++++++++++++++++
- include/linux/nfs_fs.h |    1 +
- 4 files changed, 39 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_bmap_item.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/nfs/file.c
-+++ b/fs/nfs/file.c
-@@ -459,7 +459,8 @@ static bool nfs_release_folio(struct fol
- 		if ((current_gfp_context(gfp) & GFP_KERNEL) != GFP_KERNEL ||
- 		    current_is_kswapd() || current_is_kcompactd())
- 			return false;
--		if (nfs_wb_folio(folio_file_mapping(folio)->host, folio) < 0)
-+		if (nfs_wb_folio_reclaim(folio_file_mapping(folio)->host, folio) < 0 ||
-+		    folio_test_private(folio))
- 			return false;
- 	}
- 	return nfs_fscache_release_folio(folio, gfp);
---- a/fs/nfs/nfstrace.h
-+++ b/fs/nfs/nfstrace.h
-@@ -1033,6 +1033,9 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done
- DEFINE_NFS_FOLIO_EVENT(nfs_aop_readpage);
- DEFINE_NFS_FOLIO_EVENT_DONE(nfs_aop_readpage_done);
+--- a/fs/xfs/xfs_bmap_item.c
++++ b/fs/xfs/xfs_bmap_item.c
+@@ -277,7 +277,8 @@ xfs_bmap_update_diff_items(
  
-+DEFINE_NFS_FOLIO_EVENT(nfs_writeback_folio_reclaim);
-+DEFINE_NFS_FOLIO_EVENT_DONE(nfs_writeback_folio_reclaim_done);
-+
- DEFINE_NFS_FOLIO_EVENT(nfs_writeback_folio);
- DEFINE_NFS_FOLIO_EVENT_DONE(nfs_writeback_folio_done);
- 
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -2122,6 +2122,39 @@ int nfs_wb_folio_cancel(struct inode *in
+ 	ba = container_of(a, struct xfs_bmap_intent, bi_list);
+ 	bb = container_of(b, struct xfs_bmap_intent, bi_list);
+-	return ba->bi_owner->i_ino - bb->bi_owner->i_ino;
++	return (ba->bi_owner->i_ino > bb->bi_owner->i_ino) -
++		(ba->bi_owner->i_ino < bb->bi_owner->i_ino);
  }
  
- /**
-+ * nfs_wb_folio_reclaim - Write back all requests on one page
-+ * @inode: pointer to page
-+ * @folio: pointer to folio
-+ *
-+ * Assumes that the folio has been locked by the caller
-+ */
-+int nfs_wb_folio_reclaim(struct inode *inode, struct folio *folio)
-+{
-+	loff_t range_start = folio_pos(folio);
-+	size_t len = folio_size(folio);
-+	struct writeback_control wbc = {
-+		.sync_mode = WB_SYNC_ALL,
-+		.nr_to_write = 0,
-+		.range_start = range_start,
-+		.range_end = range_start + len - 1,
-+		.for_sync = 1,
-+	};
-+	int ret;
-+
-+	if (folio_test_writeback(folio))
-+		return -EBUSY;
-+	if (folio_clear_dirty_for_io(folio)) {
-+		trace_nfs_writeback_folio_reclaim(inode, range_start, len);
-+		ret = nfs_writepage_locked(folio, &wbc);
-+		trace_nfs_writeback_folio_reclaim_done(inode, range_start, len,
-+						       ret);
-+		return ret;
-+	}
-+	nfs_commit_inode(inode, 0);
-+	return 0;
-+}
-+
-+/**
-  * nfs_wb_folio - Write back all requests on one page
-  * @inode: pointer to page
-  * @folio: pointer to folio
---- a/include/linux/nfs_fs.h
-+++ b/include/linux/nfs_fs.h
-@@ -608,6 +608,7 @@ extern int  nfs_update_folio(struct file
- extern int nfs_sync_inode(struct inode *inode);
- extern int nfs_wb_all(struct inode *inode);
- extern int nfs_wb_folio(struct inode *inode, struct folio *folio);
-+extern int nfs_wb_folio_reclaim(struct inode *inode, struct folio *folio);
- int nfs_wb_folio_cancel(struct inode *inode, struct folio *folio);
- extern int  nfs_commit_inode(struct inode *, int);
- extern struct nfs_commit_data *nfs_commitdata_alloc(void);
+ /* Set the map extent flags for this mapping. */
 
 
 
