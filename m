@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229948-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wFobBthlwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-229457-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:10:00 +0100
+	id oCoJHQ9wwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229948-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D94B62F7A48
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:09:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 184B32F9052
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE663307F2D0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8249B31DAE26
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9772F3B8D55;
-	Mon, 23 Mar 2026 15:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7D03C13F1;
+	Mon, 23 Mar 2026 16:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvDMNGXf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tdhImHmx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574223B8BC5;
-	Mon, 23 Mar 2026 15:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B485B3B3BE5;
+	Mon, 23 Mar 2026 16:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279294; cv=none; b=lpqsDbXxvRbf/oU48t7F/b0LgopHQolrh70BeB207USBOm0SnGo/L1CUImTi2kASgrte6sqpsEO8KG5yppbsWEbWNsQmcw3trJ1d78SpgU+m9AkQhrA3ueKJC5rBhIPhHJv2uEWRwZegtT0XQbbJuzuOJ5sg//laqnzhJ6NHDeg=
+	t=1774283339; cv=none; b=q5tdXUziTfxsj4lRioTsmUuO5z+RZ8T9M5X5JnAGe1buyiGgC6hdOfh1CUf8DzbwtgPEFWBE2Xi4EZSK/AeVs5KpFRBiY+W0349VduAMIrohkS1XRvjSu5jzfZIaNjGfFU8jPhCYi55cpPu45WMojGwFdYleFq0uPcQ1/PUpaAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279294; c=relaxed/simple;
-	bh=vcpuxCl5wi96ykzRXYW8BjSYU4pZ9H6RCFhsPSvhA0I=;
+	s=arc-20240116; t=1774283339; c=relaxed/simple;
+	bh=1BIBfusO/OwtawEAzaiPyr8OqqIbQfa9caL88JJXhAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pozDLqPkHST/PCWLiCQJv+1832en4/popWsoYSgKCwttg+20sAXSYwFRnZVtUKdzbytBAm2sB/vTC5sQkKspM8Fi3pA+hFs/AhwBjBibr5b8dZX9JnfVZ4bet5g1axxlz/yMcP6sHxWJl1xyWc0c0oyhCW1x9blWfdk8jvLCjSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvDMNGXf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3F7C4CEF7;
-	Mon, 23 Mar 2026 15:21:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HY9UbQ0CQRmqr4MxR5oYieMGscTqovknPkAvxM39aFV2ZLqUPHM5NmyFG8UgDS2pttcdq69cVGKaa8i4L2A2/C27fyFEDPL719f7CNCMVlIKUWR7O41nVntTNvrBy2mibUx+9l0+7iUTnlkMyeAncx6BpCLJnhhLwcRZOq7xKSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tdhImHmx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF74C4CEF7;
+	Mon, 23 Mar 2026 16:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279294;
-	bh=vcpuxCl5wi96ykzRXYW8BjSYU4pZ9H6RCFhsPSvhA0I=;
+	s=korg; t=1774283339;
+	bh=1BIBfusO/OwtawEAzaiPyr8OqqIbQfa9caL88JJXhAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvDMNGXfEA8dwBnGWvbyyTaxl5CESyKcJFQ5qLv2J59SyQBiaEKjUR3HJVpZsV/Ai
-	 Sb6JCsEHHcro27URu6If0GUjoTv+Ejat/tyhzIrRgaQuabe17eb0/z0xs6fZIXgv4d
-	 4DnrL44jimyNAWfMrfNt1pC+QV5HB34bfOO1767I=
+	b=tdhImHmx70C+OJx1cfIo526e/beQAJnntypaZakmDmHp6n3bzYbROGf9hBreszoIx
+	 SEC+Wj6aw61tPSFOHBIR5F3Joj9S31gydiz7oZyTqqAlMEhkgYO9aQKRFfheMHiHnQ
+	 kmIZkXrF+iA3uSuWYY7+r7h1fjDCoobxDYPfHihQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Duoming Zhou" <duoming@zju.edu.cn>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 537/567] net: macb: fix uninitialized rx_fs_lock
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 6.1 475/481] wifi: brcmfmac: fix use-after-free when rescheduling brcmf_btcoex_info work
 Date: Mon, 23 Mar 2026 14:47:37 +0100
-Message-ID: <20260323134547.289096518@linuxfoundation.org>
+Message-ID: <20260323134536.796115706@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +64,136 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229457-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,broadcom.com,intel.com,163.com];
+	TAGGED_FROM(0.00)[bounces-229948-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qemu.org:url,ispras.ru:email]
-X-Rspamd-Queue-Id: D94B62F7A48
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 184B32F9052
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 34b11cc56e4369bc08b1f4c4a04222d75ed596ce ]
+[ Upstream commit 9cb83d4be0b9b697eae93d321e0da999f9cdfcfc ]
 
-If hardware doesn't support RX Flow Filters, rx_fs_lock spinlock is not
-initialized leading to the following assertion splat triggerable via
-set_rxnfc callback.
+The brcmf_btcoex_detach() only shuts down the btcoex timer, if the
+flag timer_on is false. However, the brcmf_btcoex_timerfunc(), which
+runs as timer handler, sets timer_on to false. This creates critical
+race conditions:
 
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 1 PID: 949 Comm: syz.0.6 Not tainted 6.1.164+ #113
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8d/0xba lib/dump_stack.c:106
- assign_lock_key kernel/locking/lockdep.c:974 [inline]
- register_lock_class+0x141b/0x17f0 kernel/locking/lockdep.c:1287
- __lock_acquire+0x74f/0x6c40 kernel/locking/lockdep.c:4928
- lock_acquire kernel/locking/lockdep.c:5662 [inline]
- lock_acquire+0x190/0x4b0 kernel/locking/lockdep.c:5627
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x33/0x50 kernel/locking/spinlock.c:162
- gem_del_flow_filter drivers/net/ethernet/cadence/macb_main.c:3562 [inline]
- gem_set_rxnfc+0x533/0xac0 drivers/net/ethernet/cadence/macb_main.c:3667
- ethtool_set_rxnfc+0x18c/0x280 net/ethtool/ioctl.c:961
- __dev_ethtool net/ethtool/ioctl.c:2956 [inline]
- dev_ethtool+0x229c/0x6290 net/ethtool/ioctl.c:3095
- dev_ioctl+0x637/0x1070 net/core/dev_ioctl.c:510
- sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
- sock_ioctl+0x577/0x6d0 net/socket.c:1320
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl fs/ioctl.c:856 [inline]
- __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:46 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+1.If brcmf_btcoex_detach() is called while brcmf_btcoex_timerfunc()
+is executing, it may observe timer_on as false and skip the call to
+timer_shutdown_sync().
 
-A more straightforward solution would be to always initialize rx_fs_lock,
-just like rx_fs_list.  However, in this case the driver set_rxnfc callback
-would return with a rather confusing error code, e.g. -EINVAL.  So deny
-set_rxnfc attempts directly if the RX filtering feature is not supported
-by hardware.
+2.The brcmf_btcoex_timerfunc() may then reschedule the brcmf_btcoex_info
+worker after the cancel_work_sync() has been executed, resulting in
+use-after-free bugs.
 
-Fixes: ae8223de3df5 ("net: macb: Added support for RX filtering")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20260316103826.74506-2-pchelkin@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The use-after-free bugs occur in two distinct scenarios, depending on
+the timing of when the brcmf_btcoex_info struct is freed relative to
+the execution of its worker thread.
+
+Scenario 1: Freed before the worker is scheduled
+
+The brcmf_btcoex_info is deallocated before the worker is scheduled.
+A race condition can occur when schedule_work(&bt_local->work) is
+called after the target memory has been freed. The sequence of events
+is detailed below:
+
+CPU0                           | CPU1
+brcmf_btcoex_detach            | brcmf_btcoex_timerfunc
+                               |   bt_local->timer_on = false;
+  if (cfg->btcoex->timer_on)   |
+    ...                        |
+  cancel_work_sync();          |
+  ...                          |
+  kfree(cfg->btcoex); // FREE  |
+                               |   schedule_work(&bt_local->work); // USE
+
+Scenario 2: Freed after the worker is scheduled
+
+The brcmf_btcoex_info is freed after the worker has been scheduled
+but before or during its execution. In this case, statements within
+the brcmf_btcoex_handler() — such as the container_of macro and
+subsequent dereferences of the brcmf_btcoex_info object will cause
+a use-after-free access. The following timeline illustrates this
+scenario:
+
+CPU0                            | CPU1
+brcmf_btcoex_detach             | brcmf_btcoex_timerfunc
+                                |   bt_local->timer_on = false;
+  if (cfg->btcoex->timer_on)    |
+    ...                         |
+  cancel_work_sync();           |
+  ...                           |   schedule_work(); // Reschedule
+                                |
+  kfree(cfg->btcoex); // FREE   |   brcmf_btcoex_handler() // Worker
+  /*                            |     btci = container_of(....); // USE
+   The kfree() above could      |     ...
+   also occur at any point      |     btci-> // USE
+   during the worker's execution|
+   */                           |
+
+To resolve the race conditions, drop the conditional check and call
+timer_shutdown_sync() directly. It can deactivate the timer reliably,
+regardless of its current state. Once stopped, the timer_on state is
+then set to false.
+
+Fixes: 61730d4dfffc ("brcmfmac: support critical protocol API for DHCP")
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Link: https://patch.msgid.link/20250822050839.4413-1-duoming@zju.edu.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ Keep del_timer_sync() instead of timer_shutdown_sync() here. ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 1907820a7209e..693688a580022 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3855,6 +3855,9 @@ static int gem_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
- 	struct macb *bp = netdev_priv(netdev);
- 	int ret;
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/btcoex.c
+@@ -392,10 +392,8 @@ void brcmf_btcoex_detach(struct brcmf_cf
+ 	if (!cfg->btcoex)
+ 		return;
  
-+	if (!(netdev->hw_features & NETIF_F_NTUPLE))
-+		return -EOPNOTSUPP;
-+
- 	switch (cmd->cmd) {
- 	case ETHTOOL_SRXCLSRLINS:
- 		if ((cmd->fs.location >= bp->max_tuples)
--- 
-2.51.0
-
+-	if (cfg->btcoex->timer_on) {
+-		cfg->btcoex->timer_on = false;
+-		del_timer_sync(&cfg->btcoex->timer);
+-	}
++	del_timer_sync(&cfg->btcoex->timer);
++	cfg->btcoex->timer_on = false;
+ 
+ 	cancel_work_sync(&cfg->btcoex->work);
+ 
 
 
 
