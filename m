@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228088-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ELw8Hx9LwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228268-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:59 +0100
+	id GGgVOEhGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228088-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E87232F40D3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC192F369D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54AFB3175598
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5ACD8301908A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DCB3B3885;
-	Mon, 23 Mar 2026 14:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D383AE1AD;
+	Mon, 23 Mar 2026 13:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMZdxxF8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/66gbN5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80F82823DD;
-	Mon, 23 Mar 2026 14:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40A13AD534;
+	Mon, 23 Mar 2026 13:54:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274636; cv=none; b=A90wJBcCTueSRtCcIx/mO9RKhbdVJNC23TEFr/V3geVlYkF5ZYnViOqf6vGqpHOqyrC2swO5/w+jYOXOnMzExVgEDtWD93vCPyeELtqdReFDfvM7iC7/h61+bcxSBEOV+CpvDJQty6wimgcRGumiPwwlQ5QfbWIs49OfKHLWC9o=
+	t=1774274088; cv=none; b=EkKwolvJf8b4rHwSHW+eXh6j0AJqs8GtG90guvk70wPEjU3asaGt7zSPQDesuId2Bux/000ufug//PTWWp6L9MR569ttybdO3dY6FkjwqepsdmrIi1FL0euO/i1DMgpbp9vz8hLLuEGnPYrwQr655xjtecSXsJJl47VWGxcHp1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274636; c=relaxed/simple;
-	bh=NGGWHMXFB/7wuq3JpztR79G9zYXITyto24f0/+VGPf0=;
+	s=arc-20240116; t=1774274088; c=relaxed/simple;
+	bh=X+MoVVFeaoP5eU115xSZ9Ru5lo9Y8HyOPHA/6SVxfN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEW4ecl3w7WQ/Qwd4d72IBhMKaRR+ftsluscsEx9wcp0qdUjsoPMen3q/mG2S7ERGdtCMuLZfTDIVjHtVrUdvag91wQ6dskgw3+swdfaiexC0ED2/qViVjQqOvx6kr5RiCRGZxUpMbKRWUD8gsgAdgXlQgsgDM0csugUMKRVhOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMZdxxF8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF09FC4CEF7;
-	Mon, 23 Mar 2026 14:03:55 +0000 (UTC)
+	 MIME-Version; b=bOlny+0GwtPKLYUZjA4ZfQ/Ehm5r9cDkX/QB05Mli/KDIl5EfUuX4A4OJmaqbrG6qz0Yxhr8G4rgdoPcgvTsmUPaA/qUbWnHY6ldlyo2WuPKRW/l/pgPQAXimeXT9QEDEujuZa283H08sH77Q9xFfMpapakh/wSYsJrgzWdgi/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/66gbN5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78966C2BCB4;
+	Mon, 23 Mar 2026 13:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274636;
-	bh=NGGWHMXFB/7wuq3JpztR79G9zYXITyto24f0/+VGPf0=;
+	s=korg; t=1774274087;
+	bh=X+MoVVFeaoP5eU115xSZ9Ru5lo9Y8HyOPHA/6SVxfN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMZdxxF8kkd/Jzyq+29tgGORnedHJwiehaZxPjZGl9uDQUsTh3tMFCVbW8/fXBLaI
-	 Cf+oqY9/cJ9V0JSpKu6DDSisE1Vl0FI6CVX+PLEYX/k0NV1r14UI/Ew4FUuPZ/bLKv
-	 RlKGeQ46WsQ8bjq3wkDT+rAGlf59QFXZju7laOEI=
+	b=u/66gbN5BFqHJeoaAUqfcGqQag3JitV8G83TderJWtwQvF+SYEYdtGBHCZ0r8iOfp
+	 V51e+G0kqCU6KbHjxP9lKVhiEEidxKuxxtGkVPbhnCv4Em9Sdnf3g9VZKUOIZzzMdt
+	 JC1AhbQDV1aiqHJvZfMLkGkuDpR7GPtJqN4oveqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	Finn Thain <fthain@linux-m68k.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.18 060/212] mtd: Avoid boot crash in RedBoot partition table parser
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 104/220] wifi: mac80211: remove keys after disabling beaconing
 Date: Mon, 23 Mar 2026 14:44:41 +0100
-Message-ID: <20260323134505.674364722@linuxfoundation.org>
+Message-ID: <20260323134507.893440203@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,88 +68,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228268-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228088-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bootlin.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E87232F40D3
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: AEC192F369D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 8e2f8020270af7777d49c2e7132260983e4fc566 upstream.
+[ Upstream commit 708bbb45537780a8d3721ca1e0cf1932c1d1bf5f ]
 
-Given CONFIG_FORTIFY_SOURCE=y and a recent compiler,
-commit 439a1bcac648 ("fortify: Use __builtin_dynamic_object_size() when
-available") produces the warning below and an oops.
+We shouldn't remove keys before disable beaconing, at least when
+beacon protection is used, since that would remove keys that are
+still used for beacon transmission at the same time. Stop before
+removing keys so there's no race.
 
-    Searching for RedBoot partition table in 50000000.flash at offset 0x7e0000
-    ------------[ cut here ]------------
-    WARNING: lib/string_helpers.c:1035 at 0xc029e04c, CPU#0: swapper/0/1
-    memcmp: detected buffer overflow: 15 byte read of buffer size 14
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.19.0 #1 NONE
-
-As Kees said, "'names' is pointing to the final 'namelen' many bytes
-of the allocation ... 'namelen' could be basically any length at all.
-This fortify warning looks legit to me -- this code used to be reading
-beyond the end of the allocation."
-
-Since the size of the dynamic allocation is calculated with strlen()
-we can use strcmp() instead of memcmp() and remain within bounds.
-
-Cc: Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: linux-hardening@vger.kernel.org
-Link: https://lore.kernel.org/all/202602151911.AD092DFFCD@keescook/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260303150339.574e7887b3ab.I50d708f5aa22584506a91d0da7f8a73ba39fceac@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/parsers/redboot.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/mac80211/cfg.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -270,9 +270,9 @@ nogood:
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index c81091a5cc3a3..e480b48e8365d 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1889,12 +1889,6 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
  
- 		strcpy(names, fl->img->name);
- #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
--		if (!memcmp(names, "RedBoot", 8) ||
--		    !memcmp(names, "RedBoot config", 15) ||
--		    !memcmp(names, "FIS directory", 14)) {
-+		if (!strcmp(names, "RedBoot") ||
-+		    !strcmp(names, "RedBoot config") ||
-+		    !strcmp(names, "FIS directory")) {
- 			parts[i].mask_flags = MTD_WRITEABLE;
- 		}
- #endif
+ 	__sta_info_flush(sdata, true, link_id, NULL);
+ 
+-	ieee80211_remove_link_keys(link, &keys);
+-	if (!list_empty(&keys)) {
+-		synchronize_net();
+-		ieee80211_free_key_list(local, &keys);
+-	}
+-
+ 	ieee80211_stop_mbssid(sdata);
+ 	RCU_INIT_POINTER(link_conf->tx_bss_conf, NULL);
+ 
+@@ -1906,6 +1900,12 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	ieee80211_link_info_change_notify(sdata, link,
+ 					  BSS_CHANGED_BEACON_ENABLED);
+ 
++	ieee80211_remove_link_keys(link, &keys);
++	if (!list_empty(&keys)) {
++		synchronize_net();
++		ieee80211_free_key_list(local, &keys);
++	}
++
+ 	if (sdata->wdev.links[link_id].cac_started) {
+ 		chandef = link_conf->chanreq.oper;
+ 		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
+-- 
+2.51.0
+
 
 
 
