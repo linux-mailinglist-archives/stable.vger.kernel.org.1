@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-228357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EC1WMMhOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:36 +0100
+	id oPpjJJNzwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:08:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0142F4A87
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AC92F97EB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:08:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 22AFD3089A0A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCA5332F78EB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F42293AF647;
-	Mon, 23 Mar 2026 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7433BE170;
+	Mon, 23 Mar 2026 16:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppQxPJFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amPBwGAu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A913AE18A;
-	Mon, 23 Mar 2026 14:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8533BD62F;
+	Mon, 23 Mar 2026 16:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274899; cv=none; b=UjhoTNwY1Wpevin3glRDibBrdtGYMALCDQ3GdBlc496dzEw6+vvsLFvmOl5KwSw32PVQPl+u+ROolnDccOlkfQLH9ga1VIepPTyM9ckZ/UbLANG2n8k4Fbj6e6n/FCyURFUJgGit75yzYAUgby/SF0WbIDr5LsGdbUKo7MzRxDs=
+	t=1774283060; cv=none; b=ALyy8xuuBKkzRfzHTSSHtkSNgm8oKRnZCe+4lS8ITJD2aJWrU50ye8zxC1YAnYS53Sb9n2ZP/uYDg4lk0+t3QoNKfQe2rgrEaJ8MP/791yko71hmXb5aJ5rz0jlIXlGtrwW45XSdjgb5/d7bnuXS5HQVqvnyjBe1AwBvznHYocI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274899; c=relaxed/simple;
-	bh=AWwkxctdNBwuq7xjfF38KyKMCeT1/pg/u6su1EffBR0=;
+	s=arc-20240116; t=1774283060; c=relaxed/simple;
+	bh=SK7tLH+n57lGiuDiqPp0Zg+xV8s+LFm8aGnqJetXs4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6OHb80X7Z5KKYYGoN9sJhkvijqL6csRtHaPHt4Dz0WLqrVZ/4NnVnPdq+AH1XAZ813BjaaYwJ8iHR5QIA7G5x7Em0x+j95y5s57KGFGI9OJJ365zaa353J3F3kaJBmAfRtHbW/CExSUBUIdyW3uH1YeQVs26ZQLuraWjTWaU5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppQxPJFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D38C4CEF7;
-	Mon, 23 Mar 2026 14:08:19 +0000 (UTC)
+	 MIME-Version; b=Jvt4FLHFzPt3eD4d/HTNiS2UjqGlT505P1jnN/j8+WOs/ynFczunNcaSubFL4Iecu5EEqwcFLe4/JV9uLpSeJlYU+lzpnzLBzf70avRnP26eYPxg6/EsWbzulWGfMJfUbMCpjThng1c29jKqvZnnvGDRum+VBI7YxVZY5eZLxcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amPBwGAu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21505C2BC9E;
+	Mon, 23 Mar 2026 16:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274899;
-	bh=AWwkxctdNBwuq7xjfF38KyKMCeT1/pg/u6su1EffBR0=;
+	s=korg; t=1774283060;
+	bh=SK7tLH+n57lGiuDiqPp0Zg+xV8s+LFm8aGnqJetXs4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppQxPJFFCrsshRPrF3EWFPzM9Yu8RYYYnSTdoKtqqnUsFEwskUltZlpiMnN5MU2er
-	 94nVge8TBAYmRdC5OPRUE/oph15v2Je7py7FICBn8fyVY+pwXI4DVczC1pKRkuFkYb
-	 VYCdeBSQxhIoM4J3MbNtgOkgiGKgfEgAg/BsOwzw=
+	b=amPBwGAu4xA1Wk/NhtSTWUB/c/Mb8GkavghY+zGwti1b3Llo2Jg3Teh6t+QC94MxZ
+	 TitUuKkbPFs0K3WvHHsfTG5K4miGzLBXfxVDyFYlA5gajq89cLijammTngZpS6Qx33
+	 ht+nlUqhyBMgJnc5cQoCBlC4a0Q5hijXgwXoLe6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianrui Dong <keenanat2000@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 149/212] net/sched: teql: Fix double-free in teql_master_xmit
+	Jeongjun Park <aha310510@gmail.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 6.1 388/481] drm/exynos: vidi: fix to avoid directly dereferencing user pointer
 Date: Mon, 23 Mar 2026 14:46:10 +0100
-Message-ID: <20260323134508.474565097@linuxfoundation.org>
+Message-ID: <20260323134534.604035907@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,236 +65,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228357-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229861-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3A0142F4A87
+X-Rspamd-Queue-Id: 09AC92F97EB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 66360460cab63c248ca5b1070a01c0c29133b960 ]
+commit d4c98c077c7fb2dfdece7d605e694b5ea2665085 upstream.
 
-Whenever a TEQL devices has a lockless Qdisc as root, qdisc_reset should
-be called using the seq_lock to avoid racing with the datapath. Failure
-to do so may cause crashes like the following:
+In vidi_connection_ioctl(), vidi->edid(user pointer) is directly
+dereferenced in the kernel.
 
-[  238.028993][  T318] BUG: KASAN: double-free in skb_release_data (net/core/skbuff.c:1139)
-[  238.029328][  T318] Free of addr ffff88810c67ec00 by task poc_teql_uaf_ke/318
-[  238.029749][  T318]
-[  238.029900][  T318] CPU: 3 UID: 0 PID: 318 Comm: poc_teql_ke Not tainted 7.0.0-rc3-00149-ge5b31d988a41 #704 PREEMPT(full)
-[  238.029906][  T318] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[  238.029910][  T318] Call Trace:
-[  238.029913][  T318]  <TASK>
-[  238.029916][  T318]  dump_stack_lvl (lib/dump_stack.c:122)
-[  238.029928][  T318]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
-[  238.029940][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
-[  238.029944][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-...
-[  238.029957][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
-[  238.029969][  T318]  kasan_report_invalid_free (mm/kasan/report.c:221 mm/kasan/report.c:563)
-[  238.029979][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
-[  238.029989][  T318]  check_slab_allocation (mm/kasan/common.c:231)
-[  238.029995][  T318]  kmem_cache_free (mm/slub.c:2637 (discriminator 1) mm/slub.c:6168 (discriminator 1) mm/slub.c:6298 (discriminator 1))
-[  238.030004][  T318]  skb_release_data (net/core/skbuff.c:1139)
-...
-[  238.030025][  T318]  sk_skb_reason_drop (net/core/skbuff.c:1256)
-[  238.030032][  T318]  pfifo_fast_reset (./include/linux/ptr_ring.h:171 ./include/linux/ptr_ring.h:309 ./include/linux/skb_array.h:98 net/sched/sch_generic.c:827)
-[  238.030039][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-...
-[  238.030054][  T318]  qdisc_reset (net/sched/sch_generic.c:1034)
-[  238.030062][  T318]  teql_destroy (./include/linux/spinlock.h:395 net/sched/sch_teql.c:157)
-[  238.030071][  T318]  __qdisc_destroy (./include/net/pkt_sched.h:328 net/sched/sch_generic.c:1077)
-[  238.030077][  T318]  qdisc_graft (net/sched/sch_api.c:1062 net/sched/sch_api.c:1053 net/sched/sch_api.c:1159)
-[  238.030089][  T318]  ? __pfx_qdisc_graft (net/sched/sch_api.c:1091)
-[  238.030095][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  238.030102][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  238.030106][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  238.030114][  T318]  tc_get_qdisc (net/sched/sch_api.c:1529 net/sched/sch_api.c:1556)
-...
-[  238.072958][  T318] Allocated by task 303 on cpu 5 at 238.026275s:
-[  238.073392][  T318]  kasan_save_stack (mm/kasan/common.c:58)
-[  238.073884][  T318]  kasan_save_track (mm/kasan/common.c:64 (discriminator 5) mm/kasan/common.c:79 (discriminator 5))
-[  238.074230][  T318]  __kasan_slab_alloc (mm/kasan/common.c:369)
-[  238.074578][  T318]  kmem_cache_alloc_node_noprof (./include/linux/kasan.h:253 mm/slub.c:4542 mm/slub.c:4869 mm/slub.c:4921)
-[  238.076091][  T318]  kmalloc_reserve (net/core/skbuff.c:616 (discriminator 107))
-[  238.076450][  T318]  __alloc_skb (net/core/skbuff.c:713)
-[  238.076834][  T318]  alloc_skb_with_frags (./include/linux/skbuff.h:1383 net/core/skbuff.c:6763)
-[  238.077178][  T318]  sock_alloc_send_pskb (net/core/sock.c:2997)
-[  238.077520][  T318]  packet_sendmsg (net/packet/af_packet.c:2926 net/packet/af_packet.c:3019 net/packet/af_packet.c:3108)
-[  238.081469][  T318]
-[  238.081870][  T318] Freed by task 299 on cpu 1 at 238.028496s:
-[  238.082761][  T318]  kasan_save_stack (mm/kasan/common.c:58)
-[  238.083481][  T318]  kasan_save_track (mm/kasan/common.c:64 (discriminator 5) mm/kasan/common.c:79 (discriminator 5))
-[  238.085348][  T318]  kasan_save_free_info (mm/kasan/generic.c:587 (discriminator 1))
-[  238.085900][  T318]  __kasan_slab_free (mm/kasan/common.c:287)
-[  238.086439][  T318]  kmem_cache_free (mm/slub.c:6168 (discriminator 3) mm/slub.c:6298 (discriminator 3))
-[  238.087007][  T318]  skb_release_data (net/core/skbuff.c:1139)
-[  238.087491][  T318]  consume_skb (net/core/skbuff.c:1451)
-[  238.087757][  T318]  teql_master_xmit (net/sched/sch_teql.c:358)
-[  238.088116][  T318]  dev_hard_start_xmit (./include/linux/netdevice.h:5324 ./include/linux/netdevice.h:5333 net/core/dev.c:3871 net/core/dev.c:3887)
-[  238.088468][  T318]  sch_direct_xmit (net/sched/sch_generic.c:347)
-[  238.088820][  T318]  __qdisc_run (net/sched/sch_generic.c:420 (discriminator 1))
-[  238.089166][  T318]  __dev_queue_xmit (./include/net/sch_generic.h:229 ./include/net/pkt_sched.h:121 ./include/net/pkt_sched.h:117 net/core/dev.c:4196 net/core/dev.c:4802)
+This allows arbitrary kernel memory access from the user space, so instead
+of directly accessing the user pointer in the kernel, we should modify it
+to copy edid to kernel memory using copy_from_user() and use it.
 
-Workflow to reproduce:
-1. Initialize a TEQL topology (dummy0 and ifb0 as slaves, teql0 up).
-2. Start multiple sender workers continuously transmitting packets
-   through teql0 to drive teql_master_xmit().
-3. In parallel, repeatedly delete and re-add the root qdisc on
-   dummy0 and ifb0 via RTNETLINK, forcing frequent teardown and reset activity
-   (teql_destroy() / qdisc_reset()).
-4. After running both workloads concurrently for several iterations,
-   KASAN reports slab-use-after-free or double-free in the skb free path.
-
-Fix this by moving dev_reset_queue to sch_generic.h and calling it, instead
-of qdisc_reset, in teql_destroy since it handles both the lock and lockless
-cases correctly for root qdiscs.
-
-Fixes: 96009c7d500e ("sched: replace __QDISC_STATE_RUNNING bit with a spin lock")
-Reported-by: Xianrui Dong <keenanat2000@gmail.com>
-Tested-by: Xianrui Dong <keenanat2000@gmail.com>
-Co-developed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260315155422.147256-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sch_generic.h | 28 ++++++++++++++++++++++++++++
- net/sched/sch_generic.c   | 27 ---------------------------
- net/sched/sch_teql.c      |  7 ++-----
- 3 files changed, 30 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 1518454c906e1..84c86decebdfa 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -696,6 +696,34 @@ void qdisc_destroy(struct Qdisc *qdisc);
- void qdisc_put(struct Qdisc *qdisc);
- void qdisc_put_unlocked(struct Qdisc *qdisc);
- void qdisc_tree_reduce_backlog(struct Qdisc *qdisc, int n, int len);
-+
-+static inline void dev_reset_queue(struct net_device *dev,
-+				   struct netdev_queue *dev_queue,
-+				   void *_unused)
-+{
-+	struct Qdisc *qdisc;
-+	bool nolock;
-+
-+	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
-+	if (!qdisc)
-+		return;
-+
-+	nolock = qdisc->flags & TCQ_F_NOLOCK;
-+
-+	if (nolock)
-+		spin_lock_bh(&qdisc->seqlock);
-+	spin_lock_bh(qdisc_lock(qdisc));
-+
-+	qdisc_reset(qdisc);
-+
-+	spin_unlock_bh(qdisc_lock(qdisc));
-+	if (nolock) {
-+		clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
-+		clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
-+		spin_unlock_bh(&qdisc->seqlock);
-+	}
-+}
-+
- #ifdef CONFIG_NET_SCHED
- int qdisc_offload_dump_helper(struct Qdisc *q, enum tc_setup_type type,
- 			      void *type_data);
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 7dee9748a56be..30d77ad7b81d2 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -1297,33 +1297,6 @@ static void dev_deactivate_queue(struct net_device *dev,
- 	}
- }
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -252,19 +252,26 @@ int vidi_connection_ioctl(struct drm_dev
  
--static void dev_reset_queue(struct net_device *dev,
--			    struct netdev_queue *dev_queue,
--			    void *_unused)
--{
--	struct Qdisc *qdisc;
--	bool nolock;
--
--	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
--	if (!qdisc)
--		return;
--
--	nolock = qdisc->flags & TCQ_F_NOLOCK;
--
--	if (nolock)
--		spin_lock_bh(&qdisc->seqlock);
--	spin_lock_bh(qdisc_lock(qdisc));
--
--	qdisc_reset(qdisc);
--
--	spin_unlock_bh(qdisc_lock(qdisc));
--	if (nolock) {
--		clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
--		clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
--		spin_unlock_bh(&qdisc->seqlock);
--	}
--}
--
- static bool some_qdisc_is_busy(struct net_device *dev)
- {
- 	unsigned int i;
-diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
-index 783300d8b0197..ec4039a201a2c 100644
---- a/net/sched/sch_teql.c
-+++ b/net/sched/sch_teql.c
-@@ -146,15 +146,12 @@ teql_destroy(struct Qdisc *sch)
- 					master->slaves = NEXT_SLAVE(q);
- 					if (q == master->slaves) {
- 						struct netdev_queue *txq;
--						spinlock_t *root_lock;
+ 	if (vidi->connection) {
+ 		struct edid *raw_edid;
++		struct edid edid_buf;
++		void *edid_userptr = u64_to_user_ptr(vidi->edid);
  
- 						txq = netdev_get_tx_queue(master->dev, 0);
- 						master->slaves = NULL;
- 
--						root_lock = qdisc_root_sleeping_lock(rtnl_dereference(txq->qdisc));
--						spin_lock_bh(root_lock);
--						qdisc_reset(rtnl_dereference(txq->qdisc));
--						spin_unlock_bh(root_lock);
-+						dev_reset_queue(master->dev,
-+								txq, NULL);
- 					}
- 				}
- 				skb_queue_purge(&dat->q);
--- 
-2.51.0
-
+-		raw_edid = (struct edid *)(unsigned long)vidi->edid;
+-		if (!drm_edid_is_valid(raw_edid)) {
++		if (copy_from_user(&edid_buf, edid_userptr, sizeof(struct edid)))
++			return -EFAULT;
++
++		if (!drm_edid_is_valid(&edid_buf)) {
+ 			DRM_DEV_DEBUG_KMS(ctx->dev,
+ 					  "edid data is invalid.\n");
+ 			return -EINVAL;
+ 		}
+-		ctx->raw_edid = drm_edid_duplicate(raw_edid);
+-		if (!ctx->raw_edid) {
++
++		raw_edid = drm_edid_duplicate(&edid_buf);
++
++		if (!raw_edid) {
+ 			DRM_DEV_DEBUG_KMS(ctx->dev,
+ 					  "failed to allocate raw_edid.\n");
+ 			return -ENOMEM;
+ 		}
++		ctx->raw_edid = raw_edid;
+ 	} else {
+ 		/*
+ 		 * with connection = 0, free raw_edid
 
 
 
