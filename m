@@ -1,195 +1,162 @@
-Return-Path: <stable+bounces-230009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230010-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yLWXOjKiwWknUQQAu9opvQ
-	(envelope-from <stable+bounces-230009-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 21:27:30 +0100
+	id SPyeCNSkwWknUQQAu9opvQ
+	(envelope-from <stable+bounces-230010-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 21:38:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801FF2FD32B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 21:27:30 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395D52FD5E5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 21:38:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A25593056B5C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:20:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E57F63010232
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CCD3B9600;
-	Mon, 23 Mar 2026 20:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10F43E1234;
+	Mon, 23 Mar 2026 20:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m3tjUud9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HeoYXWVr"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B70E3D6483;
-	Mon, 23 Mar 2026 20:20:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39763366548
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 20:38:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774297237; cv=none; b=MixkbWPR4xoWB0evfEHzq9vJG9W6jpyVK8S9KM4NniVXSUwCjUowQ3Z4wg/swVdBYqLVAtI9ahy7YGddVUoCoDqVSZtHu91jul7KU5O9LCBS5iRA12KEtHiuJ6Y9m1qT0OjnNbl4uo8/DBQo/600GL7ZsrlN4F8BnQiQxfAaBF8=
+	t=1774298303; cv=none; b=XgNKn72Hd95XNZbLF+vTmSZv9ewafRmz+DQ2zt3klQDB6e0Z3qetZXAaDksJueBCQq/upzlF1OcHFsGnYpQlwI9P53TFPUIEkSRX+fWFNS7F4ECp1U+OOxJE0ywxbqri4Kry1tl/cVM91DRlkIU4bgXqs/cnnUrbdf38Gejs3uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774297237; c=relaxed/simple;
-	bh=ZLHOz0Vhge18irIpqyrf1TiEfpaeI3B97dPXYKcSdrA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=bsenZiyr5mNikDZFKRf6Kf0yMiNIECFYJk7kZZX8BUfpBy8cLmW1b4iHp0KL4JeBs1c4stiqxaSBhzUgzB++r/b8USlLAXCkKxVkc/f529RPv6mhT6tFL/+pns4Mjns9Ct89qkmpOUWzJHXAQnFtpajGAZY1oLciP8jdWLXvz/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m3tjUud9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A27FC4CEF7;
-	Mon, 23 Mar 2026 20:20:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774297236;
-	bh=ZLHOz0Vhge18irIpqyrf1TiEfpaeI3B97dPXYKcSdrA=;
-	h=From:Date:Subject:To:Cc:From;
-	b=m3tjUud9rFQPQaZyJRAY9SpAB1DNiJyc+UcwiuLzB5h0bY7pWHYTYSvTH943RsHEO
-	 6e5Pi39Rrzpwf1yLjJdW5h+d9YsESPw4H4N2I/VwEwP7wlqIKKYg3w6Ri/Mi2tigFw
-	 8KEBNgavyP22XjykBTcUyoumFbUZM5qmvpcGQRASgiRkoucX3jVgvhUPgnqbIbb99D
-	 gfxNlCrmVoav1OeK7xP4IbeLmB/iHgFXlSXwbY7MfEcqOoXZOPjdVymGoRowRRJltB
-	 CcFIdqirNL0d+XC3hvXe1nEIV59llQ5nvAfPKp/FOewg5vixNtfoEk0EBW7KHtgmbl
-	 SAIyJxcnZYLVA==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 23 Mar 2026 21:20:18 +0100
-Subject: [PATCH] mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
+	s=arc-20240116; t=1774298303; c=relaxed/simple;
+	bh=bmp/yOgzmdlRU6okEZtkVNgZl7QYHRiAPp8uQ7GZZAc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MAJ5ISyKkN2fmxeCBOmfosSMQg0BATfzrVv8Vm3xpGhLq+daHjDADILnb5JlxmhpPCBIKTl6zjy7bioDyeT1IT/5iDmlrGE5QjBKyZjKLXRFlKDCJ4FTiNZi2NcIm6nj1PxHXX0Q9AVvoYYXW0LwWHPGnj/JHlpA7AzelugbTqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HeoYXWVr; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-509061dab77so5020251cf.2
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 13:38:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1774298297; x=1774903097; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8s7Or+WfsmbZ1yFXmrGEyc1Xjx9iH+BN4idldBQ5KMg=;
+        b=HeoYXWVrRDHtCvD9X7i6IDIcK5Inhbh/qNeIGeAIeYHJCNb40Rv6FKXOpzeP5pmTOP
+         kzN8+iv85uk5RdbIIPUJrh1AvTHU1q9+bhhPMh1hXtRMl1e/ACZzgQg1bYQDSabzuWMT
+         FCQq9R+5u9eqga8g6GQ/jPcP7E/mylQYldo9j9KQqRmGBI081YmdvEjFgtBWytF7DYcy
+         2jNqoFX9w89glg3k0OeTKnt16mOr31oGFYBd5+WV/+ZmkcIApJ6c7d6bFfwjsKWMBYU7
+         Jeys7I7EhGKY2x9W4AAcxsVQa6pIRDLokmZRQP0GY4GJpfDXoLaNGdWxr0EM6znGxw+1
+         y2Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774298297; x=1774903097;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8s7Or+WfsmbZ1yFXmrGEyc1Xjx9iH+BN4idldBQ5KMg=;
+        b=pq3SvxUsUiFmE7ux0QDl9K0DbTCV0F0yUyHaQIVfIYYcPAtr4R0nqZ7rH6NUcrVCIY
+         Cyfpsc6X15q6xJYGxq0MEM6c6iCdfAcx0yFJsJkYbcSP1O4UQlx361a4R1gcthslWNhR
+         X5hai3SOsa12GghseSqZ+gOfituL3n5SV6Cpc06hRbaZF3UIynEOMXFR5/HeGzTzF+gJ
+         4fJc18iCpE5Js6Q7LywHm09ZZW9YsRqC7rxbE6b1RJtsHQ2P4ysZx0PSM9yA4cGm95ei
+         1D/Cgd9kzRZelVR3b2fWpyL46RQvVIjxlrtAoP2m9FVdhBoUsaqQay7ZiU2kRJ+f6QVL
+         8OeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVrWZcl+oI3ISn0SenOb+XyjwmJ53gzI+eHNWSC2hnQ0jeQ884nlZJ5lkhi7W7T8VUYidH9zto=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzojMr2CgqYMEPNG2jeAHWqAZS/wmsiZmIoSaCSfeLGIgD/ij5R
+	gBH+raxi0qtry2PTRxIUwc+7llNp8kjlRklQJ2NYdqkESffi1md99CGQ
+X-Gm-Gg: ATEYQzwoaTTGQXo0+1Ib7vTdmF9M5/XYAOPPKYAQ2tFSreFtcM2ylS1QFSlg1eBQuk4
+	lLiSqbVCuQJmTpjEUy9EjfxyHY8tzZvhra/lFqyWVuKyoyzHKJsWG642t3aVkCEPvISazVbvmKG
+	yXyEUkMgXIH3339cJBtQOtt1UoOK9zUL8qYsJoMVclrGW2mTAQyePjxmpMnFMgSPQXhj6U9yat3
+	rXHRJmM35BIdJZzcg64Zx9gzhLDl1dxtPEJzwNTkrcTK4NktSf0NVH0bASoLe9RXwB1txuVCw7L
+	nR/TcmA+up5lflC/cDhh4dew6etylo8f4cMrg3LUv6f/EUGGft0ABDaqF7s4txsmmubO/vmSnPl
+	Sb9b6jjs+QTr6JLSIQeqOdJE4sYB2ENEf9iDHdex0jqDfPsIsX9fsjLpsYACTXViZKjFPpVanWr
+	v7MM+oofu0b9kR6jpNDa8fm5gxQuuaEpZD4wXA8MSXqi4ufT68Dg==
+X-Received: by 2002:a05:622a:9d8:10b0:50b:29a6:8696 with SMTP id d75a77b69052e-50b373a1b75mr153981631cf.7.1774298297316;
+        Mon, 23 Mar 2026 13:38:17 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50b36d0671csm94143701cf.10.2026.03.23.13.38.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 13:38:16 -0700 (PDT)
+Message-ID: <4cacde08-9d71-4f74-98c7-cf269ed91504@gmail.com>
+Date: Mon, 23 Mar 2026 13:38:13 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 000/460] 6.12.78-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260323134526.647552166@linuxfoundation.org>
+Content-Language: en-US, fr-FR
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-follow_pfnmap_fix-v1-1-5b0ec10872b3@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAIGgwWkC/x2MWwqAIBAArxL7nVBuL7pKRGittVAqChVEd0/6n
- IGZByIFpgh99kCgkyM7m6DMM5g3ZVcSvCQGWcimQInCuH131+SNPZSfDN9CK90iYl01nYLU+UB
- J/89hfN8PJTkTEWMAAAA=
-To: linux-kernel@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Peter Xu <peterx@redhat.com>, linux-mm@kvack.org, 
- Alex Williamson <alex@shazbot.org>, Max Boone <mboone@akamai.com>, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.13.0
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-230010-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-230009-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[david@kernel.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ffainelli@gmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 801FF2FD32B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 395D52FD5E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-follow_pfnmap_start() suffers from two problems:
+On 3/23/26 06:39, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.78 release.
+> There are 460 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.78-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-(1) We are not re-fetching the pmd/pud after taking the PTL
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Therefore, we are not properly stabilizing what the lock lock actually
-protects. If there is concurrent zapping, we would indicate to the
-caller that we found an entry, however, that entry might already have
-been invalidated, or contain a different PFN after taking the lock.
-
-Properly use pmdp_get() / pudp_get() after taking the lock.
-
-(2) pmd_leaf() / pud_leaf() are not well defined on non-present entries
-
-pmd_leaf()/pud_leaf() could wrongly trigger on non-present entries.
-
-There is no real guarantee that pmd_leaf()/pud_leaf() returns something
-reasonable on non-present entries. Most architectures indeed either
-perform a present check or make it work by smart use of flags.
-
-However, for example loongarch checks the _PAGE_HUGE flag in pmd_leaf(),
-and always sets the _PAGE_HUGE flag in __swp_entry_to_pmd(). Whereby
-pmd_trans_huge() explicitly checks pmd_present(), pmd_leaf() does not
-do that.
-
-Let's check pmd_present()/pud_present() before assuming "the is a
-present PMD leaf" when spotting pmd_leaf()/pud_leaf(), like other page
-table handling code that traverses user page tables does.
-
-Given that non-present PMD entries are likely rare in VM_IO|VM_PFNMAP,
-(1) is likely more relevant than (2). It is questionable how often (1)
-would actually trigger, but let's CC stable to be sure.
-
-This was found by code inspection.
-
-Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-Gave it a quick test in a VM with MM selftests etc, but I am not sure if
-I actually trigger the follow_pfnmap machinery.
----
- mm/memory.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 219b9bf6cae0..2921d35c50ae 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6868,11 +6868,16 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 
- 	pudp = pud_offset(p4dp, address);
- 	pud = pudp_get(pudp);
--	if (pud_none(pud))
-+	if (!pud_present(pud))
- 		goto out;
- 	if (pud_leaf(pud)) {
- 		lock = pud_lock(mm, pudp);
--		if (!unlikely(pud_leaf(pud))) {
-+		pud = pudp_get(pudp);
-+
-+		if (unlikely(!pud_present(pud))) {
-+			spin_unlock(lock);
-+			goto out;
-+		} else if (unlikely(!pud_leaf(pud))) {
- 			spin_unlock(lock);
- 			goto retry;
- 		}
-@@ -6884,9 +6889,16 @@ int follow_pfnmap_start(struct follow_pfnmap_args *args)
- 
- 	pmdp = pmd_offset(pudp, address);
- 	pmd = pmdp_get_lockless(pmdp);
-+	if (!pmd_present(pmd))
-+		goto out;
- 	if (pmd_leaf(pmd)) {
- 		lock = pmd_lock(mm, pmdp);
--		if (!unlikely(pmd_leaf(pmd))) {
-+		pmd = pmdp_get(pmdp);
-+
-+		if (unlikely(!pmd_present(pmd))) {
-+			spin_unlock(lock);
-+			goto out;
-+		} else if (unlikely(!pmd_leaf(pmd))) {
- 			spin_unlock(lock);
- 			goto retry;
- 		}
-
----
-base-commit: 3f4f1faa33544d0bd724e32980b6f211c3a9bc7b
-change-id: 20260323-follow_pfnmap_fix-bab73335468a
-
-Best regards,
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-David Hildenbrand (Arm) <david@kernel.org>
-
+Florian
 
