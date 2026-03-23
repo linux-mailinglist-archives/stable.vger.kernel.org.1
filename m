@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228571-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wEsxIsxrwWlMTAQAu9opvQ
-	(envelope-from <stable+bounces-229605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:24 +0100
+	id EK9CDaRLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228571-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89B4C2F85FB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54B5D2F41FC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6046D30138D6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ADE7F3007A61
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69EE3BE166;
-	Mon, 23 Mar 2026 16:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A0C369204;
+	Mon, 23 Mar 2026 14:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H1AEm2Tz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhhFlznU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7737A3BD646;
-	Mon, 23 Mar 2026 16:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BD51E5B88;
+	Mon, 23 Mar 2026 14:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282371; cv=none; b=ogx763YdcWOR13LFRoxStyK7Tk4acydjKUNk/i+73KfOPhEBeYCZEtTzHghY+4CuHNFNVlpcMg1B8JU4YwELW3oF/QCx3q/6+Ifm3mbI9fuH6pJfgmU8oceBFNvohVswJnboxccuZVvwa3HAKCaGH+vEG1L5c4KAR9aCXimS0L4=
+	t=1774275482; cv=none; b=md2MtHclDEsVEUrJ3PABKsSqfK3uj8f+N3vCIOzI/uS6eVRf1klRDS+iU5CN5KtLnivL3a+uPjjffA7AjGYaXUdDDLcLdsZP1NTX8gyKxtHa3SlAGODJD37p1sfdkFnt54rKDk18p7s8I/P3qM+gGO8H32JLXTcDqGqdT7DgZKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282371; c=relaxed/simple;
-	bh=CTX3ZzeEnxo226BfY7lXQ1t1D1brwT2b/1t3xC3D7B8=;
+	s=arc-20240116; t=1774275482; c=relaxed/simple;
+	bh=YRObyxn26eEK5uO2Pwz4pbQITFXHKNmLA2BBtm36bJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FI5jlVcs8wWBP01kywsX42uijHE4czrZXWkojPnAkoE0wCrkPcAogTVYzoInIbxFnSwl9/0FLykHmATbjMquQokFDHveq+ASZ75ay4mNJvVElBNr9m0HW0HDxZRnI7J9I41eQdcg0+6AxbdN7X3+rJwY08rfdxI34+VMnSLkxXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H1AEm2Tz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D770AC2BC9E;
-	Mon, 23 Mar 2026 16:12:50 +0000 (UTC)
+	 MIME-Version; b=GD71WEJLgrDnViCZghwNBMyy8Mt2J3QCv5Wv1EY/WFZlpmY7aPEk2a1LYaMXEHbTjAyWxUo4dp8VIUOpyEmTlSrP6xFeCdMnbRuhTPlPl4K9yCqWRiBmTwkikwWrnyOkZLkIJZz09CVdrBOOQ5829y+f4OA9RPO+bSToIKtX860=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhhFlznU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B1BC2BC9E;
+	Mon, 23 Mar 2026 14:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282371;
-	bh=CTX3ZzeEnxo226BfY7lXQ1t1D1brwT2b/1t3xC3D7B8=;
+	s=korg; t=1774275482;
+	bh=YRObyxn26eEK5uO2Pwz4pbQITFXHKNmLA2BBtm36bJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H1AEm2TzEXETFevRKyhAhy0OJdwkJB2ugc7kK0Vh73Uk+RMqf3Ii+U/iKg7jLlkYm
-	 b9xV90IPPu6S91QjZo1rQzQulb9Xfcr0r8toCl5AGpyN61fUlCa1RYrkKDjaBhZYdR
-	 POJwwKeI6cKLaIHjTOC/utDW0BY6dOtlJG135tTo=
+	b=FhhFlznUTNxY04laNhCtWBeRlzvavGVSou6CNYJ+L4gNISAne9xMmQid7C/ZdzaNc
+	 bQnshOD4EmoFklRO88qTKSaPGvKRlKf+K9es69Jveu8VvaB/nwiXneWqTPK9peAga+
+	 N8v2u/Hwe/5xMe5JwgwWd37hAPdJFhRVeQCoc5Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/481] net: sched: avoid qdisc_reset_all_tx_gt() vs dequeue race for lockless qdiscs
-Date: Mon, 23 Mar 2026 14:41:52 +0100
-Message-ID: <20260323134528.437790838@linuxfoundation.org>
+	Benno Lossin <lossin@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.12 117/460] rust: kbuild: allow `unused_features`
+Date: Mon, 23 Mar 2026 14:41:53 +0100
+Message-ID: <20260323134529.507718408@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229605-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228571-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,121 +90,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 89B4C2F85FB
+X-Rspamd-Queue-Id: 54B5D2F41FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 7f083faf59d14c04e01ec05a7507f036c965acf8 ]
+commit 592c61f3bfceaa29f8275696bd67c3dfad7ef72e upstream.
 
-When shrinking the number of real tx queues,
-netif_set_real_num_tx_queues() calls qdisc_reset_all_tx_gt() to flush
-qdiscs for queues which will no longer be used.
+Starting with the upcoming Rust 1.96.0 (to be released 2026-05-28),
+`rustc` introduces the new lint `unused_features` [1], which warns [2]:
 
-qdisc_reset_all_tx_gt() currently serializes qdisc_reset() with
-qdisc_lock(). However, for lockless qdiscs, the dequeue path is
-serialized by qdisc_run_begin/end() using qdisc->seqlock instead, so
-qdisc_reset() can run concurrently with __qdisc_run() and free skbs
-while they are still being dequeued, leading to UAF.
+    warning: feature `used_with_arg` is declared but not used
+     --> <crate attribute>:1:93
+      |
+    1 | #![feature(asm_const,asm_goto,arbitrary_self_types,lint_reasons,offset_of_nested,raw_ref_op,used_with_arg)]
+      |                                                                                             ^^^^^^^^^^^^^
+      |
+      = note: `#[warn(unused_features)]` (part of `#[warn(unused)]`) on by default
 
-This can easily be reproduced on e.g. virtio-net by imposing heavy
-traffic while frequently changing the number of queue pairs:
+The original goal of using `-Zcrate-attr` automatically was that there
+is a consistent set of features enabled and managed globally for all
+Rust kernel code (modulo exceptions like the `rust/` crated).
 
-  iperf3 -ub0 -c $peer -t 0 &
-  while :; do
-    ethtool -L eth0 combined 1
-    ethtool -L eth0 combined 2
-  done
+While we could require crates to enable features manually (even if we
+still keep the `-Zallow-features=` list, i.e. removing the `-Zcrate-attr`
+list), it is not really worth making all developers worry about it just
+for a new lint.
 
-With KASAN enabled, this leads to reports like:
+The features are expected to eventually become stable anyway (most already
+did), and thus having to remove features in every file that may use them
+is not worth it either.
 
-  BUG: KASAN: slab-use-after-free in __qdisc_run+0x133f/0x1760
-  ...
-  Call Trace:
-   <TASK>
-   ...
-   __qdisc_run+0x133f/0x1760
-   __dev_queue_xmit+0x248f/0x3550
-   ip_finish_output2+0xa42/0x2110
-   ip_output+0x1a7/0x410
-   ip_send_skb+0x2e6/0x480
-   udp_send_skb+0xb0a/0x1590
-   udp_sendmsg+0x13c9/0x1fc0
-   ...
-   </TASK>
+Thus just allow the new lint globally.
 
-  Allocated by task 1270 on cpu 5 at 44.558414s:
-   ...
-   alloc_skb_with_frags+0x84/0x7c0
-   sock_alloc_send_pskb+0x69a/0x830
-   __ip_append_data+0x1b86/0x48c0
-   ip_make_skb+0x1e8/0x2b0
-   udp_sendmsg+0x13a6/0x1fc0
-   ...
+The lint actually existed for a long time, which is why `rustc` does
+not complain about an unknown lint in the stable versions we support,
+but it was "disabled" years ago [3], and now it was made to work again.
 
-  Freed by task 1306 on cpu 3 at 44.558445s:
-   ...
-   kmem_cache_free+0x117/0x5e0
-   pfifo_fast_reset+0x14d/0x580
-   qdisc_reset+0x9e/0x5f0
-   netif_set_real_num_tx_queues+0x303/0x840
-   virtnet_set_channels+0x1bf/0x260 [virtio_net]
-   ethnl_set_channels+0x684/0xae0
-   ethnl_default_set_doit+0x31a/0x890
-   ...
+For extra context, the new implementation of the lint has already been
+improved to avoid linting about features that became stable thanks to
+Benno's report and the ensuing discussion [4] [5], but while that helps,
+it is still the case that we may have features enabled that are not used
+for one reason or another in a particular crate.
 
-Serialize qdisc_reset_all_tx_gt() against the lockless dequeue path by
-taking qdisc->seqlock for TCQ_F_NOLOCK qdiscs, matching the
-serialization model already used by dev_reset_queue().
-
-Additionally clear QDISC_STATE_NON_EMPTY after reset so the qdisc state
-reflects an empty queue, avoiding needless re-scheduling.
-
-Fixes: 6b3ba9146fe6 ("net: sched: allow qdiscs to handle locking")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Link: https://patch.msgid.link/20260228145307.3955532-1-den@valinux.co.jp
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust/pull/152164 [1]
+Link: https://github.com/Rust-for-Linux/pin-init/pull/114 [2]
+Link: https://github.com/rust-lang/rust/issues/44232 [3]
+Link: https://github.com/rust-lang/rust/issues/153523 [4]
+Link: https://github.com/rust-lang/rust/pull/153610 [5]
+Reviewed-by: Benno Lossin <lossin@kernel.org>
+Reviewed-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20260312111014.74198-1-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sch_generic.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index b34e9e93a1463..7bb73448de0d3 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -724,13 +724,23 @@ static inline bool skb_skip_tc_classify(struct sk_buff *skb)
- static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
- {
- 	struct Qdisc *qdisc;
-+	bool nolock;
- 
- 	for (; i < dev->num_tx_queues; i++) {
- 		qdisc = rtnl_dereference(netdev_get_tx_queue(dev, i)->qdisc);
- 		if (qdisc) {
-+			nolock = qdisc->flags & TCQ_F_NOLOCK;
-+
-+			if (nolock)
-+				spin_lock_bh(&qdisc->seqlock);
- 			spin_lock_bh(qdisc_lock(qdisc));
- 			qdisc_reset(qdisc);
- 			spin_unlock_bh(qdisc_lock(qdisc));
-+			if (nolock) {
-+				clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
-+				clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
-+				spin_unlock_bh(&qdisc->seqlock);
-+			}
- 		}
- 	}
- }
--- 
-2.51.0
-
+--- a/Makefile
++++ b/Makefile
+@@ -446,6 +446,7 @@ KBUILD_USERLDFLAGS := $(USERLDFLAGS)
+ export rust_common_flags := --edition=2021 \
+ 			    -Zbinary_dep_depinfo=y \
+ 			    -Astable_features \
++			    -Aunused_features \
+ 			    -Dnon_ascii_idents \
+ 			    -Dunsafe_op_in_unsafe_fn \
+ 			    -Wmissing_docs \
 
 
 
