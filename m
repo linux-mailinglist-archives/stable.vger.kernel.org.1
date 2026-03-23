@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229704-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKGGLohZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229163-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:28 +0100
+	id mMMUJmxswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229704-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6060A2F618A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4F92F87B9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5EC2305AD4D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7EB0E31F0B67
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1859F3AD527;
-	Mon, 23 Mar 2026 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05CF53BE148;
+	Mon, 23 Mar 2026 16:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wkda3gDM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUAeD0ph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD463AB277;
-	Mon, 23 Mar 2026 15:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0613BE140;
+	Mon, 23 Mar 2026 16:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278259; cv=none; b=eNL6mBYVOdUNVQqYhyaA8W3+I5H+54LmDIjTPwyBbk223eP1bY3TYvYXgMv5asBgUWLeEHjNp+mIIxSk415AK1FbCmDpE7NQd0hJLumHHR63aeiL16r9vxAD9yZxNL1F2MrWmYgqKR+RYUz2+c4glK+YqGq7K8DLmmdhj5trwVA=
+	t=1774282642; cv=none; b=oScvuP5kXveu59xNeUOnXgPUjrE6zNFjVOdwBuMo24Dcm1veyH1jd4jugW1F0fAviYTovlzuk+TJiozbaMwY6AAknlFyMVgWWc3mFb8svdVZ4R+60T73wZcjq4uAKLJPSak9ZeqtwnaAjyO5eOAO3PGZbBkmwYZScp6Ezo6QoYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278259; c=relaxed/simple;
-	bh=ArLrOOjLH+TjQnqOjuMqE3olKb6HPPgutZA2Nrnl1GE=;
+	s=arc-20240116; t=1774282642; c=relaxed/simple;
+	bh=1j7LZTI104M0fx+Njx3gA7S6y1b8Lfn4yc2ezctwjRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q5dtoYn0c/ouIFPnKRH4NIdqinqJ6BO797oennkPia09UOO8Vp8gzgVBNEEo0rZgsTkv31GT1u/7jgVruHNPYtzVP+vgrqdDJdYA6mo9uuQ9O8cYDHLrCQRr7OzhXuS4X4SwExVs73KQF6fbiMtbeqtVLA2r0WEmeF2YiEopcDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wkda3gDM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CF1C4CEF7;
-	Mon, 23 Mar 2026 15:04:19 +0000 (UTC)
+	 MIME-Version; b=a7xs+6LmF7XJiDW0w9+WdPRDcxoF3X/WZWfRBnaPLgmLg6YO1CrR+tmQnqbyJaVJFbH6QtKwJIVKPluc6OHrI1irJXzFnhinUhGbdpXF+lgq3/p+0xD27CgVGIlmVMYUXPOz9fqQwFkWp/4DfbU2ldlZbI/g86bBx6yHAl+vJZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUAeD0ph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232E7C4CEF7;
+	Mon, 23 Mar 2026 16:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278259;
-	bh=ArLrOOjLH+TjQnqOjuMqE3olKb6HPPgutZA2Nrnl1GE=;
+	s=korg; t=1774282641;
+	bh=1j7LZTI104M0fx+Njx3gA7S6y1b8Lfn4yc2ezctwjRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wkda3gDM94LpBNpILt5xTN0dV4rDz7a+utiOR6nPqTIGK3Bnl25EPG7mlrXSGcAQ3
-	 1tJUXd9lB5ZHDF6vlxVkNLs2OZswUlIwtVmp3AlowymbHbLzNIIr8+F9ssTVlM83A2
-	 vEufjHXStoLQoiox5993AZOMw9KT8HRASNJLEApk=
+	b=YUAeD0phG+CBqWDTfYANK/aZgJYf4tAB1VxM2bU18X6SPT/cBHjloPuItR72L4Dz9
+	 G+C74XJOGg1qT0NZ19Yd3YuLOz/XXjqwIrFVIhDUq32iLUasufXpPsp/687e1GU0Y6
+	 s/aiQypey3wqgfkRtfp1VDXKDryTzq2Pdwhj2Tr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Vollrath <tactii@gmail.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 251/567] e1000/e1000e: Fix leak in DMA error cleanup
+Subject: [PATCH 6.1 189/481] ASoC: amd: acp3x-rt5682-max9836: Add missing error check for clock acquisition
 Date: Mon, 23 Mar 2026 14:42:51 +0100
-Message-ID: <20260323134540.046239370@linuxfoundation.org>
+Message-ID: <20260323134529.804188869@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,98 +69,76 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229163-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229704-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6060A2F618A
+X-Rspamd-Queue-Id: CC4F92F87B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Vollrath <tactii@gmail.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit e94eaef11142b01f77bf8ba4d0b59720b7858109 ]
+[ Upstream commit 53f3a900e9a383d47af7253076e19f510c5708d0 ]
 
-If an error is encountered while mapping TX buffers, the driver should
-unmap any buffers already mapped for that skb.
+The acp3x_5682_init() function did not check the return value of
+clk_get(), which could lead to dereferencing error pointers in
+rt5682_clk_enable().
 
-Because count is incremented after a successful mapping, it will always
-match the correct number of unmappings needed when dma_error is reached.
-Decrementing count before the while loop in dma_error causes an
-off-by-one error. If any mapping was successful before an unsuccessful
-mapping, exactly one DMA mapping would leak.
+Fix this by:
+1. Changing clk_get() to the device-managed devm_clk_get().
+2. Adding proper IS_ERR() checks for both clock acquisitions.
 
-In these commits, a faulty while condition caused an infinite loop in
-dma_error:
-Commit 03b1320dfcee ("e1000e: remove use of skb_dma_map from e1000e
-driver")
-Commit 602c0554d7b0 ("e1000: remove use of skb_dma_map from e1000 driver")
-
-Commit c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of
-unsigned in *_tx_map()") fixed the infinite loop, but introduced the
-off-by-one error.
-
-This issue may still exist in the igbvf driver, but I did not address it
-in this patch.
-
-Fixes: c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of unsigned in *_tx_map()")
-Assisted-by: Claude:claude-4.6-opus
-Signed-off-by: Matt Vollrath <tactii@gmail.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 6b8e4e7db3cd ("ASoC: amd: Add machine driver for Raven based platform")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260310024246.2153827-1-nichen@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000/e1000_main.c | 2 --
- drivers/net/ethernet/intel/e1000e/netdev.c    | 2 --
- 2 files changed, 4 deletions(-)
+ sound/soc/amd/acp3x-rt5682-max9836.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
-index d015a0a85f078..8dcb5d7c5a4b3 100644
---- a/drivers/net/ethernet/intel/e1000/e1000_main.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
-@@ -2951,8 +2951,6 @@ static int e1000_tx_map(struct e1000_adapter *adapter,
- dma_error:
- 	dev_err(&pdev->dev, "TX DMA map failed\n");
- 	buffer_info->dma = 0;
--	if (count)
--		count--;
+diff --git a/sound/soc/amd/acp3x-rt5682-max9836.c b/sound/soc/amd/acp3x-rt5682-max9836.c
+index 0543dda75b99a..a557de7e39410 100644
+--- a/sound/soc/amd/acp3x-rt5682-max9836.c
++++ b/sound/soc/amd/acp3x-rt5682-max9836.c
+@@ -83,8 +83,13 @@ static int acp3x_5682_init(struct snd_soc_pcm_runtime *rtd)
+ 		return ret;
+ 	}
  
- 	while (count--) {
- 		if (i == 0)
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 7e4fea0e186b6..9e9138ccac421 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -5633,8 +5633,6 @@ static int e1000_tx_map(struct e1000_ring *tx_ring, struct sk_buff *skb,
- dma_error:
- 	dev_err(&pdev->dev, "Tx DMA map failed\n");
- 	buffer_info->dma = 0;
--	if (count)
--		count--;
+-	rt5682_dai_wclk = clk_get(component->dev, "rt5682-dai-wclk");
+-	rt5682_dai_bclk = clk_get(component->dev, "rt5682-dai-bclk");
++	rt5682_dai_wclk = devm_clk_get(component->dev, "rt5682-dai-wclk");
++	if (IS_ERR(rt5682_dai_wclk))
++		return PTR_ERR(rt5682_dai_wclk);
++
++	rt5682_dai_bclk = devm_clk_get(component->dev, "rt5682-dai-bclk");
++	if (IS_ERR(rt5682_dai_bclk))
++		return PTR_ERR(rt5682_dai_bclk);
  
- 	while (count--) {
- 		if (i == 0)
+ 	ret = snd_soc_card_jack_new(card, "Headset Jack",
+ 				SND_JACK_HEADSET | SND_JACK_LINEOUT |
 -- 
 2.51.0
 
