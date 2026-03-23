@@ -1,72 +1,57 @@
-Return-Path: <stable+bounces-228752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229783-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uLoxLrlowWliSwQAu9opvQ
-	(envelope-from <stable+bounces-228752-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:22:17 +0100
+	id kBBpHs9qwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-229783-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:31:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14C832F7F67
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:22:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AA92F839B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:31:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86F1F32C6C49
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 83B9931715B1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73015388E52;
-	Mon, 23 Mar 2026 14:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28DCB3BD655;
+	Mon, 23 Mar 2026 16:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pgYzjTpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+xRAw4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3696E1459FA;
-	Mon, 23 Mar 2026 14:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03593BD240;
+	Mon, 23 Mar 2026 16:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277028; cv=none; b=VdKiza4dUeUMKCA4NlbuJBUa6e6dvY7FXEH0A6CfSBT/3p4UDplLItmJnq0jGhpHaOyxxZ8DprywViFQM8nfgW7wOtU5HahnqLFh9H2nn2QnVama9XFimfWRDwBpC6tR/r2wOlHV7TyVN+iHSNzqmqbUL2vUU6izuRf+L5u/zO0=
+	t=1774282853; cv=none; b=UZqg9zo0ZT/iz8E1VJaEr6/w1iq8dEbtkKBABZbP6GAXobvcqJmTLpF51k9bCV6oUjzF4mY4JML1q+vnovpxiMJfBCjE+/EjZZmZL1hepf3DknjxOgfndr97EC7Cau8/A7wOiIT5jb/Mig7Nx4JPJPW822WPs3WdmD0kIyCtEAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277028; c=relaxed/simple;
-	bh=L4MLnQGoxbRwPKvgNDqlFdryrKlV7TwZiyQgezZq9/I=;
+	s=arc-20240116; t=1774282853; c=relaxed/simple;
+	bh=a0WlojgjZjYdwZTEygtY3sOItUkuwFS2osDvmfcX+50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIg03MoLwiViFUeCnYSzWt8KXDn+JmfjD8CoI9x97QQz+p2EsovL/4RhsZy0N4jz2ZLLYamVMqx2waPndSDVRB4EAgY+cofDcnWkVIBauKBvtXvrOHT9mwCet44V+UmHFjal+uo/DfYro+t1yQh18NQvu/m7xlZFiJYxzLVuJEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pgYzjTpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CC2C4CEF7;
-	Mon, 23 Mar 2026 14:43:47 +0000 (UTC)
+	 MIME-Version; b=KltudXepKYEmhzyiYITB065eZx1NwPs7I5MZCN+kkNJA6quzfKzV0/ZsWt7lE32SAjsR0RvDpnGvzwevFcgprVIiRWmrqllalRkGGc5tAG7uxU/kl8CucILd4qmeofaEGO2QY3C2mY1wnUcPDqlqjnZC+vXfFJPo/IZLMF3UulE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+xRAw4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD47C4CEF7;
+	Mon, 23 Mar 2026 16:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277028;
-	bh=L4MLnQGoxbRwPKvgNDqlFdryrKlV7TwZiyQgezZq9/I=;
+	s=korg; t=1774282852;
+	bh=a0WlojgjZjYdwZTEygtY3sOItUkuwFS2osDvmfcX+50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pgYzjTptjx8Sp8cynXAPH3salIJ/qonh4l13V5A/2sjReLFmCSUS1IONC6at6Pack
-	 uEBPChyVwk6icMqkgc5omexHKH3+28WgZ10o2dzIlELZWEvSfgrjdEyn6SWbAm7xJL
-	 FRyi6YICGwvQnO/O6kcnQgAbq4d9VGar2XH0mFV0=
+	b=r+xRAw4Lu755PjWNsdw9CAHB/BpJ9JoQBUh+PK1Nwq8VKup6OUtSZO2xGPweHDAIg
+	 SOyGzlMMiUUnFK2doa8EZtnujRv/rvNb8QkOdPdfpF761CYeOBYAPG1+QJblx1bZ6Z
+	 o4FGL22f1DNlAoHqq+55TCFDtKyef9xqEreNjkaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Deepanshu Kartikey <Kartikey406@gmail.com>,
-	syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com,
-	Lance Yang <lance.yang@linux.dev>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Barry Song <baohua@kernel.org>,
-	Ackerley Tng <ackerleytng@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Fangrui Song <i@maskray.me>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <shy828301@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 295/460] mm: thp: deny THP for files on anonymous inodes
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 309/481] drm/amdgpu: apply state adjust rules to some additional HAINAN vairants
 Date: Mon, 23 Mar 2026 14:44:51 +0100
-Message-ID: <20260323134533.735545970@linuxfoundation.org>
+Message-ID: <20260323134532.637643194@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -77,141 +62,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TAGGED_FROM(0.00)[bounces-228752-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,syzkaller.appspotmail.com,linux.dev,kernel.org,google.com,oracle.com,linux.alibaba.com,arm.com,maskray.me,redhat.com,nvidia.com,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229783-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable,33a04338019ac7e43a44];
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 14C832F7F67
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,gitlab.freedesktop.org:url]
+X-Rspamd-Queue-Id: 19AA92F839B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit dd085fe9a8ebfc5d10314c60452db38d2b75e609 upstream.
+commit 9787f7da186ee8143b7b6d914cfa0b6e7fee2648 upstream.
 
-file_thp_enabled() incorrectly allows THP for files on anonymous inodes
-(e.g. guest_memfd and secretmem). These files are created via
-alloc_file_pseudo(), which does not call get_write_access() and leaves
-inode->i_writecount at 0. Combined with S_ISREG(inode->i_mode) being
-true, they appear as read-only regular files when
-CONFIG_READ_ONLY_THP_FOR_FS is enabled, making them eligible for THP
-collapse.
+They need a similar workaround.
 
-Anonymous inodes can never pass the inode_is_open_for_write() check
-since their i_writecount is never incremented through the normal VFS
-open path. The right thing to do is to exclude them from THP eligibility
-altogether, since CONFIG_READ_ONLY_THP_FOR_FS was designed for real
-filesystem files (e.g. shared libraries), not for pseudo-filesystem
-inodes.
-
-For guest_memfd, this allows khugepaged and MADV_COLLAPSE to create
-large folios in the page cache via the collapse path, but the
-guest_memfd fault handler does not support large folios. This triggers
-WARN_ON_ONCE(folio_test_large(folio)) in kvm_gmem_fault_user_mapping().
-
-For secretmem, collapse_file() tries to copy page contents through the
-direct map, but secretmem pages are removed from the direct map. This
-can result in a kernel crash:
-
-    BUG: unable to handle page fault for address: ffff88810284d000
-    RIP: 0010:memcpy_orig+0x16/0x130
-    Call Trace:
-     collapse_file
-     hpage_collapse_scan_file
-     madvise_collapse
-
-Secretmem is not affected by the crash on upstream as the memory failure
-recovery handles the failed copy gracefully, but it still triggers
-confusing false memory failure reports:
-
-    Memory failure: 0x106d96f: recovery action for clean unevictable
-    LRU page: Recovered
-
-Check IS_ANON_FILE(inode) in file_thp_enabled() to deny THP for all
-anonymous inode files.
-
-Link: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
-Link: https://lore.kernel.org/linux-mm/CAEvNRgHegcz3ro35ixkDw39ES8=U6rs6S7iP0gkR9enr7HoGtA@mail.gmail.com
-Link: https://lkml.kernel.org/r/20260214001535.435626-1-kartikey406@gmail.com
-Fixes: 7fbb5e188248 ("mm: remove VM_EXEC requirement for THP eligibility")
-Signed-off-by: Deepanshu Kartikey <Kartikey406@gmail.com>
-Reported-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=33a04338019ac7e43a44
-Tested-by: syzbot+33a04338019ac7e43a44@syzkaller.appspotmail.com
-Tested-by: Lance Yang <lance.yang@linux.dev>
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-Tested-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Fangrui Song <i@maskray.me>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Nico Pache <npache@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Ackerley: we don't have IS_ANON_FILE() yet. As guest_memfd does
-  not apply yet, simply check for secretmem explicitly. ]
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1839
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0de31d92a173d3d94f28051b0b80a6c98913aed4)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/huge_mm.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -7,6 +7,7 @@
- 
- #include <linux/fs.h> /* only for vma_is_dax() */
- #include <linux/kobject.h>
-+#include <linux/secretmem.h>
- 
- vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf);
- int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
-@@ -262,6 +263,9 @@ static inline bool file_thp_enabled(stru
- 
- 	inode = vma->vm_file->f_inode;
- 
-+	if (secretmem_mapping(inode->i_mapping))
-+		return false;
-+
- 	return (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS)) &&
- 	       !inode_is_open_for_write(inode) && S_ISREG(inode->i_mode);
- }
+--- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
++++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
+@@ -3439,9 +3439,11 @@ static void si_apply_state_adjust_rules(
+ 	if (adev->asic_type == CHIP_HAINAN) {
+ 		if ((adev->pdev->revision == 0x81) ||
+ 		    (adev->pdev->revision == 0xC3) ||
++		    (adev->pdev->device == 0x6660) ||
+ 		    (adev->pdev->device == 0x6664) ||
+ 		    (adev->pdev->device == 0x6665) ||
+-		    (adev->pdev->device == 0x6667)) {
++		    (adev->pdev->device == 0x6667) ||
++		    (adev->pdev->device == 0x666F)) {
+ 			max_sclk = 75000;
+ 		}
+ 		if ((adev->pdev->revision == 0xC3) ||
 
 
 
