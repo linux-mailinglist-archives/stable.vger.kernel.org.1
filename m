@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229287-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAvjMHtuwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229740-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:51 +0100
+	id GLkkFIpdwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229287-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A5BC2F8C8F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAE82F67E4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AAC6030706E9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9096E30537BC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DCD3B9DA5;
-	Mon, 23 Mar 2026 16:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0E42773EE;
+	Mon, 23 Mar 2026 15:10:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rf+wfFMb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VD2yelZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A5D3B0ACB;
-	Mon, 23 Mar 2026 16:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F6F3B52E2;
+	Mon, 23 Mar 2026 15:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282740; cv=none; b=Tl1MuZeHU8tg9SI9Bh6q/tglevjjZrkFpiq3Nre9kIB3GQFskK6V19N8A6eFvEYgRJzUTfZm8j49WKL/8ILBJuy5WPJziJJwHAgUkRAtrFnJAPNfKyU+uabw94IZirLF0uZoIY6JMcxElxgLShIQvfrR2n/f0f4Pq0Va04GvafE=
+	t=1774278644; cv=none; b=Jkcwv2gNB01+oGHVC1cd5orlg7XUKyv85dZb5/XOK2EZgPGTo/pqhhAGojzMwpOxXSLLhtcaAGp9SS8U0oaDyOPa03ulyqVwDKpaHapo7tSHvh41eaGIgmBW5U9K2ZsxGH12RBJlgxJFK8ZF+lrkNysoxK0jLU3Br7lZhot5R8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282740; c=relaxed/simple;
-	bh=vox3dZRh2KiFVSNsoMI1q7u8XP5igeH+zd+1/FArLGs=;
+	s=arc-20240116; t=1774278644; c=relaxed/simple;
+	bh=ib43nOFM/G/9jaXO8zu9pfcnTNAPyN6N44kfRjxjgBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+0tdBJjtI8eOl8snYdppp8+U4FE+1JTQ1kdFoS93USYDUiammvLjMcxwxx8JjU5GkT0C5g1Z5kT9VY1u1TuEScaANpTTgy2zq4mqYxONIiAKQATyHbauA1zeSzuaWaFJGVLKoOHFpsZskZ3jgPtiPM293sAKl1fXhWZBUaEO9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rf+wfFMb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0308BC4CEF7;
-	Mon, 23 Mar 2026 16:18:59 +0000 (UTC)
+	 MIME-Version; b=CX3H+K0czlPoJ44BctyFMW25gsQZw+SfmB5ePunhE02w5yFTzqwKSRggn+WWCu7KBKmG4kip6j+OVgqGupTWXCCgZzjDCCPkQzPNPumW2wHnHei0jSi+j23n2MYwukAHO6SV91isWSxtMhC2oGkOUOdVM46yISnfWaqy88Sv328=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VD2yelZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77304C4CEF7;
+	Mon, 23 Mar 2026 15:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282740;
-	bh=vox3dZRh2KiFVSNsoMI1q7u8XP5igeH+zd+1/FArLGs=;
+	s=korg; t=1774278643;
+	bh=ib43nOFM/G/9jaXO8zu9pfcnTNAPyN6N44kfRjxjgBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rf+wfFMbwWXE2lV2MCfWrvG6CcsVGFtPyIugvzcO/brHk5u86dySfysZhOCFU6vAG
-	 2M6G/ibkXywKsSSG/7MocrFOCjTLmNuqoa090jajbFMlvo5r9NS8iw4YXyVbFVs1r0
-	 gT357QU0ec76wco3QkIHFFoj/ibYqK+nm6E6uijE=
+	b=VD2yelZoq4qLpYEswr4QAB14RK2sNeqz6QeSlO0AVsG97dgUMWwVDrTNadrM2ElrE
+	 bYrjpBkS9ikfAUYIM+gyyl1Pa8k2zqooNVCphfHbP8yLRZKkqJ+uDUVnTQAB3CaSRS
+	 FXR75mJZETUfInns5bPYGp0xpoPARocl51XTtmX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Tomasz Duszynski <tduszyns@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 267/481] iio: chemical: sps30_i2c: fix buffer size in sps30_i2c_read_meas()
-Date: Mon, 23 Mar 2026 14:44:09 +0100
-Message-ID: <20260323134531.645527826@linuxfoundation.org>
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 330/567] ksmbd: fix use-after-free by using call_rcu() for oplock_info
+Date: Mon, 23 Mar 2026 14:44:10 +0100
+Message-ID: <20260323134541.998234861@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +65,147 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229740-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-229287-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5A5BC2F8C8F
+X-Rspamd-Queue-Id: EBAE82F67E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 216345f98cae7fcc84f49728c67478ac00321c87 upstream.
+commit 1dfd062caa165ec9d7ee0823087930f3ab8a6294 upstream.
 
-sizeof(num) evaluates to sizeof(size_t) (8 bytes on 64-bit) instead
-of the intended __be32 element size (4 bytes). Use sizeof(*meas) to
-correctly match the buffer element type.
+ksmbd currently frees oplock_info immediately using kfree(), even
+though it is accessed under RCU read-side critical sections in places
+like opinfo_get() and proc_show_files().
 
-Fixes: 8f3f13085278 ("iio: sps30: separate core and interface specific code")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Acked-by: Tomasz Duszynski <tduszyns@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Since there is no RCU grace period delay between nullifying the pointer
+and freeing the memory, a reader can still access oplock_info
+structure after it has been freed. This can leads to a use-after-free
+especially in opinfo_get() where atomic_inc_not_zero() is called on
+already freed memory.
+
+Fix this by switching to deferred freeing using call_rcu().
+
+Fixes: 18b4fac5ef17 ("ksmbd: fix use-after-free in smb_break_all_levII_oplock()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/sps30_i2c.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/oplock.c |   29 +++++++++++++++++++++--------
+ fs/smb/server/oplock.h |    5 +++--
+ 2 files changed, 24 insertions(+), 10 deletions(-)
 
---- a/drivers/iio/chemical/sps30_i2c.c
-+++ b/drivers/iio/chemical/sps30_i2c.c
-@@ -171,7 +171,7 @@ static int sps30_i2c_read_meas(struct sp
- 	if (!sps30_i2c_meas_ready(state))
- 		return -ETIMEDOUT;
- 
--	return sps30_i2c_command(state, SPS30_I2C_READ_MEAS, NULL, 0, meas, sizeof(num) * num);
-+	return sps30_i2c_command(state, SPS30_I2C_READ_MEAS, NULL, 0, meas, sizeof(*meas) * num);
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -120,7 +120,7 @@ static void free_lease(struct oplock_inf
+ 	kfree(lease);
  }
  
- static int sps30_i2c_clean_fan(struct sps30_state *state)
+-static void free_opinfo(struct oplock_info *opinfo)
++static void __free_opinfo(struct oplock_info *opinfo)
+ {
+ 	if (opinfo->is_lease)
+ 		free_lease(opinfo);
+@@ -129,6 +129,18 @@ static void free_opinfo(struct oplock_in
+ 	kfree(opinfo);
+ }
+ 
++static void free_opinfo_rcu(struct rcu_head *rcu)
++{
++	struct oplock_info *opinfo = container_of(rcu, struct oplock_info, rcu);
++
++	__free_opinfo(opinfo);
++}
++
++static void free_opinfo(struct oplock_info *opinfo)
++{
++	call_rcu(&opinfo->rcu, free_opinfo_rcu);
++}
++
+ struct oplock_info *opinfo_get(struct ksmbd_file *fp)
+ {
+ 	struct oplock_info *opinfo;
+@@ -176,9 +188,9 @@ void opinfo_put(struct oplock_info *opin
+ 	free_opinfo(opinfo);
+ }
+ 
+-static void opinfo_add(struct oplock_info *opinfo)
++static void opinfo_add(struct oplock_info *opinfo, struct ksmbd_file *fp)
+ {
+-	struct ksmbd_inode *ci = opinfo->o_fp->f_ci;
++	struct ksmbd_inode *ci = fp->f_ci;
+ 
+ 	down_write(&ci->m_lock);
+ 	list_add(&opinfo->op_entry, &ci->m_op_list);
+@@ -1279,20 +1291,21 @@ set_lev:
+ 	set_oplock_level(opinfo, req_op_level, lctx);
+ 
+ out:
+-	rcu_assign_pointer(fp->f_opinfo, opinfo);
+-	opinfo->o_fp = fp;
+-
+ 	opinfo_count_inc(fp);
+-	opinfo_add(opinfo);
++	opinfo_add(opinfo, fp);
++
+ 	if (opinfo->is_lease) {
+ 		err = add_lease_global_list(opinfo);
+ 		if (err)
+ 			goto err_out;
+ 	}
+ 
++	rcu_assign_pointer(fp->f_opinfo, opinfo);
++	opinfo->o_fp = fp;
++
+ 	return 0;
+ err_out:
+-	free_opinfo(opinfo);
++	__free_opinfo(opinfo);
+ 	return err;
+ }
+ 
+--- a/fs/smb/server/oplock.h
++++ b/fs/smb/server/oplock.h
+@@ -76,8 +76,9 @@ struct oplock_info {
+ 	struct lease		*o_lease;
+ 	struct list_head        op_entry;
+ 	struct list_head        lease_entry;
+-	wait_queue_head_t oplock_q; /* Other server threads */
+-	wait_queue_head_t oplock_brk; /* oplock breaking wait */
++	wait_queue_head_t	oplock_q; /* Other server threads */
++	wait_queue_head_t	oplock_brk; /* oplock breaking wait */
++	struct rcu_head		rcu;
+ };
+ 
+ struct lease_break_info {
 
 
 
