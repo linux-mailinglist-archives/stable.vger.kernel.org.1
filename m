@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229318-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mN70NPxLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:40 +0100
+	id mA2TCI9ewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229318-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CC12F432B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A35F92F6A05
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C9F453028416
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5844346B5E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191183B0AC7;
-	Mon, 23 Mar 2026 14:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591133B635A;
+	Mon, 23 Mar 2026 15:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aBZmoneL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swlYwepL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFD53AEF22;
-	Mon, 23 Mar 2026 14:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C984282F0C;
+	Mon, 23 Mar 2026 15:12:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274767; cv=none; b=KKlL2B6tTTtt5PFWKMa/5gLRHuBkWrgmKbRobtfOCR/IaguA+SOhOZIn1Te+633bZjPhFkjVIRz1j09C5OFvZQZ+hvWoojcm2ChdqaxVr5G19VEDu1H/Cp9Rwo/nhnrewiGfAoRHpv3K8DjJF082gDR8wvbJKMw6joaxNBsUkAU=
+	t=1774278740; cv=none; b=Sv2FMbMNQz+3vQa/vfd3hConW8pGjo2/X1o9JtFIf405CGA0SgqulF4AC1I4su51T9BZMygPK2u8f+LB30RSuz0enPA7XiJdg6B34vc8X6M2QwJVxVpBT+l9ELQfSNimZoSwz9vuVnSksfm32ENKBUmMalXZIDd1YZ8owVj8AYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274767; c=relaxed/simple;
-	bh=jac9PeboftAlQLCcaetn7VRVt8oBNDw6mQ7xoA8p5l0=;
+	s=arc-20240116; t=1774278740; c=relaxed/simple;
+	bh=z2tKeE60t1ifKNA9H5ufsEwqreeYJ0lMVnUL+53q9vM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WunivIb2/LxsSn++z6xq+Uz4/3PQEKLt/jr4BWo57JW8FVNujPmW6aeRA0+Do1z4kNbu/g0f6MtLLLj7PMrWiL2lVQifblXMaKob7lakXdHwvZB22FPSPucpBp5JK+BNXdRe/e3++kw1G2udUvZdz6Lhavh0aYPcskV/QUOoooU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aBZmoneL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18080C4CEF7;
-	Mon, 23 Mar 2026 14:06:06 +0000 (UTC)
+	 MIME-Version; b=bynPb782Wncd7CFre/obdIdwgkV011zKC6vBPAPGpQW4O8x0Rjjkl3NdMX8tGLMkB8NvslIqBiHW+tnvJl2nIwW8A6uHtvegsiYAqLfNVUSE4p2xde/BlcsJDrLlRfFM6mDqPRXM8EOWYOVqiZDAM8MeElkPFWlTwQeyq3QDH4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swlYwepL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9548EC2BC9E;
+	Mon, 23 Mar 2026 15:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274767;
-	bh=jac9PeboftAlQLCcaetn7VRVt8oBNDw6mQ7xoA8p5l0=;
+	s=korg; t=1774278740;
+	bh=z2tKeE60t1ifKNA9H5ufsEwqreeYJ0lMVnUL+53q9vM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aBZmoneLtv/JPQaUXUSNFi6nclu0lVlGu0V5aLs8Iqno+9VOBR4DzUKOqvX8ta5j6
-	 oDsXBnzpCVi83m2JCJPIKuOtyOocJ4Gz7KR4u+5QUxIcwJg88TwHS9LmzEGVTIf3p+
-	 0PgiWdRbKPTRlu+lSvnX6kooOOyb8o6EF8KpaotU=
+	b=swlYwepLgKZlyx3B0iLVINc11a5SZPXfpF+faLifKND4fzgc7oMQ2IA6essOMf9xb
+	 KRsceP4Oz1qgzo0rdr0LBoZTi9xRbp7Lr95zTvg2a/xCMO+XMN4RiwpoBcgBirnTGt
+	 zHTfwMgcLVq33ZUVScLweRhCXvgOzj3tiaYSSSSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 102/212] cache: starfive: fix device node leak in starlink_cache_init()
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 403/567] arm64: mm: Batch dsb and isb when populating pgtables
 Date: Mon, 23 Mar 2026 14:45:23 +0100
-Message-ID: <20260323134507.003073042@linuxfoundation.org>
+Message-ID: <20260323134543.840900035@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +67,121 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com,microchip.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228310-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229318-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A4CC12F432B
+X-Rspamd-Queue-Id: A35F92F6A05
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 3c85234b979af71cb9db5eb976ea08a468415767 ]
+[ Upstream commit 1fcb7cea8a5f7747e02230f816c2c80b060d9517 ]
 
-of_find_matching_node() returns a device_node with refcount incremented.
+After removing uneccessary TLBIs, the next bottleneck when creating the
+page tables for the linear map is DSB and ISB, which were previously
+issued per-pte in __set_pte(). Since we are writing multiple ptes in a
+given pte table, we can elide these barriers and insert them once we
+have finished writing to the table.
 
-Use __free(device_node) attribute to automatically call of_node_put()
-when the variable goes out of scope, preventing the refcount leak.
+Execution time of map_mem(), which creates the kernel linear map page
+tables, was measured on different machines with different RAM configs:
 
-Fixes: cabff60ca77d ("cache: Add StarFive StarLink cache management")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+               | Apple M2 VM | Ampere Altra| Ampere Altra| Ampere Altra
+               | VM, 16G     | VM, 64G     | VM, 256G    | Metal, 512G
+---------------|-------------|-------------|-------------|-------------
+               |   ms    (%) |   ms    (%) |   ms    (%) |    ms    (%)
+---------------|-------------|-------------|-------------|-------------
+before         |   78   (0%) |  435   (0%) | 1723   (0%) |  3779   (0%)
+after          |   11 (-86%) |  161 (-63%) |  656 (-62%) |  1654 (-56%)
+
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Tested-by: Eric Chanudet <echanude@redhat.com>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240412131908.433043-3-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Ryan: Trivial backport ]
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cache/starfive_starlink_cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/pgtable.h |    7 ++++++-
+ arch/arm64/mm/mmu.c              |   11 ++++++++++-
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cache/starfive_starlink_cache.c b/drivers/cache/starfive_starlink_cache.c
-index 24c7d078ca227..3a25d2d7c70ca 100644
---- a/drivers/cache/starfive_starlink_cache.c
-+++ b/drivers/cache/starfive_starlink_cache.c
-@@ -102,11 +102,11 @@ static const struct of_device_id starlink_cache_ids[] = {
+--- a/arch/arm64/include/asm/pgtable.h
++++ b/arch/arm64/include/asm/pgtable.h
+@@ -262,9 +262,14 @@ static inline pte_t pte_mkdevmap(pte_t p
+ 	return set_pte_bit(pte, __pgprot(PTE_DEVMAP | PTE_SPECIAL));
+ }
  
- static int __init starlink_cache_init(void)
+-static inline void set_pte(pte_t *ptep, pte_t pte)
++static inline void set_pte_nosync(pte_t *ptep, pte_t pte)
  {
--	struct device_node *np;
- 	u32 block_size;
- 	int ret;
+ 	WRITE_ONCE(*ptep, pte);
++}
++
++static inline void set_pte(pte_t *ptep, pte_t pte)
++{
++	set_pte_nosync(ptep, pte);
  
--	np = of_find_matching_node(NULL, starlink_cache_ids);
-+	struct device_node *np __free(device_node) =
-+		of_find_matching_node(NULL, starlink_cache_ids);
- 	if (!of_device_is_available(np))
- 		return -ENODEV;
+ 	/*
+ 	 * Only if the new pte is valid and kernel, otherwise TLB maintenance
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -175,7 +175,11 @@ static void init_pte(pte_t *ptep, unsign
+ 	do {
+ 		pte_t old_pte = READ_ONCE(*ptep);
  
--- 
-2.51.0
-
+-		set_pte(ptep, pfn_pte(__phys_to_pfn(phys), prot));
++		/*
++		 * Required barriers to make this visible to the table walker
++		 * are deferred to the end of alloc_init_cont_pte().
++		 */
++		set_pte_nosync(ptep, pfn_pte(__phys_to_pfn(phys), prot));
+ 
+ 		/*
+ 		 * After the PTE entry has been populated once, we
+@@ -229,6 +233,11 @@ static void alloc_init_cont_pte(pmd_t *p
+ 		phys += next - addr;
+ 	} while (addr = next, addr != end);
+ 
++	/*
++	 * Note: barriers and maintenance necessary to clear the fixmap slot
++	 * ensure that all previous pgtable writes are visible to the table
++	 * walker.
++	 */
+ 	pte_clear_fixmap();
+ }
+ 
 
 
 
