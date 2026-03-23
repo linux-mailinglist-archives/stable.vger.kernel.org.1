@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-228501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228503-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPqgOGpOwWm7SAQAu9opvQ
-	(envelope-from <stable+bounces-228501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:02 +0100
+	id CBDfMCVQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228503-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DE8C2F49D9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E8F2F4DF3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 29EC6300B58D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4947A322DBA7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A6A3AE70F;
-	Mon, 23 Mar 2026 14:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDD13B19AC;
+	Mon, 23 Mar 2026 14:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p8fJCdnw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvGzXi8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F5E17C203;
-	Mon, 23 Mar 2026 14:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FA539C658;
+	Mon, 23 Mar 2026 14:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275299; cv=none; b=QFRV1DqWL1NnN/0XlVVDvSxXBZVaIaj6oRvb8gciSdRgwuKCEiDUfJdGQGjRepRU8mRaX3xNfN7ouz6BBConElflnxUqn/ovyz7O+P9QlPcW7/eYCvFV3XWvDM6lI8C03w6fmPL7cbHSOiljjsmazBiEzSlB+Zunf4Ec3h18MuA=
+	t=1774275305; cv=none; b=Lup7xSQjpTsvje2UvV1zWW7j1+/sUhbWdOBe7Fo2/tGqwjZ//DihJO6KadXGV/fcO+Vx57YhI9peOG6fAEYUXATjnkfAk4iTWSZXWrkBDDA+jqSmzwCQ/W4htRdRu1BaK9pbL3rCvJ1WH0nCHreMDyS5NkkgV5YGWAznmGYAe5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275299; c=relaxed/simple;
-	bh=MN8lNK7vSWhphBmcdcSQfWDtjHAT7HSFzV0miFZRpKY=;
+	s=arc-20240116; t=1774275305; c=relaxed/simple;
+	bh=xGAimwdS40COwCRRbJ0BrzMRSjGnENOvcTDkj3tBCKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hdYFFOrxx0owSmPkHcKPuY9z3hU/Y1oOILkoUHPLWqdU1i9EM+PlNsKMXneZs3Y5s8OC7C8+antEXak+VcfWeq/Cv5zL3En2Hm3CrEezguGSUnM/CO+yLzF092lQa3u9mW2rXs/9bD91Z3ISt95AUK5WqMuECxAGa/pB/29YKiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p8fJCdnw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17145C2BCB1;
-	Mon, 23 Mar 2026 14:14:58 +0000 (UTC)
+	 MIME-Version; b=kHH31b251TxzKSNIKK5FtVeEiZ2Ti6O9PAgc4kEdwhxyP1kz6t8ecaa+VDRdVH0O7UJPA9Nn8aBCmhAFLv3Gs0moxrzH8FhPkGbim3GPBnhYAbWvdN7cyLYllfkh1fPO8THkPvoiIih/yA1FkBHFlv+uIO5K+yhSs8XyeSRBx+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvGzXi8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B30C2BC9E;
+	Mon, 23 Mar 2026 14:15:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275299;
-	bh=MN8lNK7vSWhphBmcdcSQfWDtjHAT7HSFzV0miFZRpKY=;
+	s=korg; t=1774275304;
+	bh=xGAimwdS40COwCRRbJ0BrzMRSjGnENOvcTDkj3tBCKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p8fJCdnwDHfniju2YrO2HvaC2SwrvH5b31d9cROUb2g2FHSya1UY0oz79L1su8vsH
-	 xeMI2eM99nDnGAYUrqw2FRjLp83jmezC73dXRX3kGH8TYxBVkjhq1TyDxJO7jQ2hN1
-	 +trtmha54XzQvuqSC6HJ9fHgbodvBcye9DOhTtoY=
+	b=mvGzXi8JZtpRsIb/pMrZ/YAcdjckP4shAO/r8Ukxc7KeuIQo8alKxL1/dSQHnCqfO
+	 FOQUABMr86oioThT2Tcc/I1C1uuLBYniXly99tENzcE4VN3Q+ExaPVmLICFlElrHrS
+	 sXZPW9v358qo1kXV6k19zoNuMZHJqEDdL1dvFdec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Shuangpeng Bai <shuangpeng.kernel@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/460] net: sfp: improve Huawei MA5671a fixup
-Date: Mon, 23 Mar 2026 14:40:42 +0100
-Message-ID: <20260323134527.845073129@linuxfoundation.org>
+Subject: [PATCH 6.12 047/460] serial: caif: hold tty->link reference in ldisc_open and ser_release
+Date: Mon, 23 Mar 2026 14:40:43 +0100
+Message-ID: <20260323134527.869127865@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
 References: <20260323134526.647552166@linuxfoundation.org>
@@ -64,35 +64,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,lunn.ch,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228501-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228503-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 7DE8C2F49D9
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 43E8F2F4DF3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,53 +101,61 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
 
-[ Upstream commit 87d126852158467ab87d5cbc36ccfd3f15464a6c ]
+[ Upstream commit 288598d80a068a0e9281de35bcb4ce495f189e2a ]
 
-With the current sfp_fixup_ignore_tx_fault() fixup we ignore the TX_FAULT
-signal, but we also need to apply sfp_fixup_ignore_los() in order to be
-able to communicate with the module even if the fiber isn't connected for
-configuration purposes.
-This is needed for all the MA5671a firmwares, excluding the FS modded
-firmware.
+A reproducer triggers a KASAN slab-use-after-free in pty_write_room()
+when caif_serial's TX path calls tty_write_room(). The faulting access
+is on tty->link->port.
 
-Fixes: 2069624dac19 ("net: sfp: Add tx-fault workaround for Huawei MA5671A SFP ONT")
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20260306125139.213637-1-noltari@gmail.com
+Hold an extra kref on tty->link for the lifetime of the caif_serial line
+discipline: get it in ldisc_open() and drop it in ser_release(), and
+also drop it on the ldisc_open() error path.
+
+With this change applied, the reproducer no longer triggers the UAF in
+my testing.
+
+Link: https://gist.github.com/shuangpengbai/c898debad6bdf170a84be7e6b3d8707f
+Link: https://lore.kernel.org/netdev/20260301220525.1546355-1-shuangpeng.kernel@gmail.com
+Fixes: e31d5a05948e ("caif: tty's are kref objects so take a reference")
+Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://patch.msgid.link/20260306034006.3395740-1-shuangpeng.kernel@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/sfp.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/caif/caif_serial.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index cae748b762236..dd8d37b44aac8 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -360,6 +360,12 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
- 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
- }
+diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
+index 699ed0ff461e8..6799dbf80f484 100644
+--- a/drivers/net/caif/caif_serial.c
++++ b/drivers/net/caif/caif_serial.c
+@@ -311,6 +311,7 @@ static void ser_release(struct work_struct *work)
+ 			dev_close(ser->dev);
+ 			unregister_netdevice(ser->dev);
+ 			debugfs_deinit(ser);
++			tty_kref_put(tty->link);
+ 			tty_kref_put(tty);
+ 		}
+ 		rtnl_unlock();
+@@ -345,6 +346,7 @@ static int ldisc_open(struct tty_struct *tty)
  
-+static void sfp_fixup_ignore_tx_fault_and_los(struct sfp *sfp)
-+{
-+	sfp_fixup_ignore_tx_fault(sfp);
-+	sfp_fixup_ignore_los(sfp);
-+}
-+
- static void sfp_fixup_ignore_hw(struct sfp *sfp, unsigned int mask)
- {
- 	sfp->state_hw_mask &= ~mask;
-@@ -523,7 +529,7 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	// Huawei MA5671A can operate at 2500base-X, but report 1.2GBd NRZ in
- 	// their EEPROM
- 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
--		  sfp_fixup_ignore_tx_fault),
-+		  sfp_fixup_ignore_tx_fault_and_los),
- 
- 	// Lantech 8330-262D-E and 8330-265D can operate at 2500base-X, but
- 	// incorrectly report 2500MBd NRZ in their EEPROM.
+ 	ser = netdev_priv(dev);
+ 	ser->tty = tty_kref_get(tty);
++	tty_kref_get(tty->link);
+ 	ser->dev = dev;
+ 	debugfs_init(ser, tty);
+ 	tty->receive_room = N_TTY_BUF_SIZE;
+@@ -353,6 +355,7 @@ static int ldisc_open(struct tty_struct *tty)
+ 	rtnl_lock();
+ 	result = register_netdevice(dev);
+ 	if (result) {
++		tty_kref_put(tty->link);
+ 		tty_kref_put(tty);
+ 		rtnl_unlock();
+ 		free_netdev(dev);
 -- 
 2.51.0
 
