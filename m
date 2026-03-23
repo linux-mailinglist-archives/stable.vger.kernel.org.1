@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-228449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228982-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMKjJBpRwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228449-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:30 +0100
+	id OFscKE9rwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-228982-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A4B2F4FD8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 225462F84DD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 630883120BD3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D6423317415
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5433B0ACD;
-	Mon, 23 Mar 2026 14:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE6637E30F;
+	Mon, 23 Mar 2026 14:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwoxM428"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xFXMg2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51703AF66E;
-	Mon, 23 Mar 2026 14:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022FD26ED46;
+	Mon, 23 Mar 2026 14:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275163; cv=none; b=WuF50gGiI7YV+DZjXhpsO3gOmfwSfk4AXcmB0NCxHT6PLFHy60PWADA/xxZwqhhVTGKYEIteg4AX2+5eJdVV/akQNw+DMPfsymyPfDKxV3hmgtRrCV3mPf1luKRBUpH71+jAJsV1oHHICgRRCKgFqyFNuZTQdhmavrAUbf4syAo=
+	t=1774277685; cv=none; b=oYWW5iMpkLe14Gn9cYx2VR6Ygb1mLKtVIDMYr3mTdw7x693BKygNjhS9lm34/lF/ha5uk8H0ew0C0L9op/roKA8XpHPEHIGTqX4o3YON0oDsU3R2IQv86LFoKsYwumAOVOCw1f8RmNoFCxFoLnno9ONN46utcTB6RVDYln8/0Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275163; c=relaxed/simple;
-	bh=TtqQnZH6EYXX4p+AhtuzMjaGzetAlPIhTpnm4P+lzGA=;
+	s=arc-20240116; t=1774277685; c=relaxed/simple;
+	bh=SCAeSTrGKaBetPxFU7xTF0XIDUPWnz27T44n8vjUoIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7uafl12fiUmo7oBDrmaDn/J36A231yQBYRtzml1/g+26JSRPlBGwwOxkfdzYG6XI7xULSSWUr+T65m0uGrIDqiwkhFjT35xflyxv+AIxVqqFxrxvr7fl8CIeg7bEqXC+Ru3zvNqZektP7iPjlFTXiynOl/d6fSR/PhA0d5e6UM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwoxM428; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C76C4CEF7;
-	Mon, 23 Mar 2026 14:12:42 +0000 (UTC)
+	 MIME-Version; b=Va1mwGNjsXYlOoLWcQjfQIcM0MgWcLC1PveISxRZsFjpfA7HMPo2e9EJ7zKEcLB6R4vgporLDPsbwCKBGIfKuq1wrv/5gtf/0A+2SpOIuVaoQxQG0JclvTa/li1XD6L/KEyKpOExjI/DkOjPN7BPBRfLJNIddlfdzYAQrLwwF4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xFXMg2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F0AC2BCB3;
+	Mon, 23 Mar 2026 14:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275162;
-	bh=TtqQnZH6EYXX4p+AhtuzMjaGzetAlPIhTpnm4P+lzGA=;
+	s=korg; t=1774277684;
+	bh=SCAeSTrGKaBetPxFU7xTF0XIDUPWnz27T44n8vjUoIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwoxM428E/FQER1ejtlkxPXoJiy3ScjEtJKQONmsSfzg8qNpDz5D6OTo7l/CoKboS
-	 OVH4hYOXrV+8L3ZRAnZyu+jLqTrVTQsn1HjGYhxVrcIlukXsnECKJvrjFtgcPgLbF1
-	 YdziIZbARX1jO9YpVFzcg3nRD0vkB6/vvkrQq+kI=
+	b=1xFXMg2QjA7r9H5GqBvQsvixrHKXSpp/otEkPkEbdO4r7wcsAR0mFCCCMbx5RchZB
+	 g89n79IOwo1eUZjwAS8uXO7dmayCWDo6YT3sWW78wD8jwE+0EZb9EyK8ndEyCkiJc8
+	 sIi3QwuwzrZLZ2Q1KrJa9UB4eNl+88aOveuRnjDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/481] scsi: ufs: core: Always initialize the UIC done completion
+Subject: [PATCH 6.6 070/567] ext4: fix e4b bitmap inconsistency reports
 Date: Mon, 23 Mar 2026 14:39:50 +0100
-Message-ID: <20260323134525.458722251@linuxfoundation.org>
+Message-ID: <20260323134535.559265368@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +72,156 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228449-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228982-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 10A4B2F4FD8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-0.999];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.cz:email,msgid.link:url,huawei.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 225462F84DD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Yongjian Sun <sunyongjian1@huawei.com>
 
-[ Upstream commit b1e8c53749adb795bfb0bf4e2f7836e26684bb90 ]
+[ Upstream commit bdc56a9c46b2a99c12313122b9352b619a2e719e ]
 
-Simplify __ufshcd_send_uic_cmd() by always initializing the
-uic_cmd::done completion. This is fine since the time required to
-initialize a completion is small compared to the time required to
-process an UIC command.
+A bitmap inconsistency issue was observed during stress tests under
+mixed huge-page workloads. Ext4 reported multiple e4b bitmap check
+failures like:
 
-Reviewed-by: Peter Wang <peter.wang@mediatek.com>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20240912223019.3510966-5-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 62c015373e1c ("scsi: ufs: core: Move link recovery for hibern8 exit failure to wl_resume")
+ext4_mb_complex_scan_group:2508: group 350, 8179 free clusters as
+per group info. But got 8192 blocks
+
+Analysis and experimentation confirmed that the issue is caused by a
+race condition between page migration and bitmap modification. Although
+this timing window is extremely narrow, it is still hit in practice:
+
+folio_lock                        ext4_mb_load_buddy
+__migrate_folio
+  check ref count
+  folio_mc_copy                     __filemap_get_folio
+                                      folio_try_get(folio)
+                                  ......
+                                  mb_mark_used
+                                  ext4_mb_unload_buddy
+  __folio_migrate_mapping
+    folio_ref_freeze
+folio_unlock
+
+The root cause of this issue is that the fast path of load_buddy only
+increments the folio's reference count, which is insufficient to prevent
+concurrent folio migration. We observed that the folio migration process
+acquires the folio lock. Therefore, we can determine whether to take the
+fast path in load_buddy by checking the lock status. If the folio is
+locked, we opt for the slow path (which acquires the lock) to close this
+concurrency window.
+
+Additionally, this change addresses the following issues:
+
+When the DOUBLE_CHECK macro is enabled to inspect bitmap-related
+issues, the following error may be triggered:
+
+corruption in group 324 at byte 784(6272): f in copy != ff on
+disk/prealloc
+
+Analysis reveals that this is a false positive. There is a specific race
+window where the bitmap and the group descriptor become momentarily
+inconsistent, leading to this error report:
+
+ext4_mb_load_buddy                   ext4_mb_load_buddy
+  __filemap_get_folio(create|lock)
+    folio_lock
+  ext4_mb_init_cache
+    folio_mark_uptodate
+                                     __filemap_get_folio(no lock)
+                                     ......
+                                     mb_mark_used
+                                       mb_mark_used_double
+  mb_cmp_bitmaps
+                                       mb_set_bits(e4b->bd_bitmap)
+  folio_unlock
+
+The original logic assumed that since mb_cmp_bitmaps is called when the
+bitmap is newly loaded from disk, the folio lock would be sufficient to
+prevent concurrent access. However, this overlooks a specific race
+condition: if another process attempts to load buddy and finds the folio
+is already in an uptodate state, it will immediately begin using it without
+holding folio lock.
+
+Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20260106090820.836242-1-sunyongjian@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ fs/ext4/mballoc.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 01927facaa203..6d44c2adb251a 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -2340,13 +2340,11 @@ ufshcd_wait_for_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd)
-  * __ufshcd_send_uic_cmd - Send UIC commands and retrieve the result
-  * @hba: per adapter instance
-  * @uic_cmd: UIC command
-- * @completion: initialize the completion only if this is set to true
-  *
-  * Returns 0 only if success.
-  */
- static int
--__ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd,
--		      bool completion)
-+__ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd)
- {
- 	lockdep_assert_held(&hba->uic_cmd_mutex);
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 877b336c651f7..d0f4e5905bf12 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1634,16 +1634,17 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
  
-@@ -2356,8 +2354,7 @@ __ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd,
- 		return -EIO;
- 	}
+ 	/* Avoid locking the folio in the fast path ... */
+ 	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
+-	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
++	if (IS_ERR(folio) || !folio_test_uptodate(folio) || folio_test_locked(folio)) {
++		/*
++		 * folio_test_locked is employed to detect ongoing folio
++		 * migrations, since concurrent migrations can lead to
++		 * bitmap inconsistency. And if we are not uptodate that
++		 * implies somebody just created the folio but is yet to
++		 * initialize it. We can drop the folio reference and
++		 * try to get the folio with lock in both cases to avoid
++		 * concurrency.
++		 */
+ 		if (!IS_ERR(folio))
+-			/*
+-			 * drop the folio reference and try
+-			 * to get the folio with lock. If we
+-			 * are not uptodate that implies
+-			 * somebody just created the folio but
+-			 * is yet to initialize it. So
+-			 * wait for it to initialize.
+-			 */
+ 			folio_put(folio);
+ 		folio = __filemap_get_folio(inode->i_mapping, pnum,
+ 				FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
+@@ -1685,7 +1686,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 	poff = block % blocks_per_page;
  
--	if (completion)
--		init_completion(&uic_cmd->done);
-+	init_completion(&uic_cmd->done);
- 
- 	uic_cmd->cmd_active = 1;
- 	ufshcd_dispatch_uic_cmd(hba, uic_cmd);
-@@ -2383,7 +2380,7 @@ int ufshcd_send_uic_cmd(struct ufs_hba *hba, struct uic_command *uic_cmd)
- 	mutex_lock(&hba->uic_cmd_mutex);
- 	ufshcd_add_delay_before_dme_cmd(hba);
- 
--	ret = __ufshcd_send_uic_cmd(hba, uic_cmd, true);
-+	ret = __ufshcd_send_uic_cmd(hba, uic_cmd);
- 	if (!ret)
- 		ret = ufshcd_wait_for_uic_cmd(hba, uic_cmd);
- 
-@@ -4081,7 +4078,7 @@ static int ufshcd_uic_pwr_ctrl(struct ufs_hba *hba, struct uic_command *cmd)
- 		reenable_intr = true;
- 	}
- 	spin_unlock_irqrestore(hba->host->host_lock, flags);
--	ret = __ufshcd_send_uic_cmd(hba, cmd, false);
-+	ret = __ufshcd_send_uic_cmd(hba, cmd);
- 	if (ret) {
- 		dev_err(hba->dev,
- 			"pwr ctrl cmd 0x%x with mode 0x%x uic error %d\n",
+ 	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
+-	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
++	if (IS_ERR(folio) || !folio_test_uptodate(folio) || folio_test_locked(folio)) {
+ 		if (!IS_ERR(folio))
+ 			folio_put(folio);
+ 		folio = __filemap_get_folio(inode->i_mapping, pnum,
 -- 
 2.51.0
 
