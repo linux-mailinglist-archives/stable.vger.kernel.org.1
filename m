@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228502-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kPpBM7dXwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-229001-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:43 +0100
+	id 0EBLJg5PwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228502-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4640E2F5E29
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 070742F4B3C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F3D9130DDDA3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A919A30EF537
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF9E93AC0C2;
-	Mon, 23 Mar 2026 14:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6493AE1B8;
+	Mon, 23 Mar 2026 14:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPrWtAUh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1VTcLeU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999E13AD527;
-	Mon, 23 Mar 2026 14:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9CE365A0A;
+	Mon, 23 Mar 2026 14:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277744; cv=none; b=hjX9AFm3Xlq2yYdOO0qU/I4+e19cTrYYHVohBAgkUhEFSpFo7e3V7AV48t2rhuyntMsJloH+hZCYoT0WcaRFBw0WmQEpMjLksmoFMP6F0N/CUJ798sqKjgmuhSTCnHrJNjMV4BfVAzvPD0jwT75RWUHUp+4K8qvJWgjp2aAr9I0=
+	t=1774275302; cv=none; b=iX4R3jfqkHaC46lQXSyRc0daP2MwWCyalCX82wcmgqkjt5nB+9lmQe6Fn0kbITvqhp5vKQe1QywGRrrsWdYZSoEAu3LJiEOB5/cNdr/g83Za9pkJEDswh8KSN21izdThsx/iV6N9XREX2/FIFetQX480l5UZMyWSklXGcSt3woA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277744; c=relaxed/simple;
-	bh=bXUoFdnVEI7vOjgzs5qikcvTG1JeSxbNCtxTslvqMqU=;
+	s=arc-20240116; t=1774275302; c=relaxed/simple;
+	bh=0IWWdmsfDrH/vpr8iI/oaWfl9ugvO4rfOYYQRXT1X1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmLTdWXmQmIxCRaYJ4EiHcbkEBKpnOsa5mrl/QhOS6pmit+zA6XrNSu2b2uak1PFaR+iPIXhnv1AI36rSJ2gzP4FxcJRd0m1k/VZbYw/3/1ansxUytDWQPAnlFRMnIjsuM5vW3I+f7WcL2qAyHiuiGOXhqhS/IK7yB/aKJXdM5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPrWtAUh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22600C4CEF7;
-	Mon, 23 Mar 2026 14:55:43 +0000 (UTC)
+	 MIME-Version; b=mLSvgcwX7zTHZ1jVRWi493TQXUrVgSsSa3s2jyHZs5c0eP6kDuQIFSMyvQrBpGcLM/tCqy0JBXFB6JAx56thtPmTWn38th2geiuIM+zskvRxYwv6AaJRplgyEEYwpXpiFHoW+GIUELG6W5jZY1Y3j+QqUcihQ+D9Ta+iH+mpvVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1VTcLeU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7200C2BC9E;
+	Mon, 23 Mar 2026 14:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277744;
-	bh=bXUoFdnVEI7vOjgzs5qikcvTG1JeSxbNCtxTslvqMqU=;
+	s=korg; t=1774275302;
+	bh=0IWWdmsfDrH/vpr8iI/oaWfl9ugvO4rfOYYQRXT1X1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pPrWtAUhsQ+1vQ/NE1kxuYB1R65ghosM3Z8ICEexiKO5x7qTuWAKGkLC3bApBgpXJ
-	 uEJcKlLTyEsxEOFtCqpMvxngBxM8rxBLBFMfYtlQO45ahMg2Scja+0hFPMTMYuF5Xm
-	 RdkD1JTqIHD9fiYx19ngcO6HBYG+Ca0O9ONRxEh0=
+	b=o1VTcLeU0mDLzASToQiInFBaA8yVkfk69kR8MKe77HnK9siJyiFe29MMpu0ITinR4
+	 I5952StUlsvn8MSqFHXLog1FFiizZ/aBAHiZlM8cYxGjFF8pnBbu1QHjLBwU8W8phb
+	 4SyXlMWWD0OkGKtZc17ixSbTSxCvYSZD00X5bo7I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jann Horn <jannh@google.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 087/567] eventpoll: Fix integer overflow in ep_loop_check_proc()
+	Peter Wang <peter.wang@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 011/460] scsi: ufs: core: Fix possible NULL pointer dereference in ufshcd_add_command_trace()
 Date: Mon, 23 Mar 2026 14:40:07 +0100
-Message-ID: <20260323134535.983095325@linuxfoundation.org>
+Message-ID: <20260323134526.940198327@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +67,109 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229001-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228502-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4640E2F5E29
+X-Rspamd-Queue-Id: 070742F4B3C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Peter Wang <peter.wang@mediatek.com>
 
-commit fdcfce93073d990ed4b71752e31ad1c1d6e9d58b upstream.
+[ Upstream commit 30df81f2228d65bddf492db3929d9fcaffd38fc5 ]
 
-If a recursive call to ep_loop_check_proc() hits the `result = INT_MAX`,
-an integer overflow will occur in the calling ep_loop_check_proc() at
-`result = max(result, ep_loop_check_proc(ep_tovisit, depth + 1) + 1)`,
-breaking the recursion depth check.
+The kernel log indicates a crash in ufshcd_add_command_trace, due to a NULL
+pointer dereference when accessing hwq->id.  This can happen if
+ufshcd_mcq_req_to_hwq() returns NULL.
 
-Fix it by using a different placeholder value that can't lead to an
-overflow.
+This patch adds a NULL check for hwq before accessing its id field to
+prevent a kernel crash.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Fixes: f2e467a48287 ("eventpoll: Fix semi-unbounded recursion")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://patch.msgid.link/20260223-epoll-int-overflow-v1-1-452f35132224@google.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Kernel log excerpt:
+[<ffffffd5d192dc4c>] notify_die+0x4c/0x8c
+[<ffffffd5d1814e58>] __die+0x60/0xb0
+[<ffffffd5d1814d64>] die+0x4c/0xe0
+[<ffffffd5d181575c>] die_kernel_fault+0x74/0x88
+[<ffffffd5d1864db4>] __do_kernel_fault+0x314/0x318
+[<ffffffd5d2a3cdf8>] do_page_fault+0xa4/0x5f8
+[<ffffffd5d2a3cd34>] do_translation_fault+0x34/0x54
+[<ffffffd5d1864524>] do_mem_abort+0x50/0xa8
+[<ffffffd5d2a297dc>] el1_abort+0x3c/0x64
+[<ffffffd5d2a29718>] el1h_64_sync_handler+0x44/0xcc
+[<ffffffd5d181133c>] el1h_64_sync+0x80/0x88
+[<ffffffd5d255c1dc>] ufshcd_add_command_trace+0x23c/0x320
+[<ffffffd5d255bad8>] ufshcd_compl_one_cqe+0xa4/0x404
+[<ffffffd5d2572968>] ufshcd_mcq_poll_cqe_lock+0xac/0x104
+[<ffffffd5d11c7460>] ufs_mtk_mcq_intr+0x54/0x74 [ufs_mediatek_mod]
+[<ffffffd5d19ab92c>] __handle_irq_event_percpu+0xc8/0x348
+[<ffffffd5d19abca8>] handle_irq_event+0x3c/0xa8
+[<ffffffd5d19b1f0c>] handle_fasteoi_irq+0xf8/0x294
+[<ffffffd5d19aa778>] generic_handle_domain_irq+0x54/0x80
+[<ffffffd5d18102bc>] gic_handle_irq+0x1d4/0x330
+[<ffffffd5d1838210>] call_on_irq_stack+0x44/0x68
+[<ffffffd5d183af30>] do_interrupt_handler+0x78/0xd8
+[<ffffffd5d2a29c00>] el1_interrupt+0x48/0xa8
+[<ffffffd5d2a29ba8>] el1h_64_irq_handler+0x14/0x24
+[<ffffffd5d18113c4>] el1h_64_irq+0x80/0x88
+[<ffffffd5d2527fb4>] arch_local_irq_enable+0x4/0x1c
+[<ffffffd5d25282e4>] cpuidle_enter+0x34/0x54
+[<ffffffd5d195a678>] do_idle+0x1dc/0x2f8
+[<ffffffd5d195a7c4>] cpu_startup_entry+0x30/0x3c
+[<ffffffd5d18155c4>] secondary_start_kernel+0x134/0x1ac
+[<ffffffd5d18640bc>] __secondary_switched+0xc4/0xcc
+
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260223065657.2432447-1-peter.wang@mediatek.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/eventpoll.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/ufs/core/ufshcd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -1907,7 +1907,8 @@ static int ep_poll(struct eventpoll *ep,
-  * @ep: the &struct eventpoll to be currently checked.
-  * @depth: Current depth of the path being checked.
-  *
-- * Return: depth of the subtree, or INT_MAX if we found a loop or went too deep.
-+ * Return: depth of the subtree, or a value bigger than EP_MAX_NESTS if we found
-+ * a loop or went too deep.
-  */
- static int ep_loop_check_proc(struct eventpoll *ep, int depth)
- {
-@@ -1926,7 +1927,7 @@ static int ep_loop_check_proc(struct eve
- 			struct eventpoll *ep_tovisit;
- 			ep_tovisit = epi->ffd.file->private_data;
- 			if (ep_tovisit == inserting_into || depth > EP_MAX_NESTS)
--				result = INT_MAX;
-+				result = EP_MAX_NESTS+1;
- 			else
- 				result = max(result, ep_loop_check_proc(ep_tovisit, depth + 1) + 1);
- 			if (result > EP_MAX_NESTS)
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index ad5866149e240..726bf4247f1fe 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -483,8 +483,8 @@ static void ufshcd_add_command_trace(struct ufs_hba *hba, unsigned int tag,
+ 
+ 	if (hba->mcq_enabled) {
+ 		struct ufs_hw_queue *hwq = ufshcd_mcq_req_to_hwq(hba, rq);
+-
+-		hwq_id = hwq->id;
++		if (hwq)
++			hwq_id = hwq->id;
+ 	} else {
+ 		doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
+ 	}
+-- 
+2.51.0
+
 
 
 
