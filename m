@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229215-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOsFDlVmwWlQSwQAu9opvQ
-	(envelope-from <stable+bounces-228684-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:05 +0100
+	id oBXHMjtbwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229215-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B969E2F7B93
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C58C2F63C1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A194312397D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:41:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 157EE30A9170
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208FE3B19AF;
-	Mon, 23 Mar 2026 14:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23913B6BE6;
+	Mon, 23 Mar 2026 15:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ta/3Pok6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmF8h/q4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD4603AF665;
-	Mon, 23 Mar 2026 14:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6319E282F1A;
+	Mon, 23 Mar 2026 15:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276849; cv=none; b=hA5smeLA+Bsg3Pt/q5tKBgXIRbXxLsCF9HoxR8bj2WG7RKzoMkuP2w/kZuL0FH2h1Pk73bE/jWHpNe8RdF9VRI0Ahq5CDfh1sxEFZX/PmXhej7WR0gmneSQH48PWx2MbymHr2mLwMq+tci0l18Fy6pWF9ofqnGBZA9qLLB9b5bg=
+	t=1774278420; cv=none; b=PPJdjSolMmvZvf+SNBeWObU5hYIhSL50L9/KM1sgbrEYJkc4I7JRy48CRaYB9MCFJ1cYKvOmKzKSvrBaXPc3zhmwbi07vtR0fGST0pRKPi1HVBpGu8oBsELyJknGVN/K32GOxrjZ2NI7sPdPbSc/7gtX6amxOmOCF99UDmGa0qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276849; c=relaxed/simple;
-	bh=Q3q80yhJgWqYcC1PJ+TrQ7lObR8G3lGe8gXsiFZtp+o=;
+	s=arc-20240116; t=1774278420; c=relaxed/simple;
+	bh=pN6wop7CmLvETMjFrLqbKG0004zm07EzLKIW01zdCJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKEDOnm8sA+OlIr/CmnOFjZKHesz/ja0BbA7lei/ALFpDiyB/+BaQT7yS70j54jpPPBzixXuiZLOFyhJz2XlIX+JKQmkAYP7BF4vuuGRp8V6QzKqhSJK5y3O5kxItRPaKsy3fDR4pBfpPjAhdpIx3SbzMekFuR1TovzCxWa+I0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ta/3Pok6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D43C4CEF7;
-	Mon, 23 Mar 2026 14:40:49 +0000 (UTC)
+	 MIME-Version; b=cK7bkbyVgfBkuPWelXTO5kQVvsWxWP8PiBZygs9J2ngo6q+wPZjUCWTrDxD0BmjRt9zaFHo16zzF72P1VPrHg6E/Qc0KRsW9707I50u1sfLeiUNdQUkgXQabnqWrsRGc3SsFMshT8llKUlSdHm86uN6U79vWiEvUAcaL83OduAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmF8h/q4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7CCC2BCB1;
+	Mon, 23 Mar 2026 15:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276849;
-	bh=Q3q80yhJgWqYcC1PJ+TrQ7lObR8G3lGe8gXsiFZtp+o=;
+	s=korg; t=1774278419;
+	bh=pN6wop7CmLvETMjFrLqbKG0004zm07EzLKIW01zdCJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ta/3Pok6I94FGodaILRDzFZODqyGxHdfc4lfh3LDoCAC7kh6fqfIA7GHLO8x8BQZA
-	 35bK5cC9nVvtZ2V6CVRvpoWrCu8TODZZAfh+4VtTElHEC3JIrJaqvBZmghWa9+FBEb
-	 DL4/PpBG1pspoQCcYuEf8G9u4E2tTmYebp2FOU1w=
+	b=tmF8h/q4Jr7VRHeOZDXqWynpSjljwtWnbbBixEfRT7/O/lPvbeiXwDqfNdgQyjJzq
+	 Q6Irt68PXSiz/REu+k/TmkcPgDZzRAOPVKP/lcrxDIGrjLHcEGlUaiw5ZzJb3YdToD
+	 QiTg3DU0dZjYk8doIPvvS08SMrl9Sc2i6PSuAqqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiji Yang <yangshiji66@outlook.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 226/460] net: phy: register phy led_triggers during probe to avoid AB-BA deadlock
+Subject: [PATCH 6.6 302/567] i3c: dw-i3c-master: Set SIR_REJECT in DAT on device attach and reattach
 Date: Mon, 23 Mar 2026 14:43:42 +0100
-Message-ID: <20260323134532.050245785@linuxfoundation.org>
+Message-ID: <20260323134541.290209957@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,22 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,lunn.ch,redhat.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228684-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229215-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,136 +90,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,outlook.com:email]
-X-Rspamd-Queue-Id: B969E2F7B93
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6C58C2F63C1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Lunn <andrew@lunn.ch>
+From: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
 
-[ Upstream commit c8dbdc6e380e7e96a51706db3e4b7870d8a9402d ]
+[ Upstream commit f311a05784634febd299f03476b80f3f18489767 ]
 
-There is an AB-BA deadlock when both LEDS_TRIGGER_NETDEV and
-LED_TRIGGER_PHY are enabled:
+The DesignWare I3C master controller ACKs IBIs as soon as a valid
+Device Address Table (DAT) entry is present. This can create a race
+between device attachment (after DAA) and the point where the client
+driver enables IBIs via i3c_device_enable_ibi().
 
-[ 1362.049207] [<8054e4b8>] led_trigger_register+0x5c/0x1fc             <-- Trying to get lock "triggers_list_lock" via down_write(&triggers_list_lock);
-[ 1362.054536] [<80662830>] phy_led_triggers_register+0xd0/0x234
-[ 1362.060329] [<8065e200>] phy_attach_direct+0x33c/0x40c
-[ 1362.065489] [<80651fc4>] phylink_fwnode_phy_connect+0x15c/0x23c
-[ 1362.071480] [<8066ee18>] mtk_open+0x7c/0xba0
-[ 1362.075849] [<806d714c>] __dev_open+0x280/0x2b0
-[ 1362.080384] [<806d7668>] __dev_change_flags+0x244/0x24c
-[ 1362.085598] [<806d7698>] dev_change_flags+0x28/0x78
-[ 1362.090528] [<807150e4>] dev_ioctl+0x4c0/0x654                       <-- Hold lock "rtnl_mutex" by calling rtnl_lock();
-[ 1362.094985] [<80694360>] sock_ioctl+0x2f4/0x4e0
-[ 1362.099567] [<802e9c4c>] sys_ioctl+0x32c/0xd8c
-[ 1362.104022] [<80014504>] syscall_common+0x34/0x58
+Set DEV_ADDR_TABLE_SIR_REJECT in the DAT entry during
+attach_i3c_dev() and reattach_i3c_dev() so that IBIs are rejected
+by default. The bit is managed thereafter by the existing
+dw_i3c_master_set_sir_enabled() function, which clears it in
+enable_ibi() after ENEC is issued, and restores it in disable_ibi()
+after DISEC.
 
-Here LED_TRIGGER_PHY is registering LED triggers during phy_attach
-while holding RTNL and then taking triggers_list_lock.
-
-[ 1362.191101] [<806c2640>] register_netdevice_notifier+0x60/0x168      <-- Trying to get lock "rtnl_mutex" via rtnl_lock();
-[ 1362.197073] [<805504ac>] netdev_trig_activate+0x194/0x1e4
-[ 1362.202490] [<8054e28c>] led_trigger_set+0x1d4/0x360                 <-- Hold lock "triggers_list_lock" by down_read(&triggers_list_lock);
-[ 1362.207511] [<8054eb38>] led_trigger_write+0xd8/0x14c
-[ 1362.212566] [<80381d98>] sysfs_kf_bin_write+0x80/0xbc
-[ 1362.217688] [<8037fcd8>] kernfs_fop_write_iter+0x17c/0x28c
-[ 1362.223174] [<802cbd70>] vfs_write+0x21c/0x3c4
-[ 1362.227712] [<802cc0c4>] ksys_write+0x78/0x12c
-[ 1362.232164] [<80014504>] syscall_common+0x34/0x58
-
-Here LEDS_TRIGGER_NETDEV is being enabled on an LED. It first takes
-triggers_list_lock and then RTNL. A classical AB-BA deadlock.
-
-phy_led_triggers_registers() does not require the RTNL, it does not
-make any calls into the network stack which require protection. There
-is also no requirement the PHY has been attached to a MAC, the
-triggers only make use of phydev state. This allows the call to
-phy_led_triggers_registers() to be placed elsewhere. PHY probe() and
-release() don't hold RTNL, so solving the AB-BA deadlock.
-
-Reported-by: Shiji Yang <yangshiji66@outlook.com>
-Closes: https://lore.kernel.org/all/OS7PR01MB13602B128BA1AD3FA38B6D1FFBC69A@OS7PR01MB13602.jpnprd01.prod.outlook.com/
-Fixes: 06f502f57d0d ("leds: trigger: Introduce a NETDEV trigger")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Shiji Yang <yangshiji66@outlook.com>
-Link: https://patch.msgid.link/20260222152601.1978655-1-andrew@lunn.ch
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ adapted condition to preserve existing `!phy_driver_is_genphy_10g(phydev)` guard ]
+Fixes: 1dd728f5d4d4 ("i3c: master: Add driver for Synopsys DesignWare IP")
+Signed-off-by: Adrian Ng Ho Yin <adrianhoyin.ng@altera.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/53f5b8cbdd8af789ec38b95b02873f32f9182dd6.1770962368.git.adrianhoyin.ng@altera.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/phy_device.c |   25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ drivers/i3c/master/dw-i3c-master.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1662,8 +1662,6 @@ int phy_attach_direct(struct net_device
- 		goto error;
- 
- 	phy_resume(phydev);
--	if (!phydev->is_on_sfp_module)
--		phy_led_triggers_register(phydev);
- 
- 	/**
- 	 * If the external phy used by current mac interface is managed by
-@@ -2033,9 +2031,6 @@ void phy_detach(struct phy_device *phyde
+diff --git a/drivers/i3c/master/dw-i3c-master.c b/drivers/i3c/master/dw-i3c-master.c
+index cee2805fccd0f..ccb521bcb73e3 100644
+--- a/drivers/i3c/master/dw-i3c-master.c
++++ b/drivers/i3c/master/dw-i3c-master.c
+@@ -941,7 +941,7 @@ static int dw_i3c_master_reattach_i3c_dev(struct i3c_dev_desc *dev,
+ 		master->free_pos &= ~BIT(pos);
  	}
- 	phydev->phylink = NULL;
  
--	if (!phydev->is_on_sfp_module)
--		phy_led_triggers_unregister(phydev);
--
- 	if (phydev->mdio.dev.driver)
- 		module_put(phydev->mdio.dev.driver->owner);
+-	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(dev->info.dyn_addr),
++	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(dev->info.dyn_addr) | DEV_ADDR_TABLE_SIR_REJECT,
+ 	       master->regs +
+ 	       DEV_ADDR_TABLE_LOC(master->datstartaddr, data->index));
  
-@@ -3660,17 +3655,28 @@ static int phy_probe(struct device *dev)
- 	/* Set the state to READY by default */
- 	phydev->state = PHY_READY;
+@@ -970,7 +970,7 @@ static int dw_i3c_master_attach_i3c_dev(struct i3c_dev_desc *dev)
+ 	master->free_pos &= ~BIT(pos);
+ 	i3c_dev_set_master_data(dev, data);
  
-+	/* Register the PHY LED triggers */
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_register(phydev);
-+
- 	/* Get the LEDs from the device tree, and instantiate standard
- 	 * LEDs for them.
- 	 */
- 	if (IS_ENABLED(CONFIG_PHYLIB_LEDS) && !phy_driver_is_genphy(phydev) &&
--	    !phy_driver_is_genphy_10g(phydev))
-+	    !phy_driver_is_genphy_10g(phydev)) {
- 		err = of_phy_leds(phydev);
-+		if (err)
-+			goto out;
-+	}
-+
-+	return 0;
+-	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(master->devs[pos].addr),
++	writel(DEV_ADDR_TABLE_DYNAMIC_ADDR(master->devs[pos].addr) | DEV_ADDR_TABLE_SIR_REJECT,
+ 	       master->regs +
+ 	       DEV_ADDR_TABLE_LOC(master->datstartaddr, data->index));
  
- out:
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_unregister(phydev);
-+
- 	/* Re-assert the reset signal on error */
--	if (err)
--		phy_device_reset(phydev, 1);
-+	phy_device_reset(phydev, 1);
- 
- 	return err;
- }
-@@ -3685,6 +3691,9 @@ static int phy_remove(struct device *dev
- 	    !phy_driver_is_genphy_10g(phydev))
- 		phy_leds_unregister(phydev);
- 
-+	if (!phydev->is_on_sfp_module)
-+		phy_led_triggers_unregister(phydev);
-+
- 	phydev->state = PHY_DOWN;
- 
- 	sfp_bus_del_upstream(phydev->sfp_bus);
+-- 
+2.51.0
+
 
 
 
