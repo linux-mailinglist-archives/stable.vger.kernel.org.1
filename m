@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228303-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CB0/MqRvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229310-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:51:48 +0100
+	id SNg5BXBLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228303-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287ED2F8EFC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:51:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7F3C2F416E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A1683454414
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A696307BEF9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FF43B9D90;
-	Mon, 23 Mar 2026 15:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BC3C3B27F7;
+	Mon, 23 Mar 2026 14:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AAbSNpX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="000n6fWI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC36B3B9DB7;
-	Mon, 23 Mar 2026 15:11:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5683B0AE8;
+	Mon, 23 Mar 2026 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278714; cv=none; b=qi8glk/UuZJBbFor3fGomVajg6a53v+S3jrY2RN0CW02iw7jbjTwz8DvavEfEpEb8v/g516iaHmqvg3SkKvYUK49o6/sD4ZuB6Ird4Sy0pGhdw5RyAgMelPcuS5+zjpADc1Yg6RrUWvck92X2GW7LM8gA5R1EDtK59JbiYVzxaU=
+	t=1774274745; cv=none; b=bZA2MDanO2arK/lp1/IGFASWh+D2vqIzy/w7lxYOGTRBSmIPyK+qCrhVoISI+kMqIPC8Q3zrTZ72ZvjkVR4b7Cfk2niVjLtC94rcVJKZLGe1ol8MA8OpWCDE+QVxjGhoJ8MVfQGutkMitdMSNZmfygaxY8Ky9dccoNFBs2yPcb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278714; c=relaxed/simple;
-	bh=0W9jethkkYjdtBG5kGeE2KS9cs8VV12s7+9l4u/9crc=;
+	s=arc-20240116; t=1774274745; c=relaxed/simple;
+	bh=+yi8ADixsrS4dQhL8aTbSk1c5446IFQ27LrqSoRBELM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDHxIzGmaTSn88DRJO6ppXIXW0SrYZ7g1lDnvs+quUVA3c5AMNRuwGb7D5fJRXnJm8ObiLw0GoH4sRVxv9pXGiLkEg+LAoUNBS8hfzDOS2rzh02nF0lPcJkj/i567LEqYmCiOxYmHjA0dkIuzFll422zIj2yQK+07RmUBYYnFo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AAbSNpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC80C4CEF7;
-	Mon, 23 Mar 2026 15:11:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dzb3U1mNO7ywF19+CC9c/7wfgK0IV4qXEO86yteKsf61/2C/jKNyqAlsOYxCCseDgQZuE3GPruPrHD3RNeZFLtmr9WKDSEpRx7qJoFwPIbC9ZGHmtxu0KnVE3KBksln6t7mQWViix8yoJd2pSDmbov94B1xNbLzmaFJ8pJf3o7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=000n6fWI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF69C4CEF7;
+	Mon, 23 Mar 2026 14:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278714;
-	bh=0W9jethkkYjdtBG5kGeE2KS9cs8VV12s7+9l4u/9crc=;
+	s=korg; t=1774274745;
+	bh=+yi8ADixsrS4dQhL8aTbSk1c5446IFQ27LrqSoRBELM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0AAbSNpXQBguOxBitRNndn8mgHLyqNUkZLv86VTry7lvLEKWOpksyme2AXXbpvMsn
-	 np+8cMjSfNIkiKRnE2UA0Yyz9dQba+sCEayNLnlGXZy0PWGzg1B75Nj/y3nhXbu2n0
-	 syEMCQfXfFLo63EgU11l3wKpYG3vcEwRlFXcUCS0=
+	b=000n6fWICZbOHReEBdv1m7CaDIau89uuzZsnBAat/aVQGAj0A3fOqNCFyeDOyvrv6
+	 PmAbd1YQ8udXOmHITLR7H7N7XL8LAzScsb0AVWfImFpZbFGmz9UpmtMiRY7jLh3YNE
+	 ljE+JZ76v1crnKFPwRAEffryMjaQdkLUM2PPGRaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 396/567] ksmbd: Compare MACs in constant time
-Date: Mon, 23 Mar 2026 14:45:16 +0100
-Message-ID: <20260323134543.656437256@linuxfoundation.org>
+	Zhanjun Dong <zhanjun.dong@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.18 096/212] drm/xe: Open-code GGTT MMIO access protection
+Date: Mon, 23 Mar 2026 14:45:17 +0100
+Message-ID: <20260323134506.808511074@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,24 +63,25 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229310-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228303-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,92 +90,107 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 287ED2F8EFC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: A7F3C2F416E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Matthew Brost <matthew.brost@intel.com>
 
-commit c5794709bc9105935dbedef8b9cf9c06f2b559fa upstream.
+commit 01f2557aa684e514005541e71a3d01f4cd45c170 upstream.
 
-To prevent timing attacks, MAC comparisons need to be constant-time.
-Replace the memcmp() with the correct function, crypto_memneq().
+GGTT MMIO access is currently protected by hotplug (drm_dev_enter),
+which works correctly when the driver loads successfully and is later
+unbound or unloaded. However, if driver load fails, this protection is
+insufficient because drm_dev_unplug() is never called.
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Additionally, devm release functions cannot guarantee that all BOs with
+GGTT mappings are destroyed before the GGTT MMIO region is removed, as
+some BOs may be freed asynchronously by worker threads.
+
+To address this, introduce an open-coded flag, protected by the GGTT
+lock, that guards GGTT MMIO access. The flag is cleared during the
+dev_fini_ggtt devm release function to ensure MMIO access is disabled
+once teardown begins.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 919bb54e989c ("drm/xe: Fix missing runtime outer protection for ggtt_remove_node")
+Reviewed-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260310225039.1320161-8-zhanjun.dong@intel.com
+(cherry picked from commit 4f3a998a173b4325c2efd90bdadc6ccd3ad9a431)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/Kconfig   |    1 +
- fs/smb/server/auth.c    |    4 +++-
- fs/smb/server/smb2pdu.c |    5 +++--
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/xe/xe_ggtt.c       |   10 ++++------
+ drivers/gpu/drm/xe/xe_ggtt_types.h |    5 ++++-
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
---- a/fs/smb/server/Kconfig
-+++ b/fs/smb/server/Kconfig
-@@ -11,6 +11,7 @@ config SMB_SERVER
- 	select CRYPTO_HMAC
- 	select CRYPTO_ECB
- 	select CRYPTO_LIB_DES
-+	select CRYPTO_LIB_UTILS
- 	select CRYPTO_SHA256
- 	select CRYPTO_CMAC
- 	select CRYPTO_SHA512
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -13,6 +13,7 @@
- #include <linux/xattr.h>
- #include <crypto/hash.h>
- #include <crypto/aead.h>
-+#include <crypto/utils.h>
- #include <linux/random.h>
- #include <linux/scatterlist.h>
+--- a/drivers/gpu/drm/xe/xe_ggtt.c
++++ b/drivers/gpu/drm/xe/xe_ggtt.c
+@@ -243,6 +243,8 @@ static void dev_fini_ggtt(void *arg)
+ {
+ 	struct xe_ggtt *ggtt = arg;
  
-@@ -283,7 +284,8 @@ int ksmbd_auth_ntlmv2(struct ksmbd_conn
- 		goto out;
- 	}
++	scoped_guard(mutex, &ggtt->lock)
++		ggtt->flags &= ~XE_GGTT_FLAGS_ONLINE;
+ 	drain_workqueue(ggtt->wq);
+ }
  
--	if (memcmp(ntlmv2->ntlmv2_hash, ntlmv2_rsp, CIFS_HMAC_MD5_HASH_SIZE) != 0)
-+	if (crypto_memneq(ntlmv2->ntlmv2_hash, ntlmv2_rsp,
-+			  CIFS_HMAC_MD5_HASH_SIZE))
- 		rc = -EINVAL;
- out:
- 	if (ctx)
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4,6 +4,7 @@
-  *   Copyright (C) 2018 Samsung Electronics Co., Ltd.
-  */
+@@ -301,6 +303,7 @@ int xe_ggtt_init_early(struct xe_ggtt *g
+ 	if (err)
+ 		return err;
  
-+#include <crypto/utils.h>
- #include <linux/inetdevice.h>
- #include <net/addrconf.h>
- #include <linux/syscalls.h>
-@@ -8804,7 +8805,7 @@ int smb2_check_sign_req(struct ksmbd_wor
- 				signature))
- 		return 0;
++	ggtt->flags |= XE_GGTT_FLAGS_ONLINE;
+ 	err = devm_add_action_or_reset(xe->drm.dev, dev_fini_ggtt, ggtt);
+ 	if (err)
+ 		return err;
+@@ -334,13 +337,10 @@ static void xe_ggtt_initial_clear(struct
+ static void ggtt_node_remove(struct xe_ggtt_node *node)
+ {
+ 	struct xe_ggtt *ggtt = node->ggtt;
+-	struct xe_device *xe = tile_to_xe(ggtt->tile);
+ 	bool bound;
+-	int idx;
+-
+-	bound = drm_dev_enter(&xe->drm, &idx);
  
--	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
-+	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
- 		pr_err("bad smb2 signature\n");
- 		return 0;
- 	}
-@@ -8892,7 +8893,7 @@ int smb3_check_sign_req(struct ksmbd_wor
- 	if (ksmbd_sign_smb3_pdu(conn, signing_key, iov, 1, signature))
- 		return 0;
+ 	mutex_lock(&ggtt->lock);
++	bound = ggtt->flags & XE_GGTT_FLAGS_ONLINE;
+ 	if (bound)
+ 		xe_ggtt_clear(ggtt, node->base.start, node->base.size);
+ 	drm_mm_remove_node(&node->base);
+@@ -353,8 +353,6 @@ static void ggtt_node_remove(struct xe_g
+ 	if (node->invalidate_on_remove)
+ 		xe_ggtt_invalidate(ggtt);
  
--	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
-+	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
- 		pr_err("bad smb2 signature\n");
- 		return 0;
- 	}
+-	drm_dev_exit(idx);
+-
+ free_node:
+ 	xe_ggtt_node_fini(node);
+ }
+--- a/drivers/gpu/drm/xe/xe_ggtt_types.h
++++ b/drivers/gpu/drm/xe/xe_ggtt_types.h
+@@ -25,11 +25,14 @@ struct xe_ggtt {
+ 	/** @size: Total size of this GGTT */
+ 	u64 size;
+ 
+-#define XE_GGTT_FLAGS_64K BIT(0)
++#define XE_GGTT_FLAGS_64K       BIT(0)
++#define XE_GGTT_FLAGS_ONLINE	BIT(1)
+ 	/**
+ 	 * @flags: Flags for this GGTT
+ 	 * Acceptable flags:
+ 	 * - %XE_GGTT_FLAGS_64K - if PTE size is 64K. Otherwise, regular is 4K.
++	 * - %XE_GGTT_FLAGS_ONLINE - is GGTT online, protected by ggtt->lock
++	 *   after init
+ 	 */
+ 	unsigned int flags;
+ 	/** @scratch: Internal object allocation used as a scratch page */
 
 
 
