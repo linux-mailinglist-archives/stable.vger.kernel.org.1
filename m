@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229811-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COv7BoRewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229315-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:44 +0100
+	id 2FOIKCR1wWl5TQQAu9opvQ
+	(envelope-from <stable+bounces-229811-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 883102F69E8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C15D32F9A2E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE94D31FC27E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2E63B31B1CF6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6ABB3B9DBA;
-	Mon, 23 Mar 2026 15:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FF563AEF5C;
+	Mon, 23 Mar 2026 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyXCTe15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/D4shIm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770FB27E1A1;
-	Mon, 23 Mar 2026 15:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428AE29ACC5;
+	Mon, 23 Mar 2026 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278730; cv=none; b=JUMi8rr2WVLMLFbvhUA8T1PefpFZetpZLpRnBkReK+nEZPM+um0GuR2IF8VqOzUf7aMY6UyYUjE7aix0AGpDPZnqxGtJTq4QnqKmLXTqXxIljYwtw0XJIZV2YtgaKE4mPJXCGvTzoqUyQiPEYVYbb96RN6O4ibfj95syWQfsMS4=
+	t=1774282929; cv=none; b=pUZZWOGJhTeQPiSiWLJO9hEDekqJQA6+1/ZYF3NQ4ds2mwFPdZnfYn7mHN9UiUci7x1bx0RbvywEhjEl9z93xCnVv523i+DFO5xjMH211ecl6J/tD2rhdkJIXo/NcU5v3ajWfITbaKABU1iqCcBD7ri2HVRDl1YjH+xQ0U+8JSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278730; c=relaxed/simple;
-	bh=xQHmOvadmMHhXFbOorPOjMgthX+BusjItcTh20RTeZQ=;
+	s=arc-20240116; t=1774282929; c=relaxed/simple;
+	bh=ltj9VdynTqoU1HMk7FpojDJov98Syt7omUxwqvf/90k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8EY0lzNWasJEf4zTh3vhVdiixYXLJ0RBKTcB3AYcBcE3/w8jv71+DJNdbM5KdVWBUKQb1cWrFU9j3Lr1o7aDXrq2TmTC8GeQSExtUO/4ZVuprsojqeN4o3IrL+HI72BnCib8/4z763Cwhz9spsMV5sNgznhIVgYAzOAXjPb4Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyXCTe15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E77A4C4CEF7;
-	Mon, 23 Mar 2026 15:12:09 +0000 (UTC)
+	 MIME-Version; b=SVbl+dz+FE6iMDv3KUzrvFgyiOHIuvo0h4jink8KFamPZPc6We358L5PLRdsBlwjixqrKfZizxJcdF5g/FN/UN+0RImuDl2v8qQ/m0iyxBaYiREjPyHom/PSJQ92+cwntbRKMLlugXngypnArjjGEmXJxPxWFJZxmK/cI7lY4SE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/D4shIm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D435C4CEF7;
+	Mon, 23 Mar 2026 16:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278730;
-	bh=xQHmOvadmMHhXFbOorPOjMgthX+BusjItcTh20RTeZQ=;
+	s=korg; t=1774282928;
+	bh=ltj9VdynTqoU1HMk7FpojDJov98Syt7omUxwqvf/90k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wyXCTe15jD+e4kLdd3IS5k7RJ6tQku7VM0z/VL+ylMXj0eMqh0LrG0ovkpg60dsjG
-	 oe0MP0j78anm7ZL97kDv+Uq3ae+M7rJkiY0kVP/NK/2gcx2IY99up9prlYJEmQvkDt
-	 kyXdNxQJG6/nXLEmmcc0rFiQ6IvnESq9i6hjI1X4=
+	b=c/D4shImxGuKKxsdRoR3LWBjZTruB7Y5ZLi01/RDUD4U/ruucxtbU7fAbdEC/ksF/
+	 hAdj9vsL8mEap3AfDT9RjFbESl64ygEqqWhfBl/GRjCmpyEyz5LGx9t/4XvWKq7dT6
+	 O2kpcdarm126FhPLAb/hq7EtapU9Wm6YOixIqXz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	linux-btrfs@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@infradead.org>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.6 400/567] btrfs: always fallback to buffered write if the inode requires checksum
-Date: Mon, 23 Mar 2026 14:45:20 +0100
-Message-ID: <20260323134543.763511700@linuxfoundation.org>
+	Joey Gouly <joey.gouly@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 339/481] arm64: reorganise PAGE_/PROT_ macros
+Date: Mon, 23 Mar 2026 14:45:21 +0100
+Message-ID: <20260323134533.359462171@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,18 +71,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229315-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229811-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,114 +92,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 883102F69E8
+X-Rspamd-Queue-Id: C15D32F9A2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Joey Gouly <joey.gouly@arm.com>
 
-commit 968f19c5b1b7d5595423b0ac0020cc18dfed8cb5 upstream.
+[ Upstream commit fa4cdccaa58224a12591f2c045c24abc5251bb9d ]
 
-[BUG]
-It is a long known bug that VM image on btrfs can lead to data csum
-mismatch, if the qemu is using direct-io for the image (this is commonly
-known as cache mode 'none').
+Make these macros available to assembly code, so they can be re-used by the
+PIE initialisation code.
 
-[CAUSE]
-Inside the VM, if the fs is EXT4 or XFS, or even NTFS from Windows, the
-fs is allowed to dirty/modify the folio even if the folio is under
-writeback (as long as the address space doesn't have AS_STABLE_WRITES
-flag inherited from the block device).
+This involves adding some extra macros, prepended with _ that are the raw
+values not `pgprot` values.
 
-This is a valid optimization to improve the concurrency, and since these
-filesystems have no extra checksum on data, the content change is not a
-problem at all.
+A dummy value for PTE_MAYBE_NG is also provided, for use in assembly.
 
-But the final write into the image file is handled by btrfs, which needs
-the content not to be modified during writeback, or the checksum will
-not match the data (checksum is calculated before submitting the bio).
-
-So EXT4/XFS/NTRFS assume they can modify the folio under writeback, but
-btrfs requires no modification, this leads to the false csum mismatch.
-
-This is only a controlled example, there are even cases where
-multi-thread programs can submit a direct IO write, then another thread
-modifies the direct IO buffer for whatever reason.
-
-For such cases, btrfs has no sane way to detect such cases and leads to
-false data csum mismatch.
-
-[FIX]
-I have considered the following ideas to solve the problem:
-
-- Make direct IO to always skip data checksum
-  This not only requires a new incompatible flag, as it breaks the
-  current per-inode NODATASUM flag.
-  But also requires extra handling for no csum found cases.
-
-  And this also reduces our checksum protection.
-
-- Let hardware handle all the checksum
-  AKA, just nodatasum mount option.
-  That requires trust for hardware (which is not that trustful in a lot
-  of cases), and it's not generic at all.
-
-- Always fallback to buffered write if the inode requires checksum
-  This was suggested by Christoph, and is the solution utilized by this
-  patch.
-
-  The cost is obvious, the extra buffer copying into page cache, thus it
-  reduces the performance.
-  But at least it's still user configurable, if the end user still wants
-  the zero-copy performance, just set NODATASUM flag for the inode
-  (which is a common practice for VM images on btrfs).
-
-  Since we cannot trust user space programs to keep the buffer
-  consistent during direct IO, we have no choice but always falling back
-  to buffered IO.  At least by this, we avoid the more deadly false data
-  checksum mismatch error.
-
-Cc: stable@vger.kernel.org # 6.6
-[ Conflicts caused by code extracted into direct-io.c ]
-Suggested-by: Christoph Hellwig <hch@infradead.org>
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20230606145859.697944-14-joey.gouly@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Stable-dep-of: c25c4aa3f79a ("arm64: mm: Add PTE_DIRTY back to PAGE_KERNEL* to fix kexec/hibernation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/file.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ arch/arm64/include/asm/pgtable-prot.h |   72 ++++++++++++++++++++--------------
+ 1 file changed, 44 insertions(+), 28 deletions(-)
 
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -1514,6 +1514,22 @@ relock:
- 		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
- 		goto buffered;
- 	}
-+	/*
-+	 * We can't control the folios being passed in, applications can write
-+	 * to them while a direct IO write is in progress.  This means the
-+	 * content might change after we calculated the data checksum.
-+	 * Therefore we can end up storing a checksum that doesn't match the
-+	 * persisted data.
-+	 *
-+	 * To be extra safe and avoid false data checksum mismatch, if the
-+	 * inode requires data checksum, just fallback to buffered IO.
-+	 * For buffered IO we have full control of page cache and can ensure
-+	 * no one is modifying the content during writeback.
-+	 */
-+	if (!(BTRFS_I(inode)->flags & BTRFS_INODE_NODATASUM)) {
-+		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
-+		goto buffered;
-+	}
+--- a/arch/arm64/include/asm/pgtable-prot.h
++++ b/arch/arm64/include/asm/pgtable-prot.h
+@@ -27,6 +27,40 @@
+  */
+ #define PMD_PRESENT_INVALID	(_AT(pteval_t, 1) << 59) /* only when !PMD_SECT_VALID */
  
- 	/*
- 	 * The iov_iter can be mapped to the same file range we are writing to.
++#define _PROT_DEFAULT		(PTE_TYPE_PAGE | PTE_AF | PTE_SHARED)
++#define _PROT_SECT_DEFAULT	(PMD_TYPE_SECT | PMD_SECT_AF | PMD_SECT_S)
++
++#define PROT_DEFAULT		(_PROT_DEFAULT | PTE_MAYBE_NG)
++#define PROT_SECT_DEFAULT	(_PROT_SECT_DEFAULT | PMD_MAYBE_NG)
++
++#define PROT_DEVICE_nGnRnE	(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_DEVICE_nGnRnE))
++#define PROT_DEVICE_nGnRE	(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_DEVICE_nGnRE))
++#define PROT_NORMAL_NC		(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_NORMAL_NC))
++#define PROT_NORMAL		(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_NORMAL))
++#define PROT_NORMAL_TAGGED	(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_NORMAL_TAGGED))
++
++#define PROT_SECT_DEVICE_nGnRE	(PROT_SECT_DEFAULT | PMD_SECT_PXN | PMD_SECT_UXN | PMD_ATTRINDX(MT_DEVICE_nGnRE))
++#define PROT_SECT_NORMAL	(PROT_SECT_DEFAULT | PMD_SECT_PXN | PMD_SECT_UXN | PMD_ATTRINDX(MT_NORMAL))
++#define PROT_SECT_NORMAL_EXEC	(PROT_SECT_DEFAULT | PMD_SECT_UXN | PMD_ATTRINDX(MT_NORMAL))
++
++#define _PAGE_DEFAULT		(_PROT_DEFAULT | PTE_ATTRINDX(MT_NORMAL))
++
++#define _PAGE_KERNEL		(PROT_NORMAL)
++#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY)
++#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY)
++#define _PAGE_KERNEL_EXEC	(PROT_NORMAL & ~PTE_PXN)
++#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT)
++
++#define _PAGE_SHARED		(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN | PTE_WRITE)
++#define _PAGE_SHARED_EXEC	(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_WRITE)
++#define _PAGE_READONLY		(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN)
++#define _PAGE_READONLY_EXEC	(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN)
++#define _PAGE_EXECONLY		(_PAGE_DEFAULT | PTE_RDONLY | PTE_NG | PTE_PXN)
++
++#ifdef __ASSEMBLY__
++#define PTE_MAYBE_NG	0
++#endif
++
+ #ifndef __ASSEMBLY__
+ 
+ #include <asm/cpufeature.h>
+@@ -34,9 +68,6 @@
+ 
+ extern bool arm64_use_ng_mappings;
+ 
+-#define _PROT_DEFAULT		(PTE_TYPE_PAGE | PTE_AF | PTE_SHARED)
+-#define _PROT_SECT_DEFAULT	(PMD_TYPE_SECT | PMD_SECT_AF | PMD_SECT_S)
+-
+ #define PTE_MAYBE_NG		(arm64_use_ng_mappings ? PTE_NG : 0)
+ #define PMD_MAYBE_NG		(arm64_use_ng_mappings ? PMD_SECT_NG : 0)
+ 
+@@ -50,26 +81,11 @@ extern bool arm64_use_ng_mappings;
+ #define PTE_MAYBE_GP		0
+ #endif
+ 
+-#define PROT_DEFAULT		(_PROT_DEFAULT | PTE_MAYBE_NG)
+-#define PROT_SECT_DEFAULT	(_PROT_SECT_DEFAULT | PMD_MAYBE_NG)
+-
+-#define PROT_DEVICE_nGnRnE	(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_DEVICE_nGnRnE))
+-#define PROT_DEVICE_nGnRE	(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_DEVICE_nGnRE))
+-#define PROT_NORMAL_NC		(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_NORMAL_NC))
+-#define PROT_NORMAL		(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_NORMAL))
+-#define PROT_NORMAL_TAGGED	(PROT_DEFAULT | PTE_PXN | PTE_UXN | PTE_WRITE | PTE_ATTRINDX(MT_NORMAL_TAGGED))
+-
+-#define PROT_SECT_DEVICE_nGnRE	(PROT_SECT_DEFAULT | PMD_SECT_PXN | PMD_SECT_UXN | PMD_ATTRINDX(MT_DEVICE_nGnRE))
+-#define PROT_SECT_NORMAL	(PROT_SECT_DEFAULT | PMD_SECT_PXN | PMD_SECT_UXN | PMD_ATTRINDX(MT_NORMAL))
+-#define PROT_SECT_NORMAL_EXEC	(PROT_SECT_DEFAULT | PMD_SECT_UXN | PMD_ATTRINDX(MT_NORMAL))
+-
+-#define _PAGE_DEFAULT		(_PROT_DEFAULT | PTE_ATTRINDX(MT_NORMAL))
+-
+-#define PAGE_KERNEL		__pgprot(PROT_NORMAL)
+-#define PAGE_KERNEL_RO		__pgprot((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY)
+-#define PAGE_KERNEL_ROX		__pgprot((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY)
+-#define PAGE_KERNEL_EXEC	__pgprot(PROT_NORMAL & ~PTE_PXN)
+-#define PAGE_KERNEL_EXEC_CONT	__pgprot((PROT_NORMAL & ~PTE_PXN) | PTE_CONT)
++#define PAGE_KERNEL		__pgprot(_PAGE_KERNEL)
++#define PAGE_KERNEL_RO		__pgprot(_PAGE_KERNEL_RO)
++#define PAGE_KERNEL_ROX		__pgprot(_PAGE_KERNEL_ROX)
++#define PAGE_KERNEL_EXEC	__pgprot(_PAGE_KERNEL_EXEC)
++#define PAGE_KERNEL_EXEC_CONT	__pgprot(_PAGE_KERNEL_EXEC_CONT)
+ 
+ #define PAGE_S2_MEMATTR(attr, has_fwb)					\
+ 	({								\
+@@ -83,11 +99,11 @@ extern bool arm64_use_ng_mappings;
+ 
+ #define PAGE_NONE		__pgprot(((_PAGE_DEFAULT) & ~PTE_VALID) | PTE_PROT_NONE | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN)
+ /* shared+writable pages are clean by default, hence PTE_RDONLY|PTE_WRITE */
+-#define PAGE_SHARED		__pgprot(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN | PTE_WRITE)
+-#define PAGE_SHARED_EXEC	__pgprot(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_WRITE)
+-#define PAGE_READONLY		__pgprot(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN)
+-#define PAGE_READONLY_EXEC	__pgprot(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN)
+-#define PAGE_EXECONLY		__pgprot(_PAGE_DEFAULT | PTE_RDONLY | PTE_NG | PTE_PXN)
++#define PAGE_SHARED		__pgprot(_PAGE_SHARED)
++#define PAGE_SHARED_EXEC	__pgprot(_PAGE_SHARED_EXEC)
++#define PAGE_READONLY		__pgprot(_PAGE_READONLY)
++#define PAGE_READONLY_EXEC	__pgprot(_PAGE_READONLY_EXEC)
++#define PAGE_EXECONLY		__pgprot(_PAGE_EXECONLY)
+ 
+ #endif /* __ASSEMBLY__ */
+ 
 
 
 
