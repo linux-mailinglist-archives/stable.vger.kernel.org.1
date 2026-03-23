@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229852-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KIIgOmlNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:45 +0100
+	id cK2SIn9zwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229852-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:08:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473712F4705
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC71A2F97C9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E2A5830607AA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6C0943266CD6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C3E3B584E;
-	Mon, 23 Mar 2026 14:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66933BADB2;
+	Mon, 23 Mar 2026 16:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBUGET9w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8H+cPfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E6C3B5846;
-	Mon, 23 Mar 2026 14:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F6A3B8D4F;
+	Mon, 23 Mar 2026 16:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274843; cv=none; b=NyCJsq/2VZ2LB3PGm9bLHh2XpTPf83ceYEsCujDTFPBZf3C+KXi4PuDvs+zo9iRX6LGSDzeIOSgTKTxICCed5KHRIL/8k3d7SdWmm/ivqueg19dtfgcN6xKN1rBjAvkHhUI/EKJGdHSqlQD5A7M2AI7JflChBxKbWHsM75EMac0=
+	t=1774283036; cv=none; b=aGivUkHIRV30qJDr/QEYsBd57OkvmE6vDfIRCavBhFAnTLrBRbqMke0bgtzJcQopYkhI3Vcu6abbAw/dXI47NjciaqS9kXtPa7dN5+StWsDCXwcHT7Qj1MSv8GLESwuJ3uzHFkqu8z7iCjjnqfb+IPll2oQFtiubVnv7ZoXYL+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274843; c=relaxed/simple;
-	bh=yOcakgRjmryMNhm6LGQ3KTHkhIFt/ovp4ebSdLNTHZI=;
+	s=arc-20240116; t=1774283036; c=relaxed/simple;
+	bh=ompl5n+16OfAPGy7Pm8wFrCNmIDZ542ltm8pycW5K0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BcDrJ4DQA7PSqyp1DDZSENfTFR0fjoYZE+Q0zAJh22+PaR0MP7QhgSCGP0H11uB2c1NU+z/Qaup8eyaNxFXEd3AynkhWJe2HTYh23VQKc5mQa9meUJODuLChHFo63TaAHy9Pp4cBDS7Hyv1NGDz3exfGlXDFiXJiI79BsRRLcgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBUGET9w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7488CC4CEF7;
-	Mon, 23 Mar 2026 14:07:22 +0000 (UTC)
+	 MIME-Version; b=a0aSGVCXwtILjof8RIzyUqZt0Er5VI/8WDmvQyZ4hWzIwErlmN1nfDHhl1GbK6AakgfSPtO55oJ0/s4A4S1kVM+UQsxV7J3XGqQ5isaW0dYMRCqT3RPY18V9fxunJIGLpNU/T8qnWW6YSc4iJ/wpcnZqV7jWMCCKit/P9g8sOU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8H+cPfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B2BC4CEF7;
+	Mon, 23 Mar 2026 16:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274842;
-	bh=yOcakgRjmryMNhm6LGQ3KTHkhIFt/ovp4ebSdLNTHZI=;
+	s=korg; t=1774283036;
+	bh=ompl5n+16OfAPGy7Pm8wFrCNmIDZ542ltm8pycW5K0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBUGET9wqEnwHyiayIz/tmNMIOLxsEpF3EK5XssruWnH39aq/m9x5h5L7L+pNxcaf
-	 cGxYxbU5V7A0tboy+g/fiKbh/EGthubSORCCO2r1Uqht/2/A+WEIP2KtQQ1exjnq8W
-	 8Ge5RWc/l4zg0JP5PJy8A9/JdeK2t7GrnW/3jFCg=
+	b=q8H+cPfLunmxJka/ummWpORoZtCD/7DfikwY5yCS8CuDfn13kqevlmhN1HeKVXSw+
+	 Zyxb8SlJ5/p3oiKCAtIF3NE92retnFheGi03I6UaIlell4wApKJVHazMge4oc7/jWS
+	 N599AAmVYAhNL903q87ovQpizAF97DTyFldoIYx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 084/212] drm/amdgpu/mmhub3.0.1: add bounds checking for cid
-Date: Mon, 23 Mar 2026 14:45:05 +0100
-Message-ID: <20260323134506.426761470@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 324/481] mptcp: pm: in-kernel: always mark signal+subflow endp as used
+Date: Mon, 23 Mar 2026 14:45:06 +0100
+Message-ID: <20260323134532.996137117@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,67 +67,155 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228335-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229852-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 473712F4705
+X-Rspamd-Queue-Id: AC71A2F97C9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 5d4e88bcfef29569a1db224ef15e28c603666c6d upstream.
+[ Upstream commit 579a752464a64cb5f9139102f0e6b90a1f595ceb ]
 
-The value should never exceed the array size as those
-are the only values the hardware is expected to return,
-but add checks anyway.
+Syzkaller managed to find a combination of actions that was generating
+this warning:
 
-Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5f76083183363c4528a4aaa593f5d38c28fe7d7b)
+  msk->pm.local_addr_used == 0
+  WARNING: net/mptcp/pm_kernel.c:1071 at __mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline], CPU#1: syz.2.17/961
+  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline], CPU#1: syz.2.17/961
+  WARNING: net/mptcp/pm_kernel.c:1071 at mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210, CPU#1: syz.2.17/961
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 961 Comm: syz.2.17 Not tainted 6.19.0-08368-gfafda3b4b06b #22 PREEMPT(full)
+  Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.17.0-debian-1.17.0-1build1 04/01/2014
+  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_kernel.c:1071 [inline]
+  RIP: 0010:mptcp_nl_remove_subflow_and_signal_addr net/mptcp/pm_kernel.c:1103 [inline]
+  RIP: 0010:mptcp_pm_nl_del_addr_doit+0x81d/0x8f0 net/mptcp/pm_kernel.c:1210
+  Code: 89 c5 e8 46 30 6f fe e9 21 fd ff ff 49 83 ed 80 e8 38 30 6f fe 4c 89 ef be 03 00 00 00 e8 db 49 df fe eb ac e8 24 30 6f fe 90 <0f> 0b 90 e9 1d ff ff ff e8 16 30 6f fe eb 05 e8 0f 30 6f fe e8 9a
+  RSP: 0018:ffffc90001663880 EFLAGS: 00010293
+  RAX: ffffffff82de1a6c RBX: 0000000000000000 RCX: ffff88800722b500
+  RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+  RBP: ffff8880158b22d0 R08: 0000000000010425 R09: ffffffffffffffff
+  R10: ffffffff82de18ba R11: 0000000000000000 R12: ffff88800641a640
+  R13: ffff8880158b1880 R14: ffff88801ec3c900 R15: ffff88800641a650
+  FS:  00005555722c3500(0000) GS:ffff8880f909d000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 00007f66346e0f60 CR3: 000000001607c000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   genl_family_rcv_msg_doit+0x117/0x180 net/netlink/genetlink.c:1115
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x3a8/0x3f0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x16d/0x240 net/netlink/af_netlink.c:2550
+   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+   netlink_unicast+0x3e9/0x4c0 net/netlink/af_netlink.c:1344
+   netlink_sendmsg+0x4aa/0x5b0 net/netlink/af_netlink.c:1894
+   sock_sendmsg_nosec net/socket.c:727 [inline]
+   __sock_sendmsg+0xc9/0xf0 net/socket.c:742
+   ____sys_sendmsg+0x272/0x3b0 net/socket.c:2592
+   ___sys_sendmsg+0x2de/0x320 net/socket.c:2646
+   __sys_sendmsg net/socket.c:2678 [inline]
+   __do_sys_sendmsg net/socket.c:2683 [inline]
+   __se_sys_sendmsg net/socket.c:2681 [inline]
+   __x64_sys_sendmsg+0x110/0x1a0 net/socket.c:2681
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0x143/0x440 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7f66346f826d
+  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007ffc83d8bdc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+  RAX: ffffffffffffffda RBX: 00007f6634985fa0 RCX: 00007f66346f826d
+  RDX: 00000000040000b0 RSI: 0000200000000740 RDI: 0000000000000007
+  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f6634985fa8
+  R13: 00007f6634985fac R14: 0000000000000000 R15: 0000000000001770
+   </TASK>
+
+The actions that caused that seem to be:
+
+ - Set the MPTCP subflows limit to 0
+ - Create an MPTCP endpoint with both the 'signal' and 'subflow' flags
+ - Create a new MPTCP connection from a different address: an ADD_ADDR
+   linked to the MPTCP endpoint will be sent ('signal' flag), but no
+   subflows is initiated ('subflow' flag)
+ - Remove the MPTCP endpoint
+
+In this case, msk->pm.local_addr_used has been kept to 0 -- because no
+subflows have been created -- but the corresponding bit in
+msk->pm.id_avail_bitmap has been cleared when the ADD_ADDR has been
+sent. This later causes a splat when removing the MPTCP endpoint because
+msk->pm.local_addr_used has been kept to 0.
+
+Now, if an endpoint has both the signal and subflow flags, but it is not
+possible to create subflows because of the limits or the c-flag case,
+then the local endpoint counter is still incremented: the endpoint is
+used at the end. This avoids issues later when removing the endpoint and
+calling __mark_subflow_endp_available(), which expects
+msk->pm.local_addr_used to have been previously incremented if the
+endpoint was marked as used according to msk->pm.id_avail_bitmap.
+
+Note that signal_and_subflow variable is reset to false when the limits
+and the c-flag case allows subflows creation. Also, local_addr_used is
+only incremented for non ID0 subflows.
+
+Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
 Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/613
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-4-4b5462b6f016@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ pm_kernel.c => pm_netlink.c ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_1.c
-@@ -117,7 +117,8 @@ mmhub_v3_0_1_print_l2_protection_fault_s
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -666,6 +666,15 @@ subflow:
+ 	}
  
- 	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
- 	case IP_VERSION(3, 0, 1):
--		mmhub_cid = mmhub_client_ids_v3_0_1[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v3_0_1) ?
-+			mmhub_client_ids_v3_0_1[cid][rw] : NULL;
- 		break;
- 	default:
- 		mmhub_cid = NULL;
+ exit:
++	/* If an endpoint has both the signal and subflow flags, but it is not
++	 * possible to create subflows -- the 'while' loop body above never
++	 * executed --  then still mark the endp as used, which is somehow the
++	 * case. This avoids issues later when removing the endpoint and calling
++	 * __mark_subflow_endp_available(), which expects the increment here.
++	 */
++	if (signal_and_subflow && local.addr.id != msk->mpc_endpoint_id)
++		msk->pm.local_addr_used++;
++
+ 	mptcp_pm_nl_check_work_pending(msk);
+ }
+ 
 
 
 
