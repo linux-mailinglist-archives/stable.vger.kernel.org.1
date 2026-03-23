@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229597-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cH+sGMlRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228561-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:25 +0100
+	id MDrnKzxrwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229597-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1E212F515C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 273B12F84B2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C9C93156F8D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 02AE931F1F2D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25062369204;
-	Mon, 23 Mar 2026 14:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2BE3BA222;
+	Mon, 23 Mar 2026 16:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWKVRCoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3jeVIsC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB895175A80;
-	Mon, 23 Mar 2026 14:17:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB42274B5F;
+	Mon, 23 Mar 2026 16:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275456; cv=none; b=WYQkLSfy4VUiexq1A4OmCf+Zaj9/EKPenH/Zqi5yhrM9YR/QP7HIrMP5M8+x1e01p8nCCjNvYlnnn2nErtfwr3VsvGlKJqtZH1k49Xfgleb7C1JoFBtEuQ0PCObvb8o8fSovNrCgEJ2z/uTiJBNTdC0j55sXex20ogfNIM8ewhA=
+	t=1774282349; cv=none; b=WvjKoY98rC5t9FvzG7ChA67mwcs2WxkFbtd4IQgXVZXWoKxTMOqnJeVRO1jpDi01ILXenaMPhUvro7kWkSCy7t5KZQ6lBzlRmw6DMRmFMACdcMsnVWOguAUNSALF5HXfD7u0de/cweJBIwTeISVShSpTHhKPQ3lVSlxvLcgcNOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275456; c=relaxed/simple;
-	bh=D1dl4trwH3apMoYVG93IdO/1/YRduwbWLvGQlB4Y/Ag=;
+	s=arc-20240116; t=1774282349; c=relaxed/simple;
+	bh=VoyiJlB+FdiWN6zOhV5hKmN/m/LDVSAzJnfN7kxLkfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WOub2kwsxc6Kp11KlIHypKR3qlvhhgosudOBwjKL2osJeN424XBz7jLfcH6G9f3AR6BnL6G9RdUDFPuwTOInPSouuGhszmi1VSBq6ugfkUxJD71wcs/o6g0RjhsgLSJii+e21Pbt/+omNJX+O0NR04lajyI/IYbYVlzYEmBtQK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWKVRCoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B5F8C4CEF7;
-	Mon, 23 Mar 2026 14:17:36 +0000 (UTC)
+	 MIME-Version; b=Oftv31zVNlGNVcmG4TffEBmebVqkdzYmdh4NbvnQeBXgEEBLBwaQzerDuboY2VkOIfQmsZBx2Uk4AxOecfInhryQMj8E/kzWN1LNLyVY6uTH6LeS3Fye4wfc8VWB1L3E3ibyOhShr6JzylNZTVEw/NFJJHGPAfswxhuOsCfCUX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3jeVIsC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C30C4CEF7;
+	Mon, 23 Mar 2026 16:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275456;
-	bh=D1dl4trwH3apMoYVG93IdO/1/YRduwbWLvGQlB4Y/Ag=;
+	s=korg; t=1774282349;
+	bh=VoyiJlB+FdiWN6zOhV5hKmN/m/LDVSAzJnfN7kxLkfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWKVRCoQtDilOXkJxyCm+YhvyESGG1hopB59rEdXMz2eGHt8rnXmuMqT9GCcfZrZm
-	 2pmvEnajQdAeLN6j6/KEmJg+ssgK2iT0PRVGKF629/EeSsr+t0ox8J7LFyueqbxcZA
-	 O1jqvR5Ab7WkpPFIZz7b/ivaVq9cNaYnBFtozNxk=
+	b=c3jeVIsCEVhqyvogc676SBSXy+XKhiYxP8vx/Um88JMUJX5ncZw+18rkos+Sejbrq
+	 cRsZ/846b/goXcZXrVB6Pq8tj896v2yks+6p1n76aWN252WTgABIYZNwAFQ1lgE/sS
+	 yR+ijMh2x6AfE59DopRSOuDyS1Gz2BYC3AgdBEig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>,
-	Arnaud Ferraris <arnaud.ferraris@collabora.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 108/460] usb: roles: get usb role switch from parent only for usb-b-connector
-Date: Mon, 23 Mar 2026 14:41:44 +0100
-Message-ID: <20260323134529.297726265@linuxfoundation.org>
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 123/481] wifi: mt76: Fix possible oob access in mt76_connac2_mac_write_txwi_80211()
+Date: Mon, 23 Mar 2026 14:41:45 +0100
+Message-ID: <20260323134528.281391127@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,85 +68,71 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228561-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229597-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F1E212F515C
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 273B12F84B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-commit 8345b1539faa49fcf9c9439c3cbd97dac6eca171 upstream.
+[ Upstream commit 4e10a730d1b511ff49723371ed6d694dd1b2c785 ]
 
-usb_role_switch_is_parent() was walking up to the parent node and checking
-for the "usb-role-switch" property regardless of the type of the passed
-fwnode. This could cause unrelated device nodes to be probed as potential
-role switch parent, leading to spurious matches and "-EPROBE_DEFER" being
-returned infinitely.
+Check frame length before accessing the mgmt fields in
+mt76_connac2_mac_write_txwi_80211 in order to avoid a possible oob
+access.
 
-Till now only Type-B connector node will have a parent node which may
-present "usb-role-switch" property and register the role switch device.
-For Type-C connector node, its parent node will always be a Type-C chip
-device which will never register the role switch device. However, it may
-still present a non-boolean "usb-role-switch = <&usb_controller>" property
-for historical compatibility.
-
-So restrict the helper to only operate on Type-B connector when attempting
-to get the role switch from parent node.
-
-Fixes: 6fadd72943b8 ("usb: roles: get usb-role-switch from parent")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Tested-by: Arnaud Ferraris <arnaud.ferraris@collabora.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260309074313.2809867-3-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 577dbc6c656d ("mt76: mt7915: enable offloading of sequence number assignment")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260226-mt76-addba-req-oob-access-v1-3-b0f6d1ad4850@kernel.org
+[fix check to also cover mgmt->u.action.u.addba_req.capab,
+correct Fixes tag]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/roles/class.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/roles/class.c
-+++ b/drivers/usb/roles/class.c
-@@ -139,9 +139,14 @@ static void *usb_role_switch_match(const
- static struct usb_role_switch *
- usb_role_switch_is_parent(struct fwnode_handle *fwnode)
- {
--	struct fwnode_handle *parent = fwnode_get_parent(fwnode);
-+	struct fwnode_handle *parent;
- 	struct device *dev;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+index f7d392fce8c28..f69cb83adcca9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -375,6 +375,7 @@ mt76_connac2_mac_write_txwi_80211(struct mt76_dev *dev, __le32 *txwi,
+ 	u32 val;
  
-+	if (!fwnode_device_is_compatible(fwnode, "usb-b-connector"))
-+		return NULL;
-+
-+	parent = fwnode_get_parent(fwnode);
-+
- 	if (!fwnode_property_present(parent, "usb-role-switch")) {
- 		fwnode_handle_put(parent);
- 		return NULL;
+ 	if (ieee80211_is_action(fc) &&
++	    skb->len >= IEEE80211_MIN_ACTION_SIZE + 1 + 1 + 2 &&
+ 	    mgmt->u.action.category == WLAN_CATEGORY_BACK &&
+ 	    mgmt->u.action.u.addba_req.action_code == WLAN_ACTION_ADDBA_REQ) {
+ 		u16 capab = le16_to_cpu(mgmt->u.action.u.addba_req.capab);
+-- 
+2.51.0
+
 
 
 
