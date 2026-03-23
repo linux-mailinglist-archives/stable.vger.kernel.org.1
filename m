@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OGj/KPluwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229802-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:57 +0100
+	id ELOPB/JHwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AFBF2F8D92
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A293B2F3AEB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5924130543D1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5FA7C309D721
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C73D1DA0E1;
-	Mon, 23 Mar 2026 16:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B36693AC0C9;
+	Mon, 23 Mar 2026 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmatMWe/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jpt1ZojJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6037612CDA5;
-	Mon, 23 Mar 2026 16:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774713ACA68;
+	Mon, 23 Mar 2026 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282904; cv=none; b=UvmpkPA+5mC8ii8R/gAI+Ncd+FjZIj3VAD5nRV8YlQGAr7Tmei7dtssHBI+T08yhYGdww/DMWuEl/y4DVOxT5wVVJ/xZl2etgdEWsO9wDeawCABgG/i64vLVB2HpcQk1C0QDtkxtTEYzZpElsXX/U/lHlRKXetfHwjXMrAHla6w=
+	t=1774274038; cv=none; b=tfKNWL9o0EHeFLZGinInOHwa3Cha6pzcSAyBPSq7v/gkkg4lA0iw3Kx4H9w3Uj7IHkLsCtSvi/J5HAdNtA5eEgSPUf8ZJoRKEKQ4+KqmQao+IYc9esDE6yQN9bLvG0jjdqm+kr799Qpc0absnsdILQrI/w0I9nShG25yUD5gd4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282904; c=relaxed/simple;
-	bh=LB/CmAzcjic/HmrcXcN4R1m+d7L/E6FFy4CbilB1CiE=;
+	s=arc-20240116; t=1774274038; c=relaxed/simple;
+	bh=KLqTtn41+D9erhxuieZbG8dP0SrvWDY6ccFdXjvOOL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJhowMw7Zd6nBcNHFtE91DaEksyHjrp/eH37c0EfEUhYlKNROb5wvGoyPwWjrBF1198jclHCe+Hq0j3tifpJLeAP3J4IZOLYUghhkLlqte9Ulv3iGLbLEln+Bdr984ResSmCQZ3ICU9a+4zvIzECYA56A+APjZt83MCFHQpPEDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmatMWe/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F57C4CEF7;
-	Mon, 23 Mar 2026 16:21:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uxRLkXAlZ/edeJLJXg3A4pavTdUC3AaDooP97ZVsHHlDiSBa47nKq/cdwqNJ+Uy9UG0nkk8iRdb6EaIiIASNvL7LFqFT2o3t+LdqeCdniN9tQ8MLLifcPD2wVvj1++AOXguPmX8zNzF4G/JOM0yhO6i7Y/VV70b7tA9b48d+cfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jpt1ZojJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02360C4CEF7;
+	Mon, 23 Mar 2026 13:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282904;
-	bh=LB/CmAzcjic/HmrcXcN4R1m+d7L/E6FFy4CbilB1CiE=;
+	s=korg; t=1774274038;
+	bh=KLqTtn41+D9erhxuieZbG8dP0SrvWDY6ccFdXjvOOL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NmatMWe/dQZMO0z0kyuVZ2wgTCplWD/YkXjXcYe1dHYWcMq6WskTJi89UBZ/O2TSP
-	 sUrT1hupI7EcL/WAENvXQRi88S6IWggWcSTjYnKB0EfbGkeuLLEivOUJK2BsA9AtX/
-	 wZoVUnIrEIXNsl8HmqxsafL8355jxQSyn9l0BC8c=
+	b=Jpt1ZojJflbCKKCiPtwtXTjT30nH1tM7CPzMlawiAX3S0JDS8gQ15mGiOaan5Ryxg
+	 Yr0qZ6khmxwp420qmPgmJwvCFrAPSvGDa2Hx3szICei9cgdsOuzhYcMjEdvDZ8Lkbs
+	 izGyteOqx/BpqD+Cti3qGdiGpV3gSFnnNfnEPNa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 285/481] NFC: nxp-nci: allow GPIOs to sleep
+	Ashutosh Dixit <ashutosh.dixit@intel.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.19 090/220] drm/xe/oa: Allow reading after disabling OA stream
 Date: Mon, 23 Mar 2026 14:44:27 +0100
-Message-ID: <20260323134532.059708581@linuxfoundation.org>
+Message-ID: <20260323134507.439481275@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,25 +63,26 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229802-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228070-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -88,51 +90,60 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6AFBF2F8D92
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: A293B2F3AEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Ashutosh Dixit <ashutosh.dixit@intel.com>
 
-commit 55dc632ab2ac2889b15995a9eef56c753d48ebc7 upstream.
+commit 9be6fd9fbd2032b683e51374497768af9aaa228a upstream.
 
-Allow the firmware and enable GPIOs to sleep.
+Some OA data might be present in the OA buffer when OA stream is
+disabled. Allow UMD's to retrieve this data, so that all data till the
+point when OA stream is disabled can be retrieved.
 
-This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
-connected to I2C GPIO expanders.
+v2: Update tail pointer after disable (Umesh)
 
--- >8 --
-kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
--- >8 --
-
-Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
+Fixes: efb315d0a013 ("drm/xe/oa/uapi: Read file_operation")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260317085337.146545-1-ian.ray@gehealthcare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Reviewed-by: Umesh Nerlige Ramappa<umesh.nerlige.ramappa@intel.com>
+Link: https://patch.msgid.link/20260313053630.3176100-1-ashutosh.dixit@intel.com
+(cherry picked from commit 4ff57c5e8dbba23b5457be12f9709d5c016da16e)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/nxp-nci/i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_oa.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *ph
- {
- 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
+--- a/drivers/gpu/drm/xe/xe_oa.c
++++ b/drivers/gpu/drm/xe/xe_oa.c
+@@ -543,8 +543,7 @@ static ssize_t xe_oa_read(struct file *f
+ 	size_t offset = 0;
+ 	int ret;
  
--	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
--	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
- 	usleep_range(10000, 15000);
+-	/* Can't read from disabled streams */
+-	if (!stream->enabled || !stream->sample)
++	if (!stream->sample)
+ 		return -EINVAL;
  
- 	if (mode == NXP_NCI_MODE_COLD)
+ 	if (!(file->f_flags & O_NONBLOCK)) {
+@@ -1460,6 +1459,10 @@ static void xe_oa_stream_disable(struct
+ 
+ 	if (stream->sample)
+ 		hrtimer_cancel(&stream->poll_check_timer);
++
++	/* Update stream->oa_buffer.tail to allow any final reports to be read */
++	if (xe_oa_buffer_check_unlocked(stream))
++		wake_up(&stream->poll_wq);
+ }
+ 
+ static int xe_oa_enable_preempt_timeslice(struct xe_oa_stream *stream)
 
 
 
