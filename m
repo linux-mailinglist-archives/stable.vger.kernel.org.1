@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-229609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229107-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAGaMwF8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:33 +0100
+	id WIItB3tZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229107-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:15 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EFE2FA51C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D332F616A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E88C630541C7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A617D332E252
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FFB3BD25A;
-	Mon, 23 Mar 2026 16:13:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EA524BBF4;
+	Mon, 23 Mar 2026 15:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFuiJZ11"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjsMJKEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F153BD240;
-	Mon, 23 Mar 2026 16:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A241A00F0;
+	Mon, 23 Mar 2026 15:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282381; cv=none; b=u8yUvQpjs5sLPG7EgjNmDc9p/cA10J2jEpnLgrQLsBZ4Z3sms/DcN2/YZktpdl2pwKuqBkLBzVAqXE6zSgI6JDiCkszBMtKmcE4npcohdUnpNU0vCEwRHDm6UbnQM10tsPiAOh2gHezqRxU/036lFBMENdHOIhCy6hQcOPxWqMw=
+	t=1774278081; cv=none; b=I0ZkdTnnCewAgd90oDX/pcpLaGWdY27sXwvLnRMI8MrD3JakBJnjBNJgqhNtmZugvaaXUKKiznsfeya+ZG2QRH2SbQ65KKA0xZ2R1dfiEzmHhmJudHADFCd3fpM0ccoSvN1ZVU8H5PKcnwYyr9wHMWiUyGC9JlofwAoNR97AcpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282381; c=relaxed/simple;
-	bh=5qzGa7Ap083E28WJn/+Sy9ivmJatUONPIukudhhCMB0=;
+	s=arc-20240116; t=1774278081; c=relaxed/simple;
+	bh=Igzr21YdDFsSCcko6Xu8wZGlJuau7M/VOpmFjp0hZRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGNP9LuHia4/Xsq/Dg53g6dH8+/wwKMxmVTMiUqlvPQHPezQfdZnRR7YzzDnWBuqG/xU3J37bUHfnBVcLerdTLX5wRNFrYS66u2kZWX3yv9VkdIuqOnUkKD6EvzuNuq8rg9ISllMmma2xJ76PJ1otJV2eLmdptUmoVPxd1TE4lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFuiJZ11; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CAB1C4CEF7;
-	Mon, 23 Mar 2026 16:13:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZrrLEcEnc+8cCe8/eZul3lxNBNPoPmNh99sL3J8n4Kkl/xDf6Z/RYggBJa+BOffxcQSYmBMxIxMPNmVC+FK7h5svfBdI8aey/jJnex04umTKgeeri3ocDvyWOO6AEI0j2QMUpNQSoeXsNLKYYd+GC6yuMeq20A/YTuTF20HUhZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjsMJKEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17C6C4CEF7;
+	Mon, 23 Mar 2026 15:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282381;
-	bh=5qzGa7Ap083E28WJn/+Sy9ivmJatUONPIukudhhCMB0=;
+	s=korg; t=1774278081;
+	bh=Igzr21YdDFsSCcko6Xu8wZGlJuau7M/VOpmFjp0hZRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EFuiJZ11Ki0ufwMqEAgkcdFPJ5zjnfr8lzbtY3kS1vCujFcROadT9BpXpUvyA8rr6
-	 JT6BwgTzV1OGGAYBOgEVSPVfBKgW+FCg7JDRMRHzKOGDtlL7kMqIUOcThUcmXY6lwn
-	 1AV2dd+FxeVh500elW5BwlzzuH2aOgh+YfXtYm38=
+	b=DjsMJKEgExrWihqN+QqT4xwNtqHZrmOCWGeXcBfozxyeEQC73SPfPP0TDqt4TzeSN
+	 L5LHnF20rFx3xUGrXJLgXLa6Z0EWQSLgaej/y+5sQ6rLOGzbwvMx5spptHH1WAHJ+y
+	 qDMZU3I+esqGmL3bhGmD/eEHHmgOt7kKZUCGrEHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <joe@dama.to>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/481] nfc: rawsock: cancel tx_work before socket teardown
+	Qualys Security Advisory <qsa@qualys.com>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	=?UTF-8?q?Maxime=20B=C3=A9lair?= <maxime.belair@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.6 196/567] apparmor: fix race on rawdata dereference
 Date: Mon, 23 Mar 2026 14:41:56 +0100
-Message-ID: <20260323134528.528758345@linuxfoundation.org>
+Message-ID: <20260323134538.697774347@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +66,473 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229107-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229609-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,dama.to:email]
-X-Rspamd-Queue-Id: 13EFE2FA51C
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: B3D332F616A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: John Johansen <john.johansen@canonical.com>
 
-[ Upstream commit d793458c45df2aed498d7f74145eab7ee22d25aa ]
+commit a0b7091c4de45a7325c8780e6934a894f92ac86b upstream.
 
-In rawsock_release(), cancel any pending tx_work and purge the write
-queue before orphaning the socket.  rawsock_tx_work runs on the system
-workqueue and calls nfc_data_exchange which dereferences the NCI
-device.  Without synchronization, tx_work can race with socket and
-device teardown when a process is killed (e.g. by SIGKILL), leading
-to use-after-free or leaked references.
+There is a race condition that leads to a use-after-free situation:
+because the rawdata inodes are not refcounted, an attacker can start
+open()ing one of the rawdata files, and at the same time remove the
+last reference to this rawdata (by removing the corresponding profile,
+for example), which frees its struct aa_loaddata; as a result, when
+seq_rawdata_open() is reached, i_private is a dangling pointer and
+freed memory is accessed.
 
-Set SEND_SHUTDOWN first so that if tx_work is already running it will
-see the flag and skip transmitting, then use cancel_work_sync to wait
-for any in-progress execution to finish, and finally purge any
-remaining queued skbs.
+The rawdata inodes weren't refcounted to avoid a circular refcount and
+were supposed to be held by the profile rawdata reference.  However
+during profile removal there is a window where the vfs and profile
+destruction race, resulting in the use after free.
 
-Fixes: 23b7869c0fd0 ("NFC: add the NFC socket raw protocol")
-Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260303162346.2071888-6-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by moving to a double refcount scheme. Where the profile
+refcount on rawdata is used to break the circular dependency. Allowing
+for freeing of the rawdata once all inode references to the rawdata
+are put.
+
+Fixes: 5d5182cae401 ("apparmor: move to per loaddata files, instead of replicating in profiles")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Maxime Bélair <maxime.belair@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/rawsock.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ security/apparmor/apparmorfs.c            |   35 ++++++++------
+ security/apparmor/include/policy_unpack.h |   71 ++++++++++++++++++------------
+ security/apparmor/policy.c                |   12 ++---
+ security/apparmor/policy_unpack.c         |   32 +++++++++----
+ 4 files changed, 93 insertions(+), 57 deletions(-)
 
-diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
-index 8dd569765f96e..cffbb96beb6cb 100644
---- a/net/nfc/rawsock.c
-+++ b/net/nfc/rawsock.c
-@@ -66,6 +66,17 @@ static int rawsock_release(struct socket *sock)
- 	if (sock->type == SOCK_RAW)
- 		nfc_sock_unlink(&raw_sk_list, sk);
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -79,7 +79,7 @@ static void rawdata_f_data_free(struct r
+ 	if (!private)
+ 		return;
  
-+	if (sk->sk_state == TCP_ESTABLISHED) {
-+		/* Prevent rawsock_tx_work from starting new transmits and
-+		 * wait for any in-progress work to finish.  This must happen
-+		 * before the socket is orphaned to avoid a race where
-+		 * rawsock_tx_work runs after the NCI device has been freed.
+-	aa_put_loaddata(private->loaddata);
++	aa_put_i_loaddata(private->loaddata);
+ 	kvfree(private);
+ }
+ 
+@@ -404,7 +404,8 @@ static struct aa_loaddata *aa_simple_wri
+ 
+ 	data->size = copy_size;
+ 	if (copy_from_user(data->data, userbuf, copy_size)) {
+-		aa_put_loaddata(data);
++		/* trigger free - don't need to put pcount */
++		aa_put_i_loaddata(data);
+ 		return ERR_PTR(-EFAULT);
+ 	}
+ 
+@@ -432,7 +433,10 @@ static ssize_t policy_update(u32 mask, c
+ 	error = PTR_ERR(data);
+ 	if (!IS_ERR(data)) {
+ 		error = aa_replace_profiles(ns, label, mask, data);
+-		aa_put_loaddata(data);
++		/* put pcount, which will put count and free if no
++		 * profiles referencing it.
 +		 */
-+		sk->sk_shutdown |= SEND_SHUTDOWN;
-+		cancel_work_sync(&nfc_rawsock(sk)->tx_work);
-+		rawsock_write_queue_purge(sk);
-+	}
-+
- 	sock_orphan(sk);
- 	sock_put(sk);
++		aa_put_profile_loaddata(data);
+ 	}
+ end_section:
+ 	end_current_label_crit_section(label);
+@@ -503,7 +507,7 @@ static ssize_t profile_remove(struct fil
+ 	if (!IS_ERR(data)) {
+ 		data->data[size] = 0;
+ 		error = aa_remove_profiles(ns, label, data->data, size);
+-		aa_put_loaddata(data);
++		aa_put_profile_loaddata(data);
+ 	}
+  out:
+ 	end_current_label_crit_section(label);
+@@ -1242,18 +1246,17 @@ static const struct file_operations seq_
+ static int seq_rawdata_open(struct inode *inode, struct file *file,
+ 			    int (*show)(struct seq_file *, void *))
+ {
+-	struct aa_loaddata *data = __aa_get_loaddata(inode->i_private);
++	struct aa_loaddata *data = aa_get_i_loaddata(inode->i_private);
+ 	int error;
  
--- 
-2.51.0
-
+ 	if (!data)
+-		/* lost race this ent is being reaped */
+ 		return -ENOENT;
+ 
+ 	error = single_open(file, show, data);
+ 	if (error) {
+ 		AA_BUG(file->private_data &&
+ 		       ((struct seq_file *)file->private_data)->private);
+-		aa_put_loaddata(data);
++		aa_put_i_loaddata(data);
+ 	}
+ 
+ 	return error;
+@@ -1264,7 +1267,7 @@ static int seq_rawdata_release(struct in
+ 	struct seq_file *seq = (struct seq_file *) file->private_data;
+ 
+ 	if (seq)
+-		aa_put_loaddata(seq->private);
++		aa_put_i_loaddata(seq->private);
+ 
+ 	return single_release(inode, file);
+ }
+@@ -1378,9 +1381,8 @@ static int rawdata_open(struct inode *in
+ 	if (!aa_current_policy_view_capable(NULL))
+ 		return -EACCES;
+ 
+-	loaddata = __aa_get_loaddata(inode->i_private);
++	loaddata = aa_get_i_loaddata(inode->i_private);
+ 	if (!loaddata)
+-		/* lost race: this entry is being reaped */
+ 		return -ENOENT;
+ 
+ 	private = rawdata_f_data_alloc(loaddata->size);
+@@ -1405,7 +1407,7 @@ fail_decompress:
+ 	return error;
+ 
+ fail_private_alloc:
+-	aa_put_loaddata(loaddata);
++	aa_put_i_loaddata(loaddata);
+ 	return error;
+ }
+ 
+@@ -1422,9 +1424,9 @@ static void remove_rawdata_dents(struct
+ 
+ 	for (i = 0; i < AAFS_LOADDATA_NDENTS; i++) {
+ 		if (!IS_ERR_OR_NULL(rawdata->dents[i])) {
+-			/* no refcounts on i_private */
+ 			aafs_remove(rawdata->dents[i]);
+ 			rawdata->dents[i] = NULL;
++			aa_put_i_loaddata(rawdata);
+ 		}
+ 	}
+ }
+@@ -1463,18 +1465,21 @@ int __aa_fs_create_rawdata(struct aa_ns
+ 	if (IS_ERR(dir))
+ 		/* ->name freed when rawdata freed */
+ 		return PTR_ERR(dir);
++	aa_get_i_loaddata(rawdata);
+ 	rawdata->dents[AAFS_LOADDATA_DIR] = dir;
+ 
+ 	dent = aafs_create_file("abi", S_IFREG | 0444, dir, rawdata,
+ 				      &seq_rawdata_abi_fops);
+ 	if (IS_ERR(dent))
+ 		goto fail;
++	aa_get_i_loaddata(rawdata);
+ 	rawdata->dents[AAFS_LOADDATA_ABI] = dent;
+ 
+ 	dent = aafs_create_file("revision", S_IFREG | 0444, dir, rawdata,
+ 				      &seq_rawdata_revision_fops);
+ 	if (IS_ERR(dent))
+ 		goto fail;
++	aa_get_i_loaddata(rawdata);
+ 	rawdata->dents[AAFS_LOADDATA_REVISION] = dent;
+ 
+ 	if (aa_g_hash_policy) {
+@@ -1482,6 +1487,7 @@ int __aa_fs_create_rawdata(struct aa_ns
+ 					      rawdata, &seq_rawdata_hash_fops);
+ 		if (IS_ERR(dent))
+ 			goto fail;
++		aa_get_i_loaddata(rawdata);
+ 		rawdata->dents[AAFS_LOADDATA_HASH] = dent;
+ 	}
+ 
+@@ -1490,24 +1496,25 @@ int __aa_fs_create_rawdata(struct aa_ns
+ 				&seq_rawdata_compressed_size_fops);
+ 	if (IS_ERR(dent))
+ 		goto fail;
++	aa_get_i_loaddata(rawdata);
+ 	rawdata->dents[AAFS_LOADDATA_COMPRESSED_SIZE] = dent;
+ 
+ 	dent = aafs_create_file("raw_data", S_IFREG | 0444,
+ 				      dir, rawdata, &rawdata_fops);
+ 	if (IS_ERR(dent))
+ 		goto fail;
++	aa_get_i_loaddata(rawdata);
+ 	rawdata->dents[AAFS_LOADDATA_DATA] = dent;
+ 	d_inode(dent)->i_size = rawdata->size;
+ 
+ 	rawdata->ns = aa_get_ns(ns);
+ 	list_add(&rawdata->list, &ns->rawdata_list);
+-	/* no refcount on inode rawdata */
+ 
+ 	return 0;
+ 
+ fail:
+ 	remove_rawdata_dents(rawdata);
+-
++	aa_put_i_loaddata(rawdata);
+ 	return PTR_ERR(dent);
+ }
+ #endif /* CONFIG_SECURITY_APPARMOR_EXPORT_BINARY */
+--- a/security/apparmor/include/policy_unpack.h
++++ b/security/apparmor/include/policy_unpack.h
+@@ -87,17 +87,29 @@ struct aa_ext {
+ 	u32 version;
+ };
+ 
+-/*
+- * struct aa_loaddata - buffer of policy raw_data set
++/* struct aa_loaddata - buffer of policy raw_data set
++ * @count: inode/filesystem refcount - use aa_get_i_loaddata()
++ * @pcount: profile refcount - use aa_get_profile_loaddata()
++ * @list: list the loaddata is on
++ * @work: used to do a delayed cleanup
++ * @dents: refs to dents created in aafs
++ * @ns: the namespace this loaddata was loaded into
++ * @name:
++ * @size: the size of the data that was loaded
++ * @compressed_size: the size of the data when it is compressed
++ * @revision: unique revision count that this data was loaded as
++ * @abi: the abi number the loaddata uses
++ * @hash: a hash of the loaddata, used to help dedup data
+  *
+- * there is no loaddata ref for being on ns list, nor a ref from
+- * d_inode(@dentry) when grab a ref from these, @ns->lock must be held
+- * && __aa_get_loaddata() needs to be used, and the return value
+- * checked, if NULL the loaddata is already being reaped and should be
+- * considered dead.
++ * There is no loaddata ref for being on ns->rawdata_list, so
++ * @ns->lock must be held when walking the list. Dentries and
++ * inode opens hold refs on @count; profiles hold refs on @pcount.
++ * When the last @pcount drops, do_ploaddata_rmfs() removes the
++ * fs entries and drops the associated @count ref.
+  */
+ struct aa_loaddata {
+ 	struct kref count;
++	struct kref pcount;
+ 	struct list_head list;
+ 	struct work_struct work;
+ 	struct dentry *dents[AAFS_LOADDATA_NDENTS];
+@@ -119,52 +131,55 @@ struct aa_loaddata {
+ int aa_unpack(struct aa_loaddata *udata, struct list_head *lh, const char **ns);
+ 
+ /**
+- * __aa_get_loaddata - get a reference count to uncounted data reference
++ * aa_get_loaddata - get a reference count from a counted data reference
+  * @data: reference to get a count on
+  *
+- * Returns: pointer to reference OR NULL if race is lost and reference is
+- *          being repeated.
+- * Requires: @data->ns->lock held, and the return code MUST be checked
+- *
+- * Use only from inode->i_private and @data->list found references
++ * Returns: pointer to reference
++ * Requires: @data to have a valid reference count on it. It is a bug
++ *           if the race to reap can be encountered when it is used.
+  */
+ static inline struct aa_loaddata *
+-__aa_get_loaddata(struct aa_loaddata *data)
++aa_get_i_loaddata(struct aa_loaddata *data)
+ {
+-	if (data && kref_get_unless_zero(&(data->count)))
+-		return data;
+ 
+-	return NULL;
++	if (data)
++		kref_get(&(data->count));
++	return data;
+ }
+ 
++
+ /**
+- * aa_get_loaddata - get a reference count from a counted data reference
++ * aa_get_profile_loaddata - get a profile reference count on loaddata
+  * @data: reference to get a count on
+  *
+- * Returns: point to reference
+- * Requires: @data to have a valid reference count on it. It is a bug
+- *           if the race to reap can be encountered when it is used.
++ * Returns: pointer to reference
++ * Requires: @data to have a valid reference count on it.
+  */
+ static inline struct aa_loaddata *
+-aa_get_loaddata(struct aa_loaddata *data)
++aa_get_profile_loaddata(struct aa_loaddata *data)
+ {
+-	struct aa_loaddata *tmp = __aa_get_loaddata(data);
+-
+-	AA_BUG(data && !tmp);
+-
+-	return tmp;
++	if (data)
++		kref_get(&(data->pcount));
++	return data;
+ }
+ 
+ void __aa_loaddata_update(struct aa_loaddata *data, long revision);
+ bool aa_rawdata_eq(struct aa_loaddata *l, struct aa_loaddata *r);
+ void aa_loaddata_kref(struct kref *kref);
++void aa_ploaddata_kref(struct kref *kref);
+ struct aa_loaddata *aa_loaddata_alloc(size_t size);
+-static inline void aa_put_loaddata(struct aa_loaddata *data)
++static inline void aa_put_i_loaddata(struct aa_loaddata *data)
+ {
+ 	if (data)
+ 		kref_put(&data->count, aa_loaddata_kref);
+ }
+ 
++static inline void aa_put_profile_loaddata(struct aa_loaddata *data)
++{
++	if (data)
++		kref_put(&data->pcount, aa_ploaddata_kref);
++}
++
+ #if IS_ENABLED(CONFIG_KUNIT)
+ bool aa_inbounds(struct aa_ext *e, size_t size);
+ size_t aa_unpack_u16_chunk(struct aa_ext *e, char **chunk);
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -336,7 +336,7 @@ void aa_free_profile(struct aa_profile *
+ 	}
+ 
+ 	kfree_sensitive(profile->hash);
+-	aa_put_loaddata(profile->rawdata);
++	aa_put_profile_loaddata(profile->rawdata);
+ 	aa_label_destroy(&profile->label);
+ 
+ 	kfree_sensitive(profile);
+@@ -1120,7 +1120,7 @@ ssize_t aa_replace_profiles(struct aa_ns
+ 	LIST_HEAD(lh);
+ 
+ 	op = mask & AA_MAY_REPLACE_POLICY ? OP_PROF_REPL : OP_PROF_LOAD;
+-	aa_get_loaddata(udata);
++	aa_get_profile_loaddata(udata);
+ 	/* released below */
+ 	error = aa_unpack(udata, &lh, &ns_name);
+ 	if (error)
+@@ -1172,10 +1172,10 @@ ssize_t aa_replace_profiles(struct aa_ns
+ 			if (aa_rawdata_eq(rawdata_ent, udata)) {
+ 				struct aa_loaddata *tmp;
+ 
+-				tmp = __aa_get_loaddata(rawdata_ent);
++				tmp = aa_get_profile_loaddata(rawdata_ent);
+ 				/* check we didn't fail the race */
+ 				if (tmp) {
+-					aa_put_loaddata(udata);
++					aa_put_profile_loaddata(udata);
+ 					udata = tmp;
+ 					break;
+ 				}
+@@ -1188,7 +1188,7 @@ ssize_t aa_replace_profiles(struct aa_ns
+ 		struct aa_profile *p;
+ 
+ 		if (aa_g_export_binary)
+-			ent->new->rawdata = aa_get_loaddata(udata);
++			ent->new->rawdata = aa_get_profile_loaddata(udata);
+ 		error = __lookup_replace(ns, ent->new->base.hname,
+ 					 !(mask & AA_MAY_REPLACE_POLICY),
+ 					 &ent->old, &info);
+@@ -1321,7 +1321,7 @@ ssize_t aa_replace_profiles(struct aa_ns
+ 
+ out:
+ 	aa_put_ns(ns);
+-	aa_put_loaddata(udata);
++	aa_put_profile_loaddata(udata);
+ 	kfree(ns_name);
+ 
+ 	if (error)
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -108,34 +108,47 @@ bool aa_rawdata_eq(struct aa_loaddata *l
+ 	return memcmp(l->data, r->data, r->compressed_size ?: r->size) == 0;
+ }
+ 
++static void do_loaddata_free(struct aa_loaddata *d)
++{
++	kfree_sensitive(d->hash);
++	kfree_sensitive(d->name);
++	kvfree(d->data);
++	kfree_sensitive(d);
++}
++
++void aa_loaddata_kref(struct kref *kref)
++{
++	struct aa_loaddata *d = container_of(kref, struct aa_loaddata, count);
++
++	do_loaddata_free(d);
++}
++
+ /*
+  * need to take the ns mutex lock which is NOT safe most places that
+  * put_loaddata is called, so we have to delay freeing it
+  */
+-static void do_loaddata_free(struct work_struct *work)
++static void do_ploaddata_rmfs(struct work_struct *work)
+ {
+ 	struct aa_loaddata *d = container_of(work, struct aa_loaddata, work);
+ 	struct aa_ns *ns = aa_get_ns(d->ns);
+ 
+ 	if (ns) {
+ 		mutex_lock_nested(&ns->lock, ns->level);
++		/* remove fs ref to loaddata */
+ 		__aa_fs_remove_rawdata(d);
+ 		mutex_unlock(&ns->lock);
+ 		aa_put_ns(ns);
+ 	}
+-
+-	kfree_sensitive(d->hash);
+-	kfree_sensitive(d->name);
+-	kvfree(d->data);
+-	kfree_sensitive(d);
++	/* called by dropping last pcount, so drop its associated icount */
++	aa_put_i_loaddata(d);
+ }
+ 
+-void aa_loaddata_kref(struct kref *kref)
++void aa_ploaddata_kref(struct kref *kref)
+ {
+-	struct aa_loaddata *d = container_of(kref, struct aa_loaddata, count);
++	struct aa_loaddata *d = container_of(kref, struct aa_loaddata, pcount);
+ 
+ 	if (d) {
+-		INIT_WORK(&d->work, do_loaddata_free);
++		INIT_WORK(&d->work, do_ploaddata_rmfs);
+ 		schedule_work(&d->work);
+ 	}
+ }
+@@ -153,6 +166,7 @@ struct aa_loaddata *aa_loaddata_alloc(si
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 	kref_init(&d->count);
++	kref_init(&d->pcount);
+ 	INIT_LIST_HEAD(&d->list);
+ 
+ 	return d;
 
 
 
