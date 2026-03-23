@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228159-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6D8eI49vwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229837-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:51:27 +0100
+	id +KBJNitHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228159-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D6C62F8EC8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:51:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8479B2F38FA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9763B30E241B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:20 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B42D301AE62
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A9D8257824;
-	Mon, 23 Mar 2026 16:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97173AD537;
+	Mon, 23 Mar 2026 13:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFtc8zs9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbbzw9un"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DFFB3AE19E;
-	Mon, 23 Mar 2026 16:23:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8003ACF03;
+	Mon, 23 Mar 2026 13:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282999; cv=none; b=P4uikOUMFdcOb8HQbSy01rFhuZAQ+tm5QzOg8qQCqNKehI07ZTFKFOSYA9KqbXFRpTk50h1VNZfv5bxT67lBB3KWw47toMc9dYRmwym7RHd/d7PnEZfh+Zx+LIZMVHalyZ/w24xHBySXdazlZrJ9sC5j/sh4FUyfv0uAOAM76Zo=
+	t=1774274304; cv=none; b=czKfGdTJeoUrgMHrOcS7lXIS8rTatmLznPtd3HyKxS1jVQ4JkVBq8GAlwhYW4N/DB5V7JbKH7EpdIeuqb8y96znw5hPhDz613IuF2anFoZQvyQyfi3Z/Ng+QMfqHQPgXBiEbP/rPST0vzEPvTG7kxOcJFVJ784lR8C92IqwG8I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282999; c=relaxed/simple;
-	bh=GBomFcJv83VUfWNyJvC+dUWl15Q1HvrGyI3gf7wM6P0=;
+	s=arc-20240116; t=1774274304; c=relaxed/simple;
+	bh=l16WpTSYHDqz/XJJda6KKmwcOjvsrY7UlSJ0MzTq6to=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXcd8jVEm0yD8hU4XeNg+9JTUZTyUM5R3flogQhg46i14fM0diyDYdSZKDmvWILkLm72/UJ9ohbTeIkHc1aw7w2jIMAA+Z5DLmmoiww8o5bd1vOWoy7WCuq8JabkmsyWFTFcMAGX/YL9OG3oST5pc4lW9kRFU/h9ldGMfw8yX6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFtc8zs9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7868C4CEF7;
-	Mon, 23 Mar 2026 16:23:18 +0000 (UTC)
+	 MIME-Version; b=ZjEY0acd4NSpA0IQcutpbylY6VtbOvp9iV4jpLPvs+Y9OQ5qMlcjf/yH3n44ka7R3/GEG7a81dS5Ze/mlVV2urZh9Wxt9pJKjRIdmrC54IVFQGtQn7d8yN0xo7oHyNKpcpLBhMPqcL9164J0OpVFNnd9f5D8cvara0AWofxauB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbbzw9un; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DAEC4CEF7;
+	Mon, 23 Mar 2026 13:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282999;
-	bh=GBomFcJv83VUfWNyJvC+dUWl15Q1HvrGyI3gf7wM6P0=;
+	s=korg; t=1774274304;
+	bh=l16WpTSYHDqz/XJJda6KKmwcOjvsrY7UlSJ0MzTq6to=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nFtc8zs9HR1+N4ct9FMyNd4MFOvfibO5sSQt90XOGKq3+U5m03YziZbF44+bS3l4I
-	 Yd3HRAzqxgwylL0lRxzhAaA2Gvm+T082RCck2HzHLbVdZnCeuu1UQnajBmMa6PdDpl
-	 vHD+wEMySTtedCdOyhbjawbZvlvRXym194O6pE/4=
+	b=gbbzw9un+ZcBObuXbYd6J72lzwGTrG/m+0nh1SvbPBbiRbsrns7Aaf0ofOnm789G4
+	 9nSrEUu42TmxUWyVB/9BjH6pfT/teZT3Qkqz5ksbmXFEHyVI3AHX5so3gUZgt2UkIm
+	 TyX/b72f+hQZZcZAiSFmK6MpKhJrw2cqnvyFJFlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanyang Wang <quanyang.wang@windriver.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 363/481] net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
+Subject: [PATCH 6.19 168/220] net/mlx5: qos: Restrict RTNL area to avoid a lock cycle
 Date: Mon, 23 Mar 2026 14:45:45 +0100
-Message-ID: <20260323134533.958613869@linuxfoundation.org>
+Message-ID: <20260323134509.858321480@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +70,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229837-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,windriver.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228159-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2D6C62F8EC8
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 8479B2F38FA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 718d0766ce4c7634ce62fa78b526ea7263487edd ]
+[ Upstream commit b7e3a5d9c0d66b7fb44f63aef3bd734821afa0c8 ]
 
-On certain platforms, such as AMD Versal boards, the tx/rx queue pointer
-registers are cleared after suspend, and the rx queue pointer register
-is also disabled during suspend if WOL is enabled. Previously, we assumed
-that these registers would be restored by macb_mac_link_up(). However,
-in commit bf9cf80cab81, macb_init_buffers() was moved from
-macb_mac_link_up() to macb_open(). Therefore, we should call
-macb_init_buffers() to reinitialize the tx/rx queue pointer registers
-during resume.
+A lock dependency cycle exists where:
+1. mlx5_ib_roce_init -> mlx5_core_uplink_netdev_event_replay ->
+mlx5_blocking_notifier_call_chain (takes notifier_rwsem) ->
+mlx5e_mdev_notifier_event -> mlx5_netdev_notifier_register ->
+register_netdevice_notifier_dev_net (takes rtnl)
+=> notifier_rwsem -> rtnl
 
-Due to the reset of these two registers, we also need to adjust the
-tx/rx rings accordingly. The tx ring will be handled by
-gem_shuffle_tx_rings() in macb_mac_link_up(), so we only need to
-initialize the rx ring here.
+2. mlx5e_probe -> _mlx5e_probe ->
+mlx5_core_uplink_netdev_set (takes uplink_netdev_lock) ->
+mlx5_blocking_notifier_call_chain (takes notifier_rwsem)
+=> uplink_netdev_lock -> notifier_rwsem
 
-Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
-Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Tested-by: Quanyang Wang <quanyang.wang@windriver.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260312-macb-versal-v1-2-467647173fa4@gmail.com
+3: devlink_nl_rate_set_doit -> devlink_nl_rate_set ->
+mlx5_esw_devlink_rate_leaf_tx_max_set -> esw_qos_devlink_rate_to_mbps ->
+mlx5_esw_qos_max_link_speed_get (takes rtnl) ->
+mlx5_esw_qos_lag_link_speed_get_locked ->
+mlx5_uplink_netdev_get (takes uplink_netdev_lock)
+=> rtnl -> uplink_netdev_lock
+=> BOOM! (lock cycle)
+
+Fix that by restricting the rtnl-protected section to just the necessary
+part, the call to netdev_master_upper_dev_get and speed querying, so
+that the last lock dependency is avoided and the cycle doesn't close.
+This is safe because mlx5_uplink_netdev_get uses netdev_hold to keep the
+uplink netdev alive while its master device is queried.
+
+Use this opportunity to rename the ambiguously-named "hold_rtnl_lock"
+argument to "take_rtnl" and remove the "_locked" suffix from
+mlx5_esw_qos_lag_link_speed_get_locked.
+
+Fixes: 6b4be64fd9fe ("net/mlx5e: Harden uplink netdev access against device unbind")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260316094603.6999-2-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/esw/qos.c | 23 ++++++++-----------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5386,8 +5386,18 @@ static int __maybe_unused macb_resume(st
- 		rtnl_unlock();
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 4278bcb04c72e..2e11574b3a81f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -1490,24 +1490,24 @@ static int esw_qos_node_enable_tc_arbitration(struct mlx5_esw_sched_node *node,
+ 	return err;
+ }
  
-+	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
-+		macb_init_buffers(bp);
-+
- 	for (q = 0, queue = bp->queues; q < bp->num_queues;
- 	     ++q, ++queue) {
-+		if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
-+			if (macb_is_gem(bp))
-+				gem_init_rx_ring(queue);
-+			else
-+				macb_init_rx_ring(queue);
-+		}
-+
- 		napi_enable(&queue->napi_rx);
- 		napi_enable(&queue->napi_tx);
- 	}
+-static u32 mlx5_esw_qos_lag_link_speed_get_locked(struct mlx5_core_dev *mdev)
++static u32 mlx5_esw_qos_lag_link_speed_get(struct mlx5_core_dev *mdev,
++					   bool take_rtnl)
+ {
+ 	struct ethtool_link_ksettings lksettings;
+ 	struct net_device *slave, *master;
+ 	u32 speed = SPEED_UNKNOWN;
+ 
+-	/* Lock ensures a stable reference to master and slave netdevice
+-	 * while port speed of master is queried.
+-	 */
+-	ASSERT_RTNL();
+-
+ 	slave = mlx5_uplink_netdev_get(mdev);
+ 	if (!slave)
+ 		goto out;
+ 
++	if (take_rtnl)
++		rtnl_lock();
+ 	master = netdev_master_upper_dev_get(slave);
+ 	if (master && !__ethtool_get_link_ksettings(master, &lksettings))
+ 		speed = lksettings.base.speed;
++	if (take_rtnl)
++		rtnl_unlock();
+ 
+ out:
+ 	mlx5_uplink_netdev_put(mdev, slave);
+@@ -1515,20 +1515,15 @@ static u32 mlx5_esw_qos_lag_link_speed_get_locked(struct mlx5_core_dev *mdev)
+ }
+ 
+ static int mlx5_esw_qos_max_link_speed_get(struct mlx5_core_dev *mdev, u32 *link_speed_max,
+-					   bool hold_rtnl_lock, struct netlink_ext_ack *extack)
++					   bool take_rtnl,
++					   struct netlink_ext_ack *extack)
+ {
+ 	int err;
+ 
+ 	if (!mlx5_lag_is_active(mdev))
+ 		goto skip_lag;
+ 
+-	if (hold_rtnl_lock)
+-		rtnl_lock();
+-
+-	*link_speed_max = mlx5_esw_qos_lag_link_speed_get_locked(mdev);
+-
+-	if (hold_rtnl_lock)
+-		rtnl_unlock();
++	*link_speed_max = mlx5_esw_qos_lag_link_speed_get(mdev, take_rtnl);
+ 
+ 	if (*link_speed_max != (u32)SPEED_UNKNOWN)
+ 		return 0;
+-- 
+2.51.0
+
 
 
 
