@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228746-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SILuBb9NwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228225-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:11 +0100
+	id XlmYOm5UwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228746-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920852F4844
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27D112F570A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6A70130D81AA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BDB2830A29BA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282453B0ADC;
-	Mon, 23 Mar 2026 14:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A397C1459FA;
+	Mon, 23 Mar 2026 14:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6JYwcFT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yd8YfqJK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD713AEF5F;
-	Mon, 23 Mar 2026 14:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666713AB269;
+	Mon, 23 Mar 2026 14:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274504; cv=none; b=Ns2jh8UqBuO4jl8DTsHEJg0hIoDGIkmjhUqhwQ9fgs0iwJrfhEOTy4njz1/pfl/WicmZodVYJodgZMhkcCx3eoDkZLSCjCfVaT4t59oOiWPjiZ1uN3a5uLcKSJGtiL1ui21b3uE3ZdK9ebazY2APh35C2MmY7pCMnkl0ygCmi6Q=
+	t=1774277011; cv=none; b=LYluGNgpP65dHBGg9ULb8rIQPLmhQ06J3baJ5aVh8DHGgj7owPzZiMNaCv8cT8HwIywzZhszPtofETqU9RcwIxrQc3o+dWEBnQU9jvBbliRvPD4SAwaq34lWHTnr3yYfSWSt5JSZ3pU+A7yZ6MjqbkazaFh940zvLLRr9PfGPSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274504; c=relaxed/simple;
-	bh=nI57aAdO1R8Zwc5kguQ6zWdeQ/T1lTP1dpjnM9T0DrE=;
+	s=arc-20240116; t=1774277011; c=relaxed/simple;
+	bh=w/XLHwr67dLgZH8L7FtAZAF7R4+4oerYDoCGWBHbm8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pC01TQZ28PPhNw4L0i2eVqcMXU6/T2zJ+OwHuZsUacCaCzruPH+eqZSa2HcjEOkf3Cme+t+R/QG8I1Kq1Lj/b4v5G2+lScMSTXIoAi2Ugj3OGievxiO3rZwVxaFsNePmfCKUjfSKEteNTKaIcAk/JEjypYp+bX4bUvfeS8WgNE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6JYwcFT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F34C4CEF7;
-	Mon, 23 Mar 2026 14:01:44 +0000 (UTC)
+	 MIME-Version; b=Syp2reMRXfh3UHHd+qSYE9yJcZ2vmTOpuZxTE3g/f8uzhPiYpZdSy/G5UqGLGmBaSFi82klmwEY44bMDVohQE/izlRr7HtVktFEVFy5T1eYyQ6WKmHSOQD4cl+UeHMHu6KyJjcCv+LREZ5iJwFi4xgiFLFuSCywbMDp1JaG6bns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yd8YfqJK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 013D0C4CEF7;
+	Mon, 23 Mar 2026 14:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274504;
-	bh=nI57aAdO1R8Zwc5kguQ6zWdeQ/T1lTP1dpjnM9T0DrE=;
+	s=korg; t=1774277011;
+	bh=w/XLHwr67dLgZH8L7FtAZAF7R4+4oerYDoCGWBHbm8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6JYwcFTF7GIHc+WEgJhUoRKi9eAono6HxQ098DahD6y/tSIlRNbQPqQyCJ+iDo4a
-	 tNGscTYvuQP4x+N3R0t1KnGkJz8LgMG6Jw2R6eNSP3RDcsa388Eu3nlkdqa9pNblhf
-	 nPf9g52pf2pHyrWVELATTPAoKtc0tfSdEdScoE4k=
+	b=Yd8YfqJKZp7NLUvtVoxxwY3ww9mBVRljW0QHcdDIsaKLF6wq9bd/IfQgNR9qkjPx9
+	 z80eLrqgI8uCuELxeJptZYQvgzlYbO8zsA6i3SN4DYDccacPyOQrW9gIZYBP6MR9V6
+	 2BsZ4wQnelJsOPsDjKeqnNm2CsOQHtpdtHyhNx+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.18 019/212] mac80211: fix crash in ieee80211_chan_bw_change for AP_VLAN stations
+	"Naveen N Rao (AMD)" <naveen@kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 244/460] KVM: SVM: Limit AVIC physical max index based on configured max_vcpu_ids
 Date: Mon, 23 Mar 2026 14:44:00 +0100
-Message-ID: <20260323134504.367397086@linuxfoundation.org>
+Message-ID: <20260323134532.496214172@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228225-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228746-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,60 +90,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 920852F4844
+X-Rspamd-Queue-Id: 27D112F570A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Naveen N Rao <naveen@kernel.org>
 
-commit 672e5229e1ecfc2a3509b53adcb914d8b024a853 upstream.
+[ Upstream commit 574ef752d4aea04134bc121294d717f4422c2755 ]
 
-ieee80211_chan_bw_change() iterates all stations and accesses
-link->reserved.oper via sta->sdata->link[link_id]. For stations on
-AP_VLAN interfaces (e.g. 4addr WDS clients), sta->sdata points to
-the VLAN sdata, whose link never participates in chanctx reservations.
-This leaves link->reserved.oper zero-initialized with chan == NULL,
-causing a NULL pointer dereference in __ieee80211_sta_cap_rx_bw()
-when accessing chandef->chan->band during CSA.
+KVM allows VMMs to specify the maximum possible APIC ID for a virtual
+machine through KVM_CAP_MAX_VCPU_ID capability so as to limit data
+structures related to APIC/x2APIC. Utilize the same to set the AVIC
+physical max index in the VMCB, similar to VMX. This helps hardware
+limit the number of entries to be scanned in the physical APIC ID table
+speeding up IPI broadcasts for virtual machines with smaller number of
+vCPUs.
 
-Resolve the VLAN sdata to its parent AP sdata using get_bss_sdata()
-before accessing link data.
+Unlike VMX, SVM AVIC requires a single page to be allocated for the
+Physical APIC ID table and the Logical APIC ID table, so retain the
+existing approach of allocating those during VM init.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20260305170812.2904208-1-nbd@nbd.name
-[also change sta->sdata in ARRAY_SIZE even if it doesn't matter]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Link: https://lore.kernel.org/r/adb07ccdb3394cd79cb372ba6bcc69a4e4d4ef54.1757009416.git.naveen@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: 87d0f901a9bd ("KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/chan.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/x86/kvm/svm/avic.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -441,14 +441,16 @@ static void ieee80211_chan_bw_change(str
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(sta, &local->sta_list,
- 				list) {
--		struct ieee80211_sub_if_data *sdata = sta->sdata;
-+		struct ieee80211_sub_if_data *sdata;
- 		enum ieee80211_sta_rx_bandwidth new_sta_bw;
- 		unsigned int link_id;
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -85,6 +85,7 @@ struct amd_svm_iommu_ir {
+ static void avic_activate_vmcb(struct vcpu_svm *svm)
+ {
+ 	struct vmcb *vmcb = svm->vmcb01.ptr;
++	struct kvm *kvm = svm->vcpu.kvm;
  
- 		if (!ieee80211_sdata_running(sta->sdata))
- 			continue;
+ 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
+ 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
+@@ -100,7 +101,8 @@ static void avic_activate_vmcb(struct vc
+ 	 */
+ 	if (x2avic_enabled && apic_x2apic_mode(svm->vcpu.arch.apic)) {
+ 		vmcb->control.int_ctl |= X2APIC_MODE_MASK;
+-		vmcb->control.avic_physical_id |= X2AVIC_MAX_PHYSICAL_ID;
++		vmcb->control.avic_physical_id |= min(kvm->arch.max_vcpu_ids - 1,
++						      X2AVIC_MAX_PHYSICAL_ID);
+ 		/* Disabling MSR intercept for x2APIC registers */
+ 		svm_set_x2apic_msr_interception(svm, false);
+ 	} else {
+@@ -111,7 +113,8 @@ static void avic_activate_vmcb(struct vc
+ 		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
  
--		for (link_id = 0; link_id < ARRAY_SIZE(sta->sdata->link); link_id++) {
-+		sdata = get_bss_sdata(sta->sdata);
-+
-+		for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
- 			struct ieee80211_link_data *link =
- 				rcu_dereference(sdata->link[link_id]);
- 			struct ieee80211_bss_conf *link_conf;
+ 		/* For xAVIC and hybrid-xAVIC modes */
+-		vmcb->control.avic_physical_id |= AVIC_MAX_PHYSICAL_ID;
++		vmcb->control.avic_physical_id |= min(kvm->arch.max_vcpu_ids - 1,
++						      AVIC_MAX_PHYSICAL_ID);
+ 		/* Enabling MSR intercept for x2APIC registers */
+ 		svm_set_x2apic_msr_interception(svm, true);
+ 	}
 
 
 
