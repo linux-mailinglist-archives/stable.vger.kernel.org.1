@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229002-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0EBLJg5PwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228502-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:46 +0100
+	id QO8MFCRVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-229002-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 070742F4B3C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C306D2F58CD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A919A30EF537
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:51 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25F6E3029678
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6493AE1B8;
-	Mon, 23 Mar 2026 14:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B5A38837F;
+	Mon, 23 Mar 2026 14:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o1VTcLeU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Q3NNGZN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9CE365A0A;
-	Mon, 23 Mar 2026 14:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8F02C0298;
+	Mon, 23 Mar 2026 14:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275302; cv=none; b=iX4R3jfqkHaC46lQXSyRc0daP2MwWCyalCX82wcmgqkjt5nB+9lmQe6Fn0kbITvqhp5vKQe1QywGRrrsWdYZSoEAu3LJiEOB5/cNdr/g83Za9pkJEDswh8KSN21izdThsx/iV6N9XREX2/FIFetQX480l5UZMyWSklXGcSt3woA=
+	t=1774277747; cv=none; b=BiMUhHGyn7fv9nsHX+wmbUpAuDT5ZLgLechWf/I7c91wa6rfFeuwlPFE4m0BtCX94JTY61vssFCw1XkdI2P9Qz/2Kwq7bG5i8S2S3kmOXQr/Qz+nQUWTBCXUr0dW9kXyjEqCmRmRrL2Ri3Y7iiGXD25ghpY1m47ZazRnVEraX9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275302; c=relaxed/simple;
-	bh=0IWWdmsfDrH/vpr8iI/oaWfl9ugvO4rfOYYQRXT1X1g=;
+	s=arc-20240116; t=1774277747; c=relaxed/simple;
+	bh=x2eO0y+1lwg/9q7cvRA7qsLzgCdJmMrxcp7GeVH7vVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLSvgcwX7zTHZ1jVRWi493TQXUrVgSsSa3s2jyHZs5c0eP6kDuQIFSMyvQrBpGcLM/tCqy0JBXFB6JAx56thtPmTWn38th2geiuIM+zskvRxYwv6AaJRplgyEEYwpXpiFHoW+GIUELG6W5jZY1Y3j+QqUcihQ+D9Ta+iH+mpvVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o1VTcLeU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7200C2BC9E;
-	Mon, 23 Mar 2026 14:15:01 +0000 (UTC)
+	 MIME-Version; b=pFb8iXQHA0foKP1/4JzRhjEmC3CQaWDnGeILuQ6U4vS5A9hkseLY3yqR6OkwQh/QK0MgS0BE4jfFSfDC8Q8RWqS0REU7TiFxY+EB1sIXepZLXPC8wMPwbuZN4GzQOv6FE+YAIrTmYJVNU38MJaIhSfSJoMecrDOsmgBHwIWSr5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Q3NNGZN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3895DC2BCB1;
+	Mon, 23 Mar 2026 14:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275302;
-	bh=0IWWdmsfDrH/vpr8iI/oaWfl9ugvO4rfOYYQRXT1X1g=;
+	s=korg; t=1774277747;
+	bh=x2eO0y+1lwg/9q7cvRA7qsLzgCdJmMrxcp7GeVH7vVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o1VTcLeU0mDLzASToQiInFBaA8yVkfk69kR8MKe77HnK9siJyiFe29MMpu0ITinR4
-	 I5952StUlsvn8MSqFHXLog1FFiizZ/aBAHiZlM8cYxGjFF8pnBbu1QHjLBwU8W8phb
-	 4SyXlMWWD0OkGKtZc17ixSbTSxCvYSZD00X5bo7I=
+	b=2Q3NNGZN6AIukrxffogMPRbqjE5f77KK4U4Zbj1hIH/KnR9dehnlkWAyEonNLK6eX
+	 ckPtoTCn/l1CFrgrcBO1rzjh0PGG1U38BGt9t2pvPFHYy5F9S2YeCozaYOdsBk/lo7
+	 0PK7IKC6yR7RpMw8qEz0HHS/tqKGmR0BJ/UnStio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 011/460] scsi: ufs: core: Fix possible NULL pointer dereference in ufshcd_add_command_trace()
-Date: Mon, 23 Mar 2026 14:40:07 +0100
-Message-ID: <20260323134526.940198327@linuxfoundation.org>
+	syzbot+ab12f0c08dd7ab8d057c@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.6 088/567] media: dvb-core: fix wrong reinitialization of ringbuffer on reopen
+Date: Mon, 23 Mar 2026 14:40:08 +0100
+Message-ID: <20260323134536.009491420@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,111 +64,88 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228502-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229002-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,ab12f0c08dd7ab8d057c];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 070742F4B3C
+X-Rspamd-Queue-Id: C306D2F58CD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 30df81f2228d65bddf492db3929d9fcaffd38fc5 ]
+commit bfbc0b5b32a8f28ce284add619bf226716a59bc0 upstream.
 
-The kernel log indicates a crash in ufshcd_add_command_trace, due to a NULL
-pointer dereference when accessing hwq->id.  This can happen if
-ufshcd_mcq_req_to_hwq() returns NULL.
+dvb_dvr_open() calls dvb_ringbuffer_init() when a new reader opens the
+DVR device.  dvb_ringbuffer_init() calls init_waitqueue_head(), which
+reinitializes the waitqueue list head to empty.
 
-This patch adds a NULL check for hwq before accessing its id field to
-prevent a kernel crash.
+Since dmxdev->dvr_buffer.queue is a shared waitqueue (all opens of the
+same DVR device share it), this orphans any existing waitqueue entries
+from io_uring poll or epoll, leaving them with stale prev/next pointers
+while the list head is reset to {self, self}.
 
-Kernel log excerpt:
-[<ffffffd5d192dc4c>] notify_die+0x4c/0x8c
-[<ffffffd5d1814e58>] __die+0x60/0xb0
-[<ffffffd5d1814d64>] die+0x4c/0xe0
-[<ffffffd5d181575c>] die_kernel_fault+0x74/0x88
-[<ffffffd5d1864db4>] __do_kernel_fault+0x314/0x318
-[<ffffffd5d2a3cdf8>] do_page_fault+0xa4/0x5f8
-[<ffffffd5d2a3cd34>] do_translation_fault+0x34/0x54
-[<ffffffd5d1864524>] do_mem_abort+0x50/0xa8
-[<ffffffd5d2a297dc>] el1_abort+0x3c/0x64
-[<ffffffd5d2a29718>] el1h_64_sync_handler+0x44/0xcc
-[<ffffffd5d181133c>] el1h_64_sync+0x80/0x88
-[<ffffffd5d255c1dc>] ufshcd_add_command_trace+0x23c/0x320
-[<ffffffd5d255bad8>] ufshcd_compl_one_cqe+0xa4/0x404
-[<ffffffd5d2572968>] ufshcd_mcq_poll_cqe_lock+0xac/0x104
-[<ffffffd5d11c7460>] ufs_mtk_mcq_intr+0x54/0x74 [ufs_mediatek_mod]
-[<ffffffd5d19ab92c>] __handle_irq_event_percpu+0xc8/0x348
-[<ffffffd5d19abca8>] handle_irq_event+0x3c/0xa8
-[<ffffffd5d19b1f0c>] handle_fasteoi_irq+0xf8/0x294
-[<ffffffd5d19aa778>] generic_handle_domain_irq+0x54/0x80
-[<ffffffd5d18102bc>] gic_handle_irq+0x1d4/0x330
-[<ffffffd5d1838210>] call_on_irq_stack+0x44/0x68
-[<ffffffd5d183af30>] do_interrupt_handler+0x78/0xd8
-[<ffffffd5d2a29c00>] el1_interrupt+0x48/0xa8
-[<ffffffd5d2a29ba8>] el1h_64_irq_handler+0x14/0x24
-[<ffffffd5d18113c4>] el1h_64_irq+0x80/0x88
-[<ffffffd5d2527fb4>] arch_local_irq_enable+0x4/0x1c
-[<ffffffd5d25282e4>] cpuidle_enter+0x34/0x54
-[<ffffffd5d195a678>] do_idle+0x1dc/0x2f8
-[<ffffffd5d195a7c4>] cpu_startup_entry+0x30/0x3c
-[<ffffffd5d18155c4>] secondary_start_kernel+0x134/0x1ac
-[<ffffffd5d18640bc>] __secondary_switched+0xc4/0xcc
+The waitqueue and spinlock in dvr_buffer are already properly
+initialized once in dvb_dmxdev_init().  The open path only needs to
+reset the buffer data pointer, size, and read/write positions.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260223065657.2432447-1-peter.wang@mediatek.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Replace the dvb_ringbuffer_init() call in dvb_dvr_open() with direct
+assignment of data/size and a call to dvb_ringbuffer_reset(), which
+properly resets pread, pwrite, and error with correct memory ordering
+without touching the waitqueue or spinlock.
+
+Cc: stable@vger.kernel.org
+Fixes: 34731df288a5f ("V4L/DVB (3501): Dmxdev: use dvb_ringbuffer")
+Reported-by: syzbot+ab12f0c08dd7ab8d057c@syzkaller.appspotmail.com
+Tested-by: syzbot+ab12f0c08dd7ab8d057c@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/698a26d3.050a0220.3b3015.007d.GAE@google.com/
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/dvb-core/dmxdev.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index ad5866149e240..726bf4247f1fe 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -483,8 +483,8 @@ static void ufshcd_add_command_trace(struct ufs_hba *hba, unsigned int tag,
- 
- 	if (hba->mcq_enabled) {
- 		struct ufs_hw_queue *hwq = ufshcd_mcq_req_to_hwq(hba, rq);
--
--		hwq_id = hwq->id;
-+		if (hwq)
-+			hwq_id = hwq->id;
- 	} else {
- 		doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
- 	}
--- 
-2.51.0
-
+--- a/drivers/media/dvb-core/dmxdev.c
++++ b/drivers/media/dvb-core/dmxdev.c
+@@ -168,7 +168,9 @@ static int dvb_dvr_open(struct inode *in
+ 			mutex_unlock(&dmxdev->mutex);
+ 			return -ENOMEM;
+ 		}
+-		dvb_ringbuffer_init(&dmxdev->dvr_buffer, mem, DVR_BUFFER_SIZE);
++		dmxdev->dvr_buffer.data = mem;
++		dmxdev->dvr_buffer.size = DVR_BUFFER_SIZE;
++		dvb_ringbuffer_reset(&dmxdev->dvr_buffer);
+ 		if (dmxdev->may_do_mmap)
+ 			dvb_vb2_init(&dmxdev->dvr_vb2_ctx, "dvr",
+ 				     file->f_flags & O_NONBLOCK);
 
 
 
