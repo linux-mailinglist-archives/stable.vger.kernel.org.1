@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-229904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228879-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2L7YMPRwwWkvTQQAu9opvQ
-	(envelope-from <stable+bounces-229904-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:24 +0100
+	id cKxUG0lqwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-228879-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:28:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71A322F92DF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E892F8257
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:28:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9BB6631A632B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6080131E37E4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC74A3B38A4;
-	Mon, 23 Mar 2026 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335563B27D0;
+	Mon, 23 Mar 2026 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHtqDYE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBKwk3qb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A051F246778;
-	Mon, 23 Mar 2026 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61173B27C4;
+	Mon, 23 Mar 2026 14:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283175; cv=none; b=R1X++vzBqsTJCd8Ky5o67v0+UiNH4M7NbplX7YN2vaOfLoGMTePECQVflDQc644wE47Iy4uFKNEbg6XdvOncL1UdjC+5Ie/gLZUqSjB66to2jt286cPcx31yi34X68STgoV49yjIgzL8+t6cy3Rh3abyXDl6tMhx7LLC46uuOMA=
+	t=1774277381; cv=none; b=TNA5J/KnhE9LPfXmNuGCwndGkUzjVEJqdpANhf7BJDq/dYb4dryHRQUprUuceFbIMX/9NlSRJ+4j2tj3WHWXQROk9wJUpi2svFoty6pt77B8xa9NRL/1ieDPkj+dmdoF1NHP1OAeckcFxqnNIQX90fG++d78oy/Buw1C8H4gvto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283175; c=relaxed/simple;
-	bh=CnJHkERJh01MFzZTIlSVfrKW3Ea3fONsiJxeSWe+/MA=;
+	s=arc-20240116; t=1774277381; c=relaxed/simple;
+	bh=/aNVcp2IGGpOy/g16jy4JebEr9Grg5XN7OJHvkjuiEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jsq/FP2AwnwVtIBvBmD8MU1OdsRcSOXU9eqH/T0KahOx0p2zVt1J0EYiX221d9Zv86A1QM0LboMweGfeFRacHi0SsCUn3HKnrSEg/ADTQK/GaZ4q9NTNfPj3YBMWADdZh8AO0JNfQnC27vGjI69J+/1VwtGjCKu5jNw8x/hGYjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHtqDYE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300E7C4CEF7;
-	Mon, 23 Mar 2026 16:26:15 +0000 (UTC)
+	 MIME-Version; b=cmBaIRXWuroaCPwiTma1fjZLhFB3KCbBnbXxXTEpKI6QNDcAJa9f1HyILjfwwFTehAmm/LpBHa+AtD5NVWeBQLyPxL0PO74ORi65cGk9Kh8mhHjoG713TcL3ufpbwcbBOSUnyd1TxsgRn2CcbGiHOLR9uJKcqbg29a5twF39sl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBKwk3qb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827E3C2BCB3;
+	Mon, 23 Mar 2026 14:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283175;
-	bh=CnJHkERJh01MFzZTIlSVfrKW3Ea3fONsiJxeSWe+/MA=;
+	s=korg; t=1774277380;
+	bh=/aNVcp2IGGpOy/g16jy4JebEr9Grg5XN7OJHvkjuiEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHtqDYE5s9dI7MZ4/PpPLjl/AHVPtqVrDDpSCUEF4kdEpmofbOhgRSI8X5c0YXA7K
-	 aWHaEB2l2LIrSPRLqjvGmmpmzbFAuGi1lnE8Y7/u2e0ojlHA1+3XVFrkdtqAYCx1hq
-	 chfS2Q+e38Ik+qlG0JcVdGrfidSB5hkTruIeY6ek=
+	b=FBKwk3qblVofA3HEVnHCeegf6a9Hy61DT6QD78jMxfddq8thLNrRqYVx/bZnBwWX2
+	 FGRQSLe3UaBf7yVL8W0CUQyCwMQ9XRml4DO/ALz8vPBto6G7pp7dfPHr97iRQ6Gzo3
+	 AQ4Wao+QE/VQtX+0xs1sVExqu5uqueiPSZrR7gsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Zdenek Bouska <zdenek.bouska@siemens.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Florian Bezdeka <florian.bezdeka@siemens.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 431/481] ACPI: processor: Fix previous acpi_processor_errata_piix4() fix
+Subject: [PATCH 6.12 417/460] igc: fix page fault in XDP TX timestamps handling
 Date: Mon, 23 Mar 2026 14:46:53 +0100
-Message-ID: <20260323134535.706034875@linuxfoundation.org>
+Message-ID: <20260323134536.795785636@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,104 +69,149 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229904-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228879-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 71A322F92DF
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,siemens.com:email]
+X-Rspamd-Queue-Id: C4E892F8257
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Zdenek Bouska <zdenek.bouska@siemens.com>
 
-[ Upstream commit bf504b229cb8d534eccbaeaa23eba34c05131e25 ]
+[ Upstream commit 45b33e805bd39f615d9353a7194b2da5281332df ]
 
-After commi f132e089fe89 ("ACPI: processor: Fix NULL-pointer dereference
-in acpi_processor_errata_piix4()"), device pointers may be dereferenced
-after dropping references to the device objects pointed to by them,
-which may cause a use-after-free to occur.
+If an XDP application that requested TX timestamping is shutting down
+while the link of the interface in use is still up the following kernel
+splat is reported:
 
-Moreover, debug messages about enabling the errata may be printed
-if the errata flags corresponding to them are unset.
+[  883.803618] [   T1554] BUG: unable to handle page fault for address: ffffcfb6200fd008
+...
+[  883.803650] [   T1554] Call Trace:
+[  883.803652] [   T1554]  <TASK>
+[  883.803654] [   T1554]  igc_ptp_tx_tstamp_event+0xdf/0x160 [igc]
+[  883.803660] [   T1554]  igc_tsync_interrupt+0x2d5/0x300 [igc]
+...
 
-Address all of these issues by moving message printing to the points
-in the code where the errata flags are set.
+During shutdown of the TX ring the xsk_meta pointers are left behind, so
+that the IRQ handler is trying to touch them.
 
-Fixes: f132e089fe89 ("ACPI: processor: Fix NULL-pointer dereference in acpi_processor_errata_piix4()")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/linux-acpi/938e2206-def5-4b7a-9b2c-d1fd37681d8a@roeck-us.net/
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/5975693.DvuYhMxLoT@rafael.j.wysocki
+This issue is now being fixed by cleaning up the stale xsk meta data on
+TX shutdown. TX timestamps on other queues remain unaffected.
+
+Fixes: 15fd021bc427 ("igc: Add Tx hardware timestamp request for AF_XDP zero-copy packet")
+Signed-off-by: Zdenek Bouska <zdenek.bouska@siemens.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_processor.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/igc/igc.h      |  2 ++
+ drivers/net/ethernet/intel/igc/igc_main.c |  7 +++++
+ drivers/net/ethernet/intel/igc/igc_ptp.c  | 33 +++++++++++++++++++++++
+ 3 files changed, 42 insertions(+)
 
-diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
-index 669398045c0fd..07acdaee6ce5c 100644
---- a/drivers/acpi/acpi_processor.c
-+++ b/drivers/acpi/acpi_processor.c
-@@ -96,6 +96,10 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
- 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
- 		if (ide_dev) {
- 			errata.piix4.bmisx = pci_resource_start(ide_dev, 4);
-+			if (errata.piix4.bmisx)
-+				dev_dbg(&ide_dev->dev,
-+					"Bus master activity detection (BM-IDE) erratum enabled\n");
+diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
+index 79d5fc5ac4fce..24949a50037ef 100644
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -745,6 +745,8 @@ ktime_t igc_ptp_rx_pktstamp(struct igc_adapter *adapter, __le32 *buf);
+ int igc_ptp_set_ts_config(struct net_device *netdev, struct ifreq *ifr);
+ int igc_ptp_get_ts_config(struct net_device *netdev, struct ifreq *ifr);
+ void igc_ptp_tx_hang(struct igc_adapter *adapter);
++void igc_ptp_clear_xsk_tx_tstamp_queue(struct igc_adapter *adapter,
++				       u16 queue_id);
+ void igc_ptp_read(struct igc_adapter *adapter, struct timespec64 *ts);
+ void igc_ptp_tx_tstamp_event(struct igc_adapter *adapter);
+ 
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 65134be59754f..6fcf4fd7ee194 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -264,6 +264,13 @@ static void igc_clean_tx_ring(struct igc_ring *tx_ring)
+ 	/* reset next_to_use and next_to_clean */
+ 	tx_ring->next_to_use = 0;
+ 	tx_ring->next_to_clean = 0;
 +
- 			pci_dev_put(ide_dev);
- 		}
- 
-@@ -114,20 +118,17 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
- 		if (isa_dev) {
- 			pci_read_config_byte(isa_dev, 0x76, &value1);
- 			pci_read_config_byte(isa_dev, 0x77, &value2);
--			if ((value1 & 0x80) || (value2 & 0x80))
-+			if ((value1 & 0x80) || (value2 & 0x80)) {
- 				errata.piix4.fdma = 1;
-+				dev_dbg(&isa_dev->dev,
-+					"Type-F DMA livelock erratum (C3 disabled)\n");
-+			}
- 			pci_dev_put(isa_dev);
- 		}
- 
- 		break;
- 	}
- 
--	if (ide_dev)
--		dev_dbg(&ide_dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
--
--	if (isa_dev)
--		dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
--
- 	return 0;
++	/* Clear any lingering XSK TX timestamp requests */
++	if (test_bit(IGC_RING_FLAG_TX_HWTSTAMP, &tx_ring->flags)) {
++		struct igc_adapter *adapter = netdev_priv(tx_ring->netdev);
++
++		igc_ptp_clear_xsk_tx_tstamp_queue(adapter, tx_ring->queue_index);
++	}
  }
  
+ /**
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index a272d1a29eadb..9ff73e7532e5e 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -587,6 +587,39 @@ static void igc_ptp_clear_tx_tstamp(struct igc_adapter *adapter)
+ 	spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
+ }
+ 
++/**
++ * igc_ptp_clear_xsk_tx_tstamp_queue - Clear pending XSK TX timestamps for a queue
++ * @adapter: Board private structure
++ * @queue_id: TX queue index to clear timestamps for
++ *
++ * Iterates over all TX timestamp registers and releases any pending
++ * timestamp requests associated with the given TX queue. This is
++ * called when an XDP pool is being disabled to ensure no stale
++ * timestamp references remain.
++ */
++void igc_ptp_clear_xsk_tx_tstamp_queue(struct igc_adapter *adapter, u16 queue_id)
++{
++	unsigned long flags;
++	int i;
++
++	spin_lock_irqsave(&adapter->ptp_tx_lock, flags);
++
++	for (i = 0; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
++		struct igc_tx_timestamp_request *tstamp = &adapter->tx_tstamp[i];
++
++		if (tstamp->buffer_type != IGC_TX_BUFFER_TYPE_XSK)
++			continue;
++		if (tstamp->xsk_queue_index != queue_id)
++			continue;
++		if (!tstamp->xsk_tx_buffer)
++			continue;
++
++		igc_ptp_free_tx_buffer(adapter, tstamp);
++	}
++
++	spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
++}
++
+ static void igc_ptp_disable_tx_timestamp(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
 -- 
 2.51.0
 
