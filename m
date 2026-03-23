@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-229685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227998-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uG8qEhlswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229685-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:41 +0100
+	id 6DhwGd9GwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-227998-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32EFC2F86D8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA2D32F381E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D8FE631130DD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A7A47306517C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20E53BED39;
-	Mon, 23 Mar 2026 16:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67BA20125F;
+	Mon, 23 Mar 2026 13:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUENm6dZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oI+x+0XV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1B33BED1B;
-	Mon, 23 Mar 2026 16:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CC93A6B88;
+	Mon, 23 Mar 2026 13:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282590; cv=none; b=YJd8Ix9z7z6Nyg0kIlrVDiGs35tdfuSXaQGd+9eQIz4BdMf218Z9xOSSwfEJbnMK0ts9ckJ+4xtjgLtmEF8rQ0buSPoqB5eqVc7vi6QiDqRUJZbRXZCle9CNH9bM0LsQYVDubp1GH8Tbtt+Z04IxWXZZFZGiaUYGHYO3N6Qo6mM=
+	t=1774273815; cv=none; b=oSS4khJsQM9jmJFzJMqRlKD6EdK0RzNfiXvfnPrKw+GzbtkS83nLDofU1/+SptMAMBpwVjBocQF7ixCIcuYPbQV0npHQkPSW7MbomZ46+ZKkaJ7m8KbFySjDKoAWIUpsMiUNB1ZoIacj1LlVILfp6T6a5woWzROgnjyeRhQzAwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282590; c=relaxed/simple;
-	bh=VAVbn3Yyy8UYw1sH4DhwQfgyU3HnbZ/LkydWqjHj7Jc=;
+	s=arc-20240116; t=1774273815; c=relaxed/simple;
+	bh=o3SPENsHpovwIKqg1GMB9J+Ce53eW4VHonOyHQLKxmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJST4CxRDly90pP1JWLLbnQjWNwpbrp/3lcwivuTKKm9XUzHS+9wckwgZAeGNUy9/98t5VqZmcLnUopJR+hFVxRewpAu0Lydpy76go+u9TZMG4CbCcYdleV3agKTsYBQkVv8qs5cejK6khHVeJwdUt5AVN9tp2kwMnluO1Elu+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUENm6dZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBA9C4CEF7;
-	Mon, 23 Mar 2026 16:16:29 +0000 (UTC)
+	 MIME-Version; b=egw0pM4SG9c4Hwk8Fiq9PzZiHBwbvD9sHg1F/7XynE+dgoq7vQbc34I2X2pL8DXWBVsf0dfkBkqh19lSGKiZhMoMPERfshPoqrd9nrQZ37HoXZBp3v39XV526z4ZGTbK2lE1rsH8s2FayT64ZDd2i6UE758pLLIVV2F97GH0/kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oI+x+0XV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE874C4CEF7;
+	Mon, 23 Mar 2026 13:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282590;
-	bh=VAVbn3Yyy8UYw1sH4DhwQfgyU3HnbZ/LkydWqjHj7Jc=;
+	s=korg; t=1774273815;
+	bh=o3SPENsHpovwIKqg1GMB9J+Ce53eW4VHonOyHQLKxmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUENm6dZVpAl0ad56W5IzKZPMTsnnaQa5jaotaVPDt4f9xKlLOqOrs60gEuSqB4nz
-	 b98J1wX2go1rgy6nL7x9s/0w6b+b87VY2L/ZNnTbgcUCyirzaoTqIC2wtYvTZT0/QX
-	 iy5N2aEXi6bwUjn6nhfaYoSWceRphocUkRGE3icc=
+	b=oI+x+0XVHnK/dHmGtku0v5Zar7s+hu45dSDmk/sajhMB/+nMyXPUJ1g/WJ9WoT7Cm
+	 SC+mz6nE2cFBS6DZp0qoml3IeUKEeDPLo4xat3JO9rHA8EmKh4954CofIg9Q/0GOSd
+	 Ohr9gdzct17GHSBir0m/No4IC/kwOxJ71VnV5liM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.1 213/481] USB: usbtmc: Use usb_bulk_msg_killable() with user-specified timeouts
+	Yifan Wu <yifanwucs@gmail.com>,
+	Juefei Pu <tomapufckgml@gmail.com>,
+	Yuan Tan <tanyuan98@outlook.com>,
+	Xin Liu <bird@lzu.edu.cn>,
+	Ao Zhou <n05ec@lzu.edu.cn>,
+	Sven Eckelmann <sven@narfation.org>,
+	Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.19 018/220] batman-adv: avoid OGM aggregation when skb tailroom is insufficient
 Date: Mon, 23 Mar 2026 14:43:15 +0100
-Message-ID: <20260323134530.353222181@linuxfoundation.org>
+Message-ID: <20260323134505.155897309@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +68,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229685-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
+	TAGGED_FROM(0.00)[bounces-227998-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,25ba18e2c5040447585d];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 32EFC2F86D8
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,outlook.com:email,narfation.org:email]
+X-Rspamd-Queue-Id: CA2D32F381E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Yang Yang <n05ec@lzu.edu.cn>
 
-commit 7784caa413a89487dd14dd5c41db8753483b2acb upstream.
+commit 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 upstream.
 
-The usbtmc driver accepts timeout values specified by the user in an
-ioctl command, and uses these timeouts for some usb_bulk_msg() calls.
-Since the user can specify arbitrarily long timeouts and
-usb_bulk_msg() uses unkillable waits, call usb_bulk_msg_killable()
-instead to avoid the possibility of the user hanging a kernel thread
-indefinitely.
+When OGM aggregation state is toggled at runtime, an existing forwarded
+packet may have been allocated with only packet_len bytes, while a later
+packet can still be selected for aggregation. Appending in this case can
+hit skb_put overflow conditions.
 
-Reported-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/8e1c7ac5-e076-44b0-84b8-1b34b20f0ae1@suse.com/T/#t
-Tested-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
-CC: stable@vger.kernel.org
-Link: https://patch.msgid.link/81c6fc24-0607-40f1-8c20-5270dab2fad5@rowland.harvard.edu
+Reject aggregation when the target skb tailroom cannot accommodate the new
+packet. The caller then falls back to creating a new forward packet
+instead of appending.
+
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Cc: stable@vger.kernel.org
+Reported-by: Yifan Wu <yifanwucs@gmail.com>
+Reported-by: Juefei Pu <tomapufckgml@gmail.com>
+Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
+Signed-off-by: Xin Liu <bird@lzu.edu.cn>
+Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
+Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/batman-adv/bat_iv_ogm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -727,7 +727,7 @@ static int usbtmc488_ioctl_trigger(struc
- 	buffer[1] = data->bTag;
- 	buffer[2] = ~data->bTag;
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -473,6 +473,9 @@ batadv_iv_ogm_can_aggregate(const struct
+ 	if (aggregated_bytes > max_bytes)
+ 		return false;
  
--	retval = usb_bulk_msg(data->usb_dev,
-+	retval = usb_bulk_msg_killable(data->usb_dev,
- 			      usb_sndbulkpipe(data->usb_dev,
- 					      data->bulk_out),
- 			      buffer, USBTMC_HEADER_SIZE,
-@@ -1347,7 +1347,7 @@ static int send_request_dev_dep_msg_in(s
- 	buffer[11] = 0; /* Reserved */
++	if (skb_tailroom(forw_packet->skb) < packet_len)
++		return false;
++
+ 	if (packet_num >= BATADV_MAX_AGGREGATION_PACKETS)
+ 		return false;
  
- 	/* Send bulk URB */
--	retval = usb_bulk_msg(data->usb_dev,
-+	retval = usb_bulk_msg_killable(data->usb_dev,
- 			      usb_sndbulkpipe(data->usb_dev,
- 					      data->bulk_out),
- 			      buffer, USBTMC_HEADER_SIZE,
-@@ -1419,7 +1419,7 @@ static ssize_t usbtmc_read(struct file *
- 	actual = 0;
- 
- 	/* Send bulk URB */
--	retval = usb_bulk_msg(data->usb_dev,
-+	retval = usb_bulk_msg_killable(data->usb_dev,
- 			      usb_rcvbulkpipe(data->usb_dev,
- 					      data->bulk_in),
- 			      buffer, bufsize, &actual,
 
 
 
