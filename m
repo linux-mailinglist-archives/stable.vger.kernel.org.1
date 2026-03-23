@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228505-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOCUBr9cwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229038-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:11 +0100
+	id 4IDHIi5QwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228505-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5682F6669
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 045A92F4E18
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 31C0A3030BBA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DF58F3178C68
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65320387599;
-	Mon, 23 Mar 2026 14:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D2F3B19D8;
+	Mon, 23 Mar 2026 14:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KXeN/7KW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y5vIukTy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293DA1DA0E1;
-	Mon, 23 Mar 2026 14:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B8E3ACF0E;
+	Mon, 23 Mar 2026 14:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277862; cv=none; b=HDSuUwROc8a9ii6JPAb8K2dT7Nx68MoseGvD2xbQ2WRg3yrc8P4aAs95EzRO1XYekkd56CLDqGokJg43UgS0pAVXpvQiHNXT7nfJanH9K6IkSyOb6rUsKNCN2xV5vE+Kli6bk8q6tTwlczL3JaH5i8TDjUQ6o6189RMilUB3r38=
+	t=1774275310; cv=none; b=k76/glXrb3RTA/yz68trk8hO+w/AE5qIIYZT7GIpi5Ousxekyf9SUzGsiS+maM0Ya5EAK9dSzFOIwShCxwWpFYGfBOeG83mE5wDsszjk9kLulwVn53fDo9whyHqugL8Mn4Y3Amw79M+4n8V8MdyMTPOfX/p/rgqhb/x+iWi3bDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277862; c=relaxed/simple;
-	bh=vQdtecHWWyZ/7enrabJ6PjXzkjL2/jcC5RypIXoma+s=;
+	s=arc-20240116; t=1774275310; c=relaxed/simple;
+	bh=NAw+BDBcc+G0MACJqPxTq+HoV7VkiIU2HtyZqQhEzg0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CPR0iyaOBoPSLgc7HGv9iYB2HeeKYXpmcb8nY1P0GpLB5yoNnKi/e0WeMgMW9v+B1NbN1KgKcdggd4hWXFaNhdbWvPPi5p/82Ect55YeYXpsL9giv9w9LB288DCeFcD7w7FWBZFIub/3frHV4MDjMP90t8BtlGGB6MTqYIZbiW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KXeN/7KW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84528C4CEF7;
-	Mon, 23 Mar 2026 14:57:41 +0000 (UTC)
+	 MIME-Version; b=Lc5P1crkK+WjsjPEejOscOLVWn+ktN+0GjnAvveHnK90r5eY0jTPE7veExAuR+m9cNcomg+nYsdHEeM67qepgUDHJ2QMDvUtZeGHtabnTS9PWpP+on/woaE1uovxl6aSMNzp35TjVj/f8dG+JpscR895OmZG/wqO00whz9OphiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y5vIukTy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DACC4CEF7;
+	Mon, 23 Mar 2026 14:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277862;
-	bh=vQdtecHWWyZ/7enrabJ6PjXzkjL2/jcC5RypIXoma+s=;
+	s=korg; t=1774275310;
+	bh=NAw+BDBcc+G0MACJqPxTq+HoV7VkiIU2HtyZqQhEzg0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KXeN/7KWV59sCtij22RSlf+/UipbKzdQbGyTzSCwTG7WZrpR2hXkGvLSHTxguhrTD
-	 EeNil3IUaEBN5z1aou8ZsZ27CBTj/YEaz84vzwrYLdgyHcSjuziJVOc3029UC4zD63
-	 dpBzqla87Y0LFEfS9WzC7T07A+0FImI6RkW/RZUs=
+	b=Y5vIukTyaWZZgSGqBKrJnVRIMtGF+TEqC/iZ6ikBdqxer3boAF3NTtVJZJ3ra25zp
+	 Nmnl+wj50KIou7wOi4D7FYTL/cB/eCwz0EpRmhR9wODj5r4QQqcoFQ0PQsacx6Aixv
+	 4+rgi8V14XKwS4obpNPfOJBleFbJTg7JxTX/SEMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Eckert <fe@dev.tdt.de>,
-	Linus Walleij <linusw@kernel.org>,
+	Haiyue Wang <haiyuewa@163.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 125/567] pinctrl: equilibrium: fix warning trace on load
+Subject: [PATCH 6.12 049/460] mctp: i2c: fix skb memory leak in receive path
 Date: Mon, 23 Mar 2026 14:40:45 +0100
-Message-ID: <20260323134536.900717000@linuxfoundation.org>
+Message-ID: <20260323134527.917088923@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +69,64 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229038-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228505-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,163.com,redhat.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1E5682F6669
+X-Rspamd-Queue-Id: 045A92F4E18
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Eckert <fe@dev.tdt.de>
+From: Haiyue Wang <haiyuewa@163.com>
 
-[ Upstream commit 3e00b1b332e54ba50cca6691f628b9c06574024f ]
+[ Upstream commit e3f5e0f22cfc2371e7471c9fd5b4da78f9df7c69 ]
 
-The callback functions 'eqbr_irq_mask()' and 'eqbr_irq_ack()' are also
-called in the callback function 'eqbr_irq_mask_ack()'. This is done to
-avoid source code duplication. The problem, is that in the function
-'eqbr_irq_mask()' also calles the gpiolib function 'gpiochip_disable_irq()'
+When 'midev->allow_rx' is false, the newly allocated skb isn't consumed
+by netif_rx(), it needs to free the skb directly.
 
-This generates the following warning trace in the log for every gpio on
-load.
-
-[    6.088111] ------------[ cut here ]------------
-[    6.092440] WARNING: CPU: 3 PID: 1 at drivers/gpio/gpiolib.c:3810 gpiochip_disable_irq+0x39/0x50
-[    6.097847] Modules linked in:
-[    6.097847] CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.12.59+ #0
-[    6.097847] Tainted: [W]=WARN
-[    6.097847] RIP: 0010:gpiochip_disable_irq+0x39/0x50
-[    6.097847] Code: 39 c6 48 19 c0 21 c6 48 c1 e6 05 48 03 b2 38 03 00 00 48 81 fe 00 f0 ff ff 77 11 48 8b 46 08 f6 c4 02 74 06 f0 80 66 09 fb c3 <0f> 0b 90 0f 1f 40 00 c3 66 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40
-[    6.097847] RSP: 0000:ffffc9000000b830 EFLAGS: 00010046
-[    6.097847] RAX: 0000000000000045 RBX: ffff888001be02a0 RCX: 0000000000000008
-[    6.097847] RDX: ffff888001be9000 RSI: ffff888001b2dd00 RDI: ffff888001be02a0
-[    6.097847] RBP: ffffc9000000b860 R08: 0000000000000000 R09: 0000000000000000
-[    6.097847] R10: 0000000000000001 R11: ffff888001b2a154 R12: ffff888001be0514
-[    6.097847] R13: ffff888001be02a0 R14: 0000000000000008 R15: 0000000000000000
-[    6.097847] FS:  0000000000000000(0000) GS:ffff888041d80000(0000) knlGS:0000000000000000
-[    6.097847] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    6.097847] CR2: 0000000000000000 CR3: 0000000003030000 CR4: 00000000001026b0
-[    6.097847] Call Trace:
-[    6.097847]  <TASK>
-[    6.097847]  ? eqbr_irq_mask+0x63/0x70
-[    6.097847]  ? no_action+0x10/0x10
-[    6.097847]  eqbr_irq_mask_ack+0x11/0x60
-
-In an other driver (drivers/pinctrl/starfive/pinctrl-starfive-jh7100.c) the
-interrupt is not disabled here.
-
-To fix this, do not call the 'eqbr_irq_mask()' and 'eqbr_irq_ack()'
-function. Implement instead this directly without disabling the interrupts.
-
-Fixes: 52066a53bd11 ("pinctrl: equilibrium: Convert to immutable irq_chip")
-Signed-off-by: Florian Eckert <fe@dev.tdt.de>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Fixes: f5b8abf9fc3d ("mctp i2c: MCTP I2C binding driver")
+Signed-off-by: Haiyue Wang <haiyuewa@163.com>
+Link: https://patch.msgid.link/20260305143240.97592-1-haiyuewa@163.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-equilibrium.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/mctp/mctp-i2c.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/pinctrl-equilibrium.c b/drivers/pinctrl/pinctrl-equilibrium.c
-index a5f7e34146c7c..e1d8c656576a8 100644
---- a/drivers/pinctrl/pinctrl-equilibrium.c
-+++ b/drivers/pinctrl/pinctrl-equilibrium.c
-@@ -63,8 +63,15 @@ static void eqbr_irq_ack(struct irq_data *d)
+diff --git a/drivers/net/mctp/mctp-i2c.c b/drivers/net/mctp/mctp-i2c.c
+index 617333343ca00..f8f83fe424e51 100644
+--- a/drivers/net/mctp/mctp-i2c.c
++++ b/drivers/net/mctp/mctp-i2c.c
+@@ -344,6 +344,7 @@ static int mctp_i2c_recv(struct mctp_i2c_dev *midev)
+ 	} else {
+ 		status = NET_RX_DROP;
+ 		spin_unlock_irqrestore(&midev->lock, flags);
++		kfree_skb(skb);
+ 	}
  
- static void eqbr_irq_mask_ack(struct irq_data *d)
- {
--	eqbr_irq_mask(d);
--	eqbr_irq_ack(d);
-+	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
-+	struct eqbr_gpio_ctrl *gctrl = gpiochip_get_data(gc);
-+	unsigned int offset = irqd_to_hwirq(d);
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&gctrl->lock, flags);
-+	writel(BIT(offset), gctrl->membase + GPIO_IRNENCLR);
-+	writel(BIT(offset), gctrl->membase + GPIO_IRNCR);
-+	raw_spin_unlock_irqrestore(&gctrl->lock, flags);
- }
- 
- static inline void eqbr_cfg_bit(void __iomem *addr,
+ 	if (status == NET_RX_SUCCESS) {
 -- 
 2.51.0
 
