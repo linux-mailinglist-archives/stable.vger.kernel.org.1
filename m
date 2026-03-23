@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJWaGHdZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229105-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:11 +0100
+	id GPqTGGlrwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCA32F6155
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD35A2F8519
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A5423325DBB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFB7D32118B6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AB0248883;
-	Mon, 23 Mar 2026 15:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15AF23BBA14;
+	Mon, 23 Mar 2026 16:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkSCFr2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QbxarVTd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76469245020;
-	Mon, 23 Mar 2026 15:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5273AB277;
+	Mon, 23 Mar 2026 16:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278075; cv=none; b=mZoXN7+0J8VM/wxCO9huBHJloCwqZ0tDUsqleNf6HcNdTDdV8J8wZ6yFlSaqFKi7zCN2iXcEGTfMJf6SljlgTy61jfBrmQ94C9iVwssESS+nrAl45rhDMIG5sm1e/NEG5gkFidXMVEZjqYFH0fuOtT2MUok1BHkkYr8PQjgnqd4=
+	t=1774282376; cv=none; b=Q81FaYsdk9Ux4+FfRqupcOWxGNp8DGYq2OSYZdnO9P+YsSntlDLmOV22bR70fXvgBXwkcoDykXtDfrjV0SHb8b+TfdbwAjEUm+dMHpYpcz77nISINg+ka85lVqpAmmZL8Qr4vz3eGC0fleZem5YE+l5tBsC5AXyZvekpcl6X2Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278075; c=relaxed/simple;
-	bh=KKcYecnD1EOWxiWnyJG8a97RPgwlgJdOygm0iIkgxBk=;
+	s=arc-20240116; t=1774282376; c=relaxed/simple;
+	bh=Kn/MHoicoQJwG+baPsywfXKsPfTm2VwUMlyBe1aChzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJapCJ40+6Ok62wcGzJuNyvtHvQWpE11Amfg6gPn0Whh+t2ndJbtoOQkdk4qRTH/Dyj6gaC09TRo5aP9J1LC0ODGnVBw6zPLdXOg/WTSAyBnAv3G2OVcVSokpot5f7guT/MYJFkrSK2RoVO3ay0IldfnqI2Lu2JSh+pulwTka3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkSCFr2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B3CC4CEF7;
-	Mon, 23 Mar 2026 15:01:14 +0000 (UTC)
+	 MIME-Version; b=kinOg1AhoVOUDYKJomRuKvxm8I5wBRCBW0FuKwaR6ggZ9Fa3j8E8yxT+E2rTZZV57brk29Y9FDMQ8Db7vdwgg05AgxDo4ADEJf+U93UoIAvUBi0FnpDWZ7hwMBFRVCebpYoJI638tMYpaOtazhWNZDjWRGHI4jlvX0XeySQk6hE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QbxarVTd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502EAC4CEF7;
+	Mon, 23 Mar 2026 16:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278075;
-	bh=KKcYecnD1EOWxiWnyJG8a97RPgwlgJdOygm0iIkgxBk=;
+	s=korg; t=1774282376;
+	bh=Kn/MHoicoQJwG+baPsywfXKsPfTm2VwUMlyBe1aChzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bkSCFr2tUysdctuXVp2hAbd0uFauUB/ZN7OXWIZhPt+HQaJ2yeEBMKTOxyg72o1zF
-	 JA4p6Wyz9Y1fC73ZSryoy/gZPL1ysbbznmMQcvNSfZq0HecBCpTkCCZDIj9t/gpY2c
-	 oZyr4EcjWCEgEIU/93mK1UDESV5Ev0URh3Z2mbHk=
+	b=QbxarVTdEebc3N5ksnPP7/ihHfamZZQjt9bmLHkE6ciREXsJg/0+aVPJNMcThvlH9
+	 oPakXJUt1tL74DCdh2iDV/DK+6e9kDJ1fw3/qcriTxUjVT5iKyoliCo+QyI86ACm/T
+	 ruifqz88/h68f76tIuV7PqR6tj4HfbdW7IIGllSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.6 194/567] apparmor: fix unprivileged local user can do privileged policy management
+	Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 132/481] nfc: nci: free skb on nci_transceive early error paths
 Date: Mon, 23 Mar 2026 14:41:54 +0100
-Message-ID: <20260323134538.651108635@linuxfoundation.org>
+Message-ID: <20260323134528.483809471@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,213 +68,105 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229105-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229607-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BFCA32F6155
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: CD35A2F8519
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 6601e13e82841879406bf9f369032656f441a425 upstream.
+[ Upstream commit 7bd4b0c4779f978a6528c9b7937d2ca18e936e2c ]
 
-An unprivileged local user can load, replace, and remove profiles by
-opening the apparmorfs interfaces, via a confused deputy attack, by
-passing the opened fd to a privileged process, and getting the
-privileged process to write to the interface.
+nci_transceive() takes ownership of the skb passed by the caller,
+but the -EPROTO, -EINVAL, and -EBUSY error paths return without
+freeing it.
 
-This does require a privileged target that can be manipulated to do
-the write for the unprivileged process, but once such access is
-achieved full policy management is possible and all the possible
-implications that implies: removing confinement, DoS of system or
-target applications by denying all execution, by-passing the
-unprivileged user namespace restriction, to exploiting kernel bugs for
-a local privilege escalation.
+Due to issues clearing NCI_DATA_EXCHANGE fixed by subsequent changes
+the nci/nci_dev selftest hits the error path occasionally in NIPA,
+and kmemleak detects leaks:
 
-The policy management interface can not have its permissions simply
-changed from 0666 to 0600 because non-root processes need to be able
-to load policy to different policy namespaces.
+unreferenced object 0xff11000015ce6a40 (size 640):
+  comm "nci_dev", pid 3954, jiffies 4295441246
+  hex dump (first 32 bytes):
+    6b 6b 6b 6b 00 a4 00 0c 02 e1 03 6b 6b 6b 6b 6b  kkkk.......kkkkk
+    6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+  backtrace (crc 7c40cc2a):
+    kmem_cache_alloc_node_noprof+0x492/0x630
+    __alloc_skb+0x11e/0x5f0
+    alloc_skb_with_frags+0xc6/0x8f0
+    sock_alloc_send_pskb+0x326/0x3f0
+    nfc_alloc_send_skb+0x94/0x1d0
+    rawsock_sendmsg+0x162/0x4c0
+    do_syscall_64+0x117/0xfc0
 
-Instead ensure the task writing the interface has privileges that
-are a subset of the task that opened the interface. This is already
-done via policy for confined processes, but unconfined can delegate
-access to the opened fd, by-passing the usual policy check.
-
-Fixes: b7fd2c0340eac ("apparmor: add per policy ns .load, .replace, .remove interface files")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20260303162346.2071888-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/apparmorfs.c     |   16 +++++++++-------
- security/apparmor/include/policy.h |    2 +-
- security/apparmor/policy.c         |   34 +++++++++++++++++++++++++++++++++-
- 3 files changed, 43 insertions(+), 9 deletions(-)
+ net/nfc/nci/core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/security/apparmor/apparmorfs.c
-+++ b/security/apparmor/apparmorfs.c
-@@ -412,7 +412,8 @@ static struct aa_loaddata *aa_simple_wri
- }
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 6b62218718a06..cdc1aa8662544 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1023,18 +1023,23 @@ static int nci_transceive(struct nfc_dev *nfc_dev, struct nfc_target *target,
+ 	struct nci_conn_info *conn_info;
  
- static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
--			     loff_t *pos, struct aa_ns *ns)
-+			     loff_t *pos, struct aa_ns *ns,
-+			     const struct cred *ocred)
- {
- 	struct aa_loaddata *data;
- 	struct aa_label *label;
-@@ -423,7 +424,7 @@ static ssize_t policy_update(u32 mask, c
- 	/* high level check about policy management - fine grained in
- 	 * below after unpack
- 	 */
--	error = aa_may_manage_policy(current_cred(), label, ns, mask);
-+	error = aa_may_manage_policy(current_cred(), label, ns, ocred, mask);
- 	if (error)
- 		goto end_section;
+ 	conn_info = ndev->rf_conn_info;
+-	if (!conn_info)
++	if (!conn_info) {
++		kfree_skb(skb);
+ 		return -EPROTO;
++	}
  
-@@ -444,7 +445,8 @@ static ssize_t profile_load(struct file
- 			    loff_t *pos)
- {
- 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
--	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns);
-+	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns,
-+				  f->f_cred);
+ 	pr_debug("target_idx %d, len %d\n", target->idx, skb->len);
  
- 	aa_put_ns(ns);
+ 	if (!ndev->target_active_prot) {
+ 		pr_err("unable to exchange data, no active target\n");
++		kfree_skb(skb);
+ 		return -EINVAL;
+ 	}
  
-@@ -462,7 +464,7 @@ static ssize_t profile_replace(struct fi
- {
- 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
- 	int error = policy_update(AA_MAY_LOAD_POLICY | AA_MAY_REPLACE_POLICY,
--				  buf, size, pos, ns);
-+				  buf, size, pos, ns, f->f_cred);
- 	aa_put_ns(ns);
+-	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags))
++	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags)) {
++		kfree_skb(skb);
+ 		return -EBUSY;
++	}
  
- 	return error;
-@@ -487,7 +489,7 @@ static ssize_t profile_remove(struct fil
- 	 * below after unpack
- 	 */
- 	error = aa_may_manage_policy(current_cred(), label, ns,
--				     AA_MAY_REMOVE_POLICY);
-+				     f->f_cred, AA_MAY_REMOVE_POLICY);
- 	if (error)
- 		goto out;
- 
-@@ -1819,7 +1821,7 @@ static int ns_mkdir_op(struct mnt_idmap
- 	int error;
- 
- 	label = begin_current_label_crit_section();
--	error = aa_may_manage_policy(current_cred(), label, NULL,
-+	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
- 				     AA_MAY_LOAD_POLICY);
- 	end_current_label_crit_section(label);
- 	if (error)
-@@ -1869,7 +1871,7 @@ static int ns_rmdir_op(struct inode *dir
- 	int error;
- 
- 	label = begin_current_label_crit_section();
--	error = aa_may_manage_policy(current_cred(), label, NULL,
-+	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
- 				     AA_MAY_LOAD_POLICY);
- 	end_current_label_crit_section(label);
- 	if (error)
---- a/security/apparmor/include/policy.h
-+++ b/security/apparmor/include/policy.h
-@@ -401,7 +401,7 @@ bool aa_policy_admin_capable(const struc
- 			     struct aa_label *label, struct aa_ns *ns);
- int aa_may_manage_policy(const struct cred *subj_cred,
- 			 struct aa_label *label, struct aa_ns *ns,
--			 u32 mask);
-+			 const struct cred *ocred, u32 mask);
- bool aa_current_policy_view_capable(struct aa_ns *ns);
- bool aa_current_policy_admin_capable(struct aa_ns *ns);
- 
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -891,17 +891,44 @@ bool aa_current_policy_admin_capable(str
- 	return res;
- }
- 
-+static bool is_subset_of_obj_privilege(const struct cred *cred,
-+				       struct aa_label *label,
-+				       const struct cred *ocred)
-+{
-+	if (cred == ocred)
-+		return true;
-+
-+	if (!aa_label_is_subset(label, cred_label(ocred)))
-+		return false;
-+	/* don't allow crossing userns for now */
-+	if (cred->user_ns != ocred->user_ns)
-+		return false;
-+	if (!cap_issubset(cred->cap_inheritable, ocred->cap_inheritable))
-+		return false;
-+	if (!cap_issubset(cred->cap_permitted, ocred->cap_permitted))
-+		return false;
-+	if (!cap_issubset(cred->cap_effective, ocred->cap_effective))
-+		return false;
-+	if (!cap_issubset(cred->cap_bset, ocred->cap_bset))
-+		return false;
-+	if (!cap_issubset(cred->cap_ambient, ocred->cap_ambient))
-+		return false;
-+	return true;
-+}
-+
-+
- /**
-  * aa_may_manage_policy - can the current task manage policy
-  * @subj_cred; subjects cred
-  * @label: label to check if it can manage policy
-  * @ns: namespace being managed by @label (may be NULL if @label's ns)
-+ * @ocred: object cred if request is coming from an open object
-  * @mask: contains the policy manipulation operation being done
-  *
-  * Returns: 0 if the task is allowed to manipulate policy else error
-  */
- int aa_may_manage_policy(const struct cred *subj_cred, struct aa_label *label,
--			 struct aa_ns *ns, u32 mask)
-+			 struct aa_ns *ns, const struct cred *ocred, u32 mask)
- {
- 	const char *op;
- 
-@@ -917,6 +944,11 @@ int aa_may_manage_policy(const struct cr
- 		return audit_policy(label, op, NULL, NULL, "policy_locked",
- 				    -EACCES);
- 
-+	if (ocred && !is_subset_of_obj_privilege(subj_cred, label, ocred))
-+		return audit_policy(label, op, NULL, NULL,
-+				    "not privileged for target profile",
-+				    -EACCES);
-+
- 	if (!aa_policy_admin_capable(subj_cred, label, ns))
- 		return audit_policy(label, op, NULL, NULL, "not policy admin",
- 				    -EACCES);
+ 	/* store cb and context to be used on receiving data */
+ 	conn_info->data_exchange_cb = cb;
+-- 
+2.51.0
+
 
 
 
