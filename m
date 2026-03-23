@@ -1,122 +1,146 @@
-Return-Path: <stable+bounces-227984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227985-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iOWgHhs9wWk9RwQAu9opvQ
-	(envelope-from <stable+bounces-227984-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:11 +0100
+	id 4Kw+B4c/wWlnRwQAu9opvQ
+	(envelope-from <stable+bounces-227985-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:26:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0992F2A3D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CDBB2F2E02
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:26:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C96D3007A76
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:16:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 613CB306CDC7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2A43AA1B6;
-	Mon, 23 Mar 2026 13:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0413837F01B;
+	Mon, 23 Mar 2026 13:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqCMTCxs"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBF837C90E
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 13:16:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDC32DE6F1
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 13:19:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774271763; cv=none; b=b7gdJHZ6XHyLUgYP9iP9E+3KdK+qnQ97muW7IjDkYr/ZO8H9Jtp0STfUgW1tHXcV2RUv83g+oZh3fOuk63JjHPTJOfcvLpZi/Y0KXg2W90IH+fEozz7CaQmo3OXSAF1NO4fxZtvf2cff0VIsc62DH7T6FjcanWiBkSMcuB99WFc=
+	t=1774271952; cv=none; b=sGhj+Omu4gkI1YciUmTKb4hC2iEwYm8eJIf4VSDmwDfHhAqBeamfgxfD3RdYqOOIYWPqqNwL1K0TO8KNOz8M6oVKLUNYb+LMm+hpQRu2KZMcvugYsI7qh/QxqumA+9/S7YP9X04VpLcNQBMaHs3Qdb2Im9cuxkmLhl1KPSd9jHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774271763; c=relaxed/simple;
-	bh=DOwFkLH/+i8ToV4jvDsAIUid6O7sfAILwkfOY1slIQI=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=ihR2mdJH0r8VewLceu91KOJI2Wpva+jKRtJ90R8Lvq9iQ7/nJFgQKHZXgz94Q60yBtupTuIQMPPArmhDk3Sprt3g7xB6t1R0UT+BMgC18C+IQasubqvjuuVKs58mvJx9XDCRbqfrLOvBJjVJvd3rjWlrl3KlBVcMk1Eh/FEUiz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.167.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-467dc3431cbso14974916b6e.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 06:16:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774271761; x=1774876561;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2t7ZxLnNlwk4M8+t5IiNuok4Xl5BTZRXnYsSVX/rUp8=;
-        b=jhE3Yh40V9xnsRuKRJblhIGe4oMarSVkYM13v/hS/1Vzdx1AEprq6EtPYa2Vkw8wE1
-         LreA9FbCi9MhIfpYzKccg/kvbGK1sTzGrAEYZufDYtKryKFDy43Xawgvkx5o5Mdl7Anf
-         N5Pa5dKmaM6LPTdhrQDSwMRlIU4PaQ/XFV58+d9N9qM04bQv6UH904UUmVvXCXsw0xa0
-         t9oLp917EHSm+rZT5SbombZZazs8qLEVoFTTAjWyj336LBfNpm/jXVZDEs7Nk4CrBHit
-         uN6QFTzyLnraHmVocTKxKRVub59nMkn1vp/0H2YI+KXGBfyZfvqv4dx5McgFwO9WNpe+
-         YcWg==
-X-Forwarded-Encrypted: i=1; AJvYcCXePSQXXF+CQEuMs5G/dB5NcdT+Qb6MlLybKuLmgbvNLwoGMhs4IYYcWyPJwJDGx1OPwDkNFHM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyE9BA3MffIN6C6+gLO9RVWkwkyxm0akzyXMvH+rAYaDgsHDO13
-	eHqHrvyMRalFXOFvJWjlZ/CB/jebcuMlMKqCH83ImLLjJGJ2orX54vuHih++TwnIMsFVZActXVs
-	kOj1HGj3KsZPCDXhKxK5oktvcS5XA9ifU462W43ql7bfUIYr1HbbnDQ9v1ow=
+	s=arc-20240116; t=1774271952; c=relaxed/simple;
+	bh=O2dHZFsOQ70hD1x0Z0vjR8SZREugcpDMh1YMqxxDscs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MOoq6oIA7wqZdd/9Ji9/jFWq+ypXiWDcGQmON7O9DVIcomIpyuqvr/wnghzqHj13lKlN0ZCSl2g+prw4V0quTgcJy7lxWm3UqYa+u9dVDZWNB2PyzOi9vO62UeSeDV39onKc780IZ6Qk41CMsuqiI3APRKd935hAFoxyEYNjVnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqCMTCxs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA179C4CEF7;
+	Mon, 23 Mar 2026 13:19:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774271952;
+	bh=O2dHZFsOQ70hD1x0Z0vjR8SZREugcpDMh1YMqxxDscs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dqCMTCxswicc9Yza5YM4D0l654ciXMwEgNYxDyMI0yC2uaOnKrZUve1U5UwRhQVIb
+	 LfH/t9/4m7kv9o7GHtEJzjJhZdCpWR0OgOJexCEU+OVMYpes5S1uMbfENkHNBhud3+
+	 x2y7d4Y8+GQXFLTNtH4vo+4pGenGhOmkapUFYiGr7+xoFPAtqtwrbBb1IIwlPl2Xux
+	 aXjs+vsAKPNFcA8+bvzvlwduwwTCq0467nQZEu+OLI+od+do3O+V16pelnoVRN1JX+
+	 dvDo99PmNIkRJJg/fX49pypgPj04L8kaRmhUmGbEIU7wacukaZqtX7P457cXWtcRMM
+	 8cpy+JyBa4nYA==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Justin Stitt <justinstitt@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 1/2] i2c: cp2615: replace deprecated strncpy with strscpy
+Date: Mon, 23 Mar 2026 09:19:09 -0400
+Message-ID: <20260323131910.1715046-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026032348-savor-throbbing-4586@gregkh>
+References: <2026032348-savor-throbbing-4586@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:4dfc:b0:67d:730f:25cb with SMTP id
- 006d021491bc7-67d746e2468mr5453265eaf.21.1774271761417; Mon, 23 Mar 2026
- 06:16:01 -0700 (PDT)
-Date: Mon, 23 Mar 2026 06:16:01 -0700
-In-Reply-To: <tencent_7C51DF11EF9B2F12D8AE4595C0F91009A405@qq.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69c13d11.050a0220.3bf4de.009d.GAE@google.com>
-Subject: Re: [v5.15] UBSAN: shift-out-of-bounds in ocfs2_fill_super
-From: syzbot <syzbot+c6104ecfe56e0fd6b616@syzkaller.appspotmail.com>
-To: 1016331059@qq.com, jlbec@evilplan.org, joseph.qi@linux.alibaba.com, 
-	linux-kernel@vger.kernel.org, mark@fasheh.com, stable@vger.kernel.org, 
-	syzkaller-lts-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [-0.36 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=e1bb6d24ef2164eb];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[qq.com,evilplan.org,linux.alibaba.com,vger.kernel.org,fasheh.com,googlegroups.com];
-	TAGGED_FROM(0.00)[bounces-227984-lists,stable=lfdr.de,c6104ecfe56e0fd6b616];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	MISSING_XM_UA(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227985-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_NONE(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	R_DKIM_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,syzkaller.appspot.com:url]
-X-Rspamd-Queue-Id: 6C0992F2A3D
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,chromium.org:email]
+X-Rspamd-Queue-Id: 7CDBB2F2E02
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hello,
+From: Justin Stitt <justinstitt@google.com>
 
-syzbot tried to test the proposed patch but the build/boot failed:
+[ Upstream commit e2def33f9ee1b1a8cda4ec5cde69840b5708f068 ]
 
-failed to apply patch:
-checking file fs/ocfs2/super.c
-Hunk #1 FAILED at 2369.
-1 out of 1 hunk FAILED
+`strncpy` is deprecated for use on NUL-terminated destination strings [1].
 
+We should prefer more robust and less ambiguous string interfaces.
 
+We expect name to be NUL-terminated based on its numerous uses with
+functions that expect NUL-terminated strings.
 
-Tested on:
+For example in i2c-core-base.c +1533:
+| dev_dbg(&adap->dev, "adapter [%s] registered\n", adap->name);
 
-commit:         3330a8d3 Linux 5.15.201
-git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e1bb6d24ef2164eb
-dashboard link: https://syzkaller.appspot.com/bug?extid=c6104ecfe56e0fd6b616
-compiler:       
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=14ce97ef980000
+NUL-padding is not required as `adap` is already zero-alloacted with:
+| adap = devm_kzalloc(&usbif->dev, sizeof(struct i2c_adapter), GFP_KERNEL);
+
+With the above in mind, a suitable replacement is `strscpy` [2] due to
+the fact that it guarantees NUL-termination on the destination buffer
+without unnecessarily NUL-padding.
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+Link: https://github.com/KSPP/linux/issues/90
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Stable-dep-of: aa79f996eb41 ("i2c: cp2615: fix serial string NULL-deref at probe")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/i2c/busses/i2c-cp2615.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/busses/i2c-cp2615.c b/drivers/i2c/busses/i2c-cp2615.c
+index 3ded28632e4c1..20f8f7c9a8cd4 100644
+--- a/drivers/i2c/busses/i2c-cp2615.c
++++ b/drivers/i2c/busses/i2c-cp2615.c
+@@ -298,7 +298,7 @@ cp2615_i2c_probe(struct usb_interface *usbif, const struct usb_device_id *id)
+ 	if (!adap)
+ 		return -ENOMEM;
+ 
+-	strncpy(adap->name, usbdev->serial, sizeof(adap->name) - 1);
++	strscpy(adap->name, usbdev->serial, sizeof(adap->name));
+ 	adap->owner = THIS_MODULE;
+ 	adap->dev.parent = &usbif->dev;
+ 	adap->dev.of_node = usbif->dev.of_node;
+-- 
+2.51.0
 
 
