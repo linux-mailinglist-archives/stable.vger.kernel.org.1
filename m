@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228270-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLxKL+ZdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229248-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:06 +0100
+	id OGbWIcJMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228270-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4E02F68B5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D8F2F4528
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 55D8E3342455
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 38A0A31FCC88
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D573B19C2;
-	Mon, 23 Mar 2026 15:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB5C53B3892;
+	Mon, 23 Mar 2026 14:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0HGNoxD4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCfI2neW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1BC265CA2;
-	Mon, 23 Mar 2026 15:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1023AEF55;
+	Mon, 23 Mar 2026 14:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278525; cv=none; b=b6bTCVz4+ghwd6vwT6PxTuVRCYjBMniMNznc73Ps2RIWgSo3fhXZELDRLeFKlH33ghj/B61qkl7dIsbLxueHj9R1fMrCsVeBmLfoZ5HaPn5HHDYBmPNgKRoinOCLnwLcjmOADQkc+/h/ot3Uur3aO8jqFjWdToWjpNjhuqCa4lM=
+	t=1774274642; cv=none; b=tR+O92sNXzVl1vnyKfKcYrQ72DQuvyveypXrhXWEanYC5HA3/v2XXTcCWYUeJuQdpu3PSkD9JR28/yC3mW57ef52FARO3f6A1P2mSUJa/o5ZcUak/nF9teTa1HD0rA+nQ9avipNRhbZVuFcAdJHp7oK7kPUd4yHNZ4VMyz+k1IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278525; c=relaxed/simple;
-	bh=GhFzmXf9H4uxVwBmGnJAhcjN+MitSQLc5l6jzbez+lc=;
+	s=arc-20240116; t=1774274642; c=relaxed/simple;
+	bh=eXX+z44+K8nOHtMaUEXnUMkGJ0rwh76UBE5cmzt9D+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dR0RUlQsm9Qh6GlW00188LHRvqss9IKbcafFl2jKkcKJjFd+dhDMPE3RK2Ax4W7cKqEbULn+qhj30c07mbqXvRhujUSroV9OeQVPQATLYO4RJOX7Nl77PEFqgbZelqv4rwQGbbpAznhFQVOgHkiznZnl+sNoFULTj79uQ/d8I+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0HGNoxD4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5327C2BCB1;
-	Mon, 23 Mar 2026 15:08:44 +0000 (UTC)
+	 MIME-Version; b=K24MeKKCicqUOhidsBL0qp2fWc8ofJQRJPji/oIBGLUUa2DssxGuRDGJTFr9D1f0KCTGzOX6Cd50A0VUZ2HECRqD7Ib0rBg52Yah2cVLhjEiqDpX+6d3e2LSDRzwhUUE1f3EMXpiK71LzojaSmV6mj8S14bEIPSBkVLWyt/hBvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCfI2neW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284E1C4CEF7;
+	Mon, 23 Mar 2026 14:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278525;
-	bh=GhFzmXf9H4uxVwBmGnJAhcjN+MitSQLc5l6jzbez+lc=;
+	s=korg; t=1774274642;
+	bh=eXX+z44+K8nOHtMaUEXnUMkGJ0rwh76UBE5cmzt9D+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0HGNoxD4zDGvZGF3hENB+OJOb7EDluDKaDTeqnqmSjPlifjvViumYN14E1Zi9I7sT
-	 ZtQ5FfT6cZFnNY4R2/KxvXpTJcD+VlwN3HPWxNV++2O7ncpRkPjhDb8D7KnOr9BGT6
-	 FSgudno4QJGWR+5SxW4keNo0zIdQWVXjLOSD7TdI=
+	b=JCfI2neWMo+2nW02tu0eTMOBxIVfaO632T4QQWAUjMVBA0ZUQndIM4HM6ustRgkUb
+	 egugqAZ+SwuAux1NI6m7QzIqT3uGl8s5LRXDrXE9iBOIVVBsBc/epfKR3YfrQHYfCr
+	 pjGtAGEdEbb+Am0Iaa12o6rHr1BuMKd8gJOUlGTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.6 336/567] drm/bridge: ti-sn65dsi83: fix CHA_DSI_CLK_RANGE rounding
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 035/212] cifs: open files should not hold ref on superblock
 Date: Mon, 23 Mar 2026 14:44:16 +0100
-Message-ID: <20260323134542.144752659@linuxfoundation.org>
+Message-ID: <20260323134504.870553054@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +66,248 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229248-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228270-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4A4E02F68B5
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 16D8F2F4528
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 2f22702dc0fee06a240404e0f7ead5b789b253d8 upstream.
+[ Upstream commit 340cea84f691c5206561bb2e0147158fe02070be ]
 
-The DSI frequency must be in the range:
+Today whenever we deal with a file, in addition to holding
+a reference on the dentry, we also get a reference on the
+superblock. This happens in two cases:
+1. when a new cinode is allocated
+2. when an oplock break is being processed
 
-  (CHA_DSI_CLK_RANGE * 5 MHz) <= DSI freq < ((CHA_DSI_CLK_RANGE + 1) * 5 MHz)
+The reasoning for holding the superblock ref was to make sure
+that when umount happens, if there are users of inodes and
+dentries, it does not try to clean them up and wait for the
+last ref to superblock to be dropped by last of such users.
 
-So the register value should point to the lower range value, but
-DIV_ROUND_UP() rounds the division to the higher range value, resulting in
-an excess of 1 (unless the frequency is an exact multiple of 5 MHz).
+But the side effect of doing that is that umount silently drops
+a ref on the superblock and we could have deferred closes and
+lease breaks still holding these refs.
 
-For example for a 437100000 MHz clock CHA_DSI_CLK_RANGE should be 87 (0x57):
+Ideally, we should ensure that all of these users of inodes and
+dentries are cleaned up at the time of umount, which is what this
+code is doing.
 
-  (87 * 5 = 435) <= 437.1 < (88 * 5 = 440)
+This code change allows these code paths to use a ref on the
+dentry (and hence the inode). That way, umount is
+ensured to clean up SMB client resources when it's the last
+ref on the superblock (For ex: when same objects are shared).
 
-but current code returns 88 (0x58).
+The code change also moves the call to close all the files in
+deferred close list to the umount code path. It also waits for
+oplock_break workers to be flushed before calling
+kill_anon_super (which eventually frees up those objects).
 
-Fix the computation by removing the DIV_ROUND_UP().
-
-Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
-Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-1-2e15f5a9a6a0@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
+Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ replaced kmalloc_obj() with kmalloc(sizeof(...)) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/smb/client/cifsfs.c    |    7 +++++--
+ fs/smb/client/cifsproto.h |    1 +
+ fs/smb/client/file.c      |   11 -----------
+ fs/smb/client/misc.c      |   42 ++++++++++++++++++++++++++++++++++++++++++
+ fs/smb/client/trace.h     |    2 ++
+ 5 files changed, 50 insertions(+), 13 deletions(-)
 
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -303,9 +303,9 @@ static u8 sn65dsi83_get_dsi_range(struct
- 	 *  DSI_CLK = mode clock * bpp / dsi_data_lanes / 2
- 	 * the 2 is there because the bus is DDR.
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -330,10 +330,14 @@ static void cifs_kill_sb(struct super_bl
+ 
+ 	/*
+ 	 * We need to release all dentries for the cached directories
+-	 * before we kill the sb.
++	 * and close all deferred file handles before we kill the sb.
  	 */
--	return DIV_ROUND_UP(clamp((unsigned int)mode->clock *
--			    mipi_dsi_pixel_format_to_bpp(ctx->dsi->format) /
--			    ctx->dsi->lanes / 2, 40000U, 500000U), 5000U);
-+	return clamp((unsigned int)mode->clock *
-+		     mipi_dsi_pixel_format_to_bpp(ctx->dsi->format) /
-+		     ctx->dsi->lanes / 2, 40000U, 500000U) / 5000U;
+ 	if (cifs_sb->root) {
+ 		close_all_cached_dirs(cifs_sb);
++		cifs_close_all_deferred_files_sb(cifs_sb);
++
++		/* Wait for all pending oplock breaks to complete */
++		flush_workqueue(cifsoplockd_wq);
+ 
+ 		/* finally release root dentry */
+ 		dput(cifs_sb->root);
+@@ -864,7 +868,6 @@ static void cifs_umount_begin(struct sup
+ 	spin_unlock(&tcon->tc_lock);
+ 	spin_unlock(&cifs_tcp_ses_lock);
+ 
+-	cifs_close_all_deferred_files(tcon);
+ 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
+ 	/* cancel_notify_requests(tcon); */
+ 	if (tcon->ses && tcon->ses->server) {
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -313,6 +313,7 @@ extern void cifs_close_deferred_file(str
+ 
+ extern void cifs_close_all_deferred_files(struct cifs_tcon *cifs_tcon);
+ 
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb);
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *cifs_tcon,
+ 					   struct dentry *dentry);
+ 
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -704,8 +704,6 @@ struct cifsFileInfo *cifs_new_fileinfo(s
+ 	mutex_init(&cfile->fh_mutex);
+ 	spin_lock_init(&cfile->file_info_lock);
+ 
+-	cifs_sb_active(inode->i_sb);
+-
+ 	/*
+ 	 * If the server returned a read oplock and we have mandatory brlocks,
+ 	 * set oplock level to None.
+@@ -760,7 +758,6 @@ static void cifsFileInfo_put_final(struc
+ 	struct inode *inode = d_inode(cifs_file->dentry);
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifsLockInfo *li, *tmp;
+-	struct super_block *sb = inode->i_sb;
+ 
+ 	/*
+ 	 * Delete any outstanding lock records. We'll lose them when the file
+@@ -778,7 +775,6 @@ static void cifsFileInfo_put_final(struc
+ 
+ 	cifs_put_tlink(cifs_file->tlink);
+ 	dput(cifs_file->dentry);
+-	cifs_sb_deactive(sb);
+ 	kfree(cifs_file->symlink_target);
+ 	kfree(cifs_file);
+ }
+@@ -3150,12 +3146,6 @@ void cifs_oplock_break(struct work_struc
+ 	__u64 persistent_fid, volatile_fid;
+ 	__u16 net_fid;
+ 
+-	/*
+-	 * Hold a reference to the superblock to prevent it and its inodes from
+-	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
+-	 * may release the last reference to the sb and trigger inode eviction.
+-	 */
+-	cifs_sb_active(sb);
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+ 
+@@ -3228,7 +3218,6 @@ oplock_break_ack:
+ 	cifs_put_tlink(tlink);
+ out:
+ 	cifs_done_oplock_break(cinode);
+-	cifs_sb_deactive(sb);
  }
  
- static u8 sn65dsi83_get_dsi_div(struct sn65dsi83 *ctx)
+ static int cifs_swap_activate(struct swap_info_struct *sis,
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -27,6 +27,11 @@
+ #include "fs_context.h"
+ #include "cached_dir.h"
+ 
++struct tcon_list {
++	struct list_head entry;
++	struct cifs_tcon *tcon;
++};
++
+ /* The xid serves as a useful identifier for each incoming vfs request,
+    in a similar way to the mid which is useful to track each sent smb,
+    and CurrentXid can also provide a running counter (although it
+@@ -832,6 +837,43 @@ cifs_close_all_deferred_files(struct cif
+ 		kfree(tmp_list);
+ 	}
+ }
++
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb)
++{
++	struct rb_root *root = &cifs_sb->tlink_tree;
++	struct rb_node *node;
++	struct cifs_tcon *tcon;
++	struct tcon_link *tlink;
++	struct tcon_list *tmp_list, *q;
++	LIST_HEAD(tcon_head);
++
++	spin_lock(&cifs_sb->tlink_tree_lock);
++	for (node = rb_first(root); node; node = rb_next(node)) {
++		tlink = rb_entry(node, struct tcon_link, tl_rbnode);
++		tcon = tlink_tcon(tlink);
++		if (IS_ERR(tcon))
++			continue;
++		tmp_list = kmalloc(sizeof(struct tcon_list), GFP_ATOMIC);
++		if (tmp_list == NULL)
++			break;
++		tmp_list->tcon = tcon;
++		/* Take a reference on tcon to prevent it from being freed */
++		spin_lock(&tcon->tc_lock);
++		++tcon->tc_count;
++		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
++				    netfs_trace_tcon_ref_get_close_defer_files);
++		spin_unlock(&tcon->tc_lock);
++		list_add_tail(&tmp_list->entry, &tcon_head);
++	}
++	spin_unlock(&cifs_sb->tlink_tree_lock);
++
++	list_for_each_entry_safe(tmp_list, q, &tcon_head, entry) {
++		cifs_close_all_deferred_files(tmp_list->tcon);
++		list_del(&tmp_list->entry);
++		cifs_put_tcon(tmp_list->tcon, netfs_trace_tcon_ref_put_close_defer_files);
++		kfree(tmp_list);
++	}
++}
+ 
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
+ 					   struct dentry *dentry)
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -47,6 +47,7 @@
+ 	EM(netfs_trace_tcon_ref_get_cached_laundromat,	"GET Ch-Lau") \
+ 	EM(netfs_trace_tcon_ref_get_cached_lease_break,	"GET Ch-Lea") \
+ 	EM(netfs_trace_tcon_ref_get_cancelled_close,	"GET Cn-Cls") \
++	EM(netfs_trace_tcon_ref_get_close_defer_files,	"GET Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_get_dfs_refer,		"GET DfsRef") \
+ 	EM(netfs_trace_tcon_ref_get_find,		"GET Find  ") \
+ 	EM(netfs_trace_tcon_ref_get_find_sess_tcon,	"GET FndSes") \
+@@ -58,6 +59,7 @@
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close,	"PUT Cn-Cls") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
++	EM(netfs_trace_tcon_ref_put_close_defer_files,	"PUT Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
+ 	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
+ 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
 
 
 
