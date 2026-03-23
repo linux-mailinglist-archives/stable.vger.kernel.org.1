@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229161-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJ0lEqBrwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229643-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:40 +0100
+	id QKnWF1JbwWlKSgQAu9opvQ
+	(envelope-from <stable+bounces-229161-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3CBC2F8580
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B497E2F63EC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2A0E032AD1EE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 40E65302BB99
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160493B38A0;
-	Mon, 23 Mar 2026 16:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7B6285072;
+	Mon, 23 Mar 2026 15:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiYmyG59"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjDO04eh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD049396B85;
-	Mon, 23 Mar 2026 16:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC0F285056;
+	Mon, 23 Mar 2026 15:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282477; cv=none; b=ffv1vfFOBRoxnIIGV/6IW3tDVIpvgpixIg3fVw7gYHaQS2EbBe8LUlLRAe6hPKupq2Z7z2HEbKzKyYBHEhBFObhIgxQhBlZdeOKH/ZHQ0TPRj8Je/bGGrTD1I3llgowwuauyY5aTXoWZ20q5XmUt7uMELLmc++31qy6QS8/VNmY=
+	t=1774278253; cv=none; b=jHZkp5sZl4jkxWSMBfIzONt9NZsJzYUhe3pbm2h3H6Fv5FxZmsx187nUbWa7HuJp+KFwCAZ0jqwRZXAggi27MWtOJ9dBAGOuHcurEdByKWT0bhukuTvC1AoiYHanUJ8TQDTyZeWXQY9vqL43sEyTetqUxW42nlEskySt/Q0rUuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282477; c=relaxed/simple;
-	bh=pjytYdGb+uh8058AD5oKer1+41NSrUDtJNBG77mhGyo=;
+	s=arc-20240116; t=1774278253; c=relaxed/simple;
+	bh=kwZ5sQW5MNiZrqfW4WOlSOxeIal45BGl7hoQ0bZAt6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KwUMffNB79JZOOPAgug++tt0IfPr1Jhwh6RDcrhJ6kYCG6/J3rzCC9ToeYoijZEf4a0UZGTJ100vjhLNboWpdTy9ITi2rRwMej5l9i2T6LxrmcxZi+y/NrIv7HTRcvKtlgBXMCOu47z3rCa5+wEJ0XNTdbYgZRZRImsNhVO7nRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiYmyG59; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F86DC4CEF7;
-	Mon, 23 Mar 2026 16:14:37 +0000 (UTC)
+	 MIME-Version; b=VuF57/op+OdNDad/ZN9193EaC1ZKbpixM+QXacshAgPr7l2XvnTJfnLSwMiaybU31XMluGHpwiKdFk0J3H7NZBRVeZEkGyZDmXKWYoNU/nBq3giwBk/x8ygG+Hj0r45eD7TYnaOHiojldQJg7v3axWTC97zMnvzKF9gggpCSqeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjDO04eh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314CFC4CEF7;
+	Mon, 23 Mar 2026 15:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282477;
-	bh=pjytYdGb+uh8058AD5oKer1+41NSrUDtJNBG77mhGyo=;
+	s=korg; t=1774278253;
+	bh=kwZ5sQW5MNiZrqfW4WOlSOxeIal45BGl7hoQ0bZAt6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QiYmyG59/oBuS1suWNLkBiic6rP51Uxwl6imaHe8kMuR1QcFsJ15SppvMX+FaCopH
-	 6Lhpy5iUg+2p+EmYd2YyJSJQXQIq2fQQx3WgaRvt/zdDv6z2TkzN0w7izimfx9FTyy
-	 +BKFzAhKe3xIxdc1ctE+5zmSsxy0l3L8RyP6InGo=
+	b=cjDO04ehp6xITzDid6VGzTDKc0OEDj6qcCJh+BeJIN/TJhcTVEjz2eDmktK8o9RLz
+	 GzeFUZz3W58nytJEJsCcnpO+QWRpaayz5KzEo08VhLBL2bdzBqDtq4ThOKqSQIYotP
+	 GNUW37k9BIzv5RzKgrEgqYX7Rq0m8x1jME+y3Txw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 170/481] ASoC: core: Do not call link_exit() on uninitialized rtd objects
+Subject: [PATCH 6.6 232/567] net: sfp: add quirk for Potron SFP+ XGSPON ONU Stick
 Date: Mon, 23 Mar 2026 14:42:32 +0100
-Message-ID: <20260323134529.366025805@linuxfoundation.org>
+Message-ID: <20260323134539.573791778@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +63,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-229643-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229161-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: B3CBC2F8580
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B497E2F63EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit dd9f9cc1e6b9391140afa5cf27bb47c9e2a08d02 ]
+[ Upstream commit dfec1c14aecee6813f9bafc7b560cc3a31d24079 ]
 
-On init we have sequence:
+Add quirk for Potron SFP+ XGSPON ONU Stick (YV SFP+ONT-XGSPON).
 
-	for_each_card_prelinks(card, i, dai_link) {
-		ret = snd_soc_add_pcm_runtime(card, dai_link);
+This device uses pins 2 and 7 for UART communication, so disable
+TX_FAULT and LOS. Additionally as it is an embedded system in an
+SFP+ form factor provide it enough time to fully boot before we
+attempt to use it.
 
-	ret = init_some_other_things(...);
-	if (ret)
-		goto probe_end:
+https://www.potrontec.com/index/index/list/cat_id/2.html#11-83
+https://pon.wiki/xgs-pon/ont/potron-technology/x-onu-sfpp/
 
-	for_each_card_rtds(card, rtd) {
-		ret = soc_init_pcm_runtime(card, rtd);
-
-probe_end:
-
-while on exit:
-	for_each_card_rtds(card, rtd)
-		snd_soc_link_exit(rtd);
-
-If init_some_other_things() step fails due to error we end up with
-not fully setup rtds and try to call snd_soc_link_exit on them, which
-depending on contents on .link_exit handler, can end up dereferencing
-NULL pointer.
-
-Reviewed-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20230929103243.705433-2-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 95bc5c225513 ("ASoC: soc-core: flush delayed work before removing DAIs and widgets")
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Link: https://patch.msgid.link/20250617180324.229487-1-macroalpha82@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 87d126852158 ("net: sfp: improve Huawei MA5671a fixup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/soc.h  |  2 ++
- sound/soc/soc-core.c | 20 +++++++++++++++-----
- 2 files changed, 17 insertions(+), 5 deletions(-)
+ drivers/net/phy/sfp.c | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/include/sound/soc.h b/include/sound/soc.h
-index d63ac6d9fbdc4..015d5fff397fa 100644
---- a/include/sound/soc.h
-+++ b/include/sound/soc.h
-@@ -1110,6 +1110,8 @@ struct snd_soc_pcm_runtime {
- 	unsigned int pop_wait:1;
- 	unsigned int fe_compr:1; /* for Dynamic PCM */
- 
-+	bool initialized;
-+
- 	int num_components;
- 	struct snd_soc_component *components[]; /* CPU/Codec/Platform */
- };
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index d42cba7de0a3b..835a9251c074b 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1256,7 +1256,7 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
- 	snd_soc_runtime_get_dai_fmt(rtd);
- 	ret = snd_soc_runtime_set_dai_fmt(rtd, dai_link->dai_fmt);
- 	if (ret)
--		return ret;
-+		goto err;
- 
- 	/* add DPCM sysfs entries */
- 	soc_dpcm_debugfs_add(rtd);
-@@ -1281,17 +1281,26 @@ static int soc_init_pcm_runtime(struct snd_soc_card *card,
- 	/* create compress_device if possible */
- 	ret = snd_soc_dai_compress_new(cpu_dai, rtd, num);
- 	if (ret != -ENOTSUPP)
--		return ret;
-+		goto err;
- 
- 	/* create the pcm */
- 	ret = soc_new_pcm(rtd, num);
- 	if (ret < 0) {
- 		dev_err(card->dev, "ASoC: can't create pcm %s :%d\n",
- 			dai_link->stream_name, ret);
--		return ret;
-+		goto err;
- 	}
- 
--	return snd_soc_pcm_dai_new(rtd);
-+	ret = snd_soc_pcm_dai_new(rtd);
-+	if (ret < 0)
-+		goto err;
-+
-+	rtd->initialized = true;
-+
-+	return 0;
-+err:
-+	snd_soc_link_exit(rtd);
-+	return ret;
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index c47d7232d1c6e..6ef50d1ce2eda 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -359,6 +359,11 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
+ 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
  }
  
- static void soc_set_name_prefix(struct snd_soc_card *card,
-@@ -1894,7 +1903,8 @@ static void soc_cleanup_card_resources(struct snd_soc_card *card)
++static void sfp_fixup_ignore_hw(struct sfp *sfp, unsigned int mask)
++{
++	sfp->state_hw_mask &= ~mask;
++}
++
+ static void sfp_fixup_nokia(struct sfp *sfp)
+ {
+ 	sfp_fixup_long_startup(sfp);
+@@ -392,7 +397,19 @@ static void sfp_fixup_halny_gsfp(struct sfp *sfp)
+ 	 * these are possibly used for other purposes on this
+ 	 * module, e.g. a serial port.
+ 	 */
+-	sfp->state_hw_mask &= ~(SFP_F_TX_FAULT | SFP_F_LOS);
++	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
++}
++
++static void sfp_fixup_potron(struct sfp *sfp)
++{
++	/*
++	 * The TX_FAULT and LOS pins on this device are used for serial
++	 * communication, so ignore them. Additionally, provide extra
++	 * time for this device to fully start up.
++	 */
++
++	sfp_fixup_long_startup(sfp);
++	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
+ }
  
- 	/* release machine specific resources */
- 	for_each_card_rtds(card, rtd)
--		snd_soc_link_exit(rtd);
-+		if (rtd->initialized)
-+			snd_soc_link_exit(rtd);
- 	/* remove and free each DAI */
- 	soc_remove_link_dais(card);
- 	soc_remove_link_components(card);
+ static void sfp_fixup_rollball(struct sfp *sfp)
+@@ -500,6 +517,8 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRC-1", sfp_fixup_fs_10gt),
+ 	SFP_QUIRK_F("Walsun", "HXSX-ATRI-1", sfp_fixup_fs_10gt),
+ 
++	SFP_QUIRK_F("YV", "SFP+ONU-XGSPON", sfp_fixup_potron),
++
+ 	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
+ 	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
+ 
 -- 
 2.51.0
 
