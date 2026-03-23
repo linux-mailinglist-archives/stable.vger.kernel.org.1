@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229545-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6NehAoZYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229048-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:10 +0100
+	id mMkkODZ7wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229545-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:41:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1CE42F5FC7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C362FA308
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:41:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 056E630E4334
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2093431796BA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9DE3387599;
-	Mon, 23 Mar 2026 14:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE64B344D99;
+	Mon, 23 Mar 2026 16:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kH3hin8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RoMMpUfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC7E2737EB;
-	Mon, 23 Mar 2026 14:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD9F0284881;
+	Mon, 23 Mar 2026 16:10:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277894; cv=none; b=dbhHJApUNEbAOoJZC1hjD5gbuLI88SSXLDZlcf6dtzDIXFRG3td+ElBGbhyTqqU97u3pPhFiqQy9RbjqkwyTAiQ0ZRhPQaFXx+d7RA/nQhjUbUCqVhFlPrBSWHDXo+O+aZz3D2mY0eh3FOW86kQqDcBYCw09TenY0a8Q3f5x4F4=
+	t=1774282211; cv=none; b=Z5NHjcsqQWLMhf/Z9Ix+q+I7xkYo36o2UApdQSYKy7slR4SbIQcYCjSkyazbBmfH6kmQB7EeOKexXRQ9SDEwC28njX9bm8LDFIMjyEYaJbgPAXFL+3HMQXr5fo/Lv9evgLpBXeBWqsNoRW/QEsi4dbFgzJKpmENnfOA0Nz5TLfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277894; c=relaxed/simple;
-	bh=k6Tdl9uHpupp8pD2Zk6lgVOuf+J0Ngt/ZUMNXD+sryA=;
+	s=arc-20240116; t=1774282211; c=relaxed/simple;
+	bh=EOGRllbt3+BVLHoG5Tapza5bIBZqNiKi8p1AwAY0PFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4xr/8kxTLUjUKcNXVCQjRq+2D/qFuv41uTXekgLVtMNIIu371Hjt5hy69CZlujAtTGr2KTDdBihMXYtK2/wETclEruoXrCD5wpaqZgaPOlVjd8Zt3hgh6Ru44l0muF0WlJEGqa1CfN98g92hLW9oK57gnmdnsJ8dPmi3c+wOlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kH3hin8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5B82C4CEF7;
-	Mon, 23 Mar 2026 14:58:13 +0000 (UTC)
+	 MIME-Version; b=WMs/2FxlTIw/9dJG7er5X7A3XvoPh1LyTNqOuBsBg1VhFmTHCVhXYF74KJoUQz/OZ37WQmUsRn4Fu2+7+x8deIriRYlkgnaX5fxTt6PzVuydkqMY7aw1NKXjnsAzWK5oC/hroOW1yt5Qp7SOZSKt3NMq985pqyOozFRk0el07mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RoMMpUfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F29C4CEF7;
+	Mon, 23 Mar 2026 16:10:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277894;
-	bh=k6Tdl9uHpupp8pD2Zk6lgVOuf+J0Ngt/ZUMNXD+sryA=;
+	s=korg; t=1774282211;
+	bh=EOGRllbt3+BVLHoG5Tapza5bIBZqNiKi8p1AwAY0PFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kH3hin8MgQRCJA1ammJUMfoDsV8BkhF2OqhfHvLKXkXmzrPXSwCSPxvm15Ka8BIMm
-	 7Va0l/RBwqMu171P+VSQARi1b99worPGJqw+ZfoeeDdkloDzoceS5B6cexLOlZtnd9
-	 D3xmfdfmLA708KIAXg3bV74R05QRJ9+OHExKJfZs=
+	b=RoMMpUfn02iWo+Qvud7vdCbCbuWQFen9Uw7OVunHC5FhdPX9uE/aHTQ3ap3259w/p
+	 vuLn3xcUaZAILbu+H45Y/GOr10yXDhzurh99aeA93ZacxOEt0uKORRjUkCud/JD7um
+	 osPU+H/xYVpeB9SQylTCoNeX1MWOqGT85+KV0cVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chintan Vankar <c-vankar@ti.com>,
+	stable <stable@kernel.org>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/567] net: ethernet: ti: am65-cpsw-nuss/cpsw-ale: Fix multicast entry handling in ALE table
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 072/481] net: usb: kaweth: validate USB endpoints
 Date: Mon, 23 Mar 2026 14:40:54 +0100
-Message-ID: <20260323134537.122772129@linuxfoundation.org>
+Message-ID: <20260323134526.991838834@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,100 +68,86 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229048-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229545-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A1CE42F5FC7
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 60C362FA308
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chintan Vankar <c-vankar@ti.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit be11a537224d72b906db6b98510619770298c8a4 ]
+commit 4b063c002ca759d1b299988ee23f564c9609c875 upstream.
 
-In the current implementation, flushing multicast entries in MAC mode
-incorrectly deletes entries for all ports instead of only the target port,
-disrupting multicast traffic on other ports. The cause is adding multicast
-entries by setting only host port bit, and not setting the MAC port bits.
+The kaweth driver should validate that the device it is probing has the
+proper number and types of USB endpoints it is expecting before it binds
+to it.  If a malicious device were to not have the same urbs the driver
+will crash later on when it blindly accesses these endpoints.
 
-Fix this by setting the MAC port's bit in the port mask while adding the
-multicast entry. Also fix the flush logic to preserve the host port bit
-during removal of MAC port and free ALE entries when mask contains only
-host port.
-
-Fixes: 5c50a856d550 ("drivers: net: ethernet: cpsw: add multicast address to ALE table")
-Signed-off-by: Chintan Vankar <c-vankar@ti.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260224181359.2055322-1-c-vankar@ti.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://patch.msgid.link/2026022305-substance-virtual-c728@gregkh
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
- drivers/net/ethernet/ti/cpsw_ale.c       | 9 ++++-----
- 2 files changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/usb/kaweth.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 28cc23736a69b..93cb4193cf0ac 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -261,7 +261,7 @@ static void am65_cpsw_nuss_ndo_slave_set_rx_mode(struct net_device *ndev)
- 	cpsw_ale_set_allmulti(common->ale,
- 			      ndev->flags & IFF_ALLMULTI, port->port_id);
+--- a/drivers/net/usb/kaweth.c
++++ b/drivers/net/usb/kaweth.c
+@@ -883,6 +883,13 @@ static int kaweth_probe(
+ 	const eth_addr_t bcast_addr = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
+ 	int result = 0;
+ 	int rv = -EIO;
++	static const u8 bulk_ep_addr[] = {
++		1 | USB_DIR_IN,
++		2 | USB_DIR_OUT,
++		0};
++	static const u8 int_ep_addr[] = {
++		3 | USB_DIR_IN,
++		0};
  
--	port_mask = ALE_PORT_HOST;
-+	port_mask = BIT(port->port_id) | ALE_PORT_HOST;
- 	/* Clear all mcast from ALE */
- 	cpsw_ale_flush_multicast(common->ale, port_mask, -1);
+ 	dev_dbg(dev,
+ 		"Kawasaki Device Probe (Device number:%d): 0x%4.4x:0x%4.4x:0x%4.4x\n",
+@@ -896,6 +903,12 @@ static int kaweth_probe(
+ 		(int)udev->descriptor.bLength,
+ 		(int)udev->descriptor.bDescriptorType);
  
-diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
-index 9eccc7064c2b0..bf0b2950272cf 100644
---- a/drivers/net/ethernet/ti/cpsw_ale.c
-+++ b/drivers/net/ethernet/ti/cpsw_ale.c
-@@ -422,14 +422,13 @@ static void cpsw_ale_flush_mcast(struct cpsw_ale *ale, u32 *ale_entry,
- 				      ale->port_mask_bits);
- 	if ((mask & port_mask) == 0)
- 		return; /* ports dont intersect, not interested */
--	mask &= ~port_mask;
-+	mask &= (~port_mask | ALE_PORT_HOST);
- 
--	/* free if only remaining port is host port */
--	if (mask)
-+	if (mask == 0x0 || mask == ALE_PORT_HOST)
-+		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
-+	else
- 		cpsw_ale_set_port_mask(ale_entry, mask,
- 				       ale->port_mask_bits);
--	else
--		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
- }
- 
- int cpsw_ale_flush_multicast(struct cpsw_ale *ale, int port_mask, int vid)
--- 
-2.51.0
-
++	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
++	    !usb_check_int_endpoints(intf, int_ep_addr)) {
++		dev_err(dev, "couldn't find required endpoints\n");
++		return -ENODEV;
++	}
++
+ 	netdev = alloc_etherdev(sizeof(*kaweth));
+ 	if (!netdev)
+ 		return -ENOMEM;
 
 
 
