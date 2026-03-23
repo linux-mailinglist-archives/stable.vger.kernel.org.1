@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229142-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFu2ON5wwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229639-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:02 +0100
+	id ANt/BLpawWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229142-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6072F92B9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656D52F6311
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AD53132AC793
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 248AC33B2A87
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFB13B9600;
-	Mon, 23 Mar 2026 16:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553AF3B5837;
+	Mon, 23 Mar 2026 15:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXSj9ffe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eblTErWW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D15E2980A8;
-	Mon, 23 Mar 2026 16:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EA623BD1D;
+	Mon, 23 Mar 2026 15:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282467; cv=none; b=KKJnT+pPEFF/UjQZ+w6Y/xtzaUw6mLca7NNS3JzzGNB8hRRLC8mm/Jh8s2mFsuFRwgxw2ulkzwlmezIN4js+/WSJ78njajTHKq7J2sk7rUBN2S3NmvPjVhXdqWFIAk9Aq+eAcujGOAhyKxduM1Jchuq/bl5TOPE75dkVA2hZIhE=
+	t=1774278194; cv=none; b=lQDvlp0AOczsYKeP6wgjU7JCfz6vWc6pj6P/fGTah59rQ2l5MR8PdALGFtPNYByK17MrvIMWaX9xoGZEcLKa/t3/IYOAdGElyNeZyIZAQ42TJcc/cfqZJz3v+9839Ou0flxQJ/Vd2dTmKUlbIu8HbvF7+E1hk7NmL2gnnYaSt2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282467; c=relaxed/simple;
-	bh=uP/qB+TCrHVVlmxViG9I+z0Lj8SDWJDBkyXzB6zRWdg=;
+	s=arc-20240116; t=1774278194; c=relaxed/simple;
+	bh=wIJlO4i6/PiwqmZA6d2UBL5XF8AAwHNNDJYkHM/EwfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bSbYQNfw4RoVNRbsKnFF7wg+JOjsq3JFOpSbp4oRqA06+YCGFGWJQbDCsQ5Etne4XxWe06LaPjnXChu+RlPaQXyy+UTPxYXlUyBS6znVhnxIIqhQAokTabkFwNvxLQXKnb3zh79KfAlmZImzNS/h9+0thDt7maZwFcH9wVXNkzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXSj9ffe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E22C4CEF7;
-	Mon, 23 Mar 2026 16:14:26 +0000 (UTC)
+	 MIME-Version; b=e94+CSRdL/+Bs2Zc2tQoDlo2nPNEbsmFcybDMYAJuUP2wR9VCAZfg+YiMU4cvR3GkSE5PSuarEJDBo1A+eCjEAXGkiGAkrpiQsy6h8svcYbJR4RmfgcztdB6qlan4+ylstzHSV1DjnVjHgcnUphRB1MQlnEqfh7U/C69uDpCu1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eblTErWW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DA25C4CEF7;
+	Mon, 23 Mar 2026 15:03:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282466;
-	bh=uP/qB+TCrHVVlmxViG9I+z0Lj8SDWJDBkyXzB6zRWdg=;
+	s=korg; t=1774278194;
+	bh=wIJlO4i6/PiwqmZA6d2UBL5XF8AAwHNNDJYkHM/EwfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AXSj9ffexT3eeIOuEzeI7AYgwyqzcm48T1EP36ZvO7wE1DYE9F0JRWtNSUQvy5bSp
-	 3a/CLX6k7AD5xSrqWMjF9hRyt/XnGIw36kluIL7aY0o7y0yoTiLE6jxc4Log1v30Y1
-	 O+E7sIEff2SdPATRORtB0O77nURcFYgXE4uYEHTo=
+	b=eblTErWW0/1VrYo2Cf6PAsEsWVR2JQ/V0dEj91hUa6ZAYZT5M89UvwtJLDWKRgFgY
+	 BC7IxPEinc9W4W0/4n0ihM+W0IOKeAjINge86E7e6H625+uR1IAhB/FVS6rbjJ8ADc
+	 mgQA6kOGOZ8r9ZSov924Q9oE0lsbu4Daw8LEYL6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 166/481] net/mlx5e: Fix DMA FIFO desync on error CQE SQ recovery
+Subject: [PATCH 6.6 228/567] ASoC: simple-card-utils: use __free(device_node) for device node
 Date: Mon, 23 Mar 2026 14:42:28 +0100
-Message-ID: <20260323134529.274861206@linuxfoundation.org>
+Message-ID: <20260323134539.475007076@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,112 +66,159 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229639-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229142-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6B6072F92B9
+X-Rspamd-Queue-Id: 656D52F6311
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit 1633111d69053512d099658d4a05fc736fab36b0 ]
+[ Upstream commit 419d1918105e5d9926ab02f1f834bb416dc76f65 ]
 
-In case of a TX error CQE, a recovery flow is triggered,
-mlx5e_reset_txqsq_cc_pc() resets dma_fifo_cc to 0 but not dma_fifo_pc,
-desyncing the DMA FIFO producer and consumer.
+simple-card-utils handles many type of device_node, thus need to
+use of_node_put() in many place. Let's use __free(device_node)
+and avoid it.
 
-After recovery, the producer pushes new DMA entries at the old
-dma_fifo_pc, while the consumer reads from position 0.
-This causes us to unmap stale DMA addresses from before the recovery.
-
-The DMA FIFO is a purely software construct with no HW counterpart.
-At the point of reset, all WQEs have been flushed so dma_fifo_cc is
-already equal to dma_fifo_pc. There is no need to reset either counter,
-similar to how skb_fifo pc/cc are untouched.
-
-Remove the 'dma_fifo_cc = 0' reset.
-
-This fixes the following WARNING:
-    WARNING: CPU: 0 PID: 0 at drivers/iommu/dma-iommu.c:1240 iommu_dma_unmap_page+0x79/0x90
-    Modules linked in: mlx5_vdpa vringh vdpa bonding mlx5_ib mlx5_vfio_pci ipip mlx5_fwctl tunnel4 mlx5_core ib_ipoib geneve ip6_gre ip_gre gre nf_tables ip6_tunnel rdma_ucm ib_uverbs ib_umad vfio_pci vfio_pci_core act_mirred act_skbedit act_vlan vhost_net vhost tap ip6table_mangle ip6table_nat ip6table_filter ip6_tables iptable_mangle cls_matchall nfnetlink_cttimeout act_gact cls_flower sch_ingress vhost_iotlb iptable_raw tunnel6 vfio_iommu_type1 vfio openvswitch nsh rpcsec_gss_krb5 auth_rpcgss oid_registry xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter overlay zram zsmalloc rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core fuse [last unloaded: nf_tables]
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5_for_upstream_min_debug_2024_12_30_21_33 #1
-    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:iommu_dma_unmap_page+0x79/0x90
-    Code: 2b 4d 3b 21 72 26 4d 3b 61 08 73 20 49 89 d8 44 89 f9 5b 4c 89 f2 4c 89 e6 48 89 ef 5d 41 5c 41 5d 41 5e 41 5f e9 c7 ae 9e ff <0f> 0b 5b 5d 41 5c 41 5d 41 5e 41 5f c3 66 2e 0f 1f 84 00 00 00 00
-    Call Trace:
-     <IRQ>
-     ? __warn+0x7d/0x110
-     ? iommu_dma_unmap_page+0x79/0x90
-     ? report_bug+0x16d/0x180
-     ? handle_bug+0x4f/0x90
-     ? exc_invalid_op+0x14/0x70
-     ? asm_exc_invalid_op+0x16/0x20
-     ? iommu_dma_unmap_page+0x79/0x90
-     ? iommu_dma_unmap_page+0x2e/0x90
-     dma_unmap_page_attrs+0x10d/0x1b0
-     mlx5e_tx_wi_dma_unmap+0xbe/0x120 [mlx5_core]
-     mlx5e_poll_tx_cq+0x16d/0x690 [mlx5_core]
-     mlx5e_napi_poll+0x8b/0xac0 [mlx5_core]
-     __napi_poll+0x24/0x190
-     net_rx_action+0x32a/0x3b0
-     ? mlx5_eq_comp_int+0x7e/0x270 [mlx5_core]
-     ? notifier_call_chain+0x35/0xa0
-     handle_softirqs+0xc9/0x270
-     irq_exit_rcu+0x71/0xd0
-     common_interrupt+0x7f/0xa0
-     </IRQ>
-     <TASK>
-     asm_common_interrupt+0x22/0x40
-
-Fixes: db75373c91b0 ("net/mlx5e: Recover Send Queue (SQ) from error state")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260305142634.1813208-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87r06pfre8.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 4185b95f8a42 ("ASoC: simple-card-utils: fix graph_util_is_ports0() for DT overlays")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/generic/simple-card-utils.c | 44 +++++++++------------------
+ 1 file changed, 14 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-index 02d9fb0c5ec24..7c39f14e57cd8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-@@ -33,7 +33,6 @@ static void mlx5e_reset_txqsq_cc_pc(struct mlx5e_txqsq *sq)
- 		  "SQ 0x%x: cc (0x%x) != pc (0x%x)\n",
- 		  sq->sqn, sq->cc, sq->pc);
- 	sq->cc = 0;
--	sq->dma_fifo_cc = 0;
- 	sq->pc = 0;
- }
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index 598b0000df244..9ef3e69683271 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -988,35 +988,27 @@ EXPORT_SYMBOL_GPL(asoc_graph_card_probe);
  
+ int asoc_graph_is_ports0(struct device_node *np)
+ {
+-	struct device_node *port, *ports, *ports0, *top;
+-	int ret;
++	struct device_node *parent __free(device_node) = of_get_parent(np);
++	struct device_node *port;
+ 
+ 	/* np is "endpoint" or "port" */
+-	if (of_node_name_eq(np, "endpoint")) {
+-		port = of_get_parent(np);
+-	} else {
++	if (of_node_name_eq(np, "endpoint"))
++		port = parent;
++	else
+ 		port = np;
+-		of_node_get(port);
+-	}
+-
+-	ports	= of_get_parent(port);
+-	top	= of_get_parent(ports);
+-	ports0	= of_get_child_by_name(top, "ports");
+-
+-	ret = ports0 == ports;
+ 
+-	of_node_put(port);
+-	of_node_put(ports);
+-	of_node_put(ports0);
+-	of_node_put(top);
++	struct device_node *ports  __free(device_node) = of_get_parent(port);
++	struct device_node *top    __free(device_node) = of_get_parent(ports);
++	struct device_node *ports0 __free(device_node) = of_get_child_by_name(top, "ports");
+ 
+-	return ret;
++	return ports0 == ports;
+ }
+ EXPORT_SYMBOL_GPL(asoc_graph_is_ports0);
+ 
+ static int graph_get_dai_id(struct device_node *ep)
+ {
+-	struct device_node *node;
++	struct device_node *node __free(device_node) = of_graph_get_port_parent(ep);
++	struct device_node *port __free(device_node) = of_get_parent(ep);
+ 	struct device_node *endpoint;
+ 	struct of_endpoint info;
+ 	int i, id;
+@@ -1039,13 +1031,10 @@ static int graph_get_dai_id(struct device_node *ep)
+ 		if (of_property_present(ep,   "reg"))
+ 			return info.id;
+ 
+-		node = of_get_parent(ep);
+-		ret = of_property_present(node, "reg");
+-		of_node_put(node);
++		ret = of_property_present(port, "reg");
+ 		if (ret)
+ 			return info.port;
+ 	}
+-	node = of_graph_get_port_parent(ep);
+ 
+ 	/*
+ 	 * Non HDMI sound case, counting port/endpoint on its DT
+@@ -1059,8 +1048,6 @@ static int graph_get_dai_id(struct device_node *ep)
+ 		i++;
+ 	}
+ 
+-	of_node_put(node);
+-
+ 	if (id < 0)
+ 		return -ENODEV;
+ 
+@@ -1070,7 +1057,6 @@ static int graph_get_dai_id(struct device_node *ep)
+ int asoc_graph_parse_dai(struct device *dev, struct device_node *ep,
+ 			 struct snd_soc_dai_link_component *dlc, int *is_single_link)
+ {
+-	struct device_node *node;
+ 	struct of_phandle_args args = {};
+ 	struct snd_soc_dai *dai;
+ 	int ret;
+@@ -1078,7 +1064,7 @@ int asoc_graph_parse_dai(struct device *dev, struct device_node *ep,
+ 	if (!ep)
+ 		return 0;
+ 
+-	node = of_graph_get_port_parent(ep);
++	struct device_node *node __free(device_node) = of_graph_get_port_parent(ep);
+ 
+ 	/*
+ 	 * Try to find from DAI node
+@@ -1120,10 +1106,8 @@ int asoc_graph_parse_dai(struct device *dev, struct device_node *ep,
+ 	 *    if he unbinded CPU or Codec.
+ 	 */
+ 	ret = snd_soc_get_dlc(&args, dlc);
+-	if (ret < 0) {
+-		of_node_put(node);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ parse_dai_end:
+ 	if (is_single_link)
 -- 
 2.51.0
 
