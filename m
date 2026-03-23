@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229886-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QFZ7JRxewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229351-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:00 +0100
+	id cMoqNkB9wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229886-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:49:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32DD02F6915
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6133C2FA7B7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:49:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E7835308A06B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 672C13115939
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC743B19B8;
-	Mon, 23 Mar 2026 15:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250D33B3BE5;
+	Mon, 23 Mar 2026 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPnczLwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpPnw77B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ADF3B0AE2;
-	Mon, 23 Mar 2026 15:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCC73B19A2;
+	Mon, 23 Mar 2026 16:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278844; cv=none; b=OAbjBZ0d9lUryy/jWtHtPVhemgADi3Mgx8JTBxXyttQEMfwxgMn+HvBAwQW8ZRHniDni+xyUiC4/hKQrAy3eL2HV49dvi6Mf5JDrNftPpUYfACXmnrwIrwPHD6+4FqsQP/dqnGUcIjlB2Vau7qF4+ymvD32Hcbk3qX6hle7RYQY=
+	t=1774283128; cv=none; b=VeRiJRETbGO8sbtiAGPFhAgPgf9l8u1oTEv6q/mV98TC0YMaOvvnjt2MUtzIIVIXxkQVhTRZDjD/QtuVBqm748lR8fCABlY2GB2WlK4Ljs7Vr24lj89GOPLSl7RySmCsqMXg8SHQ6CUxULWvyJ3gvygLIM8hOsqTNxBv9+OpK80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278844; c=relaxed/simple;
-	bh=+5Aqn9ru7qfiHkYJaSnmhWSw7PAlElXSHFFeHRBexhs=;
+	s=arc-20240116; t=1774283128; c=relaxed/simple;
+	bh=FonFDEUxyr+xsmjCLDddmpl7u4FMh1LS9k8IsF6OQ48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvEMHcbSWoCYaFyi4u7w3v+GX9hq7zI51260ADEKYYHsOwtsOQO/Nza9AOhkn5/Igb/9vrj3/2cVSIzvlGGtsX9DuSjWIetHn0Y/63lf9cGXK8sWJguCXK4eQwp8PMmDKW+6yz0js+Bx/gea9HW9a/Ob6t+CQPV9e0ArzerqjFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPnczLwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCCCC2BCB1;
-	Mon, 23 Mar 2026 15:14:03 +0000 (UTC)
+	 MIME-Version; b=pSOQfVZCPH1sAAjzKf46ZVw2qEGKXXffg+G43g3/I8rSSj0nLgFF/tAy+lfKvGKoJkAYz6IRm79UWIKQ5hyjRKiAckR/lbVJTQUmMSP2WfcOHBt++lcc3IxGFL5XAfwGnzoS0ON/XhWO44DYp2n4PYpf47P4psYw4Fp2kEEbmXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpPnw77B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA59C4CEF7;
+	Mon, 23 Mar 2026 16:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278844;
-	bh=+5Aqn9ru7qfiHkYJaSnmhWSw7PAlElXSHFFeHRBexhs=;
+	s=korg; t=1774283128;
+	bh=FonFDEUxyr+xsmjCLDddmpl7u4FMh1LS9k8IsF6OQ48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPnczLwlUhmH+E5irKJZaX9378uZ9VcFZGJaLzrbCqHResNL4cbT/eUb++Yh0c5o7
-	 DlOWd+d4o8+IokpadBwUeHSrwTGKA+OLLXGs4uzcCCDEgIOT9FO6tKiNKxxGgmcEJW
-	 MyvlwWNPfpyXFM7gwjaYUXbXmOBIf/wXVFRJ78So=
+	b=NpPnw77BwnM3auqAEVo8MNlQUZbWNF77r9b7Mg3Swhg0aHxeV+M8ANW1ZNYZeaOAa
+	 aGwr7/RCuF/5mmEFft1NqsoOtgarSpBe2pn0uUeNBdxrcqxNwlQqK6T7D90YiIK5K+
+	 2aGufsgxz9x4blYlsARsZ13zCRJuMaRUKxDO7T7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"edumazet@google.com, kuniyu@google.com, kuba@kernel.org, dsahern@kernel.org, netdev@vger.kernel.org, Ruohan Lan" <ruohanlan@aliyun.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.6 437/567] net: dst: introduce dst->dev_rcu
+	Eric Biggers <ebiggers@kernel.org>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 375/481] ksmbd: Compare MACs in constant time
 Date: Mon, 23 Mar 2026 14:45:57 +0100
-Message-ID: <20260323134544.765373628@linuxfoundation.org>
+Message-ID: <20260323134534.270294854@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,135 +68,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229351-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,aliyun.com,google.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229886-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 32DD02F6915
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 6133C2FA7B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit caedcc5b6df1b2e2b5f39079e3369c1d4d5c5f50 ]
+commit c5794709bc9105935dbedef8b9cf9c06f2b559fa upstream.
 
-Followup of commit 88fe14253e18 ("net: dst: add four helpers
-to annotate data-races around dst->dev").
+To prevent timing attacks, MAC comparisons need to be constant-time.
+Replace the memcmp() with the correct function, crypto_memneq().
 
-We want to gradually add explicit RCU protection to dst->dev,
-including lockdep support.
-
-Add an union to alias dst->dev_rcu and dst->dev.
-
-Add dst_dev_net_rcu() helper.
-
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Minor context conflict resolved. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/dst.h |   16 +++++++++++-----
- net/core/dst.c    |    2 +-
- net/ipv4/route.c  |    4 ++--
- 3 files changed, 14 insertions(+), 8 deletions(-)
+ fs/smb/server/auth.c    |    4 +++-
+ fs/smb/server/smb2pdu.c |    5 +++--
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -24,7 +24,10 @@
- struct sk_buff;
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -13,6 +13,7 @@
+ #include <linux/xattr.h>
+ #include <crypto/hash.h>
+ #include <crypto/aead.h>
++#include <crypto/algapi.h>
+ #include <linux/random.h>
+ #include <linux/scatterlist.h>
  
- struct dst_entry {
--	struct net_device       *dev;
-+	union {
-+		struct net_device       *dev;
-+		struct net_device __rcu *dev_rcu;
-+	};
- 	struct  dst_ops	        *ops;
- 	unsigned long		_metrics;
- 	unsigned long           expires;
-@@ -571,9 +574,12 @@ static inline void skb_dst_update_pmtu_n
+@@ -281,7 +282,8 @@ int ksmbd_auth_ntlmv2(struct ksmbd_conn
+ 		goto out;
+ 	}
  
- static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
- {
--	/* In the future, use rcu_dereference(dst->dev) */
--	WARN_ON_ONCE(!rcu_read_lock_held());
--	return READ_ONCE(dst->dev);
-+	return rcu_dereference(dst->dev_rcu);
-+}
-+
-+static inline struct net *dst_dev_net_rcu(const struct dst_entry *dst)
-+{
-+	return dev_net_rcu(dst_dev_rcu(dst));
- }
+-	if (memcmp(ntlmv2->ntlmv2_hash, ntlmv2_rsp, CIFS_HMAC_MD5_HASH_SIZE) != 0)
++	if (crypto_memneq(ntlmv2->ntlmv2_hash, ntlmv2_rsp,
++			  CIFS_HMAC_MD5_HASH_SIZE))
+ 		rc = -EINVAL;
+ out:
+ 	if (ctx)
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4,6 +4,7 @@
+  *   Copyright (C) 2018 Samsung Electronics Co., Ltd.
+  */
  
- static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
-@@ -598,7 +604,7 @@ static inline struct net *skb_dst_dev_ne
++#include <crypto/algapi.h>
+ #include <linux/inetdevice.h>
+ #include <net/addrconf.h>
+ #include <linux/syscalls.h>
+@@ -8430,7 +8431,7 @@ int smb2_check_sign_req(struct ksmbd_wor
+ 				signature))
+ 		return 0;
  
- static inline struct net *skb_dst_dev_net_rcu(const struct sk_buff *skb)
- {
--	return dev_net_rcu(skb_dst_dev(skb));
-+	return dev_net_rcu(skb_dst_dev_rcu(skb));
- }
+-	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
++	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
+ 		pr_err("bad smb2 signature\n");
+ 		return 0;
+ 	}
+@@ -8518,7 +8519,7 @@ int smb3_check_sign_req(struct ksmbd_wor
+ 	if (ksmbd_sign_smb3_pdu(conn, signing_key, iov, 1, signature))
+ 		return 0;
  
- struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -153,7 +153,7 @@ void dst_dev_put(struct dst_entry *dst)
- 		dst->ops->ifdown(dst, dev);
- 	WRITE_ONCE(dst->input, dst_discard);
- 	WRITE_ONCE(dst->output, dst_discard_out);
--	WRITE_ONCE(dst->dev, blackhole_netdev);
-+	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
- 	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
- 			   GFP_ATOMIC);
- }
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1042,7 +1042,7 @@ static void __ip_rt_update_pmtu(struct r
- 		return;
- 
- 	rcu_read_lock();
--	net = dev_net_rcu(dst->dev);
-+	net = dst_dev_net_rcu(dst);
- 	if (mtu < net->ipv4.ip_rt_min_pmtu) {
- 		lock = true;
- 		mtu = min(old_mtu, net->ipv4.ip_rt_min_pmtu);
-@@ -1340,7 +1340,7 @@ static unsigned int ipv4_default_advmss(
- 	struct net *net;
- 
- 	rcu_read_lock();
--	net = dev_net_rcu(dst->dev);
-+	net = dst_dev_net_rcu(dst);
- 	advmss = max_t(unsigned int, ipv4_mtu(dst) - header_size,
- 				   net->ipv4.ip_rt_min_advmss);
- 	rcu_read_unlock();
+-	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
++	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
+ 		pr_err("bad smb2 signature\n");
+ 		return 0;
+ 	}
 
 
 
