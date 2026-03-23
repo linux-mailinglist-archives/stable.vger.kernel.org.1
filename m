@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-229079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229577-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBlgDnRswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:12 +0100
+	id aO1tMlxwwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229577-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 998B02F87D1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4926F2F9159
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8323630649C5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7315E31613D3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6F832D45C;
-	Mon, 23 Mar 2026 14:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3EA03B8958;
+	Mon, 23 Mar 2026 16:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2b9d9j+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jP9LoStL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5091A23B1;
-	Mon, 23 Mar 2026 14:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 863323B8D5C;
+	Mon, 23 Mar 2026 16:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277993; cv=none; b=jmP5P6zCTblu9AO2TGahBoIEvGNsttmd51llwXqBhEGHCT+o+GhKP3QkHW7HZVNYiyhmDIfDcjeZce/kb5VEn222tkeEEJP9ippt++foQpjqovzSYUaPSc06oRVkdWeQmS7pFP56jxVXaeL7sCfe+uAUJED2k8LXgIWJXV+2R8E=
+	t=1774282296; cv=none; b=I54I2PC6RSF7So9HN6Rlsj8z9R1bRlGtdD8GOXCCEpiF6YQn3aHUDm5iZQQbUrjSpMSR53aVdX+1NSOipB7x+zRJbjYwYwsiLxF321VtL8lqOn3AZyqAZIWQQQHPXzGfRfIi8PtVw5epk2d6O/28F8Ijy5Bp0VlhGXyroV1xQJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277993; c=relaxed/simple;
-	bh=4iiz3FFYNh2FEhakyfJXyDMJ97noU7T8Q+KRjz4Sw6s=;
+	s=arc-20240116; t=1774282296; c=relaxed/simple;
+	bh=nnWTnAJtlyfG78eji2umdyfxxRZaAhDO5xwJSvCsNTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Axg6HYXgFaVZt7ugiJiNqsGVUAr5VNyx4CTuJDolaqcNLrOGTDya6Bk4fTH17dNta3dbmkDzeJAlV8H3rNV6mi8tR79MuSMEAOPLrusQPx0opXWgrDVgCGF9DwoKzlc2JTAsi14hMChgrtcREoThmybDbwdZ8kGRV3gObKVTYDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2b9d9j+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC444C4CEF7;
-	Mon, 23 Mar 2026 14:59:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aDMf77Nmk+siKe29nbHlB+vOicFC4AsUApT/353ZfHXsfh/2aylW69RJBHUNL9abNCrTPHLNIb9qHDYyIiobXhfLqYViQxz3sTjsi9gZUJfClE3yn283WdWlNJew/+Of26DAXaDdMmJzfpKwD9vvQwogSp8YbQdie2l88hMgGBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jP9LoStL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A95C4CEF7;
+	Mon, 23 Mar 2026 16:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277993;
-	bh=4iiz3FFYNh2FEhakyfJXyDMJ97noU7T8Q+KRjz4Sw6s=;
+	s=korg; t=1774282296;
+	bh=nnWTnAJtlyfG78eji2umdyfxxRZaAhDO5xwJSvCsNTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2b9d9j+XD6GuLepnGQZiVlB1j7jLx+O5/wsSs0Sw4QeOlILgG0cGxZHADpqpnAOh
-	 dgheK77aDID/nW7RZiKvhMcGis9kHEys6YZnuvTPlEFg76IzL3p1NwjYw3qQuCZ3sa
-	 dz1jxa8YTfpsNKeYfD9aivlMSgp8ZISbVvUd2/qE=
+	b=jP9LoStL8x3FELlpULCVgveF8HdWpb8pzg1m2ZoSljRwTivYpSjhtV1Htp17ySgJJ
+	 AQzQXrT/XmyGJHnQsz26HE+CAbi0/ZyVUVhD0Ne3dbNoXHuhM2em99kSM254tJgo95
+	 LJsTacR80QH0Ec/sMksnMIso9ZE9kYFQNfKiF4Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Koichiro Den <den@valinux.co.jp>,
+	syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/567] net: sched: avoid qdisc_reset_all_tx_gt() vs dequeue race for lockless qdiscs
+Subject: [PATCH 6.1 105/481] atm: lec: fix null-ptr-deref in lec_arp_clear_vccs
 Date: Mon, 23 Mar 2026 14:41:27 +0100
-Message-ID: <20260323134537.957034528@linuxfoundation.org>
+Message-ID: <20260323134527.844931840@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,143 +66,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229079-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229577-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,72e3ea390c305de0e259];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 998B02F87D1
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 4926F2F9159
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Koichiro Den <den@valinux.co.jp>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 7f083faf59d14c04e01ec05a7507f036c965acf8 ]
+[ Upstream commit 101bacb303e89dc2e0640ae6a5e0fb97c4eb45bb ]
 
-When shrinking the number of real tx queues,
-netif_set_real_num_tx_queues() calls qdisc_reset_all_tx_gt() to flush
-qdiscs for queues which will no longer be used.
+syzkaller reported a null-ptr-deref in lec_arp_clear_vccs().
+This issue can be easily reproduced using the syzkaller reproducer.
 
-qdisc_reset_all_tx_gt() currently serializes qdisc_reset() with
-qdisc_lock(). However, for lockless qdiscs, the dequeue path is
-serialized by qdisc_run_begin/end() using qdisc->seqlock instead, so
-qdisc_reset() can run concurrently with __qdisc_run() and free skbs
-while they are still being dequeued, leading to UAF.
+In the ATM LANE (LAN Emulation) module, the same atm_vcc can be shared by
+multiple lec_arp_table entries (e.g., via entry->vcc or entry->recv_vcc).
+When the underlying VCC is closed, lec_vcc_close() iterates over all
+ARP entries and calls lec_arp_clear_vccs() for each matched entry.
 
-This can easily be reproduced on e.g. virtio-net by imposing heavy
-traffic while frequently changing the number of queue pairs:
+For example, when lec_vcc_close() iterates through the hlists in
+priv->lec_arp_empty_ones or other ARP tables:
 
-  iperf3 -ub0 -c $peer -t 0 &
-  while :; do
-    ethtool -L eth0 combined 1
-    ethtool -L eth0 combined 2
-  done
+1. In the first iteration, for the first matched ARP entry sharing the VCC,
+lec_arp_clear_vccs() frees the associated vpriv (which is vcc->user_back)
+and sets vcc->user_back to NULL.
+2. In the second iteration, for the next matched ARP entry sharing the same
+VCC, lec_arp_clear_vccs() is called again. It obtains a NULL vpriv from
+vcc->user_back (via LEC_VCC_PRIV(vcc)) and then attempts to dereference it
+via `vcc->pop = vpriv->old_pop`, leading to a null-ptr-deref crash.
 
-With KASAN enabled, this leads to reports like:
+Fix this by adding a null check for vpriv before dereferencing
+it. If vpriv is already NULL, it means the VCC has been cleared
+by a previous call, so we can safely skip the cleanup and just
+clear the entry's vcc/recv_vcc pointers.
 
-  BUG: KASAN: slab-use-after-free in __qdisc_run+0x133f/0x1760
-  ...
-  Call Trace:
-   <TASK>
-   ...
-   __qdisc_run+0x133f/0x1760
-   __dev_queue_xmit+0x248f/0x3550
-   ip_finish_output2+0xa42/0x2110
-   ip_output+0x1a7/0x410
-   ip_send_skb+0x2e6/0x480
-   udp_send_skb+0xb0a/0x1590
-   udp_sendmsg+0x13c9/0x1fc0
-   ...
-   </TASK>
+The entire cleanup block (including vcc_release_async()) is placed inside
+the vpriv guard because a NULL vpriv indicates the VCC has already been
+fully released by a prior iteration — repeating the teardown would
+redundantly set flags and trigger callbacks on an already-closing socket.
 
-  Allocated by task 1270 on cpu 5 at 44.558414s:
-   ...
-   alloc_skb_with_frags+0x84/0x7c0
-   sock_alloc_send_pskb+0x69a/0x830
-   __ip_append_data+0x1b86/0x48c0
-   ip_make_skb+0x1e8/0x2b0
-   udp_sendmsg+0x13a6/0x1fc0
-   ...
+The Fixes tag points to the initial commit because the entry->vcc path has
+been vulnerable since the original code. The entry->recv_vcc path was later
+added by commit 8d9f73c0ad2f ("atm: fix a memory leak of vcc->user_back")
+with the same pattern, and both paths are fixed here.
 
-  Freed by task 1306 on cpu 3 at 44.558445s:
-   ...
-   kmem_cache_free+0x117/0x5e0
-   pfifo_fast_reset+0x14d/0x580
-   qdisc_reset+0x9e/0x5f0
-   netif_set_real_num_tx_queues+0x303/0x840
-   virtnet_set_channels+0x1bf/0x260 [virtio_net]
-   ethnl_set_channels+0x684/0xae0
-   ethnl_default_set_doit+0x31a/0x890
-   ...
-
-Serialize qdisc_reset_all_tx_gt() against the lockless dequeue path by
-taking qdisc->seqlock for TCQ_F_NOLOCK qdiscs, matching the
-serialization model already used by dev_reset_queue().
-
-Additionally clear QDISC_STATE_NON_EMPTY after reset so the qdisc state
-reflects an empty queue, avoiding needless re-scheduling.
-
-Fixes: 6b3ba9146fe6 ("net: sched: allow qdiscs to handle locking")
-Signed-off-by: Koichiro Den <den@valinux.co.jp>
-Link: https://patch.msgid.link/20260228145307.3955532-1-den@valinux.co.jp
+Reported-by: syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68c95a83.050a0220.3c6139.0e5c.GAE@google.com/T/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260225123250.189289-1-jiayuan.chen@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/atm/lec.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 3287988a6a987..232b7b22e993a 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -756,13 +756,23 @@ static inline bool skb_skip_tc_classify(struct sk_buff *skb)
- static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
- {
- 	struct Qdisc *qdisc;
-+	bool nolock;
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index b7fa48a9b7205..0d4b8e5936dcf 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -1260,24 +1260,28 @@ static void lec_arp_clear_vccs(struct lec_arp_table *entry)
+ 		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
+ 		struct net_device *dev = (struct net_device *)vcc->proto_data;
  
- 	for (; i < dev->num_tx_queues; i++) {
- 		qdisc = rtnl_dereference(netdev_get_tx_queue(dev, i)->qdisc);
- 		if (qdisc) {
-+			nolock = qdisc->flags & TCQ_F_NOLOCK;
-+
-+			if (nolock)
-+				spin_lock_bh(&qdisc->seqlock);
- 			spin_lock_bh(qdisc_lock(qdisc));
- 			qdisc_reset(qdisc);
- 			spin_unlock_bh(qdisc_lock(qdisc));
-+			if (nolock) {
-+				clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
-+				clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
-+				spin_unlock_bh(&qdisc->seqlock);
-+			}
- 		}
+-		vcc->pop = vpriv->old_pop;
+-		if (vpriv->xoff)
+-			netif_wake_queue(dev);
+-		kfree(vpriv);
+-		vcc->user_back = NULL;
+-		vcc->push = entry->old_push;
+-		vcc_release_async(vcc, -EPIPE);
++		if (vpriv) {
++			vcc->pop = vpriv->old_pop;
++			if (vpriv->xoff)
++				netif_wake_queue(dev);
++			kfree(vpriv);
++			vcc->user_back = NULL;
++			vcc->push = entry->old_push;
++			vcc_release_async(vcc, -EPIPE);
++		}
+ 		entry->vcc = NULL;
+ 	}
+ 	if (entry->recv_vcc) {
+ 		struct atm_vcc *vcc = entry->recv_vcc;
+ 		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
+ 
+-		kfree(vpriv);
+-		vcc->user_back = NULL;
++		if (vpriv) {
++			kfree(vpriv);
++			vcc->user_back = NULL;
+ 
+-		entry->recv_vcc->push = entry->old_recv_push;
+-		vcc_release_async(entry->recv_vcc, -EPIPE);
++			entry->recv_vcc->push = entry->old_recv_push;
++			vcc_release_async(entry->recv_vcc, -EPIPE);
++		}
+ 		entry->recv_vcc = NULL;
  	}
  }
 -- 
