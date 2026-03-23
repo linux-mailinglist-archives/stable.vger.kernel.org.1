@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-228245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229224-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qJePOlhMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228245-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:12 +0100
+	id gEGiGaddwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229224-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273262F440F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C34972F6839
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9441930DE434
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A0A303197CCC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7598A3B19B3;
-	Mon, 23 Mar 2026 14:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE9F3BC69A;
+	Mon, 23 Mar 2026 15:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJDyIbGD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxDs7oNd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B9D3B19DB;
-	Mon, 23 Mar 2026 14:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE013245020;
+	Mon, 23 Mar 2026 15:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274565; cv=none; b=SLRn+4GRqimgViz71gGvCB8kNIGeWydZeYBO7PB9TomtGi1/MZDIcscsf0eedkAWQD3ctnG0TcGpGq2++uVWbxXKDmbPSJ1fZZdNhKsNWgwfR3jNSoyc3D2q0m7iWqBlaP3U4ajdJi2IhkRrHCwuY4LZF1PHEVzCaKw87bqO+hc=
+	t=1774278449; cv=none; b=Y4TzGSA0ZxLd/4Q6HJRK3qI1GoBt/iK0A/R8QVO7rBoFOYy5HQUUfjQa9x4F687ioX3U6NngNpXXrg72LMynIklOGB1lpNACS1/NpJduYU5kNOZeT3OvFnMmnorqJ/ngqADKtFUp2M0FXamHMYa0atAKz9fb0AqU32n1l5q0tqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274565; c=relaxed/simple;
-	bh=D5ngVfY5jwPC5BuZMz92mGz4DluZljGMbwOM4+kd1wM=;
+	s=arc-20240116; t=1774278449; c=relaxed/simple;
+	bh=MssYNBAMJOYf7zDcOhePiWbKw2rFr61KHtUWYgMK8/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dc8WcgADKfrJPAXlsrtstjDyruoMbduO+uSUE3C/wB4/XI6fCbINB6tGnjjddg/MirJWoYPZgKkYlP6O90n0n5lmFZI8YtY4OeKniVjBDGOOclD3ZmB7Dp7pyAJZZwdszow0h2wzIcGPvGuWCUCNuL9NlvlmIZSlljTrRN4800w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJDyIbGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9937C2BCB1;
-	Mon, 23 Mar 2026 14:02:44 +0000 (UTC)
+	 MIME-Version; b=Vj1fSqqY/WRhggm/Hzj+VetlkjNrSHP+rZryV2mp+l0XJD0L4RGP9YeJ4HMmAzVEJCwme6TDGvq+5eRBrsfOLjV+ATVD097Ezm3JpZWGXz4IufUK+BbI9xffC9Ud+wfN3VAY9tmjTbaTBeiaUkiS2ugG84/hMiASZ0lhRLhK2j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxDs7oNd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32956C2BCB1;
+	Mon, 23 Mar 2026 15:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274565;
-	bh=D5ngVfY5jwPC5BuZMz92mGz4DluZljGMbwOM4+kd1wM=;
+	s=korg; t=1774278449;
+	bh=MssYNBAMJOYf7zDcOhePiWbKw2rFr61KHtUWYgMK8/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lJDyIbGDtd0AC8V9vgZW544o5zHlPZL3nzy+ga6trn4/XO/8/x227ozX3VjGbhbVE
-	 Tbdhg1gyIQaQ5F8MOJ99acEL7zhZw12rtkJf6WLKYzaUT1hcLEYCuoSGMKb75FC6Cj
-	 OALaw/zbgswZhYyXYX59RWPIsETYCa0Sk6OjXl6I=
+	b=PxDs7oNdyAY/nBvLkoe8V1KZOhrJggzOY9SkAfeKPUkRhUAcM7ZFnNuEDAM5ghH8A
+	 cdZuV7kMEw8JFotJJusxXw1FM1CS3c6yfjBupBVzpFB5EU0Htp847u/AV2CIpCSNOS
+	 HkrBvaNSJDiFsNBdsc8hqmMCLJ9kXX3tVz6NmYJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Baoquan He <bhe@redhat.com>,
-	Coiby Xu <coxu@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.18 008/212] crash_dump: dont log dm-crypt key bytes in read_key_from_user_keying
-Date: Mon, 23 Mar 2026 14:43:49 +0100
-Message-ID: <20260323134504.033549175@linuxfoundation.org>
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 310/567] device property: Allow secondary lookup in fwnode_get_next_child_node()
+Date: Mon, 23 Mar 2026 14:43:50 +0100
+Message-ID: <20260323134541.494077997@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,78 +69,106 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,linux-foundation.org:server fail,linux.dev:server fail,sea.lore.kernel.org:server fail];
-	TAGGED_FROM(0.00)[bounces-228245-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229224-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 273262F440F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C34972F6839
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 36f46b0e36892eba08978eef7502ff3c94ddba77 upstream.
+commit 2692c614f8f05929d692b3dbfd3faef1f00fbaf0 upstream.
 
-When debug logging is enabled, read_key_from_user_keying() logs the first
-8 bytes of the key payload and partially exposes the dm-crypt key.  Stop
-logging any key bytes.
+When device_get_child_node_count() got split to the fwnode and device
+respective APIs, the fwnode didn't inherit the ability to traverse over
+the secondary fwnode. Hence any user, that switches from device to fwnode
+API misses this feature. In particular, this was revealed by the commit
+1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
+that effectively broke the GPIO enumeration on Intel Galileo boards.
+Fix this by moving the secondary lookup from device to fwnode API.
 
-Link: https://lkml.kernel.org/r/20260227230008.858641-2-thorsten.blum@linux.dev
-Fixes: 479e58549b0f ("crash_dump: store dm crypt keys in kdump reserved memory")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Coiby Xu <coxu@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Note, in general no device_*() API should go into the depth of the fwnode
+implementation.
+
+Fixes: 114dbb4fa7c4 ("drivers property: When no children in primary, try secondary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://patch.msgid.link/20260210135822.47335-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/crash_dump_dm_crypt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/property.c |   27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/kernel/crash_dump_dm_crypt.c b/kernel/crash_dump_dm_crypt.c
-index 1f4067fbdb94..a20d4097744a 100644
---- a/kernel/crash_dump_dm_crypt.c
-+++ b/kernel/crash_dump_dm_crypt.c
-@@ -168,8 +168,8 @@ static int read_key_from_user_keying(struct dm_crypt_key *dm_key)
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -750,7 +750,18 @@ struct fwnode_handle *
+ fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
+ 			   struct fwnode_handle *child)
+ {
+-	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	struct fwnode_handle *next;
++
++	if (IS_ERR_OR_NULL(fwnode))
++		return NULL;
++
++	/* Try to find a child in primary fwnode */
++	next = fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	if (next)
++		return next;
++
++	/* When no more children in primary, continue with secondary */
++	return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child);
+ }
+ EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
  
- 	memcpy(dm_key->data, ukp->data, ukp->datalen);
- 	dm_key->key_size = ukp->datalen;
--	kexec_dprintk("Get dm crypt key (size=%u) %s: %8ph\n", dm_key->key_size,
--		      dm_key->key_desc, dm_key->data);
-+	kexec_dprintk("Get dm crypt key (size=%u) %s\n", dm_key->key_size,
-+		      dm_key->key_desc);
+@@ -794,19 +805,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_availa
+ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 						 struct fwnode_handle *child)
+ {
+-	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+-	struct fwnode_handle *next;
+-
+-	if (IS_ERR_OR_NULL(fwnode))
+-		return NULL;
+-
+-	/* Try to find a child in primary fwnode */
+-	next = fwnode_get_next_child_node(fwnode, child);
+-	if (next)
+-		return next;
+-
+-	/* When no more children in primary, continue with secondary */
+-	return fwnode_get_next_child_node(fwnode->secondary, child);
++	return fwnode_get_next_child_node(dev_fwnode(dev), child);
+ }
+ EXPORT_SYMBOL_GPL(device_get_next_child_node);
  
- out:
- 	up_read(&key->sem);
--- 
-2.53.0
-
 
 
 
