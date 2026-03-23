@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-229347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCUvGNZewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229347-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:06 +0100
+	id KKt2LlxewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7502F6AE3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8EC2F699D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C29313373A4E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DB40230298BB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23E743A963B;
-	Mon, 23 Mar 2026 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F843B3889;
+	Mon, 23 Mar 2026 15:14:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0t45pNPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SDt3KfM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A8239A7EF;
-	Mon, 23 Mar 2026 15:13:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0EA3B3888;
+	Mon, 23 Mar 2026 15:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278831; cv=none; b=VEmK5dbtp3HjcLz9f6I+M3AMyl/F46VzZxE96k35OZpSgW9vVFJZSPWFDyxSI0UXX/9DYPloyavqNN48OTGQaR/GOblmG1QLkGzbFLzdp+xGP37TVRmRf/SdClpuKSqtEMPChHgHSj9tE5zGRVMTXbGf8/ge5XeAGuPV15mMoog=
+	t=1774278867; cv=none; b=M4BMFKF0W+ZpM1w12C4Yz0Kf5TIdKNBVat1pntw/lukETJUFpDFPZ85ZHQX9aHe9ubUPzc4onFqMez7sTVjRLp7jPFMkZSegTFO02BjJ3VQty3rNA8ZhutezQvZjl04XGoC5a1woCl5kWx1v/mC9vj7WmDV7VhQwMQDm/5LYXZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278831; c=relaxed/simple;
-	bh=yrVP9z37BGd8etf5VXgSagBQO6XYx4lWY8aSAvwahO4=;
+	s=arc-20240116; t=1774278867; c=relaxed/simple;
+	bh=/ch01L6Lv5GkUAOjFge5oofQCfQhwGhYf/+te668+Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jJm1aoTmoVmFr5vTrAFJa91jfLzJnCr7eowFFcEOO99CjFjSaos8cCGsapshvsaHXfQdXN9W8KzqVZFcFVjLwHk2h90p7cNJky5PnM689SfhqaTjrOGLtwS6ghJPG4/cE1kx1cxr3g62aAaVSGI1wAp3okpiZRAhfQK+ETYxe/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0t45pNPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51BB3C2BCB3;
-	Mon, 23 Mar 2026 15:13:51 +0000 (UTC)
+	 MIME-Version; b=XHYrPOqor/tL2/Alzl6D7w5cu/G2FmZnnAui7N2REDEB1heneF6HwKw6zL2shEtGYYFMDMs6WQqLcZ+9h06RtAAVRYz1s9N7ks43JpLPJzaaRlSO0aX26PaXge8Mjc0u5eY2ggY12zkMV3b5Lfpn46HVTSBjt07DwUJReegoLgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SDt3KfM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3D1C2BC9E;
+	Mon, 23 Mar 2026 15:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278831;
-	bh=yrVP9z37BGd8etf5VXgSagBQO6XYx4lWY8aSAvwahO4=;
+	s=korg; t=1774278866;
+	bh=/ch01L6Lv5GkUAOjFge5oofQCfQhwGhYf/+te668+Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0t45pNPePHBHSboccXjBcWxFsDx5cx9i0Ylpu0wLlhC8WhwLQ7aYq6h/zRtiloBCm
-	 Wfy7b2AsMgr5Gn0dWdo1HrWtCfoMiYeEFd9Chwlr5wYtBJGRMptIsZPtGA3Ch8AfwJ
-	 XOXOUu8bJpd0r/2aIvfmma8Xjsp/PB9w7YlBK1FE=
+	b=SDt3KfM5xBeTv3KYave0DYfatnn0KyBsKailPUexwjCtc3ssYHUXr0AYqm/jH7j4d
+	 krOJLAW5nY+6qak6Rc4kSpk5Or0wfdlk8e9r4aeIhyqYcGlp1L325KeBDmHwy7Kzaj
+	 Nc+TFqO1Y2TF9d36rkpyZCjvKBa2royb+eIhz89U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Tom Lendacky <thomas.lendacky@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Wenshan Lan <jetlan9@163.com>
-Subject: [PATCH 6.6 416/567] x86/sev: Harden #VC instruction emulation somewhat
-Date: Mon, 23 Mar 2026 14:45:36 +0100
-Message-ID: <20260323134544.180238029@linuxfoundation.org>
+Subject: [PATCH 6.6 417/567] x86/sev: Check for MWAITX and MONITORX opcodes in the #VC handler
+Date: Mon, 23 Mar 2026 14:45:37 +0100
+Message-ID: <20260323134544.208669159@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229347-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,alien8.de,amd.com,163.com];
+	TAGGED_FROM(0.00)[bounces-229359-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,alien8.de,163.com];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CB7502F6AE3
+X-Rspamd-Queue-Id: 6F8EC2F699D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,183 +99,43 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Tom Lendacky <thomas.lendacky@amd.com>
 
-[ Upstream commit e3ef461af35a8c74f2f4ce6616491ddb355a208f ]
+[ Upstream commit e70316d17f6ab49a6038ffd115397fd68f8c7be8 ]
 
-Compare the opcode bytes at rIP for each #VC exit reason to verify the
-instruction which raised the #VC exception is actually the right one.
+The MWAITX and MONITORX instructions generate the same #VC error code as
+the MWAIT and MONITOR instructions, respectively. Update the #VC handler
+opcode checking to also support the MWAITX and MONITORX opcodes.
 
+Fixes: e3ef461af35a ("x86/sev: Harden #VC instruction emulation somewhat")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Link: https://lore.kernel.org/r/20240105101407.11694-1-bp@alien8.de
+Link: https://lore.kernel.org/r/453d5a7cfb4b9fe818b6fb67f93ae25468bc9e23.1713793161.git.thomas.lendacky@amd.com
 Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/boot/compressed/sev.c |    4 +
- arch/x86/kernel/sev-shared.c   |  102 ++++++++++++++++++++++++++++++++++++++++-
- arch/x86/kernel/sev.c          |    5 +-
- 3 files changed, 108 insertions(+), 3 deletions(-)
+ arch/x86/kernel/sev-shared.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -277,6 +277,10 @@ void do_boot_stage2_vc(struct pt_regs *r
- 	if (result != ES_OK)
- 		goto finish;
- 
-+	result = vc_check_opcode_bytes(&ctxt, exit_code);
-+	if (result != ES_OK)
-+		goto finish;
-+
- 	switch (exit_code) {
- 	case SVM_EXIT_RDTSC:
- 	case SVM_EXIT_RDTSCP:
 --- a/arch/x86/kernel/sev-shared.c
 +++ b/arch/x86/kernel/sev-shared.c
-@@ -10,11 +10,15 @@
-  */
+@@ -1237,12 +1237,14 @@ static enum es_result vc_check_opcode_by
+ 		break;
  
- #ifndef __BOOT_COMPRESSED
--#define error(v)	pr_err(v)
--#define has_cpuflag(f)	boot_cpu_has(f)
-+#define error(v)			pr_err(v)
-+#define has_cpuflag(f)			boot_cpu_has(f)
-+#define sev_printk(fmt, ...)		printk(fmt, ##__VA_ARGS__)
-+#define sev_printk_rtl(fmt, ...)	printk_ratelimited(fmt, ##__VA_ARGS__)
- #else
- #undef WARN
- #define WARN(condition, format...) (!!(condition))
-+#define sev_printk(fmt, ...)
-+#define sev_printk_rtl(fmt, ...)
- #endif
+ 	case SVM_EXIT_MONITOR:
+-		if (opcode == 0x010f && modrm == 0xc8)
++		/* MONITOR and MONITORX instructions generate the same error code */
++		if (opcode == 0x010f && (modrm == 0xc8 || modrm == 0xfa))
+ 			return ES_OK;
+ 		break;
  
- /* I/O parameters for CPUID-related helpers */
-@@ -570,6 +574,7 @@ void __head do_vc_no_ghcb(struct pt_regs
- {
- 	unsigned int subfn = lower_bits(regs->cx, 32);
- 	unsigned int fn = lower_bits(regs->ax, 32);
-+	u16 opcode = *(unsigned short *)regs->ip;
- 	struct cpuid_leaf leaf;
- 	int ret;
+ 	case SVM_EXIT_MWAIT:
+-		if (opcode == 0x010f && modrm == 0xc9)
++		/* MWAIT and MWAITX instructions generate the same error code */
++		if (opcode == 0x010f && (modrm == 0xc9 || modrm == 0xfb))
+ 			return ES_OK;
+ 		break;
  
-@@ -577,6 +582,10 @@ void __head do_vc_no_ghcb(struct pt_regs
- 	if (exit_code != SVM_EXIT_CPUID)
- 		goto fail;
- 
-+	/* Is it really a CPUID insn? */
-+	if (opcode != 0xa20f)
-+		goto fail;
-+
- 	leaf.fn = fn;
- 	leaf.subfn = subfn;
- 
-@@ -1203,3 +1212,92 @@ static int vmgexit_psc(struct ghcb *ghcb
- out:
- 	return ret;
- }
-+
-+static enum es_result vc_check_opcode_bytes(struct es_em_ctxt *ctxt,
-+					    unsigned long exit_code)
-+{
-+	unsigned int opcode = (unsigned int)ctxt->insn.opcode.value;
-+	u8 modrm = ctxt->insn.modrm.value;
-+
-+	switch (exit_code) {
-+
-+	case SVM_EXIT_IOIO:
-+	case SVM_EXIT_NPF:
-+		/* handled separately */
-+		return ES_OK;
-+
-+	case SVM_EXIT_CPUID:
-+		if (opcode == 0xa20f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_INVD:
-+		if (opcode == 0x080f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_MONITOR:
-+		if (opcode == 0x010f && modrm == 0xc8)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_MWAIT:
-+		if (opcode == 0x010f && modrm == 0xc9)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_MSR:
-+		/* RDMSR */
-+		if (opcode == 0x320f ||
-+		/* WRMSR */
-+		    opcode == 0x300f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_RDPMC:
-+		if (opcode == 0x330f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_RDTSC:
-+		if (opcode == 0x310f)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_RDTSCP:
-+		if (opcode == 0x010f && modrm == 0xf9)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_READ_DR7:
-+		if (opcode == 0x210f &&
-+		    X86_MODRM_REG(ctxt->insn.modrm.value) == 7)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_VMMCALL:
-+		if (opcode == 0x010f && modrm == 0xd9)
-+			return ES_OK;
-+
-+		break;
-+
-+	case SVM_EXIT_WRITE_DR7:
-+		if (opcode == 0x230f &&
-+		    X86_MODRM_REG(ctxt->insn.modrm.value) == 7)
-+			return ES_OK;
-+		break;
-+
-+	case SVM_EXIT_WBINVD:
-+		if (opcode == 0x90f)
-+			return ES_OK;
-+		break;
-+
-+	default:
-+		break;
-+	}
-+
-+	sev_printk(KERN_ERR "Wrong/unhandled opcode bytes: 0x%x, exit_code: 0x%lx, rIP: 0x%lx\n",
-+		   opcode, exit_code, ctxt->regs->ip);
-+
-+	return ES_UNSUPPORTED;
-+}
---- a/arch/x86/kernel/sev.c
-+++ b/arch/x86/kernel/sev.c
-@@ -1749,7 +1749,10 @@ static enum es_result vc_handle_exitcode
- 					 struct ghcb *ghcb,
- 					 unsigned long exit_code)
- {
--	enum es_result result;
-+	enum es_result result = vc_check_opcode_bytes(ctxt, exit_code);
-+
-+	if (result != ES_OK)
-+		return result;
- 
- 	switch (exit_code) {
- 	case SVM_EXIT_READ_DR7:
 
 
 
