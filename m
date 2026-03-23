@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228789-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AJ6GCL1vwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229320-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:13 +0100
+	id gJzWNBxpwWmoSwQAu9opvQ
+	(envelope-from <stable+bounces-228789-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:23:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F0B2F8F28
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 375A92F8027
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:23:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3D3D320F42C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8383232DE96B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256B2280338;
-	Mon, 23 Mar 2026 15:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45CF8239562;
+	Mon, 23 Mar 2026 14:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH2FFaG/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZC77o2tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC81A242D70;
-	Mon, 23 Mar 2026 15:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0912823815B;
+	Mon, 23 Mar 2026 14:45:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278746; cv=none; b=ISBdcZQJ9YT0A1+hcEVkHCfsx+eKjUwve3HCfVXIjC0yNzgMO+b3npZMkHPvIWK/VWKLK0a9Ve/P1Kur1PmOOaW1+N7dJ2g3aXtOhRpabUekS6KoA6MhVVGmbdgHVDFXfrvllj5t5GJVMMEw6U78Di+8PqyJGTCZr01h3xHmL6U=
+	t=1774277132; cv=none; b=OUfyjQDAFaWZLzvV4ZSGClUs6ajasIZtaUeQgUM6I8uzG39qr8h5gkdt1ptI2B0QGrZszyQZ7qzMJQU4Q3sA6yoclgO7LnElmbHomjokfUwsE8Ep+z3IsQg+fqOrBrQYbh7aqGUUspOO2bPjjCnv/WMAd+Jx73ydrcLj/LYKrG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278746; c=relaxed/simple;
-	bh=lz+IhvxSRairiKgW5rYs1e7SfPxEcWpekR5S90ynUkw=;
+	s=arc-20240116; t=1774277132; c=relaxed/simple;
+	bh=yaIVoEsvUNRJubtyQ5g6w2mwJwJCqH21/joGbt9lMrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PXX0SyX2CmNpoPTS02gqgX1FBQmd+ZCy8DjrvsCURhLIqRghP6irny5VCQjTmLQTploELIaS7GVM5SuH37WA6uZ2NOStFXNUtVPeb3KyH2Qpj1OEKcczDKjAsFpoOwI8p/uf8jDN5YjsPh0n3stB1FGADkxnfBe1bS8/31h59EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH2FFaG/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484DBC4CEF7;
-	Mon, 23 Mar 2026 15:12:26 +0000 (UTC)
+	 MIME-Version; b=HOEoervbSY/vEqBPY4TK9olrjG9TfHFF7MaNSTa5xgwhkfNY5d5sFhvIVo72v7h0T6XDDsOTSvVFrw0E5PDop20T8pXB6RliJU0+L6kxuaG7/EoOOkdp25UJs+dO6lVVxj570yB/cmyrib6jXUJxCGHD0ngn/4CBkhNSC7vn8QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZC77o2tk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA86C4CEF7;
+	Mon, 23 Mar 2026 14:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278746;
-	bh=lz+IhvxSRairiKgW5rYs1e7SfPxEcWpekR5S90ynUkw=;
+	s=korg; t=1774277131;
+	bh=yaIVoEsvUNRJubtyQ5g6w2mwJwJCqH21/joGbt9lMrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pH2FFaG/S5rj6GnzzYJ8rww5JdMrn0tIsyccyRBJgQ9OTJLU/wZREEBHy6dBjdjXy
-	 VCulVbgABDxwFgrGxTnnjU0C0Q9FPobDhZ6ovZDHxHaXXXw38dL4feWTrj6vvoMicY
-	 HI1EyHdoD+OM/FLUPceQxpEsAHKkek4e1tqWeSjc=
+	b=ZC77o2tkYUM/88Th89cayhC7oRrJA0JPBWy7msc8c7PxFfTGKv6arkkvUnTJu1aJ1
+	 LdC5BDOzAX947n1A6SlOHlvyukLy9EZAK+j8eUQIUGTbKqVgrpdpeZ1qDGRdIfJVXh
+	 aSbUEYnm8HO7JfYlgvZHP24az86hg7k1efhBGLKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d991fea1b4b23b1f6bf8@syzkaller.appspotmail.com,
-	=?UTF-8?q?Miquel=20Sabat=C3=A9=20Sol=C3=A0?= <mssola@mssola.com>,
-	David Sterba <dsterba@suse.com>,
-	Bin Lan <lanbincn@139.com>
-Subject: [PATCH 6.6 405/567] btrfs: fix NULL dereference on root when tracing inode eviction
+	Zw Tang <shicenci@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 329/460] kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()
 Date: Mon, 23 Mar 2026 14:45:25 +0100
-Message-ID: <20260323134543.895486237@linuxfoundation.org>
+Message-ID: <20260323134534.604793406@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +63,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,mssola.com,suse.com,139.com];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-229320-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228789-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d991fea1b4b23b1f6bf8];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 62F0B2F8F28
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 375A92F8027
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Sabaté Solà <mssola@mssola.com>
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-[ Upstream commit f157dd661339fc6f5f2b574fe2429c43bd309534 ]
+[ Upstream commit 5ef268cb7a0aac55521fd9881f1939fa94a8988e ]
 
-When evicting an inode the first thing we do is to setup tracing for it,
-which implies fetching the root's id. But in btrfs_evict_inode() the
-root might be NULL, as implied in the next check that we do in
-btrfs_evict_inode().
+Remove unneeded warnings for handled errors from __arm_kprobe_ftrace()
+because all caller handled the error correctly.
 
-Hence, we either should set the ->root_objectid to 0 in case the root is
-NULL, or we move tracing setup after checking that the root is not
-NULL. Setting the rootid to 0 at least gives us the possibility to trace
-this call even in the case when the root is NULL, so that's the solution
-taken here.
+Link: https://lore.kernel.org/all/177261531182.1312989.8737778408503961141.stgit@mhiramat.tok.corp.google.com/
 
-Fixes: 1abe9b8a138c ("Btrfs: add initial tracepoint support for btrfs")
-Reported-by: syzbot+d991fea1b4b23b1f6bf8@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d991fea1b4b23b1f6bf8
-Signed-off-by: Miquel Sabaté Solà <mssola@mssola.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Adjust context ]
-Signed-off-by: Bin Lan <lanbincn@139.com>
+Reported-by: Zw Tang <shicenci@gmail.com>
+Closes: https://lore.kernel.org/all/CAPHJ_V+J6YDb_wX2nhXU6kh466Dt_nyDSas-1i_Y8s7tqY-Mzw@mail.gmail.com/
+Fixes: 9c89bb8e3272 ("kprobes: treewide: Cleanup the error messages for kprobes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/btrfs.h |    4 ++--
+ kernel/kprobes.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/trace/events/btrfs.h
-+++ b/include/trace/events/btrfs.h
-@@ -225,8 +225,8 @@ DECLARE_EVENT_CLASS(btrfs__inode,
- 		__entry->generation = BTRFS_I(inode)->generation;
- 		__entry->last_trans = BTRFS_I(inode)->last_trans;
- 		__entry->logged_trans = BTRFS_I(inode)->logged_trans;
--		__entry->root_objectid =
--				BTRFS_I(inode)->root->root_key.objectid;
-+		__entry->root_objectid = BTRFS_I(inode)->root ?
-+					 btrfs_root_id(BTRFS_I(inode)->root) : 0;
- 	),
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1077,12 +1077,12 @@ static int __arm_kprobe_ftrace(struct kp
+ 	lockdep_assert_held(&kprobe_mutex);
  
- 	TP_printk_btrfs("root=%llu(%s) gen=%llu ino=%llu blocks=%llu "
+ 	ret = ftrace_set_filter_ip(ops, (unsigned long)p->addr, 0, 0);
+-	if (WARN_ONCE(ret < 0, "Failed to arm kprobe-ftrace at %pS (error %d)\n", p->addr, ret))
++	if (ret < 0)
+ 		return ret;
+ 
+ 	if (*cnt == 0) {
+ 		ret = register_ftrace_function(ops);
+-		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
++		if (ret < 0) {
+ 			/*
+ 			 * At this point, sinec ops is not registered, we should be sefe from
+ 			 * registering empty filter.
 
 
 
