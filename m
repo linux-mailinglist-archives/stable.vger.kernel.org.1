@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228203-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YD7gF5NdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229342-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:43 +0100
+	id KH1PGhdRwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228203-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:27 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA592F6815
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF2512F4FD1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 68713310CDE9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1A42311C484
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD11725393B;
-	Mon, 23 Mar 2026 15:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A913B3C1B;
+	Mon, 23 Mar 2026 14:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wC2p7dVl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9/XpN5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90868261B9E;
-	Mon, 23 Mar 2026 15:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492233B3C1C;
+	Mon, 23 Mar 2026 14:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278815; cv=none; b=nBHmoVDuBKP0/2SC3uU4SrJ8LWn64U4jOnRo29vSEIqq7hZGrqCVygf/H92M5a9aY+pU2kMYrfEaYuXktE0u4q2Jl3IgcSUcDhxyGYMK+guoYnmS4u2t4Pz5xN4DYy6cwmRv1wqE34q5mY6NePAQs1YGNcWH5Bpu1BxefgM0nos=
+	t=1774274437; cv=none; b=MOlO0MIF75RYmGHv+Vv6DTK1FgLCKz0Od12lQUUF+1XR/36t6I1HSmGUzwRIqP054bCo7EeDgiVXw6YLwMD/Flku1LsLadQonSTf0MMtboSnKNGsYxX9+/9Wzsn+blNJHmOMnwKiyypNjKUCAUTRNxdwsEh83ACa7CBNxovJh1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278815; c=relaxed/simple;
-	bh=kvX2PHraH7M7FanVZvFi0ON39S1tZ9i0cED4qIfIeao=;
+	s=arc-20240116; t=1774274437; c=relaxed/simple;
+	bh=C+78jT9diNppmGDxbLeQw65UBBj28Iu7SpZxBWLQekM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mDaU7PAwttAba7H6QOIMHCWY45Tu3mHOayeqJdbsvBa7LWXcpAYJ3A9JIw337yovcGiQBRxEScmzLDJEQbV30eNXPKQjUwgE+hiItwXFWt/8DpkkwhANKnsrxCgRwH+wBuoGvCk2rE2R2ZvI6+TMYhyKTdg9/YNM7+GJ6bGxZkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wC2p7dVl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 147A6C4CEF7;
-	Mon, 23 Mar 2026 15:13:34 +0000 (UTC)
+	 MIME-Version; b=fFO7UGzUhGbYFT0eoMEzw1qePuTAm3aPM3I94Fq0bUYo4eG0U5+a92ZkrxEuvUvb++IbifoAVKaOxcg8FUZBZ1QRCyRmQ91f4TZvYTLbT69ws4AkSrHItCCtCLZpR4qLj7KMdwz84CRkdfSBaGSs+iHvgfUpn+tDuQGZx1OMYxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9/XpN5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8A6C2BCB1;
+	Mon, 23 Mar 2026 14:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278815;
-	bh=kvX2PHraH7M7FanVZvFi0ON39S1tZ9i0cED4qIfIeao=;
+	s=korg; t=1774274436;
+	bh=C+78jT9diNppmGDxbLeQw65UBBj28Iu7SpZxBWLQekM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wC2p7dVlsw8AWnJzaauN3XRbaUHpbbJRZbsumR56bB/ogG/SnHTUTV5M+nrKvihBy
-	 PTWTvN0OBB8wNyRYEQBG5CaMYa7N3jNVD2dKrTsLv//tvZuam4N5Pvin/nAK8To8Q6
-	 r4TiEK8khoGEyFpNA8kzzaZLLBx2lJ/H/6BM8OUA=
+	b=o9/XpN5Azmk1/7wukOX9XDbcy3NA2/DIcZegArS5YndDI83IyadE3yzczY96EmzMn
+	 XeXzEtKrspxcSLtRvySC8yoaII+XiZO1MAYcGlyGzg/GK6bZ39a97ueeiNAj8cW0AI
+	 k62Mv6cghWZoEe6YG9G62sMO2SZy1lNxKuwUs9lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rosen Penev <rosenp@gmail.com>
-Subject: [PATCH 6.6 429/567] drm/amd/display: Add pixel_clock to amd_pp_display_configuration
-Date: Mon, 23 Mar 2026 14:45:49 +0100
-Message-ID: <20260323134544.543627197@linuxfoundation.org>
+	Yiming Qian <yimingqian591@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 173/220] netfilter: bpf: defer hook memory release until rcu readers are done
+Date: Mon, 23 Mar 2026 14:45:50 +0100
+Message-ID: <20260323134510.048442939@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,25 +63,24 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
+	TAGGED_FROM(0.00)[bounces-228203-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229342-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -90,85 +89,58 @@ X-Spamd-Result: default: False [-0.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: CCA592F6815
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CF2512F4FD1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit b515dcb0dc4e85d8254f5459cfb32fce88dacbfb upstream.
+[ Upstream commit 24f90fa3994b992d1a09003a3db2599330a5232a ]
 
-This commit adds the pixel_clock field to the display config
-struct so that power management (DPM) can use it.
+Yiming Qian reports UaF when concurrent process is dumping hooks via
+nfnetlink_hooks:
 
-We currently don't have a proper bandwidth calculation on old
-GPUs with DCE 6-10 because dce_calcs only supports DCE 11+.
-So the power management (DPM) on these GPUs may need to make
-ad-hoc decisions for display based on the pixel clock.
+BUG: KASAN: slab-use-after-free in nfnl_hook_dump_one.isra.0+0xe71/0x10f0
+Read of size 8 at addr ffff888003edbf88 by task poc/79
+Call Trace:
+ <TASK>
+ nfnl_hook_dump_one.isra.0+0xe71/0x10f0
+ netlink_dump+0x554/0x12b0
+ nfnl_hook_get+0x176/0x230
+ [..]
 
-Also rename sym_clock to pixel_clock in dm_pp_single_disp_config
-to avoid confusion with other code where the sym_clock refers to
-the DisplayPort symbol clock.
+Defer release until after concurrent readers have completed.
 
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_pp_smu.c       |    1 +
- drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c |    2 +-
- drivers/gpu/drm/amd/display/dc/dm_services_types.h             |    2 +-
- drivers/gpu/drm/amd/include/dm_pp_interface.h                  |    1 +
- 4 files changed, 4 insertions(+), 2 deletions(-)
+ net/netfilter/nf_bpf_link.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_pp_smu.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_pp_smu.c
-@@ -97,6 +97,7 @@ bool dm_pp_apply_display_requirements(
- 			const struct dm_pp_single_disp_config *dc_cfg =
- 						&pp_display_cfg->disp_configs[i];
- 			adev->pm.pm_display_cfg.displays[i].controller_id = dc_cfg->pipe_idx + 1;
-+			adev->pm.pm_display_cfg.displays[i].pixel_clock = dc_cfg->pixel_clock;
- 		}
+diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
+index 46e667a50d988..248840dbca1b2 100644
+--- a/net/netfilter/nf_bpf_link.c
++++ b/net/netfilter/nf_bpf_link.c
+@@ -170,7 +170,7 @@ static int bpf_nf_link_update(struct bpf_link *link, struct bpf_prog *new_prog,
  
- 		amdgpu_dpm_display_configuration_change(adev, &adev->pm.pm_display_cfg);
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dce110/dce110_clk_mgr.c
-@@ -164,7 +164,7 @@ void dce110_fill_display_configs(
- 			stream->link->cur_link_settings.link_rate;
- 		cfg->link_settings.link_spread =
- 			stream->link->cur_link_settings.link_spread;
--		cfg->sym_clock = stream->phy_pix_clk;
-+		cfg->pixel_clock = stream->phy_pix_clk;
- 		/* Round v_refresh*/
- 		cfg->v_refresh = stream->timing.pix_clk_100hz * 100;
- 		cfg->v_refresh /= stream->timing.h_total;
---- a/drivers/gpu/drm/amd/display/dc/dm_services_types.h
-+++ b/drivers/gpu/drm/amd/display/dc/dm_services_types.h
-@@ -127,7 +127,7 @@ struct dm_pp_single_disp_config {
- 	uint32_t src_height;
- 	uint32_t src_width;
- 	uint32_t v_refresh;
--	uint32_t sym_clock; /* HDMI only */
-+	uint32_t pixel_clock; /* Pixel clock in KHz (for HDMI only: normalized) */
- 	struct dc_link_settings link_settings; /* DP only */
- };
- 
---- a/drivers/gpu/drm/amd/include/dm_pp_interface.h
-+++ b/drivers/gpu/drm/amd/include/dm_pp_interface.h
-@@ -66,6 +66,7 @@ struct single_display_configuration
- 	uint32_t view_resolution_cy;
- 	enum amd_pp_display_config_type displayconfigtype;
- 	uint32_t vertical_refresh; /* for active display */
-+	uint32_t pixel_clock; /* Pixel clock in KHz (for HDMI only: normalized) */
- };
- 
- #define MAX_NUM_DISPLAY 32
+ static const struct bpf_link_ops bpf_nf_link_lops = {
+ 	.release = bpf_nf_link_release,
+-	.dealloc = bpf_nf_link_dealloc,
++	.dealloc_deferred = bpf_nf_link_dealloc,
+ 	.detach = bpf_nf_link_detach,
+ 	.show_fdinfo = bpf_nf_link_show_info,
+ 	.fill_link_info = bpf_nf_link_fill_link_info,
+-- 
+2.51.0
+
 
 
 
