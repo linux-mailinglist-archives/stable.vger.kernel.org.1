@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229773-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAnnN8NMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228271-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:59 +0100
+	id yMeWEGlywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229773-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4311C2F452F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C492F95B2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 553E531FD11D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF40F3065331
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E853A3B3897;
-	Mon, 23 Mar 2026 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712DE3AE19E;
+	Mon, 23 Mar 2026 16:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIGxKp94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Km2CbchD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFAD32470A;
-	Mon, 23 Mar 2026 14:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345741DA0E1;
+	Mon, 23 Mar 2026 16:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274645; cv=none; b=Nz5E0n6HFWKTXdCvmk2ZK09lbmX605hvlKJBd5WQnudke3OFQu2joPl7m398PxbeaergWkeUDPZFa1aY44YbXnBSN3l2YDzo1oP7IBy1PwS1qrr9fk1DfhOmdKa5YNNxTkXR5lhTP2Ip8YxlbVEUt2DWIwLcBM8rDzYbyk//3jc=
+	t=1774282829; cv=none; b=knyxH7uCVFKpKin9iR6AzZzwsypX/ZvSQVhBI9QkKyMeLrNxV+KvUWzgKDWO7RJ6NjJpNzJPahVRnsBUwELeQpSt3gwK9UiAjHHC0XuT1P1J8D8EFKXqu1vryennOTEAPvZ6oc2FPXet7DKdGgqrkSBNrvt5KMxllaLa7NPy50I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274645; c=relaxed/simple;
-	bh=Nic11FbqL7PJjSmfTlKNK4Z2WROVBTS8xAoHrsO7d1U=;
+	s=arc-20240116; t=1774282829; c=relaxed/simple;
+	bh=+Fzb3pEwpkPWE8dREIyOCMNztaaB2bEoT+Pc02fvz+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KzECh57qQk/xYyGZl/85CJd0dJ6eZ2wvaS5yIuT0zEEZp+qLO9QDH6xwa5xshsFUlYJEeZ3bgMBUVkGZr/ae15SO+1RHQpD5cuF8+RA5CxV/yuCDOgiz5llP0EfZvEO2ANGLkfzt60fY4SlyC/VXRWaB/33+RxTHQE/IwtZwOVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIGxKp94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309EEC4CEF7;
-	Mon, 23 Mar 2026 14:04:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cp+tyQd9QMsQlUPFqa5AO0rMACX20AUjvC0ll9+oww/LeBpK/PSfEvhbxTcv3vOIowKAkhVk4+11Z7tABha+xjZ2QcMBsHq9V0stldSPpu2AZn6T6l+VSzNetMGrQDmhKNjJw/j3cGY/7RYi3mm7Jeowc2+GgSOLrA2ICPR+jrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Km2CbchD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B34C4CEF7;
+	Mon, 23 Mar 2026 16:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274645;
-	bh=Nic11FbqL7PJjSmfTlKNK4Z2WROVBTS8xAoHrsO7d1U=;
+	s=korg; t=1774282829;
+	bh=+Fzb3pEwpkPWE8dREIyOCMNztaaB2bEoT+Pc02fvz+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIGxKp94PICWVjwjjSv7BK6BufCSGpW2pDRTbx281xaETSJdU0z+a+N4vs/+WLl/7
-	 jGtMlYvRUSyXdNeBIzqTWFSu2B3iTNi3k8eG4Hwao77Esumotxcobs6bHnFgcgSPdA
-	 Ak8EMVZBG2m85tpUdp0lghfTgnpACXD+nBtjZxNI=
+	b=Km2CbchD+PcqVxJvfD3fN2aBsGqCqCEBUZRQmWexnYs75VbNmHjznZQy1gbrNTRor
+	 kFmqboq9aqMet5m/odmdVgVf/KeB75gZ0vJMY4ibMrb0B3LJtLxqcnw2gIz2BVEg4w
+	 JmF6Mc7FUr5/TgNVo3gdyqbli8zaPq/gQR9V56gM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.18 062/212] iommu/vt-d: Only handle IOPF for SVA when PRI is supported
+	stable <stable@kernel.org>,
+	"Bandal, Shankar" <shankar.bandal@intel.com>,
+	"Murthy, Shanth" <shanth.murthy@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.1 301/481] serial: 8250: Add late synchronize_irq() to shutdown to handle DW UART BUSY
 Date: Mon, 23 Mar 2026 14:44:43 +0100
-Message-ID: <20260323134505.735690050@linuxfoundation.org>
+Message-ID: <20260323134532.449750301@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +65,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229773-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228271-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 4311C2F452F
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: B5C492F95B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Baolu <baolu.lu@linux.intel.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 39c20c4e83b9f78988541d829aa34668904e54a0 upstream.
+commit e0a368ae79531ff92105a2692f10d83052055856 upstream.
 
-In intel_svm_set_dev_pasid(), the driver unconditionally manages the IOPF
-handling during a domain transition. However, commit a86fb7717320
-("iommu/vt-d: Allow SVA with device-specific IOPF") introduced support for
-SVA on devices that handle page faults internally without utilizing the
-PCI PRI. On such devices, the IOMMU-side IOPF infrastructure is not
-required. Calling iopf_for_domain_replace() on these devices is incorrect
-and can lead to unexpected failures during PASID attachment or unwinding.
+When DW UART is !uart_16550_compatible, it can indicate BUSY at any
+point (when under constant Rx pressure) unless a complex sequence of
+steps is performed. Any LCR write can run a foul with the condition
+that prevents writing LCR while the UART is BUSY, which triggers
+BUSY_DETECT interrupt that seems unmaskable using IER bits.
 
-Add a check for info->pri_supported to ensure that the IOPF queue logic
-is only invoked for devices that actually rely on the IOMMU's PRI-based
-fault handling.
+Normal flow is that dw8250_handle_irq() handles BUSY_DETECT condition
+by reading USR register. This BUSY feature, however, breaks the
+assumptions made in serial8250_do_shutdown(), which runs
+synchronize_irq() after clearing IER and assumes no interrupts can
+occur after that point but then proceeds to update LCR, which on DW
+UART can trigger an interrupt.
 
-Fixes: 17fce9d2336d ("iommu/vt-d: Put iopf enablement in domain attach path")
-Cc: stable@vger.kernel.org
-Suggested-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20260310075520.295104-1-baolu.lu@linux.intel.com
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+If serial8250_do_shutdown() releases the interrupt handler before the
+handler has run and processed the BUSY_DETECT condition by read the USR
+register, the IRQ is not deasserted resulting in interrupt storm that
+triggers "irq x: nobody cared" warning leading to disabling the IRQ.
+
+Add late synchronize_irq() into serial8250_do_shutdown() to ensure
+BUSY_DETECT from DW UART is handled before port's interrupt handler is
+released. Alternative would be to add DW UART specific shutdown
+function but it would mostly duplicate the generic code and the extra
+synchronize_irq() seems pretty harmless in serial8250_do_shutdown().
+
+Fixes: 7d4008ebb1c9 ("tty: add a DesignWare 8250 driver")
+Cc: stable <stable@kernel.org>
+Reported-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260203171049.4353-7-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/svm.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/iommu/intel/svm.c
-+++ b/drivers/iommu/intel/svm.c
-@@ -164,9 +164,12 @@ static int intel_svm_set_dev_pasid(struc
- 	if (IS_ERR(dev_pasid))
- 		return PTR_ERR(dev_pasid);
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -2526,6 +2526,12 @@ void serial8250_do_shutdown(struct uart_
+ 	 * the IRQ chain.
+ 	 */
+ 	serial_port_in(port, UART_RX);
++	/*
++	 * LCR writes on DW UART can trigger late (unmaskable) IRQs.
++	 * Handle them before releasing the handler.
++	 */
++	synchronize_irq(port->irq);
++
+ 	serial8250_rpm_put(up);
  
--	ret = iopf_for_domain_replace(domain, old, dev);
--	if (ret)
--		goto out_remove_dev_pasid;
-+	/* SVA with non-IOMMU/PRI IOPF handling is allowed. */
-+	if (info->pri_supported) {
-+		ret = iopf_for_domain_replace(domain, old, dev);
-+		if (ret)
-+			goto out_remove_dev_pasid;
-+	}
- 
- 	/* Setup the pasid table: */
- 	sflags = cpu_feature_enabled(X86_FEATURE_LA57) ? PASID_FLAG_FL5LP : 0;
-@@ -180,7 +183,8 @@ static int intel_svm_set_dev_pasid(struc
- 
- 	return 0;
- out_unwind_iopf:
--	iopf_for_domain_replace(old, domain, dev);
-+	if (info->pri_supported)
-+		iopf_for_domain_replace(old, domain, dev);
- out_remove_dev_pasid:
- 	domain_remove_dev_pasid(domain, dev, pasid);
- 	return ret;
+ 	up->ops->release_irq(up);
 
 
 
