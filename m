@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228180-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UAX0KbRpwWmoSwQAu9opvQ
-	(envelope-from <stable+bounces-228839-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:26:28 +0100
+	id eMlhAn1JwWlmSAQAu9opvQ
+	(envelope-from <stable+bounces-228180-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066212F8163
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:26:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C88402F3E54
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78A7332182A0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1408E304FC99
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515BA23AB9D;
-	Mon, 23 Mar 2026 14:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307F03ACA62;
+	Mon, 23 Mar 2026 13:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0xbGR8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtR/e+87"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CFE23BF9B;
-	Mon, 23 Mar 2026 14:47:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33B63B19D1;
+	Mon, 23 Mar 2026 13:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277273; cv=none; b=I3aplwHLDdZioBJczYlKlUW/Z2CaytPSCkjMIsDOaiXgNVFgW+5Pu71QV5iDJPMGx/xAQDLUF+onFnUb5AlZXPbO2LI5p4JBaA4ueXL3cM0uCfGGpj61/6vQUsxFPfH5Wq+PSOIjY4D52UCblcS8gkN1Xsgx/DLHky3XW3vJkX4=
+	t=1774274371; cv=none; b=MG1t9G5FexFjKWImPpGyTFxWK0v9MPrOe2bSlggBhm45QlE7BQMgMi3fllLkQu2BnEz0g5SRPSC8Nr5n92WN2+sFS2xcHoknW+qhgu7ejKnEbJSHtS5UHsSyrB6OVnMqr+UYuo2HifU7RmgBzNQWaFUWfsKHxmhuuL9sY9X1dhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277273; c=relaxed/simple;
-	bh=DnJCSjL/uSIWNJ1gQSj6T2w4EE9HaDnqvMW/iOLzJxI=;
+	s=arc-20240116; t=1774274371; c=relaxed/simple;
+	bh=sr6yanP6HnzM6hUcvvLY5lqFaIzqH5HF0c0NUu9PgzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QUutGBPzlNVQDltUO6v80seZPYUowIBh1eKXKx4QHQ/DHmgu8uUXNw8a9l7ml2GA2XFWAH0zNiXlKspjnvgPqt1Ltm13arI4e4eYAoFDrwoybHJNkPOrZ/bWYJwOMKjNSWQgwCWCf4DkeFO3K3RdvLQxf4Jw9Ov6wkhw792kNh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0xbGR8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B56FC4CEF7;
-	Mon, 23 Mar 2026 14:47:52 +0000 (UTC)
+	 MIME-Version; b=MRHe79q4sZCpJDsDT8ov4g+ChA2S1kE2t8qcGut621P9HvIuXP8FwkU4tLgnAhBIchFC9XAe1hJtLbawlVgcVnPfsUdsull7+b08eLv0SDWnmiCBqEsCAE6a8pKc2ZJcJE/rcWpHi0ysThtutGtqxH7rQQoCQf+q5cy9kzuucAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtR/e+87; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65868C4CEF7;
+	Mon, 23 Mar 2026 13:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277273;
-	bh=DnJCSjL/uSIWNJ1gQSj6T2w4EE9HaDnqvMW/iOLzJxI=;
+	s=korg; t=1774274370;
+	bh=sr6yanP6HnzM6hUcvvLY5lqFaIzqH5HF0c0NUu9PgzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0xbGR8xQa8+c6VuuOhPCKZn2P7x+FsJ3kEaU02JMKXg26boGUDJjOt2jNHW1fCPn
-	 XfpQoPOdx1r/OztR2BTVucnDTzK9GFFFJCz1s9/gH1HCFTxieZ0471be10LwCVQdC6
-	 oP6GZR/GXaTeNT1jHaDG+01nsBAdB8bkAd0evhG4=
+	b=AtR/e+87J9mPZzFTbi+sQ8kITVO8BIW7xTezARmsvoS8pMj2okfZFMULfy4GW9ni3
+	 uHyI6bxwexbW3m1Ydi1Zd27wMfymAamh9S4jF0AxZi5K04lnzI0f4QQhI5IPUCuqtH
+	 lxD5J16qN6AlsvNjArVeE97OQgjkrVTEyFXMIcs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 377/460] arm64: dts: renesas: r9a09g057: Remove wdt{0,2,3} nodes
+	Kyle Meyer <kyle.meyer@hpe.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Steve Wahl <steve.wahl@hpe.com>
+Subject: [PATCH 6.19 196/220] x86/platform/uv: Handle deconfigured sockets
 Date: Mon, 23 Mar 2026 14:46:13 +0100
-Message-ID: <20260323134535.829739855@linuxfoundation.org>
+Message-ID: <20260323134510.778584902@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +64,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228839-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228180-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DBL_PROHIBIT(0.00)[0.198.94.208:email];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,11c00400:email,0.198.93.64:email,12c03000:email,renesas.com:email]
-X-Rspamd-Queue-Id: 066212F8163
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,alien8.de:email,msgid.link:url]
+X-Rspamd-Queue-Id: C88402F3E54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Kyle Meyer <kyle.meyer@hpe.com>
 
-[ Upstream commit a3f34651de4287138c0da19ba321ad72622b4af3 ]
+commit 1f6aa5bbf1d0f81a8a2aafc16136e7dd9a609ff3 upstream.
 
-The HW user manual for the Renesas RZ/V2H(P) SoC (a.k.a r9a09g057)
-states that only WDT1 is supposed to be accessed by the CA55 cores.
-WDT0 is supposed to be used by the CM33 core, WDT2 is supposed
-to be used by the CR8 core 0, and WDT3 is supposed to be used
-by the CR8 core 1.
+When a socket is deconfigured, it's mapped to SOCK_EMPTY (0xffff). This causes
+a panic while allocating UV hub info structures.
 
-Remove wdt{0,2,3} from the SoC specific device tree to make it
-compliant with the specification from the HW manual.
+Fix this by using NUMA_NO_NODE, allowing UV hub info structures to be
+allocated on valid nodes.
 
-This change is harmless as there are currently no users of the
-wdt{0,2,3} device tree nodes, only the wdt1 node is actually used.
-
-Fixes: 095105496e7d ("arm64: dts: renesas: r9a09g057: Add WDT0-WDT3 nodes")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260203124247.7320-3-fabrizio.castro.jz@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8a50c5851927 ("x86/platform/uv: UV support for sub-NUMA clustering")
+Signed-off-by: Kyle Meyer <kyle.meyer@hpe.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Steve Wahl <steve.wahl@hpe.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/ab2BmGL0ehVkkjKk@hpe.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/renesas/r9a09g057.dtsi | 30 ----------------------
- 1 file changed, 30 deletions(-)
+ arch/x86/kernel/apic/x2apic_uv_x.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-index 4676ee7561395..5c7b9e296f439 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-@@ -201,16 +201,6 @@ ostm7: timer@12c03000 {
- 			status = "disabled";
- 		};
+--- a/arch/x86/kernel/apic/x2apic_uv_x.c
++++ b/arch/x86/kernel/apic/x2apic_uv_x.c
+@@ -1708,8 +1708,22 @@ static void __init uv_system_init_hub(vo
+ 		struct uv_hub_info_s *new_hub;
  
--		wdt0: watchdog@11c00400 {
--			compatible = "renesas,r9a09g057-wdt";
--			reg = <0 0x11c00400 0 0x400>;
--			clocks = <&cpg CPG_MOD 0x4b>, <&cpg CPG_MOD 0x4c>;
--			clock-names = "pclk", "oscclk";
--			resets = <&cpg 0x75>;
--			power-domains = <&cpg>;
--			status = "disabled";
--		};
--
- 		wdt1: watchdog@14400000 {
- 			compatible = "renesas,r9a09g057-wdt";
- 			reg = <0 0x14400000 0 0x400>;
-@@ -221,26 +211,6 @@ wdt1: watchdog@14400000 {
- 			status = "disabled";
- 		};
- 
--		wdt2: watchdog@13000000 {
--			compatible = "renesas,r9a09g057-wdt";
--			reg = <0 0x13000000 0 0x400>;
--			clocks = <&cpg CPG_MOD 0x4f>, <&cpg CPG_MOD 0x50>;
--			clock-names = "pclk", "oscclk";
--			resets = <&cpg 0x77>;
--			power-domains = <&cpg>;
--			status = "disabled";
--		};
--
--		wdt3: watchdog@13000400 {
--			compatible = "renesas,r9a09g057-wdt";
--			reg = <0 0x13000400 0 0x400>;
--			clocks = <&cpg CPG_MOD 0x51>, <&cpg CPG_MOD 0x52>;
--			clock-names = "pclk", "oscclk";
--			resets = <&cpg 0x78>;
--			power-domains = <&cpg>;
--			status = "disabled";
--		};
--
- 		rtc: rtc@11c00800 {
- 			compatible = "renesas,r9a09g057-rtca3", "renesas,rz-rtca3";
- 			reg = <0 0x11c00800 0 0x400>;
--- 
-2.51.0
-
+ 		/* Allocate & fill new per hub info list */
+-		new_hub = (bid == 0) ?  &uv_hub_info_node0
+-			: kzalloc_node(bytes, GFP_KERNEL, uv_blade_to_node(bid));
++		if (bid == 0) {
++			new_hub = &uv_hub_info_node0;
++		} else {
++			int nid;
++
++			/*
++			 * Deconfigured sockets are mapped to SOCK_EMPTY. Use
++			 * NUMA_NO_NODE to allocate on a valid node.
++			 */
++			nid = uv_blade_to_node(bid);
++			if (nid == SOCK_EMPTY)
++				nid = NUMA_NO_NODE;
++
++			new_hub = kzalloc_node(bytes, GFP_KERNEL, nid);
++		}
++
+ 		if (WARN_ON_ONCE(!new_hub)) {
+ 			/* do not kfree() bid 0, which is statically allocated */
+ 			while (--bid > 0)
 
 
 
