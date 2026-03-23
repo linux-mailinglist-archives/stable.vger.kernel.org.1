@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-229653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMpVGmptwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:18 +0100
+	id sNjvJypPwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F7352F8A30
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1892D2F4B69
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4ABE9304E1BF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 18D543055A13
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5AC27E049;
-	Mon, 23 Mar 2026 16:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6DA1D63F3;
+	Mon, 23 Mar 2026 14:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gAdESxYi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PU3ceJ0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBD83B9600;
-	Mon, 23 Mar 2026 16:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCAF3AE18A;
+	Mon, 23 Mar 2026 14:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282504; cv=none; b=XsqYGCIfmuGJgJ8u3gaW3KoiAWJ3X0r8RwTXLoVUwulHleLPfBW03IK5CzCTbP5uLa7xHepeDOhPkQVHe2uDp3EycPd8R/DSZ17cvMIXlRKiGTOwTe/AX6XeIgdkigcMKqABZOTLo9w4t5UTNx448rsTW13V1a06Lzkno4PXN/M=
+	t=1774275628; cv=none; b=scrl6yJBEbYayoH6CF/ic7+D2O8s0a0uLiZQreMoM1+PCzI3uoYSXT7WecLKbMupVr75UYyy3ENFYQBshVnQi2jjuMNFWYSzcAkQV19zkyFc9AwzyXSsEo/KWKjODxhDebkuzfZZN8Z1t//DeMA86xkqEN/2AmpCZWs6C7B54FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282504; c=relaxed/simple;
-	bh=DJiDPOtAddInN/mJhuZDLOxwBx0cx5T3draJUSguge0=;
+	s=arc-20240116; t=1774275628; c=relaxed/simple;
+	bh=lZZmQY5WXuc4j/UdiqWmjemW+3Yij7xAli+O7jUj9Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ipT/stHHJdF48U+fVOGBkNZOeYtnzWR2TUviOViu76OE1x5LltOetoYCoT4Pjhr6tTg4O+1KJo0rHao5bvl6EQ8T4oRTKzhkTgJx5EDKA7/jjo1Ks/6oRpldvZwLdOSm0L6MqxJ0boQZMyQ//TxbQPUo705whodRPiom+eZni0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gAdESxYi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC202C4CEF7;
-	Mon, 23 Mar 2026 16:15:03 +0000 (UTC)
+	 MIME-Version; b=EF7MSQIGe04pKj5rAsiFCpnCTBWwZmZV9F4w0y4FZ/yWFwhDkgphc8tAtkrIRsx7T1uyB37mJVGlCsbg8cHT+62YFQ8ztOuif/H8zXiZNbaSfRrrAj4LH/PA08fzEf7oxODczbkYeTCW5alkM5NEU2rx1mH4hxDplk9kMiyGTHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PU3ceJ0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5324C4CEF7;
+	Mon, 23 Mar 2026 14:20:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282504;
-	bh=DJiDPOtAddInN/mJhuZDLOxwBx0cx5T3draJUSguge0=;
+	s=korg; t=1774275628;
+	bh=lZZmQY5WXuc4j/UdiqWmjemW+3Yij7xAli+O7jUj9Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gAdESxYijnCo1j2UUIeEJbPTZZRZmbqlGs5G7AsSGW5J7yPv95xSoEhUsipY/wKif
-	 jQccos1w7hfhJuWEcm/ch75/HYyHTETV4OP7Yzt4PTADYnYGYl1yRo2qVtwQhIMOmI
-	 6nhbX7i42wS33nhqF4e10wd+4e7e3MPThHoIW5K0=
+	b=PU3ceJ0KMRgM2wjjBgJn39ooLOPEdKpU7dhGh+O4AAMnIEf4651GlS3CuY5UsbjUz
+	 3MHitLOPfrNvPFN7NJ33YAg7qY8EtC/Br+WZjtq2CB9xz6LkrOIbJMdXKYzi+EQwCp
+	 af5iqbSbmS1E50chgZCxHjbAtvLaWdSpn/sFhvAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/481] netfilter: nfnetlink_cthelper: fix OOB read in nfnl_cthelper_dump_table()
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Alistair Popple <apopple@nvidia.com>,
+	James Houghton <jthoughton@google.com>,
+	Piotr Jaroszynski <pjaroszynski@nvidia.com>,
+	Balbir Singh <balbirs@nvidia.com>
+Subject: [PATCH 6.12 165/460] arm64: contpte: fix set_access_flags() no-op check for SMMU/ATS faults
 Date: Mon, 23 Mar 2026 14:42:41 +0100
-Message-ID: <20260323134529.573604163@linuxfoundation.org>
+Message-ID: <20260323134530.607769013@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,101 +77,163 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229653-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228621-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1F7352F8A30
+X-Rspamd-Queue-Id: 1892D2F4B69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Piotr Jaroszynski <pjaroszynski@nvidia.com>
 
-[ Upstream commit 6dcee8496d53165b2d8a5909b3050b62ae71fe89 ]
+commit 97c5550b763171dbef61e6239cab372b9f9cd4a2 upstream.
 
-nfnl_cthelper_dump_table() has a 'goto restart' that jumps to a label
-inside the for loop body.  When the "last" helper saved in cb->args[1]
-is deleted between dump rounds, every entry fails the (cur != last)
-check, so cb->args[1] is never cleared.  The for loop finishes with
-cb->args[0] == nf_ct_helper_hsize, and the 'goto restart' jumps back
-into the loop body bypassing the bounds check, causing an 8-byte
-out-of-bounds read on nf_ct_helper_hash[nf_ct_helper_hsize].
+contpte_ptep_set_access_flags() compared the gathered ptep_get() value
+against the requested entry to detect no-ops. ptep_get() ORs AF/dirty
+from all sub-PTEs in the CONT block, so a dirty sibling can make the
+target appear already-dirty. When the gathered value matches entry, the
+function returns 0 even though the target sub-PTE still has PTE_RDONLY
+set in hardware.
 
-The 'goto restart' block was meant to re-traverse the current bucket
-when "last" is no longer found, but it was placed after the for loop
-instead of inside it.  Move the block into the for loop body so that
-the restart only occurs while cb->args[0] is still within bounds.
+For a CPU with FEAT_HAFDBS this gathered view is fine, since hardware may
+set AF/dirty on any sub-PTE and CPU TLB behavior is effectively gathered
+across the CONT range. But page-table walkers that evaluate each
+descriptor individually (e.g. a CPU without DBM support, or an SMMU
+without HTTU, or with HA/HD disabled in CD.TCR) can keep faulting on the
+unchanged target sub-PTE, causing an infinite fault loop.
 
- BUG: KASAN: slab-out-of-bounds in nfnl_cthelper_dump_table+0x9f/0x1b0
- Read of size 8 at addr ffff888104ca3000 by task poc_cthelper/131
- Call Trace:
-  nfnl_cthelper_dump_table+0x9f/0x1b0
-  netlink_dump+0x333/0x880
-  netlink_recvmsg+0x3e2/0x4b0
-  sock_recvmsg+0xde/0xf0
-  __sys_recvfrom+0x150/0x200
-  __x64_sys_recvfrom+0x76/0x90
-  do_syscall_64+0xc3/0x6e0
+Gathering can therefore cause false no-ops when only a sibling has been
+updated:
+ - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
+ - read faults:  target still lacks PTE_AF
 
- Allocated by task 1:
-  __kvmalloc_node_noprof+0x21b/0x700
-  nf_ct_alloc_hashtable+0x65/0xd0
-  nf_conntrack_helper_init+0x21/0x60
-  nf_conntrack_init_start+0x18d/0x300
-  nf_conntrack_standalone_init+0x12/0xc0
+Fix by checking each sub-PTE against the requested AF/dirty/write state
+(the same bits consumed by __ptep_set_access_flags()), using raw
+per-PTE values rather than the gathered ptep_get() view, before
+returning no-op. Keep using the raw target PTE for the write-bit unfold
+decision.
 
-Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Per Arm ARM (DDI 0487) D8.7.1 ("The Contiguous bit"), any sub-PTE in a CONT
+range may become the effective cached translation and software must
+maintain consistent attributes across the range.
+
+Fixes: 4602e5757bcc ("arm64/mm: wire up PTE_CONT for user mappings")
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Alistair Popple <apopple@nvidia.com>
+Reviewed-by: James Houghton <jthoughton@google.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Piotr Jaroszynski <pjaroszynski@nvidia.com>
+Acked-by: Balbir Singh <balbirs@nvidia.com>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nfnetlink_cthelper.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/mm/contpte.c |   53 ++++++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 49 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_cthelper.c b/net/netfilter/nfnetlink_cthelper.c
-index 97248963a7d3b..71a248cca746a 100644
---- a/net/netfilter/nfnetlink_cthelper.c
-+++ b/net/netfilter/nfnetlink_cthelper.c
-@@ -603,10 +603,10 @@ nfnl_cthelper_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 				goto out;
- 			}
- 		}
--	}
--	if (cb->args[1]) {
--		cb->args[1] = 0;
--		goto restart;
-+		if (cb->args[1]) {
-+			cb->args[1] = 0;
-+			goto restart;
-+		}
- 	}
- out:
- 	rcu_read_unlock();
--- 
-2.51.0
-
+--- a/arch/arm64/mm/contpte.c
++++ b/arch/arm64/mm/contpte.c
+@@ -390,6 +390,27 @@ void contpte_clear_young_dirty_ptes(stru
+ }
+ EXPORT_SYMBOL_GPL(contpte_clear_young_dirty_ptes);
+ 
++static bool contpte_all_subptes_match_access_flags(pte_t *ptep, pte_t entry)
++{
++	pte_t *cont_ptep = contpte_align_down(ptep);
++	/*
++	 * PFNs differ per sub-PTE. Match only bits consumed by
++	 * __ptep_set_access_flags(): AF, DIRTY and write permission.
++	 */
++	const pteval_t cmp_mask = PTE_RDONLY | PTE_AF | PTE_WRITE | PTE_DIRTY;
++	pteval_t entry_cmp = pte_val(entry) & cmp_mask;
++	int i;
++
++	for (i = 0; i < CONT_PTES; i++) {
++		pteval_t pte_cmp = pte_val(__ptep_get(cont_ptep + i)) & cmp_mask;
++
++		if (pte_cmp != entry_cmp)
++			return false;
++	}
++
++	return true;
++}
++
+ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+ 					unsigned long addr, pte_t *ptep,
+ 					pte_t entry, int dirty)
+@@ -399,14 +420,38 @@ int contpte_ptep_set_access_flags(struct
+ 	int i;
+ 
+ 	/*
+-	 * Gather the access/dirty bits for the contiguous range. If nothing has
+-	 * changed, its a noop.
++	 * Check whether all sub-PTEs in the CONT block already match the
++	 * requested access flags/write permission, using raw per-PTE values
++	 * rather than the gathered ptep_get() view.
++	 *
++	 * __ptep_set_access_flags() can update AF, dirty and write
++	 * permission, but only to make the mapping more permissive.
++	 *
++	 * ptep_get() gathers AF/dirty state across the whole CONT block,
++	 * which is correct for a CPU with FEAT_HAFDBS. But page-table
++	 * walkers that evaluate each descriptor individually (e.g. a CPU
++	 * without DBM support, or an SMMU without HTTU, or with HA/HD
++	 * disabled in CD.TCR) can keep faulting on the target sub-PTE if
++	 * only a sibling has been updated. Gathering can therefore cause
++	 * false no-ops when only a sibling has been updated:
++	 *  - write faults: target still has PTE_RDONLY (needs PTE_RDONLY cleared)
++	 *  - read faults:  target still lacks PTE_AF
++	 *
++	 * Per Arm ARM (DDI 0487) D8.7.1, any sub-PTE in a CONT range may
++	 * become the effective cached translation, so all entries must have
++	 * consistent attributes. Check the full CONT block before returning
++	 * no-op, and when any sub-PTE mismatches, proceed to update the whole
++	 * range.
+ 	 */
+-	orig_pte = pte_mknoncont(ptep_get(ptep));
+-	if (pte_val(orig_pte) == pte_val(entry))
++	if (contpte_all_subptes_match_access_flags(ptep, entry))
+ 		return 0;
+ 
+ 	/*
++	 * Use raw target pte (not gathered) for write-bit unfold decision.
++	 */
++	orig_pte = pte_mknoncont(__ptep_get(ptep));
++
++	/*
+ 	 * We can fix up access/dirty bits without having to unfold the contig
+ 	 * range. But if the write bit is changing, we must unfold.
+ 	 */
 
 
 
