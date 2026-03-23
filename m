@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229640-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oC3XBfdNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228653-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:07 +0100
+	id 8Kf8LgRswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229640-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD972F48CA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F792F8688
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5D2D43043408
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D78423172BFB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233AA823DD;
-	Mon, 23 Mar 2026 14:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0593B9D9D;
+	Mon, 23 Mar 2026 16:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RdBFZAxh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhOkTP1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90E7A59;
-	Mon, 23 Mar 2026 14:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907033B8BCD;
+	Mon, 23 Mar 2026 16:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275723; cv=none; b=hR1jQevKDVjR8mt3mk6wFDuvAHO85LqUxQg5jG/GsrOmvqRtRI72U4I9ugHSU29Z9RKn52Y3Q2Vq4Xx5jcKDRCO88f7uXhLSieo8rnuSoZfFjIFDiE4V65nU9nAwIDdbnl0zg5hUFduqEfuvwyVisXcN7qAPcRNYDXTQeZz72hE=
+	t=1774282469; cv=none; b=GUJzB8h+bJVbPjVwgGAkmAyu1Pj4fxPXQ1ECPa9b3QAm6A96YIIbV2Y5zAmr+AaBB2RyAQr2C2Bo/mAcH64HqGFRtlckyMNwjv9vC85DrL/+4WP3qM7q6IP8xQpNJDS8obar/bbvv66nN2wrs2uhSJu1JYDgGr5x/iSIfLYTDRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275723; c=relaxed/simple;
-	bh=PBQpOKme9glVFXX7GWWUT1GmGatcMoyek3/qeCPiHZw=;
+	s=arc-20240116; t=1774282469; c=relaxed/simple;
+	bh=TpI9KL32F1c1yhGRYO8DmodMgCoFZvId2FxPsBkCARc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRLmoXkHeAVcVuIMyq6WhdJk6/NuOkZeSa9pYqRZtN+SaNRlB4QE0kPnBnCufaBAS6Y14fbgHl11P2itigSOTku0E+Cn4TZJIsurgoIFLjrG7siRk9pHjx3MWn8Ym5TCdqP83Wz5mr0ZfRbYW+82pDvFRrNzVfgHgnTNZVsGYo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RdBFZAxh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD66C4CEF7;
-	Mon, 23 Mar 2026 14:22:03 +0000 (UTC)
+	 MIME-Version; b=XTC1pJkiwkMTZvSs/Dc2ozBbulEYhOGxl2VU5gF7yZ222TBgtX++c9BItFF0Dj/K/Rg3PUPHHpKbA/Gtw66JEBIL+zRUNdWqYth/G+flubdYSVgpiWYc1H78TQiH7sbmHTT43NnBKtqzYeiNXdsMLFQGXvCTYD8mN0Vhh1vLbUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhOkTP1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21996C4CEF7;
+	Mon, 23 Mar 2026 16:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275723;
-	bh=PBQpOKme9glVFXX7GWWUT1GmGatcMoyek3/qeCPiHZw=;
+	s=korg; t=1774282469;
+	bh=TpI9KL32F1c1yhGRYO8DmodMgCoFZvId2FxPsBkCARc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RdBFZAxhj7FIVCyNE6tNP0o8W3gBJ7hmGifCPxuvHkr/reKj3441/YQYFZD3fccZx
-	 Z93+IM4Ql/TPNdUM2o3jm01JJ+Q8zvuLW1nykcncQLaFh5v88IKjTORToNue+yvlRd
-	 ZxKUSC+HL2onBwuxyhlnPkzveOGtFQ7TICEBWmi4=
+	b=ZhOkTP1Mv8aW9DMVG6zvKnpoeskpUW6NSB3jVKoN0GBNh7NFvXm/ONM8wQuLdPQrH
+	 9rjOLrxXoWw9Hvbo+TBCpXo5nfzx6gppbYObrudKgaRiUU/ISokSf3xWpYgApGSDFi
+	 q0eVESYjB4XTlvfjxL2A/mZ+rsCRSLAzaRp+m6/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Luka Gejak <luka.gejak@linux.dev>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 6.12 153/460] staging: rtl8723bs: fix potential out-of-bounds read in rtw_restruct_wmm_ie
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 167/481] net/sched: teql: fix NULL pointer dereference in iptunnel_xmit on TEQL slave xmit
 Date: Mon, 23 Mar 2026 14:42:29 +0100
-Message-ID: <20260323134530.330035363@linuxfoundation.org>
+Message-ID: <20260323134529.297083935@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +67,113 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228653-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229640-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3DD972F48CA
+X-Rspamd-Queue-Id: 98F792F8688
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luka Gejak <luka.gejak@linux.dev>
+From: Weiming Shi <bestswngs@gmail.com>
 
-commit a75281626fc8fa6dc6c9cc314ee423e8bc45203b upstream.
+[ Upstream commit 0cc0c2e661af418bbf7074179ea5cfffc0a5c466 ]
 
-The current code checks 'i + 5 < in_len' at the end of the if statement.
-However, it accesses 'in_ie[i + 5]' before that check, which can lead
-to an out-of-bounds read. Move the length check to the beginning of the
-conditional to ensure the index is within bounds before accessing the
-array.
+teql_master_xmit() calls netdev_start_xmit(skb, slave) to transmit
+through slave devices, but does not update skb->dev to the slave device
+beforehand.
 
-Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Luka Gejak <luka.gejak@linux.dev>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20260224132647.11642-2-luka.gejak@linux.dev
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When a gretap tunnel is a TEQL slave, the transmit path reaches
+iptunnel_xmit() which saves dev = skb->dev (still pointing to teql0
+master) and later calls iptunnel_xmit_stats(dev, pkt_len). This
+function does:
+
+    get_cpu_ptr(dev->tstats)
+
+Since teql_master_setup() does not set dev->pcpu_stat_type to
+NETDEV_PCPU_STAT_TSTATS, the core network stack never allocates tstats
+for teql0, so dev->tstats is NULL. get_cpu_ptr(NULL) computes
+NULL + __per_cpu_offset[cpu], resulting in a page fault.
+
+ BUG: unable to handle page fault for address: ffff8880e6659018
+ #PF: supervisor write access in kernel mode
+ #PF: error_code(0x0002) - not-present page
+ PGD 68bc067 P4D 68bc067 PUD 0
+ Oops: Oops: 0002 [#1] SMP KASAN PTI
+ RIP: 0010:iptunnel_xmit (./include/net/ip_tunnels.h:664 net/ipv4/ip_tunnel_core.c:89)
+ Call Trace:
+  <TASK>
+  ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
+  __gre_xmit (net/ipv4/ip_gre.c:478)
+  gre_tap_xmit (net/ipv4/ip_gre.c:779)
+  teql_master_xmit (net/sched/sch_teql.c:319)
+  dev_hard_start_xmit (net/core/dev.c:3887)
+  sch_direct_xmit (net/sched/sch_generic.c:347)
+  __dev_queue_xmit (net/core/dev.c:4802)
+  neigh_direct_output (net/core/neighbour.c:1660)
+  ip_finish_output2 (net/ipv4/ip_output.c:237)
+  __ip_finish_output.part.0 (net/ipv4/ip_output.c:315)
+  ip_mc_output (net/ipv4/ip_output.c:369)
+  ip_send_skb (net/ipv4/ip_output.c:1508)
+  udp_send_skb (net/ipv4/udp.c:1195)
+  udp_sendmsg (net/ipv4/udp.c:1485)
+  inet_sendmsg (net/ipv4/af_inet.c:859)
+  __sys_sendto (net/socket.c:2206)
+
+Fix this by setting skb->dev = slave before calling
+netdev_start_xmit(), so that tunnel xmit functions see the correct
+slave device with properly allocated tstats.
+
+Fixes: 039f50629b7f ("ip_tunnel: Move stats update to iptunnel_xmit()")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260304044216.3517851-3-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sched/sch_teql.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/staging/rtl8723bs/core/rtw_mlme.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme.c
-@@ -1929,7 +1929,10 @@ int rtw_restruct_wmm_ie(struct adapter *
- 	while (i < in_len) {
- 		ielength = initial_out_len;
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 0a7856e14a975..c89cb6eba27da 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -315,6 +315,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			if (__netif_tx_trylock(slave_txq)) {
+ 				unsigned int length = qdisc_pkt_len(skb);
  
--		if (in_ie[i] == 0xDD && in_ie[i+2] == 0x00 && in_ie[i+3] == 0x50  && in_ie[i+4] == 0xF2 && in_ie[i+5] == 0x02 && i+5 < in_len) { /* WMM element ID and OUI */
-+		if (i + 5 < in_len &&
-+		    in_ie[i] == 0xDD && in_ie[i + 2] == 0x00 &&
-+		    in_ie[i + 3] == 0x50 && in_ie[i + 4] == 0xF2 &&
-+		    in_ie[i + 5] == 0x02) {
- 			for (j = i; j < i + 9; j++) {
- 				out_ie[ielength] = in_ie[j];
- 				ielength++;
++				skb->dev = slave;
+ 				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
+ 				    netdev_start_xmit(skb, slave, slave_txq, false) ==
+ 				    NETDEV_TX_OK) {
+-- 
+2.51.0
+
 
 
 
