@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-229141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228651-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QOJTDD9awWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229141-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:31 +0100
+	id 4EyTOutNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228651-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:55 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E2D92F62B0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C07C2F48B1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 63404305BB84
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B120530423DD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9BC3B27D8;
-	Mon, 23 Mar 2026 15:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1A421FC101;
+	Mon, 23 Mar 2026 14:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVbgwdSm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ia8tpA6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401C33B5306;
-	Mon, 23 Mar 2026 15:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7A33ACEED;
+	Mon, 23 Mar 2026 14:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278191; cv=none; b=tH0xODE+PWGa2Ey9l4lgL49bOy0dFWvbqf3aq0ui7nGrd26m3An4fT6zEZNJO9T0Bqgv12uYpXUx16J5JLZ6RFT6Uk3ivQHaF0lQDyVABruR9OGuk1e0h/k5oGzkboBXQ19I1U6SgxOwSnhN6IW1fWD36OjXJl+aAMm/oxH0cQ4=
+	t=1774275717; cv=none; b=dYDiUnN21Xm/1JlHeOrzx7yo7g2dB5ygCvBptzbQA38aOtEG7YYT/QT7VEJ/jWOq0Np5k++Onuo6HxAAGLTFI2p9kV0YZu5Pw9TGjEUCcOCjpKBu0aN0udtsmQXNLvgv8WdmQSK6JGLvrIEIWCPqa+j4YPp7jC8+BXk6NJyuJG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278191; c=relaxed/simple;
-	bh=8a0/fnvz2bbi1VoMs2UEZz9/cXV8lFDfrnOeEh3/3Nw=;
+	s=arc-20240116; t=1774275717; c=relaxed/simple;
+	bh=kmbg2AHYoJG/aTIfpptvtmGoMjGpG6PdtYMhaJj7D0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBjYrK5sGO9HA6FemAZGK6CyXz1rF8vjEjS0RaIyX+pG2NHoll/M9IK0Fd4m/z08YBx3Lrk7s9Qp2S4Mp4jaNBnuts/u8yn7fgBCRKnMYJMPbHFKOKSnpdkOWGXONbLwouAebmJ6zWd0Mbvpy9n/HEcj/iv1SMnWU5fD3hic8tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVbgwdSm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763CDC2BCB4;
-	Mon, 23 Mar 2026 15:03:10 +0000 (UTC)
+	 MIME-Version; b=jvC0hjA0Cr1TwTza0bcLzTEKP1np7lGFEmEYUtcSSkcxV9dxzrwV3PcRMst8GebHbENMU+OJ/EAObattdgCLrYLQTT4cQ2pYtZntJQB3m3Ra1bSOjknPaR5o9LqrHO26nR3kK8b++fD+wMciDFOnF62elx8+hpW7YX4yYMvLVPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ia8tpA6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA07FC4CEF7;
+	Mon, 23 Mar 2026 14:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278190;
-	bh=8a0/fnvz2bbi1VoMs2UEZz9/cXV8lFDfrnOeEh3/3Nw=;
+	s=korg; t=1774275717;
+	bh=kmbg2AHYoJG/aTIfpptvtmGoMjGpG6PdtYMhaJj7D0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VVbgwdSmL+CW/iTyMGg3b5vWx+EyJnPolSjIAHNCYOV61g7ZCXqbDfl68WtP6CZki
-	 2jpgZPDV7tFyMatK7rDYbXGzSxKSbaI52P0wqsRg9r3ER75SSFFCbsNUp3oRbpm3hy
-	 SL1Zh+yyccUuRyJ6eIU/LZI3JGkSnyZDulifz9Oo=
+	b=1Ia8tpA6KvYz41rtNEefj/8MPqdObb+G4wYcgLkqevNkI1rP2NtrUlUuUKaMJdTKH
+	 eXVnCBheLHGrnDNW65Q4s8fK3kiWH7L3Var620p8PaI6PCojY5Miw/8E2QbToZbjqG
+	 rONekVtoua5SsuMWAm+TwNr1thQgSW0cmTtygSdk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Cotifava <cotifavamatteo@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/567] ASoC: soc-core: flush delayed work before removing DAIs and widgets
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.12 151/460] ixgbevf: fix link setup issue
 Date: Mon, 23 Mar 2026 14:42:27 +0100
-Message-ID: <20260323134539.451212359@linuxfoundation.org>
+Message-ID: <20260323134530.284560515@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,91 +69,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229141-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228651-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2E2D92F62B0
+X-Rspamd-Queue-Id: 0C07C2F48B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: matteo.cotifava <cotifavamatteo@gmail.com>
+From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
 
-[ Upstream commit 95bc5c225513fc3c4ce169563fb5e3929fbb938b ]
+commit feae40a6a178bb525a15f19288016e5778102a99 upstream.
 
-When a sound card is unbound while a PCM stream is open, a
-use-after-free can occur in snd_soc_dapm_stream_event(), called from
-the close_delayed_work workqueue handler.
+It may happen that VF spawned for E610 adapter has problem with setting
+link up. This happens when ixgbevf supporting mailbox API 1.6 cooperates
+with PF driver which doesn't support this version of API, and hence
+doesn't support new approach for getting PF link data.
 
-During unbind, snd_soc_unbind_card() flushes delayed work and then
-calls soc_cleanup_card_resources(). Inside cleanup,
-snd_card_disconnect_sync() releases all PCM file descriptors, and
-the resulting PCM close path can call snd_soc_dapm_stream_stop()
-which schedules new delayed work with a pmdown_time timer delay.
-Since this happens after the flush in snd_soc_unbind_card(), the
-new work is not caught. soc_remove_link_components() then frees
-DAPM widgets before this work fires, leading to the use-after-free.
+In that case VF asks PF to provide link data but as PF doesn't support
+it, returns -EOPNOTSUPP what leads to early bail from link configuration
+sequence.
 
-The existing flush in soc_free_pcm_runtime() also cannot help as it
-runs after soc_remove_link_components() has already freed the widgets.
+Avoid such situation by using legacy VFLINKS approach whenever negotiated
+API version is less than 1.6.
 
-Add a flush in soc_cleanup_card_resources() after
-snd_card_disconnect_sync() (after which no new PCM closes can
-schedule further delayed work) and before soc_remove_link_dais()
-and soc_remove_link_components() (which tear down the structures the
-delayed work accesses).
+To reproduce the issue just create VF and set its link up - adapter must
+be any from the E610 family, ixgbevf must support API 1.6 or higher while
+ixgbevf must not.
 
-Fixes: e894efef9ac7 ("ASoC: core: add support to card rebind")
-Signed-off-by: Matteo Cotifava <cotifavamatteo@gmail.com>
-Link: https://patch.msgid.link/20260309215412.545628-3-cotifavamatteo@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 53f0eb62b4d2 ("ixgbevf: fix getting link speed data for E610 devices")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/ixgbevf/vf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 39570e0e92bbc..e2a4ff5414099 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1996,6 +1996,9 @@ static void soc_cleanup_card_resources(struct snd_soc_card *card)
- 	for_each_card_rtds(card, rtd)
- 		if (rtd->initialized)
- 			snd_soc_link_exit(rtd);
-+	/* flush delayed work before removing DAIs and DAPM widgets */
-+	snd_soc_flush_all_delayed_work(card);
-+
- 	/* remove and free each DAI */
- 	soc_remove_link_dais(card);
- 	soc_remove_link_components(card);
--- 
-2.51.0
-
+--- a/drivers/net/ethernet/intel/ixgbevf/vf.c
++++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
+@@ -852,7 +852,8 @@ static s32 ixgbevf_check_mac_link_vf(str
+ 	if (!mac->get_link_status)
+ 		goto out;
+ 
+-	if (hw->mac.type == ixgbe_mac_e610_vf) {
++	if (hw->mac.type == ixgbe_mac_e610_vf &&
++	    hw->api_version >= ixgbe_mbox_api_16) {
+ 		ret_val = ixgbevf_get_pf_link_state(hw, speed, link_up);
+ 		if (ret_val)
+ 			goto out;
 
 
 
