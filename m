@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNiqGT5NwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:02 +0100
+	id GIo1D51UwWlXSQQAu9opvQ
+	(envelope-from <stable+bounces-228821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6952F46A5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A758E2F579B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0168032105F8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F274A30F3EAB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BE23B4EBC;
-	Mon, 23 Mar 2026 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C96723EA97;
+	Mon, 23 Mar 2026 14:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12dcSWeL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaIGSYVH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAF83B4EA3;
-	Mon, 23 Mar 2026 14:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26E823E33D;
+	Mon, 23 Mar 2026 14:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274795; cv=none; b=QrcbD8SUo1UKh6ugocNJ8h7TtFPUvgoS51XxVBUxfylaNZ9ZpvMMlL6EtEdTPZ2duIMP/d/TJAQ07IKh33OAFMbm/AR7QSOw55X7jaDfSP3vfhGSHBwDS2TR43pm/rn3gI5rEVQzQCzCYi6oGpaso2U4CCAdV0NT7/7K0yNTsiQ=
+	t=1774277227; cv=none; b=fej4p7hwXhmdU8Xm+aiXeVZPdMWWcuiTUzE8cosJM8vsGTtSR3+mUnqX0aeBiUx66knjR073tCPaHWIGkqNjK3VDxZGQ+0+H05QsZRWqvI0Vm8ZW9UsBFagavpENXYU+GXI2qdsrj7KHmSl2rKlZyP86GUyk1d4fPH46g9fah6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274795; c=relaxed/simple;
-	bh=DwKz7VHQKjqqSgmxby1qG+/w3lZOnDDhYBI7YtttazM=;
+	s=arc-20240116; t=1774277227; c=relaxed/simple;
+	bh=IRzvck8ZNTivlcSvm+9M6aCmITvlh5Wt7sdPDT9ZjbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZ1dmqgiN2JwBJ+TKccd09u8Dy+STFp3sZlcoiWl8zNJKf+mbMcZZxrkEd8G97cHIcpPU7p3yD8Sc+puKBZ7NGKelxJBll2Qm6gMJNWA5xNARlFOtCTBN9tR+VDdSgSpC2lXkDULSFmHyzId7hlQePUYmswaT3rqe9qM5mxnuFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12dcSWeL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04EC5C4CEF7;
-	Mon, 23 Mar 2026 14:06:34 +0000 (UTC)
+	 MIME-Version; b=L/wZgecGIqS1PERIUHRo30GdtHJbVs27GYMbq2mj7zH2tLL67V/scmkiNUiG93+MSWLDpcXLqVPt3ASM3X6XdPaugRTJgmetHZzcXIf71XpRCiMW4lx4rlgoLVwlPxkQ3IGRiQ6L20EavLOWbZPKX6GXD5zcTQ6bfeKAJC7PnhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaIGSYVH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766A7C4CEF7;
+	Mon, 23 Mar 2026 14:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274795;
-	bh=DwKz7VHQKjqqSgmxby1qG+/w3lZOnDDhYBI7YtttazM=;
+	s=korg; t=1774277226;
+	bh=IRzvck8ZNTivlcSvm+9M6aCmITvlh5Wt7sdPDT9ZjbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12dcSWeLNlRJiyjJHdmXiTqyLLwvI1ZbQUAt/B1/D+ULOY+1mpLxen13Q0zdvp8th
-	 xwFOblvQw7qjkWX36zaz8kPdFKIwK+9w+Cg8nD0AF5g3aVamQUwyb/sA8Sp8JjusXz
-	 aWFv/8Nvot4lTSLRq/FF58Dr4jI5Cw/OreARGLH0=
+	b=jaIGSYVHscpk466PzhDz8SnO5pgzuAhF8pdKdZlhLzrtYTJicAh7W/Aunezsj81mp
+	 3A5fQtz1MJeXa+c3C2pUKqhNaF/eRS3tdJqFLSEc3+9xynuLsibJ3GYRPHGJ6q1voB
+	 KdGryEClOvy/vKuSA2YUxZn//MYoM6rf+ht+MEC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 110/212] wifi: mac80211: Fix static_branch_dec() underflow for aql_disable.
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 335/460] mmc: sdhci-pci-gli: fix GL9750 DMA write corruption
 Date: Mon, 23 Mar 2026 14:45:31 +0100
-Message-ID: <20260323134507.258344129@linuxfoundation.org>
+Message-ID: <20260323134534.762729486@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,148 +65,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228319-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228821-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,feb9ce36a95341bb47a4];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9A6952F46A5
+X-Rspamd-Queue-Id: A758E2F579B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-[ Upstream commit b94ae8e0d5fe1bdbbfdc3854ff6ce98f6876a828 ]
+commit 2b76e0cc7803e5ab561c875edaba7f6bbd87fbb0 upstream.
 
-syzbot reported static_branch_dec() underflow in aql_enable_write(). [0]
+The GL9750 SD host controller has intermittent data corruption during
+DMA write operations. The GM_BURST register's R_OSRC_Lmt field
+(bits 17:16), which limits outstanding DMA read requests from system
+memory, is not being cleared during initialization. The Windows driver
+sets R_OSRC_Lmt to zero, limiting requests to the smallest unit.
 
-The problem is that aql_enable_write() does not serialise concurrent
-write()s to the debugfs.
+Clear R_OSRC_Lmt to match the Windows driver behavior. This eliminates
+write corruption verified with f3write/f3read tests while maintaining
+DMA performance.
 
-aql_enable_write() checks static_key_false(&aql_disable.key) and
-later calls static_branch_inc() or static_branch_dec(), but the
-state may change between the two calls.
-
-aql_disable does not need to track inc/dec.
-
-Let's use static_branch_enable() and static_branch_disable().
-
-[0]:
-val == 0
-WARNING: kernel/jump_label.c:311 at __static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311, CPU#0: syz.1.3155/20288
-Modules linked in:
-CPU: 0 UID: 0 PID: 20288 Comm: syz.1.3155 Tainted: G     U       L      syzkaller #0 PREEMPT(full)
-Tainted: [U]=USER, [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
-RIP: 0010:__static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311
-Code: f2 c9 ff 5b 5d c3 cc cc cc cc e8 54 f2 c9 ff 48 89 df e8 ac f9 ff ff eb ad e8 45 f2 c9 ff 90 0f 0b 90 eb a2 e8 3a f2 c9 ff 90 <0f> 0b 90 eb 97 48 89 df e8 5c 4b 33 00 e9 36 ff ff ff 0f 1f 80 00
-RSP: 0018:ffffc9000b9f7c10 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffffff9b3e5d40 RCX: ffffffff823c57b4
-RDX: ffff8880285a0000 RSI: ffffffff823c5846 RDI: ffff8880285a0000
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000000a
-R13: 1ffff9200173ef88 R14: 0000000000000001 R15: ffffc9000b9f7e98
-FS:  00007f530dd726c0(0000) GS:ffff8881245e3000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000001140 CR3: 000000007cc4a000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __static_key_slow_dec_cpuslocked kernel/jump_label.c:297 [inline]
- __static_key_slow_dec kernel/jump_label.c:321 [inline]
- static_key_slow_dec+0x7c/0xc0 kernel/jump_label.c:336
- aql_enable_write+0x2b2/0x310 net/mac80211/debugfs.c:343
- short_proxy_write+0x133/0x1a0 fs/debugfs/file.c:383
- vfs_write+0x2aa/0x1070 fs/read_write.c:684
- ksys_pwrite64 fs/read_write.c:793 [inline]
- __do_sys_pwrite64 fs/read_write.c:801 [inline]
- __se_sys_pwrite64 fs/read_write.c:798 [inline]
- __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:798
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xc9/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f530cf9aeb9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f530dd72028 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
-RAX: ffffffffffffffda RBX: 00007f530d215fa0 RCX: 00007f530cf9aeb9
-RDX: 0000000000000003 RSI: 0000000000000000 RDI: 0000000000000010
-RBP: 00007f530d008c1f R08: 0000000000000000 R09: 0000000000000000
-R10: 4200000000000005 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f530d216038 R14: 00007f530d215fa0 R15: 00007ffde89fb978
- </TASK>
-
-Fixes: e908435e402a ("mac80211: introduce aql_enable node in debugfs")
-Reported-by: syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69a8979e.a70a0220.b118c.0025.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260306072405.3649474-1-kuniyu@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e51df6ce668a ("mmc: host: sdhci-pci: Add Genesys Logic GL975x support")
+Closes: https://lore.kernel.org/linux-mmc/33d12807-5c72-41ce-8679-57aa11831fad@linux.dev/
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Reviewed-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/debugfs.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index d02f07368c511..687a66cd49433 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -320,7 +320,6 @@ static ssize_t aql_enable_read(struct file *file, char __user *user_buf,
- static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
- 				size_t count, loff_t *ppos)
- {
--	bool aql_disabled = static_key_false(&aql_disable.key);
- 	char buf[3];
- 	size_t len;
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -67,6 +67,9 @@
+ #define   GLI_9750_MISC_TX1_DLY_VALUE    0x5
+ #define   SDHCI_GLI_9750_MISC_SSC_OFF    BIT(26)
  
-@@ -335,15 +334,12 @@ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
- 	if (len > 0 && buf[len - 1] == '\n')
- 		buf[len - 1] = 0;
++#define SDHCI_GLI_9750_GM_BURST_SIZE		  0x510
++#define   SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT  GENMASK(17, 16)
++
+ #define SDHCI_GLI_9750_TUNING_CONTROL	          0x540
+ #define   SDHCI_GLI_9750_TUNING_CONTROL_EN          BIT(4)
+ #define   GLI_9750_TUNING_CONTROL_EN_ON             0x1
+@@ -271,10 +274,16 @@ static void gli_set_9750(struct sdhci_ho
+ 	u32 misc_value;
+ 	u32 parameter_value;
+ 	u32 control_value;
++	u32 burst_value;
+ 	u16 ctrl2;
  
--	if (buf[0] == '0' && buf[1] == '\0') {
--		if (!aql_disabled)
--			static_branch_inc(&aql_disable);
--	} else if (buf[0] == '1' && buf[1] == '\0') {
--		if (aql_disabled)
--			static_branch_dec(&aql_disable);
--	} else {
-+	if (buf[0] == '0' && buf[1] == '\0')
-+		static_branch_enable(&aql_disable);
-+	else if (buf[0] == '1' && buf[1] == '\0')
-+		static_branch_disable(&aql_disable);
-+	else
- 		return -EINVAL;
--	}
+ 	gl9750_wt_on(host);
  
- 	return count;
- }
--- 
-2.51.0
-
++	/* clear R_OSRC_Lmt to avoid DMA write corruption */
++	burst_value = sdhci_readl(host, SDHCI_GLI_9750_GM_BURST_SIZE);
++	burst_value &= ~SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT;
++	sdhci_writel(host, burst_value, SDHCI_GLI_9750_GM_BURST_SIZE);
++
+ 	driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
+ 	pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
+ 	sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
 
 
 
