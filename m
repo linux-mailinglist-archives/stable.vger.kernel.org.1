@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228301-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IA4WDIBJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228121-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:04 +0100
+	id cP3FOhRNwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228301-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:20 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B8F12F3E5B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26BBF2F4634
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 912993019062
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1DD273050A2F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C4991A6815;
-	Mon, 23 Mar 2026 13:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1EF3B0ADE;
+	Mon, 23 Mar 2026 14:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNVb6IzT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esNGEUN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3C721D00A;
-	Mon, 23 Mar 2026 13:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21173B0ACB;
+	Mon, 23 Mar 2026 14:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274186; cv=none; b=VonEUURMnRYpqvlqh5RTF3I0lJGcRJvZq2FsVP9t7v6s9COSP3EKeDISqHUiT+l1Qw/Jf3xF5bAFXIMskQBiQuIJXY2t0QcGDb0g85LuB1oCvrz3QmtoQc7wMdUu47yWPe6MTZH+ByJ8h51WjqsHs4Df0aRH0aFddB7kvsges90=
+	t=1774274739; cv=none; b=snQWwL6AdEh07I9WC/4DK52L2er/RPz4oeE15Q90AwhgEyfQeVPrO+pV7uZeLaHiUZGsfG4alnao+Zz/RkVBAuCkJvUZYwB6SN5MyPj4Xga9csBni+VZwEAeuyeks0e3HAsaz08FLbQhx0+1Ftkq2jPbb0kbm8Url2OnIHPqHbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274186; c=relaxed/simple;
-	bh=5b92ULWGqdtfFvslQIF9HiKSvA+HzS42An2K8b5AIw0=;
+	s=arc-20240116; t=1774274739; c=relaxed/simple;
+	bh=JZ4eR8diKEBgV1BckWVhCmfRqXODaVcSNNW0Z69m5fQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1JDeNHNy+jWYw/nD1Y7IyDqUqqOJyaB8G5pWvDa+aoGdkUk+fMHtUWhWBGWEwAV+ExM6v01AgPKOwMVgIfWUSZNuzOubyc9et7Aw7ftc8x8bAFMlm9JbO81AfilflkN2wwXKv6dzzA+eWQDmfk9nlZX85KO2bM35Dq5TTbSsKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNVb6IzT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCBEC2BCB1;
-	Mon, 23 Mar 2026 13:56:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QBLwLcvL4YCl35MI+7vAXviFRQqmkcZ/JE7N9x3gL7COqsoWOzJDbW/gqxy/cb0jlpKMzFp/MQUmqDIw7MsxD91k0S/oFvVBq8ZsZFnHxBpJs8bCDQVkUKCl2JlRMjRvei9m+j87bIT3GHXF9EfM3Yvel11oyqfoQzr2Axp8W4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esNGEUN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26288C4CEF7;
+	Mon, 23 Mar 2026 14:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274186;
-	bh=5b92ULWGqdtfFvslQIF9HiKSvA+HzS42An2K8b5AIw0=;
+	s=korg; t=1774274739;
+	bh=JZ4eR8diKEBgV1BckWVhCmfRqXODaVcSNNW0Z69m5fQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNVb6IzTr6IV7bLjYvfGlQJUpXhWmmN0WW+9u9TNyMCDIu2nRgoln8z+MruhKn5u2
-	 j1nhKUCmQbeb4bCTzv4wTuTBS5NNUQVeTBR+jtG7IBikGxZqiv3xQ5HIz65hxyUaDM
-	 2mZSCChWzZBX3Zab9FmsPxK0TDa6O6J+veeJ9WDw=
+	b=esNGEUN6hCWhoEZkQfxeUf+UmrL5ltKcoQt3dpF6a3+A3sf87YtC0yZpEISVqkH9c
+	 9w8zLhddIhzUpM6dXND7JZjFHLH61ItFPJKssMRJt8Rq7J1AcNl1DB/h0t7ZQj+g5x
+	 ui983E+mRVcnDH0H1LfjWT0ZXyXwsRJB609Nulvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 138/220] netfilter: nft_ct: drop pending enqueued packets on removal
+	Zhanjun Dong <zhanjun.dong@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.18 094/212] drm/xe/guc: Ensure CT state transitions via STOP before DISABLED
 Date: Mon, 23 Mar 2026 14:45:15 +0100
-Message-ID: <20260323134508.929136673@linuxfoundation.org>
+Message-ID: <20260323134506.748761296@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,108 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228301-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228121-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 8B8F12F3E5B
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 26BBF2F4634
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Zhanjun Dong <zhanjun.dong@intel.com>
 
-[ Upstream commit 36eae0956f659e48d5366d9b083d9417f3263ddc ]
+commit 7838dd8367419e9fc43b79c038321cb3c04de2a2 upstream.
 
-Packets sitting in nfqueue might hold a reference to:
+The GuC CT state transition requires moving to the STOP state before
+entering the DISABLED state. Update the driver teardown sequence to make
+the proper state machine transitions.
 
-- templates that specify the conntrack zone, because a percpu area is
-  used and module removal is possible.
-- conntrack timeout policies and helper, where object removal leave
-  a stale reference.
-
-Since these objects can just go away, drop enqueued packets to avoid
-stale reference to them.
-
-If there is a need for finer grain removal, this logic can be revisited
-to make selective packet drop upon dependencies.
-
-Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee4b32220a6b ("drm/xe/guc: Add devm release action to safely tear down CT")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260310225039.1320161-6-zhanjun.dong@intel.com
+(cherry picked from commit dace8cb0032f57ea67c87b3b92ad73c89dd2db44)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_ct.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/xe/xe_guc_ct.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
-index 6f2ae7cad7310..db1bf69f87750 100644
---- a/net/netfilter/nft_ct.c
-+++ b/net/netfilter/nft_ct.c
-@@ -23,6 +23,7 @@
- #include <net/netfilter/nf_conntrack_l4proto.h>
- #include <net/netfilter/nf_conntrack_expect.h>
- #include <net/netfilter/nf_conntrack_seqadj.h>
-+#include "nf_internals.h"
- 
- struct nft_ct_helper_obj  {
- 	struct nf_conntrack_helper *helper4;
-@@ -543,6 +544,7 @@ static void __nft_ct_set_destroy(const struct nft_ctx *ctx, struct nft_ct *priv)
- #endif
- #ifdef CONFIG_NF_CONNTRACK_ZONES
- 	case NFT_CT_ZONE:
-+		nf_queue_nf_hook_drop(ctx->net);
- 		mutex_lock(&nft_ct_pcpu_mutex);
- 		if (--nft_ct_pcpu_template_refcnt == 0)
- 			nft_ct_tmpl_put_pcpu();
-@@ -1016,6 +1018,7 @@ static void nft_ct_timeout_obj_destroy(const struct nft_ctx *ctx,
- 	struct nft_ct_timeout_obj *priv = nft_obj_data(obj);
- 	struct nf_ct_timeout *timeout = priv->timeout;
- 
-+	nf_queue_nf_hook_drop(ctx->net);
- 	nf_ct_untimeout(ctx->net, timeout);
- 	nf_ct_netns_put(ctx->net, ctx->family);
- 	kfree(priv->timeout);
-@@ -1148,6 +1151,7 @@ static void nft_ct_helper_obj_destroy(const struct nft_ctx *ctx,
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -266,6 +266,7 @@ static void guc_action_disable_ct(void *
  {
- 	struct nft_ct_helper_obj *priv = nft_obj_data(obj);
+ 	struct xe_guc_ct *ct = arg;
  
-+	nf_queue_nf_hook_drop(ctx->net);
- 	if (priv->helper4)
- 		nf_conntrack_helper_put(priv->helper4);
- 	if (priv->helper6)
--- 
-2.51.0
-
++	xe_guc_ct_stop(ct);
+ 	guc_ct_change_state(ct, XE_GUC_CT_STATE_DISABLED);
+ }
+ 
 
 
 
