@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-229659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229116-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJdfOY9twWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229659-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:55 +0100
+	id CDN4GpFXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229116-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A88152F8A74
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C3FF2F5DC4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A7AFE308F5E4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 81E2A304845F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EB73B38BE;
-	Mon, 23 Mar 2026 16:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49A7026ED37;
+	Mon, 23 Mar 2026 15:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH6TZ82Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0rfy2Dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3D13B9DAC;
-	Mon, 23 Mar 2026 16:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9EE26E718;
+	Mon, 23 Mar 2026 15:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282520; cv=none; b=C7FppE/El0gAOMMFHael7OBQqMvzI7l78Fi/jZ0qwo68nIAtAb5jUPFiel8KaSb4u9IHUXabH78IZvKhdzquWiQ7cXKte8isxKPGw7TtZgwxQdsCZUpSgH0K9HchXi5eYyJOPV4Ai+ulFHNjh9ai9I0cE0Vg41jq6hKGK0LN6Hs=
+	t=1774278110; cv=none; b=egTZ1ku0ORZDoURm8KBGXlq1uAGiVooXABl7+Kc3WqlHZD7I5d0w1DLzumVUA+QnPEiBzO3TT51gCiyBnf7lPcg+Nl6xAxaHowqCTV4sq+3pmCn9QKObewSjIRjRZiABAwXyplfFO1n1QmYCvQHs9PMWK1XEQe/iwPmBAm/ZYKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282520; c=relaxed/simple;
-	bh=b+xOJjNdVbLPs3ppfoH4aDjXYndV2KME1TFczZZlNmU=;
+	s=arc-20240116; t=1774278110; c=relaxed/simple;
+	bh=8cUGIUtz0pmMAuuI5c9QjVd33qz1fs+1IJ3MkwLKQk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MdGWLtE1xWX9pleoYeqXnNy76TQrpY8B81nklz3jMbEyVGSkDGeI6Ikssw2pcllc5nKorXq1IjBqmLYWVYSI/1+/xycCw0LqmdU66e3esHDYy5mULytlFF4/oow6GzOdkV4AEPVBmc5nH4kgYWd9hPw6YhBSy7BjXhILry6zoUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH6TZ82Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3CFC4CEF7;
-	Mon, 23 Mar 2026 16:15:19 +0000 (UTC)
+	 MIME-Version; b=FuI+iZQ3VJFNOKNtPAujQl9mdClLso7YIvQ00mPCSoQh/Jh5WA/nhAiOwpT11PoQ0OL6S7gVHIKQORYVYOTErELSwwlKitdP7a3xJOaA0GXi0m+jtAKjLpoWKVfOEjZjX6Zv0KFAQ2isobiodX33z/8bENGJnMsvBGS8hsahqjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0rfy2Dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D82C2BCB1;
+	Mon, 23 Mar 2026 15:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282520;
-	bh=b+xOJjNdVbLPs3ppfoH4aDjXYndV2KME1TFczZZlNmU=;
+	s=korg; t=1774278109;
+	bh=8cUGIUtz0pmMAuuI5c9QjVd33qz1fs+1IJ3MkwLKQk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qH6TZ82ZgNrIQ9xKwkfathoJH1HPlb5jCxUppdKfOFOtAnEkKT4BxcYi6hqw8rItF
-	 Vp/zhzSjl6RfAUuch2XhohwfTOfoRuwBbvlGIq5PD6ktKQFyTysiPwdQfeGHtfBlfy
-	 mZ5+p+OjtJ2Nt0OS9L3eiN8xgaq9BYXY8tyU1gKc=
+	b=t0rfy2Dk4Uh4k9iyx3VapPFAmbZ1n00lvhUWxQZ5JZSGLWzo2uSRtQx8Ov9WyWyc7
+	 E7+KOSnvpOeV6xagMiM6lBecmC/2CXbLKuuO1c10Pfj6Z5U4xrKyHiM03zDwXkS+8M
+	 vTULp9WPUHrqo8rEdhQ1uHKrJHeyMaOu+O56t9Nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Jeffery <djeffery@redhat.com>,
+	Tomas Henzl <thenzl@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 142/481] xdp: produce a warning when calculated tailroom is negative
+Subject: [PATCH 6.6 204/567] scsi: ses: Fix devices attaching to different hosts
 Date: Mon, 23 Mar 2026 14:42:04 +0100
-Message-ID: <20260323134528.717573772@linuxfoundation.org>
+Message-ID: <20260323134538.891414969@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,163 +64,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-229659-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229116-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: A88152F8A74
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2C3FF2F5DC4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Tomas Henzl <thenzl@redhat.com>
 
-[ Upstream commit 8821e857759be9db3cde337ad328b71fe5c8a55f ]
+[ Upstream commit 70ca8caa96ce473647054f5c7b9dab5423902402 ]
 
-Many ethernet drivers report xdp Rx queue frag size as being the same as
-DMA write size. However, the only user of this field, namely
-bpf_xdp_frags_increase_tail(), clearly expects a truesize.
+On a multipath SAS system some devices don't end up with correct symlinks
+from the SCSI device to its enclosure. Some devices even have enclosure
+links pointing to enclosures attached to different SCSI hosts.
 
-Such difference leads to unspecific memory corruption issues under certain
-circumstances, e.g. in ixgbevf maximum DMA write size is 3 KB, so when
-running xskxceiver's XDP_ADJUST_TAIL_GROW_MULTI_BUFF, 6K packet fully uses
-all DMA-writable space in 2 buffers. This would be fine, if only
-rxq->frag_size was properly set to 4K, but value of 3K results in a
-negative tailroom, because there is a non-zero page offset.
+ses_match_to_enclosure() calls enclosure_for_each_device() which iterates
+over all enclosures on the system, not just enclosures attached to the
+current SCSI host.
 
-We are supposed to return -EINVAL and be done with it in such case, but due
-to tailroom being stored as an unsigned int, it is reported to be somewhere
-near UINT_MAX, resulting in a tail being grown, even if the requested
-offset is too much (it is around 2K in the abovementioned test). This later
-leads to all kinds of unspecific calltraces.
+Replace the iteration with a direct call to ses_enclosure_find_by_addr().
 
-[ 7340.337579] xskxceiver[1440]: segfault at 1da718 ip 00007f4161aeac9d sp 00007f41615a6a00 error 6
-[ 7340.338040] xskxceiver[1441]: segfault at 7f410000000b ip 00000000004042b5 sp 00007f415bffecf0 error 4
-[ 7340.338179]  in libc.so.6[61c9d,7f4161aaf000+160000]
-[ 7340.339230]  in xskxceiver[42b5,400000+69000]
-[ 7340.340300]  likely on CPU 6 (core 0, socket 6)
-[ 7340.340302] Code: ff ff 01 e9 f4 fe ff ff 0f 1f 44 00 00 4c 39 f0 74 73 31 c0 ba 01 00 00 00 f0 0f b1 17 0f 85 ba 00 00 00 49 8b 87 88 00 00 00 <4c> 89 70 08 eb cc 0f 1f 44 00 00 48 8d bd f0 fe ff ff 89 85 ec fe
-[ 7340.340888]  likely on CPU 3 (core 0, socket 3)
-[ 7340.345088] Code: 00 00 00 ba 00 00 00 00 be 00 00 00 00 89 c7 e8 31 ca ff ff 89 45 ec 8b 45 ec 85 c0 78 07 b8 00 00 00 00 eb 46 e8 0b c8 ff ff <8b> 00 83 f8 69 74 24 e8 ff c7 ff ff 8b 00 83 f8 0b 74 18 e8 f3 c7
-[ 7340.404334] Oops: general protection fault, probably for non-canonical address 0x6d255010bdffc: 0000 [#1] SMP NOPTI
-[ 7340.405972] CPU: 7 UID: 0 PID: 1439 Comm: xskxceiver Not tainted 6.19.0-rc1+ #21 PREEMPT(lazy)
-[ 7340.408006] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-5.fc42 04/01/2014
-[ 7340.409716] RIP: 0010:lookup_swap_cgroup_id+0x44/0x80
-[ 7340.410455] Code: 83 f8 1c 73 39 48 ba ff ff ff ff ff ff ff 03 48 8b 04 c5 20 55 fa bd 48 21 d1 48 89 ca 83 e1 01 48 d1 ea c1 e1 04 48 8d 04 90 <8b> 00 48 83 c4 10 d3 e8 c3 cc cc cc cc 31 c0 e9 98 b7 dd 00 48 89
-[ 7340.412787] RSP: 0018:ffffcc5c04f7f6d0 EFLAGS: 00010202
-[ 7340.413494] RAX: 0006d255010bdffc RBX: ffff891f477895a8 RCX: 0000000000000010
-[ 7340.414431] RDX: 0001c17e3fffffff RSI: 00fa070000000000 RDI: 000382fc7fffffff
-[ 7340.415354] RBP: 00fa070000000000 R08: ffffcc5c04f7f8f8 R09: ffffcc5c04f7f7d0
-[ 7340.416283] R10: ffff891f4c1a7000 R11: ffffcc5c04f7f9c8 R12: ffffcc5c04f7f7d0
-[ 7340.417218] R13: 03ffffffffffffff R14: 00fa06fffffffe00 R15: ffff891f47789500
-[ 7340.418229] FS:  0000000000000000(0000) GS:ffff891ffdfaa000(0000) knlGS:0000000000000000
-[ 7340.419489] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 7340.420286] CR2: 00007f415bfffd58 CR3: 0000000103f03002 CR4: 0000000000772ef0
-[ 7340.421237] PKRU: 55555554
-[ 7340.421623] Call Trace:
-[ 7340.421987]  <TASK>
-[ 7340.422309]  ? softleaf_from_pte+0x77/0xa0
-[ 7340.422855]  swap_pte_batch+0xa7/0x290
-[ 7340.423363]  zap_nonpresent_ptes.constprop.0.isra.0+0xd1/0x270
-[ 7340.424102]  zap_pte_range+0x281/0x580
-[ 7340.424607]  zap_pmd_range.isra.0+0xc9/0x240
-[ 7340.425177]  unmap_page_range+0x24d/0x420
-[ 7340.425714]  unmap_vmas+0xa1/0x180
-[ 7340.426185]  exit_mmap+0xe1/0x3b0
-[ 7340.426644]  __mmput+0x41/0x150
-[ 7340.427098]  exit_mm+0xb1/0x110
-[ 7340.427539]  do_exit+0x1b2/0x460
-[ 7340.427992]  do_group_exit+0x2d/0xc0
-[ 7340.428477]  get_signal+0x79d/0x7e0
-[ 7340.428957]  arch_do_signal_or_restart+0x34/0x100
-[ 7340.429571]  exit_to_user_mode_loop+0x8e/0x4c0
-[ 7340.430159]  do_syscall_64+0x188/0x6b0
-[ 7340.430672]  ? __do_sys_clone3+0xd9/0x120
-[ 7340.431212]  ? switch_fpu_return+0x4e/0xd0
-[ 7340.431761]  ? arch_exit_to_user_mode_prepare.isra.0+0xa1/0xc0
-[ 7340.432498]  ? do_syscall_64+0xbb/0x6b0
-[ 7340.433015]  ? __handle_mm_fault+0x445/0x690
-[ 7340.433582]  ? count_memcg_events+0xd6/0x210
-[ 7340.434151]  ? handle_mm_fault+0x212/0x340
-[ 7340.434697]  ? do_user_addr_fault+0x2b4/0x7b0
-[ 7340.435271]  ? clear_bhb_loop+0x30/0x80
-[ 7340.435788]  ? clear_bhb_loop+0x30/0x80
-[ 7340.436299]  ? clear_bhb_loop+0x30/0x80
-[ 7340.436812]  ? clear_bhb_loop+0x30/0x80
-[ 7340.437323]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 7340.437973] RIP: 0033:0x7f4161b14169
-[ 7340.438468] Code: Unable to access opcode bytes at 0x7f4161b1413f.
-[ 7340.439242] RSP: 002b:00007ffc6ebfa770 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-[ 7340.440173] RAX: fffffffffffffe00 RBX: 00000000000005a1 RCX: 00007f4161b14169
-[ 7340.441061] RDX: 00000000000005a1 RSI: 0000000000000109 RDI: 00007f415bfff990
-[ 7340.441943] RBP: 00007ffc6ebfa7a0 R08: 0000000000000000 R09: 00000000ffffffff
-[ 7340.442824] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[ 7340.443707] R13: 0000000000000000 R14: 00007f415bfff990 R15: 00007f415bfff6c0
-[ 7340.444586]  </TASK>
-[ 7340.444922] Modules linked in: rfkill intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit libnvdimm kvm_intel vfat fat kvm snd_pcm irqbypass rapl iTCO_wdt snd_timer intel_pmc_bxt iTCO_vendor_support snd ixgbevf virtio_net soundcore i2c_i801 pcspkr libeth_xdp net_failover i2c_smbus lpc_ich failover libeth virtio_balloon joydev 9p fuse loop zram lz4hc_compress lz4_compress 9pnet_virtio 9pnet netfs ghash_clmulni_intel serio_raw qemu_fw_cfg
-[ 7340.449650] ---[ end trace 0000000000000000 ]---
-
-The issue can be fixed in all in-tree drivers, but we cannot just trust OOT
-drivers to not do this. Therefore, make tailroom a signed int and produce a
-warning when it is negative to prevent such mistakes in the future.
-
-Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail() API")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Link: https://patch.msgid.link/20260305111253.2317394-10-larysa.zaremba@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: David Jeffery <djeffery@redhat.com>
+Signed-off-by: Tomas Henzl <thenzl@redhat.com>
+Link: https://patch.msgid.link/20260210191850.36784-1-thenzl@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/scsi/ses.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 128e4b947d985..d71c24eafcb5a 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4078,13 +4078,14 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
- 	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
- 	skb_frag_t *frag = &sinfo->frags[sinfo->nr_frags - 1];
- 	struct xdp_rxq_info *rxq = xdp->rxq;
--	unsigned int tailroom;
-+	int tailroom;
+diff --git a/drivers/scsi/ses.c b/drivers/scsi/ses.c
+index d7d0c35c58b80..05e462f328e75 100644
+--- a/drivers/scsi/ses.c
++++ b/drivers/scsi/ses.c
+@@ -503,9 +503,8 @@ struct efd {
+ };
  
- 	if (!rxq->frag_size || rxq->frag_size > xdp->frame_sz)
- 		return -EOPNOTSUPP;
+ static int ses_enclosure_find_by_addr(struct enclosure_device *edev,
+-				      void *data)
++				      struct efd *efd)
+ {
+-	struct efd *efd = data;
+ 	int i;
+ 	struct ses_component *scomp;
  
- 	tailroom = rxq->frag_size - skb_frag_size(frag) -
- 		   skb_frag_off(frag) % rxq->frag_size;
-+	WARN_ON_ONCE(tailroom < 0);
- 	if (unlikely(offset > tailroom))
- 		return -EINVAL;
+@@ -658,7 +657,7 @@ static void ses_match_to_enclosure(struct enclosure_device *edev,
+ 	if (efd.addr) {
+ 		efd.dev = &sdev->sdev_gendev;
+ 
+-		enclosure_for_each_device(ses_enclosure_find_by_addr, &efd);
++		ses_enclosure_find_by_addr(edev, &efd);
+ 	}
+ }
  
 -- 
 2.51.0
