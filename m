@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IG+RG5tJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228127-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:31 +0100
+	id mGTzAGlOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F6B92F3E88
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988A12F49D0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59C0E302A07B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 38F8A305554A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E683AC0E6;
-	Mon, 23 Mar 2026 13:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A923B0AE5;
+	Mon, 23 Mar 2026 14:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOzlPIZc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RE4QhhGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A953AC0C2;
-	Mon, 23 Mar 2026 13:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B7039890A;
+	Mon, 23 Mar 2026 14:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274205; cv=none; b=Bj54vbKgEJibgwGD7b3jV7VicaF+evUqiZVqVeSDeABLHKxMKGW+f9ihLt9IpKsYyA8PgtzYFFyNNMh+ThW9mQz1g0s+DdUz64ws4eWl6eDbviFxjWsMa3QQtXL15vOI9oovKw4hJrLlr805xZA8GwCNbD/23l+35XADAG+CPOA=
+	t=1774274758; cv=none; b=k9G9SLuTThqf0g8nseTI752a/dmMkuX5whP/tWYF14uV141UFNK/K0yFQsj4FSb3GipVJPKllEK7I/p7KQTVr0Pk/Qkp59+Etc1rzlg0xm0Cc96q1Lw+0+um8YFlYGXZhO076JtwiqegBvW0vYPoeKdR0+BvBxzvVuotIkFAv5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274205; c=relaxed/simple;
-	bh=p6G+Fr/FbnNRrqirKrXcT30zTCSXdJzF2BBzqBN0R8g=;
+	s=arc-20240116; t=1774274758; c=relaxed/simple;
+	bh=UrSkLn73ZVPOdv604Np05CZeQAQXe57Ofpvc3CpTe2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNVn3jJNnh0m650oYXT+KNNU4qVbJZWzfWFYX6a4iDWrr01rsXncr9lz136u+T4tlJ+Z3OSQgk8UXij8lzSGMNAUi0kZtyP5yYq/hoT9Md/N8wVp8G3tBwERrjQhugpNLk9WfXniL+h1/zXq4T7QerLwEBWAraOD2pKS6au4fuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOzlPIZc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B98AC4CEF7;
-	Mon, 23 Mar 2026 13:56:44 +0000 (UTC)
+	 MIME-Version; b=OPq7o9YLowlT+0up4vijg9TNphE2bokb/mFGTK5qKje85x6+FKW5mgB4swY+FYbCBqMBHAtINueOA36Puuhxkk5dkkAlxIuzKKg2AsYF5POlypMJ+P79kAsCnU2+OaA7aWiJTJMjD/lk+YauDz2RWz6MiN0pb9liV0GjR0eBG+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RE4QhhGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4F9C4CEF7;
+	Mon, 23 Mar 2026 14:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274205;
-	bh=p6G+Fr/FbnNRrqirKrXcT30zTCSXdJzF2BBzqBN0R8g=;
+	s=korg; t=1774274758;
+	bh=UrSkLn73ZVPOdv604Np05CZeQAQXe57Ofpvc3CpTe2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BOzlPIZcGQsTj+zz0iJhY5JdQJCRTrui6aiqsZHCEAfm6AgeYbNrXFoa9iL3vbRJN
-	 UgswvgyUHoJ07vWRx0rKnlCdIy3TyVzcRJ/O7D512Uw4DaKJQpfK+jMgZoGPCfXfXR
-	 GRTlyv+VBxRQJxJFa1d4/Xv9IbTm0pE8homldvZg=
+	b=RE4QhhGDQ13m0nF6BZ8+plZskG7Q/o/k0+b57HpK+H90kZyErE8iyLHw0YIeJrDY7
+	 vo1xyTRhA7NJWUxQQU3NCICzUP20blqNre87GmPkHpOc4VVsYaHdBNHF7J1f72OAFt
+	 JkJH/Y/sItvcgwaj5Wqa2jIOgaAOe0+zxdx252s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 143/220] net: bcmgenet: increase WoL poll timeout
+Subject: [PATCH 6.18 099/212] btrfs: log new dentries when logging parent dir of a conflicting inode
 Date: Mon, 23 Mar 2026 14:45:20 +0100
-Message-ID: <20260323134509.078701088@linuxfoundation.org>
+Message-ID: <20260323134506.907374138@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +66,132 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228127-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bur.io,suse.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228307-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8F6B92F3E88
+X-Rspamd-Queue-Id: 988A12F49D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 6cfc3bc02b977f2fba5f7268e6504d1931a774f7 ]
+[ Upstream commit 9573a365ff9ff45da9222d3fe63695ce562beb24 ]
 
-Some systems require more than 5ms to get into WoL mode. Increase the
-timeout value to 50ms.
+If we log the parent directory of a conflicting inode, we are not logging
+the new dentries of the directory, so when we finish we have the parent
+directory's inode marked as logged but we did not log its new dentries.
+As a consequence if the parent directory is explicitly fsynced later and
+it does not have any new changes since we logged it, the fsync is a no-op
+and after a power failure the new dentries are missing.
 
-Fixes: c51de7f3976b ("net: bcmgenet: add Wake-on-LAN support code")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260312191852.3904571-1-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Example scenario:
+
+  $ mkdir foo
+
+  $ sync
+
+  $rmdir foo
+
+  $ mkdir dir1
+  $ mkdir dir2
+
+  # A file with the same name and parent as the directory we just deleted
+  # and was persisted in a past transaction. So the deleted directory's
+  # inode is a conflicting inode of this new file's inode.
+  $ touch foo
+
+  $ ln foo dir2/link
+
+  # The fsync on dir2 will log the parent directory (".") because the
+  # conflicting inode (deleted directory) does not exists anymore, but it
+  # it does not log its new dentries (dir1).
+  $ xfs_io -c "fsync" dir2
+
+  # This fsync on the parent directory is no-op, since the previous fsync
+  # logged it (but without logging its new dentries).
+  $ xfs_io -c "fsync" .
+
+  <power failure>
+
+  # After log replay dir1 is missing.
+
+Fix this by ensuring we log new dir dentries whenever we log the parent
+directory of a no longer existing conflicting inode.
+
+A test case for fstests will follow soon.
+
+Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/182055fa-e9ce-4089-9f5f-4b8a23e8dd91@gmail.com/
+Fixes: a3baaf0d786e ("Btrfs: fix fsync after succession of renames and unlink/rmdir")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/tree-log.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-index 8fb5512882980..96d5d4f7f51fe 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-@@ -123,7 +123,7 @@ static int bcmgenet_poll_wol_status(struct bcmgenet_priv *priv)
- 	while (!(bcmgenet_rbuf_readl(priv, RBUF_STATUS)
- 		& RBUF_STATUS_WOL)) {
- 		retries++;
--		if (retries > 5) {
-+		if (retries > 50) {
- 			netdev_crit(dev, "polling wol mode timeout\n");
- 			return -ETIMEDOUT;
- 		}
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 6c5db73c3e85f..7505a87522fd7 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -6203,6 +6203,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 				  struct btrfs_root *root,
+ 				  struct btrfs_log_ctx *ctx)
+ {
++	const bool orig_log_new_dentries = ctx->log_new_dentries;
+ 	int ret = 0;
+ 
+ 	/*
+@@ -6264,7 +6265,11 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 			 * dir index key range logged for the directory. So we
+ 			 * must make sure the deletion is recorded.
+ 			 */
++			ctx->log_new_dentries = false;
+ 			ret = btrfs_log_inode(trans, inode, LOG_INODE_ALL, ctx);
++			if (!ret && ctx->log_new_dentries)
++				ret = log_new_dir_dentries(trans, inode, ctx);
++
+ 			btrfs_add_delayed_iput(inode);
+ 			if (ret)
+ 				break;
+@@ -6299,6 +6304,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 			break;
+ 	}
+ 
++	ctx->log_new_dentries = orig_log_new_dentries;
+ 	ctx->logging_conflict_inodes = false;
+ 	if (ret)
+ 		free_conflicting_inodes(ctx);
 -- 
 2.51.0
 
