@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228500-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBWuOeFjwWkZSwQAu9opvQ
-	(envelope-from <stable+bounces-229524-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:01:37 +0100
+	id +MNsCR5QwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228500-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D3EE2F7462
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:01:32 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 918DF2F4DEB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 025FB35C985A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 64CB131743B3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBBA3B2FCB;
-	Mon, 23 Mar 2026 15:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9CB3B0AD8;
+	Mon, 23 Mar 2026 14:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvelXYxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cVzIhtS+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10813B27F9;
-	Mon, 23 Mar 2026 15:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB45A3B0AD0;
+	Mon, 23 Mar 2026 14:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279723; cv=none; b=AhamfBVdOwlNldhvjyM9Gswqu9s2VNuU1s3dFyEwORdZVkmYdUFTtTvarDQarvlateV+q0akwEbEJ/S5GlkdBePrxh8Q5R58D6zZ//Ue0SgMEuERi++NpCGqBL4Ia1fzkuVvJWGxagWO/G1kQR0d81vCvLGKz9/cvuwxjQwoYbQ=
+	t=1774275296; cv=none; b=k4kD0zxSRzA55w4GUVH7cVdol7Bta6IuR5Jc3EPE0DDJv9nTaVZFJx+NbC8MjysLHu+PN4Plx/Hv1rTdjJ99WSRLo7+NJTazSWF0gDoxN+vUz9mjYmqQXydB/PgiHOt5suTYquKjeImrGSOe83798gnHqztgnbAza87Alzu2Vec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279723; c=relaxed/simple;
-	bh=X3wUS4r3P/S/gw5PBYt+sr+tvSSDAgp+gJfKdeeZv3c=;
+	s=arc-20240116; t=1774275296; c=relaxed/simple;
+	bh=LpsL4sJqSdaDW1JSX182FDrMsrQwZ7Cxgt7VwIVqOzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmrVuQOrK3CXlEZsN690Mi4mdpnDbrUc/RjI6cezqARsfQnWaddM4C99ZBHBFMxyryue4I3jOgYBBzabcShM7pigDJ4bxSpj7AcELu8+fvNnqXgUenFbJe0I8WIRKYt4Uz1U70bJtVxFjXKs202JQzP0R38RSrj5M2nVf+Mzdjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvelXYxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D614C4CEF7;
-	Mon, 23 Mar 2026 15:28:43 +0000 (UTC)
+	 MIME-Version; b=CDhOoEil5hCd6I3+rFjPML7woaoM3SYDFtZyghYpa03bnh0iM5sBEqNmyW+OPHaicNSCxAZ+ZvpZ1sSKkBrS/VNbdUjKJeeb+uSm8ecLfoA0cadM5CunxzEJWvEbqvDVXyDLxilwDXC8mlXpk5482Up7TdcJ3ZALwqkQZune3V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cVzIhtS+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC9DC4CEF7;
+	Mon, 23 Mar 2026 14:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279723;
-	bh=X3wUS4r3P/S/gw5PBYt+sr+tvSSDAgp+gJfKdeeZv3c=;
+	s=korg; t=1774275296;
+	bh=LpsL4sJqSdaDW1JSX182FDrMsrQwZ7Cxgt7VwIVqOzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvelXYxXHssMzejdGorqIZwGXKhc+vs8vBLM7YQQGbPyh78urebiBvJ2Mg1ELOgAf
-	 cLCE/kakNzkaIjablH59nqqWDZ7lNmUJjDCVr71RJbPiPseKmux3HYx+fbYZupBF1I
-	 6vzKtfB6uGtdv3SqruMbohPJJ6Ec30hN3dmTEc9I=
+	b=cVzIhtS+h1q0z5D6fC7WLnm1DrJeUJsw3MIp0NaJppzFJm0c+/J6BTBnjAdQ1Zv2J
+	 4FQAUgpYkuNFn6XwgzQ44R3nz0iqlR1VJYZjcDr5mKcih3PHZ7G3KqYlIGMyAVMLvg
+	 D/5pml6bej3JVuTzK10+tIa6iPyRXeCzCnxNyWSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Powers-Holmes <aholmes@omnom.net>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Sen Wang <sen@ti.com>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/481] arm64: dts: rockchip: Fix rk356x PCIe range mappings
-Date: Mon, 23 Mar 2026 14:40:40 +0100
-Message-ID: <20260323134526.637106284@linuxfoundation.org>
+Subject: [PATCH 6.12 045/460] ASoC: simple-card-utils: fix graph_util_is_ports0() for DT overlays
+Date: Mon, 23 Mar 2026 14:40:41 +0100
+Message-ID: <20260323134527.821424451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +69,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229524-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[fe270000:query timed out,sntech.de:query timed out,fe260000:query timed out];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228500-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RSPAMD_EMAILBL_FAIL(0.00)[pcie.fe280000:query timed out,aholmes.omnom.net:query timed out];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,rock-chips.com:email,fe280000:email,fe260000:email,omnom.net:email,fe270000:email]
-X-Rspamd-Queue-Id: 7D3EE2F7462
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 918DF2F4DEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Sen Wang <sen@ti.com>
 
-[ Upstream commit f63ea193a404481f080ca2958f73e9f364682db9 ]
+[ Upstream commit 4185b95f8a42d92d68c49289b4644546b51e252b ]
 
-The pcie bus address should be mapped 1:1 to the cpu side MMIO address, so
-that there is no same address allocated from normal system memory. Otherwise
-it's broken if the same address assigned to the EP for DMA purpose.Fix it to
-sync with the vendor BSP.
+graph_util_is_ports0() identifies DPCM front-end (ports@0) vs back-end
+(ports@1) by calling of_get_child_by_name() to find the first "ports"
+child and comparing pointers. This relies on child iteration order
+matching DTS source order.
 
-Fixes: 568a67e742df ("arm64: dts: rockchip: Fix rk356x PCIe register and range mappings")
-Fixes: 66b51ea7d70f ("arm64: dts: rockchip: Add rk3568 PCIe2x1 controller")
-Cc: stable@vger.kernel.org
-Cc: Andrew Powers-Holmes <aholmes@omnom.net>
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://patch.msgid.link/1767600929-195341-1-git-send-email-shawn.lin@rock-chips.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+When the DPCM topology comes from a DT overlay, __of_attach_node()
+inserts new children at the head of the sibling list, reversing the
+order. of_get_child_by_name() then returns ports@1 instead of ports@0,
+causing all front-end links to be classified as back-ends. The card
+registers with no PCM devices.
+
+Fix this by matching the unit address directly from the node name
+instead of relying on sibling order.
+
+Fixes: 92939252458f ("ASoC: simple-card-utils: add asoc_graph_is_ports0()")
+Signed-off-by: Sen Wang <sen@ti.com>
+Acked-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/20260309042109.2576612-1-sen@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3568.dtsi | 4 ++--
- arch/arm64/boot/dts/rockchip/rk356x.dtsi | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/generic/simple-card-utils.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568.dtsi b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-index f1be76a54ceb0..4305fd20b5c32 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3568.dtsi
-@@ -97,7 +97,7 @@ pcie3x1: pcie@fe270000 {
- 		      <0x0 0xf2000000 0x0 0x00100000>;
- 		ranges = <0x01000000 0x0 0xf2100000 0x0 0xf2100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf2200000 0x0 0xf2200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x40000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x40000000 0x3 0x40000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X1_POWERUP>;
- 		reset-names = "pipe";
-@@ -150,7 +150,7 @@ pcie3x2: pcie@fe280000 {
- 		      <0x0 0xf0000000 0x0 0x00100000>;
- 		ranges = <0x01000000 0x0 0xf0100000 0x0 0xf0100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf0200000 0x0 0xf0200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x80000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x80000000 0x3 0x80000000 0x0 0x40000000>;
- 		reg-names = "dbi", "apb", "config";
- 		resets = <&cru SRST_PCIE30X2_POWERUP>;
- 		reset-names = "pipe";
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-index e5c88f0007253..05cc28f8f7669 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-@@ -985,7 +985,7 @@ pcie2x1: pcie@fe260000 {
- 		power-domains = <&power RK3568_PD_PIPE>;
- 		ranges = <0x01000000 0x0 0xf4100000 0x0 0xf4100000 0x0 0x00100000>,
- 			 <0x02000000 0x0 0xf4200000 0x0 0xf4200000 0x0 0x01e00000>,
--			 <0x03000000 0x0 0x40000000 0x3 0x00000000 0x0 0x40000000>;
-+			 <0x03000000 0x3 0x00000000 0x3 0x00000000 0x0 0x40000000>;
- 		resets = <&cru SRST_PCIE20_POWERUP>;
- 		reset-names = "pipe";
- 		#address-cells = <3>;
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index 4857ceecbdc4a..c9f92d445f4c9 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -1008,11 +1008,15 @@ int graph_util_is_ports0(struct device_node *np)
+ 	else
+ 		port = np;
+ 
+-	struct device_node *ports  __free(device_node) = of_get_parent(port);
+-	struct device_node *top    __free(device_node) = of_get_parent(ports);
+-	struct device_node *ports0 __free(device_node) = of_get_child_by_name(top, "ports");
++	struct device_node *ports __free(device_node) = of_get_parent(port);
++	const char *at = strchr(kbasename(ports->full_name), '@');
+ 
+-	return ports0 == ports;
++	/*
++	 * Since child iteration order may differ
++	 * between a base DT and DT overlays,
++	 * string match "ports" or "ports@0" in the node name instead.
++	 */
++	return !at || !strcmp(at, "@0");
+ }
+ EXPORT_SYMBOL_GPL(graph_util_is_ports0);
+ 
 -- 
 2.51.0
 
