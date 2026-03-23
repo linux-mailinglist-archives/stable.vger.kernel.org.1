@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229368-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 39m+CP9vwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:19 +0100
+	id KEJoFJRewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229368-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B280F2F9013
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC77E2F6A21
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 02D463189A28
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A4C523162A22
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 144953BA238;
-	Mon, 23 Mar 2026 16:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54F83BD650;
+	Mon, 23 Mar 2026 15:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMwq6sLn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbpl3uSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB773283C82;
-	Mon, 23 Mar 2026 16:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EC253B777A;
+	Mon, 23 Mar 2026 15:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283065; cv=none; b=gqRadjzcoptIwXTWga7Y2beyuJ+tHX6RNfpWUpz4l2ycgUNYcFwjepo9oHtHmObY9d+39I6p7zmFtVnQbycBK77bK0weUxuy7b/+Bf1kh5i5MqCzV28bicwuuzPYhzFV8GfnTaCpPU3zb21FqB/MiFegpwUEKZmwsly9mbnZ95c=
+	t=1774278895; cv=none; b=tLmqZ1iS4IA+JTunACBrW+1VyWJxduBEHx590Ql8coyDEKIT1y0YyQbASKBCXRxCjAQ6AbMlqGOFvy0xPUfipkqht+Cdrwj9HprHvh/zkWjc1YKIQ9GmPgcAEnjknOK5pwbx7livI5vvZaeyeeiEUj3dGVfh3vexRKXtjIrzBx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283065; c=relaxed/simple;
-	bh=vDkYvyprakjtWZSdZV6aqeQsdSk6Sn0HoSlWZKKhgjY=;
+	s=arc-20240116; t=1774278895; c=relaxed/simple;
+	bh=6LIxRUpgUoM2LnY6VUhHxz0kaIld17XiFGkYczcInSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gOvq7QPVl0SUqF+YFJU/BESBVeYrPX8UrvIpUhChNtL8ORxyd7oOZUpBViHiGymK4/qb3nTYKKBbWEX5bc/nSctmK+sA6J2Nj0xVGNZZakIHksegBBDaZeUXtMSqElFL4MVZTTXSDILEGHqaItkYYS1jdM1GTKEatnc6dSQ+gSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMwq6sLn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E093C4CEF7;
-	Mon, 23 Mar 2026 16:24:25 +0000 (UTC)
+	 MIME-Version; b=b7VY9ZfOEYEjM/L9CsoQLATdI3MzhliI8oN/9fIEcbQTAlHczw9HR5EDYiyqqv5atZuaVqtM2jsfwKeqiVau3N0rsDOWHoppp0po+iwG9EBlOyaDlmdLcROdi8TtwHWBTeQHzaegfi+jnpP6WVypC0o9jz6rfzsqO1HhaXOW+ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbpl3uSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 787D0C2BC9E;
+	Mon, 23 Mar 2026 15:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283065;
-	bh=vDkYvyprakjtWZSdZV6aqeQsdSk6Sn0HoSlWZKKhgjY=;
+	s=korg; t=1774278894;
+	bh=6LIxRUpgUoM2LnY6VUhHxz0kaIld17XiFGkYczcInSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMwq6sLnxCSQ1mmLYTxSrDho4CAKUXlmqXl4Ks4WZsDpQJ5X5u3CzqSly70WYPr1t
-	 M+dRd+OqxXTDieljEV5UV8brHaD2zfuXJZaJ1qlMurLO03UjeLMvuzWOeEWLSr5YYk
-	 ibmu0QpMMUNLUijZV44kl1W5nWp0GojQZogtJlqQ=
+	b=cbpl3uSnqu3PVFKSvnuL52uITKc7Bku6IYVIRbML8YxErO+7XeO1n7P2lp+s+qMXj
+	 ane7SXmjYTyTKLBdX9p4NInGxWpv1t6TTuYMhKDrzxhKig6JdY5+l5dk5OIQK9+fgh
+	 eFxb2Vq+H5TZqVIaH+vTUQZfCORpUjtU8yVQ/x9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paulo Andrade <pandrade@redhat.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 390/481] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
+	Misbah Anjum N <misanjum@linux.ibm.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 452/567] NFSD: Hold net reference for the lifetime of /proc/fs/nfs/exports fd
 Date: Mon, 23 Mar 2026 14:46:12 +0100
-Message-ID: <20260323134534.658546123@linuxfoundation.org>
+Message-ID: <20260323134545.167701548@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,156 +71,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229863-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229368-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B280F2F9013
+X-Rspamd-Queue-Id: CC77E2F6A21
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit d55c571e4333fac71826e8db3b9753fadfbead6a ]
+commit e7fcf179b82d3a3730fd8615da01b087cc654d0b upstream.
 
-This script
+The /proc/fs/nfs/exports proc entry is created at module init
+and persists for the module's lifetime. exports_proc_open()
+captures the caller's current network namespace and stores
+its svc_export_cache in seq->private, but takes no reference
+on the namespace. If the namespace is subsequently torn down
+(e.g. container destruction after the opener does setns() to a
+different namespace), nfsd_net_exit() calls nfsd_export_shutdown()
+which frees the cache. Subsequent reads on the still-open fd
+dereference the freed cache_detail, walking a freed hash table.
 
-	#!/usr/bin/bash
+Hold a reference on the struct net for the lifetime of the open
+file descriptor. This prevents nfsd_net_exit() from running --
+and thus prevents nfsd_export_shutdown() from freeing the cache
+-- while any exports fd is open. cache_detail already stores
+its net pointer (cd->net, set by cache_create_net()), so
+exports_release() can retrieve it without additional per-file
+storage.
 
-	echo 0 > /proc/sys/kernel/randomize_va_space
-
-	echo 'void main(void) {}' > TEST.c
-
-	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
-	gcc -m32 -fcf-protection=branch TEST.c -o test
-
-	bpftrace -e 'uprobe:./test:main {}' -c ./test
-
-"hangs", the probed ./test task enters an endless loop.
-
-The problem is that with randomize_va_space == 0
-get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
-just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
-by the stack vma.
-
-arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
-in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
-vm_unmapped_area() happily returns the high address > TASK_SIZE and then
-get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
-check.
-
-handle_swbp() doesn't report this failure (probably it should) and silently
-restarts the probed insn. Endless loop.
-
-I think that the right fix should change the x86 get_unmapped_area() paths
-to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
-CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
-because ->orig_ax = -1.
-
-But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
-the probed task is 32-bit to make in_ia32_syscall() true.
-
-Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
-Reported-by: Paulo Andrade <pandrade@redhat.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
+Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
+Closes: https://lore.kernel.org/linux-nfs/dcd371d3a95815a84ba7de52cef447b8@linux.ibm.com/
+Fixes: 96d851c4d28d ("nfsd: use proper net while reading "exports" file")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Tested-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/uprobes.c |   24 ++++++++++++++++++++++++
- include/linux/uprobes.h   |    1 +
- kernel/events/uprobes.c   |   10 +++++++---
- 3 files changed, 32 insertions(+), 3 deletions(-)
+ fs/nfsd/nfsctl.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/uprobes.c
-+++ b/arch/x86/kernel/uprobes.c
-@@ -1097,3 +1097,27 @@ bool arch_uretprobe_is_alive(struct retu
- 	else
- 		return regs->sp <= ret->stack;
- }
-+
-+#ifdef CONFIG_IA32_EMULATION
-+unsigned long arch_uprobe_get_xol_area(void)
-+{
-+	struct thread_info *ti = current_thread_info();
-+	unsigned long vaddr;
-+
-+	/*
-+	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
-+	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
-+	 * vm_unmapped_area_info.high_limit.
-+	 *
-+	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
-+	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
-+	 * (falsely) returns true because ->orig_ax == -1.
-+	 */
-+	if (test_thread_flag(TIF_ADDR32))
-+		ti->status |= TS_COMPAT;
-+	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
-+	ti->status &= ~TS_COMPAT;
-+
-+	return vaddr;
-+}
-+#endif
---- a/include/linux/uprobes.h
-+++ b/include/linux/uprobes.h
-@@ -140,6 +140,7 @@ extern bool arch_uretprobe_is_alive(stru
- extern bool arch_uprobe_ignore(struct arch_uprobe *aup, struct pt_regs *regs);
- extern void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
- 					 void *src, unsigned long len);
-+extern unsigned long arch_uprobe_get_xol_area(void);
- #else /* !CONFIG_UPROBES */
- struct uprobes_state {
- };
---- a/kernel/events/uprobes.c
-+++ b/kernel/events/uprobes.c
-@@ -1441,6 +1441,12 @@ void uprobe_munmap(struct vm_area_struct
- 		set_bit(MMF_RECALC_UPROBES, &vma->vm_mm->flags);
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -151,9 +151,19 @@ static int exports_net_open(struct net *
+ 
+ 	seq = file->private_data;
+ 	seq->private = nn->svc_export_cache;
++	get_net(net);
+ 	return 0;
  }
  
-+unsigned long __weak arch_uprobe_get_xol_area(void)
++static int exports_release(struct inode *inode, struct file *file)
 +{
-+	/* Try to map as high as possible, this is only a hint. */
-+	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++	struct seq_file *seq = file->private_data;
++	struct cache_detail *cd = seq->private;
++
++	put_net(cd->net);
++	return seq_release(inode, file);
 +}
 +
- /* Slot allocation for XOL */
- static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ static int exports_nfsd_open(struct inode *inode, struct file *file)
  {
-@@ -1456,9 +1462,7 @@ static int xol_add_vma(struct mm_struct
- 	}
+ 	return exports_net_open(inode->i_sb->s_fs_info, file);
+@@ -163,7 +173,7 @@ static const struct file_operations expo
+ 	.open		= exports_nfsd_open,
+ 	.read		= seq_read,
+ 	.llseek		= seq_lseek,
+-	.release	= seq_release,
++	.release	= exports_release,
+ };
  
- 	if (!area->vaddr) {
--		/* Try to map as high as possible, this is only a hint. */
--		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
--						PAGE_SIZE, 0, 0);
-+		area->vaddr = arch_uprobe_get_xol_area();
- 		if (IS_ERR_VALUE(area->vaddr)) {
- 			ret = area->vaddr;
- 			goto fail;
+ static int export_features_show(struct seq_file *m, void *v)
+@@ -1476,7 +1486,7 @@ static const struct proc_ops exports_pro
+ 	.proc_open	= exports_proc_open,
+ 	.proc_read	= seq_read,
+ 	.proc_lseek	= seq_lseek,
+-	.proc_release	= seq_release,
++	.proc_release	= exports_release,
+ };
+ 
+ static int create_proc_exports_entry(void)
 
 
 
