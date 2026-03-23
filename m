@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228358-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADZVGo9ewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229367-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:55 +0100
+	id IKhiAspOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228358-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79302F6A06
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F0A2F4A8E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C18DD3160684
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F21331921FA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC493BD641;
-	Mon, 23 Mar 2026 15:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91D2F324B16;
+	Mon, 23 Mar 2026 14:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhkPOp9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9lJgP9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAF63B47EF;
-	Mon, 23 Mar 2026 15:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556EE3947A6;
+	Mon, 23 Mar 2026 14:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278892; cv=none; b=VQ2ucvV1OWamT1wVlo9ad5VtXB1r8WnjUCPHi3ToiN62z8QQyg32wnxU9oXU4PU5HLaZxBOi25MychMuToL5r1ehos0JpQnj7qrz1KeAjH7P7dq7MtD4FdvhN02I9eaUXXj+xNmbEB8PJFf/TAdZFdp6anCucbk+S6cM5cBC96Y=
+	t=1774274902; cv=none; b=mRG4lMpqlulDi0+c2RLe/F6+oi3Vpu9dAob7w+JKjyoxgZzu9ibmiyKUPOEL1qp1T/tWtPuW9ZPVjAHY0d3vzypuvxMVWelfGw+dc6gzP9oRDz3xqeucF4M7s8UROUbZYHaXQf2v2GUWFYQL+xzIApspZK9UwtBbE8aFXAhY3Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278892; c=relaxed/simple;
-	bh=DBwBLmFh7uyALA/BlGXhZYdvXXstYelndNh5QQNiRq8=;
+	s=arc-20240116; t=1774274902; c=relaxed/simple;
+	bh=tFgUffysI1DYQfvWr8O9EtPoAsEVINVCp0/kNQZhK50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mwEPnXwtETgAMOhWAUxtojTCCfqH7W0PMw+TztVF7uZL8FjdUksFATEos+umto6jPFMO/926wmJPN5uAMOPu3KD7IiJkSDoPC3I/FOHTnKhDSfb2RkDC1/XiNlVbLqfmeOvXaPsWSNjrlm08nnDrsIEKTZfkADa2NwoBKO4/o5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhkPOp9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA26C4CEF7;
-	Mon, 23 Mar 2026 15:14:51 +0000 (UTC)
+	 MIME-Version; b=QE1I9/B+DLyUvSG/rMrdlLOyGGPAylaq0anC7pyf2Wrt9TlDzk8dJKUnOsq+W90BTT4NWKo0w3PDk1oWQiOZ1ehL72rTnq9a7K6f/iF2WzLSjhVCLopVLN6TeUnZm0To4x1g7rVepPyYUE3KrJk9L8O4O1cTO1nbV+OsGiNlKkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9lJgP9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10AEC4CEF7;
+	Mon, 23 Mar 2026 14:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278891;
-	bh=DBwBLmFh7uyALA/BlGXhZYdvXXstYelndNh5QQNiRq8=;
+	s=korg; t=1774274902;
+	bh=tFgUffysI1DYQfvWr8O9EtPoAsEVINVCp0/kNQZhK50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhkPOp9h5B2ZYPsn53M0J5kBcXOWf2iTOyLKL5Bi9tH5RqnS4Ve9xN7OAJmNud8Pg
-	 stNAGfkri/E4CI5PTngJV12OnYykVbO+jvluLz4gAP2jhYRM+obzax3JubEH/hx14L
-	 hTJQ6ny6t52DyV4139MDJu9Kw9l3NxQE99n6jR/s=
+	b=h9lJgP9w8bPsXx7OA1UiGVqqQ4h/U3z3umIhrmdonMMBmwE9TVX03mM4nw5O7Cw9t
+	 ASuGNeukfbXu3wUoB5eY2v7in+FAfy5z5k15swzMrqFUngMpwwrjLJ4IWa1P/la5DE
+	 wwWO9z1Bdwgv7R4wYRPx9cu5+njQ5+X7zpXHpryQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 451/567] io_uring/kbuf: check if target buffer list is still legacy on recycle
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 150/212] net: airoha: Remove airoha_dev_stop() in airoha_remove()
 Date: Mon, 23 Mar 2026 14:46:11 +0100
-Message-ID: <20260323134545.142498692@linuxfoundation.org>
+Message-ID: <20260323134508.505523993@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +67,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229367-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228358-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C79302F6A06
+X-Rspamd-Queue-Id: 97F0A2F4A8E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-Commit c2c185be5c85d37215397c8e8781abf0a69bec1f upstream.
+[ Upstream commit d4a533ad249e9fbdc2d0633f2ddd60a5b3a9a4ca ]
 
-There's a gap between when the buffer was grabbed and when it
-potentially gets recycled, where if the list is empty, someone could've
-upgraded it to a ring provided type. This can happen if the request
-is forced via io-wq. The legacy recycling is missing checking if the
-buffer_list still exists, and if it's of the correct type. Add those
-checks.
+Do not run airoha_dev_stop routine explicitly in airoha_remove()
+since ndo_stop() callback is already executed by unregister_netdev() in
+__dev_close_many routine if necessary and, doing so, we will end up causing
+an underflow in the qdma users atomic counters. Rely on networking subsystem
+to stop the device removing the airoha_eth module.
 
-Cc: stable@vger.kernel.org
-Fixes: c7fb19428d67 ("io_uring: add support for ring mapped supplied buffers")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 23020f0493270 ("net: airoha: Introduce ethernet support for EN7581 SoC")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260313-airoha-remove-ndo_stop-remove-net-v2-1-67542c3ceeca@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/airoha/airoha_eth.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -70,9 +70,15 @@ void io_kbuf_recycle_legacy(struct io_ki
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 0394ba6a90a9b..b16b9ae7d3311 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -3046,7 +3046,6 @@ static void airoha_remove(struct platform_device *pdev)
+ 		if (!port)
+ 			continue;
  
- 	buf = req->kbuf;
- 	bl = io_buffer_get_list(ctx, buf->bgid);
--	list_add(&buf->list, &bl->buf_list);
-+	/*
-+	 * If the buffer list was upgraded to a ring-based one, or removed,
-+	 * while the request was in-flight in io-wq, drop it.
-+	 */
-+	if (bl && !bl->is_mapped)
-+		list_add(&buf->list, &bl->buf_list);
- 	req->flags &= ~REQ_F_BUFFER_SELECTED;
- 	req->buf_index = buf->bgid;
-+	req->kbuf = NULL;
- 
- 	io_ring_submit_unlock(ctx, issue_flags);
- 	return;
+-		airoha_dev_stop(port->dev);
+ 		unregister_netdev(port->dev);
+ 		airoha_metadata_dst_free(port);
+ 	}
+-- 
+2.51.0
+
 
 
 
