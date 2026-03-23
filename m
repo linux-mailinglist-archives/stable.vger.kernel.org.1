@@ -1,160 +1,216 @@
-Return-Path: <stable+bounces-230017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230018-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gIA6M2O5wWm/UwQAu9opvQ
-	(envelope-from <stable+bounces-230017-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:06:27 +0100
+	id KOlcAAG6wWm/UwQAu9opvQ
+	(envelope-from <stable+bounces-230018-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:09:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710AC2FE112
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:06:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E032FE15F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0A16A302693A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:06:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA24D30219D3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2743822A2;
-	Mon, 23 Mar 2026 22:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747D23806BE;
+	Mon, 23 Mar 2026 22:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="epVfJLuh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p6c6b7WN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD685375F7C
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 22:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359CF330650;
+	Mon, 23 Mar 2026 22:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774303580; cv=none; b=r2vU6fTzEq66raAN8phApYoFs3WsEL1dQj71+teXLobQFlfIDsg3WH7WOaV+WSXbLhNNEplpzAhSIl9gTNYG8odf42RwpjQf9OcRe/2ShRuWAewPqpWz1nd0l5tgtj7mRjiM7uclCRZMcFChidKRrXwRGtuOTp7P1o7p3+HCb1E=
+	t=1774303740; cv=none; b=rWbTslhY+uHWo5Ewv+bmdBxnys7wMjOHWMkX082Reg1EVXkKnR9DpJLIbcftDoPFRJTmJWBHxSgsTtig58GfZFqt3zrjKheu0Vx1L2JHsK0R1r5cEto9xt8jd9is5m/IW/AhnxL7Umyp3UCt1bsKBZRZDGzvUVIO2Z3VDGInkqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774303580; c=relaxed/simple;
-	bh=5TNBIu+1zNMlQ2EzrYj8YDKPSFd9UJLXVnMoMpiv34Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oXxnce8Bvfu/d6X8JYmh+ICh74cUA1+kn/sWRMQJ4rAvw4eGKDqulYKL+PgFwgvGG/KtkKYSdfA62ZySeV1LcLh5hfhQdBJae9gGM+2i3dU+WMZRXE12VBoQX+zCWcdp6AXyJBNjKfgshBUhWb7JxG8Mejm5771Q305elY3Ik9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=epVfJLuh; arc=none smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-467161c4ba7so2846564b6e.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 15:06:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1774303577; x=1774908377; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=L+uT5kvrXZcde1sxcqGB4st5JQXrajTNaDzGATU3tww=;
-        b=epVfJLuhmdJvquuzcWyzlHD4XdhS6PUw3y64Yh5+U31abBDTSR7MoSLZGiEo0cGXD5
-         YYj5Y2YSF20foW3Foi376rQjWdId9iuAR/MTm10BXRuGhwl3tooRZJ9tsl6B/ILNSh5O
-         4BEhk6ZIaO+89Rm/ycTXi/sV31rsFez0IEPrk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774303577; x=1774908377;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=L+uT5kvrXZcde1sxcqGB4st5JQXrajTNaDzGATU3tww=;
-        b=nxXloSp2ygvp2N7tylAU5lWM+Vn1+rSjGkd/w35xmwb4XcwxVZyXob4RPHh4soRiiR
-         1iz4dLPYhaMK1W/NG6nquYOD1hSlA5S3nJOS6LXNdD/uR7MFz+l6Hp3TruTZLLc21S2B
-         ZNLd53Yt5LqmzxAwlyes57pK4ULzXAjGdkWkcKaN0bQf6AKrEQz1OnmiKMzMmfeLEU3i
-         smnpU0fuZu5AShmMJC6wqHi+9NhAKhNzPEsHwNdVvAFnWDSqrDSZG7BAlKid9urhGeJo
-         RLiy2jx8HjZRSahJL8Z3BsFyRQZhWLFCRWZowxINu+yOREN9E0LgSe1WgXHfpO2SYKky
-         aSBA==
-X-Forwarded-Encrypted: i=1; AJvYcCW+0ENxGhMg/kvmkK7a+T6trzTtDa4yzptiMus4S7BbtQuQtOwnubIv4rLI9C7L2OC+y/u+vtI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybN8n5QxHnaldKDu058mIvBdtgJgCPPPYt2kXIoEply16bgL16
-	zKseIFXjcdYfaypP/LKm4BeD8HB9vH9NSbOKDQtZ85HMF0npwV3SFjm4wdIpedmg08M=
-X-Gm-Gg: ATEYQzzMaIdoClaF1vsMNUlEkxEv8rTCwhfeEUlrIDNp6dnC+OuV0hA2I4soOkOMpWl
-	H6c0ggoc2v6ntjT0BR3hhKEP83GpPjN2hnU1MShALH91J5zSkIpL5FMPPI2++uCLRKguGmPfQ7U
-	3lZGh5MR/jb7+t/HmWgNmja6mWU/MFBO9mxdGWea9vQjxBFRUl8LXZaeUTEH6hnmxvcqOwDlgza
-	UzT3ZS4JU0DW4SLlqehgQ4OX3XOoA7vqlWSBVRbf72hfRLC90+sFIfKl3oB9MmHBMrY5hkMYEQv
-	UhaW18J/Y5TVHWDZWbd2gv0+udR4n8eRddIC1KHkkA3nLo/44/Ck65Wgd/oNyJJ7iBTaU7rZ640
-	jXI1EScPLqFok0IZJWPiX72249NFSxqO8O7Icd6r6OrSxRyHMY7yhPVdEFAJlTsh51JgBxoMWMa
-	AJLDGawPRCbMqTjjuk9elkfZQDpFXG2ZjOewU=
-X-Received: by 2002:a05:6808:238e:b0:468:4b3:d12d with SMTP id 5614622812f47-46a0cdb2d19mr705075b6e.11.1774303576681;
-        Mon, 23 Mar 2026 15:06:16 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41c4833257esm5980819fac.4.2026.03.23.15.06.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 15:06:16 -0700 (PDT)
-Message-ID: <e5af7c22-e40d-4344-a6b2-be6d62f38df6@linuxfoundation.org>
-Date: Mon, 23 Mar 2026 16:06:14 -0600
+	s=arc-20240116; t=1774303740; c=relaxed/simple;
+	bh=7+YNRg0192JPCv78lvVe/YYOAr1sQyE0YYeqhV3a2LE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=r0AYMm+GIPbFt0aPGFlqwTowenCm59JmigX5a8J/0D/GUL0ib7pBi73muCA/owdZyJma1bJxSPfFOrKASIFoRSBUTB7P4l2/NWqRlMBjtVkLnTwsp82PsMh2/4w4GSxomwM4ftwNMEX45OiNQgSDAK3oa7c+ajWe4YnQqIa7HvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p6c6b7WN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CD6C4CEF7;
+	Mon, 23 Mar 2026 22:08:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774303739;
+	bh=7+YNRg0192JPCv78lvVe/YYOAr1sQyE0YYeqhV3a2LE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=p6c6b7WNpOd2eeBbpZ+9+2Gsn8oNjJpqEk2RkYgUgq1lw+rXj7lyV3xUSS/Fs1CIS
+	 EUqx124nJBcjkR3Uu8YXUq3V3WcG29Bxtwo484LJIaQFr9GjafiBnbsFCRaG9LxULg
+	 wu5+MF1aIyKWHUL+pOXMNuWfo0nzegfaEcyt/Fj4LeK90B1W7TAs2lzxA28ZLPkKs7
+	 U7dkrBFu4aukb5MEnrk3StnwOweJG23d38+yVBRo++3W7W/CyiQjuEGv0tSez4uV4t
+	 CON5b+WUJSNCIFl6UfWTmP9KZVHCJc64626ftkv5JWT8AVGPaZ/J45MWlOVXTnBtTG
+	 bIOiaGwk4qPzg==
+Date: Mon, 23 Mar 2026 17:08:58 -0500
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Hongxing Zhu <hongxing.zhu@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>,
+	"jingoohan1@gmail.com" <jingoohan1@gmail.com>,
+	"l.stach@pengutronix.de" <l.stach@pengutronix.de>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	"kwilczynski@kernel.org" <kwilczynski@kernel.org>,
+	"mani@kernel.org" <mani@kernel.org>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"bhelgaas@google.com" <bhelgaas@google.com>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+	"kernel@pengutronix.de" <kernel@pengutronix.de>,
+	"festevam@gmail.com" <festevam@gmail.com>,
+	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v1] PCI: imx6: Add force_suspend flag to override L1SS
+ suspend skip
+Message-ID: <20260323220858.GA1084506@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 000/212] 6.18.20-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AS8PR04MB8833061F34B9BEFC9D19764A8C4EA@AS8PR04MB8833.eurprd04.prod.outlook.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-230017-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
+	TAGGED_FROM(0.00)[bounces-230018-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[nxp.com,gmail.com,pengutronix.de,kernel.org,google.com,vger.kernel.org,lists.infradead.org,lists.linux.dev];
+	RCPT_COUNT_TWELVE(0.00)[17];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[helgaas@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 710AC2FE112
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 92E032FE15F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/23/26 07:43, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.18.20 release.
-> There are 212 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.18.20-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.18.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Wed, Mar 18, 2026 at 02:55:45AM +0000, Hongxing Zhu wrote:
+> > -----Original Message-----
+> > From: Bjorn Helgaas <helgaas@kernel.org>
+> ... [messed up quoting]
 
-Compiled and booted on my test system. No dmesg regressions.
+> > On Tue, Mar 17, 2026 at 02:12:56PM +0800, Richard Zhu wrote:
+> > > Add a force_suspend flag to allow platform drivers to force the PCIe
+> > > link into L2 state during suspend, even when L1SS (ASPM L1 Sub-States)
+> > > is enabled.
+> > >
+> > > By default, the DesignWare PCIe host controller skips L2 suspend when
+> > > L1SS is supported to meet low resume latency requirements for devices
+> > > like NVMe. However, some platforms like i.MX PCIe need to enter L2
+> > > state for proper power management regardless of L1SS support.
+> > >
+> > > Enable force_suspend for i.MX PCIe to ensure the link enters L2 during
+> > > system suspend.
+> > 
+> > I'm a little bit skeptical about this.
+> > 
+> > What exactly does a "low resume latency requirement" mean?  Is
+> > this an actual functional requirement that's special to NVMe, or
+> > is it just the desire for low resume latency that everybody has
+> > for all devices?
+>
+> From my understanding, L1SS mode is characterized by lower latency
+> when compared to L2 or L3 modes.
+>
+> It can be used on all devices, avoiding frequent power on/off
+> cycles. NVMe can also extend the service life of the equipment.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+All the above applies to all platforms, so it's not an argument for
+i.MX-specific code here.
 
-thanks,
--- Shuah
+> > Is there something special about i.MX here?  Why do we want i.MX
+> > to be different from other host controllers?
+>
+> i.MX PCIe loses power supply during Deep Sleep Mode (DSM), requiring
+> full reinitialization after system wake-up.
+
+I don't know what DSM means in PCIe or how it would help justify this
+change.
+
+> Removing the L1SS check allows the suspend process to complete
+> successfully and ensures the pci->suspended flag is set to true,
+> which triggers the proper resume sequence during system wake-up for
+> i.MX PCIes.
+
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 4774faf854f5 ("PCI: dwc: Implement generic suspend/resume
+> > > functionality")
+> > > Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+> > > ---
+> > >  drivers/pci/controller/dwc/pci-imx6.c             | 1 +
+> > >  drivers/pci/controller/dwc/pcie-designware-host.c | 4 +++-
+> > >  drivers/pci/controller/dwc/pcie-designware.h      | 1 +
+> > >  3 files changed, 5 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/pci/controller/dwc/pci-imx6.c
+> > > b/drivers/pci/controller/dwc/pci-imx6.c
+> > > index 81a7093494c8..7902d39185a5 100644
+> > > --- a/drivers/pci/controller/dwc/pci-imx6.c
+> > > +++ b/drivers/pci/controller/dwc/pci-imx6.c
+> > > @@ -1831,6 +1831,7 @@ static int imx_pcie_probe(struct platform_device
+> > *pdev)
+> > >  		if (imx_check_flag(imx_pcie, IMX_PCIE_FLAG_SKIP_L23_READY))
+> > >  			pci->pp.skip_l23_ready = true;
+> > >  		pci->pp.use_atu_msg = true;
+> > > +		pci->pp.force_l2_suspend = true;
+> > >  		ret = dw_pcie_host_init(&pci->pp);
+> > >  		if (ret < 0)
+> > >  			return ret;
+> > > diff --git a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > index a74339982c24..720154fd4ff0 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > +++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+> > > @@ -1229,7 +1229,9 @@ int dw_pcie_suspend_noirq(struct dw_pcie *pci)
+> > >  	 * If L1SS is supported, then do not put the link into L2 as some
+> > >  	 * devices such as NVMe expect low resume latency.
+> > >  	 */
+> > > -	if (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
+> > PCI_EXP_LNKCTL_ASPM_L1)
+> > > +	if (!pci->pp.force_l2_suspend &&
+> > > +	    (dw_pcie_readw_dbi(pci, offset + PCI_EXP_LNKCTL) &
+> > > +	     PCI_EXP_LNKCTL_ASPM_L1))
+> > >  		return 0;
+> > >
+> > >  	if (pci->pp.ops->pme_turn_off) {
+> > > diff --git a/drivers/pci/controller/dwc/pcie-designware.h
+> > > b/drivers/pci/controller/dwc/pcie-designware.h
+> > > index ae6389dd9caa..5261036bbe6e 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-designware.h
+> > > +++ b/drivers/pci/controller/dwc/pcie-designware.h
+> > > @@ -447,6 +447,7 @@ struct dw_pcie_rp {
+> > >  	bool			ecam_enabled;
+> > >  	bool			native_ecam;
+> > >  	bool                    skip_l23_ready;
+> > > +	bool                    force_l2_suspend;
+> > >  };
+> > >
+> > >  struct dw_pcie_ep_ops {
+> > > --
+> > > 2.37.1
+> > >
 
