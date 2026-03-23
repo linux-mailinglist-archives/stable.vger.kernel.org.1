@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229549-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OCGiNjZWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-229051-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:03:18 +0100
+	id +EGlEXhswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229549-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B8172F5AC8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:03:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 063A22F87EC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 44243304CF7E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E3B54303BAC0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F03242D7F;
-	Mon, 23 Mar 2026 14:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6F93BA226;
+	Mon, 23 Mar 2026 16:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0ozM7M2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aVZ9+tHG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5514D386554;
-	Mon, 23 Mar 2026 14:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22663B9D97;
+	Mon, 23 Mar 2026 16:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277904; cv=none; b=S4jp60zjU7JhROu053lZwdGbZXfTyCYTc/jIK1yo1d0h7RpOeVl42DW5Qh4JwpMZDKDLjvX1aJG/o49uFlvLK9yQbwqd7fhRV7ya6/vlPl2hjDwELD8qcCgm6nf5zRkdYgtDj/tGY58D8lf1uBKqxnfltr+5qQUdLbszEbCId1I=
+	t=1774282222; cv=none; b=B9YpjGTZ9RkUfGCnj7pDGq/78oPPbbPB4adV3wLmMWblH77hmzXGUG3FAX4jsceCLerJ6BYBDPbV5jhHGcb1eLvfRW6eTwAL8+z/FMFAcbf92M9im7zvqz8dMSWSpHU5wMvAH9wD79a/aSu6SXFD04ha7sTl+e5Owvg4awvaC0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277904; c=relaxed/simple;
-	bh=q2BSjUe8LewONTvvxADYGtUCIE2vYwuTxcS57t5/0hE=;
+	s=arc-20240116; t=1774282222; c=relaxed/simple;
+	bh=mj8gUYt5wYomzfC4jqZbuczVkdlJcWDtZbVIIADy2bQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fnN4qegBirm6FFs2cinT8vG7gIMRDdfsvcie/kY6mX4p3IQKRZV1BlqCCt7FG8+WD93u9KJcIxuaofI2ieqo7r7CQLJyI01PhoxApS3qWgITpm+3DP0do83LGdzXS7JE5Up+VWP1jaVuqhVWZ+oD5Zx23PrgeZr7Bt4jUB9rZNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0ozM7M2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF074C4CEF7;
-	Mon, 23 Mar 2026 14:58:23 +0000 (UTC)
+	 MIME-Version; b=CjcUVUPJAfaxZFG0t1IE8ftxGiE4F1uN2+Xt1rw30YOM5Oc+je/84n1cPE63RRCFW8Z8zRWa+RmFFCa7k5EjqMhulBxAPGU4hduht9RVtAs9BYtR/f5BHGqECrbYT8hmcrVXsu25dU+diBa3Ks+X98323JOUzNUI9BmpGKteK+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aVZ9+tHG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B77C4CEF7;
+	Mon, 23 Mar 2026 16:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277904;
-	bh=q2BSjUe8LewONTvvxADYGtUCIE2vYwuTxcS57t5/0hE=;
+	s=korg; t=1774282221;
+	bh=mj8gUYt5wYomzfC4jqZbuczVkdlJcWDtZbVIIADy2bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j0ozM7M2OOog+p9VBb1ofzoT3c5Fcj1ysBhZOM4nVv97qtOzMvKvVFumRjzy0Cydl
-	 5yEPGpUn+FVdKvX7eVwShnqCTvWDluL/gBiJll2iYyd71y9moLyWWNzYBoQFcCPKku
-	 D1JnycNwosgSxjMB+aiTXmc/PZrEe50xyVifWcN4=
+	b=aVZ9+tHGTDTtcGUFqvPRQp/jN+hUFvsA4N4GwtJ2KTXEEOEGLKo8AiE6m8Wt3ixWC
+	 SRJ9CwYwFhgadqjW6s6GbNi4UanmSAiDsxX8zl+G+l4OOJock+XdVedBeLAVjaW1st
+	 wmnnDIoDni4PYraacZR+8tZT4SCKUy0yPyDHfqRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	"Nikhil P. Rao" <nikhil.rao@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/567] xsk: Fix fragment node deletion to prevent buffer leak
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	stable@kernel.org
+Subject: [PATCH 6.1 075/481] can: ems_usb: ems_usb_read_bulk_callback(): check the proper length of a message
 Date: Mon, 23 Mar 2026 14:40:57 +0100
-Message-ID: <20260323134537.193813149@linuxfoundation.org>
+Message-ID: <20260323134527.062150850@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,116 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229051-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229549-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7B8172F5AC8
+X-Rspamd-Queue-Id: 063A22F87EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikhil P. Rao <nikhil.rao@amd.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 60abb0ac11dccd6b98fd9182bc5f85b621688861 ]
+commit 38a01c9700b0dcafe97dfa9dc7531bf4a245deff upstream.
 
-After commit b692bf9a7543 ("xsk: Get rid of xdp_buff_xsk::xskb_list_node"),
-the list_node field is reused for both the xskb pool list and the buffer
-free list, this causes a buffer leak as described below.
+When looking at the data in a USB urb, the actual_length is the size of
+the buffer passed to the driver, not the transfer_buffer_length which is
+set by the driver as the max size of the buffer.
 
-xp_free() checks if a buffer is already on the free list using
-list_empty(&xskb->list_node). When list_del() is used to remove a node
-from the xskb pool list, it doesn't reinitialize the node pointers.
-This means list_empty() will return false even after the node has been
-removed, causing xp_free() to incorrectly skip adding the buffer to the
-free list.
+When parsing the messages in ems_usb_read_bulk_callback() properly check
+the size both at the beginning of parsing the message to make sure it is
+big enough for the expected structure, and at the end of the message to
+make sure we don't overflow past the end of the buffer for the next
+message.
 
-Fix this by using list_del_init() instead of list_del() in all fragment
-handling paths, this ensures the list node is reinitialized after removal,
-allowing the list_empty() to work correctly.
-
-Fixes: b692bf9a7543 ("xsk: Get rid of xdp_buff_xsk::xskb_list_node")
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
-Link: https://patch.msgid.link/20260225000456.107806-2-nikhil.rao@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: f7387d6579d6 ("xsk: Fix zero-copy AF_XDP fragment drop")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Vincent Mailhol <mailhol@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026022316-answering-strainer-a5db@gregkh
+Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xdp_sock_drv.h | 6 +++---
- net/xdp/xsk.c              | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/can/usb/ems_usb.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/xdp_sock_drv.h b/include/net/xdp_sock_drv.h
-index 7be51bdd9c63a..91339ffd2f2a8 100644
---- a/include/net/xdp_sock_drv.h
-+++ b/include/net/xdp_sock_drv.h
-@@ -115,7 +115,7 @@ static inline void xsk_buff_free(struct xdp_buff *xdp)
- 		goto out;
+--- a/drivers/net/can/usb/ems_usb.c
++++ b/drivers/net/can/usb/ems_usb.c
+@@ -445,6 +445,11 @@ static void ems_usb_read_bulk_callback(s
+ 		start = CPC_HEADER_SIZE;
  
- 	list_for_each_entry_safe(pos, tmp, xskb_list, list_node) {
--		list_del(&pos->list_node);
-+		list_del_init(&pos->list_node);
- 		xp_free(pos);
- 	}
+ 		while (msg_count) {
++			if (start + CPC_MSG_HEADER_LEN > urb->actual_length) {
++				netdev_err(netdev, "format error\n");
++				break;
++			}
++
+ 			msg = (struct ems_cpc_msg *)&ibuf[start];
  
-@@ -140,7 +140,7 @@ static inline struct xdp_buff *xsk_buff_get_frag(struct xdp_buff *first)
- 	frag = list_first_entry_or_null(&xskb->pool->xskb_list,
- 					struct xdp_buff_xsk, list_node);
- 	if (frag) {
--		list_del(&frag->list_node);
-+		list_del_init(&frag->list_node);
- 		ret = &frag->xdp;
- 	}
+ 			switch (msg->type) {
+@@ -474,7 +479,7 @@ static void ems_usb_read_bulk_callback(s
+ 			start += CPC_MSG_HEADER_LEN + msg->length;
+ 			msg_count--;
  
-@@ -151,7 +151,7 @@ static inline void xsk_buff_del_tail(struct xdp_buff *tail)
- {
- 	struct xdp_buff_xsk *xskb = container_of(tail, struct xdp_buff_xsk, xdp);
- 
--	list_del(&xskb->list_node);
-+	list_del_init(&xskb->list_node);
- }
- 
- static inline struct xdp_buff *xsk_buff_get_tail(struct xdp_buff *first)
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 8ccc2f2a99d97..8f3971a94d967 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -179,7 +179,7 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
- 		err = __xsk_rcv_zc(xs, pos, len, contd);
- 		if (err)
- 			goto err;
--		list_del(&pos->list_node);
-+		list_del_init(&pos->list_node);
- 	}
- 
- 	return 0;
--- 
-2.51.0
-
+-			if (start > urb->transfer_buffer_length) {
++			if (start > urb->actual_length) {
+ 				netdev_err(netdev, "format error\n");
+ 				break;
+ 			}
 
 
 
