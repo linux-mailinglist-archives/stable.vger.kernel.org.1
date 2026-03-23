@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229473-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNzVLEVPwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228421-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:41 +0100
+	id QMgoBuhkwWkjSwQAu9opvQ
+	(envelope-from <stable+bounces-229473-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:06:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5350C2F4BC9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 809C22F7906
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:05:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A96DE31A81D7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C2E3A30A6475
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354C63AEF36;
-	Mon, 23 Mar 2026 14:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE54E3B961F;
+	Mon, 23 Mar 2026 15:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ky87a+UA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPznbnMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED46D3AE6EE;
-	Mon, 23 Mar 2026 14:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7553B5841;
+	Mon, 23 Mar 2026 15:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275077; cv=none; b=UAcz3iD8brMFZ/Z76TPsth7mU3FfNgJdWalJbFxKb558SvI1LqwGg/zWwrWvOkQwzIm33449CGS3HnMNXzgtYQwGdBTz965ZzO+GXMdOB1WAJC7F+MS2SKhpwTahJwb51F68zk0xl1jHAknV9aUX+1vBhqJis/DklpkWrbvePpw=
+	t=1774279345; cv=none; b=SpKdStuHpiuIArOgGwsfy5LhZiWlH+A5i1WCtCj8Xk6FR+TlJ2Y0QB9TxMKGqylqdI9EznYeuAh7qSSmMDWfKVr2ALcUsyJKhwOexyBPQYDNDY7e7D18zFf7RcpO22MWhv/8lFyJAOXb/c0zv27MPOT/4Oy/nxYk3Bbv7JJxXuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275077; c=relaxed/simple;
-	bh=0dzu53iFUkaEb09cIxFDQqj+M5YOwxhFL+Q0oHOYN/Q=;
+	s=arc-20240116; t=1774279345; c=relaxed/simple;
+	bh=mDDKoJIZ218VsfxU789z6t26BCins7r5Ty/tbxgOXrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbzXSItXOQAxU+WXjknOO2vfuVIbOgnv+TWtVQovb17Ug9xLxhdbNRcPy7hNrMBaD7ldM8E054cdNQUHsIcCSwBHCtJybh5j1C1MYWFOjXoUJg6Kx4AGcPEo0z8RG+f8Iy/F4khQN1DfKki1lxzqD3sZEX7ShwiNzO9LwUr31gU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ky87a+UA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70732C4CEF7;
-	Mon, 23 Mar 2026 14:11:16 +0000 (UTC)
+	 MIME-Version; b=LrPemRiVJOBnmOo8lyHY9N4K9EuihQ7L5uAlg3tHiI9xGqDeEZwKt3M7wQKJZihL+DUuMhhKfwr3tTs+Y/DT+mIkFB77gA4ffdKhSkAVLTWYhgpn9CjF/7kLz39SJDHJqR/sZu2t7is5d20T+bbO3RoArAkY8z6Z7u51rdCcfSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPznbnMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A915C4CEF7;
+	Mon, 23 Mar 2026 15:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275076;
-	bh=0dzu53iFUkaEb09cIxFDQqj+M5YOwxhFL+Q0oHOYN/Q=;
+	s=korg; t=1774279345;
+	bh=mDDKoJIZ218VsfxU789z6t26BCins7r5Ty/tbxgOXrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ky87a+UA5AQoksLJsmAuhrOuVKGusCPoe6afuOkHIGQPeLsVKY2vZBP7NBxaRDMfg
-	 jbZ8gZg8AkogMUnnxoqDRT4wuZp6b3y2436Ac3BhPKpx0n+Au3lNsA2AHpV4Y/izl+
-	 V405EHVXZTUgXOa4yIrEJXQj105r0Ux59bCeNjU8=
+	b=WPznbnMzB6mbPkpVwBE+rpAAsaFYzbK1BrEHxBhch3K36xA6TsYZWqnAqkBH4RcyR
+	 Pn3mSa66Hj+fzpyMT1xCMUmJ9dQJMWo0S6KyUNiOCxxVwKvAPAObrN0UdYnntKrJqu
+	 OgbhyC0GCiHSqsGqpkG294M9jX37aS7IuJhyOoAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 211/212] arm64: realm: Fix PTE_NS_SHARED for 52bit PA support
+Subject: [PATCH 6.6 512/567] mpls: add missing unregister_netdevice_notifier to mpls_init
 Date: Mon, 23 Mar 2026 14:47:12 +0100
-Message-ID: <20260323134510.452735844@linuxfoundation.org>
+Message-ID: <20260323134546.684026121@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,92 +68,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228421-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229473-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5350C2F4BC9
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,queasysnail.net:email]
+X-Rspamd-Queue-Id: 809C22F7906
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 8c6e9b60f5c7985a9fe41320556a92d7a33451df ]
+[ Upstream commit 99600f79b28c83c68bae199a3d8e95049a758308 ]
 
-With LPA/LPA2, the top bits of the PFN (Bits[51:48]) end up in the lower bits
-of the PTE. So, simply creating a mask of the "top IPA bit" doesn't work well
-for these configurations to set the "top" bit at the output of Stage1
-translation.
+If mpls_init() fails after registering mpls_dev_notifier, it never
+gets removed. Add the missing unregister_netdevice_notifier() call to
+the error handling path.
 
-Fix this by using the __phys_to_pte_val() to do the right thing for all
-configurations.
-
-Tested using, kvmtool, placing the memory at a higher address (-m <size>@<Addr>).
-
- e.g:
- # lkvm run --realm -c 4 -m 512M@@128T -k Image --console serial
-
- sh-5.0# dmesg | grep "LPA2\|RSI"
-[    0.000000] RME: Using RSI version 1.0
-[    0.000000] CPU features: detected: 52-bit Virtual Addressing (LPA2)
-[    0.777354] CPU features: detected: 52-bit Virtual Addressing for KVM (LPA2)
-
-Fixes: 399306954996 ("arm64: realm: Query IPA size from the RMM")
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Steven Price <steven.price@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 5be2062e3080 ("mpls: Handle error of rtnl_register_module().")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://patch.msgid.link/7c55363c4f743d19e2306204a134407c90a69bbb.1773228081.git.sd@queasysnail.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/rsi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mpls/af_mpls.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/kernel/rsi.c b/arch/arm64/kernel/rsi.c
-index c64a06f58c0bc..9e846ce4ef9ca 100644
---- a/arch/arm64/kernel/rsi.c
-+++ b/arch/arm64/kernel/rsi.c
-@@ -12,6 +12,7 @@
- 
- #include <asm/io.h>
- #include <asm/mem_encrypt.h>
-+#include <asm/pgtable.h>
- #include <asm/rsi.h>
- 
- static struct realm_config config;
-@@ -146,7 +147,7 @@ void __init arm64_rsi_init(void)
- 		return;
- 	if (WARN_ON(rsi_get_realm_config(&config)))
- 		return;
--	prot_ns_shared = BIT(config.ipa_bits - 1);
-+	prot_ns_shared = __phys_to_pte_val(BIT(config.ipa_bits - 1));
- 
- 	if (arm64_ioremap_prot_hook_register(realm_ioremap_hook))
- 		return;
+diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
+index 5a4b175b78c8c..0561a530ecf0d 100644
+--- a/net/mpls/af_mpls.c
++++ b/net/mpls/af_mpls.c
+@@ -2775,6 +2775,7 @@ static int __init mpls_init(void)
+ out_unregister_rtnl_af:
+ 	rtnl_af_unregister(&mpls_af_ops);
+ 	dev_remove_pack(&mpls_packet_type);
++	unregister_netdevice_notifier(&mpls_dev_notifier);
+ out_unregister_pernet:
+ 	unregister_pernet_subsys(&mpls_net_ops);
+ 	goto out;
 -- 
 2.51.0
 
