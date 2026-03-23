@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228347-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EMJeLvtWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228824-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:35 +0100
+	id yO7YOFVSwWn+SAQAu9opvQ
+	(envelope-from <stable+bounces-228347-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C6B2F5C85
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D5DF2F52CF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 35944304342E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84DA53134BCE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5B8241695;
-	Mon, 23 Mar 2026 14:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707413B3884;
+	Mon, 23 Mar 2026 14:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjZ5kzf5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAyQvvLo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E540B23C4FF;
-	Mon, 23 Mar 2026 14:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319FA3ACEF1;
+	Mon, 23 Mar 2026 14:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277235; cv=none; b=pM3ZA4aeWAqJQpO/Jfpv5BGmji8HVWawrHKyl4TJ0AT36z+P1kr3l/4cYO8GEjOtyWL/yLL3JqaoFPyBwcVL4VtlNyiyh7dAQtCB3/n/s3EkmomUw+/GQLsS3rd6UtBmsr6N7qXNdywYReZVYbFDKM/GOThEKkhkoZi45sx10ss=
+	t=1774274874; cv=none; b=NJLJloXfoiNPvAdO2xagaHVX/BBqrDsgdu7E2QEUCn9VHgw6ir4w7nHSS/Qj2iLNC8Os1xzIwcc4O6pSyWanyvphYR2WduxHF5U/uF2nx2em7Y4rKz+OYV/tkp5KuxJSR3GDZeVmSTxDQO3g6CHTgxW6eVcO7gRZSek230D+86I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277235; c=relaxed/simple;
-	bh=rDav7JuOSKWn+GTSxcYsMaTvhE2ZmtTTMqsdf8V3mSM=;
+	s=arc-20240116; t=1774274874; c=relaxed/simple;
+	bh=wJNp1PFTbr08YSHzwQRyLSXyNCNyiJIzRpLopMGzy6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bIKz4gFTzO+FMJKuMmVrjyHp0F/e7qPO89FI/NfJ0zazerGfungbUviKlrTYBfqxG1wrmkeaCt95ZJntjewnGAQvxipNvSWKjqRiDHsTggS0QqJayIqUbuurEGuTMX5SApJ0/Yy33KqHR3M6P6Yp609GZIO4Oqu9Wt/Jw0FeJbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjZ5kzf5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE13C4CEF7;
-	Mon, 23 Mar 2026 14:47:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qyj76lfwW2Qy2nmLGpsH9FuzwWrQhtGmuo0gOfw6eLsxq4naaPfkmmrURY0xXCgfYeRGk69BbH0xF+ua19/4iOwX0P+GlaasLf1rkxWtme8MJ5BWP6QU5zc4RUd8/8pVcR4tIPkBIHA0nq3X9MCg46GKafV68LU2C2vB/DhP4O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAyQvvLo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A19CC4CEF7;
+	Mon, 23 Mar 2026 14:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277234;
-	bh=rDav7JuOSKWn+GTSxcYsMaTvhE2ZmtTTMqsdf8V3mSM=;
+	s=korg; t=1774274873;
+	bh=wJNp1PFTbr08YSHzwQRyLSXyNCNyiJIzRpLopMGzy6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SjZ5kzf5o+EUm7Q90dDBipDXVUug14QEnqrfLLtIRTWZ/S4oJ31WRdkKaOWJvIDgE
-	 UbxV8C08UBWO/yUigWnsdAoyeFncDXV1dCGZgjy6HR53HUZX7mPKlK8fPDXhm+ksZT
-	 oHAx/dez/RNPnkqdEaTh8kxaBENUkuQITj8Eigm4=
+	b=RAyQvvLo9BBsGT6oVHuF/n1pzyNXXW6lLM+bwuwN0gDa+BZGMKsTsLoKGa1TdgJSH
+	 KnzyU5QGpzLjUHF+4woTKGIczcq1rtJhRl9Yne9hnMUYKB9o29Y6tD3Yz2ZJLXXJU+
+	 YK/22YuXnnBmdYjaGbhwTEox0ZJLkIj1JGg7psoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 364/460] ata: libata-scsi: Return residual for emulated SCSI commands
-Date: Mon, 23 Mar 2026 14:46:00 +0100
-Message-ID: <20260323134535.502692809@linuxfoundation.org>
+Subject: [PATCH 6.18 140/212] netfilter: xt_time: use unsigned int for monthday bit shift
+Date: Mon, 23 Mar 2026 14:46:01 +0100
+Message-ID: <20260323134508.199165682@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,327 +65,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228824-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228347-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E1C6B2F5C85
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 8D5DF2F52CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 5251ae224d8d3caa21b28d12408062b6e75cffad ]
+[ Upstream commit 00050ec08cecfda447e1209b388086d76addda3a ]
 
-The function ata_scsi_rbuf_fill() used to fill the reply buffer of
-emulated SCSI commands always copies the ATA reply buffer
-(ata_scsi_rbuf) up to the size of the SCSI command buffer (the transfer
-length for the command), even if the reply is shorter than the SCSI
-command buffer. This leads to issuers of the SCSI command to always get
-a result without any residual (resid is always 0) despite the
-potentially shorter reply for the command.
+The monthday field can be up to 31, and shifting a signed integer 1
+by 31 positions (1 << 31) is undefined behavior in C, as the result
+overflows a 32-bit signed int. Use 1U to ensure well-defined behavior
+for all valid monthday values.
 
-Modify all fill actors used by ata_scsi_rbuf_fill() to return the number
-of bytes filled for the reply and 0 in case of error. Using this value,
-add a call to scsi_set_resid() in ata_scsi_rbuf_fill() to set the
-correct residual for the SCSI command when the reply length is shorter
-than the command buffer.
+Change the weekday shift to 1U as well for consistency.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20241022024537.251905-7-dlemoal@kernel.org
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Stable-dep-of: e6d7eba23b66 ("ata: libata-scsi: report correct sense field pointer in ata_scsiop_maint_in()")
+Fixes: ee4411a1b1e0 ("[NETFILTER]: x_tables: add xt_time match")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-scsi.c |   81 ++++++++++++++++++++++++++--------------------
- 1 file changed, 47 insertions(+), 34 deletions(-)
+ net/netfilter/xt_time.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -1920,17 +1920,19 @@ static void ata_scsi_rbuf_fill(struct at
- 		unsigned int (*actor)(struct ata_device *dev,
- 				      struct scsi_cmnd *cmd, u8 *rbuf))
- {
--	unsigned int rc;
- 	unsigned long flags;
-+	unsigned int len;
+diff --git a/net/netfilter/xt_time.c b/net/netfilter/xt_time.c
+index 6aa12d0f54e23..61de85e02a40f 100644
+--- a/net/netfilter/xt_time.c
++++ b/net/netfilter/xt_time.c
+@@ -227,13 +227,13 @@ time_mt(const struct sk_buff *skb, struct xt_action_param *par)
  
- 	spin_lock_irqsave(&ata_scsi_rbuf_lock, flags);
+ 	localtime_2(&current_time, stamp);
  
- 	memset(ata_scsi_rbuf, 0, ATA_SCSI_RBUF_SIZE);
--	rc = actor(dev, cmd, ata_scsi_rbuf);
--	if (rc == 0) {
-+	len = actor(dev, cmd, ata_scsi_rbuf);
-+	if (len) {
- 		sg_copy_from_buffer(scsi_sglist(cmd), scsi_sg_count(cmd),
- 				    ata_scsi_rbuf, ATA_SCSI_RBUF_SIZE);
- 		cmd->result = SAM_STAT_GOOD;
-+		if (scsi_bufflen(cmd) > len)
-+			scsi_set_resid(cmd, scsi_bufflen(cmd) - len);
+-	if (!(info->weekdays_match & (1 << current_time.weekday)))
++	if (!(info->weekdays_match & (1U << current_time.weekday)))
+ 		return false;
+ 
+ 	/* Do not spend time computing monthday if all days match anyway */
+ 	if (info->monthdays_match != XT_TIME_ALL_MONTHDAYS) {
+ 		localtime_3(&current_time, stamp);
+-		if (!(info->monthdays_match & (1 << current_time.monthday)))
++		if (!(info->monthdays_match & (1U << current_time.monthday)))
+ 			return false;
  	}
  
- 	spin_unlock_irqrestore(&ata_scsi_rbuf_lock, flags);
-@@ -2018,7 +2020,11 @@ static unsigned int ata_scsiop_inq_std(s
- 	else
- 		memcpy(rbuf + 58, versions, sizeof(versions));
- 
--	return 0;
-+	/*
-+	 * Include all 8 possible version descriptors, even if not all of
-+	 * them are popoulated.
-+	 */
-+	return 96;
- }
- 
- /**
-@@ -2055,7 +2061,8 @@ static unsigned int ata_scsiop_inq_00(st
- 		num_pages++;
- 	}
- 	rbuf[3] = num_pages;	/* number of supported VPD pages */
--	return 0;
-+
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2082,7 +2089,8 @@ static unsigned int ata_scsiop_inq_80(st
- 	memcpy(rbuf, hdr, sizeof(hdr));
- 	ata_id_string(dev->id, (unsigned char *) &rbuf[4],
- 		      ATA_ID_SERNO, ATA_ID_SERNO_LEN);
--	return 0;
-+
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2143,7 +2151,8 @@ static unsigned int ata_scsiop_inq_83(st
- 		num += ATA_ID_WWN_LEN;
- 	}
- 	rbuf[3] = num - 4;    /* page len (assume less than 256 bytes) */
--	return 0;
-+
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2180,7 +2189,8 @@ static unsigned int ata_scsiop_inq_89(st
- 	rbuf[56] = ATA_CMD_ID_ATA;
- 
- 	memcpy(&rbuf[60], &dev->id[0], 512);
--	return 0;
-+
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2231,7 +2241,7 @@ static unsigned int ata_scsiop_inq_b0(st
- 		put_unaligned_be32(1, &rbuf[28]);
- 	}
- 
--	return 0;
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2261,7 +2271,7 @@ static unsigned int ata_scsiop_inq_b1(st
- 	if (zoned)
- 		rbuf[8] = (zoned << 4);
- 
--	return 0;
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2284,7 +2294,7 @@ static unsigned int ata_scsiop_inq_b2(st
- 	rbuf[3] = 0x4;
- 	rbuf[5] = 1 << 6;	/* TPWS */
- 
--	return 0;
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2304,7 +2314,7 @@ static unsigned int ata_scsiop_inq_b6(st
- {
- 	if (!ata_dev_is_zac(dev)) {
- 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
--		return 1;
-+		return 0;
- 	}
- 
- 	/*
-@@ -2322,7 +2332,7 @@ static unsigned int ata_scsiop_inq_b6(st
- 	put_unaligned_be32(dev->zac_zones_optimal_nonseq, &rbuf[12]);
- 	put_unaligned_be32(dev->zac_zones_max_open, &rbuf[16]);
- 
--	return 0;
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2346,7 +2356,7 @@ static unsigned int ata_scsiop_inq_b9(st
- 
- 	if (!cpr_log) {
- 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
--		return 1;
-+		return 0;
- 	}
- 
- 	/* SCSI Concurrent Positioning Ranges VPD page: SBC-5 rev 1 or later */
-@@ -2360,7 +2370,7 @@ static unsigned int ata_scsiop_inq_b9(st
- 		put_unaligned_be64(cpr_log->cpr[i].num_lbas, &desc[16]);
- 	}
- 
--	return 0;
-+	return get_unaligned_be16(&rbuf[2]) + 4;
- }
- 
- /**
-@@ -2382,7 +2392,7 @@ static unsigned int ata_scsiop_inquiry(s
- 	/* is CmdDt set?  */
- 	if (scsicmd[1] & 2) {
- 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
--		return 1;
-+		return 0;
- 	}
- 
- 	/* Is EVPD clear? */
-@@ -2410,7 +2420,7 @@ static unsigned int ata_scsiop_inquiry(s
- 		return ata_scsiop_inq_b9(dev, cmd, rbuf);
- 	default:
- 		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
--		return 1;
-+		return 0;
- 	}
- }
- 
-@@ -2741,24 +2751,27 @@ static unsigned int ata_scsiop_mode_sens
- 			rbuf[3] = sizeof(sat_blk_desc);
- 			memcpy(rbuf + 4, sat_blk_desc, sizeof(sat_blk_desc));
- 		}
--	} else {
--		put_unaligned_be16(p - rbuf - 2, &rbuf[0]);
--		rbuf[3] |= dpofua;
--		if (ebd) {
--			rbuf[7] = sizeof(sat_blk_desc);
--			memcpy(rbuf + 8, sat_blk_desc, sizeof(sat_blk_desc));
--		}
-+
-+		return rbuf[0] + 1;
- 	}
--	return 0;
-+
-+	put_unaligned_be16(p - rbuf - 2, &rbuf[0]);
-+	rbuf[3] |= dpofua;
-+	if (ebd) {
-+		rbuf[7] = sizeof(sat_blk_desc);
-+		memcpy(rbuf + 8, sat_blk_desc, sizeof(sat_blk_desc));
-+	}
-+
-+	return get_unaligned_be16(&rbuf[0]) + 2;
- 
- invalid_fld:
- 	ata_scsi_set_invalid_field(dev, cmd, fp, bp);
--	return 1;
-+	return 0;
- 
- saving_not_supp:
- 	ata_scsi_set_sense(dev, cmd, ILLEGAL_REQUEST, 0x39, 0x0);
- 	 /* "Saving parameters not supported" */
--	return 1;
-+	return 0;
- }
- 
- /**
-@@ -2801,7 +2814,7 @@ static unsigned int ata_scsiop_read_cap(
- 		rbuf[6] = sector_size >> (8 * 1);
- 		rbuf[7] = sector_size;
- 
--		return 0;
-+		return 8;
- 	}
- 
- 	/*
-@@ -2811,7 +2824,7 @@ static unsigned int ata_scsiop_read_cap(
- 	if (scsicmd[0] != SERVICE_ACTION_IN_16 ||
- 	    (scsicmd[1] & 0x1f) != SAI_READ_CAPACITY_16) {
- 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
--		return 1;
-+		return 0;
- 	}
- 
- 	/* sector count, 64-bit */
-@@ -2846,7 +2859,7 @@ static unsigned int ata_scsiop_read_cap(
- 		}
- 	}
- 
--	return 0;
-+	return 16;
- }
- 
- /**
-@@ -2865,7 +2878,7 @@ static unsigned int ata_scsiop_report_lu
- {
- 	rbuf[3] = 8;	/* just one lun, LUN 0, size 8 bytes */
- 
--	return 0;
-+	return 16;
- }
- 
- /*
-@@ -3593,13 +3606,13 @@ static unsigned int ata_scsiop_maint_in(
- 
- 	if ((cdb[1] & 0x1f) != MI_REPORT_SUPPORTED_OPERATION_CODES) {
- 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
--		return 1;
-+		return 0;
- 	}
- 
- 	if (cdb[2] != 1 && cdb[2] != 3) {
- 		ata_dev_warn(dev, "invalid command format %d\n", cdb[2]);
- 		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
--		return 1;
-+		return 0;
- 	}
- 
- 	switch (cdb[3]) {
-@@ -3672,7 +3685,7 @@ static unsigned int ata_scsiop_maint_in(
- 	rbuf[0] = rwcdlp;
- 	rbuf[1] = cdlp | supported;
- 
--	return 0;
-+	return 4;
- }
- 
- /**
+-- 
+2.51.0
+
 
 
 
