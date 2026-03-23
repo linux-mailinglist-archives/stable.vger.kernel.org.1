@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKJIBC5ewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229279-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:18 +0100
+	id aH60CmFGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 670222F6938
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBABF2F36C2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 37894316FFD5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 07C3D3012228
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7838F3B4E9A;
-	Mon, 23 Mar 2026 15:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A613AE6E2;
+	Mon, 23 Mar 2026 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i4OEd/Js"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8Ekx6pg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398F62773C3;
-	Mon, 23 Mar 2026 15:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC1C3AE6E1;
+	Mon, 23 Mar 2026 13:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278619; cv=none; b=PGIG+J9Iy3oqKGvARcTuKaYwqXMLSVnfFcpQtneJ/omB6qRR+TcYTLfM1r5EekfULBpXk9Owem0TPhPkGL9NB/MDIWRsFs0YdoQJ4UixSv8a2HaK6TLB2dhNW74a7V7uWOxYPKLcAT58c3Bv/IaCQC6MnYQqxw9b02yFRAV98pU=
+	t=1774274094; cv=none; b=Pz+JvaSGOsWe7e9n5ZiNGkx41Fui6akHwtvDQnmMo5BSjiNbkVRQzzzGA9lWdZoIV4+HFmgYPk4h1JD97QYreFAWr/vY5u4FlH2KvOxXi1mstw94BHKCA7spu4RI5LCq9FtYwABaTR/CZjAWyWQrxk39wo3jos2QBwUU1QExJCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278619; c=relaxed/simple;
-	bh=yFRsDeE44w5xi+s3sl+7wrpf0JV6QieOJ8tEf1+flwE=;
+	s=arc-20240116; t=1774274094; c=relaxed/simple;
+	bh=2YW8BO8iY1w9tgPPGzSGW8zMYPtXSu+4WWc259sBNxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pyu27bqsolzL8wxXic1+2G39s95WuqHSnHxk9y0/aBP/cx7hC+XGesbtcn8TLq+pwC5xorf9XkoDBOb7okKezqIOh8dce98GJIDkeOIfXPbk2ccDokgTEsyukPgUgFHSJuOL7XYoRR8sliHoTx5hoDPKPCi8+HFYij79L2EN1Gg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i4OEd/Js; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EACC4CEF7;
-	Mon, 23 Mar 2026 15:10:18 +0000 (UTC)
+	 MIME-Version; b=daCbCzm/poaDSMmKtMbW3ukhnoPJRWZ2E9T5WqyWtTROwCBh7WdO3/JMs+WJX5w0jxzNzKvJ++hunugyiK7cHTblp6ti+RLWi1jXetRFq57pL8Gp4lA3iDfmTUgBCNWqjgzj8tGtqlFtqv2oqmlNGNZzBEDT7w1YqsPiP2vEFLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8Ekx6pg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A374FC4CEF7;
+	Mon, 23 Mar 2026 13:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278619;
-	bh=yFRsDeE44w5xi+s3sl+7wrpf0JV6QieOJ8tEf1+flwE=;
+	s=korg; t=1774274094;
+	bh=2YW8BO8iY1w9tgPPGzSGW8zMYPtXSu+4WWc259sBNxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i4OEd/JsLLZKrj+MJygjBs5KLOp9B8PPa0ueXMBHY8KjKGmX3uvCe5q+w1GG6IXqx
-	 RtCar4zF8YTx9ct6EF0g7I0HytvDQEQmK02TqSL/8IpHiJm6/QcHzNWW60TDkKuonx
-	 pc8lQEaWNGAO5AXCsk8oTh7KY1Y6B3RZ82tJGqfI=
+	b=y8Ekx6pghihg1V7iyNvmSyVWJXkvw9VLeQ4eIU52xd8PHs9LODHRe/ncUSsExMCG9
+	 xQ2ZJW44AZoOETaQJVS4qLzrzmX6QQijJ5jyxRdleYFfLRa73q+NH9Fu1332d6+Cr4
+	 T4SkcUGjcCsxPd/hGO2rr7glM/PoNlbqMcAEFY64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 363/567] i3c: mipi-i3c-hci: Restart DMA ring correctly after dequeue abort
+	syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 106/220] wifi: mac80211: Fix static_branch_dec() underflow for aql_disable.
 Date: Mon, 23 Mar 2026 14:44:43 +0100
-Message-ID: <20260323134542.805055152@linuxfoundation.org>
+Message-ID: <20260323134507.953749201@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229279-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228090-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 670222F6938
+	TAGGED_RCPT(0.00)[stable,feb9ce36a95341bb47a4];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: BBABF2F36C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit b6d586431ae20d5157ee468d0ef62ad26798ef13 upstream.
+[ Upstream commit b94ae8e0d5fe1bdbbfdc3854ff6ce98f6876a828 ]
 
-The DMA dequeue path attempts to restart the ring after aborting an
-in-flight transfer, but the current sequence is incomplete. The controller
-must be brought out of the aborted state and the ring control registers
-must be programmed in the correct order: first clearing ABORT, then
-re-enabling the ring and asserting RUN_STOP to resume operation.
+syzbot reported static_branch_dec() underflow in aql_enable_write(). [0]
 
-Add the missing controller resume step and update the ring control writes
-so that the ring is restarted using the proper sequence.
+The problem is that aql_enable_write() does not serialise concurrent
+write()s to the debugfs.
 
-Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-11-adrian.hunter@intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+aql_enable_write() checks static_key_false(&aql_disable.key) and
+later calls static_branch_inc() or static_branch_dec(), but the
+state may change between the two calls.
+
+aql_disable does not need to track inc/dec.
+
+Let's use static_branch_enable() and static_branch_disable().
+
+[0]:
+val == 0
+WARNING: kernel/jump_label.c:311 at __static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311, CPU#0: syz.1.3155/20288
+Modules linked in:
+CPU: 0 UID: 0 PID: 20288 Comm: syz.1.3155 Tainted: G     U       L      syzkaller #0 PREEMPT(full)
+Tainted: [U]=USER, [L]=SOFTLOCKUP
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
+RIP: 0010:__static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311
+Code: f2 c9 ff 5b 5d c3 cc cc cc cc e8 54 f2 c9 ff 48 89 df e8 ac f9 ff ff eb ad e8 45 f2 c9 ff 90 0f 0b 90 eb a2 e8 3a f2 c9 ff 90 <0f> 0b 90 eb 97 48 89 df e8 5c 4b 33 00 e9 36 ff ff ff 0f 1f 80 00
+RSP: 0018:ffffc9000b9f7c10 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffffffff9b3e5d40 RCX: ffffffff823c57b4
+RDX: ffff8880285a0000 RSI: ffffffff823c5846 RDI: ffff8880285a0000
+RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000000a
+R13: 1ffff9200173ef88 R14: 0000000000000001 R15: ffffc9000b9f7e98
+FS:  00007f530dd726c0(0000) GS:ffff8881245e3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000200000001140 CR3: 000000007cc4a000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ __static_key_slow_dec_cpuslocked kernel/jump_label.c:297 [inline]
+ __static_key_slow_dec kernel/jump_label.c:321 [inline]
+ static_key_slow_dec+0x7c/0xc0 kernel/jump_label.c:336
+ aql_enable_write+0x2b2/0x310 net/mac80211/debugfs.c:343
+ short_proxy_write+0x133/0x1a0 fs/debugfs/file.c:383
+ vfs_write+0x2aa/0x1070 fs/read_write.c:684
+ ksys_pwrite64 fs/read_write.c:793 [inline]
+ __do_sys_pwrite64 fs/read_write.c:801 [inline]
+ __se_sys_pwrite64 fs/read_write.c:798 [inline]
+ __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:798
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xc9/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f530cf9aeb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f530dd72028 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
+RAX: ffffffffffffffda RBX: 00007f530d215fa0 RCX: 00007f530cf9aeb9
+RDX: 0000000000000003 RSI: 0000000000000000 RDI: 0000000000000010
+RBP: 00007f530d008c1f R08: 0000000000000000 R09: 0000000000000000
+R10: 4200000000000005 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f530d216038 R14: 00007f530d215fa0 R15: 00007ffde89fb978
+ </TASK>
+
+Fixes: e908435e402a ("mac80211: introduce aql_enable node in debugfs")
+Reported-by: syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69a8979e.a70a0220.b118c.0025.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260306072405.3649474-1-kuniyu@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/mac80211/debugfs.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -491,7 +491,9 @@ static bool hci_dma_dequeue_xfer(struct
- 	}
+diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
+index d02f07368c511..687a66cd49433 100644
+--- a/net/mac80211/debugfs.c
++++ b/net/mac80211/debugfs.c
+@@ -320,7 +320,6 @@ static ssize_t aql_enable_read(struct file *file, char __user *user_buf,
+ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
+ 				size_t count, loff_t *ppos)
+ {
+-	bool aql_disabled = static_key_false(&aql_disable.key);
+ 	char buf[3];
+ 	size_t len;
  
- 	/* restart the ring */
-+	mipi_i3c_hci_resume(hci);
- 	rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE);
-+	rh_reg_write(RING_CONTROL, RING_CTRL_ENABLE | RING_CTRL_RUN_STOP);
+@@ -335,15 +334,12 @@ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
+ 	if (len > 0 && buf[len - 1] == '\n')
+ 		buf[len - 1] = 0;
  
- 	return did_unqueue;
+-	if (buf[0] == '0' && buf[1] == '\0') {
+-		if (!aql_disabled)
+-			static_branch_inc(&aql_disable);
+-	} else if (buf[0] == '1' && buf[1] == '\0') {
+-		if (aql_disabled)
+-			static_branch_dec(&aql_disable);
+-	} else {
++	if (buf[0] == '0' && buf[1] == '\0')
++		static_branch_enable(&aql_disable);
++	else if (buf[0] == '1' && buf[1] == '\0')
++		static_branch_disable(&aql_disable);
++	else
+ 		return -EINVAL;
+-	}
+ 
+ 	return count;
  }
+-- 
+2.51.0
+
 
 
 
