@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229804-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aOOaDzpUwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228721-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:50 +0100
+	id aOXUKLpywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229804-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 558832F56AA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC872F965B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2AFB73039CD5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3E2EA323225E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFF33B27C2;
-	Mon, 23 Mar 2026 14:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAED1DA0E1;
+	Mon, 23 Mar 2026 16:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3Aa0pHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2bPFrqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F16C3B19DA;
-	Mon, 23 Mar 2026 14:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DE2282F35;
+	Mon, 23 Mar 2026 16:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276942; cv=none; b=lrAhlJNw3oQxKY2fik+gOp/tagd3+gCq9l9wnmQ0lDCf+9AeVZi0RNycSj2j6xyyebgqWN3N5xR4+A3G75Tf8QPLt1rj2IUr1ctD3ab5+qe/0395BnpyphF+znkNj4VI3hfkC7utr5PvUDNf2TsnCnUt2tQUN+IbjLORSjY1cb0=
+	t=1774282909; cv=none; b=fe/UjLYN51lMGCP6GZYcHxdL7QqmwTfRv9g6eD04TQDKfGX9q/M1FYzE5rq3Cy7Ekpp4b0f/iPhw9tNhW6s5JUAVTH6WgIEv9QiNYqCIdfoK1qvvtkbYfeAafZGM+rvheHRN6ic1yBN9cZYfq4vy1YQwHeDeL6Qnt+iLImhBaCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276942; c=relaxed/simple;
-	bh=vVuI9J2q8g7SP8yB3gDG8FuljByx7uf4191ekjRO35w=;
+	s=arc-20240116; t=1774282909; c=relaxed/simple;
+	bh=L0Jm6wduFaczRQjIYdistB0U8zFZWuFZearJlnzQhX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4PHQlpoKliMNdwiukoRHklunwApBD91VuADc//9bMo6uC5inqNlJZFa/wTaaQiZgqSXOHcw9Rz+XZhxyQ+mOeB5lyUNSMEnC6kB7nKVKDZtIq+NBVSYakB8oaTVsbxqz4i+IWxPANL6Yf/moqoRaPoRWl9daOL5mtselBrRZJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3Aa0pHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10575C4CEF7;
-	Mon, 23 Mar 2026 14:42:21 +0000 (UTC)
+	 MIME-Version; b=Nwfc1mUN9Vtj1QApOulBtx9cx9dkH3NKq5kTbG+BUu2fnsa/08hSEf7OmYQHIu56sNmFQ7GtNM2rlTBO0iAEdbTYWjdbZ42H50Avir6H3vR7mlL0zV5QOdw+R18rmpOLl+sFO5dDPsZERQJv4o0wXJOduS+W5jvB6MSj9U6L9rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2bPFrqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290DEC4CEF7;
+	Mon, 23 Mar 2026 16:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276942;
-	bh=vVuI9J2q8g7SP8yB3gDG8FuljByx7uf4191ekjRO35w=;
+	s=korg; t=1774282909;
+	bh=L0Jm6wduFaczRQjIYdistB0U8zFZWuFZearJlnzQhX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R3Aa0pHvLPVEHTA1BQqf39N777RaqV1TO5Kciy7KI1b2/WFuprsr5jZpS+ed/ckjJ
-	 sd09uGaC1FtSrTMadphF612DM7EOM66dI2oRGBT0Jb9PMlzoj34sliNI+bpjZRtP87
-	 uIBwtkbB4Kte61Ak6lJ5fiJViJt8ke08ulXpq70M=
+	b=x2bPFrqkf8jC5q8ykn3/SfIUJ5xArDCq0JSbCDx2y7ggfL2SKcFeRNIN9dPi5zA/l
+	 JfjFCRNbYZV/ejT/zjX7anMT0r/QCU3NgsUKjIvU/eLsFI4fuRKdolo5wfoSXUberq
+	 QRUzH+OjGf+CwLw7bhOXX4BlEvC/1xUj94XoPeZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yan Zhao <yan.y.zhao@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 263/460] KVM: x86: Introduce supported_quirks to block disabling quirks
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.1 277/481] ipv6: use RCU in ip6_xmit()
 Date: Mon, 23 Mar 2026 14:44:19 +0100
-Message-ID: <20260323134532.946469906@linuxfoundation.org>
+Message-ID: <20260323134531.871590100@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +68,141 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228721-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229804-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 558832F56AA
+X-Rspamd-Queue-Id: 3DC872F965B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhao <yan.y.zhao@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit bd7d5362b4c4ac8b951385867a0fadfae0ba3c07 ]
+commit 9085e56501d93af9f2d7bd16f7fcfacdde47b99c upstream.
 
-Introduce supported_quirks in kvm_caps to store platform-specific force-enabled
-quirks.
+Use RCU in ip6_xmit() in order to use dst_dev_rcu() to prevent
+possible UAF.
 
-No functional changes intended.
-
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-Message-ID: <20250224070832.31394-1-yan.y.zhao@intel.com>
-[Remove unsupported quirks at KVM_ENABLE_CAP time. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Stable-dep-of: e2ffe85b6d2b ("KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 ---
- arch/x86/kvm/x86.c |    9 +++++----
- arch/x86/kvm/x86.h |    2 ++
- 2 files changed, 7 insertions(+), 4 deletions(-)
+ net/ipv6/ip6_output.c |   35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -4801,7 +4801,7 @@ int kvm_vm_ioctl_check_extension(struct
- 		r = enable_pmu ? KVM_CAP_PMU_VALID_MASK : 0;
- 		break;
- 	case KVM_CAP_DISABLE_QUIRKS2:
--		r = KVM_X86_VALID_QUIRKS;
-+		r = kvm_caps.supported_quirks;
- 		break;
- 	case KVM_CAP_X86_NOTIFY_VMEXIT:
- 		r = kvm_caps.has_notify_vmexit;
-@@ -6534,11 +6534,11 @@ int kvm_vm_ioctl_enable_cap(struct kvm *
- 	switch (cap->cap) {
- 	case KVM_CAP_DISABLE_QUIRKS2:
- 		r = -EINVAL;
--		if (cap->args[0] & ~KVM_X86_VALID_QUIRKS)
-+		if (cap->args[0] & ~kvm_caps.supported_quirks)
- 			break;
- 		fallthrough;
- 	case KVM_CAP_DISABLE_QUIRKS:
--		kvm->arch.disabled_quirks |= cap->args[0];
-+		kvm->arch.disabled_quirks |= cap->args[0] & kvm_caps.supported_quirks;
- 		r = 0;
- 		break;
- 	case KVM_CAP_SPLIT_IRQCHIP: {
-@@ -9782,6 +9782,7 @@ int kvm_x86_vendor_init(struct kvm_x86_i
- 		kvm_host.xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
- 		kvm_caps.supported_xcr0 = kvm_host.xcr0 & KVM_SUPPORTED_XCR0;
- 	}
-+	kvm_caps.supported_quirks = KVM_X86_VALID_QUIRKS;
- 	kvm_caps.inapplicable_quirks = KVM_X86_CONDITIONAL_QUIRKS;
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -258,35 +258,36 @@ bool ip6_autoflowlabel(struct net *net,
+ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
+ 	     __u32 mark, struct ipv6_txoptions *opt, int tclass, u32 priority)
+ {
+-	struct net *net = sock_net(sk);
+ 	const struct ipv6_pinfo *np = inet6_sk(sk);
+ 	struct in6_addr *first_hop = &fl6->daddr;
+ 	struct dst_entry *dst = skb_dst(skb);
+-	struct net_device *dev = dst->dev;
+ 	struct inet6_dev *idev = ip6_dst_idev(dst);
+ 	struct hop_jumbo_hdr *hop_jumbo;
+ 	int hoplen = sizeof(*hop_jumbo);
++	struct net *net = sock_net(sk);
+ 	unsigned int head_room;
++	struct net_device *dev;
+ 	struct ipv6hdr *hdr;
+ 	u8  proto = fl6->flowi6_proto;
+ 	int seg_len = skb->len;
+-	int hlimit = -1;
++	int ret, hlimit = -1;
+ 	u32 mtu;
  
- 	rdmsrl_safe(MSR_EFER, &kvm_host.efer);
-@@ -12781,7 +12782,7 @@ int kvm_arch_init_vm(struct kvm *kvm, un
- 	/* Decided by the vendor code for other VM types.  */
- 	kvm->arch.pre_fault_allowed =
- 		type == KVM_X86_DEFAULT_VM || type == KVM_X86_SW_PROTECTED_VM;
--	kvm->arch.disabled_quirks = kvm_caps.inapplicable_quirks;
-+	kvm->arch.disabled_quirks = kvm_caps.inapplicable_quirks & kvm_caps.supported_quirks;
- 
- 	ret = kvm_page_track_init(kvm);
- 	if (ret)
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -32,6 +32,8 @@ struct kvm_caps {
- 	u64 supported_xcr0;
- 	u64 supported_xss;
- 	u64 supported_perf_cap;
++	rcu_read_lock();
 +
-+	u64 supported_quirks;
- 	u64 inapplicable_quirks;
- };
++	dev = dst_dev_rcu(dst);
+ 	head_room = sizeof(struct ipv6hdr) + hoplen + LL_RESERVED_SPACE(dev);
+ 	if (opt)
+ 		head_room += opt->opt_nflen + opt->opt_flen;
+ 
+ 	if (unlikely(head_room > skb_headroom(skb))) {
+-		/* Make sure idev stays alive */
+-		rcu_read_lock();
++		/* idev stays alive while we hold rcu_read_lock(). */
+ 		skb = skb_expand_head(skb, head_room);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
+-			rcu_read_unlock();
+-			return -ENOBUFS;
++			ret = -ENOBUFS;
++			goto unlock;
+ 		}
+-		rcu_read_unlock();
+ 	}
+ 
+ 	if (opt) {
+@@ -348,17 +349,21 @@ int ip6_xmit(const struct sock *sk, stru
+ 		 * skb to its handler for processing
+ 		 */
+ 		skb = l3mdev_ip6_out((struct sock *)sk, skb);
+-		if (unlikely(!skb))
+-			return 0;
++		if (unlikely(!skb)) {
++			ret = 0;
++			goto unlock;
++		}
+ 
+ 		/* hooks should never assume socket lock is held.
+ 		 * we promote our socket to non const
+ 		 */
+-		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
+-			       net, (struct sock *)sk, skb, NULL, dev,
+-			       dst_output);
++		ret = NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
++			      net, (struct sock *)sk, skb, NULL, dev,
++			      dst_output);
++		goto unlock;
+ 	}
+ 
++	ret = -EMSGSIZE;
+ 	skb->dev = dev;
+ 	/* ipv6_local_error() does not require socket lock,
+ 	 * we promote our socket to non const
+@@ -367,7 +372,9 @@ int ip6_xmit(const struct sock *sk, stru
+ 
+ 	IP6_INC_STATS(net, idev, IPSTATS_MIB_FRAGFAILS);
+ 	kfree_skb(skb);
+-	return -EMSGSIZE;
++unlock:
++	rcu_read_unlock();
++	return ret;
+ }
+ EXPORT_SYMBOL(ip6_xmit);
  
 
 
