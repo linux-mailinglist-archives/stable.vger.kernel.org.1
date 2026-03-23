@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QAFcMMlWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-229097-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:45 +0100
+	id mALpNedOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840E32F5C2E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7883E2F4AE6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7AB863039B82
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B1FFB307F568
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E101135959;
-	Mon, 23 Mar 2026 15:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400001A680B;
+	Mon, 23 Mar 2026 14:17:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6Z2QqeJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YTViVzFp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A016317A305;
-	Mon, 23 Mar 2026 15:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0082D3C07A;
+	Mon, 23 Mar 2026 14:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278050; cv=none; b=mvrFPQ46Qv6sAKspW85x/ezoGauLMnlWh0cgfSx2EPB/KvNQmhC26/M+y7erh4O+CHJl1IDNj8wMBkef1ja/MNbYFG49ubxgPs37y8jx6R7VAd8Qiqff0OZfEljGR7RgJDEEVuHpyWJUzYV5KvRQRti/seyT2Q24Y8+8BaWxPXU=
+	t=1774275454; cv=none; b=hqly+q9s0aSc6ehcS3Hcwy4TIqL2ZxQKW9nCgEk2w/U0rSqD5/My1NI/4pAptWgz7cqyUtYPQVu2qGS1A2Vb6kcheK/Rs24cnbjw9kSO8ZpjufemXx0Pbup66tL2RAqJ15fErpkV2e3zs4W21L/K/nj+5n5S/epBhxjQ8KPAQyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278050; c=relaxed/simple;
-	bh=YK1+wrbkE5bxMdkRAdicFDfu3u5MdddT9hCORbGWWz8=;
+	s=arc-20240116; t=1774275454; c=relaxed/simple;
+	bh=mhyBGDUbYPddLRok9/RspT8GAkC4T/Ki8v/uTrPfcVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EipJtKdA8GRuEbXcJNr3ANGz5gzT1fnQ+gg7rmgbJgH8plswfcR6fis+lzY4vJ3bO2NlneYxjpsLva3ut8OVEc5twgMXVW+8ujtp4SFm2228ZdVbsTSrTXgiTLyeN27LclwYuOmORwuZCe4GSQQl4UVybjlgx0fYDZUrhnAYSzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6Z2QqeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 227C6C4CEF7;
-	Mon, 23 Mar 2026 15:00:49 +0000 (UTC)
+	 MIME-Version; b=CeXW4H89IcU2i6bj1+sFkT2h47fZ2DtqYNrev4dyfqlOJMBkK3svJuZnLOyIDsITFGOFlzhbp5w/2+A6PXOCvniZuQmlotU7zPWq+KyiVO+o5Jl8pCaZJJlC012WwGsVv8Mz3j+QgrDbg7t5EC1N4UpLbwkU14OeS3a4uEZJnFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YTViVzFp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B09C4CEF7;
+	Mon, 23 Mar 2026 14:17:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278050;
-	bh=YK1+wrbkE5bxMdkRAdicFDfu3u5MdddT9hCORbGWWz8=;
+	s=korg; t=1774275453;
+	bh=mhyBGDUbYPddLRok9/RspT8GAkC4T/Ki8v/uTrPfcVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6Z2QqeJewY3RcUll4/0PutZICPID+ieb+PxnJeO7iPGjXHTxqiwKdqRKWonAs7sb
-	 FymWJDlXg2OUJzAiayBNzYc022e6Rsr7b2d2oCZrzO3He/He63v507wgROljy+f6s9
-	 ZzvFFY/FWmFw6ocBNQAwrlMn2ak01FRQ12K+ewuw=
+	b=YTViVzFpucfxnyY6NnQWZF7sV2nzfhk5KRy099BldYFCoDUVDypjPjMZwyWHJJl1t
+	 /IbqBK8uf79OfO2IehGbQyKOkiEyTW4J8EydVw9TYX3VO8MqLYPViV7pIYtFOdJFFr
+	 eFF7wc3c/PUYQMGbUF2B0iplIH826JNlBGBfDGUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <wuyifan50@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/567] selftest/arm64: Fix sve2p1_sigill() to hwcap test
+	Marc Zyngier <maz@kernel.org>,
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.12 107/460] usb: cdc-acm: Restore CAP_BRK functionnality to CH343
 Date: Mon, 23 Mar 2026 14:41:43 +0100
-Message-ID: <20260323134538.380801558@linuxfoundation.org>
+Message-ID: <20260323134529.275992705@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +66,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229097-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228560-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 840E32F5C2E
+X-Rspamd-Queue-Id: 7883E2F4AE6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yifan Wu <wuyifan50@huawei.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit d87c828daa7ead9763416f75cc416496969cf1dc ]
+commit 14ae24cba291bddfdc296bbcbfd00cd09d0498ef upstream.
 
-The FEAT_SVE2p1 is indicated by ID_AA64ZFR0_EL1.SVEver. However,
-the BFADD requires the FEAT_SVE_B16B16, which is indicated by
-ID_AA64ZFR0_EL1.B16B16. This could cause the test to incorrectly
-fail on a CPU that supports FEAT_SVE2.1 but not FEAT_SVE_B16B16.
+The CH343 USB/serial adapter is as buggy as it is popular (very).
+One of its quirks is that despite being capable of signalling a
+BREAK condition, it doesn't advertise it.
 
-LD1Q Gather load quadwords which is decoded from SVE encodings and
-implied by FEAT_SVE2p1.
+This used to work nonetheless until 66aad7d8d3ec5 ("usb: cdc-acm:
+return correct error code on unsupported break") applied some
+reasonable restrictions, preventing breaks from being emitted on
+devices that do not advertise CAP_BRK.
 
-Fixes: c5195b027d29 ("kselftest/arm64: Add SVE 2.1 to hwcap test")
-Signed-off-by: Yifan Wu <wuyifan50@huawei.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a quirk for this particular device, so that breaks can still
+be produced on some of my machines attached to my console server.
+
+Fixes: 66aad7d8d3ec5 ("usb: cdc-acm: return correct error code on unsupported break")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable <stable@kernel.org>
+Cc: Oliver Neukum <oneukum@suse.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20260301124440.1192752-1-maz@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/arm64/abi/hwcap.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/class/cdc-acm.c |    5 +++++
+ drivers/usb/class/cdc-acm.h |    1 +
+ 2 files changed, 6 insertions(+)
 
-diff --git a/tools/testing/selftests/arm64/abi/hwcap.c b/tools/testing/selftests/arm64/abi/hwcap.c
-index e3d262831d919..311a2a65f7cf2 100644
---- a/tools/testing/selftests/arm64/abi/hwcap.c
-+++ b/tools/testing/selftests/arm64/abi/hwcap.c
-@@ -216,8 +216,8 @@ static void sve2_sigill(void)
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1379,6 +1379,8 @@ made_compressed_probe:
+ 		acm->ctrl_caps = h.usb_cdc_acm_descriptor->bmCapabilities;
+ 	if (quirks & NO_CAP_LINE)
+ 		acm->ctrl_caps &= ~USB_CDC_CAP_LINE;
++	if (quirks & MISSING_CAP_BRK)
++		acm->ctrl_caps |= USB_CDC_CAP_BRK;
+ 	acm->ctrlsize = ctrlsize;
+ 	acm->readsize = readsize;
+ 	acm->rx_buflimit = num_rx_buf;
+@@ -2002,6 +2004,9 @@ static const struct usb_device_id acm_id
+ 	.driver_info = IGNORE_DEVICE,
+ 	},
  
- static void sve2p1_sigill(void)
- {
--	/* BFADD Z0.H, Z0.H, Z0.H */
--	asm volatile(".inst 0x65000000" : : : "z0");
-+	/* LD1Q {Z0.Q}, P0/Z, [Z0.D, X0] */
-+	asm volatile(".inst 0xC400A000" : : : "z0");
- }
- 
- static void sveaes_sigill(void)
--- 
-2.51.0
-
++	/* CH343 supports CAP_BRK, but doesn't advertise it */
++	{ USB_DEVICE(0x1a86, 0x55d3), .driver_info = MISSING_CAP_BRK, },
++
+ 	/* control interfaces without any protocol set */
+ 	{ USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ACM,
+ 		USB_CDC_PROTO_NONE) },
+--- a/drivers/usb/class/cdc-acm.h
++++ b/drivers/usb/class/cdc-acm.h
+@@ -113,3 +113,4 @@ struct acm {
+ #define CLEAR_HALT_CONDITIONS		BIT(5)
+ #define SEND_ZERO_PACKET		BIT(6)
+ #define DISABLE_ECHO			BIT(7)
++#define MISSING_CAP_BRK			BIT(8)
 
 
 
