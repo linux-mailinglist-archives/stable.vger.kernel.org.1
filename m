@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-229858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229364-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8D+XHwduwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229858-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:55 +0100
+	id +IqDJnFwwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229364-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52E9B2F8BBE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C535C2F9181
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BEAE931B9227
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D2003392C2A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6778A28504F;
-	Mon, 23 Mar 2026 16:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EE43BD22E;
+	Mon, 23 Mar 2026 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F62tIuWt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p6aIP5bE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A41D37B02A;
-	Mon, 23 Mar 2026 16:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B94B3B47CF;
+	Mon, 23 Mar 2026 15:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283052; cv=none; b=Y3KEbr760v7fTd+i71tEZIWJY/A9R/6EJ9SpEcuCdBS1TiNb48buG9TD+LVAJubuySgd3vtI3fmpMDpdO2TVaw728TvK+Z2jI2r//IpiO7+O5PeQZyIg9s/BSpRM1258SB3Rwe4LCTWKMKECa00vNZ67ORJiaClusrHlGv8Mlto=
+	t=1774278882; cv=none; b=oupd84bfiNCcKZe1+AjR/1wpqGczgssRgOto1Mz+CnDys0rdR3HMXYdzcpdIR4cAPEBv3pILrI74DpnnopmevrI2S4y8DMw4tTM6fQzZqY/Y28jTlPS89AWnHYoPDMHVwOXbt9JkHEp6N09iTmyAPZO8UjDEcJELkCc5azGF7PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283052; c=relaxed/simple;
-	bh=o56kMI09mB9WgjgJK7ZYMNyI+xgsBAruDWdnhmjkBcE=;
+	s=arc-20240116; t=1774278882; c=relaxed/simple;
+	bh=gKvYgva7kBjKFzX76M/y3zUEzeNAqnctZfoJGamEBUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHfqNZuw//HXf2SKcREMoDi6kVzHXhpbOrfEGHDPWzXnez2mOMhcsiU+S+CxMOyrIvHqI+GVcUxXOouN/CkaaemrQJHhzybEtzj2Ox5LDYlhOIxgVX2wst3FCJIF6+jBNaK0V+p+fepVaXnheHeBnpL/VxU4GwSElf9tBpF/n9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F62tIuWt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87F0C2BC9E;
-	Mon, 23 Mar 2026 16:24:11 +0000 (UTC)
+	 MIME-Version; b=f0mhEzIS2rGQpXXuwN/nkw3aRG62F3fINE4iv5gMAQ3f5xtNUO5zY7XIfEj8NspZacKbMelgTwsNlbK9BlQT5LK1eqm8T/HupD8OdummHO/RNaT3lVUlEjFzi6MJzQB4iXRLc0vNmuWG7c5M/0xdazGGtEFm8twBd0oo6EaBREI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p6aIP5bE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80D9C2BC9E;
+	Mon, 23 Mar 2026 15:14:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283052;
-	bh=o56kMI09mB9WgjgJK7ZYMNyI+xgsBAruDWdnhmjkBcE=;
+	s=korg; t=1774278882;
+	bh=gKvYgva7kBjKFzX76M/y3zUEzeNAqnctZfoJGamEBUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F62tIuWtc8pOXCp7JUqAzyccIZg0Po5QteUItjnFRQEUo+N5RxKlyFDDSjgHlMGbu
-	 yyVNnjTYlLUnU/H3A039zLZ/wZVW19szP7Y6UZy128xgpEoi5eECUK70W4ASIpEnST
-	 /QLAR2tj+j7ew/LLg+/1pvb6ramtIDEo3nBLu38I=
+	b=p6aIP5bEP4dH4KfKhjatwXTLrLAmV6rHJ8/cMWckZMOB8mrH5vqUdAi+1JwFSJZ3X
+	 5NWG0X2G9JUqm6KYmc+RK/68u47AnXQEMZs2s7pn39e9Xqq8TlYdpNmuOUheYBnMWb
+	 N5neCMVDIec8XQq63FqTQQAD7fYrgIGvwpGH0uL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Francois Romieu <romieu@fr.zoreil.com>,
-	Breno Leitao <leitao@debian.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>
-Subject: [PATCH 6.1 385/481] net: Handle napi_schedule() calls from non-interrupt
-Date: Mon, 23 Mar 2026 14:46:07 +0100
-Message-ID: <20260323134534.524496181@linuxfoundation.org>
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.6 448/567] s390/stackleak: Fix __stackleak_poison() inline assembly constraint
+Date: Mon, 23 Mar 2026 14:46:08 +0100
+Message-ID: <20260323134545.063990731@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,138 +65,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229858-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229364-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 52E9B2F8BBE
+X-Rspamd-Queue-Id: C535C2F9181
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 77e45145e3039a0fb212556ab3f8c87f54771757 upstream.
+commit 674c5ff0f440a051ebf299d29a4c013133d81a65 upstream.
 
-napi_schedule() is expected to be called either:
+The __stackleak_poison() inline assembly comes with a "count" operand where
+the "d" constraint is used. "count" is used with the exrl instruction and
+"d" means that the compiler may allocate any register from 0 to 15.
 
-* From an interrupt, where raised softirqs are handled on IRQ exit
+If the compiler would allocate register 0 then the exrl instruction would
+not or the value of "count" into the executed instruction - resulting in a
+stackframe which is only partially poisoned.
 
-* From a softirq disabled section, where raised softirqs are handled on
-  the next call to local_bh_enable().
+Use the correct "a" constraint, which excludes register 0 from register
+allocation.
 
-* From a softirq handler, where raised softirqs are handled on the next
-  round in do_softirq(), or further deferred to a dedicated kthread.
-
-Other bare tasks context may end up ignoring the raised NET_RX vector
-until the next random softirq handling opportunity, which may not
-happen before a while if the CPU goes idle afterwards with the tick
-stopped.
-
-Such "misuses" have been detected on several places thanks to messages
-of the kind:
-
-	"NOHZ tick-stop error: local softirq work is pending, handler #08!!!"
-
-For example:
-
-       __raise_softirq_irqoff
-        __napi_schedule
-        rtl8152_runtime_resume.isra.0
-        rtl8152_resume
-        usb_resume_interface.isra.0
-        usb_resume_both
-        __rpm_callback
-        rpm_callback
-        rpm_resume
-        __pm_runtime_resume
-        usb_autoresume_device
-        usb_remote_wakeup
-        hub_event
-        process_one_work
-        worker_thread
-        kthread
-        ret_from_fork
-        ret_from_fork_asm
-
-And also:
-
-* drivers/net/usb/r8152.c::rtl_work_func_t
-* drivers/net/netdevsim/netdev.c::nsim_start_xmit
-
-There is a long history of issues of this kind:
-
-	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
-	330068589389 ("idpf: disable local BH when scheduling napi for marker packets")
-	e3d5d70cb483 ("net: lan78xx: fix "softirq work is pending" error")
-	e55c27ed9ccf ("mt76: mt7615: add missing bh-disable around rx napi schedule")
-	c0182aa98570 ("mt76: mt7915: add missing bh-disable around tx napi enable/schedule")
-	970be1dff26d ("mt76: disable BH around napi_schedule() calls")
-	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
-	30bfec4fec59 ("can: rx-offload: can_rx_offload_threaded_irq_finish(): add new  function to be called from threaded interrupt")
-	e63052a5dd3c ("mlx5e: add add missing BH locking around napi_schdule()")
-	83a0c6e58901 ("i40e: Invoke softirqs after napi_reschedule")
-	bd4ce941c8d5 ("mlx4: Invoke softirqs after napi_reschedule")
-	8cf699ec849f ("mlx4: do not call napi_schedule() without care")
-	ec13ee80145c ("virtio_net: invoke softirqs after __napi_schedule")
-
-This shows that relying on the caller to arrange a proper context for
-the softirqs to be handled while calling napi_schedule() is very fragile
-and error prone. Also fixing them can also prove challenging if the
-caller may be called from different kinds of contexts.
-
-Therefore fix this from napi_schedule() itself with waking up ksoftirqd
-when softirqs are raised from task contexts.
-
-Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
-Reported-by: Francois Romieu <romieu@fr.zoreil.com>
-Closes: https://lore.kernel.org/lkml/354a2690-9bbf-4ccb-8769-fa94707a9340@molgen.mpg.de/
-Cc: Breno Leitao <leitao@debian.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250223221708.27130-1-frederic@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Fixes: 2a405f6bb3a5 ("s390/stackleak: provide fast __stackleak_poison() implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20260302133500.1560531-4-hca@linux.ibm.com
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c |    2 +-
+ arch/s390/include/asm/processor.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4486,7 +4486,7 @@ static inline void ____napi_schedule(str
- 	}
- 
- 	list_add_tail(&napi->poll_list, &sd->poll_list);
--	__raise_softirq_irqoff(NET_RX_SOFTIRQ);
-+	raise_softirq_irqoff(NET_RX_SOFTIRQ);
- }
- 
- #ifdef CONFIG_RPS
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -146,7 +146,7 @@ static __always_inline void __stackleak_
+ 		"	j	4f\n"
+ 		"3:	mvc	8(1,%[addr]),0(%[addr])\n"
+ 		"4:\n"
+-		: [addr] "+&a" (erase_low), [count] "+&d" (count), [tmp] "=&a" (tmp)
++		: [addr] "+&a" (erase_low), [count] "+&a" (count), [tmp] "=&a" (tmp)
+ 		: [poison] "d" (poison)
+ 		: "memory", "cc"
+ 		);
 
 
 
