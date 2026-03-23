@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-228803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229833-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gI55NkZpwWmoSwQAu9opvQ
-	(envelope-from <stable+bounces-228803-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:38 +0100
+	id gIiANWxvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229833-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7CA2F806C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E532F8E86
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 16DB8326D954
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5A78530D7ACC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EAF272E7C;
-	Mon, 23 Mar 2026 14:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12ED3B0ACC;
+	Mon, 23 Mar 2026 16:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qw8R41SA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VMba8Ox"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF66242D62;
-	Mon, 23 Mar 2026 14:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8366C823DD;
+	Mon, 23 Mar 2026 16:23:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277173; cv=none; b=OVCrWjk/7CAdZB9v+rqroTJF7yhXvLp6pyFvmMUvfrS+4GgDD26LVvcNTGq6ISdNvOxUUZcDORKc7ejoIdyKJPuVnQb/I1WxsEIY/LPfCbmLqr9uxSSrvUtFZ6UNcXQS3pGE4HLzKsLMuqWwBljVj+Gjs+ri8GvuxCOhTJWIlGs=
+	t=1774282988; cv=none; b=u7zKwDXE4MPHtMYO2NLWrdi9WVdxTtz5wTnnMkIn/5sZER1ECG4eUpmoP//abIziWgiVeWWTz5YiiLlA9LlmM5dsaXH1vXYPLan8NGIU9lmwiRInx+3Rzy1BXPKT4sNQEtY71RrJqiAPBHM4avOkE0DP7cLh+cSOw66C3QEiFCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277173; c=relaxed/simple;
-	bh=bBb00pBxHG3CYnkCqDn0Ali//yVnCYVrGMM/BsMKhRQ=;
+	s=arc-20240116; t=1774282988; c=relaxed/simple;
+	bh=yMJb64TTOBPAZcldBzgCR1jdrpcJ51AoOfKMGRmVaVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ka8bTa+1h/5BvCd09JiRaR83hLsXx6UfCD6RwJhwZiVvW3ZYvShY0ERjIqYClZCu/qafRt0EjPxJivn0XbQSbta/GdD8Y49ITzmiq7HFcHpjloK+7jA1v3NQbX47BW3qEaAp1/lEYlOwt2bRZ2PgTz62g5EddGTKk600E8hvCVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qw8R41SA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFADAC4CEF7;
-	Mon, 23 Mar 2026 14:46:11 +0000 (UTC)
+	 MIME-Version; b=WXJczO9yoeWae6VUlX9GIk1T+8QWzy78t4SyPqQqhAzcH75ulUewOgsONbudb93qmwxXbYo34uSJoV7d5cq4CY0CItRVjV1jPohb9AwWncISpSVGAL9vQWzysVN4TXJ6q1/qxU9QFUAn5/mzuLAcdzWMxlaiblxk6w5G4GUZiQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VMba8Ox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A24C4CEF7;
+	Mon, 23 Mar 2026 16:23:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277172;
-	bh=bBb00pBxHG3CYnkCqDn0Ali//yVnCYVrGMM/BsMKhRQ=;
+	s=korg; t=1774282988;
+	bh=yMJb64TTOBPAZcldBzgCR1jdrpcJ51AoOfKMGRmVaVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qw8R41SAA0iNBVd+MklZ4+ubl50nbncHUQBvW4BYGgCh5jZc2iG1msgrpLNJCKPG0
-	 N4IEUDbo2jtmtxjG/GXjUeVUMgqRND9azRCXe+Iz7BUwCDA5W2Xa9nYzY8R27sT8RB
-	 ezR2eDJTiT0d4o32Cq7cvGKVHjliaua3UzB5688c=
+	b=0VMba8OxNxgsaOo48SyHrAcloklCPsuiok1bnGiQd2FUg97CYX11IVL145KnQejF1
+	 Hr7tsrdxbP0HkpmySYMpVfY58RIMfg1EW45bcchgazUgIJf5P1Oqf2zzRfkIJnk1NC
+	 kXzf855MOkBT5L1gOZtRk26Vweu5z13Cc/E9zMSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Raul E Rangel <rrangel@google.com>
-Subject: [PATCH 6.12 345/460] serial: 8250: Fix TX deadlock when using DMA
+	Misbah Anjum N <misanjum@linux.ibm.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 359/481] NFSD: Hold net reference for the lifetime of /proc/fs/nfs/exports fd
 Date: Mon, 23 Mar 2026 14:45:41 +0100
-Message-ID: <20260323134535.020663691@linuxfoundation.org>
+Message-ID: <20260323134533.854892366@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,86 +71,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229833-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228803-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,chromium.org:email]
-X-Rspamd-Queue-Id: 5E7CA2F806C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 83E532F8E86
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raul E Rangel <rrangel@chromium.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit a424a34b8faddf97b5af41689087e7a230f79ba7 upstream.
+[ Upstream commit e7fcf179b82d3a3730fd8615da01b087cc654d0b ]
 
-`dmaengine_terminate_async` does not guarantee that the
-`__dma_tx_complete` callback will run. The callback is currently the
-only place where `dma->tx_running` gets cleared. If the transaction is
-canceled and the callback never runs, then `dma->tx_running` will never
-get cleared and we will never schedule new TX DMA transactions again.
+The /proc/fs/nfs/exports proc entry is created at module init
+and persists for the module's lifetime. exports_proc_open()
+captures the caller's current network namespace and stores
+its svc_export_cache in seq->private, but takes no reference
+on the namespace. If the namespace is subsequently torn down
+(e.g. container destruction after the opener does setns() to a
+different namespace), nfsd_net_exit() calls nfsd_export_shutdown()
+which frees the cache. Subsequent reads on the still-open fd
+dereference the freed cache_detail, walking a freed hash table.
 
-This change makes it so we clear `dma->tx_running` after we terminate
-the DMA transaction. This is "safe" because `serial8250_tx_dma_flush`
-is holding the UART port lock. The first thing the callback does is also
-grab the UART port lock, so access to `dma->tx_running` is serialized.
+Hold a reference on the struct net for the lifetime of the open
+file descriptor. This prevents nfsd_net_exit() from running --
+and thus prevents nfsd_export_shutdown() from freeing the cache
+-- while any exports fd is open. cache_detail already stores
+its net pointer (cd->net, set by cache_create_net()), so
+exports_release() can retrieve it without additional per-file
+storage.
 
-Fixes: 9e512eaaf8f4 ("serial: 8250: Fix fifo underflow on flush")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Raul E Rangel <rrangel@google.com>
-Link: https://patch.msgid.link/20260209135815.1.I16366ecb0f62f3c96fe3dd5763fcf6f3c2b4d8cd@changeid
+Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
+Closes: https://lore.kernel.org/linux-nfs/dcd371d3a95815a84ba7de52cef447b8@linux.ibm.com/
+Fixes: 96d851c4d28d ("nfsd: use proper net while reading "exports" file")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Tested-by: Olga Kornievskaia <okorniev@redhat.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dma.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/nfsd/nfsctl.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dma.c
-+++ b/drivers/tty/serial/8250/8250_dma.c
-@@ -162,7 +162,22 @@ void serial8250_tx_dma_flush(struct uart
- 	 */
- 	dma->tx_size = 0;
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -152,9 +152,19 @@ static int exports_net_open(struct net *
  
-+	/*
-+	 * We can't use `dmaengine_terminate_sync` because `uart_flush_buffer` is
-+	 * holding the uart port spinlock.
-+	 */
- 	dmaengine_terminate_async(dma->txchan);
-+
-+	/*
-+	 * The callback might or might not run. If it doesn't run, we need to ensure
-+	 * that `tx_running` is cleared so that we can schedule new transactions.
-+	 * If it does run, then the zombie callback will clear `tx_running` again
-+	 * and perform a no-op since `tx_size` was cleared above.
-+	 *
-+	 * In either case, we ASSUME the DMA transaction will terminate before we
-+	 * issue a new `serial8250_tx_dma`.
-+	 */
-+	dma->tx_running = 0;
+ 	seq = file->private_data;
+ 	seq->private = nn->svc_export_cache;
++	get_net(net);
+ 	return 0;
  }
  
- int serial8250_rx_dma(struct uart_8250_port *p)
++static int exports_release(struct inode *inode, struct file *file)
++{
++	struct seq_file *seq = file->private_data;
++	struct cache_detail *cd = seq->private;
++
++	put_net(cd->net);
++	return seq_release(inode, file);
++}
++
+ static int exports_nfsd_open(struct inode *inode, struct file *file)
+ {
+ 	return exports_net_open(inode->i_sb->s_fs_info, file);
+@@ -164,7 +174,7 @@ static const struct file_operations expo
+ 	.open		= exports_nfsd_open,
+ 	.read		= seq_read,
+ 	.llseek		= seq_lseek,
+-	.release	= seq_release,
++	.release	= exports_release,
+ };
+ 
+ static int export_features_show(struct seq_file *m, void *v)
+@@ -1421,7 +1431,7 @@ static const struct proc_ops exports_pro
+ 	.proc_open	= exports_proc_open,
+ 	.proc_read	= seq_read,
+ 	.proc_lseek	= seq_lseek,
+-	.proc_release	= seq_release,
++	.proc_release	= exports_release,
+ };
+ 
+ static int create_proc_exports_entry(void)
 
 
 
