@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228529-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIGOOxpswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229564-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:43 +0100
+	id aDOHHmBQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228529-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E482F86EE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CFE32F4E63
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7185D3075395
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B5268322F2BD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9004D2773FF;
-	Mon, 23 Mar 2026 16:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C593B19AC;
+	Mon, 23 Mar 2026 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4rnrOTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8fza2eA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F901285068;
-	Mon, 23 Mar 2026 16:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23EBB3AD536;
+	Mon, 23 Mar 2026 14:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282262; cv=none; b=ga7kjxitKfI4bQvHQOpUGi0i3m4EKZglfa+bY8lUF4fmWLSpgc3k7N9xeDR2sXoNJLDu6F+rJFjnH26vsKur3HgCOjGWpu0D8+aougTKTQrEDz13pF0wQrDoh7HAmFSesP/CYhEF8Hh32cJ7hNmQcbatohbBhZIWFJsINIxYUgM=
+	t=1774275373; cv=none; b=OITJkatMMiVd+5++XMMY526rRG1+fghwGj9Yh+esWBTED8ziBxNwcl1YQdfuRDaHFAcoUkWVYN7J/v0fGo2/2oTepYrNyVQ3a8W5YzMYzBHftxNoTi+1pQg7Hy3AVGY+qt3KeSQo32RKbatF8yype5plhlAcaPsA2RN6rsG8TQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282262; c=relaxed/simple;
-	bh=I/3W6nz5bny5OgPaBpiwWWdzPOJpUwy5bUbB8+PhdHc=;
+	s=arc-20240116; t=1774275373; c=relaxed/simple;
+	bh=NrqwWLEyHLAdCN5JBkA3uI/0GKCIx+vuJ9wrfRbxaGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpX7KwU45BIfj85vghj+Va09b6FR8ZcxIOb+ohjIrIz+mr/LxYrKpk/3DAr9ZrZfILd+bFQpyjnQS7xocvM0dkDDgy1+/qxVfFwj9L/M83PCBoQNm55/9yJcvSTyuAEq71+r9FJIq4nQF7T3rUr696D63f7C+an4RVcvRI9HDDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4rnrOTs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0A5C4CEF7;
-	Mon, 23 Mar 2026 16:11:01 +0000 (UTC)
+	 MIME-Version; b=p6+8WseUAIHlUcbY6YGspIwq9LdCqNtyYvFRg4dt/YQJCPuvC535qO3fleSBk54tIGzDbbVSUk9aiZdkkNQaE0fiJkExLL0xy1E29SoBDprubhgdK2BphbP8+E0ofyhgblSPbJ9AXNmwo6Rx7FG+/BYPglIHsQNP0ZXK68qEARw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8fza2eA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD96C2BC9E;
+	Mon, 23 Mar 2026 14:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282262;
-	bh=I/3W6nz5bny5OgPaBpiwWWdzPOJpUwy5bUbB8+PhdHc=;
+	s=korg; t=1774275373;
+	bh=NrqwWLEyHLAdCN5JBkA3uI/0GKCIx+vuJ9wrfRbxaGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4rnrOTsKzdjLH31UkuJsA3xOImdNfCgFXu0K8qfWxTL2bu9iCaZTzW8O+IzokDe6
-	 shKXB8gy8SAk8TW5QRukdS4+kgMHtKBQpciANGj/4zRNGXGxTB0pC94r0HejUCb14g
-	 r1yBI2iGUUNXgXSd1WylN9twQsiB8KcPvF/66vzg=
+	b=G8fza2eAPTboNgVUo/zU8JAuU43V95vqazUcnE6fa9vPSy3S5Snvj7XDKhGVQHfF3
+	 mX5+Aix/m0tot1PUkJ7FmyMYk3aZXzTWNaJtj+Lqa6jihav+u4RfH+rmRtJn/ep63O
+	 uq72GSJIZiytL9RLVZz5y7SvCQ4Ztb0iosyNfISY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a9747fe1c35a5b115d3f@syzkaller.appspotmail.com,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 089/481] Squashfs: check metadata block offset is within range
+	Matt Vollrath <tactii@gmail.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 075/460] e1000/e1000e: Fix leak in DMA error cleanup
 Date: Mon, 23 Mar 2026 14:41:11 +0100
-Message-ID: <20260323134527.436869253@linuxfoundation.org>
+Message-ID: <20260323134528.529340123@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,106 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229564-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,a9747fe1c35a5b115d3f];
+	TAGGED_FROM(0.00)[bounces-228529-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 67E482F86EE
+X-Rspamd-Queue-Id: 1CFE32F4E63
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Matt Vollrath <tactii@gmail.com>
 
-commit fdb24a820a5832ec4532273282cbd4f22c291a0d upstream.
+[ Upstream commit e94eaef11142b01f77bf8ba4d0b59720b7858109 ]
 
-Syzkaller reports a "general protection fault in squashfs_copy_data"
+If an error is encountered while mapping TX buffers, the driver should
+unmap any buffers already mapped for that skb.
 
-This is ultimately caused by a corrupted index look-up table, which
-produces a negative metadata block offset.
+Because count is incremented after a successful mapping, it will always
+match the correct number of unmappings needed when dma_error is reached.
+Decrementing count before the while loop in dma_error causes an
+off-by-one error. If any mapping was successful before an unsuccessful
+mapping, exactly one DMA mapping would leak.
 
-This is subsequently passed to squashfs_copy_data (via
-squashfs_read_metadata) where the negative offset causes an out of bounds
-access.
+In these commits, a faulty while condition caused an infinite loop in
+dma_error:
+Commit 03b1320dfcee ("e1000e: remove use of skb_dma_map from e1000e
+driver")
+Commit 602c0554d7b0 ("e1000: remove use of skb_dma_map from e1000 driver")
 
-The fix is to check that the offset is within range in
-squashfs_read_metadata.  This will trap this and other cases.
+Commit c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of
+unsigned in *_tx_map()") fixed the infinite loop, but introduced the
+off-by-one error.
 
-Link: https://lkml.kernel.org/r/20260217050955.138351-1-phillip@squashfs.org.uk
-Fixes: f400e12656ab ("Squashfs: cache operations")
-Reported-by: syzbot+a9747fe1c35a5b115d3f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/699234e2.a70a0220.2c38d7.00e2.GAE@google.com/
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue may still exist in the igbvf driver, but I did not address it
+in this patch.
+
+Fixes: c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of unsigned in *_tx_map()")
+Assisted-by: Claude:claude-4.6-opus
+Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/cache.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/e1000/e1000_main.c | 2 --
+ drivers/net/ethernet/intel/e1000e/netdev.c    | 2 --
+ 2 files changed, 4 deletions(-)
 
---- a/fs/squashfs/cache.c
-+++ b/fs/squashfs/cache.c
-@@ -340,6 +340,9 @@ int squashfs_read_metadata(struct super_
- 	if (unlikely(length < 0))
- 		return -EIO;
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
+index 67d7651b6411d..8072aa8f05e38 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -2948,8 +2948,6 @@ static int e1000_tx_map(struct e1000_adapter *adapter,
+ dma_error:
+ 	dev_err(&pdev->dev, "TX DMA map failed\n");
+ 	buffer_info->dma = 0;
+-	if (count)
+-		count--;
  
-+	if (unlikely(*offset < 0 || *offset >= SQUASHFS_METADATA_SIZE))
-+		return -EIO;
-+
- 	while (length) {
- 		entry = squashfs_cache_get(sb, msblk->block_cache, *block, 0);
- 		if (entry->error) {
+ 	while (count--) {
+ 		if (i == 0)
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 5fe54e9b71e25..4d9dcb0001d21 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -5633,8 +5633,6 @@ static int e1000_tx_map(struct e1000_ring *tx_ring, struct sk_buff *skb,
+ dma_error:
+ 	dev_err(&pdev->dev, "Tx DMA map failed\n");
+ 	buffer_info->dma = 0;
+-	if (count)
+-		count--;
+ 
+ 	while (count--) {
+ 		if (i == 0)
+-- 
+2.51.0
+
 
 
 
