@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228125-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iHDnCxNvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229808-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:23 +0100
+	id +I8VEthGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228125-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FBB22F8DB7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3365E2F37F1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 40A7630CE822
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E6A4D301A2F2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4948038B7C4;
-	Mon, 23 Mar 2026 16:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE86C3A9D9D;
+	Mon, 23 Mar 2026 13:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muJuwdIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZPJ2O0n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DA4283FC8;
-	Mon, 23 Mar 2026 16:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24AF1A6815;
+	Mon, 23 Mar 2026 13:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282921; cv=none; b=MSJnA6kK8rXLWfPO/OMword3MbdUMfyZBupZtgtVj9DYqB189yullLR5zvmhjr54h17fhj/LyvlSMx8EWRtNeYijRUCipNsucWIHxt9vxAQXX50SAuRya7/w+jCRDbiIk5Ta9hDYIx55Zn5MsJmJw1pkFN0tcQNxpD/p3xijSrg=
+	t=1774274198; cv=none; b=dQHSHmcKiNrRWla20HKfiatGEUjGUPktj8wbXNr5qELEYXcowS9DjR/jY6I4jK1EHt35i+3sgM9h3IABMaJLBam+NVisaOQwJBiCFcG/NVwPN7wF839DXExJnGuCKQZJIX+gsZeczYoHApIrTsNczana++fiI5tE6Fo807shdC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282921; c=relaxed/simple;
-	bh=/PhyHL0bf6odIHSTAm3+zQjU2k67DTfROaczDiYFL4U=;
+	s=arc-20240116; t=1774274198; c=relaxed/simple;
+	bh=Um30luMYxWKuWS8dIm9gfKJFA154LC2TyQ10aDORglU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRIbVz92TS7w654TdltPlGLVRpCXQmx9wk1taXSmjhYCxUJWOmDnanjKKrbyhalRZhGi+ksw+gitR/V2AwjtJr5A+8x3F8aL+MQRID+Kjs6ykAt0x9j8ug/bflHfX8gEknF8drinHiKrLVsUlMXxlplP7FQ0r0HBeUoXEJM0AeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muJuwdIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD63C4CEF7;
-	Mon, 23 Mar 2026 16:22:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gaILcrKnXoYFZuN/95drBF90QNQUANPy6QX2OjcwlK6azp0CGIFTwr8i1i+mfjh2Z0EZX3XLB2a78OXTZpvIz9CJi/oKYleFxKOe8SJ6A2yRwNNttnZ51HZfMdMya4mRAiIODKnVdkOG/laQHYA9shNEQ+np/PI9ZkeC7TJgMBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZPJ2O0n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A73C2BC9E;
+	Mon, 23 Mar 2026 13:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282920;
-	bh=/PhyHL0bf6odIHSTAm3+zQjU2k67DTfROaczDiYFL4U=;
+	s=korg; t=1774274198;
+	bh=Um30luMYxWKuWS8dIm9gfKJFA154LC2TyQ10aDORglU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muJuwdIT9SuPMo6pOd3gZ+KbaSr2Vpz39nQIX6aIOr9twnp932E6Kn0t8JFmiSrIH
-	 2S+2SEPh/Gj7hxoSwQz8o6tQcQObwS+OpCnRuWjMxv/7seZK+szK+THPEr74XQ1Z31
-	 0JX0pNgQ2pvXW9f6GvHVzSxEcRiStDyMZbOxAKuk=
+	b=fZPJ2O0nldtScfGpsgDzhwwUu7K/+nIGHQ84OEw7Ttqqg04GnNTzyucHz3KE+22Vm
+	 bMIP6TsOTFniPiOTSN1RlPshrFNXmIUc1o6vP2k7s8VFYTNjK3j5JqWzPgzj5zx75p
+	 MxNy/CsbpCK4OULvm+8qEmWZZArDAqje9HjxXIEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 336/481] iomap: reject delalloc mappings during writeback
+Subject: [PATCH 6.19 141/220] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
 Date: Mon, 23 Mar 2026 14:45:18 +0100
-Message-ID: <20260323134533.282877639@linuxfoundation.org>
+Message-ID: <20260323134509.020340452@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +65,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229808-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228125-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9FBB22F8DB7
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vidocsecurity.com:email]
+X-Rspamd-Queue-Id: 3365E2F37F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit d320f160aa5ff36cdf83c645cca52b615e866e32 ]
+[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
 
-Filesystems should never provide a delayed allocation mapping to
-writeback; they're supposed to allocate the space before replying.
-This can lead to weird IO errors and crashes in the block layer if the
-filesystem is being malicious, or if it hadn't set iomap->dev because
-it's a delalloc mapping.
+In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
+the packet, then decrements it by 1 to skip the protocol discriminator
+byte before passing it to DecodeH323_UserInformation(). If the encoded
+length is 0, the decrement wraps to -1, which is then passed as a
+large value to the decoder, leading to an out-of-bounds read.
 
-Fix this by failing writeback on delalloc mappings.  Currently no
-filesystems actually misbehave in this manner, but we ought to be
-stricter about things like that.
+Add a check to ensure len is positive after the decrement.
 
-Cc: stable@vger.kernel.org # v5.5
-Fixes: 598ecfbaa742ac ("iomap: lift the xfs writeback code to iomap")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/20260302173002.GL13829@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ switch -> if ]
+Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1620,10 +1620,13 @@ iomap_writepage_map(struct iomap_writepa
- 		if (error)
- 			break;
- 		trace_iomap_writepage_map(inode, &wpc->iomap);
--		if (WARN_ON_ONCE(wpc->iomap.type == IOMAP_INLINE))
--			continue;
- 		if (wpc->iomap.type == IOMAP_HOLE)
- 			continue;
-+		if (WARN_ON_ONCE(wpc->iomap.type != IOMAP_MAPPED &&
-+				 wpc->iomap.type != IOMAP_UNWRITTEN)) {
-+			error = -EIO;
-+			break;
-+		}
- 		iomap_add_to_ioend(inode, pos, folio, iop, wpc, wbc,
- 				 &submit_list);
- 		count++;
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index c972e9488e16f..7b1497ed97d26 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
+ 				break;
+ 			p++;
+ 			len--;
++			if (len <= 0)
++				break;
+ 			return DecodeH323_UserInformation(buf, p, len,
+ 							  &q931->UUIE);
+ 		}
+-- 
+2.51.0
+
 
 
 
