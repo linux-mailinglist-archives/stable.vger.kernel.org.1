@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229150-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FjTL2lMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228609-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:29 +0100
+	id CJsMNyVZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229150-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83632F444A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7A12F6113
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 074C2301733D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A8AAE301BDE6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3024E1FC101;
-	Mon, 23 Mar 2026 14:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19833B774A;
+	Mon, 23 Mar 2026 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4SVnrVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq0V+EIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E551B823DD;
-	Mon, 23 Mar 2026 14:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E623B7746;
+	Mon, 23 Mar 2026 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275594; cv=none; b=LjcYL5Du4tvqaRwJPkb6zLiK7JLziiOZRFCoOM5X04XFFZCCW8DRrKZHHlKWGmytlrdlgEdxB7hX7BSmdrMJWbik7sH7Y9Om0KGEXxi4gWIUfq5sPs93NYo98++C2CMxhsmKB5hp8Sg1RhF8GVpPkvB2zC9T39oxyP9WeiXbp5o=
+	t=1774278219; cv=none; b=KskNQibW6qc9A+5vJ7q/ivuJNv+gFqNi2UX/iXwBzf+WZEnxatWjYqnVG68tEEtnpWVxh9pEC1JCKsLXlsl/mDLWjoDs6LBU2IMlHc9iHAx6lbrXQDknw3EU3FB/mgzBDeWaH7kl+VD5vuVUYCa8mznOy/CHmjsdZ3ysaJXDGjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275594; c=relaxed/simple;
-	bh=+GVci6wOB95woL5Zm7pr1s4hHyaQMsyIbDjLAZFcBfg=;
+	s=arc-20240116; t=1774278219; c=relaxed/simple;
+	bh=gbb7p8lmAsTABkarQNsPFewfSHz3yQ9jTYV6uCK6QDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6fT+HWEfvMvn8mY1OHkP3m2lIg2S3dmnPsyDSvp5bgthHXjBXmL8lA9b/Bv0tAgKN4S6YEaFMkeLQe/k2xLsSubNosMs36ZkBnx9cSQAelRGIANEW9db6lm0wJDFk6Z2bdGSSsKOYuWNZG8niF32GkcB7blRUgZ0rraS+16wN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4SVnrVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4BEC2BC9E;
-	Mon, 23 Mar 2026 14:19:53 +0000 (UTC)
+	 MIME-Version; b=Kvk5K7DyE9H3riqU+952wdlVE2ZMPYUOeYBgHJLPJwS/E/dAdN5eolZ5qSRNA5ZjgOm1QYhfN2QnQSs+Q9sfRkzvTEg8EjnpNALLVgYSREY8X9/fiusXkxKXgZ/GGqiFyndJXFuypAzbey3Vr3dzNwQk86rlIwkpPeprIlK58gw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq0V+EIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE763C2BCB1;
+	Mon, 23 Mar 2026 15:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275593;
-	bh=+GVci6wOB95woL5Zm7pr1s4hHyaQMsyIbDjLAZFcBfg=;
+	s=korg; t=1774278219;
+	bh=gbb7p8lmAsTABkarQNsPFewfSHz3yQ9jTYV6uCK6QDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4SVnrVzmMYlBnSBBhPbT9ehjbuiOPQ+kWTUZKahjCMTmZm/uLRo3MQf8qdRguGB4
-	 dbBIrvsr4WWVEqZMx4byzZcWbnYXBBAeCw1O5OMlLXGsvOxpMySAfH6uHfHrx2PRIo
-	 8rFhKLxjrA3LWXcB0drCtAFbdGiMEoUroyBGPG5U=
+	b=Tq0V+EIRPVEexSnhpD5X5ZIzmcT0LfAtdmxth6W7IIIRiGZOreFlhqgT4pYdtJgoM
+	 GoWKMuuMoaFCm5QPEx1w3qTfVA6eieYJLbBXJiUUucPXDgNldnTZEgjg7IgKt+gWq1
+	 yMoH9AYoieUrG1TDRVSloVEzb80U9vwMHjOOeHCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 155/460] net: mana: Ring doorbell at 4 CQ wraparounds
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 231/567] net: sfp: improve Nokia GPON sfp fixup
 Date: Mon, 23 Mar 2026 14:42:31 +0100
-Message-ID: <20260323134530.376475488@linuxfoundation.org>
+Message-ID: <20260323134539.548611480@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,125 +65,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,linux.dev:server fail,msgid.link:server fail,sin.lore.kernel.org:server fail];
-	TAGGED_FROM(0.00)[bounces-228609-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,armlinux.org.uk,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229150-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C83632F444A
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8C7A12F6113
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-commit dabffd08545ffa1d7183bc45e387860984025291 upstream.
+[ Upstream commit 5ffe330e40bdfad9c49a615c54d2d89343b2f08a ]
 
-MANA hardware requires at least one doorbell ring every 8 wraparounds
-of the CQ. The driver rings the doorbell as a form of flow control to
-inform hardware that CQEs have been consumed.
+Improve the Nokia GPON fixup - we need to ignore not only the hardware
+LOS signal, but also the software implementation as well. Do this by
+using the new state_ignore_mask to indicate that we should ignore not
+only the hardware RX_LOS signal, and also clear the LOS bits in the
+option field.
 
-The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
-poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
-has fewer than 512 entries, a single poll call can process more than
-4 wraparounds without ringing the doorbell. The doorbell threshold
-check also uses ">" instead of ">=", delaying the ring by one extra
-CQE beyond 4 wraparounds. Combined, these issues can cause the driver
-to exceed the 8-wraparound hardware limit, leading to missed
-completions and stalled queues.
-
-Fix this by capping the number of CQEs polled per call to 4 wraparounds
-of the CQ in both TX and RX paths. Also change the doorbell threshold
-from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
-reached.
-
-Cc: stable@vger.kernel.org
-Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260226192833.1050807-1-longli@microsoft.com
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Tested-by: Christian Marangi <ansuelsmth@gmail.com>
+Link: https://lore.kernel.org/r/E1qnfXh-008UDe-F9@rmk-PC.armlinux.org.uk
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 87d126852158 ("net: sfp: improve Huawei MA5671a fixup")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/net/phy/sfp.c | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1368,8 +1368,14 @@ static void mana_poll_tx_cq(struct mana_
- 	ndev = txq->ndev;
- 	apc = netdev_priv(ndev);
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index 5d1456e1449fb..c47d7232d1c6e 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -345,11 +345,26 @@ static void sfp_fixup_long_startup(struct sfp *sfp)
+ 	sfp->module_t_start_up = T_START_UP_BAD_GPON;
+ }
  
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
- 	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
--				    CQE_POLLING_BUFFER);
-+				    min((cq->gdma_cq->queue_size /
-+					  COMP_ENTRY_SIZE) * 4,
-+					 CQE_POLLING_BUFFER));
++static void sfp_fixup_ignore_los(struct sfp *sfp)
++{
++	/* This forces LOS to zero, so we ignore transitions */
++	sfp->state_ignore_mask |= SFP_F_LOS;
++	/* Make sure that LOS options are clear */
++	sfp->id.ext.options &= ~cpu_to_be16(SFP_OPTIONS_LOS_INVERTED |
++					    SFP_OPTIONS_LOS_NORMAL);
++}
++
+ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
+ {
+ 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
+ }
  
- 	if (comp_read < 1)
- 		return;
-@@ -1734,7 +1740,14 @@ static void mana_poll_rx_cq(struct mana_
- 	struct mana_rxq *rxq = cq->rxq;
- 	int comp_read, i;
++static void sfp_fixup_nokia(struct sfp *sfp)
++{
++	sfp_fixup_long_startup(sfp);
++	sfp_fixup_ignore_los(sfp);
++}
++
+ // For 10GBASE-T short-reach modules
+ static void sfp_fixup_10gbaset_30m(struct sfp *sfp)
+ {
+@@ -449,7 +464,7 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	// Alcatel Lucent G-010S-A can operate at 2500base-X, but report 3.2GBd
+ 	// NRZ in their EEPROM
+ 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
+-		  sfp_fixup_long_startup),
++		  sfp_fixup_nokia),
  
--	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
-+	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
-+				    min((cq->gdma_cq->queue_size /
-+					  COMP_ENTRY_SIZE) * 4,
-+					 CQE_POLLING_BUFFER));
- 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
- 
- 	rxq->xdp_flush = false;
-@@ -1779,11 +1792,11 @@ static int mana_cq_handler(void *context
- 		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
- 		cq->work_done_since_doorbell = 0;
- 		napi_complete_done(&cq->napi, w);
--	} else if (cq->work_done_since_doorbell >
--		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
-+	} else if (cq->work_done_since_doorbell >=
-+		   (cq->gdma_cq->queue_size / COMP_ENTRY_SIZE) * 4) {
- 		/* MANA hardware requires at least one doorbell ring every 8
- 		 * wraparounds of CQ even if there is no need to arm the CQ.
--		 * This driver rings the doorbell as soon as we have exceeded
-+		 * This driver rings the doorbell as soon as it has processed
- 		 * 4 wraparounds.
- 		 */
- 		mana_gd_ring_cq(gdma_queue, 0);
+ 	// Fiberstore SFP-10G-T doesn't identify as copper, and uses the
+ 	// Rollball protocol to talk to the PHY.
+-- 
+2.51.0
+
 
 
 
