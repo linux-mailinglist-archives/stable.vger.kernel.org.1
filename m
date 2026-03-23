@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229365-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMqzFFlMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:13 +0100
+	id gJSdG3hwwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229365-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0CC02F4410
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF4582F9199
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 90B87302EFEC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BB4134A0FE9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5725E3B38A0;
-	Mon, 23 Mar 2026 14:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8795D3BC69A;
+	Mon, 23 Mar 2026 15:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omzzI5//"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5d8jIxy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3DF3AF647;
-	Mon, 23 Mar 2026 14:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2CA3B776C;
+	Mon, 23 Mar 2026 15:14:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274897; cv=none; b=Z5lRxOVQkfVk/TlHeJ+lBC0Wz0iUnojnFYSo54Md3BodM5bm9TnVBZmFB1RHWQixtipOCPHurdw9WHGr/+g8qubHpLw4xJfAO9HCeE4xL7aMB1idK+DHwKsUHqMY50qHe6N9uVx9Vikbhr9VMpbSGoiAxQ9Hsv9+sf8wdjP+9rc=
+	t=1774278886; cv=none; b=PUoSF3TxHWr+yxtLf0TtCvT5Go/pLgIeBq7Kj6WEPLFCVilsrT/BMRrerGfp35eeqb1XKML2IBsmmOu9tahK9tXC066UMi6LNAKRQ35GAN9ybPSMvaGBG6bhKZRf+ElEOKv7mNvttnhY5mhKFhK1iWj9s6R27bynfcQ/PSyDots=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274897; c=relaxed/simple;
-	bh=6i0XVc4w4TxO23UABKB23MiviCQSjlhCBNJynT3Ar+M=;
+	s=arc-20240116; t=1774278886; c=relaxed/simple;
+	bh=kDr7jdhNI1Nsq7Qs8homPMKE7eWwcB/vx72JmDtEb4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lsw/MXK2fINDixNGuYbEt2VtoxHjhVTomeR7vTURBL5jVNfrCWpairCLmPeb2i1+Cw7Po2r5wzaDscRdxxJJyUrhikzCz2Sqky6BIRdgOkdx9qdcRZN/HHTJgY5Yp+TICQ2NtIwloivOEgYmds7Prnbr6lwg81cobbs9FoRUChU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omzzI5//; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1583C4CEF7;
-	Mon, 23 Mar 2026 14:08:16 +0000 (UTC)
+	 MIME-Version; b=US+lz3Us68lRG8JX9Qp9DwNcRxGo2VRFZ7a2nZz7WILucO2x+9gU2wum4t7DeDC1fWfCnq3zZJtZR4nXgSAL95nFuKWF0lTidq44snT0XmKXHYInjbewAJh3F7BI6RUWLtY+qEenRy72uiHxkvB17UySvp73uH9Fn3qcblU5ooE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5d8jIxy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 031CBC2BCB7;
+	Mon, 23 Mar 2026 15:14:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274897;
-	bh=6i0XVc4w4TxO23UABKB23MiviCQSjlhCBNJynT3Ar+M=;
+	s=korg; t=1774278885;
+	bh=kDr7jdhNI1Nsq7Qs8homPMKE7eWwcB/vx72JmDtEb4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omzzI5//WTUAD4aLSKVpFHhlTaVY3T6GhN8g/9WRDiBrzEI6j/Fe7myTkbgn8ZYJ9
-	 pFR88wpZs2aNY4Y8W1NgnSh82+jVVZMKmJAnK6kIBW9AYSqAMvzSczi8KO6ZDAcFtG
-	 SHHj9mYh/6Q/QczHymirN5u0zzTv7brP3/8dw7FY=
+	b=u5d8jIxyNU/x0ZG/I+PmzKuLgX5fwptxAiha6niRsl4pryyDEyy+3T5P1kF/s5qf+
+	 ViQgXXUzrA/HSs0MeSaFV89dTab8kCycd/we/KNr02fROU5MX/HwT5RCc5eHC78+6+
+	 nZXmFDYEw5v6iFS82/9es670fSQ59DphAzhLHj98=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ingo Franzki <ifranzki@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 148/212] net/smc: fix NULL dereference and UAF in smc_tcp_syn_recv_sock()
+Subject: [PATCH 6.6 449/567] s390/zcrypt: Enable AUTOSEL_DOM for CCA serialnr sysfs attribute
 Date: Mon, 23 Mar 2026 14:46:09 +0100
-Message-ID: <20260323134508.445605617@linuxfoundation.org>
+Message-ID: <20260323134545.091449461@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,246 +65,105 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228356-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,linuxfoundation.org:server fail,shopee.com:server fail,sto.lore.kernel.org:server fail,appspotmail.com:server fail,syzkaller.appspot.com:server fail];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229365-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable,827ae2bfb3a3529333e9];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url,shopee.com:email,appspotmail.com:email]
-X-Rspamd-Queue-Id: E0CC02F4410
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EF4582F9199
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-[ Upstream commit 6d5e4538364b9ceb1ac2941a4deb86650afb3538 ]
+commit 598bbefa8032cc58b564a81d1ad68bd815c8dc0f upstream.
 
-Syzkaller reported a panic in smc_tcp_syn_recv_sock() [1].
+The serialnr sysfs attribute for CCA cards when queried always
+used the default domain for sending the request down to the card.
+If for any reason exactly this default domain is disabled then
+the attribute code fails to retrieve the CCA info and the sysfs
+entry shows an empty string. Works as designed but the serial
+number is a card attribute and thus it does not matter which
+domain is used for the query. So if there are other domains on
+this card available, these could be used.
 
-smc_tcp_syn_recv_sock() is called in the TCP receive path
-(softirq) via icsk_af_ops->syn_recv_sock on the clcsock (TCP
-listening socket). It reads sk_user_data to get the smc_sock
-pointer. However, when the SMC listen socket is being closed
-concurrently, smc_close_active() sets clcsock->sk_user_data
-to NULL under sk_callback_lock, and then the smc_sock itself
-can be freed via sock_put() in smc_release().
+So extend the code to use AUTOSEL_DOM for the domain value to
+address any online domain within the card for querying the cca
+info and thus show the serialnr as long as there is one domain
+usable regardless of the default domain setting.
 
-This leads to two issues:
-
-1) NULL pointer dereference: sk_user_data is NULL when
-   accessed.
-2) Use-after-free: sk_user_data is read as non-NULL, but the
-   smc_sock is freed before its fields (e.g., queued_smc_hs,
-   ori_af_ops) are accessed.
-
-The race window looks like this (the syzkaller crash [1]
-triggers via the SYN cookie path: tcp_get_cookie_sock() ->
-smc_tcp_syn_recv_sock(), but the normal tcp_check_req() path
-has the same race):
-
-  CPU A (softirq)              CPU B (process ctx)
-
-  tcp_v4_rcv()
-    TCP_NEW_SYN_RECV:
-    sk = req->rsk_listener
-    sock_hold(sk)
-    /* No lock on listener */
-                               smc_close_active():
-                                 write_lock_bh(cb_lock)
-                                 sk_user_data = NULL
-                                 write_unlock_bh(cb_lock)
-                                 ...
-                                 smc_clcsock_release()
-                                 sock_put(smc->sk) x2
-                                   -> smc_sock freed!
-    tcp_check_req()
-      smc_tcp_syn_recv_sock():
-        smc = user_data(sk)
-          -> NULL or dangling
-        smc->queued_smc_hs
-          -> crash!
-
-Note that the clcsock and smc_sock are two independent objects
-with separate refcounts. TCP stack holds a reference on the
-clcsock, which keeps it alive, but this does NOT prevent the
-smc_sock from being freed.
-
-Fix this by using RCU and refcount_inc_not_zero() to safely
-access smc_sock. Since smc_tcp_syn_recv_sock() is called in
-the TCP three-way handshake path, taking read_lock_bh on
-sk_callback_lock is too heavy and would not survive a SYN
-flood attack. Using rcu_read_lock() is much more lightweight.
-
-- Set SOCK_RCU_FREE on the SMC listen socket so that
-  smc_sock freeing is deferred until after the RCU grace
-  period. This guarantees the memory is still valid when
-  accessed inside rcu_read_lock().
-- Use rcu_read_lock() to protect reading sk_user_data.
-- Use refcount_inc_not_zero(&smc->sk.sk_refcnt) to pin the
-  smc_sock. If the refcount has already reached zero (close
-  path completed), it returns false and we bail out safely.
-
-Note: smc_hs_congested() has a similar lockless read of
-sk_user_data without rcu_read_lock(), but it only checks for
-NULL and accesses the global smc_hs_wq, never dereferencing
-any smc_sock field, so it is not affected.
-
-Reproducer was verified with mdelay injection and smc_run,
-the issue no longer occurs with this patch applied.
-
-[1] https://syzkaller.appspot.com/bug?extid=827ae2bfb3a3529333e9
-
-Fixes: 8270d9c21041 ("net/smc: Limit backlog connections")
-Reported-by: syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67eaf9b8.050a0220.3c3d88.004a.GAE@google.com/T/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Link: https://patch.msgid.link/20260312092909.48325-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8f291ebf3270 ("s390/zcrypt: enable card/domain autoselect on ep11 cprbs")
+Suggested-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+[ preserved zc->online as the fourth argument to cca_get_info() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c    | 23 +++++++++++++++++------
- net/smc/smc.h       |  5 +++++
- net/smc/smc_close.c |  2 +-
- 3 files changed, 23 insertions(+), 7 deletions(-)
+ drivers/s390/crypto/zcrypt_ccamisc.c |   12 +++++++-----
+ drivers/s390/crypto/zcrypt_cex4.c    |    3 +--
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index efdadb2d8d390..6421c2e1c84de 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -131,7 +131,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
- 	struct smc_sock *smc;
- 	struct sock *child;
+--- a/drivers/s390/crypto/zcrypt_ccamisc.c
++++ b/drivers/s390/crypto/zcrypt_ccamisc.c
+@@ -1687,11 +1687,13 @@ static int fetch_cca_info(u16 cardnr, u1
  
--	smc = smc_clcsock_user_data(sk);
-+	rcu_read_lock();
-+	smc = smc_clcsock_user_data_rcu(sk);
-+	if (!smc || !refcount_inc_not_zero(&smc->sk.sk_refcnt)) {
-+		rcu_read_unlock();
-+		smc = NULL;
-+		goto drop;
+ 	memset(ci, 0, sizeof(*ci));
+ 
+-	/* get first info from zcrypt device driver about this apqn */
+-	rc = zcrypt_device_status_ext(cardnr, domain, &devstat);
+-	if (rc)
+-		return rc;
+-	ci->hwtype = devstat.hwtype;
++	/* if specific domain given, fetch status and hw info for this apqn */
++	if (domain != AUTOSEL_DOM) {
++		rc = zcrypt_device_status_ext(cardnr, domain, &devstat);
++		if (rc)
++			return rc;
++		ci->hwtype = devstat.hwtype;
 +	}
-+	rcu_read_unlock();
  
- 	if (READ_ONCE(sk->sk_ack_backlog) + atomic_read(&smc->queued_smc_hs) >
- 				sk->sk_max_ack_backlog)
-@@ -153,11 +160,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
- 		if (inet_csk(child)->icsk_af_ops == inet_csk(sk)->icsk_af_ops)
- 			inet_csk(child)->icsk_af_ops = smc->ori_af_ops;
- 	}
-+	sock_put(&smc->sk);
- 	return child;
+ 	/* prep page for rule array and var array use */
+ 	pg = (u8 *)__get_free_page(GFP_KERNEL);
+--- a/drivers/s390/crypto/zcrypt_cex4.c
++++ b/drivers/s390/crypto/zcrypt_cex4.c
+@@ -85,8 +85,7 @@ static ssize_t cca_serialnr_show(struct
  
- drop:
- 	dst_release(dst);
- 	tcp_listendrop(sk);
-+	if (smc)
-+		sock_put(&smc->sk);
- 	return NULL;
+ 	memset(&ci, 0, sizeof(ci));
+ 
+-	if (ap_domain_index >= 0)
+-		cca_get_info(ac->id, ap_domain_index, &ci, zc->online);
++	cca_get_info(ac->id, AUTOSEL_DOM, &ci, zc->online);
+ 
+ 	return sysfs_emit(buf, "%s\n", ci.serial);
  }
- 
-@@ -254,7 +264,7 @@ static void smc_fback_restore_callbacks(struct smc_sock *smc)
- 	struct sock *clcsk = smc->clcsock->sk;
- 
- 	write_lock_bh(&clcsk->sk_callback_lock);
--	clcsk->sk_user_data = NULL;
-+	rcu_assign_sk_user_data(clcsk, NULL);
- 
- 	smc_clcsock_restore_cb(&clcsk->sk_state_change, &smc->clcsk_state_change);
- 	smc_clcsock_restore_cb(&clcsk->sk_data_ready, &smc->clcsk_data_ready);
-@@ -902,7 +912,7 @@ static void smc_fback_replace_callbacks(struct smc_sock *smc)
- 	struct sock *clcsk = smc->clcsock->sk;
- 
- 	write_lock_bh(&clcsk->sk_callback_lock);
--	clcsk->sk_user_data = (void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
-+	__rcu_assign_sk_user_data_with_flags(clcsk, smc, SK_USER_DATA_NOCOPY);
- 
- 	smc_clcsock_replace_cb(&clcsk->sk_state_change, smc_fback_state_change,
- 			       &smc->clcsk_state_change);
-@@ -2665,8 +2675,8 @@ int smc_listen(struct socket *sock, int backlog)
- 	 * smc-specific sk_data_ready function
- 	 */
- 	write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
--	smc->clcsock->sk->sk_user_data =
--		(void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
-+	__rcu_assign_sk_user_data_with_flags(smc->clcsock->sk, smc,
-+					     SK_USER_DATA_NOCOPY);
- 	smc_clcsock_replace_cb(&smc->clcsock->sk->sk_data_ready,
- 			       smc_clcsock_data_ready, &smc->clcsk_data_ready);
- 	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
-@@ -2687,10 +2697,11 @@ int smc_listen(struct socket *sock, int backlog)
- 		write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
- 		smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
- 				       &smc->clcsk_data_ready);
--		smc->clcsock->sk->sk_user_data = NULL;
-+		rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
- 		write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
- 		goto out;
- 	}
-+	sock_set_flag(sk, SOCK_RCU_FREE);
- 	sk->sk_max_ack_backlog = backlog;
- 	sk->sk_ack_backlog = 0;
- 	sk->sk_state = SMC_LISTEN;
-diff --git a/net/smc/smc.h b/net/smc/smc.h
-index 2c90849637398..ea45467c11409 100644
---- a/net/smc/smc.h
-+++ b/net/smc/smc.h
-@@ -346,6 +346,11 @@ static inline struct smc_sock *smc_clcsock_user_data(const struct sock *clcsk)
- 	       ((uintptr_t)clcsk->sk_user_data & ~SK_USER_DATA_NOCOPY);
- }
- 
-+static inline struct smc_sock *smc_clcsock_user_data_rcu(const struct sock *clcsk)
-+{
-+	return (struct smc_sock *)rcu_dereference_sk_user_data(clcsk);
-+}
-+
- /* save target_cb in saved_cb, and replace target_cb with new_cb */
- static inline void smc_clcsock_replace_cb(void (**target_cb)(struct sock *),
- 					  void (*new_cb)(struct sock *),
-diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
-index 10219f55aad14..bb0313ef5f7c1 100644
---- a/net/smc/smc_close.c
-+++ b/net/smc/smc_close.c
-@@ -218,7 +218,7 @@ int smc_close_active(struct smc_sock *smc)
- 			write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
- 			smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
- 					       &smc->clcsk_data_ready);
--			smc->clcsock->sk->sk_user_data = NULL;
-+			rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
- 			write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
- 			rc = kernel_sock_shutdown(smc->clcsock, SHUT_RDWR);
- 		}
--- 
-2.51.0
-
 
 
 
