@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229254-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJZtE+9FwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228064-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:51 +0100
+	id AFURIQBewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229254-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF79A2F3615
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ABD42F68D9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5FAC7300E288
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 32EF9334C2AF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6E73ACA62;
-	Mon, 23 Mar 2026 13:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91D93B27DC;
+	Mon, 23 Mar 2026 15:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moEfEmSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Up/CsY8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A27D21D00A;
-	Mon, 23 Mar 2026 13:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3E23B2FC1;
+	Mon, 23 Mar 2026 15:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274020; cv=none; b=a0FB+f42ISo+8ujKEG9ohbZAdZXkfZHTySadjQId2OvD/RS+dtaQ1XsiFQXCJ+C6Rkjn3TUrTCY4ffk27/UaSVnYXNu15CDal50SdezzeO04p6Q3nK8Xw/0x5SD6h3lVrDys+zC2rM2FxKAfvyIaaiSxSoXxNVitWnord7HJ3fY=
+	t=1774278543; cv=none; b=pbbn0KQaz9AX4j68idZULjpVnRlKN0BZJZsDXrCmSNpQtuzdvOSi4GiSrSuEq0t0mmAcxz3SOEVUco8BxOksSC0fiuG7A1p6pW1FgI2F0MLA8o+VJ4cDgeJ4gruUUhwGElWl/4acZbOkz4PBTZoAVPgPEMAH8Yz3pU8TWBJdRoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274020; c=relaxed/simple;
-	bh=K0YJJH70MUULU9XnOQOhDycr0L52e1JJPTeMUi/firM=;
+	s=arc-20240116; t=1774278543; c=relaxed/simple;
+	bh=fAYJRIEMePh+IHeDeaPib2M04pwI7lBXwizjrN9bUEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MKseid3iwwfK9XGWQSHR8h4MWPwf4nLKgge30C6ShiIJy53kw1Sv63WZT7YAFGC89S3wTu2nTVwlXa3o9fGbnZx9N2Zbpr2zRdklnCgAjUkAoBMWIxMPHQU9ji63QkDXdoUKDbVRuJ2Ybnf5oowH06ZBb5xfmMIJHVfpdpmL39c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moEfEmSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82DC2C2BC9E;
-	Mon, 23 Mar 2026 13:53:39 +0000 (UTC)
+	 MIME-Version; b=PaTN7f7iT5c+LM8DmUZ6oPvLU0KEbopgi5eIUrSpUIF1eAmI0et72PtME3xbQCfbSYtbneqf9Fld8fOO1n38Hdp3DAK1D66e/gtTb2M2qSDpzqZkR3cTcj9G15EVVFaS6AE/ZrWqM5ygiVq6QuiHI46PmDDaVjd1d2IcKAVSld8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Up/CsY8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F90C4CEF7;
+	Mon, 23 Mar 2026 15:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274019;
-	bh=K0YJJH70MUULU9XnOQOhDycr0L52e1JJPTeMUi/firM=;
+	s=korg; t=1774278543;
+	bh=fAYJRIEMePh+IHeDeaPib2M04pwI7lBXwizjrN9bUEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=moEfEmSqcQmPHLoepoTigQ5sj5HfDwbI1z5poX0MBC1zH+RMkZmptbSFDasbFnG3I
-	 IztIxCvWpLJa2INfHuNRJG4K2J3Z7T9lCtU3FS0zmgqWWwp6J3GDDjUTkiPWZfb8Lb
-	 AxO2xPS2uD7b4+LCNL/HNN9ldAziYNqnSN0y0+YI=
+	b=Up/CsY8xVZJnP/KqIG/P+HJmRh9phiy6rJ8lPYq+Xd9I9isi05LP+he7wiz+rfJDn
+	 Rlff8B2VjH73w0LP07mTJs6wOkRPjkFXuhU+/BI6Lc61UtCkxpMyYfsF454hszCkTI
+	 67fw58Bg+whtnITUkJtp3gAzJUl5GSBqmlXasLCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.19 084/220] drm/amdgpu: Limit BO list entry count to prevent resource exhaustion
-Date: Mon, 23 Mar 2026 14:44:21 +0100
-Message-ID: <20260323134507.249294514@linuxfoundation.org>
+	Jan Hoeppner <hoeppner@linux.ibm.com>,
+	Eduard Shishkin <edward6@linux.ibm.com>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 342/567] s390/dasd: Copy detected format information to secondary device
+Date: Mon, 23 Mar 2026 14:44:22 +0100
+Message-ID: <20260323134542.297843361@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +64,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228064-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229254-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DF79A2F3615
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0ABD42F68D9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-commit 6270b1a5dab94665d7adce3dc78bc9066ed28bdd upstream.
+commit 4c527c7e030672efd788d0806d7a68972a7ba3c1 upstream.
 
-Userspace can pass an arbitrary number of BO list entries via the
-bo_number field. Although the previous multiplication overflow check
-prevents out-of-bounds allocation, a large number of entries could still
-cause excessive memory allocation (up to potentially gigabytes) and
-unnecessarily long list processing times.
+During online processing for a DASD device an IO operation is started to
+determine the format of the device. CDL format contains specifically
+sized blocks at the beginning of the disk.
 
-Introduce a hard limit of 128k entries per BO list, which is more than
-sufficient for any realistic use case (e.g., a single list containing all
-buffers in a large scene). This prevents memory exhaustion attacks and
-ensures predictable performance.
+For a PPRC secondary device no real IO operation is possible therefore
+this IO request can not be started and this step is skipped for online
+processing of secondary devices. This is generally fine since the
+secondary is a copy of the primary device.
 
-Return -EINVAL if the requested entry count exceeds the limit
+In case of an additional partition detection that is run after a swap
+operation the format information is needed to properly drive partition
+detection IO.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 688b87d39e0aa8135105b40dc167d74b5ada5332)
-Cc: stable@vger.kernel.org
+Currently the information is not passed leading to IO errors during
+partition detection and a wrongly detected partition table which in turn
+might lead to data corruption on the disk with the wrong partition table.
+
+Fix by passing the format information from primary to secondary device.
+
+Fixes: 413862caad6f ("s390/dasd: add copy pair swap capability")
+Cc: stable@vger.kernel.org #6.1
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Acked-by: Eduard Shishkin <edward6@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://patch.msgid.link/20260310142330.4080106-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/s390/block/dasd_eckd.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
-@@ -36,6 +36,7 @@
- 
- #define AMDGPU_BO_LIST_MAX_PRIORITY	32u
- #define AMDGPU_BO_LIST_NUM_BUCKETS	(AMDGPU_BO_LIST_MAX_PRIORITY + 1)
-+#define AMDGPU_BO_LIST_MAX_ENTRIES	(128 * 1024)
- 
- static void amdgpu_bo_list_free_rcu(struct rcu_head *rcu)
+--- a/drivers/s390/block/dasd_eckd.c
++++ b/drivers/s390/block/dasd_eckd.c
+@@ -6185,6 +6185,7 @@ static void copy_pair_set_active(struct
+ static int dasd_eckd_copy_pair_swap(struct dasd_device *device, char *prim_busid,
+ 				    char *sec_busid)
  {
-@@ -190,6 +191,9 @@ int amdgpu_bo_create_list_entry_array(st
- 	const uint32_t bo_number = in->bo_number;
- 	struct drm_amdgpu_bo_list_entry *info;
++	struct dasd_eckd_private *prim_priv, *sec_priv;
+ 	struct dasd_device *primary, *secondary;
+ 	struct dasd_copy_relation *copy;
+ 	struct dasd_block *block;
+@@ -6205,6 +6206,9 @@ static int dasd_eckd_copy_pair_swap(stru
+ 	if (!secondary)
+ 		return DASD_COPYPAIRSWAP_SECONDARY;
  
-+	if (bo_number > AMDGPU_BO_LIST_MAX_ENTRIES)
-+		return -EINVAL;
++	prim_priv = primary->private;
++	sec_priv = secondary->private;
 +
- 	/* copy the handle array from userspace to a kernel buffer */
- 	if (likely(info_size == bo_info_size)) {
- 		info = vmemdup_array_user(uptr, bo_number, info_size);
+ 	/*
+ 	 * usually the device should be quiesced for swap
+ 	 * for paranoia stop device and requeue requests again
+@@ -6237,6 +6241,13 @@ static int dasd_eckd_copy_pair_swap(stru
+ 		dasd_device_remove_stop_bits(primary, DASD_STOPPED_QUIESCE);
+ 	}
+ 
++	/*
++	 * The secondary device never got through format detection, but since it
++	 * is a copy of the primary device, the format is exactly the same;
++	 * therefore, the detected layout can simply be copied.
++	 */
++	sec_priv->uses_cdl = prim_priv->uses_cdl;
++
+ 	/* re-enable device */
+ 	dasd_device_remove_stop_bits(primary, DASD_STOPPED_PPRC);
+ 	dasd_device_remove_stop_bits(secondary, DASD_STOPPED_PPRC);
 
 
 
