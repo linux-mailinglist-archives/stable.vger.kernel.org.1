@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229794-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IClI+dPwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:23 +0100
+	id WN74L+duwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229794-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014062F4D3C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373C32F8D6D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7246A304EF71
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 677B3317539F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51553A9D9D;
-	Mon, 23 Mar 2026 13:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF173B8D4F;
+	Mon, 23 Mar 2026 16:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/7nBjzP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8ZBO3go"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7935D21D00A;
-	Mon, 23 Mar 2026 13:57:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DF23AF647;
+	Mon, 23 Mar 2026 16:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274258; cv=none; b=to3YGpRUwKWgKRWNsefh+QL3kDGw0f3Tavh7EXIcIh+0tOyinCVPSsOJB3CejLloO3wWAgQLxGmwOKvGQ3ecB+X+LJBe8oQxx0x7BUiov8zOKQU/EDIY723PxMyIk9Mo9BD798wP73jCm0jDh0GZ3U7ahlBStcdW8jlG78avtMU=
+	t=1774282882; cv=none; b=Ew4jpgsuTyZASDFIq6D608mcNEZ1XOZvMO0jAwrtpRsP8koWqhU5my6gyekRjaifKct0x8vL1gobzypGMqzb3w4ELZgw3QXcQD2Ih0npuWNv2fFFWIjxZL0uxcD2XgUwlRExiKkdsUJc226zqTCefizOuN3FwEVArDnMin0t69E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274258; c=relaxed/simple;
-	bh=6JOjag13x4GsQt6i57pLLF/J7dY5iOYkU06WqaywZRc=;
+	s=arc-20240116; t=1774282882; c=relaxed/simple;
+	bh=z6KIFDBteynb8IsYUaqZjlSaDbWJ/Mzg9Krlv8DJgL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKaipyyjbt2hpOoztJbx/mm8jlgcModbSpZqTock0vyywIppPxdSsaeaGbulAuhWkKIE0SqTryTIRCw8iNRj7GO5zSat9cegRFiv/TCNCKDkqvhZ6uFy31KXhFiVojKVFfIU826eKz/XyiD2apcE/xW0XQyDydSAVRYAGb6f7wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/7nBjzP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C05C4CEF7;
-	Mon, 23 Mar 2026 13:57:37 +0000 (UTC)
+	 MIME-Version; b=FsnLOmJNmUlk7yPYh6qc8SdcIjIlRYo9LhqpvBxY3+o0BlfPJWCvhkqQHs9mTcL+NNsjbC9bi0j91DOKtNC/pWPWGtqslrYJBpmq+9yVIxejyMOY5FrUzLB9zGGZYUO+PlTLKV86fTrY4e9tuu+x80IlQTKbmxpEtoF53TRzZPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8ZBO3go; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE5FFC2BCB3;
+	Mon, 23 Mar 2026 16:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274258;
-	bh=6JOjag13x4GsQt6i57pLLF/J7dY5iOYkU06WqaywZRc=;
+	s=korg; t=1774282882;
+	bh=z6KIFDBteynb8IsYUaqZjlSaDbWJ/Mzg9Krlv8DJgL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/7nBjzP3UCWUQCH1BVuBOo2sBixDR3E0CmE4Y9pvuXi1yu8/y3+foevwnblMRaHY
-	 rq6Zovdb1wG5rlngcfpHEpCFkcBATdQEAmZ+rOrSXBFPtAYw1ojWZeWGtsKaohor4H
-	 U+kmcZu6bmq2gxgIjzEWRSwVODoZh2TGXILUifaQ=
+	b=e8ZBO3go+HzQZD5KYxcOZ6eZX3Knjqv7YeS9Cn5xTP21mr32xufRS76ggdqYDqfs/
+	 ujJiYwafsJOGEFZBFFzzxGGx3QktITEfHuI/EOF/tt7qJDt6Do6T70tBr2scM4cQ6u
+	 5N46ss5DGS7kQfyznQGX6GBWbHt+wUYOoAMda9lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Tao <wangtao554@huawei.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Daniil Dulov <d.dulov@aladdin.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 123/220] Bluetooth: MGMT: Fix list corruption and UAF in command complete handlers
-Date: Mon, 23 Mar 2026 14:45:00 +0100
-Message-ID: <20260323134508.478784767@linuxfoundation.org>
+Subject: [PATCH 6.1 319/481] wifi: cfg80211: cancel rfkill_block work in wiphy_unregister()
+Date: Mon, 23 Mar 2026 14:45:01 +0100
+Message-ID: <20260323134532.875834944@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228144-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229794-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,75 +90,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 014062F4D3C
+X-Rspamd-Queue-Id: 373C32F8D6D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Tao <wangtao554@huawei.com>
+From: Daniil Dulov <d.dulov@aladdin.ru>
 
-[ Upstream commit 17f89341cb4281d1da0e2fb0de5406ab7c4e25ef ]
+[ Upstream commit 767d23ade706d5fa51c36168e92a9c5533c351a1 ]
 
-Commit 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs") introduced
-mgmt_pending_valid(), which not only validates the pending command but
-also unlinks it from the pending list if it is valid. This change in
-semantics requires updates to several completion handlers to avoid list
-corruption and memory safety issues.
+There is a use-after-free error in cfg80211_shutdown_all_interfaces found
+by syzkaller:
 
-This patch addresses two left-over issues from the aforementioned rework:
+BUG: KASAN: use-after-free in cfg80211_shutdown_all_interfaces+0x213/0x220
+Read of size 8 at addr ffff888112a78d98 by task kworker/0:5/5326
+CPU: 0 UID: 0 PID: 5326 Comm: kworker/0:5 Not tainted 6.19.0-rc2 #2 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Workqueue: events cfg80211_rfkill_block_work
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x116/0x1f0
+ print_report+0xcd/0x630
+ kasan_report+0xe0/0x110
+ cfg80211_shutdown_all_interfaces+0x213/0x220
+ cfg80211_rfkill_block_work+0x1e/0x30
+ process_one_work+0x9cf/0x1b70
+ worker_thread+0x6c8/0xf10
+ kthread+0x3c5/0x780
+ ret_from_fork+0x56d/0x700
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-1. In mgmt_add_adv_patterns_monitor_complete(), mgmt_pending_remove()
-is replaced with mgmt_pending_free() in the success path. Since
-mgmt_pending_valid() already unlinks the command at the beginning of
-the function, calling mgmt_pending_remove() leads to a double list_del()
-and subsequent list corruption/kernel panic.
+The problem arises due to the rfkill_block work is not cancelled when wiphy
+is being unregistered. In order to fix the issue cancel the corresponding
+work in wiphy_unregister().
 
-2. In set_mesh_complete(), the use of mgmt_pending_foreach() in the error
-path is removed. Since the current command is already unlinked by
-mgmt_pending_valid(), this foreach loop would incorrectly target other
-pending mesh commands, potentially freeing them while they are still being
-processed concurrently (leading to UAFs). The redundant mgmt_cmd_status()
-is also simplified to use cmd->opcode directly.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Fixes: 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs")
-Signed-off-by: Wang Tao <wangtao554@huawei.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 1f87f7d3a3b4 ("cfg80211: add rfkill support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Link: https://patch.msgid.link/20260211082024.1967588-1-d.dulov@aladdin.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/wireless/core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 0e46f9e08b106..2c63f49c33018 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2195,10 +2195,7 @@ static void set_mesh_complete(struct hci_dev *hdev, void *data, int err)
- 	sk = cmd->sk;
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -1125,6 +1125,7 @@ void wiphy_unregister(struct wiphy *wiph
+ 	/* this has nothing to do now but make sure it's gone */
+ 	cancel_work_sync(&rdev->wiphy_work);
  
- 	if (status) {
--		mgmt_cmd_status(cmd->sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
--				status);
--		mgmt_pending_foreach(MGMT_OP_SET_MESH_RECEIVER, hdev, true,
--				     cmd_status_rsp, &status);
-+		mgmt_cmd_status(cmd->sk, hdev->id, cmd->opcode, status);
- 		goto done;
- 	}
- 
-@@ -5377,7 +5374,7 @@ static void mgmt_add_adv_patterns_monitor_complete(struct hci_dev *hdev,
- 
- 	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
- 			  mgmt_status(status), &rp, sizeof(rp));
--	mgmt_pending_remove(cmd);
-+	mgmt_pending_free(cmd);
- 
- 	hci_dev_unlock(hdev);
- 	bt_dev_dbg(hdev, "add monitor %d complete, status %d",
--- 
-2.51.0
-
++	cancel_work_sync(&rdev->rfkill_block);
+ 	cancel_work_sync(&rdev->conn_work);
+ 	flush_work(&rdev->event_work);
+ 	cancel_delayed_work_sync(&rdev->dfs_update_channels_wk);
 
 
 
