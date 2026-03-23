@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228205-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gN4lJntMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228381-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:47 +0100
+	id qGdwAm5KwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228205-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57E172F4497
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705A32F3FC6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7236A30298A1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 10B4F3038D1D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFC53B0AED;
-	Mon, 23 Mar 2026 14:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9E51A6815;
+	Mon, 23 Mar 2026 14:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nFQ4SUN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvKJgI++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CC63B0AE8;
-	Mon, 23 Mar 2026 14:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1859C3B47EB;
+	Mon, 23 Mar 2026 14:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274961; cv=none; b=SflgUrQ+FLBuRZ4LCiOJo5yFWblJTCP2It0C3zmzwAsCFmTwoKnRXIZlxMDXglnoUnhsuis+Qt9KwMw1XwCM46MTSzhd0/gWaofTWYlx+oXbzIfuRbvmQB3x7sJw4N9YTkQ+uBfDGDgSftpw+qzou5i3YkIvEDqt4jwFz48C/Pk=
+	t=1774274443; cv=none; b=mrFtqd8slostQhSrbZuKVtnU3Ul9msU9OKpIRjlp/I3dDvb1zVNCDNfTfKZ4MqSiB9eVcjsLeBUqLl7SKBzEdu8PwAc4reS0yOqHim44z8PxSb+/gV0Ol/qSZBtkb+DyokvE0cXMHSu64sEfb8haV00KVcI0fZabPPBrgIxtRcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274961; c=relaxed/simple;
-	bh=M979iYjKFyTxFeDc3yYTLHe6+3no+T3pqhMh7D+mDBs=;
+	s=arc-20240116; t=1774274443; c=relaxed/simple;
+	bh=X36AgmuPdaGYTI8tBwAPrJXihaZiE0No5XPPI0htbPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VNy69wsWGoWuZxl8Tfv3GRJ5LLBbSWUcsHpQf63OS3EzqwymaEO6tM7yrcKO/EcDG2tC6ESiiUt+d6pH4Ozpx/VhR5NQjG1Os5fddmHSEayycUFT8VliWOkLJc2l1pE6UNUrI4J36IsT5OqXfT2C8JU8y0NB2ADbIfWE+pdAMug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nFQ4SUN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E06C2BCB4;
-	Mon, 23 Mar 2026 14:09:20 +0000 (UTC)
+	 MIME-Version; b=qCIDAv5Bx2Kl3magBdx9lmmnuu9SgxMfJk9a/L0l3NbcySpSZFxFKp4V+eKvJa4AIE9OHMQbrKD3Db/7qNBo1tINu1gVtt8/zpUGGhEthP3V+4YQaON/rwLvfreU3rqBlSndP2AGpFjP5okTYL2m48OC4U1zEB7PGaR5i8p7QAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvKJgI++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917CBC4CEF7;
+	Mon, 23 Mar 2026 14:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274961;
-	bh=M979iYjKFyTxFeDc3yYTLHe6+3no+T3pqhMh7D+mDBs=;
+	s=korg; t=1774274443;
+	bh=X36AgmuPdaGYTI8tBwAPrJXihaZiE0No5XPPI0htbPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nFQ4SUN/WQ+xN2r6/7+zuXhRSsLbgSR07ank35NnAIitD+08CdN1DlIwLitLF8Byf
-	 4bPD8d1U+US80VVayULjqFooWiaaFe9qarHARkiXTTcyDFHbe8ZnQdEeFDWoNQSNgq
-	 uN8YYnKxux8k+pn2axpt6B1wnFzxH2rvllECUGRQ=
+	b=zvKJgI+++oLBNRMj6torV5dwDWMKqsLMA4JQnd/lHIiDoEfPSuSd0AZbN8W75whWF
+	 DxoQqZEnKbrdI81XHXdP6GQ6cXr3jPuLKlGUgaXJbbSPMx61nhw2ZBYpF16dl4xUt9
+	 L2UlRO6ScNlJHtureXG2WkpLHrjay0vF2oqg8h80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 131/212] bridge: cfm: Fix race condition in peer_mep deletion
+Subject: [PATCH 6.19 175/220] nfnetlink_osf: validate individual option lengths in fingerprints
 Date: Mon, 23 Mar 2026 14:45:52 +0100
-Message-ID: <20260323134507.911763832@linuxfoundation.org>
+Message-ID: <20260323134510.108743626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,21 +69,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228381-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228205-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,82 +92,90 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,nvidia.com:email]
-X-Rspamd-Queue-Id: 57E172F4497
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,asu.edu:email]
+X-Rspamd-Queue-Id: 705A32F3FC6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit 3715a00855316066cdda69d43648336367422127 ]
+[ Upstream commit dbdfaae9609629a9569362e3b8f33d0a20fd783c ]
 
-When a peer MEP is being deleted, cancel_delayed_work_sync() is called
-on ccm_rx_dwork before freeing. However, br_cfm_frame_rx() runs in
-softirq context under rcu_read_lock (without RTNL) and can re-schedule
-ccm_rx_dwork via ccm_rx_timer_start() between cancel_delayed_work_sync()
-returning and kfree_rcu() being called.
+nfnl_osf_add_callback() validates opt_num bounds and string
+NUL-termination but does not check individual option length fields.
+A zero-length option causes nf_osf_match_one() to enter the option
+matching loop even when foptsize sums to zero, which matches packets
+with no TCP options where ctx->optp is NULL:
 
-The following is a simple race scenario:
+ Oops: general protection fault
+ KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+ RIP: 0010:nf_osf_match_one (net/netfilter/nfnetlink_osf.c:98)
+ Call Trace:
+  nf_osf_match (net/netfilter/nfnetlink_osf.c:227)
+  xt_osf_match_packet (net/netfilter/xt_osf.c:32)
+  ipt_do_table (net/ipv4/netfilter/ip_tables.c:293)
+  nf_hook_slow (net/netfilter/core.c:623)
+  ip_local_deliver (net/ipv4/ip_input.c:262)
+  ip_rcv (net/ipv4/ip_input.c:573)
 
-           cpu0                                     cpu1
+Additionally, an MSS option (kind=2) with length < 4 causes
+out-of-bounds reads when nf_osf_match_one() unconditionally accesses
+optp[2] and optp[3] for MSS value extraction.  While RFC 9293
+section 3.2 specifies that the MSS option is always exactly 4
+bytes (Kind=2, Length=4), the check uses "< 4" rather than
+"!= 4" because lengths greater than 4 do not cause memory
+safety issues -- the buffer is guaranteed to be at least
+foptsize bytes by the ctx->optsize == foptsize check.
 
-mep_delete_implementation()
-  cancel_delayed_work_sync(ccm_rx_dwork);
-                                           br_cfm_frame_rx()
-                                             // peer_mep still in hlist
-                                             if (peer_mep->ccm_defect)
-                                               ccm_rx_timer_start()
-                                                 queue_delayed_work(ccm_rx_dwork)
-  hlist_del_rcu(&peer_mep->head);
-  kfree_rcu(peer_mep, rcu);
-                                           ccm_rx_work_expired()
-                                             // on freed peer_mep
+Reject fingerprints where any option has zero length, or where an MSS
+option has length less than 4, at add time rather than trusting these
+values in the packet matching hot path.
 
-To prevent this, cancel_delayed_work_sync() is replaced with
-disable_delayed_work_sync() in both peer MEP deletion paths, so
-that subsequent queue_delayed_work() calls from br_cfm_frame_rx()
-are silently rejected.
-
-The cc_peer_disable() helper retains cancel_delayed_work_sync()
-because it is also used for the CC enable/disable toggle path where
-the work must remain re-schedulable.
-
-Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of CFM. CCM frame RX added.")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/abBgYT5K_FI9rD1a@v4bel
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_cfm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nfnetlink_osf.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/net/bridge/br_cfm.c b/net/bridge/br_cfm.c
-index c2c1c7d44c615..f4ca77d9b0e96 100644
---- a/net/bridge/br_cfm.c
-+++ b/net/bridge/br_cfm.c
-@@ -576,7 +576,7 @@ static void mep_delete_implementation(struct net_bridge *br,
+diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
+index c0fc431991e88..9fc9544d4bc53 100644
+--- a/net/netfilter/nfnetlink_osf.c
++++ b/net/netfilter/nfnetlink_osf.c
+@@ -302,7 +302,9 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
+ {
+ 	struct nf_osf_user_finger *f;
+ 	struct nf_osf_finger *kf = NULL, *sf;
++	unsigned int tot_opt_len = 0;
+ 	int err = 0;
++	int i;
  
- 	/* Empty and free peer MEP list */
- 	hlist_for_each_entry_safe(peer_mep, n_store, &mep->peer_mep_list, head) {
--		cancel_delayed_work_sync(&peer_mep->ccm_rx_dwork);
-+		disable_delayed_work_sync(&peer_mep->ccm_rx_dwork);
- 		hlist_del_rcu(&peer_mep->head);
- 		kfree_rcu(peer_mep, rcu);
- 	}
-@@ -732,7 +732,7 @@ int br_cfm_cc_peer_mep_remove(struct net_bridge *br, const u32 instance,
- 		return -ENOENT;
- 	}
+ 	if (!capable(CAP_NET_ADMIN))
+ 		return -EPERM;
+@@ -318,6 +320,17 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
+ 	if (f->opt_num > ARRAY_SIZE(f->opt))
+ 		return -EINVAL;
  
--	cc_peer_disable(peer_mep);
-+	disable_delayed_work_sync(&peer_mep->ccm_rx_dwork);
- 
- 	hlist_del_rcu(&peer_mep->head);
- 	kfree_rcu(peer_mep, rcu);
++	for (i = 0; i < f->opt_num; i++) {
++		if (!f->opt[i].length || f->opt[i].length > MAX_IPOPTLEN)
++			return -EINVAL;
++		if (f->opt[i].kind == OSFOPT_MSS && f->opt[i].length < 4)
++			return -EINVAL;
++
++		tot_opt_len += f->opt[i].length;
++		if (tot_opt_len > MAX_IPOPTLEN)
++			return -EINVAL;
++	}
++
+ 	if (!memchr(f->genre, 0, MAXGENRELEN) ||
+ 	    !memchr(f->subtype, 0, MAXGENRELEN) ||
+ 	    !memchr(f->version, 0, MAXGENRELEN))
 -- 
 2.51.0
 
