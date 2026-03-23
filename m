@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229015-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SEXbN1tmwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-229507-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:11 +0100
+	id kIPdBH9rwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229015-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E8C2F7BBB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FD22F8549
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4F11B3058078
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4796C31C3249
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CFAE3BFE24;
-	Mon, 23 Mar 2026 15:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3072B3AC0C2;
+	Mon, 23 Mar 2026 14:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQEgJv/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQ3bN4zD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCF43BF682;
-	Mon, 23 Mar 2026 15:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E52A3383C7C;
+	Mon, 23 Mar 2026 14:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279454; cv=none; b=dHZsjTmL7ur/AleZhv/8lEkdoKfMfeZW3mhyIe4PV2oPSjsyB4tGkoFPFErfdNAJu5CdaLV9cYdRIVYHrC+IWOtKztVBdKCM84h8dLtk9VnrVSnVAuTzMr4JoQDebTGHvBxtpKZ8o8OZtk+uDjFnyibCiq+KhVBaf/mTh8jSQJQ=
+	t=1774277788; cv=none; b=OqJO9cahfabm8SsjP/I2Mg0bWvJYVwT9kjJsHsa9zphjzoGUbBJgI4dv/wKnAakR7M2SFCMbLikcyK61rTW5h1DKp4/l1OIfFQJhGzXbysJFF3sFVb4V3biXMrslwyHD4gViJ1FqjNsDXz82KNGLT1QLwqK3xbdzjCefeQ+Ijw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279454; c=relaxed/simple;
-	bh=H0ui83fIBYkgophzFfNZOyAWXkPeUg6LLroe6GSsGI0=;
+	s=arc-20240116; t=1774277788; c=relaxed/simple;
+	bh=DZpMDbdRMjpGom5mdKyHJhpyE7TTtYhfvPXob5z4FVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RH3Y5UPUaAzGOsLCVY6nSBEu0EM10IWFZzPgexpiP61V6Aj2IVT6uZelc4XPgpLNo5BOi3dPpuPOCHTmaVcwsgsUMBa9xvLNxa3Ww308KCHZSTbF1DD5hrcJBegD7Ey/f3MBHq+4uEZ47KoRkZR0IrqRVBUp6NqxZgwGGEt1yUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQEgJv/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3090C4CEF7;
-	Mon, 23 Mar 2026 15:24:13 +0000 (UTC)
+	 MIME-Version; b=fg1cQ4enlMYkaePUh0vP8qsYsCZaG4PJ+LtkgTAvrysH2HhYnzzv9A1z9DWHD04fu0ANX11fEI/fWVH68MYUDWw0v3jOJ/axLqjKAPsbKOrFwbyq9C572poZFHNgqfAzpi6dq+nah1i2K7E0MILrn46AoIRJn8bCQ9bQhRtj/OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQ3bN4zD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7112BC4CEF7;
+	Mon, 23 Mar 2026 14:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279454;
-	bh=H0ui83fIBYkgophzFfNZOyAWXkPeUg6LLroe6GSsGI0=;
+	s=korg; t=1774277787;
+	bh=DZpMDbdRMjpGom5mdKyHJhpyE7TTtYhfvPXob5z4FVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQEgJv/3OU9IXqoYTGbfkk5PTcKpdT1P12KQlwAzWaG75C21RefgaUItg40ki2AxA
-	 O25BGirALQp6twEryy6nUGgJ5o+02cgAW/pbYp7YyZuJ1L1Wog75gW3+IoNMnPRaHL
-	 h0+h2R6FKD/yZku9ocxmcjVzg3R6bfa2eeyK9ct4=
+	b=sQ3bN4zDpxsip2YC6A2IAGc7+ZVJfifq27zVK6E9XyKg8d4W0qn9TnHz4vhe5cQbB
+	 tXQPTDySTmouqHv+er/qmoKI+w4psBArVYf9f5WLfXJuq/yIvP2fTZMxwZ6QgerPZO
+	 JaWCErLO2pzi/1Hrxh5I51D/wDXz2XhjYnNoONQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/481] ext4: get rid of ppath in ext4_ext_insert_extent()
+	syzbot+b09c1af8764c0097bb19@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 104/567] wifi: radiotap: reject radiotap with unknown bits
 Date: Mon, 23 Mar 2026 14:40:24 +0100
-Message-ID: <20260323134526.258969639@linuxfoundation.org>
+Message-ID: <20260323134536.399758727@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,353 +63,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229015-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229507-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.cz:email,msgid.link:url]
-X-Rspamd-Queue-Id: C7E8C2F7BBB
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,b09c1af8764c0097bb19];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 60FD22F8549
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit f7d1331f16a869c76a5102caebb58e840e1d509c ]
+commit c854758abe0b8d86f9c43dc060ff56a0ee5b31e0 upstream.
 
-The use of path and ppath is now very confusing, so to make the code more
-readable, pass path between functions uniformly, and get rid of ppath.
+The radiotap parser is currently only used with the radiotap
+namespace (not with vendor namespaces), but if the undefined
+field 18 is used, the alignment/size is unknown as well. In
+this case, iterator->_next_ns_data isn't initialized (it's
+only set for skipping vendor namespaces), and syzbot points
+out that we later compare against this uninitialized value.
 
-To get rid of the ppath in ext4_ext_insert_extent(), the following is done
-here:
+Fix this by moving the rejection of unknown radiotap fields
+down to after the in-namespace lookup, so it will really use
+iterator->_next_ns_data only for vendor namespaces, even in
+case undefined fields are present.
 
- * Free the extents path when an error is encountered.
- * Its caller needs to update ppath if it uses ppath.
- * Free path when npath is used, free npath when it is not used.
- * The got_allocated_blocks label in ext4_ext_map_blocks() does not
-   update err now, so err is updated to 0 if the err returned by
-   ext4_ext_search_right() is greater than 0 and is about to enter
-   got_allocated_blocks.
-
-No functional changes.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-15-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 22784ca541c0 ("ext4: subdivide EXT4_EXT_DATA_VALID1")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 33e5a2f776e3 ("wireless: update radiotap parser")
+Reported-by: syzbot+b09c1af8764c0097bb19@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/69944a91.a70a0220.2c38d7.00fc.GAE@google.com
+Link: https://patch.msgid.link/20260217120526.162647-2-johannes@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h        |  7 ++--
- fs/ext4/extents.c     | 88 ++++++++++++++++++++++++-------------------
- fs/ext4/fast_commit.c |  8 ++--
- fs/ext4/migrate.c     |  5 ++-
- 4 files changed, 61 insertions(+), 47 deletions(-)
+ net/wireless/radiotap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/ext4.h b/fs/ext4/ext4.h
-index 490496adf17cc..7449777fabc36 100644
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -3719,9 +3719,10 @@ extern int ext4_map_blocks(handle_t *handle, struct inode *inode,
- extern int ext4_ext_calc_credits_for_single_extent(struct inode *inode,
- 						   int num,
- 						   struct ext4_ext_path *path);
--extern int ext4_ext_insert_extent(handle_t *, struct inode *,
--				  struct ext4_ext_path **,
--				  struct ext4_extent *, int);
-+extern struct ext4_ext_path *ext4_ext_insert_extent(
-+				handle_t *handle, struct inode *inode,
-+				struct ext4_ext_path *path,
-+				struct ext4_extent *newext, int gb_flags);
- extern struct ext4_ext_path *ext4_find_extent(struct inode *, ext4_lblk_t,
- 					      struct ext4_ext_path *,
- 					      int flags);
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index eda6f92a42330..59c0bffc691d1 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1960,16 +1960,15 @@ static unsigned int ext4_ext_check_overlap(struct ext4_sb_info *sbi,
-  * inserts requested extent as new one into the tree,
-  * creating new leaf in the no-space case.
-  */
--int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
--				struct ext4_ext_path **ppath,
--				struct ext4_extent *newext, int gb_flags)
-+struct ext4_ext_path *
-+ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
-+		       struct ext4_ext_path *path,
-+		       struct ext4_extent *newext, int gb_flags)
- {
--	struct ext4_ext_path *path = *ppath;
- 	struct ext4_extent_header *eh;
- 	struct ext4_extent *ex, *fex;
- 	struct ext4_extent *nearex; /* nearest extent */
--	struct ext4_ext_path *npath = NULL;
--	int depth, len, err;
-+	int depth, len, err = 0;
- 	ext4_lblk_t next;
- 	int mb_flags = 0, unwritten;
- 
-@@ -1977,14 +1976,16 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 		mb_flags |= EXT4_MB_DELALLOC_RESERVED;
- 	if (unlikely(ext4_ext_get_actual_len(newext) == 0)) {
- 		EXT4_ERROR_INODE(inode, "ext4_ext_get_actual_len(newext) == 0");
--		return -EFSCORRUPTED;
-+		err = -EFSCORRUPTED;
-+		goto errout;
- 	}
- 	depth = ext_depth(inode);
- 	ex = path[depth].p_ext;
- 	eh = path[depth].p_hdr;
- 	if (unlikely(path[depth].p_hdr == NULL)) {
- 		EXT4_ERROR_INODE(inode, "path[%d].p_hdr == NULL", depth);
--		return -EFSCORRUPTED;
-+		err = -EFSCORRUPTED;
-+		goto errout;
- 	}
- 
- 	/* try to insert block into found extent and return */
-@@ -2022,7 +2023,7 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 			err = ext4_ext_get_access(handle, inode,
- 						  path + depth);
- 			if (err)
--				return err;
-+				goto errout;
- 			unwritten = ext4_ext_is_unwritten(ex);
- 			ex->ee_len = cpu_to_le16(ext4_ext_get_actual_len(ex)
- 					+ ext4_ext_get_actual_len(newext));
-@@ -2047,7 +2048,7 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 			err = ext4_ext_get_access(handle, inode,
- 						  path + depth);
- 			if (err)
--				return err;
-+				goto errout;
- 
- 			unwritten = ext4_ext_is_unwritten(ex);
- 			ex->ee_block = newext->ee_block;
-@@ -2072,21 +2073,26 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 	if (le32_to_cpu(newext->ee_block) > le32_to_cpu(fex->ee_block))
- 		next = ext4_ext_next_leaf_block(path);
- 	if (next != EXT_MAX_BLOCKS) {
-+		struct ext4_ext_path *npath;
-+
- 		ext_debug(inode, "next leaf block - %u\n", next);
--		BUG_ON(npath != NULL);
- 		npath = ext4_find_extent(inode, next, NULL, gb_flags);
--		if (IS_ERR(npath))
--			return PTR_ERR(npath);
-+		if (IS_ERR(npath)) {
-+			err = PTR_ERR(npath);
-+			goto errout;
-+		}
- 		BUG_ON(npath->p_depth != path->p_depth);
- 		eh = npath[depth].p_hdr;
- 		if (le16_to_cpu(eh->eh_entries) < le16_to_cpu(eh->eh_max)) {
- 			ext_debug(inode, "next leaf isn't full(%d)\n",
- 				  le16_to_cpu(eh->eh_entries));
-+			ext4_free_ext_path(path);
- 			path = npath;
- 			goto has_space;
- 		}
- 		ext_debug(inode, "next leaf has no free space(%d,%d)\n",
- 			  le16_to_cpu(eh->eh_entries), le16_to_cpu(eh->eh_max));
-+		ext4_free_ext_path(npath);
- 	}
- 
- 	/*
-@@ -2097,12 +2103,8 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 		mb_flags |= EXT4_MB_USE_RESERVED;
- 	path = ext4_ext_create_new_leaf(handle, inode, mb_flags, gb_flags,
- 					path, newext);
--	if (IS_ERR(path)) {
--		*ppath = NULL;
--		err = PTR_ERR(path);
--		goto cleanup;
--	}
--	*ppath = path;
-+	if (IS_ERR(path))
-+		return path;
- 	depth = ext_depth(inode);
- 	eh = path[depth].p_hdr;
- 
-@@ -2111,7 +2113,7 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 
- 	err = ext4_ext_get_access(handle, inode, path + depth);
- 	if (err)
--		goto cleanup;
-+		goto errout;
- 
- 	if (!nearex) {
- 		/* there is no extent in this leaf, create first one */
-@@ -2169,17 +2171,20 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 	if (!(gb_flags & EXT4_GET_BLOCKS_PRE_IO))
- 		ext4_ext_try_to_merge(handle, inode, path, nearex);
- 
--
- 	/* time to correct all indexes above */
- 	err = ext4_ext_correct_indexes(handle, inode, path);
- 	if (err)
--		goto cleanup;
-+		goto errout;
- 
- 	err = ext4_ext_dirty(handle, inode, path + path->p_depth);
-+	if (err)
-+		goto errout;
- 
--cleanup:
--	ext4_free_ext_path(npath);
--	return err;
-+	return path;
-+
-+errout:
-+	ext4_free_ext_path(path);
-+	return ERR_PTR(err);
- }
- 
- static int ext4_fill_es_cache_info(struct inode *inode,
-@@ -3232,24 +3237,29 @@ static int ext4_split_extent_at(handle_t *handle,
- 	if (split_flag & EXT4_EXT_MARK_UNWRIT2)
- 		ext4_ext_mark_unwritten(ex2);
- 
--	err = ext4_ext_insert_extent(handle, inode, ppath, &newex, flags);
--	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
-+	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
-+	if (!IS_ERR(path)) {
-+		*ppath = path;
- 		goto out;
-+	}
-+	*ppath = NULL;
-+	err = PTR_ERR(path);
-+	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
-+		return err;
- 
- 	/*
--	 * Update path is required because previous ext4_ext_insert_extent()
--	 * may have freed or reallocated the path. Using EXT4_EX_NOFAIL
--	 * guarantees that ext4_find_extent() will not return -ENOMEM,
--	 * otherwise -ENOMEM will cause a retry in do_writepages(), and a
--	 * WARN_ON may be triggered in ext4_da_update_reserve_space() due to
--	 * an incorrect ee_len causing the i_reserved_data_blocks exception.
-+	 * Get a new path to try to zeroout or fix the extent length.
-+	 * Using EXT4_EX_NOFAIL guarantees that ext4_find_extent()
-+	 * will not return -ENOMEM, otherwise -ENOMEM will cause a
-+	 * retry in do_writepages(), and a WARN_ON may be triggered
-+	 * in ext4_da_update_reserve_space() due to an incorrect
-+	 * ee_len causing the i_reserved_data_blocks exception.
- 	 */
--	path = ext4_find_extent(inode, ee_block, *ppath,
-+	path = ext4_find_extent(inode, ee_block, NULL,
- 				flags | EXT4_EX_NOFAIL);
- 	if (IS_ERR(path)) {
- 		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
- 				 split, PTR_ERR(path));
--		*ppath = NULL;
- 		return PTR_ERR(path);
- 	}
- 	depth = ext_depth(inode);
-@@ -3308,7 +3318,7 @@ static int ext4_split_extent_at(handle_t *handle,
- 	ext4_ext_dirty(handle, inode, path + path->p_depth);
- 	return err;
- out:
--	ext4_ext_show_leaf(inode, *ppath);
-+	ext4_ext_show_leaf(inode, path);
- 	return err;
- }
- 
-@@ -4299,6 +4309,7 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 	    get_implied_cluster_alloc(inode->i_sb, map, &ex2, path)) {
- 		ar.len = allocated = map->m_len;
- 		newblock = map->m_pblk;
-+		err = 0;
- 		goto got_allocated_blocks;
- 	}
- 
-@@ -4371,8 +4382,9 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 		map->m_flags |= EXT4_MAP_UNWRITTEN;
- 	}
- 
--	err = ext4_ext_insert_extent(handle, inode, &path, &newex, flags);
--	if (err) {
-+	path = ext4_ext_insert_extent(handle, inode, path, &newex, flags);
-+	if (IS_ERR(path)) {
-+		err = PTR_ERR(path);
- 		if (allocated_clusters) {
- 			int fb_flags = 0;
- 
-diff --git a/fs/ext4/fast_commit.c b/fs/ext4/fast_commit.c
-index 94f90032ca561..83a0a78a124a1 100644
---- a/fs/ext4/fast_commit.c
-+++ b/fs/ext4/fast_commit.c
-@@ -1828,12 +1828,12 @@ static int ext4_fc_replay_add_range(struct super_block *sb,
- 			if (ext4_ext_is_unwritten(ex))
- 				ext4_ext_mark_unwritten(&newex);
- 			down_write(&EXT4_I(inode)->i_data_sem);
--			ret = ext4_ext_insert_extent(
--				NULL, inode, &path, &newex, 0);
-+			path = ext4_ext_insert_extent(NULL, inode,
-+						      path, &newex, 0);
- 			up_write((&EXT4_I(inode)->i_data_sem));
--			ext4_free_ext_path(path);
--			if (ret)
-+			if (IS_ERR(path))
- 				goto out;
-+			ext4_free_ext_path(path);
- 			goto next;
- 		}
- 
-diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
-index 0be0467ae6dd2..7a0e429507cf3 100644
---- a/fs/ext4/migrate.c
-+++ b/fs/ext4/migrate.c
-@@ -37,7 +37,6 @@ static int finish_range(handle_t *handle, struct inode *inode,
- 	path = ext4_find_extent(inode, lb->first_block, NULL, 0);
- 	if (IS_ERR(path)) {
- 		retval = PTR_ERR(path);
--		path = NULL;
- 		goto err_out;
- 	}
- 
-@@ -53,7 +52,9 @@ static int finish_range(handle_t *handle, struct inode *inode,
- 	retval = ext4_datasem_ensure_credits(handle, inode, needed, needed, 0);
- 	if (retval < 0)
- 		goto err_out;
--	retval = ext4_ext_insert_extent(handle, inode, &path, &newext, 0);
-+	path = ext4_ext_insert_extent(handle, inode, path, &newext, 0);
-+	if (IS_ERR(path))
-+		retval = PTR_ERR(path);
- err_out:
- 	up_write((&EXT4_I(inode)->i_data_sem));
- 	ext4_free_ext_path(path);
--- 
-2.51.0
-
+--- a/net/wireless/radiotap.c
++++ b/net/wireless/radiotap.c
+@@ -239,14 +239,14 @@ int ieee80211_radiotap_iterator_next(
+ 		default:
+ 			if (!iterator->current_namespace ||
+ 			    iterator->_arg_index >= iterator->current_namespace->n_bits) {
+-				if (iterator->current_namespace == &radiotap_ns)
+-					return -ENOENT;
+ 				align = 0;
+ 			} else {
+ 				align = iterator->current_namespace->align_size[iterator->_arg_index].align;
+ 				size = iterator->current_namespace->align_size[iterator->_arg_index].size;
+ 			}
+ 			if (!align) {
++				if (iterator->current_namespace == &radiotap_ns)
++					return -ENOENT;
+ 				/* skip all subsequent data */
+ 				iterator->_arg = iterator->_next_ns_data;
+ 				/* give up on this namespace */
 
 
 
