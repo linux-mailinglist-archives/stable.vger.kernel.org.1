@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229392-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oKDLKudpwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228863-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:19 +0100
+	id GAKeJKdiwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229392-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173E02F81D2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A312F7236
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B0011323C7DA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 183263065D16
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 557BC2727E2;
-	Mon, 23 Mar 2026 14:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784A1275AF5;
+	Mon, 23 Mar 2026 15:16:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RW4tLnIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N53fvT7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793223A963B;
-	Mon, 23 Mar 2026 14:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C012242D60;
+	Mon, 23 Mar 2026 15:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277338; cv=none; b=R5SoR9r+iRW+cfQvmrVbv7Lz55f7qvcD2otoGNo5VBC0xb2WS9UPnS40d10ck3Md1t4DGdKPMsUln3qd6k4UzKZzmuEiqa5ARC2u8evpAa2V3DP2iSLpQdcOqn125f9aMbnApxGUlBLMf8aZlUDq+lLIaPhTjp/U8RyHfcqzNPU=
+	t=1774278971; cv=none; b=cLIEyDP8SsLCbG5O32tL6uUcleSiETEe0GeIC88vw3bwbBUWzoTcSL7k0DeH+NaGLyv7KG2abuevDjYMtn0CXNdPjo5Cff0+XRyAkBusXzEPxyTZBwtwNLMvOKFFCpvXTDzHd4JVrP+2OyIJtZ9UUZfA/yvdUkWob90WlZJY5fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277338; c=relaxed/simple;
-	bh=3qavSFdMajSqeupwrugEcs7AW1GMAfY12L4RxN40m7Y=;
+	s=arc-20240116; t=1774278971; c=relaxed/simple;
+	bh=sPlhitbKlewSo9EY9TCh1XIllx2Jx0BhUyjNH2idlFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtkiVSvwUno4DYcBKj5EqjpFfz2MHoUpgUPmNuzH8gskH6Ptpc6tFe/yNvRYCSHe/LHEJ9LAEzuGr4FJ8dnncQCrI4hdwsxyvxu1y3AvrsLfT3qfjAZDGdFvbPQuEqzDzfBRz7NjfyLW8Pfzc6PVNoJL+8T5a30zknS5eTbep6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RW4tLnIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB9EC4CEF7;
-	Mon, 23 Mar 2026 14:48:57 +0000 (UTC)
+	 MIME-Version; b=VXt2htltDyZ5hIwBDBgnAgLBPI6E9l7r9dQMdQaNLN936ev+GhBXvQ7436J5RjImUHSPK2cYyEHPuU4CdcB+nDIsUszGUHJ0eouOD8v6lPgjJUxSQ/A4resfDcBejVVypIg4MPNvHxg4PORM1vl/brBRut02PPInwKHK5z+u6pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N53fvT7E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D5EC4CEF7;
+	Mon, 23 Mar 2026 15:16:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277338;
-	bh=3qavSFdMajSqeupwrugEcs7AW1GMAfY12L4RxN40m7Y=;
+	s=korg; t=1774278970;
+	bh=sPlhitbKlewSo9EY9TCh1XIllx2Jx0BhUyjNH2idlFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RW4tLnIxXaskwd0Gt2XEc2dR16qPuD+xyq7dMoVXtsYkOeae/DHkefKk9tgANlxF/
-	 GnzoLE4dF+Agd/FMkQN0aYpkB2No3mtnVXhuY6qmqz5mgZLKVQPhs4CJjCNpCVIF9C
-	 r8OQhPfyf6Ho8XxrSqHrNXULhvCf37ylgv1Wnq34=
+	b=N53fvT7EFhIHOPfJBCG4nQz//FjfRM7z8iDgritxxMnPnWuMsh9NfFZp4gnowG+c/
+	 oHYONs7YVaUX5SVLupLzq93pSuZhHXg3lAh7bj9IUr/q9N/dVjljAEsg5uD6uOOkMv
+	 bW9GePaCUXkFpzHF0dv8O80fQNly2h5oK2FufEUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 402/460] net: mana: fix use-after-free in mana_hwc_destroy_channel() by reordering teardown
+	David Jander <david@protonic.nl>,
+	Johan Hovold <johan@kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 478/567] spi: fix statistics allocation
 Date: Mon, 23 Mar 2026 14:46:38 +0100
-Message-ID: <20260323134536.440908235@linuxfoundation.org>
+Message-ID: <20260323134545.806472322@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,98 +68,108 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228863-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229392-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 173E02F81D2
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B0A312F7236
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit fa103fc8f56954a60699a29215cb713448a39e87 ]
+commit dee0774bbb2abb172e9069ce5ffef579b12b3ae9 upstream.
 
-A potential race condition exists in mana_hwc_destroy_channel() where
-hwc->caller_ctx is freed before the HWC's Completion Queue (CQ) and
-Event Queue (EQ) are destroyed. This allows an in-flight CQ interrupt
-handler to dereference freed memory, leading to a use-after-free or
-NULL pointer dereference in mana_hwc_handle_resp().
+The controller per-cpu statistics is not allocated until after the
+controller has been registered with driver core, which leaves a window
+where accessing the sysfs attributes can trigger a NULL-pointer
+dereference.
 
-mana_smc_teardown_hwc() signals the hardware to stop but does not
-synchronize against IRQ handlers already executing on other CPUs. The
-IRQ synchronization only happens in mana_hwc_destroy_cq() via
-mana_gd_destroy_eq() -> mana_gd_deregister_irq(). Since this runs
-after kfree(hwc->caller_ctx), a concurrent mana_hwc_rx_event_handler()
-can dereference freed caller_ctx (and rxq->msg_buf) in
-mana_hwc_handle_resp().
+Fix this by moving the statistics allocation to controller allocation
+while tying its lifetime to that of the controller (rather than using
+implicit devres).
 
-Fix this by reordering teardown to reverse-of-creation order: destroy
-the TX/RX work queues and CQ/EQ before freeing hwc->caller_ctx. This
-ensures all in-flight interrupt handlers complete before the memory they
-access is freed.
-
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/abHA3AjNtqa1nx9k@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6598b91b5ac3 ("spi: spi.c: Convert statistics to per-cpu u64_stats_t")
+Cc: stable@vger.kernel.org	# 6.0
+Cc: David Jander <david@protonic.nl>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://patch.msgid.link/20260312151817.32100-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/hw_channel.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index a00f915c51881..e07d0a9529782 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -778,9 +778,6 @@ void mana_hwc_destroy_channel(struct gdma_context *gc)
- 		gc->max_num_cqs = 0;
- 	}
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -2777,6 +2777,8 @@ static void spi_controller_release(struc
+ 	struct spi_controller *ctlr;
  
--	kfree(hwc->caller_ctx);
--	hwc->caller_ctx = NULL;
--
- 	if (hwc->txq)
- 		mana_hwc_destroy_wq(hwc, hwc->txq);
- 
-@@ -790,6 +787,9 @@ void mana_hwc_destroy_channel(struct gdma_context *gc)
- 	if (hwc->cq)
- 		mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc->cq);
- 
-+	kfree(hwc->caller_ctx);
-+	hwc->caller_ctx = NULL;
+ 	ctlr = container_of(dev, struct spi_controller, dev);
 +
- 	mana_gd_free_res_map(&hwc->inflight_msg_res);
++	free_percpu(ctlr->pcpu_statistics);
+ 	kfree(ctlr);
+ }
  
- 	hwc->num_inflight_msg = 0;
--- 
-2.51.0
-
+@@ -2928,6 +2930,12 @@ struct spi_controller *__spi_alloc_contr
+ 	if (!ctlr)
+ 		return NULL;
+ 
++	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(NULL);
++	if (!ctlr->pcpu_statistics) {
++		kfree(ctlr);
++		return NULL;
++	}
++
+ 	device_initialize(&ctlr->dev);
+ 	INIT_LIST_HEAD(&ctlr->queue);
+ 	spin_lock_init(&ctlr->queue_lock);
+@@ -3216,13 +3224,6 @@ int spi_register_controller(struct spi_c
+ 		if (status)
+ 			goto del_ctrl;
+ 	}
+-	/* Add statistics */
+-	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(dev);
+-	if (!ctlr->pcpu_statistics) {
+-		dev_err(dev, "Error allocating per-cpu statistics\n");
+-		status = -ENOMEM;
+-		goto destroy_queue;
+-	}
+ 
+ 	mutex_lock(&board_lock);
+ 	list_add_tail(&ctlr->list, &spi_controller_list);
+@@ -3235,8 +3236,6 @@ int spi_register_controller(struct spi_c
+ 	acpi_register_spi_devices(ctlr);
+ 	return status;
+ 
+-destroy_queue:
+-	spi_destroy_queue(ctlr);
+ del_ctrl:
+ 	device_del(&ctlr->dev);
+ free_bus_id:
 
 
 
