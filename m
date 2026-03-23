@@ -1,68 +1,61 @@
-Return-Path: <stable+bounces-228709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJ10NRFTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228709-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:53 +0100
+	id 0O3jNRhywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796B32F5437
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 908C82F952D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B4D1D3041892
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 55A273104A88
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F567396D3D;
-	Mon, 23 Mar 2026 14:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D8B3BE65C;
+	Mon, 23 Mar 2026 16:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPUYDR7D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsSgikG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D676E387593;
-	Mon, 23 Mar 2026 14:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696A13B0ACB;
+	Mon, 23 Mar 2026 16:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276911; cv=none; b=jW/7pzuHlPocEILbwgTtjKM1UWPEHdXWlT7cBYJSd3j6msORD9CYDld9RQ1vYSlIQKD5vfxu3uKDTKZGIDGDNq8rkNurlYnVyz4Mvgn/q4BmSAo0kk2Q2jsnpzu4MAaw/hEuZ200SU8bu/Nmbh3EVnPdvJ3H7uNhTi/pNzFNPyg=
+	t=1774282737; cv=none; b=Yn0teHGJgoHnc9Qb1GLyfo3eYm9bSpcH4wtNJFIiuGzuzxte20mMy15M/RNk4DsiT5HA/+ov+BGVzoc+nw0tlmPvToChdK4iSs1sip/uaGc6W3gpkyilusuKi4wjwOYrqLGgndQdzPXFooamSU5ArTGK10Hra29ADzYqSrxgvYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276911; c=relaxed/simple;
-	bh=+ne5dcj5rOucQiG3Z49b+DjkhtN0VhGepV4zQm4wn5o=;
+	s=arc-20240116; t=1774282737; c=relaxed/simple;
+	bh=VEXKhO5p+ScVUy5cthqCTzvynI6UiazImKhQEoFk5XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ml9zKWPCm5fcN7wV3ExVnAY51hcQ0iPZ9+8Cwg/kixtjAvp8Q4cETJ8Di8L0li7YXyyRPkpGr5lBCqZRrUkzRVDXIHFlyO0Q4JZMGdY8Sr3RnQI5GXR6Ek9muZSmmkfrqZo0+vNWzOZ8ZSK8alA2G4DY/2pFKOCWpZBXUnCLUb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPUYDR7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AF18C4CEF7;
-	Mon, 23 Mar 2026 14:41:51 +0000 (UTC)
+	 MIME-Version; b=gHz3qqsPP8JDGGtAS7BZ4eN1Jsyc4WImxh/dh6+XKRs2AVO8Oy/lk3c7T2pjP+addoJRDF6Ka3fd9xCOk//EO8dgkcPt/Efx8TGQZWfKp6fiRVsxGi0cT1Ly/6+LFMR55BlnEBfBk3rNbrGRAG4A9HsWb4w0ED4t4eYTsl9Q1s4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fsSgikG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED241C2BCB0;
+	Mon, 23 Mar 2026 16:18:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276911;
-	bh=+ne5dcj5rOucQiG3Z49b+DjkhtN0VhGepV4zQm4wn5o=;
+	s=korg; t=1774282737;
+	bh=VEXKhO5p+ScVUy5cthqCTzvynI6UiazImKhQEoFk5XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPUYDR7DkbY96YYFmPlOTxgmwjIA9Q+dql/haEHsHko2DJJbHU0ADlj//FPq/Bvn9
-	 C3TulcBuEnGeOgvGAkd8qAaboX83weAyI4l2s4/6pBh6UcABIdlmvoh0FCbBrt4tAl
-	 AnDN/V9eNoP/ywH57KGLmpUKhmxMbF+seyqo3wag=
+	b=fsSgikG7WjTodFms7Idtjg8W5gVH/Tui4gb1WFB69G2/WzmC4XP5hLtSlgZDDMs+q
+	 0nw1U4fMzjkctJqD33KaGpD6JiRxhSISE19nOOQ78aahHM4DHGzb3Ws4nfxLTcNIW+
+	 BbNNsvO7u9GMdJw9u+oESdS1we5fQfJpoChU7oWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Oscar Salvador <osalvador@suse.de>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 252/460] mm/page_alloc: forward the gfp flags from alloc_contig_range() to post_alloc_hook()
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Tomasz Duszynski <tduszyns@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 266/481] iio: chemical: sps30_serial: fix buffer size in sps30_serial_read_meas()
 Date: Mon, 23 Mar 2026 14:44:08 +0100
-Message-ID: <20260323134532.684058386@linuxfoundation.org>
+Message-ID: <20260323134531.623034393@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,121 +66,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228709-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,suse.cz,suse.de,csgroup.eu,linux.ibm.com,ellerman.id.au,kernel.org,gmail.com,nvidia.com,linux-foundation.org];
+	TAGGED_FROM(0.00)[bounces-229739-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,gmail.com,intel.com,vger.kernel.org,huawei.com];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RSPAMD_URIBL_FAIL(0.00)[analog.com:query timed out];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[tduszyns.gmail.com:query timed out];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 796B32F5437
+X-Rspamd-Queue-Id: 908C82F952D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-[ Upstream commit 7b755570064fcb9cde37afd48f6bc65151097ba7 ]
+commit c3914ce1963c4db25e186112c90fa5d2361e9e0a upstream.
 
-In the __GFP_COMP case, we already pass the gfp_flags to
-prep_new_page()->post_alloc_hook().  However, in the !__GFP_COMP case, we
-essentially pass only hardcoded __GFP_MOVABLE to post_alloc_hook(),
-preventing some action modifiers from being effective..
+sizeof(num) evaluates to sizeof(size_t) which is 8 bytes on 64-bit,
+but the buffer elements are only 4 bytes. The same function already
+uses sizeof(*meas) on line 312, making the mismatch evident. Use
+sizeof(*meas) consistently.
 
-Let's pass our now properly adjusted gfp flags there as well.
-
-This way, we can now support __GFP_ZERO for alloc_contig_*().
-
-As a side effect, we now also support __GFP_SKIP_ZERO and__GFP_ZEROTAGS;
-but we'll keep the more special stuff (KASAN, NOLOCKDEP) disabled for now.
-
-It's worth noting that with __GFP_ZERO, we might unnecessarily zero pages
-when we have to release part of our range using free_contig_range() again.
-This can be optimized in the future, if ever required; the caller we'll
-be converting (powernv/memtrace) next won't trigger this.
-
-Link: https://lkml.kernel.org/r/20241203094732.200195-6-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: d155aab90fff ("mm/kfence: fix KASAN hardware tag faults during late enablement")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b2e171f5a5c6 ("iio: sps30: add support for serial interface")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Acked-by: Tomasz Duszynski <tduszyns@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/iio/chemical/sps30_serial.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -6579,7 +6579,7 @@ int __alloc_contig_migrate_range(struct
- 	return (ret < 0) ? ret : 0;
- }
+--- a/drivers/iio/chemical/sps30_serial.c
++++ b/drivers/iio/chemical/sps30_serial.c
+@@ -303,7 +303,7 @@ static int sps30_serial_read_meas(struct
+ 	if (msleep_interruptible(1000))
+ 		return -EINTR;
  
--static void split_free_pages(struct list_head *list)
-+static void split_free_pages(struct list_head *list, gfp_t gfp_mask)
- {
- 	int order;
- 
-@@ -6590,7 +6590,7 @@ static void split_free_pages(struct list
- 		list_for_each_entry_safe(page, next, &list[order], lru) {
- 			int i;
- 
--			post_alloc_hook(page, order, __GFP_MOVABLE);
-+			post_alloc_hook(page, order, gfp_mask);
- 			set_page_refcounted(page);
- 			if (!order)
- 				continue;
-@@ -6608,7 +6608,8 @@ static void split_free_pages(struct list
- static int __alloc_contig_verify_gfp_mask(gfp_t gfp_mask, gfp_t *gfp_cc_mask)
- {
- 	const gfp_t reclaim_mask = __GFP_IO | __GFP_FS | __GFP_RECLAIM;
--	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
-+	const gfp_t action_mask = __GFP_COMP | __GFP_RETRY_MAYFAIL | __GFP_NOWARN |
-+				  __GFP_ZERO | __GFP_ZEROTAGS | __GFP_SKIP_ZERO;
- 	const gfp_t cc_action_mask = __GFP_RETRY_MAYFAIL | __GFP_NOWARN;
- 
- 	/*
-@@ -6756,7 +6757,7 @@ int alloc_contig_range_noprof(unsigned l
- 	}
- 
- 	if (!(gfp_mask & __GFP_COMP)) {
--		split_free_pages(cc.freepages);
-+		split_free_pages(cc.freepages, gfp_mask);
- 
- 		/* Free head and tail (if any) */
- 		if (start != outer_start)
+-	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(num));
++	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(*meas));
+ 	if (ret < 0)
+ 		return ret;
+ 	/* if measurements aren't ready sensor returns empty frame */
 
 
 
