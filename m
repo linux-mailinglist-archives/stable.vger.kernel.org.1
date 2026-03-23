@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-228605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229594-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHJlHhhSwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228605-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:45:44 +0100
+	id kElABKlrwWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229594-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB07B2F5215
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:45:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BC92F859C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A946230B6D3A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5600330C171C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 373CE1A6808;
-	Mon, 23 Mar 2026 14:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15E13B8D75;
+	Mon, 23 Mar 2026 16:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JriCcicr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlH8lVIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6AB3AB295;
-	Mon, 23 Mar 2026 14:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25803AC0D3;
+	Mon, 23 Mar 2026 16:12:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275581; cv=none; b=GX3jHJwHIKMgCLVW6B1gHpLV2UgTK8DAT6iLe++50laWqGYK3c40jJf8dZ+JIRL7kTUX56CHZM43dUkc4c+HVm2623xd4ZhjLxEo6pnBqqhiCB4Zo7rlvoyQZWxupnMw2lgTwzJfbCPzvKDItAjOz/OSsS3kD88h9m8V/JPzcao=
+	t=1774282341; cv=none; b=t0MAiuRVciD6HB3sTpaOngk8gU122QZV4zGUQWHVqsXlLH2qLMQFIUUYp5a+jSn6shK3BKzaV0HxzhMRyYiWV3g+x6XssFJUWVD0FIMu8WJ7yvfLlGxolxj8f08YZcwfF08HWySAbpIfwGyCuUUXV4vdiezqkDidVmEqUBR1fgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275581; c=relaxed/simple;
-	bh=VxOMIxIqHXrWfNE0IzofH3gvMDiW8WQWEIE/x3/mwUc=;
+	s=arc-20240116; t=1774282341; c=relaxed/simple;
+	bh=kmVEdR+rUG1App0km5UNfplLh505No80sugm8jdgZfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WiPDyW2K2yHr3u93jA/QNvCHvOo7J90QWWdlqdqvgnRr/ZObG2VP2TFt3ZAXkS9Ukb9Q75/PNNo3+3St56ZGUEdD5beOVnrfjwZSwj7EJBsuCkagclF0GIOK0q6R+HHsILfZ6KhpghLtV7dZ5cFjIuxsNB2u/l7RNwmB3uSOS/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JriCcicr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70BD1C4CEF7;
-	Mon, 23 Mar 2026 14:19:40 +0000 (UTC)
+	 MIME-Version; b=d5aLg/lTLdp7Z/QX8s8xLp3GJkStGdCDjIZEW4NRhlxpUaFOfmqpx6GJxuG/74iIsrxKogytD8S+9GIj9usBjs2W3jOXPfHmYJHwF3uu+4ohjUCE2dEb1stOAIxVoiNhNN3xtFy6ka4/wbp7hLYbNbkhFscaMD4IyVs++36wDz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlH8lVIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEDCC4CEF7;
+	Mon, 23 Mar 2026 16:12:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275580;
-	bh=VxOMIxIqHXrWfNE0IzofH3gvMDiW8WQWEIE/x3/mwUc=;
+	s=korg; t=1774282341;
+	bh=kmVEdR+rUG1App0km5UNfplLh505No80sugm8jdgZfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JriCcicruy/tk3RJToDXZXCymhp981L2GPf4antgwMZumazc4rPx954rf2/Uw+HWM
-	 ryU7MqJ69o0qvfvuX05KipiJKvf/qf7xON2vX7ULD2fR6DCp+Ob6UyyQyQbGo3jlT7
-	 n36V/NCeyn5NqKLEfpcouRoEuwDNULFUHswPzKk8=
+	b=hlH8lVIxhaNBaaooQMSBFkyoAC8qvhi1l2jAxN8ZCL+COvZXbA2TminJN7jR8drbn
+	 27FBDX7I4k/C1yYtg4VpOGWgjKshNg8kz81QmNe/snP6cUNgkDXDGSYHYi3mWwmeAG
+	 bk4h9GtmvaFPpAkkrCskUgJfuuz+O+w+b5YWghmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 106/460] usb: core: dont power off roothub PHYs if phy_set_mode() fails
+	Sathesh Edara <sedara@marvell.com>,
+	Shinas Rasheed <srasheed@marvell.com>,
+	Vimlesh Kumar <vimleshk@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 120/481] octeon_ep: avoid compiler and IQ/OQ reordering
 Date: Mon, 23 Mar 2026 14:41:42 +0100
-Message-ID: <20260323134529.249471943@linuxfoundation.org>
+Message-ID: <20260323134528.208131040@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +68,190 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228605-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229594-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DB07B2F5215
+X-Rspamd-Queue-Id: 14BC92F859C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Vimlesh Kumar <vimleshk@marvell.com>
 
-commit e293015ba76eb96ce4ebed7e3b2cb1a7d319f3e9 upstream.
+[ Upstream commit 43b3160cb639079a15daeb5f080120afbfbfc918 ]
 
-Remove the error path from the usb_phy_roothub_set_mode() function.
-The code is clearly wrong, because phy_set_mode() calls can't be
-balanced with phy_power_off() calls.
+Utilize READ_ONCE and WRITE_ONCE APIs for IO queue Tx/Rx
+variable access to prevent compiler optimization and reordering.
+Additionally, ensure IO queue OUT/IN_CNT registers are flushed
+by performing a read-back after writing.
 
-Additionally, the usb_phy_roothub_set_mode() function is called only
-from usb_add_hcd() before it powers on the PHYs, so powering off those
-makes no sense anyway.
+The compiler could reorder reads/writes to pkts_pending, last_pkt_count,
+etc., causing stale values to be used when calculating packets to process
+or register updates to send to hardware. The Octeon hardware requires a
+read-back after writing to OUT_CNT/IN_CNT registers to ensure the write
+has been flushed through any posted write buffers before the interrupt
+resend bit is set. Without this, we have observed cases where the hardware
+didn't properly update its internal state.
 
-Presumably, the code is copy-pasted from the phy_power_on() function
-without adjusting the error handling.
+wmb/rmb only provides ordering guarantees but doesn't prevent the compiler
+from performing optimizations like caching in registers, load tearing etc.
 
-Cc: stable@vger.kernel.org # v5.1+
-Fixes: b97a31348379 ("usb: core: comply to PHY framework")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://patch.msgid.link/20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 37d79d0596062 ("octeon_ep: add Tx/Rx processing and interrupt support")
+Signed-off-by: Sathesh Edara <sedara@marvell.com>
+Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
+Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
+Link: https://patch.msgid.link/20260227091402.1773833-3-vimleshk@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/phy.c |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ .../ethernet/marvell/octeon_ep/octep_main.c   | 21 +++++++++------
+ .../net/ethernet/marvell/octeon_ep/octep_rx.c | 27 +++++++++++++------
+ 2 files changed, 32 insertions(+), 16 deletions(-)
 
---- a/drivers/usb/core/phy.c
-+++ b/drivers/usb/core/phy.c
-@@ -200,16 +200,10 @@ int usb_phy_roothub_set_mode(struct usb_
- 	list_for_each_entry(roothub_entry, head, list) {
- 		err = phy_set_mode(roothub_entry->phy, mode);
- 		if (err)
--			goto err_out;
-+			return err;
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index aa98cc8fd344e..32b30cbb8c009 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -353,17 +353,22 @@ static void octep_clean_irqs(struct octep_device *oct)
+  */
+ static void octep_update_pkt(struct octep_iq *iq, struct octep_oq *oq)
+ {
+-	u32 pkts_pend = oq->pkts_pending;
++	u32 pkts_pend = READ_ONCE(oq->pkts_pending);
++	u32 last_pkt_count = READ_ONCE(oq->last_pkt_count);
++	u32 pkts_processed = READ_ONCE(iq->pkts_processed);
++	u32 pkt_in_done = READ_ONCE(iq->pkt_in_done);
+ 
+ 	netdev_dbg(iq->netdev, "enabling intr for Q-%u\n", iq->q_no);
+-	if (iq->pkts_processed) {
+-		writel(iq->pkts_processed, iq->inst_cnt_reg);
+-		iq->pkt_in_done -= iq->pkts_processed;
+-		iq->pkts_processed = 0;
++	if (pkts_processed) {
++		writel(pkts_processed, iq->inst_cnt_reg);
++		readl(iq->inst_cnt_reg);
++		WRITE_ONCE(iq->pkt_in_done, (pkt_in_done - pkts_processed));
++		WRITE_ONCE(iq->pkts_processed, 0);
+ 	}
+-	if (oq->last_pkt_count - pkts_pend) {
+-		writel(oq->last_pkt_count - pkts_pend, oq->pkts_sent_reg);
+-		oq->last_pkt_count = pkts_pend;
++	if (last_pkt_count - pkts_pend) {
++		writel(last_pkt_count - pkts_pend, oq->pkts_sent_reg);
++		readl(oq->pkts_sent_reg);
++		WRITE_ONCE(oq->last_pkt_count, pkts_pend);
  	}
  
- 	return 0;
--
--err_out:
--	list_for_each_entry_continue_reverse(roothub_entry, head, list)
--		phy_power_off(roothub_entry->phy);
--
--	return err;
- }
- EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
+ 	/* Flush the previous wrties before writing to RESEND bit */
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
+index 4f3c1187a6e82..0ecfc4e36f3ac 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
+@@ -317,10 +317,16 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
+ 				      struct octep_oq *oq)
+ {
+ 	u32 pkt_count, new_pkts;
++	u32 last_pkt_count, pkts_pending;
  
+ 	pkt_count = readl(oq->pkts_sent_reg);
+-	new_pkts = pkt_count - oq->last_pkt_count;
++	last_pkt_count = READ_ONCE(oq->last_pkt_count);
++	new_pkts = pkt_count - last_pkt_count;
+ 
++	if (pkt_count < last_pkt_count) {
++		dev_err(oq->dev, "OQ-%u pkt_count(%u) < oq->last_pkt_count(%u)\n",
++			oq->q_no, pkt_count, last_pkt_count);
++	}
+ 	/* Clear the hardware packets counter register if the rx queue is
+ 	 * being processed continuously with-in a single interrupt and
+ 	 * reached half its max value.
+@@ -331,8 +337,9 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
+ 		pkt_count = readl(oq->pkts_sent_reg);
+ 		new_pkts += pkt_count;
+ 	}
+-	oq->last_pkt_count = pkt_count;
+-	oq->pkts_pending += new_pkts;
++	WRITE_ONCE(oq->last_pkt_count, pkt_count);
++	pkts_pending = READ_ONCE(oq->pkts_pending);
++	WRITE_ONCE(oq->pkts_pending, (pkts_pending + new_pkts));
+ 	return new_pkts;
+ }
+ 
+@@ -405,7 +412,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
+ 	u16 data_offset;
+ 	u32 read_idx;
+ 
+-	read_idx = oq->host_read_idx;
++	read_idx = READ_ONCE(oq->host_read_idx);
+ 	rx_bytes = 0;
+ 	desc_used = 0;
+ 	for (pkt = 0; pkt < pkts_to_process; pkt++) {
+@@ -488,7 +495,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
+ 		napi_gro_receive(oq->napi, skb);
+ 	}
+ 
+-	oq->host_read_idx = read_idx;
++	WRITE_ONCE(oq->host_read_idx, read_idx);
+ 	oq->refill_count += desc_used;
+ 	oq->stats.packets += pkt;
+ 	oq->stats.bytes += rx_bytes;
+@@ -511,22 +518,26 @@ int octep_oq_process_rx(struct octep_oq *oq, int budget)
+ {
+ 	u32 pkts_available, pkts_processed, total_pkts_processed;
+ 	struct octep_device *oct = oq->octep_dev;
++	u32 pkts_pending;
+ 
+ 	pkts_available = 0;
+ 	pkts_processed = 0;
+ 	total_pkts_processed = 0;
+ 	while (total_pkts_processed < budget) {
+ 		 /* update pending count only when current one exhausted */
+-		if (oq->pkts_pending == 0)
++		pkts_pending = READ_ONCE(oq->pkts_pending);
++		if (pkts_pending == 0)
+ 			octep_oq_check_hw_for_pkts(oct, oq);
++		pkts_pending = READ_ONCE(oq->pkts_pending);
+ 		pkts_available = min(budget - total_pkts_processed,
+-				     oq->pkts_pending);
++				     pkts_pending);
+ 		if (!pkts_available)
+ 			break;
+ 
+ 		pkts_processed = __octep_oq_process_rx(oct, oq,
+ 						       pkts_available);
+-		oq->pkts_pending -= pkts_processed;
++		pkts_pending = READ_ONCE(oq->pkts_pending);
++		WRITE_ONCE(oq->pkts_pending, (pkts_pending - pkts_processed));
+ 		total_pkts_processed += pkts_processed;
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
