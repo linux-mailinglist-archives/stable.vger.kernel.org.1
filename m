@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229496-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MEJ6NplUwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:25 +0100
+	id mCTrEe9fwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229496-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:44:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B532F578C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F5C2F6D24
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:44:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A503230151F1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B74BD30FD483
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B31235C01;
-	Mon, 23 Mar 2026 14:55:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAA13BF671;
+	Mon, 23 Mar 2026 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ybk4pfq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnFLEnZ5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43DD38837F;
-	Mon, 23 Mar 2026 14:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410793BF664;
+	Mon, 23 Mar 2026 15:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277726; cv=none; b=Jyxfxj5rBtAWmj9GkeomWQjkZYCvywzkIMgGQZskZqZ7YzynPp30vF5Z2HPqeo5TZ/SiCGRj4u9+WfSr+wVZwLBxuucA3H1JyyUSArddFxy2pCIWpLSTXmRf4doTelG+aSqu2woy6ub5GJGGA/98Yx1vKES6tM6DxwjktpJg808=
+	t=1774279419; cv=none; b=l0kQSdQ0rDg+49OCONq4NGJDcttyNorNBG120HlvuJ3uiatPfQuPhDsNI9HZoBO+XQUtaNhD3xF0CoGMQ/ZFolJ5j7wjzZfIhraGLb1Vg6+i5I+bM1Sk0q8cg6iE2+j7ZAfsJ7sKcJJ9lG9lu4+ee7bX5S7IlrG7o4AsCm3uxEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277726; c=relaxed/simple;
-	bh=QEc9ZdWLkMBwjdkASUAy8PIJ4KbRYeu7Ki74GAYdhzs=;
+	s=arc-20240116; t=1774279419; c=relaxed/simple;
+	bh=Kgy9DIQZRBZ1mWxT8l6VdDq9wlRGNwhzhYzybtKL8go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y+GzFV72GZuFfqxm3QPycZom04C0L04F3RGlYQ0J82fLJxbifvZO2S5+xOTGbqg5aNv7dEqTFekmFGvh8ToEpx3YorasmCMasAv1xPobQZ2mwWqp4YGKsrWeBFUMrGOhDAHPUzqdZ9QzB1S0bAqyRU1CemlW0W8V1mzlaA+7LLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ybk4pfq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65CA3C4CEF7;
-	Mon, 23 Mar 2026 14:55:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VSu7gXrbPU3P6k41ec24YDoPrug1xOUcA13wXKPUMqrUED9yFOxH/M3Y3Cj4EW+K3QxvTYoONrsup1g9gK12p2AO8R6ks1H0hp1bdEYJNNiBX3Sk9yk5ZwoIPoUU1BlOjHb/DhSncIatTbGf+gjKdu5HtVCjd1FG0r/uEHwny8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnFLEnZ5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B49C4CEF7;
+	Mon, 23 Mar 2026 15:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277725;
-	bh=QEc9ZdWLkMBwjdkASUAy8PIJ4KbRYeu7Ki74GAYdhzs=;
+	s=korg; t=1774279419;
+	bh=Kgy9DIQZRBZ1mWxT8l6VdDq9wlRGNwhzhYzybtKL8go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ybk4pfq3vRWUSV0O0L7OIrpfmyq3BldXf/SFFXY9EPnnDUM5XY/H0AAHrSrwbfV8q
-	 K9iXQYAcMlzDt/S7BSdVle90GIYxkJSvWEW4p6ehAAqJfcBrrbQ1SXGTHHURBFxTH1
-	 eD5yZdnas7w9nfXNcG6LW5fGWBWBiQy7GZ/Hc33I=
+	b=ZnFLEnZ5+aqCi21Y4DtwFJumno+87a7whcLLQkZ8oVc36aZKEf9utzXPDJAhcXKi4
+	 t20j5D6NdssUCCD2nikBJ0IQepb9NYEb83/EU6KFOBW68O6106w1JLTw412Jtz18RD
+	 5KXBDdIE+uV5BZy+FbXr2h+k2yVg2SQAWm90wsYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Hutchings <ben@decadent.org.uk>,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/567] hwmon: (max16065) Use READ/WRITE_ONCE to avoid compiler optimization induced race
-Date: Mon, 23 Mar 2026 14:40:02 +0100
-Message-ID: <20260323134535.857691315@linuxfoundation.org>
+Subject: [PATCH 6.1 021/481] PCI: Fix printk field formatting
+Date: Mon, 23 Mar 2026 14:40:03 +0100
+Message-ID: <20260323134525.764409737@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228995-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,decadent.org.uk,gmail.com,roeck-us.net,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229496-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 88B532F578C
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: F3F5C2F6D24
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit 007be4327e443d79c9dd9e56dc16c36f6395d208 ]
+[ Upstream commit 62008578b73f16e274070a232b939ba5933bb8ba ]
 
-Simply copying shared data to a local variable cannot prevent data
-races. The compiler is allowed to optimize away the local copy and
-re-read the shared memory, causing a Time-of-Check Time-of-Use (TOCTOU)
-issue if the data changes between the check and the usage.
+Previously we used "%#08x" to print a 32-bit value.  This fills an
+8-character field with "0x...", but of course many 32-bit values require a
+10-character field "0x12345678" for this format.  Fix the formats to avoid
+confusion.
 
-To enforce the use of the local variable, use READ_ONCE() when reading
-the shared data and WRITE_ONCE() when updating it. Apply these macros to
-the three identified locations (curr_sense, adc, and fault) where local
-variables are used for error validation, ensuring the value remains
-consistent.
-
-Reported-by: Ben Hutchings <ben@decadent.org.uk>
-Closes: https://lore.kernel.org/all/6fe17868327207e8b850cf9f88b7dc58b2021f73.camel@decadent.org.uk/
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-Fixes: b8d5acdcf525 ("hwmon: (max16065) Use local variable to avoid TOCTOU")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20260203121443.5482-1-hanguidong02@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230824193712.542167-5-helgaas@kernel.org
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Stable-dep-of: 11721c45a826 ("PCI: Use resource_set_range() that correctly sets ->end")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max16065.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/pci/setup-res.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
-index 4c9e7892a73c1..43fbb9b26b102 100644
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -151,27 +151,27 @@ static struct max16065_data *max16065_update_device(struct device *dev)
- 		int i;
+diff --git a/drivers/pci/setup-res.c b/drivers/pci/setup-res.c
+index 967f9a7589239..ceaa69491f5ef 100644
+--- a/drivers/pci/setup-res.c
++++ b/drivers/pci/setup-res.c
+@@ -104,7 +104,7 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
+ 	pci_read_config_dword(dev, reg, &check);
  
- 		for (i = 0; i < data->num_adc; i++)
--			data->adc[i]
--			  = max16065_read_adc(client, MAX16065_ADC(i));
-+			WRITE_ONCE(data->adc[i],
-+				   max16065_read_adc(client, MAX16065_ADC(i)));
+ 	if ((new ^ check) & mask) {
+-		pci_err(dev, "BAR %d: error updating (%#08x != %#08x)\n",
++		pci_err(dev, "BAR %d: error updating (%#010x != %#010x)\n",
+ 			resno, new, check);
+ 	}
  
- 		if (data->have_current) {
--			data->adc[MAX16065_NUM_ADC]
--			  = max16065_read_adc(client, MAX16065_CSP_ADC);
--			data->curr_sense
--			  = i2c_smbus_read_byte_data(client,
--						     MAX16065_CURR_SENSE);
-+			WRITE_ONCE(data->adc[MAX16065_NUM_ADC],
-+				   max16065_read_adc(client, MAX16065_CSP_ADC));
-+			WRITE_ONCE(data->curr_sense,
-+				   i2c_smbus_read_byte_data(client, MAX16065_CURR_SENSE));
+@@ -113,7 +113,7 @@ static void pci_std_update_resource(struct pci_dev *dev, int resno)
+ 		pci_write_config_dword(dev, reg + 4, new);
+ 		pci_read_config_dword(dev, reg + 4, &check);
+ 		if (check != new) {
+-			pci_err(dev, "BAR %d: error updating (high %#08x != %#08x)\n",
++			pci_err(dev, "BAR %d: error updating (high %#010x != %#010x)\n",
+ 				resno, new, check);
  		}
- 
- 		for (i = 0; i < 2; i++)
--			data->fault[i]
--			  = i2c_smbus_read_byte_data(client, MAX16065_FAULT(i));
-+			WRITE_ONCE(data->fault[i],
-+				   i2c_smbus_read_byte_data(client, MAX16065_FAULT(i)));
- 
- 		/*
- 		 * MAX16067 and MAX16068 have separate undervoltage and
- 		 * overvoltage alarm bits. Squash them together.
- 		 */
- 		if (data->chip == max16067 || data->chip == max16068)
--			data->fault[0] |= data->fault[1];
-+			WRITE_ONCE(data->fault[0],
-+				   data->fault[0] | data->fault[1]);
- 
- 		data->last_updated = jiffies;
- 		data->valid = true;
-@@ -185,7 +185,7 @@ static ssize_t max16065_alarm_show(struct device *dev,
- {
- 	struct sensor_device_attribute_2 *attr2 = to_sensor_dev_attr_2(da);
- 	struct max16065_data *data = max16065_update_device(dev);
--	int val = data->fault[attr2->nr];
-+	int val = READ_ONCE(data->fault[attr2->nr]);
- 
- 	if (val < 0)
- 		return val;
-@@ -203,7 +203,7 @@ static ssize_t max16065_input_show(struct device *dev,
- {
- 	struct sensor_device_attribute *attr = to_sensor_dev_attr(da);
- 	struct max16065_data *data = max16065_update_device(dev);
--	int adc = data->adc[attr->index];
-+	int adc = READ_ONCE(data->adc[attr->index]);
- 
- 	if (unlikely(adc < 0))
- 		return adc;
-@@ -216,7 +216,7 @@ static ssize_t max16065_current_show(struct device *dev,
- 				     struct device_attribute *da, char *buf)
- {
- 	struct max16065_data *data = max16065_update_device(dev);
--	int curr_sense = data->curr_sense;
-+	int curr_sense = READ_ONCE(data->curr_sense);
- 
- 	if (unlikely(curr_sense < 0))
- 		return curr_sense;
+ 	}
 -- 
 2.51.0
 
