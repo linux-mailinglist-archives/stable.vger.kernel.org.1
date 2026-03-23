@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228445-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UKGkMvZWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228933-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:30 +0100
+	id qPzhLcVPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228445-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A0A02F5C7E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DEEA2F4CD2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C18C430D20EC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:52:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE7D831FD745
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 535CB3AE6E1;
-	Mon, 23 Mar 2026 14:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70453AF65A;
+	Mon, 23 Mar 2026 14:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6TK6oR6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmG7vZ0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B8F23B612;
-	Mon, 23 Mar 2026 14:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A183AA4FD;
+	Mon, 23 Mar 2026 14:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277529; cv=none; b=H3xuSmyLuy/IQbHChY5RAgbZmGLKKBDy/gfVV1CIY84TnNfMVsqmyx5yX4ErH+JUUImBWAhzCuMwgeTgcoBLoJcktTBuymDK6ADL8mJHwOROam8o8HNYGXJTmt6hhvL6wTWrsgiMu4TOd1GJ7vAZfghW4Hh1Syf/jvhhkJY7Nqc=
+	t=1774275150; cv=none; b=VVHu9JalFogwoTcQJQs0jIHXgRFjiBLzRHAZFQEM78FtgdfkbIZdhoZ9WCAZG1LupvTqfreB7NRH+kiXtzTDR3zLiiKSGEMlFwFSgVbTPuB8cgy40D9cPgJOJwtbxTrvS02Cj+7NDNZCgEqMgCApeoL2s17sqLutt0YkPLFGDtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277529; c=relaxed/simple;
-	bh=15feyfXLamrmXZ/Sze8NiZp8M3IjcH/FsaUcoTCfNmI=;
+	s=arc-20240116; t=1774275150; c=relaxed/simple;
+	bh=bgkPSAlIrGXYQYvKr80E3EgW1e9E332+0QMBPVhti4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsrNGBt7nm/8cZUSgy+tlzfrMVId5TmJSEAMeitF+2KT1+Ur5RkT8XpJ7hK2GTfxe/YxyfnQcxFKzsFmqOorOCNyjwBjgfZJbteN8DnmCrpY3X6Rg/SJ1VWDChMw6LQVjW2aEC1lQOXpafKk87wp/EJqPXOwY8K4ohHdKAqjaHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6TK6oR6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF22DC4CEF7;
-	Mon, 23 Mar 2026 14:52:08 +0000 (UTC)
+	 MIME-Version; b=UIX72j8CH68VBLLAFATinQTDyI5ZDGZh/aAT8ybh3cYK8v3GNCAaQwKtVU2lFguD03eKuXKKKU8lLnfIdz+9ndGDc0fsPbodqjkzNaljPyQle5ecIizGqWpPBAur/Atk05xmt/wFSaWqACYfS4yOLyFQKwXZVR1IHlMdDaVe3o0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmG7vZ0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D455AC4CEF7;
+	Mon, 23 Mar 2026 14:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277529;
-	bh=15feyfXLamrmXZ/Sze8NiZp8M3IjcH/FsaUcoTCfNmI=;
+	s=korg; t=1774275150;
+	bh=bgkPSAlIrGXYQYvKr80E3EgW1e9E332+0QMBPVhti4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6TK6oR6jjaijgwMl7bpAoWWTtFuB+SbjWuSquDt9gsnL5qntK+dJu9aReUvxNfYm
-	 TdH4LileYlF7HMQ1oiqoQPd/qyWsfuJXZa7JvpZa7qa3y4cVmUBJQKdrBq6WDSdzKn
-	 tvcSe26m2oknKlcTAnR2ETYLrR+4ksM5Eccchnns=
+	b=tmG7vZ0dHqTkrSLKEq6HYi7yWJdR941uy5Y02Ok4R7Hvuc2OZOQ/PEWWWKRGzeD2e
+	 UBMCOeCXfBMEigsd/k1r7pEIvoJ8RFH3tlppNcxW+rJrtPKm76r3GAnnaKiMk3vUsP
+	 fU8r+6kyt4VK0N8dwYt1ndSEQ/4dDBZJdcMxQK0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong Wu <yong.wu@mediatek.com>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Waiman Long <longman@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/481] memory: mtk-smi: fix device leak on larb probe
+Subject: [PATCH 6.12 005/460] unshare: fix unshare_fs() handling
 Date: Mon, 23 Mar 2026 14:40:01 +0100
-Message-ID: <20260323134525.715500024@linuxfoundation.org>
+Message-ID: <20260323134526.789103480@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,66 +74,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228933-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mediatek.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228445-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4A0A02F5C7E
+X-Rspamd-Queue-Id: 2DEEA2F4CD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 9dae65913b32d05dbc8ff4b8a6bf04a0e49a8eb6 ]
+[ Upstream commit 6c4b2243cb6c0755159bd567130d5e12e7b10d9f ]
 
-Make sure to drop the reference taken when looking up the SMI device
-during larb probe on late probe failure (e.g. probe deferral) and on
-driver unbind.
+There's an unpleasant corner case in unshare(2), when we have a
+CLONE_NEWNS in flags and current->fs hadn't been shared at all; in that
+case copy_mnt_ns() gets passed current->fs instead of a private copy,
+which causes interesting warts in proof of correctness]
 
-Fixes: cc8bbe1a8312 ("memory: mediatek: Add SMI driver")
-Fixes: 038ae37c510f ("memory: mtk-smi: add missing put_device() call in mtk_smi_device_link_common")
-Cc: stable@vger.kernel.org	# 4.6: 038ae37c510f
-Cc: stable@vger.kernel.org	# 4.6
-Cc: Yong Wu <yong.wu@mediatek.com>
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20251121164624.13685-3-johan@kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+> I guess if private means fs->users == 1, the condition could still be true.
+
+Unfortunately, it's worse than just a convoluted proof of correctness.
+Consider the case when we have CLONE_NEWCGROUP in addition to CLONE_NEWNS
+(and current->fs->users == 1).
+
+We pass current->fs to copy_mnt_ns(), all right.  Suppose it succeeds and
+flips current->fs->{pwd,root} to corresponding locations in the new namespace.
+Now we proceed to copy_cgroup_ns(), which fails (e.g. with -ENOMEM).
+We call put_mnt_ns() on the namespace created by copy_mnt_ns(), it's
+destroyed and its mount tree is dissolved, but...  current->fs->root and
+current->fs->pwd are both left pointing to now detached mounts.
+
+They are pinning those, so it's not a UAF, but it leaves the calling
+process with unshare(2) failing with -ENOMEM _and_ leaving it with
+pwd and root on detached isolated mounts.  The last part is clearly a bug.
+
+There is other fun related to that mess (races with pivot_root(), including
+the one between pivot_root() and fork(), of all things), but this one
+is easy to isolate and fix - treat CLONE_NEWNS as "allocate a new
+fs_struct even if it hadn't been shared in the first place".  Sure, we could
+go for something like "if both CLONE_NEWNS *and* one of the things that might
+end up failing after copy_mnt_ns() call in create_new_namespaces() are set,
+force allocation of new fs_struct", but let's keep it simple - the cost
+of copy_fs_struct() is trivial.
+
+Another benefit is that copy_mnt_ns() with CLONE_NEWNS *always* gets
+a freshly allocated fs_struct, yet to be attached to anything.  That
+seriously simplifies the analysis...
+
+FWIW, that bug had been there since the introduction of unshare(2) ;-/
+
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://patch.msgid.link/20260207082524.GE3183987@ZenIV
+Tested-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/mtk-smi.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/fork.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/memory/mtk-smi.c b/drivers/memory/mtk-smi.c
-index 1326119288c98..95f1bf2c37785 100644
---- a/drivers/memory/mtk-smi.c
-+++ b/drivers/memory/mtk-smi.c
-@@ -574,6 +574,7 @@ static void mtk_smi_larb_remove(struct platform_device *pdev)
- 	device_link_remove(&pdev->dev, larb->smi_common_dev);
- 	pm_runtime_disable(&pdev->dev);
- 	component_del(&pdev->dev, &mtk_smi_larb_component_ops);
-+	put_device(larb->smi_common_dev);
- }
+diff --git a/kernel/fork.c b/kernel/fork.c
+index e5ec098a6f61e..55086df4d24cb 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -3248,7 +3248,7 @@ static int unshare_fs(unsigned long unshare_flags, struct fs_struct **new_fsp)
+ 		return 0;
  
- static int __maybe_unused mtk_smi_larb_resume(struct device *dev)
+ 	/* don't need lock here; in the worst case we'll do useless copy */
+-	if (fs->users == 1)
++	if (!(unshare_flags & CLONE_NEWNS) && fs->users == 1)
+ 		return 0;
+ 
+ 	*new_fsp = copy_fs_struct(fs);
 -- 
 2.51.0
 
