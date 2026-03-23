@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-229637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229141-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIqrLt1wwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229637-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:01 +0100
+	id QOJTDD9awWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229141-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:31 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 500B32F92B1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:01 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E2D92F62B0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B51830CE328
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 63404305BB84
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA066388377;
-	Mon, 23 Mar 2026 16:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9BC3B27D8;
+	Mon, 23 Mar 2026 15:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f45S1kCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVbgwdSm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC152282F3A;
-	Mon, 23 Mar 2026 16:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401C33B5306;
+	Mon, 23 Mar 2026 15:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282461; cv=none; b=gDqc/YUweN72t3GNsMASL4cRyDCv2bYp3VvB0jzrO+4sNGiHkt1cDXe7T4R2/x0vF8Bz6iJ8lj8DTeYj6nNT7D0qGBiAlvDzHQyED+r/EPgcs0Sg/4rcJagIVZOdgBS4CqdHNHu685C/txrx4ElOcuamyU6zkss6guz2DjtI3Y0=
+	t=1774278191; cv=none; b=tH0xODE+PWGa2Ey9l4lgL49bOy0dFWvbqf3aq0ui7nGrd26m3An4fT6zEZNJO9T0Bqgv12uYpXUx16J5JLZ6RFT6Uk3ivQHaF0lQDyVABruR9OGuk1e0h/k5oGzkboBXQ19I1U6SgxOwSnhN6IW1fWD36OjXJl+aAMm/oxH0cQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282461; c=relaxed/simple;
-	bh=GvmIR1Y3zDzx4lKioTQUYLe7ycAbXux+5m81fr8Lu0I=;
+	s=arc-20240116; t=1774278191; c=relaxed/simple;
+	bh=8a0/fnvz2bbi1VoMs2UEZz9/cXV8lFDfrnOeEh3/3Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ybv3Wl8cXlC2bqfZIdzlMHjsEbyGC3UcNIecw5z8yAsMHi/1lPmyE4iH2EgRPQhOM/3jwSIJIu3A4YQPaXnliN3+xjsQR7x2IxbF/6eQZKfG6LB7TPKGPuIvg8uoLtG9t79DmW2NsiCHTsmpGVPZ9eLTPo3x4wHJCW1yT1YBdFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f45S1kCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FD3C4CEF7;
-	Mon, 23 Mar 2026 16:14:20 +0000 (UTC)
+	 MIME-Version; b=ZBjYrK5sGO9HA6FemAZGK6CyXz1rF8vjEjS0RaIyX+pG2NHoll/M9IK0Fd4m/z08YBx3Lrk7s9Qp2S4Mp4jaNBnuts/u8yn7fgBCRKnMYJMPbHFKOKSnpdkOWGXONbLwouAebmJ6zWd0Mbvpy9n/HEcj/iv1SMnWU5fD3hic8tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVbgwdSm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763CDC2BCB4;
+	Mon, 23 Mar 2026 15:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282461;
-	bh=GvmIR1Y3zDzx4lKioTQUYLe7ycAbXux+5m81fr8Lu0I=;
+	s=korg; t=1774278190;
+	bh=8a0/fnvz2bbi1VoMs2UEZz9/cXV8lFDfrnOeEh3/3Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f45S1kCqoRvEjWFDTBQ9PjwCGMIpq4I8IYjyOI7xzX2AP5ELku6v7qMxZ4jiMIAkE
-	 RLBu6fzBf3RzfPOLvRcQNM13flFs8PAA12h++YV2M8AYLDAl4fwq9xKCKziglQNTZI
-	 I/YIDIWgI0ZQMbzAv8ZhddpZYqqrm296SRjwyeO8=
+	b=VVbgwdSmL+CW/iTyMGg3b5vWx+EyJnPolSjIAHNCYOV61g7ZCXqbDfl68WtP6CZki
+	 2jpgZPDV7tFyMatK7rDYbXGzSxKSbaI52P0wqsRg9r3ER75SSFFCbsNUp3oRbpm3hy
+	 SL1Zh+yyccUuRyJ6eIU/LZI3JGkSnyZDulifz9Oo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Matteo Cotifava <cotifavamatteo@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/481] net/mlx5: Fix deadlock between devlink lock and esw->wq
+Subject: [PATCH 6.6 227/567] ASoC: soc-core: flush delayed work before removing DAIs and widgets
 Date: Mon, 23 Mar 2026 14:42:27 +0100
-Message-ID: <20260323134529.250211632@linuxfoundation.org>
+Message-ID: <20260323134539.451212359@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,182 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229637-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229141-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 500B32F92B1
+X-Rspamd-Queue-Id: 2E2D92F62B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: matteo.cotifava <cotifavamatteo@gmail.com>
 
-[ Upstream commit aed763abf0e905b4b8d747d1ba9e172961572f57 ]
+[ Upstream commit 95bc5c225513fc3c4ce169563fb5e3929fbb938b ]
 
-esw->work_queue executes esw_functions_changed_event_handler ->
-esw_vfs_changed_event_handler and acquires the devlink lock.
+When a sound card is unbound while a PCM stream is open, a
+use-after-free can occur in snd_soc_dapm_stream_event(), called from
+the close_delayed_work workqueue handler.
 
-.eswitch_mode_set (acquires devlink lock in devlink_nl_pre_doit) ->
-mlx5_devlink_eswitch_mode_set -> mlx5_eswitch_disable_locked ->
-mlx5_eswitch_event_handler_unregister -> flush_workqueue deadlocks
-when esw_vfs_changed_event_handler executes.
+During unbind, snd_soc_unbind_card() flushes delayed work and then
+calls soc_cleanup_card_resources(). Inside cleanup,
+snd_card_disconnect_sync() releases all PCM file descriptors, and
+the resulting PCM close path can call snd_soc_dapm_stream_stop()
+which schedules new delayed work with a pmdown_time timer delay.
+Since this happens after the flush in snd_soc_unbind_card(), the
+new work is not caught. soc_remove_link_components() then frees
+DAPM widgets before this work fires, leading to the use-after-free.
 
-Fix that by no longer flushing the work to avoid the deadlock, and using
-a generation counter to keep track of work relevance. This avoids an old
-handler manipulating an esw that has undergone one or more mode changes:
-- the counter is incremented in mlx5_eswitch_event_handler_unregister.
-- the counter is read and passed to the ephemeral mlx5_host_work struct.
-- the work handler takes the devlink lock and bails out if the current
-  generation is different than the one it was scheduled to operate on.
-- mlx5_eswitch_cleanup does the final draining before destroying the wq.
+The existing flush in soc_free_pcm_runtime() also cannot help as it
+runs after soc_remove_link_components() has already freed the widgets.
 
-No longer flushing the workqueue has the side effect of maybe no longer
-cancelling pending vport_change_handler work items, but that's ok since
-those are disabled elsewhere:
-- mlx5_eswitch_disable_locked disables the vport eq notifier.
-- mlx5_esw_vport_disable disarms the HW EQ notification and marks
-  vport->enabled under state_lock to false to prevent pending vport
-  handler from doing anything.
-- mlx5_eswitch_cleanup destroys the workqueue and makes sure all events
-  are disabled/finished.
+Add a flush in soc_cleanup_card_resources() after
+snd_card_disconnect_sync() (after which no new PCM closes can
+schedule further delayed work) and before soc_remove_link_dais()
+and soc_remove_link_components() (which tear down the structures the
+delayed work accesses).
 
-Fixes: f1bc646c9a06 ("net/mlx5: Use devl_ API in mlx5_esw_offloads_devlink_port_register")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260305081019.1811100-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e894efef9ac7 ("ASoC: core: add support to card rebind")
+Signed-off-by: Matteo Cotifava <cotifavamatteo@gmail.com>
+Link: https://patch.msgid.link/20260309215412.545628-3-cotifavamatteo@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c  |  7 ++++---
- .../net/ethernet/mellanox/mlx5/core/eswitch.h  |  2 ++
- .../mellanox/mlx5/core/eswitch_offloads.c      | 18 +++++++++++++-----
- 3 files changed, 19 insertions(+), 8 deletions(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 3255af4313a29..8b2b78f05cbe7 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -999,10 +999,11 @@ static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
- 
- static void mlx5_eswitch_event_handler_unregister(struct mlx5_eswitch *esw)
- {
--	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev))
-+	if (esw->mode == MLX5_ESWITCH_OFFLOADS &&
-+	    mlx5_eswitch_is_funcs_handler(esw->dev)) {
- 		mlx5_eq_notifier_unregister(esw->dev, &esw->esw_funcs.nb);
--
--	flush_workqueue(esw->work_queue);
-+		atomic_inc(&esw->esw_funcs.generation);
-+	}
- }
- 
- static void mlx5_eswitch_clear_vf_vports_info(struct mlx5_eswitch *esw)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index ff20b43a551de..00d169a11a0a8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -275,10 +275,12 @@ struct esw_mc_addr { /* SRIOV only */
- struct mlx5_host_work {
- 	struct work_struct	work;
- 	struct mlx5_eswitch	*esw;
-+	int			work_gen;
- };
- 
- struct mlx5_esw_functions {
- 	struct mlx5_nb		nb;
-+	atomic_t		generation;
- 	bool			host_funcs_disabled;
- 	u16			num_vfs;
- };
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index f7f1eae998b5e..2a64d0fd2fe52 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3207,22 +3207,28 @@ static void esw_offloads_steering_cleanup(struct mlx5_eswitch *esw)
- }
- 
- static void
--esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
-+esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, int work_gen,
-+			      const u32 *out)
- {
- 	struct devlink *devlink;
- 	bool host_pf_disabled;
- 	u16 new_num_vfs;
- 
-+	devlink = priv_to_devlink(esw->dev);
-+	devl_lock(devlink);
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 39570e0e92bbc..e2a4ff5414099 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1996,6 +1996,9 @@ static void soc_cleanup_card_resources(struct snd_soc_card *card)
+ 	for_each_card_rtds(card, rtd)
+ 		if (rtd->initialized)
+ 			snd_soc_link_exit(rtd);
++	/* flush delayed work before removing DAIs and DAPM widgets */
++	snd_soc_flush_all_delayed_work(card);
 +
-+	/* Stale work from one or more mode changes ago. Bail out. */
-+	if (work_gen != atomic_read(&esw->esw_funcs.generation))
-+		goto unlock;
-+
- 	new_num_vfs = MLX5_GET(query_esw_functions_out, out,
- 			       host_params_context.host_num_of_vfs);
- 	host_pf_disabled = MLX5_GET(query_esw_functions_out, out,
- 				    host_params_context.host_pf_disabled);
- 
- 	if (new_num_vfs == esw->esw_funcs.num_vfs || host_pf_disabled)
--		return;
-+		goto unlock;
- 
--	devlink = priv_to_devlink(esw->dev);
--	devl_lock(devlink);
- 	/* Number of VFs can only change from "0 to x" or "x to 0". */
- 	if (esw->esw_funcs.num_vfs > 0) {
- 		mlx5_eswitch_unload_vf_vports(esw, esw->esw_funcs.num_vfs);
-@@ -3237,6 +3243,7 @@ esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
- 		}
- 	}
- 	esw->esw_funcs.num_vfs = new_num_vfs;
-+unlock:
- 	devl_unlock(devlink);
- }
- 
-@@ -3253,7 +3260,7 @@ static void esw_functions_changed_event_handler(struct work_struct *work)
- 	if (IS_ERR(out))
- 		goto out;
- 
--	esw_vfs_changed_event_handler(esw, out);
-+	esw_vfs_changed_event_handler(esw, host_work->work_gen, out);
- 	kvfree(out);
- out:
- 	kfree(host_work);
-@@ -3273,6 +3280,7 @@ int mlx5_esw_funcs_changed_handler(struct notifier_block *nb, unsigned long type
- 	esw = container_of(esw_funcs, struct mlx5_eswitch, esw_funcs);
- 
- 	host_work->esw = esw;
-+	host_work->work_gen = atomic_read(&esw_funcs->generation);
- 
- 	INIT_WORK(&host_work->work, esw_functions_changed_event_handler);
- 	queue_work(esw->work_queue, &host_work->work);
+ 	/* remove and free each DAI */
+ 	soc_remove_link_dais(card);
+ 	soc_remove_link_components(card);
 -- 
 2.51.0
 
