@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-228005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229239-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHI0Em9GwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228005-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:59 +0100
+	id kO+fNR5vwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229239-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 984EC2F3705
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 588AB2F8DDC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D90A301E94A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B002F32AA72C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377B23AC0C9;
-	Mon, 23 Mar 2026 13:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2B03AC0C2;
+	Mon, 23 Mar 2026 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RsY0z5Gj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+R+GsIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFD1366570;
-	Mon, 23 Mar 2026 13:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B329E39657B;
+	Mon, 23 Mar 2026 15:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273837; cv=none; b=ENZMWZEcAkz/14yxOytGTip5zAFPNdFBb0ab1g1KjlVLKFk4RXFUryyZy0QVNFGlW7JpaC/WozAfrY25fdm9ZQfCkKCOOl/yil9Mgs9LdRW9my8ULC9gmm2ft3devhTMPSdStE/vyq3A1bFcXzOrMjMX8u3I24qCRJMQn+XT81M=
+	t=1774278497; cv=none; b=FUMk8xcQy7Tru3fqI/eK6umPwyH0USh13z5USj6yjeu7Tp0Sm4g95YFVw8xnOKNuubWmjyQMV19/17FdVNEujVaxD/eY6e+D3knh1BR8wBUJZsF19/phXRKfy2q+qILsp8R2aclMw2/AH/nElEZT7O4XKhPStiaMyGuvXodTKio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273837; c=relaxed/simple;
-	bh=fM/FHuzAeKcxyNS4YNrbL7z4FP7VvSIqlm4jjzDuLMs=;
+	s=arc-20240116; t=1774278497; c=relaxed/simple;
+	bh=q23OtDahFre6+C32MstwYKjvKkX2pjLO+PWvUWa089Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UARAh3+H4wEq07Nw3APjQ5xASrfNchORQ1avCdZp+db+dnjtmf5RFnNNLT2gHcpwQrVf9uHGWZ4sdujwKsdSHaCtOhGvHPl4W+qRvuFT0yGAOjxrtv9vcuU9PQYAMYWEzdNTVLsTw3vIl942PcXsqvRDWW5UMvXNAXPERtLmW+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RsY0z5Gj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77774C4CEF7;
-	Mon, 23 Mar 2026 13:50:36 +0000 (UTC)
+	 MIME-Version; b=TtZ1dS9szuH/mNyPuvm7DE2oCWPYQ5ZFEZ+7wKY9zBRjmwPagjCeN7DGOwGJ1J9BmVf/hJPVj4q9VH1m9XuV1yXttk/veUzaqcN5aE6xMpYAIqUvT+gzJ9Y8RE7nImVXaffVOU1MnMHMuFBwa4QJHZF+2xEMTBTjpXcy54N5nPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+R+GsIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB578C2BC9E;
+	Mon, 23 Mar 2026 15:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273836;
-	bh=fM/FHuzAeKcxyNS4YNrbL7z4FP7VvSIqlm4jjzDuLMs=;
+	s=korg; t=1774278497;
+	bh=q23OtDahFre6+C32MstwYKjvKkX2pjLO+PWvUWa089Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RsY0z5GjUGKFNyiU3PylY+KWh+TDNkObQX1UGa3e2drjF+hgnTqUl91ZtqYDmSbQY
-	 BY9SssAsvSTz6b1ZjaG/VaP7mhPb/1JCTjUObbGs9DNGtssHgxyJvLMQVxLyloP0j+
-	 5pGWdFeWxn6lV2uW9oYjY00x+LUeQ0bllGyCm0Xc=
+	b=w+R+GsItsIgW627/b1Y6c63WeiGbSNfDGBG42vcnp5X6JzN7N8z+ym0Gk8V30t1qQ
+	 9sefpdDrM9lR1qFsQXxN3P9aLahhYHuDt/2TZHuCtMCcvD1h13DBnaSAnoOE8ArNdE
+	 d/ivj+tYPDst/+7clKdQgf+aC+nHQT8pyKOrmzpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oscar Santos <ossantos@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 024/220] smb: client: fix krb5 mount with username option
-Date: Mon, 23 Mar 2026 14:43:21 +0100
-Message-ID: <20260323134505.345160349@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.6 282/567] USB: core: Limit the length of unkillable synchronous timeouts
+Date: Mon, 23 Mar 2026 14:43:22 +0100
+Message-ID: <20260323134540.806249098@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +64,167 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228005-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229239-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,manguebit.org:email]
-X-Rspamd-Queue-Id: 984EC2F3705
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 588AB2F8DDC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 12b4c5d98cd7ca46d5035a57bcd995df614c14e1 upstream.
+commit 1015c27a5e1a63efae2b18a9901494474b4d1dc3 upstream.
 
-Customer reported that some of their krb5 mounts were failing against
-a single server as the client was trying to mount the shares with
-wrong credentials.  It turned out the client was reusing SMB session
-from first mount to try mounting the other shares, even though a
-different username= option had been specified to the other mounts.
+The usb_control_msg(), usb_bulk_msg(), and usb_interrupt_msg() APIs in
+usbcore allow unlimited timeout durations.  And since they use
+uninterruptible waits, this leaves open the possibility of hanging a
+task for an indefinitely long time, with no way to kill it short of
+unplugging the target device.
 
-By using username mount option along with sec=krb5 to search for
-principals from keytab is supported by cifs.upcall(8) since
-cifs-utils-4.8.  So fix this by matching username mount option in
-match_session() even with Kerberos.
+To prevent this sort of problem, enforce a maximum limit on the length
+of these unkillable timeouts.  The limit chosen here, somewhat
+arbitrarily, is 60 seconds.  On many systems (although not all) this
+is short enough to avoid triggering the kernel's hung-task detector.
 
-For example, the second mount below should fail with -ENOKEY as there
-is no 'foobar' principal in keytab (/etc/krb5.keytab).  The client
-ends up reusing SMB session from first mount to perform the second
-one, which is wrong.
+In addition, clear up the ambiguity of negative timeout values by
+treating them the same as 0, i.e., using the maximum allowed timeout.
 
-```
-$ ktutil
-ktutil:  add_entry -password -p testuser -k 1 -e aes256-cts
-Password for testuser@ZELDA.TEST:
-ktutil:  write_kt /etc/krb5.keytab
-ktutil:  quit
-$ klist -ke
-Keytab name: FILE:/etc/krb5.keytab
-KVNO Principal
- ---- ----------------------------------------------------------------
-   1 testuser@ZELDA.TEST (aes256-cts-hmac-sha1-96)
-$ mount.cifs //w22-root2/scratch /mnt/1 -o sec=krb5,username=testuser
-$ mount.cifs //w22-root2/scratch /mnt/2 -o sec=krb5,username=foobar
-$ mount -t cifs | grep -Po 'username=\K\w+'
-testuser
-testuser
-```
-
-Reported-by: Oscar Santos <ossantos@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/15fc9773-a007-47b0-a703-df89a8cf83dd@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/core/message.c |   27 +++++++++++++--------------
+ include/linux/usb.h        |    3 +++
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1952,6 +1952,10 @@ static int match_session(struct cifs_ses
- 	case Kerberos:
- 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
- 			return 0;
-+		if (strncmp(ses->user_name ?: "",
-+			    ctx->username ?: "",
-+			    CIFS_MAX_USERNAME_LEN))
-+			return 0;
- 		break;
- 	case NTLMv2:
- 	case RawNTLMSSP:
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -45,6 +45,8 @@ static void usb_api_blocking_completion(
+  * Starts urb and waits for completion or timeout.
+  * Whether or not the wait is killable depends on the flag passed in.
+  * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
++ *
++ * For non-killable waits, we enforce a maximum limit on the timeout value.
+  */
+ static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
+ 		bool killable)
+@@ -61,7 +63,9 @@ static int usb_start_wait_urb(struct urb
+ 	if (unlikely(retval))
+ 		goto out;
+ 
+-	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
++	if (!killable && (timeout <= 0 || timeout > USB_MAX_SYNCHRONOUS_TIMEOUT))
++		timeout = USB_MAX_SYNCHRONOUS_TIMEOUT;
++	expire = (timeout > 0) ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
+ 	if (killable)
+ 		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
+ 	else
+@@ -127,8 +131,7 @@ static int usb_internal_control_msg(stru
+  * @index: USB message index value
+  * @data: pointer to the data to send
+  * @size: length in bytes of the data to send
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -183,8 +186,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg);
+  * @index: USB message index value
+  * @driver_data: pointer to the data to send
+  * @size: length in bytes of the data to send
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  * @memflags: the flags for memory allocation for buffers
+  *
+  * Context: !in_interrupt ()
+@@ -242,8 +244,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_send);
+  * @index: USB message index value
+  * @driver_data: pointer to the data to be filled in by the message
+  * @size: length in bytes of the data to be received
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  * @memflags: the flags for memory allocation for buffers
+  *
+  * Context: !in_interrupt ()
+@@ -314,8 +315,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_recv);
+  * @len: length in bytes of the data to send
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+- * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -347,8 +347,7 @@ EXPORT_SYMBOL_GPL(usb_interrupt_msg);
+  * @len: length in bytes of the data to send
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+- * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -408,12 +407,12 @@ EXPORT_SYMBOL_GPL(usb_bulk_msg);
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+  * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ *	timing out (if <= 0, the wait is as long as possible)
+  *
+  * Context: task context, might sleep.
+  *
+- * This function is just like usb_blk_msg() except that it waits in a
+- * killable state.
++ * This function is just like usb_blk_msg(), except that it waits in a
++ * killable state and there is no limit on the timeout length.
+  *
+  * Return:
+  * If successful, 0. Otherwise a negative error number. The number of actual
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1843,6 +1843,9 @@ void usb_buffer_unmap_sg(const struct us
+  *                         SYNCHRONOUS CALL SUPPORT                  *
+  *-------------------------------------------------------------------*/
+ 
++/* Maximum value allowed for timeout in synchronous routines below */
++#define USB_MAX_SYNCHRONOUS_TIMEOUT		60000	/* ms */
++
+ extern int usb_control_msg(struct usb_device *dev, unsigned int pipe,
+ 	__u8 request, __u8 requesttype, __u16 value, __u16 index,
+ 	void *data, __u16 size, int timeout);
 
 
 
