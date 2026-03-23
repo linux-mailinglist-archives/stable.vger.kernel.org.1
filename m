@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-228041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228221-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qFG7BFZHwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228041-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:50 +0100
+	id 0ECaBLBKwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228221-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753562F3981
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:49 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D2D2F4020
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A189304F5E0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3435D30753A0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EFB43AC0D2;
-	Mon, 23 Mar 2026 13:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFC0A3AF679;
+	Mon, 23 Mar 2026 14:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JL7I41Sx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdqpKSO0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 327FC1A6818;
-	Mon, 23 Mar 2026 13:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934053AE1A8;
+	Mon, 23 Mar 2026 14:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273949; cv=none; b=c0YkLk+3uaN6nf01rHn+IzuxjDygoTV3Lx4pmFNlM6l97cma0A0ufRLS0pbYjEHdbQfNZk53gN6yPwgWGvObaSRZoNluoA4tCxlxSQ2LSEV1iohXrFYQW9I9JzqsD3RaclMczsJ5FFoW83k6qDXp1XL5jxzNHZQy4O/ll5h4XwA=
+	t=1774274492; cv=none; b=IcUOGsQYTSEMpxfJZx0Zia2TXu7XePz73Ml6Twa+45M506FbgYDrPJ43BkY8QLPNKRzgVe974neVdUP2pxdYqpFI/J65bxIYEoAjpFaJf98Q41TC2trNzNzGYsxMKULuJqOBNCuylR6VEBnSPCsHy+zPA2qowSykj/ACTtXm3zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273949; c=relaxed/simple;
-	bh=NQeRQOOuUOtcs1SBZDGKPwxdPfZixq60y13vItsyk1M=;
+	s=arc-20240116; t=1774274492; c=relaxed/simple;
+	bh=/OHwpZ3Y1+wkZSLaSBmfjiEzw8+zCpkFaFkAPGmN/vY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EcJTMmc/KPJErX1Tgie1ydZmS0IH0o+0rh4tpTMjVKYCwHcng0npo404tBlVdf9Uzu/v4gwZBRL+aKST9VLC0t/2WkC+BmUGqTsJ0Tc/OJuALeFlvCdGpvQ6XNHsHj3Y43ME+VwPtfCTPzYQT336mEslByMPHtgXKnHeBmTLxy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JL7I41Sx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73464C4CEF7;
-	Mon, 23 Mar 2026 13:52:28 +0000 (UTC)
+	 MIME-Version; b=rOZCeRUdco4FOsHgQ50LNuvLCeZN8dKX3SnxCkhqnAQmBPUkaHteMoNscQSUPKu5u37VdQNT9rzvHX8hsWSP3dm3yIcFkr7xRuuITAJnNchiPYDpjSdv2Z1DBhwtnWKDX0Kx44F9680ly1XOn4pAShVgmb37igcOSBqZPftNvw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdqpKSO0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C1AC4CEF7;
+	Mon, 23 Mar 2026 14:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273948;
-	bh=NQeRQOOuUOtcs1SBZDGKPwxdPfZixq60y13vItsyk1M=;
+	s=korg; t=1774274492;
+	bh=/OHwpZ3Y1+wkZSLaSBmfjiEzw8+zCpkFaFkAPGmN/vY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JL7I41SxHgAnFAvJQqbJ5wbEhufRSqTZwJHrBfBx9siZHLreOD1g/utJSN43B8oV9
-	 CEEErcfjZqEH7n8x98kek0zp/5DTcTueFGto93VGFLn9QOmcGyDcfjCaRejUOWow7r
-	 J3VuKP7cnem/WU5vgfga98Y9ii01PyHeVzJK0RjE=
+	b=rdqpKSO0aQfOT9PWeoXOT6tiy6ATUA7lJPBFTU0uQYGEd5VkJstte3//xtKvHbtfz
+	 PfAwOsadDnK3jsANy2baybFFc81pR97FW7Kj3TJfErEp2cXKli5YQNUIw0Grkd4U+c
+	 IkkyMaK6+JByIau/mAU5d5H65VQK9vnzF/I9u90M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Martin=20Roukala=20 ?= <martin.roukala@mupuf.org>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.19 059/220] serial: 8250_pci: add support for the AX99100
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.18 015/212] net: macb: fix use-after-free access to PTP clock
 Date: Mon, 23 Mar 2026 14:43:56 +0100
-Message-ID: <20260323134506.455406315@linuxfoundation.org>
+Message-ID: <20260323134504.243955686@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +62,165 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.96 / 15.00];
-	CC_EXCESS_QP(1.20)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228041-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228221-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,mupuf.org:email,startech.com:url]
-X-Rspamd-Queue-Id: 753562F3981
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,qemu.org:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,ispras.ru:email]
+X-Rspamd-Queue-Id: A2D2D2F4020
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Roukala (né Peres) <martin.roukala@mupuf.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit 9c0072bc33d349c83d223e64be30794e11938a6b upstream.
+commit 8da13e6d63c1a97f7302d342c89c4a56a55c7015 upstream.
 
-This is found in popular brands such as StarTech.com or Delock, and has
-been a source of frustration to quite a few people, if I can trust
-Amazon comments complaining about Linux support via the official
-out-of-the-tree driver.
+PTP clock is registered on every opening of the interface and destroyed on
+every closing.  However it may be accessed via get_ts_info ethtool call
+which is possible while the interface is just present in the kernel.
 
-Signed-off-by: Martin Roukala (né Peres) <martin.roukala@mupuf.org>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260309-8250_pci_ax99100-v1-1-3328bdfd8e94@mupuf.org
+BUG: KASAN: use-after-free in ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
+Read of size 4 at addr ffff8880194345cc by task syz.0.6/948
+
+CPU: 1 PID: 948 Comm: syz.0.6 Not tainted 6.1.164+ #109
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x8d/0xba lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:316 [inline]
+ print_report+0x17f/0x496 mm/kasan/report.c:420
+ kasan_report+0xd9/0x180 mm/kasan/report.c:524
+ ptp_clock_index+0x47/0x50 drivers/ptp/ptp_clock.c:426
+ gem_get_ts_info+0x138/0x1e0 drivers/net/ethernet/cadence/macb_main.c:3349
+ macb_get_ts_info+0x68/0xb0 drivers/net/ethernet/cadence/macb_main.c:3371
+ __ethtool_get_ts_info+0x17c/0x260 net/ethtool/common.c:558
+ ethtool_get_ts_info net/ethtool/ioctl.c:2367 [inline]
+ __dev_ethtool net/ethtool/ioctl.c:3017 [inline]
+ dev_ethtool+0x2b05/0x6290 net/ethtool/ioctl.c:3095
+ dev_ioctl+0x637/0x1070 net/core/dev_ioctl.c:510
+ sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
+ sock_ioctl+0x577/0x6d0 net/socket.c:1320
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+ </TASK>
+
+Allocated by task 457:
+ kmalloc include/linux/slab.h:563 [inline]
+ kzalloc include/linux/slab.h:699 [inline]
+ ptp_clock_register+0x144/0x10e0 drivers/ptp/ptp_clock.c:235
+ gem_ptp_init+0x46f/0x930 drivers/net/ethernet/cadence/macb_ptp.c:375
+ macb_open+0x901/0xd10 drivers/net/ethernet/cadence/macb_main.c:2920
+ __dev_open+0x2ce/0x500 net/core/dev.c:1501
+ __dev_change_flags+0x56a/0x740 net/core/dev.c:8651
+ dev_change_flags+0x92/0x170 net/core/dev.c:8722
+ do_setlink+0xaf8/0x3a80 net/core/rtnetlink.c:2833
+ __rtnl_newlink+0xbf4/0x1940 net/core/rtnetlink.c:3608
+ rtnl_newlink+0x63/0xa0 net/core/rtnetlink.c:3655
+ rtnetlink_rcv_msg+0x3c6/0xed0 net/core/rtnetlink.c:6150
+ netlink_rcv_skb+0x15d/0x430 net/netlink/af_netlink.c:2511
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x6d7/0xa30 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x97e/0xeb0 net/netlink/af_netlink.c:1872
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg+0x14b/0x180 net/socket.c:730
+ __sys_sendto+0x320/0x3b0 net/socket.c:2152
+ __do_sys_sendto net/socket.c:2164 [inline]
+ __se_sys_sendto net/socket.c:2160 [inline]
+ __x64_sys_sendto+0xdc/0x1b0 net/socket.c:2160
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Freed by task 938:
+ kasan_slab_free include/linux/kasan.h:177 [inline]
+ slab_free_hook mm/slub.c:1729 [inline]
+ slab_free_freelist_hook mm/slub.c:1755 [inline]
+ slab_free mm/slub.c:3687 [inline]
+ __kmem_cache_free+0xbc/0x320 mm/slub.c:3700
+ device_release+0xa0/0x240 drivers/base/core.c:2507
+ kobject_cleanup lib/kobject.c:681 [inline]
+ kobject_release lib/kobject.c:712 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1cd/0x350 lib/kobject.c:729
+ put_device+0x1b/0x30 drivers/base/core.c:3805
+ ptp_clock_unregister+0x171/0x270 drivers/ptp/ptp_clock.c:391
+ gem_ptp_remove+0x4e/0x1f0 drivers/net/ethernet/cadence/macb_ptp.c:404
+ macb_close+0x1c8/0x270 drivers/net/ethernet/cadence/macb_main.c:2966
+ __dev_close_many+0x1b9/0x310 net/core/dev.c:1585
+ __dev_close net/core/dev.c:1597 [inline]
+ __dev_change_flags+0x2bb/0x740 net/core/dev.c:8649
+ dev_change_flags+0x92/0x170 net/core/dev.c:8722
+ dev_ifsioc+0x151/0xe00 net/core/dev_ioctl.c:326
+ dev_ioctl+0x33e/0x1070 net/core/dev_ioctl.c:572
+ sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
+ sock_ioctl+0x577/0x6d0 net/socket.c:1320
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:870 [inline]
+ __se_sys_ioctl fs/ioctl.c:856 [inline]
+ __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
+ do_syscall_x64 arch/x86/entry/common.c:46 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Set the PTP clock pointer to NULL after unregistering.
+
+Fixes: c2594d804d5c ("macb: Common code to enable ptp support for MACB/GEM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20260316103826.74506-1-pchelkin@ispras.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_pci.c |   17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/net/ethernet/cadence/macb_ptp.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -137,6 +137,8 @@ struct serial_private {
- };
+--- a/drivers/net/ethernet/cadence/macb_ptp.c
++++ b/drivers/net/ethernet/cadence/macb_ptp.c
+@@ -355,8 +355,10 @@ void gem_ptp_remove(struct net_device *n
+ {
+ 	struct macb *bp = netdev_priv(ndev);
  
- #define PCI_DEVICE_ID_HPE_PCI_SERIAL	0x37e
-+#define PCIE_VENDOR_ID_ASIX		0x125B
-+#define PCIE_DEVICE_ID_AX99100		0x9100
+-	if (bp->ptp_clock)
++	if (bp->ptp_clock) {
+ 		ptp_clock_unregister(bp->ptp_clock);
++		bp->ptp_clock = NULL;
++	}
  
- static const struct pci_device_id pci_use_msi[] = {
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9900,
-@@ -149,6 +151,8 @@ static const struct pci_device_id pci_us
- 			 0xA000, 0x1000) },
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_HP_3PAR, PCI_DEVICE_ID_HPE_PCI_SERIAL,
- 			 PCI_ANY_ID, PCI_ANY_ID) },
-+	{ PCI_DEVICE_SUB(PCIE_VENDOR_ID_ASIX, PCIE_DEVICE_ID_AX99100,
-+			 0xA000, 0x1000) },
- 	{ }
- };
+ 	gem_ptp_clear_timer(bp);
  
-@@ -920,6 +924,7 @@ static int pci_netmos_init(struct pci_de
- 	case PCI_DEVICE_ID_NETMOS_9912:
- 	case PCI_DEVICE_ID_NETMOS_9922:
- 	case PCI_DEVICE_ID_NETMOS_9900:
-+	case PCIE_DEVICE_ID_AX99100:
- 		num_serial = pci_netmos_9900_numports(dev);
- 		break;
- 
-@@ -2555,6 +2560,14 @@ static struct pci_serial_quirk pci_seria
- 		.init		= pci_netmos_init,
- 		.setup		= pci_netmos_9900_setup,
- 	},
-+	{
-+		.vendor		= PCIE_VENDOR_ID_ASIX,
-+		.device		= PCI_ANY_ID,
-+		.subvendor	= PCI_ANY_ID,
-+		.subdevice	= PCI_ANY_ID,
-+		.init		= pci_netmos_init,
-+		.setup		= pci_netmos_9900_setup,
-+	},
- 	/*
- 	 * EndRun Technologies
- 	*/
-@@ -6076,6 +6089,10 @@ static const struct pci_device_id serial
- 		0xA000, 0x3002,
- 		0, 0, pbn_NETMOS9900_2s_115200 },
- 
-+	{	PCIE_VENDOR_ID_ASIX, PCIE_DEVICE_ID_AX99100,
-+		0xA000, 0x1000,
-+		0, 0, pbn_b0_1_115200 },
-+
- 	/*
- 	 * Best Connectivity and Rosewill PCI Multi I/O cards
- 	 */
 
 
 
