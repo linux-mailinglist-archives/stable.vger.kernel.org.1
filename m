@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229296-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SLz7HdFowWliSwQAu9opvQ
-	(envelope-from <stable+bounces-228765-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:22:41 +0100
+	id YHQ2HYFvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229296-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:51:13 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96952F7F8C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:22:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCDA72F8EAA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:51:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96A1332EDDBB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADBDC335AE5F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC0138C2CA;
-	Mon, 23 Mar 2026 14:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F03D3B8D6B;
+	Mon, 23 Mar 2026 15:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwouSMfV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnLAfsS8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9814C394476;
-	Mon, 23 Mar 2026 14:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20E83B8BCD;
+	Mon, 23 Mar 2026 15:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277063; cv=none; b=JDqXVs6Twdfy9mjMGB7Dv7BVQ541i5NmiSCchFBz75Y6CAuUCb3FnyYxqVVvVXNlppvOz/zgptBflDYA9Kcngcbwg+36qTX5VHD0mp/owWCgj4G6L4Z7+IvP95fMlKb2GChq7p5Smzd3dx6Sq0/9zXYTl/hvphuRmGwVBrkPxGg=
+	t=1774278672; cv=none; b=rlX8DXiaOqpfPRNnFPZX7cK+WHc1lj3kufT/FgsHFkq+0PEwWssoFN+M6TpQleGXmnu2sFT4xEX7AccnRq5pomD8fQDLYMSP0YmXaqVBaxLCgGR0Cu+k73eZsX5Kti7dzw3frvxsqMuw9wCb82hiC8XvYfdRKENMsY2XYM6+L3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277063; c=relaxed/simple;
-	bh=xskb2567+iJ9D2HNsmKxC1ZfjiSWsIwjfI0rwRgPWX4=;
+	s=arc-20240116; t=1774278672; c=relaxed/simple;
+	bh=j7hCEgfySAfsriiwiAi37wufdcvfI3GgguHuFE2YB78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CmmwzwWYttE3glMdbchl2PSXvsA/oaXqgWCA5+QeMF54gxJdK1M+v/LNhosXeo1acIzPB4rcTHhx37aSdeEgtM2P8GopNgGQLXDUiy3R3BJELHnMy2JSIBk5w1RQDZA24As+TP790obgnN9149QdaD4ssnGKFLvxBiMQ6Jo0+40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwouSMfV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000FDC4CEF7;
-	Mon, 23 Mar 2026 14:44:22 +0000 (UTC)
+	 MIME-Version; b=ImgUGhHynVAgxq5BPOKPIdGPuIb0t6keblIQ8uVCdkGTZh4NpySb3lOaktDFd/4WZCVeUJVS6bxurONy3+JqEF+L2wd7r3arwG65rmpTjrCeWjnjhzUNZPE3fxJMgN1+zv/DYgdwyy2nYNZdwbYJEQKgkTEk9wcMHaBWaEgSjPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnLAfsS8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B7EC4CEF7;
+	Mon, 23 Mar 2026 15:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277063;
-	bh=xskb2567+iJ9D2HNsmKxC1ZfjiSWsIwjfI0rwRgPWX4=;
+	s=korg; t=1774278671;
+	bh=j7hCEgfySAfsriiwiAi37wufdcvfI3GgguHuFE2YB78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NwouSMfVZ9W/4yY1Vyv23i7MpGtFgrCJuC7ZcrF4PpoBTvgFY1YGtstAaAeAmvau/
-	 coyNS5wDbc92QPlaMdSQwPMZKN2UyN9Qv1sNimLs9c0K5vqdRsJYDwVXmVPIuPk6Mo
-	 P2TLVGHMAf+notFfZa77LkPDVQmyKKhEDaedUDyU=
+	b=tnLAfsS8I/k6Yiu0kIt5Bcw2sq968j4wORiCUX3KOBssL7mLcrQ97vkdJef2BkWnd
+	 aef7uNiWcCyhqvM/wEX0AOIMxXidA8xXsb4ShOmz0naaA3Qhdr9zdFKj/5Ww+ua9Lf
+	 VHIN5B57QbthIMPUf2Ucl1FwVV3srFiPGNSwV1rQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Nicholas Carlini <npc@anthropic.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 307/460] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
+	Sean Christopherson <seanjc@google.com>,
+	"Naveen N Rao (AMD)" <naveen@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 383/567] KVM: SVM: Add a helper to look up the max physical ID for AVIC
 Date: Mon, 23 Mar 2026 14:45:03 +0100
-Message-ID: <20260323134534.039559360@linuxfoundation.org>
+Message-ID: <20260323134543.320727656@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,126 +66,112 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228765-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229296-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,anthropic.com:email]
-X-Rspamd-Queue-Id: E96952F7F8C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CCDA72F8EAA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Naveen N Rao <naveen@kernel.org>
 
-commit 5133b61aaf437e5f25b1b396b14242a6bb0508e2 upstream.
+[ Upstream commit f2f6e67a56dc88fea7e9b10c4e79bb01d97386b7 ]
 
-The NFSv4.0 replay cache uses a fixed 112-byte inline buffer
-(rp_ibuf[NFSD4_REPLAY_ISIZE]) to store encoded operation responses.
-This size was calculated based on OPEN responses and does not account
-for LOCK denied responses, which include the conflicting lock owner as
-a variable-length field up to 1024 bytes (NFS4_OPAQUE_LIMIT).
+To help with a future change, add a helper to look up the maximum
+physical ID depending on the vCPU AVIC mode. No functional change
+intended.
 
-When a LOCK operation is denied due to a conflict with an existing lock
-that has a large owner, nfsd4_encode_operation() copies the full encoded
-response into the undersized replay buffer via read_bytes_from_xdr_buf()
-with no bounds check. This results in a slab-out-of-bounds write of up
-to 944 bytes past the end of the buffer, corrupting adjacent heap memory.
-
-This can be triggered remotely by an unauthenticated attacker with two
-cooperating NFSv4.0 clients: one sets a lock with a large owner string,
-then the other requests a conflicting lock to provoke the denial.
-
-We could fix this by increasing NFSD4_REPLAY_ISIZE to allow for a full
-opaque, but that would increase the size of every stateowner, when most
-lockowners are not that large.
-
-Instead, fix this by checking the encoded response length against
-NFSD4_REPLAY_ISIZE before copying into the replay buffer. If the
-response is too large, set rp_buflen to 0 to skip caching the replay
-payload. The status is still cached, and the client already received the
-correct response on the original request.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Reported-by: Nicholas Carlini <npc@anthropic.com>
-Tested-by: Nicholas Carlini <npc@anthropic.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
+Link: https://lore.kernel.org/r/0ab9bf5e20a3463a4aa3a5ea9bbbac66beedf1d1.1757009416.git.naveen@kernel.org
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: 87d0f901a9bd ("KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    9 +++++++--
- fs/nfsd/state.h   |   17 ++++++++++++-----
- 2 files changed, 19 insertions(+), 7 deletions(-)
+ arch/x86/kvm/svm/avic.c |   26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -5809,9 +5809,14 @@ nfsd4_encode_operation(struct nfsd4_comp
- 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
- 
- 		so->so_replay.rp_status = op->status;
--		so->so_replay.rp_buflen = len;
--		read_bytes_from_xdr_buf(xdr->buf, op_status_offset + XDR_UNIT,
-+		if (len <= NFSD4_REPLAY_ISIZE) {
-+			so->so_replay.rp_buflen = len;
-+			read_bytes_from_xdr_buf(xdr->buf,
-+						op_status_offset + XDR_UNIT,
- 						so->so_replay.rp_buf, len);
-+		} else {
-+			so->so_replay.rp_buflen = 0;
-+		}
- 	}
- status:
- 	op->status = nfsd4_map_status(op->status,
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -473,11 +473,18 @@ struct nfs4_client_reclaim {
- 	struct xdr_netobj	cr_princhash;
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -82,13 +82,31 @@ struct amd_svm_iommu_ir {
+ 	void *data;		/* Storing pointer to struct amd_ir_data */
  };
  
--/* A reasonable value for REPLAY_ISIZE was estimated as follows:  
-- * The OPEN response, typically the largest, requires 
-- *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +  8(verifier) + 
-- *   4(deleg. type) + 8(deleg. stateid) + 4(deleg. recall flag) + 
-- *   20(deleg. space limit) + ~32(deleg. ace) = 112 bytes 
-+/*
-+ * REPLAY_ISIZE is sized for an OPEN response with delegation:
-+ *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +
-+ *   8(verifier) + 4(deleg. type) + 8(deleg. stateid) +
-+ *   4(deleg. recall flag) + 20(deleg. space limit) +
-+ *   ~32(deleg. ace) = 112 bytes
-+ *
-+ * Some responses can exceed this. A LOCK denial includes the conflicting
-+ * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). Responses
-+ * larger than REPLAY_ISIZE are not cached in rp_ibuf; only rp_status is
-+ * saved. Enlarging this constant increases the size of every
-+ * nfs4_stateowner.
-  */
++static u32 avic_get_max_physical_id(struct kvm_vcpu *vcpu)
++{
++	u32 arch_max;
++
++	if (x2avic_enabled && apic_x2apic_mode(vcpu->arch.apic))
++		arch_max = X2AVIC_MAX_PHYSICAL_ID;
++	else
++		arch_max = AVIC_MAX_PHYSICAL_ID;
++
++	/*
++	 * Despite its name, KVM_CAP_MAX_VCPU_ID represents the maximum APIC ID
++	 * plus one, so the max possible APIC ID is one less than that.
++	 */
++	return min(vcpu->kvm->arch.max_vcpu_ids - 1, arch_max);
++}
++
+ static void avic_activate_vmcb(struct vcpu_svm *svm)
+ {
+ 	struct vmcb *vmcb = svm->vmcb01.ptr;
+-	struct kvm *kvm = svm->vcpu.kvm;
++	struct kvm_vcpu *vcpu = &svm->vcpu;
  
- #define NFSD4_REPLAY_ISIZE       112 
+ 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
++
+ 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
++	vmcb->control.avic_physical_id |= avic_get_max_physical_id(vcpu);
+ 
+ 	vmcb->control.int_ctl |= AVIC_ENABLE_MASK;
+ 
+@@ -101,8 +119,7 @@ static void avic_activate_vmcb(struct vc
+ 	 */
+ 	if (x2avic_enabled && apic_x2apic_mode(svm->vcpu.arch.apic)) {
+ 		vmcb->control.int_ctl |= X2APIC_MODE_MASK;
+-		vmcb->control.avic_physical_id |= min(kvm->arch.max_vcpu_ids - 1,
+-						      X2AVIC_MAX_PHYSICAL_ID);
++
+ 		/* Disabling MSR intercept for x2APIC registers */
+ 		svm_set_x2apic_msr_interception(svm, false);
+ 	} else {
+@@ -112,9 +129,6 @@ static void avic_activate_vmcb(struct vc
+ 		 */
+ 		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
+ 
+-		/* For xAVIC and hybrid-xAVIC modes */
+-		vmcb->control.avic_physical_id |= min(kvm->arch.max_vcpu_ids - 1,
+-						      AVIC_MAX_PHYSICAL_ID);
+ 		/* Enabling MSR intercept for x2APIC registers */
+ 		svm_set_x2apic_msr_interception(svm, true);
+ 	}
 
 
 
