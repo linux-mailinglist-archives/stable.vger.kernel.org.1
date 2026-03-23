@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228546-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oAKrEdRcwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229044-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:32 +0100
+	id mG/WCHZQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228546-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755C82F66AC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784812F4EAE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E72A83032595
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E97B9310E140
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2A33AA518;
-	Mon, 23 Mar 2026 14:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AF93AD525;
+	Mon, 23 Mar 2026 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeAVA9Fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5khF4L1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEE91DA0E1;
-	Mon, 23 Mar 2026 14:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A620F1A6808;
+	Mon, 23 Mar 2026 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277881; cv=none; b=nwooVHCxRDw90bREXAC8bfnW6M6QjzdK8vEWEfIvsIU9opJ3wz7jOjmX053fE9SJuw+It4xJ53thJdk2qmV5ONsFNQXwMM+nHWILXKOaY9ldHWHFd6PJx5LWT5KjcYLVlPri5dKl32EulGXmud+VmRYxz1WCGtNMWGIzO0g+aTM=
+	t=1774275417; cv=none; b=rLC4AjSlbR0PS9XJzcroCdHUqso8zV70s51Hp3l05duTfByvfYtlksQDaV73y8xadvasqgGZd1FHbZQ8uRz1L+ylE2USpdRgLohcEh1qOVlV7LBtaZmmE6Rb0+eiFfR6A3y5tJBIvyPbsi0Up3dxCo2RYte1snMzgutdSWi3Ilk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277881; c=relaxed/simple;
-	bh=mGxDziu/GuyUTnvDun981Tknyk+KoDTQG+QKqsDEXts=;
+	s=arc-20240116; t=1774275417; c=relaxed/simple;
+	bh=tPnGfR3fTcsy3EAK2U3A6iBRZPYTT4fXFsWrizXNa7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJQZ7OkTW96OokDN8DGo5+UskwtQD3BD/g2TmP7p9pKy4PtGgqNah1EmDufG57gyNsAfH+V5n/gAtKkBQYSCYWJefS5oLexSJKXVkB4dzEgJfOvjPQqD86A1BFvrXP4kPaQuL5BZ95T42Cu+f19OOxZSyIr8tsMsYcgOfw0MNt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeAVA9Fh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED134C4CEF7;
-	Mon, 23 Mar 2026 14:58:00 +0000 (UTC)
+	 MIME-Version; b=Oi6oV18hsXb0harJgFWFe1EMAXbEJiAF7vPZoYFmLC13W62YRFzJI1ZyHdR1OnTGRiZcaqoINhCO+ZlbJlseImWDE5qKxb4voHoKN1DKXMdjKSPXtapNXyGbw6+atL+3xHL5VcPkJKIoH6HYzo9CNL+Vc5xoTmdERjo5e++wJBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5khF4L1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D93C4CEF7;
+	Mon, 23 Mar 2026 14:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277881;
-	bh=mGxDziu/GuyUTnvDun981Tknyk+KoDTQG+QKqsDEXts=;
+	s=korg; t=1774275417;
+	bh=tPnGfR3fTcsy3EAK2U3A6iBRZPYTT4fXFsWrizXNa7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VeAVA9Fh4MPVycVFJjOfrIjdg/mW15dgRKL1k0/NAGvAaSnsja+He2drA8I4KbSQR
-	 shLCGproSuoQi5S3sK+BgS0IaTBprw8eaJ/X/h5HzLUy8fPm0xy24k6RBl2hESdSqv
-	 QNW4gMe+kzn07Z98vQ+Ija8vHZwx6LMezOMhf0uk=
+	b=w5khF4L16D7lYWlNWdLgQ8oyjMahout7nrEcQiffT5JUpOBDkwr1rjVKOJM5hKxMi
+	 iMU86MIBncGLLLko0F3qapdGgqZotDrqFEfQ9+1KHaJgGCSAv3ym0iYSBma/QKb/Ps
+	 6SS3Bz1Mgjrvw2i4JWJ1HlJsmZ+ABFKjhxUrO9uU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/567] drm/ssd130x: Store the HW buffer in the driver-private CRTC state
+Subject: [PATCH 6.12 055/460] bonding: fix type confusion in bond_setup_by_slave()
 Date: Mon, 23 Mar 2026 14:40:51 +0100
-Message-ID: <20260323134537.044968239@linuxfoundation.org>
+Message-ID: <20260323134528.058693667@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,364 +71,178 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229044-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228546-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 755C82F66AC
+X-Rspamd-Queue-Id: 784812F4EAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Martinez Canillas <javierm@redhat.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit d51f9fbd98b6d88aef4f6431bbb575378a6c7a24 ]
+[ Upstream commit 950803f7254721c1c15858fbbfae3deaaeeecb11 ]
 
-The commit 45b58669e532 ("drm/ssd130x: Allocate buffer in the plane's
-.atomic_check() callback") moved the allocation of the intermediate and
-HW buffers from the encoder's .atomic_enable callback, to the plane's
-.atomic_check callback.
+kernel BUG at net/core/skbuff.c:2306!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+RIP: 0010:pskb_expand_head+0xa08/0xfe0 net/core/skbuff.c:2306
+RSP: 0018:ffffc90004aff760 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff88807e3c8780 RCX: ffffffff89593e0e
+RDX: ffff88807b7c4900 RSI: ffffffff89594747 RDI: ffff88807b7c4900
+RBP: 0000000000000820 R08: 0000000000000005 R09: 0000000000000000
+R10: 00000000961a63e0 R11: 0000000000000000 R12: ffff88807e3c8780
+R13: 00000000961a6560 R14: dffffc0000000000 R15: 00000000961a63e0
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fe1a0ed8df0 CR3: 000000002d816000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ ipgre_header+0xdd/0x540 net/ipv4/ip_gre.c:900
+ dev_hard_header include/linux/netdevice.h:3439 [inline]
+ packet_snd net/packet/af_packet.c:3028 [inline]
+ packet_sendmsg+0x3ae5/0x53c0 net/packet/af_packet.c:3108
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xa54/0xc30 net/socket.c:2592
+ ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
+ __sys_sendmsg+0x170/0x220 net/socket.c:2678
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe1a0e6c1a9
 
-This was suggested by Maxime Ripard, because drivers aren't allowed to
-fail after the drm_atomic_helper_swap_state() function has been called.
+When a non-Ethernet device (e.g. GRE tunnel) is enslaved to a bond,
+bond_setup_by_slave() directly copies the slave's header_ops to the
+bond device:
 
-And the encoder's .atomic_enable happens after the new atomic state has
-been swapped, so allocations (that can fail) shouldn't be done there.
+    bond_dev->header_ops = slave_dev->header_ops;
 
-But the HW buffer isn't really tied to the plane's state. It has a fixed
-size that only depends on the (also fixed) display resolution defined in
-the Device Tree Blob.
+This causes a type confusion when dev_hard_header() is later called
+on the bond device. Functions like ipgre_header(), ip6gre_header(),all use
+netdev_priv(dev) to access their device-specific private data. When
+called with the bond device, netdev_priv() returns the bond's private
+data (struct bonding) instead of the expected type (e.g. struct
+ip_tunnel), leading to garbage values being read and kernel crashes.
 
-That buffer can be considered part of the CRTC state, and for this reason
-makes more sense to do its allocation in the CRTC .atomic_check callback.
+Fix this by introducing bond_header_ops with wrapper functions that
+delegate to the active slave's header_ops using the slave's own
+device. This ensures netdev_priv() in the slave's header functions
+always receives the correct device.
 
-The other allocated buffer (used to store a conversion from the emulated
-XR24 format to the native R1 format) is part of the plane's state, since
-it will be optional once the driver supports R1 and allows user-space to
-set that pixel format.
+The fix is placed in the bonding driver rather than individual device
+drivers, as the root cause is bond blindly inheriting header_ops from
+the slave without considering that these callbacks expect a specific
+netdev_priv() layout.
 
-So let's keep the allocation for it in the plane's .atomic_check callback,
-this can't be moved to the CRTC's .atomic_check because changing a format
-does not trigger a CRTC mode set.
+The type confusion can be observed by adding a printk in
+ipgre_header() and running the following commands:
 
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Closes: https://lore.kernel.org/dri-devel/CAMuHMdWv_QSatDgihr8=2SXHhvp=icNxumZcZOPwT9Q_QiogNQ@mail.gmail.com/
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230913052938.1114651-1-javierm@redhat.com
-Stable-dep-of: 36d9579fed6c ("drm/solomon: Fix page start when updating rectangle in page addressing mode")
+    ip link add dummy0 type dummy
+    ip addr add 10.0.0.1/24 dev dummy0
+    ip link set dummy0 up
+    ip link add gre1 type gre local 10.0.0.1
+    ip link add bond1 type bond mode active-backup
+    ip link set gre1 master bond1
+    ip link set gre1 up
+    ip link set bond1 up
+    ip addr add fe80::1/64 dev bond1
+
+Fixes: 1284cd3a2b74 ("bonding: two small fixes for IPoIB support")
+Suggested-by: Jay Vosburgh <jv@jvosburgh.net>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260306021508.222062-1-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/solomon/ssd130x.c | 153 +++++++++++++++++++++++-------
- 1 file changed, 118 insertions(+), 35 deletions(-)
+ drivers/net/bonding/bond_main.c | 47 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 46 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/solomon/ssd130x.c b/drivers/gpu/drm/solomon/ssd130x.c
-index deec6acdcf646..ef3e3832add90 100644
---- a/drivers/gpu/drm/solomon/ssd130x.c
-+++ b/drivers/gpu/drm/solomon/ssd130x.c
-@@ -141,14 +141,23 @@ const struct ssd130x_deviceinfo ssd130x_variants[] = {
- };
- EXPORT_SYMBOL_NS_GPL(ssd130x_variants, DRM_SSD130X);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 6f2b4734c9c06..546c9004c9e30 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1542,6 +1542,50 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
+ 	return features;
+ }
  
-+struct ssd130x_crtc_state {
-+	struct drm_crtc_state base;
-+	/* Buffer to store pixels in HW format and written to the panel */
-+	u8 *data_array;
++static int bond_header_create(struct sk_buff *skb, struct net_device *bond_dev,
++			      unsigned short type, const void *daddr,
++			      const void *saddr, unsigned int len)
++{
++	struct bonding *bond = netdev_priv(bond_dev);
++	const struct header_ops *slave_ops;
++	struct slave *slave;
++	int ret = 0;
++
++	rcu_read_lock();
++	slave = rcu_dereference(bond->curr_active_slave);
++	if (slave) {
++		slave_ops = READ_ONCE(slave->dev->header_ops);
++		if (slave_ops && slave_ops->create)
++			ret = slave_ops->create(skb, slave->dev,
++						type, daddr, saddr, len);
++	}
++	rcu_read_unlock();
++	return ret;
++}
++
++static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
++{
++	struct bonding *bond = netdev_priv(skb->dev);
++	const struct header_ops *slave_ops;
++	struct slave *slave;
++	int ret = 0;
++
++	rcu_read_lock();
++	slave = rcu_dereference(bond->curr_active_slave);
++	if (slave) {
++		slave_ops = READ_ONCE(slave->dev->header_ops);
++		if (slave_ops && slave_ops->parse)
++			ret = slave_ops->parse(skb, haddr);
++	}
++	rcu_read_unlock();
++	return ret;
++}
++
++static const struct header_ops bond_header_ops = {
++	.create	= bond_header_create,
++	.parse	= bond_header_parse,
 +};
 +
- struct ssd130x_plane_state {
- 	struct drm_shadow_plane_state base;
- 	/* Intermediate buffer to convert pixels from XRGB8888 to HW format */
- 	u8 *buffer;
--	/* Buffer to store pixels in HW format and written to the panel */
--	u8 *data_array;
- };
- 
-+static inline struct ssd130x_crtc_state *to_ssd130x_crtc_state(struct drm_crtc_state *state)
-+{
-+	return container_of(state, struct ssd130x_crtc_state, base);
-+}
-+
- static inline struct ssd130x_plane_state *to_ssd130x_plane_state(struct drm_plane_state *state)
+ static void bond_setup_by_slave(struct net_device *bond_dev,
+ 				struct net_device *slave_dev)
  {
- 	return container_of(state, struct ssd130x_plane_state, base.base);
-@@ -448,13 +457,11 @@ static int ssd130x_init(struct ssd130x_device *ssd130x)
- }
+@@ -1549,7 +1593,8 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
  
- static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
--			       struct ssd130x_plane_state *ssd130x_state,
--			       struct drm_rect *rect)
-+			       struct drm_rect *rect, u8 *buf,
-+			       u8 *data_array)
- {
- 	unsigned int x = rect->x1;
- 	unsigned int y = rect->y1;
--	u8 *buf = ssd130x_state->buffer;
--	u8 *data_array = ssd130x_state->data_array;
- 	unsigned int width = drm_rect_width(rect);
- 	unsigned int height = drm_rect_height(rect);
- 	unsigned int line_length = DIV_ROUND_UP(width, 8);
-@@ -550,12 +557,10 @@ static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
- 	return ret;
- }
+ 	dev_close(bond_dev);
  
--static void ssd130x_clear_screen(struct ssd130x_device *ssd130x,
--				 struct ssd130x_plane_state *ssd130x_state)
-+static void ssd130x_clear_screen(struct ssd130x_device *ssd130x, u8 *data_array)
- {
- 	unsigned int page_height = ssd130x->device_info->page_height;
- 	unsigned int pages = DIV_ROUND_UP(ssd130x->height, page_height);
--	u8 *data_array = ssd130x_state->data_array;
- 	unsigned int width = ssd130x->width;
- 	int ret, i;
+-	bond_dev->header_ops	    = slave_dev->header_ops;
++	bond_dev->header_ops	    = slave_dev->header_ops ?
++				      &bond_header_ops : NULL;
  
-@@ -594,15 +599,13 @@ static void ssd130x_clear_screen(struct ssd130x_device *ssd130x,
- 	}
- }
- 
--static int ssd130x_fb_blit_rect(struct drm_plane_state *state,
-+static int ssd130x_fb_blit_rect(struct drm_framebuffer *fb,
- 				const struct iosys_map *vmap,
--				struct drm_rect *rect)
-+				struct drm_rect *rect,
-+				u8 *buf, u8 *data_array)
- {
--	struct drm_framebuffer *fb = state->fb;
- 	struct ssd130x_device *ssd130x = drm_to_ssd130x(fb->dev);
- 	unsigned int page_height = ssd130x->device_info->page_height;
--	struct ssd130x_plane_state *ssd130x_state = to_ssd130x_plane_state(state);
--	u8 *buf = ssd130x_state->buffer;
- 	struct iosys_map dst;
- 	unsigned int dst_pitch;
- 	int ret = 0;
-@@ -622,7 +625,7 @@ static int ssd130x_fb_blit_rect(struct drm_plane_state *state,
- 
- 	drm_gem_fb_end_cpu_access(fb, DMA_FROM_DEVICE);
- 
--	ssd130x_update_rect(ssd130x, ssd130x_state, rect);
-+	ssd130x_update_rect(ssd130x, rect, buf, data_array);
- 
- 	return ret;
- }
-@@ -634,12 +637,19 @@ static int ssd130x_primary_plane_helper_atomic_check(struct drm_plane *plane,
- 	struct ssd130x_device *ssd130x = drm_to_ssd130x(drm);
- 	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(state, plane);
- 	struct ssd130x_plane_state *ssd130x_state = to_ssd130x_plane_state(plane_state);
--	unsigned int page_height = ssd130x->device_info->page_height;
--	unsigned int pages = DIV_ROUND_UP(ssd130x->height, page_height);
-+	struct drm_crtc *crtc = plane_state->crtc;
-+	struct drm_crtc_state *crtc_state;
- 	const struct drm_format_info *fi;
- 	unsigned int pitch;
- 	int ret;
- 
-+	if (!crtc)
-+		return -EINVAL;
-+
-+	crtc_state = drm_atomic_get_crtc_state(state, crtc);
-+	if (IS_ERR(crtc_state))
-+		return PTR_ERR(crtc_state);
-+
- 	ret = drm_plane_helper_atomic_check(plane, state);
- 	if (ret)
- 		return ret;
-@@ -654,14 +664,6 @@ static int ssd130x_primary_plane_helper_atomic_check(struct drm_plane *plane,
- 	if (!ssd130x_state->buffer)
- 		return -ENOMEM;
- 
--	ssd130x_state->data_array = kcalloc(ssd130x->width, pages, GFP_KERNEL);
--	if (!ssd130x_state->data_array) {
--		kfree(ssd130x_state->buffer);
--		/* Set to prevent a double free in .atomic_destroy_state() */
--		ssd130x_state->buffer = NULL;
--		return -ENOMEM;
--	}
--
- 	return 0;
- }
- 
-@@ -671,6 +673,10 @@ static void ssd130x_primary_plane_helper_atomic_update(struct drm_plane *plane,
- 	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(state, plane);
- 	struct drm_plane_state *old_plane_state = drm_atomic_get_old_plane_state(state, plane);
- 	struct drm_shadow_plane_state *shadow_plane_state = to_drm_shadow_plane_state(plane_state);
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, plane_state->crtc);
-+	struct ssd130x_crtc_state *ssd130x_crtc_state =  to_ssd130x_crtc_state(crtc_state);
-+	struct ssd130x_plane_state *ssd130x_plane_state = to_ssd130x_plane_state(plane_state);
-+	struct drm_framebuffer *fb = plane_state->fb;
- 	struct drm_atomic_helper_damage_iter iter;
- 	struct drm_device *drm = plane->dev;
- 	struct drm_rect dst_clip;
-@@ -687,7 +693,9 @@ static void ssd130x_primary_plane_helper_atomic_update(struct drm_plane *plane,
- 		if (!drm_rect_intersect(&dst_clip, &damage))
- 			continue;
- 
--		ssd130x_fb_blit_rect(plane_state, &shadow_plane_state->data[0], &dst_clip);
-+		ssd130x_fb_blit_rect(fb, &shadow_plane_state->data[0], &dst_clip,
-+				     ssd130x_plane_state->buffer,
-+				     ssd130x_crtc_state->data_array);
- 	}
- 
- 	drm_dev_exit(idx);
-@@ -698,13 +706,21 @@ static void ssd130x_primary_plane_helper_atomic_disable(struct drm_plane *plane,
- {
- 	struct drm_device *drm = plane->dev;
- 	struct ssd130x_device *ssd130x = drm_to_ssd130x(drm);
--	struct ssd130x_plane_state *ssd130x_state = to_ssd130x_plane_state(plane->state);
-+	struct drm_plane_state *plane_state = drm_atomic_get_new_plane_state(state, plane);
-+	struct drm_crtc_state *crtc_state;
-+	struct ssd130x_crtc_state *ssd130x_crtc_state;
- 	int idx;
- 
-+	if (!plane_state->crtc)
-+		return;
-+
-+	crtc_state = drm_atomic_get_new_crtc_state(state, plane_state->crtc);
-+	ssd130x_crtc_state = to_ssd130x_crtc_state(crtc_state);
-+
- 	if (!drm_dev_enter(drm, &idx))
- 		return;
- 
--	ssd130x_clear_screen(ssd130x, ssd130x_state);
-+	ssd130x_clear_screen(ssd130x, ssd130x_crtc_state->data_array);
- 
- 	drm_dev_exit(idx);
- }
-@@ -737,9 +753,8 @@ static struct drm_plane_state *ssd130x_primary_plane_duplicate_state(struct drm_
- 	if (!ssd130x_state)
- 		return NULL;
- 
--	/* The buffers are not duplicated and are allocated in .atomic_check */
-+	/* The buffer is not duplicated and is allocated in .atomic_check */
- 	ssd130x_state->buffer = NULL;
--	ssd130x_state->data_array = NULL;
- 
- 	new_shadow_plane_state = &ssd130x_state->base;
- 
-@@ -753,7 +768,6 @@ static void ssd130x_primary_plane_destroy_state(struct drm_plane *plane,
- {
- 	struct ssd130x_plane_state *ssd130x_state = to_ssd130x_plane_state(state);
- 
--	kfree(ssd130x_state->data_array);
- 	kfree(ssd130x_state->buffer);
- 
- 	__drm_gem_destroy_shadow_plane_state(&ssd130x_state->base);
-@@ -793,6 +807,75 @@ static enum drm_mode_status ssd130x_crtc_helper_mode_valid(struct drm_crtc *crtc
- 	return MODE_OK;
- }
- 
-+static int ssd130x_crtc_helper_atomic_check(struct drm_crtc *crtc,
-+					    struct drm_atomic_state *state)
-+{
-+	struct drm_device *drm = crtc->dev;
-+	struct ssd130x_device *ssd130x = drm_to_ssd130x(drm);
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
-+	struct ssd130x_crtc_state *ssd130x_state = to_ssd130x_crtc_state(crtc_state);
-+	unsigned int page_height = ssd130x->device_info->page_height;
-+	unsigned int pages = DIV_ROUND_UP(ssd130x->height, page_height);
-+	int ret;
-+
-+	ret = drm_crtc_helper_atomic_check(crtc, state);
-+	if (ret)
-+		return ret;
-+
-+	ssd130x_state->data_array = kmalloc(ssd130x->width * pages, GFP_KERNEL);
-+	if (!ssd130x_state->data_array)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+/* Called during init to allocate the CRTC's atomic state. */
-+static void ssd130x_crtc_reset(struct drm_crtc *crtc)
-+{
-+	struct ssd130x_crtc_state *ssd130x_state;
-+
-+	WARN_ON(crtc->state);
-+
-+	ssd130x_state = kzalloc(sizeof(*ssd130x_state), GFP_KERNEL);
-+	if (!ssd130x_state)
-+		return;
-+
-+	__drm_atomic_helper_crtc_reset(crtc, &ssd130x_state->base);
-+}
-+
-+static struct drm_crtc_state *ssd130x_crtc_duplicate_state(struct drm_crtc *crtc)
-+{
-+	struct ssd130x_crtc_state *old_ssd130x_state;
-+	struct ssd130x_crtc_state *ssd130x_state;
-+
-+	if (WARN_ON(!crtc->state))
-+		return NULL;
-+
-+	old_ssd130x_state = to_ssd130x_crtc_state(crtc->state);
-+	ssd130x_state = kmemdup(old_ssd130x_state, sizeof(*ssd130x_state), GFP_KERNEL);
-+	if (!ssd130x_state)
-+		return NULL;
-+
-+	/* The buffer is not duplicated and is allocated in .atomic_check */
-+	ssd130x_state->data_array = NULL;
-+
-+	__drm_atomic_helper_crtc_duplicate_state(crtc, &ssd130x_state->base);
-+
-+	return &ssd130x_state->base;
-+}
-+
-+static void ssd130x_crtc_destroy_state(struct drm_crtc *crtc,
-+				       struct drm_crtc_state *state)
-+{
-+	struct ssd130x_crtc_state *ssd130x_state = to_ssd130x_crtc_state(state);
-+
-+	kfree(ssd130x_state->data_array);
-+
-+	__drm_atomic_helper_crtc_destroy_state(state);
-+
-+	kfree(ssd130x_state);
-+}
-+
- /*
-  * The CRTC is always enabled. Screen updates are performed by
-  * the primary plane's atomic_update function. Disabling clears
-@@ -800,16 +883,16 @@ static enum drm_mode_status ssd130x_crtc_helper_mode_valid(struct drm_crtc *crtc
-  */
- static const struct drm_crtc_helper_funcs ssd130x_crtc_helper_funcs = {
- 	.mode_valid = ssd130x_crtc_helper_mode_valid,
--	.atomic_check = drm_crtc_helper_atomic_check,
-+	.atomic_check = ssd130x_crtc_helper_atomic_check,
- };
- 
- static const struct drm_crtc_funcs ssd130x_crtc_funcs = {
--	.reset = drm_atomic_helper_crtc_reset,
-+	.reset = ssd130x_crtc_reset,
- 	.destroy = drm_crtc_cleanup,
- 	.set_config = drm_atomic_helper_set_config,
- 	.page_flip = drm_atomic_helper_page_flip,
--	.atomic_duplicate_state = drm_atomic_helper_crtc_duplicate_state,
--	.atomic_destroy_state = drm_atomic_helper_crtc_destroy_state,
-+	.atomic_duplicate_state = ssd130x_crtc_duplicate_state,
-+	.atomic_destroy_state = ssd130x_crtc_destroy_state,
- };
- 
- static void ssd130x_encoder_helper_atomic_enable(struct drm_encoder *encoder,
+ 	bond_dev->type		    = slave_dev->type;
+ 	bond_dev->hard_header_len   = slave_dev->hard_header_len;
 -- 
 2.51.0
 
