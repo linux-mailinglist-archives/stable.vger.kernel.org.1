@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-228784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229281-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPQwCEdUwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:03 +0100
+	id kJATDTJewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229281-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B773D2F56C9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3AF2F6955
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 39CD330DEAA5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4F1334475ED
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CD3233134;
-	Mon, 23 Mar 2026 14:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC673B3BFF;
+	Mon, 23 Mar 2026 15:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2R92afr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM4xt0ID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA0BF23504B;
-	Mon, 23 Mar 2026 14:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B6A2773EE;
+	Mon, 23 Mar 2026 15:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277115; cv=none; b=YR1twj4VgLQZD3H7tkB66+nXECfQehJvO5pJrrG0TlfEDFCkfOqzo2AHaxnJBCVA0WRbJznAHStcz4ry+RwysjIm2/H8FG/JYvA6IA+pqwHkHCp2KBopGZ0PGqQR2x4VwBZNEhI1zlxxDV0PAKl53GpZCCXBOpUOMbtPEqDgQQ0=
+	t=1774278625; cv=none; b=r1jnfbod/zozpDe/tgE8ua9M1KCpyPxPvlIH+5nbcM9m9CGAmk15Ag0hdXvxHmx/7pTAGLZ66lMC5oqMKEQ8zajAbl/IwKWWqOgocKX4iBJSmIzk0S6PUQVXblxaKScRuy6EXDgUNNqasioNiEBNEVoEfHWX8vaGzqb8A2wNv4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277115; c=relaxed/simple;
-	bh=WOYx71cXq1W3OhHT8sSQYCrsyu7sXB+tDANUKHS7gg4=;
+	s=arc-20240116; t=1774278625; c=relaxed/simple;
+	bh=TrVkD5ij3mCV4XbfyP7HF4lOaqQHQEVP7j8lDlpDAko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EehS1TbawpZrSLLXFHd4yhKpW1ypUhSTM9Tu9d+h8w2nVqWrlo/BwLjYStCzcDs0l1kUo/gGcu0TemZvqSmrIttw1+wCDbVvaxXNYIRG0z2HjtKW7ZiPFW0/OtouVywxzl9sSjE9OCTCWhaD+HoTiBb3A7712/zStIfT41qIqxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2R92afr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457EEC4CEF7;
-	Mon, 23 Mar 2026 14:45:15 +0000 (UTC)
+	 MIME-Version; b=GdqOHU0h/49W3y/eMfOVaCvf9VT0dPakWay5y+9BUaGbGa56SkWpZixamnMTkO77QMbX2+87TO65kL5TRshppNaQ4L2P/Th7LuE5qT2lH9mCcdnXZhZ5y4dqQMoJRGZp6zVy/N2rylRzOVXRZE58ZREV+KpAHSKW3VSq4p6cryY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM4xt0ID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEE2C4CEF7;
+	Mon, 23 Mar 2026 15:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277115;
-	bh=WOYx71cXq1W3OhHT8sSQYCrsyu7sXB+tDANUKHS7gg4=;
+	s=korg; t=1774278625;
+	bh=TrVkD5ij3mCV4XbfyP7HF4lOaqQHQEVP7j8lDlpDAko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2R92afrhIWKAqj7cvZQps6wlIf67ne2Fbd3eGC75rhEKrNi7u8H3p7dGevFcRYNn
-	 LEjqC/rJ88xYz+agy4qP5rWuG/vXk5OrfQUDtG1Wp7BxI4fwfEFPqdJ5sjFTi5UUY1
-	 UvjpindpP0uZ6R1K0F8lyg2l1fW0gRayUC6HYRZs=
+	b=CM4xt0IDeANI4iXv1c2u9Gl3HluJSJS7s6wusE+zKP6WzDArSIo+vHIk8I5LYn/5X
+	 vEeQzqEtXPko4HUrBPGEq+UtaUR6Vsk17StB46BV27/7LN4jGi15gY5+WfdhdZ72hz
+	 HLRW56kW07O21W+Q2l9J4EwqQo1h/WwCKyHTdVSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	"stable@vger.kernel.org, Han Guangjiang" <hanguangjiang@lixiang.com>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liang Jie <liangjie@lixiang.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Robert Garcia <rob_garcia@163.com>
-Subject: [PATCH 6.12 289/460] blk-throttle: fix access race during throttle policy activation
+	John Ripple <john.ripple@keysight.com>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.6 365/567] drm/bridge: ti-sn65dsi86: Add support for DisplayPort mode with HPD
 Date: Mon, 23 Mar 2026 14:44:45 +0100
-Message-ID: <20260323134533.583706685@linuxfoundation.org>
+Message-ID: <20260323134542.849772502@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,195 +65,257 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228784-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lixiang.com,huawei.com,kernel.dk,163.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-229281-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B773D2F56C9
+X-Rspamd-Queue-Id: AB3AF2F6955
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Han Guangjiang <hanguangjiang@lixiang.com>
+From: John Ripple <john.ripple@keysight.com>
 
-[ Upstream commit bd9fd5be6bc0836820500f68fff144609fbd85a9 ]
+commit 9133bc3f0564890218cbba6cc7e81ebc0841a6f1 upstream.
 
-On repeated cold boots we occasionally hit a NULL pointer crash in
-blk_should_throtl() when throttling is consulted before the throttle
-policy is fully enabled for the queue. Checking only q->td != NULL is
-insufficient during early initialization, so blkg_to_pd() for the
-throttle policy can still return NULL and blkg_to_tg() becomes NULL,
-which later gets dereferenced.
+Add support for DisplayPort to the bridge, which entails the following:
+- Get and use an interrupt for HPD;
+- Properly clear all status bits in the interrupt handler;
 
- Unable to handle kernel NULL pointer dereference
- at virtual address 0000000000000156
- ...
- pc : submit_bio_noacct+0x14c/0x4c8
- lr : submit_bio_noacct+0x48/0x4c8
- sp : ffff800087f0b690
- x29: ffff800087f0b690 x28: 0000000000005f90 x27: ffff00068af393c0
- x26: 0000000000080000 x25: 000000000002fbc0 x24: ffff000684ddcc70
- x23: 0000000000000000 x22: 0000000000000000 x21: 0000000000000000
- x20: 0000000000080000 x19: ffff000684ddcd08 x18: ffffffffffffffff
- x17: 0000000000000000 x16: ffff80008132a550 x15: 0000ffff98020fff
- x14: 0000000000000000 x13: 1fffe000d11d7021 x12: ffff000688eb810c
- x11: ffff00077ec4bb80 x10: ffff000688dcb720 x9 : ffff80008068ef60
- x8 : 00000a6fb8a86e85 x7 : 000000000000111e x6 : 0000000000000002
- x5 : 0000000000000246 x4 : 0000000000015cff x3 : 0000000000394500
- x2 : ffff000682e35e40 x1 : 0000000000364940 x0 : 000000000000001a
- Call trace:
-  submit_bio_noacct+0x14c/0x4c8
-  verity_map+0x178/0x2c8
-  __map_bio+0x228/0x250
-  dm_submit_bio+0x1c4/0x678
-  __submit_bio+0x170/0x230
-  submit_bio_noacct_nocheck+0x16c/0x388
-  submit_bio_noacct+0x16c/0x4c8
-  submit_bio+0xb4/0x210
-  f2fs_submit_read_bio+0x4c/0xf0
-  f2fs_mpage_readpages+0x3b0/0x5f0
-  f2fs_readahead+0x90/0xe8
-
-Tighten blk_throtl_activated() to also require that the throttle policy
-bit is set on the queue:
-
-  return q->td != NULL &&
-         test_bit(blkcg_policy_throtl.plid, q->blkcg_pols);
-
-This prevents blk_should_throtl() from accessing throttle group state
-until policy data has been attached to blkgs.
-
-Fixes: a3166c51702b ("blk-throttle: delay initialization until configuration")
-Co-developed-by: Liang Jie <liangjie@lixiang.com>
-Signed-off-by: Liang Jie <liangjie@lixiang.com>
-Signed-off-by: Han Guangjiang <hanguangjiang@lixiang.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: John Ripple <john.ripple@keysight.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250915174543.2564994-1-john.ripple@keysight.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-cgroup.c   |    6 ------
- block/blk-cgroup.h   |    6 ++++++
- block/blk-throttle.c |    6 +-----
- block/blk-throttle.h |   18 +++++++++++-------
- 4 files changed, 18 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c |  112 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
 
---- a/block/blk-cgroup.c
-+++ b/block/blk-cgroup.c
-@@ -110,12 +110,6 @@ static struct cgroup_subsys_state *blkcg
- 	return task_css(current, io_cgrp_id);
- }
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -106,10 +106,21 @@
+ #define SN_PWM_EN_INV_REG			0xA5
+ #define  SN_PWM_INV_MASK			BIT(0)
+ #define  SN_PWM_EN_MASK				BIT(1)
++
++#define SN_IRQ_EN_REG				0xE0
++#define  IRQ_EN					BIT(0)
++
++#define SN_IRQ_EVENTS_EN_REG			0xE6
++#define  HPD_INSERTION_EN			BIT(1)
++#define  HPD_REMOVAL_EN				BIT(2)
++
+ #define SN_AUX_CMD_STATUS_REG			0xF4
+ #define  AUX_IRQ_STATUS_AUX_RPLY_TOUT		BIT(3)
+ #define  AUX_IRQ_STATUS_AUX_SHORT		BIT(5)
+ #define  AUX_IRQ_STATUS_NAT_I2C_FAIL		BIT(6)
++#define SN_IRQ_STATUS_REG			0xF5
++#define  HPD_REMOVAL_STATUS			BIT(2)
++#define  HPD_INSERTION_STATUS			BIT(1)
  
--static bool blkcg_policy_enabled(struct request_queue *q,
--				 const struct blkcg_policy *pol)
--{
--	return pol && test_bit(pol->plid, q->blkcg_pols);
--}
--
- static void blkg_free_workfn(struct work_struct *work)
- {
- 	struct blkcg_gq *blkg = container_of(work, struct blkcg_gq,
---- a/block/blk-cgroup.h
-+++ b/block/blk-cgroup.h
-@@ -455,6 +455,12 @@ static inline bool blk_cgroup_mergeable(
- 		bio_issue_as_root_blkg(rq->bio) == bio_issue_as_root_blkg(bio);
- }
+ #define MIN_DSI_CLK_FREQ_MHZ	40
  
-+static inline bool blkcg_policy_enabled(struct request_queue *q,
-+				const struct blkcg_policy *pol)
+@@ -152,7 +163,9 @@
+  * @ln_assign:    Value to program to the LN_ASSIGN register.
+  * @ln_polrs:     Value for the 4-bit LN_POLRS field of SN_ENH_FRAME_REG.
+  * @comms_enabled: If true then communication over the aux channel is enabled.
++ * @hpd_enabled:   If true then HPD events are enabled.
+  * @comms_mutex:   Protects modification of comms_enabled.
++ * @hpd_mutex:     Protects modification of hpd_enabled.
+  *
+  * @gchip:        If we expose our GPIOs, this is used.
+  * @gchip_output: A cache of whether we've set GPIOs to output.  This
+@@ -190,7 +203,9 @@ struct ti_sn65dsi86 {
+ 	u8				ln_assign;
+ 	u8				ln_polrs;
+ 	bool				comms_enabled;
++	bool				hpd_enabled;
+ 	struct mutex			comms_mutex;
++	struct mutex			hpd_mutex;
+ 
+ #if defined(CONFIG_OF_GPIO)
+ 	struct gpio_chip		gchip;
+@@ -221,6 +236,23 @@ static const struct regmap_config ti_sn6
+ 	.max_register = 0xFF,
+ };
+ 
++static int ti_sn65dsi86_read_u8(struct ti_sn65dsi86 *pdata, unsigned int reg,
++				u8 *val)
 +{
-+	return pol && test_bit(pol->plid, q->blkcg_pols);
++	int ret;
++	unsigned int reg_val;
++
++	ret = regmap_read(pdata->regmap, reg, &reg_val);
++	if (ret) {
++		dev_err(pdata->dev, "fail to read raw reg %#x: %d\n",
++			reg, ret);
++		return ret;
++	}
++	*val = (u8)reg_val;
++
++	return 0;
 +}
 +
- void blk_cgroup_bio_start(struct bio *bio);
- void blkcg_add_delay(struct blkcg_gq *blkg, u64 now, u64 delta);
- #else	/* CONFIG_BLK_CGROUP */
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -1209,17 +1209,13 @@ static int blk_throtl_init(struct gendis
- 	INIT_WORK(&td->dispatch_work, blk_throtl_dispatch_work_fn);
- 	throtl_service_queue_init(&td->service_queue);
- 
--	/*
--	 * Freeze queue before activating policy, to synchronize with IO path,
--	 * which is protected by 'q_usage_counter'.
--	 */
- 	blk_mq_freeze_queue(disk->queue);
- 	blk_mq_quiesce_queue(disk->queue);
- 
- 	q->td = td;
- 	td->queue = q;
- 
--	/* activate policy */
-+	/* activate policy, blk_throtl_activated() will return true */
- 	ret = blkcg_activate_policy(disk, &blkcg_policy_throtl);
- 	if (ret) {
- 		q->td = NULL;
---- a/block/blk-throttle.h
-+++ b/block/blk-throttle.h
-@@ -154,7 +154,13 @@ void blk_throtl_cancel_bios(struct gendi
- 
- static inline bool blk_throtl_activated(struct request_queue *q)
+ static int __maybe_unused ti_sn65dsi86_read_u16(struct ti_sn65dsi86 *pdata,
+ 						unsigned int reg, u16 *val)
  {
--	return q->td != NULL;
-+	/*
-+	 * q->td guarantees that the blk-throttle module is already loaded,
-+	 * and the plid of blk-throttle is assigned.
-+	 * blkcg_policy_enabled() guarantees that the policy is activated
-+	 * in the request_queue.
-+	 */
-+	return q->td != NULL && blkcg_policy_enabled(q, &blkcg_policy_throtl);
+@@ -362,6 +394,7 @@ static void ti_sn65dsi86_disable_comms(s
+ static int __maybe_unused ti_sn65dsi86_resume(struct device *dev)
+ {
+ 	struct ti_sn65dsi86 *pdata = dev_get_drvdata(dev);
++	const struct i2c_client *client = to_i2c_client(pdata->dev);
+ 	int ret;
+ 
+ 	ret = regulator_bulk_enable(SN_REGULATOR_SUPPLY_NUM, pdata->supplies);
+@@ -396,6 +429,13 @@ static int __maybe_unused ti_sn65dsi86_r
+ 	if (pdata->refclk)
+ 		ti_sn65dsi86_enable_comms(pdata);
+ 
++	if (client->irq) {
++		ret = regmap_update_bits(pdata->regmap, SN_IRQ_EN_REG, IRQ_EN,
++					 IRQ_EN);
++		if (ret)
++			dev_err(pdata->dev, "Failed to enable IRQ events: %d\n", ret);
++	}
++
+ 	return ret;
  }
  
- static inline bool blk_should_throtl(struct bio *bio)
-@@ -162,11 +168,6 @@ static inline bool blk_should_throtl(str
- 	struct throtl_grp *tg;
- 	int rw = bio_data_dir(bio);
- 
--	/*
--	 * This is called under bio_queue_enter(), and it's synchronized with
--	 * the activation of blk-throtl, which is protected by
--	 * blk_mq_freeze_queue().
--	 */
- 	if (!blk_throtl_activated(bio->bi_bdev->bd_queue))
- 		return false;
- 
-@@ -192,7 +193,10 @@ static inline bool blk_should_throtl(str
- 
- static inline bool blk_throtl_bio(struct bio *bio)
+@@ -1223,6 +1263,8 @@ static void ti_sn65dsi86_debugfs_init(st
+ static void ti_sn_bridge_hpd_enable(struct drm_bridge *bridge)
  {
--
-+	/*
-+	 * block throttling takes effect if the policy is activated
-+	 * in the bio's request_queue.
-+	 */
- 	if (!blk_should_throtl(bio))
- 		return false;
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++	const struct i2c_client *client = to_i2c_client(pdata->dev);
++	int ret;
  
+ 	/*
+ 	 * Device needs to be powered on before reading the HPD state
+@@ -1231,11 +1273,35 @@ static void ti_sn_bridge_hpd_enable(stru
+ 	 */
+ 
+ 	pm_runtime_get_sync(pdata->dev);
++
++	mutex_lock(&pdata->hpd_mutex);
++	pdata->hpd_enabled = true;
++	mutex_unlock(&pdata->hpd_mutex);
++
++	if (client->irq) {
++		ret = regmap_set_bits(pdata->regmap, SN_IRQ_EVENTS_EN_REG,
++				      HPD_REMOVAL_EN | HPD_INSERTION_EN);
++		if (ret)
++			dev_err(pdata->dev, "Failed to enable HPD events: %d\n", ret);
++	}
+ }
+ 
+ static void ti_sn_bridge_hpd_disable(struct drm_bridge *bridge)
+ {
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++	const struct i2c_client *client = to_i2c_client(pdata->dev);
++	int ret;
++
++	if (client->irq) {
++		ret = regmap_clear_bits(pdata->regmap, SN_IRQ_EVENTS_EN_REG,
++					HPD_REMOVAL_EN | HPD_INSERTION_EN);
++		if (ret)
++			dev_err(pdata->dev, "Failed to disable HPD events: %d\n", ret);
++	}
++
++	mutex_lock(&pdata->hpd_mutex);
++	pdata->hpd_enabled = false;
++	mutex_unlock(&pdata->hpd_mutex);
+ 
+ 	pm_runtime_put_autosuspend(pdata->dev);
+ }
+@@ -1321,6 +1387,41 @@ static int ti_sn_bridge_parse_dsi_host(s
+ 	return 0;
+ }
+ 
++static irqreturn_t ti_sn_bridge_interrupt(int irq, void *private)
++{
++	struct ti_sn65dsi86 *pdata = private;
++	struct drm_device *dev = pdata->bridge.dev;
++	u8 status;
++	int ret;
++	bool hpd_event;
++
++	ret = ti_sn65dsi86_read_u8(pdata, SN_IRQ_STATUS_REG, &status);
++	if (ret) {
++		dev_err(pdata->dev, "Failed to read IRQ status: %d\n", ret);
++		return IRQ_NONE;
++	}
++
++	hpd_event = status & (HPD_REMOVAL_STATUS | HPD_INSERTION_STATUS);
++
++	dev_dbg(pdata->dev, "(SN_IRQ_STATUS_REG = %#x)\n", status);
++	if (!status)
++		return IRQ_NONE;
++
++	ret = regmap_write(pdata->regmap, SN_IRQ_STATUS_REG, status);
++	if (ret) {
++		dev_err(pdata->dev, "Failed to clear IRQ status: %d\n", ret);
++		return IRQ_NONE;
++	}
++
++	/* Only send the HPD event if we are bound with a device. */
++	mutex_lock(&pdata->hpd_mutex);
++	if (pdata->hpd_enabled && hpd_event)
++		drm_kms_helper_hotplug_event(dev);
++	mutex_unlock(&pdata->hpd_mutex);
++
++	return IRQ_HANDLED;
++}
++
+ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
+ 			      const struct auxiliary_device_id *id)
+ {
+@@ -1951,6 +2052,7 @@ static int ti_sn65dsi86_probe(struct i2c
+ 	dev_set_drvdata(dev, pdata);
+ 	pdata->dev = dev;
+ 
++	mutex_init(&pdata->hpd_mutex);
+ 	mutex_init(&pdata->comms_mutex);
+ 
+ 	pdata->regmap = devm_regmap_init_i2c(client,
+@@ -1981,6 +2083,16 @@ static int ti_sn65dsi86_probe(struct i2c
+ 	if (ret)
+ 		return ret;
+ 
++	if (client->irq) {
++		ret = devm_request_threaded_irq(pdata->dev, client->irq, NULL,
++						ti_sn_bridge_interrupt,
++						IRQF_ONESHOT,
++						dev_name(pdata->dev), pdata);
++
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to request interrupt\n");
++	}
++
+ 	/*
+ 	 * Break ourselves up into a collection of aux devices. The only real
+ 	 * motiviation here is to solve the chicken-and-egg problem of probe
 
 
 
