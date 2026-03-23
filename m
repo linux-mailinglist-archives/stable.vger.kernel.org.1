@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228922-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uALUEVh/wWl2TgQAu9opvQ
-	(envelope-from <stable+bounces-229962-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:58:48 +0100
+	id 0CxCLzpYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228922-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D122FABAC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:58:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D1B2F5F0E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A549035E3E46
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5E7C03026BFB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73073C1978;
-	Mon, 23 Mar 2026 16:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4BD3AF647;
+	Mon, 23 Mar 2026 14:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIpegjpD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+fJbs/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DC4A3BE644;
-	Mon, 23 Mar 2026 16:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E694323EA97;
+	Mon, 23 Mar 2026 14:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283378; cv=none; b=Mq8+P7ukd2tk65MNzUrmoTlKQAcK6/3pfDCRTumasCYgOkyDMb7k7pCfdKkyHon2NLwimOdm2UOIlznpDqi+MvRuJEiGonsOq6e1ucr3bm5OkVPC24vBXhA50zxYMIeJxCTkqilpDXtcYEPm69AhWNkpjPpWcRSpi+QEFLlUBSU=
+	t=1774277496; cv=none; b=lf8ZM9ZIpVHJMTG3Ptz2DIrCdSFHt8oSiDJZ/GGRFB+ea6PX6kY57h+1+CxVYYKyIg2b1OMJS6d5DkW1CjWiksqiVv8bjKv3hIv4N6k0DlYNt19jr6TRm2IhI3nkiQu51RIJi+4DWeDw1ucwChe2Nic0dPs3WZTJVaEsc4E0lfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283378; c=relaxed/simple;
-	bh=NQJegeNQehNHhgF/u2R2CEQ+yO93d8L1BfJAM9JN0KY=;
+	s=arc-20240116; t=1774277496; c=relaxed/simple;
+	bh=5+vjtCXBqyvn6Q8TtJcxdve9UIaKLQOS+PLMP2EXONo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7xHQx6j3B0yuiamSPQArRbu2SXFmohHtLhaqEsk8YFJGeiKRqZsHxrA4L8yFlBS6VOOUuJEjS/GO/Ce+agvKo3YcjE/o0mJ70skNrTPDtxcn7gAwhTp96YHq3qYFS463l+Dzn4V3uG7IYNWVyx9mBQ3UVoDjkeFQE5rNhFxljY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIpegjpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9430CC2BCB0;
-	Mon, 23 Mar 2026 16:29:37 +0000 (UTC)
+	 MIME-Version; b=sHFn1mTolDY+hcjhDauaLxU3vm/AZzQVK1l0A+vrk9CWfu197wQYFDXrgB9xZ08WOfnOcrmuFq174Yqax7fr8pSGgyflHXN8HspEsLO3ZauV2EwtfEoGl+Cc7uX01N6v21cYke2VMTsK7S1FnFFNwHtP2BGUaVDKCVOxxrsrWAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+fJbs/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB56C4CEF7;
+	Mon, 23 Mar 2026 14:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283377;
-	bh=NQJegeNQehNHhgF/u2R2CEQ+yO93d8L1BfJAM9JN0KY=;
+	s=korg; t=1774277495;
+	bh=5+vjtCXBqyvn6Q8TtJcxdve9UIaKLQOS+PLMP2EXONo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIpegjpDKWSb6vx0Mp7RNtJO0LaXL+Bini6ZGtIp4piYff5cA8Uz7ZbByGgyu3Iwf
-	 grrRx9EFgteO79ALCD5O3JENYvLCi6PsTGb+vcCLzMuQBTNcUWWq2ZNwSMIqzYLaTN
-	 TPjW9IHJGFt4rnluB325oPBLIW8R35OgOfe4GFlo=
+	b=A+fJbs/auiiAkmNofdLEy8y372mNM6kgToHSZOWhSykpF+0ZgocH1N+HX3X4V0S0g
+	 uKmzQB3R9KFWCz29VWPfnvLMbGzDR5M+HakN8GaTtvhWrmqJFxX3+1eqYxagdk44tB
+	 P7uqXbL2fsBnU4GKeL3fQsQbyWvQnoPfFPH8+8jU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"pablo@netfilter.org, netdev@vger.kernel.org, sbrivio@redhat.com, XiaoHua Wang" <561399680@139.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	XiaoHua Wang <561399680@139.com>
-Subject: [PATCH 6.1 474/481] netfilter: nft_set_pipapo: prevent overflow in lookup table allocation
+	Xudong Hao <xudong.hao@intel.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 460/460] perf/x86/intel: Add missing branch counters constraint apply
 Date: Mon, 23 Mar 2026 14:47:36 +0100
-Message-ID: <20260323134536.768408830@linuxfoundation.org>
+Message-ID: <20260323134537.878213120@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,22 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,139.com,netfilter.org,redhat.com];
-	TAGGED_FROM(0.00)[bounces-229962-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228922-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,163 +90,110 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[netfilter.org:email,139.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A0D122FABAC
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E0D1B2F5F0E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dapeng Mi <dapeng1.mi@linux.intel.com>
 
-[ Upstream commit 4c5c6aa9967dbe55bd017bb509885928d0f31206 ]
+[ Upstream commit 1d07bbd7ea36ea0b8dfa8068dbe67eb3a32d9590 ]
 
-When calculating the lookup table size, ensure the following
-multiplication does not overflow:
+When running the command:
+'perf record -e "{instructions,instructions:p}" -j any,counter sleep 1',
+a "shift-out-of-bounds" warning is reported on CWF.
 
-- desc->field_len[] maximum value is U8_MAX multiplied by
-  NFT_PIPAPO_GROUPS_PER_BYTE(f) that can be 2, worst case.
-- NFT_PIPAPO_BUCKETS(f->bb) is 2^8, worst case.
-- sizeof(unsigned long), from sizeof(*f->lt), lt in
-  struct nft_pipapo_field.
+  UBSAN: shift-out-of-bounds in /kbuild/src/consumer/arch/x86/events/intel/lbr.c:970:15
+  shift exponent 64 is too large for 64-bit type 'long long unsigned int'
+  ......
+  intel_pmu_lbr_counters_reorder.isra.0.cold+0x2a/0xa7
+  intel_pmu_lbr_save_brstack+0xc0/0x4c0
+  setup_arch_pebs_sample_data+0x114b/0x2400
 
-Then, use check_mul_overflow() to multiply by bucket size and then use
-check_add_overflow() to the alignment for avx2 (if needed). Finally, add
-lt_size_check_overflow() helper and use it to consolidate this.
+The warning occurs because the second "instructions:p" event, which
+involves branch counters sampling, is incorrectly programmed to fixed
+counter 0 instead of the general-purpose (GP) counters 0-3 that support
+branch counters sampling. Currently only GP counters 0-3 support branch
+counters sampling on CWF, any event involving branch counters sampling
+should be programed on GP counters 0-3. Since the counter index of fixed
+counter 0 is 32, it leads to the "src" value in below code is right
+shifted 64 bits and trigger the "shift-out-of-bounds" warning.
 
-While at it, replace leftover allocation using the GFP_KERNEL to
-GFP_KERNEL_ACCOUNT for consistency, in pipapo_resize().
+cnt = (src >> (order[j] * LBR_INFO_BR_CNTR_BITS)) & LBR_INFO_BR_CNTR_MASK;
 
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[ Adjust context ]
-Signed-off-by: XiaoHua Wang <561399680@139.com>
+The root cause is the loss of the branch counters constraint for the
+new event in the branch counters sampling event group. Since it isn't
+yet part of the sibling list. This results in the second
+"instructions:p" event being programmed on fixed counter 0 incorrectly
+instead of the appropriate GP counters 0-3.
+
+To address this, we apply the missing branch counters constraint for
+the last event in the group. Additionally, we introduce a new function,
+`intel_set_branch_counter_constr()`, to apply the branch counters
+constraint and avoid code duplication.
+
+Fixes: 33744916196b ("perf/x86/intel: Support branch counters logging")
+Reported-by: Xudong Hao <xudong.hao@intel.com>
+Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://patch.msgid.link/20260228053320.140406-2-dapeng1.mi@linux.intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c |   58 +++++++++++++++++++++++++++++++----------
- 1 file changed, 44 insertions(+), 14 deletions(-)
+ arch/x86/events/intel/core.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -610,6 +610,30 @@ static void *nft_pipapo_get(const struct
- 			 nft_genmask_cur(net), get_jiffies_64());
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4031,6 +4031,17 @@ end:
+ 	return start;
  }
  
-+
-+/**
-+ * lt_calculate_size() - Get storage size for lookup table with overflow check
-+ * @groups:	Amount of bit groups
-+ * @bb:		Number of bits grouped together in lookup table buckets
-+ * @bsize:	Size of each bucket in lookup table, in longs
-+ *
-+ * Return: allocation size including alignment overhead, negative on overflow
-+ */
-+static ssize_t lt_calculate_size(unsigned int groups, unsigned int bb,
-+				 unsigned int bsize)
++static inline int intel_set_branch_counter_constr(struct perf_event *event,
++						  int *num)
 +{
-+	ssize_t ret = groups * NFT_PIPAPO_BUCKETS(bb) * sizeof(long);
++	if (branch_sample_call_stack(event))
++		return -EINVAL;
++	if (branch_sample_counters(event))
++		(*num)++;
 +
-+	if (check_mul_overflow(ret, bsize, &ret))
-+		return -1;
-+	if (check_add_overflow(ret, NFT_PIPAPO_ALIGN_HEADROOM, &ret))
-+		return -1;
-+	if (ret > INT_MAX)
-+		return -1;
-+
-+	return ret;
++	return 0;
 +}
 +
- /**
-  * pipapo_resize() - Resize lookup or mapping table, or both
-  * @f:		Field containing lookup and mapping tables
-@@ -628,6 +652,7 @@ static int pipapo_resize(struct nft_pipa
- 	union nft_pipapo_map_bucket *new_mt, *old_mt = f->mt;
- 	size_t new_bucket_size, copy;
- 	int group, bucket;
-+	ssize_t lt_size;
- 
- 	new_bucket_size = DIV_ROUND_UP(rules, BITS_PER_LONG);
- #ifdef NFT_PIPAPO_ALIGN
-@@ -643,10 +668,11 @@ static int pipapo_resize(struct nft_pipa
- 	else
- 		copy = new_bucket_size;
- 
--	new_lt = kvzalloc(f->groups * NFT_PIPAPO_BUCKETS(f->bb) *
--			  new_bucket_size * sizeof(*new_lt) +
--			  NFT_PIPAPO_ALIGN_HEADROOM,
--			  GFP_KERNEL);
-+	lt_size = lt_calculate_size(f->groups, f->bb, new_bucket_size);
-+	if (lt_size < 0)
-+		return -ENOMEM;
-+
-+	new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 	if (!new_lt)
- 		return -ENOMEM;
- 
-@@ -845,7 +871,7 @@ static void pipapo_lt_bits_adjust(struct
+ static int intel_pmu_hw_config(struct perf_event *event)
  {
- 	unsigned long *new_lt;
- 	int groups, bb;
--	size_t lt_size;
-+	ssize_t lt_size;
+ 	int ret = x86_pmu_hw_config(event);
+@@ -4090,17 +4101,19 @@ static int intel_pmu_hw_config(struct pe
+ 		 * group, which requires the extra space to store the counters.
+ 		 */
+ 		leader = event->group_leader;
+-		if (branch_sample_call_stack(leader))
++		if (intel_set_branch_counter_constr(leader, &num))
+ 			return -EINVAL;
+-		if (branch_sample_counters(leader))
+-			num++;
+ 		leader->hw.flags |= PERF_X86_EVENT_BRANCH_COUNTERS;
  
- 	lt_size = f->groups * NFT_PIPAPO_BUCKETS(f->bb) * f->bsize *
- 		  sizeof(*f->lt);
-@@ -855,15 +881,17 @@ static void pipapo_lt_bits_adjust(struct
- 		groups = f->groups * 2;
- 		bb = NFT_PIPAPO_GROUP_BITS_LARGE_SET;
- 
--		lt_size = groups * NFT_PIPAPO_BUCKETS(bb) * f->bsize *
--			  sizeof(*f->lt);
-+		lt_size = lt_calculate_size(groups, bb, f->bsize);
-+		if (lt_size < 0)
-+			return;
- 	} else if (f->bb == NFT_PIPAPO_GROUP_BITS_LARGE_SET &&
- 		   lt_size < NFT_PIPAPO_LT_SIZE_LOW) {
- 		groups = f->groups / 2;
- 		bb = NFT_PIPAPO_GROUP_BITS_SMALL_SET;
- 
--		lt_size = groups * NFT_PIPAPO_BUCKETS(bb) * f->bsize *
--			  sizeof(*f->lt);
-+		lt_size = lt_calculate_size(groups, bb, f->bsize);
-+		if (lt_size < 0)
-+			return;
- 
- 		/* Don't increase group width if the resulting lookup table size
- 		 * would exceed the upper size threshold for a "small" set.
-@@ -874,7 +902,7 @@ static void pipapo_lt_bits_adjust(struct
- 		return;
- 	}
- 
--	new_lt = kvzalloc(lt_size + NFT_PIPAPO_ALIGN_HEADROOM, GFP_KERNEL_ACCOUNT);
-+	new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 	if (!new_lt)
- 		return;
- 
-@@ -1348,13 +1376,15 @@ static struct nft_pipapo_match *pipapo_c
- 
- 	for (i = 0; i < old->field_count; i++) {
- 		unsigned long *new_lt;
-+		ssize_t lt_size;
- 
- 		memcpy(dst, src, offsetof(struct nft_pipapo_field, lt));
- 
--		new_lt = kvzalloc(src->groups * NFT_PIPAPO_BUCKETS(src->bb) *
--				  src->bsize * sizeof(*dst->lt) +
--				  NFT_PIPAPO_ALIGN_HEADROOM,
--				  GFP_KERNEL_ACCOUNT);
-+		lt_size = lt_calculate_size(src->groups, src->bb, src->bsize);
-+		if (lt_size < 0)
-+			goto out_lt;
+ 		for_each_sibling_event(sibling, leader) {
+-			if (branch_sample_call_stack(sibling))
++			if (intel_set_branch_counter_constr(sibling, &num))
++				return -EINVAL;
++		}
 +
-+		new_lt = kvzalloc(lt_size, GFP_KERNEL_ACCOUNT);
- 		if (!new_lt)
- 			goto out_lt;
++		/* event isn't installed as a sibling yet. */
++		if (event != leader) {
++			if (intel_set_branch_counter_constr(event, &num))
+ 				return -EINVAL;
+-			if (branch_sample_counters(sibling))
+-				num++;
+ 		}
  
+ 		if (num > fls(x86_pmu.lbr_counters))
 
 
 
