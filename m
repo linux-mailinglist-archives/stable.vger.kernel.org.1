@@ -1,170 +1,202 @@
-Return-Path: <stable+bounces-227873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UIPDBBuOwGnkIgQAu9opvQ
-	(envelope-from <stable+bounces-227873-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 01:49:31 +0100
+	id gO9ON8KawGmJJAQAu9opvQ
+	(envelope-from <stable+bounces-227874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 02:43:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C462EB4C7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 01:49:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BAB2EB8F8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 02:43:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E07C93003367
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 00:49:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85161302A040
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 01:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE48B286A4;
-	Mon, 23 Mar 2026 00:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FD81EDA0F;
+	Mon, 23 Mar 2026 01:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Amorlrcv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f79.google.com (mail-oo1-f79.google.com [209.85.161.79])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF75145A1F
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 00:49:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924971E98E3
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 01:40:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774226966; cv=none; b=GdMALVuey62UEzxANtyHnj4d62YAFNxOPB+7KUqVT7N+evZ1Le31nFHUGG9BjkaVBLVUM/8lxmPApXTZHFEf/vUcjrukiXtVGTPx/hRqgF+q4Z0rO4Yv2MJhIhUvpcb25qgZB2fO9HY7fzgTz0IpmluYgvlnMOJa2yOBoiauCWg=
+	t=1774230021; cv=none; b=gag+++czgMjkwkLMhV5nPxK5EatT2nTwZTIIfGJSO0tycchccMGqjoV2g2DgylvwYtKD7s79g0d/bPtUXBLW9z7o8vaxmfxwJsAcgacVGM1Ai0j5y63bEvgHuYgVzz5POuLV9U8FkOvRRDBq9i4UyBLvr6dRVIcRxO6sTwLwPm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774226966; c=relaxed/simple;
-	bh=7LaKKr4yZyg0ZvE9VEGYMOfjx057iDIEwnbzmhIy93A=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=ibgvZaL7W0Buzk6eZD6KmawmaDQm0ICdVPgPsfuFfY8wKW6esLSaAhFimV1SOeSpJJSzTfM8YA1Up1JOoTa2nWkUGVLe/SU/cpMaedN3j/8v4mM2MTLDj1E/cPDiOICF+ixxJoiBVvjua1nB10kqBQZr6z2KbD4r0SgcEMOe3n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f79.google.com with SMTP id 006d021491bc7-67c258734aeso48710157eaf.1
-        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 17:49:25 -0700 (PDT)
+	s=arc-20240116; t=1774230021; c=relaxed/simple;
+	bh=x+NQTNG7TLJbf1+gAkp809JyPlVQTm3JsLRUYPdDhxA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KBLQ7lEFV6BDOBMj9ks3o9xbXYb9btepxfB4r7Ag8Xf7lT6VMTAG8UU+rCKE/Hk9IHZ2eJ4qlG7LRmyKV0DMZV7IzLmiog11xH8nsy6lrcazjvmNsM2c1UqII9fTOBnO6I0fmIv07e7DVljECjFMX3Q8V9kkhmMTgcpXWyPY+K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Amorlrcv; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ad21f437eeso32067445ad.0
+        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 18:40:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774230020; x=1774834820; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3lK2HLOWAGj+69lEc/65okI9MbvVHw7Gm/K5aPIjtCA=;
+        b=AmorlrcvRkClBJQ/8FxkBsNIs2XlO1cYiJtw3C+VbJ1hK3M1hFO0t31QFRnzrzje3c
+         z5l6nLLaf4GU27dmnipepDyRkt1kl5XScLAKMM+mUxHIbIbMhTgjBKBeCSs0PqRBy7lx
+         haQc/hcr//sgEMxsFiO+1KNeuTWpgLwvQp7eQClO92V2EAg52FSTxsSzLLL3KEyVPzDY
+         tjtdockQL+P5TJltums+I1Ajs9KQ9+1BJfl9vvdZvc5WRLU3E9i1RfFLHpi+Xk+F8vsQ
+         XnrkluzFzgPZfIvyI9m9ML0O+VVpHSG8iMnk6+mVF1tyGK3DHCyvUtOOvuagEqUK4m4t
+         +xDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774226964; x=1774831764;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lCR822/uZHf0Q8Jfza0L6H0l12rk2oqJxUhoblYiW7c=;
-        b=nXYPyy1HBEul674obZ3kd3JskcP0d74TklwN8q56QyEAVWW/snL+6ZAgk7h4rd/W2Z
-         yDtw5U5H8ivxBwiSbw4js1rt3klWGSbtXbdHSgDNW9bK8shkLW+t6Fbrz+fK1sLLz0QA
-         UVP6qNyRUufZnF5ud+umj7xNVz0aXXv059f36spo3Qehlxz943L80/HMb/8dKIQuxEeO
-         4SKZ4yIjAPyTE5o0YHCxFHA5ugVHI8rWbmKK6xGKxgPkFNciTwVR8hc/jLsDntT09IAy
-         3BAFN2jdm6Kfm6eZq4yIqkqoHA1T/WNY+L3y1NHBZ9FgU7ZN2dai9a6rKBPFQSp1pOCj
-         Hjeg==
-X-Forwarded-Encrypted: i=1; AJvYcCUHiMY34Cw/1bA5ei49JdgbogHuMFrs5AYKx5G5x1hJsp+DHBn3T7hm1H2LSdXhOGcVcVUs9Yk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvwJn02CGuaRqKXJwT5TcJT5WHJ+nuCSuftr5s040C9HUXclQq
-	ExQga0/AGKCa5SUii6Esras1stEtPgWZcq5OQKbNGOrBu1xiIhv9edJTj7zZap/zqY0pgAStFm1
-	uCzCsvr0SHCZmQZk3dhN1ROispDfd+caQHaoi/miu1Nh3V5M/jELXNs43wwc=
+        d=1e100.net; s=20251104; t=1774230020; x=1774834820;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=3lK2HLOWAGj+69lEc/65okI9MbvVHw7Gm/K5aPIjtCA=;
+        b=CdICh/ktuJdO0zFdYR6LoXGkelZgTaVqthbt7X5vPpZPcy/DNDAJIWN/VPMyMSzQeN
+         3za4rn3b/yTGu85q7r0ed4fCalXzsjxqb6KkFQ9IWnbQ9kBIEM7ilFGEJqpYujX1IsRf
+         5BTQNn67GIeSQ63vtXx3zz6GfUhoJ4cdnqJWEHk4bhb7dCS9QLsGSly/ayaiFcnDLlDw
+         zF1RgVufFo7D1m0oROEHvX+zf1g2i1pN/9Ny9BfQbKIExFV9OtT3TBgZUDf6FkMmwk1J
+         86rWhrHFGfwSGKjRTxprZkj/Hj9cHkRa52agNftA9vPe0S3Rd8SdpUf0UTwu23BgYPd9
+         chtw==
+X-Forwarded-Encrypted: i=1; AJvYcCW5ADP9YVlDFGpR8jhT83BwlKiDHk033qWohDJEZ6pkeiIYzGisJ8ESTvOjvduy+cT1mtBK73I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVj9xwEGwe650Q0QPEA5ksQ1Wv2cTtnBPbFcXWrpWCsNI1dkjo
+	cVfcaGuEMB+0teym533uGkwhIKUMHMwX8NUB4KO8xMtNT1vleBk2+DuG
+X-Gm-Gg: ATEYQzx/BAucXa9kbUMhOXAPhdL1aHDypw2PqKnkCYz6iZxLnpS1ed5S3xKyiGYZMr0
+	QmglDD5vOyqW923pt3iUbZUUA8Yszb/9VuyGTZ5DfCT9/tmhMevK9PkqwdPBzvgSljQu65es+Jl
+	fFtUdLyy1dCu45RgLjtsO0nnLGSMP631R4QHyE8bSseynKjDLR2cdr5s2ChX1axkPd4fUdQjwBL
+	dYd4EBHra9MOpvBN/OfAtWWQ9wtSKES8oxTCO5sWKjcphwEo15FJBJDWSuRzt3nNg4vVjHFDKk5
+	yTNOj1QZPx+CW57Ke87VfrIF6OxRGGaDfnO3eKDx9tgvpEZcDPALZR9iy88a9/FskkiLicQkk3Q
+	DHuQ3sxnuiUsa4ej/3hnJJGxFskJubkvQGGMWLcyqW7dfef8XK169Lyr69ffsWNse9b8+WwKziS
+	GVBvW6+405nkqcNVklDB8YkOjpcBQF58ljd7J0
+X-Received: by 2002:a17:903:94c:b0:2b0:5ac2:9aa5 with SMTP id d9443c01a7336-2b0771eddb7mr117594055ad.19.1774230019940;
+        Sun, 22 Mar 2026 18:40:19 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b08354b109sm115638305ad.31.2026.03.22.18.40.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Mar 2026 18:40:19 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Sun, 22 Mar 2026 18:40:18 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: "Pradhan, Sanman" <sanman.pradhan@hpe.com>
+Cc: "linux-hwmon@vger.kernel.org" <linux-hwmon@vger.kernel.org>,
+	"iwona.winiarska@intel.com" <iwona.winiarska@intel.com>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	Sanman Pradhan <psanman@juniper.net>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] hwmon: (peci/cputemp) Fix crit_hyst returning delta
+ instead of absolute temperature
+Message-ID: <5f7d51e7-0f63-4f06-be4a-faa168773c66@roeck-us.net>
+References: <20260323002352.93417-1-sanman.pradhan@hpe.com>
+ <20260323002352.93417-2-sanman.pradhan@hpe.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:a29a:10b0:67c:2734:6aa3 with SMTP id
- 006d021491bc7-67c27346d80mr4722941eaf.42.1774226964307; Sun, 22 Mar 2026
- 17:49:24 -0700 (PDT)
-Date: Sun, 22 Mar 2026 17:49:24 -0700
-In-Reply-To: <69b8c9a9.a00a0220.3b25d1.002a.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69c08e14.050a0220.3bf4de.008f.GAE@google.com>
-Subject: Re: [syzbot] [nilfs?] WARNING in nilfs_ioctl_prepare_clean_segments
-From: syzbot <syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com>
-To: junjie.cao@linux.dev, konishi.ryusuke@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-nilfs@vger.kernel.org, slava@dubeyko.com, 
-	stable@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Spamd-Result: default: False [1.14 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	URI_HIDDEN_PATH(1.00)[https://syzkaller.appspot.com/x/.config?x=c584910d0d74158d];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260323002352.93417-2-sanman.pradhan@hpe.com>
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[appspotmail.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_TO(0.00)[linux.dev,gmail.com,vger.kernel.org,dubeyko.com,googlegroups.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-227873-lists,stable=lfdr.de,466a45fcfb0562f5b9a0];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[storage.googleapis.com:url,appspotmail.com:email,syzkaller.appspot.com:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[syzbot@syzkaller.appspotmail.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	TAGGED_FROM(0.00)[bounces-227874-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_NONE(0.00)[];
-	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[roeck-us.net];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[linux@roeck-us.net,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	SUBJECT_HAS_QUESTION(0.00)[]
-X-Rspamd-Queue-Id: 97C462EB4C7
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 80BAB2EB8F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-syzbot has found a reproducer for the following issue on:
+On Mon, Mar 23, 2026 at 12:24:25AM +0000, Pradhan, Sanman wrote:
+> From: Sanman Pradhan <psanman@juniper.net>
+> 
+> The hwmon sysfs ABI expects tempN_crit_hyst to report the temperature at
+> which the critical condition clears, not the hysteresis delta from the
+> critical limit.
+> 
+> The peci cputemp driver currently returns tjmax - tcontrol for
+> crit_hyst_type, which is the hysteresis margin rather than the
+> corresponding absolute temperature.
+> 
+> Return tcontrol directly, and update the documentation accordingly.
+> 
+> Fixes: bf3608f338e9 ("hwmon: peci: Add cputemp driver")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sanman Pradhan <psanman@juniper.net>
 
-HEAD commit:    785f0eb2f85d Add linux-next specific files for 20260320
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=10d95e02580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=c584910d0d74158d
-dashboard link: https://syzkaller.appspot.com/bug?extid=466a45fcfb0562f5b9a0
-compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14a941d6580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14d95e02580000
+Applied.
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/a1f7fd9c1a63/disk-785f0eb2.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/6c138da87c25/vmlinux-785f0eb2.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/4d1be64e56db/bzImage-785f0eb2.xz
-mounted in repro: https://storage.googleapis.com/syzbot-assets/35af4078ce5c/mount_0.gz
+Thanks,
+Guenter
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+466a45fcfb0562f5b9a0@syzkaller.appspotmail.com
-
-loop0: detected capacity change from 0 to 4096
-------------[ cut here ]------------
-ret == -ENOENT
-WARNING: fs/nilfs2/ioctl.c:757 at nilfs_ioctl_mark_blocks_dirty fs/nilfs2/ioctl.c:757 [inline], CPU#1: syz.0.17/6067
-WARNING: fs/nilfs2/ioctl.c:757 at nilfs_ioctl_prepare_clean_segments+0x7e7/0x800 fs/nilfs2/ioctl.c:799, CPU#1: syz.0.17/6067
-Modules linked in:
-CPU: 1 UID: 0 PID: 6067 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2026
-RIP: 0010:nilfs_ioctl_mark_blocks_dirty fs/nilfs2/ioctl.c:757 [inline]
-RIP: 0010:nilfs_ioctl_prepare_clean_segments+0x7e7/0x800 fs/nilfs2/ioctl.c:799
-Code: fe e9 3e fa ff ff 44 89 e9 80 e1 07 80 c1 03 38 c1 0f 8c d4 fa ff ff 4c 89 ef e8 34 a7 7e fe e9 c7 fa ff ff e8 fa 40 15 fe 90 <0f> 0b 90 41 bf fe ff ff ff e9 e3 fe ff ff 66 66 2e 0f 1f 84 00 00
-RSP: 0018:ffffc90002f17640 EFLAGS: 00010293
-RAX: ffffffff83b11086 RBX: 00000000fffffffe RCX: ffff888029a05b80
-RDX: 0000000000000000 RSI: ffffffff8ecbc490 RDI: 00000000fffffffe
-RBP: ffffc90002f17730 R08: ffff888029a05b80 R09: 0000000000000002
-R10: 00000000fffffffe R11: 0000000000000000 R12: dffffc0000000000
-R13: 0000000000000020 R14: ffff88805c254560 R15: ffff88807ade9180
-FS:  0000555588d41500(0000) GS:ffff888125548000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b31063fff CR3: 0000000078882000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- nilfs_clean_segments+0x18c/0xa50 fs/nilfs2/segment.c:2525
- nilfs_ioctl_clean_segments fs/nilfs2/ioctl.c:916 [inline]
- nilfs_ioctl+0x261f/0x2780 fs/nilfs2/ioctl.c:1346
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x14d/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f2426b9c799
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcedafafd8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f2426e15fa0 RCX: 00007f2426b9c799
-RDX: 0000200000000000 RSI: 0000000040786e88 RDI: 0000000000000004
-RBP: 00007f2426c32c99 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f2426e15fac R14: 00007f2426e15fa0 R15: 00007f2426e15fa0
- </TASK>
-
-
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+> ---
+>  Documentation/hwmon/peci-cputemp.rst | 10 ++++++----
+>  drivers/hwmon/peci/cputemp.c         |  2 +-
+>  2 files changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/Documentation/hwmon/peci-cputemp.rst b/Documentation/hwmon/peci-cputemp.rst
+> index fe0422248dc5e..266b62a46f49c 100644
+> --- a/Documentation/hwmon/peci-cputemp.rst
+> +++ b/Documentation/hwmon/peci-cputemp.rst
+> @@ -51,8 +51,9 @@ temp1_max		Provides thermal control temperature of the CPU package
+>  temp1_crit		Provides shutdown temperature of the CPU package which
+>  			is also known as the maximum processor junction
+>  			temperature, Tjmax or Tprochot.
+> -temp1_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
+> -			the CPU package.
+> +temp1_crit_hyst		Provides the hysteresis temperature of the CPU
+> +			package. Returns Tcontrol, the temperature at which
+> +			the critical condition clears.
+>  
+>  temp2_label		"DTS"
+>  temp2_input		Provides current temperature of the CPU package scaled
+> @@ -62,8 +63,9 @@ temp2_max		Provides thermal control temperature of the CPU package
+>  temp2_crit		Provides shutdown temperature of the CPU package which
+>  			is also known as the maximum processor junction
+>  			temperature, Tjmax or Tprochot.
+> -temp2_crit_hyst		Provides the hysteresis value from Tcontrol to Tjmax of
+> -			the CPU package.
+> +temp2_crit_hyst		Provides the hysteresis temperature of the CPU
+> +			package. Returns Tcontrol, the temperature at which
+> +			the critical condition clears.
+>  
+>  temp3_label		"Tcontrol"
+>  temp3_input		Provides current Tcontrol temperature of the CPU
+> diff --git a/drivers/hwmon/peci/cputemp.c b/drivers/hwmon/peci/cputemp.c
+> index b2fc936851e14..badec53ff4461 100644
+> --- a/drivers/hwmon/peci/cputemp.c
+> +++ b/drivers/hwmon/peci/cputemp.c
+> @@ -131,7 +131,7 @@ static int get_temp_target(struct peci_cputemp *priv, enum peci_temp_target_type
+>  		*val = priv->temp.target.tjmax;
+>  		break;
+>  	case crit_hyst_type:
+> -		*val = priv->temp.target.tjmax - priv->temp.target.tcontrol;
+> +		*val = priv->temp.target.tcontrol;
+>  		break;
+>  	default:
+>  		ret = -EOPNOTSUPP;
 
