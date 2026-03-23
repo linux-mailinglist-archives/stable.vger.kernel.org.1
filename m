@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cBldKAJQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228152-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:50 +0100
+	id CIfOM0hpwWmoSwQAu9opvQ
+	(envelope-from <stable+bounces-228805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:40 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8012F4DA3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4A92F807A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BC4CD3061467
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:58:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F64632161ED
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9D729A31C;
-	Mon, 23 Mar 2026 13:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF504265CA8;
+	Mon, 23 Mar 2026 14:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BXxVw+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPNhR3ia"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EB41A6815;
-	Mon, 23 Mar 2026 13:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5DE23B62C;
+	Mon, 23 Mar 2026 14:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274283; cv=none; b=Ro26Heij7KUvyPrL5Dp5OIui+gqhGKEdnM9PrKrFjolQZfTKAUhoVcvvGZkvCrmDaOEdWp6eNeByz1NzQuVgk8pyMnF3ptkc6fWuoKDn9sk6SXY0oA4Fzr5khq2YI8h+G3d/XQuw5zEKegenbZQud8ySmqnElhst9R+umY/ogcQ=
+	t=1774277178; cv=none; b=O0Kl1YQHlFmiFo6v6N7xwUVeKBH/JDCCiZ32K49wk437yL/Mwsl23pmOpICGP6s7pz7603oYK+GZ+u1NIGvLWFhck6WeA9hOJltS0DqHJqy4NGUoa0twPQnLZO+M8iFflm9TIyBdlp2VICgUqg1DSmBixmuJl6uSEo3Ol0DZwp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274283; c=relaxed/simple;
-	bh=QGGfd1VJxPjCebaiiJJ9H1xKYleeQf2xD/VTDK9uV4Y=;
+	s=arc-20240116; t=1774277178; c=relaxed/simple;
+	bh=MDCfz7qGMKe+62ZP4i/CQfsMicI54B1MBm0vxf1CHKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twDep/NzQ+EnchAU0i1dwCy1Ct1FQ9jsgcqoO64CNOM4j6TGN9W0pMSi3ylaRtybOczkeF4LyLf44IUoR+S73NKR38PLxwBQL7jYwIqtCwJmZOLmSREKOuC4ibwZt276YyJK97HGrnlnCMAhX+vEmIB2WTOTnG66xzFqZbs1Ch8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BXxVw+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9B8C4CEF7;
-	Mon, 23 Mar 2026 13:58:02 +0000 (UTC)
+	 MIME-Version; b=gfC25LTeYnfD6sInPz/p4gVrHSw8xOXxW9Ltg1udZFn4G1JobeQ2KqLFppXroXmYnTEcE5YxgPmGDm5GjBhRttCezALJMHQmpfne1wgwzgCt9t3ApmaSI8pzGlFWV/vJreVnbu9uVU5lV4hp97zV2yq6NYXmhEU8ehC4OyAiTw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPNhR3ia; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2232CC4CEF7;
+	Mon, 23 Mar 2026 14:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274282;
-	bh=QGGfd1VJxPjCebaiiJJ9H1xKYleeQf2xD/VTDK9uV4Y=;
+	s=korg; t=1774277178;
+	bh=MDCfz7qGMKe+62ZP4i/CQfsMicI54B1MBm0vxf1CHKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BXxVw+EQWyogCr5+9jyP+njHt5MznENeIel254W/kkLUoP+anZKtrk+ejRvhIwg6
-	 lOwrMMORNI1EqEAlsZkpEdaBq1K0gJdolODzs/784SyHDRdBnbG3RzhPpd45vyCJ3N
-	 Q7UaDBOzi24Zw84dHW9udNZuQkOhf52s13giZLe4=
+	b=pPNhR3iaM1TZxZUn8oIM52LypV3CIax1e1I7b6B2xXewktFIEdelQg/NFGfZthJTt
+	 pB6ObEU5556HrxcEvfZBFQODmtfN4V3X2TM3BPNNeMw1ROaj7Rc1QdOdxopfkCB/XY
+	 KCwxwhMsu0lcpgO1b1AVhn8iy4hvjLKlfgHCFzKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 166/220] net: macb: fix uninitialized rx_fs_lock
+	stable <stable@kernel.org>,
+	Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
+Subject: [PATCH 6.12 347/460] serial: uartlite: fix PM runtime usage count underflow on probe
 Date: Mon, 23 Mar 2026 14:45:43 +0100
-Message-ID: <20260323134509.798368673@linuxfoundation.org>
+Message-ID: <20260323134535.074073277@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +65,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228152-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228805-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.996];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1A8012F4DA3
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,m-works.net:email]
+X-Rspamd-Queue-Id: 4F4A92F807A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
 
-[ Upstream commit 34b11cc56e4369bc08b1f4c4a04222d75ed596ce ]
+commit d54801cd509515f674a5aac1d3ea1401d2a05863 upstream.
 
-If hardware doesn't support RX Flow Filters, rx_fs_lock spinlock is not
-initialized leading to the following assertion splat triggerable via
-set_rxnfc callback.
+ulite_probe() calls pm_runtime_put_autosuspend() at the end of probe
+without holding a corresponding PM runtime reference for non-console
+ports.
 
-INFO: trying to register non-static key.
-The code is fine but needs lockdep annotation, or maybe
-you didn't initialize this object before use?
-turning off the locking correctness validator.
-CPU: 1 PID: 949 Comm: syz.0.6 Not tainted 6.1.164+ #113
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.1-0-g3208b098f51a-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x8d/0xba lib/dump_stack.c:106
- assign_lock_key kernel/locking/lockdep.c:974 [inline]
- register_lock_class+0x141b/0x17f0 kernel/locking/lockdep.c:1287
- __lock_acquire+0x74f/0x6c40 kernel/locking/lockdep.c:4928
- lock_acquire kernel/locking/lockdep.c:5662 [inline]
- lock_acquire+0x190/0x4b0 kernel/locking/lockdep.c:5627
- __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
- _raw_spin_lock_irqsave+0x33/0x50 kernel/locking/spinlock.c:162
- gem_del_flow_filter drivers/net/ethernet/cadence/macb_main.c:3562 [inline]
- gem_set_rxnfc+0x533/0xac0 drivers/net/ethernet/cadence/macb_main.c:3667
- ethtool_set_rxnfc+0x18c/0x280 net/ethtool/ioctl.c:961
- __dev_ethtool net/ethtool/ioctl.c:2956 [inline]
- dev_ethtool+0x229c/0x6290 net/ethtool/ioctl.c:3095
- dev_ioctl+0x637/0x1070 net/core/dev_ioctl.c:510
- sock_do_ioctl+0x20d/0x2c0 net/socket.c:1215
- sock_ioctl+0x577/0x6d0 net/socket.c:1320
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:870 [inline]
- __se_sys_ioctl fs/ioctl.c:856 [inline]
- __x64_sys_ioctl+0x18c/0x210 fs/ioctl.c:856
- do_syscall_x64 arch/x86/entry/common.c:46 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:76
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+During ulite_assign(), uart_add_one_port() triggers uart_configure_port()
+which calls ulite_pm() via uart_change_pm(). For non-console ports, the
+UART core performs a balanced get/put cycle:
 
-A more straightforward solution would be to always initialize rx_fs_lock,
-just like rx_fs_list.  However, in this case the driver set_rxnfc callback
-would return with a rather confusing error code, e.g. -EINVAL.  So deny
-set_rxnfc attempts directly if the RX filtering feature is not supported
-by hardware.
+  uart_change_pm(ON)  -> ulite_pm() -> pm_runtime_get_sync()        +1
+  uart_change_pm(OFF) -> ulite_pm() -> pm_runtime_put_autosuspend() -1
 
-Fixes: ae8223de3df5 ("net: macb: Added support for RX filtering")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20260316103826.74506-2-pchelkin@ispras.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This leaves no spare reference for the pm_runtime_put_autosuspend() at
+the end of probe. The PM runtime core prevents the count from actually
+going below zero, and instead triggers a
+"Runtime PM usage count underflow!" warning.
+
+For console ports the bug is masked: the UART core skips the
+uart_change_pm(OFF) call, so the UART core's unbalanced get happens to
+pair with probe's trailing put.
+
+Add pm_runtime_get_noresume() before pm_runtime_enable() to take an
+explicit probe-owned reference that the trailing
+pm_runtime_put_autosuspend() can release. This ensures a correct usage
+count regardless of whether the port is a console.
+
+Fixes: 5bbe10a6942d ("tty: serial: uartlite: Add runtime pm support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
+Link: https://patch.msgid.link/20260305123746.4152800-1-maciej.andrzejewski@m-works.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/uartlite.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index a0802177a7a24..1a46e27bfbb4a 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3979,6 +3979,9 @@ static int gem_set_rxnfc(struct net_device *netdev, struct ethtool_rxnfc *cmd)
- 	struct macb *bp = netdev_priv(netdev);
- 	int ret;
+--- a/drivers/tty/serial/uartlite.c
++++ b/drivers/tty/serial/uartlite.c
+@@ -878,6 +878,7 @@ of_err:
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, UART_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_get_noresume(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
-+	if (!(netdev->hw_features & NETIF_F_NTUPLE))
-+		return -EOPNOTSUPP;
-+
- 	switch (cmd->cmd) {
- 	case ETHTOOL_SRXCLSRLINS:
- 		if ((cmd->fs.location >= bp->max_tuples)
--- 
-2.51.0
-
+ 	ret = ulite_assign(&pdev->dev, id, res->start, irq, pdata);
 
 
 
