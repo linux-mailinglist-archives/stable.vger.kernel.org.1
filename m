@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228654-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MO5fE/lrwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229630-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:09 +0100
+	id iHV2NklQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228654-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C69D2F866A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC5F2F4E4B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BA4F43170EA7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 04CD3305F240
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A563BB9E1;
-	Mon, 23 Mar 2026 16:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E071A6828;
+	Mon, 23 Mar 2026 14:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQIDagsu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHq5GE8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2116A396D30;
-	Mon, 23 Mar 2026 16:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99B51A680D;
+	Mon, 23 Mar 2026 14:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282443; cv=none; b=dYpNAWhfFzsSlnsCzstsngSokD03VP9+ZTRFgOSiAOL9Y3gnJqlFE4EuJTaNq9nMsfNWUrWPUPw0JMLT2jZXrAQfuSU9drBskBW2VvdC5rnJm3TxaDaNu05xdCEWeprAtcABepipWTcry8rEnysYYCFHxA2U1bkFUErY3Ki4urM=
+	t=1774275727; cv=none; b=K5xXTiiXtxA7AbXY2/dFDDKz6yXCrDRyVHIGctUw8JgwntC2xaHBCV079kWTrdYw6n10oVXtzmmH3HpOkXxruV09dd2NKIXSiNUPLvj8Nn8TzBKyMAR40HDKpqR3vZfE0LB7EbCk2p6AEoeP+rNQl6ugGLf2O78nedCU4jDT61Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282443; c=relaxed/simple;
-	bh=3A39ZxtdjgYykbast1qyui7WUNVft4UVOcutTZVoT6E=;
+	s=arc-20240116; t=1774275727; c=relaxed/simple;
+	bh=jWcpChWD2YnUni3QLa1Ix0k55EVJg5+PIiELfp71ixo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xh/93JpNE4bbQiR2YfVt+zj2/s/oL1p2Wik1JOtkh3p7gDRkOegT4XQVPwUEEXNDN7C8efUV5LRsD5v1Z2mRIPxcli0e05UE4ozLTCpCT+7H0bmhc5VudiX3c9CXZ9eDhCK7FQXGWDrDWSHyAG0fU7k1kWSVM2O4NlPnsRSjTGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQIDagsu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5B2C4CEF7;
-	Mon, 23 Mar 2026 16:14:02 +0000 (UTC)
+	 MIME-Version; b=cpLe3rY4BQZBqrIYtR3NHNnBfMOi1O20AozxdaKybHDStB4eRO/3KGvk64bgqXRCFqV7K8rubzLKa5H3zT/+k3a7pm04xwI2PbmobiHfC4HQGi2aU5mIECkwJHF2IIrgL051EHT9bOuwUbsDLjQZDkfolEVwf+CvUS5gFfVy3ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHq5GE8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A387C4CEF7;
+	Mon, 23 Mar 2026 14:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282442;
-	bh=3A39ZxtdjgYykbast1qyui7WUNVft4UVOcutTZVoT6E=;
+	s=korg; t=1774275726;
+	bh=jWcpChWD2YnUni3QLa1Ix0k55EVJg5+PIiELfp71ixo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQIDagsuXqEL9C/izgPOJ6ehzNvTPbaOBe1uRZwoNFegLDCD3pLxmIicsedbzR0DJ
-	 L+kCmRmHx5yP84kob0G/mRPVcCMJ1v5UIsFTC9EDNLHhORsjWCq8hZpUoxFFiAD8zW
-	 BJ55K4pEGQgz0+WcjwBZ8V4EzmVjBUzTemURTZOU=
+	b=sHq5GE8zggbw3Q96yG/HesQVbaP9KQFIOVh2TJxnkh5bAAbzZPsqe1JccH3pH7NNQ
+	 EuYdFpC6KEpXMkV4GBRVRokMCesLwXviUond3FRrz9wjbdFUK+hpxTTiDu6oA0Kma4
+	 jHxyZcm/Qk4L1BHzJzAxuvkzFzZkQgk+XP5bpakY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/481] remoteproc: mediatek: Unprepare SCP clock during system suspend
+	Franz Schnyder <franz.schnyder@toradex.com>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.12 144/460] drm/bridge: ti-sn65dsi86: Enable HPD polling if IRQ is not used
 Date: Mon, 23 Mar 2026 14:42:20 +0100
-Message-ID: <20260323134529.086886389@linuxfoundation.org>
+Message-ID: <20260323134530.122356084@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,132 +65,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229630-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228654-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6C69D2F866A
+X-Rspamd-Queue-Id: 9DC5F2F4E4B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Franz Schnyder <franz.schnyder@toradex.com>
 
-[ Upstream commit 35c3f72a2d55dbf52f28f4ecae51c76be1acf545 ]
+commit 0b87d51690dd5131cbe9fbd23746b037aab89815 upstream.
 
-Prior to commit d935187cfb27 ("remoteproc: mediatek: Break lock
-dependency to prepare_lock"), `scp->clk` was prepared and enabled only
-when it needs to communicate with the SCP.  The commit d935187cfb27
-moved the prepare operation to remoteproc's prepare(), keeping the clock
-prepared as long as the SCP is running.
+Fallback to polling to detect hotplug events on systems without
+interrupts.
 
-The power consumption due to the prolonged clock preparation can be
-negligible when the system is running, as SCP is designed to be a very
-power efficient processor.
+On systems where the interrupt line of the bridge is not connected,
+the bridge cannot notify hotplug events. Only add the
+DRM_BRIDGE_OP_HPD flag if an interrupt has been registered
+otherwise remain in polling mode.
 
-However, the clock remains prepared even when the system enters system
-suspend.  This prevents the underlying clock controller (and potentially
-the parent PLLs) from shutting down, which increases power consumption
-and may block the system from entering deep sleep states.
-
-Add suspend and resume callbacks.  Unprepare the clock in suspend() if
-it was active and re-prepare it in resume() to ensure the clock is
-properly disabled during system suspend, while maintaining the "always
-prepared" semantics while the system is active.  The driver doesn't
-implement .attach() callback, hence it only checks for RPROC_RUNNING.
-
-Fixes: d935187cfb27 ("remoteproc: mediatek: Break lock dependency to prepare_lock")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://lore.kernel.org/r/20260206033034.3031781-1-tzungbi@kernel.org
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 55e8ff842051 ("drm/bridge: ti-sn65dsi86: Add HPD for DisplayPort connector type")
+Cc: stable@vger.kernel.org # 6.16: 9133bc3f0564: drm/bridge: ti-sn65dsi86: Add
+Signed-off-by: Franz Schnyder <franz.schnyder@toradex.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+[dianders: Adjusted Fixes/stable line based on discussion]
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20260206123758.374555-1-fra.schnyder@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/mtk_scp.c | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-index 8f513e66ef6bb..476066c9590cb 100644
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -1025,12 +1025,51 @@ static const struct of_device_id mtk_scp_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, mtk_scp_of_match);
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -1326,6 +1326,7 @@ static int ti_sn_bridge_probe(struct aux
+ {
+ 	struct ti_sn65dsi86 *pdata = dev_get_drvdata(adev->dev.parent);
+ 	struct device_node *np = pdata->dev->of_node;
++	const struct i2c_client *client = to_i2c_client(pdata->dev);
+ 	int ret;
  
-+static int __maybe_unused scp_suspend(struct device *dev)
-+{
-+	struct mtk_scp *scp = dev_get_drvdata(dev);
-+	struct rproc *rproc = scp->rproc;
-+
-+	/*
-+	 * Only unprepare if the SCP is running and holding the clock.
-+	 *
-+	 * Note: `scp_ops` doesn't implement .attach() callback, hence
-+	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
-+	 * should also be checked here.
-+	 */
-+	if (rproc->state == RPROC_RUNNING)
-+		clk_unprepare(scp->clk);
-+	return 0;
-+}
-+
-+static int __maybe_unused scp_resume(struct device *dev)
-+{
-+	struct mtk_scp *scp = dev_get_drvdata(dev);
-+	struct rproc *rproc = scp->rproc;
-+
-+	/*
-+	 * Only prepare if the SCP was running and holding the clock.
-+	 *
-+	 * Note: `scp_ops` doesn't implement .attach() callback, hence
-+	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
-+	 * should also be checked here.
-+	 */
-+	if (rproc->state == RPROC_RUNNING)
-+		return clk_prepare(scp->clk);
-+	return 0;
-+}
-+
-+static const struct dev_pm_ops scp_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(scp_suspend, scp_resume)
-+};
-+
- static struct platform_driver mtk_scp_driver = {
- 	.probe = scp_probe,
- 	.remove = scp_remove,
- 	.driver = {
- 		.name = "mtk-scp",
- 		.of_match_table = mtk_scp_of_match,
-+		.pm = &scp_pm_ops,
- 	},
- };
+ 	pdata->next_bridge = devm_drm_of_get_bridge(&adev->dev, np, 1, 0);
+@@ -1345,8 +1346,9 @@ static int ti_sn_bridge_probe(struct aux
+ 			   ? DRM_MODE_CONNECTOR_DisplayPort : DRM_MODE_CONNECTOR_eDP;
  
--- 
-2.51.0
-
+ 	if (pdata->bridge.type == DRM_MODE_CONNECTOR_DisplayPort) {
+-		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT |
+-				    DRM_BRIDGE_OP_HPD;
++		pdata->bridge.ops = DRM_BRIDGE_OP_EDID | DRM_BRIDGE_OP_DETECT;
++		if (client->irq)
++			pdata->bridge.ops |= DRM_BRIDGE_OP_HPD;
+ 		/*
+ 		 * If comms were already enabled they would have been enabled
+ 		 * with the wrong value of HPD_DISABLE. Update it now. Comms
 
 
 
