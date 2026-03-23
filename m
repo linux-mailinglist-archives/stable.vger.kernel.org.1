@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228250-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uGH3DM9IwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228067-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:07 +0100
+	id MCt7M21MwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228250-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:33 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 929172F3D06
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60A2B2F4459
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ECB3303DD1C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA32F30DCECC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E86D3ACA62;
-	Mon, 23 Mar 2026 13:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D434C145;
+	Mon, 23 Mar 2026 14:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tmpdyir6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtAwhXc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426743AC0D2;
-	Mon, 23 Mar 2026 13:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52443B27EB;
+	Mon, 23 Mar 2026 14:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274029; cv=none; b=iwj3RU7TW0WRK8hOKk4n0KNMHtmRoA42pAUjd3sslc6/kiMWPMwLC8tw43KjJUKNyAEtqLl9C9EbZgbknDN0a24tJ03nzpFmcBo5OoDPawZ3qkpf+AnEBW5lMiS/g+DZoqprQ043e8O22P+7dBtMHQjiv5+AfQPE0WdBDZ8Yik0=
+	t=1774274580; cv=none; b=dkb3QUOURiBACuFQtf2OnZXx3TJ3wMxJ9c1kTdth4cnfu4ZkG62eVcJQw4oSRYhH+SlqNASrcQJVRNmtp2GrCSPAXD7IeD52D10U1TpePbw1cxV4/7OMzTyC2y+QBri/GDnvT6AxiU9mMc+Lf7IzF6SOUsbH22GXoQN2dVCJp20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274029; c=relaxed/simple;
-	bh=gpJx6Xj4MV94iZjSW6H6nlzSsMuBW5vMZZhTgpkBqTg=;
+	s=arc-20240116; t=1774274580; c=relaxed/simple;
+	bh=iW97RUDSYKs8j0+hIbtFzkZmmlKTI+YHWBVhblsJ+iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a9f+MnMNwtd9F7bVJwuiuupl8P1eKPFbvKo+h5/H9tOGqXlTo7Fi8/mjzuhmXwTZEElefmIbPfPJmSiW+lpn6afCM3z04G6jM4kXy3erldla9Rjr/KnJDSwPLjKp/0NT3yAzVxLyD7M3B4+6/gWda/+58zTBuHIDLOFrIbIK70U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tmpdyir6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B741AC2BC9E;
-	Mon, 23 Mar 2026 13:53:48 +0000 (UTC)
+	 MIME-Version; b=Bn5a8qd2O9t3aNnHiNMj4QE2F/D3Jt8l85ojNiw0XuVGKLmWWrCaBOvI1D3S879jM1sL48nkEMRz3Y1UO+ZsZdVU0jB7gTN8A3l7KSCwR8ulA3l8F5+CVdZsrf3tClSiignTS3jQsuoabuwLHxPRtyStxwrJeYN4b1j4oXowjCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtAwhXc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF45C4CEF7;
+	Mon, 23 Mar 2026 14:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274029;
-	bh=gpJx6Xj4MV94iZjSW6H6nlzSsMuBW5vMZZhTgpkBqTg=;
+	s=korg; t=1774274580;
+	bh=iW97RUDSYKs8j0+hIbtFzkZmmlKTI+YHWBVhblsJ+iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tmpdyir6epKjNzgOjE/jn5Ma0u7OhVcnLH5mSL/E3jk3682X8KyWgcY3lwBAPJwdq
-	 Q6eu7FcbtRz3S8ps6ZtP91OogahB5UMQdcmhDtgEXVZHwzv9ENWFDxJGnrOiIbYJRq
-	 x8lgJoShQZEOXy2ThUspNc2k+4RkdT2+ALQDwHPo=
+	b=dtAwhXc5btB9pUyWu5+jV0ezy5zqOnnALqms3VGmIvCzt5s1V2CnyG24tmNupZFm9
+	 FPqxffZ3hqAPhARe7TRByriCT2hMN567JpQcg90uFm7fNPp3wAk9+tVAZVLSIclSBx
+	 X5B2yrcdo8x+Nsfh/WWfp41srm/4ggeC11qHi7MM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Kahola <mika.kahola@intel.com>,
-	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.19 087/220] drm/i915/psr: Compute PSR entry_setup_frames into intel_crtc_state
+	Matthew Brost <matthew.brost@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 043/212] drm/xe/sync: Fix user fence leak on alloc failure
 Date: Mon, 23 Mar 2026 14:44:24 +0100
-Message-ID: <20260323134507.344271539@linuxfoundation.org>
+Message-ID: <20260323134505.127936350@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +64,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228067-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	URIBL_MULTI_FAIL(0.00)[intel.com:server fail,linuxfoundation.org:server fail,msgid.link:server fail];
+	TAGGED_FROM(0.00)[bounces-228250-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 929172F3D06
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 60A2B2F4459
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Högander <jouni.hogander@intel.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-commit 7caac659a837af9fd4cad85be851982b88859484 upstream.
+[ Upstream commit 0879c3f04f67e2a1677c25dcc24669ce21eb6a6c ]
 
-PSR entry_setup_frames is currently computed directly into struct
-intel_dp:intel_psr:entry_setup_frames. This causes a problem if mode change
-gets rejected after PSR compute config: Psr_entry_setup_frames computed for
-this rejected state is in intel_dp:intel_psr:entry_setup_frame. Fix this by
-computing it into intel_crtc_state and copy the value into
-intel_dp:intel_psr:entry_setup_frames on PSR enable.
+When dma_fence_chain_alloc() fails, properly release the user fence
+reference to prevent a memory leak.
 
-Fixes: 2b981d57e480 ("drm/i915/display: Support PSR entry VSC packet to be transmitted one frame earlier")
-Cc: Mika Kahola <mika.kahola@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260312083710.1593781-3-jouni.hogander@intel.com
-(cherry picked from commit 8c229b4aa00262c13787982e998c61c0783285e0)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: 0995c2fc39b0 ("drm/xe: Enforce correct user fence signaling order using")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260219233516.2938172-6-shuicheng.lin@intel.com
+(cherry picked from commit a5d5634cde48a9fcd68c8504aa07f89f175074a0)
+Cc: stable@vger.kernel.org
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_types.h |    1 +
- drivers/gpu/drm/i915/display/intel_psr.c           |    5 +++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_sync.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_types.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_types.h
-@@ -1160,6 +1160,7 @@ struct intel_crtc_state {
- 	u32 dc3co_exitline;
- 	u16 su_y_granularity;
- 	u8 active_non_psr_pipes;
-+	u8 entry_setup_frames;
- 	const char *no_psr_reason;
+--- a/drivers/gpu/drm/xe/xe_sync.c
++++ b/drivers/gpu/drm/xe/xe_sync.c
+@@ -206,8 +206,10 @@ int xe_sync_entry_parse(struct xe_device
+ 			if (XE_IOCTL_DBG(xe, IS_ERR(sync->ufence)))
+ 				return PTR_ERR(sync->ufence);
+ 			sync->ufence_chain_fence = dma_fence_chain_alloc();
+-			if (!sync->ufence_chain_fence)
+-				return -ENOMEM;
++			if (!sync->ufence_chain_fence) {
++				err = -ENOMEM;
++				goto free_sync;
++			}
+ 			sync->ufence_syncobj = ufence_syncobj;
+ 		}
  
- 	/*
---- a/drivers/gpu/drm/i915/display/intel_psr.c
-+++ b/drivers/gpu/drm/i915/display/intel_psr.c
-@@ -1711,7 +1711,7 @@ static bool _psr_compute_config(struct i
- 	entry_setup_frames = intel_psr_entry_setup_frames(intel_dp, adjusted_mode);
- 
- 	if (entry_setup_frames >= 0) {
--		intel_dp->psr.entry_setup_frames = entry_setup_frames;
-+		crtc_state->entry_setup_frames = entry_setup_frames;
- 	} else {
- 		crtc_state->no_psr_reason = "PSR setup timing not met";
- 		drm_dbg_kms(display->drm,
-@@ -1792,7 +1792,7 @@ static bool intel_psr_needs_wa_180378188
- {
- 	struct intel_display *display = to_intel_display(intel_dp);
- 
--	return (DISPLAY_VER(display) == 20 && intel_dp->psr.entry_setup_frames > 0 &&
-+	return (DISPLAY_VER(display) == 20 && crtc_state->entry_setup_frames > 0 &&
- 		!crtc_state->has_sel_update);
- }
- 
-@@ -2167,6 +2167,7 @@ static void intel_psr_enable_locked(stru
- 	intel_dp->psr.pkg_c_latency_used = crtc_state->pkg_c_latency_used;
- 	intel_dp->psr.io_wake_lines = crtc_state->alpm_state.io_wake_lines;
- 	intel_dp->psr.fast_wake_lines = crtc_state->alpm_state.fast_wake_lines;
-+	intel_dp->psr.entry_setup_frames = crtc_state->entry_setup_frames;
- 
- 	if (!psr_interrupt_error_check(intel_dp))
- 		return;
 
 
 
