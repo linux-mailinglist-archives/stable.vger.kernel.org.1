@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228976-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eL0tC2VOwWm7SAQAu9opvQ
-	(envelope-from <stable+bounces-228437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:57 +0100
+	id +Pk9Od9XwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228976-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890402F49BA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BA102F5E75
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CD9643155FA0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:13:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA5AE30565FC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CDC83B38B1;
-	Mon, 23 Mar 2026 14:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 614793AE6E1;
+	Mon, 23 Mar 2026 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fA8YyF7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MG9UdfQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E26A3B38AB;
-	Mon, 23 Mar 2026 14:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF4826D4F9;
+	Mon, 23 Mar 2026 14:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275124; cv=none; b=s6c0hHaMT3WYe20302LQOrpoR0eU3jfWi2gxRSQt2vpFp8qbK+DHuhb8fzj5Y+KC+GSo88nhZjs5uPY4AOlWaq9eFr2NbmpqucRF7cm3e8qNV629mkGM+y8A6gxDxrSh5aPjxFVlpA764ffMLtDGJ2MQTPv83zNWL05/gP0QoOk=
+	t=1774277666; cv=none; b=V1XmoC5sFZJ1DTlvxaHdMHRSxhG9PLRqEeZjCBUT/LIz3F7gs8UzfyZ8RjtK2hMRnYC1kvz8ld0pv8XnLJT9F5s6MXj4Q42GCpM9aQPfQBc7er2Sh5sp1WtV+jLNzcCzRwGM7HliefhXo96Xu/AMUFmlJgs7Ln363bNw6AI20zY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275124; c=relaxed/simple;
-	bh=TxJ2kHfdLrp9rzZ4NnjXtlqtCYRuraOsrrmHgKpaMs8=;
+	s=arc-20240116; t=1774277666; c=relaxed/simple;
+	bh=DaG3kds4llIRCMnJgDmuUbsAGQS79mY5/fVki3d9gcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h1AHF1ArjMJpx76oXJJLaVcU1WrOfv8A01d0xsOMyVa2PXvzj040KiuNg0ai5PE0p5ANpQa+fd7ur7wdWXDpxzUM/+vXB/E2boHaV3HKg9bTHpccYps/lskAY2yZa2jO4Hq7wFWhDwf6UXVg8UhuoeTzvPVU78NBVwMmp1yz5jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fA8YyF7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE358C2BCB1;
-	Mon, 23 Mar 2026 14:12:03 +0000 (UTC)
+	 MIME-Version; b=mTiqSHnp4ZmWV4NO07c4f6lYVy/rf+FiV+qb3r29BojvqPYCH5VQF7nbw3Cxj90ygtU0ZAFKEmTLHAZI3eYnTrn1mKBz6ou1qRwNtpE39tqRSHRfGeRsvArIqmOlyfwY7mkVSGWHf4rdinrcQ0X70CaTFxkO/hlUshFKCXYbn24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MG9UdfQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05E8C2BC9E;
+	Mon, 23 Mar 2026 14:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275124;
-	bh=TxJ2kHfdLrp9rzZ4NnjXtlqtCYRuraOsrrmHgKpaMs8=;
+	s=korg; t=1774277666;
+	bh=DaG3kds4llIRCMnJgDmuUbsAGQS79mY5/fVki3d9gcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fA8YyF7Yns1J647uYICfgtCwiZE4M6ptrJ/Y2txZIsxcUdulhl0uQXgSaJHiiYuyj
-	 5ZGTEEeu6fFCj7kaPl0Fkqp4UkYeZGqieoUrNzUtHJR6NPzUoR8Ht+F7x0ajz1741R
-	 2TIscvE9pq0kox7DjRzq5eEPwjjByDOv8SBRDeVg=
+	b=MG9UdfQ0DH6bAJqhZjUQAl2bQBD4D7V3/xcqORzI/OkmsHPHADCLyGkHK2QzFUWCe
+	 0ZxA3/o1bsBM6QSS6eoBPgbcDgLp/fryuK/9thCqPwjMPOLc/ohT8d7U4+IQ2kSDgh
+	 Y4459mym8gpU983smGX1RQ84vd+6qMc6a0A5kSpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Paul Walmsley <pjw@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/481] drm/vmwgfx: Return the correct value in vmw_translate_ptr functions
-Date: Mon, 23 Mar 2026 14:39:44 +0100
-Message-ID: <20260323134525.318682372@linuxfoundation.org>
+Subject: [PATCH 6.6 065/567] mailbox: Allow controller specific mapping using fwnode
+Date: Mon, 23 Mar 2026 14:39:45 +0100
+Message-ID: <20260323134535.433162038@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,83 +71,201 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228437-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228976-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.intel.com,ventanamicro.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.944];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 890402F49BA
+X-Rspamd-Queue-Id: 6BA102F5E75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit 5023ca80f9589295cb60735016e39fc5cc714243 ]
+[ Upstream commit ba879dfc0574878f3e08f217b2b4fdf845c426c0 ]
 
-Before the referenced fixes these functions used a lookup function that
-returned a pointer. This was changed to another lookup function that
-returned an error code with the pointer becoming an out parameter.
+Introduce optional fw_node() callback which allows a mailbox controller
+driver to provide controller specific mapping using fwnode.
 
-The error path when the lookup failed was not changed to reflect this
-change and the code continued to return the PTR_ERR of the now
-uninitialized pointer. This could cause the vmw_translate_ptr functions
-to return success when they actually failed causing further uninitialized
-and OOB accesses.
+The Linux OF framework already implements fwnode operations for the
+Linux DD framework so the fw_xlate() callback works fine with device
+tree as well.
 
-Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
-Fixes: a309c7194e8a ("drm/vmwgfx: Remove rcu locks from user resources")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Reviewed-by: Zack Rusin <zack.rusin@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/20260113175357.129285-1-ian.forbes@broadcom.com
+Acked-by: Jassi Brar <jassisinghbrar@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250818040920.272664-6-apatel@ventanamicro.com
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+Stable-dep-of: fcd7f96c7836 ("mailbox: Prevent out-of-bounds access in fw_mbox_index_xlate()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mailbox/mailbox.c          | 65 ++++++++++++++++++------------
+ include/linux/mailbox_controller.h |  3 ++
+ 2 files changed, 43 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index d8cc99ef7e2a0..34b9161ec7e81 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1156,7 +1156,7 @@ static int vmw_translate_mob_ptr(struct vmw_private *dev_priv,
- 	ret = vmw_user_bo_lookup(sw_context->filp, handle, &vmw_bo);
- 	if (ret != 0) {
- 		drm_dbg(&dev_priv->drm, "Could not find or use MOB buffer.\n");
--		return PTR_ERR(vmw_bo);
-+		return ret;
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 7dcbca48d1a0f..892aa0a048e0f 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -15,6 +15,7 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/of.h>
++#include <linux/property.h>
+ #include <linux/spinlock.h>
+ 
+ #include "mailbox.h"
+@@ -396,34 +397,56 @@ EXPORT_SYMBOL_GPL(mbox_bind_client);
+  */
+ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
+ {
+-	struct device *dev = cl->dev;
++	struct fwnode_reference_args fwspec;
++	struct fwnode_handle *fwnode;
+ 	struct mbox_controller *mbox;
+ 	struct of_phandle_args spec;
+ 	struct mbox_chan *chan;
++	struct device *dev;
++	unsigned int i;
+ 	int ret;
+ 
+-	if (!dev || !dev->of_node) {
+-		pr_debug("%s: No owner device node\n", __func__);
++	dev = cl->dev;
++	if (!dev) {
++		pr_debug("No owner device\n");
+ 		return ERR_PTR(-ENODEV);
  	}
- 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo, true, false);
- 	tmp_bo = vmw_bo;
-@@ -1211,7 +1211,7 @@ static int vmw_translate_guest_ptr(struct vmw_private *dev_priv,
- 	ret = vmw_user_bo_lookup(sw_context->filp, handle, &vmw_bo);
- 	if (ret != 0) {
- 		drm_dbg(&dev_priv->drm, "Could not find or use GMR region.\n");
--		return PTR_ERR(vmw_bo);
-+		return ret;
+ 
+-	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
+-					 index, &spec);
++	fwnode = dev_fwnode(dev);
++	if (!fwnode) {
++		dev_dbg(dev, "No owner fwnode\n");
++		return ERR_PTR(-ENODEV);
++	}
++
++	ret = fwnode_property_get_reference_args(fwnode, "mboxes", "#mbox-cells",
++						 0, index, &fwspec);
+ 	if (ret) {
+-		dev_err(dev, "%s: can't parse \"mboxes\" property\n", __func__);
++		dev_err(dev, "%s: can't parse \"%s\" property\n", __func__, "mboxes");
+ 		return ERR_PTR(ret);
  	}
- 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo, false, false);
- 	tmp_bo = vmw_bo;
+ 
++	spec.np = to_of_node(fwspec.fwnode);
++	spec.args_count = fwspec.nargs;
++	for (i = 0; i < spec.args_count; i++)
++		spec.args[i] = fwspec.args[i];
++
+ 	scoped_guard(mutex, &con_mutex) {
+ 		chan = ERR_PTR(-EPROBE_DEFER);
+-		list_for_each_entry(mbox, &mbox_cons, node)
+-			if (mbox->dev->of_node == spec.np) {
+-				chan = mbox->of_xlate(mbox, &spec);
+-				if (!IS_ERR(chan))
+-					break;
++		list_for_each_entry(mbox, &mbox_cons, node) {
++			if (device_match_fwnode(mbox->dev, fwspec.fwnode)) {
++				if (mbox->fw_xlate) {
++					chan = mbox->fw_xlate(mbox, &fwspec);
++					if (!IS_ERR(chan))
++						break;
++				} else if (mbox->of_xlate) {
++					chan = mbox->of_xlate(mbox, &spec);
++					if (!IS_ERR(chan))
++						break;
++				}
+ 			}
++		}
+ 
+-		of_node_put(spec.np);
++		fwnode_handle_put(fwspec.fwnode);
+ 
+ 		if (IS_ERR(chan))
+ 			return chan;
+@@ -440,15 +463,8 @@ EXPORT_SYMBOL_GPL(mbox_request_channel);
+ struct mbox_chan *mbox_request_channel_byname(struct mbox_client *cl,
+ 					      const char *name)
+ {
+-	struct device_node *np = cl->dev->of_node;
+-	int index;
+-
+-	if (!np) {
+-		dev_err(cl->dev, "%s() currently only supports DT\n", __func__);
+-		return ERR_PTR(-EINVAL);
+-	}
++	int index = device_property_match_string(cl->dev, "mbox-names", name);
+ 
+-	index = of_property_match_string(np, "mbox-names", name);
+ 	if (index < 0) {
+ 		dev_err(cl->dev, "%s() could not locate channel named \"%s\"\n",
+ 			__func__, name);
+@@ -485,9 +501,8 @@ void mbox_free_channel(struct mbox_chan *chan)
+ }
+ EXPORT_SYMBOL_GPL(mbox_free_channel);
+ 
+-static struct mbox_chan *
+-of_mbox_index_xlate(struct mbox_controller *mbox,
+-		    const struct of_phandle_args *sp)
++static struct mbox_chan *fw_mbox_index_xlate(struct mbox_controller *mbox,
++					     const struct fwnode_reference_args *sp)
+ {
+ 	int ind = sp->args[0];
+ 
+@@ -540,8 +555,8 @@ int mbox_controller_register(struct mbox_controller *mbox)
+ 		spin_lock_init(&chan->lock);
+ 	}
+ 
+-	if (!mbox->of_xlate)
+-		mbox->of_xlate = of_mbox_index_xlate;
++	if (!mbox->fw_xlate && !mbox->of_xlate)
++		mbox->fw_xlate = fw_mbox_index_xlate;
+ 
+ 	scoped_guard(mutex, &con_mutex)
+ 		list_add_tail(&mbox->node, &mbox_cons);
+diff --git a/include/linux/mailbox_controller.h b/include/linux/mailbox_controller.h
+index 5fb0b65f45a2c..b91379922cb33 100644
+--- a/include/linux/mailbox_controller.h
++++ b/include/linux/mailbox_controller.h
+@@ -66,6 +66,7 @@ struct mbox_chan_ops {
+  *			no interrupt rises. Ignored if 'txdone_irq' is set.
+  * @txpoll_period:	If 'txdone_poll' is in effect, the API polls for
+  *			last TX's status after these many millisecs
++ * @fw_xlate:		Controller driver specific mapping of channel via fwnode
+  * @of_xlate:		Controller driver specific mapping of channel via DT
+  * @poll_hrt:		API private. hrtimer used to poll for TXDONE on all
+  *			channels.
+@@ -79,6 +80,8 @@ struct mbox_controller {
+ 	bool txdone_irq;
+ 	bool txdone_poll;
+ 	unsigned txpoll_period;
++	struct mbox_chan *(*fw_xlate)(struct mbox_controller *mbox,
++				      const struct fwnode_reference_args *sp);
+ 	struct mbox_chan *(*of_xlate)(struct mbox_controller *mbox,
+ 				      const struct of_phandle_args *sp);
+ 	/* Internal to API */
 -- 
 2.51.0
 
