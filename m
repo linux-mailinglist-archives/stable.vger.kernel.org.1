@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-228354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229858-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MJHQIppNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228354-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:34 +0100
+	id 8D+XHwduwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229858-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDEDC2F47B4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52E9B2F8BBE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 34E65313E57C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BEAE931B9227
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465E7286417;
-	Mon, 23 Mar 2026 14:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6778A28504F;
+	Mon, 23 Mar 2026 16:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8EJU8BO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F62tIuWt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E53AE1AA;
-	Mon, 23 Mar 2026 14:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A41D37B02A;
+	Mon, 23 Mar 2026 16:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274892; cv=none; b=mg1ZD8wDEOykda5a5AlVMBLktBC2YB79ZkYmvcaH9ltHARlBpNduL4Xgrf8CoW3ZDaQ7vJqDQ1ZmNm+QWSgb9hyF1HesxzVY7kvQYZeXepD5f/SpKjALo2MdHjxo95S4rrXdRWLKZMyIccw8dnXRrqSjTt6IENm6ZKiRLXrdqTE=
+	t=1774283052; cv=none; b=Y3KEbr760v7fTd+i71tEZIWJY/A9R/6EJ9SpEcuCdBS1TiNb48buG9TD+LVAJubuySgd3vtI3fmpMDpdO2TVaw728TvK+Z2jI2r//IpiO7+O5PeQZyIg9s/BSpRM1258SB3Rwe4LCTWKMKECa00vNZ67ORJiaClusrHlGv8Mlto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274892; c=relaxed/simple;
-	bh=cjj+fQDThn4/P3t0RELi7ypLOWVmSucd80UqSTfIo1I=;
+	s=arc-20240116; t=1774283052; c=relaxed/simple;
+	bh=o56kMI09mB9WgjgJK7ZYMNyI+xgsBAruDWdnhmjkBcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWnIHXBqf3IvaJjr7qBPYr8ear+k1B1DVcQ/y2X4lFWnWC2oTsdq9cXG3L83dyFkhUXVn1UO2N3ZkAz3YLt4FKOwAz35DEbjNhc2dIBAxSLKNT0KOnQQQZLh47rgdirCKfXYJeDSxzRhX30TAhS1an5RxeN3dlcaXbzQzAKOpUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8EJU8BO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90AD8C2BCB1;
-	Mon, 23 Mar 2026 14:08:11 +0000 (UTC)
+	 MIME-Version; b=HHfqNZuw//HXf2SKcREMoDi6kVzHXhpbOrfEGHDPWzXnez2mOMhcsiU+S+CxMOyrIvHqI+GVcUxXOouN/CkaaemrQJHhzybEtzj2Ox5LDYlhOIxgVX2wst3FCJIF6+jBNaK0V+p+fepVaXnheHeBnpL/VxU4GwSElf9tBpF/n9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F62tIuWt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87F0C2BC9E;
+	Mon, 23 Mar 2026 16:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274891;
-	bh=cjj+fQDThn4/P3t0RELi7ypLOWVmSucd80UqSTfIo1I=;
+	s=korg; t=1774283052;
+	bh=o56kMI09mB9WgjgJK7ZYMNyI+xgsBAruDWdnhmjkBcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8EJU8BOfTWuFDUlAh8ZGn1PBl+3/0e1Q+2wTyg0I78BCr5h9FdJmib5OWYA+45rv
-	 PYWAsPpedM5iOeLqxGFE57wOzyI694C5GhTQCgMwgZnX8tqMpWwRilGXgIeD1/qWNZ
-	 MSMH76GLoKm1xNmwoooVeCXcIhcPtnh5U9jAO+oM=
+	b=F62tIuWtc8pOXCp7JUqAzyccIZg0Po5QteUItjnFRQEUo+N5RxKlyFDDSjgHlMGbu
+	 yyVNnjTYlLUnU/H3A039zLZ/wZVW19szP7Y6UZy128xgpEoi5eECUK70W4ASIpEnST
+	 /QLAR2tj+j7ew/LLg+/1pvb6ramtIDEo3nBLu38I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 146/212] PM: runtime: Fix a race condition related to device removal
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Francois Romieu <romieu@fr.zoreil.com>,
+	Breno Leitao <leitao@debian.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jan Kiszka <jan.kiszka@siemens.com>
+Subject: [PATCH 6.1 385/481] net: Handle napi_schedule() calls from non-interrupt
 Date: Mon, 23 Mar 2026 14:46:07 +0100
-Message-ID: <20260323134508.382399603@linuxfoundation.org>
+Message-ID: <20260323134534.524496181@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,162 +68,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228354-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229858-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6c905ab800f20cf4086c];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DDEDC2F47B4
+X-Rspamd-Queue-Id: 52E9B2F8BBE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 29ab768277617452d88c0607c9299cdc63b6e9ff ]
+commit 77e45145e3039a0fb212556ab3f8c87f54771757 upstream.
 
-The following code in pm_runtime_work() may dereference the dev->parent
-pointer after the parent device has been freed:
+napi_schedule() is expected to be called either:
 
-	/* Maybe the parent is now able to suspend. */
-	if (parent && !parent->power.ignore_children) {
-		spin_unlock(&dev->power.lock);
+* From an interrupt, where raised softirqs are handled on IRQ exit
 
-		spin_lock(&parent->power.lock);
-		rpm_idle(parent, RPM_ASYNC);
-		spin_unlock(&parent->power.lock);
+* From a softirq disabled section, where raised softirqs are handled on
+  the next call to local_bh_enable().
 
-		spin_lock(&dev->power.lock);
-	}
+* From a softirq handler, where raised softirqs are handled on the next
+  round in do_softirq(), or further deferred to a dedicated kthread.
 
-Fix this by inserting a flush_work() call in pm_runtime_remove().
+Other bare tasks context may end up ignoring the raised NET_RX vector
+until the next random softirq handling opportunity, which may not
+happen before a while if the CPU goes idle afterwards with the tick
+stopped.
 
-Without this patch blktest block/001 triggers the following complaint
-sporadically:
+Such "misuses" have been detected on several places thanks to messages
+of the kind:
 
-BUG: KASAN: slab-use-after-free in lock_acquire+0x70/0x160
-Read of size 1 at addr ffff88812bef7198 by task kworker/u553:1/3081
-Workqueue: pm pm_runtime_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x61/0x80
- print_address_description.constprop.0+0x8b/0x310
- print_report+0xfd/0x1d7
- kasan_report+0xd8/0x1d0
- __kasan_check_byte+0x42/0x60
- lock_acquire.part.0+0x38/0x230
- lock_acquire+0x70/0x160
- _raw_spin_lock+0x36/0x50
- rpm_suspend+0xc6a/0xfe0
- rpm_idle+0x578/0x770
- pm_runtime_work+0xee/0x120
- process_one_work+0xde3/0x1410
- worker_thread+0x5eb/0xfe0
- kthread+0x37b/0x480
- ret_from_fork+0x6cb/0x920
- ret_from_fork_asm+0x11/0x20
- </TASK>
+	"NOHZ tick-stop error: local softirq work is pending, handler #08!!!"
 
-Allocated by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_alloc_info+0x3d/0x50
- __kasan_kmalloc+0xa0/0xb0
- __kmalloc_noprof+0x311/0x990
- scsi_alloc_target+0x122/0xb60 [scsi_mod]
- __scsi_scan_target+0x101/0x460 [scsi_mod]
- scsi_scan_channel+0x179/0x1c0 [scsi_mod]
- scsi_scan_host_selected+0x259/0x2d0 [scsi_mod]
- store_scan+0x2d2/0x390 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
- do_syscall_64+0xee/0xfc0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
+For example:
 
-Freed by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_free_info+0x3f/0x50
- __kasan_slab_free+0x67/0x80
- kfree+0x225/0x6c0
- scsi_target_dev_release+0x3d/0x60 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_dev_release+0xacf/0x12c0 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_put+0x7f/0xc0 [scsi_mod]
- sdev_store_delete+0xa5/0x120 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
+       __raise_softirq_irqoff
+        __napi_schedule
+        rtl8152_runtime_resume.isra.0
+        rtl8152_resume
+        usb_resume_interface.isra.0
+        usb_resume_both
+        __rpm_callback
+        rpm_callback
+        rpm_resume
+        __pm_runtime_resume
+        usb_autoresume_device
+        usb_remote_wakeup
+        hub_event
+        process_one_work
+        worker_thread
+        kthread
+        ret_from_fork
+        ret_from_fork_asm
 
-Reported-by: Ming Lei <ming.lei@redhat.com>
-Closes: https://lore.kernel.org/all/ZxdNvLNI8QaOfD2d@fedora/
-Reported-by: syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c13942.050a0220.2ff435.000b.GAE@google.com/
-Fixes: 5e928f77a09a ("PM: Introduce core framework for run-time PM of I/O devices (rev. 17)")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260312182720.2776083-1-bvanassche@acm.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+And also:
+
+* drivers/net/usb/r8152.c::rtl_work_func_t
+* drivers/net/netdevsim/netdev.c::nsim_start_xmit
+
+There is a long history of issues of this kind:
+
+	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
+	330068589389 ("idpf: disable local BH when scheduling napi for marker packets")
+	e3d5d70cb483 ("net: lan78xx: fix "softirq work is pending" error")
+	e55c27ed9ccf ("mt76: mt7615: add missing bh-disable around rx napi schedule")
+	c0182aa98570 ("mt76: mt7915: add missing bh-disable around tx napi enable/schedule")
+	970be1dff26d ("mt76: disable BH around napi_schedule() calls")
+	019edd01d174 ("ath10k: sdio: Add missing BH locking around napi_schdule()")
+	30bfec4fec59 ("can: rx-offload: can_rx_offload_threaded_irq_finish(): add new  function to be called from threaded interrupt")
+	e63052a5dd3c ("mlx5e: add add missing BH locking around napi_schdule()")
+	83a0c6e58901 ("i40e: Invoke softirqs after napi_reschedule")
+	bd4ce941c8d5 ("mlx4: Invoke softirqs after napi_reschedule")
+	8cf699ec849f ("mlx4: do not call napi_schedule() without care")
+	ec13ee80145c ("virtio_net: invoke softirqs after __napi_schedule")
+
+This shows that relying on the caller to arrange a proper context for
+the softirqs to be handled while calling napi_schedule() is very fragile
+and error prone. Also fixing them can also prove challenging if the
+caller may be called from different kinds of contexts.
+
+Therefore fix this from napi_schedule() itself with waking up ksoftirqd
+when softirqs are raised from task contexts.
+
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Francois Romieu <romieu@fr.zoreil.com>
+Closes: https://lore.kernel.org/lkml/354a2690-9bbf-4ccb-8769-fa94707a9340@molgen.mpg.de/
+Cc: Breno Leitao <leitao@debian.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250223221708.27130-1-frederic@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/core/dev.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index e882b5269ebec..6980a8dfced2c 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1896,6 +1896,7 @@ void pm_runtime_reinit(struct device *dev)
- void pm_runtime_remove(struct device *dev)
- {
- 	__pm_runtime_disable(dev, false);
-+	flush_work(&dev->power.work);
- 	pm_runtime_reinit(dev);
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4486,7 +4486,7 @@ static inline void ____napi_schedule(str
+ 	}
+ 
+ 	list_add_tail(&napi->poll_list, &sd->poll_list);
+-	__raise_softirq_irqoff(NET_RX_SOFTIRQ);
++	raise_softirq_irqoff(NET_RX_SOFTIRQ);
  }
  
--- 
-2.51.0
-
+ #ifdef CONFIG_RPS
 
 
 
