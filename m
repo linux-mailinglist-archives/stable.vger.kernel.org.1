@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-228526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229102-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6KZMFVtQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228526-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:19 +0100
+	id iAwWAP1rwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229102-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C051B2F4E59
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EEC22F8672
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B693A32277E7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E467531C6D86
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60518175A80;
-	Mon, 23 Mar 2026 14:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A711A00F0;
+	Mon, 23 Mar 2026 15:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/rp3xeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwmgrBiQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214B6365A0A;
-	Mon, 23 Mar 2026 14:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079FC1A3029;
+	Mon, 23 Mar 2026 15:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275365; cv=none; b=Ve0swcj4RjqjErN6sbH5mySVc8GjCbG+JFr2w4zeeJh/LBLNTc8+kQvgvPdYqUAinCkFtwS48x/c9O0TN7uW+iprL4wLNE8+ahQVrTtD6FRz1xzZwoCx3nejX+peNkgbwVsiWWCG1p3snjCYLNLHzH3cObhDclOak6pIh7v2aOA=
+	t=1774278066; cv=none; b=GmFkclqxXEPkguEpGbvf2X3BOM6NcDoli9hTK1WgJ55EIk684W00r7cx07kUetHXGBZ/EYRNdYxUNg1nORM6nhq+yvMwuQAkz6f0OBOFwDQIMJzB7VpnPeGmeTQTD2I/tiH/+qvWVNXBoJyFxJira0E14+j9IxG188PE+YgHrVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275365; c=relaxed/simple;
-	bh=VGBjdvAwjcQbIzoncVS28EVFedHUwZn1LDt7iImXrj0=;
+	s=arc-20240116; t=1774278066; c=relaxed/simple;
+	bh=eOTB0lwWo9YsLhyDv9uywH3EwYGUJVCmLZcLBGYeEDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hhH95FTKIRS8295b71y2N6uzv8ckzlIpHUiHTgVO+QG6fD0Pu3hAhd3CNmM/lUd5prKZTwdpRbVb+QdL6NMEmeAxl9V74Fvdn8re5x3vkxO5y1yWIFhtsUDluak668nHKTrFKnhPHx0htS+MLrrnBsVAg7H/xMMfHKQ6gdt0u2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/rp3xeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF35C4CEF7;
-	Mon, 23 Mar 2026 14:16:04 +0000 (UTC)
+	 MIME-Version; b=aXI7x57JWF/Q22fSh/v6UZH0UrucPiybf/KrvCzpwi0wbYYJ/jhYKJieAztINBIMz0hrlh7a2QJaECEiQBJfXRKIhe+AS4CUpkhRsd4N8BCOYWh+0C9NNgKi701+Hy2aldX0StdMFalfTpuARPDzOMTGN7l3QzvRYIGnRA+aIbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwmgrBiQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8013EC4CEF7;
+	Mon, 23 Mar 2026 15:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275365;
-	bh=VGBjdvAwjcQbIzoncVS28EVFedHUwZn1LDt7iImXrj0=;
+	s=korg; t=1774278065;
+	bh=eOTB0lwWo9YsLhyDv9uywH3EwYGUJVCmLZcLBGYeEDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/rp3xehSkNjyaGoW21zLM5yzFc9sSBUClLzf1D/ue3HaPyFFBRkpBtA9PVPOtk30
-	 S/uYf0/nccZyNdD6jtsMh75iMYDHlx7qsFaZfmSwHt0QP3eUtUzkZgsnYcvk92BlYX
-	 ACcz3HuOyDbY+m5h3LlV8nRtcslvjmbwci3Woclo=
+	b=QwmgrBiQTH5UvwSdzxG7wxf1V+91sRBlXlpMY0utQcyHGO86ynghVx9BdvwngW+J9
+	 10uznwMx0yDHfKY4hR3pHM8J41o0hfjC8FHDcPRp1sAkoV/63SjaoIEfUfKOFswH9w
+	 jcQLysnQqG3QQypbIH5djy6tLY3ZBUK4zTz1SmQc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Shi <cshi008@fiu.edu>,
-	Weidong Zhu <weizhu@fiu.edu>,
-	Dave Tian <daveti@purdue.edu>,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Keith Busch <kbusch@kernel.org>,
+	syzbot+5a287bcdc08104bc3132@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/460] nvme-pci: Fix slab-out-of-bounds in nvme_dbbuf_set
+Subject: [PATCH 6.6 148/567] bpf/bonding: reject vlan+srcmac xmit_hash_policy change when XDP is loaded
 Date: Mon, 23 Mar 2026 14:41:08 +0100
-Message-ID: <20260323134528.462762171@linuxfoundation.org>
+Message-ID: <20260323134537.494378614@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,162 +64,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.34 / 15.00];
-	SEM_URIBL(3.50)[purdue.edu:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228526-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	NEURAL_SPAM(0.00)[0.775];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MIME_TRACE(0.00)[0:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	R_SPF_ALLOW(0.00)[+ip6:2600:3c04:e001:36c::/64:c];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229102-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: C051B2F4E59
+	TAGGED_RCPT(0.00)[stable,5a287bcdc08104bc3132];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4EEC22F8672
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit b4e78f1427c7d6859229ae9616df54e1fc05a516 ]
+[ Upstream commit 479d589b40b836442bbdadc3fdb37f001bb67f26 ]
 
-dev->online_queues is a count incremented in nvme_init_queue. Thus,
-valid indices are 0 through dev->online_queues − 1.
+bond_option_mode_set() already rejects mode changes that would make a
+loaded XDP program incompatible via bond_xdp_check().  However,
+bond_option_xmit_hash_policy_set() has no such guard.
 
-This patch fixes the loop condition to ensure the index stays within the
-valid range. Index 0 is excluded because it is the admin queue.
+For 802.3ad and balance-xor modes, bond_xdp_check() returns false when
+xmit_hash_policy is vlan+srcmac, because the 802.1q payload is usually
+absent due to hardware offload.  This means a user can:
 
-KASAN splat:
+1. Attach a native XDP program to a bond in 802.3ad/balance-xor mode
+   with a compatible xmit_hash_policy (e.g. layer2+3).
+2. Change xmit_hash_policy to vlan+srcmac while XDP remains loaded.
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
-BUG: KASAN: slab-out-of-bounds in nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
-Read of size 2 at addr ffff88800592a574 by task kworker/u8:5/74
+This leaves bond->xdp_prog set but bond_xdp_check() now returning false
+for the same device.  When the bond is later destroyed, dev_xdp_uninstall()
+calls bond_xdp_set(dev, NULL, NULL) to remove the program, which hits
+the bond_xdp_check() guard and returns -EOPNOTSUPP, triggering:
 
-CPU: 0 UID: 0 PID: 74 Comm: kworker/u8:5 Not tainted 6.19.0-dirty #10 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Workqueue: nvme-reset-wq nvme_reset_work
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0xea/0x150 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0xce/0x5d0 mm/kasan/report.c:482
- kasan_report+0xdc/0x110 mm/kasan/report.c:595
- __asan_report_load2_noabort+0x18/0x20 mm/kasan/report_generic.c:379
- nvme_dbbuf_free drivers/nvme/host/pci.c:377 [inline]
- nvme_dbbuf_set+0x39c/0x400 drivers/nvme/host/pci.c:404
- nvme_reset_work+0x36b/0x8c0 drivers/nvme/host/pci.c:3252
- process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
- kthread+0x41a/0x930 kernel/kthread.c:463
- ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
+WARN_ON(dev_xdp_install(dev, mode, bpf_op, NULL, 0, NULL))
 
-Allocated by task 34 on cpu 1 at 4.241550s:
- kasan_save_stack+0x2c/0x60 mm/kasan/common.c:57
- kasan_save_track+0x1c/0x70 mm/kasan/common.c:78
- kasan_save_alloc_info+0x3c/0x50 mm/kasan/generic.c:570
- poison_kmalloc_redzone mm/kasan/common.c:398 [inline]
- __kasan_kmalloc+0xb5/0xc0 mm/kasan/common.c:415
- kasan_kmalloc include/linux/kasan.h:263 [inline]
- __do_kmalloc_node mm/slub.c:5657 [inline]
- __kmalloc_node_noprof+0x2bf/0x8d0 mm/slub.c:5663
- kmalloc_array_node_noprof include/linux/slab.h:1075 [inline]
- nvme_pci_alloc_dev drivers/nvme/host/pci.c:3479 [inline]
- nvme_probe+0x2f1/0x1820 drivers/nvme/host/pci.c:3534
- local_pci_probe+0xef/0x1c0 drivers/pci/pci-driver.c:324
- pci_call_probe drivers/pci/pci-driver.c:392 [inline]
- __pci_device_probe drivers/pci/pci-driver.c:417 [inline]
- pci_device_probe+0x743/0x920 drivers/pci/pci-driver.c:451
- call_driver_probe drivers/base/dd.c:583 [inline]
- really_probe+0x29b/0xb70 drivers/base/dd.c:661
- __driver_probe_device+0x3b0/0x4a0 drivers/base/dd.c:803
- driver_probe_device+0x56/0x1f0 drivers/base/dd.c:833
- __driver_attach_async_helper+0x155/0x340 drivers/base/dd.c:1159
- async_run_entry_fn+0xa6/0x4b0 kernel/async.c:129
- process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
- kthread+0x41a/0x930 kernel/kthread.c:463
- ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+Fix this by rejecting xmit_hash_policy changes to vlan+srcmac when an
+XDP program is loaded on a bond in 802.3ad or balance-xor mode.
 
-The buggy address belongs to the object at ffff88800592a000
- which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 244 bytes to the right of
- allocated 1152-byte region [ffff88800592a000, ffff88800592a480)
+commit 39a0876d595b ("net, bonding: Disallow vlan+srcmac with XDP")
+introduced bond_xdp_check() which returns false for 802.3ad/balance-xor
+modes when xmit_hash_policy is vlan+srcmac.  The check was wired into
+bond_xdp_set() to reject XDP attachment with an incompatible policy, but
+the symmetric path -- preventing xmit_hash_policy from being changed to an
+incompatible value after XDP is already loaded -- was left unguarded in
+bond_option_xmit_hash_policy_set().
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x5928
-head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
-anon flags: 0xfffffc0000040(head|node=0|zone=1|lastcpupid=0x1fffff)
-page_type: f5(slab)
-raw: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
-raw: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
-head: 000fffffc0000040 ffff888001042000 0000000000000000 dead000000000001
-head: 0000000000000000 0000000000080008 00000000f5000000 0000000000000000
-head: 000fffffc0000003 ffffea0000164a01 00000000ffffffff 00000000ffffffff
-head: ffffffffffffffff 0000000000000000 00000000ffffffff 0000000000000008
-page dumped because: kasan: bad access detected
+Note:
+commit 094ee6017ea0 ("bonding: check xdp prog when set bond mode")
+later added a similar guard to bond_option_mode_set(), but
+bond_option_xmit_hash_policy_set() remained unprotected.
 
-Memory state around the buggy address:
- ffff88800592a400: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88800592a480: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff88800592a500: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                                                             ^
- ffff88800592a580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88800592a600: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-==================================================================
-
-Fixes: 0f0d2c876c96 (nvme: free sq/cq dbbuf pointers when dbbuf set fails)
-Acked-by: Chao Shi <cshi008@fiu.edu>
-Acked-by: Weidong Zhu <weizhu@fiu.edu>
-Acked-by: Dave Tian <daveti@purdue.edu>
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reported-by: syzbot+5a287bcdc08104bc3132@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6995aff6.050a0220.2eeac1.014e.GAE@google.com/T/
+Fixes: 39a0876d595b ("net, bonding: Disallow vlan+srcmac with XDP")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260226080306.98766-2-jiayuan.chen@linux.dev
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c    | 9 +++++++--
+ drivers/net/bonding/bond_options.c | 2 ++
+ include/net/bonding.h              | 1 +
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index b31a2dad361d6..c7d1e9c2b1571 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -343,7 +343,7 @@ static void nvme_dbbuf_set(struct nvme_dev *dev)
- 		/* Free memory and continue on */
- 		nvme_dbbuf_dma_free(dev);
- 
--		for (i = 1; i <= dev->online_queues; i++)
-+		for (i = 1; i < dev->online_queues; i++)
- 			nvme_dbbuf_free(&dev->queues[i]);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 836d7fcac71a1..a2bf7bb12ff7c 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -322,7 +322,7 @@ static bool bond_sk_check(struct bonding *bond)
  	}
  }
+ 
+-bool bond_xdp_check(struct bonding *bond, int mode)
++bool __bond_xdp_check(int mode, int xmit_policy)
+ {
+ 	switch (mode) {
+ 	case BOND_MODE_ROUNDROBIN:
+@@ -333,7 +333,7 @@ bool bond_xdp_check(struct bonding *bond, int mode)
+ 		/* vlan+srcmac is not supported with XDP as in most cases the 802.1q
+ 		 * payload is not in the packet due to hardware offload.
+ 		 */
+-		if (bond->params.xmit_policy != BOND_XMIT_POLICY_VLAN_SRCMAC)
++		if (xmit_policy != BOND_XMIT_POLICY_VLAN_SRCMAC)
+ 			return true;
+ 		fallthrough;
+ 	default:
+@@ -341,6 +341,11 @@ bool bond_xdp_check(struct bonding *bond, int mode)
+ 	}
+ }
+ 
++bool bond_xdp_check(struct bonding *bond, int mode)
++{
++	return __bond_xdp_check(mode, bond->params.xmit_policy);
++}
++
+ /*---------------------------------- VLAN -----------------------------------*/
+ 
+ /* In the following 2 functions, bond_vlan_rx_add_vid and bond_vlan_rx_kill_vid,
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 5a2a935945c4c..b823425ad7f69 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -1546,6 +1546,8 @@ static int bond_option_fail_over_mac_set(struct bonding *bond,
+ static int bond_option_xmit_hash_policy_set(struct bonding *bond,
+ 					    const struct bond_opt_value *newval)
+ {
++	if (bond->xdp_prog && !__bond_xdp_check(BOND_MODE(bond), newval->value))
++		return -EOPNOTSUPP;
+ 	netdev_dbg(bond->dev, "Setting xmit hash policy to %s (%llu)\n",
+ 		   newval->string, newval->value);
+ 	bond->params.xmit_policy = newval->value;
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index 9fb40a5920209..66940d41d4854 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -696,6 +696,7 @@ void bond_debug_register(struct bonding *bond);
+ void bond_debug_unregister(struct bonding *bond);
+ void bond_debug_reregister(struct bonding *bond);
+ const char *bond_mode_name(int mode);
++bool __bond_xdp_check(int mode, int xmit_policy);
+ bool bond_xdp_check(struct bonding *bond, int mode);
+ void bond_setup(struct net_device *bond_dev);
+ unsigned int bond_get_num_tx_queues(void);
 -- 
 2.51.0
 
