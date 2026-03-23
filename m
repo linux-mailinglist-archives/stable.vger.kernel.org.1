@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6DIpJUtpwWmoSwQAu9opvQ
-	(envelope-from <stable+bounces-228811-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:43 +0100
+	id wNcsGKRNwWmxSAQAu9opvQ
+	(envelope-from <stable+bounces-228362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2DC2F808F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:24:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C53892F47DE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C0CEB321CB16
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F20A8302AD24
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5D31A5B84;
-	Mon, 23 Mar 2026 14:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9314F3AEF44;
+	Mon, 23 Mar 2026 14:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpCgl9H0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6RQSq7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D40023AB9D;
-	Mon, 23 Mar 2026 14:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AF33947A6;
+	Mon, 23 Mar 2026 14:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277197; cv=none; b=qnPuHi/Tj4MqGimR1NVLF/UjKqU87WB4HEx0sIuRkr5Qdbu6WtYQmXx+2OJ8sEjGctDPbGpexlKXjpVp7j0nFs9xunLgR2/fipppal4lUczxag1+tqiRK/itnrH8FTajC5EBxpD+tdWBB+hmPG7pUM9k3kDpyvRovwplkHTUJkg=
+	t=1774274912; cv=none; b=GVluT4RU/8q+aceSthhS7whF7c39qP2p/inEkN3mjBpY4N7DBYU0YRm1VAYKlO+J6tsVW3bzOJXCblBj0NTMQUEVeDToRop54cJdFf9i5bR3fXRPQ//GFK4zQBgy79Hjck5sjt1PDibtmJH2tyl69FPGGnZh6NdiIVA4ku1DYao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277197; c=relaxed/simple;
-	bh=Zg7qxLuXwoxeabYhBiuS1Vl/5uKTFJdxOwVrX1+HkYQ=;
+	s=arc-20240116; t=1774274912; c=relaxed/simple;
+	bh=nzjy+XaIGenUDTNQsexW67DG2QRo3PWZlzFg4GQ2fWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdDhAbEm4fN1v81H7KGi/OLfeJRNKO0K1YMKNZS8OTNngTBQAH8Wf6U3RAPDHiml8Lw8Ml4dE+JAEjlXwVz3C+gCeYImqfsa+7J3VoOdkPZTyPEpjIejTanyENZk8rZcuLfKboVxdkjG0801R3Fx8HjvfRNWc66Y9prROdbea04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpCgl9H0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69193C4CEF7;
-	Mon, 23 Mar 2026 14:46:36 +0000 (UTC)
+	 MIME-Version; b=pM53ten5hrEcBTxQ+C6+M3LAvvxC+FD3Tzv/bvCex46+h6AafzSFv4DE8+QJEplocnHVfHIQHxw3S5zWmiTzeqvdhgkio8av16hkdI1JBzIDu0/JiqsCxhyQEVhkXxD7e4d5G6UjBWuws/SSw0ra/QbhNUnsi+2XZJ0qycRLNV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6RQSq7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4EFC4CEF7;
+	Mon, 23 Mar 2026 14:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277196;
-	bh=Zg7qxLuXwoxeabYhBiuS1Vl/5uKTFJdxOwVrX1+HkYQ=;
+	s=korg; t=1774274912;
+	bh=nzjy+XaIGenUDTNQsexW67DG2QRo3PWZlzFg4GQ2fWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XpCgl9H0yaQU2U3dBU/mOQzVbZv/vslvJmfsmRbukkUzTHLG/0xEKdW2x24QfjwFC
-	 gIIro0Qgr1e0f6bgkTTDnFu1SgbWj4qmZNfpoGU5tHfw9263k5Y0zVshqKdUanRAnC
-	 P20xggrS0DI1sKf29Ra/v3FIap8BXkObyhxvR8b0=
+	b=D6RQSq7GeouOUOp4kdw06VnQAe+E4PEnnPJ5Z/TqOKVuryYvqek4GZ5C4VDohlmNK
+	 NWYXX8d85JA/C7eMDCDwtr4GkqDVKbKnohvPUiF18TKSgfyPvenKFZKrzoesNsTR5m
+	 PvQl6bzhIeeEZxnxUAxQwEcocrE4m9j0OQ0YvQ/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 352/460] drm/amdgpu/mmhub2.0: add bounds checking for cid
+	Wang Tao <wangtao554@huawei.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 127/212] Bluetooth: MGMT: Fix list corruption and UAF in command complete handlers
 Date: Mon, 23 Mar 2026 14:45:48 +0100
-Message-ID: <20260323134535.202637884@linuxfoundation.org>
+Message-ID: <20260323134507.781832641@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +66,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228362-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228811-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 3D2DC2F808F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C53892F47DE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Wang Tao <wangtao554@huawei.com>
 
-commit 0b26edac4ac5535df1f63e6e8ab44c24fe1acad7 upstream.
+[ Upstream commit 17f89341cb4281d1da0e2fb0de5406ab7c4e25ef ]
 
-The value should never exceed the array size as those
-are the only values the hardware is expected to return,
-but add checks anyway.
+Commit 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs") introduced
+mgmt_pending_valid(), which not only validates the pending command but
+also unlinks it from the pending list if it is valid. This change in
+semantics requires updates to several completion handlers to avoid list
+corruption and memory safety issues.
 
-Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e064cef4b53552602bb6ac90399c18f662f3cacd)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch addresses two left-over issues from the aforementioned rework:
+
+1. In mgmt_add_adv_patterns_monitor_complete(), mgmt_pending_remove()
+is replaced with mgmt_pending_free() in the success path. Since
+mgmt_pending_valid() already unlinks the command at the beginning of
+the function, calling mgmt_pending_remove() leads to a double list_del()
+and subsequent list corruption/kernel panic.
+
+2. In set_mesh_complete(), the use of mgmt_pending_foreach() in the error
+path is removed. Since the current command is already unlinked by
+mgmt_pending_valid(), this foreach loop would incorrectly target other
+pending mesh commands, potentially freeing them while they are still being
+processed concurrently (leading to UAFs). The redundant mgmt_cmd_status()
+is also simplified to use cmd->opcode directly.
+
+Fixes: 302a1f674c00 ("Bluetooth: MGMT: Fix possible UAFs")
+Signed-off-by: Wang Tao <wangtao554@huawei.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/bluetooth/mgmt.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-@@ -154,14 +154,17 @@ mmhub_v2_0_print_l2_protection_fault_sta
- 	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
- 	case IP_VERSION(2, 0, 0):
- 	case IP_VERSION(2, 0, 2):
--		mmhub_cid = mmhub_client_ids_navi1x[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_navi1x) ?
-+			mmhub_client_ids_navi1x[cid][rw] : NULL;
- 		break;
- 	case IP_VERSION(2, 1, 0):
- 	case IP_VERSION(2, 1, 1):
--		mmhub_cid = mmhub_client_ids_sienna_cichlid[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_sienna_cichlid) ?
-+			mmhub_client_ids_sienna_cichlid[cid][rw] : NULL;
- 		break;
- 	case IP_VERSION(2, 1, 2):
--		mmhub_cid = mmhub_client_ids_beige_goby[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_beige_goby) ?
-+			mmhub_client_ids_beige_goby[cid][rw] : NULL;
- 		break;
- 	default:
- 		mmhub_cid = NULL;
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index ee2dd26b1b82b..1a270f0b17d9e 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2183,10 +2183,7 @@ static void set_mesh_complete(struct hci_dev *hdev, void *data, int err)
+ 	sk = cmd->sk;
+ 
+ 	if (status) {
+-		mgmt_cmd_status(cmd->sk, hdev->id, MGMT_OP_SET_MESH_RECEIVER,
+-				status);
+-		mgmt_pending_foreach(MGMT_OP_SET_MESH_RECEIVER, hdev, true,
+-				     cmd_status_rsp, &status);
++		mgmt_cmd_status(cmd->sk, hdev->id, cmd->opcode, status);
+ 		goto done;
+ 	}
+ 
+@@ -5295,7 +5292,7 @@ static void mgmt_add_adv_patterns_monitor_complete(struct hci_dev *hdev,
+ 
+ 	mgmt_cmd_complete(cmd->sk, cmd->hdev->id, cmd->opcode,
+ 			  mgmt_status(status), &rp, sizeof(rp));
+-	mgmt_pending_remove(cmd);
++	mgmt_pending_free(cmd);
+ 
+ 	hci_dev_unlock(hdev);
+ 	bt_dev_dbg(hdev, "add monitor %d complete, status %d",
+-- 
+2.51.0
+
 
 
 
