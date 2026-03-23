@@ -1,167 +1,211 @@
-Return-Path: <stable+bounces-227876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oL6dHIahwGmLJQQAu9opvQ
-	(envelope-from <stable+bounces-227876-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 03:12:22 +0100
+	id +IAsGWeowGm6JgQAu9opvQ
+	(envelope-from <stable+bounces-227877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 03:41:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9CEA2EBDFB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 03:12:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F08412EBF90
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 03:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4B6143006B55
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 02:12:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E69C3300877C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 02:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EE71EDA0F;
-	Mon, 23 Mar 2026 02:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B2C248166;
+	Mon, 23 Mar 2026 02:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="jX4e9TlB"
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="TO0MjWsd"
 X-Original-To: stable@vger.kernel.org
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from smtp134-33.sina.com.cn (smtp134-33.sina.com.cn [180.149.134.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430302BD11
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 02:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ECC522B8AB
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 02:40:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=180.149.134.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774231938; cv=none; b=ljBRu9sbsI1bTTv3tq/hpcy1MA3qpsv2zQP3tOvFo6bcz8GSE4aVIRn/voRIUr8/pT1i5iST6gPMzDP1mWgTJZk1RmHkuVxPjaHG7Xt6MrY+kxlp3HJxS7VH/PtTU8z4PkG9O9actJ9ZIDGSHxQhVff3jkCreuEqVdZaqfYgYRs=
+	t=1774233660; cv=none; b=m8f1SppO231up+R4PTvJQUw3drcHRA+qLhkSD3+fbU8JZ3npaY0638zY65IB4UV0cI9Thq31lqgHWhnKMvs1WYOnfzsK9APD/lh2meh2HgxVIx3FsHQRLQVnoe8+Gw7wvDfVtbO2gucjdn896UOLG1gjsmtmYCMnuR6c/kPLcMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774231938; c=relaxed/simple;
-	bh=r6at4SgkmZdNH8kd903Yyjgxb4jv3rcOAS54r37TeVE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=caBODTxDn7FigZCN/YvLb5BJEF9/Yej80BMZFNDcUbCqi/VWOQ6hRwHquHU+4sr1ufJFCsE0EEvvE+C7tdvDHdugVo8UTdvCwTUWI7ohuW5YeitvfWSQexLQ/G6YgCZ4H2LjCqAVAEg1QXBGN/JHxqx/PMCqd5JfFFGHvySy7Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=jX4e9TlB; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <db5ac1d4-9d07-4fdf-8127-b4e5d1a5df1c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1774231935;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7fP+Lbq2mzGcFGL6RZjQPbF6+oL36HH3daBGTHIiwlI=;
-	b=jX4e9TlBHFivYzXhtQeiqJ6WURnOVA+1u2ohki/UxH3ZMJZExRqRLN7BhPgdnOj+C6BT/k
-	rbOjjISEO7C59LHl6ktsv8kcVUnD7UIFppBch1S9/3lMJLOy2IYQxtwm69ofZwBWb3YhXo
-	69b5Z0tKw4I/ydVGFd5TRGn9JMhv4iM=
-Date: Mon, 23 Mar 2026 10:12:04 +0800
+	s=arc-20240116; t=1774233660; c=relaxed/simple;
+	bh=hglrARk+G4S1A9SIvuYIKMOw6G8JyaErvJJVq79ULzw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=tIKSl7xSUpTae6FcWPkEVFiA84/y/gxobjJhx/ql46xKXpD4gPy5R3AOHHmyYpLxOUz0BqbkCX8FhdzVjSwgeGTCl4E7hEI7n3iFVBPjED2sh4VNIh3odJ5iXBLUC1uHrJhiFqXGO/W7HHcN1emIzjDNbVjVRwIzN2he7BpKL2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=TO0MjWsd; arc=none smtp.client-ip=180.149.134.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1774233653;
+	bh=6y/PzUO23BdXJACJHrA53tpnwFYEb82yoDUp59wM7q4=;
+	h=From:Subject:Date:Message-Id;
+	b=TO0MjWsdF5gdQyJeF5be7yXJLXXvM8skY+SAnOwVHD8ttq6rU72Wa9n7/WpJuLvKY
+	 4tdSKcm77CRdQOALePLcS0QzYp3D1SJV23I55+QFj4RamiVA3vak4a+rrG2ED2Xq7o
+	 9nkauicTR03nRroeU9lzUr8pQSvo2SCsub0Wn25g=
+X-SMAIL-HELO: pek-lpg-core6.wrs.com
+Received: from unknown (HELO pek-lpg-core6.wrs.com)([60.247.85.88])
+	by sina.com (10.185.250.21) with ESMTP
+	id 69C0A80B000003B8; Mon, 23 Mar 2026 10:40:14 +0800 (CST)
+X-Sender: johnny_haocn@sina.com
+X-Auth-ID: johnny_haocn@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=johnny_haocn@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=johnny_haocn@sina.com
+X-SMAIL-MID: 1703113408658
+X-SMAIL-UIID: BDE1985B73A3483CB67EC241A8A3DFC3-20260323-104014-1
+From: Johnny Hao <johnny_haocn@sina.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 6.1.y] net: clear the dst when changing skb protocol
+Date: Mon, 23 Mar 2026 10:40:06 +0800
+Message-Id: <20260323024006.1764018-1-johnny_haocn@sina.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] mm/memcontrol: fix obj_cgroup leak in
- mem_cgroup_css_online() error path
-To: David Carlier <devnexen@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, stable@vger.kernel.org
-References: <20260322080142.5834-1-devnexen@gmail.com>
- <20260322193631.45457-1-devnexen@gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <20260322193631.45457-1-devnexen@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.dev,none];
+	DMARC_POLICY_ALLOW(-0.50)[sina.com,none];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.dev:s=key1];
+	R_DKIM_ALLOW(-0.20)[sina.com:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227876-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,cmpxchg.org,kernel.org,linux.dev,linux-foundation.org];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,google.com,iogearbox.net,sina.com];
+	TAGGED_FROM(0.00)[bounces-227877-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linux.dev:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[qi.zheng@linux.dev,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux.dev:dkim,linux.dev:mid]
-X-Rspamd-Queue-Id: C9CEA2EBDFB
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[sina.com];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johnny_haocn@sina.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[sina.com:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,iogearbox.net:email]
+X-Rspamd-Queue-Id: F08412EBF90
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+From: Jakub Kicinski <kuba@kernel.org>
 
+[ Upstream commit ba9db6f907ac02215e30128770f85fbd7db2fcf9 ]
 
-On 3/23/26 3:36 AM, David Carlier wrote:
-> When obj_cgroup_alloc() fails partway through the NUMA node loop in
-> mem_cgroup_css_online(), the free_objcg error path drops the extra
-> reference held by pn->orig_objcg but never kills the initial percpu_ref
-> from obj_cgroup_alloc() stored in pn->objcg.
-> 
-> Since css_offline is never called when css_online fails,
-> memcg_reparent_objcgs() never runs, so the percpu_ref_kill() that
-> normally drops this initial reference never executes. The obj_cgroup and
-> its per-cpu ref allocations are leaked.
-> 
-> Clear pn->objcg via rcu_replace_pointer() and add the missing
-> percpu_ref_kill() in the error path, matching the normal teardown
-> sequence in memcg_reparent_objcgs().
-> 
-> Also add a NULL check for pn in __mem_cgroup_free() to prevent a NULL
-> pointer dereference when alloc_mem_cgroup_per_node_info() fails partway
-> through the node loop in mem_cgroup_alloc().
-> 
-> Fixes: 098fad3e1621 ("mm: memcontrol: convert objcg to be per-memcg per-node type")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Carlier <devnexen@gmail.com>
-> ---
->   mm/memcontrol.c | 7 ++++++-
->   1 file changed, 6 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index a47fb68dd65f..00b3bb81aee4 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3936,6 +3936,8 @@ static void __mem_cgroup_free(struct mem_cgroup *memcg)
->   
->   	for_each_node(node) {
->   		struct mem_cgroup_per_node *pn = memcg->nodeinfo[node];
-> +		if (!pn)
-> +			continue;
->   
->   		obj_cgroup_put(pn->orig_objcg);
->   		free_mem_cgroup_per_node_info(pn);
-> @@ -4137,8 +4139,11 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
->   free_objcg:
->   	for_each_node(nid) {
->   		struct mem_cgroup_per_node *pn = memcg->nodeinfo[nid];
+A not-so-careful NAT46 BPF program can crash the kernel
+if it indiscriminately flips ingress packets from v4 to v6:
 
-Nit: A newline character is needed here, otherwise the checkpatch might
-complain.
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
+    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
+    process_backlog (net/core/dev.c:6186:4)
+    napi_poll (net/core/dev.c:6906:9)
+    net_rx_action (net/core/dev.c:7028:13)
+    do_softirq (kernel/softirq.c:462:3)
+    netif_rx (net/core/dev.c:5326:3)
+    dev_loopback_xmit (net/core/dev.c:4015:2)
+    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
+    NF_HOOK (./include/linux/netfilter.h:314:9)
+    ip_mc_output (net/ipv4/ip_output.c:400:5)
+    dst_output (./include/net/dst.h:459:9)
+    ip_local_out (net/ipv4/ip_output.c:130:9)
+    ip_send_skb (net/ipv4/ip_output.c:1496:8)
+    udp_send_skb (net/ipv4/udp.c:1040:8)
+    udp_sendmsg (net/ipv4/udp.c:1328:10)
 
-> +		objcg = rcu_replace_pointer(pn->objcg, NULL, true);
-> +		if (objcg)
-> +			percpu_ref_kill(&objcg->refcnt);
->   
-> -		if (pn && pn->orig_objcg) {
-> +		if (pn->orig_objcg) {
->   			obj_cgroup_put(pn->orig_objcg);
->   			/*
->   			 * Reset pn->orig_objcg to NULL to prevent
+The output interface has a 4->6 program attached at ingress.
+We try to loop the multicast skb back to the sending socket.
+Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
+and changes skb->protocol to v6. We enter ip6_rcv_core which
+tries to use skb_dst(). But the dst is still an IPv4 one left
+after IPv4 mcast output.
 
-Make sense, thanks!
+Clear the dst in all BPF helpers which change the protocol.
+Try to preserve metadata dsts, those may carry non-routing
+metadata.
 
-Acked-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
+Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250610001245.1981782-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ The context change is due to the commit d219df60a70e
+("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+in v6.3 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+---
+ net/core/filter.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-
-
+diff --git a/net/core/filter.c b/net/core/filter.c
+index c177e40e7077..5360fef468b7 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3232,6 +3232,13 @@ static const struct bpf_func_proto bpf_skb_vlan_pop_proto = {
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ };
+ 
++static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
++{
++	skb->protocol = htons(proto);
++	if (skb_valid_dst(skb))
++		skb_dst_drop(skb);
++}
++
+ static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
+ {
+ 	/* Caller already did skb_cow() with len as headroom,
+@@ -3328,7 +3335,7 @@ static int bpf_skb_proto_4_to_6(struct sk_buff *skb)
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IPV6);
++	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3358,7 +3365,7 @@ static int bpf_skb_proto_6_to_4(struct sk_buff *skb)
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IP);
++	bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3545,10 +3552,10 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
+ 		/* Match skb->protocol to new outer l3 protocol */
+ 		if (skb->protocol == htons(ETH_P_IP) &&
+ 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
+-			skb->protocol = htons(ETH_P_IPV6);
++			bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 		else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
+-			skb->protocol = htons(ETH_P_IP);
++			bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	}
+ 
+ 	if (skb_is_gso(skb)) {
+-- 
+2.34.1
 
 
