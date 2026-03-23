@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228755-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +C2cGsNvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229324-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:19 +0100
+	id KHsJA6RWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228755-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85022F8F45
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F122F5BA8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 51D9B337131B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A087D32DD450
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCB937E30F;
-	Mon, 23 Mar 2026 15:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F903AF665;
+	Mon, 23 Mar 2026 14:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtUgDk5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbHtfwSi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A7535957;
-	Mon, 23 Mar 2026 15:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556C433CE9A;
+	Mon, 23 Mar 2026 14:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278759; cv=none; b=VxXatTPU1M9rQhxWS3DJ5g3QraQuAZv+SGuejpdNP5KJJ3RrTmRANPqel9bMcx2TlQnSkwHkMUTKa1OQJ+xhNu94Zbwmz6ntW87bmisogs3c0RiDcWcWsHizsJMC0Kya1zmANxBUaxwPYWeIX+Unzyry8UNjV2J1W62CUdhFFs8=
+	t=1774277036; cv=none; b=TbUIaKkdeHOdGG7d6T6qd6OrX6jHQEX+fWT2lPh6Xh7uyaVmkrpK+ooG1cOTQwxzIZKSinAKxyD+gnSnhtGGo0TDn7tYSqrGpWy0Z0LgVmbDW1QryphJ8TazIe6fMGdM5ry/0iuaUtmJLbksjIWz+S8mq4/esjgVBH4myAAyRBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278759; c=relaxed/simple;
-	bh=SBuRcldFa7m/pSdo9Au6dSFzs3vwMGpbX5ohhyoJHUk=;
+	s=arc-20240116; t=1774277036; c=relaxed/simple;
+	bh=/ARkAOLexPgNkXPce2VzZHqs9EvctgPhe06fXlGPO5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAUL3Eo7EZ1bj5BufAf+iuFyG7q2d6FiBLRhIyRL3sZLOv4dGFevFEIXdK/sXmXg/HbAJx3jZNnU0FmlYWKVqyPF8NeEOKA/fwtUC6g+cyWVrfaP8Vt1upRvvM2kxczsFnHvk70uewZiqQf3oYU+iBzCnjrHdERqKojTqv+OUfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtUgDk5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 122CCC4CEF7;
-	Mon, 23 Mar 2026 15:12:38 +0000 (UTC)
+	 MIME-Version; b=OTmDvzT4x1VdeM1tnqrZ0X6WcN0q4uoOI//89NM0lQrbGLSR7krG8LlxBQNwuU7jgTob7FO81HEKUhBoct3VIoQAlcKI0yTtcpjqRyAIerD9YQrRyBEqOK5tldse2+2muqkJyWKdsChwZVzU8ispvNeHjd4lsSrAZ+V74t/dRXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbHtfwSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5658C4CEF7;
+	Mon, 23 Mar 2026 14:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278759;
-	bh=SBuRcldFa7m/pSdo9Au6dSFzs3vwMGpbX5ohhyoJHUk=;
+	s=korg; t=1774277036;
+	bh=/ARkAOLexPgNkXPce2VzZHqs9EvctgPhe06fXlGPO5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gtUgDk5dbFtsvVVWWPELLrrdnt+etN84CoHzrcQgXzOjiv5WFLLuFwaR+5b73Er+f
-	 QO6UQofg+PK2Uy9Qt+FuNuyKV17nsOqocKXwlEb/rk5R26w0xbR2XnOCgqNX9d9u3z
-	 gK4MBvRWbdxFxqB9DozMO7GORcBvhCAO46N6cyl4=
+	b=xbHtfwSiUnUyte114OYqJxxzogFH103GI22m7ZfAsLPlsUNuhtqYcPNFrYwiUfLnV
+	 XKliB4wzShGIFA1hy1eNg/klPMR77S8Nl9hlgTz5TCx8NzF4sY3FO7QyyoXs0i+aXI
+	 0qYn27lgtbiR6EGqy3DoOLGa79cSlTanEgGh24hk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Natalie Vock <natalie.vock@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 373/567] drm/amd/display: Use GFP_ATOMIC in dc_create_stream_for_sink
-Date: Mon, 23 Mar 2026 14:44:53 +0100
-Message-ID: <20260323134543.057952822@linuxfoundation.org>
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Shubhang Kaushik <shubhang@os.amperecomputing.com>,
+	Eric Hagberg <ehagberg@janestreet.com>
+Subject: [PATCH 6.12 298/460] sched/fair: Fix zero_vruntime tracking
+Date: Mon, 23 Mar 2026 14:44:54 +0100
+Message-ID: <20260323134533.805879358@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +67,248 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229324-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228755-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B85022F8F45
+X-Rspamd-Queue-Id: 65F122F5BA8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Natalie Vock <natalie.vock@gmx.de>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 28dfe4317541e57fe52f9a290394cd29c348228b ]
+commit b3d99f43c72b56cf7a104a364e7fb34b0702828b upstream.
 
-This can be called while preemption is disabled, for example by
-dcn32_internal_validate_bw which is called with the FPU active.
+It turns out that zero_vruntime tracking is broken when there is but a single
+task running. Current update paths are through __{en,de}queue_entity(), and
+when there is but a single task, pick_next_task() will always return that one
+task, and put_prev_set_next_task() will end up in neither function.
 
-Fixes "BUG: scheduling while atomic" messages I encounter on my Navi31
-machine.
+This can cause entity_key() to grow indefinitely large and cause overflows,
+leading to much pain and suffering.
 
-Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit b42dae2ebc5c84a68de63ec4ffdfec49362d53f1)
-Cc: stable@vger.kernel.org
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Furtermore, doing update_zero_vruntime() from __{de,en}queue_entity(), which
+are called from {set_next,put_prev}_entity() has problems because:
+
+ - set_next_entity() calls __dequeue_entity() before it does cfs_rq->curr = se.
+   This means the avg_vruntime() will see the removal but not current, missing
+   the entity for accounting.
+
+ - put_prev_entity() calls __enqueue_entity() before it does cfs_rq->curr =
+   NULL. This means the avg_vruntime() will see the addition *and* current,
+   leading to double accounting.
+
+Both cases are incorrect/inconsistent.
+
+Noting that avg_vruntime is already called on each {en,de}queue, remove the
+explicit avg_vruntime() calls (which removes an extra 64bit division for each
+{en,de}queue) and have avg_vruntime() update zero_vruntime itself.
+
+Additionally, have the tick call avg_vruntime() -- discarding the result, but
+for the side-effect of updating zero_vruntime.
+
+While there, optimize avg_vruntime() by noting that the average of one value is
+rather trivial to compute.
+
+Test case:
+  # taskset -c -p 1 $$
+  # taskset -c 2 bash -c 'while :; do :; done&'
+  # cat /sys/kernel/debug/sched/debug | awk '/^cpu#/ {P=0} /^cpu#2,/ {P=1} {if (P) print $0}' | grep -e zero_vruntime -e "^>"
+
+PRE:
+    .zero_vruntime                 : 31316.407903
+  >R            bash   487     50787.345112   E       50789.145972           2.800000     50780.298364        16     120         0.000000         0.000000         0.000000        /
+    .zero_vruntime                 : 382548.253179
+  >R            bash   487    427275.204288   E      427276.003584           2.800000    427268.157540        23     120         0.000000         0.000000         0.000000        /
+
+POST:
+    .zero_vruntime                 : 17259.709467
+  >R            bash   526     17259.709467   E       17262.509467           2.800000     16915.031624         9     120         0.000000         0.000000         0.000000        /
+    .zero_vruntime                 : 18702.723356
+  >R            bash   526     18702.723356   E       18705.523356           2.800000     18358.045513         9     120         0.000000         0.000000         0.000000        /
+
+Fixes: 79f3f9bedd14 ("sched/eevdf: Fix min_vruntime vs avg_vruntime")
+Reported-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: K Prateek Nayak <kprateek.nayak@amd.com>
+Tested-by: Shubhang Kaushik <shubhang@os.amperecomputing.com>
+Link: https://patch.msgid.link/20260219080624.438854780%40infradead.org
+Tested-by: Eric Hagberg <ehagberg@janestreet.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/fair.c |   84 +++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 57 insertions(+), 27 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -164,7 +164,7 @@ struct dc_stream_state *dc_create_stream
- 	if (sink == NULL)
- 		return NULL;
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -551,6 +551,21 @@ static inline bool entity_before(const s
+ 	return (s64)(a->deadline - b->deadline) < 0;
+ }
  
--	stream = kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
-+	stream = kzalloc(sizeof(struct dc_stream_state), GFP_ATOMIC);
- 	if (stream == NULL)
- 		goto alloc_fail;
++/*
++ * Per avg_vruntime() below, cfs_rq::zero_vruntime is only slightly stale
++ * and this value should be no more than two lag bounds. Which puts it in the
++ * general order of:
++ *
++ *	(slice + TICK_NSEC) << NICE_0_LOAD_SHIFT
++ *
++ * which is around 44 bits in size (on 64bit); that is 20 for
++ * NICE_0_LOAD_SHIFT, another 20 for NSEC_PER_MSEC and then a handful for
++ * however many msec the actual slice+tick ends up begin.
++ *
++ * (disregarding the actual divide-by-weight part makes for the worst case
++ * weight of 2, which nicely cancels vs the fuzz in zero_vruntime not actually
++ * being the zero-lag point).
++ */
+ static inline s64 entity_key(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ {
+ 	return (s64)(se->vruntime - cfs_rq->zero_vruntime);
+@@ -638,39 +653,61 @@ avg_vruntime_sub(struct cfs_rq *cfs_rq,
+ }
  
+ static inline
+-void avg_vruntime_update(struct cfs_rq *cfs_rq, s64 delta)
++void update_zero_vruntime(struct cfs_rq *cfs_rq, s64 delta)
+ {
+ 	/*
+-	 * v' = v + d ==> avg_vruntime' = avg_runtime - d*avg_load
++	 * v' = v + d ==> avg_vruntime' = avg_vruntime - d*avg_load
+ 	 */
+ 	cfs_rq->avg_vruntime -= cfs_rq->avg_load * delta;
++       cfs_rq->zero_vruntime += delta;
+ }
+ 
+ /*
+- * Specifically: avg_runtime() + 0 must result in entity_eligible() := true
++ * Specifically: avg_vruntime() + 0 must result in entity_eligible() := true
+  * For this to be so, the result of this function must have a left bias.
++ *
++ * Called in:
++ *  - place_entity()      -- before enqueue
++ *  - update_entity_lag() -- before dequeue
++ *  - entity_tick()
++ *
++ * This means it is one entry 'behind' but that puts it close enough to where
++ * the bound on entity_key() is at most two lag bounds.
+  */
+ u64 avg_vruntime(struct cfs_rq *cfs_rq)
+ {
+ 	struct sched_entity *curr = cfs_rq->curr;
+-	s64 avg = cfs_rq->avg_vruntime;
+-	long load = cfs_rq->avg_load;
++       long weight = cfs_rq->avg_load;
++       s64 delta = 0;
+ 
+-	if (curr && curr->on_rq) {
+-		unsigned long weight = scale_load_down(curr->load.weight);
++       if (curr && !curr->on_rq)
++               curr = NULL;
+ 
+-		avg += entity_key(cfs_rq, curr) * weight;
+-		load += weight;
+-	}
++       if (weight) {
++               s64 runtime = cfs_rq->avg_vruntime;
++
++               if (curr) {
++                       unsigned long w = scale_load_down(curr->load.weight);
++
++                       runtime += entity_key(cfs_rq, curr) * w;
++                       weight += w;
++               }
+ 
+-	if (load) {
+ 		/* sign flips effective floor / ceiling */
+-		if (avg < 0)
+-			avg -= (load - 1);
+-		avg = div_s64(avg, load);
++               if (runtime < 0)
++                       runtime -= (weight - 1);
++
++               delta = div_s64(runtime, weight);
++       } else if (curr) {
++               /*
++                * When there is but one element, it is the average.
++                */
++               delta = curr->vruntime - cfs_rq->zero_vruntime;
+ 	}
+ 
+-	return cfs_rq->zero_vruntime + avg;
++       update_zero_vruntime(cfs_rq, delta);
++
++       return cfs_rq->zero_vruntime;
+ }
+ 
+ /*
+@@ -744,16 +781,6 @@ int entity_eligible(struct cfs_rq *cfs_r
+ 	return vruntime_eligible(cfs_rq, se->vruntime);
+ }
+ 
+-static void update_zero_vruntime(struct cfs_rq *cfs_rq)
+-{
+-	u64 vruntime = avg_vruntime(cfs_rq);
+-	s64 delta = (s64)(vruntime - cfs_rq->zero_vruntime);
+-
+-	avg_vruntime_update(cfs_rq, delta);
+-
+-	cfs_rq->zero_vruntime = vruntime;
+-}
+-
+ static inline u64 cfs_rq_min_slice(struct cfs_rq *cfs_rq)
+ {
+ 	struct sched_entity *root = __pick_root_entity(cfs_rq);
+@@ -824,7 +851,6 @@ RB_DECLARE_CALLBACKS(static, min_vruntim
+ static void __enqueue_entity(struct cfs_rq *cfs_rq, struct sched_entity *se)
+ {
+ 	avg_vruntime_add(cfs_rq, se);
+-	update_zero_vruntime(cfs_rq);
+ 	se->min_vruntime = se->vruntime;
+ 	se->min_slice = se->slice;
+ 	rb_add_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
+@@ -836,7 +862,6 @@ static void __dequeue_entity(struct cfs_
+ 	rb_erase_augmented_cached(&se->run_node, &cfs_rq->tasks_timeline,
+ 				  &min_vruntime_cb);
+ 	avg_vruntime_sub(cfs_rq, se);
+-	update_zero_vruntime(cfs_rq);
+ }
+ 
+ struct sched_entity *__pick_root_entity(struct cfs_rq *cfs_rq)
+@@ -5700,6 +5725,11 @@ entity_tick(struct cfs_rq *cfs_rq, struc
+ 	update_load_avg(cfs_rq, curr, UPDATE_TG);
+ 	update_cfs_group(curr);
+ 
++	/*
++	 * Pulls along cfs_rq::zero_vruntime.
++	 */
++	avg_vruntime(cfs_rq);
++
+ #ifdef CONFIG_SCHED_HRTICK
+ 	/*
+ 	 * queued ticks are scheduled to match the slice, so don't bother
 
 
 
