@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-229319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228788-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNBXAJFewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229319-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:57 +0100
+	id EPW5E6BVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228788-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90EE72F6A13
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 755792F59FD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4C5431FA13D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5AEF630455ED
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7270B3B6349;
-	Mon, 23 Mar 2026 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF6E23815B;
+	Mon, 23 Mar 2026 14:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0I5Ubxw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0YACWK49"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35494242D70;
-	Mon, 23 Mar 2026 15:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2329233134;
+	Mon, 23 Mar 2026 14:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278743; cv=none; b=tYJQtfttR5Hr0Rh6KLv3hMUdn36x8ncUGN5rTgFGVEUKDmXMIc1fQxlzPKHcaOQZ9PreDT5eC7uWZhkylagx+h4Kv6ksj55Qnax0c38GKqVZwiluOAV8WTHdFhcQBWDaOi7AEt0ptwSACL60V86AEC32UxQOexBpxATo82yykuc=
+	t=1774277128; cv=none; b=oOiGlvVqC3XrpgLYiFMiHANfR+7YexHdTKLPv5+SOJktn73zXyQHMxkkjjW92Pq/DrJiWVTr4rQgQJc6NyzdfPt2akhIaQ1c8njdKz3h6G0WdNXEgzZFTJGrqYy+BzWy/dV403KFETeiP5pqVmm0SI+HJ/783KKbMIZSzf/Az84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278743; c=relaxed/simple;
-	bh=erVJntiwZLNctjGOVQ8ljM1F6bTFjCti0Ig1cLHQBEc=;
+	s=arc-20240116; t=1774277128; c=relaxed/simple;
+	bh=4lEX/d+JTbFMBMtT7Of7SHv0Opoz/HU+qUwI23L6a+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoK3UeCyTLRrmgEQQSQCayKO+c5K+tIoo78Cs1eb/JIcBfe0c1bh/78/qPmoZoGvWIUksih/FogRsMKYhY6TJUBsZv7YFJK3dOudBKOWEbMgPHSk2HCwAJzWHx5bLz26QI86sbmfHOkVptdH6Wm+mYSr4jlMEZb0OIbDhzbzg6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0I5Ubxw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22C7C4CEF7;
-	Mon, 23 Mar 2026 15:12:22 +0000 (UTC)
+	 MIME-Version; b=FLZKpP1YjvUumbVbQwUPK0LrSSF7HviRlZSLi3jSchIcbu5rbwOmUDD/u7BtpgVUQbJU0sxXJzpYXzukiAWkCkesI1cDKmY2eE3x3Xn0YTCfRRq5n4nqnAF7XosWM9u0zdkmeDGoUB379GOX00RGXdftqSz61Jjg1XX+ZKCcIcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0YACWK49; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF58C4CEF7;
+	Mon, 23 Mar 2026 14:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278743;
-	bh=erVJntiwZLNctjGOVQ8ljM1F6bTFjCti0Ig1cLHQBEc=;
+	s=korg; t=1774277128;
+	bh=4lEX/d+JTbFMBMtT7Of7SHv0Opoz/HU+qUwI23L6a+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0I5UbxwlH4LyO/gmdLwbLJLHoq4r0yUWby5F8HDOHwJwpswzIzRi8SsusphehYi1
-	 1CTdCSQZ8fNXjAi7fiF0xKA8zAYOEFX5HQzgwmF7aeEc0w4iY9fsI03glDwQo/mWhY
-	 2fP7+vyN7yOyX9DR8vMnljqSM967LRClDCNyP50g=
+	b=0YACWK49kB1ciwNxR/7+qb+zFKwNmrfcCDNkujEbNceKPEjjh8XO/QD7JMlDZ809t
+	 XONytoC66pee3L7cLNLEjl+HUymrKS7hCQLJrG5INnP7rs4TrPxjFt+9ZEs2US9HfV
+	 ZRKmbd6eOLGiZKL5Nje/PEnI+UNMn84wBVUBky2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
-	Eric Chanudet <echanude@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 404/567] arm64: mm: Dont remap pgtables for allocate vs populate
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 328/460] kprobes: Remove unneeded goto
 Date: Mon, 23 Mar 2026 14:45:24 +0100
-Message-ID: <20260323134543.866808148@linuxfoundation.org>
+Message-ID: <20260323134534.575364942@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,207 +65,136 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229319-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228788-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 90EE72F6A13
+X-Rspamd-Queue-Id: 755792F59FD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-[ Upstream commit 0e9df1c905d8293d333ace86c13d147382f5caf9 ]
+[ Upstream commit 5e5b8b49335971b68b54afeb0e7ded004945af07 ]
 
-During linear map pgtable creation, each pgtable is fixmapped /
-fixunmapped twice; once during allocation to zero the memory, and a
-again during population to write the entries. This means each table has
-2 TLB invalidations issued against it. Let's fix this so that each table
-is only fixmapped/fixunmapped once, halving the number of TLBIs, and
-improving performance.
+Remove unneeded gotos. Since the labels referred by these gotos have
+only one reference for each, we can replace those gotos with the
+referred code.
 
-Achieve this by separating allocation and initialization (zeroing) of
-the page. The allocated page is now fixmapped directly by the walker and
-initialized, before being populated and finally fixunmapped.
+Link: https://lore.kernel.org/all/173371211203.480397.13988907319659165160.stgit@devnote2/
 
-This approach keeps the change small, but has the side effect that late
-allocations (using __get_free_page()) must also go through the generic
-memory clearing routine. So let's tell __get_free_page() not to zero the
-memory to avoid duplication.
-
-Additionally this approach means that fixmap/fixunmap is still used for
-late pgtable modifications. That's not technically needed since the
-memory is all mapped in the linear map by that point. That's left as a
-possible future optimization if found to be needed.
-
-Execution time of map_mem(), which creates the kernel linear map page
-tables, was measured on different machines with different RAM configs:
-
-               | Apple M2 VM | Ampere Altra| Ampere Altra| Ampere Altra
-               | VM, 16G     | VM, 64G     | VM, 256G    | Metal, 512G
----------------|-------------|-------------|-------------|-------------
-               |   ms    (%) |   ms    (%) |   ms    (%) |    ms    (%)
----------------|-------------|-------------|-------------|-------------
-before         |   11   (0%) |  161   (0%) |  656   (0%) |  1654   (0%)
-after          |   10 (-11%) |  104 (-35%) |  438 (-33%) |  1223 (-26%)
-
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
-Tested-by: Eric Chanudet <echanude@redhat.com>
-Reviewed-by: Mark Rutland <mark.rutland@arm.com>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20240412131908.433043-4-ryan.roberts@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Ryan: Trivial backport ]
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Stable-dep-of: 5ef268cb7a0a ("kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/mmu.c |   58 ++++++++++++++++++++++++++--------------------------
- 1 file changed, 29 insertions(+), 29 deletions(-)
+ kernel/kprobes.c |   45 +++++++++++++++++++++------------------------
+ 1 file changed, 21 insertions(+), 24 deletions(-)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -106,28 +106,12 @@ EXPORT_SYMBOL(phys_mem_access_prot);
- static phys_addr_t __init early_pgtable_alloc(int shift)
- {
- 	phys_addr_t phys;
--	void *ptr;
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1082,20 +1082,18 @@ static int __arm_kprobe_ftrace(struct kp
  
- 	phys = memblock_phys_alloc_range(PAGE_SIZE, PAGE_SIZE, 0,
- 					 MEMBLOCK_ALLOC_NOLEAKTRACE);
- 	if (!phys)
- 		panic("Failed to allocate page table page\n");
+ 	if (*cnt == 0) {
+ 		ret = register_ftrace_function(ops);
+-		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret))
+-			goto err_ftrace;
++		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
++			/*
++			 * At this point, sinec ops is not registered, we should be sefe from
++			 * registering empty filter.
++			 */
++			ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
++			return ret;
++		}
+ 	}
  
+ 	(*cnt)++;
+ 	return ret;
+-
+-err_ftrace:
 -	/*
--	 * The FIX_{PGD,PUD,PMD} slots may be in active use, but the FIX_PTE
--	 * slot will be free, so we can (ab)use the FIX_PTE slot to initialise
--	 * any level of table.
+-	 * At this point, sinec ops is not registered, we should be sefe from
+-	 * registering empty filter.
 -	 */
--	ptr = pte_set_fixmap(phys);
--
--	memset(ptr, 0, PAGE_SIZE);
--
--	/*
--	 * Implicit barriers also ensure the zeroed page is visible to the page
--	 * table walker
--	 */
--	pte_clear_fixmap();
--
- 	return phys;
+-	ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
+-	return ret;
  }
  
-@@ -169,6 +153,14 @@ bool pgattr_change_is_safe(u64 old, u64
- 	return ((old ^ new) & ~mask) == 0;
- }
- 
-+static void init_clear_pgtable(void *table)
-+{
-+	clear_page(table);
-+
-+	/* Ensure the zeroing is observed by page table walks. */
-+	dsb(ishst);
-+}
-+
- static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
- 		     phys_addr_t phys, pgprot_t prot)
+ static int arm_kprobe_ftrace(struct kprobe *p)
+@@ -1456,7 +1454,7 @@ _kprobe_addr(kprobe_opcode_t *addr, cons
+ 	     unsigned long offset, bool *on_func_entry)
  {
-@@ -211,12 +203,15 @@ static void alloc_init_cont_pte(pmd_t *p
- 			pmdval |= PMD_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
- 		pte_phys = pgtable_alloc(PAGE_SHIFT);
-+		ptep = pte_set_fixmap(pte_phys);
-+		init_clear_pgtable(ptep);
-+		ptep += pte_index(addr);
- 		__pmd_populate(pmdp, pte_phys, pmdval);
--		pmd = READ_ONCE(*pmdp);
-+	} else {
-+		BUG_ON(pmd_bad(pmd));
-+		ptep = pte_set_fixmap_offset(pmdp, addr);
- 	}
--	BUG_ON(pmd_bad(pmd));
+ 	if ((symbol_name && addr) || (!symbol_name && !addr))
+-		goto invalid;
++		return ERR_PTR(-EINVAL);
  
--	ptep = pte_set_fixmap_offset(pmdp, addr);
- 	do {
- 		pgprot_t __prot = prot;
+ 	if (symbol_name) {
+ 		/*
+@@ -1486,11 +1484,10 @@ _kprobe_addr(kprobe_opcode_t *addr, cons
+ 	 * at the start of the function.
+ 	 */
+ 	addr = arch_adjust_kprobe_addr((unsigned long)addr, offset, on_func_entry);
+-	if (addr)
+-		return addr;
++	if (!addr)
++		return ERR_PTR(-EINVAL);
  
-@@ -295,12 +290,15 @@ static void alloc_init_cont_pmd(pud_t *p
- 			pudval |= PUD_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
- 		pmd_phys = pgtable_alloc(PMD_SHIFT);
-+		pmdp = pmd_set_fixmap(pmd_phys);
-+		init_clear_pgtable(pmdp);
-+		pmdp += pmd_index(addr);
- 		__pud_populate(pudp, pmd_phys, pudval);
--		pud = READ_ONCE(*pudp);
-+	} else {
-+		BUG_ON(pud_bad(pud));
-+		pmdp = pmd_set_fixmap_offset(pudp, addr);
- 	}
--	BUG_ON(pud_bad(pud));
- 
--	pmdp = pmd_set_fixmap_offset(pudp, addr);
- 	do {
- 		pgprot_t __prot = prot;
- 
-@@ -338,12 +336,15 @@ static void alloc_init_pud(pgd_t *pgdp,
- 			p4dval |= P4D_TABLE_PXN;
- 		BUG_ON(!pgtable_alloc);
- 		pud_phys = pgtable_alloc(PUD_SHIFT);
-+		pudp = pud_set_fixmap(pud_phys);
-+		init_clear_pgtable(pudp);
-+		pudp += pud_index(addr);
- 		__p4d_populate(p4dp, pud_phys, p4dval);
--		p4d = READ_ONCE(*p4dp);
-+	} else {
-+		BUG_ON(p4d_bad(p4d));
-+		pudp = pud_set_fixmap_offset(p4dp, addr);
- 	}
--	BUG_ON(p4d_bad(p4d));
- 
--	pudp = pud_set_fixmap_offset(p4dp, addr);
- 	do {
- 		pud_t old_pud = READ_ONCE(*pudp);
- 
-@@ -425,11 +426,10 @@ void create_kpti_ng_temp_pgd(pgd_t *pgdi
- 
- static phys_addr_t __pgd_pgtable_alloc(int shift)
- {
--	void *ptr = (void *)__get_free_page(GFP_PGTABLE_KERNEL);
--	BUG_ON(!ptr);
-+	/* Page is zeroed by init_clear_pgtable() so don't duplicate effort. */
-+	void *ptr = (void *)__get_free_page(GFP_PGTABLE_KERNEL & ~__GFP_ZERO);
- 
--	/* Ensure the zeroed page is visible to the page table walker */
--	dsb(ishst);
-+	BUG_ON(!ptr);
- 	return __pa(ptr);
+-invalid:
+-	return ERR_PTR(-EINVAL);
++	return addr;
  }
  
+ static kprobe_opcode_t *kprobe_addr(struct kprobe *p)
+@@ -1513,15 +1510,15 @@ static struct kprobe *__get_valid_kprobe
+ 	if (unlikely(!ap))
+ 		return NULL;
+ 
+-	if (p != ap) {
+-		list_for_each_entry(list_p, &ap->list, list)
+-			if (list_p == p)
+-			/* kprobe p is a valid probe */
+-				goto valid;
+-		return NULL;
+-	}
+-valid:
+-	return ap;
++	if (p == ap)
++		return ap;
++
++	list_for_each_entry(list_p, &ap->list, list)
++		if (list_p == p)
++		/* kprobe p is a valid probe */
++			return ap;
++
++	return NULL;
+ }
+ 
+ /*
 
 
 
