@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229619-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCKHO9ZQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228589-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:23 +0100
+	id uDl7Bu9rwWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229619-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603FA2F4F4E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9062F8645
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B3DE3283AA9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 15BA130E272F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D79C1FC101;
-	Mon, 23 Mar 2026 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72DB43BD620;
+	Mon, 23 Mar 2026 16:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Odi1vjzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efc3tvMm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEEC823DD;
-	Mon, 23 Mar 2026 14:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E57F3AF649;
+	Mon, 23 Mar 2026 16:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275531; cv=none; b=pATqodyP0fndFOsHvjKVhT/EdIORUY9+vUivLebxrAyH1VQzCoWwoATqBNG9RPpBRZjLIzueuMFcYsT3yiskcvfmUf56mcU1DQNtS8uoTXn3c75cYVow29uIvosEXY10GK+ap6/TnE7Bk0+QZ7YsnFRnXc4Ld630iKc+SZdiKkU=
+	t=1774282413; cv=none; b=OUFzQv/cWpU3BYMeEhwWSVO9ST10wd/TqumE6uw7lzLXN8igHTJP0ILDk7H3Qxuk66bzuST9RPFgzDn0q5dyNYaPNH5wF/tRjNSSml9/pN3Oh6c34ISPeYnv6o9VlN9JFwP8Cmok9q+Sl1Vi7j68unqD8psXb+F543Dl9+Oa3OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275531; c=relaxed/simple;
-	bh=vLtMphh8ydOwYsd64b2KeFZ3eKfO3Ld4P/1pY0BvowM=;
+	s=arc-20240116; t=1774282413; c=relaxed/simple;
+	bh=tTCpGaBp70b5RUnKM673BPFzYEUreLusNHi4U/tiEbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxCX6vPJFg2QOPInoiwZL8DMjwtbYu9C/tUZCJd3DUzSM+A0RhhaoVQvfSMkw87gMrFLIhMNhLNflrzhvJ6V3TjdB1XsNaMmGi8rqSxEqNza9qGrsBWRB1+9B5IBFrzCyTgnW4gMYEcjJirPschlHMuz2sLUHPVs8d2UKzoovEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Odi1vjzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9D4DC4CEF7;
-	Mon, 23 Mar 2026 14:18:50 +0000 (UTC)
+	 MIME-Version; b=tkyyawvQHxCpZAwzjIE3bmTum5LlVVhW2PC/CC++6rUIs91tojHz0bJuiFSsIcQv/eAEFJn8FyZ81aU8fs/xeYs86uYcDdE+d/fbCEKbgu9WIVR67CNrOTJjeiICcEfMyuukEpRoornnsdVVInqVmSNcUvXl5KifoGoseSqiWDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efc3tvMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DCDC2BC9E;
+	Mon, 23 Mar 2026 16:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275531;
-	bh=vLtMphh8ydOwYsd64b2KeFZ3eKfO3Ld4P/1pY0BvowM=;
+	s=korg; t=1774282412;
+	bh=tTCpGaBp70b5RUnKM673BPFzYEUreLusNHi4U/tiEbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Odi1vjzzwu0aXoG1W5ZsHKHTtzTY03SvwmWAD8z+NiONCsfnWLCbhflN9w17uFK/7
-	 beWtNTqjTjXfIrBWUxClelCAPAz6ju6YgmYXZ/9tafYULMaofPyKfbFjMa9APQ2gv+
-	 AD2KyUwpiT4oZGItYSYtbEokVSRxxnPi0lryGYOQ=
+	b=efc3tvMmbCNIHuZtG0sFs2wkiU03tbvaw2zVsjGf3UqVwnwmzTe2XzgvDDryhS16S
+	 Nrfrd0nrA5MsvXmlZn5zZFNp49pLyD/EYvuB9oYozB12K+rwRM9bOSUWT5qpwDZxd7
+	 qW9QU8l76auaWTByhaBjXQAL1ocSSOJHp6LbjZ+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Ranjan Kumar <ranjan.kumar@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/460] time/jiffies: Mark jiffies_64_to_clock_t() notrace
-Date: Mon, 23 Mar 2026 14:42:09 +0100
-Message-ID: <20260323134529.873174669@linuxfoundation.org>
+Subject: [PATCH 6.1 148/481] scsi: mpi3mr: Add NULL checks when resetting request and reply queues
+Date: Mon, 23 Mar 2026 14:42:10 +0100
+Message-ID: <20260323134528.856381232@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +66,105 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228589-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	MAILSPIKE_FAIL(0.00)[104.64.211.4:query timed out];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229619-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 603FA2F4F4E
+X-Rspamd-Queue-Id: 4D9062F8645
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
 
-[ Upstream commit 755a648e78f12574482d4698d877375793867fa1 ]
+[ Upstream commit fa96392ebebc8fade2b878acb14cce0f71016503 ]
 
-The trace_clock_jiffies() function that handles the "uptime" clock for
-tracing calls jiffies_64_to_clock_t(). This causes the function tracer to
-constantly recurse when the tracing clock is set to "uptime". Mark it
-notrace to prevent unnecessary recursion when using the "uptime" clock.
+The driver encountered a crash during resource cleanup when the reply and
+request queues were NULL due to freed memory.  This issue occurred when the
+creation of reply or request queues failed, and the driver freed the memory
+first, but attempted to mem set the content of the freed memory, leading to
+a system crash.
 
-Fixes: 58d4e21e50ff3 ("tracing: Fix wraparound problems in "uptime" trace clock")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260306212403.72270bb2@robin
+Add NULL pointer checks for reply and request queues before accessing the
+reply/request memory during cleanup
+
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://patch.msgid.link/20260212070026.30263-1-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/mpi3mr/mpi3mr_fw.c | 34 ++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 1ad88e97b4ebc..da7e8a02a0964 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -702,7 +702,7 @@ EXPORT_SYMBOL(clock_t_to_jiffies);
-  *
-  * Return: jiffies_64 value converted to 64-bit "clock_t" (CLOCKS_PER_SEC)
-  */
--u64 jiffies_64_to_clock_t(u64 x)
-+notrace u64 jiffies_64_to_clock_t(u64 x)
- {
- #if (TICK_NSEC % (NSEC_PER_SEC / USER_HZ)) == 0
- # if HZ < USER_HZ
+diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+index 9d8f5a4794666..d4747ff4d800a 100644
+--- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
+@@ -4246,21 +4246,25 @@ void mpi3mr_memset_buffers(struct mpi3mr_ioc *mrioc)
+ 	}
+ 
+ 	for (i = 0; i < mrioc->num_queues; i++) {
+-		mrioc->op_reply_qinfo[i].qid = 0;
+-		mrioc->op_reply_qinfo[i].ci = 0;
+-		mrioc->op_reply_qinfo[i].num_replies = 0;
+-		mrioc->op_reply_qinfo[i].ephase = 0;
+-		atomic_set(&mrioc->op_reply_qinfo[i].pend_ios, 0);
+-		atomic_set(&mrioc->op_reply_qinfo[i].in_use, 0);
+-		mpi3mr_memset_op_reply_q_buffers(mrioc, i);
+-
+-		mrioc->req_qinfo[i].ci = 0;
+-		mrioc->req_qinfo[i].pi = 0;
+-		mrioc->req_qinfo[i].num_requests = 0;
+-		mrioc->req_qinfo[i].qid = 0;
+-		mrioc->req_qinfo[i].reply_qid = 0;
+-		spin_lock_init(&mrioc->req_qinfo[i].q_lock);
+-		mpi3mr_memset_op_req_q_buffers(mrioc, i);
++		if (mrioc->op_reply_qinfo) {
++			mrioc->op_reply_qinfo[i].qid = 0;
++			mrioc->op_reply_qinfo[i].ci = 0;
++			mrioc->op_reply_qinfo[i].num_replies = 0;
++			mrioc->op_reply_qinfo[i].ephase = 0;
++			atomic_set(&mrioc->op_reply_qinfo[i].pend_ios, 0);
++			atomic_set(&mrioc->op_reply_qinfo[i].in_use, 0);
++			mpi3mr_memset_op_reply_q_buffers(mrioc, i);
++		}
++
++		if (mrioc->req_qinfo) {
++			mrioc->req_qinfo[i].ci = 0;
++			mrioc->req_qinfo[i].pi = 0;
++			mrioc->req_qinfo[i].num_requests = 0;
++			mrioc->req_qinfo[i].qid = 0;
++			mrioc->req_qinfo[i].reply_qid = 0;
++			spin_lock_init(&mrioc->req_qinfo[i].q_lock);
++			mpi3mr_memset_op_req_q_buffers(mrioc, i);
++		}
+ 	}
+ 
+ 	atomic_set(&mrioc->pend_large_data_sz, 0);
 -- 
 2.51.0
 
