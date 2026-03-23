@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229881-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHiPI3NMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228377-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:39 +0100
+	id 2MCkCCluwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229881-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F5E2F4470
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A29F2F8BEB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 34A8430BF81C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 513C930B3572
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503B53B0ADA;
-	Mon, 23 Mar 2026 14:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D5D3B3BE5;
+	Mon, 23 Mar 2026 16:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swR5yWb8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ib1ugU2r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 136753947A6;
-	Mon, 23 Mar 2026 14:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68C528504F;
+	Mon, 23 Mar 2026 16:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274951; cv=none; b=fUyecDgXyGxZ52mio/72gNX8T66Uy5ZT9U2M8g5HJmmFxC2UVrPtJbrQNLB5LhZeUaQqx+QAPOWv6siwXRfYH2soLk4kHq5W86Spq9il3cTav8dBpMXQDajERUnSUEIuCwoVKX7Msv5JyVHczglfC8QY1sVNyFyY3uv7hJdvzX8=
+	t=1774283115; cv=none; b=EjXLgVnJ0FKcpMWzjSeVZ1vSQLD2DFP9i0jUXxkrbYG4hqv7qup1AQ2FR10WSjdDnZHfuThZxK7B/vJK4jH/OZrwdZyBpiRYH1xPLWvlvFgTVggPVbSrTY//iLTn/Np1NIylfVkmI23aEjHsf6Eq16ZHUNrsGqUVuSah/Uj8q5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274951; c=relaxed/simple;
-	bh=n9mEJi1VuRxytVjosdALcm+rDHblzF9bBFym3Ni5DJA=;
+	s=arc-20240116; t=1774283115; c=relaxed/simple;
+	bh=daFFX8AD+KEtV73hTyaS2ng0qBrVhf0yszeDzp8H5eI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTSa5uTtlEGe392ITTmZPMJoYl/jcnCEXfyosLTWqBMZvxTHCa28vgJWKHWi8PMk7Nw7qIkSwgoq0brlF0Ggieu7qYparSBEQU5FTZTV9gzjgZ/PPKKJ3wQtumfolEaZky52RvbAFXnrhnhtdsOdBnk58Qd30zmVk84q5NkLsLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swR5yWb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6A5C4CEF7;
-	Mon, 23 Mar 2026 14:09:10 +0000 (UTC)
+	 MIME-Version; b=jedcwA+A7AUpldXmG7dzAjBxMV1QQQisgOZk1ONupW9itl5i3q9UZmATgJJ48sk5smVvgt52Z1funv5pqmhU1RLpLNGU/h3cgZjCCGw/RF5T61vKB9RN+gIlEGFlyE1suydMsb2Nduz+3oWlItrMrwiEu4V93IpBJXDfaEYG0aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ib1ugU2r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00647C4CEF7;
+	Mon, 23 Mar 2026 16:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274951;
-	bh=n9mEJi1VuRxytVjosdALcm+rDHblzF9bBFym3Ni5DJA=;
+	s=korg; t=1774283115;
+	bh=daFFX8AD+KEtV73hTyaS2ng0qBrVhf0yszeDzp8H5eI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=swR5yWb8xGnnuBn84Jeer/iGwon8wQNSmYpjERdR3iXo5gnuoippW+rT8rC7Xu3DT
-	 Hs2Qesaqk3fETKwpTNd6/67F+HktaEMzOM/zexm+d1WCKW1ki2yC1Ipvjlkcs4YJLB
-	 z5AlqymoUiVMlihIrSg5UqFVOjwQKXJAEmi1CL14=
+	b=Ib1ugU2rXcJmMt/SYb466rdKTwVmnMD+6rVSOVn9DX97UssugwppYvOkPbaSAnJq1
+	 4mrinu4pYN4mU2ATsLz5ONEgHpLUMOqyzoF9ZhKHMKzHElXeOWFRR4sywopybr2lqO
+	 ipdxhbFI010IMLo0btvpUmvJ/O1Wf1LJsfm+4inM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 167/212] net/mlx5e: Prevent concurrent access to IPSec ASO context
+Subject: [PATCH 6.1 406/481] Bluetooth: SMP: make SM/PER/KDU/BI-04-C happy
 Date: Mon, 23 Mar 2026 14:46:28 +0100
-Message-ID: <20260323134509.006064335@linuxfoundation.org>
+Message-ID: <20260323134535.075677322@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,147 +66,66 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,msgid.link:server fail];
-	TAGGED_FROM(0.00)[bounces-228377-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229881-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,nvidia.com:email]
-X-Rspamd-Queue-Id: 34F5E2F4470
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1A29F2F8BEB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 99b36850d881e2d65912b2520a1c80d0fcc9429a ]
+[ Upstream commit 0e4d4dcc1a6e82cc6f9abf32193558efa7e1613d ]
 
-The query or updating IPSec offload object is through Access ASO WQE.
-The driver uses a single mlx5e_ipsec_aso struct for each PF, which
-contains a shared DMA-mapped context for all ASO operations.
+The last test step ("Test with Invalid public key X and Y, all set to
+0") expects to get an "DHKEY check failed" instead of "unspecified".
 
-A race condition exists because the ASO spinlock is released before
-the hardware has finished processing WQE. If a second operation is
-initiated immediately after, it overwrites the shared context in the
-DMA area.
-
-When the first operation's completion is processed later, it reads
-this corrupted context, leading to unexpected behavior and incorrect
-results.
-
-This commit fixes the race by introducing a private context within
-each IPSec offload object. The shared ASO context is now copied to
-this private context while the ASO spinlock is held. Subsequent
-processing uses this saved, per-object context, ensuring its integrity
-is maintained.
-
-Fixes: 1ed78fc03307 ("net/mlx5e: Update IPsec soft and hard limits")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260316094603.6999-3-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6d19628f539f ("Bluetooth: SMP: Fail if remote and local public keys are identical")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/en_accel/ipsec.h         |  1 +
- .../mellanox/mlx5/core/en_accel/ipsec_offload.c | 17 ++++++++---------
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ net/bluetooth/smp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-index f8eaaf37963b1..abcbd38db9dbb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
-@@ -287,6 +287,7 @@ struct mlx5e_ipsec_sa_entry {
- 	struct mlx5e_ipsec_dwork *dwork;
- 	struct mlx5e_ipsec_limits limits;
- 	u32 rx_mapped_id;
-+	u8 ctx[MLX5_ST_SZ_BYTES(ipsec_aso)];
- };
- 
- struct mlx5_accel_pol_xfrm_attrs {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-index ef7322d381af6..2739ff490239d 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
-@@ -370,20 +370,18 @@ static void mlx5e_ipsec_aso_update_soft(struct mlx5e_ipsec_sa_entry *sa_entry,
- static void mlx5e_ipsec_handle_limits(struct mlx5e_ipsec_sa_entry *sa_entry)
- {
- 	struct mlx5_accel_esp_xfrm_attrs *attrs = &sa_entry->attrs;
--	struct mlx5e_ipsec *ipsec = sa_entry->ipsec;
--	struct mlx5e_ipsec_aso *aso = ipsec->aso;
- 	bool soft_arm, hard_arm;
- 	u64 hard_cnt;
- 
- 	lockdep_assert_held(&sa_entry->x->lock);
- 
--	soft_arm = !MLX5_GET(ipsec_aso, aso->ctx, soft_lft_arm);
--	hard_arm = !MLX5_GET(ipsec_aso, aso->ctx, hard_lft_arm);
-+	soft_arm = !MLX5_GET(ipsec_aso, sa_entry->ctx, soft_lft_arm);
-+	hard_arm = !MLX5_GET(ipsec_aso, sa_entry->ctx, hard_lft_arm);
- 	if (!soft_arm && !hard_arm)
- 		/* It is not lifetime event */
- 		return;
- 
--	hard_cnt = MLX5_GET(ipsec_aso, aso->ctx, remove_flow_pkt_cnt);
-+	hard_cnt = MLX5_GET(ipsec_aso, sa_entry->ctx, remove_flow_pkt_cnt);
- 	if (!hard_cnt || hard_arm) {
- 		/* It is possible to see packet counter equal to zero without
- 		 * hard limit event armed. Such situation can be if packet
-@@ -454,10 +452,8 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
- 		container_of(_work, struct mlx5e_ipsec_work, work);
- 	struct mlx5e_ipsec_sa_entry *sa_entry = work->data;
- 	struct mlx5_accel_esp_xfrm_attrs *attrs;
--	struct mlx5e_ipsec_aso *aso;
- 	int ret;
- 
--	aso = sa_entry->ipsec->aso;
- 	attrs = &sa_entry->attrs;
- 
- 	spin_lock_bh(&sa_entry->x->lock);
-@@ -466,8 +462,9 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
- 		goto unlock;
- 
- 	if (attrs->replay_esn.trigger &&
--	    !MLX5_GET(ipsec_aso, aso->ctx, esn_event_arm)) {
--		u32 mode_param = MLX5_GET(ipsec_aso, aso->ctx, mode_parameter);
-+	    !MLX5_GET(ipsec_aso, sa_entry->ctx, esn_event_arm)) {
-+		u32 mode_param = MLX5_GET(ipsec_aso, sa_entry->ctx,
-+					  mode_parameter);
- 
- 		mlx5e_ipsec_update_esn_state(sa_entry, mode_param);
+diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
+index d8a77bfe65a62..4241d39393f3e 100644
+--- a/net/bluetooth/smp.c
++++ b/net/bluetooth/smp.c
+@@ -2737,7 +2737,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
+ 	if (!test_bit(SMP_FLAG_DEBUG_KEY, &smp->flags) &&
+ 	    !crypto_memneq(key, smp->local_pk, 64)) {
+ 		bt_dev_err(hdev, "Remote and local public keys are identical");
+-		return SMP_UNSPECIFIED;
++		return SMP_DHKEY_CHECK_FAILED;
  	}
-@@ -629,6 +626,8 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
- 			/* We are in atomic context */
- 			udelay(10);
- 	} while (ret && time_is_after_jiffies(expires));
-+	if (!ret)
-+		memcpy(sa_entry->ctx, aso->ctx, MLX5_ST_SZ_BYTES(ipsec_aso));
- 	spin_unlock_bh(&aso->lock);
- 	return ret;
- }
+ 
+ 	memcpy(smp->remote_pk, key, 64);
 -- 
 2.51.0
 
