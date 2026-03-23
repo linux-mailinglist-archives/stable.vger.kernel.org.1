@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-229879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228197-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cKl0Nct1wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:18:03 +0100
+	id EOpHDntNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228197-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECF662F9B47
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:18:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11E02F473E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 19A8B317AF06
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4AA75303D739
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30153B9D85;
-	Mon, 23 Mar 2026 16:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799763B3BE5;
+	Mon, 23 Mar 2026 14:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4fS5fir"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwZQ47Cn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5435F3AE6F8;
-	Mon, 23 Mar 2026 16:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCCF397E84;
+	Mon, 23 Mar 2026 14:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283110; cv=none; b=qKqvtzu4NY/QEeK0xWKoN3xNX8L//e0Gq3vUOdf96Kd/8DC9S4AvzKNkcSuxzWXeMe3RN3EVMoJUd2yRGWZEzwUA7nd6WVsX7pyxOfg4BANYuPHdMSlUJbwooeESzAdYL+XRr9PRfDQJ8NUM5ruOfOdCoXZuf9WhanHcUBo5hKQ=
+	t=1774274418; cv=none; b=BjzUrulds9Lajde55deehEJNwRUszDzPD3YAKVWXUMsi9kWCB3oe8aj4IKzTfX3qEi3Xt9pur01JolgWnIGn4hHav57SmEZnTFIzpzLRcNsHqrGJXxQwhneIfot7BCd7E4HkTH12RIMWNkdfpNfHz0k3iEvU2lh1POT0SMeUIJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283110; c=relaxed/simple;
-	bh=28ezYnE9VVlv2ZDzbsnOe9evy7ycjq04L76+r+PDpGo=;
+	s=arc-20240116; t=1774274418; c=relaxed/simple;
+	bh=BW2cF7hiBTzFNVmK74LlGyOsM0oFb8UDkGfUif9gGY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDm+fOzi4lksuZiCLVJ+i9wgSdDjNDyvgVUy71W2k3jjgDMpOxW+r7wqB7SN7NQ6lPvu3v19gO5irY1ZLKX4zYGc4NYgQmX7xOtJ2xhmJ63Anh18VsTMEPwkeeOt0mPxO2YTlsAD3zrN3fjvqvojP5SmCqmYa7OQbOVStqFGYhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4fS5fir; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B980CC4CEF7;
-	Mon, 23 Mar 2026 16:25:09 +0000 (UTC)
+	 MIME-Version; b=mmVUDSaOimLCNuM0ofmK86PvV9p1ZzLlQa5evWamZ60t671c24+OnAt1LihBf7e+L7aAuzRWETDeoE9hoNk/Ls6r/y3ii+UVA6WM8h6F8eh8BreRhAbs+VC/ltUwCwEwXRIG3YQOFWk+7k69j7XjF2D0WeyK+oXiR/oVhrV1d1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwZQ47Cn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904D2C4CEF7;
+	Mon, 23 Mar 2026 14:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283110;
-	bh=28ezYnE9VVlv2ZDzbsnOe9evy7ycjq04L76+r+PDpGo=;
+	s=korg; t=1774274418;
+	bh=BW2cF7hiBTzFNVmK74LlGyOsM0oFb8UDkGfUif9gGY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4fS5firypsZ8JkZwmN9oO6TYnZ0LCxwsNhU7bpKdS2MRgEHf2FrdXAOMuRwLoncM
-	 M3ZCXQSRw7hh1h7fCnkQT/Kcdfwi2gHpzOQw70UUB9WTekuse1uH7TCvLnV7neJsPF
-	 mUx9WMmfLP1f+J5lk9ucvW6Oj/IzYAWCjgXHlP7s=
+	b=hwZQ47CnLASFXEbcdEdKdQdDpCRBjiComHXYa2noyV1pg5bxCbwd6TgI2Q/qcs3Kj
+	 NEhrKtav4OgLegsQyFF2Xh7/DbjZ6jK1PbvXUKKb6oalpxwII04dpPlOT9zvvG8AkH
+	 Mdjed2DJcy/ZybV7QQxMtNDri9JchD1McXd2vcIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 404/481] Bluetooth: LE L2CAP: Disconnect if received packets SDU exceeds IMTU
+Subject: [PATCH 6.19 209/220] drm/amd/display: Fix DisplayID not-found handling in parse_edid_displayid_vrr()
 Date: Mon, 23 Mar 2026 14:46:26 +0100
-Message-ID: <20260323134535.020784795@linuxfoundation.org>
+Message-ID: <20260323134511.153997876@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,19 +76,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229879-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228197-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,61 +97,77 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: ECF662F9B47
+X-Rspamd-Queue-Id: A11E02F473E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit e1d9a66889867c232657a9b6f25d451d7c3ab96f ]
+[ Upstream commit 2323b019651ad81c20a0f7f817c63392b3110652 ]
 
-Core 6.0, Vol 3, Part A, 3.4.3:
-"If the SDU length field value exceeds the receiver's MTU, the receiver
-shall disconnect the channel..."
+parse_edid_displayid_vrr() searches the EDID extension blocks for a
+DisplayID extension before parsing the dynamic video timing range.
 
-This fixes L2CAP/LE/CFC/BV-26-C (running together with 'l2test -r -P
-0x0027 -V le_public -I 100').
+The code previously checked whether edid_ext was NULL after the search
+loop. However, edid_ext is assigned during each iteration of the loop,
+so it will never be NULL once the loop has executed. If no DisplayID
+extension is found, edid_ext ends up pointing to the last extension
+block, and the NULL check does not correctly detect the failure case.
 
-Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Instead, check whether the loop completed without finding a matching
+DisplayID block by testing "i == edid->extensions". This ensures the
+function exits early when no DisplayID extension is present and avoids
+parsing an unrelated EDID extension block.
+
+Also simplify the EDID validation check using "!edid ||
+!edid->extensions".
+
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:13079 parse_edid_displayid_vrr() warn: variable dereferenced before check 'edid_ext' (see line 13075)
+
+Fixes: a638b837d0e6 ("drm/amd/display: Fix refresh rate range for some panel")
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Jerry Zuo <jerry.zuo@amd.com>
+Cc: Sun peng Li <sunpeng.li@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 91c7e6342e98c846b259c57273436fdea4c043f2)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 7899600cd3724..db62b4f2c5210 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7678,8 +7678,10 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
- 		return -ENOBUFS;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index e84ec4365ca6b..5a54d3f4a3de5 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -13101,7 +13101,7 @@ static void parse_edid_displayid_vrr(struct drm_connector *connector,
+ 	u16 min_vfreq;
+ 	u16 max_vfreq;
+ 
+-	if (edid == NULL || edid->extensions == 0)
++	if (!edid || !edid->extensions)
+ 		return;
+ 
+ 	/* Find DisplayID extension */
+@@ -13111,7 +13111,7 @@ static void parse_edid_displayid_vrr(struct drm_connector *connector,
+ 			break;
  	}
  
--	if (chan->imtu < skb->len) {
--		BT_ERR("Too big LE L2CAP PDU");
-+	if (skb->len > chan->imtu) {
-+		BT_ERR("Too big LE L2CAP PDU: len %u > %u", skb->len,
-+		       chan->imtu);
-+		l2cap_send_disconn_req(chan, ECONNRESET);
- 		return -ENOBUFS;
- 	}
+-	if (edid_ext == NULL)
++	if (i == edid->extensions)
+ 		return;
  
-@@ -7705,7 +7707,9 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
- 		       sdu_len, skb->len, chan->imtu);
- 
- 		if (sdu_len > chan->imtu) {
--			BT_ERR("Too big LE L2CAP SDU length received");
-+			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
-+			       skb->len, sdu_len);
-+			l2cap_send_disconn_req(chan, ECONNRESET);
- 			err = -EMSGSIZE;
- 			goto failed;
- 		}
+ 	while (j < EDID_LENGTH) {
 -- 
 2.51.0
 
