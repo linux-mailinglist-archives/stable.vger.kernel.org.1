@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-229334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228759-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QHj4K6tewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229334-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:23 +0100
+	id 8AdrGstowWliSwQAu9opvQ
+	(envelope-from <stable+bounces-228759-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:22:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198432F6A76
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F182F7F84
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:22:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20DCB3472176
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED42531F4421
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC4953B636A;
-	Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609B1388E52;
+	Mon, 23 Mar 2026 14:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPJpiziW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqAlW3+5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFAE3B3C18;
-	Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CFC394476;
+	Mon, 23 Mar 2026 14:44:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278790; cv=none; b=lAGuxxRyNUesqxoaIF7isXnWJPAUv3Qn87/3Yju1D7xCHuTNU/ma2Xey8qf6ddSqvjrPJD/6a+OzG/Fuppi8TQs3UGQEMnqPHv1gcbhnmOwhEX3+815S9SPHco/xnUIMgQglcL9T3YPeYDF9XiHxuFhk5/HGQYrsqziXffdEGuE=
+	t=1774277047; cv=none; b=sw6hRD1U8UibNfY3+RpL6rnRjmcqxqooLfA1+rlp6zbtMLhfqEdplkl6l+idLagkv/ZXndTz4VMxnrdo+NWN30786y1yZ/ObGrpyHFSklw/rxS8EYkQ2MNbziIoAKBYD++aPoqx7VGpxFTlUyNHPtkyaj6QKgzeDayHToR1y7CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278790; c=relaxed/simple;
-	bh=EXRK55SKgHWb3VGOA7oIlelQpxNCGxUx5AEXSvpSfMs=;
+	s=arc-20240116; t=1774277047; c=relaxed/simple;
+	bh=QFozIvc7qPDxpd4/BueryxJ09Ua8AY+dvAJnSznPj08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jT4w/pyElOQMj/qXhOEmCmQOZCiMUatPbZK/Pue3QFjtrVwsrR72XZxnDtiYOVfZvpSyU4S+/45rwWJMror6L97nE+ERe5nITk/002oi1a8Suasz/VOnTpvfFStaD1Oh70YxFEf6CQ1JWxlpLM/jbPz2eRaaxFzViuktVaKRvhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPJpiziW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 339AAC2BCB6;
-	Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dQs0NETfSs4MA1xdw+TLYeAzhoOO2SlZYEKhjkj/XbZFUUhjrmcl0yDzcDx8oabnnyDF756QXeZSo0rCWXbtBir8wDKg96LUGLQ1AWC7y1mKbwTnubHzAR8+3bDY3GzAl1VbWmho0DHbpki6hCmi72n0K4gooKNW0UqssZ3hMrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqAlW3+5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6FDC4CEF7;
+	Mon, 23 Mar 2026 14:44:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278790;
-	bh=EXRK55SKgHWb3VGOA7oIlelQpxNCGxUx5AEXSvpSfMs=;
+	s=korg; t=1774277047;
+	bh=QFozIvc7qPDxpd4/BueryxJ09Ua8AY+dvAJnSznPj08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VPJpiziWCnX5W4u+3KefaFu/cDjG/Uf1nRXGyXo1K6dVDXVoR34kcK0rN0IOVUVyp
-	 8dNPPxfo4/VCBtt+j6yt/wou83M7qu9S60Pd5QM1dk16Qg9cmLhhbnAJlDMD4vo9hU
-	 XxHAARw6NhGpcPnWJRK8J3g0chzDqbx9c/9eOEaM=
+	b=LqAlW3+5TGLulIw+BFK28m+fnxbSTeGNaMKY8N4ZYaTDT5aGQ2Y3866Pw1kXZOblH
+	 J9qkdO3K/RbUWmDGGGIOajxJL4Dji7/XWvqCfPCsiIWRTOcuT29UFxQETReE64ASxS
+	 xn6YIMAOV7TuPEWRJO+fupUKcVf8bfMA76T26Cwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Suchanek <msuchanek@suse.de>,
-	Rainer Fiebig <jrf@mailbox.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Nicolas Schier <nsc@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 378/567] kbuild: Leave objtool binary around with make clean
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Tvrtko Ursulin <tursulin@ursulin.net>
+Subject: [PATCH 6.12 302/460] drm/i915/psr: Repeat Selective Update area alignment
 Date: Mon, 23 Mar 2026 14:44:58 +0100
-Message-ID: <20260323134543.188844541@linuxfoundation.org>
+Message-ID: <20260323134533.905135418@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,138 +63,156 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229334-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228759-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 198432F6A76
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: B4F182F7F84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-[ Upstream commit fdb12c8a24a453bdd6759979b6ef1e04ebd4beb4 ]
+commit 1be2fca84f520105413d0d89ed04bb0ff742ab16 upstream.
 
-The difference between 'make clean' and 'make mrproper' is documented in
-'make help' as:
+Currently we are aligning Selective Update area to cover cursor fully if
+needed only once. It may happen that cursor is in Selective Update area
+after pipe alignment and after that covering cursor plane only
+partially. Fix this by looping alignment as long as alignment isn't needed
+anymore.
 
-  clean     - Remove most generated files but keep the config and
-              enough build support to build external modules
-  mrproper  - Remove all generated files + config + various backup files
+v2:
+  - do not unecessarily loop if cursor was already fully covered
+  - rename aligned as su_area_changed
 
-After commit 68b4fe32d737 ("kbuild: Add objtool to top-level clean
-target"), running 'make clean' then attempting to build an external
-module with the resulting build directory fails with
-
-  $ make ARCH=x86_64 O=build clean
-
-  $ make -C build M=... MO=...
-  ...
-  /bin/sh: line 1: .../build/tools/objtool/objtool: No such file or directory
-
-as 'make clean' removes the objtool binary.
-
-Split the objtool clean target into mrproper and clean like Kbuild does
-and remove all generated artifacts with 'make clean' except for the
-objtool binary, which is removed with 'make mrproper'. To avoid a small
-race when running the objtool clean target through both objtool_mrproper
-and objtool_clean when running 'make mrproper', modify objtool's clean
-up find command to avoid using find's '-delete' command by piping the
-files into 'xargs rm -f' like the rest of Kbuild does.
-
-Cc: stable@vger.kernel.org
-Fixes: 68b4fe32d737 ("kbuild: Add objtool to top-level clean target")
-Reported-by: Michal Suchanek <msuchanek@suse.de>
-Closes: https://lore.kernel.org/20260225112633.6123-1-msuchanek@suse.de/
-Reported-by: Rainer Fiebig <jrf@mailbox.org>
-Closes: https://lore.kernel.org/62d12399-76e5-3d40-126a-7490b4795b17@mailbox.org/
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Nicolas Schier <nsc@kernel.org>
-Tested-by: Nicolas Schier <nsc@kernel.org>
-Link: https://patch.msgid.link/20260227-avoid-objtool-binary-removal-clean-v1-1-122f3e55eae9@kernel.org
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1bff93b8bc27 ("drm/i915/psr: Extend SU area to cover cursor fully if needed")
+Cc: <stable@vger.kernel.org> # v6.9+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://patch.msgid.link/20260304113011.626542-2-jouni.hogander@intel.com
+(cherry picked from commit 681e12440d8b110350a5709101169f319e10ccbb)
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile               |    8 ++++----
- tools/objtool/Makefile |    8 +++++---
- 2 files changed, 9 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/display/intel_psr.c |   50 +++++++++++++++++++++++--------
+ 1 file changed, 38 insertions(+), 12 deletions(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1356,13 +1356,13 @@ ifneq ($(wildcard $(resolve_btfids_O)),)
- 	$(Q)$(MAKE) -sC $(srctree)/tools/bpf/resolve_btfids O=$(resolve_btfids_O) clean
- endif
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -2385,12 +2385,13 @@ static void clip_area_update(struct drm_
+ 		overlap_damage_area->y2 = damage_area->y2;
+ }
  
--PHONY += objtool_clean
-+PHONY += objtool_clean objtool_mrproper
+-static void intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
++static bool intel_psr2_sel_fetch_pipe_alignment(struct intel_crtc_state *crtc_state)
+ {
+ 	struct intel_display *display = to_intel_display(crtc_state);
+ 	struct drm_i915_private *dev_priv = to_i915(crtc_state->uapi.crtc->dev);
+ 	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
+ 	u16 y_alignment;
++	bool su_area_changed = false;
  
- objtool_O = $(abspath $(objtree))/tools/objtool
+ 	/* ADLP aligns the SU region to vdsc slice height in case dsc is enabled */
+ 	if (crtc_state->dsc.compression_enable &&
+@@ -2399,10 +2400,18 @@ static void intel_psr2_sel_fetch_pipe_al
+ 	else
+ 		y_alignment = crtc_state->su_y_granularity;
  
--objtool_clean:
-+objtool_clean objtool_mrproper:
- ifneq ($(wildcard $(objtool_O)),)
--	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) clean
-+	$(Q)$(MAKE) -sC $(abs_srctree)/tools/objtool O=$(objtool_O) srctree=$(abs_srctree) $(patsubst objtool_%,%,$@)
- endif
- 
- tools/: FORCE
-@@ -1529,7 +1529,7 @@ PHONY += $(mrproper-dirs) mrproper
- $(mrproper-dirs):
- 	$(Q)$(MAKE) $(clean)=$(patsubst _mrproper_%,%,$@)
- 
--mrproper: clean $(mrproper-dirs)
-+mrproper: clean objtool_mrproper $(mrproper-dirs)
- 	$(call cmd,rmfiles)
- 	@find . $(RCS_FIND_IGNORE) \
- 		\( -name '*.rmeta' \) \
---- a/tools/objtool/Makefile
-+++ b/tools/objtool/Makefile
-@@ -87,10 +87,12 @@ $(LIBSUBCMD)-clean:
- 	$(Q)$(RM) -r -- $(LIBSUBCMD_OUTPUT)
- 
- clean: $(LIBSUBCMD)-clean
--	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
--	$(Q)find $(OUTPUT) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete
-+	$(Q)find $(OUTPUT) \( -name '*.o' -o -name '\.*.cmd' -o -name '\.*.d' \) -type f -print | xargs $(RM)
- 	$(Q)$(RM) $(OUTPUT)arch/x86/lib/inat-tables.c $(OUTPUT)fixdep
- 
-+mrproper: clean
-+	$(call QUIET_CLEAN, objtool) $(RM) $(OBJTOOL)
+-	crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
+-	if (crtc_state->psr2_su_area.y2 % y_alignment)
++	if (crtc_state->psr2_su_area.y1 % y_alignment) {
++		crtc_state->psr2_su_area.y1 -= crtc_state->psr2_su_area.y1 % y_alignment;
++		su_area_changed = true;
++	}
 +
- FORCE:
++	if (crtc_state->psr2_su_area.y2 % y_alignment) {
+ 		crtc_state->psr2_su_area.y2 = ((crtc_state->psr2_su_area.y2 /
+ 						y_alignment) + 1) * y_alignment;
++		su_area_changed = true;
++	}
++
++	return su_area_changed;
+ }
  
--.PHONY: clean FORCE
-+.PHONY: clean mrproper FORCE
+ /*
+@@ -2487,7 +2496,7 @@ int intel_psr2_sel_fetch_update(struct i
+ 	struct intel_crtc_state *crtc_state = intel_atomic_get_new_crtc_state(state, crtc);
+ 	struct intel_plane_state *new_plane_state, *old_plane_state;
+ 	struct intel_plane *plane;
+-	bool full_update = false, cursor_in_su_area = false;
++	bool full_update = false, su_area_changed;
+ 	int i, ret;
+ 
+ 	if (!crtc_state->enable_psr2_sel_fetch)
+@@ -2599,15 +2608,32 @@ int intel_psr2_sel_fetch_update(struct i
+ 	if (ret)
+ 		return ret;
+ 
+-	/*
+-	 * Adjust su area to cover cursor fully as necessary (early
+-	 * transport). This needs to be done after
+-	 * drm_atomic_add_affected_planes to ensure visible cursor is added into
+-	 * affected planes even when cursor is not updated by itself.
+-	 */
+-	intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
++	do {
++		bool cursor_in_su_area;
+ 
+-	intel_psr2_sel_fetch_pipe_alignment(crtc_state);
++		/*
++		 * Adjust su area to cover cursor fully as necessary
++		 * (early transport). This needs to be done after
++		 * drm_atomic_add_affected_planes to ensure visible
++		 * cursor is added into affected planes even when
++		 * cursor is not updated by itself.
++		 */
++		intel_psr2_sel_fetch_et_alignment(state, crtc, &cursor_in_su_area);
++
++		su_area_changed = intel_psr2_sel_fetch_pipe_alignment(crtc_state);
++
++		/*
++		 * If the cursor was outside the SU area before
++		 * alignment, the alignment step (which only expands
++		 * SU) may pull the cursor partially inside, so we
++		 * must run ET alignment again to fully cover it. But
++		 * if the cursor was already fully inside before
++		 * alignment, expanding the SU area won't change that,
++		 * so no further work is needed.
++		 */
++		if (cursor_in_su_area)
++			break;
++	} while (su_area_changed);
+ 
+ 	/*
+ 	 * Now that we have the pipe damaged area check if it intersect with
 
 
 
