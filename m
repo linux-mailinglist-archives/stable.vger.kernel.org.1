@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cOtFO3pJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228120-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:58 +0100
+	id uMzoDxBNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:16 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DDE42F3E4D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67CDA2F461C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 01A053016CBB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B9756304C11E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8CE3AB29B;
-	Mon, 23 Mar 2026 13:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97873B0AD0;
+	Mon, 23 Mar 2026 14:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wrQ6wsBG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVrT5DbW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6C0286A4;
-	Mon, 23 Mar 2026 13:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8703AC0E3;
+	Mon, 23 Mar 2026 14:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274183; cv=none; b=a9jmLx+96/R5t4HEllAPC/IYammsvpXaNXClbqeMkepVy0aH7bBtz+u6uZAZ3JfEVrQI54VPio3uNtr0oN7mkP0SZNa5mmAwUcZdJD/iqZLr4xPnEoL4BktIxhuT+u+VRhSqSrRYwDeKNy5M86spDkCbpfZ8x/rT3C0H1WlGT6I=
+	t=1774274736; cv=none; b=seKQVfvqXs+jHUFKiesRzaRQTarxsviwAoYxth5Fg9xWCSFJv1nNjNm99xftQbwEisTkENBp9slZY9iUfw+LpFh5MdZ4eN8v9SV2Q3I/yRmpBgdZsxRkfZADOIwK4js8Tv+ev6TXcuD4lnA04vOqbeuKJsbc9Qt9OOVCD7TWMc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274183; c=relaxed/simple;
-	bh=rTY+RsZZOFg7ksc5Lib38aGUtcjxUL8t+pu4fLxeOKo=;
+	s=arc-20240116; t=1774274736; c=relaxed/simple;
+	bh=6vFmUa5dUuqeTEVJKt5Vt6y0lcVKC3RG4IZh8k99jNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ceBTVe2jPeieCNzHU0KaNEY15z3mI9DsztKUNFywsNYsFpqjx6yTFaCpZpEzcQEgeqQ2ed2Q+UlwxKH/2i0JT5PYQFeP4D9ABAdDQTLTUKMKrNpN5GGrXvOYJQIw0QsvXGR01AmelbfH/AdFjwsqWCW6M+JC2mccqN3DuDAYrT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wrQ6wsBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8411C4CEF7;
-	Mon, 23 Mar 2026 13:56:22 +0000 (UTC)
+	 MIME-Version; b=CyHIg5mqkPOMdw6H75pf2a4Spx11KSci7oAASARld2cPgpvOaiKleer6eca1ffPcoa6YF/38zKk2cF3u/aWno/jG2zFXCxXMl5BRqEraefj7FsTSLtWhEkreFDpb/wJbCADDjjlbB5q0dah715dhg3Z1jdjYmbNuQNQE3cTHTa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVrT5DbW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1289AC4AF0B;
+	Mon, 23 Mar 2026 14:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274183;
-	bh=rTY+RsZZOFg7ksc5Lib38aGUtcjxUL8t+pu4fLxeOKo=;
+	s=korg; t=1774274736;
+	bh=6vFmUa5dUuqeTEVJKt5Vt6y0lcVKC3RG4IZh8k99jNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wrQ6wsBGZ/9zJKQMyGHFMuNwUA6myJ7a0Zcuxz1W/uekO5dB3DCkX2jE6isUx9s7J
-	 9XU5EWqgX8r/vJ47Ln6GaDZIMJGSx1OcGD6DiSbwy465hrMRb6njlIMUEgrZQ1TpX+
-	 fKRKD6Gz45p5Ag3umvnf6dGmcjgZ2Qaii26DL9Jw=
+	b=YVrT5DbWB6ZobuYdc97LqhYDY5PRZ2zoiIuRRLDIWTr6IBne6TzJMLWKTQi8woJ7m
+	 xxUKew4LJSBzkN0Lh/WK9Kl3gvoS6YTvSNw/g3Zg/rSG6xm/F7JaHRPRovVhZgo0Bw
+	 8qmwLhQX9x/3bk6wCvF9vJ9C+shERLut05e/It68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gurpreet Shergill <giki.shergill@proton.me>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 137/220] nf_tables: nft_dynset: fix possible stateful expression memleak in error path
+	Mohammed Thasleem <mohammed.thasleem@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Tao Liu <ltao@redhat.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.18 093/212] drm/i915/dmc: Fix an unlikely NULL pointer deference at probe
 Date: Mon, 23 Mar 2026 14:45:14 +0100
-Message-ID: <20260323134508.901251701@linuxfoundation.org>
+Message-ID: <20260323134506.716983161@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,140 +66,118 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228120-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228300-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,proton.me:email]
-X-Rspamd-Queue-Id: 4DDE42F3E4D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 67CDA2F461C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Imre Deak <imre.deak@intel.com>
 
-[ Upstream commit 0548a13b5a145b16e4da0628b5936baf35f51b43 ]
+commit ac57eb3b7d2ad649025b5a0fa207315f755ac4f6 upstream.
 
-If cloning the second stateful expression in the element via GFP_ATOMIC
-fails, then the first stateful expression remains in place without being
-released.
+intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
+initialized, and dmc is thus NULL.
 
-   unreferenced object (percpu) 0x607b97e9cab8 (size 16):
-     comm "softirq", pid 0, jiffies 4294931867
-     hex dump (first 16 bytes on cpu 3):
-       00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-     backtrace (crc 0):
-       pcpu_alloc_noprof+0x453/0xd80
-       nft_counter_clone+0x9c/0x190 [nf_tables]
-       nft_expr_clone+0x8f/0x1b0 [nf_tables]
-       nft_dynset_new+0x2cb/0x5f0 [nf_tables]
-       nft_rhash_update+0x236/0x11c0 [nf_tables]
-       nft_dynset_eval+0x11f/0x670 [nf_tables]
-       nft_do_chain+0x253/0x1700 [nf_tables]
-       nft_do_chain_ipv4+0x18d/0x270 [nf_tables]
-       nf_hook_slow+0xaa/0x1e0
-       ip_local_deliver+0x209/0x330
+That would be the case when the call path is
+intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
+gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
+intel_power_domains_init_hw() is called *before* intel_dmc_init().
 
-Fixes: 563125a73ac3 ("netfilter: nftables: generalize set extension to support for several expressions")
-Reported-by: Gurpreet Shergill <giki.shergill@proton.me>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
+conditionally, depending on the current and target DC states. At probe,
+the target is disabled, but if DC6 is enabled, the function is called,
+and an oops follows. Apparently it's quite unlikely that DC6 is enabled
+at probe, as we haven't seen this failure mode before.
+
+It is also strange to have DC6 enabled at boot, since that would require
+the DMC firmware (loaded by BIOS); the BIOS loading the DMC firmware and
+the driver stopping / reprogramming the firmware is a poorly specified
+sequence and as such unlikely an intentional BIOS behaviour. It's more
+likely that BIOS is leaving an unintentionally enabled DC6 HW state
+behind (without actually loading the required DMC firmware for this).
+
+The tracking of the DC6 allowed counter only works if starting /
+stopping the counter depends on the _SW_ DC6 state vs. the current _HW_
+DC6 state (since stopping the counter requires the DC5 counter captured
+when the counter was started). Thus, using the HW DC6 state is incorrect
+and it also leads to the above oops. Fix both issues by using the SW DC6
+state for the tracking.
+
+This is v2 of the fix originally sent by Jani, updated based on the
+first Link: discussion below.
+
+Link: https://lore.kernel.org/all/3626411dc9e556452c432d0919821b76d9991217@intel.com
+Link: https://lore.kernel.org/all/20260228130946.50919-2-ltao@redhat.com
+Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Tao Liu <ltao@redhat.com>
+Cc: <stable@vger.kernel.org> # v6.16+
+Tested-by: Tao Liu <ltao@redhat.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patch.msgid.link/20260309164803.1918158-1-imre.deak@intel.com
+(cherry picked from commit 2344b93af8eb5da5d496b4e0529d35f0f559eaf0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |  2 ++
- net/netfilter/nf_tables_api.c     |  4 ++--
- net/netfilter/nft_dynset.c        | 10 +++++++++-
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_power_well.c |    2 +-
+ drivers/gpu/drm/i915/display/intel_dmc.c                |    3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index c18cffafc9696..4dc080f7f27c6 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -875,6 +875,8 @@ struct nft_elem_priv *nft_set_elem_init(const struct nft_set *set,
- 					u64 timeout, u64 expiration, gfp_t gfp);
- int nft_set_elem_expr_clone(const struct nft_ctx *ctx, struct nft_set *set,
- 			    struct nft_expr *expr_array[]);
-+void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
-+			       struct nft_set_elem_expr *elem_expr);
- void nft_set_elem_destroy(const struct nft_set *set,
- 			  const struct nft_elem_priv *elem_priv,
- 			  bool destroy_expr);
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index c9a76c760b17c..03321b800707c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6744,8 +6744,8 @@ static void __nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
- 	}
- }
+--- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
+@@ -796,7 +796,7 @@ void gen9_set_dc_state(struct intel_disp
+ 			power_domains->dc_state, val & mask);
  
--static void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
--				      struct nft_set_elem_expr *elem_expr)
-+void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
-+			       struct nft_set_elem_expr *elem_expr)
- {
- 	struct nft_expr *expr;
- 	u32 size;
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index 7807d81296646..9123277be03ce 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -30,18 +30,26 @@ static int nft_dynset_expr_setup(const struct nft_dynset *priv,
- 				 const struct nft_set_ext *ext)
- {
- 	struct nft_set_elem_expr *elem_expr = nft_set_ext_expr(ext);
-+	struct nft_ctx ctx = {
-+		.net	= read_pnet(&priv->set->net),
-+		.family	= priv->set->table->family,
-+	};
- 	struct nft_expr *expr;
- 	int i;
+ 	enable_dc6 = state & DC_STATE_EN_UPTO_DC6;
+-	dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
++	dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
+ 	if (!dc6_was_enabled && enable_dc6)
+ 		intel_dmc_update_dc6_allowed_count(display, true);
  
- 	for (i = 0; i < priv->num_exprs; i++) {
- 		expr = nft_setelem_expr_at(elem_expr, elem_expr->size);
- 		if (nft_expr_clone(expr, priv->expr_array[i], GFP_ATOMIC) < 0)
--			return -1;
-+			goto err_out;
+--- a/drivers/gpu/drm/i915/display/intel_dmc.c
++++ b/drivers/gpu/drm/i915/display/intel_dmc.c
+@@ -1569,8 +1569,7 @@ static bool intel_dmc_get_dc6_allowed_co
+ 		return false;
  
- 		elem_expr->size += priv->expr_array[i]->ops->size;
- 	}
+ 	mutex_lock(&power_domains->lock);
+-	dc6_enabled = intel_de_read(display, DC_STATE_EN) &
+-		      DC_STATE_EN_UPTO_DC6;
++	dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
+ 	if (dc6_enabled)
+ 		intel_dmc_update_dc6_allowed_count(display, false);
  
- 	return 0;
-+err_out:
-+	nft_set_elem_expr_destroy(&ctx, elem_expr);
-+
-+	return -1;
- }
- 
- struct nft_elem_priv *nft_dynset_new(struct nft_set *set,
--- 
-2.51.0
-
 
 
 
