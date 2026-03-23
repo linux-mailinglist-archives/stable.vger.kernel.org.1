@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229581-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WBqAAy1swWlMTAQAu9opvQ
-	(envelope-from <stable+bounces-229084-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:01 +0100
+	id 6LPOOpx7wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229581-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:42:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE202F8716
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 591342FA469
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A33AB30F2C0F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADD8931C4CB0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288C83B0ACB;
-	Mon, 23 Mar 2026 15:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB8D3BADA3;
+	Mon, 23 Mar 2026 16:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFQUWclp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Todf7KYi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E166D3AC0C2;
-	Mon, 23 Mar 2026 15:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E643BADA2;
+	Mon, 23 Mar 2026 16:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278010; cv=none; b=JJPIU/PdSi8EBwdPRiFYBSmUGWMEGzyx4UaxQqHlNs/Xxrao7l/n3U7RWE1ifwGJhERs2OiiClOG7SZqb7GJIzI/9/N9tRbX2S7ckNA6dicHG/9r2mO/BePnAi9fHHQOnAxSs3oLhZ9KPEIxbPQT19eSCExZRH9CRuU+kEpUg88=
+	t=1774282307; cv=none; b=O4/M4aSvZrLsjpWvRzALZW+rsRZGzX/5OrYwdeLSe9J6fEM+Y8kxdV9pmAvxqwuCsAeBCZzGaKxGN99Wq09lHW8r3ucdtasYvPMZDX/ND8vLLPCr4zuy2W3AE2TdRUWJ3OaHipf5dKtTUXFht3GvT7SWBYW5eY7j0Ib1HMOlfIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278010; c=relaxed/simple;
-	bh=uuM4Y5gSIqb4z9tZL34LdcDsNBIj5Qk5UuWp8gSAbWE=;
+	s=arc-20240116; t=1774282307; c=relaxed/simple;
+	bh=4bO68dEUu+E9hZilebeWh7W2op/NPfFXh58CpcGRYo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=guQzT77hYQKF+ct8MiletWb8W2qskJLEhYA2aqZRpJ2fRUO7E3qdo924LGc1yHirM7gBN6lSIBXEUzX+3cppMElB1ByZ15Fs58lsCmbbM0KfKA1IMgGQUuKXSImdDwScvGamEjh1E7/rwe0hOXXzuj4w0vVmaxx9sT2hBH23+YI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFQUWclp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CBDDC4CEF7;
-	Mon, 23 Mar 2026 15:00:09 +0000 (UTC)
+	 MIME-Version; b=q0RH/vrQDDTUrzJPWEKpIipz5u00at4zACjZAs/L8W2OKzEec1zsQwcL1fpjhO7QnUvgAIiQczSVFz2/g9y2sy/ascg1OH9m/aerfdPBYC+/MCQDwmPUBFOGDrl6DZKGUTsEL7l0obbCacho1XBPew/dvD4WEnTJLaJvvotTCkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Todf7KYi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45A5C4CEF7;
+	Mon, 23 Mar 2026 16:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278009;
-	bh=uuM4Y5gSIqb4z9tZL34LdcDsNBIj5Qk5UuWp8gSAbWE=;
+	s=korg; t=1774282307;
+	bh=4bO68dEUu+E9hZilebeWh7W2op/NPfFXh58CpcGRYo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFQUWclpF/WVpK1diZuezD+g1zTOB38/uJK/kkQih/ClJ/pt+fbpJjVnE2KO4jn1Q
-	 6B5GQK6yZjWKFdBNINNODKXSWv8m3OTcEbSuRSn63nc0QiHGFLUAIiNvK0eQBLnuZS
-	 Nj/84bLMeiSP7d7WJYpn6ymw3OwTM7UZD2fQJhWQ=
+	b=Todf7KYiqwW/il4ci8OVBTZPSuQw7WmsGzWboybs5jteN/NfRC7O+UaQJotUIyqza
+	 xGrF/IME8bhPI2hQU1oYdEDvl/zXjFZ/rL9Viq/57FwtvVXvkGSvZsEMmbKn0KtnbR
+	 Jx6oJrY7I1ypbeXd9SM7BiwfTYN3H5IQkmTu3fX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joe Damato <joe@dama.to>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daniel Latypov <dlatypov@google.com>,
+	David Gow <davidgow@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 171/567] nfc: rawsock: cancel tx_work before socket teardown
+Subject: [PATCH 6.1 109/481] kunit: tool: make --json do nothing if --raw_ouput is set
 Date: Mon, 23 Mar 2026 14:41:31 +0100
-Message-ID: <20260323134538.062916920@linuxfoundation.org>
+Message-ID: <20260323134527.939495684@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +67,146 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229084-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229581-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5EE202F8716
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kunit.py:url]
+X-Rspamd-Queue-Id: 591342FA469
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Daniel Latypov <dlatypov@google.com>
 
-[ Upstream commit d793458c45df2aed498d7f74145eab7ee22d25aa ]
+[ Upstream commit 309e22effb741a8c65131a2694a49839fd685a27 ]
 
-In rawsock_release(), cancel any pending tx_work and purge the write
-queue before orphaning the socket.  rawsock_tx_work runs on the system
-workqueue and calls nfc_data_exchange which dereferences the NCI
-device.  Without synchronization, tx_work can race with socket and
-device teardown when a process is killed (e.g. by SIGKILL), leading
-to use-after-free or leaked references.
+When --raw_output is set (to any value), we don't actually parse the
+test results. So asking to print the test results as json doesn't make
+sense.
 
-Set SEND_SHUTDOWN first so that if tx_work is already running it will
-see the flag and skip transmitting, then use cancel_work_sync to wait
-for any in-progress execution to finish, and finally purge any
-remaining queued skbs.
+We internally create a fake test with one passing subtest, so --json
+would actually print out something misleading.
 
-Fixes: 23b7869c0fd0 ("NFC: add the NFC socket raw protocol")
-Reviewed-by: Joe Damato <joe@dama.to>
-Link: https://patch.msgid.link/20260303162346.2071888-6-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This patch:
+* Rewords the flag descriptions so hopefully this is more obvious.
+* Also updates --raw_output's description to note the default behavior
+  is to print out only "KUnit" results (actually any KTAP results)
+* also renames and refactors some related logic for clarity (e.g.
+  test_result => test, it's a kunit_parser.Test object).
+
+Notably, this patch does not make it an error to specify --json and
+--raw_output together. This is an edge case, but I know of at least one
+wrapper around kunit.py that always sets --json. You'd never be able to
+use --raw_output with that wrapper.
+
+Signed-off-by: Daniel Latypov <dlatypov@google.com>
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: 40804c4974b8 ("kunit: tool: copy caller args in run_kernel to prevent mutation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/rawsock.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ tools/testing/kunit/kunit.py | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
-diff --git a/net/nfc/rawsock.c b/net/nfc/rawsock.c
-index 5125392bb68eb..028b4daafaf83 100644
---- a/net/nfc/rawsock.c
-+++ b/net/nfc/rawsock.c
-@@ -67,6 +67,17 @@ static int rawsock_release(struct socket *sock)
- 	if (sock->type == SOCK_RAW)
- 		nfc_sock_unlink(&raw_sk_list, sk);
+diff --git a/tools/testing/kunit/kunit.py b/tools/testing/kunit/kunit.py
+index 4d4663fb578bd..e7b6549712d66 100755
+--- a/tools/testing/kunit/kunit.py
++++ b/tools/testing/kunit/kunit.py
+@@ -192,12 +192,11 @@ def _map_to_overall_status(test_status: kunit_parser.TestStatus) -> KunitStatus:
+ def parse_tests(request: KunitParseRequest, metadata: kunit_json.Metadata, input_data: Iterable[str]) -> Tuple[KunitResult, kunit_parser.Test]:
+ 	parse_start = time.time()
  
-+	if (sk->sk_state == TCP_ESTABLISHED) {
-+		/* Prevent rawsock_tx_work from starting new transmits and
-+		 * wait for any in-progress work to finish.  This must happen
-+		 * before the socket is orphaned to avoid a race where
-+		 * rawsock_tx_work runs after the NCI device has been freed.
-+		 */
-+		sk->sk_shutdown |= SEND_SHUTDOWN;
-+		cancel_work_sync(&nfc_rawsock(sk)->tx_work);
-+		rawsock_write_queue_purge(sk);
-+	}
+-	test_result = kunit_parser.Test()
+-
+ 	if request.raw_output:
+ 		# Treat unparsed results as one passing test.
+-		test_result.status = kunit_parser.TestStatus.SUCCESS
+-		test_result.counts.passed = 1
++		fake_test = kunit_parser.Test()
++		fake_test.status = kunit_parser.TestStatus.SUCCESS
++		fake_test.counts.passed = 1
+ 
+ 		output: Iterable[str] = input_data
+ 		if request.raw_output == 'all':
+@@ -206,14 +205,17 @@ def parse_tests(request: KunitParseRequest, metadata: kunit_json.Metadata, input
+ 			output = kunit_parser.extract_tap_lines(output, lstrip=False)
+ 		for line in output:
+ 			print(line.rstrip())
++		parse_time = time.time() - parse_start
++		return KunitResult(KunitStatus.SUCCESS, parse_time), fake_test
+ 
+-	else:
+-		test_result = kunit_parser.parse_run_tests(input_data)
+-	parse_end = time.time()
 +
- 	sock_orphan(sk);
- 	sock_put(sk);
++	# Actually parse the test results.
++	test = kunit_parser.parse_run_tests(input_data)
++	parse_time = time.time() - parse_start
+ 
+ 	if request.json:
+ 		json_str = kunit_json.get_json_result(
+-					test=test_result,
++					test=test,
+ 					metadata=metadata)
+ 		if request.json == 'stdout':
+ 			print(json_str)
+@@ -223,10 +225,10 @@ def parse_tests(request: KunitParseRequest, metadata: kunit_json.Metadata, input
+ 			stdout.print_with_timestamp("Test results stored in %s" %
+ 				os.path.abspath(request.json))
+ 
+-	if test_result.status != kunit_parser.TestStatus.SUCCESS:
+-		return KunitResult(KunitStatus.TEST_FAILURE, parse_end - parse_start), test_result
++	if test.status != kunit_parser.TestStatus.SUCCESS:
++		return KunitResult(KunitStatus.TEST_FAILURE, parse_time), test
+ 
+-	return KunitResult(KunitStatus.SUCCESS, parse_end - parse_start), test_result
++	return KunitResult(KunitStatus.SUCCESS, parse_time), test
+ 
+ def run_tests(linux: kunit_kernel.LinuxSourceTree,
+ 	      request: KunitRequest) -> KunitResult:
+@@ -359,14 +361,14 @@ def add_exec_opts(parser) -> None:
+ 			    choices=['suite', 'test'])
+ 
+ def add_parse_opts(parser) -> None:
+-	parser.add_argument('--raw_output', help='If set don\'t format output from kernel. '
+-			    'If set to --raw_output=kunit, filters to just KUnit output.',
++	parser.add_argument('--raw_output', help='If set don\'t parse output from kernel. '
++			    'By default, filters to just KUnit output. Use '
++			    '--raw_output=all to show everything',
+ 			     type=str, nargs='?', const='all', default=None, choices=['all', 'kunit'])
+ 	parser.add_argument('--json',
+ 			    nargs='?',
+-			    help='Stores test results in a JSON, and either '
+-			    'prints to stdout or saves to file if a '
+-			    'filename is specified',
++			    help='Prints parsed test results as JSON to stdout or a file if '
++			    'a filename is specified. Does nothing if --raw_output is set.',
+ 			    type=str, const='stdout', default=None, metavar='FILE')
+ 
  
 -- 
 2.51.0
