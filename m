@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-229375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228366-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0MRGOMpewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229375-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:54 +0100
+	id KCqIOapNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228366-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0BE42F6AB8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 483DE2F47FC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A536130FBC1E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4EC783030E91
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9823B893B;
-	Mon, 23 Mar 2026 15:15:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DCE3AD50A;
+	Mon, 23 Mar 2026 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0KHcKSY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxzkmPvn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380973B52F5;
-	Mon, 23 Mar 2026 15:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48233947A6;
+	Mon, 23 Mar 2026 14:08:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278918; cv=none; b=AJZeoYn/4DVf87LiwKLbpBHy5GmdcSZLTLCTiCw6/kSp8LttifEYN5SxiLDqANivtdtdRVFY8t3pDPCnXOFHvG98jvpqANR/gR/FHzNeEsdpHxi3Q/xXPfzmX0qMHqDXPJrZOTkgrx4yP/nJoRLWBM13ybEPrDJOHsNONMHF7fg=
+	t=1774274922; cv=none; b=FlScb90yYT7/SpOEcumtxLPdODVwDNfISbmnmop683n2kiV/uPRmQDRR8nd2Xd1/i+Rcf7s4M9QQC9SEw/7Dyhd4U0nC7XtOCGWJCNRTiESEyAPgVcpqm6AnWc4ywYAmswbToSx/488mj8Pt1TZy5fpIZRHf36jov7u+8fj7xWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278918; c=relaxed/simple;
-	bh=lDObL2TngL/jMWp6ZrR848TeEjQvdPGBFjWwZcfbR7E=;
+	s=arc-20240116; t=1774274922; c=relaxed/simple;
+	bh=3UKlXwPeXYOJFdENVJNiBHJzoDnDyXHm6zWD4hSdwtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HevQ0G4wPKImdUWwHL+a8hw5Npw90mSmcjZPMlvpFqOHm0ODvlMGEMredn27akqV6wW7eEQDRhinYCT8ehlaycTH870jNINUB9FE+Bw6WRL4pvSE7CLnuE9/tS9hRyYqkSwy0jf7oh/S3uD5evcpHE2tXfHPyBWCwVu85GTIdcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0KHcKSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EF4EC4CEF7;
-	Mon, 23 Mar 2026 15:15:17 +0000 (UTC)
+	 MIME-Version; b=D4FCxvDvK1Fu7WlpJ+dd+L07oiiSC0z+i/ty4mXTtDdwh7YYO9N6P+IOBKxPU7S/C5ZSwifn9wdUNms4RjMKLnMIhRGwzBT0plZ1hZiVimpV6ulprsmqT3Av+qf64flw5Gh8SNKmyNk5GlZC1oRJfCGcyZrN50oiT1y7bDNWEKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxzkmPvn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E11C4CEF7;
+	Mon, 23 Mar 2026 14:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278917;
-	bh=lDObL2TngL/jMWp6ZrR848TeEjQvdPGBFjWwZcfbR7E=;
+	s=korg; t=1774274922;
+	bh=3UKlXwPeXYOJFdENVJNiBHJzoDnDyXHm6zWD4hSdwtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a0KHcKSYHDnCN1ycbgweNRQy8xntlLtdDxVOorrKrhvmNV8CyTwwDlcePau7sw9sE
-	 bQ01Bz62cSM2mJrc2FxJ96NfKcEzhClQMD+ycnCKXBBfwF3+XVKGR7Qpg7MlAJg3ll
-	 uLFMZgV/mgujc9OoPkfChBzmyhe5XmrJYXNPu1Ng=
+	b=zxzkmPvni2SaikqkMcCWeKEuNGruieeDyzCwqz6M2q83M16HOPccbR2H2LIBXTqGx
+	 S/oXHU8bB7uJZ9M+vSGSnQFdWVsy4TSXdtHFVzS6+GiHu1k/uJZ76/CXV4v9ek7/aH
+	 ZrH7mT6yTnv9EK2NELKsCE9O/kvYCRuoJcIeqd/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Lechner <felix.lechner@lease-up.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 458/567] parisc: Flush correct cache in cacheflush() syscall
+	Zdenek Bouska <zdenek.bouska@siemens.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Florian Bezdeka <florian.bezdeka@siemens.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 157/212] igc: fix page fault in XDP TX timestamps handling
 Date: Mon, 23 Mar 2026 14:46:18 +0100
-Message-ID: <20260323134545.315395963@linuxfoundation.org>
+Message-ID: <20260323134508.717453812@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,89 +69,150 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229375-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lease-up.com,gmx.de];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228366-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A0BE42F6AB8
+X-Rspamd-Queue-Id: 483DE2F47FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Zdenek Bouska <zdenek.bouska@siemens.com>
 
-commit 2c98a8fbd6aa647414c6248dacf254ebe91c79ad upstream.
+[ Upstream commit 45b33e805bd39f615d9353a7194b2da5281332df ]
 
-The assembly flush instructions were swapped for I- and D-cache flags:
+If an XDP application that requested TX timestamping is shutting down
+while the link of the interface in use is still up the following kernel
+splat is reported:
 
-SYSCALL_DEFINE3(cacheflush, ...)
-{
-	if (cache & DCACHE) {
-			"fic ...\n"
-	}
-	if (cache & ICACHE && error == 0) {
-			"fdc ...\n"
-	}
+[  883.803618] [   T1554] BUG: unable to handle page fault for address: ffffcfb6200fd008
+...
+[  883.803650] [   T1554] Call Trace:
+[  883.803652] [   T1554]  <TASK>
+[  883.803654] [   T1554]  igc_ptp_tx_tstamp_event+0xdf/0x160 [igc]
+[  883.803660] [   T1554]  igc_tsync_interrupt+0x2d5/0x300 [igc]
+...
 
-Fix it by using fdc for DCACHE, and fic for ICACHE flushing.
+During shutdown of the TX ring the xsk_meta pointers are left behind, so
+that the IRQ handler is trying to touch them.
 
-Reported-by: Felix Lechner <felix.lechner@lease-up.com>
-Fixes: c6d96328fecd ("parisc: Add cacheflush() syscall")
-Cc: <stable@vger.kernel.org> # v6.5+
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This issue is now being fixed by cleaning up the stale xsk meta data on
+TX shutdown. TX timestamps on other queues remain unaffected.
+
+Fixes: 15fd021bc427 ("igc: Add Tx hardware timestamp request for AF_XDP zero-copy packet")
+Signed-off-by: Zdenek Bouska <zdenek.bouska@siemens.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Reviewed-by: Florian Bezdeka <florian.bezdeka@siemens.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igc/igc.h      |  2 ++
+ drivers/net/ethernet/intel/igc/igc_main.c |  7 +++++
+ drivers/net/ethernet/intel/igc/igc_ptp.c  | 33 +++++++++++++++++++++++
+ 3 files changed, 42 insertions(+)
 
-diff --git a/arch/parisc/kernel/cache.c b/arch/parisc/kernel/cache.c
-index 4c5240d3a3c7..b189265785dc 100644
---- a/arch/parisc/kernel/cache.c
-+++ b/arch/parisc/kernel/cache.c
-@@ -953,7 +953,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned long, addr, unsigned long, bytes,
- #else
- 			"1: cmpb,<<,n	%0,%2,1b\n"
- #endif
--			"   fic,m	%3(%4,%0)\n"
-+			"   fdc,m	%3(%4,%0)\n"
- 			"2: sync\n"
- 			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
- 			: "+r" (start), "+r" (error)
-@@ -968,7 +968,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned long, addr, unsigned long, bytes,
- #else
- 			"1: cmpb,<<,n	%0,%2,1b\n"
- #endif
--			"   fdc,m	%3(%4,%0)\n"
-+			"   fic,m	%3(%4,%0)\n"
- 			"2: sync\n"
- 			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
- 			: "+r" (start), "+r" (error)
+diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
+index a427f05814c1a..17236813965d3 100644
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -781,6 +781,8 @@ int igc_ptp_hwtstamp_set(struct net_device *netdev,
+ 			 struct kernel_hwtstamp_config *config,
+ 			 struct netlink_ext_ack *extack);
+ void igc_ptp_tx_hang(struct igc_adapter *adapter);
++void igc_ptp_clear_xsk_tx_tstamp_queue(struct igc_adapter *adapter,
++				       u16 queue_id);
+ void igc_ptp_read(struct igc_adapter *adapter, struct timespec64 *ts);
+ void igc_ptp_tx_tstamp_event(struct igc_adapter *adapter);
+ 
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 55d6feccc7745..104d6ab2ce5fa 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -264,6 +264,13 @@ static void igc_clean_tx_ring(struct igc_ring *tx_ring)
+ 	/* reset next_to_use and next_to_clean */
+ 	tx_ring->next_to_use = 0;
+ 	tx_ring->next_to_clean = 0;
++
++	/* Clear any lingering XSK TX timestamp requests */
++	if (test_bit(IGC_RING_FLAG_TX_HWTSTAMP, &tx_ring->flags)) {
++		struct igc_adapter *adapter = netdev_priv(tx_ring->netdev);
++
++		igc_ptp_clear_xsk_tx_tstamp_queue(adapter, tx_ring->queue_index);
++	}
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 7aae83c108fd7..98491346d21b8 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -576,6 +576,39 @@ static void igc_ptp_clear_tx_tstamp(struct igc_adapter *adapter)
+ 	spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
+ }
+ 
++/**
++ * igc_ptp_clear_xsk_tx_tstamp_queue - Clear pending XSK TX timestamps for a queue
++ * @adapter: Board private structure
++ * @queue_id: TX queue index to clear timestamps for
++ *
++ * Iterates over all TX timestamp registers and releases any pending
++ * timestamp requests associated with the given TX queue. This is
++ * called when an XDP pool is being disabled to ensure no stale
++ * timestamp references remain.
++ */
++void igc_ptp_clear_xsk_tx_tstamp_queue(struct igc_adapter *adapter, u16 queue_id)
++{
++	unsigned long flags;
++	int i;
++
++	spin_lock_irqsave(&adapter->ptp_tx_lock, flags);
++
++	for (i = 0; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
++		struct igc_tx_timestamp_request *tstamp = &adapter->tx_tstamp[i];
++
++		if (tstamp->buffer_type != IGC_TX_BUFFER_TYPE_XSK)
++			continue;
++		if (tstamp->xsk_queue_index != queue_id)
++			continue;
++		if (!tstamp->xsk_tx_buffer)
++			continue;
++
++		igc_ptp_free_tx_buffer(adapter, tstamp);
++	}
++
++	spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
++}
++
+ static void igc_ptp_disable_tx_timestamp(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
 -- 
-2.53.0
+2.51.0
 
 
 
