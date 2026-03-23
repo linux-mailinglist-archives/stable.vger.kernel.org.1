@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-229238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228660-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UCsqGcxdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229238-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:40 +0100
+	id eMQ1BiROwWm7SAQAu9opvQ
+	(envelope-from <stable+bounces-228660-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFFBF2F687C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E013D2F4932
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9D9C03153C0E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 96013304545B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57603AB295;
-	Mon, 23 Mar 2026 15:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E7D38F630;
+	Mon, 23 Mar 2026 14:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMmJY+Wo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tebfytEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E3F28504D;
-	Mon, 23 Mar 2026 15:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A211F91F6;
+	Mon, 23 Mar 2026 14:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278494; cv=none; b=G9vd6aYrUBYu+lQ6T6/iIxpK5uWnFJbmJkCcWRog871ZAbaO+NpEP1AVJtWVSwV/w2M+sJFTlMKQj2GC1J2CebuIUx6lb0gpon/Rs5HUm6c++e8POificjsc9MNlKjVVz12gKgyf6s77DVOa1iU22y1rIKnR9BCbBoFzOV8MjkI=
+	t=1774275745; cv=none; b=CWAtlBxNIx/+LpirS0iySbuAHikz2lXNvxPdECuH/wjrFC/M5lVltCm/BtCdAVAROUDiWHWpKkpaToeCB4HcFKMJexttbuvVq+I4pIfUkY36oPyCfCQEx9JgVXYxpFfwDI6JY1axjXKjdhtPvnJ6klfDsgTJ18Utb66xBUf2wJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278494; c=relaxed/simple;
-	bh=15Oxxr55Hz236hnqMK7gvPmJl71l5Z61E6iqyWZVHBM=;
+	s=arc-20240116; t=1774275745; c=relaxed/simple;
+	bh=hlqscGFKnPw5oiloxWoTTdBSLU/AN2qRT52kp+bQpSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HVRyMN7MWfpsdMlelAlxvKeHldCVmw/8IrQ6KvuHwyWUMzkytY5AfjGSTHsbugeudAwRj3h4KKJnY/P3lhWBEJ1M7Ek4dEcr5bQkK+OgzRwJO3vEmuo7sANAOaR6RzMPyFHVM1oAoIdkQB9CXcbfh7fdn0QIDe/vOHGWG0QMEV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMmJY+Wo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F03C4CEF7;
-	Mon, 23 Mar 2026 15:08:13 +0000 (UTC)
+	 MIME-Version; b=KCp++YE5SF7qPwo5IljzMC8K0hRCLswrqekPVlsrBHodd9G1VstNnBaj5aymtocUCFv0pURIXHNDoB2IPoJiV2KKIXkK1Xx1+qGWu8BK7LNNAYJrD95lFyRUWS0DXcJ3cc2yPI/lthaSJ+zz8mpJngD/4aGF6yDy6fiw66S/RYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tebfytEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D771C4CEF7;
+	Mon, 23 Mar 2026 14:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278494;
-	bh=15Oxxr55Hz236hnqMK7gvPmJl71l5Z61E6iqyWZVHBM=;
+	s=korg; t=1774275745;
+	bh=hlqscGFKnPw5oiloxWoTTdBSLU/AN2qRT52kp+bQpSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMmJY+Woso/Lq03AiOsN5oNJ9xLJVwnWMgl+1roneO3zuIqE2GATPQrf30BziqdxN
-	 8BjXk6mRDelhNtysLzd1oAaK1PeOEqDBqC3U4TnyN48cTlHupRChvi9l642xVy3TgX
-	 fIMaFvU8Z9UjFMkDzkarzzi1cXb6tI3w1lMuzdVw=
+	b=tebfytEaDaxW3es79zNpcjNRWY+F4EmLn5ga8zjAqRMx1L0ALk0E9BVpZdDwy8f9Y
+	 vaaWZ1fYjL9pqD55emIAvnjWj+U69TVBvCSwhCL87qTnb97NaVkDni5sbU0HWPLApl
+	 SqhFiaH+VJpvK/AjvWCkT18bhy/y+Vu/H2wJAY3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com,
-	Alan Stern <stern@rowland.harvard.edu>
-Subject: [PATCH 6.6 281/567] USB: usbtmc: Use usb_bulk_msg_killable() with user-specified timeouts
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Tomasz Duszynski <tduszyns@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 205/460] iio: chemical: sps30_serial: fix buffer size in sps30_serial_read_meas()
 Date: Mon, 23 Mar 2026 14:43:21 +0100
-Message-ID: <20260323134540.783405411@linuxfoundation.org>
+Message-ID: <20260323134531.568005326@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +66,72 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229238-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-228660-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,25ba18e2c5040447585d];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BFFBF2F687C
+X-Rspamd-Queue-Id: E013D2F4932
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 7784caa413a89487dd14dd5c41db8753483b2acb upstream.
+commit c3914ce1963c4db25e186112c90fa5d2361e9e0a upstream.
 
-The usbtmc driver accepts timeout values specified by the user in an
-ioctl command, and uses these timeouts for some usb_bulk_msg() calls.
-Since the user can specify arbitrarily long timeouts and
-usb_bulk_msg() uses unkillable waits, call usb_bulk_msg_killable()
-instead to avoid the possibility of the user hanging a kernel thread
-indefinitely.
+sizeof(num) evaluates to sizeof(size_t) which is 8 bytes on 64-bit,
+but the buffer elements are only 4 bytes. The same function already
+uses sizeof(*meas) on line 312, making the mismatch evident. Use
+sizeof(*meas) consistently.
 
-Reported-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-usb/8e1c7ac5-e076-44b0-84b8-1b34b20f0ae1@suse.com/T/#t
-Tested-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
-CC: stable@vger.kernel.org
-Link: https://patch.msgid.link/81c6fc24-0607-40f1-8c20-5270dab2fad5@rowland.harvard.edu
+Fixes: b2e171f5a5c6 ("iio: sps30: add support for serial interface")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Acked-by: Tomasz Duszynski <tduszyns@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/iio/chemical/sps30_serial.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -727,7 +727,7 @@ static int usbtmc488_ioctl_trigger(struc
- 	buffer[1] = data->bTag;
- 	buffer[2] = ~data->bTag;
+--- a/drivers/iio/chemical/sps30_serial.c
++++ b/drivers/iio/chemical/sps30_serial.c
+@@ -303,7 +303,7 @@ static int sps30_serial_read_meas(struct
+ 	if (msleep_interruptible(1000))
+ 		return -EINTR;
  
--	retval = usb_bulk_msg(data->usb_dev,
-+	retval = usb_bulk_msg_killable(data->usb_dev,
- 			      usb_sndbulkpipe(data->usb_dev,
- 					      data->bulk_out),
- 			      buffer, USBTMC_HEADER_SIZE,
-@@ -1347,7 +1347,7 @@ static int send_request_dev_dep_msg_in(s
- 	buffer[11] = 0; /* Reserved */
- 
- 	/* Send bulk URB */
--	retval = usb_bulk_msg(data->usb_dev,
-+	retval = usb_bulk_msg_killable(data->usb_dev,
- 			      usb_sndbulkpipe(data->usb_dev,
- 					      data->bulk_out),
- 			      buffer, USBTMC_HEADER_SIZE,
-@@ -1419,7 +1419,7 @@ static ssize_t usbtmc_read(struct file *
- 	actual = 0;
- 
- 	/* Send bulk URB */
--	retval = usb_bulk_msg(data->usb_dev,
-+	retval = usb_bulk_msg_killable(data->usb_dev,
- 			      usb_rcvbulkpipe(data->usb_dev,
- 					      data->bulk_in),
- 			      buffer, bufsize, &actual,
+-	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(num));
++	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(*meas));
+ 	if (ret < 0)
+ 		return ret;
+ 	/* if measurements aren't ready sensor returns empty frame */
 
 
 
