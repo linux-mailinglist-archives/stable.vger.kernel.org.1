@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228925-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BSPMz5gwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229444-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:06 +0100
+	id 2EXkIJxYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228925-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6802D2F6DE4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1953B2F6002
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8FAF5306EC9C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25ACF3153C32
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A3783B47FC;
-	Mon, 23 Mar 2026 15:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E443AEF58;
+	Mon, 23 Mar 2026 14:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9IV7K6H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wh+MCdVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D703A9D86;
-	Mon, 23 Mar 2026 15:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B90235045;
+	Mon, 23 Mar 2026 14:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279253; cv=none; b=YsK2FGAY9Rzg7B6uSSZgLcpdX9m+iDnYGJCUyBqFIUkCtOYF0fQJzFrcl41LpX5+wyTJ5LL+yxShR1tUVzgGW39KRfFmrDQAR6EW4QabDWPAcxK9SMl29NMH3u6a9KzQXer5D41FPXd7qstQSCkMymseZttsxrkTeK0Njp4qyA4=
+	t=1774277503; cv=none; b=k6VwGli+WHw+acNm40o9b24x3/2ON6nHNkFvhh7D+kAsTGunObzRx464thyr54Jv1Rsm/3aLhQMZknH+cvf6QA3N1W36bier+4u6BUYteoIOQi4rUxvLU/vwgdqblIULIeiXgwyM2j/fwc0HbKbrHyo7UsCknP+6C09RhGSF8hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279253; c=relaxed/simple;
-	bh=utaRQfoaTN/obt93eM+2k6yC/CYvj5H8zsP78wNMAzY=;
+	s=arc-20240116; t=1774277503; c=relaxed/simple;
+	bh=syYMgIsqUAXZAYIztlzLQdX3TOfwhwfYr72S3/8stMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQMtjVIHlSEZtWOySqL+Pq1T6I8MCvtDpTxqpfJneyLQ/sEdP4abk+PpnrHAZ7n3qfMsIE4xxNtWg6lGzpe5JsdtUDVAhKSVqyPajRbCoYln63DAE3ruaxeSxzST1AUPRssrwqCayJBd4daQaeV4WrOsNQPw8109niWSYX1S7mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9IV7K6H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E7DC4CEF7;
-	Mon, 23 Mar 2026 15:20:52 +0000 (UTC)
+	 MIME-Version; b=NlE8hFgQ/B2MpcQFibhGYqYrAaQ/khOp+BA6XQ9qHGLGmxIhLza9nTpuZthZ1FhAm/aIWn1HhcFYqUDe3ABiuEKIJu4UB28Mj2KwK4X7axaCEO04uJsUgS5KwspJ1K1n9pS4RIN4GIFX1f5IvJtkGpd88r1F4P1fHIObbtn6IiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wh+MCdVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA2EC4CEF7;
+	Mon, 23 Mar 2026 14:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279253;
-	bh=utaRQfoaTN/obt93eM+2k6yC/CYvj5H8zsP78wNMAzY=;
+	s=korg; t=1774277503;
+	bh=syYMgIsqUAXZAYIztlzLQdX3TOfwhwfYr72S3/8stMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g9IV7K6HyNWz6Q2mGG3SVdwKNCt0/xXDD1cjpJX5W/o2+MmSyAV7zvrG/WmXEQTwV
-	 4Z8Kp9YZ+58aZd6rWpR1Dv4JcxZXCoIl4fHAnxn0mX+AbX8vp7l15xAb81wDgPk4oJ
-	 g2VHkAnVuF9X5WUIvbDgYxNEUaAACuu0B0z+MWGg=
+	b=Wh+MCdVZTrxxJ/sdMuMr6tyllnLYizj0KRdxt4hGoiiQQNQGqjff+7SGjnrvht1CI
+	 OeIiyFCnK7ATxB3hznt0URSryNvVnfukzuCAA9YHAZvmX69oi5pFaAKpY5qyg2hMgW
+	 YzKptYsQlyWPYDlxkkqZitzQm39NqzNz3zMxrhwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	soufiane el hachmi <kilwa10@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Anas Iqbal <mohd.abd.6602@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 508/567] Bluetooth: HIDP: Fix possible UAF
+Subject: [PATCH 6.12 432/460] net: dsa: bcm_sf2: fix missing clk_disable_unprepare() in error paths
 Date: Mon, 23 Mar 2026 14:47:08 +0100
-Message-ID: <20260323134546.585987045@linuxfoundation.org>
+Message-ID: <20260323134537.168852502@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,270 +66,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229444-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228925-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6802D2F6DE4
+X-Rspamd-Queue-Id: 1953B2F6002
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Anas Iqbal <mohd.abd.6602@gmail.com>
 
-[ Upstream commit dbf666e4fc9bdd975a61bf682b3f75cb0145eedd ]
+[ Upstream commit b48731849609cbd8c53785a48976850b443153fd ]
 
-This fixes the following trace caused by not dropping l2cap_conn
-reference when user->remove callback is called:
+Smatch reports:
+drivers/net/dsa/bcm_sf2.c:997 bcm_sf2_sw_resume() warn:
+'priv->clk' from clk_prepare_enable() not released on lines: 983,990.
 
-[   97.809249] l2cap_conn_free: freeing conn ffff88810a171c00
-[   97.809907] CPU: 1 UID: 0 PID: 1419 Comm: repro_standalon Not tainted 7.0.0-rc1-dirty #14 PREEMPT(lazy)
-[   97.809935] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-[   97.809947] Call Trace:
-[   97.809954]  <TASK>
-[   97.809961]  dump_stack_lvl (lib/dump_stack.c:122)
-[   97.809990]  l2cap_conn_free (net/bluetooth/l2cap_core.c:1808)
-[   97.810017]  l2cap_conn_del (./include/linux/kref.h:66 net/bluetooth/l2cap_core.c:1821 net/bluetooth/l2cap_core.c:1798)
-[   97.810055]  l2cap_disconn_cfm (net/bluetooth/l2cap_core.c:7347 (discriminator 1) net/bluetooth/l2cap_core.c:7340 (discriminator 1))
-[   97.810086]  ? __pfx_l2cap_disconn_cfm (net/bluetooth/l2cap_core.c:7341)
-[   97.810117]  hci_conn_hash_flush (./include/net/bluetooth/hci_core.h:2152 (discriminator 2) net/bluetooth/hci_conn.c:2644 (discriminator 2))
-[   97.810148]  hci_dev_close_sync (net/bluetooth/hci_sync.c:5360)
-[   97.810180]  ? __pfx_hci_dev_close_sync (net/bluetooth/hci_sync.c:5285)
-[   97.810212]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810242]  ? up_write (./arch/x86/include/asm/atomic64_64.h:87 (discriminator 5) ./include/linux/atomic/atomic-arch-fallback.h:2852 (discriminator 5) ./include/linux/atomic/atomic-long.h:268 (discriminator 5) ./include/linux/atomic/atomic-instrumented.h:3391 (discriminator 5) kernel/locking/rwsem.c:1385 (discriminator 5) kernel/locking/rwsem.c:1643 (discriminator 5))
-[   97.810267]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810290]  ? rcu_is_watching (./arch/x86/include/asm/atomic.h:23 ./include/linux/atomic/atomic-arch-fallback.h:457 ./include/linux/context_tracking.h:128 kernel/rcu/tree.c:752)
-[   97.810320]  hci_unregister_dev (net/bluetooth/hci_core.c:504 net/bluetooth/hci_core.c:2716)
-[   97.810346]  vhci_release (drivers/bluetooth/hci_vhci.c:691)
-[   97.810375]  ? __pfx_vhci_release (drivers/bluetooth/hci_vhci.c:678)
-[   97.810404]  __fput (fs/file_table.c:470)
-[   97.810430]  task_work_run (kernel/task_work.c:235)
-[   97.810451]  ? __pfx_task_work_run (kernel/task_work.c:201)
-[   97.810472]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810495]  ? do_raw_spin_unlock (./include/asm-generic/qspinlock.h:128 (discriminator 5) kernel/locking/spinlock_debug.c:142 (discriminator 5))
-[   97.810527]  do_exit (kernel/exit.c:972)
-[   97.810547]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810574]  ? __pfx_do_exit (kernel/exit.c:897)
-[   97.810594]  ? lock_acquire (kernel/locking/lockdep.c:470 (discriminator 6) kernel/locking/lockdep.c:5870 (discriminator 6) kernel/locking/lockdep.c:5825 (discriminator 6))
-[   97.810616]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810639]  ? do_raw_spin_lock (kernel/locking/spinlock_debug.c:95 (discriminator 4) kernel/locking/spinlock_debug.c:118 (discriminator 4))
-[   97.810664]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810688]  ? find_held_lock (kernel/locking/lockdep.c:5350 (discriminator 1))
-[   97.810721]  do_group_exit (kernel/exit.c:1093)
-[   97.810745]  get_signal (kernel/signal.c:3007 (discriminator 1))
-[   97.810772]  ? security_file_permission (./arch/x86/include/asm/jump_label.h:37 security/security.c:2366)
-[   97.810803]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810826]  ? vfs_read (fs/read_write.c:555)
-[   97.810854]  ? __pfx_get_signal (kernel/signal.c:2800)
-[   97.810880]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810905]  ? __pfx_vfs_read (fs/read_write.c:555)
-[   97.810932]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.810960]  arch_do_signal_or_restart (arch/x86/kernel/signal.c:337 (discriminator 1))
-[   97.810990]  ? __pfx_arch_do_signal_or_restart (arch/x86/kernel/signal.c:334)
-[   97.811021]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.811055]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.811078]  ? ksys_read (fs/read_write.c:707)
-[   97.811106]  ? __pfx_ksys_read (fs/read_write.c:707)
-[   97.811137]  exit_to_user_mode_loop (kernel/entry/common.c:66 kernel/entry/common.c:98)
-[   97.811169]  ? rcu_is_watching (./arch/x86/include/asm/atomic.h:23 ./include/linux/atomic/atomic-arch-fallback.h:457 ./include/linux/context_tracking.h:128 kernel/rcu/tree.c:752)
-[   97.811192]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.811215]  ? trace_hardirqs_off (./include/trace/events/preemptirq.h:36 (discriminator 33) kernel/trace/trace_preemptirq.c:95 (discriminator 33) kernel/trace/trace_preemptirq.c:90 (discriminator 33))
-[   97.811240]  do_syscall_64 (./include/linux/irq-entry-common.h:226 ./include/linux/irq-entry-common.h:256 ./include/linux/entry-common.h:325 arch/x86/entry/syscall_64.c:100)
-[   97.811268]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   97.811292]  ? exc_page_fault (arch/x86/mm/fault.c:1480 (discriminator 3) arch/x86/mm/fault.c:1527 (discriminator 3))
-[   97.811318]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-[   97.811338] RIP: 0033:0x445cfe
-[   97.811352] Code: Unable to access opcode bytes at 0x445cd4.
+The clock enabled by clk_prepare_enable() in bcm_sf2_sw_resume()
+is not released if bcm_sf2_sw_rst() or bcm_sf2_cfp_resume() fails.
 
-Code starting with the faulting instruction
-===========================================
-[   97.811360] RSP: 002b:00007f65c41c6dc8 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-[   97.811378] RAX: fffffffffffffe00 RBX: 00007f65c41c76c0 RCX: 0000000000445cfe
-[   97.811391] RDX: 0000000000000400 RSI: 00007f65c41c6e40 RDI: 0000000000000004
-[   97.811403] RBP: 00007f65c41c7250 R08: 0000000000000000 R09: 0000000000000000
-[   97.811415] R10: 0000000000000000 R11: 0000000000000246 R12: ffffffffffffffe8
-[   97.811428] R13: 0000000000000000 R14: 00007fff780a8c00 R15: 00007f65c41c76c0
-[   97.811453]  </TASK>
-[   98.402453] ==================================================================
-[   98.403560] BUG: KASAN: use-after-free in __mutex_lock (kernel/locking/mutex.c:199 kernel/locking/mutex.c:694 kernel/locking/mutex.c:776)
-[   98.404541] Read of size 8 at addr ffff888113ee40a8 by task khidpd_00050004/1430
-[   98.405361]
-[   98.405563] CPU: 1 UID: 0 PID: 1430 Comm: khidpd_00050004 Not tainted 7.0.0-rc1-dirty #14 PREEMPT(lazy)
-[   98.405588] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-[   98.405600] Call Trace:
-[   98.405607]  <TASK>
-[   98.405614]  dump_stack_lvl (lib/dump_stack.c:122)
-[   98.405641]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
-[   98.405667]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.405691]  ? __virt_addr_valid (arch/x86/mm/physaddr.c:55)
-[   98.405724]  ? __mutex_lock (kernel/locking/mutex.c:199 kernel/locking/mutex.c:694 kernel/locking/mutex.c:776)
-[   98.405748]  kasan_report (mm/kasan/report.c:221 mm/kasan/report.c:597)
-[   98.405778]  ? __mutex_lock (kernel/locking/mutex.c:199 kernel/locking/mutex.c:694 kernel/locking/mutex.c:776)
-[   98.405807]  __mutex_lock (kernel/locking/mutex.c:199 kernel/locking/mutex.c:694 kernel/locking/mutex.c:776)
-[   98.405832]  ? do_raw_spin_lock (kernel/locking/spinlock_debug.c:95 (discriminator 4) kernel/locking/spinlock_debug.c:118 (discriminator 4))
-[   98.405859]  ? l2cap_unregister_user (./include/linux/list.h:381 (discriminator 2) net/bluetooth/l2cap_core.c:1723 (discriminator 2))
-[   98.405888]  ? __pfx_do_raw_spin_lock (kernel/locking/spinlock_debug.c:114)
-[   98.405915]  ? __pfx___mutex_lock (kernel/locking/mutex.c:775)
-[   98.405939]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.405963]  ? lock_acquire (kernel/locking/lockdep.c:470 (discriminator 6) kernel/locking/lockdep.c:5870 (discriminator 6) kernel/locking/lockdep.c:5825 (discriminator 6))
-[   98.405984]  ? find_held_lock (kernel/locking/lockdep.c:5350 (discriminator 1))
-[   98.406015]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406038]  ? lock_release (kernel/locking/lockdep.c:5536 kernel/locking/lockdep.c:5889 kernel/locking/lockdep.c:5875)
-[   98.406061]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406085]  ? _raw_spin_unlock_irqrestore (./arch/x86/include/asm/irqflags.h:42 ./arch/x86/include/asm/irqflags.h:119 ./arch/x86/include/asm/irqflags.h:159 ./include/linux/spinlock_api_smp.h:178 kernel/locking/spinlock.c:194)
-[   98.406107]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406130]  ? __timer_delete_sync (kernel/time/timer.c:1592)
-[   98.406158]  ? l2cap_unregister_user (./include/linux/list.h:381 (discriminator 2) net/bluetooth/l2cap_core.c:1723 (discriminator 2))
-[   98.406186]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406210]  l2cap_unregister_user (./include/linux/list.h:381 (discriminator 2) net/bluetooth/l2cap_core.c:1723 (discriminator 2))
-[   98.406263]  hidp_session_thread (./include/linux/instrumented.h:112 ./include/linux/atomic/atomic-instrumented.h:400 ./include/linux/refcount.h:389 ./include/linux/refcount.h:432 ./include/linux/refcount.h:450 ./include/linux/kref.h:64 net/bluetooth/hidp/core.c:996 net/bluetooth/hidp/core.c:1305)
-[   98.406293]  ? __pfx_hidp_session_thread (net/bluetooth/hidp/core.c:1264)
-[   98.406323]  ? kthread (kernel/kthread.c:433)
-[   98.406340]  ? __pfx_hidp_session_wake_function (net/bluetooth/hidp/core.c:1251)
-[   98.406370]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406393]  ? find_held_lock (kernel/locking/lockdep.c:5350 (discriminator 1))
-[   98.406424]  ? __pfx_hidp_session_wake_function (net/bluetooth/hidp/core.c:1251)
-[   98.406453]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406476]  ? trace_hardirqs_on (kernel/trace/trace_preemptirq.c:79 (discriminator 1))
-[   98.406499]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406523]  ? kthread (kernel/kthread.c:433)
-[   98.406539]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406565]  ? kthread (kernel/kthread.c:433)
-[   98.406581]  ? __pfx_hidp_session_thread (net/bluetooth/hidp/core.c:1264)
-[   98.406610]  kthread (kernel/kthread.c:467)
-[   98.406627]  ? __pfx_kthread (kernel/kthread.c:412)
-[   98.406645]  ret_from_fork (arch/x86/kernel/process.c:164)
-[   98.406674]  ? __pfx_ret_from_fork (arch/x86/kernel/process.c:153)
-[   98.406704]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.406728]  ? __pfx_kthread (kernel/kthread.c:412)
-[   98.406747]  ret_from_fork_asm (arch/x86/entry/entry_64.S:258)
-[   98.406774]  </TASK>
-[   98.406780]
-[   98.433693] The buggy address belongs to the physical page:
-[   98.434405] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff888113ee7c40 pfn:0x113ee4
-[   98.435557] flags: 0x200000000000000(node=0|zone=2)
-[   98.436198] raw: 0200000000000000 ffffea0004244308 ffff8881f6f3ebc0 0000000000000000
-[   98.437195] raw: ffff888113ee7c40 0000000000000000 00000000ffffffff 0000000000000000
-[   98.438115] page dumped because: kasan: bad access detected
-[   98.438951]
-[   98.439211] Memory state around the buggy address:
-[   98.439871]  ffff888113ee3f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   98.440714]  ffff888113ee4000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[   98.441580] >ffff888113ee4080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[   98.442458]                                   ^
-[   98.443011]  ffff888113ee4100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[   98.443889]  ffff888113ee4180: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-[   98.444768] ==================================================================
-[   98.445719] Disabling lock debugging due to kernel taint
-[   98.448074] l2cap_conn_free: freeing conn ffff88810c22b400
-[   98.450012] CPU: 1 UID: 0 PID: 1430 Comm: khidpd_00050004 Tainted: G    B               7.0.0-rc1-dirty #14 PREEMPT(lazy)
-[   98.450040] Tainted: [B]=BAD_PAGE
-[   98.450047] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-[   98.450059] Call Trace:
-[   98.450065]  <TASK>
-[   98.450071]  dump_stack_lvl (lib/dump_stack.c:122)
-[   98.450099]  l2cap_conn_free (net/bluetooth/l2cap_core.c:1808)
-[   98.450125]  l2cap_conn_put (net/bluetooth/l2cap_core.c:1822)
-[   98.450154]  session_free (net/bluetooth/hidp/core.c:990)
-[   98.450181]  hidp_session_thread (net/bluetooth/hidp/core.c:1307)
-[   98.450213]  ? __pfx_hidp_session_thread (net/bluetooth/hidp/core.c:1264)
-[   98.450271]  ? kthread (kernel/kthread.c:433)
-[   98.450293]  ? __pfx_hidp_session_wake_function (net/bluetooth/hidp/core.c:1251)
-[   98.450339]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.450368]  ? find_held_lock (kernel/locking/lockdep.c:5350 (discriminator 1))
-[   98.450406]  ? __pfx_hidp_session_wake_function (net/bluetooth/hidp/core.c:1251)
-[   98.450442]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.450471]  ? trace_hardirqs_on (kernel/trace/trace_preemptirq.c:79 (discriminator 1))
-[   98.450499]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.450528]  ? kthread (kernel/kthread.c:433)
-[   98.450547]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.450578]  ? kthread (kernel/kthread.c:433)
-[   98.450598]  ? __pfx_hidp_session_thread (net/bluetooth/hidp/core.c:1264)
-[   98.450637]  kthread (kernel/kthread.c:467)
-[   98.450657]  ? __pfx_kthread (kernel/kthread.c:412)
-[   98.450680]  ret_from_fork (arch/x86/kernel/process.c:164)
-[   98.450715]  ? __pfx_ret_from_fork (arch/x86/kernel/process.c:153)
-[   98.450752]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[   98.450782]  ? __pfx_kthread (kernel/kthread.c:412)
-[   98.450804]  ret_from_fork_asm (arch/x86/entry/entry_64.S:258)
-[   98.450836]  </TASK>
+Add the missing clk_disable_unprepare() calls in the error paths
+to properly release the clock resource.
 
-Fixes: b4f34d8d9d26 ("Bluetooth: hidp: add new session-management helpers")
-Reported-by: soufiane el hachmi <kilwa10@gmail.com>
-Tested-by: soufiane el hachmi <kilwa10@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
+Link: https://patch.msgid.link/20260318084212.1287-1-mohd.abd.6602@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hidp/core.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/dsa/bcm_sf2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hidp/core.c b/net/bluetooth/hidp/core.c
-index 707f229f896a1..40a6f1e20babc 100644
---- a/net/bluetooth/hidp/core.c
-+++ b/net/bluetooth/hidp/core.c
-@@ -986,7 +986,8 @@ static void session_free(struct kref *ref)
- 	skb_queue_purge(&session->intr_transmit);
- 	fput(session->intr_sock->file);
- 	fput(session->ctrl_sock->file);
--	l2cap_conn_put(session->conn);
-+	if (session->conn)
-+		l2cap_conn_put(session->conn);
- 	kfree(session);
- }
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index f1372830d5fa2..e680fff7d23fb 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -980,15 +980,19 @@ static int bcm_sf2_sw_resume(struct dsa_switch *ds)
+ 	ret = bcm_sf2_sw_rst(priv);
+ 	if (ret) {
+ 		pr_err("%s: failed to software reset switch\n", __func__);
++		if (!priv->wol_ports_mask)
++			clk_disable_unprepare(priv->clk);
+ 		return ret;
+ 	}
  
-@@ -1164,6 +1165,15 @@ static void hidp_session_remove(struct l2cap_conn *conn,
+ 	bcm_sf2_crossbar_setup(priv);
  
- 	down_write(&hidp_session_sem);
- 
-+	/* Drop L2CAP reference immediately to indicate that
-+	 * l2cap_unregister_user() shall not be called as it is already
-+	 * considered removed.
-+	 */
-+	if (session->conn) {
-+		l2cap_conn_put(session->conn);
-+		session->conn = NULL;
+ 	ret = bcm_sf2_cfp_resume(ds);
+-	if (ret)
++	if (ret) {
++		if (!priv->wol_ports_mask)
++			clk_disable_unprepare(priv->clk);
+ 		return ret;
+-
 +	}
-+
- 	hidp_session_terminate(session);
+ 	if (priv->hw_params.num_gphy == 1)
+ 		bcm_sf2_gphy_enable_set(ds, true);
  
- 	cancel_work_sync(&session->dev_init);
-@@ -1301,7 +1311,9 @@ static int hidp_session_thread(void *arg)
- 	 * Instead, this call has the same semantics as if user-space tried to
- 	 * delete the session.
- 	 */
--	l2cap_unregister_user(session->conn, &session->user);
-+	if (session->conn)
-+		l2cap_unregister_user(session->conn, &session->user);
-+
- 	hidp_session_put(session);
- 
- 	module_put_and_kthread_exit(0);
 -- 
 2.51.0
 
