@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-229302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228099-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0B1hC7ZdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229302-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:18 +0100
+	id cHyiOYxGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228099-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBC182F6848
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8F22F3742
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5100F3041A21
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B7087301A79A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A8C3B531B;
-	Mon, 23 Mar 2026 15:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEA63AE1AD;
+	Mon, 23 Mar 2026 13:55:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaWqoaMW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7JUcU29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D800B3B3890;
-	Mon, 23 Mar 2026 15:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61543AE70F;
+	Mon, 23 Mar 2026 13:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278690; cv=none; b=L9XQ2bmpjNLebgTI+47AbZDLRmROKAgKcz5ul9rIAl0IW797KJ/A4wdtSErGCHl7KaYdjp3usZRXbG4Wc0jmHJN70+guhZyaMW1xqMjtjhb/iSQJakYA4lN0cc88xUujNA/DpqZ0f2j0B2oqDcKiE326JSv9BdYiw1iDelbrw3M=
+	t=1774274121; cv=none; b=aMc0/43OKqUprpQ7txH06mr6Ar0ht+SqrADXLlLJX30xA4Sm78DdFRMehsHmz47a8GGsrv5VxQeIJqUE+LFrhvJvmX1KmcdtY9RLhfVYxINYPOuQ3pq78x9CLs6EvjIxdc2QIB4A0/W8ktE4+ggDrgGDzJZkcnMtSs33ABOM77U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278690; c=relaxed/simple;
-	bh=jTa8mWvVSbm8Xb0rpmcO5zAm/wjX0yfBRzfQmsfVXMU=;
+	s=arc-20240116; t=1774274121; c=relaxed/simple;
+	bh=GyibNyFa/r9RKCbkH/h70eU81vvBxCwLSbBgmZPE510=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=faYcf4DIVTZ273uJcNcwBfX1fQgGRVTXBS4w+6J9ix3jM1E7QrycO8F3icT1Tl4qIaBhX8aeQdhBiMs22IIzR6SHqCJMqeqRv4LWTN7Gu9xxRR/HfHmToSV9W7wgc94EN0DjEPq8xLf9ZX3Uyb4c7fktnJI3o+snSwVD/NlhvD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaWqoaMW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F135C4CEF7;
-	Mon, 23 Mar 2026 15:11:29 +0000 (UTC)
+	 MIME-Version; b=oULOn8iH53sdQyQtHYTzEH2odSh/I2r2fC4bOsSbXTlKQdcMttVfuduU1NZg/xDqkFn8QgSigtGU5xiDbuzPYM6ERIZvcNVN3SZHM1mukz3/HtrQOJAZrc9ic/Gy22QTLYKY09Ow3nUZGx4box293k9bvDQkeIz2EnCs5sUlZCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7JUcU29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E616C2BCB1;
+	Mon, 23 Mar 2026 13:55:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278690;
-	bh=jTa8mWvVSbm8Xb0rpmcO5zAm/wjX0yfBRzfQmsfVXMU=;
+	s=korg; t=1774274121;
+	bh=GyibNyFa/r9RKCbkH/h70eU81vvBxCwLSbBgmZPE510=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WaWqoaMWJL72XKwCg8EvaCrg9/DL6/+nEuct4rMHvRbabcg0D6dSSDF8hEEzhBR9D
-	 f5iz7CNZUCvmc36neSggv5K+RtODVFvgbdCbZBnPjCDRqATeg8zVmP6adtSm1vNDmY
-	 /YYl3GLLFufQOUV+ybsOGCtWts/B1ePqPIgsqiL8=
+	b=T7JUcU29JrO366Mw8Spq0L/NbyG4sCin3310xmwvh/1YJepJW+7pxExu7OwWiPTIr
+	 xvMdzvsHksIbtFHGjCGbkFt7uAhxrtlDsCk9xE8adSFT4ULN7MOPH0HQg1wcX1qJe1
+	 yw32yYeJqOIhg3orHs/G7sBGqvzS24Y4e1Bj8oSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Garg <nktgrg@google.com>,
-	Jordan Rhee <jordanrhee@google.com>,
-	Harshitha Ramamurthy <hramamurthy@google.com>,
-	Joshua Washington <joshwash@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 371/567] gve: fix incorrect buffer cleanup in gve_tx_clean_pending_packets for QPL
+Subject: [PATCH 6.19 114/220] arm64: dts: renesas: r8a78000: Fix out-of-range SPI interrupt numbers
 Date: Mon, 23 Mar 2026 14:44:51 +0100
-Message-ID: <20260323134543.004786632@linuxfoundation.org>
+Message-ID: <20260323134508.204292451@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,165 +63,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229302-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228099-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CBC182F6848
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5C8F22F3742
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ankit Garg <nktgrg@google.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit fb868db5f4bccd7a78219313ab2917429f715cea ]
+[ Upstream commit 85c2601e2c2feb60980c7ca23de28c49472f61f1 ]
 
-In DQ-QPL mode, gve_tx_clean_pending_packets() incorrectly uses the RDA
-buffer cleanup path. It iterates num_bufs times and attempts to unmap
-entries in the dma array.
+SPI interrupts are in the range 0-987.  Extended SPI interrupts should
+use GIC_ESPI, instead of abusing GIC_SPI with a manual offset of 4064.
 
-This leads to two issues:
-1. The dma array shares storage with tx_qpl_buf_ids (union).
- Interpreting buffer IDs as DMA addresses results in attempting to
- unmap incorrect memory locations.
-2. num_bufs in QPL mode (counting 2K chunks) can significantly exceed
- the size of the dma array, causing out-of-bounds access warnings
-(trace below is how we noticed this issue).
-
-UBSAN: array-index-out-of-bounds in
-drivers/net/ethernet/drivers/net/ethernet/google/gve/gve_tx_dqo.c:178:5 index 18 is out of
-range for type 'dma_addr_t[18]' (aka 'unsigned long long[18]')
-Workqueue: gve gve_service_task [gve]
-Call Trace:
-<TASK>
-dump_stack_lvl+0x33/0xa0
-__ubsan_handle_out_of_bounds+0xdc/0x110
-gve_tx_stop_ring_dqo+0x182/0x200 [gve]
-gve_close+0x1be/0x450 [gve]
-gve_reset+0x99/0x120 [gve]
-gve_service_task+0x61/0x100 [gve]
-process_scheduled_works+0x1e9/0x380
-
-Fix this by properly checking for QPL mode and delegating to
-gve_free_tx_qpl_bufs() to reclaim the buffers.
-
-Cc: stable@vger.kernel.org
-Fixes: a6fb8d5a8b69 ("gve: Tx path for DQO-QPL")
-Signed-off-by: Ankit Garg <nktgrg@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
-Signed-off-by: Joshua Washington <joshwash@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260220215324.1631350-1-joshwash@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ netmem_dma_unmap_page_attrs() => dma_unmap_page() ]
+Fixes: 63500d12cf76d003 ("arm64: dts: renesas: Add R8A78000 SoC support")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/1f9dd274720ea1b66617a5dd84f76c3efc829dc8.1772641415.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/google/gve/gve_tx_dqo.c |   52 +++++++++++----------------
- 1 file changed, 23 insertions(+), 29 deletions(-)
+ arch/arm64/boot/dts/renesas/r8a78000.dtsi | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-+++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
-@@ -157,6 +157,24 @@ gve_free_pending_packet(struct gve_tx_ri
- 	}
- }
- 
-+static void gve_unmap_packet(struct device *dev,
-+			     struct gve_tx_pending_packet_dqo *pkt)
-+{
-+	int i;
-+
-+	if (!pkt->num_bufs)
-+		return;
-+
-+	/* SKB linear portion is guaranteed to be mapped */
-+	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
-+			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
-+	for (i = 1; i < pkt->num_bufs; i++) {
-+		dma_unmap_page(dev, dma_unmap_addr(pkt, dma[i]),
-+			       dma_unmap_len(pkt, len[i]), DMA_TO_DEVICE);
-+	}
-+	pkt->num_bufs = 0;
-+}
-+
- /* gve_tx_free_desc - Cleans up all pending tx requests and buffers.
-  */
- static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
-@@ -166,21 +184,12 @@ static void gve_tx_clean_pending_packets
- 	for (i = 0; i < tx->dqo.num_pending_packets; i++) {
- 		struct gve_tx_pending_packet_dqo *cur_state =
- 			&tx->dqo.pending_packets[i];
--		int j;
- 
--		for (j = 0; j < cur_state->num_bufs; j++) {
--			if (j == 0) {
--				dma_unmap_single(tx->dev,
--					dma_unmap_addr(cur_state, dma[j]),
--					dma_unmap_len(cur_state, len[j]),
--					DMA_TO_DEVICE);
--			} else {
--				dma_unmap_page(tx->dev,
--					dma_unmap_addr(cur_state, dma[j]),
--					dma_unmap_len(cur_state, len[j]),
--					DMA_TO_DEVICE);
--			}
--		}
-+		if (tx->dqo.qpl)
-+			gve_free_tx_qpl_bufs(tx, cur_state);
-+		else
-+			gve_unmap_packet(tx->dev, cur_state);
-+
- 		if (cur_state->skb) {
- 			dev_consume_skb_any(cur_state->skb);
- 			cur_state->skb = NULL;
-@@ -992,21 +1001,6 @@ static void remove_from_list(struct gve_
- 	}
- }
- 
--static void gve_unmap_packet(struct device *dev,
--			     struct gve_tx_pending_packet_dqo *pkt)
--{
--	int i;
--
--	/* SKB linear portion is guaranteed to be mapped */
--	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
--			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
--	for (i = 1; i < pkt->num_bufs; i++) {
--		dma_unmap_page(dev, dma_unmap_addr(pkt, dma[i]),
--			       dma_unmap_len(pkt, len[i]), DMA_TO_DEVICE);
--	}
--	pkt->num_bufs = 0;
--}
--
- /* Completion types and expected behavior:
-  * No Miss compl + Packet compl = Packet completed normally.
-  * Miss compl + Re-inject compl = Packet completed normally.
+diff --git a/arch/arm64/boot/dts/renesas/r8a78000.dtsi b/arch/arm64/boot/dts/renesas/r8a78000.dtsi
+index 4c97298fa7634..3e1c98903cea0 100644
+--- a/arch/arm64/boot/dts/renesas/r8a78000.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a78000.dtsi
+@@ -698,7 +698,7 @@ scif0: serial@c0700000 {
+ 			compatible = "renesas,scif-r8a78000",
+ 				     "renesas,rcar-gen5-scif", "renesas,scif";
+ 			reg = <0 0xc0700000 0 0x40>;
+-			interrupts = <GIC_SPI 4074 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_ESPI 10 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&dummy_clk_sgasyncd16>, <&dummy_clk_sgasyncd16>, <&scif_clk>;
+ 			clock-names = "fck", "brg_int", "scif_clk";
+ 			status = "disabled";
+@@ -708,7 +708,7 @@ scif1: serial@c0704000 {
+ 			compatible = "renesas,scif-r8a78000",
+ 				     "renesas,rcar-gen5-scif", "renesas,scif";
+ 			reg = <0 0xc0704000 0 0x40>;
+-			interrupts = <GIC_SPI 4075 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_ESPI 11 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&dummy_clk_sgasyncd16>, <&dummy_clk_sgasyncd16>, <&scif_clk>;
+ 			clock-names = "fck", "brg_int", "scif_clk";
+ 			status = "disabled";
+@@ -718,7 +718,7 @@ scif3: serial@c0708000 {
+ 			compatible = "renesas,scif-r8a78000",
+ 				     "renesas,rcar-gen5-scif", "renesas,scif";
+ 			reg = <0 0xc0708000 0 0x40>;
+-			interrupts = <GIC_SPI 4076 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_ESPI 12 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&dummy_clk_sgasyncd16>, <&dummy_clk_sgasyncd16>, <&scif_clk>;
+ 			clock-names = "fck", "brg_int", "scif_clk";
+ 			status = "disabled";
+@@ -728,7 +728,7 @@ scif4: serial@c070c000 {
+ 			compatible = "renesas,scif-r8a78000",
+ 				     "renesas,rcar-gen5-scif", "renesas,scif";
+ 			reg = <0 0xc070c000 0 0x40>;
+-			interrupts = <GIC_SPI 4077 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_ESPI 13 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&dummy_clk_sgasyncd16>, <&dummy_clk_sgasyncd16>, <&scif_clk>;
+ 			clock-names = "fck", "brg_int", "scif_clk";
+ 			status = "disabled";
+@@ -738,7 +738,7 @@ hscif0: serial@c0710000 {
+ 			compatible = "renesas,hscif-r8a78000",
+ 				     "renesas,rcar-gen5-hscif", "renesas,hscif";
+ 			reg = <0 0xc0710000 0 0x60>;
+-			interrupts = <GIC_SPI 4078 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_ESPI 14 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&dummy_clk_sgasyncd4>, <&dummy_clk_sgasyncd4>, <&scif_clk>;
+ 			clock-names = "fck", "brg_int", "scif_clk";
+ 			status = "disabled";
+@@ -748,7 +748,7 @@ hscif1: serial@c0714000 {
+ 			compatible = "renesas,hscif-r8a78000",
+ 				     "renesas,rcar-gen5-hscif", "renesas,hscif";
+ 			reg = <0 0xc0714000 0 0x60>;
+-			interrupts = <GIC_SPI 4079 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_ESPI 15 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&dummy_clk_sgasyncd4>, <&dummy_clk_sgasyncd4>, <&scif_clk>;
+ 			clock-names = "fck", "brg_int", "scif_clk";
+ 			status = "disabled";
+@@ -758,7 +758,7 @@ hscif2: serial@c0718000 {
+ 			compatible = "renesas,hscif-r8a78000",
+ 				     "renesas,rcar-gen5-hscif", "renesas,hscif";
+ 			reg = <0 0xc0718000 0 0x60>;
+-			interrupts = <GIC_SPI 4080 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_ESPI 16 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&dummy_clk_sgasyncd4>, <&dummy_clk_sgasyncd4>, <&scif_clk>;
+ 			clock-names = "fck", "brg_int", "scif_clk";
+ 			status = "disabled";
+@@ -768,7 +768,7 @@ hscif3: serial@c071c000 {
+ 			compatible = "renesas,hscif-r8a78000",
+ 				     "renesas,rcar-gen5-hscif", "renesas,hscif";
+ 			reg = <0 0xc071c000 0 0x60>;
+-			interrupts = <GIC_SPI 4081 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_ESPI 17 IRQ_TYPE_LEVEL_HIGH>;
+ 			clocks = <&dummy_clk_sgasyncd4>, <&dummy_clk_sgasyncd4>, <&scif_clk>;
+ 			clock-names = "fck", "brg_int", "scif_clk";
+ 			status = "disabled";
+-- 
+2.51.0
+
 
 
 
