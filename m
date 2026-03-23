@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CDTyHeBSwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228423-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:04 +0100
+	id YMoLBuppwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-228860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D92672F53AF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80F0A2F81DA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D33D3116FA4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CAD04310529B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF1E3B0AD7;
-	Mon, 23 Mar 2026 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A03826A08F;
+	Mon, 23 Mar 2026 14:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lbZqVmfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uIFZ7x84"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8883B0ADD;
-	Mon, 23 Mar 2026 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA27A340282;
+	Mon, 23 Mar 2026 14:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275083; cv=none; b=c4oobCZiRwDcQKHGQ3oinrX54WQ13YiIDnwm8+mEPMCIQBmSW5VDR08Yck1W3sCYmn3V6juljfWc/82w4Vm5QW1gCu9KoE453gJ39rz2zpYVOikjGsnXKZjKIX2avo4EiWH4pNEIOcugLa52IWXGlWaGPVr+R+gCxOZ4jFeh8Ug=
+	t=1774277329; cv=none; b=P+Voc3EJwC0IP64xyuAtYHWhQcBm9dcuRvqUpWmwJXyh9Th9xiyeXJ0e++aI0ZgeK1GO7YAx4r9j/oZXaPCDDYpHDFz9gL506F6ZUPH9htaEBw1co+prr/hN3am/Ww/kfHaYkhjGtey4jZYBElyZ9mb8bTIWfitXHfBhMdgVct8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275083; c=relaxed/simple;
-	bh=t/tXdQHdvEvSFNIg760vOUoy+QDyDQEQqEK3r6PFlEg=;
+	s=arc-20240116; t=1774277329; c=relaxed/simple;
+	bh=zQ8AFTGP1PBFWEa1554gDR56EfNvjncj6i/iARBfV2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hF8558tlEUKepGRMybwHK8pNi6rqgHtuOXPPXL+ctW5Ik4uwRp3Z2OVf/490YY3dcxfzWRZTRj5ZZAMa68sW1bDMFzEvO5h1KjeVMJbeK4BSIBVMvC02JINjGLB75/zB2gO4bJ6G+BqXHIId6o0+K1zbUWka0rZaShFjA3bTfd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lbZqVmfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982CAC2BC9E;
-	Mon, 23 Mar 2026 14:11:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ufNQMplY4i0oLHMgk8jMHnmWVae4BGxV1R4EJXR9r18NtaPy6AHwOSj2nhwJI9We5XW7hDbK4Rfc8XNtbTSnoy6BVZNb+OPNY9NYybwP3Sm0NWX/W9qqlf0NE1eS7UMthveWGpgubSLHRqONCzzwT9idixM7uSh66eO/WDl9XZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uIFZ7x84; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054C2C4CEF7;
+	Mon, 23 Mar 2026 14:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275083;
-	bh=t/tXdQHdvEvSFNIg760vOUoy+QDyDQEQqEK3r6PFlEg=;
+	s=korg; t=1774277329;
+	bh=zQ8AFTGP1PBFWEa1554gDR56EfNvjncj6i/iARBfV2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lbZqVmfqR2eKkRvPID8jsA2AcL1PKXk5Tp/tUcmofW1FvzKiL2TXSmi6qm7Jmd7eD
-	 CtyOaF+c6kDHbSsQMSmIs/uacw268iPIglr+sLA/ZRMAO2riakuMZ2HaoIYJds2Xs1
-	 yQ4sbg50PXObLFrpemUEsXTqqoWGfJm1gkJ5syyM=
+	b=uIFZ7x84Ved7b+auA4gAeM6WdNG+lw+jVe4qsxtH6ofP0tinkdgcYOpqyJSAoaMiV
+	 HRHWf+Ucp8t3+tGS8uZ000CVRih4croFPzLoi/ftagOKgflJqzZUcw+wdmsoQBW7CM
+	 8jy2scd4fqSaYtJ58IGysgnqqKoRDZ6FKQSc7/HQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 174/212] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
+Subject: [PATCH 6.12 399/460] netfilter: xt_time: use unsigned int for monthday bit shift
 Date: Mon, 23 Mar 2026 14:46:35 +0100
-Message-ID: <20260323134509.263306342@linuxfoundation.org>
+Message-ID: <20260323134536.369046790@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,118 +65,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228423-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228860-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D92672F53AF
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,vidocsecurity.com:email]
+X-Rspamd-Queue-Id: 80F0A2F81DA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
+[ Upstream commit 00050ec08cecfda447e1209b388086d76addda3a ]
 
-mvpp2_bm_switch_buffers() unconditionally calls
-mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
-shared buffer pool modes. This function programs CM3 flow control
-registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
-priv->cm3_base without any NULL check.
+The monthday field can be up to 31, and shifting a signed integer 1
+by 31 positions (1 << 31) is undefined behavior in C, as the result
+overflows a 32-bit signed int. Use 1U to ensure well-defined behavior
+for all valid monthday values.
 
-When the CM3 SRAM resource is not present in the device tree (the
-third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
-SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
-NULL and priv->global_tx_fc is false. Any operation that triggers
-mvpp2_bm_switch_buffers(), for example an MTU change that crosses
-the jumbo frame threshold, will crash:
+Change the weekday shift to 1U as well for consistency.
 
-  Unable to handle kernel NULL pointer dereference at
-  virtual address 0000000000000000
-  Mem abort info:
-    ESR = 0x0000000096000006
-    EC = 0x25: DABT (current EL), IL = 32 bits
-  pc : readl+0x0/0x18
-  lr : mvpp2_cm3_read.isra.0+0x14/0x20
-  Call trace:
-   readl+0x0/0x18
-   mvpp2_bm_pool_update_fc+0x40/0x12c
-   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
-   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
-   mvpp2_change_mtu+0x140/0x380
-   __dev_set_mtu+0x1c/0x38
-   dev_set_mtu_ext+0x78/0x118
-   dev_set_mtu+0x48/0xa8
-   dev_ifsioc+0x21c/0x43c
-   dev_ioctl+0x2d8/0x42c
-   sock_ioctl+0x314/0x378
-
-Every other flow control call site in the driver already guards
-hardware access with either priv->global_tx_fc or port->tx_fc.
-mvpp2_bm_switch_buffers() is the only place that omits this check.
-
-Add the missing priv->global_tx_fc guard to both the disable and
-re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
-rest of the driver.
-
-Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
-Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
-Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: ee4411a1b1e0 ("[NETFILTER]: x_tables: add xt_time match")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
+ net/netfilter/xt_time.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index ab0c99aa9f9a5..74d44510684bf 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -5018,7 +5018,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 	if (priv->percpu_pools)
- 		numbufs = port->nrxqs * 2;
+diff --git a/net/netfilter/xt_time.c b/net/netfilter/xt_time.c
+index 6aa12d0f54e23..61de85e02a40f 100644
+--- a/net/netfilter/xt_time.c
++++ b/net/netfilter/xt_time.c
+@@ -227,13 +227,13 @@ time_mt(const struct sk_buff *skb, struct xt_action_param *par)
  
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, false);
+ 	localtime_2(&current_time, stamp);
  
- 	for (i = 0; i < numbufs; i++)
-@@ -5043,7 +5043,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 			mvpp2_open(port->dev);
+-	if (!(info->weekdays_match & (1 << current_time.weekday)))
++	if (!(info->weekdays_match & (1U << current_time.weekday)))
+ 		return false;
+ 
+ 	/* Do not spend time computing monthday if all days match anyway */
+ 	if (info->monthdays_match != XT_TIME_ALL_MONTHDAYS) {
+ 		localtime_3(&current_time, stamp);
+-		if (!(info->monthdays_match & (1 << current_time.monthday)))
++		if (!(info->monthdays_match & (1U << current_time.monthday)))
+ 			return false;
  	}
  
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, true);
- 
- 	return 0;
 -- 
 2.51.0
 
