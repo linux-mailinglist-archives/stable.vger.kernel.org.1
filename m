@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GSDLixSwWn+SAQAu9opvQ
-	(envelope-from <stable+bounces-228325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:04 +0100
+	id gEvJLrJVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7492F5258
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6387D2F5A13
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8093E3029AEA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 491CC30234EA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429983B27D5;
-	Mon, 23 Mar 2026 14:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7025A274B5C;
+	Mon, 23 Mar 2026 14:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJwBXbtF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zbK09N1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066513C07A;
-	Mon, 23 Mar 2026 14:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A34C26F28D;
+	Mon, 23 Mar 2026 14:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274814; cv=none; b=tJ8WzxFHA8hRqG0YPqH+aO738Q/4LNfHCaF/DYBlJ9+FX1zjnRNZeZxxhFyJXl53B72RqhRFcYoqfu0AiROnf7BJirjXYuZCjK+lmz/6ljlhcDaH81EMVik+z1cAeiJf6/QeMfg8uinWLn4K68u7BO9RDraOqGw+S1/bhMvR4jg=
+	t=1774277290; cv=none; b=NgU0XVIvvTFjnOf5xPFT5svFC0V62MUm5+bBE2psJn2x4YGemjbS+MU0QwNCrDl7FoB9sGliIjvslrCxBDPhtLIu4x0B6z1fR3uZ7OYu+80YW1bUAhOfg5WbXclJWYLyqshODCvB9wVUvgC0MQug4VgLz1FERjoFUNpgqLD6WMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274814; c=relaxed/simple;
-	bh=D1uUGmtj8V9X+/OWCYLh0/9Wsas++sqwxZHKRejpbBY=;
+	s=arc-20240116; t=1774277290; c=relaxed/simple;
+	bh=E2DSqW/v2QGmnlp2ALK3U88T3bOd2dE9sYAd3b7RjAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ox7IJH+MOW0TciqcwC7GKLJWbnvFP10L8R996EtO+0trXqsk60t2iIyNUictJO9LPy5efTuEgH4m9PMYUtwjMzqwCE+UNpYH1xbm5qJhL3s45fAKM5KIRm9BZNaAysZgQYYz03FL2PSu2mNsZyUEMrm6Km4tsIjorPoCxZ3X+qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJwBXbtF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E447C4CEF7;
-	Mon, 23 Mar 2026 14:06:53 +0000 (UTC)
+	 MIME-Version; b=tZ4ZYPPh22/dVJvm83SB6lP9RlEl6lEFa/bWkK3IVeWQYj8+vqKMjzS3unQTOal0N4Lg0G7lJAvRExnTIqjXaXOXdsXPapMT/nx+NPU7lWszEr7PfFuEFIdAfFf3twc696yD9bmjLUjjofHFqHsReeDqhl9o0CEJ7lprqaCBZKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zbK09N1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2631C4CEF7;
+	Mon, 23 Mar 2026 14:48:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274813;
-	bh=D1uUGmtj8V9X+/OWCYLh0/9Wsas++sqwxZHKRejpbBY=;
+	s=korg; t=1774277290;
+	bh=E2DSqW/v2QGmnlp2ALK3U88T3bOd2dE9sYAd3b7RjAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJwBXbtFb9RKreIGc+68pRfosqZuB3ctA7VsdBhNR/UonfZ6sr65JVBIaQRZBKKj4
-	 /KClTDp8HXFGDOmomEQb7MLuNOthZLiTiXg+SCFQ3wKD1A4F4DddVftU5Rd7jtsRow
-	 ugaeyhNi4ZJXynQAVQY0X9zbrOfiiq53ZNxIGlSI=
+	b=0zbK09N1jSeKU1UuAq03uOL356+TTbTN5TQTOttEGrXIs8h0o4menJT1cJ9gxREXS
+	 EIhWT1THzVTomq/GqigkLgS+OJt4X6ExFH9M3etXKaJH2iKvD6DkBstxP+Ad0qd7y0
+	 bPclCo5weY0Eu8vYrDJ3KgW8VA0Oq86EI+Muq1GU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 116/212] arm64: dts: renesas: r9a09g077: Fix CPG register region sizes
+	Chen Ni <nichen@iscas.ac.cn>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.12 341/460] mtd: rawnand: cadence: Fix error check for dma_alloc_coherent() in cadence_nand_init()
 Date: Mon, 23 Mar 2026 14:45:37 +0100
-Message-ID: <20260323134507.444769517@linuxfoundation.org>
+Message-ID: <20260323134534.914333686@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,78 +64,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228325-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228846-lists,stable=lfdr.de];
+	RSPAMD_URIBL_FAIL(0.00)[oracle.com:query timed out,iscas.ac.cn:query timed out];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RSPAMD_EMAILBL_FAIL(0.00)[nichen.iscas.ac.cn:query timed out,alok.a.tiwari.oracle.com:query timed out,miquel.raynal.bootlin.com:query timed out];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1D7492F5258
+X-Rspamd-Queue-Id: 6387D2F5A13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit b12985ceca18bcf67f176883175d544daad5e00e ]
+commit 0410e1a4c545c769c59c6eda897ad5d574d0c865 upstream.
 
-The CPG register regions were incorrectly sized.  Update them to match
-the actual hardware specification:
-  - First region (0x80280000): 0x1000 -> 0x10000 (64kiB)
-  - Second region (0x81280000): 0x9000 -> 0x10000 (64kiB)
+Fix wrong variable used for error checking after dma_alloc_coherent()
+call. The function checks cdns_ctrl->dma_cdma_desc instead of
+cdns_ctrl->cdma_desc, which could lead to incorrect error handling.
 
-Fixes: d17b34744f5e4 ("arm64: dts: renesas: Add initial support for the Renesas RZ/T2H SoC")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260213131742.3606334-2-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/renesas/r9a09g077.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/cadence-nand-controller.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g077.dtsi b/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
-index 7f1aca218c9fb..06aae2c635676 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a09g077.dtsi
-@@ -267,8 +267,8 @@ i2c2: i2c@81008000 {
+--- a/drivers/mtd/nand/raw/cadence-nand-controller.c
++++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
+@@ -2878,7 +2878,7 @@ static int cadence_nand_init(struct cdns
+ 						  sizeof(*cdns_ctrl->cdma_desc),
+ 						  &cdns_ctrl->dma_cdma_desc,
+ 						  GFP_KERNEL);
+-	if (!cdns_ctrl->dma_cdma_desc)
++	if (!cdns_ctrl->cdma_desc)
+ 		return -ENOMEM;
  
- 		cpg: clock-controller@80280000 {
- 			compatible = "renesas,r9a09g077-cpg-mssr";
--			reg = <0 0x80280000 0 0x1000>,
--			      <0 0x81280000 0 0x9000>;
-+			reg = <0 0x80280000 0 0x10000>,
-+			      <0 0x81280000 0 0x10000>;
- 			clocks = <&extal_clk>;
- 			clock-names = "extal";
- 			#clock-cells = <2>;
--- 
-2.51.0
-
+ 	cdns_ctrl->buf_size = SZ_16K;
 
 
 
