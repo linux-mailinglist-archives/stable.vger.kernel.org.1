@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229151-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0GTxM6prwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229652-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:50 +0100
+	id wEd0EMxtwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229151-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 953AD2F85AA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B15452F8B0B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 339263239E80
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ACC6E32EF0CE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1963E38B7C4;
-	Mon, 23 Mar 2026 16:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC383B774E;
+	Mon, 23 Mar 2026 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LY3/ama8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CH5gpff+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA1D282F3A;
-	Mon, 23 Mar 2026 16:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6377A22FE0A;
+	Mon, 23 Mar 2026 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282501; cv=none; b=baCNFTRUdJoHWDvLAKy+1CjrS+B2gtNFNgJPP0xuJLR2yko7nla6HSHNYvSFxnR+VDgsqtdNkWbs9Ud8SwygyBauk5qQ7kolTV5V3FC4qTF/qb7OHcc19yEBRoXNokqQcpvqsMjQUv5oyGCXNX8w1Ykvs2w4YZIqsiprOoyepJk=
+	t=1774278222; cv=none; b=IwYJE3jbK7pEAjQBgWFPSU8dSJ2aX0ib7hyiv0+xlx5yo7ElkgIXeAVWaVWmwF3x3gqS+2HWhv9z4tI4lJX4nvvBM2bA9NDENlKmyYLxbILdKrabNrx4St9Dy+SSfKOo+LM59k6c2n0Wm5IcPYa/FngxqL/deA20M1Ei88WgrsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282501; c=relaxed/simple;
-	bh=97JCbjupXr1lTKE3TfBr35UqrSkFWex07HI4h9/x4ew=;
+	s=arc-20240116; t=1774278222; c=relaxed/simple;
+	bh=2Ow+tLWbORctv/J+hGvCad1P7luP+rI5DzNk7NRJtyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nr2nYCwsXbg4sWyM8L84VtbwZYKz4fWVOGX80ENGxZuM+LOJTJf8QLRK9Qfbe14Itu4Jkn5GeXNrIP+O1I7cjxPNVi3iWv1LdM6boCjSR1B6np7XtKkIsQB7vQjXlWiwqUEMmQ0sRFaRXfzKxrKOEyVIZ+5WDPndVnOd/prxJ48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LY3/ama8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5258BC4CEF7;
-	Mon, 23 Mar 2026 16:15:01 +0000 (UTC)
+	 MIME-Version; b=BPJIcr8rNcrJAeXYcvxDPmxeEqiP65h/8tboMf/VVk2nMTmAGW9+l8z0bS6ZtLDtY1NUZV2v0lLdNactE9EaaL5MpOaQq8pL3OGT10DBItPEv6noM4KlNNOh9fuykOxtmydh1pYBWaiQog2Y4ylrTt9PaEXFw5JUDmvKL2RFiy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CH5gpff+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0382C4CEF7;
+	Mon, 23 Mar 2026 15:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282501;
-	bh=97JCbjupXr1lTKE3TfBr35UqrSkFWex07HI4h9/x4ew=;
+	s=korg; t=1774278222;
+	bh=2Ow+tLWbORctv/J+hGvCad1P7luP+rI5DzNk7NRJtyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LY3/ama8gtlIMtP1ugBIHb6z7ufzz4CoTSYt9x9TDk2qrFfRRno5XjDrSxogsEucJ
-	 U+VR9rK1CS9zOQd65wP/yFkIW09/EcjkeWAMUOVrSV8EYXDQZ9oF7nq8gxW3s7tTg1
-	 r8c8Mb7rGk+7GutpObX9PpLsB7nasJ0Dl43Rtm1Y=
+	b=CH5gpff+QkeXkOrIe8IpDxw0RiYxjgTVAur5Eevlcrm3+j44rqBZn34s1hjHArqMe
+	 WOroNSOP21mZ6MYaTrVxYEOsLystPDXV/24uR8UmHsn9JN83k0snPb9FaMQPSY60VL
+	 KTNC/ZiV8X7fZH85YYY7Qzy+PYPm6CHMdCF0/KZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Dull <monderasdor@gmail.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
 	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/481] netfilter: nfnetlink_queue: fix entry leak in bridge verdict error path
+Subject: [PATCH 6.6 240/567] netfilter: nft_set_pipapo: fix stack out-of-bounds read in pipapo_drop()
 Date: Mon, 23 Mar 2026 14:42:40 +0100
-Message-ID: <20260323134529.550989624@linuxfoundation.org>
+Message-ID: <20260323134539.772232661@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,82 +66,95 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229652-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229151-lists,stable=lfdr.de];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 953AD2F85AA
+X-Rspamd-Queue-Id: B15452F8B0B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit f1ba83755d81c6fc66ac7acd723d238f974091e9 ]
+[ Upstream commit d6d8cd2db236a9dd13dbc2d05843b3445cc964b5 ]
 
-nfqnl_recv_verdict() calls find_dequeue_entry() to remove the queue
-entry from the queue data structures, taking ownership of the entry.
-For PF_BRIDGE packets, it then calls nfqa_parse_bridge() to parse VLAN
-attributes.  If nfqa_parse_bridge() returns an error (e.g. NFQA_VLAN
-present but NFQA_VLAN_TCI missing), the function returns immediately
-without freeing the dequeued entry or its sk_buff.
+pipapo_drop() passes rulemap[i + 1].n to pipapo_unmap() as the
+to_offset argument on every iteration, including the last one where
+i == m->field_count - 1. This reads one element past the end of the
+stack-allocated rulemap array (declared as rulemap[NFT_PIPAPO_MAX_FIELDS]
+with NFT_PIPAPO_MAX_FIELDS == 16).
 
-This leaks the nf_queue_entry, its associated sk_buff, and all held
-references (net_device refcounts, struct net refcount).  Repeated
-triggering exhausts kernel memory.
+Although pipapo_unmap() returns early when is_last is true without
+using the to_offset value, the argument is evaluated at the call site
+before the function body executes, making this a genuine out-of-bounds
+stack read confirmed by KASAN:
 
-Fix this by dropping the entry via nfqnl_reinject() with NF_DROP verdict
-on the error path, consistent with other error handling in this file.
+  BUG: KASAN: stack-out-of-bounds in pipapo_drop+0x50c/0x57c [nf_tables]
+  Read of size 4 at addr ffff8000810e71a4
 
-Fixes: 8d45ff22f1b4 ("netfilter: bridge: nf queue verdict to use NFQA_VLAN and NFQA_L2HDR")
-Reviewed-by: David Dull <monderasdor@gmail.com>
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+  This frame has 1 object:
+   [32, 160) 'rulemap'
+
+  The buggy address is at offset 164 -- exactly 4 bytes past the end
+  of the rulemap array.
+
+Pass 0 instead of rulemap[i + 1].n on the last iteration to avoid
+the out-of-bounds read.
+
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_queue.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nft_set_pipapo.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index f13eed826cbb8..4e0d1362875bd 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -1262,8 +1262,10 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index c3ada6798d4a3..f4d0bb6b377d1 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1570,6 +1570,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 	int i;
  
- 	if (entry->state.pf == PF_BRIDGE) {
- 		err = nfqa_parse_bridge(entry, nfqa);
--		if (err < 0)
-+		if (err < 0) {
-+			nfqnl_reinject(entry, NF_DROP);
- 			return err;
-+		}
- 	}
+ 	nft_pipapo_for_each_field(f, i, m) {
++		bool last = i == m->field_count - 1;
+ 		int g;
  
- 	if (nfqa[NFQA_PAYLOAD]) {
+ 		for (g = 0; g < f->groups; g++) {
+@@ -1589,7 +1590,7 @@ static void pipapo_drop(struct nft_pipapo_match *m,
+ 		}
+ 
+ 		pipapo_unmap(f->mt, f->rules, rulemap[i].to, rulemap[i].n,
+-			     rulemap[i + 1].n, i == m->field_count - 1);
++			     last ? 0 : rulemap[i + 1].n, last);
+ 		if (pipapo_resize(f, f->rules, f->rules - rulemap[i].n)) {
+ 			/* We can ignore this, a failure to shrink tables down
+ 			 * doesn't make tables invalid.
 -- 
 2.51.0
 
