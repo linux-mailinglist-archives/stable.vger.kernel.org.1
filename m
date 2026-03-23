@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yEFwIZldwWl0SgQAu9opvQ
-	(envelope-from <stable+bounces-229346-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:49 +0100
+	id KJbiJyhRwWnqSAQAu9opvQ
+	(envelope-from <stable+bounces-228206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E712F681D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A852F4FFD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 30C5F310E16A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B8F0D307B215
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4FB2C0298;
-	Mon, 23 Mar 2026 15:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AE33B47D7;
+	Mon, 23 Mar 2026 14:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHxu4ZC0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YzQqyWWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95850285CA8;
-	Mon, 23 Mar 2026 15:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AD43AF65B;
+	Mon, 23 Mar 2026 14:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278828; cv=none; b=TyYfs4xbLtFhFmVPMewXd07iffYbq7QKtlpGtuZmWaKA2dk1daCRl9qaoguYfcxgj3Poh5eY1YWqT9p8ETk5Kt2LX/MeljCt0vQYAWqJakAxocahQO10YwKAcQCo06H2Q0Xg+Y4mKPuQFlyoKXPii/XYkDX8S8FOeAHb0UbUCNE=
+	t=1774274446; cv=none; b=DcSbz55P4EwvnAa2qtYg903imv5nD3SOdvr0tZOQh/1F1i/Nubfr4v2b9IlwYynH3SWFv2lIvKMP8JtYrH6hithap2nUslqTBIRNHPwet72tiwagfgg/a8CnpmmhEa07oVNOYObZY7TTnMW9Nhorh1oVxkotQxEe1TzSVHTFkN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278828; c=relaxed/simple;
-	bh=WN/2e3q1WzFjr1xTIeHSYvSXentqFfV388F6JYn+NIw=;
+	s=arc-20240116; t=1774274446; c=relaxed/simple;
+	bh=IpRCQiFcE0XWGfCUFsmfvd2hOsgVsHNCD2aBoGLZJ7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kfmo2NNHgF6UoLNDHrxuf4wvGfL2uXJXIbNMgYrXKgMG6BfHpNjEzw0qM5ZY4GhrRkjo9AjTx0bEZIxi0IyDNt1zsW41qBAiR6jtlTdEXQi5JQ0bXD2pyAsNkGogjLLwkLrnfWe5PkjH5Hojv4PNeWvn1nlMdTAA6ttPHiNwz9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHxu4ZC0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F829C4CEF7;
-	Mon, 23 Mar 2026 15:13:47 +0000 (UTC)
+	 MIME-Version; b=iwEFAcW99DU28NBZotU2JSDbSyxT5N3rNWMcvGpbDF1p5ajV0KKGo9d5kHm0fDQ2dnn6VX4TE7C5sKqLhoPbLK3zO/2OybGO7JfooczKyReKYmLiAv4KfGLLpYPkyLd4pb3e3GYJg3Dqqx0CHWwLuCPYo4uv8JUelNvk2ZHYmc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YzQqyWWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A19C4CEF7;
+	Mon, 23 Mar 2026 14:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278828;
-	bh=WN/2e3q1WzFjr1xTIeHSYvSXentqFfV388F6JYn+NIw=;
+	s=korg; t=1774274446;
+	bh=IpRCQiFcE0XWGfCUFsmfvd2hOsgVsHNCD2aBoGLZJ7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHxu4ZC0hpevWa+yqI/VmCZMn9+qDz6zThNUZbNZkKzEPh7HZxR130M4k7pbLS/gt
-	 WsARcySpo8qwZAVXhCMWKBKAVFcujs370KlFullp1Gh0EhAuO2tEhbAuoxMat5XB/A
-	 WGHFVMN3/J47WudtCUrjHxPZDSFO2PN8rBDrm4X0=
+	b=YzQqyWWw+FkdPAwc5N4qmNmk98k1nTXWwLbI95YTygFN4SkU9AuqvNuM64yZXCDom
+	 QZ3fnX1aJPNcqHrr2E/5Hkeq+FNVTeVW8ApWbozyalFzY5uw1BEZagV1pXXPjGXkKd
+	 ZMmWZRNlcB1Nvs5vMmFbdnkEdrUOsTBb1LCRPikE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Inki Dae <inki.dae@samsung.com>
-Subject: [PATCH 6.6 433/567] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()
+	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 176/220] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
 Date: Mon, 23 Mar 2026 14:45:53 +0100
-Message-ID: <20260323134544.647761881@linuxfoundation.org>
+Message-ID: <20260323134510.139208604@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,124 +67,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229346-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228206-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 21E712F681D
+X-Rspamd-Queue-Id: 09A852F4FFD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
 
-[ Upstream commit d3968a0d85b211e197f2f4f06268a7031079e0d0 ]
+[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
 
-vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
-obtain a struct vidi_context pointer. However, drm_dev->dev is the
-exynos-drm master device, and the driver_data contained therein is not
-the vidi component device, but a completely different device.
+mvpp2_bm_switch_buffers() unconditionally calls
+mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
+shared buffer pool modes. This function programs CM3 flow control
+registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
+priv->cm3_base without any NULL check.
 
-This can lead to various bugs, ranging from null pointer dereferences and
-garbage value accesses to, in unlucky cases, out-of-bounds errors,
-use-after-free errors, and more.
+When the CM3 SRAM resource is not present in the device tree (the
+third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
+SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
+NULL and priv->global_tx_fc is false. Any operation that triggers
+mvpp2_bm_switch_buffers(), for example an MTU change that crosses
+the jumbo frame threshold, will crash:
 
-To resolve this issue, we need to store/delete the vidi device pointer in
-exynos_drm_private->vidi_dev during bind/unbind, and then read this
-exynos_drm_private->vidi_dev within ioctl() to obtain the correct
-struct vidi_context pointer.
+  Unable to handle kernel NULL pointer dereference at
+  virtual address 0000000000000000
+  Mem abort info:
+    ESR = 0x0000000096000006
+    EC = 0x25: DABT (current EL), IL = 32 bits
+  pc : readl+0x0/0x18
+  lr : mvpp2_cm3_read.isra.0+0x14/0x20
+  Call trace:
+   readl+0x0/0x18
+   mvpp2_bm_pool_update_fc+0x40/0x12c
+   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
+   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
+   mvpp2_change_mtu+0x140/0x380
+   __dev_set_mtu+0x1c/0x38
+   dev_set_mtu_ext+0x78/0x118
+   dev_set_mtu+0x48/0xa8
+   dev_ifsioc+0x21c/0x43c
+   dev_ioctl+0x2d8/0x42c
+   sock_ioctl+0x314/0x378
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Every other flow control call site in the driver already guards
+hardware access with either priv->global_tx_fc or port->tx_fc.
+mvpp2_bm_switch_buffers() is the only place that omits this check.
+
+Add the missing priv->global_tx_fc guard to both the disable and
+re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
+rest of the driver.
+
+Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
+Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_drv.h  |    1 +
- drivers/gpu/drm/exynos/exynos_drm_vidi.c |   14 +++++++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
-+++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
-@@ -199,6 +199,7 @@ struct drm_exynos_file_private {
- struct exynos_drm_private {
- 	struct device *g2d_dev;
- 	struct device *dma_dev;
-+	struct device *vidi_dev;
- 	void *mapping;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 33426fded919a..789e14bb1377a 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -5018,7 +5018,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
+ 	if (priv->percpu_pools)
+ 		numbufs = port->nrxqs * 2;
  
- 	/* for atomic commit */
---- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
-@@ -224,9 +224,14 @@ ATTRIBUTE_GROUPS(vidi);
- int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
- 				struct drm_file *file_priv)
- {
--	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
-+	struct device *dev = priv ? priv->vidi_dev : NULL;
-+	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
- 	struct drm_exynos_vidi_connection *vidi = data;
+-	if (change_percpu)
++	if (change_percpu && priv->global_tx_fc)
+ 		mvpp2_bm_pool_update_priv_fc(priv, false);
  
-+	if (!ctx)
-+		return -ENODEV;
-+
- 	if (!vidi) {
- 		DRM_DEV_DEBUG_KMS(ctx->dev,
- 				  "user data for vidi is null.\n");
-@@ -386,6 +391,7 @@ static int vidi_bind(struct device *dev,
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
- 	struct drm_device *drm_dev = data;
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
- 	struct drm_encoder *encoder = &ctx->encoder;
- 	struct exynos_drm_plane *exynos_plane;
- 	struct exynos_drm_plane_config plane_config = { 0 };
-@@ -393,6 +399,8 @@ static int vidi_bind(struct device *dev,
- 	int ret;
+ 	for (i = 0; i < numbufs; i++)
+@@ -5043,7 +5043,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
+ 			mvpp2_open(port->dev);
+ 	}
  
- 	ctx->drm_dev = drm_dev;
-+	if (priv)
-+		priv->vidi_dev = dev;
+-	if (change_percpu)
++	if (change_percpu && priv->global_tx_fc)
+ 		mvpp2_bm_pool_update_priv_fc(priv, true);
  
- 	plane_config.pixel_formats = formats;
- 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
-@@ -438,8 +446,12 @@ static int vidi_bind(struct device *dev,
- static void vidi_unbind(struct device *dev, struct device *master, void *data)
- {
- 	struct vidi_context *ctx = dev_get_drvdata(dev);
-+	struct drm_device *drm_dev = data;
-+	struct exynos_drm_private *priv = drm_dev->dev_private;
- 
- 	del_timer_sync(&ctx->timer);
-+	if (priv)
-+		priv->vidi_dev = NULL;
- }
- 
- static const struct component_ops vidi_component_ops = {
+ 	return 0;
+-- 
+2.51.0
+
 
 
 
