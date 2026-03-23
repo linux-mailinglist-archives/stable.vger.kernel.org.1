@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229614-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OA/vACNdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229073-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:51 +0100
+	id qISKKgd8wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229614-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 476A52F6746
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310EF2FA52B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DD683301DD3B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 315C33222844
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18247394461;
-	Mon, 23 Mar 2026 14:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92173BD258;
+	Mon, 23 Mar 2026 16:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCJVFwjd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbUXHDdC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3A81A23B1;
-	Mon, 23 Mar 2026 14:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F033BC693;
+	Mon, 23 Mar 2026 16:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277973; cv=none; b=E5o1sfxgYJF9RKX+dhw8kK1/ygM0GbuB6o8/abzVnWoO59fkV83F6MlIBbTR4na3rRYwnt41xMHuSsxKAt7q+mjd7LPS4UVuIkUV15IPLWGx/79YnuYHX2oeJbh7hcmok9Yc672KCKz9v0l446L4vWdZkYWcnBPp7G7WF8CGaPg=
+	t=1774282399; cv=none; b=VNmKxLNA8SW4hAA0u0sthXIoJDWY1yG8K0qV+7eqMn3aFMgEJD+M1AnttmoLM0L+upALdw6Y91Z5HcH9TjGriCjnn0ARkWRO7iZCb+Xu1m9oyT7SXrM83Ni3ehaYD9a5HAvAfdFIAYZTZVsE4y9RdvaCvY9IywudI9Nc8mVY6Tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277973; c=relaxed/simple;
-	bh=GzNsi4JIhXOdtc/6tcXaxGp9bze/JLgXaOoH4pegl14=;
+	s=arc-20240116; t=1774282399; c=relaxed/simple;
+	bh=YPdBObBp/kjw2oYJTHDOJepyevbVfgdMaOhyzb/ziMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eP/Ve/MluFJyFNy5+lRGjdqAhjU9KWpzBc63JDC6jYikTJLMB1/ouVYb9jN9PTK7DFaV/gvZT2YZsELngTpsCqbyYJ/4n+UxaJBwZ2JyQOdTUE2pXSXbr+xtu5SgYUfOGghxABiWgjepEhfi8ZFOvVcPJ1jO1x/IGkns8/YQS7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCJVFwjd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580D4C4CEF7;
-	Mon, 23 Mar 2026 14:59:33 +0000 (UTC)
+	 MIME-Version; b=fQKccVQ7VlMRPCA0ZFsAWUb9QME1KPj1EIbBPnMNeDr9/rYZczp0rPLGD7wR+/O45Bk8UYjT+t2Fnets0nOdLia9jsTEiVr6LHnzB/CEHePBbLHGA4peYf9i63brAQdDyRYQyulnfHEuQ1ApinxcpqmgeNcgneuHWSuEntB/RyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbUXHDdC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB730C2BCB0;
+	Mon, 23 Mar 2026 16:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277973;
-	bh=GzNsi4JIhXOdtc/6tcXaxGp9bze/JLgXaOoH4pegl14=;
+	s=korg; t=1774282399;
+	bh=YPdBObBp/kjw2oYJTHDOJepyevbVfgdMaOhyzb/ziMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cCJVFwjdVGh+lruQUKOd5LbNqO9YK+dIKMjpAdssuVdcISLwRtv1soo6wBLCuD/fq
-	 MNPvM0J2/U67yY7K/WqlRmMbJRY2qEyZN6oALonT5G3SvM6by8lVk7N3Iq+OdmoiR+
-	 Gp2+zpuCak5urarJ1NScpSGb/D5UbeXwdr3qDy0c=
+	b=GbUXHDdCUpQdGKIQaeEKUYc7HWA0bxSSKlVPHidxfNIC/A2EsQUlIknK8bqOJZ6XA
+	 muINTFofTLkt8U8MCpuy+Yn0wC7aaBR02yo7h4PupfGueeudpYoAxDqTVAQUY8/nSo
+	 Y34vxX/u3KiLvz9dsfBT79gaIRn0nQ+8IXb4gb+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	ZhangGuoDong <zhangguodong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/567] smb/client: fix buffer size for smb311_posix_qinfo in SMB311_posix_query_info()
+Subject: [PATCH 6.1 099/481] net: dpaa2: replace dpaa2_mac_is_type_fixed() with dpaa2_mac_is_type_phy()
 Date: Mon, 23 Mar 2026 14:41:21 +0100
-Message-ID: <20260323134537.805639294@linuxfoundation.org>
+Message-ID: <20260323134527.693148358@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,69 +70,144 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229073-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229614-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 476A52F6746
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,lunn.ch:email]
+X-Rspamd-Queue-Id: 310EF2FA52B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhangGuoDong <zhangguodong@kylinos.cn>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 9621b996e4db1dbc2b3dc5d5910b7d6179397320 ]
+[ Upstream commit 320fefa9e2edc67011e235ea1d50f0d00ddfe004 ]
 
-SMB311_posix_query_info() is currently unused, but it may still be used in
-some stable versions, so these changes are submitted as a separate patch.
+dpaa2_mac_is_type_fixed() is a header with no implementation and no
+callers, which is referenced from the documentation though. It can be
+deleted.
 
-Use `sizeof(struct smb311_posix_qinfo)` instead of sizeof its pointer,
-so the allocated buffer matches the actual struct size.
+On the other hand, it would be useful to reuse the code between
+dpaa2_eth_is_type_phy() and dpaa2_switch_port_is_type_phy(). That common
+code should be called dpaa2_mac_is_type_phy(), so let's create that.
 
-Fixes: b1bc1874b885 ("smb311: Add support for SMB311 query info (non-compounded)")
-Reported-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The removal and the addition are merged into the same patch because,
+in fact, is_type_phy() is the logical opposite of is_type_fixed().
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 74badb9c20b1 ("dpaa2-switch: Fix interrupt storm after receiving bad if_id in IRQ handler")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/freescale/dpaa2/mac-phy-support.rst       |  9 ++++++---
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h       |  7 +------
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.h       | 10 ++++++++--
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.h    |  7 +------
+ 4 files changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index d1d332f08883a..094f431e428fa 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -3927,7 +3927,7 @@ int
- SMB311_posix_query_info(const unsigned int xid, struct cifs_tcon *tcon,
- 		u64 persistent_fid, u64 volatile_fid, struct smb311_posix_qinfo *data, u32 *plen)
- {
--	size_t output_len = sizeof(struct smb311_posix_qinfo *) +
-+	size_t output_len = sizeof(struct smb311_posix_qinfo) +
- 			(sizeof(struct smb_sid) * 2) + (PATH_MAX * 2);
- 	*plen = 0;
+diff --git a/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/mac-phy-support.rst b/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/mac-phy-support.rst
+index 51e6624fb7741..1d2f55feca242 100644
+--- a/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/mac-phy-support.rst
++++ b/Documentation/networking/device_drivers/ethernet/freescale/dpaa2/mac-phy-support.rst
+@@ -181,10 +181,13 @@ when necessary using the below listed API::
+  - int dpaa2_mac_connect(struct dpaa2_mac *mac);
+  - void dpaa2_mac_disconnect(struct dpaa2_mac *mac);
  
+-A phylink integration is necessary only when the partner DPMAC is not of TYPE_FIXED.
+-One can check for this condition using the below API::
++A phylink integration is necessary only when the partner DPMAC is not of
++``TYPE_FIXED``. This means it is either of ``TYPE_PHY``, or of
++``TYPE_BACKPLANE`` (the difference being the two that in the ``TYPE_BACKPLANE``
++mode, the MC firmware does not access the PCS registers). One can check for
++this condition using the following helper::
+ 
+- - bool dpaa2_mac_is_type_fixed(struct fsl_mc_device *dpmac_dev,struct fsl_mc_io *mc_io);
++ - static inline bool dpaa2_mac_is_type_phy(struct dpaa2_mac *mac);
+ 
+ Before connection to a MAC, the caller must allocate and populate the
+ dpaa2_mac structure with the associated net_device, a pointer to the MC portal
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
+index e703846adc9f0..9c8d888b10b01 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-eth.h
+@@ -733,12 +733,7 @@ static inline unsigned int dpaa2_eth_rx_head_room(struct dpaa2_eth_priv *priv)
+ 
+ static inline bool dpaa2_eth_is_type_phy(struct dpaa2_eth_priv *priv)
+ {
+-	if (priv->mac &&
+-	    (priv->mac->attr.link_type == DPMAC_LINK_TYPE_PHY ||
+-	     priv->mac->attr.link_type == DPMAC_LINK_TYPE_BACKPLANE))
+-		return true;
+-
+-	return false;
++	return dpaa2_mac_is_type_phy(priv->mac);
+ }
+ 
+ static inline bool dpaa2_eth_has_mac(struct dpaa2_eth_priv *priv)
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.h b/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.h
+index a58cab188a99a..c1ec9efd413ac 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.h
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.h
+@@ -30,8 +30,14 @@ struct dpaa2_mac {
+ 	struct phy *serdes_phy;
+ };
+ 
+-bool dpaa2_mac_is_type_fixed(struct fsl_mc_device *dpmac_dev,
+-			     struct fsl_mc_io *mc_io);
++static inline bool dpaa2_mac_is_type_phy(struct dpaa2_mac *mac)
++{
++	if (!mac)
++		return false;
++
++	return mac->attr.link_type == DPMAC_LINK_TYPE_PHY ||
++	       mac->attr.link_type == DPMAC_LINK_TYPE_BACKPLANE;
++}
+ 
+ int dpaa2_mac_open(struct dpaa2_mac *mac);
+ 
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.h b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.h
+index 0002dca4d4177..9898073abe012 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.h
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.h
+@@ -230,12 +230,7 @@ static inline bool dpaa2_switch_supports_cpu_traffic(struct ethsw_core *ethsw)
+ static inline bool
+ dpaa2_switch_port_is_type_phy(struct ethsw_port_priv *port_priv)
+ {
+-	if (port_priv->mac &&
+-	    (port_priv->mac->attr.link_type == DPMAC_LINK_TYPE_PHY ||
+-	     port_priv->mac->attr.link_type == DPMAC_LINK_TYPE_BACKPLANE))
+-		return true;
+-
+-	return false;
++	return dpaa2_mac_is_type_phy(port_priv->mac);
+ }
+ 
+ static inline bool dpaa2_switch_port_has_mac(struct ethsw_port_priv *port_priv)
 -- 
 2.51.0
 
