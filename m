@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229927-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEe6HB1zwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:37 +0100
+	id UEDcGut8wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229927-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:27 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9602F973E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A7A2FA6DB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4724434183C3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:34:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 889C13228179
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3354D3BED28;
-	Mon, 23 Mar 2026 15:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B843BED33;
+	Mon, 23 Mar 2026 16:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDp+1y/o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7sLWULG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA66A3BE64D;
-	Mon, 23 Mar 2026 15:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378B33BE657;
+	Mon, 23 Mar 2026 16:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279352; cv=none; b=CUXltbfmm8Dqr0BbwOSlQLRgWmJtwP79LfqRw8BQGTTRKwqQ8qw1hrym6+N/Szd/g9qRNy7Cn1+ZrZl9+amV8S5ZNo3AtH8GqHjh3bMPMUH5RoFDqksjc/lzkAHel+q9xrIdWS0WIifurjU5IUpGYhuei++PjbZxjY3grtV8Xhg=
+	t=1774283239; cv=none; b=ERFLvAcPqYmckiEm2/+vR+f3JrfoP3Pue2RoZ8v/EzbGWNHwZUFoX27I6OZYRJLtg2ffSY5vjtxDWQy2A/zuuZxv3Fx0NIXOuWlVtt5Xj7AkLyjmDaDCibMsDUvK5BsfND6Lnv3QAErzW4rSp517Y3Urrzbeij8/V2wOb52PO+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279352; c=relaxed/simple;
-	bh=4wFKzKLMokF6zBkcaSE90XwlFO+sUjq34+bucVFgZmM=;
+	s=arc-20240116; t=1774283239; c=relaxed/simple;
+	bh=aEeapLI7HYCKoZ0Bp8qsuoL9GxFGPud2JYYLVN6WR9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F0uNzXNiTd5FTINUfoqx4wuUC+fCf2fu56hYU68vPeaEjM+lQC5Ol9PkQzhTfHxeU8gDDwVESuTTHBAHlHYyeuG6BFjJT1wFiRQYP3s6wlf8eIJ/didIc/jCLSrmdRfL001kq4RF4IJ4I0LolQacmGshG0bGgeDbfhMApmslSq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDp+1y/o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775B6C4CEF7;
-	Mon, 23 Mar 2026 15:22:31 +0000 (UTC)
+	 MIME-Version; b=Ze4BuLY10xisS8h0L+YbBzRkxNwZWTfooDKLRlzjV1eJcpHVsb8szMSy2yNyK9izwM03PnDShETgjKCzMNWlUbz4pKrC0e4TPeMUnej4wK4bDQsu1QClv8Ym4yy99e3JGSifxGo/c0VRIhLIU6YUTATzjeAj0EP4UXCqdhRo2pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7sLWULG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8487AC2BCB0;
+	Mon, 23 Mar 2026 16:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279351;
-	bh=4wFKzKLMokF6zBkcaSE90XwlFO+sUjq34+bucVFgZmM=;
+	s=korg; t=1774283238;
+	bh=aEeapLI7HYCKoZ0Bp8qsuoL9GxFGPud2JYYLVN6WR9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDp+1y/onUHupy38uMLibwk9BkC4rL2M9nQ/BuHYt2j4DaCjVhwH4j6yzihqoBmdc
-	 6VY/aHoBPRdbnCT5YFftLGz4Hlyc6jAi/SbtXU411sHfJH4ZYn6FVIez382rGtYJbN
-	 4tRfzpgiYzNPTCILuKft80Cu0VcjQynu1rDRlmCY=
+	b=Q7sLWULGlPz6l26Si6NmIlzf8mRvXysMN08tJ19hPtJWei7XLdlk2tICxRzLJU/vD
+	 HdX87xeBn7ILr3ogcAZLK1J9WlAKvYmO+MVtogOthJdchSpHmv8ZK27EJzZDcIrBhs
+	 nxKckA6KOLtKYj81GAAgR2xv4M57ZRfe0q/HFYKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Josh Law <objecting@objecting.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 514/567] netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()
+Subject: [PATCH 6.1 452/481] lib/bootconfig: check xbc_init_node() return in override path
 Date: Mon, 23 Mar 2026 14:47:14 +0100
-Message-ID: <20260323134546.731756843@linuxfoundation.org>
+Message-ID: <20260323134536.229488955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,154 +66,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229475-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229927-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: ED9602F973E
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,objecting.org:email]
+X-Rspamd-Queue-Id: C0A7A2FA6DB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Josh Law <objecting@objecting.org>
 
-[ Upstream commit 5cb81eeda909dbb2def209dd10636b51549a3f8a ]
+[ Upstream commit bb288d7d869e86d382f35a0e26242c5ccb05ca82 ]
 
-ctnetlink_dump_exp_ct() stores a conntrack pointer in cb->data for the
-netlink dump callback ctnetlink_exp_ct_dump_table(), but drops the
-conntrack reference immediately after netlink_dump_start().  When the
-dump spans multiple rounds, the second recvmsg() triggers the dump
-callback which dereferences the now-freed conntrack via nfct_help(ct),
-leading to a use-after-free on ct->ext.
+The ':=' override path in xbc_parse_kv() calls xbc_init_node() to
+re-initialize an existing value node but does not check the return
+value. If xbc_init_node() fails (data offset out of range), parsing
+silently continues with stale node data.
 
-The bug is that the netlink_dump_control has no .start or .done
-callbacks to manage the conntrack reference across dump rounds.  Other
-dump functions in the same file (e.g. ctnetlink_get_conntrack) properly
-use .start/.done callbacks for this purpose.
+Add the missing error check to match the xbc_add_node() call path
+which already checks for failure.
 
-Fix this by adding .start and .done callbacks that hold and release the
-conntrack reference for the duration of the dump, and move the
-nfct_help() call after the cb->args[0] early-return check in the dump
-callback to avoid dereferencing ct->ext unnecessarily.
+In practice, a bootconfig using ':=' to override a value near the
+32KB data limit could silently retain the old value, meaning a
+security-relevant boot parameter override (e.g., a trace filter or
+debug setting) would not take effect as intended.
 
- BUG: KASAN: slab-use-after-free in ctnetlink_exp_ct_dump_table+0x4f/0x2e0
- Read of size 8 at addr ffff88810597ebf0 by task ctnetlink_poc/133
+Link: https://lore.kernel.org/all/20260318155847.78065-2-objecting@objecting.org/
 
- CPU: 1 UID: 0 PID: 133 Comm: ctnetlink_poc Not tainted 7.0.0-rc2+ #3 PREEMPTLAZY
- Call Trace:
-  <TASK>
-  ctnetlink_exp_ct_dump_table+0x4f/0x2e0
-  netlink_dump+0x333/0x880
-  netlink_recvmsg+0x3e2/0x4b0
-  ? aa_sk_perm+0x184/0x450
-  sock_recvmsg+0xde/0xf0
-
- Allocated by task 133:
-  kmem_cache_alloc_noprof+0x134/0x440
-  __nf_conntrack_alloc+0xa8/0x2b0
-  ctnetlink_create_conntrack+0xa1/0x900
-  ctnetlink_new_conntrack+0x3cf/0x7d0
-  nfnetlink_rcv_msg+0x48e/0x510
-  netlink_rcv_skb+0xc9/0x1f0
-  nfnetlink_rcv+0xdb/0x220
-  netlink_unicast+0x3ec/0x590
-  netlink_sendmsg+0x397/0x690
-  __sys_sendmsg+0xf4/0x180
-
- Freed by task 0:
-  slab_free_after_rcu_debug+0xad/0x1e0
-  rcu_core+0x5c3/0x9c0
-
-Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: e5efaeb8a8f5 ("bootconfig: Support mixing a value and subkeys under a key")
+Signed-off-by: Josh Law <objecting@objecting.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ lib/bootconfig.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 237468202a0be..b4761a060e7a0 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3200,7 +3200,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	struct nf_conn *ct = cb->data;
--	struct nf_conn_help *help = nfct_help(ct);
-+	struct nf_conn_help *help;
- 	u_int8_t l3proto = nfmsg->nfgen_family;
- 	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_expect *exp;
-@@ -3208,6 +3208,10 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (cb->args[0])
- 		return 0;
+diff --git a/lib/bootconfig.c b/lib/bootconfig.c
+index 82f21a9b0aaba..675f34cf32f0d 100644
+--- a/lib/bootconfig.c
++++ b/lib/bootconfig.c
+@@ -714,7 +714,8 @@ static int __init xbc_parse_kv(char **k, char *v, int op)
+ 		if (op == ':') {
+ 			unsigned short nidx = child->next;
  
-+	help = nfct_help(ct);
-+	if (!help)
-+		return 0;
-+
- 	rcu_read_lock();
- 
- restart:
-@@ -3237,6 +3241,24 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
- }
- 
-+static int ctnetlink_dump_exp_ct_start(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (!refcount_inc_not_zero(&ct->ct_general.use))
-+		return -ENOENT;
-+	return 0;
-+}
-+
-+static int ctnetlink_dump_exp_ct_done(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (ct)
-+		nf_ct_put(ct);
-+	return 0;
-+}
-+
- static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 				 struct sk_buff *skb,
- 				 const struct nlmsghdr *nlh,
-@@ -3252,6 +3274,8 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 	struct nf_conntrack_zone zone;
- 	struct netlink_dump_control c = {
- 		.dump = ctnetlink_exp_ct_dump_table,
-+		.start = ctnetlink_dump_exp_ct_start,
-+		.done = ctnetlink_dump_exp_ct_done,
- 	};
- 
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
+-			xbc_init_node(child, v, XBC_VALUE);
++			if (xbc_init_node(child, v, XBC_VALUE) < 0)
++				return xbc_parse_error("Failed to override value", v);
+ 			child->next = nidx;	/* keep subkeys */
+ 			goto array;
+ 		}
 -- 
 2.51.0
 
