@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229206-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCrGBa1IwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228061-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:33 +0100
+	id APAqHCRbwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229206-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781D62F3C9B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE542F6395
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 371B330A6934
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 806503033BFE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CD13AD538;
-	Mon, 23 Mar 2026 13:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5283279DB3;
+	Mon, 23 Mar 2026 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXPVAGGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7eRDd02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84A13AD527;
-	Mon, 23 Mar 2026 13:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6892D275AF5;
+	Mon, 23 Mar 2026 15:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274010; cv=none; b=SooMJyJeGSNAYsV+HnFwr26q4TH/XuYgpVeA/kPgE+4u2h9yGyGEQV6V9znJFpFeZNap1dmdFBJhXhb9Yc6aZLSJD9262HBkkVITFEEF5b6j2F8uCPHpAJE/cnP3ItnTdBI1byItkcqK6o2Cz6SMutiZqnmXXwyZ1C7Ki+ZoKxk=
+	t=1774278392; cv=none; b=edzGnwtokHueCiMlxXHS1J9UozFIElwZk+MuiLTktC9kz8GV+FzuKzBiAOdcTw5w30RsYBd0z00GGlWJkn+wN1OYJKC7oWYcSq03LXC2FV5bGkInTJ7R4fF3x3fyRIzOm91nly4azEuqDPt4gtJvZHmILcWnc87GxIvjUdsp9WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274010; c=relaxed/simple;
-	bh=1JfEtYGGl950CUxeF2AcxnnKGrRHVOG6w0fsfhSfas0=;
+	s=arc-20240116; t=1774278392; c=relaxed/simple;
+	bh=5CTNordbXUxrDSQD8c20CtGf+aPBuVjGPyfjUbHo2ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j+eaImn1XA/d9nEi4R61U3L5XHa6E78+U04YRt6AUoj2pPkv1oo5e4kwKLLlPxFLJS8wZbQcGnVb48GALZSUmDiF98GfEcEtwFmKgGlkuPIrVm1WX+EiD8w/9T794qN+soMyBDcxM/kMQdMiqfXOqHxpwLaoWiKIA4c0zIEnpXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXPVAGGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F40C4CEF7;
-	Mon, 23 Mar 2026 13:53:30 +0000 (UTC)
+	 MIME-Version; b=J0yAziQmPUYy+a5z2HF7pjvNV+m0zYtLK1qdDV6rOP6VqUO5gWpZZLUmHX4cYE7+zV/aZB9ookrXifvr6HHsyphQHs21XfWXQ20tydBCPqZgbd0fCyP32wQsyTDxKw4ugP+4bc6lZgSe7iYFSqj62cWyE2i9EKLGQjKDHnSIdkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7eRDd02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1670C4CEF7;
+	Mon, 23 Mar 2026 15:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274010;
-	bh=1JfEtYGGl950CUxeF2AcxnnKGrRHVOG6w0fsfhSfas0=;
+	s=korg; t=1774278392;
+	bh=5CTNordbXUxrDSQD8c20CtGf+aPBuVjGPyfjUbHo2ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXPVAGGtW/1U7U+fEdjC0sR3NKLo1O2VJwzw0NO2GIdy7Uzp+QUodCd6tB70U63vs
-	 zj6tDdPencZbm0khLtWBd9mfFhyyBCD2WpIQ9MT005fbDTbf6hgCwsHCE3TOggVkge
-	 bEWE5vBCr5SuLuq1Shvrf0iSig1/1REhZj1QPN2U=
+	b=J7eRDd026eIfzKi9gLakr9u/+eIh4PmXigN1yjCknVoClx7gtsecT5NNEu/GVgtSX
+	 8JEC4hnFg8u5/+h71ndT9IeLyX95UY/4hceELGRKvuih1etcrP/K9t917mEq+jjJP1
+	 ITu7l0/KprdJszaxUL7DwG+NriKvNtFWtehP/ch8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 036/220] crypto: atmel-sha204a - Fix OOM ->tfm_count leak
-Date: Mon, 23 Mar 2026 14:43:33 +0100
-Message-ID: <20260323134505.727481045@linuxfoundation.org>
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.6 294/567] libceph: Fix potential out-of-bounds access in ceph_handle_auth_reply()
+Date: Mon, 23 Mar 2026 14:43:34 +0100
+Message-ID: <20260323134541.094151989@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +66,156 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228061-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229206-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.994];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,apana.org.au:email,linux.dev:email]
-X-Rspamd-Queue-Id: 781D62F3C9B
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0CE542F6395
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
 
-[ Upstream commit d240b079a37e90af03fd7dfec94930eb6c83936e ]
+commit b282c43ed156ae15ea76748fc15cd5c39dc9ab72 upstream.
 
-If memory allocation fails, decrement ->tfm_count to avoid blocking
-future reads.
+This patch fixes an out-of-bounds access in ceph_handle_auth_reply()
+that can be triggered by a message of type CEPH_MSG_AUTH_REPLY. In
+ceph_handle_auth_reply(), the value of the payload_len field of such a
+message is stored in a variable of type int. A value greater than
+INT_MAX leads to an integer overflow and is interpreted as a negative
+value. This leads to decrementing the pointer address by this value and
+subsequently accessing it because ceph_decode_need() only checks that
+the memory access does not exceed the end address of the allocation.
+
+This patch fixes the issue by changing the data type of payload_len to
+u32. Additionally, the data type of result_msg_len is changed to u32,
+as it is also a variable holding a non-negative length.
+
+Also, an additional layer of sanity checks is introduced, ensuring that
+directly after reading it from the message, payload_len and
+result_msg_len are not greater than the overall segment length.
+
+BUG: KASAN: slab-out-of-bounds in ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+Read of size 4 at addr ffff88811404df14 by task kworker/20:1/262
+
+CPU: 20 UID: 0 PID: 262 Comm: kworker/20:1 Not tainted 6.19.2 #5 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: ceph-msgr ceph_con_workfn [libceph]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x76/0xa0
+ print_report+0xd1/0x620
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? kasan_complete_mode_report_info+0x72/0x210
+ kasan_report+0xe7/0x130
+ ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ ? ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ __asan_report_load_n_noabort+0xf/0x20
+ ceph_handle_auth_reply+0x642/0x7a0 [libceph]
+ mon_dispatch+0x973/0x23d0 [libceph]
+ ? apparmor_socket_recvmsg+0x6b/0xa0
+ ? __pfx_mon_dispatch+0x10/0x10 [libceph]
+ ? __kasan_check_write+0x14/0x30i
+ ? mutex_unlock+0x7f/0xd0
+ ? __pfx_mutex_unlock+0x10/0x10
+ ? __pfx_do_recvmsg+0x10/0x10 [libceph]
+ ceph_con_process_message+0x1f1/0x650 [libceph]
+ process_message+0x1e/0x450 [libceph]
+ ceph_con_v2_try_read+0x2e48/0x6c80 [libceph]
+ ? __pfx_ceph_con_v2_try_read+0x10/0x10 [libceph]
+ ? save_fpregs_to_fpstate+0xb0/0x230
+ ? raw_spin_rq_unlock+0x17/0xa0
+ ? finish_task_switch.isra.0+0x13b/0x760
+ ? __switch_to+0x385/0xda0
+ ? __kasan_check_write+0x14/0x30
+ ? mutex_lock+0x8d/0xe0
+ ? __pfx_mutex_lock+0x10/0x10
+ ceph_con_workfn+0x248/0x10c0 [libceph]
+ process_one_work+0x629/0xf80
+ ? __kasan_check_write+0x14/0x30
+ worker_thread+0x87f/0x1570
+ ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+ ? __pfx_try_to_wake_up+0x10/0x10
+ ? kasan_print_address_stack_frame+0x1f7/0x280
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x396/0x830
+ ? __pfx__raw_spin_lock_irq+0x10/0x10
+ ? __pfx_kthread+0x10/0x10
+ ? __kasan_check_write+0x14/0x30
+ ? recalc_sigpending+0x180/0x210
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x3f7/0x610
+ ? __pfx_ret_from_fork+0x10/0x10
+ ? __switch_to+0x385/0xda0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+[ idryomov: replace if statements with ceph_decode_need() for
+  payload_len and result_msg_len ]
 
 Cc: stable@vger.kernel.org
-Fixes: da001fb651b0 ("crypto: atmel-i2c - add support for SHA204A random number generator")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-sha204a.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/ceph/auth.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/crypto/atmel-sha204a.c
-+++ b/drivers/crypto/atmel-sha204a.c
-@@ -52,9 +52,10 @@ static int atmel_sha204a_rng_read_nonblo
- 		rng->priv = 0;
- 	} else {
- 		work_data = kmalloc(sizeof(*work_data), GFP_ATOMIC);
--		if (!work_data)
-+		if (!work_data) {
-+			atomic_dec(&i2c_priv->tfm_count);
- 			return -ENOMEM;
--
-+		}
- 		work_data->ctx = i2c_priv;
- 		work_data->client = i2c_priv->client;
+--- a/net/ceph/auth.c
++++ b/net/ceph/auth.c
+@@ -205,9 +205,9 @@ int ceph_handle_auth_reply(struct ceph_a
+ 	s32 result;
+ 	u64 global_id;
+ 	void *payload, *payload_end;
+-	int payload_len;
++	u32 payload_len;
+ 	char *result_msg;
+-	int result_msg_len;
++	u32 result_msg_len;
+ 	int ret = -EINVAL;
  
+ 	mutex_lock(&ac->mutex);
+@@ -217,10 +217,12 @@ int ceph_handle_auth_reply(struct ceph_a
+ 	result = ceph_decode_32(&p);
+ 	global_id = ceph_decode_64(&p);
+ 	payload_len = ceph_decode_32(&p);
++	ceph_decode_need(&p, end, payload_len, bad);
+ 	payload = p;
+ 	p += payload_len;
+ 	ceph_decode_need(&p, end, sizeof(u32), bad);
+ 	result_msg_len = ceph_decode_32(&p);
++	ceph_decode_need(&p, end, result_msg_len, bad);
+ 	result_msg = p;
+ 	p += result_msg_len;
+ 	if (p != end)
 
 
 
