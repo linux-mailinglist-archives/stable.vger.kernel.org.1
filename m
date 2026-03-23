@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-228182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228840-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CXiLx9KwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:11:43 +0100
+	id 8BYMHzZXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228840-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BAA2F3F49
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:11:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8848F2F5CE5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D14F3023E03
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DE4EC3066439
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8811E3B8D55;
-	Mon, 23 Mar 2026 13:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6550C30B50F;
+	Mon, 23 Mar 2026 14:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1eerfHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdwaeSVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D2F3B27E9;
-	Mon, 23 Mar 2026 13:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271DF27380A;
+	Mon, 23 Mar 2026 14:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274377; cv=none; b=P18fDOvplIhycnVvAE1zS5ugswQDSd3Cx8cg2189pP4lew1FlgvCf9lfHXuUN53ST36cMwNjGKhKvDJb3MqcdKntgIMsfOglYo3I1wbZYzw2D6QxpiEVqPE72GJCzE4TEYo+xWDfj+kIDlhDAK0E/mlL9z28HTbs1e4YR8oESo8=
+	t=1774277276; cv=none; b=pLAH35B53iJf9aYO/bHhjhHChpxhb54krVfzaTy7/sniUzIwVB5uDAn+EyEltFWO9ISPKN9WcV93zeN4eWphODxdCQZzCh+Uvi/HqNubdIUk5ViaLb1517xJqB30nHHk/gDii/zU0di1ui78wXUPK82/V1tYZ//LOYmG/ZkRT+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274377; c=relaxed/simple;
-	bh=qUav43EMErbfPaXqPnUJrbvYi+og5St+1SWa83Z6ve4=;
+	s=arc-20240116; t=1774277276; c=relaxed/simple;
+	bh=rQTbKgf/IpZVcH+H45SECJbUlFskECipKfnVLgVaaAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LojHU6ihXWRxq84k2WXj3h/8UmOoekQg1RJrXC2BCWjLiyFtPstaB91cWHqLM2RsnIMDwBgdypNcc97jRSu9pyhLZPe/s1NsFv9eTWSUSMpvOKvcuJhmmhTIBwlIxFEQ6xHQUVheg3KvWNw47krxH3QqTuWhqgmqrapqcXpjlUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1eerfHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 909C4C2BCB1;
-	Mon, 23 Mar 2026 13:59:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OarfC3HEp9iWuQMiC6IwBgZHa9yLxioV+IWGERACjit72O8aqVu+veTx3uIZcUz9nqcT4njCI0+/SaxvJMB0sggd9U5DyVts0XRIoroTzgn0Xpwic/EPwcVoA0Iws68/6g3Z0++6YEShUf5KR8vzjXuEcJGxQX6IL66M5iHU4D0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdwaeSVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75AA8C4CEF7;
+	Mon, 23 Mar 2026 14:47:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274377;
-	bh=qUav43EMErbfPaXqPnUJrbvYi+og5St+1SWa83Z6ve4=;
+	s=korg; t=1774277275;
+	bh=rQTbKgf/IpZVcH+H45SECJbUlFskECipKfnVLgVaaAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1eerfHSV9I5582XNx9quqaREgEpcGmQSPPwv3euB+x7Jvs9gi4O/lJmN5+F+L2a3
-	 GdL0X8iZR3wLo2J9kLCWfUQGQxlVVMRrap9Cg5xjFL3s2ZEDv60v3jdfbExwCtexr3
-	 +lvrzf3TfLsyEz3W1egLToJBK2v90oYmm6Kx9z1o=
+	b=qdwaeSVJ7eiLcyvyf9twI01OXQrcxa95m/GdLF+1bw+jL8xPzza/c1GQMvQfoxIdj
+	 5yRMbXdD6uwbDaNYay3t8p2tf+w1SvVTOdj6e2OjQ+49Bjcsr3MH2X29bE2CMGIIGp
+	 AY12QVofvTKwc4qT1FRYu4gcqwxyNZf1WvQ71FCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Cyrill Gorcunov <gorcunov@gmail.com>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>,
-	Andrei Vagin <avagin@google.com>,
-	Kees Cook <kees@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 197/220] binfmt_elf_fdpic: fix AUXV size calculation for ELF_HWCAP3 and ELF_HWCAP4
+Subject: [PATCH 6.12 378/460] firmware: arm_ffa: Remove vm_id argument in ffa_rxtx_unmap()
 Date: Mon, 23 Mar 2026 14:46:14 +0100
-Message-ID: <20260323134510.813097392@linuxfoundation.org>
+Message-ID: <20260323134535.854643512@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,99 +68,102 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228840-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com,suse.com,futurfusion.io,google.com];
-	TAGGED_FROM(0.00)[bounces-228182-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 10BAA2F3F49
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 8848F2F5CE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Vagin <avagin@google.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 4ced4cf5c9d172d91f181df3accdf949d3761aab ]
+[ Upstream commit a4e8473b775160f3ce978f621cf8dea2c7250433 ]
 
-Commit 4e6e8c2b757f ("binfmt_elf: Wire up AT_HWCAP3 at AT_HWCAP4") added
-support for AT_HWCAP3 and AT_HWCAP4, but it missed updating the AUX
-vector size calculation in create_elf_fdpic_tables() and
-AT_VECTOR_SIZE_BASE in include/linux/auxvec.h.
+According to the FF-A specification (DEN0077, v1.1, §13.7), when
+FFA_RXTX_UNMAP is invoked from any instance other than non-secure
+physical, the w1 register must be zero (MBZ). If a non-zero value is
+supplied in this context, the SPMC must return FFA_INVALID_PARAMETER.
 
-Similar to the fix for AT_HWCAP2 in commit c6a09e342f8e ("binfmt_elf_fdpic:
-fix AUXV size calculation when ELF_HWCAP2 is defined"), this omission
-leads to a mismatch between the reserved space and the actual number of
-AUX entries, eventually triggering a kernel BUG_ON(csp != sp).
+The Arm FF-A driver operates exclusively as a guest or non-secure
+physical instance where the partition ID is always zero and is not
+invoked from a hypervisor context where w1 carries a VM ID. In this
+execution model, the partition ID observed by the driver is always zero,
+and passing a VM ID is unnecessary and potentially invalid.
 
-Fix this by incrementing nitems when ELF_HWCAP3 or ELF_HWCAP4 are
-defined and updating AT_VECTOR_SIZE_BASE.
+Remove the vm_id parameter from ffa_rxtx_unmap() and ensure that the
+SMC call is issued with w1 implicitly zeroed, as required by the
+specification. This prevents invalid parameter errors and aligns the
+implementation with the defined FF-A ABI behavior.
 
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
-Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-Fixes: 4e6e8c2b757f ("binfmt_elf: Wire up AT_HWCAP3 at AT_HWCAP4")
-Signed-off-by: Andrei Vagin <avagin@google.com>
-Link: https://patch.msgid.link/20260217180108.1420024-2-avagin@google.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Fixes: 3bbfe9871005 ("firmware: arm_ffa: Add initial Arm FFA driver support")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Message-Id: <20260304120953.847671-1-yeoreum.yun@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/binfmt_elf_fdpic.c  | 6 ++++++
- include/linux/auxvec.h | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/driver.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index 48fd2de3bca05..a3d4e6973b299 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -595,6 +595,12 @@ static int create_elf_fdpic_tables(struct linux_binprm *bprm,
- #ifdef ELF_HWCAP2
- 	nitems++;
- #endif
-+#ifdef ELF_HWCAP3
-+	nitems++;
-+#endif
-+#ifdef ELF_HWCAP4
-+	nitems++;
-+#endif
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 9516ee870cd25..bec1fbaff7f34 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -206,12 +206,12 @@ static int ffa_rxtx_map(phys_addr_t tx_buf, phys_addr_t rx_buf, u32 pg_cnt)
+ 	return 0;
+ }
  
- 	csp = sp;
- 	sp -= nitems * 2 * sizeof(unsigned long);
-diff --git a/include/linux/auxvec.h b/include/linux/auxvec.h
-index 407f7005e6d60..8bcb9b7262628 100644
---- a/include/linux/auxvec.h
-+++ b/include/linux/auxvec.h
-@@ -4,6 +4,6 @@
+-static int ffa_rxtx_unmap(u16 vm_id)
++static int ffa_rxtx_unmap(void)
+ {
+ 	ffa_value_t ret;
  
- #include <uapi/linux/auxvec.h>
+ 	invoke_ffa_fn((ffa_value_t){
+-		      .a0 = FFA_RXTX_UNMAP, .a1 = PACK_TARGET_INFO(vm_id, 0),
++		      .a0 = FFA_RXTX_UNMAP,
+ 		      }, &ret);
  
--#define AT_VECTOR_SIZE_BASE 22 /* NEW_AUX_ENT entries in auxiliary table */
-+#define AT_VECTOR_SIZE_BASE 24 /* NEW_AUX_ENT entries in auxiliary table */
-   /* number of "#define AT_.*" above, minus {AT_NULL, AT_IGNORE, AT_NOTELF} */
- #endif /* _LINUX_AUXVEC_H */
+ 	if (ret.a0 == FFA_ERROR)
+@@ -1832,7 +1832,7 @@ static int __init ffa_init(void)
+ 
+ cleanup_notifs:
+ 	ffa_notifications_cleanup();
+-	ffa_rxtx_unmap(drv_info->vm_id);
++	ffa_rxtx_unmap();
+ free_pages:
+ 	if (drv_info->tx_buffer)
+ 		free_pages_exact(drv_info->tx_buffer, rxtx_bufsz);
+@@ -1847,7 +1847,7 @@ static void __exit ffa_exit(void)
+ {
+ 	ffa_notifications_cleanup();
+ 	ffa_partitions_cleanup();
+-	ffa_rxtx_unmap(drv_info->vm_id);
++	ffa_rxtx_unmap();
+ 	free_pages_exact(drv_info->tx_buffer, drv_info->rxtx_bufsz);
+ 	free_pages_exact(drv_info->rx_buffer, drv_info->rxtx_bufsz);
+ 	kfree(drv_info);
 -- 
 2.51.0
 
