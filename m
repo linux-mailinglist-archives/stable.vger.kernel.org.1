@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-229547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229021-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMNADDt7wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:41:15 +0100
+	id WCMnHItcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229021-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECAE2FA328
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:41:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77C732F6601
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F024317F065
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AAF60302AADE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15064271A6D;
-	Mon, 23 Mar 2026 16:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF73839A805;
+	Mon, 23 Mar 2026 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VadKHdgV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVIk4tgm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB7B257851;
-	Mon, 23 Mar 2026 16:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A298E387599;
+	Mon, 23 Mar 2026 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282216; cv=none; b=j1KVEHVbYEvuLhVP0IaLY/4GX0Gj1pkPdbRUucts4sgIci09jvphOXLq1LBFg7kbRUZ+Ht+geKjk3Wb92v0Ao9+45sh6KLDvC00xMAm5iOq8zB+cQGIOuxlOjPbQqYjvwSB+jYtmo+7V1lzxfuSIPo4+0EA8owiTHZGmHr7Ftps=
+	t=1774277806; cv=none; b=UUI7lJnac3Dof6HBdzIDFa55GrdGPKl0qJ+dFkoDe7bXQiXkhRFLd02tZvHqPGbwl9Hs7q5b72ZZS9GZ+DPExrs4kPnbO5d025yPCVvoXFqsv2lgGzZ/J39b+9gjRsPJN4KCVg6bThzWq+Fk2oZSuH7ReNGiFZgkHHCa32FZu+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282216; c=relaxed/simple;
-	bh=IKxjvbQqaJfirJUQ9m9djcF99aSHBGYJi2PTIO4PL6c=;
+	s=arc-20240116; t=1774277806; c=relaxed/simple;
+	bh=CXtclEEVX3TVygyhJIugTZQWiKVsdSM529dB/os49Xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3ONyPhHgBAJmU3NX0BeL2/EjYFHng5iGRqyDG1+KHSr/WFmg/rfb/BDePCyvmSePQNoBl+Ir6sZFvK80m24JFYCrZYPv1vtX3U8KdAF1imJmhwe2v+GNl1iAPDm9SQMj2D785H+LUv8zB9RYOY8TMTYFVBc9sY1EDcTt0wbQ4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VadKHdgV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E63DC2BCB0;
-	Mon, 23 Mar 2026 16:10:15 +0000 (UTC)
+	 MIME-Version; b=kAynFIJ1Y72Msh0idQFsTFqsti7u5+u8IDznEg/kRxj1jyHwmB1h67HkR4J6K0Z2mS82K8dtdQ/L4lLX7PtQRCF1NYtpAtGfTP28f7NwbBSq2J+NLYYWrAoDVVb67jmWax+ZXbwll6LzS/tk33I2zanaEsx7lxLHpeckULWmokY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVIk4tgm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314E7C4CEF7;
+	Mon, 23 Mar 2026 14:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282216;
-	bh=IKxjvbQqaJfirJUQ9m9djcF99aSHBGYJi2PTIO4PL6c=;
+	s=korg; t=1774277806;
+	bh=CXtclEEVX3TVygyhJIugTZQWiKVsdSM529dB/os49Xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VadKHdgVe1S8A1n65F5HK6LacCQgQnV5KM1nHFiGuGUFR4XJmiA50Db8afSjjCw4i
-	 pIexPrefzE9fHadyevvfCKUbIuz2HCm0jPnQZXbVKB3e2S3NFo7K3/YLJYR2N/312n
-	 HxRPkagRlNjPexK/yEu9UFoA0IqcjLd1LwWnab0Q=
+	b=AVIk4tgm2wcVkMM7hlgculUZHpMQchZ4uVZQ9uPD27Fsfq+8gYyjizRgXqi5pL7Zj
+	 XrVpcarVek86kBcnb0b10KGj53uxlUDZsR7GM/AMC3dpWEmuwjpj/9nSkFipK61Ri+
+	 EUQGjrRuMADjF05HlMKQzGNo69LjwD+1xhYH6f0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	stable@kernel.org,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/481] ext4: drop extent cache when splitting extent fails
-Date: Mon, 23 Mar 2026 14:40:29 +0100
-Message-ID: <20260323134526.377959844@linuxfoundation.org>
+	Davide Caratti <dcaratti@redhat.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 110/567] net/sched: ets: fix divide by zero in the offload path
+Date: Mon, 23 Mar 2026 14:40:30 +0100
+Message-ID: <20260323134536.535897133@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,93 +69,146 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229021-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229547-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8ECAE2FA328
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 77C732F6601
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Davide Caratti <dcaratti@redhat.com>
 
-[ Upstream commit 79b592e8f1b435796cbc2722190368e3e8ffd7a1 ]
+commit e35626f610f3d2b7953ccddf6a77453da22b3a9e upstream.
 
-When the split extent fails, we might leave some extents still being
-processed and return an error directly, which will result in stale
-extent entries remaining in the extent status tree. So drop all of the
-remaining potentially stale extents if the splitting fails.
+Offloading ETS requires computing each class' WRR weight: this is done by
+averaging over the sums of quanta as 'q_sum' and 'q_psum'. Using unsigned
+int, the same integer size as the individual DRR quanta, can overflow and
+even cause division by zero, like it happened in the following splat:
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Cc: stable@kernel.org
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Message-ID: <20251129103247.686136-8-yi.zhang@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Oops: divide error: 0000 [#1] SMP PTI
+ CPU: 13 UID: 0 PID: 487 Comm: tc Tainted: G            E       6.19.0-virtme #45 PREEMPT(full)
+ Tainted: [E]=UNSIGNED_MODULE
+ Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+ RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
+ Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
+ RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
+ RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
+ RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
+ R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
+ R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
+ FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  ets_qdisc_change+0x870/0xf40 [sch_ets]
+  qdisc_create+0x12b/0x540
+  tc_modify_qdisc+0x6d7/0xbd0
+  rtnetlink_rcv_msg+0x168/0x6b0
+  netlink_rcv_skb+0x5c/0x110
+  netlink_unicast+0x1d6/0x2b0
+  netlink_sendmsg+0x22e/0x470
+  ____sys_sendmsg+0x38a/0x3c0
+  ___sys_sendmsg+0x99/0xe0
+  __sys_sendmsg+0x8a/0xf0
+  do_syscall_64+0x111/0xf80
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x7f440b81c77e
+ Code: 4d 89 d8 e8 d4 bc 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
+ RSP: 002b:00007fff951e4c10 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 0000000000481820 RCX: 00007f440b81c77e
+ RDX: 0000000000000000 RSI: 00007fff951e4cd0 RDI: 0000000000000003
+ RBP: 00007fff951e4c20 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff951f4fa8
+ R13: 00000000699ddede R14: 00007f440bb01000 R15: 0000000000486980
+  </TASK>
+ Modules linked in: sch_ets(E) netdevsim(E)
+ ---[ end trace 0000000000000000 ]---
+ RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
+ Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
+ RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
+ RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
+ RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
+ R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
+ R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
+ FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
+ Kernel panic - not syncing: Fatal exception
+ Kernel Offset: 0x30000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+ ---[ end Kernel panic - not syncing: Fatal exception ]---
+
+Fix this using 64-bit integers for 'q_sum' and 'q_psum'.
+
+Cc: stable@vger.kernel.org
+Fixes: d35eb52bd2ac ("net: sch_ets: Make the ETS qdisc offloadable")
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/28504887df314588c7255e9911769c36f751edee.1771964872.git.dcaratti@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/sched/sch_ets.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 30b0b25aac9ff..bb27c04798d2b 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3252,7 +3252,7 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -115,12 +115,12 @@ static void ets_offload_change(struct Qd
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct tc_ets_qopt_offload qopt;
+ 	unsigned int w_psum_prev = 0;
+-	unsigned int q_psum = 0;
+-	unsigned int q_sum = 0;
+ 	unsigned int quantum;
+ 	unsigned int w_psum;
+ 	unsigned int weight;
+ 	unsigned int i;
++	u64 q_psum = 0;
++	u64 q_sum = 0;
  
- 	err = PTR_ERR(path);
- 	if (err != -ENOSPC && err != -EDQUOT && err != -ENOMEM)
--		return path;
-+		goto out_path;
+ 	if (!tc_can_offload(dev) || !dev->netdev_ops->ndo_setup_tc)
+ 		return;
+@@ -138,8 +138,12 @@ static void ets_offload_change(struct Qd
  
- 	/*
- 	 * Get a new path to try to zeroout or fix the extent length.
-@@ -3266,7 +3266,7 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
- 	if (IS_ERR(path)) {
- 		EXT4_ERROR_INODE(inode, "Failed split extent on %u, err %ld",
- 				 split, PTR_ERR(path));
--		return path;
-+		goto out_path;
- 	}
- 	depth = ext_depth(inode);
- 	ex = path[depth].p_ext;
-@@ -3343,6 +3343,10 @@ static struct ext4_ext_path *ext4_split_extent_at(handle_t *handle,
- 		ext4_free_ext_path(path);
- 		path = ERR_PTR(err);
- 	}
-+out_path:
-+	if (IS_ERR(path))
-+		/* Remove all remaining potentially stale extents. */
-+		ext4_es_remove_extent(inode, ee_block, ee_len);
- 	ext4_ext_show_leaf(inode, path);
- 	return path;
- }
--- 
-2.51.0
-
+ 	for (i = 0; i < q->nbands; i++) {
+ 		quantum = q->classes[i].quantum;
+-		q_psum += quantum;
+-		w_psum = quantum ? q_psum * 100 / q_sum : 0;
++		if (quantum) {
++			q_psum += quantum;
++			w_psum = div64_u64(q_psum * 100, q_sum);
++		} else {
++			w_psum = 0;
++		}
+ 		weight = w_psum - w_psum_prev;
+ 		w_psum_prev = w_psum;
+ 
 
 
 
