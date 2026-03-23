@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229561-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAwWAP1rwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:13 +0100
+	id SF1mNTBwwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229561-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EEC22F8672
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A0802F90BA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E467531C6D86
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C9FE3181DDC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A711A00F0;
-	Mon, 23 Mar 2026 15:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF56F279DB1;
+	Mon, 23 Mar 2026 16:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwmgrBiQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WmgBrzPU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079FC1A3029;
-	Mon, 23 Mar 2026 15:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9140B257851;
+	Mon, 23 Mar 2026 16:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278066; cv=none; b=GmFkclqxXEPkguEpGbvf2X3BOM6NcDoli9hTK1WgJ55EIk684W00r7cx07kUetHXGBZ/EYRNdYxUNg1nORM6nhq+yvMwuQAkz6f0OBOFwDQIMJzB7VpnPeGmeTQTD2I/tiH/+qvWVNXBoJyFxJira0E14+j9IxG188PE+YgHrVI=
+	t=1774282253; cv=none; b=pNw+y668flSG9tIsn93EWW6tc9ZiEtaWLh1u8SyNZ7DLjBjtxwew/sEPg9P1anMH7Dg17hom3qCwM5qh929iYhBSO+cKslvXzfvHIbDJ3qnDoLyk/Mrddt2O/JD5z8lX/8xGpwxwWMt726FOXXaOPk6cW6JvXaYnXo8VLUKTXoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278066; c=relaxed/simple;
-	bh=eOTB0lwWo9YsLhyDv9uywH3EwYGUJVCmLZcLBGYeEDw=;
+	s=arc-20240116; t=1774282253; c=relaxed/simple;
+	bh=k5zT8rjWaaHhMY5H4q6SnbPvgDumUYfrAOpxICaQgdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXI7x57JWF/Q22fSh/v6UZH0UrucPiybf/KrvCzpwi0wbYYJ/jhYKJieAztINBIMz0hrlh7a2QJaECEiQBJfXRKIhe+AS4CUpkhRsd4N8BCOYWh+0C9NNgKi701+Hy2aldX0StdMFalfTpuARPDzOMTGN7l3QzvRYIGnRA+aIbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwmgrBiQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8013EC4CEF7;
-	Mon, 23 Mar 2026 15:01:05 +0000 (UTC)
+	 MIME-Version; b=YS7MG6X392Qmousf4+nHzeBdhJFgJbLCForZ7fAfxiTFhz1E12pxwsl8nUjPtuYCf5xJQsrhoLaJvcQUf4VY6T4H891zQmEQhCv8c1Igzp4QQiY1Iz4M4xWe30YMcRla5OL3o33hQZnCODIyWZm7uvBrge9iQAySdw6i/1NIOFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WmgBrzPU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22419C2BC9E;
+	Mon, 23 Mar 2026 16:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278065;
-	bh=eOTB0lwWo9YsLhyDv9uywH3EwYGUJVCmLZcLBGYeEDw=;
+	s=korg; t=1774282253;
+	bh=k5zT8rjWaaHhMY5H4q6SnbPvgDumUYfrAOpxICaQgdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwmgrBiQTH5UvwSdzxG7wxf1V+91sRBlXlpMY0utQcyHGO86ynghVx9BdvwngW+J9
-	 10uznwMx0yDHfKY4hR3pHM8J41o0hfjC8FHDcPRp1sAkoV/63SjaoIEfUfKOFswH9w
-	 jcQLysnQqG3QQypbIH5djy6tLY3ZBUK4zTz1SmQc=
+	b=WmgBrzPUD1gCuSeTG+T4CqmKtsaMDiuV9mH2W4jRomm2++c0igQzV1wZqT5wLHyCJ
+	 vaj0hmaw1RpmTxrvRIdJW6nzPFolJIUMXzq5FYe9S9buq0aUuV2903kpv4nWHKi/KX
+	 GUKQBoh2IomYe3Bs1chpAr63dn+sowtAfj1Q39MI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5a287bcdc08104bc3132@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 148/567] bpf/bonding: reject vlan+srcmac xmit_hash_policy change when XDP is loaded
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.1 086/481] RDMA/irdma: Fix kernel stack leak in irdma_create_user_ah()
 Date: Mon, 23 Mar 2026 14:41:08 +0100
-Message-ID: <20260323134537.494378614@linuxfoundation.org>
+Message-ID: <20260323134527.362364874@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,155 +63,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229102-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229561-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,5a287bcdc08104bc3132];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4EEC22F8672
+X-Rspamd-Queue-Id: 4A0802F90BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 479d589b40b836442bbdadc3fdb37f001bb67f26 ]
+commit 74586c6da9ea222a61c98394f2fc0a604748438c upstream.
 
-bond_option_mode_set() already rejects mode changes that would make a
-loaded XDP program incompatible via bond_xdp_check().  However,
-bond_option_xmit_hash_policy_set() has no such guard.
+struct irdma_create_ah_resp {  // 8 bytes, no padding
+    __u32 ah_id;               // offset 0 - SET (uresp.ah_id = ah->sc_ah.ah_info.ah_idx)
+    __u8  rsvd[4];             // offset 4 - NEVER SET <- LEAK
+};
 
-For 802.3ad and balance-xor modes, bond_xdp_check() returns false when
-xmit_hash_policy is vlan+srcmac, because the 802.1q payload is usually
-absent due to hardware offload.  This means a user can:
+rsvd[4]: 4 bytes of stack memory leaked unconditionally. Only ah_id is assigned before ib_respond_udata().
 
-1. Attach a native XDP program to a bond in 802.3ad/balance-xor mode
-   with a compatible xmit_hash_policy (e.g. layer2+3).
-2. Change xmit_hash_policy to vlan+srcmac while XDP remains loaded.
+The reserved members of the structure were not zeroed.
 
-This leaves bond->xdp_prog set but bond_xdp_check() now returning false
-for the same device.  When the bond is later destroyed, dev_xdp_uninstall()
-calls bond_xdp_set(dev, NULL, NULL) to remove the program, which hits
-the bond_xdp_check() guard and returns -EOPNOTSUPP, triggering:
-
-WARN_ON(dev_xdp_install(dev, mode, bpf_op, NULL, 0, NULL))
-
-Fix this by rejecting xmit_hash_policy changes to vlan+srcmac when an
-XDP program is loaded on a bond in 802.3ad or balance-xor mode.
-
-commit 39a0876d595b ("net, bonding: Disallow vlan+srcmac with XDP")
-introduced bond_xdp_check() which returns false for 802.3ad/balance-xor
-modes when xmit_hash_policy is vlan+srcmac.  The check was wired into
-bond_xdp_set() to reject XDP attachment with an incompatible policy, but
-the symmetric path -- preventing xmit_hash_policy from being changed to an
-incompatible value after XDP is already loaded -- was left unguarded in
-bond_option_xmit_hash_policy_set().
-
-Note:
-commit 094ee6017ea0 ("bonding: check xdp prog when set bond mode")
-later added a similar guard to bond_option_mode_set(), but
-bond_option_xmit_hash_policy_set() remained unprotected.
-
-Reported-by: syzbot+5a287bcdc08104bc3132@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6995aff6.050a0220.2eeac1.014e.GAE@google.com/T/
-Fixes: 39a0876d595b ("net, bonding: Disallow vlan+srcmac with XDP")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Link: https://patch.msgid.link/20260226080306.98766-2-jiayuan.chen@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://patch.msgid.link/3-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c    | 9 +++++++--
- drivers/net/bonding/bond_options.c | 2 ++
- include/net/bonding.h              | 1 +
- 3 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/irdma/verbs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 836d7fcac71a1..a2bf7bb12ff7c 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -322,7 +322,7 @@ static bool bond_sk_check(struct bonding *bond)
- 	}
- }
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -4338,7 +4338,7 @@ static int irdma_create_user_ah(struct i
+ #define IRDMA_CREATE_AH_MIN_RESP_LEN offsetofend(struct irdma_create_ah_resp, rsvd)
+ 	struct irdma_ah *ah = container_of(ibah, struct irdma_ah, ibah);
+ 	struct irdma_device *iwdev = to_iwdev(ibah->pd->device);
+-	struct irdma_create_ah_resp uresp;
++	struct irdma_create_ah_resp uresp = {};
+ 	struct irdma_ah *parent_ah;
+ 	int err;
  
--bool bond_xdp_check(struct bonding *bond, int mode)
-+bool __bond_xdp_check(int mode, int xmit_policy)
- {
- 	switch (mode) {
- 	case BOND_MODE_ROUNDROBIN:
-@@ -333,7 +333,7 @@ bool bond_xdp_check(struct bonding *bond, int mode)
- 		/* vlan+srcmac is not supported with XDP as in most cases the 802.1q
- 		 * payload is not in the packet due to hardware offload.
- 		 */
--		if (bond->params.xmit_policy != BOND_XMIT_POLICY_VLAN_SRCMAC)
-+		if (xmit_policy != BOND_XMIT_POLICY_VLAN_SRCMAC)
- 			return true;
- 		fallthrough;
- 	default:
-@@ -341,6 +341,11 @@ bool bond_xdp_check(struct bonding *bond, int mode)
- 	}
- }
- 
-+bool bond_xdp_check(struct bonding *bond, int mode)
-+{
-+	return __bond_xdp_check(mode, bond->params.xmit_policy);
-+}
-+
- /*---------------------------------- VLAN -----------------------------------*/
- 
- /* In the following 2 functions, bond_vlan_rx_add_vid and bond_vlan_rx_kill_vid,
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 5a2a935945c4c..b823425ad7f69 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -1546,6 +1546,8 @@ static int bond_option_fail_over_mac_set(struct bonding *bond,
- static int bond_option_xmit_hash_policy_set(struct bonding *bond,
- 					    const struct bond_opt_value *newval)
- {
-+	if (bond->xdp_prog && !__bond_xdp_check(BOND_MODE(bond), newval->value))
-+		return -EOPNOTSUPP;
- 	netdev_dbg(bond->dev, "Setting xmit hash policy to %s (%llu)\n",
- 		   newval->string, newval->value);
- 	bond->params.xmit_policy = newval->value;
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 9fb40a5920209..66940d41d4854 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -696,6 +696,7 @@ void bond_debug_register(struct bonding *bond);
- void bond_debug_unregister(struct bonding *bond);
- void bond_debug_reregister(struct bonding *bond);
- const char *bond_mode_name(int mode);
-+bool __bond_xdp_check(int mode, int xmit_policy);
- bool bond_xdp_check(struct bonding *bond, int mode);
- void bond_setup(struct net_device *bond_dev);
- unsigned int bond_get_num_tx_queues(void);
--- 
-2.51.0
-
 
 
 
