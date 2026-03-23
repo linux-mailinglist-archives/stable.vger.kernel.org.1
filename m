@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229512-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OA8pISlVwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-229004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:49 +0100
+	id +B+ROApgwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229512-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:45:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67EB42F58DB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 985662F6D8C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:45:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4F02B3006149
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8FD7310E16A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AAD3B0ACA;
-	Mon, 23 Mar 2026 14:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDDCC3BFE4F;
+	Mon, 23 Mar 2026 15:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdHs9k5G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eou0lwbC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5813AA516;
-	Mon, 23 Mar 2026 14:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07FA282F04;
+	Mon, 23 Mar 2026 15:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277753; cv=none; b=PgdRby5d6YoVlL1dSOTY1OF1jJxD3JriQaJwkAShYasXtJ90QsL7nzN2g7UK+uqULNe2MrLaCzdm+FudIyqp3v2m+SMUlQhxyXO356mmzPgR3Ql3pI7/DSI+qxJ0mv04oAYI8kk8QaFjxtbuSQrafG4uzL/6D+geQytsCWZjQ8k=
+	t=1774279469; cv=none; b=HwBnSx+ShRC87KtB8fssR5ze4vGmfIrRrGCeZK+0rIxN8w7oSLt5RjukvuYtNF/0OiK5gIzeDmmItjDn9+JaaoLm3GuO7BvwBr8TA5Ohv2s1/W5uv+FcypOTHH4btmUO4NN841L0b4D5W/nk+x0wnu1IihkLTzm9YHlHFEDdi5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277753; c=relaxed/simple;
-	bh=Zy3KMWEykR1TP2PPrn1RBPHhaORRbtMwkvnprVjUmmQ=;
+	s=arc-20240116; t=1774279469; c=relaxed/simple;
+	bh=aeR7JwEy7/o+1VvUNhGqFJ0vthCdaWBEY9zx9JwWmr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NX0Kp6MtAVWIY965TL35LbZlK1bFYJlL9PkWujtyuoopPXR7WAA7fGheIKdqx7s5HNe5MLEVB46CHVGq12u1Xbg/PUUyyVYn7WkzkhDIktPwqZcAUfZFG+ZtwGJZBrPpQDSTc9Pp+gOHOi1dhv0GzDLFvRytobByW/STkLu21Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdHs9k5G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531D4C4CEF7;
-	Mon, 23 Mar 2026 14:55:53 +0000 (UTC)
+	 MIME-Version; b=Iie0LJQS7I0ZsBTMUYUhwCDAzp+PBM+1M30q1Wkb8ClusgF6qN/c8nTliSFBMswUaXGlFCjOit9GwSyrU6m++V7DQW/NB5felDV1SamxjwYpru0buaImud4gFbA2pJTBVPOGBAqFSgXUxOgbpUosW+jIFWVZhLDPJg4gbR926iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eou0lwbC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22CA2C4CEF7;
+	Mon, 23 Mar 2026 15:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277753;
-	bh=Zy3KMWEykR1TP2PPrn1RBPHhaORRbtMwkvnprVjUmmQ=;
+	s=korg; t=1774279469;
+	bh=aeR7JwEy7/o+1VvUNhGqFJ0vthCdaWBEY9zx9JwWmr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UdHs9k5Gfl6uHpIJmL3Q/61bSS+bKsChasDsX2Pnke2gi4b6QtBMHsXY/xa4jCDP7
-	 nhyHHe4m7uLc8jdM2lSh0f2bTN8E3xQQEMIqK7N98yl8ut3fWBUfFs9M7ColtBol2l
-	 LPz7UgrVLjJwxjYWAmDi/hjEhhcL5t49mlEoZPIM=
+	b=Eou0lwbC+UnBYsW5DYYoG7RfudFPMz/MA2kFdpO2UuQva///vYAefmOVWrYqn6anm
+	 yne+5yBLsn7mVehmmoR6nNSiokdtuk53qr5LLdbVVT0ii+I7NvBA2VglKgzbncXsfi
+	 PgmVMM8ayP+49p02e3tZQJ/ItVSJJf9XdH4O234k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 090/567] net: usb: kaweth: validate USB endpoints
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 028/481] KVM: x86: Rename KVM_MSR_RET_INVALID to KVM_MSR_RET_UNSUPPORTED
 Date: Mon, 23 Mar 2026 14:40:10 +0100
-Message-ID: <20260323134536.058766821@linuxfoundation.org>
+Message-ID: <20260323134525.926176053@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229004-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229512-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,63 +89,154 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 67EB42F58DB
+X-Rspamd-Queue-Id: 985662F6D8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 4b063c002ca759d1b299988ee23f564c9609c875 upstream.
+[ Upstream commit aaecae7b6a2b19a874a7df0d474f44f3a5b5a74e ]
 
-The kaweth driver should validate that the device it is probing has the
-proper number and types of USB endpoints it is expecting before it binds
-to it.  If a malicious device were to not have the same urbs the driver
-will crash later on when it blindly accesses these endpoints.
+Rename the "INVALID" internal MSR error return code to "UNSUPPORTED" to
+try and make it more clear that access was denied because the MSR itself
+is unsupported/unknown.  "INVALID" is too ambiguous, as it could just as
+easily mean the value for WRMSR as invalid.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://patch.msgid.link/2026022305-substance-virtual-c728@gregkh
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Avoid UNKNOWN and UNIMPLEMENTED, as the error code is used for MSRs that
+_are_ actually implemented by KVM, e.g. if the MSR is unsupported because
+an associated feature flag is not present in guest CPUID.
+
+Opportunistically beef up the comments for the internal MSR error codes.
+
+Link: https://lore.kernel.org/r/20240802181935.292540-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: 5bb9ac186512 ("KVM: x86: Return "unsupported" instead of "invalid" on access to unsupported PV MSR")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/kaweth.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/x86/kvm/svm/svm.c |  2 +-
+ arch/x86/kvm/vmx/vmx.c |  2 +-
+ arch/x86/kvm/x86.c     | 12 ++++++------
+ arch/x86/kvm/x86.h     | 15 +++++++++++----
+ 4 files changed, 19 insertions(+), 12 deletions(-)
 
---- a/drivers/net/usb/kaweth.c
-+++ b/drivers/net/usb/kaweth.c
-@@ -883,6 +883,13 @@ static int kaweth_probe(
- 	const eth_addr_t bcast_addr = { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF };
- 	int result = 0;
- 	int rv = -EIO;
-+	static const u8 bulk_ep_addr[] = {
-+		1 | USB_DIR_IN,
-+		2 | USB_DIR_OUT,
-+		0};
-+	static const u8 int_ep_addr[] = {
-+		3 | USB_DIR_IN,
-+		0};
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index a885fb39a6559..5d7775b869732 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2735,7 +2735,7 @@ static int svm_get_msr_feature(struct kvm_msr_entry *msr)
+ 		msr->data = kvm_caps.supported_perf_cap;
+ 		return 0;
+ 	default:
+-		return KVM_MSR_RET_INVALID;
++		return KVM_MSR_RET_UNSUPPORTED;
+ 	}
  
- 	dev_dbg(dev,
- 		"Kawasaki Device Probe (Device number:%d): 0x%4.4x:0x%4.4x:0x%4.4x\n",
-@@ -896,6 +903,12 @@ static int kaweth_probe(
- 		(int)udev->descriptor.bLength,
- 		(int)udev->descriptor.bDescriptorType);
+ 	return 0;
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index ebdc86030a7a4..e5d162e97f503 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1889,7 +1889,7 @@ static int vmx_get_msr_feature(struct kvm_msr_entry *msr)
+ 		msr->data = kvm_caps.supported_perf_cap;
+ 		return 0;
+ 	default:
+-		return KVM_MSR_RET_INVALID;
++		return KVM_MSR_RET_UNSUPPORTED;
+ 	}
+ }
  
-+	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
-+	    !usb_check_int_endpoints(intf, int_ep_addr)) {
-+		dev_err(dev, "couldn't find required endpoints\n");
-+		return -ENODEV;
-+	}
-+
- 	netdev = alloc_etherdev(sizeof(*kaweth));
- 	if (!netdev)
- 		return -ENOMEM;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 80daa1ef956fa..84e54547ec7d0 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1718,7 +1718,7 @@ static int do_get_msr_feature(struct kvm_vcpu *vcpu, unsigned index, u64 *data)
+ 	msr.index = index;
+ 	r = kvm_get_msr_feature(&msr);
+ 
+-	if (r == KVM_MSR_RET_INVALID && kvm_msr_ignored_check(index, 0, false))
++	if (r == KVM_MSR_RET_UNSUPPORTED && kvm_msr_ignored_check(index, 0, false))
+ 		r = 0;
+ 
+ 	*data = msr.data;
+@@ -1908,7 +1908,7 @@ static int kvm_set_msr_ignored_check(struct kvm_vcpu *vcpu,
+ {
+ 	int ret = __kvm_set_msr(vcpu, index, data, host_initiated);
+ 
+-	if (ret == KVM_MSR_RET_INVALID)
++	if (ret == KVM_MSR_RET_UNSUPPORTED)
+ 		if (kvm_msr_ignored_check(index, data, true))
+ 			ret = 0;
+ 
+@@ -1953,7 +1953,7 @@ static int kvm_get_msr_ignored_check(struct kvm_vcpu *vcpu,
+ {
+ 	int ret = __kvm_get_msr(vcpu, index, data, host_initiated);
+ 
+-	if (ret == KVM_MSR_RET_INVALID) {
++	if (ret == KVM_MSR_RET_UNSUPPORTED) {
+ 		/* Unconditionally clear *data for simplicity */
+ 		*data = 0;
+ 		if (kvm_msr_ignored_check(index, 0, false))
+@@ -2022,7 +2022,7 @@ static int complete_fast_rdmsr(struct kvm_vcpu *vcpu)
+ static u64 kvm_msr_reason(int r)
+ {
+ 	switch (r) {
+-	case KVM_MSR_RET_INVALID:
++	case KVM_MSR_RET_UNSUPPORTED:
+ 		return KVM_MSR_EXIT_REASON_UNKNOWN;
+ 	case KVM_MSR_RET_FILTERED:
+ 		return KVM_MSR_EXIT_REASON_FILTER;
+@@ -3915,7 +3915,7 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		    kvm_is_msr_to_save(msr))
+ 			break;
+ 
+-		return KVM_MSR_RET_INVALID;
++		return KVM_MSR_RET_UNSUPPORTED;
+ 	}
+ 	return 0;
+ }
+@@ -4270,7 +4270,7 @@ int kvm_get_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 			break;
+ 		}
+ 
+-		return KVM_MSR_RET_INVALID;
++		return KVM_MSR_RET_UNSUPPORTED;
+ 	}
+ 	return 0;
+ }
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index f3554bf052016..9bb2f237b0fc0 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -459,11 +459,18 @@ bool kvm_msr_allowed(struct kvm_vcpu *vcpu, u32 index, u32 type);
+ 
+ /*
+  * Internal error codes that are used to indicate that MSR emulation encountered
+- * an error that should result in #GP in the guest, unless userspace
+- * handles it.
++ * an error that should result in #GP in the guest, unless userspace handles it.
++ * Note, '1', '0', and negative numbers are off limits, as they are used by KVM
++ * as part of KVM's lightly documented internal KVM_RUN return codes.
++ *
++ * UNSUPPORTED	- The MSR isn't supported, either because it is completely
++ *		  unknown to KVM, or because the MSR should not exist according
++ *		  to the vCPU model.
++ *
++ * FILTERED	- Access to the MSR is denied by a userspace MSR filter.
+  */
+-#define  KVM_MSR_RET_INVALID	2	/* in-kernel MSR emulation #GP condition */
+-#define  KVM_MSR_RET_FILTERED	3	/* #GP due to userspace MSR filter */
++#define  KVM_MSR_RET_UNSUPPORTED	2
++#define  KVM_MSR_RET_FILTERED		3
+ 
+ #define __cr4_reserved_bits(__cpu_has, __c)             \
+ ({                                                      \
+-- 
+2.51.0
+
 
 
 
