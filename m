@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-228341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228818-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SDOZBHlNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228341-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:01 +0100
+	id KGFCFoVXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228818-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBCC2F4730
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F242F5D97
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 044F43131D99
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E2307313EEB3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E323AEF51;
-	Mon, 23 Mar 2026 14:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D63623EA85;
+	Mon, 23 Mar 2026 14:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2nui/UG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FYEXQ6tv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B96D3A0B3D;
-	Mon, 23 Mar 2026 14:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0067626ED4F;
+	Mon, 23 Mar 2026 14:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274858; cv=none; b=JlLNGj7MoO2DYtIO8+Kt3HzFR0CX8cZpXbT5DdTH2cjJO9CuYpE9+mBcCVcHhkmtMgDsQd+M2eY645S97zDWpnhnGCS7OgK4TICkgFAsOFAoMtIo/BuF8iMpgANcANEZ/6gHFZpqSzWcXr7J1jVB8vL6feG/yc7W3uTI9xX3uzU=
+	t=1774277219; cv=none; b=QHsBwnOj7Z1AL3D5uo4tphmfpeycoTxLNfPs3vwC8HzoOYMlegMwILdwSCsDyZklT7C2LZFw9eB5WDghnWnvdejpHnURRp/huDtgr0W+q3WDpaa/VUzGkqrfKxW3PcEGuJNTjCKKmLiMfLQkie6XeI8mINhIPuDeZTUhWSyrPxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274858; c=relaxed/simple;
-	bh=6rwdOkk4VBCmsI48rAtQQSisi9S7eOl/TjYrf2R31pU=;
+	s=arc-20240116; t=1774277219; c=relaxed/simple;
+	bh=j6U4A7sM7pbgKQo1UbBd4oau7gihwSdX98hET+9QVbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NzE7SxtK08fvJpM1v7WhZsAVCpCxOILuMrBNT8lHuMpYdMubvS6kK4jnMwLB1QhmO5QIDL3U1nPd5YQ59px4LZNWAwffOPsHPQ0cESDvzpkMLiw+sT5tNCvckp4PczCjzJDpUlJI8fJk8sLdTWvKyY7YtFU7DwFmd4arGJxrSu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2nui/UG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2950C4CEF7;
-	Mon, 23 Mar 2026 14:07:37 +0000 (UTC)
+	 MIME-Version; b=trpDE6jOzRZmcm4sknb5N+x9DqaHYHGamG8enOPEP+XKfSLeob48n4B1DDTNJ/JJ70/hPsSbk1eRMejriV9BEIysqMhu+iF15hHW/bITTKO0PYeWytXlj/40vlPtmoKSjepFybzQzYaq/7zLW6kx+Ljr1+TpizF99Nz/kuai0G8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FYEXQ6tv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BD5C4CEF7;
+	Mon, 23 Mar 2026 14:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274858;
-	bh=6rwdOkk4VBCmsI48rAtQQSisi9S7eOl/TjYrf2R31pU=;
+	s=korg; t=1774277218;
+	bh=j6U4A7sM7pbgKQo1UbBd4oau7gihwSdX98hET+9QVbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2nui/UG3TA9P0AB/IH7N7/8voFSZgQqyVSrBfWKuKB4SRwKmQB8Xj4s3HopeCTid
-	 VetlJVdsK9oP2Ps9DKHkxf24JSajAFsHKYBmWO1nYEgVq683KzCWdPLd1GQ4xeHvzy
-	 UZfN7/FBhcgi2nXQCKVrfsWzFueJwxtAsa/fnKD0=
+	b=FYEXQ6tvPgrNIK6pzPiyw63l3aIDyErzaMaehQOZGQ3oOEPnxI0nCTnkHs7KX5lZe
+	 4xeQgMBl6QTUo7UMdHwMb1D65Qi+rp9pUEKGYMMImhpUsXJePIp+n6ZdxI9oclqFDA
+	 9Vd0eUqYTJ22hLDd9+NbtADcfjOqKBuPU/uhfeQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 134/212] netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 359/460] drm/radeon: apply state adjust rules to some additional HAINAN vairants
 Date: Mon, 23 Mar 2026 14:45:55 +0100
-Message-ID: <20260323134508.006315803@linuxfoundation.org>
+Message-ID: <20260323134535.377977435@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,155 +66,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228341-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228818-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8FBCC2F4730
+X-Rspamd-Queue-Id: B3F242F5D97
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 5cb81eeda909dbb2def209dd10636b51549a3f8a ]
+commit 86650ee2241ff84207eaa298ab318533f3c21a38 upstream.
 
-ctnetlink_dump_exp_ct() stores a conntrack pointer in cb->data for the
-netlink dump callback ctnetlink_exp_ct_dump_table(), but drops the
-conntrack reference immediately after netlink_dump_start().  When the
-dump spans multiple rounds, the second recvmsg() triggers the dump
-callback which dereferences the now-freed conntrack via nfct_help(ct),
-leading to a use-after-free on ct->ext.
+They need a similar workaround.
 
-The bug is that the netlink_dump_control has no .start or .done
-callbacks to manage the conntrack reference across dump rounds.  Other
-dump functions in the same file (e.g. ctnetlink_get_conntrack) properly
-use .start/.done callbacks for this purpose.
-
-Fix this by adding .start and .done callbacks that hold and release the
-conntrack reference for the duration of the dump, and move the
-nfct_help() call after the cb->args[0] early-return check in the dump
-callback to avoid dereferencing ct->ext unnecessarily.
-
- BUG: KASAN: slab-use-after-free in ctnetlink_exp_ct_dump_table+0x4f/0x2e0
- Read of size 8 at addr ffff88810597ebf0 by task ctnetlink_poc/133
-
- CPU: 1 UID: 0 PID: 133 Comm: ctnetlink_poc Not tainted 7.0.0-rc2+ #3 PREEMPTLAZY
- Call Trace:
-  <TASK>
-  ctnetlink_exp_ct_dump_table+0x4f/0x2e0
-  netlink_dump+0x333/0x880
-  netlink_recvmsg+0x3e2/0x4b0
-  ? aa_sk_perm+0x184/0x450
-  sock_recvmsg+0xde/0xf0
-
- Allocated by task 133:
-  kmem_cache_alloc_noprof+0x134/0x440
-  __nf_conntrack_alloc+0xa8/0x2b0
-  ctnetlink_create_conntrack+0xa1/0x900
-  ctnetlink_new_conntrack+0x3cf/0x7d0
-  nfnetlink_rcv_msg+0x48e/0x510
-  netlink_rcv_skb+0xc9/0x1f0
-  nfnetlink_rcv+0xdb/0x220
-  netlink_unicast+0x3ec/0x590
-  netlink_sendmsg+0x397/0x690
-  __sys_sendmsg+0xf4/0x180
-
- Freed by task 0:
-  slab_free_after_rcu_debug+0xad/0x1e0
-  rcu_core+0x5c3/0x9c0
-
-Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1839
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 87327658c848f56eac166cb382b57b83bf06c5ac)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_netlink.c | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/si_dpm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 3a04665adf992..f261dd48973fe 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -3211,7 +3211,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	struct nf_conn *ct = cb->data;
--	struct nf_conn_help *help = nfct_help(ct);
-+	struct nf_conn_help *help;
- 	u_int8_t l3proto = nfmsg->nfgen_family;
- 	unsigned long last_id = cb->args[1];
- 	struct nf_conntrack_expect *exp;
-@@ -3219,6 +3219,10 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	if (cb->args[0])
- 		return 0;
- 
-+	help = nfct_help(ct);
-+	if (!help)
-+		return 0;
-+
- 	rcu_read_lock();
- 
- restart:
-@@ -3248,6 +3252,24 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
- }
- 
-+static int ctnetlink_dump_exp_ct_start(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (!refcount_inc_not_zero(&ct->ct_general.use))
-+		return -ENOENT;
-+	return 0;
-+}
-+
-+static int ctnetlink_dump_exp_ct_done(struct netlink_callback *cb)
-+{
-+	struct nf_conn *ct = cb->data;
-+
-+	if (ct)
-+		nf_ct_put(ct);
-+	return 0;
-+}
-+
- static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 				 struct sk_buff *skb,
- 				 const struct nlmsghdr *nlh,
-@@ -3263,6 +3285,8 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 	struct nf_conntrack_zone zone;
- 	struct netlink_dump_control c = {
- 		.dump = ctnetlink_exp_ct_dump_table,
-+		.start = ctnetlink_dump_exp_ct_start,
-+		.done = ctnetlink_dump_exp_ct_done,
- 	};
- 
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
--- 
-2.51.0
-
+--- a/drivers/gpu/drm/radeon/si_dpm.c
++++ b/drivers/gpu/drm/radeon/si_dpm.c
+@@ -2915,9 +2915,11 @@ static void si_apply_state_adjust_rules(
+ 	if (rdev->family == CHIP_HAINAN) {
+ 		if ((rdev->pdev->revision == 0x81) ||
+ 		    (rdev->pdev->revision == 0xC3) ||
++		    (rdev->pdev->device == 0x6660) ||
+ 		    (rdev->pdev->device == 0x6664) ||
+ 		    (rdev->pdev->device == 0x6665) ||
+-		    (rdev->pdev->device == 0x6667)) {
++		    (rdev->pdev->device == 0x6667) ||
++		    (rdev->pdev->device == 0x666F)) {
+ 			max_sclk = 75000;
+ 		}
+ 		if ((rdev->pdev->revision == 0xC3) ||
 
 
 
