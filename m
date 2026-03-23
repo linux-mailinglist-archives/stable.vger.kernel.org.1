@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228728-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qC5BAQhewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:40 +0100
+	id CNCoH09UwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228728-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57D8A2F68F0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEA02F56D8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85B2932F4992
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BE227303437E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372323B2FF6;
-	Mon, 23 Mar 2026 15:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145BF3AF667;
+	Mon, 23 Mar 2026 14:42:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gD7tfuq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMUNzdZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF14D388377;
-	Mon, 23 Mar 2026 15:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89443B27F5;
+	Mon, 23 Mar 2026 14:42:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278556; cv=none; b=RfOI10fmyd8rnwbBr/th06FNG5g8NcUOD0HbFGtQ/Ed0LF8sduUr2Ix5VgL8ARVlHkIOaasfT4zU8Ov0PX0tR04hg8lU9/BSZzr7H37GZdSTV7Z4Rx4gLAadcBozyrDG23QJrmvIukeWYknmvmA45P7WHu09uFNmesA/j7u8XmI=
+	t=1774276961; cv=none; b=DUQz/dbgkdECHBjnZKvTw+L/IeUe8Ik4vusFZuzPWiuTjB0T8IZNi5aJ8EGCplO1FKNIAuOVuBS9bZdozTucMDA6E1HX7/iFqKqJlB2W3gsLsRktXdgAL2yo4GYsW9WlZX4TUskLz3TCvh37Cmle7WQUlPDDSSXnrkFmpgdpEVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278556; c=relaxed/simple;
-	bh=s4G7e3FuKDedSA/gWxQDDrKyWxzgsj1HTRXETxAIs8I=;
+	s=arc-20240116; t=1774276961; c=relaxed/simple;
+	bh=0Sr4IWWftD+OBk7OCn6s8qHMVbXKDd9Pt8h+Rriid5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqQPtHNCiNhct0lY+mveIm4GCaB8mTOHzJ1/kMKKaZMikPscl4XxpZ3wUd0/FLovck0PaPKD9wRkmvlEnnLRbpZ2ff68NaxLuKFuTsfgi+Ae0+F/BKa0J2/wpdXf83ZVzx6/TyX+1P/uh1atY/jGH7GviF7QkAWWYMN9c6WJfeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gD7tfuq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B8EC4CEF7;
-	Mon, 23 Mar 2026 15:09:15 +0000 (UTC)
+	 MIME-Version; b=GbuYyCeuh5d3Lcv7tbAhu8sPj2NEmPdiDtaAIbmFXRLZeb7pB6eKhybikk0S0J1ZZ3xI6y2zSUei80CCVJxs9cALbmJZKTVldczNgTheEv1bsCTLq0pGTkYb1rx92KcUKwHI3ceKsMhP6keszFYLD7sRuX+bASRMStIycTFxsA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMUNzdZY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9C1C4CEF7;
+	Mon, 23 Mar 2026 14:42:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278555;
-	bh=s4G7e3FuKDedSA/gWxQDDrKyWxzgsj1HTRXETxAIs8I=;
+	s=korg; t=1774276961;
+	bh=0Sr4IWWftD+OBk7OCn6s8qHMVbXKDd9Pt8h+Rriid5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gD7tfuq6cSMM6Bl/rBNLL+xDF/zQzrAdypsCVFH+TDsmfOb/OKx5U0V/Mwb63Yzqn
-	 Di/nnHE2JbLdHbBn/Z47dsjhq2zdFYrqiKndneO1hKwdFqikfEOszpcosj8b0zKWpO
-	 iVEGi98sZ8/mOiwqhM2/RHzp26J8/2Bsu5tpyJrY=
+	b=RMUNzdZYGaSSEfxmLmQkIrFLEFk4bwZ9MdLYUIxaB6XimKBZPeP0DEX94g4mG+Fyw
+	 ZQs0DfYEzV6ITMLShIph3716nHUY98k5ISWzV4YWKVEtn0HdIuFgtXAUReGxkf3zZR
+	 OZKkyV6zHhLPewl+DHoacdgkgWpMWRb6p/gYOlso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Bukte <rahul.bukte@sony.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sohil Mehta <sohil.mehta@intel.com>
-Subject: [PATCH 6.6 345/567] x86/apic: Disable x2apic on resume if the kernel expects so
+	Quanyang Wang <quanyang.wang@windriver.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 269/460] net: macb: Shuffle the tx ring before enabling tx
 Date: Mon, 23 Mar 2026 14:44:25 +0100
-Message-ID: <20260323134542.370798311@linuxfoundation.org>
+Message-ID: <20260323134533.099008512@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,116 +71,217 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229258-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228728-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,windriver.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 57D8A2F68F0
+X-Rspamd-Queue-Id: 8EEA02F56D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
+[ Upstream commit 881a0263d502e1a93ebc13a78254e9ad19520232 ]
 
-When resuming from s2ram, firmware may re-enable x2apic mode, which may have
-been disabled by the kernel during boot either because it doesn't support IRQ
-remapping or for other reasons. This causes the kernel to continue using the
-xapic interface, while the hardware is in x2apic mode, which causes hangs.
-This happens on defconfig + bare metal + s2ram.
+Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
+the rootfs may take an extended time to recover after a suspend.
+Upon investigation, it was determined that the issue originates from a
+problem in the macb driver.
 
-Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
-disabled, i.e. when x2apic_mode = 0.
+According to the Zynq UltraScale TRM [1], when transmit is disabled,
+the transmit buffer queue pointer resets to point to the address
+specified by the transmit buffer queue base address register.
 
-The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
-pre-sleep configuration or initial boot configuration for each CPU, including
-MSR state:
+In the current implementation, the code merely resets `queue->tx_head`
+and `queue->tx_tail` to '0'. This approach presents several issues:
 
-  When executing from the power-on reset vector as a result of waking from an
-  S2 or S3 sleep state, the platform firmware performs only the hardware
-  initialization required to restore the system to either the state the
-  platform was in prior to the initial operating system boot, or to the
-  pre-sleep configuration state. In multiprocessor systems, non-boot
-  processors should be placed in the same state as prior to the initial
-  operating system boot.
+- Packets already queued in the tx ring are silently lost,
+  leading to memory leaks since the associated skbs cannot be released.
 
-  (further ahead)
+- Concurrent write access to `queue->tx_head` and `queue->tx_tail` may
+  occur from `macb_tx_poll()` or `macb_start_xmit()` when these values
+  are reset to '0'.
 
-  If this is an S2 or S3 wake, then the platform runtime firmware restores
-  minimum context of the system before jumping to the waking vector. This
-  includes:
+- The transmission may become stuck on a packet that has already been sent
+  out, with its 'TX_USED' bit set, but has not yet been processed. However,
+  due to the manipulation of 'queue->tx_head' and 'queue->tx_tail',
+  `macb_tx_poll()` incorrectly assumes there are no packets to handle
+  because `queue->tx_head == queue->tx_tail`. This issue is only resolved
+  when a new packet is placed at this position. This is the root cause of
+  the prolonged recovery time observed for the NFS root filesystem.
 
-	CPU configuration. Platform runtime firmware restores the pre-sleep
-	configuration or initial boot configuration of each CPU (MSR, MTRR,
-	firmware update, SMBase, and so on). Interrupts must be disabled (for
-	IA-32 processors, disabled by CLI instruction).
+To resolve this issue, shuffle the tx ring and tx skb array so that
+the first unsent packet is positioned at the start of the tx ring.
+Additionally, ensure that updates to `queue->tx_head` and
+`queue->tx_tail` are properly protected with the appropriate lock.
 
-	(and other things)
+[1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
 
-So at least as per the spec, re-enablement of x2apic by the firmware is
-allowed if "x2apic on" is a part of the initial boot configuration.
-
-  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
-
-  [ bp: Massage. ]
-
-Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
-Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
+Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted include block context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/apic.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c |   98 ++++++++++++++++++++++++++++++-
+ 1 file changed, 95 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1931,6 +1931,7 @@ void __init check_x2apic(void)
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -38,6 +38,7 @@
+ #include <linux/ptp_classify.h>
+ #include <linux/reset.h>
+ #include <linux/firmware/xlnx-zynqmp.h>
++#include <linux/gcd.h>
+ #include <linux/inetdevice.h>
+ #include "macb.h"
  
- static inline void try_to_enable_x2apic(int remap_mode) { }
- static inline void __x2apic_enable(void) { }
-+static inline void __x2apic_disable(void) { }
- #endif /* !CONFIG_X86_X2APIC */
+@@ -719,6 +720,97 @@ static void macb_mac_link_down(struct ph
+ 	netif_tx_stop_all_queues(ndev);
+ }
  
- void __init enable_IR_x2apic(void)
-@@ -2652,6 +2653,11 @@ static void lapic_resume(void)
- 	if (x2apic_mode) {
- 		__x2apic_enable();
- 	} else {
-+		if (x2apic_enabled()) {
-+			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
-+			__x2apic_disable();
++/* Use juggling algorithm to left rotate tx ring and tx skb array */
++static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
++{
++	unsigned int head, tail, count, ring_size, desc_size;
++	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
++	struct macb_dma_desc *desc_curr, *desc_next;
++	unsigned int i, cycles, shift, curr, next;
++	struct macb *bp = queue->bp;
++	unsigned char desc[24];
++	unsigned long flags;
++
++	desc_size = macb_dma_desc_get_size(bp);
++
++	if (WARN_ON_ONCE(desc_size > ARRAY_SIZE(desc)))
++		return;
++
++	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
++	head = queue->tx_head;
++	tail = queue->tx_tail;
++	ring_size = bp->tx_ring_size;
++	count = CIRC_CNT(head, tail, ring_size);
++
++	if (!(tail % ring_size))
++		goto unlock;
++
++	if (!count) {
++		queue->tx_head = 0;
++		queue->tx_tail = 0;
++		goto unlock;
++	}
++
++	shift = tail % ring_size;
++	cycles = gcd(ring_size, shift);
++
++	for (i = 0; i < cycles; i++) {
++		memcpy(&desc, macb_tx_desc(queue, i), desc_size);
++		memcpy(&tx_skb, macb_tx_skb(queue, i),
++		       sizeof(struct macb_tx_skb));
++
++		curr = i;
++		next = (curr + shift) % ring_size;
++
++		while (next != i) {
++			desc_curr = macb_tx_desc(queue, curr);
++			desc_next = macb_tx_desc(queue, next);
++
++			memcpy(desc_curr, desc_next, desc_size);
++
++			if (next == ring_size - 1)
++				desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
++			if (curr == ring_size - 1)
++				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
++
++			skb_curr = macb_tx_skb(queue, curr);
++			skb_next = macb_tx_skb(queue, next);
++			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
++
++			curr = next;
++			next = (curr + shift) % ring_size;
 +		}
 +
- 		/*
- 		 * Make sure the APICBASE points to the right address
- 		 *
++		desc_curr = macb_tx_desc(queue, curr);
++		memcpy(desc_curr, &desc, desc_size);
++		if (i == ring_size - 1)
++			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
++		if (curr == ring_size - 1)
++			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
++		memcpy(macb_tx_skb(queue, curr), &tx_skb,
++		       sizeof(struct macb_tx_skb));
++	}
++
++	queue->tx_head = count;
++	queue->tx_tail = 0;
++
++	/* Make descriptor updates visible to hardware */
++	wmb();
++
++unlock:
++	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
++}
++
++/* Rotate the queue so that the tail is at index 0 */
++static void gem_shuffle_tx_rings(struct macb *bp)
++{
++	struct macb_queue *queue;
++	int q;
++
++	for (q = 0, queue = bp->queues; q < bp->num_queues; q++, queue++)
++		gem_shuffle_tx_one_ring(queue);
++}
++
+ static void macb_mac_link_up(struct phylink_config *config,
+ 			     struct phy_device *phy,
+ 			     unsigned int mode, phy_interface_t interface,
+@@ -757,8 +849,6 @@ static void macb_mac_link_up(struct phyl
+ 			ctrl |= MACB_BIT(PAE);
+ 
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+-			queue->tx_head = 0;
+-			queue->tx_tail = 0;
+ 			queue_writel(queue, IER,
+ 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
+ 		}
+@@ -772,8 +862,10 @@ static void macb_mac_link_up(struct phyl
+ 
+ 	spin_unlock_irqrestore(&bp->lock, flags);
+ 
+-	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
++	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
+ 		macb_set_tx_clk(bp, speed);
++		gem_shuffle_tx_rings(bp);
++	}
+ 
+ 	/* Enable Rx and Tx; Enable PTP unicast */
+ 	ctrl = macb_readl(bp, NCR);
 
 
 
