@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228688-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SORUFQpHwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228030-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:34 +0100
+	id WNHUJPlTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228688-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:53:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FE22F389F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:33 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D912F5615
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 04694307339A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DEAA8308BABE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2613A961B;
-	Mon, 23 Mar 2026 13:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A763B0AF1;
+	Mon, 23 Mar 2026 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnR3tlaR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eSzVX67m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E809340298;
-	Mon, 23 Mar 2026 13:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284BE3AF66E;
+	Mon, 23 Mar 2026 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273915; cv=none; b=t4F3N5qfLeAL18uMtajSKwdiajxfApfIDO3IM3qTt8IKO4plg6sDXyPR/eDO7o7YDy0V5Ql7iIW4Qn3EblK+04/ExvchHtRJ8u2WTsEGS6PQcbsnMSLowB7l41s0E6mf4iBMtA/chEntBrOP5bteKjvDx3y0T20VqeleKl6ZoDc=
+	t=1774276860; cv=none; b=IwTYml5S9S/3sBsX2Gv89ynC0LS60LiH8BrmTb1DE/BAdgqWyNpx9Ij46p9CGTVFtN9g5I7IT15mMPzHf9D6zC6QHMacNUW0HQLyCIQC1OBEPjNGtyd9c1PeebFaKnXJHsZD714kyyeOH5/QP4st1zy4GGLSMdKvDqpJFNSRr/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273915; c=relaxed/simple;
-	bh=CLYtgUJ4aaAnfa3phsISxPxovvL3yyhj+u8x9pDQ9SQ=;
+	s=arc-20240116; t=1774276860; c=relaxed/simple;
+	bh=NQme2TxZOZDmQoeyiGNATZmiRHxu1dmBDkwxBO4Wx90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C9HLJgSTVY2vW8zDoeWHox9u3jLkKecCdSwsZPRZnqHrSv7gICPNO33roDgpPZdnnia3sjG0KT3yZZ6cQVohXBhe7gQys5+EjNkOc2EPqYYvu/6Gu2SOkfMMmwflh+dq9GvCsbuvBMxuXP/4qpDq1/qMu/nHB5cRDCePVeMBn5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnR3tlaR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C884FC4CEF7;
-	Mon, 23 Mar 2026 13:51:54 +0000 (UTC)
+	 MIME-Version; b=g2lVa7VCbwue6LbaNcKacdnGAB+AvILRiUnGJF1ibIom/4xLGj6d0Hq2w9NPKJPl5cjA8g0hLAsK0WNK9bRvg9tiHV0EP5KE7BpRKUFEUaceASumiBA7VIlVbXVg56yICiXyuIr7B+u8sfGqkmzu25kPcFcODmXLSBAXVrcBuRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eSzVX67m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85D0C2BCB1;
+	Mon, 23 Mar 2026 14:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273915;
-	bh=CLYtgUJ4aaAnfa3phsISxPxovvL3yyhj+u8x9pDQ9SQ=;
+	s=korg; t=1774276860;
+	bh=NQme2TxZOZDmQoeyiGNATZmiRHxu1dmBDkwxBO4Wx90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qnR3tlaRD9zjtrpJP5tIi5/zxI8g8JsHFfuVUeUc2SxQtvkiR3AcFyFecK076WQpT
-	 Dkaz0Brteh5Y7Tu7YgWilp+zvzHSDx3bUKi2/Vukn05AJf5Yp7xJeo2zIi1h1bKItu
-	 yNShS1ruOoCNWdHvXgLVaLmY/MlIwvr0bSJKyQSY=
+	b=eSzVX67mE6LFUhtFu0PIG1f4ZZDGC0bjREgOljBdQOlLLRGPyBWlABvB4AhRUC84V
+	 L8XX/VU/X1Z19H9BEPhMdOkVKvdmnvBpiHg7SuFeyNzOfh1NWy4iVIqcS7DkL4xmoE
+	 +gI4z3qxA+TxuBmygW0Q3riagblvHZl1cCoyEwo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.19 049/220] mtd: spi-nor: Fix RDCR controller capability core check
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Eric Hu <eric.hu@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 230/460] perf/x86/intel/uncore: Support more units on Granite Rapids
 Date: Mon, 23 Mar 2026 14:43:46 +0100
-Message-ID: <20260323134506.138186567@linuxfoundation.org>
+Message-ID: <20260323134532.149497096@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +69,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228688-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228030-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bootlin.com:email]
-X-Rspamd-Queue-Id: 82FE22F389F
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C6D912F5615
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-commit ac512cd351f7e4ab4569f6a52c116f4ab3a239cc upstream.
+[ Upstream commit 6d642735cdb6cdb814d2b6c81652caa53ce04842 ]
 
-Commit 5008c3ec3f89 ("mtd: spi-nor: core: Check read CR support") adds a
-controller check to make sure the core will not use CR reads on
-controllers not supporting them. The approach is valid but the fix is
-incorrect. Unfortunately, the author could not catch it, because the
-expected behavior was met. The patch indeed drops the RDCR capability,
-but it does it for all controllers!
+The same CXL PMONs support is also avaiable on GNR. Apply
+spr_uncore_cxlcm and spr_uncore_cxldp to GNR as well.
 
-The issue comes from the use of spi_nor_spimem_check_op() which is an
-internal helper dedicated to check read/write operations only, despite
-its generic name.
+The other units were broken on early HW samples, so they were ignored in
+the early enabling patch. The issue has been fixed and verified on the
+later production HW. Add UPI, B2UPI, B2HOT, PCIEX16 and PCIEX8 for GNR.
 
-This helper looks for the biggest number of address bytes that can be
-used for a page operation and tries 4 then 3. It then calls the usual
-spi-mem helpers to do the checks. These will always fail because there
-is now an inconsistency: the address cycles are forced to 4 (then 3)
-bytes, but the bus width during the address cycles rightfully remains
-0. There is a non-zero address length but a zero address bus width,
-which is an invalid combination.
-
-The correct check in this case is to directly call spi_mem_supports_op()
-which doesn't messes up with the operation content.
-
-Fixes: 5008c3ec3f89 ("mtd: spi-nor: core: Check read CR support")
-Cc: stable@vger.kernel.org
-Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Acked-by: Takahiro Kuwano <takahiro.kuwano@infineon.com>
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Eric Hu <eric.hu@intel.com>
+Link: https://lkml.kernel.org/r/20250108143017.1793781-2-kan.liang@linux.intel.com
+Stable-dep-of: 6a8a48644c4b ("perf/x86/intel/uncore: Add per-scheduler IMC CAS count events")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/spi-nor/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/uncore_snbep.c |   48 +++++++++++++++++++++++------------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
-index 8ffeb41c3e08..13201908a69f 100644
---- a/drivers/mtd/spi-nor/core.c
-+++ b/drivers/mtd/spi-nor/core.c
-@@ -2466,7 +2466,7 @@ spi_nor_spimem_adjust_hwcaps(struct spi_nor *nor, u32 *hwcaps)
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6597,17 +6597,8 @@ void spr_uncore_mmio_init(void)
+ /* GNR uncore support */
  
- 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
+ #define UNCORE_GNR_NUM_UNCORE_TYPES	23
+-#define UNCORE_GNR_TYPE_15		15
+-#define UNCORE_GNR_B2UPI		18
+-#define UNCORE_GNR_TYPE_21		21
+-#define UNCORE_GNR_TYPE_22		22
  
--		if (spi_nor_spimem_check_op(nor, &op))
-+		if (!spi_mem_supports_op(nor->spimem, &op))
- 			nor->flags |= SNOR_F_NO_READ_CR;
- 	}
- }
--- 
-2.53.0
-
+ int gnr_uncore_units_ignore[] = {
+-	UNCORE_SPR_UPI,
+-	UNCORE_GNR_TYPE_15,
+-	UNCORE_GNR_B2UPI,
+-	UNCORE_GNR_TYPE_21,
+-	UNCORE_GNR_TYPE_22,
+ 	UNCORE_IGNORE_END
+ };
+ 
+@@ -6616,6 +6607,31 @@ static struct intel_uncore_type gnr_unco
+ 	.attr_update		= uncore_alias_groups,
+ };
+ 
++static struct intel_uncore_type gnr_uncore_pciex8 = {
++	SPR_UNCORE_PCI_COMMON_FORMAT(),
++	.name			= "pciex8",
++};
++
++static struct intel_uncore_type gnr_uncore_pciex16 = {
++	SPR_UNCORE_PCI_COMMON_FORMAT(),
++	.name			= "pciex16",
++};
++
++static struct intel_uncore_type gnr_uncore_upi = {
++	SPR_UNCORE_PCI_COMMON_FORMAT(),
++	.name			= "upi",
++};
++
++static struct intel_uncore_type gnr_uncore_b2upi = {
++	SPR_UNCORE_PCI_COMMON_FORMAT(),
++	.name			= "b2upi",
++};
++
++static struct intel_uncore_type gnr_uncore_b2hot = {
++	.name			= "b2hot",
++	.attr_update		= uncore_alias_groups,
++};
++
+ static struct intel_uncore_type gnr_uncore_b2cmi = {
+ 	SPR_UNCORE_PCI_COMMON_FORMAT(),
+ 	.name			= "b2cmi",
+@@ -6640,21 +6656,21 @@ static struct intel_uncore_type *gnr_unc
+ 	&gnr_uncore_ubox,
+ 	&spr_uncore_imc,
+ 	NULL,
++	&gnr_uncore_upi,
+ 	NULL,
+ 	NULL,
+ 	NULL,
++	&spr_uncore_cxlcm,
++	&spr_uncore_cxldp,
+ 	NULL,
+-	NULL,
+-	NULL,
+-	NULL,
+-	NULL,
++	&gnr_uncore_b2hot,
+ 	&gnr_uncore_b2cmi,
+ 	&gnr_uncore_b2cxl,
+-	NULL,
++	&gnr_uncore_b2upi,
+ 	NULL,
+ 	&gnr_uncore_mdf_sbo,
+-	NULL,
+-	NULL,
++	&gnr_uncore_pciex16,
++	&gnr_uncore_pciex8,
+ };
+ 
+ static struct freerunning_counters gnr_iio_freerunning[] = {
 
 
 
