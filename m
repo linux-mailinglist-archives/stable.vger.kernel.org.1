@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UPfRNhpbwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229212-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:10 +0100
+	id 8Kl5KFNmwWlQSwQAu9opvQ
+	(envelope-from <stable+bounces-228682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B3752F637A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2806A2F7B83
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88835304F23D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E04D831BFD56
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A0927A107;
-	Mon, 23 Mar 2026 15:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F323AF65F;
+	Mon, 23 Mar 2026 14:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dea7QuTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf4GlYgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04AE27E05E;
-	Mon, 23 Mar 2026 15:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7E83B0AEF;
+	Mon, 23 Mar 2026 14:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278410; cv=none; b=Lakve7HeaQATqfFTmIyGBRCsETNHlMM6Ad/ZAi58KGBf1Opt5rackejFVx0jua7+0yYGvubH8aTClrGsYX0kbCSgmCbI8BvAQUpBobkIQFn6fTRTtOSAtd0LTxMd9wvKS3ZBU4LWz6evVqj+m7AGNIlBX9dYjhFPc0r3W5sUF0s=
+	t=1774276844; cv=none; b=S3NDw7FrPc/f+OOzqoe8neXSs1gDWxEc0zjNeinb+LJPqS4TShspoQeilvkQCEPwPvANefnvnxacFmF80tRwAJsRvTcmvBqUZc8HkTJvemjKDcQPRCNaTBiRxzS7wQscRmkz2Ciplnah96D0Qp6mClwFBcsHR0TjjsoeC7MD484=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278410; c=relaxed/simple;
-	bh=Im+KkqPfV+aEuoMLdOJ4HFt0T+wXxfhJcqDDUzGBn4U=;
+	s=arc-20240116; t=1774276844; c=relaxed/simple;
+	bh=Cy6kTe8uQC/PW1gIy7TseYylxQkg2Rn5Ql3hReUMOxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DWZgx1RehxyEn9V0nesg7w2MYTcVwDzMhok0tj4uS5ubuNWcYmtd7Hh/xq+zGw0EaA2r7hYe9TRDbEvR9U5LveIdmsl/7FI63FrphbQqWiLBVsB+CgfE0D3vizGHjKUZlOzeDPwKWfsaLVbVxPCvrA34+l8+s9EPvqp7OjdlrMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dea7QuTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446B3C4CEF7;
-	Mon, 23 Mar 2026 15:06:50 +0000 (UTC)
+	 MIME-Version; b=shQxJMtky93pWAHYUKV5tGpcSkHv95za+QHNu32X45ng3oqnX385OK0gaxjCVzQ8+yHT3b+Wptyw7+EJHjIarJOh3SXyzhDBtibwgYRZMALJ8DDVRvYTWv/q040xuN10Msm7A8aq4qY69W7myyVrH5tyQk6R5EqcPN5rZUMptNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf4GlYgp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2B9C2BCB1;
+	Mon, 23 Mar 2026 14:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278410;
-	bh=Im+KkqPfV+aEuoMLdOJ4HFt0T+wXxfhJcqDDUzGBn4U=;
+	s=korg; t=1774276844;
+	bh=Cy6kTe8uQC/PW1gIy7TseYylxQkg2Rn5Ql3hReUMOxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dea7QuTdNxzwCvfPpEg4fMxP5MGiq9utcoFbB3THR/CP7Db2vhoVxrLFDEdM4PxYf
-	 cE8zXUFqAgAQgLwAI82+iuxZWWlpQhVI9FMr8zLWsO+fQWiOtJTmeGaGdFG5CxXpTL
-	 0lFtiCVrEpVLUkOCJZCZDlU+2qJ+v2ASQTVuStNg=
+	b=Lf4GlYgph+ty2kPQOb43azYe5LmEW+2G2tTFRh3uJsQrXScaNlQWeMcpFH/UrvuYW
+	 t/f1Zf02j9pPldeWtcNQcBFLD2dnFFnyjd3ZrsgV6Mycg2+/HRB++/YlTFoTgYZziR
+	 XsjN/oF4qLfJSKDRLXz00a0r4olv1dzTmw6nEeq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Khairul Anuar Romli" <khairul.anuar.romli@altera.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 299/567] ceph: fix i_nlink underrun during async unlink
-Date: Mon, 23 Mar 2026 14:43:39 +0100
-Message-ID: <20260323134541.216396588@linuxfoundation.org>
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Niravkumar L Rabara <nirav.rabara@altera.com>,
+	Mark Brown <broonie@kernel.org>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 6.12 224/460] spi: cadence-quadspi: Implement refcount to handle unbind during busy
+Date: Mon, 23 Mar 2026 14:43:40 +0100
+Message-ID: <20260323134532.000418288@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,155 +68,155 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229212-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,altera.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-228682-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6B3752F637A
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,altera.com:email]
+X-Rspamd-Queue-Id: 2806A2F7B83
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
 
-commit ce0123cbb4a40a2f1bbb815f292b26e96088639f upstream.
+[ Upstream commit 7446284023e8ef694fb392348185349c773eefb3 ]
 
-During async unlink, we drop the `i_nlink` counter before we receive
-the completion (that will eventually update the `i_nlink`) because "we
-assume that the unlink will succeed".  That is not a bad idea, but it
-races against deletions by other clients (or against the completion of
-our own unlink) and can lead to an underrun which emits a WARNING like
-this one:
+driver support indirect read and indirect write operation with
+assumption no force device removal(unbind) operation. However
+force device removal(removal) is still available to root superuser.
 
- WARNING: CPU: 85 PID: 25093 at fs/inode.c:407 drop_nlink+0x50/0x68
- Modules linked in:
- CPU: 85 UID: 3221252029 PID: 25093 Comm: php-cgi8.1 Not tainted 6.14.11-cm4all1-ampere #655
- Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
- pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
- pc : drop_nlink+0x50/0x68
- lr : ceph_unlink+0x6c4/0x720
- sp : ffff80012173bc90
- x29: ffff80012173bc90 x28: ffff086d0a45aaf8 x27: ffff0871d0eb5680
- x26: ffff087f2a64a718 x25: 0000020000000180 x24: 0000000061c88647
- x23: 0000000000000002 x22: ffff07ff9236d800 x21: 0000000000001203
- x20: ffff07ff9237b000 x19: ffff088b8296afc0 x18: 00000000f3c93365
- x17: 0000000000070000 x16: ffff08faffcbdfe8 x15: ffff08faffcbdfec
- x14: 0000000000000000 x13: 45445f65645f3037 x12: 34385f6369706f74
- x11: 0000a2653104bb20 x10: ffffd85f26d73290 x9 : ffffd85f25664f94
- x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000002
- x5 : 0000000000000081 x4 : 0000000000000481 x3 : 0000000000000000
- x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff08727d3f91e8
- Call trace:
-  drop_nlink+0x50/0x68 (P)
-  vfs_unlink+0xb0/0x2e8
-  do_unlinkat+0x204/0x288
-  __arm64_sys_unlinkat+0x3c/0x80
-  invoke_syscall.constprop.0+0x54/0xe8
-  do_el0_svc+0xa4/0xc8
-  el0_svc+0x18/0x58
-  el0t_64_sync_handler+0x104/0x130
-  el0t_64_sync+0x154/0x158
+Unbinding driver during operation causes kernel crash. This changes
+ensure driver able to handle such operation for indirect read and
+indirect write by implementing refcount to track attached devices
+to the controller and gracefully wait and until attached devices
+remove operation completed before proceed with removal operation.
 
-In ceph_unlink(), a call to ceph_mdsc_submit_request() submits the
-CEPH_MDS_OP_UNLINK to the MDS, but does not wait for completion.
-
-Meanwhile, between this call and the following drop_nlink() call, a
-worker thread may process a CEPH_CAP_OP_IMPORT, CEPH_CAP_OP_GRANT or
-just a CEPH_MSG_CLIENT_REPLY (the latter of which could be our own
-completion).  These will lead to a set_nlink() call, updating the
-`i_nlink` counter to the value received from the MDS.  If that new
-`i_nlink` value happens to be zero, it is illegal to decrement it
-further.  But that is exactly what ceph_unlink() will do then.
-
-The WARNING can be reproduced this way:
-
-1. Force async unlink; only the async code path is affected.  Having
-   no real clue about Ceph internals, I was unable to find out why the
-   MDS wouldn't give me the "Fxr" capabilities, so I patched
-   get_caps_for_async_unlink() to always succeed.
-
-   (Note that the WARNING dump above was found on an unpatched kernel,
-   without this kludge - this is not a theoretical bug.)
-
-2. Add a sleep call after ceph_mdsc_submit_request() so the unlink
-   completion gets handled by a worker thread before drop_nlink() is
-   called.  This guarantees that the `i_nlink` is already zero before
-   drop_nlink() runs.
-
-The solution is to skip the counter decrement when it is already zero,
-but doing so without a lock is still racy (TOCTOU).  Since
-ceph_fill_inode() and handle_cap_grant() both hold the
-`ceph_inode_info.i_ceph_lock` spinlock while set_nlink() runs, this
-seems like the proper lock to protect the `i_nlink` updates.
-
-I found prior art in NFS and SMB (using `inode.i_lock`) and AFS (using
-`afs_vnode.cb_lock`).  All three have the zero check as well.
-
-Cc: stable@vger.kernel.org
-Fixes: 2ccb45462aea ("ceph: perform asynchronous unlink if we have sufficient caps")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Khairul Anuar Romli <khairul.anuar.romli@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Reviewed-by: Niravkumar L Rabara <nirav.rabara@altera.com>
+Link: https://patch.msgid.link/8704fd6bd2ff4d37bba4a0eacf5eba3ba001079e.1756168074.git.khairul.anuar.romli@altera.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/dir.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c |   33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -1292,6 +1292,7 @@ static int ceph_unlink(struct inode *dir
- 	struct ceph_fs_client *fsc = ceph_sb_to_fs_client(dir->i_sb);
- 	struct ceph_mds_client *mdsc = fsc->mdsc;
- 	struct inode *inode = d_inode(dentry);
-+	struct ceph_inode_info *ci = ceph_inode(inode);
- 	struct ceph_mds_request *req;
- 	bool try_async = ceph_test_mount_opt(fsc, ASYNC_DIROPS);
- 	int err = -EROFS;
-@@ -1349,7 +1350,19 @@ retry:
- 			 * We have enough caps, so we assume that the unlink
- 			 * will succeed. Fix up the target inode and dcache.
- 			 */
--			drop_nlink(inode);
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -105,6 +105,8 @@ struct cqspi_st {
+ 
+ 	bool			is_jh7110; /* Flag for StarFive JH7110 SoC */
+ 	bool			disable_stig_mode;
++	refcount_t		refcount;
++	refcount_t		inflight_ops;
+ 
+ 	const struct cqspi_driver_platdata *ddata;
+ };
+@@ -731,6 +733,9 @@ static int cqspi_indirect_read_execute(s
+ 	u8 *rxbuf_end = rxbuf + n_rx;
+ 	int ret = 0;
+ 
++	if (!refcount_read(&cqspi->refcount))
++		return -ENODEV;
 +
-+			/*
-+			 * Protect the i_nlink update with i_ceph_lock
-+			 * to precent racing against ceph_fill_inode()
-+			 * handling our completion on a worker thread
-+			 * and don't decrement if i_nlink has already
-+			 * been updated to zero by this completion.
-+			 */
-+			spin_lock(&ci->i_ceph_lock);
-+			if (inode->i_nlink > 0)
-+				drop_nlink(inode);
-+			spin_unlock(&ci->i_ceph_lock);
+ 	writel(from_addr, reg_base + CQSPI_REG_INDIRECTRDSTARTADDR);
+ 	writel(remaining, reg_base + CQSPI_REG_INDIRECTRDBYTES);
+ 
+@@ -1058,6 +1063,9 @@ static int cqspi_indirect_write_execute(
+ 	unsigned int write_bytes;
+ 	int ret;
+ 
++	if (!refcount_read(&cqspi->refcount))
++		return -ENODEV;
 +
- 			d_delete(dentry);
- 		} else {
- 			spin_lock(&fsc->async_unlink_conflict_lock);
+ 	writel(to_addr, reg_base + CQSPI_REG_INDIRECTWRSTARTADDR);
+ 	writel(remaining, reg_base + CQSPI_REG_INDIRECTWRBYTES);
+ 
+@@ -1450,12 +1458,26 @@ static int cqspi_exec_mem_op(struct spi_
+ 	struct cqspi_st *cqspi = spi_controller_get_devdata(mem->spi->controller);
+ 	struct device *dev = &cqspi->pdev->dev;
+ 
++	if (refcount_read(&cqspi->inflight_ops) == 0)
++		return -ENODEV;
++
+ 	ret = pm_runtime_resume_and_get(dev);
+ 	if (ret) {
+ 		dev_err(&mem->spi->dev, "resume failed with %d\n", ret);
+ 		return ret;
+ 	}
+ 
++	if (!refcount_read(&cqspi->refcount))
++		return -EBUSY;
++
++	refcount_inc(&cqspi->inflight_ops);
++
++	if (!refcount_read(&cqspi->refcount)) {
++		if (refcount_read(&cqspi->inflight_ops))
++			refcount_dec(&cqspi->inflight_ops);
++		return -EBUSY;
++	}
++
+ 	ret = cqspi_mem_process(mem, op);
+ 
+ 	pm_runtime_mark_last_busy(dev);
+@@ -1464,6 +1486,9 @@ static int cqspi_exec_mem_op(struct spi_
+ 	if (ret)
+ 		dev_err(&mem->spi->dev, "operation failed with %d\n", ret);
+ 
++	if (refcount_read(&cqspi->inflight_ops) > 1)
++		refcount_dec(&cqspi->inflight_ops);
++
+ 	return ret;
+ }
+ 
+@@ -1916,6 +1941,9 @@ static int cqspi_probe(struct platform_d
+ 		}
+ 	}
+ 
++	refcount_set(&cqspi->refcount, 1);
++	refcount_set(&cqspi->inflight_ops, 1);
++
+ 	ret = devm_request_irq(dev, irq, cqspi_irq_handler, 0,
+ 			       pdev->name, cqspi);
+ 	if (ret) {
+@@ -1978,6 +2006,11 @@ static void cqspi_remove(struct platform
+ {
+ 	struct cqspi_st *cqspi = platform_get_drvdata(pdev);
+ 
++	refcount_set(&cqspi->refcount, 0);
++
++	if (!refcount_dec_and_test(&cqspi->inflight_ops))
++		cqspi_wait_idle(cqspi);
++
+ 	spi_unregister_controller(cqspi->host);
+ 	cqspi_controller_enable(cqspi, 0);
+ 
 
 
 
