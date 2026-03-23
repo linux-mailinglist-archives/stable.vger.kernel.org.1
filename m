@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229846-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDcpMrVIwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228117-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:41 +0100
+	id EMlyJxlzwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229846-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53262F3CB1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1351F2F9737
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9146C300F2B6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9DA993257587
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBD903AE6F7;
-	Mon, 23 Mar 2026 13:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B0E3AF662;
+	Mon, 23 Mar 2026 16:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Rv/TDjc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZH6tDNC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4A33AE18C;
-	Mon, 23 Mar 2026 13:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EF23B9DB7;
+	Mon, 23 Mar 2026 16:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274174; cv=none; b=ax3ed+zR/NROrMXG7SHtqYIC3mJ4wUDf7sMImk3niWxpVWvjym9+LENBIkR+LLNdfe/3Wej92+vN9CMxfm3Kc32r593n5f0LCBMbt7JxomHblmfCJ+IQ6P9S29x/2IpfLw7Jd0TEIJnhw8G8HsfXrQOUiYBNy9NSqTxFIgWGia8=
+	t=1774283023; cv=none; b=seem5jEFNVfyKkAyVVymMmwUasugMjxwNEu69fdMYqn/XRnLKZ7DWwTDhOpL50wQf+DycAQEdL2+HJy6h/+8wKuwKHNckcnO0s0HvaSBr/57v6Bj/a71wbFDRmQ6vCNSjUQkix1wzssZjnh2Tu5A8A4GP6SvvcwTSwoaHGjG0mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274174; c=relaxed/simple;
-	bh=mlKYnV4pGP2gfWPzjQqTLwoeDm6ugKsaY+qZiOgy+HY=;
+	s=arc-20240116; t=1774283023; c=relaxed/simple;
+	bh=rJ/JCxKQFLVXqoCA7uIPUaVnuHnjvCazRLLuNRzvuKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qYIRFfviraM72kXeyZDyNrz4wS3YTE2l3QTs8lkJTjfhr+U4GYkx6R1GF9aNKM85/JXL0w7vjLK3XGcl0gpYC2WrZ769xkb3Q7a/BInWkq32J39Bt6LKePkMrb58CaqGgEaC/d/aHlZ3DcpRGfmXxbYy5Im2UhAXQYyF5zOgazM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Rv/TDjc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852B6C2BC9E;
-	Mon, 23 Mar 2026 13:56:13 +0000 (UTC)
+	 MIME-Version; b=DQoi+9qVPGeeXuPdck7GWqU1GB8dqfyOha9wqJEyD/0qsJyRxCEBP4HfrIAEc++rj/1pt+h6frkTRzeySIjG4YHW1lsMFR4foj3Lt+P8BgaPZXVe97G5j16l9WERu40sOZBx3dA2ZCmUnyrYIx2BQjzWVWEHrnCCWvFTaj8+Q+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZH6tDNC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832C7C4CEF7;
+	Mon, 23 Mar 2026 16:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274173;
-	bh=mlKYnV4pGP2gfWPzjQqTLwoeDm6ugKsaY+qZiOgy+HY=;
+	s=korg; t=1774283022;
+	bh=rJ/JCxKQFLVXqoCA7uIPUaVnuHnjvCazRLLuNRzvuKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Rv/TDjcPXx3XatlLCEDGFWLcRkJzMhd17BXp8QQ5CyvfeOVWnuQyrhboXMLXbxRh
-	 8pYtzhPX+YsHKndeRgxYMPWe/0k/R4xAIjWMQ9vaH0DkdXcLA5+0Puk0KntcJERCmB
-	 sToBH9VQxitybV3kUwGzYArIIEC7XZNBIpSONT+s=
+	b=eZH6tDNC4m+J497uSkFwCrbzVoOMK40ts6NOyVtku1h/PtzpTMl/6v93xaMw8ZQ7+
+	 XYAwGkNRKKEZVzTp+z5UTJeQcQ22fvPCBBYSTsIgJA2LWPLoFHmfqmdYb42NLs9gp1
+	 rssVYSXB/mtLQ7NlXVWxPqrJLNMsBZNua8n3oCEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
-	Florian Westphal <fw@strlen.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 134/220] netfilter: nf_conntrack_sip: fix Content-Length u32 truncation in sip_help_tcp()
+Subject: [PATCH 6.1 329/481] can: gs_usb: gs_can_open(): always configure bitrates before starting device
 Date: Mon, 23 Mar 2026 14:45:11 +0100
-Message-ID: <20260323134508.814584602@linuxfoundation.org>
+Message-ID: <20260323134533.121714472@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,26 +62,25 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228117-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229846-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,72 +88,108 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,strlen.de:email,johannes-moeller.dev:email]
-X-Rspamd-Queue-Id: D53262F3CB1
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1351F2F9737
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Johannes Möller <research@johannes-moeller.dev>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit fbce58e719a17aa215c724473fd5baaa4a8dc57c ]
+[ Upstream commit 2df6162785f31f1bbb598cfc3b08e4efc88f80b6 ]
 
-sip_help_tcp() parses the SIP Content-Length header with
-simple_strtoul(), which returns unsigned long, but stores the result in
-unsigned int clen.  On 64-bit systems, values exceeding UINT_MAX are
-silently truncated before computing the SIP message boundary.
+So far the driver populated the struct can_priv::do_set_bittiming() and
+struct can_priv::fd::do_set_data_bittiming() callbacks.
 
-For example, Content-Length 4294967328 (2^32 + 32) is truncated to 32,
-causing the parser to miscalculate where the current message ends.  The
-loop then treats trailing data in the TCP segment as a second SIP
-message and processes it through the SDP parser.
+Before bringing up the interface, user space has to configure the bitrates.
+With these callbacks the configuration is directly forwarded into the CAN
+hardware. Then the interface can be brought up.
 
-Fix this by changing clen to unsigned long to match the return type of
-simple_strtoul(), and reject Content-Length values that exceed the
-remaining TCP payload length.
+An ifdown-ifup cycle (without changing the bit rates) doesn't re-configure
+the bitrates in the CAN hardware. This leads to a problem with the
+CANable-2.5 [1] firmware, which resets the configured bit rates during
+ifdown.
 
-Fixes: f5b321bd37fb ("netfilter: nf_conntrack_sip: add TCP support")
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+To fix the problem remove both bit timing callbacks and always configure
+the bitrates in the struct net_device_ops::ndo_open() callback.
+
+[1] https://github.com/Elmue/CANable-2.5-firmware-Slcan-and-Candlelight
+
+Cc: stable@vger.kernel.org
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://patch.msgid.link/20260219-gs_usb-always-configure-bitrates-v2-1-671f8ba5b0a5@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+[ adapted to different structure of the struct ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_sip.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_sip.c b/net/netfilter/nf_conntrack_sip.c
-index ca748f8dbff13..4ab5ef71d96db 100644
---- a/net/netfilter/nf_conntrack_sip.c
-+++ b/net/netfilter/nf_conntrack_sip.c
-@@ -1534,11 +1534,12 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -678,9 +678,8 @@ device_detach:
+ 	}
+ }
+ 
+-static int gs_usb_set_bittiming(struct net_device *netdev)
++static int gs_usb_set_bittiming(struct gs_can *dev)
  {
- 	struct tcphdr *th, _tcph;
- 	unsigned int dataoff, datalen;
--	unsigned int matchoff, matchlen, clen;
-+	unsigned int matchoff, matchlen;
- 	unsigned int msglen, origlen;
- 	const char *dptr, *end;
- 	s16 diff, tdiff = 0;
- 	int ret = NF_ACCEPT;
-+	unsigned long clen;
- 	bool term;
+-	struct gs_can *dev = netdev_priv(netdev);
+ 	struct can_bittiming *bt = &dev->can.bittiming;
+ 	struct gs_device_bittiming dbt = {
+ 		.prop_seg = cpu_to_le32(bt->prop_seg),
+@@ -698,9 +697,8 @@ static int gs_usb_set_bittiming(struct n
+ 				    GFP_KERNEL);
+ }
  
- 	if (ctinfo != IP_CT_ESTABLISHED &&
-@@ -1573,6 +1574,9 @@ static int sip_help_tcp(struct sk_buff *skb, unsigned int protoff,
- 		if (dptr + matchoff == end)
- 			break;
+-static int gs_usb_set_data_bittiming(struct net_device *netdev)
++static int gs_usb_set_data_bittiming(struct gs_can *dev)
+ {
+-	struct gs_can *dev = netdev_priv(netdev);
+ 	struct can_bittiming *bt = &dev->can.data_bittiming;
+ 	struct gs_device_bittiming dbt = {
+ 		.prop_seg = cpu_to_le32(bt->prop_seg),
+@@ -961,6 +959,20 @@ static int gs_can_open(struct net_device
+ 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 		flags |= GS_CAN_MODE_HW_TIMESTAMP;
  
-+		if (clen > datalen)
-+			break;
++	rc = gs_usb_set_bittiming(dev);
++	if (rc) {
++		netdev_err(netdev, "failed to set bittiming: %pe\n", ERR_PTR(rc));
++		goto out_usb_kill_anchored_urbs;
++	}
 +
- 		term = false;
- 		for (; end + strlen("\r\n\r\n") <= dptr + datalen; end++) {
- 			if (end[0] == '\r' && end[1] == '\n' &&
--- 
-2.51.0
-
++	if (ctrlmode & CAN_CTRLMODE_FD) {
++		rc = gs_usb_set_data_bittiming(dev);
++		if (rc) {
++			netdev_err(netdev, "failed to set data bittiming: %pe\n", ERR_PTR(rc));
++			goto out_usb_kill_anchored_urbs;
++		}
++	}
++
+ 	/* start polling timestamp */
+ 	if (dev->feature & GS_CAN_FEATURE_HW_TIMESTAMP)
+ 		gs_usb_timestamp_init(dev);
+@@ -1231,7 +1243,6 @@ static struct gs_can *gs_make_candev(uns
+ 	dev->can.state = CAN_STATE_STOPPED;
+ 	dev->can.clock.freq = le32_to_cpu(bt_const.fclk_can);
+ 	dev->can.bittiming_const = &dev->bt_const;
+-	dev->can.do_set_bittiming = gs_usb_set_bittiming;
+ 
+ 	dev->can.ctrlmode_supported = CAN_CTRLMODE_CC_LEN8_DLC;
+ 
+@@ -1255,7 +1266,6 @@ static struct gs_can *gs_make_candev(uns
+ 		 * GS_CAN_FEATURE_BT_CONST_EXT is set.
+ 		 */
+ 		dev->can.data_bittiming_const = &dev->bt_const;
+-		dev->can.do_set_data_bittiming = gs_usb_set_data_bittiming;
+ 	}
+ 
+ 	if (feature & GS_CAN_FEATURE_TERMINATION) {
 
 
 
