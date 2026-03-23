@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229697-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAYuETBPwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:20 +0100
+	id 8GZfCChuwWnVTAQAu9opvQ
+	(envelope-from <stable+bounces-229697-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:28 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F14E42F4B79
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C00FB2F8BEA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B0AD530B7629
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC8C2307B42E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F6B39A055;
-	Mon, 23 Mar 2026 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D8B3C0604;
+	Mon, 23 Mar 2026 16:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2R7JAYZl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boXbiW7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FBC1A6828;
-	Mon, 23 Mar 2026 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A7A3BF698;
+	Mon, 23 Mar 2026 16:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275659; cv=none; b=CGnVKPj33jwmV0ongFNnffVBm67WdNp6UaQE0bK52FfeNkUis2/Bnm+6hbvzpseHDbg9r4LMHuz4qSXs2svJdhhev/W3OmxyjDiOJXghGvohh5KJUpWweL/KQRHqHNR9TUwwVlfAwBtTfgfSBlpMjoVTcx9ZaTOSkjz0S+/TjgY=
+	t=1774282623; cv=none; b=H26Xm05r2NHpbc15Cf7Zx2L+/gUm6PY2mdKFdaHtSIh1ouJSAOsuG+/zlp4tezHN0d1FvSLbKPROzIdNrt2gGAhtmEGmRLnZ3y+UPTKRwjWe2duAgb7c6w0eya4fHfFV/hG+u5jihhx87rn5/FtSUCnLmBj+Ja4vQrogrDqEU/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275659; c=relaxed/simple;
-	bh=+4dIMjOyEVo/YhZiR5KYFKeLvsI2aAOgzqctAy8TRS8=;
+	s=arc-20240116; t=1774282623; c=relaxed/simple;
+	bh=7WwfUp59ZieEOhEgWiY2Fp2IRwioMM0h54nwcI83kbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drZmQYoZKo9RPu+StO6mqa1YsGODxJ+FLS1ww+esnb+fkvylAPowYp2EAeM2YCo5MAwvEZM6n0awsLsUbb+5jZtDQKj4EzIAME6LYVKy3PgzpYXOZ/NhivKXnquR8FW1BAFQy/8LhyOqPD4NjLmI60tpItS2eO0dPc6UgwM5MdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2R7JAYZl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C543CC4CEF7;
-	Mon, 23 Mar 2026 14:20:58 +0000 (UTC)
+	 MIME-Version; b=uYSVI0UUr5odoPYtEg+7taOK5SyBW2HEZzMHhzJFfL3ETVdgein3nP5TfX6GMMzPX3dJ2MNDi3AqYBeVKT44Qv5RxK8EHHzkt8JJ+6snQ5rjh95jVu23Rw4zFQxTAupJOANvBEhbeFf37/5VSm0reByOkxl0OGtLoBTAsdra2dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boXbiW7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7821C4CEF7;
+	Mon, 23 Mar 2026 16:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275659;
-	bh=+4dIMjOyEVo/YhZiR5KYFKeLvsI2aAOgzqctAy8TRS8=;
+	s=korg; t=1774282623;
+	bh=7WwfUp59ZieEOhEgWiY2Fp2IRwioMM0h54nwcI83kbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2R7JAYZlQXfhkImFtpQyvmPSgLoaLfpNcJAgXWuOsWUyTstAVZ/fRuXI+DkGfyVwL
-	 dL1g97CFJc0uryaqCSNAauCajawtqmBD0gGsgEsGT/ElljUoPs+8zBRjha+SspUuYq
-	 80mRVaULDpR3u0OUhqQwzdaSJQfwn1nc9OEvjqAI=
+	b=boXbiW7oEHPB/lb9vZtjuXzS3dPUbNJILGHJb8bteUhbTWk0kpr5OJWfVkXEonAkR
+	 Lbu1DIOKltoqlAjandzT9VHS2xilCAV35VEtr4PhhqeA0YM8YxP3f78LgTErVeQazO
+	 55odOSspCxTSiqj+O3tAaHcx2IdJEvPw4VFcS0nc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Zhang <zhangjian.3032@bytedance.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 174/460] net: ncsi: fix skb leak in error paths
+	Ben Dooks <ben.dooks@codethink.co.uk>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 188/481] ACPI: OSL: fix __iomem type on return from acpi_os_map_generic_address()
 Date: Mon, 23 Mar 2026 14:42:50 +0100
-Message-ID: <20260323134530.810193294@linuxfoundation.org>
+Message-ID: <20260323134529.780941499@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,14 +74,14 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228631-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229697-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,94 +90,54 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F14E42F4B79
+X-Rspamd-Queue-Id: C00FB2F8BEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Zhang <zhangjian.3032@bytedance.com>
+From: Ben Dooks <ben.dooks@codethink.co.uk>
 
-commit 5c3398a54266541610c8d0a7082e654e9ff3e259 upstream.
+[ Upstream commit 393815f57651101f1590632092986d1d5a3a41bd ]
 
-Early return paths in NCSI RX and AEN handlers fail to release
-the received skb, resulting in a memory leak.
+The pointer returned from acpi_os_map_generic_address() is
+tagged with __iomem, so make the rv it is returned to also
+of void __iomem * type.
 
-Specifically, ncsi_aen_handler() returns on invalid AEN packets
-without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
-when failing to resolve the NCSI device, response handler, or
-request, leaving the skb unfreed.
+Fixes the following sparse warning:
 
-CC: stable@vger.kernel.org
-Fixes: 7a82ecf4cfb8 ("net/ncsi: NCSI AEN packet handler")
-Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
-Link: https://patch.msgid.link/20260305060656.3357250-1-zhangjian.3032@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/acpi/osl.c:1686:20: warning: incorrect type in assignment (different address spaces)
+drivers/acpi/osl.c:1686:20:    expected void *rv
+drivers/acpi/osl.c:1686:20:    got void [noderef] __iomem *
+
+Fixes: 6915564dc5a8 ("ACPI: OSL: Change the type of acpi_os_map_generic_address() return value")
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+[ rjw: Subject tweak, added Fixes tag ]
+Link: https://patch.msgid.link/20260311105835.463030-1-ben.dooks@codethink.co.uk
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/ncsi-aen.c |    3 ++-
- net/ncsi/ncsi-rsp.c |   16 ++++++++++++----
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ drivers/acpi/osl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_pri
- 	if (!nah) {
- 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
- 			    h->type);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto out;
- 	}
+diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
+index 3269a888fb7a9..d147c27bc6455 100644
+--- a/drivers/acpi/osl.c
++++ b/drivers/acpi/osl.c
+@@ -1656,7 +1656,7 @@ acpi_status __init acpi_os_initialize(void)
+ 		 * Use acpi_os_map_generic_address to pre-map the reset
+ 		 * register if it's in system memory.
+ 		 */
+-		void *rv;
++		void __iomem *rv;
  
- 	ret = ncsi_validate_aen_pkt(h, nah->payload);
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -1176,8 +1176,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	/* Find the NCSI device */
- 	nd = ncsi_find_dev(orig_dev);
- 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
--	if (!ndp)
--		return -ENODEV;
-+	if (!ndp) {
-+		ret = -ENODEV;
-+		goto err_free_skb;
-+	}
- 
- 	/* Check if it is AEN packet */
- 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
-@@ -1199,7 +1201,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	if (!nrh) {
- 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
- 			   hdr->type);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto err_free_skb;
- 	}
- 
- 	/* Associate with the request */
-@@ -1207,7 +1210,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
- 	nr = &ndp->requests[hdr->id];
- 	if (!nr->used) {
- 		spin_unlock_irqrestore(&ndp->lock, flags);
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto err_free_skb;
- 	}
- 
- 	nr->rsp = skb;
-@@ -1261,4 +1265,8 @@ out_netlink:
- out:
- 	ncsi_free_request(nr);
- 	return ret;
-+
-+err_free_skb:
-+	kfree_skb(skb);
-+	return ret;
- }
+ 		rv = acpi_os_map_generic_address(&acpi_gbl_FADT.reset_register);
+ 		pr_debug("%s: Reset register mapping %s\n", __func__,
+-- 
+2.51.0
+
 
 
 
