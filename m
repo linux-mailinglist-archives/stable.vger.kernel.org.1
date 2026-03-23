@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229685-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uL5oAsxUwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228701-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:16 +0100
+	id uG8qEhlswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229685-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B092F5810
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EFC2F86D8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5536E305E20B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8FE631130DD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE96B3ACA62;
-	Mon, 23 Mar 2026 14:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20E53BED39;
+	Mon, 23 Mar 2026 16:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8iOYAz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUENm6dZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827CA1A6808;
-	Mon, 23 Mar 2026 14:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1B33BED1B;
+	Mon, 23 Mar 2026 16:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276891; cv=none; b=mLbe82w8a4UaB5+EzsbgkkT626VchU7BDQfrId+ZRqtk0ivN4mh5MWYRvtBrqhtTsN2/ecW+vLHikVIshF7yCac3p5Vf+m5E6QJOevNktLvUa4JTlathZg6HeSHO5l7A7/M2c0qi9bysDVRyM6aE67Xxxyt693jWjVCsqBcGsJI=
+	t=1774282590; cv=none; b=YJd8Ix9z7z6Nyg0kIlrVDiGs35tdfuSXaQGd+9eQIz4BdMf218Z9xOSSwfEJbnMK0ts9ckJ+4xtjgLtmEF8rQ0buSPoqB5eqVc7vi6QiDqRUJZbRXZCle9CNH9bM0LsQYVDubp1GH8Tbtt+Z04IxWXZZFZGiaUYGHYO3N6Qo6mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276891; c=relaxed/simple;
-	bh=urxmdCAmaZK5h+nG8wTJ0JyCuvYdJk+M54pAci/9CXU=;
+	s=arc-20240116; t=1774282590; c=relaxed/simple;
+	bh=VAVbn3Yyy8UYw1sH4DhwQfgyU3HnbZ/LkydWqjHj7Jc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MT7kSc1G9hWt5VipuR8d77xtWzvcAU7jtmZPc0efuJNDVirrxqJSTQuuvjamfZuZxUgKT6eaj6EkACW2HUfvnzHVofa2p9WPRNlIOCvMwFHssLpw1jaoMB+K0mUTcWGMdUcxn7Qn47nT4CRQNPEa7194vtnTYHf0quXV7tksHAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8iOYAz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC48C4CEF7;
-	Mon, 23 Mar 2026 14:41:30 +0000 (UTC)
+	 MIME-Version; b=tJST4CxRDly90pP1JWLLbnQjWNwpbrp/3lcwivuTKKm9XUzHS+9wckwgZAeGNUy9/98t5VqZmcLnUopJR+hFVxRewpAu0Lydpy76go+u9TZMG4CbCcYdleV3agKTsYBQkVv8qs5cejK6khHVeJwdUt5AVN9tp2kwMnluO1Elu+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUENm6dZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBA9C4CEF7;
+	Mon, 23 Mar 2026 16:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276891;
-	bh=urxmdCAmaZK5h+nG8wTJ0JyCuvYdJk+M54pAci/9CXU=;
+	s=korg; t=1774282590;
+	bh=VAVbn3Yyy8UYw1sH4DhwQfgyU3HnbZ/LkydWqjHj7Jc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C8iOYAz2+WFfSNtJS+PdYdRzzDkpJ3X8txNQGWT0aVXxSYsbUGv4sttxakYSVQx6n
-	 ogT6peBgoAi4Hn6pCwbnz4JHcVuTqBT4YI5XXiwRScwNIh8Vm2TFRemBpuvmonKT88
-	 /Ug215vy9H4M4dIV2fqiOfVfC5irNLX/wI2pHom0=
+	b=eUENm6dZVpAl0ad56W5IzKZPMTsnnaQa5jaotaVPDt4f9xKlLOqOrs60gEuSqB4nz
+	 b98J1wX2go1rgy6nL7x9s/0w6b+b87VY2L/ZNnTbgcUCyirzaoTqIC2wtYvTZT0/QX
+	 iy5N2aEXi6bwUjn6nhfaYoSWceRphocUkRGE3icc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. Thomas Orgis" <thomas.orgis@uni-hamburg.de>,
-	Enzo Matsumiya <ematsumiya@suse.de>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 199/460] smb: client: fix iface port assignment in parse_server_interfaces
+	syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com,
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.1 213/481] USB: usbtmc: Use usb_bulk_msg_killable() with user-specified timeouts
 Date: Mon, 23 Mar 2026 14:43:15 +0100
-Message-ID: <20260323134531.431444241@linuxfoundation.org>
+Message-ID: <20260323134530.353222181@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +63,93 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228701-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229685-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,25ba18e2c5040447585d];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D5B092F5810
+X-Rspamd-Queue-Id: 32EFC2F86D8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henrique Carvalho <henrique.carvalho@suse.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit d4c7210d2f3ea481a6481f03040a64d9077a6172 upstream.
+commit 7784caa413a89487dd14dd5c41db8753483b2acb upstream.
 
-parse_server_interfaces() initializes interface socket addresses with
-CIFS_PORT. When the mount uses a non-default port this overwrites the
-configured destination port.
+The usbtmc driver accepts timeout values specified by the user in an
+ioctl command, and uses these timeouts for some usb_bulk_msg() calls.
+Since the user can specify arbitrarily long timeouts and
+usb_bulk_msg() uses unkillable waits, call usb_bulk_msg_killable()
+instead to avoid the possibility of the user hanging a kernel thread
+indefinitely.
 
-Later, cifs_chan_update_iface() copies this sockaddr into server->dstaddr,
-causing reconnect attempts to use the wrong port after server interface
-updates.
-
-Use the existing port from server->dstaddr instead.
-
-Cc: stable@vger.kernel.org
-Fixes: fe856be475f7 ("CIFS: parse and store info on iface queries")
-Tested-by: Dr. Thomas Orgis <thomas.orgis@uni-hamburg.de>
-Reviewed-by: Enzo Matsumiya <ematsumiya@suse.de>
-Signed-off-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/8e1c7ac5-e076-44b0-84b8-1b34b20f0ae1@suse.com/T/#t
+Tested-by: syzbot+25ba18e2c5040447585d@syzkaller.appspotmail.com
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/81c6fc24-0607-40f1-8c20-5270dab2fad5@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2ops.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/usb/class/usbtmc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -628,6 +628,7 @@ parse_server_interfaces(struct network_i
- 	struct iface_info_ipv6 *p6;
- 	struct cifs_server_iface *info = NULL, *iface = NULL, *niface = NULL;
- 	struct cifs_server_iface tmp_iface;
-+	__be16 port;
- 	ssize_t bytes_left;
- 	size_t next = 0;
- 	int nb_iface = 0;
-@@ -662,6 +663,15 @@ parse_server_interfaces(struct network_i
- 		goto out;
- 	}
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -727,7 +727,7 @@ static int usbtmc488_ioctl_trigger(struc
+ 	buffer[1] = data->bTag;
+ 	buffer[2] = ~data->bTag;
  
-+	spin_lock(&ses->server->srv_lock);
-+	if (ses->server->dstaddr.ss_family == AF_INET)
-+		port = ((struct sockaddr_in *)&ses->server->dstaddr)->sin_port;
-+	else if (ses->server->dstaddr.ss_family == AF_INET6)
-+		port = ((struct sockaddr_in6 *)&ses->server->dstaddr)->sin6_port;
-+	else
-+		port = cpu_to_be16(CIFS_PORT);
-+	spin_unlock(&ses->server->srv_lock);
-+
- 	while (bytes_left >= (ssize_t)sizeof(*p)) {
- 		memset(&tmp_iface, 0, sizeof(tmp_iface));
- 		/* default to 1Gbps when link speed is unset */
-@@ -682,7 +692,7 @@ parse_server_interfaces(struct network_i
- 			memcpy(&addr4->sin_addr, &p4->IPv4Address, 4);
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_sndbulkpipe(data->usb_dev,
+ 					      data->bulk_out),
+ 			      buffer, USBTMC_HEADER_SIZE,
+@@ -1347,7 +1347,7 @@ static int send_request_dev_dep_msg_in(s
+ 	buffer[11] = 0; /* Reserved */
  
- 			/* [MS-SMB2] 2.2.32.5.1.1 Clients MUST ignore these */
--			addr4->sin_port = cpu_to_be16(CIFS_PORT);
-+			addr4->sin_port = port;
+ 	/* Send bulk URB */
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_sndbulkpipe(data->usb_dev,
+ 					      data->bulk_out),
+ 			      buffer, USBTMC_HEADER_SIZE,
+@@ -1419,7 +1419,7 @@ static ssize_t usbtmc_read(struct file *
+ 	actual = 0;
  
- 			cifs_dbg(FYI, "%s: ipv4 %pI4\n", __func__,
- 				 &addr4->sin_addr);
-@@ -696,7 +706,7 @@ parse_server_interfaces(struct network_i
- 			/* [MS-SMB2] 2.2.32.5.1.2 Clients MUST ignore these */
- 			addr6->sin6_flowinfo = 0;
- 			addr6->sin6_scope_id = 0;
--			addr6->sin6_port = cpu_to_be16(CIFS_PORT);
-+			addr6->sin6_port = port;
- 
- 			cifs_dbg(FYI, "%s: ipv6 %pI6\n", __func__,
- 				 &addr6->sin6_addr);
+ 	/* Send bulk URB */
+-	retval = usb_bulk_msg(data->usb_dev,
++	retval = usb_bulk_msg_killable(data->usb_dev,
+ 			      usb_rcvbulkpipe(data->usb_dev,
+ 					      data->bulk_in),
+ 			      buffer, bufsize, &actual,
 
 
 
