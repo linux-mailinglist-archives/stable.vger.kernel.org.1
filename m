@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228035-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJrFIM5mwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-228695-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:06 +0100
+	id YPqFGitHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228035-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D28A62F7C55
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DD67F2F38F3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 254313222CA6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 00A2E307FBA4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7259A3B47C2;
-	Mon, 23 Mar 2026 14:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3618E3ACA68;
+	Mon, 23 Mar 2026 13:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M3bGLqzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxRnq/6v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B353B3C1D;
-	Mon, 23 Mar 2026 14:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1B81A6818;
+	Mon, 23 Mar 2026 13:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276876; cv=none; b=NZ9VUeDp9rH5ftjTHCE6yzbipg9/YWtW+Skbd/egvTNglOlu4dRt6iyN1it+B6hQ484vlPV3GaWQUvmppp5PKiGFhtLZSgbBtsgnaweyXtsVHFkOARoODVJIE8W2LzBAJvjvo4/jo1w9nd7u9NbgtUhSaeC6725vPDqFrdgvXgs=
+	t=1774273931; cv=none; b=daJqnYJOmezh6g9FGEflHd3c3lU10Y4ypvxJMabqfuci5r5HC5YDC6eKWHzd0+N8LXMyNj9SvHGCBg6shgDsCDrARylehsSjNKWwOZH+OUeAKj314IsBhn3J1BV7uq2Ji/BnOA1qoQ1oqpP4oVEcPB9CKqAJdfeW1pYA6ksK1Jg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276876; c=relaxed/simple;
-	bh=ajnfqmbszjSuEcilVpBV+MAT5SF7cc1NfXow42Mgq0E=;
+	s=arc-20240116; t=1774273931; c=relaxed/simple;
+	bh=P0GDf9yLuQBP2QYIPNmEUlUvU3hNiGeUTWE/PYG1v5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lx9ClCEW9W/8guKqsYz4+uHpy7GasW4mj1KOQhBspGew9uvD95MP5xJMlqeZiq/J9YpgMTEVAsHL3WSG4R+1zUrqrWbHfY+Xwc1TUGk7Zbi1z83S73RlXebyFKH4dnW2BAqk1/uD2CaRviQs2biCvDH1REFApWqOdX35UV6QIP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M3bGLqzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C83AC4CEF7;
-	Mon, 23 Mar 2026 14:41:15 +0000 (UTC)
+	 MIME-Version; b=BgqSgZooyueUbE9S6ajGwDusrWz0CzGVn+4p/6GWMGll6e36BU5+yL3NTFDdeIO0IuopEG/EIIgP9os3rpWAff6G1eB654NdZEgKEmkVAyuDNTUIWznrA/iAdy8ud2LMpB/avTxnm8qC0b/5wlgZ2gawBV696iPf1l0ivQS5fB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxRnq/6v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAD6C2BC9E;
+	Mon, 23 Mar 2026 13:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276875;
-	bh=ajnfqmbszjSuEcilVpBV+MAT5SF7cc1NfXow42Mgq0E=;
+	s=korg; t=1774273930;
+	bh=P0GDf9yLuQBP2QYIPNmEUlUvU3hNiGeUTWE/PYG1v5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M3bGLqzRBfOlJQm1WFPJuxQpX/A5H+N7oYa+k6Oet6c+SQat5HXi5wHEvs0MNMwEh
-	 uNnUfOW4Dpqdxdu8CvFCHYp1136PWREMF8tZgDSpRzKgUK53taTiEu329uLflt3SG4
-	 8Y+OK4J+zJKzrl9kmNRsx3wDbqSUa7wueExKXijA=
+	b=xxRnq/6vzRc1BREzKFVcKV8jzDT45ppvHXz3D1uwoHTUIcMjsaN5OlygSGrdVnatD
+	 V9RmFD4taGCwDwP0nADg4ii1DbnrkvoC3vBgEpM1dXJG0teFHk4Vu7zE9HDrAUKZ/6
+	 wtZA3ph754PXtUtN4JwaE4PxIvyB1bdudBX0A9lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gang Yan <yangang@kylinos.cn>,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 235/460] selftests: mptcp: add a check for add_addr_accepted
+	Kevin Tian <kevin.tian@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.19 054/220] iommu/vt-d: Only handle IOPF for SVA when PRI is supported
 Date: Mon, 23 Mar 2026 14:43:51 +0100
-Message-ID: <20260323134532.271665708@linuxfoundation.org>
+Message-ID: <20260323134506.293916640@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,105 +73,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228695-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228035-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D28A62F7C55
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: DD67F2F38F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit 0eee0fdf9b7b0baf698f9b426384aa9714d76a51 ]
+commit 39c20c4e83b9f78988541d829aa34668904e54a0 upstream.
 
-The previous patch fixed an issue with the 'add_addr_accepted' counter.
-This was not spot by the test suite.
+In intel_svm_set_dev_pasid(), the driver unconditionally manages the IOPF
+handling during a domain transition. However, commit a86fb7717320
+("iommu/vt-d: Allow SVA with device-specific IOPF") introduced support for
+SVA on devices that handle page faults internally without utilizing the
+PCI PRI. On such devices, the IOMMU-side IOPF infrastructure is not
+required. Calling iopf_for_domain_replace() on these devices is incorrect
+and can lead to unexpected failures during PASID attachment or unwinding.
 
-Check this counter and 'add_addr_signal' in MPTCP Join 'delete re-add
-signal' test. This should help spotting similar regressions later on.
-These counters are crucial for ensuring the MPTCP path manager correctly
-handles the subflow creation via 'ADD_ADDR'.
+Add a check for info->pri_supported to ensure that the IOPF queue logic
+is only invoked for devices that actually rely on the IOMMU's PRI-based
+fault handling.
 
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251118-net-mptcp-misc-fixes-6-18-rc6-v1-11-806d3781c95f@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 560edd99b5f5 ("selftests: mptcp: join: check RM_ADDR not sent over same subflow")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 17fce9d2336d ("iommu/vt-d: Put iopf enablement in domain attach path")
+Cc: stable@vger.kernel.org
+Suggested-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20260310075520.295104-1-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iommu/intel/svm.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3922,38 +3922,45 @@ endpoint_tests()
- 			$ns1 10.0.2.1 id 1 flags signal
- 		chk_subflow_nr "before delete" 2
- 		chk_mptcp_info subflows 1 subflows 1
-+		chk_mptcp_info add_addr_signal 2 add_addr_accepted 1
+--- a/drivers/iommu/intel/svm.c
++++ b/drivers/iommu/intel/svm.c
+@@ -164,9 +164,12 @@ static int intel_svm_set_dev_pasid(struc
+ 	if (IS_ERR(dev_pasid))
+ 		return PTR_ERR(dev_pasid);
  
- 		pm_nl_del_endpoint $ns1 1 10.0.2.1
- 		pm_nl_del_endpoint $ns1 2 224.0.0.1
- 		sleep 0.5
- 		chk_subflow_nr "after delete" 1
- 		chk_mptcp_info subflows 0 subflows 0
-+		chk_mptcp_info add_addr_signal 0 add_addr_accepted 0
+-	ret = iopf_for_domain_replace(domain, old, dev);
+-	if (ret)
+-		goto out_remove_dev_pasid;
++	/* SVA with non-IOMMU/PRI IOPF handling is allowed. */
++	if (info->pri_supported) {
++		ret = iopf_for_domain_replace(domain, old, dev);
++		if (ret)
++			goto out_remove_dev_pasid;
++	}
  
- 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
- 		pm_nl_add_endpoint $ns1 10.0.3.1 id 2 flags signal
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add" 3
- 		chk_mptcp_info subflows 2 subflows 2
-+		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
+ 	/* Setup the pasid table: */
+ 	sflags = cpu_feature_enabled(X86_FEATURE_LA57) ? PASID_FLAG_FL5LP : 0;
+@@ -181,7 +184,8 @@ static int intel_svm_set_dev_pasid(struc
  
- 		pm_nl_del_endpoint $ns1 42 10.0.1.1
- 		sleep 0.5
- 		chk_subflow_nr "after delete ID 0" 2
- 		chk_mptcp_info subflows 2 subflows 2
-+		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add ID 0" 3
- 		chk_mptcp_info subflows 3 subflows 3
-+		chk_mptcp_info add_addr_signal 3 add_addr_accepted 2
- 
- 		pm_nl_del_endpoint $ns1 99 10.0.1.1
- 		sleep 0.5
- 		chk_subflow_nr "after re-delete ID 0" 2
- 		chk_mptcp_info subflows 2 subflows 2
-+		chk_mptcp_info add_addr_signal 2 add_addr_accepted 2
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 88 flags signal
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-re-add ID 0" 3
- 		chk_mptcp_info subflows 3 subflows 3
-+		chk_mptcp_info add_addr_signal 3 add_addr_accepted 2
- 		mptcp_lib_kill_group_wait $tests_pid
- 
- 		kill_events_pids
+ 	return 0;
+ out_unwind_iopf:
+-	iopf_for_domain_replace(old, domain, dev);
++	if (info->pri_supported)
++		iopf_for_domain_replace(old, domain, dev);
+ out_remove_dev_pasid:
+ 	domain_remove_dev_pasid(domain, dev, pasid);
+ 	return ret;
 
 
 
