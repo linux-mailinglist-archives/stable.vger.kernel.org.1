@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229081-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sIJ0MEhQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228519-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:00 +0100
+	id mG5IOFNswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229081-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D8F2F4E3D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3562F876F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C29A2317D8F7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3DA0630C29F4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B0553AEF50;
-	Mon, 23 Mar 2026 14:15:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CAB3AF669;
+	Mon, 23 Mar 2026 15:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TF4OfdQ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWAOtS3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D242E3AE6EE;
-	Mon, 23 Mar 2026 14:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC75B26ED46;
+	Mon, 23 Mar 2026 14:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275346; cv=none; b=p6V86QbyM2mNOLG3wWGOhzmuw6ufgys5nk9WjhdDgHoEprDPrbyWVESXi4gj4FwtodWT+kgcIrgvRJSZHY99pYDfRG/9Ce/dCC+ttWhNZxdXpF2pZ4MS67ogStz5073nHFf6iOWftrb3XIz0RGQpcnRy7sPCsSOWoSIwHBQD+UI=
+	t=1774277999; cv=none; b=ExtJB6+ivOv6vdyuP5V30XKHevkxpvGuYTN5DYNR2CFdr83a4+Ae8UiTuDjDANhwcyHteo8B894UtNe2wOa5guNjMRkvmYMarsUv2AQasfnUvGg7M72nYyjXssjj+4ocElytydbQwLUCP8CJ+OQnalxSDBX3fW5+6cFNWi3E64o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275346; c=relaxed/simple;
-	bh=6fLNpbQ+vUn8JGqmh9vV4uh13lGYZc5gzD20JUv/cn8=;
+	s=arc-20240116; t=1774277999; c=relaxed/simple;
+	bh=Pb3n0EmLggoQG+eFLHXFxMUV0FYJBtmt/sM8o9bQWMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BcwN+luEBIRiMc284NveH3gL99rlan4J5XPLR3rRiUwAddKbA9B5mXj6Je7oQC/xCj2bXFYmGFm/q39H7FlzJKRcy/3basOox5kB7oqWLL5ZJRVcFT1UG2iBIapFpUcguK/gHwzQ7NuJ4DkUS6mn7Ijruey+9iDnNEXeVH+ZYrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TF4OfdQ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CF5C4CEF7;
-	Mon, 23 Mar 2026 14:15:46 +0000 (UTC)
+	 MIME-Version; b=DTGhZ24H40Bgwi9IoQGYzSlMq2/N9YXjqqOZtXYxdOR3pjuD7INYLAdENhdLEJjL5KID8MV6/NyBrJ/UQ6ioZRmpUS06DpaGtR2rbbo//ahAOQM2PtPFheicSELJAxjaCDOT8Acd1c4RAGKhcY6Qxx24AyQUaAM3g7ihBaIFUWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWAOtS3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490B0C4CEF7;
+	Mon, 23 Mar 2026 14:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275346;
-	bh=6fLNpbQ+vUn8JGqmh9vV4uh13lGYZc5gzD20JUv/cn8=;
+	s=korg; t=1774277999;
+	bh=Pb3n0EmLggoQG+eFLHXFxMUV0FYJBtmt/sM8o9bQWMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TF4OfdQ4NMlbgsFjH4BO7PfvhIzqngPrSkphWm7opHVyzS1JkEjeUp0ctSML+E9AN
-	 zhxDY0s6ppVobe2TV78BAX84JurANorxIMDUvfa56RDkNTycWWMnuvRqepvxSoN5GX
-	 Egg5eHB/9Ni6P+FAmK1OsC/rzyWgUjNEOqXoUZag=
+	b=TWAOtS3sdiwtC42VNfMwoYn/prUK6KBSGDlo9wJlJUIhQoeb0JztpQjqkTt7dlDkb
+	 jesQxeK/TtfrJ0Cu7i9d3ych1fh6y9os9RowGTR7uQw+ghfxJgR/4uEDxmTE3gVKE/
+	 +QSbfaA4JYm3Ry5Hpf3o+DkiY/6eVRhGwrSCaxV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Guruvendra Punugupati <Guruvendra.Punugupati@amd.com>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/460] netfilter: nfnetlink_cthelper: fix OOB read in nfnl_cthelper_dump_table()
+Subject: [PATCH 6.6 142/567] amd-xgbe: fix MAC_TCR_SS register width for 2.5G and 10M speeds
 Date: Mon, 23 Mar 2026 14:41:02 +0100
-Message-ID: <20260323134528.325592000@linuxfoundation.org>
+Message-ID: <20260323134537.329670164@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,101 +67,80 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228519-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229081-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 83D8F2F4E3D
+X-Rspamd-Queue-Id: 3C3562F876F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit 6dcee8496d53165b2d8a5909b3050b62ae71fe89 ]
+[ Upstream commit 9439a661c2e80485406ce2c90b107ca17858382d ]
 
-nfnl_cthelper_dump_table() has a 'goto restart' that jumps to a label
-inside the for loop body.  When the "last" helper saved in cb->args[1]
-is deleted between dump rounds, every entry fails the (cur != last)
-check, so cb->args[1] is never cleared.  The for loop finishes with
-cb->args[0] == nf_ct_helper_hsize, and the 'goto restart' jumps back
-into the loop body bypassing the bounds check, causing an 8-byte
-out-of-bounds read on nf_ct_helper_hash[nf_ct_helper_hsize].
+Extend the MAC_TCR_SS (Speed Select) register field width from 2 bits
+to 3 bits to properly support all speed settings.
 
-The 'goto restart' block was meant to re-traverse the current bucket
-when "last" is no longer found, but it was placed after the for loop
-instead of inside it.  Move the block into the for loop body so that
-the restart only occurs while cb->args[0] is still within bounds.
+The MAC_TCR register's SS field encoding requires 3 bits to represent
+all supported speeds:
+  - 0x00: 10Gbps (XGMII)
+  - 0x02: 2.5Gbps (GMII) / 100Mbps
+  - 0x03: 1Gbps / 10Mbps
+  - 0x06: 2.5Gbps (XGMII) - P100a only
 
- BUG: KASAN: slab-out-of-bounds in nfnl_cthelper_dump_table+0x9f/0x1b0
- Read of size 8 at addr ffff888104ca3000 by task poc_cthelper/131
- Call Trace:
-  nfnl_cthelper_dump_table+0x9f/0x1b0
-  netlink_dump+0x333/0x880
-  netlink_recvmsg+0x3e2/0x4b0
-  sock_recvmsg+0xde/0xf0
-  __sys_recvfrom+0x150/0x200
-  __x64_sys_recvfrom+0x76/0x90
-  do_syscall_64+0xc3/0x6e0
+With only 2 bits, values 0x04-0x07 cannot be represented, which breaks
+2.5G XGMII mode on newer platforms and causes incorrect speed select
+values to be programmed.
 
- Allocated by task 1:
-  __kvmalloc_node_noprof+0x21b/0x700
-  nf_ct_alloc_hashtable+0x65/0xd0
-  nf_conntrack_helper_init+0x21/0x60
-  nf_conntrack_init_start+0x18d/0x300
-  nf_conntrack_standalone_init+0x12/0xc0
-
-Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 07445f3c7ca1 ("amd-xgbe: Add support for 10 Mbps speed")
+Co-developed-by: Guruvendra Punugupati <Guruvendra.Punugupati@amd.com>
+Signed-off-by: Guruvendra Punugupati <Guruvendra.Punugupati@amd.com>
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20260226170753.250312-1-Raju.Rangoju@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_cthelper.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-common.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink_cthelper.c b/net/netfilter/nfnetlink_cthelper.c
-index 97248963a7d3b..71a248cca746a 100644
---- a/net/netfilter/nfnetlink_cthelper.c
-+++ b/net/netfilter/nfnetlink_cthelper.c
-@@ -603,10 +603,10 @@ nfnl_cthelper_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
- 				goto out;
- 			}
- 		}
--	}
--	if (cb->args[1]) {
--		cb->args[1] = 0;
--		goto restart;
-+		if (cb->args[1]) {
-+			cb->args[1] = 0;
-+			goto restart;
-+		}
- 	}
- out:
- 	rcu_read_unlock();
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-common.h b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+index aa25a8a0a106f..d99d2295eab0f 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-common.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-common.h
+@@ -514,7 +514,7 @@
+ #define MAC_SSIR_SSINC_INDEX		16
+ #define MAC_SSIR_SSINC_WIDTH		8
+ #define MAC_TCR_SS_INDEX		29
+-#define MAC_TCR_SS_WIDTH		2
++#define MAC_TCR_SS_WIDTH		3
+ #define MAC_TCR_TE_INDEX		0
+ #define MAC_TCR_TE_WIDTH		1
+ #define MAC_TCR_VNE_INDEX		24
 -- 
 2.51.0
 
