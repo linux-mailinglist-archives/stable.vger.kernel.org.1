@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-229321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228790-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QBtOAZNewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:59 +0100
+	id gOymHllUwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228790-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629832F6A1A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C8A2F56F3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AE2933712C9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D515030DF838
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9813D282F1C;
-	Mon, 23 Mar 2026 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B877233704;
+	Mon, 23 Mar 2026 14:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3Zv+gSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThLbbkqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA0A27FD5B;
-	Mon, 23 Mar 2026 15:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC5322CBC6;
+	Mon, 23 Mar 2026 14:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278750; cv=none; b=joCyT7BR74G54T7w6ed4yVDaPP5ZQ8wgUr/FWGNiqa1C00cxi6eqVKbo82l3m4QwWhVWr2KNBH7uVZdoDbj+lRPCTUdMsGL/CodCrOA0bePBEu/JK1Wl90/8PAl1IAP5uU/WapyY06OQK8wIhbgMxfc6Xg6DMLpNcBXM+9CdTpY=
+	t=1774277135; cv=none; b=LhMlBL71gGQ8oXESpukIVd/lcCXRbLNwEfIdDH7A0VE08WeNjBV1/+eVf/wI4Ab+QHulKLYzKCy3lvaKluXSbwKV36tY6sZWftoRaCZpQxCdeXESsqvvMRohNvtcbv8OIjvwK9BtNUb4KPvdRQgeW4VC668VRtkt7ykpBpviW3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278750; c=relaxed/simple;
-	bh=zWV+4xqAH86NXsaZK3znjOWeJqMPaAywwE6TDvYfY9s=;
+	s=arc-20240116; t=1774277135; c=relaxed/simple;
+	bh=TsWLdPW3hfn5MAXIJM6j2PhbfGK9H8t3kuesROFs25w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M44+WqEvQrGsYNO9q4PKR0ozhAH2D5lYPCdxZNe5b0fJGBeN5FQu9d5xhCFmvLYbr0TkIdrQjLaXstrmf008vxbD7hq3jJBOXGlWnilXCWSknm83zqFxW7kIsTzsqqPRjMWLOGSEuN5/vsLp3EY/DXtfpLDvuGtVfIJWMKNmurQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3Zv+gSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1236C4CEF7;
-	Mon, 23 Mar 2026 15:12:29 +0000 (UTC)
+	 MIME-Version; b=MOXjYJ78SFYTZHF/qRvwLP0u0zIWsrb9VkAvmQ+zFAJ++Ty22+Hh4l4oHKf3M3VHvQq1IYSaDG+x0mXNaqM1Gq5QoCLQgHps3CiyiFNSm4Ra+i7gwwkyRyO3z5cZphTXV46IpnyWypyfSa4axh+Ztxad4IaZybkOnh0UgNQEW8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThLbbkqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7EBC4CEF7;
+	Mon, 23 Mar 2026 14:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278750;
-	bh=zWV+4xqAH86NXsaZK3znjOWeJqMPaAywwE6TDvYfY9s=;
+	s=korg; t=1774277135;
+	bh=TsWLdPW3hfn5MAXIJM6j2PhbfGK9H8t3kuesROFs25w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w3Zv+gSwp/d2vhdfW2gMeOnmuqL/1wcLZSQ7fphDr9jw3NB1i1p/eic2m1Uf4Nada
-	 RRcf9ihAvPlEVYqJv9Mftvk/JU+Mp5Duw/MGd95oLvU8qnjnv0KLFdEhqoea6+8FqT
-	 5cxV88cp3GSsjGxYIQQtOtOY5ysZZJN1yn3Cuob0=
+	b=ThLbbkqhRsx3gwMv9WMyKq5ZF+C0b3kFC3uRFcW7h8d26zsELyT860dIKgoV+SDpL
+	 hqeLXvT5zk8/C9IbZyqM4loN5xwKvZVr0d7bV+io5BbTJGcSUv/DMGYfBbWagdlsho
+	 g0hPaKWHABVHdbNRqi4zkmFveFmMG55PnO96ImVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+179fc225724092b8b2b2@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.6 406/567] dst: fix races in rt6_uncached_list_del() and rt_del_uncached_list()
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 330/460] btrfs: fix transaction abort when snapshotting received subvolumes
 Date: Mon, 23 Mar 2026 14:45:26 +0100
-Message-ID: <20260323134543.921435907@linuxfoundation.org>
+Message-ID: <20260323134534.631101640@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,297 +66,206 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,google.com,kernel.org,163.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229321-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228790-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,179fc225724092b8b2b2];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 629832F6A1A
+X-Rspamd-Queue-Id: 19C8A2F56F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 9a6f0c4d5796ab89b5a28a890ce542344d58bd69 ]
+[ Upstream commit e1b18b959025e6b5dbad668f391f65d34b39595a ]
 
-syzbot was able to crash the kernel in rt6_uncached_list_flush_dev()
-in an interesting way [1]
+Currently a user can trigger a transaction abort by snapshotting a
+previously received snapshot a bunch of times until we reach a
+BTRFS_UUID_KEY_RECEIVED_SUBVOL item overflow (the maximum item size we
+can store in a leaf). This is very likely not common in practice, but
+if it happens, it turns the filesystem into RO mode. The snapshot, send
+and set_received_subvol and subvol_setflags (used by receive) don't
+require CAP_SYS_ADMIN, just inode_owner_or_capable(). A malicious user
+could use this to turn a filesystem into RO mode and disrupt a system.
 
-Crash happens in list_del_init()/INIT_LIST_HEAD() while writing
-list->prev, while the prior write on list->next went well.
+Reproducer script:
 
-static inline void INIT_LIST_HEAD(struct list_head *list)
-{
-	WRITE_ONCE(list->next, list); // This went well
-	WRITE_ONCE(list->prev, list); // Crash, @list has been freed.
-}
+  $ cat test.sh
+  #!/bin/bash
 
-Issue here is that rt6_uncached_list_del() did not attempt to lock
-ul->lock, as list_empty(&rt->dst.rt_uncached) returned
-true because the WRITE_ONCE(list->next, list) happened on the other CPU.
+  DEV=/dev/sdi
+  MNT=/mnt/sdi
 
-We might use list_del_init_careful() and list_empty_careful(),
-or make sure rt6_uncached_list_del() always grabs the spinlock
-whenever rt->dst.rt_uncached_list has been set.
+  # Use smallest node size to make the test faster.
+  mkfs.btrfs -f --nodesize 4K $DEV
+  mount $DEV $MNT
 
-A similar fix is neeed for IPv4.
+  # Create a subvolume and set it to RO so that it can be used for send.
+  btrfs subvolume create $MNT/sv
+  touch $MNT/sv/foo
+  btrfs property set $MNT/sv ro true
 
-[1]
+  # Send and receive the subvolume into snaps/sv.
+  mkdir $MNT/snaps
+  btrfs send $MNT/sv | btrfs receive $MNT/snaps
 
- BUG: KASAN: slab-use-after-free in INIT_LIST_HEAD include/linux/list.h:46 [inline]
- BUG: KASAN: slab-use-after-free in list_del_init include/linux/list.h:296 [inline]
- BUG: KASAN: slab-use-after-free in rt6_uncached_list_flush_dev net/ipv6/route.c:191 [inline]
- BUG: KASAN: slab-use-after-free in rt6_disable_ip+0x633/0x730 net/ipv6/route.c:5020
-Write of size 8 at addr ffff8880294cfa78 by task kworker/u8:14/3450
+  # Now snapshot the received subvolume, which has a received_uuid, a
+  # lot of times to trigger the leaf overflow.
+  total=500
+  for ((i = 1; i <= $total; i++)); do
+      echo -ne "\rCreating snapshot $i/$total"
+      btrfs subvolume snapshot -r $MNT/snaps/sv $MNT/snaps/sv_$i > /dev/null
+  done
+  echo
 
-CPU: 0 UID: 0 PID: 3450 Comm: kworker/u8:14 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)}
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/25/2025
-Workqueue: netns cleanup_net
-Call Trace:
- <TASK>
-  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:378 [inline]
-  print_report+0xca/0x240 mm/kasan/report.c:482
-  kasan_report+0x118/0x150 mm/kasan/report.c:595
-  INIT_LIST_HEAD include/linux/list.h:46 [inline]
-  list_del_init include/linux/list.h:296 [inline]
-  rt6_uncached_list_flush_dev net/ipv6/route.c:191 [inline]
-  rt6_disable_ip+0x633/0x730 net/ipv6/route.c:5020
-  addrconf_ifdown+0x143/0x18a0 net/ipv6/addrconf.c:3853
- addrconf_notify+0x1bc/0x1050 net/ipv6/addrconf.c:-1
-  notifier_call_chain+0x19d/0x3a0 kernel/notifier.c:85
-  call_netdevice_notifiers_extack net/core/dev.c:2268 [inline]
-  call_netdevice_notifiers net/core/dev.c:2282 [inline]
-  netif_close_many+0x29c/0x410 net/core/dev.c:1785
-  unregister_netdevice_many_notify+0xb50/0x2330 net/core/dev.c:12353
-  ops_exit_rtnl_list net/core/net_namespace.c:187 [inline]
-  ops_undo_list+0x3dc/0x990 net/core/net_namespace.c:248
-  cleanup_net+0x4de/0x7b0 net/core/net_namespace.c:696
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
+  umount $MNT
 
-Allocated by task 803:
-  kasan_save_stack mm/kasan/common.c:57 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
-  unpoison_slab_object mm/kasan/common.c:340 [inline]
-  __kasan_slab_alloc+0x6c/0x80 mm/kasan/common.c:366
-  kasan_slab_alloc include/linux/kasan.h:253 [inline]
-  slab_post_alloc_hook mm/slub.c:4953 [inline]
-  slab_alloc_node mm/slub.c:5263 [inline]
-  kmem_cache_alloc_noprof+0x18d/0x6c0 mm/slub.c:5270
-  dst_alloc+0x105/0x170 net/core/dst.c:89
-  ip6_dst_alloc net/ipv6/route.c:342 [inline]
-  icmp6_dst_alloc+0x75/0x460 net/ipv6/route.c:3333
-  mld_sendpack+0x683/0xe60 net/ipv6/mcast.c:1844
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+When running the test:
 
-Freed by task 20:
-  kasan_save_stack mm/kasan/common.c:57 [inline]
-  kasan_save_track+0x3e/0x80 mm/kasan/common.c:78
-  kasan_save_free_info+0x46/0x50 mm/kasan/generic.c:584
-  poison_slab_object mm/kasan/common.c:253 [inline]
-  __kasan_slab_free+0x5c/0x80 mm/kasan/common.c:285
-  kasan_slab_free include/linux/kasan.h:235 [inline]
-  slab_free_hook mm/slub.c:2540 [inline]
-  slab_free mm/slub.c:6670 [inline]
-  kmem_cache_free+0x18f/0x8d0 mm/slub.c:6781
-  dst_destroy+0x235/0x350 net/core/dst.c:121
-  rcu_do_batch kernel/rcu/tree.c:2605 [inline]
-  rcu_core kernel/rcu/tree.c:2857 [inline]
-  rcu_cpu_kthread+0xba5/0x1af0 kernel/rcu/tree.c:2945
-  smpboot_thread_fn+0x542/0xa60 kernel/smpboot.c:160
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+  $ ./test.sh
+  (...)
+  Create subvolume '/mnt/sdi/sv'
+  At subvol /mnt/sdi/sv
+  At subvol sv
+  Creating snapshot 496/500ERROR: Could not create subvolume: Value too large for defined data type
+  Creating snapshot 497/500ERROR: Could not create subvolume: Read-only file system
+  Creating snapshot 498/500ERROR: Could not create subvolume: Read-only file system
+  Creating snapshot 499/500ERROR: Could not create subvolume: Read-only file system
+  Creating snapshot 500/500ERROR: Could not create subvolume: Read-only file system
 
-Last potentially related work creation:
-  kasan_save_stack+0x3e/0x60 mm/kasan/common.c:57
-  kasan_record_aux_stack+0xbd/0xd0 mm/kasan/generic.c:556
-  __call_rcu_common kernel/rcu/tree.c:3119 [inline]
-  call_rcu+0xee/0x890 kernel/rcu/tree.c:3239
-  refdst_drop include/net/dst.h:266 [inline]
-  skb_dst_drop include/net/dst.h:278 [inline]
-  skb_release_head_state+0x71/0x360 net/core/skbuff.c:1156
-  skb_release_all net/core/skbuff.c:1180 [inline]
-  __kfree_skb net/core/skbuff.c:1196 [inline]
-  sk_skb_reason_drop+0xe9/0x170 net/core/skbuff.c:1234
-  kfree_skb_reason include/linux/skbuff.h:1322 [inline]
-  tcf_kfree_skb_list include/net/sch_generic.h:1127 [inline]
-  __dev_xmit_skb net/core/dev.c:4260 [inline]
-  __dev_queue_xmit+0x26aa/0x3210 net/core/dev.c:4785
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+And in dmesg/syslog:
 
-The buggy address belongs to the object at ffff8880294cfa00
- which belongs to the cache ip6_dst_cache of size 232
-The buggy address is located 120 bytes inside of
- freed 232-byte region [ffff8880294cfa00, ffff8880294cfae8)
+  $ dmesg
+  (...)
+  [251067.627338] BTRFS warning (device sdi): insert uuid item failed -75 (0x4628b21c4ac8d898, 0x2598bee2b1515c91) type 252!
+  [251067.629212] ------------[ cut here ]------------
+  [251067.630033] BTRFS: Transaction aborted (error -75)
+  [251067.630871] WARNING: fs/btrfs/transaction.c:1907 at create_pending_snapshot.cold+0x52/0x465 [btrfs], CPU#10: btrfs/615235
+  [251067.632851] Modules linked in: btrfs dm_zero (...)
+  [251067.644071] CPU: 10 UID: 0 PID: 615235 Comm: btrfs Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
+  [251067.646165] Tainted: [W]=WARN
+  [251067.646733] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+  [251067.648735] RIP: 0010:create_pending_snapshot.cold+0x55/0x465 [btrfs]
+  [251067.649984] Code: f0 48 0f (...)
+  [251067.653313] RSP: 0018:ffffce644908fae8 EFLAGS: 00010292
+  [251067.653987] RAX: 00000000ffffff01 RBX: ffff8e5639e63a80 RCX: 00000000ffffffd3
+  [251067.655042] RDX: ffff8e53faa76b00 RSI: 00000000ffffffb5 RDI: ffffffffc0919750
+  [251067.656077] RBP: ffffce644908fbd8 R08: 0000000000000000 R09: ffffce644908f820
+  [251067.657068] R10: ffff8e5adc1fffa8 R11: 0000000000000003 R12: ffff8e53c0431bd0
+  [251067.658050] R13: ffff8e5414593600 R14: ffff8e55efafd000 R15: 00000000ffffffb5
+  [251067.659019] FS:  00007f2a4944b3c0(0000) GS:ffff8e5b27dae000(0000) knlGS:0000000000000000
+  [251067.660115] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  [251067.660943] CR2: 00007ffc5aa57898 CR3: 00000005813a2003 CR4: 0000000000370ef0
+  [251067.661972] Call Trace:
+  [251067.662292]  <TASK>
+  [251067.662653]  create_pending_snapshots+0x97/0xc0 [btrfs]
+  [251067.663413]  btrfs_commit_transaction+0x26e/0xc00 [btrfs]
+  [251067.664257]  ? btrfs_qgroup_convert_reserved_meta+0x35/0x390 [btrfs]
+  [251067.665238]  ? _raw_spin_unlock+0x15/0x30
+  [251067.665837]  ? record_root_in_trans+0xa2/0xd0 [btrfs]
+  [251067.666531]  btrfs_mksubvol+0x330/0x580 [btrfs]
+  [251067.667145]  btrfs_mksnapshot+0x74/0xa0 [btrfs]
+  [251067.667827]  __btrfs_ioctl_snap_create+0x194/0x1d0 [btrfs]
+  [251067.668595]  btrfs_ioctl_snap_create_v2+0x107/0x130 [btrfs]
+  [251067.669479]  btrfs_ioctl+0x1580/0x2690 [btrfs]
+  [251067.670093]  ? count_memcg_events+0x6d/0x180
+  [251067.670849]  ? handle_mm_fault+0x1a0/0x2a0
+  [251067.671652]  __x64_sys_ioctl+0x92/0xe0
+  [251067.672406]  do_syscall_64+0x50/0xf20
+  [251067.673129]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  [251067.674096] RIP: 0033:0x7f2a495648db
+  [251067.674812] Code: 00 48 89 (...)
+  [251067.678227] RSP: 002b:00007ffc5aa57840 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+  [251067.679691] RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f2a495648db
+  [251067.681145] RDX: 00007ffc5aa588b0 RSI: 0000000050009417 RDI: 0000000000000004
+  [251067.682511] RBP: 0000000000000002 R08: 0000000000000000 R09: 0000000000000000
+  [251067.683842] R10: 000000000000000a R11: 0000000000000246 R12: 00007ffc5aa59910
+  [251067.685176] R13: 00007ffc5aa588b0 R14: 0000000000000004 R15: 0000000000000006
+  [251067.686524]  </TASK>
+  [251067.686972] ---[ end trace 0000000000000000 ]---
+  [251067.687890] BTRFS: error (device sdi state A) in create_pending_snapshot:1907: errno=-75 unknown
+  [251067.689049] BTRFS info (device sdi state EA): forced readonly
+  [251067.689054] BTRFS warning (device sdi state EA): Skipping commit of aborted transaction.
+  [251067.690119] BTRFS: error (device sdi state EA) in cleanup_transaction:2043: errno=-75 unknown
+  [251067.702028] BTRFS info (device sdi state EA): last unmount of filesystem 46dc3975-30a2-4a69-a18f-418b859cccda
 
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x294cf
-memcg:ffff88803536b781
-flags: 0x80000000000000(node=0|zone=1)
-page_type: f5(slab)
-raw: 0080000000000000 ffff88802ff1c8c0 ffffea0000bf2bc0 dead000000000006
-raw: 0000000000000000 00000000800c000c 00000000f5000000 ffff88803536b781
-page dumped because: kasan: bad access detected
-page_owner tracks the page as allocated
-page last allocated via order 0, migratetype Unmovable, gfp_mask 0x52820(GFP_ATOMIC|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP), pid 9, tgid 9 (kworker/0:0), ts 91119585830, free_ts 91088628818
-  set_page_owner include/linux/page_owner.h:32 [inline]
-  post_alloc_hook+0x234/0x290 mm/page_alloc.c:1857
-  prep_new_page mm/page_alloc.c:1865 [inline]
-  get_page_from_freelist+0x28c0/0x2960 mm/page_alloc.c:3915
-  __alloc_frozen_pages_noprof+0x181/0x370 mm/page_alloc.c:5210
-  alloc_pages_mpol+0xd1/0x380 mm/mempolicy.c:2486
-  alloc_slab_page mm/slub.c:3075 [inline]
-  allocate_slab+0x86/0x3b0 mm/slub.c:3248
-  new_slab mm/slub.c:3302 [inline]
-  ___slab_alloc+0xb10/0x13e0 mm/slub.c:4656
-  __slab_alloc+0xc6/0x1f0 mm/slub.c:4779
-  __slab_alloc_node mm/slub.c:4855 [inline]
-  slab_alloc_node mm/slub.c:5251 [inline]
-  kmem_cache_alloc_noprof+0x101/0x6c0 mm/slub.c:5270
-  dst_alloc+0x105/0x170 net/core/dst.c:89
-  ip6_dst_alloc net/ipv6/route.c:342 [inline]
-  icmp6_dst_alloc+0x75/0x460 net/ipv6/route.c:3333
-  mld_sendpack+0x683/0xe60 net/ipv6/mcast.c:1844
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-  process_one_work kernel/workqueue.c:3257 [inline]
-  process_scheduled_works+0xad1/0x1770 kernel/workqueue.c:3340
-  worker_thread+0x8a0/0xda0 kernel/workqueue.c:3421
-  kthread+0x711/0x8a0 kernel/kthread.c:463
-  ret_from_fork+0x510/0xa50 arch/x86/kernel/process.c:158
-page last free pid 5859 tgid 5859 stack trace:
-  reset_page_owner include/linux/page_owner.h:25 [inline]
-  free_pages_prepare mm/page_alloc.c:1406 [inline]
-  __free_frozen_pages+0xfe1/0x1170 mm/page_alloc.c:2943
-  discard_slab mm/slub.c:3346 [inline]
-  __put_partials+0x149/0x170 mm/slub.c:3886
-  __slab_free+0x2af/0x330 mm/slub.c:5952
-  qlink_free mm/kasan/quarantine.c:163 [inline]
-  qlist_free_all+0x97/0x100 mm/kasan/quarantine.c:179
-  kasan_quarantine_reduce+0x148/0x160 mm/kasan/quarantine.c:286
-  __kasan_slab_alloc+0x22/0x80 mm/kasan/common.c:350
-  kasan_slab_alloc include/linux/kasan.h:253 [inline]
-  slab_post_alloc_hook mm/slub.c:4953 [inline]
-  slab_alloc_node mm/slub.c:5263 [inline]
-  kmem_cache_alloc_noprof+0x18d/0x6c0 mm/slub.c:5270
-  getname_flags+0xb8/0x540 fs/namei.c:146
-  getname include/linux/fs.h:2498 [inline]
-  do_sys_openat2+0xbc/0x200 fs/open.c:1426
-  do_sys_open fs/open.c:1436 [inline]
-  __do_sys_openat fs/open.c:1452 [inline]
-  __se_sys_openat fs/open.c:1447 [inline]
-  __x64_sys_openat+0x138/0x170 fs/open.c:1447
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xec/0xf80 arch/x86/entry/syscall_64.c:94
+Fix this by ignoring -EOVERFLOW errors from btrfs_uuid_tree_add() in the
+snapshot creation code when attempting to add the
+BTRFS_UUID_KEY_RECEIVED_SUBVOL item. This is OK because it's not critical
+and we are still able to delete the snapshot, as snapshot/subvolume
+deletion ignores if a BTRFS_UUID_KEY_RECEIVED_SUBVOL is missing (see
+inode.c:btrfs_delete_subvolume()). As for send/receive, we can still do
+send/receive operations since it always peeks the first root ID in the
+existing BTRFS_UUID_KEY_RECEIVED_SUBVOL (it could peek any since all
+snapshots have the same content), and even if the key is missing, it
+falls back to searching by BTRFS_UUID_KEY_SUBVOL key.
 
-Fixes: 8d0b94afdca8 ("ipv6: Keep track of DST_NOCACHE routes in case of iface down/unregister")
-Fixes: 78df76a065ae ("ipv4: take rt_uncached_lock only if needed")
-Reported-by: syzbot+179fc225724092b8b2b2@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6964cdf2.050a0220.eaf7.009d.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260112103825.3810713-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
+A test case for fstests will be sent soon.
+
+Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
+CC: stable@vger.kernel.org # 3.12+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ adapted error check condition to omit unlikely() wrapper ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dst.c   |    1 +
- net/ipv4/route.c |    4 ++--
- net/ipv6/route.c |    4 ++--
- 3 files changed, 5 insertions(+), 4 deletions(-)
+ fs/btrfs/transaction.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -68,6 +68,7 @@ void dst_init(struct dst_entry *dst, str
- 	dst->lwtstate = NULL;
- 	rcuref_init(&dst->__rcuref, initial_ref);
- 	INIT_LIST_HEAD(&dst->rt_uncached);
-+	dst->rt_uncached_list = NULL;
- 	dst->__use = 0;
- 	dst->lastuse = jiffies;
- 	dst->flags = flags;
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -1546,9 +1546,9 @@ void rt_add_uncached_list(struct rtable
- 
- void rt_del_uncached_list(struct rtable *rt)
- {
--	if (!list_empty(&rt->dst.rt_uncached)) {
--		struct uncached_list *ul = rt->dst.rt_uncached_list;
-+	struct uncached_list *ul = rt->dst.rt_uncached_list;
- 
-+	if (ul) {
- 		spin_lock_bh(&ul->lock);
- 		list_del_init(&rt->dst.rt_uncached);
- 		spin_unlock_bh(&ul->lock);
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -149,9 +149,9 @@ void rt6_uncached_list_add(struct rt6_in
- 
- void rt6_uncached_list_del(struct rt6_info *rt)
- {
--	if (!list_empty(&rt->dst.rt_uncached)) {
--		struct uncached_list *ul = rt->dst.rt_uncached_list;
-+	struct uncached_list *ul = rt->dst.rt_uncached_list;
- 
-+	if (ul) {
- 		spin_lock_bh(&ul->lock);
- 		list_del_init(&rt->dst.rt_uncached);
- 		spin_unlock_bh(&ul->lock);
+--- a/fs/btrfs/transaction.c
++++ b/fs/btrfs/transaction.c
+@@ -1894,6 +1894,22 @@ static noinline int create_pending_snaps
+ 		ret = btrfs_uuid_tree_add(trans, new_root_item->received_uuid,
+ 					  BTRFS_UUID_KEY_RECEIVED_SUBVOL,
+ 					  objectid);
++		/*
++		 * We are creating of lot of snapshots of the same root that was
++		 * received (has a received UUID) and reached a leaf's limit for
++		 * an item. We can safely ignore this and avoid a transaction
++		 * abort. A deletion of this snapshot will still work since we
++		 * ignore if an item with a BTRFS_UUID_KEY_RECEIVED_SUBVOL key
++		 * is missing (see btrfs_delete_subvolume()). Send/receive will
++		 * work too since it peeks the first root id from the existing
++		 * item (it could peek any), and in case it's missing it
++		 * falls back to search by BTRFS_UUID_KEY_SUBVOL keys.
++		 * Creation of a snapshot does not require CAP_SYS_ADMIN, so
++		 * we don't want users triggering transaction aborts, either
++		 * intentionally or not.
++		 */
++		if (ret == -EOVERFLOW)
++			ret = 0;
+ 		if (ret && ret != -EEXIST) {
+ 			btrfs_abort_transaction(trans, ret);
+ 			goto fail;
 
 
 
