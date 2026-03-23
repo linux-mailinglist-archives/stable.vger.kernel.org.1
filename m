@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229622-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDIbOsVZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229124-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:29 +0100
+	id QM1GLg98wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229622-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:47 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 931B12F61F8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E34C2FA556
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A5C73263001
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CDF663037D4E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75919242D60;
-	Mon, 23 Mar 2026 15:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0613BB9EE;
+	Mon, 23 Mar 2026 16:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEbwyTG3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1WKK4sj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E9927A123;
-	Mon, 23 Mar 2026 15:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B04E3BA254;
+	Mon, 23 Mar 2026 16:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278136; cv=none; b=iIKAdaJC1rsyii+SM/zc6wyt6/u0E0z/Ndvhb+XCLEvfLFaod4jjRvzJtAuwSL5kzRcOqMkDViNHRMBLqsuhyDT6k9QmDaWjdV9+6e+FTgZbdD3VRZsbjP+2CWbuzhlomqVa3BAEYbSipEiNA0fXBoMwGmG1IjfZayRyAzsVaAc=
+	t=1774282421; cv=none; b=NesARjn7wYlz4fl35RWfTSz8TTxbmMGPMFCUX8Qq4AV5sNOnTHL/sxKb4wxo/MWAgddxLLHQW6NgmKf2aEVU8jVJN8BPiUYFh596iP70ATZwUrWzOlYBTc2K8DHnSmTqSctxxMmjnNMSubB0flICSOoVD7wvpVTcApuqMVd1mqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278136; c=relaxed/simple;
-	bh=ckP+H3JljC/AIq5+RV2WJs/M3Yk2p/BInwiK2JGoeHc=;
+	s=arc-20240116; t=1774282421; c=relaxed/simple;
+	bh=lOku3nFW6AFClrGWcW6QhvDSnKmvNyoleu10Yq+stNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhMgFkb1DdiIBirPmxt+rliiXylKxvRT1ddBSkxfbwCW8S1KGorUwa2fY6QDbjCM88xHuBB5BCXVcMKYogbmQ1F044g2t22CxyfG+nLY0kP/lrUX77PNR4rx4nr4l/CWfa8TFRyAgSaZcsBss4wJ7SdSfCaygyWtvKphfaAr2io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEbwyTG3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB6BC4CEF7;
-	Mon, 23 Mar 2026 15:02:15 +0000 (UTC)
+	 MIME-Version; b=KdVGi1umYmbD5O7p06Hppz5EadP589HglR4HQ5esH/bDl+py6+8s3JQdk73tGX/xWK7gqyFZGYXv8MBIwNEDcTHyl4niax09F4C9BSPJbv5jQLSU9D+3oVCkYfocJLQPr63kyTCJ8HtUuFvIRBnqw1L0ISDX39gTSvdr5VU4wuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1WKK4sj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB132C4CEF7;
+	Mon, 23 Mar 2026 16:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278136;
-	bh=ckP+H3JljC/AIq5+RV2WJs/M3Yk2p/BInwiK2JGoeHc=;
+	s=korg; t=1774282421;
+	bh=lOku3nFW6AFClrGWcW6QhvDSnKmvNyoleu10Yq+stNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HEbwyTG31E5/+9Q31HMaIYmuI23qBIO2XPKIJWEv0kn/KHlpS3hs8gXJKYCFwFwHS
-	 yDwVN8TP/MnuTYscn59crKFDZefOHANErDd+yxxZYVkmR3OmgDnIKCSqOUiHI34gFT
-	 CvZ7QpkOaa7ciDejCp48YiczfWs8bIztXWUXMM+A=
+	b=n1WKK4sjxqbMzIbdr/Mqwy/GQptLvXmILM127Wq30CKdgdqsqpYEZSY5zXbAYLSFA
+	 LZJyyFs7eVXugN5AO6JlGpP0vqkhJ125YT3V5leKNJX6gPrMcMzDybY+1GMhiWCcXF
+	 KINpGQW+FSVOPDl+VK1ixD1Wu3ZZHFQxcsJaMKng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-	Chris Lew <christopher.lew@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sofia Schneider <sofia@schn.dev>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 212/567] remoteproc: sysmon: Correct subsys_name_len type in QMI request
-Date: Mon, 23 Mar 2026 14:42:12 +0100
-Message-ID: <20260323134539.077192090@linuxfoundation.org>
+Subject: [PATCH 6.1 151/481] ACPI: OSI: Add DMI quirk for Acer Aspire One D255
+Date: Mon, 23 Mar 2026 14:42:13 +0100
+Message-ID: <20260323134528.927102867@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +68,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229124-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229622-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 931B12F61F8
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 1E34C2FA556
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+From: Sofia Schneider <sofia@schn.dev>
 
-[ Upstream commit da994db94e60f9a9411108ddf4d1836147ad4c9c ]
+[ Upstream commit 5ede90206273ff156a778254f0f972a55e973c89 ]
 
-The QMI message encoder has up until recently read a single byte (as
-elem_size == 1), but with the introduction of big endian support it's
-become apparent that this field is expected to be a full u32 -
-regardless of the size of the length in the encoded message (which is
-what elem_size specifies).
+The screen backlight turns off during boot (specifically during udev device
+initialization) when returning true for _OSI("Windows 2009").
 
-The result is that the encoder now reads past the length byte and
-rejects the unreasonably large length formed when including the
-following 3 bytes from the subsys_name array.
+Analyzing the device's DSDT reveals that the firmware takes a different
+code path when Windows 7 is reported, which leads to the backlight shutoff.
+Add a DMI quirk to invoke dmi_disable_osi_win7 for this model.
 
-Fix this by changing to the expected type.
-
-Fixes: 1fb82ee806d1 ("remoteproc: qcom: Introduce sysmon")
-Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
-Reviewed-by: Chris Lew <christopher.lew@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20260220-qmi-encode-invalid-length-v2-1-5674be35ab29@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sofia Schneider <sofia@schn.dev>
+Link: https://patch.msgid.link/20260223025240.518509-1-sofia@schn.dev
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_sysmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/osi.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/remoteproc/qcom_sysmon.c b/drivers/remoteproc/qcom_sysmon.c
-index c24e4a8828738..db33a41051a3e 100644
---- a/drivers/remoteproc/qcom_sysmon.c
-+++ b/drivers/remoteproc/qcom_sysmon.c
-@@ -203,7 +203,7 @@ static const struct qmi_elem_info ssctl_shutdown_resp_ei[] = {
- };
+diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+index ae9620757865b..600af8814038a 100644
+--- a/drivers/acpi/osi.c
++++ b/drivers/acpi/osi.c
+@@ -389,6 +389,19 @@ static const struct dmi_system_id acpi_osi_dmi_table[] __initconst = {
+ 		},
+ 	},
  
- struct ssctl_subsys_event_req {
--	u8 subsys_name_len;
-+	u32 subsys_name_len;
- 	char subsys_name[SSCTL_SUBSYS_NAME_LENGTH];
- 	u32 event;
- 	u8 evt_driven_valid;
++	/*
++	 * The screen backlight turns off during udev device creation
++	 * when returning true for _OSI("Windows 2009")
++	 */
++	{
++	.callback = dmi_disable_osi_win7,
++	.ident = "Acer Aspire One D255",
++	.matches = {
++		     DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
++		     DMI_MATCH(DMI_PRODUCT_NAME, "AOD255"),
++		},
++	},
++
+ 	/*
+ 	 * The wireless hotkey does not work on those machines when
+ 	 * returning true for _OSI("Windows 2012")
 -- 
 2.51.0
 
