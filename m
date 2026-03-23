@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-229620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229621-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gNncGbBrwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229620-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:56 +0100
+	id 0B2bK7JrwWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229621-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE022F85BF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706202F85D4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AB76130D050E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2A71B30D0BD9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517213B9611;
-	Mon, 23 Mar 2026 16:13:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768CD3BBA06;
+	Mon, 23 Mar 2026 16:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmSqOk+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzcllvk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C55A3BD649;
-	Mon, 23 Mar 2026 16:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A137E274B5F;
+	Mon, 23 Mar 2026 16:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282416; cv=none; b=mNpQjyYKd2I6KQjNwBhSbd4VCJT9xSqwQv+MnGkO2YR3slK5ERn+0TZi7DwOV3Ux0aI+W+zdDKygNck9h3tNbGOmS3d4OEkPCQhSSqAmnnwlpxYUMA9qrYHmyJzTzsX0wXtxRStBcy0/gL2eNv58rS4bXkpCYyylvhQbD3e85oM=
+	t=1774282418; cv=none; b=QtjI93FW/ipDQc8XdR4lneFomcev6xGYzpUfb05m6QomU5O/Aap5dVOY3mkYruI2GcJjbbZYAlwqAMmb/Bn0RDgHKUALVrrc62uXAGyt27UKNqp7U1+jPDNWg5F4CRoUBfOELz02R3w3Pg0x8F6DhjQ7S3ZgRzdHpWywjMToAAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282416; c=relaxed/simple;
-	bh=52HkgNG9onzppc1vHfoQj758ZXPky5WL7oQvQwl58t8=;
+	s=arc-20240116; t=1774282418; c=relaxed/simple;
+	bh=QYZCgyQvsaLnD3/gOg98hth1Y+54aN1dFIm12mJ3HJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjbwvpriD1I0Ac261OPEnF+FV+d5w1s8xMp7aP4IU3GlFytS8+bpnup0mA8olSTgnZurVexQFQPqiwHkcZ1Ak1mCLLLBDmOobICbE660tuU+9ucCA8UOVQKjl5hTPmNaaVdn2Pea6D2hgoPYMebkALJ49KIAtlTWYYMR6jeSY+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmSqOk+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C22C2BCB4;
-	Mon, 23 Mar 2026 16:13:35 +0000 (UTC)
+	 MIME-Version; b=g08B41gjGjhRLtRDu4qkMpNGum23SVNJ00YIadAyk3sd3I69uqGiA3aB94ipSNO1IJLMpXmZ+4rqY34c8Zi2kgkvawxM+3Miq9IPNtD8zmb8iBe51BbpbH+6k5W0ZoYteBz9JlGUEVy7HgUCb52SXSjTRj1ZlDHKSSpuAN7gTWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzcllvk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D48EC2BCB4;
+	Mon, 23 Mar 2026 16:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282415;
-	bh=52HkgNG9onzppc1vHfoQj758ZXPky5WL7oQvQwl58t8=;
+	s=korg; t=1774282418;
+	bh=QYZCgyQvsaLnD3/gOg98hth1Y+54aN1dFIm12mJ3HJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BmSqOk+FWRKWqLtKEU4CmjqkHWhP1lnUqvXNYrPhEI9m+JJJvNbIfH2DWeE9g8BaX
-	 VhanMUqsB/2S8SGm52lT/QzVTiNO1itAYTpDYJ5fQGSHO5AEU4ekMDGvd9HsEPH3dJ
-	 v3pEmhVSNVHuWfT26mzBa8Y/3koBoA1m32WJDXFg=
+	b=wzcllvk6N9FoTNF7leElYe6kJMEfYxHSVsuX2ysZEaeAjgZLHx8YZSIFSqApDEGFd
+	 7mNXIdDb8TCxk2wm800tzx8x8Sfmcr3mmusqmEpkgimfLkQvMol7W0/QinCsuEUKho
+	 Cdtd01XjzKInM7Ysk4dApVSF8662SR9psWUt840o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Waiman Long <longman@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Ramanathan Choodamani <quic_rchoodam@quicinc.com>,
+	Aishwarya R <aishwarya.r@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/481] unshare: fix unshare_fs() handling
-Date: Mon, 23 Mar 2026 14:42:11 +0100
-Message-ID: <20260323134528.879638101@linuxfoundation.org>
+Subject: [PATCH 6.1 150/481] wifi: mac80211: set default WMM parameters on all links
+Date: Mon, 23 Mar 2026 14:42:12 +0100
+Message-ID: <20260323134528.904829084@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
 References: <20260323134525.256603107@linuxfoundation.org>
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229620-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229621-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0FE022F85BF
+X-Rspamd-Queue-Id: 706202F85D4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,69 +99,50 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Ramanathan Choodamani <quic_rchoodam@quicinc.com>
 
-[ Upstream commit 6c4b2243cb6c0755159bd567130d5e12e7b10d9f ]
+[ Upstream commit 2259d14499d16b115ef8d5d2ddc867e2be7cb5b5 ]
 
-There's an unpleasant corner case in unshare(2), when we have a
-CLONE_NEWNS in flags and current->fs hadn't been shared at all; in that
-case copy_mnt_ns() gets passed current->fs instead of a private copy,
-which causes interesting warts in proof of correctness]
+Currently, mac80211 only initializes default WMM parameters
+on the deflink during do_open(). For MLO cases, this
+leaves the additional links without proper WMM defaults
+if hostapd does not supply per-link WMM parameters, leading
+to inconsistent QoS behavior across links.
 
-> I guess if private means fs->users == 1, the condition could still be true.
+Set default WMM parameters for each link during
+ieee80211_vif_update_links(), because this ensures all
+individual links in an MLD have valid WMM settings during
+bring-up and behave consistently across different BSS.
 
-Unfortunately, it's worse than just a convoluted proof of correctness.
-Consider the case when we have CLONE_NEWCGROUP in addition to CLONE_NEWNS
-(and current->fs->users == 1).
-
-We pass current->fs to copy_mnt_ns(), all right.  Suppose it succeeds and
-flips current->fs->{pwd,root} to corresponding locations in the new namespace.
-Now we proceed to copy_cgroup_ns(), which fails (e.g. with -ENOMEM).
-We call put_mnt_ns() on the namespace created by copy_mnt_ns(), it's
-destroyed and its mount tree is dissolved, but...  current->fs->root and
-current->fs->pwd are both left pointing to now detached mounts.
-
-They are pinning those, so it's not a UAF, but it leaves the calling
-process with unshare(2) failing with -ENOMEM _and_ leaving it with
-pwd and root on detached isolated mounts.  The last part is clearly a bug.
-
-There is other fun related to that mess (races with pivot_root(), including
-the one between pivot_root() and fork(), of all things), but this one
-is easy to isolate and fix - treat CLONE_NEWNS as "allocate a new
-fs_struct even if it hadn't been shared in the first place".  Sure, we could
-go for something like "if both CLONE_NEWNS *and* one of the things that might
-end up failing after copy_mnt_ns() call in create_new_namespaces() are set,
-force allocation of new fs_struct", but let's keep it simple - the cost
-of copy_fs_struct() is trivial.
-
-Another benefit is that copy_mnt_ns() with CLONE_NEWNS *always* gets
-a freshly allocated fs_struct, yet to be attached to anything.  That
-seriously simplifies the analysis...
-
-FWIW, that bug had been there since the introduction of unshare(2) ;-/
-
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Link: https://patch.msgid.link/20260207082524.GE3183987@ZenIV
-Tested-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Ramanathan Choodamani <quic_rchoodam@quicinc.com>
+Signed-off-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260205094216.3093542-1-aishwarya.r@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/link.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index c548538d3ade8..b8cf8891ffc7b 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -3193,7 +3193,7 @@ static int unshare_fs(unsigned long unshare_flags, struct fs_struct **new_fsp)
- 		return 0;
+diff --git a/net/mac80211/link.c b/net/mac80211/link.c
+index a85b44c1bc995..cd84e7f3b742e 100644
+--- a/net/mac80211/link.c
++++ b/net/mac80211/link.c
+@@ -176,6 +176,7 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
+ 	struct ieee80211_bss_conf *old[IEEE80211_MLD_MAX_NUM_LINKS];
+ 	struct ieee80211_link_data *old_data[IEEE80211_MLD_MAX_NUM_LINKS];
+ 	bool use_deflink = old_links == 0; /* set for error case */
++	bool non_sta = sdata->vif.type != NL80211_IFTYPE_STATION;
  
- 	/* don't need lock here; in the worst case we'll do useless copy */
--	if (fs->users == 1)
-+	if (!(unshare_flags & CLONE_NEWNS) && fs->users == 1)
- 		return 0;
+ 	sdata_assert_lock(sdata);
  
- 	*new_fsp = copy_fs_struct(fs);
+@@ -229,6 +230,7 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
+ 		link = links[link_id];
+ 		ieee80211_link_init(sdata, link_id, &link->data, &link->conf);
+ 		ieee80211_link_setup(&link->data);
++		ieee80211_set_wmm_default(&link->data, true, non_sta);
+ 	}
+ 
+ 	if (new_links == 0)
 -- 
 2.51.0
 
