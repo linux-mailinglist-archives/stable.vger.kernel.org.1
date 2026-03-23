@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228020-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNQFCSlbwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229210-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:25 +0100
+	id eAj5MPBGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228020-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5672F63AB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30EA72F384D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9277D3034362
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B7DB73064E18
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D338B27A123;
-	Mon, 23 Mar 2026 15:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4733ACF10;
+	Mon, 23 Mar 2026 13:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KrR9DH9v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YxeYcQnZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9672735957;
-	Mon, 23 Mar 2026 15:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996323ACA5C;
+	Mon, 23 Mar 2026 13:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278404; cv=none; b=AoNZkZDJr7gbhYVNtgmqoqB0CT+vOP3QEhscrnsIkj0m76pBNslL2k299P7lSpX0M78UX8fKG6UdzDBK7fLCzukMWFiDJof2HUVv7bXYUELteYbYGsblWbRWLCADomQpGFfO/v5JQAnKb7KSLWevVNna4QfuRntE1DGxaBQ0Pr0=
+	t=1774273883; cv=none; b=eNOyFa+qcmor/jYaoDDW4DU0gJ6QHfiHxzhbrvhmGMIjUG/u4xhex4v8CXess8BIQFFE6XWLTqUJy0uKMAvIgRerev+FcHijQrozXnJz4Nz0zJ4WQ6N6++087huZmr0R5ugh7kF1X7DUgcd+io0iM4w4ovP4t5SGErYPa1tU5G8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278404; c=relaxed/simple;
-	bh=ERp4pesnM22Dk3cf/gEfrFMUdEUFARIiWh+NKwgQLA4=;
+	s=arc-20240116; t=1774273883; c=relaxed/simple;
+	bh=4lo7yHi0eD0NwZJU1UBNm8zQuVR6rBQyj66VqE5cwyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3WNdLWcJvIoAHdy8qQ6lyz3nkfO9Jn0bZFsb8HKG8nCu728joUcrQxDk8yBqFf6o4WalZ8czzp8ogpW2HJdssjBWfpdsSQHJ0tLzmAk07U0FftnCCcoolNJ/TH/KHsi5aPv9Ks5UVk7pbE5nqzPatx3LDJZ8v+OEYVsQNZsAJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KrR9DH9v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDEFC4CEF7;
-	Mon, 23 Mar 2026 15:06:43 +0000 (UTC)
+	 MIME-Version; b=EUkrIVKR7tLMu85NtVzP5yioyCbUFzP6VVnLyp6uBzh1ObfDbhpkHRRYbCZBxrH6H5yzLFKTZyseTowQegycSKhyoxKrpHo8rFMUU3WQ4YqbkXZ7ijKVMHqv2NiGEcVqevL7PGy2UY4QiJKwMQ3Vkot2U8e8TJ/Lo2vdg7oN1+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YxeYcQnZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B48DC2BCB1;
+	Mon, 23 Mar 2026 13:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278404;
-	bh=ERp4pesnM22Dk3cf/gEfrFMUdEUFARIiWh+NKwgQLA4=;
+	s=korg; t=1774273883;
+	bh=4lo7yHi0eD0NwZJU1UBNm8zQuVR6rBQyj66VqE5cwyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KrR9DH9vhiBPjmPFd97SLWYLf8av4iUZp51JHy4t2Lm7KH3OA+sdqbF1K1wSUd9h2
-	 Xkj602hiFLFWEMoe3dC+f/ktvzXKnKk9XRvPuSyMggV4LCToKG1vOC/Fo/Umzzreoe
-	 T843y0a2lOaWdMSTY9O5KLdgXjGm/H1H8YLhtIzk=
+	b=YxeYcQnZui9FiOv/CyAWp8Sz0smiT3CXPFPxHDJdEiZN+Gaz6SvKXKuA9jLIXFnFi
+	 e5bw94JvtamfxcqH6sAi6wAob4T6eGepR2bmg6uwLstMo50+cn48HY8SiFPsWzTjei
+	 dMHHJeca2IdFdK6oc2TFj27rcJB8iljjfWHOFylA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 297/567] libceph: Use u32 for non-negative values in ceph_monmap_decode()
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Corey Minyard <corey@minyard.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 040/220] ipmi:msghandler: Handle error returns from the SMI sender
 Date: Mon, 23 Mar 2026 14:43:37 +0100
-Message-ID: <20260323134541.168067466@linuxfoundation.org>
+Message-ID: <20260323134505.857446668@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +66,247 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229210-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tu-ilmenau.de,ibm.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228020-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0C5672F63AB
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 30EA72F384D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+From: Corey Minyard <corey@minyard.net>
 
-commit 770444611f047dbfd4517ec0bc1b179d40c2f346 upstream.
+[ Upstream commit 62cd145453d577113f993efd025f258dd86aa183 ]
 
-This patch fixes unnecessary implicit conversions that change signedness
-of blob_len and num_mon in ceph_monmap_decode().
-Currently blob_len and num_mon are (signed) int variables. They are used
-to hold values that are always non-negative and get assigned in
-ceph_decode_32_safe(), which is meant to assign u32 values. Both
-variables are subsequently used as unsigned values, and the value of
-num_mon is further assigned to monmap->num_mon, which is of type u32.
-Therefore, both variables should be of type u32. This is especially
-relevant for num_mon. If the value read from the incoming message is
-very large, it is interpreted as a negative value, and the check for
-num_mon > CEPH_MAX_MON does not catch it. This leads to the attempt to
-allocate a very large chunk of memory for monmap, which will most likely
-fail. In this case, an unnecessary attempt to allocate memory is
-performed, and -ENOMEM is returned instead of -EINVAL.
+It used to be, until recently, that the sender operation on the low
+level interfaces would not fail.  That's not the case any more with
+recent changes.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+So check the return value from the sender operation, and propagate it
+back up from there and handle the errors in all places.
+
+Reported-by: Rafael J. Wysocki <rafael@kernel.org>
+Fixes: bc3a9d217755 ("ipmi:si: Gracefully handle if the BMC is non-functional")
+Cc: stable@vger.kernel.org # 4.18
+Signed-off-by: Corey Minyard <corey@minyard.net>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/mon_client.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c |  100 ++++++++++++++++++++++++------------
+ 1 file changed, 68 insertions(+), 32 deletions(-)
 
---- a/net/ceph/mon_client.c
-+++ b/net/ceph/mon_client.c
-@@ -72,8 +72,8 @@ static struct ceph_monmap *ceph_monmap_d
- 	struct ceph_monmap *monmap = NULL;
- 	struct ceph_fsid fsid;
- 	u32 struct_len;
--	int blob_len;
--	int num_mon;
-+	u32 blob_len;
-+	u32 num_mon;
- 	u8 struct_v;
- 	u32 epoch;
- 	int ret;
-@@ -112,7 +112,7 @@ static struct ceph_monmap *ceph_monmap_d
- 	}
- 	ceph_decode_32_safe(p, end, num_mon, e_inval);
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -1887,19 +1887,32 @@ static struct ipmi_smi_msg *smi_add_send
+ 	return smi_msg;
+ }
  
--	dout("%s fsid %pU epoch %u num_mon %d\n", __func__, &fsid, epoch,
-+	dout("%s fsid %pU epoch %u num_mon %u\n", __func__, &fsid, epoch,
- 	     num_mon);
- 	if (num_mon > CEPH_MAX_MON)
- 		goto e_inval;
+-static void smi_send(struct ipmi_smi *intf,
++static int smi_send(struct ipmi_smi *intf,
+ 		     const struct ipmi_smi_handlers *handlers,
+ 		     struct ipmi_smi_msg *smi_msg, int priority)
+ {
+ 	int run_to_completion = READ_ONCE(intf->run_to_completion);
+ 	unsigned long flags = 0;
++	int rv = 0;
+ 
+ 	ipmi_lock_xmit_msgs(intf, run_to_completion, &flags);
+ 	smi_msg = smi_add_send_msg(intf, smi_msg, priority);
+ 	ipmi_unlock_xmit_msgs(intf, run_to_completion, &flags);
+ 
+-	if (smi_msg)
+-		handlers->sender(intf->send_info, smi_msg);
++	if (smi_msg) {
++		rv = handlers->sender(intf->send_info, smi_msg);
++		if (rv) {
++			ipmi_lock_xmit_msgs(intf, run_to_completion, &flags);
++			intf->curr_msg = NULL;
++			ipmi_unlock_xmit_msgs(intf, run_to_completion, &flags);
++			/*
++			 * Something may have been added to the transmit
++			 * queue, so schedule a check for that.
++			 */
++			queue_work(system_wq, &intf->smi_work);
++		}
++	}
++	return rv;
+ }
+ 
+ static bool is_maintenance_mode_cmd(struct kernel_ipmi_msg *msg)
+@@ -2312,6 +2325,7 @@ static int i_ipmi_request(struct ipmi_us
+ 	struct ipmi_recv_msg *recv_msg;
+ 	int run_to_completion = READ_ONCE(intf->run_to_completion);
+ 	int rv = 0;
++	bool in_seq_table = false;
+ 
+ 	if (supplied_recv) {
+ 		recv_msg = supplied_recv;
+@@ -2365,33 +2379,50 @@ static int i_ipmi_request(struct ipmi_us
+ 		rv = i_ipmi_req_ipmb(intf, addr, msgid, msg, smi_msg, recv_msg,
+ 				     source_address, source_lun,
+ 				     retries, retry_time_ms);
++		in_seq_table = true;
+ 	} else if (is_ipmb_direct_addr(addr)) {
+ 		rv = i_ipmi_req_ipmb_direct(intf, addr, msgid, msg, smi_msg,
+ 					    recv_msg, source_lun);
+ 	} else if (is_lan_addr(addr)) {
+ 		rv = i_ipmi_req_lan(intf, addr, msgid, msg, smi_msg, recv_msg,
+ 				    source_lun, retries, retry_time_ms);
++		in_seq_table = true;
+ 	} else {
+-	    /* Unknown address type. */
++		/* Unknown address type. */
+ 		ipmi_inc_stat(intf, sent_invalid_commands);
+ 		rv = -EINVAL;
+ 	}
+ 
+-	if (rv) {
+-out_err:
+-		if (!supplied_smi)
+-			ipmi_free_smi_msg(smi_msg);
+-		if (!supplied_recv)
+-			ipmi_free_recv_msg(recv_msg);
+-	} else {
++	if (!rv) {
+ 		dev_dbg(intf->si_dev, "Send: %*ph\n",
+ 			smi_msg->data_size, smi_msg->data);
+ 
+-		smi_send(intf, intf->handlers, smi_msg, priority);
++		rv = smi_send(intf, intf->handlers, smi_msg, priority);
++		if (rv != IPMI_CC_NO_ERROR)
++			/* smi_send() returns an IPMI err, return a Linux one. */
++			rv = -EIO;
++		if (rv && in_seq_table) {
++			/*
++			 * If it's in the sequence table, it will be
++			 * retried later, so ignore errors.
++			 */
++			rv = 0;
++			/* But we need to fix the timeout. */
++			intf_start_seq_timer(intf, smi_msg->msgid);
++			ipmi_free_smi_msg(smi_msg);
++			smi_msg = NULL;
++		}
+ 	}
++out_err:
+ 	if (!run_to_completion)
+ 		mutex_unlock(&intf->users_mutex);
+ 
++	if (rv) {
++		if (!supplied_smi)
++			ipmi_free_smi_msg(smi_msg);
++		if (!supplied_recv)
++			ipmi_free_recv_msg(recv_msg);
++	}
+ 	return rv;
+ }
+ 
+@@ -3965,12 +3996,12 @@ static int handle_ipmb_get_msg_cmd(struc
+ 		dev_dbg(intf->si_dev, "Invalid command: %*ph\n",
+ 			msg->data_size, msg->data);
+ 
+-		smi_send(intf, intf->handlers, msg, 0);
+-		/*
+-		 * We used the message, so return the value that
+-		 * causes it to not be freed or queued.
+-		 */
+-		rv = -1;
++		if (smi_send(intf, intf->handlers, msg, 0) == IPMI_CC_NO_ERROR)
++			/*
++			 * We used the message, so return the value that
++			 * causes it to not be freed or queued.
++			 */
++			rv = -1;
+ 	} else if (!IS_ERR(recv_msg)) {
+ 		/* Extract the source address from the data. */
+ 		ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
+@@ -4044,12 +4075,12 @@ static int handle_ipmb_direct_rcv_cmd(st
+ 		msg->data[4] = IPMI_INVALID_CMD_COMPLETION_CODE;
+ 		msg->data_size = 5;
+ 
+-		smi_send(intf, intf->handlers, msg, 0);
+-		/*
+-		 * We used the message, so return the value that
+-		 * causes it to not be freed or queued.
+-		 */
+-		rv = -1;
++		if (smi_send(intf, intf->handlers, msg, 0) == IPMI_CC_NO_ERROR)
++			/*
++			 * We used the message, so return the value that
++			 * causes it to not be freed or queued.
++			 */
++			rv = -1;
+ 	} else if (!IS_ERR(recv_msg)) {
+ 		/* Extract the source address from the data. */
+ 		daddr = (struct ipmi_ipmb_direct_addr *)&recv_msg->addr;
+@@ -4189,7 +4220,7 @@ static int handle_lan_get_msg_cmd(struct
+ 				  struct ipmi_smi_msg *msg)
+ {
+ 	struct cmd_rcvr          *rcvr;
+-	int                      rv = 0;
++	int                      rv = 0; /* Free by default */
+ 	unsigned char            netfn;
+ 	unsigned char            cmd;
+ 	unsigned char            chan;
+@@ -4242,12 +4273,12 @@ static int handle_lan_get_msg_cmd(struct
+ 		dev_dbg(intf->si_dev, "Invalid command: %*ph\n",
+ 			msg->data_size, msg->data);
+ 
+-		smi_send(intf, intf->handlers, msg, 0);
+-		/*
+-		 * We used the message, so return the value that
+-		 * causes it to not be freed or queued.
+-		 */
+-		rv = -1;
++		if (smi_send(intf, intf->handlers, msg, 0) == IPMI_CC_NO_ERROR)
++			/*
++			 * We used the message, so return the value that
++			 * causes it to not be freed or queued.
++			 */
++			rv = -1;
+ 	} else if (!IS_ERR(recv_msg)) {
+ 		/* Extract the source address from the data. */
+ 		lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
+@@ -5056,7 +5087,12 @@ static void check_msg_timeout(struct ipm
+ 				ipmi_inc_stat(intf,
+ 					      retransmitted_ipmb_commands);
+ 
+-			smi_send(intf, intf->handlers, smi_msg, 0);
++			/* If this fails we'll retry later or timeout. */
++			if (smi_send(intf, intf->handlers, smi_msg, 0) != IPMI_CC_NO_ERROR) {
++				/* But fix the timeout. */
++				intf_start_seq_timer(intf, smi_msg->msgid);
++				ipmi_free_smi_msg(smi_msg);
++			}
+ 		} else
+ 			ipmi_free_smi_msg(smi_msg);
+ 
 
 
 
