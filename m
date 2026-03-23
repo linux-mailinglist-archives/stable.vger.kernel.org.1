@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229644-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBaVAuRQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228611-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:36 +0100
+	id qKQHOF9twWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229644-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B0432F4F75
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 571C62F8A0C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:42:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C492D3122BBF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84B09304F6F2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0CD1F91F6;
-	Mon, 23 Mar 2026 14:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6853BB9EE;
+	Mon, 23 Mar 2026 16:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayg/WCy7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RD2TSPCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508D61A680D;
-	Mon, 23 Mar 2026 14:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4703AF662;
+	Mon, 23 Mar 2026 16:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275600; cv=none; b=NwAwfKqxpOen1YDmQEerH/TtAvYJfG6CJv0Kg1abx+HGZb5HwI2piwUl5H3XjF2Ug9ips+ZmWNTpKtD0ItiJcozY2fdkGnNcav7a+BgxmKg/19/5TNS7uW4B6X6g+dh5XsqW7tVuDEkzfnAf4ttUxjI/ihoC5R3xTbW+fdziCRw=
+	t=1774282480; cv=none; b=Nnyw0jk83HXhZLRLo0Mu3v0Ho0y/PELLy2i7UhS+ITngvUerN33jFdsa6TCDRDywEwGGGPqpvezyr4SsO2NmLSGX0czNqxhkiQPnOgJVKzmwJ/ePORfNRW/0D0BuKxm2hkHrzWwazErN7B+lYLerIvNkWvETHoRtf0XObfsXZgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275600; c=relaxed/simple;
-	bh=Zu6OLowadA8zGf+5R74d3IJfvP50OYfhvxxZU55SDls=;
+	s=arc-20240116; t=1774282480; c=relaxed/simple;
+	bh=DnOpL8tw1x4wqIu1Plj4OxybrU3m2nXNmWcX+ApA36A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/y2/5irh9GygnWzk4Jqoqu8Hmjhk/3XODcamiXRdmSiysMcuTJH8qbgv1rJ0u7SYZemN245ufTYefcCPH+MG4B/Pfpap3FLmBqbDnpjDUcfj/wp0VErtexAwHRAuV3UXzWyhqIVzSfKf9p13b/92o2ay+7xfzkzmHFFdr6Rbbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayg/WCy7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921C2C2BC9E;
-	Mon, 23 Mar 2026 14:19:59 +0000 (UTC)
+	 MIME-Version; b=oEo2XF3UDjkEDzmmyX35c/vbnAA+sILGRPg8QNHNF/gCxrVOkgA1fXnBg5C18j2EniUs4jEtOQTfA9KrMaE3jjuvw8voR0x/up97WwTHUADNN/BjlJATNclVArkCDOVkxe+ZG9ddnEsmYdFxVTqwMOU4QqOBjIWQeGPZ1n6pvbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RD2TSPCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E821FC4CEF7;
+	Mon, 23 Mar 2026 16:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275600;
-	bh=Zu6OLowadA8zGf+5R74d3IJfvP50OYfhvxxZU55SDls=;
+	s=korg; t=1774282480;
+	bh=DnOpL8tw1x4wqIu1Plj4OxybrU3m2nXNmWcX+ApA36A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ayg/WCy7tGCLVtPWawX5jtDFsBd34tCoIPmPWCvMwgayhLn/DK48ik27uLVMVC36J
-	 Tojg5MjziQu4QRVJcO+X0slZ/bIrQS6D91DpK+/jT6a7OzIfwF5NFJX4slIyw/O2S1
-	 Ce19yRR70n6s4cYMGKvew/I2MZLZI3AoEt3rrTAA=
+	b=RD2TSPCbA4+gNIL23U6dlrFnoyFlBZwZMaTQFA6KeLInS9VrrhgICkVR+Qd1FI5/v
+	 15/jFiQcy/g6ZCb5NFFjHLtlXRcu8JbCHvi/y+R83AydblXotCl+7rQ6Q8DWVEDEPV
+	 BwNViP6OgdYVxQ549Bkxc2tC0CZMdfXn26nUn9a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Huiwen He <hehuiwen@kylinos.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 157/460] tracing: Fix syscall events activation by ensuring refcount hits zero
+	Matteo Cotifava <cotifavamatteo@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 171/481] ASoC: soc-core: flush delayed work before removing DAIs and widgets
 Date: Mon, 23 Mar 2026 14:42:33 +0100
-Message-ID: <20260323134530.421214209@linuxfoundation.org>
+Message-ID: <20260323134529.388091810@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,152 +66,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228611-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_FROM(0.00)[bounces-229644-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6B0432F4F75
+X-Rspamd-Queue-Id: 571C62F8A0C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huiwen He <hehuiwen@kylinos.cn>
+From: matteo.cotifava <cotifavamatteo@gmail.com>
 
-commit 0a663b764dbdf135a126284f454c9f01f95a87d4 upstream.
+[ Upstream commit 95bc5c225513fc3c4ce169563fb5e3929fbb938b ]
 
-When multiple syscall events are specified in the kernel command line
-(e.g., trace_event=syscalls:sys_enter_openat,syscalls:sys_enter_close),
-they are often not captured after boot, even though they appear enabled
-in the tracing/set_event file.
+When a sound card is unbound while a PCM stream is open, a
+use-after-free can occur in snd_soc_dapm_stream_event(), called from
+the close_delayed_work workqueue handler.
 
-The issue stems from how syscall events are initialized. Syscall
-tracepoints require the global reference count (sys_tracepoint_refcount)
-to transition from 0 to 1 to trigger the registration of the syscall
-work (TIF_SYSCALL_TRACEPOINT) for tasks, including the init process (pid 1).
+During unbind, snd_soc_unbind_card() flushes delayed work and then
+calls soc_cleanup_card_resources(). Inside cleanup,
+snd_card_disconnect_sync() releases all PCM file descriptors, and
+the resulting PCM close path can call snd_soc_dapm_stream_stop()
+which schedules new delayed work with a pmdown_time timer delay.
+Since this happens after the flush in snd_soc_unbind_card(), the
+new work is not caught. soc_remove_link_components() then frees
+DAPM widgets before this work fires, leading to the use-after-free.
 
-The current implementation of early_enable_events() with disable_first=true
-used an interleaved sequence of "Disable A -> Enable A -> Disable B -> Enable B".
-If multiple syscalls are enabled, the refcount never drops to zero,
-preventing the 0->1 transition that triggers actual registration.
+The existing flush in soc_free_pcm_runtime() also cannot help as it
+runs after soc_remove_link_components() has already freed the widgets.
 
-Fix this by splitting early_enable_events() into two distinct phases:
-1. Disable all events specified in the buffer.
-2. Enable all events specified in the buffer.
+Add a flush in soc_cleanup_card_resources() after
+snd_card_disconnect_sync() (after which no new PCM closes can
+schedule further delayed work) and before soc_remove_link_dais()
+and soc_remove_link_components() (which tear down the structures the
+delayed work accesses).
 
-This ensures the refcount hits zero before re-enabling, allowing syscall
-events to be properly activated during early boot.
-
-The code is also refactored to use a helper function to avoid logic
-duplication between the disable and enable phases.
-
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://patch.msgid.link/20260224023544.1250787-1-hehuiwen@kylinos.cn
-Fixes: ce1039bd3a89 ("tracing: Fix enabling of syscall events on the command line")
-Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e894efef9ac7 ("ASoC: core: add support to card rebind")
+Signed-off-by: Matteo Cotifava <cotifavamatteo@gmail.com>
+Link: https://patch.msgid.link/20260309215412.545628-3-cotifavamatteo@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events.c |   52 +++++++++++++++++++++++++++++++-------------
- 1 file changed, 37 insertions(+), 15 deletions(-)
+ sound/soc/soc-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/trace/trace_events.c
-+++ b/kernel/trace/trace_events.c
-@@ -4173,26 +4173,22 @@ static __init int event_trace_memsetup(v
- 	return 0;
- }
- 
--__init void
--early_enable_events(struct trace_array *tr, char *buf, bool disable_first)
-+/*
-+ * Helper function to enable or disable a comma-separated list of events
-+ * from the bootup buffer.
-+ */
-+static __init void __early_set_events(struct trace_array *tr, char *buf, bool enable)
- {
- 	char *token;
--	int ret;
--
--	while (true) {
--		token = strsep(&buf, ",");
--
--		if (!token)
--			break;
- 
-+	while ((token = strsep(&buf, ","))) {
- 		if (*token) {
--			/* Restarting syscalls requires that we stop them first */
--			if (disable_first)
-+			if (enable) {
-+				if (ftrace_set_clr_event(tr, token, 1))
-+					pr_warn("Failed to enable trace event: %s\n", token);
-+			} else {
- 				ftrace_set_clr_event(tr, token, 0);
--
--			ret = ftrace_set_clr_event(tr, token, 1);
--			if (ret)
--				pr_warn("Failed to enable trace event: %s\n", token);
-+			}
- 		}
- 
- 		/* Put back the comma to allow this to be called again */
-@@ -4201,6 +4197,32 @@ early_enable_events(struct trace_array *
- 	}
- }
- 
-+/**
-+ * early_enable_events - enable events from the bootup buffer
-+ * @tr: The trace array to enable the events in
-+ * @buf: The buffer containing the comma separated list of events
-+ * @disable_first: If true, disable all events in @buf before enabling them
-+ *
-+ * This function enables events from the bootup buffer. If @disable_first
-+ * is true, it will first disable all events in the buffer before enabling
-+ * them.
-+ *
-+ * For syscall events, which rely on a global refcount to register the
-+ * SYSCALL_WORK_SYSCALL_TRACEPOINT flag (especially for pid 1), we must
-+ * ensure the refcount hits zero before re-enabling them. A simple
-+ * "disable then enable" per-event is not enough if multiple syscalls are
-+ * used, as the refcount will stay above zero. Thus, we need a two-phase
-+ * approach: disable all, then enable all.
-+ */
-+__init void
-+early_enable_events(struct trace_array *tr, char *buf, bool disable_first)
-+{
-+	if (disable_first)
-+		__early_set_events(tr, buf, false);
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 835a9251c074b..c673453e8a747 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1905,6 +1905,9 @@ static void soc_cleanup_card_resources(struct snd_soc_card *card)
+ 	for_each_card_rtds(card, rtd)
+ 		if (rtd->initialized)
+ 			snd_soc_link_exit(rtd);
++	/* flush delayed work before removing DAIs and DAPM widgets */
++	snd_soc_flush_all_delayed_work(card);
 +
-+	__early_set_events(tr, buf, true);
-+}
-+
- static __init int event_trace_enable(void)
- {
- 	struct trace_array *tr = top_trace_array();
+ 	/* remove and free each DAI */
+ 	soc_remove_link_dais(card);
+ 	soc_remove_link_components(card);
+-- 
+2.51.0
+
 
 
 
