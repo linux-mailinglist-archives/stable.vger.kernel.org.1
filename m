@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228409-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8EhkCA9lwWkjSwQAu9opvQ
-	(envelope-from <stable+bounces-229418-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:06:39 +0100
+	id SGZjFv1LwWmKSAQAu9opvQ
+	(envelope-from <stable+bounces-228409-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEF3D2F794B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:06:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C05DC2F432C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8213F302BAC8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 94F9731A4D4A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C9D3BB9E9;
-	Mon, 23 Mar 2026 15:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADB153ACF0E;
+	Mon, 23 Mar 2026 14:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eb1+OGZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iv13iF9z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1957C3B27C5;
-	Mon, 23 Mar 2026 15:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F43123BCFD;
+	Mon, 23 Mar 2026 14:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279184; cv=none; b=pp/7herqg1UkFWZqTxxydtb3DUv2Ctsft7dgdzKkhVjP0IZ0H4OOKfMWwk96ty+skh7TCeGOx83NQ5VRUzBmhZHl9xl+v6txRvBc/MPQEiqH1Qfzj58djtwp0n8VbAEKMMDlYQyZygaRuQRpIs8RdM7vYzlPv56CLbMBR36FdSA=
+	t=1774275038; cv=none; b=AGezeC1iFs22KO8wtMlX00ZfxQM9VX6WGvoTzaeCmTn7dKhTnri/6a5vQHwjrv7Um3MlKQH4RpRjcy5TsX1zWHUpQL4ZMdCdCpj2pVWnJujSr9ogV8l8vvPSFQeDRnLCg4P2BO4HsXac3IDL/Gft27sGzhRSTHxSDhtaHVXqs7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279184; c=relaxed/simple;
-	bh=yoi5MY8NK5ODONtnO2k5oBNLRdVT688KhTaC5xdItxQ=;
+	s=arc-20240116; t=1774275038; c=relaxed/simple;
+	bh=KuD/AT/qe3T6V3N8cluVoYGSFzcPhNZq7uhFsfvThPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEtRhtyQDM3iJz5Yc9nxDKgf2CpBab0778V9IPnjkU9xJ8wd1AF1tmLGXnJxt/6yfc/P2LFiksxmjIMLJ+ZinTWGDhMWXFE8lsyIJMgXJPvG4ar0aERkwTaNihH78xBiOsY8hLm7nLYg0+N4/junjikyX7GfOCTBqGgR+Q3S34M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eb1+OGZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5992CC4CEF7;
-	Mon, 23 Mar 2026 15:19:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gJ6wAWOu47YnGhxw8Fpul2xq6JElNJfV3/B0wIVtpgBljVedGspewn47+0DU5NeHzOg1iUdRIF6zcSx6wO2FOrZk7Zo6cE1lzDsrSj/xraEXCTHupazNL1jcsYIpJI/wlOql/j0ZW2yOJR3kTLbYaOeTSwJIlI3SRWKn3uRP4Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iv13iF9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E670FC4CEF7;
+	Mon, 23 Mar 2026 14:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279183;
-	bh=yoi5MY8NK5ODONtnO2k5oBNLRdVT688KhTaC5xdItxQ=;
+	s=korg; t=1774275038;
+	bh=KuD/AT/qe3T6V3N8cluVoYGSFzcPhNZq7uhFsfvThPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eb1+OGZBBb/gZ6brVMLmiNwFm1SUTRj/FEJMvrWMrPtICQhSOjDaQV1GXAMKw3a+u
-	 ppQHZzNWt6L32khGmiMt1rn4d9NJ9JwpRLDp1rmNgYO7KIih8tl8iiuA+Pvim30Reg
-	 d0+SL9PnBout3W9n4hfqglqX0xXijojbtvjddxtg=
+	b=iv13iF9zwruyIpSgk7X2TofLMArRwRYUWU1OnGqPqoLdyfVcs/vogRsYyCibL3Umj
+	 p87YVch9HZj8oVfAvSoqygeBIQqTrWIgLj+GQNRYD3bEzEnGwjBF/pa8HekTvFJAQW
+	 1pchBAi+aL0ABHx6gPl05OGlA89x87kh2TmzpKBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Mika=20Penttil=C3=A4?= <mpenttil@redhat.com>,
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Maaz Mombasawala <maaz.mombasawala@broadcom.com>,
+	Zack Rusin <zack.rusin@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 501/567] wifi: cfg80211: cancel pmsr_free_wk in cfg80211_pmsr_wdev_down
+Subject: [PATCH 6.18 200/212] drm/vmwgfx: Dont overwrite KMS surface dirty tracker
 Date: Mon, 23 Mar 2026 14:47:01 +0100
-Message-ID: <20260323134546.417852041@linuxfoundation.org>
+Message-ID: <20260323134510.110751354@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +65,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-228409-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229418-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,intel.com:email,qualcomm.com:email]
-X-Rspamd-Queue-Id: AEF3D2F794B
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: C05DC2F432C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
+From: Ian Forbes <ian.forbes@broadcom.com>
 
-[ Upstream commit 6dccbc9f3e1d38565dff7730d2b7d1e8b16c9b09 ]
+[ Upstream commit c6cb77c474a32265e21c4871c7992468bf5e7638 ]
 
-When the nl80211 socket that originated a PMSR request is
-closed, cfg80211_release_pmsr() sets the request's nl_portid
-to zero and schedules pmsr_free_wk to process the abort
-asynchronously. If the interface is concurrently torn down
-before that work runs, cfg80211_pmsr_wdev_down() calls
-cfg80211_pmsr_process_abort() directly. However, the already-
-scheduled pmsr_free_wk work item remains pending and may run
-after the interface has been removed from the driver. This
-could cause the driver's abort_pmsr callback to operate on a
-torn-down interface, leading to undefined behavior and
-potential crashes.
+We were overwriting the surface's dirty tracker here causing a memory leak.
 
-Cancel pmsr_free_wk synchronously in cfg80211_pmsr_wdev_down()
-before calling cfg80211_pmsr_process_abort(). This ensures any
-pending or in-progress work is drained before interface teardown
-proceeds, preventing the work from invoking the driver abort
-callback after the interface is gone.
-
-Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
-Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260305160712.1263829-3-peddolla.reddy@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: Mika Penttilä <mpenttil@redhat.com>
+Closes: https://lore.kernel.org/dri-devel/8c53f3c6-c6de-46fe-a8ca-d98dd52b3abe@redhat.com/
+Fixes: 965544150d1c ("drm/vmwgfx: Refactor cursor handling")
+Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Link: https://patch.msgid.link/20260302200330.66763-1-ian.forbes@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/pmsr.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index 841a4516793b1..77cb1de9fc13b 100644
---- a/net/wireless/pmsr.c
-+++ b/net/wireless/pmsr.c
-@@ -641,6 +641,7 @@ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev)
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index 535d844191e7a..3e8a2f4a907da 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -768,7 +768,8 @@ static struct drm_framebuffer *vmw_kms_fb_create(struct drm_device *dev,
+ 		ret = vmw_bo_dirty_add(bo);
+ 		if (!ret && surface && surface->res.func->dirty_alloc) {
+ 			surface->res.coherent = true;
+-			ret = surface->res.func->dirty_alloc(&surface->res);
++			if (surface->res.dirty == NULL)
++				ret = surface->res.func->dirty_alloc(&surface->res);
+ 		}
+ 		ttm_bo_unreserve(&bo->tbo);
  	}
- 	spin_unlock_bh(&wdev->pmsr_lock);
- 
-+	cancel_work_sync(&wdev->pmsr_free_wk);
- 	if (found)
- 		cfg80211_pmsr_process_abort(wdev);
- 
 -- 
 2.51.0
 
