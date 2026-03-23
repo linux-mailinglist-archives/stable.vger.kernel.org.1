@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228184-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OF7HAXNSwWn+SAQAu9opvQ
-	(envelope-from <stable+bounces-228363-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:47:15 +0100
+	id oGv1Id5QwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228184-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:30 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BB22F5303
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:47:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BA52F4F56
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 160243225CC0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 806B130FA5C8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 411AE3B38B6;
-	Mon, 23 Mar 2026 14:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8402F3B95E7;
+	Mon, 23 Mar 2026 13:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tpyt3ajm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ff0yVegD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AA9399004;
-	Mon, 23 Mar 2026 14:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43AE63B8D6B;
+	Mon, 23 Mar 2026 13:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274915; cv=none; b=cIAbGya0mPC4op8wH3zSMMyatNjogSvpQLbQOvB8sE1i3pRSUai3SQI2hxDkS0ZUa1wT7h9zObhF0evMKQkQHy4z+iyrzcoTx78TdDCtN1TNhn06M+75Ce1yWNz0N/lHdsfkdrtn07lUwJsjxmAPNn+rAZFxj/oC//+AxpYKIZc=
+	t=1774274383; cv=none; b=aq/w2cElqi1nk44Z62vCyh/KypwGCfBqjENQhZ1IbxpD/E3cW7g0jAT5w2uZd1rCHCb9dOR6HdyAsukj2QQBzOinypEPAT9PGfe4AEv6L4HKviOOiwMDUouNmRKe87NliHOjwnTQpMbg2rpH3rZzn50thbF93X9s5OWLB7s6rZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274915; c=relaxed/simple;
-	bh=7f8QoszGXvDLiQ2i1YkrWCDq1MrmSXqbBkSPxbcwdYs=;
+	s=arc-20240116; t=1774274383; c=relaxed/simple;
+	bh=37ONiUJe11gT6DRrPL4MgqeQ3u6RPWmUHpos/DIK0Fo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aCjktKeTRBnETFN4rt867uEj5hbnih1nLrju+5dZCyb+z8sXKYSTm63vkr1s78VdBMJy6nse3nk7i1V7PGiyw43hOkv3SNUrZ/D1aq47sVqLDR7/BKcm61jXhWJtTM6SvBme05KpEXJTjBzmtRF1yTHu0SubAT8sGMpbmw0I0rU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tpyt3ajm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BFEFC4CEF7;
-	Mon, 23 Mar 2026 14:08:34 +0000 (UTC)
+	 MIME-Version; b=WPUJc0C+cJIygwbePcNU0kJXzetHtiRxEPojAVSrlxJ0Q+OUf1vFrtBJkOEgmoJBSQbpV0IG9S1Y07mObIxu6oY8xiLQ+2HeFoSSvnOYtbrYn8dB+CtVej9ztnf1pqsImBVzzzfU0ayaCfLQoW0dnYFpW7tab1hT9Veu7bmhgQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ff0yVegD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A06C4CEF7;
+	Mon, 23 Mar 2026 13:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274914;
-	bh=7f8QoszGXvDLiQ2i1YkrWCDq1MrmSXqbBkSPxbcwdYs=;
+	s=korg; t=1774274383;
+	bh=37ONiUJe11gT6DRrPL4MgqeQ3u6RPWmUHpos/DIK0Fo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tpyt3ajmdto8NclZ7Cq0m5O5OnFh4nOCZFDKqIZY0h6E9DsaPKrdQfOLnisPQ0E2o
-	 q8g3di4Cv9yMzRFOpAUsaOYYAFRjuwrW7fZRtUuysMviwvsjIEhq3QvDP2PBklnALC
-	 DdAVx5kZI0xahfQIXa6FrFh8/Y7kvGxVh7FC3pRg=
+	b=ff0yVegDohqmL7aY5tEFLEOZ0Gli0HPk9ek55Ps1fPlpCj5dch1T/yzrjVxijutdG
+	 +tRvfvUFcOQlxwa2pQ2P3lfuSWTdFGyPL3bNIhucmevJjH8waVyWeuUJQf1yx1nHT1
+	 MYe45xpsmHYkV8gTadjqAJdlpmumDY/0nhBTthHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com,
-	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 154/212] net: usb: aqc111: Do not perform PM inside suspend callback
-Date: Mon, 23 Mar 2026 14:46:15 +0100
-Message-ID: <20260323134508.623362515@linuxfoundation.org>
+Subject: [PATCH 6.19 199/220] mtd: rawnand: brcmnand: skip DMA during panic write
+Date: Mon, 23 Mar 2026 14:46:16 +0100
+Message-ID: <20260323134510.868733170@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +66,81 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,redhat.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228363-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228184-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,48dc1e8dfc92faf1124c];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 87BB22F5303
+X-Rspamd-Queue-Id: D6BA52F4F56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikola Z. Ivanov <zlatistiv@gmail.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-[ Upstream commit 069c8f5aebe4d5224cf62acc7d4b3486091c658a ]
+[ Upstream commit da9ba4dcc01e7cf52b7676f0ee9607b8358c2171 ]
 
-syzbot reports "task hung in rpm_resume"
+When oops_panic_write is set, the driver disables interrupts and
+switches to PIO polling mode but still falls through into the DMA
+path. DMA cannot be used reliably in panic context, so make the
+DMA path an else branch to ensure only PIO is used during panic
+writes.
 
-This is caused by aqc111_suspend calling
-the PM variant of its write_cmd routine.
-
-The simplified call trace looks like this:
-
-rpm_suspend()
-  usb_suspend_both() - here udev->dev.power.runtime_status == RPM_SUSPENDING
-    aqc111_suspend() - called for the usb device interface
-      aqc111_write32_cmd()
-        usb_autopm_get_interface()
-          pm_runtime_resume_and_get()
-            rpm_resume() - here we call rpm_resume() on our parent
-              rpm_resume() - Here we wait for a status change that will never happen.
-
-At this point we block another task which holds
-rtnl_lock and locks up the whole networking stack.
-
-Fix this by replacing the write_cmd calls with their _nopm variants
-
-Reported-by: syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=48dc1e8dfc92faf1124c
-Fixes: e58ba4544c77 ("net: usb: aqc111: Add support for wake on LAN by MAGIC packet")
-Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
-Link: https://patch.msgid.link/20260313141643.1181386-1-zlatistiv@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: c1ac2dc34b51 ("mtd: rawnand: brcmnand: When oops in progress use pio and interrupt polling")
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 9201ee10a13f7..d316aa66dbc23 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -1400,14 +1400,14 @@ static int aqc111_suspend(struct usb_interface *intf, pm_message_t message)
- 		aqc111_write16_cmd_nopm(dev, AQ_ACCESS_MAC,
- 					SFR_MEDIUM_STATUS_MODE, 2, &reg16);
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 835653bdd5abc..8f4d001377a1c 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -2350,14 +2350,12 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
+ 	for (i = 0; i < ctrl->max_oob; i += 4)
+ 		oob_reg_write(ctrl, i, 0xffffffff);
  
--		aqc111_write_cmd(dev, AQ_WOL_CFG, 0, 0,
--				 WOL_CFG_SIZE, &wol_cfg);
--		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
--				   &aqc111_data->phy_cfg);
-+		aqc111_write_cmd_nopm(dev, AQ_WOL_CFG, 0, 0,
-+				      WOL_CFG_SIZE, &wol_cfg);
-+		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
-+					&aqc111_data->phy_cfg);
- 	} else {
- 		aqc111_data->phy_cfg |= AQ_LOW_POWER;
--		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
--				   &aqc111_data->phy_cfg);
-+		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
-+					&aqc111_data->phy_cfg);
+-	if (mtd->oops_panic_write)
++	if (mtd->oops_panic_write) {
+ 		/* switch to interrupt polling and PIO mode */
+ 		disable_ctrl_irqs(ctrl);
+-
+-	if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
++	} else if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
+ 		if (ctrl->dma_trans(host, addr, (u32 *)buf, oob, mtd->writesize,
+ 				    CMD_PROGRAM_PAGE))
+-
+ 			ret = -EIO;
  
- 		/* Disable RX path */
- 		aqc111_read16_cmd_nopm(dev, AQ_ACCESS_MAC,
+ 		goto out;
 -- 
 2.51.0
 
