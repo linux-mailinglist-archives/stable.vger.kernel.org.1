@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-228702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229687-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGVvHgxTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228702-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:48 +0100
+	id oG1IIihswWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229687-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4416D2F5410
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CA22F8708
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 986C8308A793
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D5213137F39
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018021A6808;
-	Mon, 23 Mar 2026 14:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059603BED13;
+	Mon, 23 Mar 2026 16:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFjAZoXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJsTUa7f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7211387593;
-	Mon, 23 Mar 2026 14:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B723BED3B;
+	Mon, 23 Mar 2026 16:16:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276893; cv=none; b=tpqSxNJckaxrBhXCVZse77aB4CmIqEWhzMnkQQxOUHOqX4ou3Li6vLixdGnaGzC8mqD90npuQClhuerLvTQVPx94bm/uMlKYde7lcs0p3bnLChMzVrQTTpzdpR6+URmygAglM0fSwlOgHJZdEFpDUe2Dy6HKhAYPfMtv88IA0D4=
+	t=1774282596; cv=none; b=WCbiKE15NmZBl8cOjCDZc6t8njIhrkhSsy9H3hkE6kgw8wO3sG+MCiDkKzAHNvVLfhSQ6LXMK7IqixKXb6tonVp0HaQr0g4+4qCIyYaVbeTO5CV8sQjjlFOFPOSaM0xlFES511qsIWurL3/vWUnDiyV646zVQdCKWy3/5E7r/p0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276893; c=relaxed/simple;
-	bh=wXrbbV1HxQlqwfj9rzDfopZzFckR3D841attg0kTXF8=;
+	s=arc-20240116; t=1774282596; c=relaxed/simple;
+	bh=6myc3mAW3BHnI7szksuIR+J0MdO9nFucytE4XlSukHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pUmo7XJe22thPBRIQzJYg11IQTg0slFdluL9eLOasp+5cFkeW8Gvj2meHySCw7+d+TJ6ewjTRVks6iaT12CnMLIUc79kFdlzji3VBHwRZk3+aanZnbOjOilpRG8z/at3oy24ZNHd2U8df05o0/EPs6hHEk9GHj3urfYuaRoD1IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFjAZoXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4748CC4CEF7;
-	Mon, 23 Mar 2026 14:41:33 +0000 (UTC)
+	 MIME-Version; b=NSFWRaftD6I/E2iboj0rdVAHWXIGbClArCaxSFxlmTkFx1QuO1i8H8TUz6VLDdEqLh/yG+Lq1QF/FT+zzL1FcMTvKjn1zor/GcJGqtfmmTeNit0r9xRqn1XveYKoMtDXb6XFPJxMsPpaNMrQ7+hXGckOILboAY32uoeMbj4KPmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJsTUa7f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72FDDC2BCB4;
+	Mon, 23 Mar 2026 16:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276893;
-	bh=wXrbbV1HxQlqwfj9rzDfopZzFckR3D841attg0kTXF8=;
+	s=korg; t=1774282595;
+	bh=6myc3mAW3BHnI7szksuIR+J0MdO9nFucytE4XlSukHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LFjAZoXv9Q3KYhtfa7JCmZJ67cPeDTjOr25ZjDCBZDD6OAHTV153T4ay07n5WThPX
-	 1PPom4ao7O36cMpUot5SyH9hj5Q4gzfZzCXoQD72SvJo6zJ7lty9g4Dc4FAe+yhlyC
-	 GzvqnZ4g6YGk9PTO+s8Z69EX79P31dRrM0KraV5w=
+	b=AJsTUa7ffpXpHR1KOXsrAGBy8ItuZsfO15bumBh3/OyR72+6jq/92g6rOr/YJvaAM
+	 jDEBhhVfjL3Cj9r+IlU+rdWHGwa2w5hz+PHGoJSUg7cn5N6AHLbgJ/lWJw+EIOP4yP
+	 vDwNgaGzkk50skk3mfbEpzUgofzzdQVgIJrSbfXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 200/460] btrfs: fix transaction abort on file creation due to name hash collision
+	Alan Stern <stern@rowland.harvard.edu>
+Subject: [PATCH 6.1 214/481] USB: core: Limit the length of unkillable synchronous timeouts
 Date: Mon, 23 Mar 2026 14:43:16 +0100
-Message-ID: <20260323134531.454308113@linuxfoundation.org>
+Message-ID: <20260323134530.374866694@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,222 +64,167 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228702-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229687-lists,stable=lfdr.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4416D2F5410
+X-Rspamd-Queue-Id: E8CA22F8708
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 2d1ababdedd4ba38867c2500eb7f95af5ddeeef7 upstream.
+commit 1015c27a5e1a63efae2b18a9901494474b4d1dc3 upstream.
 
-If we attempt to create several files with names that result in the same
-hash, we have to pack them in same dir item and that has a limit inherent
-to the leaf size. However if we reach that limit, we trigger a transaction
-abort and turns the filesystem into RO mode. This allows for a malicious
-user to disrupt a system, without the need to have administration
-privileges/capabilities.
+The usb_control_msg(), usb_bulk_msg(), and usb_interrupt_msg() APIs in
+usbcore allow unlimited timeout durations.  And since they use
+uninterruptible waits, this leaves open the possibility of hanging a
+task for an indefinitely long time, with no way to kill it short of
+unplugging the target device.
 
-Reproducer:
+To prevent this sort of problem, enforce a maximum limit on the length
+of these unkillable timeouts.  The limit chosen here, somewhat
+arbitrarily, is 60 seconds.  On many systems (although not all) this
+is short enough to avoid triggering the kernel's hung-task detector.
 
-  $ cat exploit-hash-collisions.sh
-  #!/bin/bash
+In addition, clear up the ambiguity of negative timeout values by
+treating them the same as 0, i.e., using the maximum allowed timeout.
 
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
-
-  # Use smallest node size to make the test faster and require fewer file
-  # names that result in hash collision.
-  mkfs.btrfs -f --nodesize 4K $DEV
-  mount $DEV $MNT
-
-  # List of names that result in the same crc32c hash for btrfs.
-  declare -a names=(
-   'foobar'
-   '%a8tYkxfGMLWRGr55QSeQc4PBNH9PCLIvR6jZnkDtUUru1t@RouaUe_L:@xGkbO3nCwvLNYeK9vhE628gss:T$yZjZ5l-Nbd6CbC$M=hqE-ujhJICXyIxBvYrIU9-TDC'
-   'AQci3EUB%shMsg-N%frgU:02ByLs=IPJU0OpgiWit5nexSyxZDncY6WB:=zKZuk5Zy0DD$Ua78%MelgBuMqaHGyKsJUFf9s=UW80PcJmKctb46KveLSiUtNmqrMiL9-Y0I_l5Fnam04CGIg=8@U:Z'
-   'CvVqJpJzueKcuA$wqwePfyu7VxuWNN3ho$p0zi2H8QFYK$7YlEqOhhb%:hHgjhIjW5vnqWHKNP4'
-   'ET:vk@rFU4tsvMB0$C_p=xQHaYZjvoF%-BTc%wkFW8yaDAPcCYoR%x$FH5O:'
-   'HwTon%v7SGSP4FE08jBwwiu5aot2CFKXHTeEAa@38fUcNGOWvE@Mz6WBeDH_VooaZ6AgsXPkVGwy9l@@ZbNXabUU9csiWrrOp0MWUdfi$EZ3w9GkIqtz7I_eOsByOkBOO'
-   'Ij%2VlFGXSuPvxJGf5UWy6O@1svxGha%b@=%wjkq:CIgE6u7eJOjmQY5qTtxE2Rjbis9@us'
-   'KBkjG5%9R8K9sOG8UTnAYjxLNAvBmvV5vz3IiZaPmKuLYO03-6asI9lJ_j4@6Xo$KZicaLWJ3Pv8XEwVeUPMwbHYWwbx0pYvNlGMO9F:ZhHAwyctnGy%_eujl%WPd4U2BI7qooOSr85J-C2V$LfY'
-   'NcRfDfuUQ2=zP8K3CCF5dFcpfiOm6mwenShsAb_F%n6GAGC7fT2JFFn:c35X-3aYwoq7jNX5$ZJ6hI3wnZs$7KgGi7wjulffhHNUxAT0fRRLF39vJ@NvaEMxsMO'
-   'Oj42AQAEzRoTxa5OuSKIr=A_lwGMy132v4g3Pdq1GvUG9874YseIFQ6QU'
-   'Ono7avN5GjC:_6dBJ_'
-   'WHmN2gnmaN-9dVDy4aWo:yNGFzz8qsJyJhWEWcud7$QzN2D9R0efIWWEdu5kwWr73NZm4=@CoCDxrrZnRITr-kGtU_cfW2:%2_am'
-   'WiFnuTEhAG9FEC6zopQmj-A-$LDQ0T3WULz%ox3UZAPybSV6v1Z$b4L_XBi4M4BMBtJZpz93r9xafpB77r:lbwvitWRyo$odnAUYlYMmU4RvgnNd--e=I5hiEjGLETTtaScWlQp8mYsBovZwM2k'
-   'XKyH=OsOAF3p%uziGF_ZVr$ivrvhVgD@1u%5RtrV-gl_vqAwHkK@x7YwlxX3qT6WKKQ%PR56NrUBU2dOAOAdzr2=5nJuKPM-T-$ZpQfCL7phxQbUcb:BZOTPaFExc-qK-gDRCDW2'
-   'd3uUR6OFEwZr%ns1XH_@tbxA@cCPmbBRLdyh7p6V45H$P2$F%w0RqrD3M0g8aGvWpoTFMiBdOTJXjD:JF7=h9a_43xBywYAP%r$SPZi%zDg%ql-KvkdUCtF9OLaQlxmd'
-   'ePTpbnit%hyNm@WELlpKzNZYOzOTf8EQ$sEfkMy1VOfIUu3coyvIr13-Y7Sv5v-Ivax2Go_GQRFMU1b3362nktT9WOJf3SpT%z8sZmM3gvYQBDgmKI%%RM-G7hyrhgYflOw%z::ZRcv5O:lDCFm'
-   'evqk743Y@dvZAiG5J05L_ROFV@$2%rVWJ2%3nxV72-W7$e$-SK3tuSHA2mBt$qloC5jwNx33GmQUjD%akhBPu=VJ5g$xhlZiaFtTrjeeM5x7dt4cHpX0cZkmfImndYzGmvwQG:$euFYmXn$_2rA9mKZ'
-   'gkgUtnihWXsZQTEkrMAWIxir09k3t7jk_IK25t1:cy1XWN0GGqC%FrySdcmU7M8MuPO_ppkLw3=Dfr0UuBAL4%GFk2$Ma10V1jDRGJje%Xx9EV2ERaWKtjpwiZwh0gCSJsj5UL7CR8RtW5opCVFKGGy8Cky'
-   'hNgsG_8lNRik3PvphqPm0yEH3P%%fYG:kQLY=6O-61Wa6nrV_WVGR6TLB09vHOv%g4VQRP8Gzx7VXUY1qvZyS'
-   'isA7JVzN12xCxVPJZ_qoLm-pTBuhjjHMvV7o=F:EaClfYNyFGlsfw-Kf%uxdqW-kwk1sPl2vhbjyHU1A6$hz'
-   'kiJ_fgcdZFDiOptjgH5PN9-PSyLO4fbk_:u5_2tz35lV_iXiJ6cx7pwjTtKy-XGaQ5IefmpJ4N_ZqGsqCsKuqOOBgf9LkUdffHet@Wu'
-   'lvwtxyhE9:%Q3UxeHiViUyNzJsy:fm38pg_b6s25JvdhOAT=1s0$pG25x=LZ2rlHTszj=gN6M4zHZYr_qrB49i=pA--@WqWLIuX7o1S_SfS@2FSiUZN'
-   'rC24cw3UBDZ=5qJBUMs9e$=S4Y94ni%Z8639vnrGp=0Hv4z3dNFL0fBLmQ40=EYIY:Z=SLc@QLMSt2zsss2ZXrP7j4='
-   'uwGl2s-fFrf@GqS=DQqq2I0LJSsOmM%xzTjS:lzXguE3wChdMoHYtLRKPvfaPOZF2fER@j53evbKa7R%A7r4%YEkD=kicJe@SFiGtXHbKe4gCgPAYbnVn'
-   'UG37U6KKua2bgc:IHzRs7BnB6FD:2Mt5Cc5NdlsW%$1tyvnfz7S27FvNkroXwAW:mBZLA1@qa9WnDbHCDmQmfPMC9z-Eq6QT0jhhPpqyymaD:R02ghwYo%yx7SAaaq-:x33LYpei$5g8DMl3C'
-   'y2vjek0FE1PDJC0qpfnN:x8k2wCFZ9xiUF2ege=JnP98R%wxjKkdfEiLWvQzmnW'
-   '8-HCSgH5B%K7P8_jaVtQhBXpBk:pE-$P7ts58U0J@iR9YZntMPl7j$s62yAJO@_9eanFPS54b=UTw$94C-t=HLxT8n6o9P=QnIxq-f1=Ne2dvhe6WbjEQtc'
-   'YPPh:IFt2mtR6XWSmjHptXL_hbSYu8bMw-JP8@PNyaFkdNFsk$M=xfL6LDKCDM-mSyGA_2MBwZ8Dr4=R1D%7-mCaaKGxb990jzaagRktDTyp'
-   '9hD2ApKa_t_7x-a@GCG28kY:7$M@5udI1myQ$x5udtggvagmCQcq9QXWRC5hoB0o-_zHQUqZI5rMcz_kbMgvN5jr63LeYA4Cj-c6F5Ugmx6DgVf@2Jqm%MafecpgooqreJ53P-QTS'
-  )
-
-  # Now create files with all those names in the same parent directory.
-  # It should not fail since a 4K leaf has enough space for them.
-  for name in "${names[@]}"; do
-       touch $MNT/$name
-  done
-
-  # Now add one more file name that causes a crc32c hash collision.
-  # This should fail, but it should not turn the filesystem into RO mode
-  # (which could be exploited by malicious users) due to a transaction
-  # abort.
-  touch $MNT/'W6tIm-VK2@BGC@IBfcgg6j_p:pxp_QUqtWpGD5Ok_GmijKOJJt'
-
-  # Check that we are able to create another file, with a name that does not cause
-  # a crc32c hash collision.
-  echo -n "hello world" > $MNT/baz
-
-  # Unmount and mount again, verify file baz exists and with the right content.
-  umount $MNT
-  mount $DEV $MNT
-  echo "File baz content: $(cat $MNT/baz)"
-
-  umount $MNT
-
-When running the reproducer:
-
-  $ ./exploit-hash-collisions.sh
-  (...)
-  touch: cannot touch '/mnt/sdi/W6tIm-VK2@BGC@IBfcgg6j_p:pxp_QUqtWpGD5Ok_GmijKOJJt': Value too large for defined data type
-  ./exploit-hash-collisions.sh: line 57: /mnt/sdi/baz: Read-only file system
-  cat: /mnt/sdi/baz: No such file or directory
-  File baz content:
-
-And the transaction abort stack trace in dmesg/syslog:
-
-  $ dmesg
-  (...)
-  [758240.509761] ------------[ cut here ]------------
-  [758240.510668] BTRFS: Transaction aborted (error -75)
-  [758240.511577] WARNING: fs/btrfs/inode.c:6854 at btrfs_create_new_inode+0x805/0xb50 [btrfs], CPU#6: touch/888644
-  [758240.513513] Modules linked in: btrfs dm_zero (...)
-  [758240.523221] CPU: 6 UID: 0 PID: 888644 Comm: touch Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
-  [758240.524621] Tainted: [W]=WARN
-  [758240.525037] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [758240.526331] RIP: 0010:btrfs_create_new_inode+0x80b/0xb50 [btrfs]
-  [758240.527093] Code: 0f 82 cf (...)
-  [758240.529211] RSP: 0018:ffffce64418fbb48 EFLAGS: 00010292
-  [758240.529935] RAX: 00000000ffffffd3 RBX: 0000000000000000 RCX: 00000000ffffffb5
-  [758240.531040] RDX: 0000000d04f33e06 RSI: 00000000ffffffb5 RDI: ffffffffc0919dd0
-  [758240.531920] RBP: ffffce64418fbc10 R08: 0000000000000000 R09: 00000000ffffffb5
-  [758240.532928] R10: 0000000000000000 R11: ffff8e52c0000000 R12: ffff8e53eee7d0f0
-  [758240.533818] R13: ffff8e57f70932a0 R14: ffff8e5417629568 R15: 0000000000000000
-  [758240.534664] FS:  00007f1959a2a740(0000) GS:ffff8e5b27cae000(0000) knlGS:0000000000000000
-  [758240.535821] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [758240.536644] CR2: 00007f1959b10ce0 CR3: 000000012a2cc005 CR4: 0000000000370ef0
-  [758240.537517] Call Trace:
-  [758240.537828]  <TASK>
-  [758240.538099]  btrfs_create_common+0xbf/0x140 [btrfs]
-  [758240.538760]  path_openat+0x111a/0x15b0
-  [758240.539252]  do_filp_open+0xc2/0x170
-  [758240.539699]  ? preempt_count_add+0x47/0xa0
-  [758240.540200]  ? __virt_addr_valid+0xe4/0x1a0
-  [758240.540800]  ? __check_object_size+0x1b3/0x230
-  [758240.541661]  ? alloc_fd+0x118/0x180
-  [758240.542315]  do_sys_openat2+0x70/0xd0
-  [758240.543012]  __x64_sys_openat+0x50/0xa0
-  [758240.543723]  do_syscall_64+0x50/0xf20
-  [758240.544462]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [758240.545397] RIP: 0033:0x7f1959abc687
-  [758240.546019] Code: 48 89 fa (...)
-  [758240.548522] RSP: 002b:00007ffe16ff8690 EFLAGS: 00000202 ORIG_RAX: 0000000000000101
-  [758240.566278] RAX: ffffffffffffffda RBX: 00007f1959a2a740 RCX: 00007f1959abc687
-  [758240.567068] RDX: 0000000000000941 RSI: 00007ffe16ffa333 RDI: ffffffffffffff9c
-  [758240.567860] RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  [758240.568707] R10: 00000000000001b6 R11: 0000000000000202 R12: 0000561eec7c4b90
-  [758240.569712] R13: 0000561eec7c311f R14: 00007ffe16ffa333 R15: 0000000000000000
-  [758240.570758]  </TASK>
-  [758240.571040] ---[ end trace 0000000000000000 ]---
-  [758240.571681] BTRFS: error (device sdi state A) in btrfs_create_new_inode:6854: errno=-75 unknown
-  [758240.572899] BTRFS info (device sdi state EA): forced readonly
-
-Fix this by checking for hash collision, and if the adding a new name is
-possible, early in btrfs_create_new_inode() before we do any tree updates,
-so that we don't need to abort the transaction if we cannot add the new
-name due to the leaf size limit.
-
-A test case for fstests will be sent soon.
-
-Fixes: caae78e03234 ("btrfs: move common inode creation code into btrfs_create_new_inode()")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/15fc9773-a007-47b0-a703-df89a8cf83dd@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/usb/core/message.c |   27 +++++++++++++--------------
+ include/linux/usb.h        |    3 +++
+ 2 files changed, 16 insertions(+), 14 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -6358,6 +6358,25 @@ int btrfs_create_new_inode(struct btrfs_
- 	int ret;
- 	bool xa_reserved = false;
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -44,6 +44,8 @@ static void usb_api_blocking_completion(
+  * Starts urb and waits for completion or timeout.
+  * Whether or not the wait is killable depends on the flag passed in.
+  * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
++ *
++ * For non-killable waits, we enforce a maximum limit on the timeout value.
+  */
+ static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
+ 		bool killable)
+@@ -60,7 +62,9 @@ static int usb_start_wait_urb(struct urb
+ 	if (unlikely(retval))
+ 		goto out;
  
-+	if (!args->orphan && !args->subvol) {
-+		/*
-+		 * Before anything else, check if we can add the name to the
-+		 * parent directory. We want to avoid a dir item overflow in
-+		 * case we have an existing dir item due to existing name
-+		 * hash collisions. We do this check here before we call
-+		 * btrfs_add_link() down below so that we can avoid a
-+		 * transaction abort (which could be exploited by malicious
-+		 * users).
-+		 *
-+		 * For subvolumes we already do this in btrfs_mksubvol().
-+		 */
-+		ret = btrfs_check_dir_item_collision(BTRFS_I(dir)->root,
-+						     btrfs_ino(BTRFS_I(dir)),
-+						     name);
-+		if (ret < 0)
-+			return ret;
-+	}
+-	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
++	if (!killable && (timeout <= 0 || timeout > USB_MAX_SYNCHRONOUS_TIMEOUT))
++		timeout = USB_MAX_SYNCHRONOUS_TIMEOUT;
++	expire = (timeout > 0) ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
+ 	if (killable)
+ 		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
+ 	else
+@@ -126,8 +130,7 @@ static int usb_internal_control_msg(stru
+  * @index: USB message index value
+  * @data: pointer to the data to send
+  * @size: length in bytes of the data to send
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -182,8 +185,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg);
+  * @index: USB message index value
+  * @driver_data: pointer to the data to send
+  * @size: length in bytes of the data to send
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  * @memflags: the flags for memory allocation for buffers
+  *
+  * Context: !in_interrupt ()
+@@ -241,8 +243,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_send);
+  * @index: USB message index value
+  * @driver_data: pointer to the data to be filled in by the message
+  * @size: length in bytes of the data to be received
+- * @timeout: time in msecs to wait for the message to complete before timing
+- *	out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  * @memflags: the flags for memory allocation for buffers
+  *
+  * Context: !in_interrupt ()
+@@ -313,8 +314,7 @@ EXPORT_SYMBOL_GPL(usb_control_msg_recv);
+  * @len: length in bytes of the data to send
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+- * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -346,8 +346,7 @@ EXPORT_SYMBOL_GPL(usb_interrupt_msg);
+  * @len: length in bytes of the data to send
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+- * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ * @timeout: time in msecs to wait for the message to complete before timing out
+  *
+  * Context: task context, might sleep.
+  *
+@@ -407,12 +406,12 @@ EXPORT_SYMBOL_GPL(usb_bulk_msg);
+  * @actual_length: pointer to a location to put the actual length transferred
+  *	in bytes
+  * @timeout: time in msecs to wait for the message to complete before
+- *	timing out (if 0 the wait is forever)
++ *	timing out (if <= 0, the wait is as long as possible)
+  *
+  * Context: task context, might sleep.
+  *
+- * This function is just like usb_blk_msg() except that it waits in a
+- * killable state.
++ * This function is just like usb_blk_msg(), except that it waits in a
++ * killable state and there is no limit on the timeout length.
+  *
+  * Return:
+  * If successful, 0. Otherwise a negative error number. The number of actual
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1798,6 +1798,9 @@ void usb_buffer_unmap_sg(const struct us
+  *                         SYNCHRONOUS CALL SUPPORT                  *
+  *-------------------------------------------------------------------*/
+ 
++/* Maximum value allowed for timeout in synchronous routines below */
++#define USB_MAX_SYNCHRONOUS_TIMEOUT		60000	/* ms */
 +
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
+ extern int usb_control_msg(struct usb_device *dev, unsigned int pipe,
+ 	__u8 request, __u8 requesttype, __u16 value, __u16 index,
+ 	void *data, __u16 size, int timeout);
 
 
 
