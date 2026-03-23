@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228422-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLeJDAVYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228897-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:01 +0100
+	id ONHHJEVPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228422-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31AA22F5EBD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA012F4BC8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BA8B83025137
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 665F430D61D6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CC153AF663;
-	Mon, 23 Mar 2026 14:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447DD3AF65A;
+	Mon, 23 Mar 2026 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a+yjP2XD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bj1KCn7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6A9395DB5;
-	Mon, 23 Mar 2026 14:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0846F3AE6EE;
+	Mon, 23 Mar 2026 14:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277430; cv=none; b=odO3D7JR4GGVDF+vcqmOM/TH5eF/oARx+6rkA3ALt+X32BgP3wJ81sG32BJgqfpaM0byfLLjF4bIz+KbGVBHm7hc3um387WONkMf52hcRYnfmmiw6JQ7e6JOQAfSeygI0eXmXpRR3Uf5lMCgeH+Ulx5pQzm13cdDSFAgtUBXIkM=
+	t=1774275080; cv=none; b=CnnsamA5g3Njl4JG7zXXmzl1sg4Z9wBKbDjEbCzYptUxUb/3LcxysVdDFrFyLAlaPC2tev8R9LWXyd/peLTGz4frT+LYjaUBh9vAQ6iSuLgp4rE6f8ddrzFV2CvJ9CoMd4m1D0rCGEonb/5n0gegA3Hzpf0r4X/oRJQKbNh/ark=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277430; c=relaxed/simple;
-	bh=pcnIaEru2mqbYoXCdWBJsh9ZqLLRbAhFEUV+wkZcMUs=;
+	s=arc-20240116; t=1774275080; c=relaxed/simple;
+	bh=Mzo3XbRlY6G0WkcPMck1qKkwYIaASWDb1BLMJjeQDDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nzRKQxl5VYRiDGjBp8SdkqjLGJKqgPcyh/iwh/p2texQIzw7IPrMYSaGMg2L9ANffb6Vkwz5eNO7s0aDevXgnTpeujZFHp/O4MeDi/mKv2ThaYAepdkzWzuFoF/DzhFj07S473jZoeD+V19IZORtqLq4+wCHXFLWWk49m6eqqmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a+yjP2XD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A73C6C4CEF7;
-	Mon, 23 Mar 2026 14:50:29 +0000 (UTC)
+	 MIME-Version; b=Gg50+KNuj6mwmwvY0O+2FMozIiNlYIVW3Pro4eu58cQEkCeFUycq1WpGnlTk8+hZ0i7f0MCLRGhWRp1Hn3LoL/xbWmfxRBZvJ1IuJE7i4BPhmK//qHfNlFTPaTQ9gynz+/Jr5fF6TiRbb8tVsdwezIWvEYWODM4MlsBOjRmNYiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bj1KCn7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85EC7C4CEF7;
+	Mon, 23 Mar 2026 14:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277430;
-	bh=pcnIaEru2mqbYoXCdWBJsh9ZqLLRbAhFEUV+wkZcMUs=;
+	s=korg; t=1774275079;
+	bh=Mzo3XbRlY6G0WkcPMck1qKkwYIaASWDb1BLMJjeQDDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+yjP2XDzPk13rIrEAwXQTjPDjijId6zKnBlrLP3JEaT1NPfma8D8hWeeChTuIN+X
-	 gSLmv3XRDIdR9Yn1jCGxFyzLu6M6JdWpO1by1WqqSu7MrNUvG9ooJSfDMuDGgkEuc8
-	 doQrP9dGN3tfhulBo9F5yhfupLThkJ9HwPi4Ki30=
+	b=bj1KCn7WWvPMn/iSkl77AGe1B4oBIQEtNKZJ5KfgkrYbzfCAypoXvRp7X1WkGgkW7
+	 EzBo0RSfl/fR0CmSjEEEY5cPLxv3XZprY6aCN+v+2TX0u/I3EDjF/y7tkwviQ/wVcn
+	 K6Hbfvl/RLIUO7exVp3sH6dXQ7000T9SsGZVk8w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ji-Ze Hong (Peter Hong)" <peter_hong@fintek.com.tw>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.12 437/460] USB: serial: f81232: fix incomplete serial port generation
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 212/212] hwmon: (max6639) Fix pulses-per-revolution implementation
 Date: Mon, 23 Mar 2026 14:47:13 +0100
-Message-ID: <20260323134537.300799732@linuxfoundation.org>
+Message-ID: <20260323134510.491650850@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228897-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228422-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,142 +90,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 31AA22F5EBD
+X-Rspamd-Queue-Id: 0CA012F4BC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ji-Ze Hong (Peter Hong) <peter_hong@fintek.com.tw>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit cd644b805da8a253198718741bf363c4c58862ff upstream.
+[ Upstream commit e7bae9a7a5e1251ab414291f4e9304d702bb9221 ]
 
-The Fintek F81532A/534A/535/536 family relies on the
-F81534A_CTRL_CMD_ENABLE_PORT (116h) register during initialization to
-both determine serial port status and control port creation. If the
-driver experiences fast load/unload cycles, the device state may becomes
-unstable, resulting in the incomplete generation of serial ports.
+The valid range for the pulses-per-revolution devicetree property is
+1..4. The current code checks for a range of 1..5. Fix it.
 
-Performing a dummy read operation on the register prior to the initial
-write command resolves the issue. This clears the device's stale internal
-state. Subsequent write operations will correctly generate all serial
-ports.
+Declare the variable used to retrieve pulses per revolution from
+devicetree as u32 (unsigned) to match the of_property_read_u32() API.
 
-This patch also removes the retry loop in f81534a_ctrl_set_register()
-because the stale state has been fixed.
+The current code uses a postfix decrement when writing the pulses per
+resolution into the chip. This has no effect since the value is evaluated
+before it is decremented. Fix it by decrementing before evaluating the
+value.
 
-Tested on: HygonDM1SLT(Hygon C86 3250 8-core Processor)
-
-Signed-off-by: Ji-Ze Hong (Peter Hong) <peter_hong@fintek.com.tw>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7506ebcd662b ("hwmon: (max6639) : Configure based on DT property")
+Cc: Naresh Solanki <naresh.solanki@9elements.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/f81232.c |   77 ++++++++++++++++++++++++++------------------
- 1 file changed, 47 insertions(+), 30 deletions(-)
+ drivers/hwmon/max6639.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/serial/f81232.c
-+++ b/drivers/usb/serial/f81232.c
-@@ -70,7 +70,6 @@ MODULE_DEVICE_TABLE(usb, combined_id_tab
- #define F81232_REGISTER_REQUEST		0xa0
- #define F81232_GET_REGISTER		0xc0
- #define F81232_SET_REGISTER		0x40
--#define F81534A_ACCESS_REG_RETRY	2
- 
- #define SERIAL_BASE_ADDRESS		0x0120
- #define RECEIVE_BUFFER_REGISTER		(0x00 + SERIAL_BASE_ADDRESS)
-@@ -824,36 +823,31 @@ static void f81232_lsr_worker(struct wor
- static int f81534a_ctrl_set_register(struct usb_interface *intf, u16 reg,
- 					u16 size, void *val)
+diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
+index 1fc12e1463b58..447e8cdbc74c6 100644
+--- a/drivers/hwmon/max6639.c
++++ b/drivers/hwmon/max6639.c
+@@ -235,7 +235,7 @@ static int max6639_read_fan(struct device *dev, u32 attr, int channel,
+ static int max6639_set_ppr(struct max6639_data *data, int channel, u8 ppr)
  {
--	struct usb_device *dev = interface_to_usbdev(intf);
--	int retry = F81534A_ACCESS_REG_RETRY;
--	int status;
--
--	while (retry--) {
--		status = usb_control_msg_send(dev,
--					      0,
--					      F81232_REGISTER_REQUEST,
--					      F81232_SET_REGISTER,
--					      reg,
--					      0,
--					      val,
--					      size,
--					      USB_CTRL_SET_TIMEOUT,
--					      GFP_KERNEL);
--		if (status) {
--			status = usb_translate_errors(status);
--			if (status == -EIO)
--				continue;
--		}
--
--		break;
--	}
--
--	if (status) {
--		dev_err(&intf->dev, "failed to set register 0x%x: %d\n",
--				reg, status);
--	}
-+	return usb_control_msg_send(interface_to_usbdev(intf),
-+						0,
-+						F81232_REGISTER_REQUEST,
-+						F81232_SET_REGISTER,
-+						reg,
-+						0,
-+						val,
-+						size,
-+						USB_CTRL_SET_TIMEOUT,
-+						GFP_KERNEL);
-+}
- 
--	return status;
-+static int f81534a_ctrl_get_register(struct usb_interface *intf, u16 reg,
-+					u16 size, void *val)
-+{
-+	return usb_control_msg_recv(interface_to_usbdev(intf),
-+						0,
-+						F81232_REGISTER_REQUEST,
-+						F81232_GET_REGISTER,
-+						reg,
-+						0,
-+						val,
-+						size,
-+						USB_CTRL_GET_TIMEOUT,
-+						GFP_KERNEL);
+ 	/* Decrement the PPR value and shift left by 6 to match the register format */
+-	return regmap_write(data->regmap, MAX6639_REG_FAN_PPR(channel), ppr-- << 6);
++	return regmap_write(data->regmap, MAX6639_REG_FAN_PPR(channel), --ppr << 6);
  }
  
- static int f81534a_ctrl_enable_all_ports(struct usb_interface *intf, bool en)
-@@ -869,6 +863,29 @@ static int f81534a_ctrl_enable_all_ports
- 	 * bit 0~11	: Serial port enable bit.
- 	 */
- 	if (en) {
-+		/*
-+		 * The Fintek F81532A/534A/535/536 family relies on the
-+		 * F81534A_CTRL_CMD_ENABLE_PORT (116h) register during
-+		 * initialization to both determine serial port status and
-+		 * control port creation.
-+		 *
-+		 * If the driver experiences fast load/unload cycles, the
-+		 * device state may becomes unstable, resulting in the
-+		 * incomplete generation of serial ports.
-+		 *
-+		 * Performing a dummy read operation on the register prior
-+		 * to the initial write command resolves the issue.
-+		 *
-+		 * This clears the device's stale internal state. Subsequent
-+		 * write operations will correctly generate all serial ports.
-+		 */
-+		status = f81534a_ctrl_get_register(intf,
-+						F81534A_CTRL_CMD_ENABLE_PORT,
-+						sizeof(enable),
-+						enable);
-+		if (status)
-+			return status;
-+
- 		enable[0] = 0xff;
- 		enable[1] = 0x8f;
- 	}
+ static int max6639_write_fan(struct device *dev, u32 attr, int channel,
+@@ -537,8 +537,8 @@ static int max6639_probe_child_from_dt(struct i2c_client *client,
+ 
+ {
+ 	struct device *dev = &client->dev;
+-	u32 i;
+-	int err, val;
++	u32 i, val;
++	int err;
+ 
+ 	err = of_property_read_u32(child, "reg", &i);
+ 	if (err) {
+@@ -553,8 +553,8 @@ static int max6639_probe_child_from_dt(struct i2c_client *client,
+ 
+ 	err = of_property_read_u32(child, "pulses-per-revolution", &val);
+ 	if (!err) {
+-		if (val < 1 || val > 5) {
+-			dev_err(dev, "invalid pulses-per-revolution %d of %pOFn\n", val, child);
++		if (val < 1 || val > 4) {
++			dev_err(dev, "invalid pulses-per-revolution %u of %pOFn\n", val, child);
+ 			return -EINVAL;
+ 		}
+ 		data->ppr[i] = val;
+-- 
+2.51.0
+
 
 
 
