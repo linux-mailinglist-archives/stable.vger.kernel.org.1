@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229053-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMKUG5BTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228475-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:00 +0100
+	id 0DpkIjtWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229053-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:03:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82772F5525
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 260032F5AF0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:03:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4BEFF3153C24
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4240E304D9F8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC433B2FDD;
-	Mon, 23 Mar 2026 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 759F439C658;
+	Mon, 23 Mar 2026 14:58:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns3B5rYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLhBD3ee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5803B2FD5;
-	Mon, 23 Mar 2026 14:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 385721DA0E1;
+	Mon, 23 Mar 2026 14:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275233; cv=none; b=bGouTYzq7TfInn4vf0LzxovjzTB0THGP58jj2lSyh6TYba/7EUaDhw3/B68wMEJnpZP/QDScXRxwrUUUm/UeilgOostRX1cbcBWQkwS2xS3UtLsiPl4KD49xiDzH6YnZYdGIHbtHrx38e7fC4zSNS0h0h2/rok/88JEPDKMifSE=
+	t=1774277911; cv=none; b=AodvJnfgNuGcCfxc1v+nDJcd+sA/r0halwnxrnbAtI59CLPpoJZY4xnchEOZcOQG536yEcZ4E7JdjNardOxpoPgGfgXZ6LrnV0k/3MIiCXM6L/U8rov02w7hc9U9RV6mwxzhIGLPC6QhV+nJEtXTk4ZXWYMKRa8NQ7kgDduKhJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275233; c=relaxed/simple;
-	bh=Mi7XkuYUf7dxHm+0iCHkD5V3llz3G+FFbz+AeHeWaGs=;
+	s=arc-20240116; t=1774277911; c=relaxed/simple;
+	bh=HW8A2uOFnwMexGdV9cY2C+ac0GMkjrP5ksGfbr8huCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gj3CajrSKB6By8J+bHm5VVL4NL863RiKp1iV/QdUJJD8et7PkZq8UrZkIfH5aOMXPoZNMEvFFm9lAnnxtjbRGAy6kCI8BXdXLjHWMLzxRjKGNHxtPbF+Y9FZPvnnBu6qW34cK9XkIcHjHBspneQ5pVKLSZABr2rK2cVbzdhJNGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns3B5rYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA217C4CEF7;
-	Mon, 23 Mar 2026 14:13:52 +0000 (UTC)
+	 MIME-Version; b=ih96cKfFPR4QNuyFSt2raP+jXT5r+W6txm3wTs+oAGtmqGhFsPTBe8dMUdunBtZFnYzq4YPxi5Ro58d2ZgEwGsjt702mb96Ifk6e4ky8RddJ0+SLY8jUomQOU0YqpJG0ZYoeztiIX9ulAVr0sSLKM0uoO5SGJ3XGwSds5ffyiS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLhBD3ee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CA6C4CEF7;
+	Mon, 23 Mar 2026 14:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275233;
-	bh=Mi7XkuYUf7dxHm+0iCHkD5V3llz3G+FFbz+AeHeWaGs=;
+	s=korg; t=1774277910;
+	bh=HW8A2uOFnwMexGdV9cY2C+ac0GMkjrP5ksGfbr8huCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ns3B5rYLOEdewOH45ONMDvrlOJw1Qy+zjhF/wFdwDIdGO6GWd5XmedNU0MRw2sazD
-	 oiI7Af12r9lbQ+TqCLZ8GGy6Ks2/hRFs+CNSstN6c6uZLrBdRjOwT5tk+rYNb0CSDb
-	 vKClGfaa+GISefXkEdyIyqfkWCkWfEBqIkcGwkzI=
+	b=pLhBD3eeBqzhn+KMNfJ+6mLpcigmqT6MWNWtmK7TqCwKcK7rPQcFFE/tEbDr6yGPt
+	 5iV4LWrBXqnS7fwbZNTe18Jat9XnAc/XZSMjOJZZ71eC2R2AQB2jc81R3CRFKBLD8G
+	 Dtv8SNdxykBz2lzNdzageZm+CcPsBIB7h1Q6E1qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 022/460] remoteproc: mediatek: Unprepare SCP clock during system suspend
+	"Ji-Ze Hong (Peter Hong)" <peter_hong@fintek.com.tw>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 098/567] can: usb: f81604: handle bulk write errors properly
 Date: Mon, 23 Mar 2026 14:40:18 +0100
-Message-ID: <20260323134527.231391231@linuxfoundation.org>
+Message-ID: <20260323134536.251176211@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228475-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229053-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,108 +91,70 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E82772F5525
+X-Rspamd-Queue-Id: 260032F5AF0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 35c3f72a2d55dbf52f28f4ecae51c76be1acf545 ]
+commit 51f94780720fa90c424f67e3e9784cb8ef8190e5 upstream.
 
-Prior to commit d935187cfb27 ("remoteproc: mediatek: Break lock
-dependency to prepare_lock"), `scp->clk` was prepared and enabled only
-when it needs to communicate with the SCP.  The commit d935187cfb27
-moved the prepare operation to remoteproc's prepare(), keeping the clock
-prepared as long as the SCP is running.
+If a write urb fails then more needs to be done other than just logging
+the message, otherwise the transmission could be stalled.  Properly
+increment the error counters and wake up the queues so that data will
+continue to flow.
 
-The power consumption due to the prolonged clock preparation can be
-negligible when the system is running, as SCP is designed to be a very
-power efficient processor.
-
-However, the clock remains prepared even when the system enters system
-suspend.  This prevents the underlying clock controller (and potentially
-the parent PLLs) from shutting down, which increases power consumption
-and may block the system from entering deep sleep states.
-
-Add suspend and resume callbacks.  Unprepare the clock in suspend() if
-it was active and re-prepare it in resume() to ensure the clock is
-properly disabled during system suspend, while maintaining the "always
-prepared" semantics while the system is active.  The driver doesn't
-implement .attach() callback, hence it only checks for RPROC_RUNNING.
-
-Fixes: d935187cfb27 ("remoteproc: mediatek: Break lock dependency to prepare_lock")
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Link: https://lore.kernel.org/r/20260206033034.3031781-1-tzungbi@kernel.org
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Ji-Ze Hong (Peter Hong) <peter_hong@fintek.com.tw>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Vincent Mailhol <mailhol@kernel.org>
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026022334-slackness-dynamic-9195@gregkh
+Fixes: 88da17436973 ("can: usb: f81604: add Fintek F81604 support")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/mtk_scp.c | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/net/can/usb/f81604.c |   24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
-index ae20d2221c8e0..fcd2665f7abbc 100644
---- a/drivers/remoteproc/mtk_scp.c
-+++ b/drivers/remoteproc/mtk_scp.c
-@@ -1544,12 +1544,51 @@ static const struct of_device_id mtk_scp_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, mtk_scp_of_match);
+--- a/drivers/net/can/usb/f81604.c
++++ b/drivers/net/can/usb/f81604.c
+@@ -891,9 +891,27 @@ static void f81604_write_bulk_callback(s
+ 	if (!netif_device_present(netdev))
+ 		return;
  
-+static int __maybe_unused scp_suspend(struct device *dev)
-+{
-+	struct mtk_scp *scp = dev_get_drvdata(dev);
-+	struct rproc *rproc = scp->rproc;
+-	if (urb->status)
+-		netdev_info(netdev, "%s: Tx URB error: %pe\n", __func__,
+-			    ERR_PTR(urb->status));
++	if (!urb->status)
++		return;
 +
-+	/*
-+	 * Only unprepare if the SCP is running and holding the clock.
-+	 *
-+	 * Note: `scp_ops` doesn't implement .attach() callback, hence
-+	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
-+	 * should also be checked here.
-+	 */
-+	if (rproc->state == RPROC_RUNNING)
-+		clk_unprepare(scp->clk);
-+	return 0;
-+}
++	switch (urb->status) {
++	case -ENOENT:
++	case -ECONNRESET:
++	case -ESHUTDOWN:
++		return;
++	default:
++		break;
++	}
 +
-+static int __maybe_unused scp_resume(struct device *dev)
-+{
-+	struct mtk_scp *scp = dev_get_drvdata(dev);
-+	struct rproc *rproc = scp->rproc;
++	if (net_ratelimit())
++		netdev_err(netdev, "%s: Tx URB error: %pe\n", __func__,
++			   ERR_PTR(urb->status));
 +
-+	/*
-+	 * Only prepare if the SCP was running and holding the clock.
-+	 *
-+	 * Note: `scp_ops` doesn't implement .attach() callback, hence
-+	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
-+	 * should also be checked here.
-+	 */
-+	if (rproc->state == RPROC_RUNNING)
-+		return clk_prepare(scp->clk);
-+	return 0;
-+}
++	can_free_echo_skb(netdev, 0, NULL);
++	netdev->stats.tx_dropped++;
++	netdev->stats.tx_errors++;
 +
-+static const struct dev_pm_ops scp_pm_ops = {
-+	SET_SYSTEM_SLEEP_PM_OPS(scp_suspend, scp_resume)
-+};
-+
- static struct platform_driver mtk_scp_driver = {
- 	.probe = scp_probe,
- 	.remove_new = scp_remove,
- 	.driver = {
- 		.name = "mtk-scp",
- 		.of_match_table = mtk_scp_of_match,
-+		.pm = &scp_pm_ops,
- 	},
- };
++	netif_wake_queue(netdev);
+ }
  
--- 
-2.51.0
-
+ static void f81604_clear_reg_work(struct work_struct *work)
 
 
 
