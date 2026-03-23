@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AI/FMk1XwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228842-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:57 +0100
+	id UIhAMj91wWl5TQQAu9opvQ
+	(envelope-from <stable+bounces-229825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:43 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C54782F5D19
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA132F9A54
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7713E30215FF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02E393136779
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 277893AF66A;
-	Mon, 23 Mar 2026 14:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384E93AF662;
+	Mon, 23 Mar 2026 16:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MWyIiXaJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmrSCh1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BE83AE6E6;
-	Mon, 23 Mar 2026 14:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED86A1DA0E1;
+	Mon, 23 Mar 2026 16:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277281; cv=none; b=RFuBhc6y6zmGj9T+LZLHnQ0pG+xyN/nHkxAxkdky4MIBGTXX7oij3LH1RZe8uIQjmcB6iVmH5xn1Jx8j9yzQ9Z4k9NJpoVGVgLLJ0uJQqTyyVoSqWcwDv13sypB8sVWbsONs2b/gU1AzI8Bmfu5RQCNc97L8hInW97jWBJ4E5u0=
+	t=1774282967; cv=none; b=t3erpIy/vRbHUihBkva7D88cfDnV5/eA4sCqDZpnaixkAqHJo/g9GvOmQLQlyJkZWhWhj7I6AkzOr29jQJv6vxzZIgPo9RoaeVm8cxYHZhBkKF10w40SS5gI7EfKQCpnIzKpPgOnCiDeHmuBMK4voGHc2B9wRWvCH851CjNVMK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277281; c=relaxed/simple;
-	bh=eSRemrrplmsUqIc4p3Zz1/sqQ26eHUNIXEWeoBB0ll8=;
+	s=arc-20240116; t=1774282967; c=relaxed/simple;
+	bh=IDHGFgv0uAxMH74mgUfHPaHnMHOQTkhZKFrJUxqIjCc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rQiNIL4lMqu7otHmLoQhwWaO0CA8nejJ5uVnZ9abZJf5+CEx6tG0e0X2OZmnY3qqmmOvB3uEMrW3G/a5H1JwcUAk8iE/Uvv0bsfGIDCezeXPTeTJbwEklQmGARA+iSfSc9zlD8tGcKcVQZBvTMG2+N465qwu7jomOLeCTumNmhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MWyIiXaJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30392C4CEF7;
-	Mon, 23 Mar 2026 14:48:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZHaxgu5fMBsRHdRIPKVHi9MR3XDKFxiFReTFHwx9Z92RPi8UMjLT+IR7HKaaF+thh340cBDAGKHCST98soUq2BG+FpcDPzNPUg+30WzGMb7tUP7Sr5sM0NBpjcxEohSHgLz5Bhbv3S7qP/Q2sA/jFnZDkENcQTaa0V0sAleqVqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmrSCh1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A962C4CEF7;
+	Mon, 23 Mar 2026 16:22:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277281;
-	bh=eSRemrrplmsUqIc4p3Zz1/sqQ26eHUNIXEWeoBB0ll8=;
+	s=korg; t=1774282966;
+	bh=IDHGFgv0uAxMH74mgUfHPaHnMHOQTkhZKFrJUxqIjCc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MWyIiXaJnaoc6VTlKGqW+wjGD9f5Q9vhzeybKegc27YWiNKjcSmdQ8REgJxmQn6f8
-	 p+ZR/d9e5ZYwDeXTFD+EHLlMwFNv8cim46IwHtzf017zHfw7UZPTegpGvdeVt8OHmt
-	 fSodt6Wfqg48g8Y/J3dMyxlLU6KZAENs9tbmfhpQ=
+	b=YmrSCh1pVgY02AzEQvUtuqeqKtc8JXNy3wzd/FJb3SksmHsXSgJcFFWavlHigFfo5
+	 Mav0oqjnqHUtOpRCJaRIOq6p76LBfdlaGIuKUp1s8t+3R5nCTJ/SzdIqIDxzEnzB07
+	 O0CYudxN9EotPoZ5sJLQsgWH/xtLy3DMpTbktBcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jander <david@protonic.nl>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 338/460] spi: fix use-after-free on controller registration failure
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 352/481] iio: buffer: fix coding style warnings
 Date: Mon, 23 Mar 2026 14:45:34 +0100
-Message-ID: <20260323134534.836267401@linuxfoundation.org>
+Message-ID: <20260323134533.685089203@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,417 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228842-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-229825-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C54782F5D19
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: CFA132F9A54
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Nuno Sá <nuno.sa@analog.com>
 
-commit 8634e05b08ead636e926022f4a98416e13440df9 upstream.
+[ Upstream commit 26e46ef7758922e983a9a2f688369f649cc1a635 ]
 
-Make sure to deregister from driver core also in the unlikely event that
-per-cpu statistics allocation fails during controller registration to
-avoid use-after-free (of driver resources) and unclocked register
-accesses.
+Just cosmetics. No functional change intended...
 
-Fixes: 6598b91b5ac3 ("spi: spi.c: Convert statistics to per-cpu u64_stats_t")
-Cc: stable@vger.kernel.org	# 6.0
-Cc: David Jander <david@protonic.nl>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260312151817.32100-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Lars-Peter Clausen <lars@metafoo.de>
+Link: https://lore.kernel.org/r/20230216101452.591805-4-nuno.sa@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 064234044056 ("iio: buffer: Fix wait_queue not being removed")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/iio/industrialio-buffer.c |   98 +++++++++++++++++++-------------------
+ 1 file changed, 49 insertions(+), 49 deletions(-)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3367,10 +3367,8 @@ int spi_register_controller(struct spi_c
- 		dev_info(dev, "controller is unqueued, this is deprecated\n");
- 	} else if (ctlr->transfer_one || ctlr->transfer_one_message) {
- 		status = spi_controller_initialize_queue(ctlr);
--		if (status) {
--			device_del(&ctlr->dev);
--			goto free_bus_id;
--		}
-+		if (status)
-+			goto del_ctrl;
- 	}
- 	/* Add statistics */
- 	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(dev);
-@@ -3393,6 +3391,8 @@ int spi_register_controller(struct spi_c
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -194,7 +194,7 @@ static ssize_t iio_buffer_write(struct f
+ 	written = 0;
+ 	add_wait_queue(&rb->pollq, &wait);
+ 	do {
+-		if (indio_dev->info == NULL)
++		if (!indio_dev->info)
+ 			return -ENODEV;
  
- destroy_queue:
- 	spi_destroy_queue(ctlr);
-+del_ctrl:
-+	device_del(&ctlr->dev);
- free_bus_id:
- 	mutex_lock(&board_lock);
- 	idr_remove(&spi_master_idr, ctlr->bus_num);
+ 		if (!iio_buffer_space_available(rb)) {
+@@ -210,7 +210,7 @@ static ssize_t iio_buffer_write(struct f
+ 			}
+ 
+ 			wait_woken(&wait, TASK_INTERRUPTIBLE,
+-					MAX_SCHEDULE_TIMEOUT);
++				   MAX_SCHEDULE_TIMEOUT);
+ 			continue;
+ 		}
+ 
+@@ -242,7 +242,7 @@ static __poll_t iio_buffer_poll(struct f
+ 	struct iio_buffer *rb = ib->buffer;
+ 	struct iio_dev *indio_dev = ib->indio_dev;
+ 
+-	if (!indio_dev->info || rb == NULL)
++	if (!indio_dev->info || !rb)
+ 		return 0;
+ 
+ 	poll_wait(filp, &rb->pollq, wait);
+@@ -407,9 +407,9 @@ static ssize_t iio_scan_el_show(struct d
+ 
+ /* Note NULL used as error indicator as it doesn't make sense. */
+ static const unsigned long *iio_scan_mask_match(const unsigned long *av_masks,
+-					  unsigned int masklength,
+-					  const unsigned long *mask,
+-					  bool strict)
++						unsigned int masklength,
++						const unsigned long *mask,
++						bool strict)
+ {
+ 	if (bitmap_empty(mask, masklength))
+ 		return NULL;
+@@ -427,7 +427,7 @@ static const unsigned long *iio_scan_mas
+ }
+ 
+ static bool iio_validate_scan_mask(struct iio_dev *indio_dev,
+-	const unsigned long *mask)
++				   const unsigned long *mask)
+ {
+ 	if (!indio_dev->setup_ops->validate_scan_mask)
+ 		return true;
+@@ -446,7 +446,7 @@ static bool iio_validate_scan_mask(struc
+  * individual buffers request is plausible.
+  */
+ static int iio_scan_mask_set(struct iio_dev *indio_dev,
+-		      struct iio_buffer *buffer, int bit)
++			     struct iio_buffer *buffer, int bit)
+ {
+ 	const unsigned long *mask;
+ 	unsigned long *trialmask;
+@@ -538,7 +538,6 @@ error_ret:
+ 	mutex_unlock(&indio_dev->mlock);
+ 
+ 	return ret < 0 ? ret : len;
+-
+ }
+ 
+ static ssize_t iio_scan_el_ts_show(struct device *dev,
+@@ -703,7 +702,7 @@ static unsigned int iio_storage_bytes_fo
+ }
+ 
+ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
+-				const unsigned long *mask, bool timestamp)
++				  const unsigned long *mask, bool timestamp)
+ {
+ 	unsigned int bytes = 0;
+ 	int length, i, largest = 0;
+@@ -729,7 +728,7 @@ static int iio_compute_scan_bytes(struct
+ }
+ 
+ static void iio_buffer_activate(struct iio_dev *indio_dev,
+-	struct iio_buffer *buffer)
++				struct iio_buffer *buffer)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 
+@@ -750,12 +749,12 @@ static void iio_buffer_deactivate_all(st
+ 	struct iio_buffer *buffer, *_buffer;
+ 
+ 	list_for_each_entry_safe(buffer, _buffer,
+-			&iio_dev_opaque->buffer_list, buffer_list)
++				 &iio_dev_opaque->buffer_list, buffer_list)
+ 		iio_buffer_deactivate(buffer);
+ }
+ 
+ static int iio_buffer_enable(struct iio_buffer *buffer,
+-	struct iio_dev *indio_dev)
++			     struct iio_dev *indio_dev)
+ {
+ 	if (!buffer->access->enable)
+ 		return 0;
+@@ -763,7 +762,7 @@ static int iio_buffer_enable(struct iio_
+ }
+ 
+ static int iio_buffer_disable(struct iio_buffer *buffer,
+-	struct iio_dev *indio_dev)
++			      struct iio_dev *indio_dev)
+ {
+ 	if (!buffer->access->disable)
+ 		return 0;
+@@ -771,7 +770,7 @@ static int iio_buffer_disable(struct iio
+ }
+ 
+ static void iio_buffer_update_bytes_per_datum(struct iio_dev *indio_dev,
+-	struct iio_buffer *buffer)
++					      struct iio_buffer *buffer)
+ {
+ 	unsigned int bytes;
+ 
+@@ -779,13 +778,13 @@ static void iio_buffer_update_bytes_per_
+ 		return;
+ 
+ 	bytes = iio_compute_scan_bytes(indio_dev, buffer->scan_mask,
+-		buffer->scan_timestamp);
++				       buffer->scan_timestamp);
+ 
+ 	buffer->access->set_bytes_per_datum(buffer, bytes);
+ }
+ 
+ static int iio_buffer_request_update(struct iio_dev *indio_dev,
+-	struct iio_buffer *buffer)
++				     struct iio_buffer *buffer)
+ {
+ 	int ret;
+ 
+@@ -794,7 +793,7 @@ static int iio_buffer_request_update(str
+ 		ret = buffer->access->request_update(buffer);
+ 		if (ret) {
+ 			dev_dbg(&indio_dev->dev,
+-			       "Buffer not started: buffer parameter update failed (%d)\n",
++				"Buffer not started: buffer parameter update failed (%d)\n",
+ 				ret);
+ 			return ret;
+ 		}
+@@ -804,7 +803,7 @@ static int iio_buffer_request_update(str
+ }
+ 
+ static void iio_free_scan_mask(struct iio_dev *indio_dev,
+-	const unsigned long *mask)
++			       const unsigned long *mask)
+ {
+ 	/* If the mask is dynamically allocated free it, otherwise do nothing */
+ 	if (!indio_dev->available_scan_masks)
+@@ -820,8 +819,9 @@ struct iio_device_config {
+ };
+ 
+ static int iio_verify_update(struct iio_dev *indio_dev,
+-	struct iio_buffer *insert_buffer, struct iio_buffer *remove_buffer,
+-	struct iio_device_config *config)
++			     struct iio_buffer *insert_buffer,
++			     struct iio_buffer *remove_buffer,
++			     struct iio_device_config *config)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	unsigned long *compound_mask;
+@@ -861,7 +861,7 @@ static int iio_verify_update(struct iio_
+ 	if (insert_buffer) {
+ 		modes &= insert_buffer->access->modes;
+ 		config->watermark = min(config->watermark,
+-			insert_buffer->watermark);
++					insert_buffer->watermark);
+ 	}
+ 
+ 	/* Definitely possible for devices to support both of these. */
+@@ -887,7 +887,7 @@ static int iio_verify_update(struct iio_
+ 
+ 	/* What scan mask do we actually have? */
+ 	compound_mask = bitmap_zalloc(indio_dev->masklength, GFP_KERNEL);
+-	if (compound_mask == NULL)
++	if (!compound_mask)
+ 		return -ENOMEM;
+ 
+ 	scan_timestamp = false;
+@@ -908,18 +908,18 @@ static int iio_verify_update(struct iio_
+ 
+ 	if (indio_dev->available_scan_masks) {
+ 		scan_mask = iio_scan_mask_match(indio_dev->available_scan_masks,
+-				    indio_dev->masklength,
+-				    compound_mask,
+-				    strict_scanmask);
++						indio_dev->masklength,
++						compound_mask,
++						strict_scanmask);
+ 		bitmap_free(compound_mask);
+-		if (scan_mask == NULL)
++		if (!scan_mask)
+ 			return -EINVAL;
+ 	} else {
+ 		scan_mask = compound_mask;
+ 	}
+ 
+ 	config->scan_bytes = iio_compute_scan_bytes(indio_dev,
+-				    scan_mask, scan_timestamp);
++						    scan_mask, scan_timestamp);
+ 	config->scan_mask = scan_mask;
+ 	config->scan_timestamp = scan_timestamp;
+ 
+@@ -951,16 +951,16 @@ static void iio_buffer_demux_free(struct
+ }
+ 
+ static int iio_buffer_add_demux(struct iio_buffer *buffer,
+-	struct iio_demux_table **p, unsigned int in_loc, unsigned int out_loc,
+-	unsigned int length)
++				struct iio_demux_table **p, unsigned int in_loc,
++				unsigned int out_loc,
++				unsigned int length)
+ {
+-
+ 	if (*p && (*p)->from + (*p)->length == in_loc &&
+-		(*p)->to + (*p)->length == out_loc) {
++	    (*p)->to + (*p)->length == out_loc) {
+ 		(*p)->length += length;
+ 	} else {
+ 		*p = kmalloc(sizeof(**p), GFP_KERNEL);
+-		if (*p == NULL)
++		if (!(*p))
+ 			return -ENOMEM;
+ 		(*p)->from = in_loc;
+ 		(*p)->to = out_loc;
+@@ -1024,7 +1024,7 @@ static int iio_buffer_update_demux(struc
+ 		out_loc += length;
+ 	}
+ 	buffer->demux_bounce = kzalloc(out_loc, GFP_KERNEL);
+-	if (buffer->demux_bounce == NULL) {
++	if (!buffer->demux_bounce) {
+ 		ret = -ENOMEM;
+ 		goto error_clear_mux_table;
+ 	}
+@@ -1057,7 +1057,7 @@ error_clear_mux_table:
+ }
+ 
+ static int iio_enable_buffers(struct iio_dev *indio_dev,
+-	struct iio_device_config *config)
++			      struct iio_device_config *config)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	struct iio_buffer *buffer, *tmp = NULL;
+@@ -1075,7 +1075,7 @@ static int iio_enable_buffers(struct iio
+ 		ret = indio_dev->setup_ops->preenable(indio_dev);
+ 		if (ret) {
+ 			dev_dbg(&indio_dev->dev,
+-			       "Buffer not started: buffer preenable failed (%d)\n", ret);
++				"Buffer not started: buffer preenable failed (%d)\n", ret);
+ 			goto err_undo_config;
+ 		}
+ 	}
+@@ -1115,7 +1115,7 @@ static int iio_enable_buffers(struct iio
+ 		ret = indio_dev->setup_ops->postenable(indio_dev);
+ 		if (ret) {
+ 			dev_dbg(&indio_dev->dev,
+-			       "Buffer not started: postenable failed (%d)\n", ret);
++				"Buffer not started: postenable failed (%d)\n", ret);
+ 			goto err_detach_pollfunc;
+ 		}
+ 	}
+@@ -1191,15 +1191,15 @@ static int iio_disable_buffers(struct ii
+ }
+ 
+ static int __iio_update_buffers(struct iio_dev *indio_dev,
+-		       struct iio_buffer *insert_buffer,
+-		       struct iio_buffer *remove_buffer)
++				struct iio_buffer *insert_buffer,
++				struct iio_buffer *remove_buffer)
+ {
+ 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	struct iio_device_config new_config;
+ 	int ret;
+ 
+ 	ret = iio_verify_update(indio_dev, insert_buffer, remove_buffer,
+-		&new_config);
++				&new_config);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -1255,7 +1255,7 @@ int iio_update_buffers(struct iio_dev *i
+ 		return 0;
+ 
+ 	if (insert_buffer &&
+-	    (insert_buffer->direction == IIO_BUFFER_DIRECTION_OUT))
++	    insert_buffer->direction == IIO_BUFFER_DIRECTION_OUT)
+ 		return -EINVAL;
+ 
+ 	mutex_lock(&iio_dev_opaque->info_exist_lock);
+@@ -1272,7 +1272,7 @@ int iio_update_buffers(struct iio_dev *i
+ 		goto out_unlock;
+ 	}
+ 
+-	if (indio_dev->info == NULL) {
++	if (!indio_dev->info) {
+ 		ret = -ENODEV;
+ 		goto out_unlock;
+ 	}
+@@ -1609,7 +1609,7 @@ static int __iio_buffer_alloc_sysfs_and_
+ 
+ 	buffer_attrcount = 0;
+ 	if (buffer->attrs) {
+-		while (buffer->attrs[buffer_attrcount] != NULL)
++		while (buffer->attrs[buffer_attrcount])
+ 			buffer_attrcount++;
+ 	}
+ 
+@@ -1636,7 +1636,7 @@ static int __iio_buffer_alloc_sysfs_and_
+ 			}
+ 
+ 			ret = iio_buffer_add_channel_sysfs(indio_dev, buffer,
+-							 &channels[i]);
++							   &channels[i]);
+ 			if (ret < 0)
+ 				goto error_cleanup_dynamic;
+ 			scan_el_attrcount += ret;
+@@ -1644,10 +1644,10 @@ static int __iio_buffer_alloc_sysfs_and_
+ 				iio_dev_opaque->scan_index_timestamp =
+ 					channels[i].scan_index;
+ 		}
+-		if (indio_dev->masklength && buffer->scan_mask == NULL) {
++		if (indio_dev->masklength && !buffer->scan_mask) {
+ 			buffer->scan_mask = bitmap_zalloc(indio_dev->masklength,
+ 							  GFP_KERNEL);
+-			if (buffer->scan_mask == NULL) {
++			if (!buffer->scan_mask) {
+ 				ret = -ENOMEM;
+ 				goto error_cleanup_dynamic;
+ 			}
+@@ -1763,7 +1763,7 @@ int iio_buffers_alloc_sysfs_and_mask(str
+ 			goto error_unwind_sysfs_and_mask;
+ 	}
+ 
+-	sz = sizeof(*(iio_dev_opaque->buffer_ioctl_handler));
++	sz = sizeof(*iio_dev_opaque->buffer_ioctl_handler);
+ 	iio_dev_opaque->buffer_ioctl_handler = kzalloc(sz, GFP_KERNEL);
+ 	if (!iio_dev_opaque->buffer_ioctl_handler) {
+ 		ret = -ENOMEM;
+@@ -1812,14 +1812,14 @@ void iio_buffers_free_sysfs_and_mask(str
+  * a time.
+  */
+ bool iio_validate_scan_mask_onehot(struct iio_dev *indio_dev,
+-	const unsigned long *mask)
++				   const unsigned long *mask)
+ {
+ 	return bitmap_weight(mask, indio_dev->masklength) == 1;
+ }
+ EXPORT_SYMBOL_GPL(iio_validate_scan_mask_onehot);
+ 
+ static const void *iio_demux(struct iio_buffer *buffer,
+-				 const void *datain)
++			     const void *datain)
+ {
+ 	struct iio_demux_table *t;
+ 
 
 
 
