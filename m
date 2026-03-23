@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCiXKMZNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228646-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:18 +0100
+	id wEHJAp9bwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813F02F4852
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7746A2F6476
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 06235300C57C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0394533ED0CA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 318A4369204;
-	Mon, 23 Mar 2026 14:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6798271468;
+	Mon, 23 Mar 2026 15:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B2oUHeAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4L+OfAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CF61A6828;
-	Mon, 23 Mar 2026 14:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997CA258EE9;
+	Mon, 23 Mar 2026 15:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275704; cv=none; b=NdpgZEe0KX4EtvskWwWUS5RXnTxc06r10m3N7Y3JDDjs0vW6oWAaolj8+pTpd2DxxyAc+9dU+eQ4CNBcmjopxmKnLgOOqZEb27YWoCYVABaRM4vsB5QSlO+k1nUeOcdljJb6yO3BYgGZ5ZiD+l8iZEs7YBDNG/5iUJ2vNcjGckI=
+	t=1774278303; cv=none; b=hBHzSBc23yIcHkxjCH007mRf+0ql95kqGz4CdTtuUoNuJSYrOdkg+cXSmzd/K10rZ5V0sxmfovHVOOSb3YmGGDyX5vvrv36nkAv3SDHlKvnQWnV37IO8/IFUso7+DwkD617oB3hwVbnw4Kpv7tgbDr8kAEo3FgUX6ZNFRtkORM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275704; c=relaxed/simple;
-	bh=VzSD0nrSgKS9meqLlpVHOnOWniTWtpi2HYbUk+S8Wag=;
+	s=arc-20240116; t=1774278303; c=relaxed/simple;
+	bh=1ir3VECauYn4ZBI330A5QcgGg0P0xBARVYCNsTyYDmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nskoB6laD9ahZ/yM3w/EazCgMrfc34gnaW+1YKHOhC4ZNUCjYihXK7Ly0JzW8WVeeEY0PplBi1hD1RXAATu4gPJHBFSYE0M1HVzkpnPQCoYLQt2pPb7D9rb5Hcn79CYSEq6xG1LKdlq/qs8xRn1d74kvEHS0FgDUjMXTchxbed0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B2oUHeAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5271AC4CEF7;
-	Mon, 23 Mar 2026 14:21:43 +0000 (UTC)
+	 MIME-Version; b=od1G3wqzrMOBAB7n0kjNnN/6gkES6LCtft8zcmW95mD+oeCrmNQQVs18pv/jDaVOj3UuhD3myQoDxA9zzNGIFeZv85E5bdArNgRNbLhy2QmXXdmkq7jOqdCGq93hJPl9DaVaxKC24Wjc0A74POyiRl5Y2evVALUqsPratjYTYZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4L+OfAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC10C4CEF7;
+	Mon, 23 Mar 2026 15:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275703;
-	bh=VzSD0nrSgKS9meqLlpVHOnOWniTWtpi2HYbUk+S8Wag=;
+	s=korg; t=1774278303;
+	bh=1ir3VECauYn4ZBI330A5QcgGg0P0xBARVYCNsTyYDmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B2oUHeAqCh64bHtVwdR8ausOLNLvMX1NLQd4Ju4HMXjnEGYxyFcAvfWjEcfq1F+Xc
-	 Ts7gi5n9wroSqGlRrMxOjAhzyEHYz8g/9V9LIVtdUZHYmmxDs3o6kZvEgILFpgEn/R
-	 s+k7cQRQ3Nw5EJgWcC83etWbSj5c7fDytzRXwuSw=
+	b=I4L+OfArURVE655Dz17GAahMCDk6yAMr2NR/ySTDUp2AQ45Fmqz3Z74BVyOKg/Hkq
+	 FOGJFhfIskitAP/3TchmyssHo3Q0O+5OfnonOlFely10JzVj4ANctVAY5/GUUhrG2B
+	 ahyOiFy3lq8x/AROXCTp/NRjWOzts0h4tXSbQEx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>
-Subject: [PATCH 6.12 188/460] xfs: fix undersized l_iclog_roundoff values
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 264/567] net: usb: lan78xx: fix silent drop of packets with checksum errors
 Date: Mon, 23 Mar 2026 14:43:04 +0100
-Message-ID: <20260323134531.171055884@linuxfoundation.org>
+Message-ID: <20260323134540.362468909@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228646-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229177-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,75 +89,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 813F02F4852
+X-Rspamd-Queue-Id: 7746A2F6476
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 
-commit 52a8a1ba883defbfe3200baa22cf4cd21985d51a upstream.
+commit e4f774a0cc955ce762aec91c66915a6e15087ab7 upstream.
 
-If the superblock doesn't list a log stripe unit, we set the incore log
-roundoff value to 512.  This leads to corrupt logs and unmountable
-filesystems in generic/617 on a disk with 4k physical sectors...
+Do not drop packets with checksum errors at the USB driver level;
+pass them to the network stack.
 
-XFS (sda1): Mounting V5 Filesystem ff3121ca-26e6-4b77-b742-aaff9a449e1c
-XFS (sda1): Torn write (CRC failure) detected at log block 0x318e. Truncating head block from 0x3197.
-XFS (sda1): failed to locate log tail
-XFS (sda1): log mount/recovery failed: error -74
-XFS (sda1): log mount failed
-XFS (sda1): Mounting V5 Filesystem ff3121ca-26e6-4b77-b742-aaff9a449e1c
-XFS (sda1): Ending clean mount
+Previously, the driver dropped all packets where the 'Receive Error
+Detected' (RED) bit was set, regardless of the specific error type. This
+caused packets with only IP or TCP/UDP checksum errors to be dropped
+before reaching the kernel, preventing the network stack from accounting
+for them or performing software fallback.
 
-...on the current xfsprogs for-next which has a broken mkfs.  xfs_info
-shows this...
+Add a mask for hard hardware errors to safely drop genuinely corrupt
+frames, while allowing checksum-errored frames to pass with their
+ip_summed field explicitly set to CHECKSUM_NONE.
 
-meta-data=/dev/sda1              isize=512    agcount=4, agsize=644992 blks
-         =                       sectsz=4096  attr=2, projid32bit=1
-         =                       crc=1        finobt=1, sparse=1, rmapbt=1
-         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
-         =                       exchange=1   metadir=1
-data     =                       bsize=4096   blocks=2579968, imaxpct=25
-         =                       sunit=0      swidth=0 blks
-naming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=1
-log      =internal log           bsize=4096   blocks=16384, version=2
-         =                       sectsz=4096  sunit=0 blks, lazy-count=1
-realtime =none                   extsz=4096   blocks=0, rtextents=0
-         =                       rgcount=0    rgsize=268435456 extents
-         =                       zoned=0      start=0 reserved=0
-
-...observe that the log section has sectsz=4096 sunit=0, which means
-that the roundoff factor is 512, not 4096 as you'd expect.  We should
-fix mkfs not to generate broken filesystems, but anyone can fuzz the
-ondisk superblock so we should be more cautious.  I think the inadequate
-logic predates commit a6a65fef5ef8d0, but that's clearly going to
-require a different backport.
-
-Cc: stable@vger.kernel.org # v5.14
-Fixes: a6a65fef5ef8d0 ("xfs: log stripe roundoff is a property of the log")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/20260305143429.530909-2-o.rempel@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_log.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/usb/lan78xx.c |    4 +++-
+ drivers/net/usb/lan78xx.h |    3 +++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -1396,6 +1396,8 @@ xlog_alloc_log(
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -3537,6 +3537,7 @@ static void lan78xx_rx_csum_offload(stru
+ 	 */
+ 	if (!(dev->net->features & NETIF_F_RXCSUM) ||
+ 	    unlikely(rx_cmd_a & RX_CMD_A_ICSM_) ||
++	    unlikely(rx_cmd_a & RX_CMD_A_CSE_MASK_) ||
+ 	    ((rx_cmd_a & RX_CMD_A_FVTG_) &&
+ 	     !(dev->net->features & NETIF_F_HW_VLAN_CTAG_RX))) {
+ 		skb->ip_summed = CHECKSUM_NONE;
+@@ -3609,7 +3610,8 @@ static int lan78xx_rx(struct lan78xx_net
+ 			return 0;
+ 		}
  
- 	if (xfs_has_logv2(mp) && mp->m_sb.sb_logsunit > 1)
- 		log->l_iclog_roundoff = mp->m_sb.sb_logsunit;
-+	else if (mp->m_sb.sb_logsectsize > 0)
-+		log->l_iclog_roundoff = mp->m_sb.sb_logsectsize;
- 	else
- 		log->l_iclog_roundoff = BBSIZE;
+-		if (unlikely(rx_cmd_a & RX_CMD_A_RED_)) {
++		if (unlikely(rx_cmd_a & RX_CMD_A_RED_) &&
++		    (rx_cmd_a & RX_CMD_A_RX_HARD_ERRS_MASK_)) {
+ 			netif_dbg(dev, rx_err, dev->net,
+ 				  "Error rx_cmd_a=0x%08x", rx_cmd_a);
+ 		} else {
+--- a/drivers/net/usb/lan78xx.h
++++ b/drivers/net/usb/lan78xx.h
+@@ -74,6 +74,9 @@
+ #define RX_CMD_A_ICSM_			(0x00004000)
+ #define RX_CMD_A_LEN_MASK_		(0x00003FFF)
  
++#define RX_CMD_A_RX_HARD_ERRS_MASK_ \
++	(RX_CMD_A_RX_ERRS_MASK_ & ~RX_CMD_A_CSE_MASK_)
++
+ /* Rx Command B */
+ #define RX_CMD_B_CSUM_SHIFT_		(16)
+ #define RX_CMD_B_CSUM_MASK_		(0xFFFF0000)
 
 
 
