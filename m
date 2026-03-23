@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sLeeK3BQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228166-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:40 +0100
+	id QOjrMXx+wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:55:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401AC2F4E90
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 014022FA9E4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D8D730F1701
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:00:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E9D4C3125A72
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 850613B3BE0;
-	Mon, 23 Mar 2026 13:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB92D3B19A2;
+	Mon, 23 Mar 2026 16:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O41j7yT8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5PFJnGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466C23B38B9;
-	Mon, 23 Mar 2026 13:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E953246778;
+	Mon, 23 Mar 2026 16:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274326; cv=none; b=QS0VyRf8aT76fB4zqCL2QgoqH9J7OQPLR8AGDzhf4+Ab+uIbnSzmbNy6jjblZPnOyDLhdkxQXfwStqNC5dbCYTI8iNPUDEZdOvB2qS0hyZ62OeFIpE2QUmilPmOeiiA3aR4UqVZoQSWvODtkFKVvrYoCwoKMZ0P3rTn1M6H3tpc=
+	t=1774283154; cv=none; b=I2mHbUajd6oNGADd3LDIeuQZTAoX1QJeXjL7Y42GsG+Rp6o9uCCp/qAyvWgltC5DckIJqpYf1abxR2KufkJDVqXMJ3H8YWgSSswu07iHd9cUlfJ/KSFQLR6s+AO1r1o1zej9ZxVQSxUUbgHZq0P9+HRa4dAX1gxxx25UIRAIgbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274326; c=relaxed/simple;
-	bh=uZ9JvnwDJaxokd4c6l3RmyOaBcxyIUMvovuTJy2GZUo=;
+	s=arc-20240116; t=1774283154; c=relaxed/simple;
+	bh=K5Y/5WqMqQgwq4UMb4CyTjoUGIZe+K8lt+ucjolOdyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qWXk8RZzPq2eY0aEJ54KrGjGynD91lUWCKge6LFRuUKtjlXBDb0v7nBwoM0+eSKbAVqLjGjuBBRiSwrG8QpqrsU8Pc0os7LxJaOyDSI3yQNtMcY/bybAvUBtDkJtknqvXndZWqvazs8IKIN8Zv4PL6OcbiNV0xH1oVqnSek5suA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O41j7yT8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC879C2BCB4;
-	Mon, 23 Mar 2026 13:58:45 +0000 (UTC)
+	 MIME-Version; b=pXgMfHqH/+VM4xTHmhswHoZB3xRtCH76gzddV9Cv9KGx1kojIa1NBplDc2r13T9zJ6+Z1NApvJiUSzNqCtHbSsrdyu81us2zzard3hCtjvstgtCzFdmSZbHD7JPtV2APqotopSKx03Rtn2UN0+rfu61J/vrT520sQS/KITRmjJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5PFJnGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECA7C4CEF7;
+	Mon, 23 Mar 2026 16:25:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274326;
-	bh=uZ9JvnwDJaxokd4c6l3RmyOaBcxyIUMvovuTJy2GZUo=;
+	s=korg; t=1774283154;
+	bh=K5Y/5WqMqQgwq4UMb4CyTjoUGIZe+K8lt+ucjolOdyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O41j7yT8WHfPILOTVVjQjam0TGmHuRgfaeiiIm/Toz4DpBnduEovxad6yg1oMZS/0
-	 hlnqymLiOwAlv9BAEYTVHU/x19osWYMCPNQ+JDg2/QOXheqN9zppJkfupoccNO4X6r
-	 Ji4zCg/+seXuCI5ZoR7DCaUz4UoNrWNAu43Bg9xM=
+	b=m5PFJnGT4Isjba+ObjAgA0Zh5/mvSsXpd2l5N1L4LTg+zz0h64Hq3XeBsYyGyhsGH
+	 ZGdS+x4ojbwtpKRS+NYBfu3t95Pfc8ZfFn9SIZgFBtbI00utKDEbVl1DoJsODMADj+
+	 LyuP1k4Lh1omGZ7dPCBFwhVsci6zwlU7IFEvMHrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.19 183/220] hwmon: (pmbus/mp2975) Add error check for pmbus_read_word_data() return value
+	Rob Herring <robh@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 378/481] net: enetc: reimplement RFS/RSS memory clearing as PCI quirk
 Date: Mon, 23 Mar 2026 14:46:00 +0100
-Message-ID: <20260323134510.354893860@linuxfoundation.org>
+Message-ID: <20260323134534.344454915@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +67,235 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228166-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,nxp.com,davemloft.net,163.com];
+	TAGGED_FROM(0.00)[bounces-229896-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 401AC2F4E90
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nxp.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 014022FA9E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 19d4b9c8a136704d5f2544e7ac550f27918a5004 upstream.
+[ Upstream commit f0168042a21292d20007d24ab2e4fc32f79ebf11 ]
 
-mp2973_read_word_data() XORs the return value of pmbus_read_word_data()
-with PB_STATUS_POWER_GOOD_N without first checking for errors. If the I2C
-transaction fails, a negative error code is XORed with the constant,
-producing a corrupted value that is returned as valid status data instead
-of propagating the error.
+The workaround implemented in commit 3222b5b613db ("net: enetc:
+initialize RFS/RSS memories for unused ports too") is no longer
+effective after commit 6fffbc7ae137 ("PCI: Honor firmware's device
+disabled status"). Thus, it has introduced a regression and we see AER
+errors being reported again:
 
-Add the missing error check before modifying the return value.
+$ ip link set sw2p0 up && dhclient -i sw2p0 && ip addr show sw2p0
+fsl_enetc 0000:00:00.2 eno2: configuring for fixed/internal link mode
+fsl_enetc 0000:00:00.2 eno2: Link is Up - 2.5Gbps/Full - flow control rx/tx
+mscc_felix 0000:00:00.5 swp2: configuring for fixed/sgmii link mode
+mscc_felix 0000:00:00.5 swp2: Link is Up - 1Gbps/Full - flow control off
+sja1105 spi2.2 sw2p0: configuring for phy/rgmii-id link mode
+sja1105 spi2.2 sw2p0: Link is Up - 1Gbps/Full - flow control off
+pcieport 0000:00:1f.0: AER: Multiple Corrected error received: 0000:00:00.0
+pcieport 0000:00:1f.0: AER: can't find device of ID0000
 
-Fixes: acda945afb465 ("hwmon: (pmbus/mp2975) Fix PGOOD in READ_STATUS_WORD")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260317173308.382545-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Rob's suggestion is to reimplement the enetc driver workaround as a
+PCI fixup, and to modify the PCI core to run the fixups for all PCI
+functions. This change handles the first part.
+
+We refactor the common code in enetc_psi_create() and enetc_psi_destroy(),
+and use the PCI fixup only for those functions for which enetc_pf_probe()
+won't get called. This avoids some work being done twice for the PFs
+which are enabled.
+
+Fixes: 6fffbc7ae137 ("PCI: Honor firmware's device disabled status")
+Link: https://lore.kernel.org/netdev/CAL_JsqLsVYiPLx2kcHkDQ4t=hQVCR7NHziDwi9cCFUFhx48Qow@mail.gmail.com/
+Suggested-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/mp2975.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc_pf.c |  103 +++++++++++++++++-------
+ 1 file changed, 73 insertions(+), 30 deletions(-)
 
---- a/drivers/hwmon/pmbus/mp2975.c
-+++ b/drivers/hwmon/pmbus/mp2975.c
-@@ -313,6 +313,8 @@ static int mp2973_read_word_data(struct
- 	case PMBUS_STATUS_WORD:
- 		/* MP2973 & MP2971 return PGOOD instead of PB_STATUS_POWER_GOOD_N. */
- 		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
- 		ret ^= PB_STATUS_POWER_GOOD_N;
- 		break;
- 	case PMBUS_OT_FAULT_LIMIT:
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -1236,50 +1236,81 @@ static int enetc_pf_register_with_ierb(s
+ 	return ret;
+ }
+ 
+-static int enetc_pf_probe(struct pci_dev *pdev,
+-			  const struct pci_device_id *ent)
++static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
+ {
+-	struct device_node *node = pdev->dev.of_node;
+-	struct enetc_ndev_priv *priv;
+-	struct net_device *ndev;
+ 	struct enetc_si *si;
+-	struct enetc_pf *pf;
+ 	int err;
+ 
+-	err = enetc_pf_register_with_ierb(pdev);
+-	if (err == -EPROBE_DEFER)
+-		return err;
+-	if (err)
+-		dev_warn(&pdev->dev,
+-			 "Could not register with IERB driver: %pe, please update the device tree\n",
+-			 ERR_PTR(err));
+-
+-	err = enetc_pci_probe(pdev, KBUILD_MODNAME, sizeof(*pf));
+-	if (err)
+-		return dev_err_probe(&pdev->dev, err, "PCI probing failed\n");
++	err = enetc_pci_probe(pdev, KBUILD_MODNAME, sizeof(struct enetc_pf));
++	if (err) {
++		dev_err_probe(&pdev->dev, err, "PCI probing failed\n");
++		goto out;
++	}
+ 
+ 	si = pci_get_drvdata(pdev);
+ 	if (!si->hw.port || !si->hw.global) {
+ 		err = -ENODEV;
+ 		dev_err(&pdev->dev, "could not map PF space, probing a VF?\n");
+-		goto err_map_pf_space;
++		goto out_pci_remove;
+ 	}
+ 
+ 	err = enetc_setup_cbdr(&pdev->dev, &si->hw, ENETC_CBDR_DEFAULT_SIZE,
+ 			       &si->cbd_ring);
+ 	if (err)
+-		goto err_setup_cbdr;
++		goto out_pci_remove;
+ 
+ 	err = enetc_init_port_rfs_memory(si);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Failed to initialize RFS memory\n");
+-		goto err_init_port_rfs;
++		goto out_teardown_cbdr;
+ 	}
+ 
+ 	err = enetc_init_port_rss_memory(si);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "Failed to initialize RSS memory\n");
+-		goto err_init_port_rss;
++		goto out_teardown_cbdr;
++	}
++
++	return si;
++
++out_teardown_cbdr:
++	enetc_teardown_cbdr(&si->cbd_ring);
++out_pci_remove:
++	enetc_pci_remove(pdev);
++out:
++	return ERR_PTR(err);
++}
++
++static void enetc_psi_destroy(struct pci_dev *pdev)
++{
++	struct enetc_si *si = pci_get_drvdata(pdev);
++
++	enetc_teardown_cbdr(&si->cbd_ring);
++	enetc_pci_remove(pdev);
++}
++
++static int enetc_pf_probe(struct pci_dev *pdev,
++			  const struct pci_device_id *ent)
++{
++	struct device_node *node = pdev->dev.of_node;
++	struct enetc_ndev_priv *priv;
++	struct net_device *ndev;
++	struct enetc_si *si;
++	struct enetc_pf *pf;
++	int err;
++
++	err = enetc_pf_register_with_ierb(pdev);
++	if (err == -EPROBE_DEFER)
++		return err;
++	if (err)
++		dev_warn(&pdev->dev,
++			 "Could not register with IERB driver: %pe, please update the device tree\n",
++			 ERR_PTR(err));
++
++	si = enetc_psi_create(pdev);
++	if (IS_ERR(si)) {
++		err = PTR_ERR(si);
++		goto err_psi_create;
+ 	}
+ 
+ 	if (node && !of_device_is_available(node)) {
+@@ -1365,15 +1396,10 @@ err_alloc_si_res:
+ 	si->ndev = NULL;
+ 	free_netdev(ndev);
+ err_alloc_netdev:
+-err_init_port_rss:
+-err_init_port_rfs:
+ err_device_disabled:
+ err_setup_mac_addresses:
+-	enetc_teardown_cbdr(&si->cbd_ring);
+-err_setup_cbdr:
+-err_map_pf_space:
+-	enetc_pci_remove(pdev);
+-
++	enetc_psi_destroy(pdev);
++err_psi_create:
+ 	return err;
+ }
+ 
+@@ -1396,12 +1422,29 @@ static void enetc_pf_remove(struct pci_d
+ 	enetc_free_msix(priv);
+ 
+ 	enetc_free_si_resources(priv);
+-	enetc_teardown_cbdr(&si->cbd_ring);
+ 
+ 	free_netdev(si->ndev);
+ 
+-	enetc_pci_remove(pdev);
++	enetc_psi_destroy(pdev);
++}
++
++static void enetc_fixup_clear_rss_rfs(struct pci_dev *pdev)
++{
++	struct device_node *node = pdev->dev.of_node;
++	struct enetc_si *si;
++
++	/* Only apply quirk for disabled functions. For the ones
++	 * that are enabled, enetc_pf_probe() will apply it.
++	 */
++	if (node && of_device_is_available(node))
++		return;
++
++	si = enetc_psi_create(pdev);
++	if (si)
++		enetc_psi_destroy(pdev);
+ }
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_FREESCALE, ENETC_DEV_ID_PF,
++			enetc_fixup_clear_rss_rfs);
+ 
+ static const struct pci_device_id enetc_pf_id_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_FREESCALE, ENETC_DEV_ID_PF) },
 
 
 
