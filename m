@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228733-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sCxHLERLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:36 +0100
+	id wIyJFapTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228733-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:26 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574982F4117
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CEF2F5561
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5791D3072C69
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A9333047CB0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 074643B8BCF;
-	Mon, 23 Mar 2026 14:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BDB3B0AE5;
+	Mon, 23 Mar 2026 14:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPZKiKIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNtgVOhL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF77F3B19CC;
-	Mon, 23 Mar 2026 14:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89D63AF663;
+	Mon, 23 Mar 2026 14:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274599; cv=none; b=FPt7xLQSzPcwVbTLddTgKtij3G7L6PEfAU6qs5+9LGRDpz10lMf4HcO7YT9nVJchEPOUh+vcfx4II/IugyhfdahP449CwvyCPy78m2DN/pfJgtSKCv50RAQRev4AnIchhEFmhDrNVR2KDHpOjrYohkFzvgyDCyhmLm17pewvGYk=
+	t=1774276975; cv=none; b=KDuO1ZoOViPUwGq4uOOF98buYMMyTc/wLKFg+qa8ehq41A2UozIt2a1L0bxHGJbrFTrTIrEoT2XOoGdVQXA5fVHa/27IAlt7ltazELVpxOXWgji7YWjAMiGAzxl0K0AhgZFfCjWiptGGDJW//ZF9DbiS+BTTI3RE4GNIMS0Blok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274599; c=relaxed/simple;
-	bh=nHbzVaXb9nn0dpxFtL8/5TKDGhwsB2aGhjfWyYkeUVs=;
+	s=arc-20240116; t=1774276975; c=relaxed/simple;
+	bh=nbIePGM1qb1DTosN5src08yau3O8W8rfngT1zswQ+Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+7/A2KHf1dIzZ0/EBdy1EyebkIEAqG7lMUClyRQOdrkB5wxfZtyliq/UtgP9BvGLg8a+lUqUV/Ym+CAB8GhzWcVepjD1QiaPoabvHhW1sSvEZ7gj0nfQCQ2B/6j5MstL1JdNnYihQeTtV15QqKLAzlraIhkBsxOykYhDSL4+rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPZKiKIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3B8BC4CEF7;
-	Mon, 23 Mar 2026 14:03:18 +0000 (UTC)
+	 MIME-Version; b=MQpIcZ4H7h0WgbhuwhR3r8QBJ5uCrrUfqKoaicq5t5LCoqhyOdA4OiJ+MzdDdXkVL1WmydCQP1R+C1XmUT/P1ZnIMmJSrtrRXVSSpMDihRJWZBHEfXoeHLvI3UOzWs34RTSyYEq526y5b7TlUICiJbMouR+hM6oIHlO5VJ/dbhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNtgVOhL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC91C4CEF7;
+	Mon, 23 Mar 2026 14:42:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274599;
-	bh=nHbzVaXb9nn0dpxFtL8/5TKDGhwsB2aGhjfWyYkeUVs=;
+	s=korg; t=1774276975;
+	bh=nbIePGM1qb1DTosN5src08yau3O8W8rfngT1zswQ+Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPZKiKIi1yKf7Uy4ZYUKvOVeZxGcCVHVsKqx9G0FDYGUr1sQJZtVx8Z/XL1Pvo2oi
-	 tnttno856rvts5yFE6ZyYMJZcaXqeB2XjRoPvrIfxvpxgNxjhtnLpA4FDZxya8CH3z
-	 MxitJBjZerjNVjIFkI9Zd8TXb4JdObkuKqSPtOzs=
+	b=rNtgVOhLcgVB0R37M2ZSd+22ZT/tLogUewEwa1SMJMRYQrqYf15gDjxz7tMJKTmfE
+	 cHt7N+5NWPdDc7GVDtwsesIMWliA3qAKcW7WH4M2pSHZKsKGNQgPLvjxtdzwkEuPSS
+	 lRZu4Zg2YSQgh9dialLE2on1/6WdY4dKWw2tzSqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 049/212] ipmi:msghandler: Handle error returns from the SMI sender
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.12 274/460] ipv6: use RCU in ip6_xmit()
 Date: Mon, 23 Mar 2026 14:44:30 +0100
-Message-ID: <20260323134505.321326451@linuxfoundation.org>
+Message-ID: <20260323134533.214173230@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,244 +70,139 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228733-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228256-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,minyard.net:email]
-X-Rspamd-Queue-Id: 574982F4117
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 06CEF2F5561
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <corey@minyard.net>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 62cd145453d577113f993efd025f258dd86aa183 ]
+commit 9085e56501d93af9f2d7bd16f7fcfacdde47b99c upstream.
 
-It used to be, until recently, that the sender operation on the low
-level interfaces would not fail.  That's not the case any more with
-recent changes.
+Use RCU in ip6_xmit() in order to use dst_dev_rcu() to prevent
+possible UAF.
 
-So check the return value from the sender operation, and propagate it
-back up from there and handle the errors in all places.
-
-Reported-by: Rafael J. Wysocki <rafael@kernel.org>
-Fixes: bc3a9d217755 ("ipmi:si: Gracefully handle if the BMC is non-functional")
-Cc: stable@vger.kernel.org # 4.18
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c |  100 ++++++++++++++++++++++++------------
- 1 file changed, 68 insertions(+), 32 deletions(-)
+ net/ipv6/ip6_output.c |   35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -1887,19 +1887,32 @@ static struct ipmi_smi_msg *smi_add_send
- 	return smi_msg;
- }
- 
--static void smi_send(struct ipmi_smi *intf,
-+static int smi_send(struct ipmi_smi *intf,
- 		     const struct ipmi_smi_handlers *handlers,
- 		     struct ipmi_smi_msg *smi_msg, int priority)
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -267,35 +267,36 @@ bool ip6_autoflowlabel(struct net *net,
+ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
+ 	     __u32 mark, struct ipv6_txoptions *opt, int tclass, u32 priority)
  {
- 	int run_to_completion = READ_ONCE(intf->run_to_completion);
- 	unsigned long flags = 0;
-+	int rv = 0;
+-	struct net *net = sock_net(sk);
+ 	const struct ipv6_pinfo *np = inet6_sk(sk);
+ 	struct in6_addr *first_hop = &fl6->daddr;
+ 	struct dst_entry *dst = skb_dst(skb);
+-	struct net_device *dev = dst_dev(dst);
+ 	struct inet6_dev *idev = ip6_dst_idev(dst);
+ 	struct hop_jumbo_hdr *hop_jumbo;
+ 	int hoplen = sizeof(*hop_jumbo);
++	struct net *net = sock_net(sk);
+ 	unsigned int head_room;
++	struct net_device *dev;
+ 	struct ipv6hdr *hdr;
+ 	u8  proto = fl6->flowi6_proto;
+ 	int seg_len = skb->len;
+-	int hlimit = -1;
++	int ret, hlimit = -1;
+ 	u32 mtu;
  
- 	ipmi_lock_xmit_msgs(intf, run_to_completion, &flags);
- 	smi_msg = smi_add_send_msg(intf, smi_msg, priority);
- 	ipmi_unlock_xmit_msgs(intf, run_to_completion, &flags);
++	rcu_read_lock();
++
++	dev = dst_dev_rcu(dst);
+ 	head_room = sizeof(struct ipv6hdr) + hoplen + LL_RESERVED_SPACE(dev);
+ 	if (opt)
+ 		head_room += opt->opt_nflen + opt->opt_flen;
  
--	if (smi_msg)
--		handlers->sender(intf->send_info, smi_msg);
-+	if (smi_msg) {
-+		rv = handlers->sender(intf->send_info, smi_msg);
-+		if (rv) {
-+			ipmi_lock_xmit_msgs(intf, run_to_completion, &flags);
-+			intf->curr_msg = NULL;
-+			ipmi_unlock_xmit_msgs(intf, run_to_completion, &flags);
-+			/*
-+			 * Something may have been added to the transmit
-+			 * queue, so schedule a check for that.
-+			 */
-+			queue_work(system_wq, &intf->smi_work);
-+		}
-+	}
-+	return rv;
- }
- 
- static bool is_maintenance_mode_cmd(struct kernel_ipmi_msg *msg)
-@@ -2312,6 +2325,7 @@ static int i_ipmi_request(struct ipmi_us
- 	struct ipmi_recv_msg *recv_msg;
- 	int run_to_completion = READ_ONCE(intf->run_to_completion);
- 	int rv = 0;
-+	bool in_seq_table = false;
- 
- 	if (supplied_recv) {
- 		recv_msg = supplied_recv;
-@@ -2365,33 +2379,50 @@ static int i_ipmi_request(struct ipmi_us
- 		rv = i_ipmi_req_ipmb(intf, addr, msgid, msg, smi_msg, recv_msg,
- 				     source_address, source_lun,
- 				     retries, retry_time_ms);
-+		in_seq_table = true;
- 	} else if (is_ipmb_direct_addr(addr)) {
- 		rv = i_ipmi_req_ipmb_direct(intf, addr, msgid, msg, smi_msg,
- 					    recv_msg, source_lun);
- 	} else if (is_lan_addr(addr)) {
- 		rv = i_ipmi_req_lan(intf, addr, msgid, msg, smi_msg, recv_msg,
- 				    source_lun, retries, retry_time_ms);
-+		in_seq_table = true;
- 	} else {
--	    /* Unknown address type. */
-+		/* Unknown address type. */
- 		ipmi_inc_stat(intf, sent_invalid_commands);
- 		rv = -EINVAL;
+ 	if (unlikely(head_room > skb_headroom(skb))) {
+-		/* Make sure idev stays alive */
+-		rcu_read_lock();
++		/* idev stays alive while we hold rcu_read_lock(). */
+ 		skb = skb_expand_head(skb, head_room);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
+-			rcu_read_unlock();
+-			return -ENOBUFS;
++			ret = -ENOBUFS;
++			goto unlock;
+ 		}
+-		rcu_read_unlock();
  	}
  
--	if (rv) {
--out_err:
--		if (!supplied_smi)
--			ipmi_free_smi_msg(smi_msg);
--		if (!supplied_recv)
--			ipmi_free_recv_msg(recv_msg);
--	} else {
-+	if (!rv) {
- 		dev_dbg(intf->si_dev, "Send: %*ph\n",
- 			smi_msg->data_size, smi_msg->data);
- 
--		smi_send(intf, intf->handlers, smi_msg, priority);
-+		rv = smi_send(intf, intf->handlers, smi_msg, priority);
-+		if (rv != IPMI_CC_NO_ERROR)
-+			/* smi_send() returns an IPMI err, return a Linux one. */
-+			rv = -EIO;
-+		if (rv && in_seq_table) {
-+			/*
-+			 * If it's in the sequence table, it will be
-+			 * retried later, so ignore errors.
-+			 */
-+			rv = 0;
-+			/* But we need to fix the timeout. */
-+			intf_start_seq_timer(intf, smi_msg->msgid);
-+			ipmi_free_smi_msg(smi_msg);
-+			smi_msg = NULL;
+ 	if (opt) {
+@@ -357,17 +358,21 @@ int ip6_xmit(const struct sock *sk, stru
+ 		 * skb to its handler for processing
+ 		 */
+ 		skb = l3mdev_ip6_out((struct sock *)sk, skb);
+-		if (unlikely(!skb))
+-			return 0;
++		if (unlikely(!skb)) {
++			ret = 0;
++			goto unlock;
 +		}
+ 
+ 		/* hooks should never assume socket lock is held.
+ 		 * we promote our socket to non const
+ 		 */
+-		return NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
+-			       net, (struct sock *)sk, skb, NULL, dev,
+-			       dst_output);
++		ret = NF_HOOK(NFPROTO_IPV6, NF_INET_LOCAL_OUT,
++			      net, (struct sock *)sk, skb, NULL, dev,
++			      dst_output);
++		goto unlock;
  	}
-+out_err:
- 	if (!run_to_completion)
- 		mutex_unlock(&intf->users_mutex);
  
-+	if (rv) {
-+		if (!supplied_smi)
-+			ipmi_free_smi_msg(smi_msg);
-+		if (!supplied_recv)
-+			ipmi_free_recv_msg(recv_msg);
-+	}
- 	return rv;
++	ret = -EMSGSIZE;
+ 	skb->dev = dev;
+ 	/* ipv6_local_error() does not require socket lock,
+ 	 * we promote our socket to non const
+@@ -376,7 +381,9 @@ int ip6_xmit(const struct sock *sk, stru
+ 
+ 	IP6_INC_STATS(net, idev, IPSTATS_MIB_FRAGFAILS);
+ 	kfree_skb(skb);
+-	return -EMSGSIZE;
++unlock:
++	rcu_read_unlock();
++	return ret;
  }
- 
-@@ -3961,12 +3992,12 @@ static int handle_ipmb_get_msg_cmd(struc
- 		dev_dbg(intf->si_dev, "Invalid command: %*ph\n",
- 			msg->data_size, msg->data);
- 
--		smi_send(intf, intf->handlers, msg, 0);
--		/*
--		 * We used the message, so return the value that
--		 * causes it to not be freed or queued.
--		 */
--		rv = -1;
-+		if (smi_send(intf, intf->handlers, msg, 0) == IPMI_CC_NO_ERROR)
-+			/*
-+			 * We used the message, so return the value that
-+			 * causes it to not be freed or queued.
-+			 */
-+			rv = -1;
- 	} else if (!IS_ERR(recv_msg)) {
- 		/* Extract the source address from the data. */
- 		ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
-@@ -4040,12 +4071,12 @@ static int handle_ipmb_direct_rcv_cmd(st
- 		msg->data[4] = IPMI_INVALID_CMD_COMPLETION_CODE;
- 		msg->data_size = 5;
- 
--		smi_send(intf, intf->handlers, msg, 0);
--		/*
--		 * We used the message, so return the value that
--		 * causes it to not be freed or queued.
--		 */
--		rv = -1;
-+		if (smi_send(intf, intf->handlers, msg, 0) == IPMI_CC_NO_ERROR)
-+			/*
-+			 * We used the message, so return the value that
-+			 * causes it to not be freed or queued.
-+			 */
-+			rv = -1;
- 	} else if (!IS_ERR(recv_msg)) {
- 		/* Extract the source address from the data. */
- 		daddr = (struct ipmi_ipmb_direct_addr *)&recv_msg->addr;
-@@ -4185,7 +4216,7 @@ static int handle_lan_get_msg_cmd(struct
- 				  struct ipmi_smi_msg *msg)
- {
- 	struct cmd_rcvr          *rcvr;
--	int                      rv = 0;
-+	int                      rv = 0; /* Free by default */
- 	unsigned char            netfn;
- 	unsigned char            cmd;
- 	unsigned char            chan;
-@@ -4238,12 +4269,12 @@ static int handle_lan_get_msg_cmd(struct
- 		dev_dbg(intf->si_dev, "Invalid command: %*ph\n",
- 			msg->data_size, msg->data);
- 
--		smi_send(intf, intf->handlers, msg, 0);
--		/*
--		 * We used the message, so return the value that
--		 * causes it to not be freed or queued.
--		 */
--		rv = -1;
-+		if (smi_send(intf, intf->handlers, msg, 0) == IPMI_CC_NO_ERROR)
-+			/*
-+			 * We used the message, so return the value that
-+			 * causes it to not be freed or queued.
-+			 */
-+			rv = -1;
- 	} else if (!IS_ERR(recv_msg)) {
- 		/* Extract the source address from the data. */
- 		lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
-@@ -5052,7 +5083,12 @@ static void check_msg_timeout(struct ipm
- 				ipmi_inc_stat(intf,
- 					      retransmitted_ipmb_commands);
- 
--			smi_send(intf, intf->handlers, smi_msg, 0);
-+			/* If this fails we'll retry later or timeout. */
-+			if (smi_send(intf, intf->handlers, smi_msg, 0) != IPMI_CC_NO_ERROR) {
-+				/* But fix the timeout. */
-+				intf_start_seq_timer(intf, smi_msg->msgid);
-+				ipmi_free_smi_msg(smi_msg);
-+			}
- 		} else
- 			ipmi_free_smi_msg(smi_msg);
+ EXPORT_SYMBOL(ip6_xmit);
  
 
 
