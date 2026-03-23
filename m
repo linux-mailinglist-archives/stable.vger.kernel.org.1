@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229454-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gA/HMNVWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228921-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:57 +0100
+	id 2LtaEcZiwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229454-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 347702F5C4B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 989562F7272
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1ADA430C72A4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 28713358883A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D8E3AF650;
-	Mon, 23 Mar 2026 14:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9343BE620;
+	Mon, 23 Mar 2026 15:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlPOmzGM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0I6ZI+VS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588BE3AEF50;
-	Mon, 23 Mar 2026 14:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CBB3BE17E;
+	Mon, 23 Mar 2026 15:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277493; cv=none; b=l0JiyWlrROd6yInmG5x0+bvnFOV1NAu6W+xa6OTRhapkAlcZdeDrhAX0aVwLrrsJcwxdRGq3Ga2oQz27wGrQ7dytA7yaa+3dwfl2OE/8G5LRmxYaJTFJXcFCHlDdgSArqTcG95OUeCKfUfsQ9Vkg6AfQwUECsRuZ9IvrmBkszb4=
+	t=1774279284; cv=none; b=GRHXicqekTszBcg3XJ3CkDAFKAH8LaZK4CzFNgtTxRg+W4sf2wqUIoNy8ZU0Lf7e0hd48SMw8Ut80EvtHwDvoLUjIQNKSiL1wCM37Dk2TSQb318wATwvMws6plyDm38vaNDHwVp+9Ujre3VWnk2S9PGjyG2xInilpEKiG8m9guU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277493; c=relaxed/simple;
-	bh=4vxM1+lhVEZUefXpN7jBiUSVVn9mahxGnWOJeDlF0qs=;
+	s=arc-20240116; t=1774279284; c=relaxed/simple;
+	bh=NvZIdawnQHcgh+fxsNPpjdlzbQgMeJl0veVvtqA6Auc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RZhfEgu7RjcC9VXeIoCHN0vyX0+ng0LqbNHCewrAF/bjfI5RS/L6K07rC9ZLgdONp0lWtceGOSEy+89c2vI3bBDqP3yHe2NT/w+fppD/Cn9GL86A++JZpme0vxpTCW+Qf5RLZWeO9proQXh57DpC1d2de5V4FFwNUfZmsZsYOj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlPOmzGM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E38BEC4CEF7;
-	Mon, 23 Mar 2026 14:51:32 +0000 (UTC)
+	 MIME-Version; b=ZYhBgjsjedjIkA+hrw0rain18TI+lKU8N6lqadOIfytKCotvHcyqJbG+VwSB1XOqMm8TMvA090LA92JW9TXTh+YwtuH2HD/EvYVj+DyLJT16bxldJLBBsvnFikmKVu8459l4dJQPbA/afccO7NCP61QI9odbx1q2s1WBOangF/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0I6ZI+VS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5512CC2BCB3;
+	Mon, 23 Mar 2026 15:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277493;
-	bh=4vxM1+lhVEZUefXpN7jBiUSVVn9mahxGnWOJeDlF0qs=;
+	s=korg; t=1774279284;
+	bh=NvZIdawnQHcgh+fxsNPpjdlzbQgMeJl0veVvtqA6Auc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlPOmzGMO97zbwkMI84FruFpqjbjl2QZTzd86GRAtP8D8Wd/QA9RkDA6DNy/nJyYB
-	 2OPIjc8ktBXXjFh89Cp4xRnAGGXDnhmSUQq6iPNCayE6sjCLQ1zZuTrPbZDBMVNYwl
-	 BpH5m9M9NcjjfM80akHPD5M+gmF9veJJJjXZYAAA=
+	b=0I6ZI+VSdfIT7y6A2ySY1vFOor63IkgvPw0ssw7ys56fYfexvbpRMwzcsNPHPXecV
+	 9ySFmY/jROGxTNnL+KjR3zMf8mzO2qaIi9k+32oY7gyLvOav3raAcRzaYXD8diXR6j
+	 Fq6aHqlS3DdoDljj6sSUNMpZpSqUHKnYj4K+UNRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naresh Solanki <naresh.solanki@9elements.com>,
+	Peter Astrand <astrand@lysator.liu.se>,
 	Guenter Roeck <linux@roeck-us.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 459/460] hwmon: (max6639) Fix pulses-per-revolution implementation
+Subject: [PATCH 6.6 535/567] wifi: wlcore: Return -ENOMEM instead of -EAGAIN if there is not enough headroom
 Date: Mon, 23 Mar 2026 14:47:35 +0100
-Message-ID: <20260323134537.856835750@linuxfoundation.org>
+Message-ID: <20260323134547.239933910@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +67,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228921-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229454-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 347702F5C4B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 989562F7272
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit e7bae9a7a5e1251ab414291f4e9304d702bb9221 ]
+[ Upstream commit deb353d9bb009638b7762cae2d0b6e8fdbb41a69 ]
 
-The valid range for the pulses-per-revolution devicetree property is
-1..4. The current code checks for a range of 1..5. Fix it.
+Since upstream commit e75665dd0968 ("wifi: wlcore: ensure skb headroom
+before skb_push"), wl1271_tx_allocate() and with it
+wl1271_prepare_tx_frame() returns -EAGAIN if pskb_expand_head() fails.
+However, in wlcore_tx_work_locked(), a return value of -EAGAIN from
+wl1271_prepare_tx_frame() is interpreted as the aggregation buffer being
+full. This causes the code to flush the buffer, put the skb back at the
+head of the queue, and immediately retry the same skb in a tight while
+loop.
 
-Declare the variable used to retrieve pulses per revolution from
-devicetree as u32 (unsigned) to match the of_property_read_u32() API.
+Because wlcore_tx_work_locked() holds wl->mutex, and the retry happens
+immediately with GFP_ATOMIC, this will result in an infinite loop and a
+CPU soft lockup. Return -ENOMEM instead so the packet is dropped and
+the loop terminates.
 
-The current code uses a postfix decrement when writing the pulses per
-resolution into the chip. This has no effect since the value is evaluated
-before it is decremented. Fix it by decrementing before evaluating the
-value.
+The problem was found by an experimental code review agent based on
+gemini-3.1-pro while reviewing backports into v6.18.y.
 
-Fixes: 7506ebcd662b ("hwmon: (max6639) : Configure based on DT property")
-Cc: Naresh Solanki <naresh.solanki@9elements.com>
+Assisted-by: Gemini:gemini-3.1-pro
+Fixes: e75665dd0968 ("wifi: wlcore: ensure skb headroom before skb_push")
+Cc: Peter Astrand <astrand@lysator.liu.se>
 Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://patch.msgid.link/20260318064636.3065925-1-linux@roeck-us.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max6639.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/ti/wlcore/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
-index 0b0a9f4c2307f..154250099adf1 100644
---- a/drivers/hwmon/max6639.c
-+++ b/drivers/hwmon/max6639.c
-@@ -234,7 +234,7 @@ static int max6639_read_fan(struct device *dev, u32 attr, int channel,
- static int max6639_set_ppr(struct max6639_data *data, int channel, u8 ppr)
- {
- 	/* Decrement the PPR value and shift left by 6 to match the register format */
--	return regmap_write(data->regmap, MAX6639_REG_FAN_PPR(channel), ppr-- << 6);
-+	return regmap_write(data->regmap, MAX6639_REG_FAN_PPR(channel), --ppr << 6);
- }
- 
- static int max6639_write_fan(struct device *dev, u32 attr, int channel,
-@@ -536,8 +536,8 @@ static int max6639_probe_child_from_dt(struct i2c_client *client,
- 
- {
- 	struct device *dev = &client->dev;
--	u32 i;
--	int err, val;
-+	u32 i, val;
-+	int err;
- 
- 	err = of_property_read_u32(child, "reg", &i);
- 	if (err) {
-@@ -552,8 +552,8 @@ static int max6639_probe_child_from_dt(struct i2c_client *client,
- 
- 	err = of_property_read_u32(child, "pulses-per-revolution", &val);
- 	if (!err) {
--		if (val < 1 || val > 5) {
--			dev_err(dev, "invalid pulses-per-revolution %d of %pOFn\n", val, child);
-+		if (val < 1 || val > 4) {
-+			dev_err(dev, "invalid pulses-per-revolution %u of %pOFn\n", val, child);
- 			return -EINVAL;
+diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
+index 75ad096676561..1c6373013f66a 100644
+--- a/drivers/net/wireless/ti/wlcore/tx.c
++++ b/drivers/net/wireless/ti/wlcore/tx.c
+@@ -213,7 +213,7 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 		if (skb_headroom(skb) < (total_len - skb->len) &&
+ 		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
+ 			wl1271_free_tx_id(wl, id);
+-			return -EAGAIN;
++			return -ENOMEM;
  		}
- 		data->ppr[i] = val;
+ 		desc = skb_push(skb, total_len - skb->len);
+ 
 -- 
 2.51.0
 
