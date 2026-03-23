@@ -1,160 +1,251 @@
-Return-Path: <stable+bounces-230021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-230022-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sMFcE0i7wWm/UwQAu9opvQ
-	(envelope-from <stable+bounces-230021-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:14:32 +0100
+	id GGXxCUC8wWm/UwQAu9opvQ
+	(envelope-from <stable+bounces-230022-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:18:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFC0B2FE23E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:14:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96192FE2BF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 23:18:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5EF5A3027BA8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:14:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25D53301EF32
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 22:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B69BF382F0B;
-	Mon, 23 Mar 2026 22:14:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1603090F5;
+	Mon, 23 Mar 2026 22:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LzkEt0N4"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pX7+NvzI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8098382F0E
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 22:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E163345729;
+	Mon, 23 Mar 2026 22:18:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774304068; cv=none; b=Zdo4AhFOcnUhUBJAnp5QFKNEhdZmR5nyH4HnEwlWVuMV3nri8TGR+KGF40nsjJDX1d5nYcTZAKwLAv+zNfBFn1dk4BRJt9bFvdyfZPVAgERrR6chGWLI8P2ljyIlBN5o5cl3vjPmlSanyavEfesDoMreUkUI2RlYUJxRvUEHGiM=
+	t=1774304317; cv=none; b=OJSbwftXh7yqmE4KfDINB0DGVJJl5n8mmdrvE4R46QS/tl5pO4l1eDRpLnN6/oDK+7Uiqnvvra0w+2M2ohCVVHLqor7Eyt6Y6mOVl4AC1coqx24O1z+yr07+5fP4z3Bf9ceh96qgsie2DIhjydQzj8YiIk48xX6tfM1UncGAgN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774304068; c=relaxed/simple;
-	bh=u45GD6ljkZzzO+s25gIyu9x9FXNK40ZR6rWB92rZkB4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UzTMfsf3ExoN2oLP11RyLbNcrmyL7EHOltvT0x6mRTdehsewrBf/cHjTaBXUphiEJCQe+g1v+ZkNqSEPG73ue+/4dkFT1qlof7TYxCjGYUkJo/CddeBZXz27W18IdGervlKHZF4HazXphxm66z5RjKi8FCnHj1DIfnl4jN1Cm+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LzkEt0N4; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-40f387a688dso3621993fac.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 15:14:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1774304065; x=1774908865; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ChdMT4MylejAuCZm+2amkaY9v69TqoANZkATUoAewQc=;
-        b=LzkEt0N46KLDnXeC9PZzb0hmwG9htWL454MLpkUBkElp96mWO5dFQwxhOYWj5cXnQh
-         BJuLizKyWKIlpzljq9AP5P3hziqMAHX0QdJJtVYt7UoFcJ2X6Ws6gbX053lCo9woWQ6p
-         YoF/zb+twQez2Ru9CfK3CIaWq1Jpwvfq73dE0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774304065; x=1774908865;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ChdMT4MylejAuCZm+2amkaY9v69TqoANZkATUoAewQc=;
-        b=fFWewhHYxV+S2MD6j11FfgjPSf8i94mOd5CRqT/TVarFOPA9zTBDuT7MKCyFZScjGO
-         2Yv1VG+n2wTpwr3cyf/5CnigpGPeoc3ecW6bT2CtFBskKUtnmbT3gdLePi/5BthWpxSS
-         ZZtIQy2oAPVVgx3tu85wkJCff2ST/QFMaA7np+8/iqPu93aaawG5GBQPVExQa/Qq21FV
-         L7dM7c/wRFdNKhM1gEj+GWJwq6SU1OYinPaiUe1cPPf5zJcMBd/1h4BwChwZMgfcHjVK
-         ijRlYuUl6fIph8EiwbRAAEJELHeghxYUGgsVhN7Z57JfOgxL+tNWZpUDFnL2Kvsn7rG6
-         YTKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXZNpShPdgBHaW3rXdDxdjVr5CBWc6ef5Wqf/P/nVBzhdOjCyH9II4A2OmD5cSwzQI0C+lzfg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpX9Ii1ZO1dVOlJ77Y0TveEUSr0wKSwQMjo4iV3ndSXCj7XpGA
-	pFMw8x4OsordlsRrh12s4lh8I7aWJr6yjK5gpzpXdWetZLHHw6OaHqUnOpwqetZvtCY=
-X-Gm-Gg: ATEYQzyNQtSXjJjUfV8XSq3mkHsq/5+2n7jixRQjemKh8a5LDQaEGhi/3Yvwt8EDUV6
-	4/Gm9DQ+1E0QFKf7TFRFV0+iFtPyzHlV6NNfl7vHPSE7vGtOBo5n8djU9AuqDxzVy0L0Tod/U3Q
-	vKSgiXLm/P/u1Z3ouWI6WoxKODHVGmdGXiYlkwoyBPZlZ6toB+7TJ70SHXWUpY6ijJMq5P4rUTL
-	LYv4gvz0J2e+ns/apvNSMs52iLZVR0EtLrYXgKVVtlYhQtCzRTQEN+Pi73yYSmosLC1g4Z4xYJ9
-	7w3BoNtwOTTyPNrrm3tVQhU9Zm3ct3grVBTkSdjtS+wU/8JUkFGEDl/1OvIr4pERB4Ha44koY0X
-	Ejc9N0PKAOFk4NmD8WWLi84udv5hyt1ajh2Q9/6/YPqlYMoScVUluqpU8bpeZDYRv9Cqe8rw/2q
-	3Q4sPnRvkMxK79STTo2WsSw1DMJAUDVHUhuxbdwgsH/29SOA==
-X-Received: by 2002:a05:6870:b52b:b0:3d9:2fe2:f5c8 with SMTP id 586e51a60fabf-41c11227833mr8798048fac.32.1774304064791;
-        Mon, 23 Mar 2026 15:14:24 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.187.108])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-41c14ddbcb3sm11505467fac.14.2026.03.23.15.14.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 15:14:24 -0700 (PDT)
-Message-ID: <959e0530-4991-4d4a-8b65-3ce0b7f6ff86@linuxfoundation.org>
-Date: Mon, 23 Mar 2026 16:14:22 -0600
+	s=arc-20240116; t=1774304317; c=relaxed/simple;
+	bh=o/+Kg9/bBW5TqV/W+gUBtz++JcR9+Hvj9c2EEedZ2p0=;
+	h=Date:To:From:Subject:Message-Id; b=D9tzMGI/uoHHieUKQZr7tf+C27x3N8XsjqwpfJxVks6K3Lie8QGpD3qTKtKIf9h6DyZqtpJemkc7qUj6nyR/iczwQtkJTSwfnEc4VYIqgie8RObfSwfddc4IGJzA/gLF/wYgY5DkqGMsoqakEWi6zfDTp510gQJ4ZOKgGLr5wH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pX7+NvzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 086ADC4CEF7;
+	Mon, 23 Mar 2026 22:18:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774304317;
+	bh=o/+Kg9/bBW5TqV/W+gUBtz++JcR9+Hvj9c2EEedZ2p0=;
+	h=Date:To:From:Subject:From;
+	b=pX7+NvzIQqr6UB4fcGx+BBTcKjUsFHx94e6tLxVbeLUImPlVR476AYVOL6wPsZmGc
+	 rQNH9khtuoqWpza8w86kS2yTHMKZ0U3RWaZqRU5dZynkZH5GKeyeeYmPbrvMgp6K7Q
+	 W7rCm7bmW09crHzoX4zjjtJfWvRwLwe43m4gKXJI=
+Date: Mon, 23 Mar 2026 15:18:36 -0700
+To: mm-commits@vger.kernel.org,vbabka@kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,peterx@redhat.com,mhocko@suse.com,ljs@kernel.org,liam.howlett@oracle.com,david@kernel.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memory-fix-pmd-pud-checks-in-follow_pfnmap_start.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260323221837.086ADC4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 000/481] 6.1.167-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=google];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com,linuxfoundation.org];
-	TAGGED_FROM(0.00)[bounces-230021-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[skhan@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	TAGGED_FROM(0.00)[bounces-230022-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	TO_DN_NONE(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: EFC0B2FE23E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux-foundation.org:dkim,linux-foundation.org:email,oracle.com:email]
+X-Rspamd-Queue-Id: B96192FE2BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/23/26 07:39, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.167 release.
-> There are 481 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 25 Mar 2026 13:44:33 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.167-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
 
-Compiled and booted on my test system. No dmesg regressions.
+The patch titled
+     Subject: mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memory-fix-pmd-pud-checks-in-follow_pfnmap_start.patch
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory-fix-pmd-pud-checks-in-follow_pfnmap_start.patch
 
-thanks,
--- Shuah
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: mm/memory: fix PMD/PUD checks in follow_pfnmap_start()
+Date: Mon, 23 Mar 2026 21:20:18 +0100
+
+follow_pfnmap_start() suffers from two problems:
+
+(1) We are not re-fetching the pmd/pud after taking the PTL
+
+Therefore, we are not properly stabilizing what the lock lock actually
+protects.  If there is concurrent zapping, we would indicate to the caller
+that we found an entry, however, that entry might already have been
+invalidated, or contain a different PFN after taking the lock.
+
+Properly use pmdp_get() / pudp_get() after taking the lock.
+
+(2) pmd_leaf() / pud_leaf() are not well defined on non-present entries
+
+pmd_leaf()/pud_leaf() could wrongly trigger on non-present entries.
+
+There is no real guarantee that pmd_leaf()/pud_leaf() returns something
+reasonable on non-present entries.  Most architectures indeed either
+perform a present check or make it work by smart use of flags.
+
+However, for example loongarch checks the _PAGE_HUGE flag in pmd_leaf(),
+and always sets the _PAGE_HUGE flag in __swp_entry_to_pmd().  Whereby
+pmd_trans_huge() explicitly checks pmd_present(), pmd_leaf() does not do
+that.
+
+Let's check pmd_present()/pud_present() before assuming "the is a present
+PMD leaf" when spotting pmd_leaf()/pud_leaf(), like other page table
+handling code that traverses user page tables does.
+
+Given that non-present PMD entries are likely rare in VM_IO|VM_PFNMAP, (1)
+is likely more relevant than (2).  It is questionable how often (1) would
+actually trigger, but let's CC stable to be sure.
+
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20260323-follow_pfnmap_fix-v1-1-5b0ec10872b3@kernel.org
+Fixes: 6da8e9634bb7 ("mm: new follow_pfnmap API")
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes (Oracle) <ljs@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory.c |   18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
+
+--- a/mm/memory.c~mm-memory-fix-pmd-pud-checks-in-follow_pfnmap_start
++++ a/mm/memory.c
+@@ -6815,11 +6815,16 @@ retry:
+ 
+ 	pudp = pud_offset(p4dp, address);
+ 	pud = pudp_get(pudp);
+-	if (pud_none(pud))
++	if (!pud_present(pud))
+ 		goto out;
+ 	if (pud_leaf(pud)) {
+ 		lock = pud_lock(mm, pudp);
+-		if (!unlikely(pud_leaf(pud))) {
++		pud = pudp_get(pudp);
++
++		if (unlikely(!pud_present(pud))) {
++			spin_unlock(lock);
++			goto out;
++		} else if (unlikely(!pud_leaf(pud))) {
+ 			spin_unlock(lock);
+ 			goto retry;
+ 		}
+@@ -6831,9 +6836,16 @@ retry:
+ 
+ 	pmdp = pmd_offset(pudp, address);
+ 	pmd = pmdp_get_lockless(pmdp);
++	if (!pmd_present(pmd))
++		goto out;
+ 	if (pmd_leaf(pmd)) {
+ 		lock = pmd_lock(mm, pmdp);
+-		if (!unlikely(pmd_leaf(pmd))) {
++		pmd = pmdp_get(pmdp);
++
++		if (unlikely(!pmd_present(pmd))) {
++			spin_unlock(lock);
++			goto out;
++		} else if (unlikely(!pmd_leaf(pmd))) {
+ 			spin_unlock(lock);
+ 			goto retry;
+ 		}
+_
+
+Patches currently in -mm which might be from david@kernel.org are
+
+mm-memory-fix-pmd-pud-checks-in-follow_pfnmap_start.patch
+mm-centralizefix-comments-about-compound_mapcount-in-new-sync_with_folio_pmd_zap.patch
+mm-pagewalk-drop-fw_migration.patch
+mm-madvise-drop-range-checks-in-madvise_free_single_vma.patch
+mm-memory-remove-zap_details-parameter-from-zap_page_range_single.patch
+mm-memory-remove-zap_details-parameter-from-zap_page_range_single-fix.patch
+mm-memory-inline-unmap_mapping_range_vma-into-unmap_mapping_range_tree.patch
+mm-memory-simplify-calculation-in-unmap_mapping_range_tree.patch
+mm-oom_kill-use-mmu_notify_clear-in-__oom_reap_task_mm.patch
+mm-oom_kill-factor-out-zapping-of-vma-into-zap_vma_for_reaping.patch
+mm-memory-rename-unmap_single_vma-to-__zap_vma_range.patch
+mm-memory-move-adjusting-of-address-range-to-unmap_vmas.patch
+mm-memory-convert-details-even_cows-into-details-skip_cows.patch
+mm-memory-use-__zap_vma_range-in-zap_vma_for_reaping.patch
+mm-memory-inline-unmap_page_range-into-__zap_vma_range.patch
+mm-memory-inline-unmap_page_range-into-__zap_vma_range-fix.patch
+mm-rename-zap_vma_pages-to-zap_vma.patch
+mm-rename-zap_page_range_single_batched-to-zap_vma_range_batched.patch
+mm-rename-zap_page_range_single-to-zap_vma_range.patch
+mm-rename-zap_vma_ptes-to-zap_special_vma_range.patch
+mm-memory-support-vm_mixedmap-in-zap_special_vma_range.patch
+kasan-docs-slub-is-the-only-remaining-slab-implementation.patch
+mm-move-vma_kernel_pagesize-from-hugetlb-to-mmh.patch
+mm-move-vma_mmu_pagesize-from-hugetlb-to-vmac.patch
+kvm-remove-hugetlbh-inclusion.patch
+kvm-ppc-remove-hugetlbh-inclusion.patch
+mm-memory_hotplug-remove-for_each_valid_pfn-usage.patch
+mm-sparse-remove-warn_ons-from-onlineoffline_mem_sections.patch
+mm-kconfig-make-config_memory_hotplug-depend-on-config_sparsemem_vmemmap.patch
+mm-memory_hotplug-simplify-check_pfn_span.patch
+mm-sparse-remove-config_sparsemem_vmemmap-leftovers-for-config_memory_hotplug.patch
+mm-bootmem_info-remove-handling-for-config_sparsemem_vmemmap.patch
+mm-bootmem_info-avoid-using-sparse_decode_mem_map.patch
+mm-sparse-remove-sparse_decode_mem_map.patch
+mm-sparse-remove-config_memory_hotplug-specific-usemap-allocation-handling.patch
+mm-prepare-to-move-subsection_map_init-to-mm-sparse-vmemmapc.patch
+mm-sparse-drop-set_section_nid-from-sparse_add_section.patch
+mm-sparse-move-sparse_init_one_section-to-internalh.patch
+mm-sparse-move-sparse_init_one_section-to-internalh-fix.patch
+mm-sparse-move-__section_mark_present-to-internalh.patch
+mm-sparse-move-memory-hotplug-bits-to-sparse-vmemmapc.patch
+mm-remove-config_arch_enable_memory_hotremove.patch
+mm-introduce-config_numa_migration-and-simplify-config_migration.patch
+
 
