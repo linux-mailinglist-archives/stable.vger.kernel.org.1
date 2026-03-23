@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229824-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WB6XBkFNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228321-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:05 +0100
+	id KM/1A919wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229824-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:52:29 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C24F2F46AC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C4622FA885
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:52:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3025D3211065
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C3203024529
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB08A3B19DB;
-	Mon, 23 Mar 2026 14:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4D423B612;
+	Mon, 23 Mar 2026 16:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFKdGe+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lc1nIDjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9AC3B19D4;
-	Mon, 23 Mar 2026 14:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2033B0ACC;
+	Mon, 23 Mar 2026 16:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274801; cv=none; b=Lzve8a5Ce2T/doYXnsV0KAsBfj2bc2EnjqXlbru6HOBqLvxl25lR7UFH7W/hrxU4fF6MdkoPM2QPrCaiw/ncgVunNtC/Y8TrnhmivQVipHKlVuX5ZgexdsYFWy6C/GrERL/EtCDvQCOMHFK+a5Jhl99vVmqVaoJ5WejvRG/8t04=
+	t=1774282964; cv=none; b=YvqsO7A7EhcDMvA9/QUOor2pSb7+qI+iKvXfrSvij1q2qmL1ZyKg3FwWcLzAaQijIx3w6Tjc4LZJBnxVIClP1T0fpRPIdxBbnWQG3LX2Fiom30Lf5oWCVA5MUYyzMQtt+X5nXNyKLurn7nD5iM7na2J+qG7w50pezlg74wQFbEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274801; c=relaxed/simple;
-	bh=aIUxPv1f0xRm/7lo3OvADgLYXvBQm44HhkFM92Fm4kc=;
+	s=arc-20240116; t=1774282964; c=relaxed/simple;
+	bh=X8KU3T/xNOIfX8VRAAtMnzSZX6Q8kicg27EVaCO3Ulg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RqZjB8TuMiv201ohr4+Q9zmEE43rqpgcJhfc/z0Pglb2kJacXuHVhq4P652NOBXW/alHglWOJpqD5JdTdmAW1+VzRmGNZzyCr8PHNzu8MKm0EZ9/EXqRFzWjPKoGxuDnq2Pfx7CU6ew7VE6NvnJvH43M8yd1v4gYmbb/iWAmmFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFKdGe+t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C93BC4CEF7;
-	Mon, 23 Mar 2026 14:06:41 +0000 (UTC)
+	 MIME-Version; b=Vwb8fNdM/5HNta/9bzNNDu07/EkAX46yTqtMwr2mAlcVG1O0yPsW1StvqogyuQcwZFwHYr3lWfyyQ9h0qOFpf1fsh2uS9SVdrz11fe8yglP4qYXimMOmMkdjkTI5gQcx+eiVsybMoajb3u4QoePx9M7gWFd7cMPojdlyKG5/TQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lc1nIDjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73C1C4CEF7;
+	Mon, 23 Mar 2026 16:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274801;
-	bh=aIUxPv1f0xRm/7lo3OvADgLYXvBQm44HhkFM92Fm4kc=;
+	s=korg; t=1774282964;
+	bh=X8KU3T/xNOIfX8VRAAtMnzSZX6Q8kicg27EVaCO3Ulg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gFKdGe+t495vC5RWDCIrbSub8f3Qq1Nzvd3eDK0b1/XsN5pEzDvvTjRLOjMMJipQc
-	 uKRGCAXewU7eIHTylNpNjmlw+S6HsCWXYUNJOd49chdZrzEkFTl1Z3HNaA68FeJhj/
-	 y4dbEBPTC5uqA2JCfu5jQs8F+M2hxqss65CR3EQA=
+	b=Lc1nIDjfsrhzZEMVqZtDBFa574rRQADqYb4KPSj279mLnPZC8OvbwsfxdSyFRYjru
+	 jDY0VDP9w7Ad0dhCtfwF89w/2Q7vZSQJnA7Cqwnd7sOROYZJIVLLsae4YnF6/YjkjO
+	 5c+v2pm9zwrtUn5aab8+8AP6rQvajsmbzoo76WAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Zw Tang <shicenci@gmail.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 112/212] arm64: dts: renesas: rzt2h-n2h-evk: Add ramp delay for SD0 card regulator
+Subject: [PATCH 6.1 351/481] kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()
 Date: Mon, 23 Mar 2026 14:45:33 +0100
-Message-ID: <20260323134507.315915208@linuxfoundation.org>
+Message-ID: <20260323134533.657986664@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +64,79 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228321-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229824-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7C24F2F46AC
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 5C4622FA885
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 
-[ Upstream commit bb70589b67039e491dd60cf71272884e926a0f95 ]
+[ Upstream commit 5ef268cb7a0aac55521fd9881f1939fa94a8988e ]
 
-Add a ramp delay of 60 uV/us to the vqmmc_sdhi0 voltage regulator to
-fix UHS-I SD card detection failures.
+Remove unneeded warnings for handled errors from __arm_kprobe_ftrace()
+because all caller handled the error correctly.
 
-Measurements on CN78 pin 4 showed the actual voltage ramp time to be
-21.86ms when switching between 3.3V and 1.8V. A 25ms ramp delay has
-been configured to provide adequate margin. The calculation is based
-on the voltage delta of 1.5V (3.3V - 1.8V):
-  1500000 uV / 60 uV/us = 25000 us (25ms)
+Link: https://lore.kernel.org/all/177261531182.1312989.8737778408503961141.stgit@mhiramat.tok.corp.google.com/
 
-Prior to this patch, UHS-I cards failed to initialize with:
-
-    mmc0: error -110 whilst initialising SD card
-
-After this patch, UHS-I cards are properly detected on SD0:
-
-    mmc0: new UHS-I speed SDR104 SDXC card at address aaaa
-    mmcblk0: mmc0:aaaa SR64G 59.5 GiB
-
-Fixes: d065453e5ee09 ("arm64: dts: renesas: rzt2h-rzn2h-evk: Enable SD card slot")
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260123225957.1007089-2-prabhakar.mahadev-lad.rj@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reported-by: Zw Tang <shicenci@gmail.com>
+Closes: https://lore.kernel.org/all/CAPHJ_V+J6YDb_wX2nhXU6kh466Dt_nyDSas-1i_Y8s7tqY-Mzw@mail.gmail.com/
+Fixes: 9c89bb8e3272 ("kprobes: treewide: Cleanup the error messages for kprobes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/kprobes.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi b/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
-index 5384a43837c1d..9c6f712a62eff 100644
---- a/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
-+++ b/arch/arm64/boot/dts/renesas/rzt2h-n2h-evk-common.dtsi
-@@ -49,6 +49,7 @@ vqmmc_sdhi0: regulator-vqmmc-sdhi0 {
- 		regulator-max-microvolt = <3300000>;
- 		gpios-states = <0>;
- 		states = <3300000 0>, <1800000 1>;
-+		regulator-ramp-delay = <60>;
- 	};
- #endif
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1077,12 +1077,12 @@ static int __arm_kprobe_ftrace(struct kp
+ 	lockdep_assert_held(&kprobe_mutex);
  
--- 
-2.51.0
-
+ 	ret = ftrace_set_filter_ip(ops, (unsigned long)p->addr, 0, 0);
+-	if (WARN_ONCE(ret < 0, "Failed to arm kprobe-ftrace at %pS (error %d)\n", p->addr, ret))
++	if (ret < 0)
+ 		return ret;
+ 
+ 	if (*cnt == 0) {
+ 		ret = register_ftrace_function(ops);
+-		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
++		if (ret < 0) {
+ 			/*
+ 			 * At this point, sinec ops is not registered, we should be sefe from
+ 			 * registering empty filter.
 
 
 
