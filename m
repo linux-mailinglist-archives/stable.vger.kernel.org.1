@@ -1,138 +1,117 @@
-Return-Path: <stable+bounces-227971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227972-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2GcDDac5wWm7RQQAu9opvQ
-	(envelope-from <stable+bounces-227971-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:01:27 +0100
+	id GHB0IW07wWn2RgQAu9opvQ
+	(envelope-from <stable+bounces-227972-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D67F72F2625
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:01:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F722F2899
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AB5CF308A65B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 12:56:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 096B0307BF0D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5425236EAB1;
-	Mon, 23 Mar 2026 12:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6625145948;
+	Mon, 23 Mar 2026 13:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bQXJ6URt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvJVoDvi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182E63A9DAB
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 12:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAD7286A4
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 13:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774270594; cv=none; b=ipZo7rx0YAkUNp/EQPUNkZBZIdeJlFoHaJIFa5VWMnAhuBw7ez7/A8I58p/7W8FNbLPhUZBxsdEtAxz1J2sluIgMfHJKdhjiyqQpuGNbQ36e/Y9aLMkwazyDVHnzG5Cig2ZHiCMDvFMFF4OMul3j8h/8OSW14N4uMu0bcebgzdU=
+	t=1774270822; cv=none; b=fDiag/CZlLLHZFfvnWy+t8Nrxqvg6/Albo8R5Z78bRD9gYOf9hJdXTELCA4K5vwzGVKLgP/uxUaISwCe02mD+hxAUk6R6G7h1jOZtDX1XawLhb/9Sjn6STKLHoirNu+y49109xPT6xxb0a6K6m1L7n7kYHM/WwZWsT7cab8+kuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774270594; c=relaxed/simple;
-	bh=5RFSHrSy0T0N8TKyFd5rGOjqnVR8zENTugr+DmETkVI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uozJ/R0g5dSimSNMhViF5X87WQ4MPGQYsBlKH6jEMWk8EAJudexp5V7Yex+p8AEKl0mEhs2CZfIsAzeUxb/iY2Puhk8YSXvXl+HoQdk7E2uGxQQPLsmHbdLG2uzDRLb/Dh6FgC+DYncebqhu/K7aqveal9Xw/zNr2PULBXCmK58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bQXJ6URt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E33C2BC9E;
-	Mon, 23 Mar 2026 12:56:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774270593;
-	bh=5RFSHrSy0T0N8TKyFd5rGOjqnVR8zENTugr+DmETkVI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQXJ6URtNaqMex69bkgbpO+eT6eZvyCd1Yxw7tBiDLnBKrl0xa3o7ScfEP1OdFUq2
-	 nye85bCOsg2sW3nwXjU3RktDu4Yr2fsDQL1UDqOrgFNEgpnE92kf9UShsbW3yecmSZ
-	 vKBxecDxgMkZZSRN5U0XZfOC0VqTaqFsoveFDxrJpN4zEhvZoB3BaGWysGOH2wHEdV
-	 oG8svjxQCU/g7X/bMRGyiym/EFRlMe+hTzKbNQ+mbRsdN7HHsPTILINHqA12PA7bU0
-	 +iDuihgmy2hJ8tbRGyOe6RQyDcG4RHCQRKJ6owtCEEmh+eaF0TEyn5yMOd28w7dhCf
-	 6CbT3fQ19D5+g==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Johan Hovold <johan@kernel.org>,
-	=?UTF-8?q?Bence=20Cs=C3=B3k=C3=A1s?= <bence98@sch.bme.hu>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y 2/2] i2c: cp2615: fix serial string NULL-deref at probe
-Date: Mon, 23 Mar 2026 08:56:30 -0400
-Message-ID: <20260323125630.1651316-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260323125630.1651316-1-sashal@kernel.org>
-References: <2026032348-endanger-humvee-fc57@gregkh>
- <20260323125630.1651316-1-sashal@kernel.org>
+	s=arc-20240116; t=1774270822; c=relaxed/simple;
+	bh=NiDhwM7+uj+ZCcIpQ1Vu0ykSSlBJ19E/FGMRyVej0rY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bqJrwHZrKVDPnrWjov6Cq4U8b2SaOVBTFK/YckYKg9eiCh97/TciV8hYj3Ms/U7YrXF//TLseWqkhkh09LqC0cZUHJcYm/asC31O8BAAsa24AI9dxCN77BNHg2sJjb0E2djBhOT3Wy/6xl4sW4Hb8udigym9wyqioMpWnGZlqkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvJVoDvi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA01C4CEF7;
+	Mon, 23 Mar 2026 13:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1774270821;
+	bh=NiDhwM7+uj+ZCcIpQ1Vu0ykSSlBJ19E/FGMRyVej0rY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VvJVoDvidVotVU1K4aRMuVX1HRLAF9gN8IIyhafkmizBrnxIWkuIzBRL1LlAY3hXD
+	 vt6F2Za7zZrjtzTPKi5W8AYHvg66zrisfC8e3Acw9HfuM7VG7A2v46F5EdIhiYgDhl
+	 4F4n01YdLtuFfc//BSpyc5+wS71V7/0xrWjqv2ok=
+Date: Mon, 23 Mar 2026 13:59:59 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Ghadi Elie Rahme <ghadi.rahme@canonical.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 6.1.y] smb/dfs_cache: Fix NULL pointer dereference on
+ session connection failure
+Message-ID: <2026032355-portfolio-corral-c5de@gregkh>
+References: <20260303173139.517020-1-ghadi.rahme@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303173139.517020-1-ghadi.rahme@canonical.com>
+X-Spamd-Result: default: False [2.34 / 15.00];
+	MID_END_EQ_FROM_USER_PART(4.00)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227971-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	RSPAMD_URIBL_FAIL(0.00)[bme.hu:query timed out];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TAGGED_FROM(0.00)[bounces-227972-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[sashal@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D67F72F2625
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim]
+X-Rspamd-Queue-Id: E0F722F2899
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Johan Hovold <johan@kernel.org>
+On Tue, Mar 03, 2026 at 07:31:39PM +0200, Ghadi Elie Rahme wrote:
+> [ Upstream commit 6916881f443f67f6893b504fa2171468c8aed915 ]
 
-[ Upstream commit aa79f996eb41e95aed85a1bd7f56bcd6a3842008 ]
+No, that is NOT what this commit id is.
 
-The cp2615 driver uses the USB device serial string as the i2c adapter
-name but does not make sure that the string exists.
+> It is possible for find_ipc_from_server_path to run while the tcon is NULL,
+> resulting in a NULL pointer dereference crash when calling strcasecmp().
+> This happens when the ipc connection fails freeing the tcon and setting it
+> to NULL while the dfs cache worker thread was already executing.
+> This issue was fixed upstream indirectly by a rewrite that removed this
+> function. Although with this fix the issue can still occur, the window of
+> the race is now much narrower.
+> A fix that would completely fix it using mutexes was tested and
+> worked fine. However the regression potential would be much higher and so
+> would be the deviation from upstream.
+> This is a good balance of safety while minimizing upstream deviation.
 
-Verify that the device has a serial number before accessing it to avoid
-triggering a NULL-pointer dereference (e.g. with malicious devices).
+No, please use the upstream commits instead.  Also, you did not cc: any
+of the maintainers or developers involved here, which would mean we
+couldn't take this anyway.
 
-Fixes: 4a7695429ead ("i2c: cp2615: add i2c driver for Silicon Labs' CP2615 Digital Audio Bridge")
-Cc: stable@vger.kernel.org	# 5.13
-Cc: Bence Csókás <bence98@sch.bme.hu>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Bence Csókás <bence98@sch.bme.hu>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260309075016.25612-1-johan@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/i2c/busses/i2c-cp2615.c | 3 +++
- 1 file changed, 3 insertions(+)
+sorry.
 
-diff --git a/drivers/i2c/busses/i2c-cp2615.c b/drivers/i2c/busses/i2c-cp2615.c
-index 20f8f7c9a8cd4..8e17f32d38c06 100644
---- a/drivers/i2c/busses/i2c-cp2615.c
-+++ b/drivers/i2c/busses/i2c-cp2615.c
-@@ -298,6 +298,9 @@ cp2615_i2c_probe(struct usb_interface *usbif, const struct usb_device_id *id)
- 	if (!adap)
- 		return -ENOMEM;
- 
-+	if (!usbdev->serial)
-+		return -EINVAL;
-+
- 	strscpy(adap->name, usbdev->serial, sizeof(adap->name));
- 	adap->owner = THIS_MODULE;
- 	adap->dev.parent = &usbif->dev;
--- 
-2.51.0
-
+greg k-h
 
