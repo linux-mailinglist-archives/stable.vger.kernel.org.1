@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229717-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mOb6FxhHwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228031-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:48 +0100
+	id 6FIwHHd0wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229717-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:12:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8822F38B7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932DD2F9928
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0041F3074E10
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 681D7303943C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6FC1A6818;
-	Mon, 23 Mar 2026 13:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19B1258CD9;
+	Mon, 23 Mar 2026 16:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nC8LfBXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMmeRrqT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604D821D00A;
-	Mon, 23 Mar 2026 13:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F083BED34;
+	Mon, 23 Mar 2026 16:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273918; cv=none; b=bUtRTyRXpB0qjYHOOfq5e7ARYrLVnM0sYtg+mAT9MMZwxlXtkSbbsNwroIjaqjIXx4Kx2DT+hOzxYHyCxzY5cB22wDR31kHgKEm9TRSFjROJNttxDPWwTMNPMZhfjXlZHxJ+NPybTZYQIvysIsAEIyiU+ABjvcKDMLWxqK5PJcE=
+	t=1774282677; cv=none; b=JXaNURUw6QFD849vt3gkYGT2ph93UbnoRBQqB05WHeBgT/OGf9KI+eRpZe5IHlZQqofkyMqDmQOoWvGzmMxKJaTvzLWyxgBPRSr1qDnZs8dQc5OabY3mf+sE8jPVKDhogKtMhDMOe7dnjQEZVeMjJsUi5Fgexm4s41UOCmOssYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273918; c=relaxed/simple;
-	bh=h9Dnf4q6Lv0pOItWae+wlDsLQMCcEoxO70PIJ1RO7ak=;
+	s=arc-20240116; t=1774282677; c=relaxed/simple;
+	bh=FqEOeWCpbit8nKQ8yQ1jMcjmxDiDohxaKA5OwbFZYAU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eX5qIOWcWkbQPKz49szAcGNLcxRhfZD+ZTlMJchvjtQ4L2ICPgSfwIX97lpm0bIvxdS9b3I+adio8RQ3ajXjUMnBYF9CsDZVzJwMDsxboxqhlbZKdHOcOwsqQz8D9BoFHuE2qch/InlDPAWLI//XQFjO+JIki86g5hmemAtgtAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nC8LfBXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D959EC4CEF7;
-	Mon, 23 Mar 2026 13:51:57 +0000 (UTC)
+	 MIME-Version; b=ULHZrmr3XorgAM9waALDgcw5BbhZVOZQyA37SWCeHMJ/TyDKidmVx7xkykHOsJaCpT/OEz0tcEI1tg+2gAGZWvyY1xRzQPOcRFsooh1eRDDlpcA5UEdrdVXB7ulkGZpKyCnN+FsIkqs2u+bgbsr73ZWPsAzxAMR5h8HU2d4GpMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMmeRrqT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA77C4CEF7;
+	Mon, 23 Mar 2026 16:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273918;
-	bh=h9Dnf4q6Lv0pOItWae+wlDsLQMCcEoxO70PIJ1RO7ak=;
+	s=korg; t=1774282677;
+	bh=FqEOeWCpbit8nKQ8yQ1jMcjmxDiDohxaKA5OwbFZYAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nC8LfBXW43hVid3pAMe9dCnli7yIfE62B8QHxX950Kwp6Pxmb4YZPn1VTzAnpFNbJ
-	 RNNmInivBBsi7pr5lQj/hvGZg4STzSjbam4lqNlCfvkf99tnWtMdcqSIJ7Zz9kldKw
-	 dC1ZqE2S87PTBJwZ9aBsyzuCVA4JX8RLFwO4TuJc=
+	b=yMmeRrqTathw0sVqQ8LqovBsn04Ok1RZElG/Y+803oANCbIa9ucMGkZ25ENAEZztw
+	 kostl9YtLl7IIrLTlPFC3W7p8SI4k+BXcT4OkSMQFPLVnTVHmYnxztXO6ANQPWh2QP
+	 bU+CQBuknvcXK1meM9Ti2kD3t9o26TQitN2nvQqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Sobrie <olivier@sobrie.be>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.19 050/220] mtd: rawnand: pl353: make sure optimal timings are applied
-Date: Mon, 23 Mar 2026 14:43:47 +0100
-Message-ID: <20260323134506.166627195@linuxfoundation.org>
+	Marios Makassikis <mmakassikis@freebox.fr>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 246/481] smb: server: fix use-after-free in smb2_open()
+Date: Mon, 23 Mar 2026 14:43:48 +0100
+Message-ID: <20260323134531.148684742@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229717-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228031-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sobrie.be:email]
-X-Rspamd-Queue-Id: BD8822F38B7
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 932DD2F9928
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Sobrie <olivier@sobrie.be>
+From: Marios Makassikis <mmakassikis@freebox.fr>
 
-commit b9465b04de4b90228de03db9a1e0d56b00814366 upstream.
+commit 1e689a56173827669a35da7cb2a3c78ed5c53680 upstream.
 
-Timings of the nand are adjusted by pl35x_nfc_setup_interface() but
-actually applied by the pl35x_nand_select_target() function.
-If there is only one nand chip, the pl35x_nand_select_target() will only
-apply the timings once since the test at its beginning will always be true
-after the first call to this function. As a result, the hardware will
-keep using the default timings set at boot to detect the nand chip, not
-the optimal ones.
+The opinfo pointer obtained via rcu_dereference(fp->f_opinfo) is
+dereferenced after rcu_read_unlock(), creating a use-after-free
+window.
 
-With this patch, we program directly the new timings when
-pl35x_nfc_setup_interface() is called.
-
-Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
-Signed-off-by: Olivier Sobrie <olivier@sobrie.be>
 Cc: stable@vger.kernel.org
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/pl35x-nand-controller.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/smb2pdu.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
-+++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
-@@ -862,6 +862,9 @@ static int pl35x_nfc_setup_interface(str
- 			  PL35X_SMC_NAND_TAR_CYCLES(tmgs.t_ar) |
- 			  PL35X_SMC_NAND_TRR_CYCLES(tmgs.t_rr);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3343,10 +3343,8 @@ int smb2_open(struct ksmbd_work *work)
+ 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
  
-+	writel(plnand->timings, nfc->conf_regs + PL35X_SMC_CYCLES);
-+	pl35x_smc_update_regs(nfc);
-+
- 	return 0;
- }
+ 	rsp->StructureSize = cpu_to_le16(89);
+-	rcu_read_lock();
+-	opinfo = rcu_dereference(fp->f_opinfo);
++	opinfo = opinfo_get(fp);
+ 	rsp->OplockLevel = opinfo != NULL ? opinfo->level : 0;
+-	rcu_read_unlock();
+ 	rsp->Flags = 0;
+ 	rsp->CreateAction = cpu_to_le32(file_info);
+ 	rsp->CreationTime = cpu_to_le64(fp->create_time);
+@@ -3387,6 +3385,7 @@ int smb2_open(struct ksmbd_work *work)
+ 		next_ptr = &lease_ccontext->Next;
+ 		next_off = conn->vals->create_lease_size;
+ 	}
++	opinfo_put(opinfo);
  
+ 	if (maximal_access_ctxt) {
+ 		struct create_context *mxac_ccontext;
 
 
 
