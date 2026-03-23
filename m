@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-228018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229732-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAkaKORGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228018-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:56 +0100
+	id OAifEYxswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229732-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5362F382D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F962F8810
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E4E2305A5C7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE54432155ED
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B482F3AE6E1;
-	Mon, 23 Mar 2026 13:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFC43BD635;
+	Mon, 23 Mar 2026 16:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pjXo/v7u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oI0xkaxi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A7D3AE1AD;
-	Mon, 23 Mar 2026 13:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF06D2C0298;
+	Mon, 23 Mar 2026 16:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273877; cv=none; b=HxdxhXbAtO3GcammQhOmer+a6J577h//YaD+3xadd8MW/53/DZrTlc8Wcn7cyOf0pLRglkRxvFCSqjuZDQYkg4LM2rt2H1X+bfmo2R2Vko03VGc1zt9qgpLka0f+Mp3qoj6Ex5sZk/GBLT/l0WwoFTy5Rad59MtDtLPqHw1RoPI=
+	t=1774282717; cv=none; b=AtfhSrYCaQUmlMcOIvmcDixJ17eVQh9YmJNe6yWPm6OjqwREdAVanOPZt7o3qpHLyiqfx7YvqgOBIwepEmM6zn+ox8c7vP2SeuXhgzq1g5O8Hi/Esnd1UIE/AuDcXWPIWUdmGVGICc7WBC7y3iuJPdK1Sd9KGa4jsKKuXt6g99A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273877; c=relaxed/simple;
-	bh=V8yQo9zNz7wxMcz+IDmU+FPWTxJgqZIIqjjgcjTLcCk=;
+	s=arc-20240116; t=1774282717; c=relaxed/simple;
+	bh=saVG+wDok9UVwysexqffaHS8aP5z9EOxazUcjp3srQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CxratA+gfIIhA+cdjqyNjmTLMSbto2S3ZwVFANsakbygxN190MpftskNMButdnVclLvKeEunGVsPeRFUXRIUjg4zTfHh+YzV6Vc5Sf1GexSD5Vym6ajeL0pHvdBdItZlesybWFpwKgCAq4GHnpikUD4q8v1LgxAWmEL8n6dEXxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pjXo/v7u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8482C2BCB3;
-	Mon, 23 Mar 2026 13:51:16 +0000 (UTC)
+	 MIME-Version; b=eUUDPiHuBwlJAR+JV2Mq/pEz87u7ZeMng9u/oZH2VYmbefcIwIbmd0kYIq3IEHhxlsOSRNlYvfpK/6qahpsEVHjBgKHKXKpCrCsuen/kOu+6o/8A4DL+MDD4dIMfdK3QF4asGcO/hYI+sCSpoq9Y8NQ1wDRLC7uimITqh8EigLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oI0xkaxi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C658C4CEF7;
+	Mon, 23 Mar 2026 16:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273877;
-	bh=V8yQo9zNz7wxMcz+IDmU+FPWTxJgqZIIqjjgcjTLcCk=;
+	s=korg; t=1774282717;
+	bh=saVG+wDok9UVwysexqffaHS8aP5z9EOxazUcjp3srQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pjXo/v7uQtBqehR6REdQi34rnWA49INm1+7kcrybzI42MAM0co2Qv/zN9QXU9u0XF
-	 L3+q92lSLM+XBFvwjIApG847Dplf991MlFsA3DHHnddv07GKZ7iSeNLh7sgHlgADZN
-	 f3t/zYziIPvbp27XODkav2bqvTRtPZxDXJDA+HNM=
+	b=oI0xkaxiqJKzWAkh9DEnPn3nolGfIAQspMLco7iQ/XSc3H5YbJ73jCMyO/hpHt3V1
+	 nR7PYHwYiAZEDCVq5tPXddjImtPD4W4ym/72Minf2/qqz7DbQtfjLvogM4N92ASerm
+	 89gWZH8Z+9HXMaSH9TeOnN15UK9E/Mbbwa4PO1Wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Varun Gupta <varun.gupta@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 038/220] drm/xe: Fix memory leak in xe_vm_madvise_ioctl
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>
+Subject: [PATCH 6.1 233/481] irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supports
 Date: Mon, 23 Mar 2026 14:43:35 +0100
-Message-ID: <20260323134505.789738405@linuxfoundation.org>
+Message-ID: <20260323134530.814639740@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,80 +69,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229732-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228018-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 2C5362F382D
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: C0F962F8810
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Varun Gupta <varun.gupta@intel.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 0cfe9c4838f1147713f6b5c02094cd4dc0c598fa ]
+commit ce9e40a9a5e5cff0b1b0d2fa582b3d71a8ce68e8 upstream.
 
-When check_bo_args_are_sane() validation fails, jump to the new
-free_vmas cleanup label to properly free the allocated resources.
-This ensures proper cleanup in this error path.
+The ITS driver blindly assumes that EventIDs are in abundant supply, to the
+point where it never checks how many the hardware actually supports.
 
-Fixes: 293032eec4ba ("drm/xe/bo: Update atomic_access attribute on madvise")
-Cc: stable@vger.kernel.org # v6.18+
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Signed-off-by: Varun Gupta <varun.gupta@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260223175145.1532801-1-varun.gupta@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 29bd06faf727a4b76663e4be0f7d770e2d2a7965)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-[ changed old goto target from `madv_fini` to `unlock_vm` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It turns out that some pretty esoteric integrations make it so that only a
+few bits are available, all the way down to a single bit.
+
+Enforce the advertised limitation at the point of allocating the device
+structure, and hope that the endpoint driver can deal with such limitation.
+
+Fixes: 84a6a2e7fc18d ("irqchip: GICv3: ITS: device allocation and configuration")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260206154816.3582887-1-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_vm_madvise.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c   |    4 ++++
+ include/linux/irqchip/arm-gic-v3.h |    1 +
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_vm_madvise.c
-+++ b/drivers/gpu/drm/xe/xe_vm_madvise.c
-@@ -390,7 +390,7 @@ int xe_vm_madvise_ioctl(struct drm_devic
- 						    madvise_range.num_vmas,
- 						    args->atomic.val)) {
- 				err = -EINVAL;
--				goto unlock_vm;
-+				goto free_vmas;
- 			}
- 		}
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3382,6 +3382,7 @@ static struct its_device *its_create_dev
+ 	int lpi_base;
+ 	int nr_lpis;
+ 	int nr_ites;
++	int id_bits;
+ 	int sz;
  
-@@ -426,6 +426,7 @@ int xe_vm_madvise_ioctl(struct drm_devic
- err_fini:
- 	if (madvise_range.has_bo_vmas)
- 		drm_exec_fini(&exec);
-+free_vmas:
- 	kfree(madvise_range.vmas);
- 	madvise_range.vmas = NULL;
- unlock_vm:
+ 	if (!its_alloc_device_table(its, dev_id))
+@@ -3394,7 +3395,10 @@ static struct its_device *its_create_dev
+ 	/*
+ 	 * Even if the device wants a single LPI, the ITT must be
+ 	 * sized as a power of two (and you need at least one bit...).
++	 * Also honor the ITS's own EID limit.
+ 	 */
++	id_bits = FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
++	nvecs = min_t(unsigned int, nvecs, BIT(id_bits));
+ 	nr_ites = max(2, nvecs);
+ 	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+ 	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
+--- a/include/linux/irqchip/arm-gic-v3.h
++++ b/include/linux/irqchip/arm-gic-v3.h
+@@ -394,6 +394,7 @@
+ #define GITS_TYPER_VLPIS		(1UL << 1)
+ #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
+ #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
++#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
+ #define GITS_TYPER_IDBITS_SHIFT		8
+ #define GITS_TYPER_DEVBITS_SHIFT	13
+ #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
 
 
 
