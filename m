@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8LkLLNFRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228567-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:33 +0100
+	id aNw4I01rwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 631322F5163
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12C102F84D6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA5943171407
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8C541329BFFE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CCA91A680B;
-	Mon, 23 Mar 2026 14:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DA33BC673;
+	Mon, 23 Mar 2026 16:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8ulgR2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ1BVziq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F7C40DFC4;
-	Mon, 23 Mar 2026 14:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5930F3BADB2;
+	Mon, 23 Mar 2026 16:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275472; cv=none; b=Da0lRUOkbT5qcrDP+y9n1zgiOcw9H4n/Gpt99bOSHEuGoGCfbNFxsl9Q1YdCn+GRJqSNOgC52S+wW4N8OZ+ebuGhaNb/1Z6bDCzwyJkRVrX85p+5+Ndhyi5VM0sGGaz9CNn6Kzn6jKl0fUwiN3oN+2wwxUb5j9Z9mGl/KwfIstE=
+	t=1774282363; cv=none; b=Q8NauNWDKgcmzwXdgY032Vzk3Ka1VG53tRtLO/IwwSEdavC+dLp4nm1LZsJJuaECoTlgiYeXF95HQcwghOc7MHY7BIxJ80f+D6lqnmJzPib8UjKcBSEU9j/8XNkcQ4q3ltuNJdQfXRToplQ/TPu8LI7noTEg9Mbj28CEGKEiZ5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275472; c=relaxed/simple;
-	bh=tq34NGZOWzPQFUbwQot+pB3uV+lCBHYYgziPI9Ji6nk=;
+	s=arc-20240116; t=1774282363; c=relaxed/simple;
+	bh=NfBvylQFe9MwJoMy+nIQj8H1b+voXarH6nDSiDlXn9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uh1mh7NJ8hsCO96MZzAsjiSikUMEoz48ck29Y2RUVh4X7+pXbXVF+nBiRZ+ZVV+9y+dS/nPRF49g0JLlsZ5chcea/etmaLBwyD0i83WBDy2cYhvF5J0RFxMMqKiCTZgpe6M9IDtTOliQ+iCV4sHZSYJlhjaWs8Cw09F0W5kG92I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8ulgR2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70954C4CEF7;
-	Mon, 23 Mar 2026 14:17:51 +0000 (UTC)
+	 MIME-Version; b=aZ6ymkvn5xK6EZnKMOMBPad8skt0VLkWPwZz34IPWld5zL1Alik5Ck0cGtuteciuAQqAw+ljNPn9Oov3PobQNOqAX0YoN5B/boXGs64m/nd52OXEwas6amYvbiFVxnydjQPNIbjr54K7Fg/a39AyBHHq4vefm0/EI4oRFpyH3x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ1BVziq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2C1C2BCB0;
+	Mon, 23 Mar 2026 16:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275471;
-	bh=tq34NGZOWzPQFUbwQot+pB3uV+lCBHYYgziPI9Ji6nk=;
+	s=korg; t=1774282363;
+	bh=NfBvylQFe9MwJoMy+nIQj8H1b+voXarH6nDSiDlXn9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8ulgR2+n4i3LYaFAp7XlAXMxy7dUjua97ixpe7xym8SyfTUr/9qwbbqyuJdHOdde
-	 WRzJ/MIZ327KKoxpdjLFsAz3pL+zI7RMLj7M+H9xdIWXLXJZpqrvtl0CyNmHNVBoqj
-	 EClXAwJrdj1ufSiRuQnzG9PH76JaexSWdbwHB53M=
+	b=GZ1BVziqhyDWnAmQbzyrmdXXfxkqRCf8nSBPfdQ9ny/zvfWCs4D9UUve8GKzoEVCh
+	 KRJNxQXkyP20PIleUPQA6iPporSt3CxG9WqnXcInWV3pD617vqZD+allYDbDPNBEsT
+	 VdVnT+UN9FSKUlwHcVolkNZaTAG530nl75ibIVSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Fan Wu <fanwu01@zju.edu.cn>
-Subject: [PATCH 6.12 114/460] usb: renesas_usbhs: fix use-after-free in ISR during device removal
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 128/481] ipv6: fix NULL pointer deref in ip6_rt_get_dev_rcu()
 Date: Mon, 23 Mar 2026 14:41:50 +0100
-Message-ID: <20260323134529.438351484@linuxfoundation.org>
+Message-ID: <20260323134528.393470047@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,79 +66,88 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228567-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229602-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 631322F5163
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 12C102F84D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 3cbc242b88c607f55da3d0d0d336b49bf1e20412 upstream.
+[ Upstream commit 2ffb4f5c2ccb2fa1c049dd11899aee7967deef5a ]
 
-In usbhs_remove(), the driver frees resources (including the pipe array)
-while the interrupt handler (usbhs_interrupt) is still registered. If an
-interrupt fires after usbhs_pipe_remove() but before the driver is fully
-unbound, the ISR may access freed memory, causing a use-after-free.
+l3mdev_master_dev_rcu() can return NULL when the slave device is being
+un-slaved from a VRF. All other callers deal with this, but we lost
+the fallback to loopback in ip6_rt_pcpu_alloc() -> ip6_rt_get_dev_rcu()
+with commit 4832c30d5458 ("net: ipv6: put host and anycast routes on
+device with address").
 
-Fix this by calling devm_free_irq() before freeing resources. This ensures
-the interrupt handler is both disabled and synchronized (waits for any
-running ISR to complete) before usbhs_pipe_remove() is called.
+  KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
+  RIP: 0010:ip6_rt_pcpu_alloc (net/ipv6/route.c:1418)
+  Call Trace:
+   ip6_pol_route (net/ipv6/route.c:2318)
+   fib6_rule_lookup (net/ipv6/fib6_rules.c:115)
+   ip6_route_output_flags (net/ipv6/route.c:2607)
+   vrf_process_v6_outbound (drivers/net/vrf.c:437)
 
-Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
-Cc: stable <stable@kernel.org>
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Link: https://patch.msgid.link/20260303073344.34577-1-fanwu01@zju.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I was tempted to rework the un-slaving code to clear the flag first
+and insert synchronize_rcu() before we remove the upper. But looks like
+the explicit fallback to loopback_dev is an established pattern.
+And I guess avoiding the synchronize_rcu() is nice, too.
+
+Fixes: 4832c30d5458 ("net: ipv6: put host and anycast routes on device with address")
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260301194548.927324-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/renesas_usbhs/common.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/ipv6/route.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/renesas_usbhs/common.c
-+++ b/drivers/usb/renesas_usbhs/common.c
-@@ -811,6 +811,15 @@ static void usbhs_remove(struct platform
- 
- 	usbhs_platform_call(priv, hardware_exit, pdev);
- 	reset_control_assert(priv->rsts);
-+
-+	/*
-+	 * Explicitly free the IRQ to ensure the interrupt handler is
-+	 * disabled and synchronized before freeing resources.
-+	 * devm_free_irq() calls free_irq() which waits for any running
-+	 * ISR to complete, preventing UAF.
-+	 */
-+	devm_free_irq(&pdev->dev, priv->irq, priv);
-+
- 	usbhs_mod_remove(priv);
- 	usbhs_fifo_remove(priv);
- 	usbhs_pipe_remove(priv);
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 07e3d59c24059..5aa5390da1095 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1058,7 +1058,8 @@ static struct net_device *ip6_rt_get_dev_rcu(const struct fib6_result *res)
+ 		 */
+ 		if (netif_is_l3_slave(dev) &&
+ 		    !rt6_need_strict(&res->f6i->fib6_dst.addr))
+-			dev = l3mdev_master_dev_rcu(dev);
++			dev = l3mdev_master_dev_rcu(dev) ? :
++			      dev_net(dev)->loopback_dev;
+ 		else if (!netif_is_l3_master(dev))
+ 			dev = dev_net(dev)->loopback_dev;
+ 		/* last case is netif_is_l3_master(dev) is true in which
+-- 
+2.51.0
+
 
 
 
