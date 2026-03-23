@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-229409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KPoYOFlgwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229409-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:33 +0100
+	id 2L7YMPRwwWkvTQQAu9opvQ
+	(envelope-from <stable+bounces-229904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80FC2F6E10
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A322F92DF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 39848307D43A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BB6631A632B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6423C3B3888;
-	Mon, 23 Mar 2026 15:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC74A3B38A4;
+	Mon, 23 Mar 2026 16:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGPFyg5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHtqDYE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279093B27C5;
-	Mon, 23 Mar 2026 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A051F246778;
+	Mon, 23 Mar 2026 16:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279156; cv=none; b=CFfvTAJ4yjMyjBv0cMgH9+fhLfNZydWYWfyORL+INbcV8zMBjaGIu/LoCZOZ94K6ROB/kyRKvMJMASg63JUllmyD6qjw1puXPHebkvSIy3CgzAarK+Ns9rdcn2jZ780m3OTV7bV8mHxz5h2LFsPnMKej5Gy0hetA76sn4BHUiC4=
+	t=1774283175; cv=none; b=R1X++vzBqsTJCd8Ky5o67v0+UiNH4M7NbplX7YN2vaOfLoGMTePECQVflDQc644wE47Iy4uFKNEbg6XdvOncL1UdjC+5Ie/gLZUqSjB66to2jt286cPcx31yi34X68STgoV49yjIgzL8+t6cy3Rh3abyXDl6tMhx7LLC46uuOMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279156; c=relaxed/simple;
-	bh=GGiG8u26buyFncubgGlbaIpjz7Nzoc/MFFMw7A1rcU4=;
+	s=arc-20240116; t=1774283175; c=relaxed/simple;
+	bh=CnJHkERJh01MFzZTIlSVfrKW3Ea3fONsiJxeSWe+/MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KPyjk8SV/7LqEFzRfqx8WC+fqI/dUQwMRVy8XFCdo1soJYlrgwuOaUUuNKGiu+zYTLa39MxkNd/eCX/EOIkVOjuXU7wSdFhqlluQI7grYg8fcu7/QQZwn9vbaQOlAEIX1eFBQHEJf2SCt8KHSUA67DJQJOaGyV5wXybKMG7oBes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGPFyg5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65147C4CEF7;
-	Mon, 23 Mar 2026 15:19:15 +0000 (UTC)
+	 MIME-Version; b=Jsq/FP2AwnwVtIBvBmD8MU1OdsRcSOXU9eqH/T0KahOx0p2zVt1J0EYiX221d9Zv86A1QM0LboMweGfeFRacHi0SsCUn3HKnrSEg/ADTQK/GaZ4q9NTNfPj3YBMWADdZh8AO0JNfQnC27vGjI69J+/1VwtGjCKu5jNw8x/hGYjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHtqDYE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 300E7C4CEF7;
+	Mon, 23 Mar 2026 16:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279155;
-	bh=GGiG8u26buyFncubgGlbaIpjz7Nzoc/MFFMw7A1rcU4=;
+	s=korg; t=1774283175;
+	bh=CnJHkERJh01MFzZTIlSVfrKW3Ea3fONsiJxeSWe+/MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGPFyg5EGe2RCAGMyRoS6yB7fzwYFwnzJS5CtlS6QcekK+/KDF9HXywC5WJT/gAqG
-	 W8QNTrJ7OnaZHIGRPlnl1eBDmFeSWELOAxUXA01BUd4lpbR68MhWYO/tvgttB43k+i
-	 bxtH9KjOwM8Xna4Uf75g/vp5U2hkKQssJYps29CE=
+	b=QHtqDYE5s9dI7MZ4/PpPLjl/AHVPtqVrDDpSCUEF4kdEpmofbOhgRSI8X5c0YXA7K
+	 aWHaEB2l2LIrSPRLqjvGmmpmzbFAuGi1lnE8Y7/u2e0ojlHA1+3XVFrkdtqAYCx1hq
+	 chfS2Q+e38Ik+qlG0JcVdGrfidSB5hkTruIeY6ek=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 493/567] drm/radeon: apply state adjust rules to some additional HAINAN vairants
+	Guenter Roeck <linux@roeck-us.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 431/481] ACPI: processor: Fix previous acpi_processor_errata_piix4() fix
 Date: Mon, 23 Mar 2026 14:46:53 +0100
-Message-ID: <20260323134546.177781981@linuxfoundation.org>
+Message-ID: <20260323134535.706034875@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,69 +66,107 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229409-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229904-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: E80FC2F6E10
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 71A322F92DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 86650ee2241ff84207eaa298ab318533f3c21a38 upstream.
+[ Upstream commit bf504b229cb8d534eccbaeaa23eba34c05131e25 ]
 
-They need a similar workaround.
+After commi f132e089fe89 ("ACPI: processor: Fix NULL-pointer dereference
+in acpi_processor_errata_piix4()"), device pointers may be dereferenced
+after dropping references to the device objects pointed to by them,
+which may cause a use-after-free to occur.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/1839
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 87327658c848f56eac166cb382b57b83bf06c5ac)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Moreover, debug messages about enabling the errata may be printed
+if the errata flags corresponding to them are unset.
+
+Address all of these issues by moving message printing to the points
+in the code where the errata flags are set.
+
+Fixes: f132e089fe89 ("ACPI: processor: Fix NULL-pointer dereference in acpi_processor_errata_piix4()")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/linux-acpi/938e2206-def5-4b7a-9b2c-d1fd37681d8a@roeck-us.net/
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/5975693.DvuYhMxLoT@rafael.j.wysocki
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/si_dpm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/acpi/acpi_processor.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/radeon/si_dpm.c
-+++ b/drivers/gpu/drm/radeon/si_dpm.c
-@@ -2959,9 +2959,11 @@ static void si_apply_state_adjust_rules(
- 	if (rdev->family == CHIP_HAINAN) {
- 		if ((rdev->pdev->revision == 0x81) ||
- 		    (rdev->pdev->revision == 0xC3) ||
-+		    (rdev->pdev->device == 0x6660) ||
- 		    (rdev->pdev->device == 0x6664) ||
- 		    (rdev->pdev->device == 0x6665) ||
--		    (rdev->pdev->device == 0x6667)) {
-+		    (rdev->pdev->device == 0x6667) ||
-+		    (rdev->pdev->device == 0x666F)) {
- 			max_sclk = 75000;
+diff --git a/drivers/acpi/acpi_processor.c b/drivers/acpi/acpi_processor.c
+index 669398045c0fd..07acdaee6ce5c 100644
+--- a/drivers/acpi/acpi_processor.c
++++ b/drivers/acpi/acpi_processor.c
+@@ -96,6 +96,10 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
+ 				     PCI_ANY_ID, PCI_ANY_ID, NULL);
+ 		if (ide_dev) {
+ 			errata.piix4.bmisx = pci_resource_start(ide_dev, 4);
++			if (errata.piix4.bmisx)
++				dev_dbg(&ide_dev->dev,
++					"Bus master activity detection (BM-IDE) erratum enabled\n");
++
+ 			pci_dev_put(ide_dev);
  		}
- 		if ((rdev->pdev->revision == 0xC3) ||
+ 
+@@ -114,20 +118,17 @@ static int acpi_processor_errata_piix4(struct pci_dev *dev)
+ 		if (isa_dev) {
+ 			pci_read_config_byte(isa_dev, 0x76, &value1);
+ 			pci_read_config_byte(isa_dev, 0x77, &value2);
+-			if ((value1 & 0x80) || (value2 & 0x80))
++			if ((value1 & 0x80) || (value2 & 0x80)) {
+ 				errata.piix4.fdma = 1;
++				dev_dbg(&isa_dev->dev,
++					"Type-F DMA livelock erratum (C3 disabled)\n");
++			}
+ 			pci_dev_put(isa_dev);
+ 		}
+ 
+ 		break;
+ 	}
+ 
+-	if (ide_dev)
+-		dev_dbg(&ide_dev->dev, "Bus master activity detection (BM-IDE) erratum enabled\n");
+-
+-	if (isa_dev)
+-		dev_dbg(&isa_dev->dev, "Type-F DMA livelock erratum (C3 disabled)\n");
+-
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
 
 
