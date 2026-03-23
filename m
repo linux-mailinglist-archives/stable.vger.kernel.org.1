@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-229812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228130-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2Kr0HuNywWlkTQQAu9opvQ
-	(envelope-from <stable+bounces-229812-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:05:39 +0100
+	id qMl9C1NJwWlmSAQAu9opvQ
+	(envelope-from <stable+bounces-228130-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E76EF2F96B0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:05:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A00AA2F3E20
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C940304B37C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE9E03030100
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CF33AF647;
-	Mon, 23 Mar 2026 16:22:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9909A29A31C;
+	Mon, 23 Mar 2026 13:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rwktq10L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0f8vBxM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1241529ACC5;
-	Mon, 23 Mar 2026 16:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CABB286A4;
+	Mon, 23 Mar 2026 13:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282932; cv=none; b=JpJ5ekzanbdKzt3OuUfT+yUcOkTRtfax+Be8zW8PQlptGquetpeweF79HyDMlZdSs/RXT2fh7fTOiCTVG0zmslBdA/6mnrJK+aWCB2cssxwED64Bv1d4Jw3+8QjMGaDKc3zIssbbHkJ0izZYjHufCgDvdZ0JELSX8xd5g5mLqmc=
+	t=1774274215; cv=none; b=hzescYi+e/fo5/yprehyXqvDVsAagunCcWBqLaR3utREcbFrCndtQ87AmE48CUia3A17QTdMvX6j8U45IT4jO253LdDz7K7ccOo6jFziouXPvRsHqyGuCFBbXYIBanEYGbGO8AnR/wIqxkDiPaFkXSO1850yRe3B9QxZWYJ5MaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282932; c=relaxed/simple;
-	bh=0FJsuyi0tSRchEQdGJqDikRfG3BYotUpmcQGI591z38=;
+	s=arc-20240116; t=1774274215; c=relaxed/simple;
+	bh=jGyCIT3HTY4BIf8w7GGLeJBuqoQYMA8ci5QA6GRclZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tf6xPhDz1kBw+vxsWLXbl9/3OK6/krRMU/HqnMQkqDX8bal/0sqqbxEUtahjFnF8+7xQ0yL2eTyo8+1VmwvmJ9vjntx3/xMQuy6RUKzTttOYCGOKPv1EY5vtiSvbpTfE1dslHgR8Gb0mWyYhRWCMN0PYbE68Z23C1DkgIDinMqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rwktq10L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E80C4CEF7;
-	Mon, 23 Mar 2026 16:22:11 +0000 (UTC)
+	 MIME-Version; b=Qm9Fy46jaoP2yVCpj3yMM9FteAcOr/FWLEAkNMXL7drhCKUeHT1jcYI5wDVfAdkLFSdWJeocsaLZjsefEtZqEI/HjZi+3i6kqTbNdZR1WM9yrKaTGZ6a0nviv029X46l5UurWTqMLJfmOokmKYQKrmhfA9fUXBr5fDCJ67Em12Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0f8vBxM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C28C4CEF7;
+	Mon, 23 Mar 2026 13:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282931;
-	bh=0FJsuyi0tSRchEQdGJqDikRfG3BYotUpmcQGI591z38=;
+	s=korg; t=1774274215;
+	bh=jGyCIT3HTY4BIf8w7GGLeJBuqoQYMA8ci5QA6GRclZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rwktq10L+DlXXxuZOCWWNRnrnBcqwbOK/nriYamxSNONt3zglwt7n/Rs3xqKG1jzm
-	 rNiVvafacdNJBWvL5f1GIq2xZWx8QO3pGy23N4S6ARZpS326OiP/dHU9b70iBPOj9e
-	 8JKv18qEXedQKYqDgR9YlF0G9KaB28g0hKvq2gj8=
+	b=S0f8vBxM5lRZAaValWmfR5lctrwa7VXlREAtBbMMfQJP1rZmoiSMdlYkrDPpyEn6F
+	 1gbOohgAFrTGIF9Qx7rQy49vzyY0sIrcK3iT8VDmVHmAJVszQqRbJikCpl23HkBwus
+	 r/Ma8I0xZZDFmIBQ2CfAMASWYY41MNumXRA5hysI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	Will Deacon <will@kernel.org>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 340/481] arm64: mm: Add PTE_DIRTY back to PAGE_KERNEL* to fix kexec/hibernation
-Date: Mon, 23 Mar 2026 14:45:22 +0100
-Message-ID: <20260323134533.383262824@linuxfoundation.org>
+Subject: [PATCH 6.19 146/220] sched: idle: Consolidate the handling of two special cases
+Date: Mon, 23 Mar 2026 14:45:23 +0100
+Message-ID: <20260323134509.203643237@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,95 +71,165 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229812-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228130-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E76EF2F96B0
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email,arm.com:email]
+X-Rspamd-Queue-Id: A00AA2F3E20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c25c4aa3f79a488cc270507935a29c07dc6bddfc ]
+[ Upstream commit f4c31b07b136839e0fb3026f8a5b6543e3b14d2f ]
 
-Commit 143937ca51cc ("arm64, mm: avoid always making PTE dirty in
-pte_mkwrite()") changed pte_mkwrite_novma() to only clear PTE_RDONLY
-when PTE_DIRTY is set. This was to allow writable-clean PTEs for swap
-pages that haven't actually been written.
+There are two special cases in the idle loop that are handled
+inconsistently even though they are analogous.
 
-However, this broke kexec and hibernation for some platforms. Both go
-through trans_pgd_create_copy() -> _copy_pte(), which calls
-pte_mkwrite_novma() to make the temporary linear-map copy fully
-writable. With the updated pte_mkwrite_novma(), read-only kernel pages
-(without PTE_DIRTY) remain read-only in the temporary mapping.
-While such behaviour is fine for user pages where hardware DBM or
-trapping will make them writeable, subsequent in-kernel writes by the
-kexec relocation code will fault.
+The first one is when a cpuidle driver is absent and the default CPU
+idle time power management implemented by the architecture code is used.
+In that case, the scheduler tick is stopped every time before invoking
+default_idle_call().
 
-Add PTE_DIRTY back to all _PAGE_KERNEL* protection definitions. This was
-the case prior to 5.4, commit aa57157be69f ("arm64: Ensure
-VM_WRITE|VM_SHARED ptes are clean by default"). With the kernel
-linear-map PTEs always having PTE_DIRTY set, pte_mkwrite_novma()
-correctly clears PTE_RDONLY.
+The second one is when a cpuidle driver is present, but there is only
+one idle state in its table.  In that case, the scheduler tick is never
+stopped at all.
 
-Fixes: 143937ca51cc ("arm64, mm: avoid always making PTE dirty in pte_mkwrite()")
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: stable@vger.kernel.org
-Reported-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Link: https://lore.kernel.org/r/20251204062722.3367201-1-jianpeng.chang.cn@windriver.com
-Cc: Will Deacon <will@kernel.org>
-Cc: Huang, Ying <ying.huang@linux.alibaba.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Since each of these approaches has its drawbacks, reconcile them with
+the help of one simple heuristic.  Namely, stop the tick if the CPU has
+been woken up by it in the previous iteration of the idle loop, or let
+it tick otherwise.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Fixes: ed98c3491998 ("sched: idle: Do not stop the tick before cpuidle_idle_call()")
+[ rjw: Added Fixes tag, changelog edits ]
+Link: https://patch.msgid.link/4741364.LvFx2qVVIh@rafael.j.wysocki
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/pgtable-prot.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ kernel/sched/idle.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
---- a/arch/arm64/include/asm/pgtable-prot.h
-+++ b/arch/arm64/include/asm/pgtable-prot.h
-@@ -45,11 +45,11 @@
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 69c70d509e1cf..8e00d95fb3388 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -161,6 +161,14 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	return cpuidle_enter(drv, dev, next_state);
+ }
  
- #define _PAGE_DEFAULT		(_PROT_DEFAULT | PTE_ATTRINDX(MT_NORMAL))
++static void idle_call_stop_or_retain_tick(bool stop_tick)
++{
++	if (stop_tick || tick_nohz_tick_stopped())
++		tick_nohz_idle_stop_tick();
++	else
++		tick_nohz_idle_retain_tick();
++}
++
+ /**
+  * cpuidle_idle_call - the main idle function
+  *
+@@ -170,7 +178,7 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+  * set, and it returns with polling set.  If it ever stops polling, it
+  * must clear the polling bit.
+  */
+-static void cpuidle_idle_call(void)
++static void cpuidle_idle_call(bool stop_tick)
+ {
+ 	struct cpuidle_device *dev = cpuidle_get_device();
+ 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
+@@ -186,7 +194,7 @@ static void cpuidle_idle_call(void)
+ 	}
  
--#define _PAGE_KERNEL		(PROT_NORMAL)
--#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY)
--#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY)
--#define _PAGE_KERNEL_EXEC	(PROT_NORMAL & ~PTE_PXN)
--#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT)
-+#define _PAGE_KERNEL		(PROT_NORMAL | PTE_DIRTY)
-+#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY | PTE_DIRTY)
-+#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY | PTE_DIRTY)
-+#define _PAGE_KERNEL_EXEC	((PROT_NORMAL & ~PTE_PXN) | PTE_DIRTY)
-+#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT | PTE_DIRTY)
+ 	if (cpuidle_not_available(drv, dev)) {
+-		tick_nohz_idle_stop_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
  
- #define _PAGE_SHARED		(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN | PTE_WRITE)
- #define _PAGE_SHARED_EXEC	(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_WRITE)
+ 		default_idle_call();
+ 		goto exit_idle;
+@@ -222,17 +230,19 @@ static void cpuidle_idle_call(void)
+ 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
+ 		call_cpuidle(drv, dev, next_state);
+ 	} else if (drv->state_count > 1) {
+-		bool stop_tick = true;
++		/*
++		 * stop_tick is expected to be true by default by cpuidle
++		 * governors, which allows them to select idle states with
++		 * target residency above the tick period length.
++		 */
++		stop_tick = true;
+ 
+ 		/*
+ 		 * Ask the cpuidle framework to choose a convenient idle state.
+ 		 */
+ 		next_state = cpuidle_select(drv, dev, &stop_tick);
+ 
+-		if (stop_tick || tick_nohz_tick_stopped())
+-			tick_nohz_idle_stop_tick();
+-		else
+-			tick_nohz_idle_retain_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		entered_state = call_cpuidle(drv, dev, next_state);
+ 		/*
+@@ -240,7 +250,7 @@ static void cpuidle_idle_call(void)
+ 		 */
+ 		cpuidle_reflect(dev, entered_state);
+ 	} else {
+-		tick_nohz_idle_retain_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		/*
+ 		 * If there is only a single idle state (or none), there is
+@@ -268,6 +278,7 @@ static void cpuidle_idle_call(void)
+ static void do_idle(void)
+ {
+ 	int cpu = smp_processor_id();
++	bool got_tick = false;
+ 
+ 	/*
+ 	 * Check if we need to update blocked load
+@@ -338,8 +349,9 @@ static void do_idle(void)
+ 			tick_nohz_idle_restart_tick();
+ 			cpu_idle_poll();
+ 		} else {
+-			cpuidle_idle_call();
++			cpuidle_idle_call(got_tick);
+ 		}
++		got_tick = tick_nohz_idle_got_tick();
+ 		arch_cpu_idle_exit();
+ 	}
+ 
+-- 
+2.51.0
+
 
 
 
