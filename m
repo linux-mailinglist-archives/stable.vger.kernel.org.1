@@ -1,227 +1,183 @@
-Return-Path: <stable+bounces-227908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227907-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2BlELsnywGkSPAQAu9opvQ
-	(envelope-from <stable+bounces-227908-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:59:05 +0100
+	id mBtJDcLywGkSPAQAu9opvQ
+	(envelope-from <stable+bounces-227907-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:58:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F4CB2EDF9A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:59:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2412EDF93
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:58:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E3D7300D694
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:59:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3DAD630055B9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B7E366823;
-	Mon, 23 Mar 2026 07:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8471364EB1;
+	Mon, 23 Mar 2026 07:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kHGMaVf6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 130A435DA65;
-	Mon, 23 Mar 2026 07:58:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516C1344DA8
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 07:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774252742; cv=none; b=Srb+srsX7jualDacrtAr+BEYQsEvEbKcurrmCTFcAw8xwUyz+FF2zAg/ShriqsHuDg3IBoxcpYA6YC9NtMDUtveYKIBl4s6tJgGcRVLl3v2wUL2tVBAixXAX4yw8m9evnNASujua3exeErvFa+FtjBQYvD7Nwp8ZKGWm47wJVvc=
+	t=1774252735; cv=none; b=OXNvZcQw1OyobGUWprMXeYClH8eEEMEuLDCZVKdZmxVk82R6UhS1DodzRrhShQRxKfvmnAQulQ5uCmOavchj5kf4XpxkvV1lVwimuf49coJfxoG5qATOIjGwU+6wANtxih1954AO61+MM7Y/RK4mhAzv9DYUVNXefJyiJ36rrMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774252742; c=relaxed/simple;
-	bh=7QH3BsorKQIJ3a//5qucPyumwc4GWWuOSUjOOpVHDw4=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=rbBttIMuw0ocTNssU7qxs3KCK4x9T/R0bE+JbHv6SuebCHFyuhraq+31LINi+Bx+au8nFAyNWnlIvo6Vwxx75ZjtJLFcb76P65pt14LJ3GOu3QexN/vu8YrmXhgTJ3TaN190D7GFCJUi/MIgRQ1T93MvYCP0gbJ8qZLYHv8ZBQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Dx7qnA8sBpiLYdAA--.25662S3;
-	Mon, 23 Mar 2026 15:58:56 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxpsC08sBpATJbAA--.8525S3;
-	Mon, 23 Mar 2026 15:58:44 +0800 (CST)
-Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more
- robust
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini
- <pbonzini@redhat.com>, Tianrui Zhao <zhaotianrui@loongson.cn>,
- kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org,
- Aurelien Jarno <aurel32@debian.org>
-References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
- <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
- <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
-Date: Mon, 23 Mar 2026 15:56:00 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1774252735; c=relaxed/simple;
+	bh=4KQcuvo6YzkNDD9zHDEoEGiEyr7Ep7oCDyKiODpqBMo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Lrrle/fhuGKTgL8sy/hVO+2IKl4NDm14Pzun12ttGBr3NZ3KjUbaGqzYGFs9oP1OnAribHqgKXCFPH9m0XUHYzuKHBCI5gmL/JrQo79V33YF62AAOhAgUQWabqVSu6qd9VevKOPeqMAvg3xG3RC0dhpDkLFS6BXK2/BcTaNANao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kHGMaVf6; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-66132b22182so5102515a12.2
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 00:58:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774252733; x=1774857533; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yAX/7cErjTnTYB1b0qlUk9SWpyIXQDOX196VDxiUGag=;
+        b=kHGMaVf6oaSieW8TMme+wP/JJEeDVZkM8zv7aDQdOJuj3rxPrLY1TsEeyHXkoNPKB+
+         VxQENmtJTs/RlOFymttqAq5h2sA/n8gbbYmFTf3wmotN4zJzGokU8YRHNCNHohKjl1HQ
+         EIa5uO+pJkjdBYlNPaES8SNlxusWUBThq97kfyDv1WSwjridmTljvnktSSwWmSqnL+20
+         QNkzlHwM9Qqd5Tf8ujZXO8E9ZTri2udejKSK35kopLlmnOBoCgOnj2yx0MUCQ6Cw2ius
+         1j/ptNapehRSAUl6MT77b5XFzULBAp6kcu8Sgcx2yf+1S7orWOjXY4aTcnjA8tIRUtLI
+         ecdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774252733; x=1774857533;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yAX/7cErjTnTYB1b0qlUk9SWpyIXQDOX196VDxiUGag=;
+        b=qTwamWGfscNRbs+aULU0mtggVThogJ7vmEyajdxJnB2kA6Jcwau06xZKR43ezJLX9A
+         /8cjovY/i9Bqqko4uqMsNKvIu7Sgmr3FFmHRY5TpM3c6x13XRbog8MoEHT36Pc/L3+gN
+         TPgUJ3kdNmZXD41op4NqoNu5oPjiF7515xdwVX/vybiWV8pi8gCzi2MQ8PpUqdil39XC
+         uWnnS4N0yKYm5G5ABaKemfsQxUqhBLdLWn0+MFszSRSIfxMYiwyInIZStr3+PLqPKaUY
+         3KOdiUjfeT35MG7tE18ImzPDQtw58xAEvX3hXjD5CrHl1Og0cdL1e9+5jXkHFitBspqX
+         cEXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUtQzHqLAI0QZyoTpuuvHTScLjBn5u2OLQvcH5iAnFgX0txnIDJjRftazRy6U/4OOXPtBwxK2c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8rRRQq8rnuLNkVaPSFdwgaGt2nM6w7bMQae/zJ5nwDFmGF0F2
+	wHG59LUatuPeIdnXpNvqBAxYz4UONnIkFHnDUR/2lhA55SbazRdG9DCE
+X-Gm-Gg: ATEYQzyERCg8rfexVAMfQ+49vf9yUDTm1LJHAGQy20VHqjrcerHUrmpb8PkTjsOQA5O
+	4gJSzGlyBkJmuN5mA26AAalrMjQgyV7PF5zi4vmP1wH9kkR8Iqv9FIbcac2UVjxfh9Q6DLGe2QX
+	ebYI8Qg8K6dEQkyabtdv9o1D7IUEBpLyp2uzlvwV/PguRKNcMhOe6Dl8UAzDUvxRswWAV7aco5d
+	hZ4m1Jpot3wwzKIzXKBOCgCbkQTdLXpO0paRa99OVnXvRZEKk6M3ovcTumkHhTM92O5c3Es0ils
+	jn3WE0QmlpHiS5tQlOzaaJ/YAcyJGyG2devcvbK9qAekB9cFrz/vzxNSd8BnDNgx9EoQA50PYbO
+	iNH2JrZLkjm2Z0uHBt9Ef3d2sF8w9KdnABZKKKPYTKilm1bsikXrqGLYkfqC0ZBA6k4Fh+35mnQ
+	iS0A5nYdBK8oS1zKnO1v6eVh62IldrkEEK8pw=
+X-Received: by 2002:a05:6402:5187:b0:663:4560:aa8d with SMTP id 4fb4d7f45d1cf-668c9c40bb1mr7954797a12.26.1774252732415;
+        Mon, 23 Mar 2026 00:58:52 -0700 (PDT)
+Received: from foxbook (bfk214.neoplus.adsl.tpnet.pl. [83.28.48.214])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-668d2390f7csm3370406a12.24.2026.03.23.00.58.49
+        (version=TLS1_2 cipher=AES128-SHA bits=128/128);
+        Mon, 23 Mar 2026 00:58:51 -0700 (PDT)
+Date: Mon, 23 Mar 2026 08:58:45 +0100
+From: Michal Pecio <michal.pecio@gmail.com>
+To: Jeffrey Hein <jp@jphein.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
+ <hansg@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ linux-media@vger.kernel.org, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH 0/3] USB/UVC: Add quirks to prevent Razer Kiyo Pro xHCI
+ cascade failure
+Message-ID: <20260323085845.6bf57b3b.michal.pecio@gmail.com>
+In-Reply-To: <CAD5VvzBE8Oq80EhFZnZ7kNrRC_rpoR25Ct5-Fg62yDZUHVtWzw@mail.gmail.com>
+References: <20260321223713.1219297-1-jp@jphein.com>
+	<20260322055354.03399a32.michal.pecio@gmail.com>
+	<CAD5VvzBE8Oq80EhFZnZ7kNrRC_rpoR25Ct5-Fg62yDZUHVtWzw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxpsC08sBpATJbAA--.8525S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxWrWUtr4fKFWrCFWfWrWfWFX_yoWrJrWUp3
-	yDAa98J3yrGr4xWrW0q3WkJF4UKrnrWr4DZayYga4Y9r4qqw1rCr1vyryDuFyUuw4kAF1I
-	gFy3Jw1avF1UJ3XCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB2b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_
-	Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
-	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
-	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
-	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
-	14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU466zUUUUU
-X-Spamd-Result: default: False [-1.46 / 15.00];
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	R_DKIM_NA(0.00)[];
-	DMARC_NA(0.00)[loongson.cn];
-	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[gmail.com:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227908-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-227907-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 0F4CB2EDF9A
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCVD_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[michalpecio@gmail.com,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CC2412EDF93
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+On Sun, 22 Mar 2026 15:10:28 -0700, Jeffrey Hein wrote:
+> Both failure modes are in the device firmware (version 8.21), not the
+> kernel, so they exist on any kernel version.  On 6.8.0-106-generic
+> (where I tested), the TRB_STOP_RING case in
+> xhci_handle_command_timeout() goes straight to xhci_halt() +
+> xhci_hc_died() without attempting per-device recovery.
 
+Command timeout is a failure of the xHCI controller, not the device,
+and as Alan said, it's generally not supposed to happen so we are
+curious how it happens and if it can be prevented in xhci-hcd.
 
-On 2026/3/23 下午3:08, Huacai Chen wrote:
-> On Mon, Mar 23, 2026 at 11:16 AM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->>
->>
->> On 2026/3/22 下午9:53, Huacai Chen wrote:
->>> kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
->>> cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
->>> case so as to make it more robust.
->>>
->>> This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
->>>
->>> Cc: <stable@vger.kernel.org>
->>> Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical cpuid")
->>> Reported-by: Aurelien Jarno <aurel32@debian.org>
->>> Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
->>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
->>> ---
->>>    arch/loongarch/kvm/vcpu.c | 3 +++
->>>    1 file changed, 3 insertions(+)
->>>
->>> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
->>> index 8ffd50a470e6..831f381a8fd1 100644
->>> --- a/arch/loongarch/kvm/vcpu.c
->>> +++ b/arch/loongarch/kvm/vcpu.c
->>> @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
->>>    {
->>>        struct kvm_phyid_map *map;
->>>
->>> +     if (cpuid < 0)
->>> +             return NULL;
->>> +
->>>        if (cpuid >= KVM_MAX_PHYID)
->>>                return NULL;
->>>
->>>
->>
->> if (cpuid < 0 || cpuid >= KVM_MAX_PHYID)?
->> however both are OK for me.
-> I use a similar style as kvm_get_vcpu_by_id(). :)
+Device behavior may be a contributing factor, as can be a kernel bug
+or controller HW bug. It would be helpful if somebody tried this on
+non-Intel hardware and on current kernels, because there were various
+changes to xHCI error handling over the last two years.
+
+> The stress test script is in the series repository:
 > 
-> But there is another warning which can't be solved by this series (and
-> I doubt whether it can be solved unless revert 01a8e68396a6d51f5b).
-> https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
-
-what is the kernel config file with bug
-    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
-
-kvm_eiointc_regs_access() seems has problem, it need convert to void * 
-before arithmetic operation. I do not know whether this patch can solve 
-this bug.
-
-diff --git a/arch/loongarch/kvm/intc/eiointc.c 
-b/arch/loongarch/kvm/intc/eiointc.c
-index d2acb4d09e73..71bd67b57338 100644
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -472,34 +472,34 @@ static int kvm_eiointc_regs_access(struct 
-kvm_device *dev,
-         switch (addr) {
-         case EIOINTC_NODETYPE_START ... EIOINTC_NODETYPE_END:
-                 offset = (addr - EIOINTC_NODETYPE_START) / 4;
--               p = s->nodetype + offset * 4;
-+               p = (void *)s->nodetype + offset * 4;
-                 break;
-         case EIOINTC_IPMAP_START ... EIOINTC_IPMAP_END:
-                 offset = (addr - EIOINTC_IPMAP_START) / 4;
--               p = &s->ipmap + offset * 4;
-+               p = (void *)&s->ipmap + offset * 4;
-                 break;
-         case EIOINTC_ENABLE_START ... EIOINTC_ENABLE_END:
-                 offset = (addr - EIOINTC_ENABLE_START) / 4;
--               p = s->enable + offset * 4;
-+               p = (void *)s->enable + offset * 4;
-                 break;
-         case EIOINTC_BOUNCE_START ... EIOINTC_BOUNCE_END:
-                 offset = (addr - EIOINTC_BOUNCE_START) / 4;
--               p = s->bounce + offset * 4;
-+               p = (void *)s->bounce + offset * 4;
-                 break;
-         case EIOINTC_ISR_START ... EIOINTC_ISR_END:
-                 offset = (addr - EIOINTC_ISR_START) / 4;
--               p = s->isr + offset * 4;
-+               p = (void *)s->isr + offset * 4;
-                 break;
-         case EIOINTC_COREISR_START ... EIOINTC_COREISR_END:
-                 if (cpu >= s->num_cpu)
-                         return -EINVAL;
-
-                 offset = (addr - EIOINTC_COREISR_START) / 4;
--               p = s->coreisr[cpu] + offset * 4;
-+               p = (void *)s->coreisr[cpu] + offset * 4;
-                 break;
-         case EIOINTC_COREMAP_START ... EIOINTC_COREMAP_END:
-                 offset = (addr - EIOINTC_COREMAP_START) / 4;
--               p = s->coremap + offset * 4;
-+               p = (void *)s->coremap + offset * 4;
-                 break;
-         default:
-                 kvm_err("%s: unknown eiointc register, addr = %d\n", 
-__func__, addr);
-
-
-Regards
-Bibo Mao
+>     https://github.com/jphein/kiyo-xhci-fix
 > 
-> Huacai
-> 
->>
->> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
->>
+> stress-test-kiyo.sh exercises UVC controls via v4l2-ctl at maximum
+> rate -- brightness, contrast, saturation, white balance, exposure,
+> focus, pan/tilt/zoom -- cycling through their full ranges each round.
+> With 0ms delay between controls, the crash consistently occurs around
+> round 25 of 50 (~5-10 seconds of sustained rapid SET_CUR).
 
+OK, I will see if it does anything interesting on my hardware, but it
+may be nothing because I don't have this camera.
+
+Did you try it on a different camera in the same USB port?
+
+> That said, the firmware lockup itself is controller-independent -- the
+> device stops responding to USB control transfers regardless of the
+> host controller.  What varies is the host controller's response to the
+> resulting stop-endpoint timeout.  On 6.8, xhci-hcd takes the
+> TRB_STOP_RING timeout straight to hc_died()
+
+Nope, this is controller dependent because Stop Endpoint is a command
+to the controller and it has no reason to fail. Something is broken.
+
+Could you boot a newer kernel (compile 7.0-rc5 yourself or at least get
+latest release (or beta) of your distribution), enable dynamic debug 
+
+echo 'module xhci_hcd +p' >/proc/dynamic_debug/control
+echo 'module usbcore +p' >/proc/dynamic_debug/control
+
+then connect the camera, crash it again and send dmesg output?
+
+Regards,
+Michal
 
