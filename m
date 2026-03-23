@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-229853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229349-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AHKTDoBzwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229853-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:08:16 +0100
+	id 4MFHOeRewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229349-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C90E02F97D1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:08:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68A012F6B07
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 69F8B302E864
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E37D1347D2E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868713B388C;
-	Mon, 23 Mar 2026 16:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C45B3AF670;
+	Mon, 23 Mar 2026 15:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvNjHJE7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ip05WPwZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FF93B9D85;
-	Mon, 23 Mar 2026 16:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095E63AF662;
+	Mon, 23 Mar 2026 15:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283039; cv=none; b=Wx/aEIatOHI1+Zb/0X5/BOoFU7/40JTRA3MpkQtKoiHyZSt47a+8Zq4Cdr9AQtUZhEzfHATa4KCvNWg6I4daoZu4r5G2bXaHQVfu5LJg9zIcVs/aEhDKsvKdM/uroiWU5N/oN0KjbKVeJCjCpwt8hs1UuGW9TpA6vA9NFB1P3LM=
+	t=1774278838; cv=none; b=uLrCNxI8eAi73+7U3zLM+xO2IhWNDEiBe9OKiX0xWfY5eZoTRTL3sCc3p/Hn0zgdxZYzCXuVU+fE/ZsKodiKFXMmSe5Ta4kATXKoASzsCC1U/muYtZMFfPmJuXR/Fb7ep2bisBTIgBdKwylN59TtqzdQB7cHPp1WQAR9SCplb+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283039; c=relaxed/simple;
-	bh=qg1SMW1jye+fzLbL7DnVUTLJ8HVgaqXXE5F/zNMwfDk=;
+	s=arc-20240116; t=1774278838; c=relaxed/simple;
+	bh=Qey1Gt+uNVzPmq96uXWAyjs2YM6nGg9Mt1NBJvh8Hjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gv1vSfVDYwTXj2jxp5MRfIj83TFtYCXraj2xv8n0+WEzJ+J9Q0HT8FDbq9FA6HJRnyjF+qzfS5Q1LHwzjmIjRxr8qZNqxCulgx6rMkJiUsYy1ysLOuarA4VtbCVCl3lmafd6Qesqdeo5niNnrbtzteVI8lFwkf4/wK1KM7SRC5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvNjHJE7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4651C4CEF7;
-	Mon, 23 Mar 2026 16:23:58 +0000 (UTC)
+	 MIME-Version; b=dyBGe2g0sHTOzvAPXO5XlSmTlo/gLHVP6cftaIUJJhLAZLFt4BIEHSXUSlzxYJCs1p8475liSlCvK3QejosfO9x803fNT7aG7g4LFGQ7gU954MY2b7CiDPbGfXsTohvB9cs+9YkrfMkhTIImfO4B6j5fByA/jllhtmEmH3FQNJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ip05WPwZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83739C2BC9E;
+	Mon, 23 Mar 2026 15:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283039;
-	bh=qg1SMW1jye+fzLbL7DnVUTLJ8HVgaqXXE5F/zNMwfDk=;
+	s=korg; t=1774278837;
+	bh=Qey1Gt+uNVzPmq96uXWAyjs2YM6nGg9Mt1NBJvh8Hjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvNjHJE7dJN5J+eTzUE0MaZomx/73y3WZZYkz02X4N/eFQKCRt0t7R+P4pJUKdBFw
-	 Ml9pS9SaDspBQpI89iGh/UMwrrMGZbU7oxuBH17rH6c3Ad2omw2aY4ibbXJXtY8eXm
-	 o8EQESckxGIntx1uPAJKNQi6k44VX46ZJTj8kcY8=
+	b=Ip05WPwZK4bx4CQc9vw6r3NPUncJ90c/aoNZF6OQlvDElVnZLGKKd1zmJJ9AZhQVP
+	 J146/k3g8DDH5PRxjwOyz1BRMTYL+vQXUCErIpI+DCzPyIKDpjE2mFVACPlRd0U9xk
+	 0+8vPQ1oINWbseC3zqmTT0lSey0fNM9aKFJeMzls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Groeneveld <kgroeneveld@lenbrook.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Johnny Hao <johnny_haocn@sina.com>
-Subject: [PATCH 6.1 372/481] net: fec: handle page_pool_dev_alloc_pages error
-Date: Mon, 23 Mar 2026 14:45:54 +0100
-Message-ID: <20260323134534.196626335@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.6 435/567] drm/exynos: vidi: use ctx->lock to protect struct vidi_context member variables related to memory alloc/free
+Date: Mon, 23 Mar 2026 14:45:55 +0100
+Message-ID: <20260323134544.697316299@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,129 +64,233 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229853-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lenbrook.com,intel.com,nxp.com,kernel.org,sina.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229349-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_THREE(0.00)[4];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C90E02F97D1
+X-Rspamd-Queue-Id: 68A012F6B07
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Groeneveld <kgroeneveld@lenbrook.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 001ba0902046cb6c352494df610718c0763e77a5 ]
+[ Upstream commit 52b330799e2d6f825ae2bb74662ec1b10eb954bb ]
 
-The fec_enet_update_cbd function calls page_pool_dev_alloc_pages but did
-not handle the case when it returned NULL. There was a WARN_ON(!new_page)
-but it would still proceed to use the NULL pointer and then crash.
+Exynos Virtual Display driver performs memory alloc/free operations
+without lock protection, which easily causes concurrency problem.
 
-This case does seem somewhat rare but when the system is under memory
-pressure it can happen. One case where I can duplicate this with some
-frequency is when writing over a smbd share to a SATA HDD attached to an
-imx6q.
+For example, use-after-free can occur in race scenario like this:
+```
+	CPU0				CPU1				CPU2
+	----				----				----
+  vidi_connection_ioctl()
+    if (vidi->connection) // true
+      drm_edid = drm_edid_alloc(); // alloc drm_edid
+      ...
+      ctx->raw_edid = drm_edid;
+      ...
+								drm_mode_getconnector()
+								  drm_helper_probe_single_connector_modes()
+								    vidi_get_modes()
+								      if (ctx->raw_edid) // true
+								        drm_edid_dup(ctx->raw_edid);
+								          if (!drm_edid) // false
+								          ...
+				vidi_connection_ioctl()
+				  if (vidi->connection) // false
+				    drm_edid_free(ctx->raw_edid); // free drm_edid
+				    ...
+								          drm_edid_alloc(drm_edid->edid)
+								            kmemdup(edid); // UAF!!
+								            ...
+```
 
-Setting /proc/sys/vm/min_free_kbytes to higher values also seems to solve
-the problem for my test case. But it still seems wrong that the fec driver
-ignores the memory allocation error and can crash.
+To prevent these vulns, at least in vidi_context, member variables related
+to memory alloc/free should be protected with ctx->lock.
 
-This commit handles the allocation error by dropping the current packet.
-
-Fixes: 95698ff6177b5 ("net: fec: using page pool to manage RX buffers")
-Signed-off-by: Kevin Groeneveld <kgroeneveld@lenbrook.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Wei Fang <wei.fang@nxp.com>
-Link: https://patch.msgid.link/20250113154846.1765414-1-kgroeneveld@lenbrook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ The context change is due to the commit 6c8fae0caf5d
-(net: fec: simplify the code logic of quirks")
-in v6.2 which is irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c |   19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |   43 +++++++++++++++++++++++++------
+ 1 file changed, 35 insertions(+), 8 deletions(-)
 
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -1595,19 +1595,22 @@ fec_enet_copybreak(struct net_device *nd
- 	return true;
- }
- 
--static void fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
-+static int fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
- 				struct bufdesc *bdp, int index)
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -186,15 +186,17 @@ static ssize_t vidi_store_connection(str
+ 				const char *buf, size_t len)
  {
- 	struct page *new_page;
- 	dma_addr_t phys_addr;
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
+-	int ret;
++	int ret, new_connected;
  
- 	new_page = page_pool_dev_alloc_pages(rxq->page_pool);
--	WARN_ON(!new_page);
--	rxq->rx_skb_info[index].page = new_page;
-+	if (unlikely(!new_page))
-+		return -ENOMEM;
+-	ret = kstrtoint(buf, 0, &ctx->connected);
++	ret = kstrtoint(buf, 0, &new_connected);
+ 	if (ret)
+ 		return ret;
  
-+	rxq->rx_skb_info[index].page = new_page;
- 	rxq->rx_skb_info[index].offset = FEC_ENET_XDP_HEADROOM;
- 	phys_addr = page_pool_get_dma_addr(new_page) + FEC_ENET_XDP_HEADROOM;
- 	bdp->cbd_bufaddr = cpu_to_fec32(phys_addr);
+-	if (ctx->connected > 1)
++	if (new_connected > 1)
+ 		return -EINVAL;
+ 
++	mutex_lock(&ctx->lock);
 +
-+	return 0;
+ 	/* use fake edid data for test. */
+ 	if (!ctx->raw_edid)
+ 		ctx->raw_edid = (struct edid *)fake_edid_info;
+@@ -202,14 +204,21 @@ static ssize_t vidi_store_connection(str
+ 	/* if raw_edid isn't same as fake data then it can't be tested. */
+ 	if (ctx->raw_edid != (struct edid *)fake_edid_info) {
+ 		DRM_DEV_DEBUG_KMS(dev, "edid data is not fake data.\n");
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto fail;
+ 	}
+ 
++	ctx->connected = new_connected;
++	mutex_unlock(&ctx->lock);
++
+ 	DRM_DEV_DEBUG_KMS(dev, "requested connection.\n");
+ 
+ 	drm_helper_hpd_irq_event(ctx->drm_dev);
+ 
+ 	return len;
++fail:
++	mutex_unlock(&ctx->lock);
++	return ret;
  }
  
- /* During a receive, the bd_rx.cur points to the current incoming buffer.
-@@ -1632,6 +1635,7 @@ fec_enet_rx_queue(struct net_device *nde
- 	int	index = 0;
- 	bool	need_swap = fep->quirks & FEC_QUIRK_SWAP_FRAME;
- 	struct page *page;
-+	__fec32 cbd_bufaddr;
+ static DEVICE_ATTR(connection, 0644, vidi_show_connection,
+@@ -244,11 +253,14 @@ int vidi_connection_ioctl(struct drm_dev
+ 		return -EINVAL;
+ 	}
  
- #ifdef CONFIG_M532x
- 	flush_cache_all();
-@@ -1686,12 +1690,17 @@ fec_enet_rx_queue(struct net_device *nde
++	mutex_lock(&ctx->lock);
+ 	if (ctx->connected == vidi->connection) {
++		mutex_unlock(&ctx->lock);
+ 		DRM_DEV_DEBUG_KMS(ctx->dev,
+ 				  "same connection request.\n");
+ 		return -EINVAL;
+ 	}
++	mutex_unlock(&ctx->lock);
  
- 		index = fec_enet_get_bd_index(bdp, &rxq->bd);
- 		page = rxq->rx_skb_info[index].page;
-+		cbd_bufaddr = bdp->cbd_bufaddr;
-+		if (fec_enet_update_cbd(rxq, bdp, index)) {
-+			ndev->stats.rx_dropped++;
-+			goto rx_processing_done;
-+		}
+ 	if (vidi->connection) {
+ 		struct edid *raw_edid;
+@@ -271,20 +283,27 @@ int vidi_connection_ioctl(struct drm_dev
+ 					  "failed to allocate raw_edid.\n");
+ 			return -ENOMEM;
+ 		}
++		mutex_lock(&ctx->lock);
+ 		ctx->raw_edid = raw_edid;
++		mutex_unlock(&ctx->lock);
+ 	} else {
+ 		/*
+ 		 * with connection = 0, free raw_edid
+ 		 * only if raw edid data isn't same as fake data.
+ 		 */
++		mutex_lock(&ctx->lock);
+ 		if (ctx->raw_edid && ctx->raw_edid !=
+ 				(struct edid *)fake_edid_info) {
+ 			kfree(ctx->raw_edid);
+ 			ctx->raw_edid = NULL;
+ 		}
++		mutex_unlock(&ctx->lock);
+ 	}
+ 
++	mutex_lock(&ctx->lock);
+ 	ctx->connected = vidi->connection;
++	mutex_unlock(&ctx->lock);
 +
- 		dma_sync_single_for_cpu(&fep->pdev->dev,
--					fec32_to_cpu(bdp->cbd_bufaddr),
-+					fec32_to_cpu(cbd_bufaddr),
- 					pkt_len,
- 					DMA_FROM_DEVICE);
- 		prefetch(page_address(page));
--		fec_enet_update_cbd(rxq, bdp, index);
+ 	drm_helper_hpd_irq_event(ctx->drm_dev);
  
- 		/* The packet length includes FCS, but we don't want to
- 		 * include that when passing upstream as it messes up
+ 	return 0;
+@@ -299,7 +318,7 @@ static enum drm_connector_status vidi_de
+ 	 * connection request would come from user side
+ 	 * to do hotplug through specific ioctl.
+ 	 */
+-	return ctx->connected ? connector_status_connected :
++	return READ_ONCE(ctx->connected) ? connector_status_connected :
+ 			connector_status_disconnected;
+ }
+ 
+@@ -321,22 +340,24 @@ static int vidi_get_modes(struct drm_con
+ 	struct vidi_context *ctx = ctx_from_connector(connector);
+ 	struct edid *edid;
+ 	int edid_len;
+-	int count;
++	int count = 0;
+ 
+ 	/*
+ 	 * the edid data comes from user side and it would be set
+ 	 * to ctx->raw_edid through specific ioctl.
+ 	 */
++
++	mutex_lock(&ctx->lock);
+ 	if (!ctx->raw_edid) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "raw_edid is null.\n");
+-		return 0;
++		goto fail;
+ 	}
+ 
+ 	edid_len = (1 + ctx->raw_edid->extensions) * EDID_LENGTH;
+ 	edid = kmemdup(ctx->raw_edid, edid_len, GFP_KERNEL);
+ 	if (!edid) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev, "failed to allocate edid\n");
+-		return 0;
++		goto fail;
+ 	}
+ 
+ 	drm_connector_update_edid_property(connector, edid);
+@@ -345,6 +366,8 @@ static int vidi_get_modes(struct drm_con
+ 
+ 	kfree(edid);
+ 
++fail:
++	mutex_unlock(&ctx->lock);
+ 	return count;
+ }
+ 
+@@ -490,11 +513,15 @@ static int vidi_remove(struct platform_d
+ {
+ 	struct vidi_context *ctx = platform_get_drvdata(pdev);
+ 
++	mutex_lock(&ctx->lock);
++
+ 	if (ctx->raw_edid != (struct edid *)fake_edid_info) {
+ 		kfree(ctx->raw_edid);
+ 		ctx->raw_edid = NULL;
+ 	}
+ 
++	mutex_unlock(&ctx->lock);
++
+ 	component_del(&pdev->dev, &vidi_component_ops);
+ 
+ 	return 0;
 
 
 
