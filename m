@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228775-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gB3RJ+1IwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228118-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:37 +0100
+	id AIMDKTNUwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228775-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323532F3D50
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242AE2F568D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EB55830C0276
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E926F30C5F19
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A329B1F91F6;
-	Mon, 23 Mar 2026 13:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5863AF643;
+	Mon, 23 Mar 2026 14:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ujlish38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2+aWLCn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1F93AD538;
-	Mon, 23 Mar 2026 13:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F150E3AF65F;
+	Mon, 23 Mar 2026 14:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274177; cv=none; b=Qmw/OoH2KcXufth2+CVbhfjumVO2vROGyPbTBOd7VlNVDJITx2N9uPl6EFd3G/HsL5+wAVgKS/gYsv5NgR0IOlzL9Jbg4iB/AFI4KEAaYFZyovF/s/Ni+8LSbm4d49hXR/VXbZNhlGu0+qOTQfKOZPB8ibZHIeoJlYBsmk84wlw=
+	t=1774277090; cv=none; b=QziTV2Zo4WGrCSmY3/NKSZAPljWkzF71HGVkOMo7DOBnLI/b6+rNu7OzRtaXdtzZS3Un5Uol9Zlsut+i+vk5rNFuAC8+ctyYTHs9Kb3Pq8VIbjkMz9msG/zORUDA0Isqm81TYxcs+9U9pzwHad7DTQWDEmJYrEe3B37jBVCaCUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274177; c=relaxed/simple;
-	bh=NU9EVJ6F20fk0AI+hbK8amLfA42q3rUBj5LlWdDb1+0=;
+	s=arc-20240116; t=1774277090; c=relaxed/simple;
+	bh=14q5U7lOOffpT/6xm94wTgbpzpEOIXFsVgZshUedmow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cX1vemsM3tzEjv1pV3Fq2vWPoTpcxlGn2465asb/u256UmL1vXqD/WJzkd362alglpAcMSylbG3IgvRRpaKaQQtx/JqFDMneWFFShxLQ9DhnjHwhgFCGM/Ulbs24C0DngmkLeyNxBMazshBlBLPZvMjoIxtB1lEM9AkjZUr3GzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ujlish38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9492CC4CEF7;
-	Mon, 23 Mar 2026 13:56:16 +0000 (UTC)
+	 MIME-Version; b=k4EOMAGkwZhIX82f+VNRZ+RnokUA+5XuqiSUXsPXOCHZS+jIK4lwMcsVwPZl9Cv+HmGKDCB3C1MoCv9G/mek9U//0WCXDfBb8TCoN59gUIFkqHAJt9Qz9/o724kaaJCXhoMX0hodugiYe+1Raifxd0fgUqCmgFh2TZ0ubJ0n/to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2+aWLCn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B994C4CEF7;
+	Mon, 23 Mar 2026 14:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274177;
-	bh=NU9EVJ6F20fk0AI+hbK8amLfA42q3rUBj5LlWdDb1+0=;
+	s=korg; t=1774277089;
+	bh=14q5U7lOOffpT/6xm94wTgbpzpEOIXFsVgZshUedmow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ujlish38uv0HR0k/Kn6Ig8MvoDXdJjaDj5D7quhg83FivzMMsSoB/O+Il8U1vU02P
-	 E6+VAq/6rCb70QSKgUPnJ6hpMNfGOwN3VRIw+Mfc40vMagYWu7u1a0bZGc4CGx/p8T
-	 0IZa+c9M/clxnpUEZIQZ3B3pZt0u7GfjMlXgwMWo=
+	b=D2+aWLCnUGL4LaZqANAJs8QtiSSiv0739UctKGef3tJ4IBYq8rwJ9MOI4dO26lgS/
+	 k1IcKhw37kVi5kFVN7MM9y56d6eP693f6VdvJ6jwYDT8zQzq9BXM1Hus1jdrB7xb/Z
+	 b+HTGKiluMn+eKKsIcfl4eTIx1WH0YW55ZW8KZ1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Woudstra <ericwouds@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 135/220] netfilter: nf_flow_table_ip: reset mac header before vlan push
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.12 316/460] mac80211: fix crash in ieee80211_chan_bw_change for AP_VLAN stations
 Date: Mon, 23 Mar 2026 14:45:12 +0100
-Message-ID: <20260323134508.844777689@linuxfoundation.org>
+Message-ID: <20260323134534.266282961@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,74 +65,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228118-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228775-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: 323532F3D50
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 242AE2F568D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Woudstra <ericwouds@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit a3aca98aec9a278ee56da4f8013bfa1dd1a1c298 ]
+commit 672e5229e1ecfc2a3509b53adcb914d8b024a853 upstream.
 
-With double vlan tagged packets in the fastpath, getting the error:
+ieee80211_chan_bw_change() iterates all stations and accesses
+link->reserved.oper via sta->sdata->link[link_id]. For stations on
+AP_VLAN interfaces (e.g. 4addr WDS clients), sta->sdata points to
+the VLAN sdata, whose link never participates in chanctx reservations.
+This leaves link->reserved.oper zero-initialized with chan == NULL,
+causing a NULL pointer dereference in __ieee80211_sta_cap_rx_bw()
+when accessing chandef->chan->band during CSA.
 
-skb_vlan_push got skb with skb->data not at mac header (offset 18)
+Resolve the VLAN sdata to its parent AP sdata using get_bss_sdata()
+before accessing link data.
 
-Call skb_reset_mac_header() before calling skb_vlan_push().
-
-Fixes: c653d5a78f34 ("netfilter: flowtable: inline vlan encapsulation in xmit path")
-Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20260305170812.2904208-1-nbd@nbd.name
+[also change sta->sdata in ARRAY_SIZE even if it doesn't matter]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_flow_table_ip.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/mac80211/chan.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 78883343e5d68..458895e9e1f85 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -576,6 +576,7 @@ static int nf_flow_encap_push(struct sk_buff *skb,
- 		switch (tuple->encap[i].proto) {
- 		case htons(ETH_P_8021Q):
- 		case htons(ETH_P_8021AD):
-+			skb_reset_mac_header(skb);
- 			if (skb_vlan_push(skb, tuple->encap[i].proto,
- 					  tuple->encap[i].id) < 0)
- 				return -1;
--- 
-2.51.0
-
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -423,14 +423,16 @@ static void ieee80211_chan_bw_change(str
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(sta, &local->sta_list,
+ 				list) {
+-		struct ieee80211_sub_if_data *sdata = sta->sdata;
++		struct ieee80211_sub_if_data *sdata;
+ 		enum ieee80211_sta_rx_bandwidth new_sta_bw;
+ 		unsigned int link_id;
+ 
+ 		if (!ieee80211_sdata_running(sta->sdata))
+ 			continue;
+ 
+-		for (link_id = 0; link_id < ARRAY_SIZE(sta->sdata->link); link_id++) {
++		sdata = get_bss_sdata(sta->sdata);
++
++		for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
+ 			struct ieee80211_link_data *link =
+ 				rcu_dereference(sdata->link[link_id]);
+ 			struct ieee80211_bss_conf *link_conf;
 
 
 
