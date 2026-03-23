@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228187-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMTcNx5UwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228870-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:22 +0100
+	id wDVCBMtJwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228187-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A00232F5662
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A267B2F3ED1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 32877301AE43
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C93D63057138
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184653AEF4F;
-	Mon, 23 Mar 2026 14:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE803B8D6B;
+	Mon, 23 Mar 2026 13:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lrsc3f9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2N8x75LR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD69F38CFE1;
-	Mon, 23 Mar 2026 14:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED5C3AD536;
+	Mon, 23 Mar 2026 13:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277357; cv=none; b=WZPSaRP7bgCl0Nt2prM6dJyQyAtwjZmULrXvrAi6lO/qWuMftlfb77MGOgdweKHcOvExfxT8aFl9ZQQw1RJ0T5GBaEN7o5KGueB3ojblu2dGDmejzLlNG9Vdy7tA/561TOZjhoxItVUrF1ikOz2sFcCuaRv+K55yZBg5Xe3Pp3U=
+	t=1774274389; cv=none; b=L8SniBwrTj2hTtQ7LrpZ7ZGCekHfTonqLPxX1Zh74gq+TENUA5FwRj2OM1gLLLCNRBMT57WupZ+r9j82dJcSZ3sTJJN4p3t0QZCXD+AHoxWmyfQ6pbn4HabqTyzPqwJlnGw3XXJrxMHYKMz1qJPi9IdTEwiz488x7rTzRCDjk8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277357; c=relaxed/simple;
-	bh=Qad2mGiK7P/Fxt2pA8iDuyOwMOO949HpR+p9LZxy6tc=;
+	s=arc-20240116; t=1774274389; c=relaxed/simple;
+	bh=+CHolI0OoLHZYDLufhHM5SNrDl3HwUgcGhgXG0Fngac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jgEOj0yZjNqupR/1el7gf5UqxFrvGSwjvLs5mrNyTXa1fmyIIGBnq03Te/Sr2vMDPjIQbMIiIfvBrtcmWg8dnen3Ac4z0ua4bgVq87k2pbhus6yzh4KhzYUXsFocte/PMMxp36JaKib1u41ot/Pd4mOyHG5ILsVAsKSiSSvL4ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lrsc3f9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE7E3C2BC9E;
-	Mon, 23 Mar 2026 14:49:16 +0000 (UTC)
+	 MIME-Version; b=CbwBJDZZ3WNUIfkMouMR8auAnEl08yRu1HZu+REPuFLL+wfSWwdRgiRgoXDVRqA3aRQZPcoCdOknY9j+dVhfVNdrC6Fl+53j/vrnPK4fdusfhOOrXmGmr+rxjg8UtBq+FwNpxf5HFUtCZrYL/2WJKtaNALzClAvD4ATX1QgTDes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2N8x75LR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A514DC2BCB6;
+	Mon, 23 Mar 2026 13:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277357;
-	bh=Qad2mGiK7P/Fxt2pA8iDuyOwMOO949HpR+p9LZxy6tc=;
+	s=korg; t=1774274389;
+	bh=+CHolI0OoLHZYDLufhHM5SNrDl3HwUgcGhgXG0Fngac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lrsc3f9HfRU13cztk/th2p2wumkcO/TX972z78wt3f+c768qPEtqwV6uy7BASgNuy
-	 hPN6dPjBtz8gKKlY8cQokBGXoRlw8W6l3aVdaSIWAr7sXQVCiaog3Wh3OatKx3Ok5o
-	 Z9ZsfGb8/O4W8j6gnTeXuXnQuszATUzyXGqkT7QY=
+	b=2N8x75LR5HjX8X2SaFhO2KaBYa98EdQdmX0BHHBA545j5amGq1luLqq3hcm9BiabJ
+	 kQ+Up8lWxx/0JJ99L3v1nqdfX8YPFhyNOi3hAmp2wpJkKgrEA9M5AAWcmg3w5LsdSi
+	 hBBHziu7NE/pkjJwnL6op2clazma7xWupSz8rvR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Ben Horgan <ben.horgan@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 382/460] Bluetooth: SMP: make SM/PER/KDU/BI-04-C happy
+Subject: [PATCH 6.19 201/220] arm_mpam: Fix null pointer dereference when restoring bandwidth counters
 Date: Mon, 23 Mar 2026 14:46:18 +0100
-Message-ID: <20260323134535.957072043@linuxfoundation.org>
+Message-ID: <20260323134510.923477284@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +67,91 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228870-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228187-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A00232F5662
+X-Rspamd-Queue-Id: A267B2F3ED1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Ben Horgan <ben.horgan@arm.com>
 
-[ Upstream commit 0e4d4dcc1a6e82cc6f9abf32193558efa7e1613d ]
+[ Upstream commit 4ad79c874e53ebb7fe3b8ae7ac6c858a2121f415 ]
 
-The last test step ("Test with Invalid public key X and Y, all set to
-0") expects to get an "DHKEY check failed" instead of "unspecified".
+When an MSC supporting memory bandwidth monitoring is brought offline and
+then online, mpam_restore_mbwu_state() calls __ris_msmon_read() via ipi to
+restore the configuration of the bandwidth counters. It doesn't care about
+the value read, mbwu_arg.val, and doesn't set it leading to a null pointer
+dereference when __ris_msmon_read() adds to it. This results in a kernel
+oops with a call trace such as:
 
-Fixes: 6d19628f539f ("Bluetooth: SMP: Fail if remote and local public keys are identical")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Call trace:
+__ris_msmon_read+0x19c/0x64c (P)
+mpam_restore_mbwu_state+0xa0/0xe8
+smp_call_on_cpu_callback+0x1c/0x38
+process_one_work+0x154/0x4b4
+worker_thread+0x188/0x310
+kthread+0x11c/0x130
+ret_from_fork+0x10/0x20
+
+Provide a local variable for val to avoid __ris_msmon_read() dereferencing
+a null pointer when adding to val.
+
+Fixes: 41e8a14950e1 ("arm_mpam: Track bandwidth counter state for power management")
+Signed-off-by: Ben Horgan <ben.horgan@arm.com>
+Reviewed-by: James Morse <james.morse@arm.com>
+Signed-off-by: James Morse <james.morse@arm.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/smp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/resctrl/mpam_devices.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 3a33fd06e6a4c..204c5fe3a8d08 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -2743,7 +2743,7 @@ static int smp_cmd_public_key(struct l2cap_conn *conn, struct sk_buff *skb)
- 	if (!test_bit(SMP_FLAG_DEBUG_KEY, &smp->flags) &&
- 	    !crypto_memneq(key, smp->local_pk, 64)) {
- 		bt_dev_err(hdev, "Remote and local public keys are identical");
--		return SMP_UNSPECIFIED;
-+		return SMP_DHKEY_CHECK_FAILED;
- 	}
+diff --git a/drivers/resctrl/mpam_devices.c b/drivers/resctrl/mpam_devices.c
+index b495d52918681..41fe421171813 100644
+--- a/drivers/resctrl/mpam_devices.c
++++ b/drivers/resctrl/mpam_devices.c
+@@ -1428,6 +1428,7 @@ static void mpam_reprogram_ris_partid(struct mpam_msc_ris *ris, u16 partid,
+ static int mpam_restore_mbwu_state(void *_ris)
+ {
+ 	int i;
++	u64 val;
+ 	struct mon_read mwbu_arg;
+ 	struct mpam_msc_ris *ris = _ris;
+ 	struct mpam_class *class = ris->vmsc->comp->class;
+@@ -1437,6 +1438,7 @@ static int mpam_restore_mbwu_state(void *_ris)
+ 			mwbu_arg.ris = ris;
+ 			mwbu_arg.ctx = &ris->mbwu_state[i].cfg;
+ 			mwbu_arg.type = mpam_msmon_choose_counter(class);
++			mwbu_arg.val = &val;
  
- 	memcpy(smp->remote_pk, key, 64);
+ 			__ris_msmon_read(&mwbu_arg);
+ 		}
 -- 
 2.51.0
 
