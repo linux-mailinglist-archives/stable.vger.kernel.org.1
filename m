@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kEyPFt1XwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229131-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:21 +0100
+	id 8Fy4MStSwWnqSAQAu9opvQ
+	(envelope-from <stable+bounces-228599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FEF2F5E6E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA432F5251
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3FF4A304EF3F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1B199316416E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B7624CEEA;
-	Mon, 23 Mar 2026 15:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7360823DD;
+	Mon, 23 Mar 2026 14:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIfZIWHV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JP2cMFjl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4882248883;
-	Mon, 23 Mar 2026 15:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F231A680D;
+	Mon, 23 Mar 2026 14:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278159; cv=none; b=kILD6FDOHjvbsuZQ4/vttJdvPz0szBmr9bt2DhQ6veoU72WxBNyAh4w5CHL0FhlGZJRC9fUKzM1Ew5k4kuCTy9cflcXck6iGeF82AVcMyOa6/SNw5gZBuxxLDYAekADNIBwOEcwXUai6jh8zRidDrVYFX9Tc1wy0LQSjhZtuTcU=
+	t=1774275562; cv=none; b=LJysfh6QKhnX9L3sliWS9cwb80Qc3k/yAsh7+japS8y6aJxpLuC12jI/vFLaOkQOSJy6t8B2YaC3LwArBMGpGacUClUlGTdGr90Ocos8BroB30tY4zesIOc27shNK13zoqgRAUsFK2B2/pDR9eNWaAKl6M/dJJwztFQeI2tl68Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278159; c=relaxed/simple;
-	bh=H40aJHTkio0Ky9zkhqB4WkQ92WPOFBL2o+62XruVlgk=;
+	s=arc-20240116; t=1774275562; c=relaxed/simple;
+	bh=P94LZOTKseVt7gkxdoqvr1glguGuDsemotZuikbPqkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btKk+WTyLwd++H1NubwzYpSnPlfu0yK8dScXXRIeyM29FnIeP+NbM/t9Tc9DtAwaomfoduiuVJDUUmw2oKmckIq8XQPXLg+NPU6lycgZxDk/YyTOmHzG/KNwQkpTWNVLfIF3RjwoTSjZAgfGG1NohHbE6i94Oe6isU/tcgSiip0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIfZIWHV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1CFC2BC9E;
-	Mon, 23 Mar 2026 15:02:38 +0000 (UTC)
+	 MIME-Version; b=mh88VCBmB9ikJeiMQmKbpbZGMLDKkr63V8EJu/5Gk54k5OqQoERO01LWwoj7upWV/6GBdPrlePon5bJvyYG/TZBWZs1RPKmSCNTy2e/zRKJ1ptpa/pbJCWiZWc7U76s51m7EQi2V3LWVnWHC8Da9/eAJ0QEzeOBYBwcRLvz9qCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JP2cMFjl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA238C2BCB1;
+	Mon, 23 Mar 2026 14:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278158;
-	bh=H40aJHTkio0Ky9zkhqB4WkQ92WPOFBL2o+62XruVlgk=;
+	s=korg; t=1774275562;
+	bh=P94LZOTKseVt7gkxdoqvr1glguGuDsemotZuikbPqkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pIfZIWHVGuY1pnVeOUMAitC5b2/JwfMXANL6QXwcRbfwVe32K5vUkMBA/qimtPn7M
-	 zrXG5Pnkfv0/sXux/tz3OhT1Db5sWoAKqQxzWiH2XOa68g5umByLA3TDEMQbgM14AZ
-	 KqM4U1DDII9QZylKj8YptpxE0cFYFKd4CiCNSkEw=
+	b=JP2cMFjlJENiabIcUtICFLWVygSYfssuqfnr6R6jUVAhdoi5aibM4f8wShvb75xmp
+	 6kJmsJulnLE2tD589AvpHysv7x/WCHfB54av15tFy4Ou01TmJuYLskG9DJXCsNHINZ
+	 D41OMWEPk274j1GzM5BvX2xezYgO+9PRmfvtPKuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/567] drm/msm/dsi: Document DSC related pclk_rate and hdisplay calculations
+	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.12 142/460] drm/amd: Disable MES LR compute W/A
 Date: Mon, 23 Mar 2026 14:42:18 +0100
-Message-ID: <20260323134539.221450453@linuxfoundation.org>
+Message-ID: <20260323134530.075844721@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229131-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228599-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,85 +89,69 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E5FEF2F5E6E
+X-Rspamd-Queue-Id: 1EA432F5251
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 3b56d27ba1578c3d61f51de4102cf896a9a8617e ]
+commit 6b0d812971370c64b837a2db4275410f478272fe upstream.
 
-Provide actual documentation for the pclk and hdisplay calculations in
-the case of DSC compression being used.
+A workaround was introduced in commit 1fb710793ce2 ("drm/amdgpu: Enable
+MES lr_compute_wa by default") to help with some hangs observed in gfx1151.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/577534/
-Link: https://lore.kernel.org/r/20240208-fd_document_dsc_pclk_rate-v4-1-56fe59d0a2e0@linaro.org
-Stable-dep-of: e4eb11b34d6c ("drm/msm/dsi: fix pclk rate calculation for bonded dsi")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This WA didn't fully fix the issue.  It was actually fixed by adjusting
+the VGPR size to the correct value that matched the hardware in commit
+b42f3bf9536c ("drm/amdkfd: bump minimum vgpr size for gfx1151").
+
+There are reports of instability on other products with newer GC microcode
+versions, and I believe they're caused by this workaround. As we don't
+need the workaround any more, remove it.
+
+Fixes: b42f3bf9536c ("drm/amdkfd: bump minimum vgpr size for gfx1151")
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9973e64bd6ee7642860a6f3b6958cbf14e89cabd)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/dsi_host.c | 33 ++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |    5 -----
+ drivers/gpu/drm/amd/amdgpu/mes_v12_0.c |    5 -----
+ 2 files changed, 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
-index f90ccdfbb2fc7..48a39f8727441 100644
---- a/drivers/gpu/drm/msm/dsi/dsi_host.c
-+++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
-@@ -529,6 +529,25 @@ void dsi_link_clk_disable_v2(struct msm_dsi_host *msm_host)
- 	clk_disable_unprepare(msm_host->byte_clk);
- }
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
+@@ -677,11 +677,6 @@ static int mes_v11_0_set_hw_resources(st
+ 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
+ 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
+ 	mes_set_hw_res_pkt.oversubscription_timer = 50;
+-	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x7f)
+-		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
+-	else
+-		dev_info_once(mes->adev->dev,
+-			      "MES FW version must be >= 0x7f to enable LR compute workaround.\n");
  
-+/**
-+ * dsi_adjust_pclk_for_compression() - Adjust the pclk rate for compression case
-+ * @mode: The selected mode for the DSI output
-+ * @dsc: DRM DSC configuration for this DSI output
-+ *
-+ * Adjust the pclk rate by calculating a new hdisplay proportional to
-+ * the compression ratio such that:
-+ *     new_hdisplay = old_hdisplay * compressed_bpp / uncompressed_bpp
-+ *
-+ * Porches do not need to be adjusted:
-+ * - For VIDEO mode they are not compressed by DSC and are passed as is.
-+ * - For CMD mode there are no actual porches. Instead these fields
-+ *   currently represent the overhead to the image data transfer. As such, they
-+ *   are calculated for the final mode parameters (after the compression) and
-+ *   are not to be adjusted too.
-+ *
-+ *  FIXME: Reconsider this if/when CMD mode handling is rewritten to use
-+ *  transfer time and data overhead as a starting point of the calculations.
-+ */
- static unsigned long dsi_adjust_pclk_for_compression(const struct drm_display_mode *mode,
- 		const struct drm_dsc_config *dsc)
- {
-@@ -937,8 +956,18 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
- 		if (ret)
- 			return;
+ 	if (amdgpu_mes_log_enable) {
+ 		mes_set_hw_res_pkt.enable_mes_event_int_logging = 1;
+--- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
+@@ -615,11 +615,6 @@ static int mes_v12_0_set_hw_resources(st
+ 	mes_set_hw_res_pkt.use_different_vmid_compute = 1;
+ 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
+ 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
+-	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x82)
+-		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
+-	else
+-		dev_info_once(adev->dev,
+-			      "MES FW version must be >= 0x82 to enable LR compute workaround.\n");
  
--		/* Divide the display by 3 but keep back/font porch and
--		 * pulse width same
-+		/*
-+		 * DPU sends 3 bytes per pclk cycle to DSI. If widebus is
-+		 * enabled, bus width is extended to 6 bytes.
-+		 *
-+		 * Calculate the number of pclks needed to transmit one line of
-+		 * the compressed data.
-+
-+		 * The back/font porch and pulse width are kept intact. For
-+		 * VIDEO mode they represent timing parameters rather than
-+		 * actual data transfer, see the documentation for
-+		 * dsi_adjust_pclk_for_compression(). For CMD mode they are
-+		 * unused anyway.
- 		 */
- 		h_total -= hdisplay;
- 		hdisplay = DIV_ROUND_UP(msm_dsc_get_bytes_per_line(msm_host->dsc), 3);
--- 
-2.51.0
-
+ 	/*
+ 	 * Keep oversubscribe timer for sdma . When we have unmapped doorbell
 
 
 
