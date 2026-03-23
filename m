@@ -1,63 +1,61 @@
-Return-Path: <stable+bounces-229664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229158-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COZXHtxrwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229664-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:40 +0100
+	id qLwJN+JtwWnVTAQAu9opvQ
+	(envelope-from <stable+bounces-229158-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFA32F8621
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 477772F8B5F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B9BF32B9084
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADC8E33D6B6F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607F53BD226;
-	Mon, 23 Mar 2026 16:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A92283FE5;
+	Mon, 23 Mar 2026 15:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yC+5rUWU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSTC+DUG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2160B3B9610;
-	Mon, 23 Mar 2026 16:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317EE25BF13;
+	Mon, 23 Mar 2026 15:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282534; cv=none; b=RjV42a3aMRWtzHvfuGLsAoZ6qulCx+3EaalErIE6aYmqIiKZQgr/E4Xzfjp3WUe9YztUAk+65gS0JnnweNmFQF9zkfSWqxbJw38rPC5ypCckVFhf95NHH47HUESx/8T6wjQGrvBQDx/P2172JRY5RLykE6jB/uUnesmz5YB/JPM=
+	t=1774278244; cv=none; b=mFNm8tqrzG4e5jqPrbiW5YfQpK6ySqRSvw650NBZVF3f53rTnyY1If6a5hICm9dHLRbdcaYwqOQ3R0bzFrgQLkH1LnVG+84OVMs0azKdQxvVpXSXGy9HBSV17SmqQZM+M6mgP89s8y1ZA5bdyNXMO7MSKAD2MmVGkaQa83xjH5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282534; c=relaxed/simple;
-	bh=G5PrxRpN/fDY6UXPaJHFjtjR3CF9ZnA6exJN0n4OfhU=;
+	s=arc-20240116; t=1774278244; c=relaxed/simple;
+	bh=7CyM+uOJeDHg8z/M+98/AH42YYeUzDVS6taKHFsSc7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2dmfX5iZ9a7jvvHxLN/MYW/s/E702Ri7ciBxxEwAUponIrGmRaCw+pXHTaAZFTDy6ORZQCE8dOg8+fPUWYUbMUIwAMgqVyECQhGURRjxDLHVFG4i91gMdNDtb4qFktPFPuGFReLBk32p2Bya7HSFVg2KzbFy9ClDVYfGuKcCmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yC+5rUWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A75C5C4CEF7;
-	Mon, 23 Mar 2026 16:15:33 +0000 (UTC)
+	 MIME-Version; b=XqKgwWfVpKC6lRapTL9X5GGj+tu8UpdiAxhECiZbQf1JWfXPj+aDwOqzJzTyRPB2pRStuEfJnmeQpwb3ryVa+U3KoUl1dX5G7y6NKbxdIKB784FKj7q5cBab0nWxUiTZxGfbY9QvaE20PAW2OwWJrX0Ygf+UXSzzbmY8S6kHepg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSTC+DUG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0149C4CEF7;
+	Mon, 23 Mar 2026 15:04:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282534;
-	bh=G5PrxRpN/fDY6UXPaJHFjtjR3CF9ZnA6exJN0n4OfhU=;
+	s=korg; t=1774278244;
+	bh=7CyM+uOJeDHg8z/M+98/AH42YYeUzDVS6taKHFsSc7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yC+5rUWUViFyHq7j48E0W4DDdx69P0dTuxwlrRwK6NWb6lQKtmZMMbNi/aaL4BJxC
-	 3pvBgKqCHiEQjjXQygDisRf+Ylm3r8K46lvaMMkaqfZ9RdR1+HUcgXz7oG8qaLwjSH
-	 LgCQZh7lkEcOQ25yNTq5Jyd8WVE4dD0YQIkYndHw=
+	b=xSTC+DUGjVTgbGKVSunhs3nQm3XCFHQFMiJCCpMiLcSS2wEkBGb+e+Mc2ryhl/qtz
+	 nD2k+EDMAQZugvl6btqTcJdMHGjKznnTl4G23TT1W/Zgl/vPCGmoaD9KhcUK063r0B
+	 LyczxDOBYG+dH91z7JQEeGIWpHhukf/7MT6W4PC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Shi <cshi008@fiu.edu>,
-	Weidong Zhu <weizhu@fiu.edu>,
-	Dave Tian <daveti@purdue.edu>,
-	Christoph Hellwig <hch@lst.de>,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Keith Busch <kbusch@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/481] nvme-pci: Fix race bug in nvme_poll_irqdisable()
+Subject: [PATCH 6.6 247/567] sched: idle: Make skipping governor callbacks more consistent
 Date: Mon, 23 Mar 2026 14:42:47 +0100
-Message-ID: <20260323134529.713177433@linuxfoundation.org>
+Message-ID: <20260323134539.946649678@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,156 +66,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[purdue.edu:email];
+X-Spamd-Result: default: False [-1.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229664-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
+	TAGGED_FROM(0.00)[bounces-229158-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	NEURAL_SPAM(0.00)[0.955];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	R_SPF_ALLOW(0.00)[+ip4:172.105.105.114:c];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DEFA32F8621
+X-Rspamd-Queue-Id: 477772F8B5F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit fc71f409b22ca831a9f87a2712eaa09ef2bb4a5e ]
+[ Upstream commit d557640e4ce589a24dca5ca7ce3b9680f471325f ]
 
-In the following scenario, pdev can be disabled between (1) and (3) by
-(2). This sets pdev->msix_enabled = 0. Then, pci_irq_vector() will
-return MSI-X IRQ(>15) for (1) whereas return INTx IRQ(<=15) for (2).
-This causes IRQ warning because it tries to enable INTx IRQ that has
-never been disabled before.
+If the cpuidle governor .select() callback is skipped because there
+is only one idle state in the cpuidle driver, the .reflect() callback
+should be skipped as well, at least for consistency (if not for
+correctness), so do it.
 
-To fix this, save IRQ number into a local variable and ensure
-disable_irq() and enable_irq() operate on the same IRQ number.  Even if
-pci_free_irq_vectors() frees the IRQ concurrently, disable_irq() and
-enable_irq() on a stale IRQ number is still valid and safe, and the
-depth accounting reamins balanced.
-
-task 1:
-nvme_poll_irqdisable()
-  disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector)) ...(1)
-  enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector))  ...(3)
-
-task 2:
-nvme_reset_work()
-  nvme_dev_disable()
-    pdev->msix_enable = 0;  ...(2)
-
-crash log:
-
-------------[ cut here ]------------
-Unbalanced enable for IRQ 10
-WARNING: kernel/irq/manage.c:753 at __enable_irq+0x102/0x190 kernel/irq/manage.c:753, CPU#1: kworker/1:0H/26
-Modules linked in:
-CPU: 1 UID: 0 PID: 26 Comm: kworker/1:0H Not tainted 6.19.0-dirty #9 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-Workqueue: kblockd blk_mq_timeout_work
-RIP: 0010:__enable_irq+0x107/0x190 kernel/irq/manage.c:753
-Code: ff df 48 89 fa 48 c1 ea 03 0f b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 04 84 d2 75 79 48 8d 3d 2e 7a 3f 05 41 8b 74 24 2c <67> 48 0f b9 3a e8 ef b9 21 00 5b 41 5c 5d e9 46 54 66 03 e8 e1 b9
-RSP: 0018:ffffc900001bf550 EFLAGS: 00010046
-RAX: 0000000000000007 RBX: 0000000000000000 RCX: ffffffffb20c0e90
-RDX: 0000000000000000 RSI: 000000000000000a RDI: ffffffffb74b88f0
-RBP: ffffc900001bf560 R08: ffff88800197cf00 R09: 0000000000000001
-R10: 0000000000000003 R11: 0000000000000003 R12: ffff8880012a6000
-R13: 1ffff92000037eae R14: 000000000000000a R15: 0000000000000293
-FS:  0000000000000000(0000) GS:ffff8880b49f7000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555da4a25fa8 CR3: 00000000208e8000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- enable_irq+0x121/0x1e0 kernel/irq/manage.c:797
- nvme_poll_irqdisable+0x162/0x1c0 drivers/nvme/host/pci.c:1494
- nvme_timeout+0x965/0x14b0 drivers/nvme/host/pci.c:1744
- blk_mq_rq_timed_out block/blk-mq.c:1653 [inline]
- blk_mq_handle_expired+0x227/0x2d0 block/blk-mq.c:1721
- bt_iter+0x2fc/0x3a0 block/blk-mq-tag.c:292
- __sbitmap_for_each_set include/linux/sbitmap.h:269 [inline]
- sbitmap_for_each_set include/linux/sbitmap.h:290 [inline]
- bt_for_each block/blk-mq-tag.c:324 [inline]
- blk_mq_queue_tag_busy_iter+0x969/0x1e80 block/blk-mq-tag.c:536
- blk_mq_timeout_work+0x627/0x870 block/blk-mq.c:1763
- process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
- process_scheduled_works kernel/workqueue.c:3340 [inline]
- worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
- kthread+0x41a/0x930 kernel/kthread.c:463
- ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
- </TASK>
-irq event stamp: 74478
-hardirqs last  enabled at (74477): [<ffffffffb5720a9c>] __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:159 [inline]
-hardirqs last  enabled at (74477): [<ffffffffb5720a9c>] _raw_spin_unlock_irq+0x2c/0x60 kernel/locking/spinlock.c:202
-hardirqs last disabled at (74478): [<ffffffffb57207b5>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:108 [inline]
-hardirqs last disabled at (74478): [<ffffffffb57207b5>] _raw_spin_lock_irqsave+0x85/0xa0 kernel/locking/spinlock.c:162
-softirqs last  enabled at (74304): [<ffffffffb1e9466c>] __do_softirq kernel/softirq.c:656 [inline]
-softirqs last  enabled at (74304): [<ffffffffb1e9466c>] invoke_softirq kernel/softirq.c:496 [inline]
-softirqs last  enabled at (74304): [<ffffffffb1e9466c>] __irq_exit_rcu+0xdc/0x120 kernel/softirq.c:723
-softirqs last disabled at (74287): [<ffffffffb1e9466c>] __do_softirq kernel/softirq.c:656 [inline]
-softirqs last disabled at (74287): [<ffffffffb1e9466c>] invoke_softirq kernel/softirq.c:496 [inline]
-softirqs last disabled at (74287): [<ffffffffb1e9466c>] __irq_exit_rcu+0xdc/0x120 kernel/softirq.c:723
----[ end trace 0000000000000000 ]---
-
-Fixes: fa059b856a59 (nvme-pci: Simplify nvme_poll_irqdisable)
-Acked-by: Chao Shi <cshi008@fiu.edu>
-Acked-by: Weidong Zhu <weizhu@fiu.edu>
-Acked-by: Dave Tian <daveti@purdue.edu>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: e5c9ffc6ae1b ("cpuidle: Skip governor when only one idle state is available")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://patch.msgid.link/12857700.O9o76ZdvQC@rafael.j.wysocki
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/cpuidle/cpuidle.c | 10 ----------
+ kernel/sched/idle.c       | 11 ++++++++++-
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 9f3d5959755fd..518f8c5012bdf 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1150,14 +1150,16 @@ static irqreturn_t nvme_irq_check(int irq, void *data)
- static void nvme_poll_irqdisable(struct nvme_queue *nvmeq)
+diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
+index aa117f2967fdf..6704d610573ad 100644
+--- a/drivers/cpuidle/cpuidle.c
++++ b/drivers/cpuidle/cpuidle.c
+@@ -356,16 +356,6 @@ noinstr int cpuidle_enter_state(struct cpuidle_device *dev,
+ int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		   bool *stop_tick)
  {
- 	struct pci_dev *pdev = to_pci_dev(nvmeq->dev->dev);
-+	int irq;
- 
- 	WARN_ON_ONCE(test_bit(NVMEQ_POLLED, &nvmeq->flags));
- 
--	disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
-+	irq = pci_irq_vector(pdev, nvmeq->cq_vector);
-+	disable_irq(irq);
- 	spin_lock(&nvmeq->cq_poll_lock);
- 	nvme_poll_cq(nvmeq, NULL);
- 	spin_unlock(&nvmeq->cq_poll_lock);
--	enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
-+	enable_irq(irq);
+-	/*
+-	 * If there is only a single idle state (or none), there is nothing
+-	 * meaningful for the governor to choose. Skip the governor and
+-	 * always use state 0 with the tick running.
+-	 */
+-	if (drv->state_count <= 1) {
+-		*stop_tick = false;
+-		return 0;
+-	}
+-
+ 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
  }
  
- static int nvme_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 565f8374ddbbf..2ba2f21a1c0f2 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -199,7 +199,7 @@ static void cpuidle_idle_call(void)
+ 
+ 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
+ 		call_cpuidle(drv, dev, next_state);
+-	} else {
++	} else if (drv->state_count > 1) {
+ 		bool stop_tick = true;
+ 
+ 		/*
+@@ -217,6 +217,15 @@ static void cpuidle_idle_call(void)
+ 		 * Give the governor an opportunity to reflect on the outcome
+ 		 */
+ 		cpuidle_reflect(dev, entered_state);
++	} else {
++		tick_nohz_idle_retain_tick();
++
++		/*
++		 * If there is only a single idle state (or none), there is
++		 * nothing meaningful for the governor to choose.  Skip the
++		 * governor and always use state 0.
++		 */
++		call_cpuidle(drv, dev, 0);
+ 	}
+ 
+ exit_idle:
 -- 
 2.51.0
 
