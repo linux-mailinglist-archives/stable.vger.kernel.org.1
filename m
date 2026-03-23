@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229090-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MNcYHAFrwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229588-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:32:01 +0100
+	id gGEyDxRswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229090-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043972F8443
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:32:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B38F2F86B5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3095E31AC846
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 862DA3120325
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74073B8D55;
-	Mon, 23 Mar 2026 16:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C69423ABAA;
+	Mon, 23 Mar 2026 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBQ7RdKy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgpIjsb6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D713B19AC;
-	Mon, 23 Mar 2026 16:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1797D1A00F0;
+	Mon, 23 Mar 2026 15:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282325; cv=none; b=Jyx4FHOoE45pKx940G984lT0xr3Y1eGiN+VDXwaWx95MSM9/ADs+lMHyyWHlrNTCUbtnWMDAt6Q3/7fnjVwPur2dFwsArC9bub6x25pk6T1PKF6jKVSioUJWxoZK5kq8hFfF7WTDjWHEM3RpDi3HStypiYaXeIa5wsf55XeUkgo=
+	t=1774278029; cv=none; b=sy93QQHTTwGg8A560fZr7BHbV5ce13+cTibC9MbiH/LFCRRZCwJ6M4COzUzu4toIWpZamjUGrE0SRC1Gtu8vDrU0WlcBdTnXATh8dYuAZ20xroBk7UVqIVt4Hd9LkHlAz7KehiOXizkunVZuGm/dIVDSli7tNlSoaZJJQuRvE/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282325; c=relaxed/simple;
-	bh=qfiDyt8HMONYVqIUtEut9uobTe3rZYvTcKaCiy3rtlQ=;
+	s=arc-20240116; t=1774278029; c=relaxed/simple;
+	bh=y1viK1CE+mGFPlOrZIQDuclwmuHQlM/mO9rlQw8gc+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DioCgDyRjjtaWSwL0Y7H9uhpHow9tzkVLYklSlRq0Dtw9hoVK6iWIy6/HiL1UHiIgjApujItcrLkHo4zhFKl7XdZQsGS7AysQa8ABHns8fiNHqR0GWNFJlGgfr+dWUACesONGI7rXI9kjovag0en5I+Og7fVFWJIwjutWhZRfME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBQ7RdKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CCAC4CEF7;
-	Mon, 23 Mar 2026 16:12:05 +0000 (UTC)
+	 MIME-Version; b=Oo9U1eT9ohePzd8l4HTeAaiLFyDOtuu42vLv60Pcf54U3zQx6O6lGAOc++VFa6RRXHRvtUGAptvqxgIyNvK8AmoaCM5YYTzQDYJMRz3vsm/JL/vNb4M/RN5t2VcAr9OUCCdtUsl7oey+PowSQB9gNgM23Eb9iZpRaRFm7nww8IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgpIjsb6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF18C4CEF7;
+	Mon, 23 Mar 2026 15:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282325;
-	bh=qfiDyt8HMONYVqIUtEut9uobTe3rZYvTcKaCiy3rtlQ=;
+	s=korg; t=1774278029;
+	bh=y1viK1CE+mGFPlOrZIQDuclwmuHQlM/mO9rlQw8gc+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KBQ7RdKya8hPQKJn40nsmZnq+DnT/eeEB+XCGE93dhUmWRQUr80u1O7K9HfHj6rv2
-	 uVqvwl39lrOhtPANJXTMPOrjTAra+xUzBYWdlddrqu1/aUU1a10+5QIchw5d8hcZvm
-	 KyOAmYccz+XGaqe+c3V3WxL1iy6B+6Ju380BW4zU=
+	b=SgpIjsb6K8AP5BfNnccyHZXiC8WTqJ+eN/wFJQ8qAP4mPWygU1gATlLy1wpCOyXFR
+	 7/qZ93Kh7L6RUi0vjPLakXXRaMEek1cTEd6+sMb6hgjsqzSaehoEQwBchYbafM+4Ij
+	 xYjxw2V8Z05g83/Hzop8lpEaJLkHCaf9y4Pell4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Daniel Latypov <dlatypov@google.com>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Ruitong Liu <cnitlrt@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 115/481] kunit: tool: fix pre-existing `mypy --strict` errors and update run_checks.py
+Subject: [PATCH 6.6 177/567] net/sched: act_ife: Fix metalist update behavior
 Date: Mon, 23 Mar 2026 14:41:37 +0100
-Message-ID: <20260323134528.081879297@linuxfoundation.org>
+Message-ID: <20260323134538.220915928@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,329 +70,430 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229090-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229588-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.968];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,kunit.py:url,kunit_tool_test.py:url]
-X-Rspamd-Queue-Id: 043972F8443
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 8B38F2F86B5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Latypov <dlatypov@google.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit 1da2e6220e1115930694c649605534baf6fa3dea ]
+[ Upstream commit e2cedd400c3ec0302ffca2490e8751772906ac23 ]
 
-Basically, get this command to be happy and make run_checks.py happy
- $ mypy --strict --exclude '_test.py$' --exclude qemu_configs/ ./tools/testing/kunit/
+Whenever an ife action replace changes the metalist, instead of
+replacing the old data on the metalist, the current ife code is appending
+the new metadata. Aside from being innapropriate behavior, this may lead
+to an unbounded addition of metadata to the metalist which might cause an
+out of bounds error when running the encode op:
 
-Primarily the changes are
-* add `-> None` return type annotations
-* add all the missing argument type annotations
+[  138.423369][    C1] ==================================================================
+[  138.424317][    C1] BUG: KASAN: slab-out-of-bounds in ife_tlv_meta_encode (net/ife/ife.c:168)
+[  138.424906][    C1] Write of size 4 at addr ffff8880077f4ffe by task ife_out_out_bou/255
+[  138.425778][    C1] CPU: 1 UID: 0 PID: 255 Comm: ife_out_out_bou Not tainted 7.0.0-rc1-00169-gfbdfa8da05b6 #624 PREEMPT(full)
+[  138.425795][    C1] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  138.425800][    C1] Call Trace:
+[  138.425804][    C1]  <IRQ>
+[  138.425808][    C1]  dump_stack_lvl (lib/dump_stack.c:122)
+[  138.425828][    C1]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
+[  138.425839][    C1]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  138.425844][    C1]  ? __virt_addr_valid (./arch/x86/include/asm/preempt.h:95 (discriminator 1) ./include/linux/rcupdate.h:975 (discriminator 1) ./include/linux/mmzone.h:2207 (discriminator 1) arch/x86/mm/physaddr.c:54 (discriminator 1))
+[  138.425853][    C1]  ? ife_tlv_meta_encode (net/ife/ife.c:168)
+[  138.425859][    C1]  kasan_report (mm/kasan/report.c:221 mm/kasan/report.c:597)
+[  138.425868][    C1]  ? ife_tlv_meta_encode (net/ife/ife.c:168)
+[  138.425878][    C1]  kasan_check_range (mm/kasan/generic.c:186 (discriminator 1) mm/kasan/generic.c:200 (discriminator 1))
+[  138.425884][    C1]  __asan_memset (mm/kasan/shadow.c:84 (discriminator 2))
+[  138.425889][    C1]  ife_tlv_meta_encode (net/ife/ife.c:168)
+[  138.425893][    C1]  ? ife_tlv_meta_encode (net/ife/ife.c:171)
+[  138.425898][    C1]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  138.425903][    C1]  ife_encode_meta_u16 (net/sched/act_ife.c:57)
+[  138.425910][    C1]  ? __pfx_do_raw_spin_lock (kernel/locking/spinlock_debug.c:114)
+[  138.425916][    C1]  ? __asan_memcpy (mm/kasan/shadow.c:105 (discriminator 3))
+[  138.425921][    C1]  ? __pfx_ife_encode_meta_u16 (net/sched/act_ife.c:45)
+[  138.425927][    C1]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  138.425931][    C1]  tcf_ife_act (net/sched/act_ife.c:847 net/sched/act_ife.c:879)
 
-Previously, we had false positives from mypy in `main()`, see commit
-09641f7c7d8f ("kunit: tool: surface and address more typing issues").
-But after commit 2dc9d6ca52a4 ("kunit: kunit.py extract handlers")
-refactored things, the variable name reuse mypy hated is gone.
+To solve this issue, fix the replace behavior by adding the metalist to
+the ife rcu data structure.
 
-Note: mypy complains we don't annotate the types the unused args in our
-signal handler. That's silly.
-But to make it happy, I've copy-pasted an appropriate annotation from
-https://github.com/python/typing/discussions/1042#discussioncomment-2013595.
-
-Reported-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://lore.kernel.org/linux-kselftest/9a172b50457f4074af41fe1dc8e55dcaf4795d7e.camel@sipsolutions.net/
-Signed-off-by: Daniel Latypov <dlatypov@google.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: 40804c4974b8 ("kunit: tool: copy caller args in run_kernel to prevent mutation")
+Fixes: aa9fd9a325d51 ("sched: act: ife: update parameters via rcu handling")
+Reported-by: Ruitong Liu <cnitlrt@gmail.com>
+Tested-by: Ruitong Liu <cnitlrt@gmail.com>
+Co-developed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260304140603.76500-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/kunit/kunit.py        | 24 ++++++++++++------------
- tools/testing/kunit/kunit_config.py |  4 ++--
- tools/testing/kunit/kunit_kernel.py | 29 +++++++++++++++--------------
- tools/testing/kunit/run_checks.py   |  4 ++--
- 4 files changed, 31 insertions(+), 30 deletions(-)
+ include/net/tc_act/tc_ife.h |  4 +-
+ net/sched/act_ife.c         | 93 ++++++++++++++++++-------------------
+ 2 files changed, 45 insertions(+), 52 deletions(-)
 
-diff --git a/tools/testing/kunit/kunit.py b/tools/testing/kunit/kunit.py
-index 172db04b48f42..1ed7f0f86dee3 100755
---- a/tools/testing/kunit/kunit.py
-+++ b/tools/testing/kunit/kunit.py
-@@ -278,7 +278,7 @@ def massage_argv(argv: Sequence[str]) -> Sequence[str]:
- def get_default_jobs() -> int:
- 	return len(os.sched_getaffinity(0))
+diff --git a/include/net/tc_act/tc_ife.h b/include/net/tc_act/tc_ife.h
+index c7f24a2da1cad..24d4d5a62b3c2 100644
+--- a/include/net/tc_act/tc_ife.h
++++ b/include/net/tc_act/tc_ife.h
+@@ -13,15 +13,13 @@ struct tcf_ife_params {
+ 	u8 eth_src[ETH_ALEN];
+ 	u16 eth_type;
+ 	u16 flags;
+-
++	struct list_head metalist;
+ 	struct rcu_head rcu;
+ };
  
--def add_common_opts(parser) -> None:
-+def add_common_opts(parser: argparse.ArgumentParser) -> None:
- 	parser.add_argument('--build_dir',
- 			    help='As in the make command, it specifies the build '
- 			    'directory.',
-@@ -329,13 +329,13 @@ def add_common_opts(parser) -> None:
- 			    help='Additional QEMU arguments, e.g. "-smp 8"',
- 			    action='append', metavar='')
+ struct tcf_ife_info {
+ 	struct tc_action common;
+ 	struct tcf_ife_params __rcu *params;
+-	/* list of metaids allowed */
+-	struct list_head metalist;
+ };
+ #define to_ife(a) ((struct tcf_ife_info *)a)
  
--def add_build_opts(parser) -> None:
-+def add_build_opts(parser: argparse.ArgumentParser) -> None:
- 	parser.add_argument('--jobs',
- 			    help='As in the make command, "Specifies  the number of '
- 			    'jobs (commands) to run simultaneously."',
- 			    type=int, default=get_default_jobs(), metavar='N')
+diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
+index 58c1ab02bd0d2..bf772401b1f41 100644
+--- a/net/sched/act_ife.c
++++ b/net/sched/act_ife.c
+@@ -293,8 +293,8 @@ static int load_metaops_and_vet(u32 metaid, void *val, int len, bool rtnl_held)
+ /* called when adding new meta information
+ */
+ static int __add_metainfo(const struct tcf_meta_ops *ops,
+-			  struct tcf_ife_info *ife, u32 metaid, void *metaval,
+-			  int len, bool atomic, bool exists)
++			  struct tcf_ife_params *p, u32 metaid, void *metaval,
++			  int len, bool atomic)
+ {
+ 	struct tcf_meta_info *mi = NULL;
+ 	int ret = 0;
+@@ -313,45 +313,40 @@ static int __add_metainfo(const struct tcf_meta_ops *ops,
+ 		}
+ 	}
  
--def add_exec_opts(parser) -> None:
-+def add_exec_opts(parser: argparse.ArgumentParser) -> None:
- 	parser.add_argument('--timeout',
- 			    help='maximum number of seconds to allow for all tests '
- 			    'to run. This does not include time taken to build the '
-@@ -360,7 +360,7 @@ def add_exec_opts(parser) -> None:
- 			    type=str,
- 			    choices=['suite', 'test'])
+-	if (exists)
+-		spin_lock_bh(&ife->tcf_lock);
+-	list_add_tail(&mi->metalist, &ife->metalist);
+-	if (exists)
+-		spin_unlock_bh(&ife->tcf_lock);
++	list_add_tail(&mi->metalist, &p->metalist);
  
--def add_parse_opts(parser) -> None:
-+def add_parse_opts(parser: argparse.ArgumentParser) -> None:
- 	parser.add_argument('--raw_output', help='If set don\'t parse output from kernel. '
- 			    'By default, filters to just KUnit output. Use '
- 			    '--raw_output=all to show everything',
-@@ -395,7 +395,7 @@ def tree_from_args(cli_args: argparse.Namespace) -> kunit_kernel.LinuxSourceTree
- 			extra_qemu_args=qemu_args)
- 
- 
--def run_handler(cli_args):
-+def run_handler(cli_args: argparse.Namespace) -> None:
- 	if not os.path.exists(cli_args.build_dir):
- 		os.mkdir(cli_args.build_dir)
- 
-@@ -414,7 +414,7 @@ def run_handler(cli_args):
- 		sys.exit(1)
- 
- 
--def config_handler(cli_args):
-+def config_handler(cli_args: argparse.Namespace) -> None:
- 	if cli_args.build_dir and (
- 			not os.path.exists(cli_args.build_dir)):
- 		os.mkdir(cli_args.build_dir)
-@@ -430,7 +430,7 @@ def config_handler(cli_args):
- 		sys.exit(1)
- 
- 
--def build_handler(cli_args):
-+def build_handler(cli_args: argparse.Namespace) -> None:
- 	linux = tree_from_args(cli_args)
- 	request = KunitBuildRequest(build_dir=cli_args.build_dir,
- 					make_options=cli_args.make_options,
-@@ -443,7 +443,7 @@ def build_handler(cli_args):
- 		sys.exit(1)
- 
- 
--def exec_handler(cli_args):
-+def exec_handler(cli_args: argparse.Namespace) -> None:
- 	linux = tree_from_args(cli_args)
- 	exec_request = KunitExecRequest(raw_output=cli_args.raw_output,
- 					build_dir=cli_args.build_dir,
-@@ -459,10 +459,10 @@ def exec_handler(cli_args):
- 		sys.exit(1)
- 
- 
--def parse_handler(cli_args):
-+def parse_handler(cli_args: argparse.Namespace) -> None:
- 	if cli_args.file is None:
--		sys.stdin.reconfigure(errors='backslashreplace')  # pytype: disable=attribute-error
--		kunit_output = sys.stdin
-+		sys.stdin.reconfigure(errors='backslashreplace')  # type: ignore
-+		kunit_output = sys.stdin  # type: Iterable[str]
- 	else:
- 		with open(cli_args.file, 'r', errors='backslashreplace') as f:
- 			kunit_output = f.read().splitlines()
-@@ -484,7 +484,7 @@ subcommand_handlers_map = {
+ 	return ret;
  }
  
+ static int add_metainfo_and_get_ops(const struct tcf_meta_ops *ops,
+-				    struct tcf_ife_info *ife, u32 metaid,
+-				    bool exists)
++				    struct tcf_ife_params *p, u32 metaid)
+ {
+ 	int ret;
  
--def main(argv):
-+def main(argv: Sequence[str]) -> None:
- 	parser = argparse.ArgumentParser(
- 			description='Helps writing and running KUnit tests.')
- 	subparser = parser.add_subparsers(dest='subcommand')
-diff --git a/tools/testing/kunit/kunit_config.py b/tools/testing/kunit/kunit_config.py
-index 9f76d7b896175..eb5dd01210b1b 100644
---- a/tools/testing/kunit/kunit_config.py
-+++ b/tools/testing/kunit/kunit_config.py
-@@ -8,7 +8,7 @@
- 
- from dataclasses import dataclass
- import re
--from typing import Dict, Iterable, List, Tuple
-+from typing import Any, Dict, Iterable, List, Tuple
- 
- CONFIG_IS_NOT_SET_PATTERN = r'^# CONFIG_(\w+) is not set$'
- CONFIG_PATTERN = r'^CONFIG_(\w+)=(\S+|".*")$'
-@@ -34,7 +34,7 @@ class Kconfig:
- 	def __init__(self) -> None:
- 		self._entries = {}  # type: Dict[str, str]
- 
--	def __eq__(self, other) -> bool:
-+	def __eq__(self, other: Any) -> bool:
- 		if not isinstance(other, self.__class__):
- 			return False
- 		return self._entries == other._entries
-diff --git a/tools/testing/kunit/kunit_kernel.py b/tools/testing/kunit/kunit_kernel.py
-index cd73256c30c39..faf90dcfed32d 100644
---- a/tools/testing/kunit/kunit_kernel.py
-+++ b/tools/testing/kunit/kunit_kernel.py
-@@ -16,6 +16,7 @@ import shutil
- import signal
- import threading
- from typing import Iterator, List, Optional, Tuple
-+from types import FrameType
- 
- import kunit_config
- import qemu_config
-@@ -56,7 +57,7 @@ class LinuxSourceTreeOperations:
- 	def make_arch_config(self, base_kunitconfig: kunit_config.Kconfig) -> kunit_config.Kconfig:
- 		return base_kunitconfig
- 
--	def make_olddefconfig(self, build_dir: str, make_options) -> None:
-+	def make_olddefconfig(self, build_dir: str, make_options: Optional[List[str]]) -> None:
- 		command = ['make', 'ARCH=' + self._linux_arch, 'O=' + build_dir, 'olddefconfig']
- 		if self._cross_compile:
- 			command += ['CROSS_COMPILE=' + self._cross_compile]
-@@ -70,7 +71,7 @@ class LinuxSourceTreeOperations:
- 		except subprocess.CalledProcessError as e:
- 			raise ConfigError(e.output.decode())
- 
--	def make(self, jobs, build_dir: str, make_options) -> None:
-+	def make(self, jobs: int, build_dir: str, make_options: Optional[List[str]]) -> None:
- 		command = ['make', 'ARCH=' + self._linux_arch, 'O=' + build_dir, '--jobs=' + str(jobs)]
- 		if make_options:
- 			command.extend(make_options)
-@@ -132,7 +133,7 @@ class LinuxSourceTreeOperationsQemu(LinuxSourceTreeOperations):
- class LinuxSourceTreeOperationsUml(LinuxSourceTreeOperations):
- 	"""An abstraction over command line operations performed on a source tree."""
- 
--	def __init__(self, cross_compile=None):
-+	def __init__(self, cross_compile: Optional[str]=None):
- 		super().__init__(linux_arch='um', cross_compile=cross_compile)
- 
- 	def make_arch_config(self, base_kunitconfig: kunit_config.Kconfig) -> kunit_config.Kconfig:
-@@ -215,7 +216,7 @@ def _get_qemu_ops(config_path: str,
- 
- 	if not hasattr(config, 'QEMU_ARCH'):
- 		raise ValueError('qemu_config module missing "QEMU_ARCH": ' + config_path)
--	params: qemu_config.QemuArchParams = config.QEMU_ARCH  # type: ignore
-+	params: qemu_config.QemuArchParams = config.QEMU_ARCH
- 	if extra_qemu_args:
- 		params.extra_qemu_params.extend(extra_qemu_args)
- 	return params.linux_arch, LinuxSourceTreeOperationsQemu(
-@@ -229,10 +230,10 @@ class LinuxSourceTree:
- 	      build_dir: str,
- 	      kunitconfig_paths: Optional[List[str]]=None,
- 	      kconfig_add: Optional[List[str]]=None,
--	      arch=None,
--	      cross_compile=None,
--	      qemu_config_path=None,
--	      extra_qemu_args=None) -> None:
-+	      arch: Optional[str]=None,
-+	      cross_compile: Optional[str]=None,
-+	      qemu_config_path: Optional[str]=None,
-+	      extra_qemu_args: Optional[List[str]]=None) -> None:
- 		signal.signal(signal.SIGINT, self.signal_handler)
- 		if qemu_config_path:
- 			self._arch, self._ops = _get_qemu_ops(qemu_config_path, extra_qemu_args, cross_compile)
-@@ -275,7 +276,7 @@ class LinuxSourceTree:
- 		logging.error(message)
- 		return False
- 
--	def build_config(self, build_dir: str, make_options) -> bool:
-+	def build_config(self, build_dir: str, make_options: Optional[List[str]]) -> bool:
- 		kconfig_path = get_kconfig_path(build_dir)
- 		if build_dir and not os.path.exists(build_dir):
- 			os.mkdir(build_dir)
-@@ -303,7 +304,7 @@ class LinuxSourceTree:
- 		old_kconfig = kunit_config.parse_file(old_path)
- 		return old_kconfig != self._kconfig
- 
--	def build_reconfig(self, build_dir: str, make_options) -> bool:
-+	def build_reconfig(self, build_dir: str, make_options: Optional[List[str]]) -> bool:
- 		"""Creates a new .config if it is not a subset of the .kunitconfig."""
- 		kconfig_path = get_kconfig_path(build_dir)
- 		if not os.path.exists(kconfig_path):
-@@ -319,7 +320,7 @@ class LinuxSourceTree:
- 		os.remove(kconfig_path)
- 		return self.build_config(build_dir, make_options)
- 
--	def build_kernel(self, jobs, build_dir: str, make_options) -> bool:
-+	def build_kernel(self, jobs: int, build_dir: str, make_options: Optional[List[str]]) -> bool:
- 		try:
- 			self._ops.make_olddefconfig(build_dir, make_options)
- 			self._ops.make(jobs, build_dir, make_options)
-@@ -328,7 +329,7 @@ class LinuxSourceTree:
- 			return False
- 		return self.validate_config(build_dir)
- 
--	def run_kernel(self, args=None, build_dir='', filter_glob='', timeout=None) -> Iterator[str]:
-+	def run_kernel(self, args: Optional[List[str]]=None, build_dir: str='', filter_glob: str='', timeout: Optional[int]=None) -> Iterator[str]:
- 		if not args:
- 			args = []
- 		if filter_glob:
-@@ -339,7 +340,7 @@ class LinuxSourceTree:
- 		assert process.stdout is not None  # tell mypy it's set
- 
- 		# Enforce the timeout in a background thread.
--		def _wait_proc():
-+		def _wait_proc() -> None:
- 			try:
- 				process.wait(timeout=timeout)
- 			except Exception as e:
-@@ -365,6 +366,6 @@ class LinuxSourceTree:
- 			waiter.join()
- 			subprocess.call(['stty', 'sane'])
- 
--	def signal_handler(self, unused_sig, unused_frame) -> None:
-+	def signal_handler(self, unused_sig: int, unused_frame: Optional[FrameType]) -> None:
- 		logging.error('Build interruption occurred. Cleaning console.')
- 		subprocess.call(['stty', 'sane'])
-diff --git a/tools/testing/kunit/run_checks.py b/tools/testing/kunit/run_checks.py
-index 066e6f938f6dc..d061cf1ca4a59 100755
---- a/tools/testing/kunit/run_checks.py
-+++ b/tools/testing/kunit/run_checks.py
-@@ -23,7 +23,7 @@ commands: Dict[str, Sequence[str]] = {
- 	'kunit_tool_test.py': ['./kunit_tool_test.py'],
- 	'kunit smoke test': ['./kunit.py', 'run', '--kunitconfig=lib/kunit', '--build_dir=kunit_run_checks'],
- 	'pytype': ['/bin/sh', '-c', 'pytype *.py'],
--	'mypy': ['/bin/sh', '-c', 'mypy *.py'],
-+	'mypy': ['mypy', '--strict', '--exclude', '_test.py$', '--exclude', 'qemu_configs/', '.'],
+ 	if (!try_module_get(ops->owner))
+ 		return -ENOENT;
+-	ret = __add_metainfo(ops, ife, metaid, NULL, 0, true, exists);
++	ret = __add_metainfo(ops, p, metaid, NULL, 0, true);
+ 	if (ret)
+ 		module_put(ops->owner);
+ 	return ret;
  }
  
- # The user might not have mypy or pytype installed, skip them if so.
-@@ -73,7 +73,7 @@ def main(argv: Sequence[str]) -> None:
- 		sys.exit(1)
+-static int add_metainfo(struct tcf_ife_info *ife, u32 metaid, void *metaval,
+-			int len, bool exists)
++static int add_metainfo(struct tcf_ife_params *p, u32 metaid, void *metaval,
++			int len)
+ {
+ 	const struct tcf_meta_ops *ops = find_ife_oplist(metaid);
+ 	int ret;
  
+ 	if (!ops)
+ 		return -ENOENT;
+-	ret = __add_metainfo(ops, ife, metaid, metaval, len, false, exists);
++	ret = __add_metainfo(ops, p, metaid, metaval, len, false);
+ 	if (ret)
+ 		/*put back what find_ife_oplist took */
+ 		module_put(ops->owner);
+ 	return ret;
+ }
  
--def run_cmd(argv: Sequence[str]):
-+def run_cmd(argv: Sequence[str]) -> None:
- 	subprocess.check_output(argv, stderr=subprocess.STDOUT, cwd=ABS_TOOL_PATH, timeout=TIMEOUT)
+-static int use_all_metadata(struct tcf_ife_info *ife, bool exists)
++static int use_all_metadata(struct tcf_ife_params *p)
+ {
+ 	struct tcf_meta_ops *o;
+ 	int rc = 0;
+@@ -359,7 +354,7 @@ static int use_all_metadata(struct tcf_ife_info *ife, bool exists)
  
+ 	read_lock(&ife_mod_lock);
+ 	list_for_each_entry(o, &ifeoplist, list) {
+-		rc = add_metainfo_and_get_ops(o, ife, o->metaid, exists);
++		rc = add_metainfo_and_get_ops(o, p, o->metaid);
+ 		if (rc == 0)
+ 			installed += 1;
+ 	}
+@@ -371,7 +366,7 @@ static int use_all_metadata(struct tcf_ife_info *ife, bool exists)
+ 		return -EINVAL;
+ }
  
+-static int dump_metalist(struct sk_buff *skb, struct tcf_ife_info *ife)
++static int dump_metalist(struct sk_buff *skb, struct tcf_ife_params *p)
+ {
+ 	struct tcf_meta_info *e;
+ 	struct nlattr *nest;
+@@ -379,14 +374,14 @@ static int dump_metalist(struct sk_buff *skb, struct tcf_ife_info *ife)
+ 	int total_encoded = 0;
+ 
+ 	/*can only happen on decode */
+-	if (list_empty(&ife->metalist))
++	if (list_empty(&p->metalist))
+ 		return 0;
+ 
+ 	nest = nla_nest_start_noflag(skb, TCA_IFE_METALST);
+ 	if (!nest)
+ 		goto out_nlmsg_trim;
+ 
+-	list_for_each_entry(e, &ife->metalist, metalist) {
++	list_for_each_entry(e, &p->metalist, metalist) {
+ 		if (!e->ops->get(skb, e))
+ 			total_encoded += 1;
+ 	}
+@@ -403,13 +398,11 @@ static int dump_metalist(struct sk_buff *skb, struct tcf_ife_info *ife)
+ 	return -1;
+ }
+ 
+-/* under ife->tcf_lock */
+-static void _tcf_ife_cleanup(struct tc_action *a)
++static void __tcf_ife_cleanup(struct tcf_ife_params *p)
+ {
+-	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_meta_info *e, *n;
+ 
+-	list_for_each_entry_safe(e, n, &ife->metalist, metalist) {
++	list_for_each_entry_safe(e, n, &p->metalist, metalist) {
+ 		list_del(&e->metalist);
+ 		if (e->metaval) {
+ 			if (e->ops->release)
+@@ -422,18 +415,23 @@ static void _tcf_ife_cleanup(struct tc_action *a)
+ 	}
+ }
+ 
++static void tcf_ife_cleanup_params(struct rcu_head *head)
++{
++	struct tcf_ife_params *p = container_of(head, struct tcf_ife_params,
++						rcu);
++
++	__tcf_ife_cleanup(p);
++	kfree(p);
++}
++
+ static void tcf_ife_cleanup(struct tc_action *a)
+ {
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	struct tcf_ife_params *p;
+ 
+-	spin_lock_bh(&ife->tcf_lock);
+-	_tcf_ife_cleanup(a);
+-	spin_unlock_bh(&ife->tcf_lock);
+-
+ 	p = rcu_dereference_protected(ife->params, 1);
+ 	if (p)
+-		kfree_rcu(p, rcu);
++		call_rcu(&p->rcu, tcf_ife_cleanup_params);
+ }
+ 
+ static int load_metalist(struct nlattr **tb, bool rtnl_held)
+@@ -455,8 +453,7 @@ static int load_metalist(struct nlattr **tb, bool rtnl_held)
+ 	return 0;
+ }
+ 
+-static int populate_metalist(struct tcf_ife_info *ife, struct nlattr **tb,
+-			     bool exists, bool rtnl_held)
++static int populate_metalist(struct tcf_ife_params *p, struct nlattr **tb)
+ {
+ 	int len = 0;
+ 	int rc = 0;
+@@ -468,7 +465,7 @@ static int populate_metalist(struct tcf_ife_info *ife, struct nlattr **tb,
+ 			val = nla_data(tb[i]);
+ 			len = nla_len(tb[i]);
+ 
+-			rc = add_metainfo(ife, i, val, len, exists);
++			rc = add_metainfo(p, i, val, len);
+ 			if (rc)
+ 				return rc;
+ 		}
+@@ -523,6 +520,7 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
+ 	p = kzalloc(sizeof(*p), GFP_KERNEL);
+ 	if (!p)
+ 		return -ENOMEM;
++	INIT_LIST_HEAD(&p->metalist);
+ 
+ 	if (tb[TCA_IFE_METALST]) {
+ 		err = nla_parse_nested_deprecated(tb2, IFE_META_MAX,
+@@ -567,8 +565,6 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
+ 	}
+ 
+ 	ife = to_ife(*a);
+-	if (ret == ACT_P_CREATED)
+-		INIT_LIST_HEAD(&ife->metalist);
+ 
+ 	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
+ 	if (err < 0)
+@@ -600,8 +596,7 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
+ 	}
+ 
+ 	if (tb[TCA_IFE_METALST]) {
+-		err = populate_metalist(ife, tb2, exists,
+-					!(flags & TCA_ACT_FLAGS_NO_RTNL));
++		err = populate_metalist(p, tb2);
+ 		if (err)
+ 			goto metadata_parse_err;
+ 	} else {
+@@ -610,7 +605,7 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
+ 		 * as we can. You better have at least one else we are
+ 		 * going to bail out
+ 		 */
+-		err = use_all_metadata(ife, exists);
++		err = use_all_metadata(p);
+ 		if (err)
+ 			goto metadata_parse_err;
+ 	}
+@@ -626,13 +621,14 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+ 	if (p)
+-		kfree_rcu(p, rcu);
++		call_rcu(&p->rcu, tcf_ife_cleanup_params);
+ 
+ 	return ret;
+ metadata_parse_err:
+ 	if (goto_ch)
+ 		tcf_chain_put_by_act(goto_ch);
+ release_idr:
++	__tcf_ife_cleanup(p);
+ 	kfree(p);
+ 	tcf_idr_release(*a, bind);
+ 	return err;
+@@ -679,7 +675,7 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	if (nla_put(skb, TCA_IFE_TYPE, 2, &p->eth_type))
+ 		goto nla_put_failure;
+ 
+-	if (dump_metalist(skb, ife)) {
++	if (dump_metalist(skb, p)) {
+ 		/*ignore failure to dump metalist */
+ 		pr_info("Failed to dump metalist\n");
+ 	}
+@@ -693,13 +689,13 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
+ 	return -1;
+ }
+ 
+-static int find_decode_metaid(struct sk_buff *skb, struct tcf_ife_info *ife,
++static int find_decode_metaid(struct sk_buff *skb, struct tcf_ife_params *p,
+ 			      u16 metaid, u16 mlen, void *mdata)
+ {
+ 	struct tcf_meta_info *e;
+ 
+ 	/* XXX: use hash to speed up */
+-	list_for_each_entry(e, &ife->metalist, metalist) {
++	list_for_each_entry_rcu(e, &p->metalist, metalist) {
+ 		if (metaid == e->metaid) {
+ 			if (e->ops) {
+ 				/* We check for decode presence already */
+@@ -716,10 +712,13 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ {
+ 	struct tcf_ife_info *ife = to_ife(a);
+ 	int action = ife->tcf_action;
++	struct tcf_ife_params *p;
+ 	u8 *ifehdr_end;
+ 	u8 *tlv_data;
+ 	u16 metalen;
+ 
++	p = rcu_dereference_bh(ife->params);
++
+ 	bstats_update(this_cpu_ptr(ife->common.cpu_bstats), skb);
+ 	tcf_lastuse_update(&ife->tcf_tm);
+ 
+@@ -745,7 +744,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ 			return TC_ACT_SHOT;
+ 		}
+ 
+-		if (find_decode_metaid(skb, ife, mtype, dlen, curr_data)) {
++		if (find_decode_metaid(skb, p, mtype, dlen, curr_data)) {
+ 			/* abuse overlimits to count when we receive metadata
+ 			 * but dont have an ops for it
+ 			 */
+@@ -769,12 +768,12 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
+ /*XXX: check if we can do this at install time instead of current
+  * send data path
+ **/
+-static int ife_get_sz(struct sk_buff *skb, struct tcf_ife_info *ife)
++static int ife_get_sz(struct sk_buff *skb, struct tcf_ife_params *p)
+ {
+-	struct tcf_meta_info *e, *n;
++	struct tcf_meta_info *e;
+ 	int tot_run_sz = 0, run_sz = 0;
+ 
+-	list_for_each_entry_safe(e, n, &ife->metalist, metalist) {
++	list_for_each_entry_rcu(e, &p->metalist, metalist) {
+ 		if (e->ops->check_presence) {
+ 			run_sz = e->ops->check_presence(skb, e);
+ 			tot_run_sz += run_sz;
+@@ -795,7 +794,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 	   OUTERHDR:TOTMETALEN:{TLVHDR:Metadatum:TLVHDR..}:ORIGDATA
+ 	   where ORIGDATA = original ethernet header ...
+ 	 */
+-	u16 metalen = ife_get_sz(skb, ife);
++	u16 metalen = ife_get_sz(skb, p);
+ 	int hdrm = metalen + skb->dev->hard_header_len + IFE_METAHDRLEN;
+ 	unsigned int skboff = 0;
+ 	int new_len = skb->len + hdrm;
+@@ -833,25 +832,21 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
+ 	if (!ife_meta)
+ 		goto drop;
+ 
+-	spin_lock(&ife->tcf_lock);
+-
+ 	/* XXX: we dont have a clever way of telling encode to
+ 	 * not repeat some of the computations that are done by
+ 	 * ops->presence_check...
+ 	 */
+-	list_for_each_entry(e, &ife->metalist, metalist) {
++	list_for_each_entry_rcu(e, &p->metalist, metalist) {
+ 		if (e->ops->encode) {
+ 			err = e->ops->encode(skb, (void *)(ife_meta + skboff),
+ 					     e);
+ 		}
+ 		if (err < 0) {
+ 			/* too corrupt to keep around if overwritten */
+-			spin_unlock(&ife->tcf_lock);
+ 			goto drop;
+ 		}
+ 		skboff += err;
+ 	}
+-	spin_unlock(&ife->tcf_lock);
+ 	oethh = (struct ethhdr *)skb->data;
+ 
+ 	if (!is_zero_ether_addr(p->eth_src))
 -- 
 2.51.0
 
