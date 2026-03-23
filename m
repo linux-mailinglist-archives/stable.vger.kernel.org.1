@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-229144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229601-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SJPIOPBYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229144-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:56 +0100
+	id yLUVJhRtwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229601-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942342F60BB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DC012F896F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 90C9F303F7D7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C756D30BEF91
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE4C3B635B;
-	Mon, 23 Mar 2026 15:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB6813BBA0F;
+	Mon, 23 Mar 2026 16:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqVyZsgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3WjOlfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6743B6342;
-	Mon, 23 Mar 2026 15:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9FF25F984;
+	Mon, 23 Mar 2026 16:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278200; cv=none; b=leVxkfALbDsCGprUCeDzazVs9EfYAzCTh15ZfWvpL+r2Teuc8fpQYeFh0Bt8MjF/3XSLm5Y1O5HcTf9ztdfb1KY/2mNedhySfwqhFtqymU266xbaaMucnQKJ4rJHILcZz9KshcFwqiS4w7DQ2IGdlk1FJGss3E3dE5Fv2A5PsoM=
+	t=1774282360; cv=none; b=rEsrLFufqr7RRpWebQIKraEzgKnif45cENe6CU9C8K0k1eTRViQkOqxZaceNHbh+OCirUSLNieoYVJs0a4zlSmypKM7Fn/Vv2h/OLqNF94XeYqBgF/HvMpUnoYppGkpsf6XhEo7byDzB29Wi4eH5e4ep5sTLszgn2QYrNPVUX/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278200; c=relaxed/simple;
-	bh=25PvCxIA6yXOc2yZCwN79LFhKaD/VyCO3whGZ/qHjo4=;
+	s=arc-20240116; t=1774282360; c=relaxed/simple;
+	bh=Bql2hsYAhf6UVh1hcNHHIAlATWPrFGfKa+OXz2ZSAwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3WH4i51lvQjBZzOY/RK9Kwh7b6Zcft7LWEa63S+8E4Zwo2CURgHClM6Z447lSu0DZYUcrbiT3BjGjvegyZC8pJ0Hb4MLU7UtbpG0crg3fS0v4jvLflAcjH8MvgjzYuKp3KLYK03CzfX+DD4cHjeX6OqSsp51hsIAGfsxnp/x8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqVyZsgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59E9C4CEF7;
-	Mon, 23 Mar 2026 15:03:19 +0000 (UTC)
+	 MIME-Version; b=C0xjlWPhORVSC83tvedGTTk5iDUEne0+TQiWf81s52pHiG7eleVb+ek06Of9+/T0S/TT9UoelQtOYYah2FHhAY5OaOUsDO+8WiKo/GTTAmevEH0iLagl0eZbbQNLpPql6M6wNwHYW7hun0bzq33oDYFnRKurQ5RlsT2fTgdZJs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3WjOlfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31628C2BCB0;
+	Mon, 23 Mar 2026 16:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278200;
-	bh=25PvCxIA6yXOc2yZCwN79LFhKaD/VyCO3whGZ/qHjo4=;
+	s=korg; t=1774282360;
+	bh=Bql2hsYAhf6UVh1hcNHHIAlATWPrFGfKa+OXz2ZSAwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqVyZsgkweGFE/1QjNkBY5M9EhTiptfU1ikVybGOWAUaZ4N8RTBZnJm33NIMbhy0I
-	 DKrrEAK88d/PYBEN5jiGMdq97+URaz862zkV84p6LZmJu9G8awa1CpHD2bYA5rApMv
-	 1nDkywh1ZQ1ZauWabl6DHQgTCTczZV3AAnq3rhoM=
+	b=D3WjOlfUKkCrehNUF5gi3X4v2aiTzmGkxut3fL6fxTM+d9rPlDh+9WyyzwiwJXD96
+	 FpOFUoDbP/V/m2msQy4EoV1aXxRxuPmMqAe5Hwc+W3KXJy0woX43kpNJNNwBLcBxt2
+	 m2HPfRbjK505tFLsFoHPGckXFSY5H/pv0pqY/OS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.6 189/567] apparmor: replace recursive profile removal with iterative approach
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	Lang Xu <xulang@uniontech.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 127/481] bpf: Fix a UAF issue in bpf_trampoline_link_cgroup_shim
 Date: Mon, 23 Mar 2026 14:41:49 +0100
-Message-ID: <20260323134538.529476683@linuxfoundation.org>
+Message-ID: <20260323134528.371589262@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,115 +70,103 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229144-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229601-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 942342F60BB
+X-Rspamd-Queue-Id: 0DC012F896F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: Lang Xu <xulang@uniontech.com>
 
-commit ab09264660f9de5d05d1ef4e225aa447c63a8747 upstream.
+[ Upstream commit 56145d237385ca0e7ca9ff7b226aaf2eb8ef368b ]
 
-The profile removal code uses recursion when removing nested profiles,
-which can lead to kernel stack exhaustion and system crashes.
+The root cause of this bug is that when 'bpf_link_put' reduces the
+refcount of 'shim_link->link.link' to zero, the resource is considered
+released but may still be referenced via 'tr->progs_hlist' in
+'cgroup_shim_find'. The actual cleanup of 'tr->progs_hlist' in
+'bpf_shim_tramp_link_release' is deferred. During this window, another
+process can cause a use-after-free via 'bpf_trampoline_link_cgroup_shim'.
 
-Reproducer:
-  $ pf='a'; for ((i=0; i<1024; i++)); do
-      echo -e "profile $pf { \n }" | apparmor_parser -K -a;
-      pf="$pf//x";
-  done
-  $ echo -n a > /sys/kernel/security/apparmor/.remove
+Based on Martin KaFai Lau's suggestions, I have created a simple patch.
 
-Replace the recursive __aa_profile_list_release() approach with an
-iterative approach in __remove_profile(). The function repeatedly
-finds and removes leaf profiles until the entire subtree is removed,
-maintaining the same removal semantic without recursion.
+To fix this:
+   Add an atomic non-zero check in 'bpf_trampoline_link_cgroup_shim'.
+   Only increment the refcount if it is not already zero.
 
-Fixes: c88d4c7b049e ("AppArmor: core policy routines")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Testing:
+   I verified the fix by adding a delay in
+   'bpf_shim_tramp_link_release' to make the bug easier to trigger:
+
+static void bpf_shim_tramp_link_release(struct bpf_link *link)
+{
+	/* ... */
+	if (!shim_link->trampoline)
+		return;
+
++	msleep(100);
+	WARN_ON_ONCE(bpf_trampoline_unlink_prog(&shim_link->link,
+		shim_link->trampoline, NULL));
+	bpf_trampoline_put(shim_link->trampoline);
+}
+
+Before the patch, running a PoC easily reproduced the crash(almost 100%)
+with a call trace similar to KaiyanM's report.
+After the patch, the bug no longer occurs even after millions of
+iterations.
+
+Fixes: 69fd337a975c ("bpf: per-cgroup lsm flavor")
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Closes: https://lore.kernel.org/bpf/3c4ebb0b.46ff8.19abab8abe2.Coremail.kaiyanm@hust.edu.cn/
+Signed-off-by: Lang Xu <xulang@uniontech.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/279EEE1BA1DDB49D+20260303095217.34436-1-xulang@uniontech.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy.c |   30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ kernel/bpf/trampoline.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -182,19 +182,43 @@ static void __list_remove_profile(struct
- }
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index 4c7c6129db90e..17763af54179b 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -732,10 +732,8 @@ int bpf_trampoline_link_cgroup_shim(struct bpf_prog *prog,
+ 	mutex_lock(&tr->mutex);
  
- /**
-- * __remove_profile - remove old profile, and children
-- * @profile: profile to be replaced  (NOT NULL)
-+ * __remove_profile - remove profile, and children
-+ * @profile: profile to be removed  (NOT NULL)
-  *
-  * Requires: namespace list lock be held, or list not be shared
-  */
- static void __remove_profile(struct aa_profile *profile)
- {
-+	struct aa_profile *curr, *to_remove;
-+
- 	AA_BUG(!profile);
- 	AA_BUG(!profile->ns);
- 	AA_BUG(!mutex_is_locked(&profile->ns->lock));
- 
- 	/* release any children lists first */
--	__aa_profile_list_release(&profile->base.profiles);
-+	if (!list_empty(&profile->base.profiles)) {
-+		curr = list_first_entry(&profile->base.profiles, struct aa_profile, base.list);
-+
-+		while (curr != profile) {
-+
-+			while (!list_empty(&curr->base.profiles))
-+				curr = list_first_entry(&curr->base.profiles,
-+							struct aa_profile, base.list);
-+
-+			to_remove = curr;
-+			if (!list_is_last(&to_remove->base.list,
-+					  &aa_deref_parent(curr)->base.profiles))
-+				curr = list_next_entry(to_remove, base.list);
-+			else
-+				curr = aa_deref_parent(curr);
-+
-+			/* released by free_profile */
-+			aa_label_remove(&to_remove->label);
-+			__aafs_profile_rmdir(to_remove);
-+			__list_remove_profile(to_remove);
-+		}
-+	}
-+
- 	/* released by free_profile */
- 	aa_label_remove(&profile->label);
- 	__aafs_profile_rmdir(profile);
+ 	shim_link = cgroup_shim_find(tr, bpf_func);
+-	if (shim_link) {
++	if (shim_link && !IS_ERR(bpf_link_inc_not_zero(&shim_link->link.link))) {
+ 		/* Reusing existing shim attached by the other program. */
+-		bpf_link_inc(&shim_link->link.link);
+-
+ 		mutex_unlock(&tr->mutex);
+ 		bpf_trampoline_put(tr); /* bpf_trampoline_get above */
+ 		return 0;
+-- 
+2.51.0
+
 
 
 
