@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-229214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228683-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gKUZND9bwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:47 +0100
+	id WHFJKUJowWliSwQAu9opvQ
+	(envelope-from <stable+bounces-228683-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:20:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7046F2F63D0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 353872F7E8F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:20:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5773F30A7568
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEB1831C0D1D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873E93B637F;
-	Mon, 23 Mar 2026 15:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063283AF66B;
+	Mon, 23 Mar 2026 14:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFQqvvOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9TXPF8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ABDE27E05E;
-	Mon, 23 Mar 2026 15:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E72F3AF672;
+	Mon, 23 Mar 2026 14:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278417; cv=none; b=lGyJ3LuVfTKJwtIMNmiDWkkJnO/hv4ueLmHDIVXe2fQFH2EOmjbSpBDLhXHAiLfxd22SkxfqNlPMbpEsaxmN3DBUV9b1IlDspM9qflpv20WvDwS6lVsrNkfFYi19Lo6WLbi2RHIs2GjHXI+NpdBDmlMJ7ztGC9AdZlB84duZXv0=
+	t=1774276847; cv=none; b=O4YJt+mACgcQNBImNFaKwypbBZYLEoTaux/8p/bGjOC/Ewm2ieXj0p5ChC5t9SLsGQks72pg7jCUC9tfbBA3pNvXNAQ2SsRAHUNbiwyp67KJZbwYRBxFfhp/BxLV/Di0Fw3GIU9/nC2gq90LRj+JLfjgZg018BmHnwK8TAWAwLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278417; c=relaxed/simple;
-	bh=IrT/NXMySSiHjv8XIdDEJhqJzehgAxVg6ASYQKxWnKE=;
+	s=arc-20240116; t=1774276847; c=relaxed/simple;
+	bh=J70rqolnJjkELF9oANAjHXDnWMhLfZm6LsKeibnkWv4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k12kWsEbc6bMWYAnnkUjUHciOhk8OSHy/t/MJaxDhiw78wUoyEQIxsPr0Kj0LlUp1j+7vlW21IfjyH+xlt+V2x4jN4uXm2h+HQScPVVPpVGozUft3XcA85q28rtjSMXOT9pwyIicYUuKfArTbOqO7c5K1MVPomLyeGiX/qpiKNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFQqvvOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721B9C4CEF7;
-	Mon, 23 Mar 2026 15:06:56 +0000 (UTC)
+	 MIME-Version; b=dTFSLhZUzqsmOS4PUwgsPPG0WTU0xwyLAP5EX6rdXdRofzKpR2I4c7Oeb98b2RKCg1XkWQpOUYV6ySxt9xqAVwsQHjNY2zPl90yJQQfdgNXn8LJrhJQzwTov062dF9eB48rYZRcL6F1Xf190jobiYMxV7GYeEyr01qmDA+kYcx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9TXPF8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2C8C4CEF7;
+	Mon, 23 Mar 2026 14:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278416;
-	bh=IrT/NXMySSiHjv8XIdDEJhqJzehgAxVg6ASYQKxWnKE=;
+	s=korg; t=1774276846;
+	bh=J70rqolnJjkELF9oANAjHXDnWMhLfZm6LsKeibnkWv4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFQqvvOb+bAHsqdaVdX9or/lTaKu5ZZcg3FYq8+lqZo0vy/cPYRgNIrO8uzyZVz5f
-	 wyVQx3bge4ZJ07nlKv0rHXAW4U+JhsQlB8zHHK4r2QZ1sftapXUO3KTZOFOUZCLzWr
-	 kiIXq2x4S3PRzqOpuxXjD8O1O0ctmvjQh63lEm0w=
+	b=l9TXPF8PiFELfkbPFUeUJvR+KnewhKl3TLysiJfqZC57BPjzvnktPFr9Z44zbTQQP
+	 IHmZQSZ3d76jew2h++HlMajTm9lvM6T0mbgaVCXX654rk0ba4IbHNBVTIOXxorqYKa
+	 EvSSYpwmypm/iHiVZ0S+BTsJ1tk8H7vSB4LBdDCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@kernel.org>,
+	Ankit Garg <nktgrg@google.com>,
+	Jordan Rhee <jordanrhee@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 301/567] time/jiffies: Mark jiffies_64_to_clock_t() notrace
+Subject: [PATCH 6.12 225/460] gve: fix incorrect buffer cleanup in gve_tx_clean_pending_packets for QPL
 Date: Mon, 23 Mar 2026 14:43:41 +0100
-Message-ID: <20260323134541.266078047@linuxfoundation.org>
+Message-ID: <20260323134532.022548407@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +70,165 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229214-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,linuxfoundation.org:server fail,sea.lore.kernel.org:server fail];
+	TAGGED_FROM(0.00)[bounces-228683-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7046F2F63D0
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 353872F7E8F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Ankit Garg <nktgrg@google.com>
 
-[ Upstream commit 755a648e78f12574482d4698d877375793867fa1 ]
+[ Upstream commit fb868db5f4bccd7a78219313ab2917429f715cea ]
 
-The trace_clock_jiffies() function that handles the "uptime" clock for
-tracing calls jiffies_64_to_clock_t(). This causes the function tracer to
-constantly recurse when the tracing clock is set to "uptime". Mark it
-notrace to prevent unnecessary recursion when using the "uptime" clock.
+In DQ-QPL mode, gve_tx_clean_pending_packets() incorrectly uses the RDA
+buffer cleanup path. It iterates num_bufs times and attempts to unmap
+entries in the dma array.
 
-Fixes: 58d4e21e50ff3 ("tracing: Fix wraparound problems in "uptime" trace clock")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Thomas Gleixner <tglx@kernel.org>
-Link: https://patch.msgid.link/20260306212403.72270bb2@robin
+This leads to two issues:
+1. The dma array shares storage with tx_qpl_buf_ids (union).
+ Interpreting buffer IDs as DMA addresses results in attempting to
+ unmap incorrect memory locations.
+2. num_bufs in QPL mode (counting 2K chunks) can significantly exceed
+ the size of the dma array, causing out-of-bounds access warnings
+(trace below is how we noticed this issue).
+
+UBSAN: array-index-out-of-bounds in
+drivers/net/ethernet/drivers/net/ethernet/google/gve/gve_tx_dqo.c:178:5 index 18 is out of
+range for type 'dma_addr_t[18]' (aka 'unsigned long long[18]')
+Workqueue: gve gve_service_task [gve]
+Call Trace:
+<TASK>
+dump_stack_lvl+0x33/0xa0
+__ubsan_handle_out_of_bounds+0xdc/0x110
+gve_tx_stop_ring_dqo+0x182/0x200 [gve]
+gve_close+0x1be/0x450 [gve]
+gve_reset+0x99/0x120 [gve]
+gve_service_task+0x61/0x100 [gve]
+process_scheduled_works+0x1e9/0x380
+
+Fix this by properly checking for QPL mode and delegating to
+gve_free_tx_qpl_bufs() to reclaim the buffers.
+
+Cc: stable@vger.kernel.org
+Fixes: a6fb8d5a8b69 ("gve: Tx path for DQO-QPL")
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Signed-off-by: Joshua Washington <joshwash@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260220215324.1631350-1-joshwash@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ netmem_dma_unmap_page_attrs() => dma_unmap_page() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c |   52 +++++++++++----------------
+ 1 file changed, 23 insertions(+), 29 deletions(-)
 
-diff --git a/kernel/time/time.c b/kernel/time/time.c
-index 1ad88e97b4ebc..da7e8a02a0964 100644
---- a/kernel/time/time.c
-+++ b/kernel/time/time.c
-@@ -702,7 +702,7 @@ EXPORT_SYMBOL(clock_t_to_jiffies);
-  *
-  * Return: jiffies_64 value converted to 64-bit "clock_t" (CLOCKS_PER_SEC)
+--- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+@@ -157,6 +157,24 @@ gve_free_pending_packet(struct gve_tx_ri
+ 	}
+ }
+ 
++static void gve_unmap_packet(struct device *dev,
++			     struct gve_tx_pending_packet_dqo *pkt)
++{
++	int i;
++
++	if (!pkt->num_bufs)
++		return;
++
++	/* SKB linear portion is guaranteed to be mapped */
++	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
++			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
++	for (i = 1; i < pkt->num_bufs; i++) {
++		dma_unmap_page(dev, dma_unmap_addr(pkt, dma[i]),
++			       dma_unmap_len(pkt, len[i]), DMA_TO_DEVICE);
++	}
++	pkt->num_bufs = 0;
++}
++
+ /* gve_tx_free_desc - Cleans up all pending tx requests and buffers.
   */
--u64 jiffies_64_to_clock_t(u64 x)
-+notrace u64 jiffies_64_to_clock_t(u64 x)
- {
- #if (TICK_NSEC % (NSEC_PER_SEC / USER_HZ)) == 0
- # if HZ < USER_HZ
--- 
-2.51.0
-
+ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
+@@ -166,21 +184,12 @@ static void gve_tx_clean_pending_packets
+ 	for (i = 0; i < tx->dqo.num_pending_packets; i++) {
+ 		struct gve_tx_pending_packet_dqo *cur_state =
+ 			&tx->dqo.pending_packets[i];
+-		int j;
+ 
+-		for (j = 0; j < cur_state->num_bufs; j++) {
+-			if (j == 0) {
+-				dma_unmap_single(tx->dev,
+-					dma_unmap_addr(cur_state, dma[j]),
+-					dma_unmap_len(cur_state, len[j]),
+-					DMA_TO_DEVICE);
+-			} else {
+-				dma_unmap_page(tx->dev,
+-					dma_unmap_addr(cur_state, dma[j]),
+-					dma_unmap_len(cur_state, len[j]),
+-					DMA_TO_DEVICE);
+-			}
+-		}
++		if (tx->dqo.qpl)
++			gve_free_tx_qpl_bufs(tx, cur_state);
++		else
++			gve_unmap_packet(tx->dev, cur_state);
++
+ 		if (cur_state->skb) {
+ 			dev_consume_skb_any(cur_state->skb);
+ 			cur_state->skb = NULL;
+@@ -1039,21 +1048,6 @@ static void remove_from_list(struct gve_
+ 	}
+ }
+ 
+-static void gve_unmap_packet(struct device *dev,
+-			     struct gve_tx_pending_packet_dqo *pkt)
+-{
+-	int i;
+-
+-	/* SKB linear portion is guaranteed to be mapped */
+-	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
+-			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
+-	for (i = 1; i < pkt->num_bufs; i++) {
+-		dma_unmap_page(dev, dma_unmap_addr(pkt, dma[i]),
+-			       dma_unmap_len(pkt, len[i]), DMA_TO_DEVICE);
+-	}
+-	pkt->num_bufs = 0;
+-}
+-
+ /* Completion types and expected behavior:
+  * No Miss compl + Packet compl = Packet completed normally.
+  * Miss compl + Re-inject compl = Packet completed normally.
 
 
 
