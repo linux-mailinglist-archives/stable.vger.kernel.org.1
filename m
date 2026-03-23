@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-228628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229675-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iPmSBANNwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:03 +0100
+	id 4HIqBe9rwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229675-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E6432F45FE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96C902F864E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:35:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A1A0C302BC08
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A7AFE328D577
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44F031A680D;
-	Mon, 23 Mar 2026 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9E825A359;
+	Mon, 23 Mar 2026 16:16:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dzBNvu63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MjqDZJoF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0883D1A680B;
-	Mon, 23 Mar 2026 14:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D493BE166;
+	Mon, 23 Mar 2026 16:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275650; cv=none; b=h9h15aU9Iu4RIuG5s1lFBu8GNJt2q8EeIAWl8uKJpyB4Kq6nRjkPtK40cx4Q90REsVpvK8pNDiEhHiX3sSlDbJ5xrFB92pBQdvDgMkP2B6x2zmWAxFVmaG9cnfZs4QvLweHOD7ATKLu3wJCLyUbBG7SleEzdAm13mTzLf+Lb86Y=
+	t=1774282564; cv=none; b=rnL65ocrcECcT6S1EJCdeua/8OiJbUUeU8Cyr2Ut6nkn5rGOHtoqTLvmGwdFUAk4BLbXxg+8J8/F7B8KIrQx9Zr0lou0Q5meiv/xZQ/G1WWb3xdosIZtp2efJPTH9FW5JgIJYnh+K2WaSgczT+/juclFRd6EXcIdqTlqqQCIMqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275650; c=relaxed/simple;
-	bh=Y2g9dBfX25Jl58lytbW2cf8CNMtUg7fBRbN36SJuHpQ=;
+	s=arc-20240116; t=1774282564; c=relaxed/simple;
+	bh=QQAeiDncgIPoQDE61+fRMb0wMUgMAzn706eaxWwyAzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1SZVkkEgl3poGs95s8kXTiSSMVuN5RPZvYY21qLWJNldC1mz196uEnKIWlEW1N9wDFMPvpJGtWQ1vlnnwu2be0gECNA8zLqE/aRwRcBXtBcsURsskBJ95UXZGg62PTUD6UcIEPEblENZipKtAHLmUP7btMgrp0RsoebNIJ6nh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dzBNvu63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA3CC4CEF7;
-	Mon, 23 Mar 2026 14:20:49 +0000 (UTC)
+	 MIME-Version; b=eIl/cpxl4Z36yKY3JrJrsZZ+249rwcVenC/mNBwI7AqcspKQe8m+DrPFpGaTV3gk2+JY4HYdDPTNB4YLb/Utd9oyISlyLwyc7UVY2f+HODH/SLtXgrk2F2JDcx/b8iuvFGE/wL/5CTnxNiFS1LUcr2vROtGJq3bw+CVQnsybfJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MjqDZJoF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A257C2BC9E;
+	Mon, 23 Mar 2026 16:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275649;
-	bh=Y2g9dBfX25Jl58lytbW2cf8CNMtUg7fBRbN36SJuHpQ=;
+	s=korg; t=1774282563;
+	bh=QQAeiDncgIPoQDE61+fRMb0wMUgMAzn706eaxWwyAzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dzBNvu635UKkoAfVHtGI42TAVpDbzslb++EK6O0mwZD95b4JvhfNl+WzuXUP597bY
-	 gaMu7A8iSo3JUknDU8b6s+zEDGnIpmrL0n8xBRAy7CiLND2rT7O44IVwxI5eA0/oYp
-	 6ns0LM/7UhBGEbV/aMKri1VWv8p5UCVKO1HXN0cc=
+	b=MjqDZJoFHL8dPDrefeATO5iz3y5ieckww8Xug1ikRfTWR6R//iLPRYkSYDA+GBdjr
+	 VDXpoNWglWl/B18YG/7PnCfpB4PjG6qrJq52Mzc++fooxcmG8Tp6AklD4TxCLe+ya/
+	 Wg4V39alJxai2Pty6Z/ANdoiKY1+XeIjxZg6faMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 172/460] ksmbd: fix use-after-free by using call_rcu() for oplock_info
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 186/481] i40e: fix src IP mask checks and memcpy argument names in cloud filter
 Date: Mon, 23 Mar 2026 14:42:48 +0100
-Message-ID: <20260323134530.764490484@linuxfoundation.org>
+Message-ID: <20260323134529.735611501@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,146 +70,116 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229675-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228628-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.993];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3E6432F45FE
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 96C902F864E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 1dfd062caa165ec9d7ee0823087930f3ab8a6294 upstream.
+[ Upstream commit e809085f492842ce7a519c9ef72d40f4bca89c13 ]
 
-ksmbd currently frees oplock_info immediately using kfree(), even
-though it is accessed under RCU read-side critical sections in places
-like opinfo_get() and proc_show_files().
+Fix following issues in the IPv4 and IPv6 cloud filter handling logic in
+both the add and delete paths:
 
-Since there is no RCU grace period delay between nullifying the pointer
-and freeing the memory, a reader can still access oplock_info
-structure after it has been freed. This can leads to a use-after-free
-especially in opinfo_get() where atomic_inc_not_zero() is called on
-already freed memory.
+- The source-IP mask check incorrectly compares mask.src_ip[0] against
+  tcf.dst_ip[0]. Update it to compare against tcf.src_ip[0]. This likely
+  goes unnoticed because the check is in an "else if" path that only
+  executes when dst_ip is not set, most cloud filter use cases focus on
+  destination-IP matching, and the buggy condition can accidentally
+  evaluate true in some cases.
 
-Fix this by switching to deferred freeing using call_rcu().
+- memcpy() for the IPv4 source address incorrectly uses
+  ARRAY_SIZE(tcf.dst_ip) instead of ARRAY_SIZE(tcf.src_ip), although
+  both arrays are the same size.
 
-Fixes: 18b4fac5ef17 ("ksmbd: fix use-after-free in smb_break_all_levII_oplock()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- The IPv4 memcpy operations used ARRAY_SIZE(tcf.dst_ip) and ARRAY_SIZE
+  (tcf.src_ip), Update these to use sizeof(cfilter->ip.v4.dst_ip) and
+  sizeof(cfilter->ip.v4.src_ip) to ensure correct and explicit copy size.
+
+- In the IPv6 delete path, memcmp() uses sizeof(src_ip6) when comparing
+  dst_ip6 fields. Replace this with sizeof(dst_ip6) to make the intent
+  explicit, even though both fields are struct in6_addr.
+
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c |   29 +++++++++++++++++++++--------
- fs/smb/server/oplock.h |    5 +++--
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -120,7 +120,7 @@ static void free_lease(struct oplock_inf
- 	kfree(lease);
- }
- 
--static void free_opinfo(struct oplock_info *opinfo)
-+static void __free_opinfo(struct oplock_info *opinfo)
- {
- 	if (opinfo->is_lease)
- 		free_lease(opinfo);
-@@ -129,6 +129,18 @@ static void free_opinfo(struct oplock_in
- 	kfree(opinfo);
- }
- 
-+static void free_opinfo_rcu(struct rcu_head *rcu)
-+{
-+	struct oplock_info *opinfo = container_of(rcu, struct oplock_info, rcu);
-+
-+	__free_opinfo(opinfo);
-+}
-+
-+static void free_opinfo(struct oplock_info *opinfo)
-+{
-+	call_rcu(&opinfo->rcu, free_opinfo_rcu);
-+}
-+
- struct oplock_info *opinfo_get(struct ksmbd_file *fp)
- {
- 	struct oplock_info *opinfo;
-@@ -176,9 +188,9 @@ void opinfo_put(struct oplock_info *opin
- 	free_opinfo(opinfo);
- }
- 
--static void opinfo_add(struct oplock_info *opinfo)
-+static void opinfo_add(struct oplock_info *opinfo, struct ksmbd_file *fp)
- {
--	struct ksmbd_inode *ci = opinfo->o_fp->f_ci;
-+	struct ksmbd_inode *ci = fp->f_ci;
- 
- 	down_write(&ci->m_lock);
- 	list_add(&opinfo->op_entry, &ci->m_op_list);
-@@ -1279,20 +1291,21 @@ set_lev:
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
--
- 	opinfo_count_inc(fp);
--	opinfo_add(opinfo);
-+	opinfo_add(opinfo, fp);
-+
- 	if (opinfo->is_lease) {
- 		err = add_lease_global_list(opinfo);
- 		if (err)
- 			goto err_out;
- 	}
- 
-+	rcu_assign_pointer(fp->f_opinfo, opinfo);
-+	opinfo->o_fp = fp;
-+
- 	return 0;
- err_out:
--	free_opinfo(opinfo);
-+	__free_opinfo(opinfo);
- 	return err;
- }
- 
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -69,8 +69,9 @@ struct oplock_info {
- 	struct lease		*o_lease;
- 	struct list_head        op_entry;
- 	struct list_head        lease_entry;
--	wait_queue_head_t oplock_q; /* Other server threads */
--	wait_queue_head_t oplock_brk; /* oplock breaking wait */
-+	wait_queue_head_t	oplock_q; /* Other server threads */
-+	wait_queue_head_t	oplock_brk; /* oplock breaking wait */
-+	struct rcu_head		rcu;
- };
- 
- struct lease_break_info {
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 1bba77347efbb..73ef73c69bd0a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3755,10 +3755,10 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		cfilter.n_proto = ETH_P_IP;
+ 		if (mask.dst_ip[0] & tcf.dst_ip[0])
+ 			memcpy(&cfilter.ip.v4.dst_ip, tcf.dst_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
+-		else if (mask.src_ip[0] & tcf.dst_ip[0])
++			       sizeof(cfilter.ip.v4.dst_ip));
++		else if (mask.src_ip[0] & tcf.src_ip[0])
+ 			memcpy(&cfilter.ip.v4.src_ip, tcf.src_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
++			       sizeof(cfilter.ip.v4.src_ip));
+ 		break;
+ 	case VIRTCHNL_TCP_V6_FLOW:
+ 		cfilter.n_proto = ETH_P_IPV6;
+@@ -3813,7 +3813,7 @@ static int i40e_vc_del_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		/* for ipv6, mask is set for all sixteen bytes (4 words) */
+ 		if (cfilter.n_proto == ETH_P_IPV6 && mask.dst_ip[3])
+ 			if (memcmp(&cfilter.ip.v6.dst_ip6, &cf->ip.v6.dst_ip6,
+-				   sizeof(cfilter.ip.v6.src_ip6)))
++				   sizeof(cfilter.ip.v6.dst_ip6)))
+ 				continue;
+ 		if (mask.vlan_id)
+ 			if (cfilter.vlan_id != cf->vlan_id)
+@@ -3901,10 +3901,10 @@ static int i40e_vc_add_cloud_filter(struct i40e_vf *vf, u8 *msg)
+ 		cfilter->n_proto = ETH_P_IP;
+ 		if (mask.dst_ip[0] & tcf.dst_ip[0])
+ 			memcpy(&cfilter->ip.v4.dst_ip, tcf.dst_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
+-		else if (mask.src_ip[0] & tcf.dst_ip[0])
++			       sizeof(cfilter->ip.v4.dst_ip));
++		else if (mask.src_ip[0] & tcf.src_ip[0])
+ 			memcpy(&cfilter->ip.v4.src_ip, tcf.src_ip,
+-			       ARRAY_SIZE(tcf.dst_ip));
++			       sizeof(cfilter->ip.v4.src_ip));
+ 		break;
+ 	case VIRTCHNL_TCP_V6_FLOW:
+ 		cfilter->n_proto = ETH_P_IPV6;
+-- 
+2.51.0
+
 
 
 
