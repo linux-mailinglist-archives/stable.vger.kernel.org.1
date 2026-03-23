@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0KVKEiJdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229072-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:50 +0100
+	id OGp3Dgd8wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD472F673E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAD3D2FA52A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C00E5301D55D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3572F32217F6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FCE438B7C4;
-	Mon, 23 Mar 2026 14:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCA573B9600;
+	Mon, 23 Mar 2026 16:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWchAxAY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1D0oJXrW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04663242D7F;
-	Mon, 23 Mar 2026 14:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A509383C7C;
+	Mon, 23 Mar 2026 16:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277971; cv=none; b=EYPyVBX7JN1iu0ue/L57CuN1/NQM2N0hT+f0rQ3vVtWx1VMkHpWw1umJhd+KmPmyWg6MtHRjNhqSes57FKsEpVgedkrJA22drL/ab0mrDpDW0u3j1dAt/WPvUHW3bHlugjfwxvsCn0c29Uo1LOY8kPIs4TNWyk4PVhqp3usk2OA=
+	t=1774282396; cv=none; b=CEJT9/WU8G98xdwQ4iJn9j4TOYxBriCRj+YGluzToYSbJ4ZhC2dYsk+X0L0qcklm1OmsuF0Toal3e//4CWJnlqDZee223HLeeLlteCO2lPqVmacXyCiR3Mljqwe1X/qm/lIaqA/21uglMFWmsfHDDb5f1V7aWPYLqJTnu1YFiRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277971; c=relaxed/simple;
-	bh=rsYMF6Kgk5hOf+S4/Ous8zkaT0vDKD/Pv7e7tNjB5Bc=;
+	s=arc-20240116; t=1774282396; c=relaxed/simple;
+	bh=KgDafGA6OefsQxMDlV7hx/wGm4oTWXrmB6U8u151IcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rVn0KL5qQQfY6vGeQ0TjWfyvv8enkWf0Y1rmq6dXOq+OvynoYy6c9PJpqJPk2TIfajO1Nf72W4lRVCEWEX0eOFdQV79ZqQA4CzgoTSGVT/swbTX2j/8wUr/r7zPAZH4VGjVaLBXoK1MFc0GiYktpA9oFrk7r0JIHv1CV71kKb0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWchAxAY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4481AC4CEF7;
-	Mon, 23 Mar 2026 14:59:30 +0000 (UTC)
+	 MIME-Version; b=PNJsT050oCgjQJp3Vn0TRATv8jEsAIVcqkwo+Dkx+1qbykGPhuSnpfmkJxElw0c043szS6JHGOAZPeeFBfzf7DIDCI0fpTyxqX0AWCYENRU+WZ4qC9ps7yyXhWRHt96YOCltRivyPjMD8Xma36URpzlw0MJ7MqhP6V7mdLKo7F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1D0oJXrW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D559C4CEF7;
+	Mon, 23 Mar 2026 16:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277970;
-	bh=rsYMF6Kgk5hOf+S4/Ous8zkaT0vDKD/Pv7e7tNjB5Bc=;
+	s=korg; t=1774282396;
+	bh=KgDafGA6OefsQxMDlV7hx/wGm4oTWXrmB6U8u151IcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tWchAxAYes1CElho5yGGM44J2svHgC4SUlRqhWZC4hn8QPEei3hL2rrjrsBaywCJG
-	 SYHnpOdApn9PrEVQ4xgJvFaxMrylrzGwJcWDD31CMb5Jj9/xzGEVjE0nAeRXGyIG9C
-	 9kvcK5EpBWzg7c+UxsJeFpMkOP9IPW6gtrAOHP/s=
+	b=1D0oJXrWIGDKpmWclAUr6xVkRibmJ4xCWL8bp1pr1uL61vS0QC97Md/0Xl7Wl18mC
+	 PnP/B6iiP9mR+Q49GdpmmjPcXyB2knvgPSFUe9op5xRhb87quIfrLur22Kq34tev1Z
+	 BA46QY6jEeiXtx9OkoG9dJ4M2dNomns3a3JDzap0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	ZhangGuoDong <zhangguodong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>,
+	Chintan Vankar <c-vankar@ti.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/567] smb/client: fix buffer size for smb311_posix_qinfo in smb2_compound_op()
+Subject: [PATCH 6.1 098/481] net: ethernet: ti: am65-cpsw-nuss/cpsw-ale: Fix multicast entry handling in ALE table
 Date: Mon, 23 Mar 2026 14:41:20 +0100
-Message-ID: <20260323134537.781277047@linuxfoundation.org>
+Message-ID: <20260323134527.670255991@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,75 +69,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229072-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229613-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4BD472F673E
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,ti.com:email]
+X-Rspamd-Queue-Id: AAD3D2FA52A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhangGuoDong <zhangguodong@kylinos.cn>
+From: Chintan Vankar <c-vankar@ti.com>
 
-[ Upstream commit 12c43a062acb0ac137fc2a4a106d4d084b8c5416 ]
+[ Upstream commit be11a537224d72b906db6b98510619770298c8a4 ]
 
-Use `sizeof(struct smb311_posix_qinfo)` instead of sizeof its pointer,
-so the allocated buffer matches the actual struct size.
+In the current implementation, flushing multicast entries in MAC mode
+incorrectly deletes entries for all ports instead of only the target port,
+disrupting multicast traffic on other ports. The cause is adding multicast
+entries by setting only host port bit, and not setting the MAC port bits.
 
-Fixes: 6a5f6592a0b6 ("SMB311: Add support for query info using posix extensions (level 100)")
-Reported-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: ZhangGuoDong <zhangguodong@kylinos.cn>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix this by setting the MAC port's bit in the port mask while adding the
+multicast entry. Also fix the flush logic to preserve the host port bit
+during removal of MAC port and free ALE entries when mask contains only
+host port.
+
+Fixes: 5c50a856d550 ("drivers: net: ethernet: cpsw: add multicast address to ALE table")
+Signed-off-by: Chintan Vankar <c-vankar@ti.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260224181359.2055322-1-c-vankar@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2inode.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 2 +-
+ drivers/net/ethernet/ti/cpsw_ale.c       | 9 ++++-----
+ 2 files changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/smb/client/smb2inode.c b/fs/smb/client/smb2inode.c
-index d6086394d0b84..c576d82799acb 100644
---- a/fs/smb/client/smb2inode.c
-+++ b/fs/smb/client/smb2inode.c
-@@ -315,7 +315,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 							  cfile->fid.volatile_fid,
- 							  SMB_FIND_FILE_POSIX_INFO,
- 							  SMB2_O_INFO_FILE, 0,
--							  sizeof(struct smb311_posix_qinfo *) +
-+							  sizeof(struct smb311_posix_qinfo) +
- 							  (PATH_MAX * 2) +
- 							  (sizeof(struct smb_sid) * 2), 0, NULL);
- 			} else {
-@@ -325,7 +325,7 @@ static int smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
- 							  COMPOUND_FID,
- 							  SMB_FIND_FILE_POSIX_INFO,
- 							  SMB2_O_INFO_FILE, 0,
--							  sizeof(struct smb311_posix_qinfo *) +
-+							  sizeof(struct smb311_posix_qinfo) +
- 							  (PATH_MAX * 2) +
- 							  (sizeof(struct smb_sid) * 2), 0, NULL);
- 			}
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index a0a9e4e13e77b..d04a05e959bbb 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -257,7 +257,7 @@ static void am65_cpsw_nuss_ndo_slave_set_rx_mode(struct net_device *ndev)
+ 	cpsw_ale_set_allmulti(common->ale,
+ 			      ndev->flags & IFF_ALLMULTI, port->port_id);
+ 
+-	port_mask = ALE_PORT_HOST;
++	port_mask = BIT(port->port_id) | ALE_PORT_HOST;
+ 	/* Clear all mcast from ALE */
+ 	cpsw_ale_flush_multicast(common->ale, port_mask, -1);
+ 
+diff --git a/drivers/net/ethernet/ti/cpsw_ale.c b/drivers/net/ethernet/ti/cpsw_ale.c
+index 3d42ca15e8779..d7c65df7f8c06 100644
+--- a/drivers/net/ethernet/ti/cpsw_ale.c
++++ b/drivers/net/ethernet/ti/cpsw_ale.c
+@@ -422,14 +422,13 @@ static void cpsw_ale_flush_mcast(struct cpsw_ale *ale, u32 *ale_entry,
+ 				      ale->port_mask_bits);
+ 	if ((mask & port_mask) == 0)
+ 		return; /* ports dont intersect, not interested */
+-	mask &= ~port_mask;
++	mask &= (~port_mask | ALE_PORT_HOST);
+ 
+-	/* free if only remaining port is host port */
+-	if (mask)
++	if (mask == 0x0 || mask == ALE_PORT_HOST)
++		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
++	else
+ 		cpsw_ale_set_port_mask(ale_entry, mask,
+ 				       ale->port_mask_bits);
+-	else
+-		cpsw_ale_set_entry_type(ale_entry, ALE_TYPE_FREE);
+ }
+ 
+ int cpsw_ale_flush_multicast(struct cpsw_ale *ale, int port_mask, int vid)
 -- 
 2.51.0
 
