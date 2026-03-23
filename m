@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229747-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GefCvlKwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:21 +0100
+	id 4KjMJ7FswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229747-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65002F409F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25172F888F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BE9A13072BB6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D70631AACB7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2813B27C3;
-	Mon, 23 Mar 2026 14:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C62643AE6E6;
+	Mon, 23 Mar 2026 16:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhcZlOpk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNx27qlk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57F03A9D9D;
-	Mon, 23 Mar 2026 14:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C4A282F35;
+	Mon, 23 Mar 2026 16:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274608; cv=none; b=lblNFyGdyj2weuXC0Yh21x4KN6EWuLszosoDvLIZp5OOOWbXcpObg36AuVZBJypjQVolSrfWyzIXBFgx/FBlNMJYu351fQO4nU4u3UKQibRVxT9iW6/csmGEgYYZH/hsrutrvgi4bvVNX4glh5ialb+gjgrvLC9QhXjBvrp8Qac=
+	t=1774282759; cv=none; b=NpKBWv+jgeDOAZGXJ4mel1gQ9eRJeaLD90+n8GSaNG4qnSscq3sKBlT8kaiQq/jcK37AMMNODB6k1FoaEeWpPWTYhyFFIVBhryCY9mjAPp3xF6f3/PxMMbD4gFK45CHP941+mT6kVO9gonttxil5DDRc6soIiXIlW1aMvoyChjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274608; c=relaxed/simple;
-	bh=98s1gaOyclYAbiG44fi0zvqsDq+Iq1umpgyH224B3JQ=;
+	s=arc-20240116; t=1774282759; c=relaxed/simple;
+	bh=ftV4tm+4OEq+hOOW5YZq/0aBh7SyFpW5YzzalepsHbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXo5LSfDLYKpPsomM8rH03rKG5dTbyH2DsU2p0+e5tDqq3wMuxUgZDNQYE9OT5k2HTSuhHE3hElIisRSiUFSlMXlOt1+ZIC/vrnfw2SmEQO6T+QxSfkyAZlU+nBdKG5oo+UUHoDKSAHfI19FHP+HEs7GyUrG8AUWNV74Q8HxwGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhcZlOpk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B8A1C4CEF7;
-	Mon, 23 Mar 2026 14:03:28 +0000 (UTC)
+	 MIME-Version; b=D9zOUzmRdA0uw1JhjyjHYah5/Ch8XyxeoI3qeUQzBoBuHWMEitQcaksqQDs7zRpReBt3Z7+H92KFs5EKWw9tCnAX4MutfL9mEdg1SPyiq52zfS8MAw0hSyptj286QABOhNwpobH3WJY0fBqpZaPoY9TclAQofsPv432MHHrMMZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNx27qlk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16061C4CEF7;
+	Mon, 23 Mar 2026 16:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274608;
-	bh=98s1gaOyclYAbiG44fi0zvqsDq+Iq1umpgyH224B3JQ=;
+	s=korg; t=1774282759;
+	bh=ftV4tm+4OEq+hOOW5YZq/0aBh7SyFpW5YzzalepsHbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nhcZlOpk/m2ag+uMqL41vHcoq3PJAqSncnEHLKhuMO8dkZGfE15U8AW+tcddmL3xo
-	 UVQ2DHClepgoCv00nYRqyRE8B6qm0lZtH36yAGW9DvUyxLBEMLxhFjlYVDe7AshEO2
-	 KE5IpiTKGpAamSJCEIg8oI1ttXg8F6DyMSXZEqBk=
+	b=WNx27qlkGu7Djt9luc8PtgtokmbHr2WS68krfQecso+zfBD5kRN7jiVJcs2BaVq3M
+	 +yzO4f2irVJTjUTLTsovtNEWtDT+31xGZ415mGzDr15Ns/4IV4ZL88GzNNgtaE6SKy
+	 4anGqZ31MS8Q0z43zACDJHQN5rhSdtsWUuifpkxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 034/212] crypto: atmel-sha204a - Fix OOM ->tfm_count leak
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 273/481] i3c: mipi-i3c-hci: Use ETIMEDOUT instead of ETIME for timeout errors
 Date: Mon, 23 Mar 2026 14:44:15 +0100
-Message-ID: <20260323134504.840855072@linuxfoundation.org>
+Message-ID: <20260323134531.782439165@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +66,111 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229747-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228259-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[apana.org.au:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B65002F409F
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E25172F888F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit d240b079a37e90af03fd7dfec94930eb6c83936e ]
+commit 4167b8914463132654e01e16259847d097f8a7f7 upstream.
 
-If memory allocation fails, decrement ->tfm_count to avoid blocking
-future reads.
+The MIPI I3C HCI driver currently returns -ETIME for various timeout
+conditions, while other I3C master drivers consistently use -ETIMEDOUT
+for the same class of errors.  Align the HCI driver with the rest of the
+subsystem by replacing all uses of -ETIME with -ETIMEDOUT.
 
+Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
 Cc: stable@vger.kernel.org
-Fixes: da001fb651b0 ("crypto: atmel-i2c - add support for SHA204A random number generator")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260306072451.11131-2-adrian.hunter@intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/atmel-sha204a.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/i3c/master/mipi-i3c-hci/cmd_v1.c |    2 +-
+ drivers/i3c/master/mipi-i3c-hci/cmd_v2.c |    2 +-
+ drivers/i3c/master/mipi-i3c-hci/core.c   |    6 +++---
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/crypto/atmel-sha204a.c
-+++ b/drivers/crypto/atmel-sha204a.c
-@@ -52,9 +52,10 @@ static int atmel_sha204a_rng_read_nonblo
- 		rng->priv = 0;
- 	} else {
- 		work_data = kmalloc(sizeof(*work_data), GFP_ATOMIC);
--		if (!work_data)
-+		if (!work_data) {
-+			atomic_dec(&i2c_priv->tfm_count);
- 			return -ENOMEM;
--
-+		}
- 		work_data->ctx = i2c_priv;
- 		work_data->client = i2c_priv->client;
- 
+--- a/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
++++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v1.c
+@@ -335,7 +335,7 @@ static int hci_cmd_v1_daa(struct i3c_hci
+ 		hci->io->queue_xfer(hci, xfer, 1);
+ 		if (!wait_for_completion_timeout(&done, HZ) &&
+ 		    hci->io->dequeue_xfer(hci, xfer, 1)) {
+-			ret = -ETIME;
++			ret = -ETIMEDOUT;
+ 			break;
+ 		}
+ 		if (RESP_STATUS(xfer[0].response) == RESP_ERR_NACK &&
+--- a/drivers/i3c/master/mipi-i3c-hci/cmd_v2.c
++++ b/drivers/i3c/master/mipi-i3c-hci/cmd_v2.c
+@@ -277,7 +277,7 @@ static int hci_cmd_v2_daa(struct i3c_hci
+ 		hci->io->queue_xfer(hci, xfer, 2);
+ 		if (!wait_for_completion_timeout(&done, HZ) &&
+ 		    hci->io->dequeue_xfer(hci, xfer, 2)) {
+-			ret = -ETIME;
++			ret = -ETIMEDOUT;
+ 			break;
+ 		}
+ 		if (RESP_STATUS(xfer[0].response) != RESP_SUCCESS) {
+--- a/drivers/i3c/master/mipi-i3c-hci/core.c
++++ b/drivers/i3c/master/mipi-i3c-hci/core.c
+@@ -237,7 +237,7 @@ static int i3c_hci_send_ccc_cmd(struct i
+ 		goto out;
+ 	if (!wait_for_completion_timeout(&done, HZ) &&
+ 	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
+-		ret = -ETIME;
++		ret = -ETIMEDOUT;
+ 		goto out;
+ 	}
+ 	for (i = prefixed; i < nxfers; i++) {
+@@ -311,7 +311,7 @@ static int i3c_hci_priv_xfers(struct i3c
+ 		goto out;
+ 	if (!wait_for_completion_timeout(&done, HZ) &&
+ 	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
+-		ret = -ETIME;
++		ret = -ETIMEDOUT;
+ 		goto out;
+ 	}
+ 	for (i = 0; i < nxfers; i++) {
+@@ -359,7 +359,7 @@ static int i3c_hci_i2c_xfers(struct i2c_
+ 		goto out;
+ 	if (!wait_for_completion_timeout(&done, HZ) &&
+ 	    hci->io->dequeue_xfer(hci, xfer, nxfers)) {
+-		ret = -ETIME;
++		ret = -ETIMEDOUT;
+ 		goto out;
+ 	}
+ 	for (i = 0; i < nxfers; i++) {
 
 
 
