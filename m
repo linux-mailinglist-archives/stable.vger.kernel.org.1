@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229352-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHfWJH1NwWmxSAQAu9opvQ
-	(envelope-from <stable+bounces-228344-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:05 +0100
+	id OHvbKhhwwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229352-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:44 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 102C12F4745
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C67D2F9086
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 470693220C01
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B0773384965
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A1183AEF5C;
-	Mon, 23 Mar 2026 14:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015F03B6C17;
+	Mon, 23 Mar 2026 15:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySqOjmOQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npx5aB5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6DC36F414;
-	Mon, 23 Mar 2026 14:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94E33B27ED;
+	Mon, 23 Mar 2026 15:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274866; cv=none; b=Rn0tiSbLLsGzT77TMrKyWuqthx7JhHJ9rFbVznNpXpDsXgbvNnnZc74GzoHcSDU0HuFt/svgbY0kW8HDKr1aBSZcT/vAFA/xp7rXZ0fPIVxTPzOanMkKvdCcwuBqj43LXTIa0ZnxqQ6cJKWmlMrWilJs1KsmqH3hspfcCWXO32I=
+	t=1774278847; cv=none; b=UqIlk6WHOiwSdlLbSGeqOtqp88JidN0AmUGbBWkxOLk4lygNSeANnVwngIEr31VGdF2IbuIR48PorZAQLQfduVIOfRU4VkGf0hks7aKKWoI/qUp+eyXZ1j5ULCG0Dr44MTkpB31HqVSyIbYGx270rsBstjZrpdCCZZOIBzhVuLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274866; c=relaxed/simple;
-	bh=PgUQlbcaj1LwktG9sniKIvuDMQOXLvmW5rCyy77MSVU=;
+	s=arc-20240116; t=1774278847; c=relaxed/simple;
+	bh=AlNe2Gp7Mer0rj+LOhNmdFtOVobO5KINzl1ssVrUl6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tn1N9NWSMyJwSNdxMYw6hQ2ipjIfU0BkSaklUMsPnMn6xcqj77inGCeF9zcadX31rLrhABdRpwOEFlDuRfEq8T7lamrGOO1eRJQ+bDMh1rRKEeY7kasQU9XuyUWqYSEGgkA/abMso3b3NCCpV7U6OHTAFMdd6dKiG2OHLsuYU2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySqOjmOQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0EDC4CEF7;
-	Mon, 23 Mar 2026 14:07:45 +0000 (UTC)
+	 MIME-Version; b=lQJ4vCKKqY4DgHTFkJdhBpwkADBoD08/akkxX8DLXh1wvcErkoijQ+DTgQsKcaxfUodp8LikwQXqpz6WSM/TZ+nWDZIbHRpwQgz8g3+QH32p+Nk8QBylsVfBoKcFXn7/C+z4dDbXjoGr/e+QS9S6NlAnZr4DElYfQnR/ICWZnEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npx5aB5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F191EC2BCB3;
+	Mon, 23 Mar 2026 15:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274865;
-	bh=PgUQlbcaj1LwktG9sniKIvuDMQOXLvmW5rCyy77MSVU=;
+	s=korg; t=1774278847;
+	bh=AlNe2Gp7Mer0rj+LOhNmdFtOVobO5KINzl1ssVrUl6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySqOjmOQAigtDt6FD+56fZ7G9zAjILsh4543hMwcMNobDKAIh4M7rP5mNBu/1tvNr
-	 LIS837QUSs42SBwSmi1Qg4xeHIGqSa5fQCT9gx2g8ctFO4jYAcgjQSsRH0TBGcrWgG
-	 loe1HVUWzaT/VK8yTRXW05ktVXwyT9aWaD1Vl//4=
+	b=npx5aB5tcxVc4M21IZab4Dbi2QVMdJbc5sxp/tuDfA+e0F3EZWlmP6myLVAqIk/ri
+	 Zz3J4iN7/TZgENcyzQGE3VSPzsywm5D6glrG6wAXEnAicSVgptx1G9m9C6prHt/U4I
+	 hDgtB60jBOw8gTzhLVYp5tXPiDyV/+eim+zhQkvA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gurpreet Shergill <giki.shergill@proton.me>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 137/212] nf_tables: nft_dynset: fix possible stateful expression memleak in error path
+	"edumazet@google.com, kuniyu@google.com, kuba@kernel.org, dsahern@kernel.org, netdev@vger.kernel.org, Ruohan Lan" <ruohanlan@aliyun.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 6.6 438/567] net: use dst_dev_rcu() in sk_setup_caps()
 Date: Mon, 23 Mar 2026 14:45:58 +0100
-Message-ID: <20260323134508.099907247@linuxfoundation.org>
+Message-ID: <20260323134544.788448840@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,139 +65,169 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228344-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229352-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,aliyun.com,google.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 102C12F4745
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2C67D2F9086
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 0548a13b5a145b16e4da0628b5936baf35f51b43 ]
+[ Upstream commit 99a2ace61b211b0be861b07fbaa062fca4b58879 ]
 
-If cloning the second stateful expression in the element via GFP_ATOMIC
-fails, then the first stateful expression remains in place without being
-released.
+Use RCU to protect accesses to dst->dev from sk_setup_caps()
+and sk_dst_gso_max_size().
 
-   unreferenced object (percpu) 0x607b97e9cab8 (size 16):
-     comm "softirq", pid 0, jiffies 4294931867
-     hex dump (first 16 bytes on cpu 3):
-       00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-     backtrace (crc 0):
-       pcpu_alloc_noprof+0x453/0xd80
-       nft_counter_clone+0x9c/0x190 [nf_tables]
-       nft_expr_clone+0x8f/0x1b0 [nf_tables]
-       nft_dynset_new+0x2cb/0x5f0 [nf_tables]
-       nft_rhash_update+0x236/0x11c0 [nf_tables]
-       nft_dynset_eval+0x11f/0x670 [nf_tables]
-       nft_do_chain+0x253/0x1700 [nf_tables]
-       nft_do_chain_ipv4+0x18d/0x270 [nf_tables]
-       nf_hook_slow+0xaa/0x1e0
-       ip_local_deliver+0x209/0x330
+Also use dst_dev_rcu() in ip6_dst_mtu_maybe_forward(),
+and ip_dst_mtu_maybe_forward().
 
-Fixes: 563125a73ac3 ("netfilter: nftables: generalize set extension to support for several expressions")
-Reported-by: Gurpreet Shergill <giki.shergill@proton.me>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ip4_dst_hoplimit() can use dst_dev_net_rcu().
+
+Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250828195823.3958522-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Adjust context ]
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h |  2 ++
- net/netfilter/nf_tables_api.c     |  4 ++--
- net/netfilter/nft_dynset.c        | 10 +++++++++-
- 3 files changed, 13 insertions(+), 3 deletions(-)
+ include/net/ip.h        |    7 +++++--
+ include/net/ip6_route.h |    2 +-
+ include/net/route.h     |    2 +-
+ net/core/sock.c         |   16 ++++++++++------
+ 4 files changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index c18cffafc9696..4dc080f7f27c6 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -875,6 +875,8 @@ struct nft_elem_priv *nft_set_elem_init(const struct nft_set *set,
- 					u64 timeout, u64 expiration, gfp_t gfp);
- int nft_set_elem_expr_clone(const struct nft_ctx *ctx, struct nft_set *set,
- 			    struct nft_expr *expr_array[]);
-+void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
-+			       struct nft_set_elem_expr *elem_expr);
- void nft_set_elem_destroy(const struct nft_set *set,
- 			  const struct nft_elem_priv *elem_priv,
- 			  bool destroy_expr);
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index b6a575ec33159..0992869b33b35 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6863,8 +6863,8 @@ static void __nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
- 	}
- }
- 
--static void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
--				      struct nft_set_elem_expr *elem_expr)
-+void nft_set_elem_expr_destroy(const struct nft_ctx *ctx,
-+			       struct nft_set_elem_expr *elem_expr)
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -458,9 +458,12 @@ static inline unsigned int ip_dst_mtu_ma
+ 						    bool forwarding)
  {
- 	struct nft_expr *expr;
- 	u32 size;
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index 7807d81296646..9123277be03ce 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -30,18 +30,26 @@ static int nft_dynset_expr_setup(const struct nft_dynset *priv,
- 				 const struct nft_set_ext *ext)
- {
- 	struct nft_set_elem_expr *elem_expr = nft_set_ext_expr(ext);
-+	struct nft_ctx ctx = {
-+		.net	= read_pnet(&priv->set->net),
-+		.family	= priv->set->table->family,
-+	};
- 	struct nft_expr *expr;
- 	int i;
+ 	const struct rtable *rt = container_of(dst, struct rtable, dst);
+-	struct net *net = dev_net(dst->dev);
++	struct net *net;
++	const struct net_device *dev;
+ 	unsigned int mtu;
  
- 	for (i = 0; i < priv->num_exprs; i++) {
- 		expr = nft_setelem_expr_at(elem_expr, elem_expr->size);
- 		if (nft_expr_clone(expr, priv->expr_array[i], GFP_ATOMIC) < 0)
--			return -1;
-+			goto err_out;
++	dev = dst_dev_rcu(dst);
++	net = dev_net_rcu(dev);
+ 	if (READ_ONCE(net->ipv4.sysctl_ip_fwd_use_pmtu) ||
+ 	    ip_mtu_locked(dst) ||
+ 	    !forwarding) {
+@@ -474,7 +477,7 @@ static inline unsigned int ip_dst_mtu_ma
+ 	if (mtu)
+ 		goto out;
  
- 		elem_expr->size += priv->expr_array[i]->ops->size;
+-	mtu = READ_ONCE(dst->dev->mtu);
++	mtu = READ_ONCE(dev->mtu);
+ 
+ 	if (unlikely(ip_mtu_locked(dst))) {
+ 		if (rt->rt_uses_gateway && mtu > 576)
+--- a/include/net/ip6_route.h
++++ b/include/net/ip6_route.h
+@@ -333,7 +333,7 @@ static inline unsigned int ip6_dst_mtu_m
+ 
+ 	mtu = IPV6_MIN_MTU;
+ 	rcu_read_lock();
+-	idev = __in6_dev_get(dst->dev);
++	idev = __in6_dev_get(dst_dev_rcu(dst));
+ 	if (idev)
+ 		mtu = idev->cnf.mtu6;
+ 	rcu_read_unlock();
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -363,7 +363,7 @@ static inline int ip4_dst_hoplimit(const
+ 		const struct net *net;
+ 
+ 		rcu_read_lock();
+-		net = dev_net_rcu(dst->dev);
++		net = dst_dev_net_rcu(dst);
+ 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
+ 		rcu_read_unlock();
  	}
- 
- 	return 0;
-+err_out:
-+	nft_set_elem_expr_destroy(&ctx, elem_expr);
-+
-+	return -1;
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2440,7 +2440,7 @@ void sk_free_unlock_clone(struct sock *s
  }
+ EXPORT_SYMBOL_GPL(sk_free_unlock_clone);
  
- struct nft_elem_priv *nft_dynset_new(struct nft_set *set,
--- 
-2.51.0
-
+-static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
++static u32 sk_dst_gso_max_size(struct sock *sk, const struct net_device *dev)
+ {
+ 	bool is_ipv6 = false;
+ 	u32 max_size;
+@@ -2450,8 +2450,8 @@ static u32 sk_dst_gso_max_size(struct so
+ 		   !ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr));
+ #endif
+ 	/* pairs with the WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
+-	max_size = is_ipv6 ? READ_ONCE(dst_dev(dst)->gso_max_size) :
+-			READ_ONCE(dst_dev(dst)->gso_ipv4_max_size);
++	max_size = is_ipv6 ? READ_ONCE(dev->gso_max_size) :
++			READ_ONCE(dev->gso_ipv4_max_size);
+ 	if (max_size > GSO_LEGACY_MAX_SIZE && !sk_is_tcp(sk))
+ 		max_size = GSO_LEGACY_MAX_SIZE;
+ 
+@@ -2460,9 +2460,12 @@ static u32 sk_dst_gso_max_size(struct so
+ 
+ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
+ {
++	const struct net_device *dev;
+ 	u32 max_segs = 1;
+ 
+-	sk->sk_route_caps = dst_dev(dst)->features;
++	rcu_read_lock();
++	dev = dst_dev_rcu(dst);
++	sk->sk_route_caps = dev->features;
+ 	if (sk_is_tcp(sk))
+ 		sk->sk_route_caps |= NETIF_F_GSO;
+ 	if (sk->sk_route_caps & NETIF_F_GSO)
+@@ -2474,13 +2477,14 @@ void sk_setup_caps(struct sock *sk, stru
+ 			sk->sk_route_caps &= ~NETIF_F_GSO_MASK;
+ 		} else {
+ 			sk->sk_route_caps |= NETIF_F_SG | NETIF_F_HW_CSUM;
+-			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dst);
++			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dev);
+ 			/* pairs with the WRITE_ONCE() in netif_set_gso_max_segs() */
+-			max_segs = max_t(u32, READ_ONCE(dst_dev(dst)->gso_max_segs), 1);
++			max_segs = max_t(u32, READ_ONCE(dev->gso_max_segs), 1);
+ 		}
+ 	}
+ 	sk->sk_gso_max_segs = max_segs;
+ 	sk_dst_set(sk, dst);
++	rcu_read_unlock();
+ }
+ EXPORT_SYMBOL_GPL(sk_setup_caps);
+ 
 
 
 
