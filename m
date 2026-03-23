@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-228355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229860-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIjNCp1NwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228355-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:37 +0100
+	id wG+PO691wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229860-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:17:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A968B2F47BB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3344F2F9B1D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4423332241DF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 68E7C3090F1E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9D83AF667;
-	Mon, 23 Mar 2026 14:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116393BD62B;
+	Mon, 23 Mar 2026 16:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adklCvuQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVsIUGKk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728BA324B16;
-	Mon, 23 Mar 2026 14:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A123BC668;
+	Mon, 23 Mar 2026 16:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274894; cv=none; b=tt8RgGWPuuoUDnkb4J4OXQ0fPqS4p6eBMbKIQoKe7ebTU6hmiY32mZxeWa+L8G/eg/4lrlt2zctrbu3OkRUQT6irEyDl2IAz0/ZXvFZqNXJnF0H8jGbLPFUsmO9LcdzusoTcI0N8YLU2kr1FDflP2vLcX6n1D9saZ3BlEWKw8Ls=
+	t=1774283057; cv=none; b=mNCvb9SuwRs+bfeY/YZbn32JLpkB8gh81Rm4u7uONSw+j4yD4RtCpKLaq8yniRUYmF+geAQbDJOUGXAGedVJwesHVlXWAmixjZYIbNWWrQP+x7SRD3sp0gCxckiTfuIO1KQBEVkxn+6tGnn9+WQUtSEDx/nBdbzm3fN0IMOREt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274894; c=relaxed/simple;
-	bh=ZreNGinVPNdGdjtEPcschDxPhjXSpksutNtASAn4/fU=;
+	s=arc-20240116; t=1774283057; c=relaxed/simple;
+	bh=Vc4i4bgX1RYMC64vcm8ejqWIZj28MDzraqObZVKjjpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDWYjU46DXT6misFEJ9nXYA0Sbkcl9R4dEvyncBF5gv0DGq7bLDxJnVc9dRzPq5sQ8QafR7K0uqFFblYNZAUfIMvhUcqgT3mii26P5W+hg/IGFXmP46X7RYWKrChych4wzd61zdYONRyx8Ol+vLM4sBdGEPbf70BGr90GK9lMrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adklCvuQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D30AC4CEF7;
-	Mon, 23 Mar 2026 14:08:13 +0000 (UTC)
+	 MIME-Version; b=R3pTab2CWmtcR/OO1UmJciHLCkDaUKK4b7gVd4bKoOMyo0+f8xm7Z6uusYXcw0D7v0aIuEnHKGb+nSreWeBnXOFmDoQOrLWtADGFiaSCcFLIkapGm0ztRkll4HlqFAf6VpMHry17a9oUX3QY2KQnORSXvD0+2cjMrBNtRDCYM00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVsIUGKk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C37C2BC9E;
+	Mon, 23 Mar 2026 16:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274894;
-	bh=ZreNGinVPNdGdjtEPcschDxPhjXSpksutNtASAn4/fU=;
+	s=korg; t=1774283057;
+	bh=Vc4i4bgX1RYMC64vcm8ejqWIZj28MDzraqObZVKjjpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=adklCvuQd9U8jlIRJuTQCy/0QSUFeggpHg7JM4tY/kIIhrVM0JqNavSdX5fHZeFsj
-	 isP2LvPZgbycdD5V6ISzr4ZJjq/uShgZoiPz28gK7LovabFE7kgnncb+gqooR7QLQE
-	 gljTdJipNBKRUaaeLfLcLH2oNFAVtl9clrrLdHvU=
+	b=bVsIUGKkn+HhHXhtqpInrNLy6JXr3N+GVb1BRppaoqb/YRL1H3sBkPrwMiz3NzrUY
+	 OypMHkDS/ugP6XwaYKhSvh0ZZ/XuvgJtXNJFZHvkc87iCJvC1Uh/9mKRpLEfk8aKh7
+	 PVOtkAHfAfqafbBBno0g/kjzf2XNs5tcM0ncxSsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 147/212] bonding: prevent potential infinite loop in bond_header_parse()
-Date: Mon, 23 Mar 2026 14:46:08 +0100
-Message-ID: <20260323134508.412812340@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	Inki Dae <inki.dae@samsung.com>
+Subject: [PATCH 6.1 387/481] drm/exynos: vidi: use priv->vidi_dev for ctx lookup in vidi_connection_ioctl()
+Date: Mon, 23 Mar 2026 14:46:09 +0100
+Message-ID: <20260323134534.575762688@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,241 +63,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228355-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TAGGED_FROM(0.00)[bounces-229860-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,samsung.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A968B2F47BB
+X-Rspamd-Queue-Id: 3344F2F9B1D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit b7405dcf7385445e10821777143f18c3ce20fa04 ]
+commit d3968a0d85b211e197f2f4f06268a7031079e0d0 upstream.
 
-bond_header_parse() can loop if a stack of two bonding devices is setup,
-because skb->dev always points to the hierarchy top.
+vidi_connection_ioctl() retrieves the driver_data from drm_dev->dev to
+obtain a struct vidi_context pointer. However, drm_dev->dev is the
+exynos-drm master device, and the driver_data contained therein is not
+the vidi component device, but a completely different device.
 
-Add new "const struct net_device *dev" parameter to
-(struct header_ops)->parse() method to make sure the recursion
-is bounded, and that the final leaf parse method is called.
+This can lead to various bugs, ranging from null pointer dereferences and
+garbage value accesses to, in unlucky cases, out-of-bounds errors,
+use-after-free errors, and more.
 
-Fixes: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Tested-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Link: https://patch.msgid.link/20260315104152.1436867-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To resolve this issue, we need to store/delete the vidi device pointer in
+exynos_drm_private->vidi_dev during bind/unbind, and then read this
+exynos_drm_private->vidi_dev within ioctl() to obtain the correct
+struct vidi_context pointer.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/net.c          | 5 +++--
- drivers/net/bonding/bond_main.c | 8 +++++---
- include/linux/etherdevice.h     | 3 ++-
- include/linux/if_ether.h        | 3 ++-
- include/linux/netdevice.h       | 6 ++++--
- net/ethernet/eth.c              | 9 +++------
- net/ipv4/ip_gre.c               | 3 ++-
- net/mac802154/iface.c           | 4 +++-
- net/phonet/af_phonet.c          | 5 ++++-
- 9 files changed, 28 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_drv.h  |    1 +
+ drivers/gpu/drm/exynos/exynos_drm_vidi.c |   14 +++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firewire/net.c b/drivers/firewire/net.c
-index 6d64467135395..e829454089550 100644
---- a/drivers/firewire/net.c
-+++ b/drivers/firewire/net.c
-@@ -257,9 +257,10 @@ static void fwnet_header_cache_update(struct hh_cache *hh,
- 	memcpy((u8 *)hh->hh_data + HH_DATA_OFF(FWNET_HLEN), haddr, net->addr_len);
- }
+--- a/drivers/gpu/drm/exynos/exynos_drm_drv.h
++++ b/drivers/gpu/drm/exynos/exynos_drm_drv.h
+@@ -201,6 +201,7 @@ struct exynos_drm_private {
  
--static int fwnet_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int fwnet_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+			      unsigned char *haddr)
+ 	struct device *g2d_dev;
+ 	struct device *dma_dev;
++	struct device *vidi_dev;
+ 	void *mapping;
+ 
+ 	/* for atomic commit */
+--- a/drivers/gpu/drm/exynos/exynos_drm_vidi.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_vidi.c
+@@ -224,9 +224,14 @@ ATTRIBUTE_GROUPS(vidi);
+ int vidi_connection_ioctl(struct drm_device *drm_dev, void *data,
+ 				struct drm_file *file_priv)
  {
--	memcpy(haddr, skb->dev->dev_addr, FWNET_ALEN);
-+	memcpy(haddr, dev->dev_addr, FWNET_ALEN);
+-	struct vidi_context *ctx = dev_get_drvdata(drm_dev->dev);
++	struct exynos_drm_private *priv = drm_dev->dev_private;
++	struct device *dev = priv ? priv->vidi_dev : NULL;
++	struct vidi_context *ctx = dev ? dev_get_drvdata(dev) : NULL;
+ 	struct drm_exynos_vidi_connection *vidi = data;
  
- 	return FWNET_ALEN;
- }
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index e8e261e0cb4e1..106cfe732a15e 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1497,9 +1497,11 @@ static int bond_header_create(struct sk_buff *skb, struct net_device *bond_dev,
- 	return ret;
- }
- 
--static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int bond_header_parse(const struct sk_buff *skb,
-+			     const struct net_device *dev,
-+			     unsigned char *haddr)
- {
--	struct bonding *bond = netdev_priv(skb->dev);
-+	struct bonding *bond = netdev_priv(dev);
- 	const struct header_ops *slave_ops;
- 	struct slave *slave;
- 	int ret = 0;
-@@ -1509,7 +1511,7 @@ static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
- 	if (slave) {
- 		slave_ops = READ_ONCE(slave->dev->header_ops);
- 		if (slave_ops && slave_ops->parse)
--			ret = slave_ops->parse(skb, haddr);
-+			ret = slave_ops->parse(skb, slave->dev, haddr);
- 	}
- 	rcu_read_unlock();
- 	return ret;
-diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
-index 9a1eacf35d370..df8f88f63a706 100644
---- a/include/linux/etherdevice.h
-+++ b/include/linux/etherdevice.h
-@@ -42,7 +42,8 @@ extern const struct header_ops eth_header_ops;
- 
- int eth_header(struct sk_buff *skb, struct net_device *dev, unsigned short type,
- 	       const void *daddr, const void *saddr, unsigned len);
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr);
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr);
- int eth_header_cache(const struct neighbour *neigh, struct hh_cache *hh,
- 		     __be16 type);
- void eth_header_cache_update(struct hh_cache *hh, const struct net_device *dev,
-diff --git a/include/linux/if_ether.h b/include/linux/if_ether.h
-index 61b7335aa037c..ca9afa824aa4f 100644
---- a/include/linux/if_ether.h
-+++ b/include/linux/if_ether.h
-@@ -40,7 +40,8 @@ static inline struct ethhdr *inner_eth_hdr(const struct sk_buff *skb)
- 	return (struct ethhdr *)skb_inner_mac_header(skb);
- }
- 
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr);
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr);
- 
- extern ssize_t sysfs_format_mac(char *buf, const unsigned char *addr, int len);
- 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 0f425a1f80409..20bd42fa160c9 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -311,7 +311,9 @@ struct header_ops {
- 	int	(*create) (struct sk_buff *skb, struct net_device *dev,
- 			   unsigned short type, const void *daddr,
- 			   const void *saddr, unsigned int len);
--	int	(*parse)(const struct sk_buff *skb, unsigned char *haddr);
-+	int	(*parse)(const struct sk_buff *skb,
-+			 const struct net_device *dev,
-+			 unsigned char *haddr);
- 	int	(*cache)(const struct neighbour *neigh, struct hh_cache *hh, __be16 type);
- 	void	(*cache_update)(struct hh_cache *hh,
- 				const struct net_device *dev,
-@@ -3427,7 +3429,7 @@ static inline int dev_parse_header(const struct sk_buff *skb,
- 
- 	if (!dev->header_ops || !dev->header_ops->parse)
- 		return 0;
--	return dev->header_ops->parse(skb, haddr);
-+	return dev->header_ops->parse(skb, dev, haddr);
- }
- 
- static inline __be16 dev_parse_header_protocol(const struct sk_buff *skb)
-diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
-index 43e211e611b16..ca4e3a01237d0 100644
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -193,14 +193,11 @@ __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev)
- }
- EXPORT_SYMBOL(eth_type_trans);
- 
--/**
-- * eth_header_parse - extract hardware address from packet
-- * @skb: packet to extract header from
-- * @haddr: destination buffer
-- */
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr)
- {
- 	const struct ethhdr *eth = eth_hdr(skb);
++	if (!ctx)
++		return -ENODEV;
 +
- 	memcpy(haddr, eth->h_source, ETH_ALEN);
- 	return ETH_ALEN;
- }
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index e13244729ad8d..35f0baa99d409 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -919,7 +919,8 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
- 	return -(t->hlen + sizeof(*iph));
- }
- 
--static int ipgre_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int ipgre_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+			      unsigned char *haddr)
+ 	if (!vidi) {
+ 		DRM_DEV_DEBUG_KMS(ctx->dev,
+ 				  "user data for vidi is null.\n");
+@@ -386,6 +391,7 @@ static int vidi_bind(struct device *dev,
  {
- 	const struct iphdr *iph = (const struct iphdr *) skb_mac_header(skb);
- 	memcpy(haddr, &iph->saddr, 4);
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index 9e4631fade90c..000be60d95803 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -469,7 +469,9 @@ static int mac802154_header_create(struct sk_buff *skb,
- }
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
+ 	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
+ 	struct drm_encoder *encoder = &ctx->encoder;
+ 	struct exynos_drm_plane *exynos_plane;
+ 	struct exynos_drm_plane_config plane_config = { 0 };
+@@ -393,6 +399,8 @@ static int vidi_bind(struct device *dev,
+ 	int ret;
  
- static int
--mac802154_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+mac802154_header_parse(const struct sk_buff *skb,
-+		       const struct net_device *dev,
-+		       unsigned char *haddr)
+ 	ctx->drm_dev = drm_dev;
++	if (priv)
++		priv->vidi_dev = dev;
+ 
+ 	plane_config.pixel_formats = formats;
+ 	plane_config.num_pixel_formats = ARRAY_SIZE(formats);
+@@ -438,8 +446,12 @@ static int vidi_bind(struct device *dev,
+ static void vidi_unbind(struct device *dev, struct device *master, void *data)
  {
- 	struct ieee802154_hdr hdr;
+ 	struct vidi_context *ctx = dev_get_drvdata(dev);
++	struct drm_device *drm_dev = data;
++	struct exynos_drm_private *priv = drm_dev->dev_private;
  
-diff --git a/net/phonet/af_phonet.c b/net/phonet/af_phonet.c
-index 238a9638d2b0f..d89225d6bfd3b 100644
---- a/net/phonet/af_phonet.c
-+++ b/net/phonet/af_phonet.c
-@@ -129,9 +129,12 @@ static int pn_header_create(struct sk_buff *skb, struct net_device *dev,
- 	return 1;
+ 	del_timer_sync(&ctx->timer);
++	if (priv)
++		priv->vidi_dev = NULL;
  }
  
--static int pn_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int pn_header_parse(const struct sk_buff *skb,
-+			   const struct net_device *dev,
-+			   unsigned char *haddr)
- {
- 	const u8 *media = skb_mac_header(skb);
-+
- 	*haddr = *media;
- 	return 1;
- }
--- 
-2.51.0
-
+ static const struct component_ops vidi_component_ops = {
 
 
 
