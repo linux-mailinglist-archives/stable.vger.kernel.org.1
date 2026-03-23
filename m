@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-228442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228456-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MBrsMlZMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228442-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:10 +0100
+	id YGhDMCVRwWnqSAQAu9opvQ
+	(envelope-from <stable+bounces-228456-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 424762F4408
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D7262F4FF6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E95AB31E1303
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0705C320C9E8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E04C3AD50A;
-	Mon, 23 Mar 2026 14:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B70E3B0AFA;
+	Mon, 23 Mar 2026 14:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vFEPvhwL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbCmKobv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DE93ACA5C;
-	Mon, 23 Mar 2026 14:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0233B0AE2;
+	Mon, 23 Mar 2026 14:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275141; cv=none; b=omk8f2my8OGuaTUQcPn7qnDa2styIO12SIw30aBOC+zc6WTj+PSr1f6o2b99mQZDE3XeAuGsKSEaiGU+xnj/0HVEbwWTTA85AhJP+8yHeGEa/JA/M0ZG1q1tClioNc1xaFTkC5apANG3tmmanWNjuXAM0gzbk4cfuQ3gIk0XXhY=
+	t=1774275185; cv=none; b=Cbhi4vgIx/OowZSLd9tkPbIQa7t6vCb4Ft3fPw15MdP31b/1pNELEBeTzE+gOMhfdYFrQeHNZuTcsUpswUyMvye0YUofshOOvOGJolSqGhPHynOjM06DAfU4/j3vI7B8QiEUl3Klxgi0Y2XNes40ngSDA43EOuPD50iM7o4+324=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275141; c=relaxed/simple;
-	bh=Vk7SdsXfcEkUUgFBxnhhpw/uWoEFHm4bDfCDfSBb+T4=;
+	s=arc-20240116; t=1774275185; c=relaxed/simple;
+	bh=a0NC8bsB2qCPfgQt8euDjTw0tUu9ld+aByA8k1zEobI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDOn7vMv+NyFBAn2EbwGCRdzomWFAl83KKrjKVgPDVTkR1CLgcF3bPLKczbVTE7xPEoPZ5V9vY8cmlm2sqSORDYRBQ1cDRZ7m6RPK65rTGZVizwX2DRtqvs5O9PVWYhgj9bXbFD7x0E9y/F36eZQmDyZcLvb+FJG1wCVVevUnkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vFEPvhwL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90939C4CEF7;
-	Mon, 23 Mar 2026 14:12:20 +0000 (UTC)
+	 MIME-Version; b=aCpwd5UhtkObnqzpGPnIXe0c2xFxurbniz9t5juusUfakHguV0VavgvjmoqS5W0hsmWHvxZG6rNAfFmvSVcYtvKJqnzJQD3FgKftXBp4LQFvvyGGu3RBpTZEJwhHLAFw2RlFRKaEJuxNZfOx5rVTyl+Q0V+V2T3MLiiKNZh4cic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbCmKobv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922ACC2BC9E;
+	Mon, 23 Mar 2026 14:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275141;
-	bh=Vk7SdsXfcEkUUgFBxnhhpw/uWoEFHm4bDfCDfSBb+T4=;
+	s=korg; t=1774275185;
+	bh=a0NC8bsB2qCPfgQt8euDjTw0tUu9ld+aByA8k1zEobI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vFEPvhwLiwcWzBrmjYuMK22qheVZwltjJqJC+JGA2WVgPbgYbGyioSfCDBUcwW/V4
-	 ob5tsh3L4nGD4WzABZcHDmZrD6ukj1vOCPc73h6UeUSmTD/5khjJyUuWQsyCsIVDoG
-	 kDf/H4FUdDh8M67xo0yZfIAWlm+XKFD9IMAjrsH8=
+	b=EbCmKobvXG41Kijf2ED2c6c9aeEGEDFV/OTg4woS9Y1s+2xs75cFoR9vYkuWRgK+F
+	 bztPS3riD5RASEMup2/Dh2K6YgHPkYU5jbuh29EgBeCH+M/wbjZljIpOaD+u50KJcr
+	 xwq0ISqlgAOvFKyUNVWuUXDtZrWEoqiEapeoHLTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathias Krause <minipli@grsecurity.net>,
-	Justin Tee <justin.tee@broadcom.com>,
+	Salomon Dushimirimana <salomondush@google.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 005/567] scsi: lpfc: Properly set WC for DPP mapping
-Date: Mon, 23 Mar 2026 14:38:45 +0100
-Message-ID: <20260323134533.882561248@linuxfoundation.org>
+Subject: [PATCH 6.6 006/567] scsi: pm8001: Fix use-after-free in pm8001_queue_command()
+Date: Mon, 23 Mar 2026 14:38:46 +0100
+Message-ID: <20260323134533.905909539@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -69,22 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[broadcom.com:server fail,linuxfoundation.org:server fail,grsecurity.net:server fail,oracle.com:server fail,msgid.link:server fail,tor.lore.kernel.org:server fail];
-	TAGGED_FROM(0.00)[bounces-228442-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228456-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,8 +90,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email,oracle.com:email,msgid.link:url]
-X-Rspamd-Queue-Id: 424762F4408
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3D7262F4FF6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,125 +99,51 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mathias Krause <minipli@grsecurity.net>
+From: Salomon Dushimirimana <salomondush@google.com>
 
-[ Upstream commit bffda93a51b40afd67c11bf558dc5aae83ca0943 ]
+[ Upstream commit 38353c26db28efd984f51d426eac2396d299cca7 ]
 
-Using set_memory_wc() to enable write-combining for the DPP portion of
-the MMIO mapping is wrong as set_memory_*() is meant to operate on RAM
-only, not MMIO mappings. In fact, as used currently triggers a BUG_ON()
-with enabled CONFIG_DEBUG_VIRTUAL.
+Commit e29c47fe8946 ("scsi: pm8001: Simplify pm8001_task_exec()") refactors
+pm8001_queue_command(), however it introduces a potential cause of a double
+free scenario when it changes the function to return -ENODEV in case of phy
+down/device gone state.
 
-Simply map the DPP region separately and in addition to the already
-existing mappings, avoiding any possible negative side effects for
-these.
+In this path, pm8001_queue_command() updates task status and calls
+task_done to indicate to upper layer that the task has been handled.
+However, this also frees the underlying SAS task. A -ENODEV is then
+returned to the caller. When libsas sas_ata_qc_issue() receives this error
+value, it assumes the task wasn't handled/queued by LLDD and proceeds to
+clean up and free the task again, resulting in a double free.
 
-Fixes: 1351e69fc6db ("scsi: lpfc: Add push-to-adapter support to sli4")
-Signed-off-by: Mathias Krause <minipli@grsecurity.net>
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Reviewed-by: Mathias Krause <minipli@grsecurity.net>
-Link: https://patch.msgid.link/20260212192327.141104-1-justintee8345@gmail.com
+Since pm8001_queue_command() handles the SAS task in this case, it should
+return 0 to the caller indicating that the task has been handled.
+
+Fixes: e29c47fe8946 ("scsi: pm8001: Simplify pm8001_task_exec()")
+Signed-off-by: Salomon Dushimirimana <salomondush@google.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://patch.msgid.link/20260213192806.439432-1-salomondush@google.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_init.c |  2 ++
- drivers/scsi/lpfc/lpfc_sli.c  | 36 +++++++++++++++++++++++++++++------
- drivers/scsi/lpfc/lpfc_sli4.h |  3 +++
- 3 files changed, 35 insertions(+), 6 deletions(-)
+ drivers/scsi/pm8001/pm8001_sas.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
-index b0eac09de5ad5..dc18d84c54c3c 100644
---- a/drivers/scsi/lpfc/lpfc_init.c
-+++ b/drivers/scsi/lpfc/lpfc_init.c
-@@ -12049,6 +12049,8 @@ lpfc_sli4_pci_mem_unset(struct lpfc_hba *phba)
- 		iounmap(phba->sli4_hba.conf_regs_memmap_p);
- 		if (phba->sli4_hba.dpp_regs_memmap_p)
- 			iounmap(phba->sli4_hba.dpp_regs_memmap_p);
-+		if (phba->sli4_hba.dpp_regs_memmap_wc_p)
-+			iounmap(phba->sli4_hba.dpp_regs_memmap_wc_p);
- 		break;
- 	case LPFC_SLI_INTF_IF_TYPE_1:
- 		break;
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 4cf935b7223af..c88e224feed8a 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -15938,6 +15938,32 @@ lpfc_dual_chute_pci_bar_map(struct lpfc_hba *phba, uint16_t pci_barset)
- 	return NULL;
- }
+diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
+index 4daab8b6d6752..0f911228cb2f1 100644
+--- a/drivers/scsi/pm8001/pm8001_sas.c
++++ b/drivers/scsi/pm8001/pm8001_sas.c
+@@ -476,8 +476,9 @@ int pm8001_queue_command(struct sas_task *task, gfp_t gfp_flags)
+ 		} else {
+ 			task->task_done(task);
+ 		}
+-		rc = -ENODEV;
+-		goto err_out;
++		spin_unlock_irqrestore(&pm8001_ha->lock, flags);
++		pm8001_dbg(pm8001_ha, IO, "pm8001_task_exec device gone\n");
++		return 0;
+ 	}
  
-+static __maybe_unused void __iomem *
-+lpfc_dpp_wc_map(struct lpfc_hba *phba, uint8_t dpp_barset)
-+{
-+
-+	/* DPP region is supposed to cover 64-bit BAR2 */
-+	if (dpp_barset != WQ_PCI_BAR_4_AND_5) {
-+		lpfc_log_msg(phba, KERN_WARNING, LOG_INIT,
-+			     "3273 dpp_barset x%x != WQ_PCI_BAR_4_AND_5\n",
-+			     dpp_barset);
-+		return NULL;
-+	}
-+
-+	if (!phba->sli4_hba.dpp_regs_memmap_wc_p) {
-+		void __iomem *dpp_map;
-+
-+		dpp_map = ioremap_wc(phba->pci_bar2_map,
-+				     pci_resource_len(phba->pcidev,
-+						      PCI_64BIT_BAR4));
-+
-+		if (dpp_map)
-+			phba->sli4_hba.dpp_regs_memmap_wc_p = dpp_map;
-+	}
-+
-+	return phba->sli4_hba.dpp_regs_memmap_wc_p;
-+}
-+
- /**
-  * lpfc_modify_hba_eq_delay - Modify Delay Multiplier on EQs
-  * @phba: HBA structure that EQs are on.
-@@ -16901,9 +16927,6 @@ lpfc_wq_create(struct lpfc_hba *phba, struct lpfc_queue *wq,
- 	uint8_t dpp_barset;
- 	uint32_t dpp_offset;
- 	uint8_t wq_create_version;
--#ifdef CONFIG_X86
--	unsigned long pg_addr;
--#endif
- 
- 	/* sanity check on queue memory */
- 	if (!wq || !cq)
-@@ -17089,14 +17112,15 @@ lpfc_wq_create(struct lpfc_hba *phba, struct lpfc_queue *wq,
- 
- #ifdef CONFIG_X86
- 			/* Enable combined writes for DPP aperture */
--			pg_addr = (unsigned long)(wq->dpp_regaddr) & PAGE_MASK;
--			rc = set_memory_wc(pg_addr, 1);
--			if (rc) {
-+			bar_memmap_p = lpfc_dpp_wc_map(phba, dpp_barset);
-+			if (!bar_memmap_p) {
- 				lpfc_printf_log(phba, KERN_ERR, LOG_INIT,
- 					"3272 Cannot setup Combined "
- 					"Write on WQ[%d] - disable DPP\n",
- 					wq->queue_id);
- 				phba->cfg_enable_dpp = 0;
-+			} else {
-+				wq->dpp_regaddr = bar_memmap_p + dpp_offset;
- 			}
- #else
- 			phba->cfg_enable_dpp = 0;
-diff --git a/drivers/scsi/lpfc/lpfc_sli4.h b/drivers/scsi/lpfc/lpfc_sli4.h
-index 2541a8fba093f..323d3ed3272b5 100644
---- a/drivers/scsi/lpfc/lpfc_sli4.h
-+++ b/drivers/scsi/lpfc/lpfc_sli4.h
-@@ -783,6 +783,9 @@ struct lpfc_sli4_hba {
- 	void __iomem *dpp_regs_memmap_p;  /* Kernel memory mapped address for
- 					   * dpp registers
- 					   */
-+	void __iomem *dpp_regs_memmap_wc_p;/* Kernel memory mapped address for
-+					    * dpp registers with write combining
-+					    */
- 	union {
- 		struct {
- 			/* IF Type 0, BAR 0 PCI cfg space reg mem map */
+ 	ccb = pm8001_ccb_alloc(pm8001_ha, pm8001_dev, task);
 -- 
 2.51.0
 
