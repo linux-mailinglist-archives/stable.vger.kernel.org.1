@@ -1,61 +1,65 @@
-Return-Path: <stable+bounces-229439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228905-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UGa4GFlgwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229439-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:33 +0100
+	id QMWcEnJYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228905-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84A02F6E11
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3932F5FAA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3D3C9306B7B2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4CEE32E1A4F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6696B3CF051;
-	Mon, 23 Mar 2026 15:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEBD3B27F5;
+	Mon, 23 Mar 2026 14:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSojMKu0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCygplxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144AD3B38A0;
-	Mon, 23 Mar 2026 15:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA013B27D9;
+	Mon, 23 Mar 2026 14:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279238; cv=none; b=u4HIpKXKLC1lYUYs6GM0iMsFcl29uptahSfHdssRkMXcOyuqUuF7MKygQUwOCNdxHJJHMTsB9K8uit398VCalxZWlR4ssG066n68gWaGwC7zhKv+3eBwi2bNoorK7OAIjZ8lzYayiiecC3DU9ave8EhleugYi5yrjdJdlVFuFVw=
+	t=1774277450; cv=none; b=U7xiaDDvcyvJxxIrqV7AirLGjzx+qytuKpdA1Zwcx18/BO8x2s3vDoBMKFBglLj2FqwlETwpoymVU77cPtcy6uW9CKiYtS15j2h20ggRpb8f+4IetaKFDQA05iLnYwnYY2CMOKpNMuV/oJV5gXZepbtx/xudKZuubjhNZYw39rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279238; c=relaxed/simple;
-	bh=iapayuxHvqEvq5uX89ztw4TIBUF8Lzn9AFKWGaOYrhk=;
+	s=arc-20240116; t=1774277450; c=relaxed/simple;
+	bh=v4fLwQL/NYBrEhg80/5I3eBaqoR5StYLUz1NaQOXyi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aZo6DYwTsAAqknLFo3p0NuBciJg4qXFu0+YSP+W1FQm47BGAO8q4GDnWZzDZp3NGjMVnNX4squtkN2KH3Yd/SSQ45K1f23Wh9tDEEasimIGXxkX6BqJpYMaO8DgpPDV03AcRyrzuxoK0Ijncv3CMiAkhhVHOgcl3XhQ7EeiIcVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSojMKu0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A45C2BCB1;
-	Mon, 23 Mar 2026 15:20:37 +0000 (UTC)
+	 MIME-Version; b=AT6Bqg8XBzShRyhJuYkrbTSLSopNS6fVUPJuheaqerfscOiW4Sa4zTU+iJP1qk4HWrye1f28nCNZOHvww0NhPoffHsqS1oD0nmIBroGt97rsBthV5q8yG2+Cjqm71hLqfxvqTmjtAxyWdyIV3xF7ur+G8m9kQm4iUZosa27JYTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCygplxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E732EC4CEF7;
+	Mon, 23 Mar 2026 14:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279237;
-	bh=iapayuxHvqEvq5uX89ztw4TIBUF8Lzn9AFKWGaOYrhk=;
+	s=korg; t=1774277450;
+	bh=v4fLwQL/NYBrEhg80/5I3eBaqoR5StYLUz1NaQOXyi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSojMKu0dBRHVQFmrd/nqZkcPgdX0jNJM1S2wSHcmaxJE2s3/g/UpUu8Wqg9/3Oxk
-	 n5S6CqBuD21d/63vsgj6+JsYFM7kMjHrMEDY0KflPpao7CRmuUoZlfV2BxMpOo4sjM
-	 dGcdMaFzb2Z2DVAHTYvMXgLY1hL4VUxVCeDncwyI=
+	b=fCygplxaxEhe6WHypvaQKUCDINDXpGnN6K8DwK5lTN+OwYfIG4aD/p3bpdKRFJA44
+	 SbLPNY5v8Q4GLNuqQX0YzViTZXRHIT0Gv6QJqjxCHW6LvkOPFY28Nx417rkgh97pEL
+	 1ysKFrckExUrwSRBBKuNWWPa5YxMzhCrHFaXtbCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 521/567] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Alex Xu (Hello71)" <alex_y_xu@yahoo.ca>,
+	Kairui Song <ryncsn@gmail.com>,
+	Kairui Song <kasong@tencent.com>,
+	David Hildenbrand <david@redhat.com>,
+	Lance Yang <ioworker0@gmail.com>,
+	Matthew Wilcow <willy@infradead.org>,
+	Hugh Dickins <hughd@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 445/460] mm: shmem: fix potential data corruption during shmem swapin
 Date: Mon, 23 Mar 2026 14:47:21 +0100
-Message-ID: <20260323134546.897182423@linuxfoundation.org>
+Message-ID: <20260323134537.518504587@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +69,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229439-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-228905-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,yahoo.ca,gmail.com,tencent.com,redhat.com,infradead.org,google.com,linux-foundation.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: E84A02F6E11
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AD3932F5FAA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
 
-[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
+commit 058313515d5aab10d0a01dd634f92ed4a4e71d4c upstream.
 
-In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
-the packet, then decrements it by 1 to skip the protocol discriminator
-byte before passing it to DecodeH323_UserInformation(). If the encoded
-length is 0, the decrement wraps to -1, which is then passed as a
-large value to the decoder, leading to an out-of-bounds read.
+Alex and Kairui reported some issues (system hang or data corruption) when
+swapping out or swapping in large shmem folios.  This is especially easy
+to reproduce when the tmpfs is mount with the 'huge=within_size'
+parameter.  Thanks to Kairui's reproducer, the issue can be easily
+replicated.
 
-Add a check to ensure len is positive after the decrement.
+The root cause of the problem is that swap readahead may asynchronously
+swap in order 0 folios into the swap cache, while the shmem mapping can
+still store large swap entries.  Then an order 0 folio is inserted into
+the shmem mapping without splitting the large swap entry, which overwrites
+the original large swap entry, leading to data corruption.
 
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When getting a folio from the swap cache, we should split the large swap
+entry stored in the shmem mapping if the orders do not match, to fix this
+issue.
+
+Link: https://lkml.kernel.org/r/2fe47c557e74e9df5fe2437ccdc6c9115fa1bf70.1740476943.git.baolin.wang@linux.alibaba.com
+Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reported-by: Alex Xu (Hello71) <alex_y_xu@yahoo.ca>
+Reported-by: Kairui Song <ryncsn@gmail.com>
+Closes: https://lore.kernel.org/all/1738717785.im3r5g2vxc.none@localhost/
+Tested-by: Kairui Song <kasong@tencent.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Lance Yang <ioworker0@gmail.com>
+Cc: Matthew Wilcow <willy@infradead.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+[ hughd: removed skip_swapcache dependencies ]
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/shmem.c |   30 +++++++++++++++++++++++++++---
+ 1 file changed, 27 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index c972e9488e16f..7b1497ed97d26 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
- 				break;
- 			p++;
- 			len--;
-+			if (len <= 0)
-+				break;
- 			return DecodeH323_UserInformation(buf, p, len,
- 							  &q931->UUIE);
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -2132,7 +2132,7 @@ static int shmem_swapin_folio(struct ino
+ 	struct swap_info_struct *si;
+ 	struct folio *folio = NULL;
+ 	swp_entry_t swap;
+-	int error, nr_pages;
++	int error, nr_pages, order, split_order;
+ 
+ 	VM_BUG_ON(!*foliop || !xa_is_value(*foliop));
+ 	swap = radix_to_swp_entry(*foliop);
+@@ -2151,8 +2151,8 @@ static int shmem_swapin_folio(struct ino
+ 
+ 	/* Look it up and read it in.. */
+ 	folio = swap_cache_get_folio(swap, NULL, 0);
++	order = xa_get_order(&mapping->i_pages, index);
+ 	if (!folio) {
+-		int split_order;
+ 
+ 		/* Or update major stats only when swapin succeeds?? */
+ 		if (fault_type) {
+@@ -2189,13 +2189,37 @@ static int shmem_swapin_folio(struct ino
+ 			error = -ENOMEM;
+ 			goto failed;
  		}
--- 
-2.51.0
-
++	} else if (order != folio_order(folio)) {
++		/*
++		 * Swap readahead may swap in order 0 folios into swapcache
++		 * asynchronously, while the shmem mapping can still stores
++		 * large swap entries. In such cases, we should split the
++		 * large swap entry to prevent possible data corruption.
++		 */
++		split_order = shmem_split_large_entry(inode, index, swap, gfp);
++		if (split_order < 0) {
++			error = split_order;
++			goto failed;
++		}
++
++		/*
++		 * If the large swap entry has already been split, it is
++		 * necessary to recalculate the new swap entry based on
++		 * the old order alignment.
++		 */
++		if (split_order > 0) {
++			pgoff_t offset = index - round_down(index, 1 << split_order);
++
++			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
++		}
+ 	}
+ 
+ 	/* We have to do this with folio locked to prevent races */
+ 	folio_lock(folio);
+ 	if (!folio_test_swapcache(folio) ||
+ 	    folio->swap.val != swap.val ||
+-	    !shmem_confirm_swap(mapping, index, swap)) {
++	    !shmem_confirm_swap(mapping, index, swap) ||
++	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
+ 		error = -EEXIST;
+ 		goto unlock;
+ 	}
 
 
 
