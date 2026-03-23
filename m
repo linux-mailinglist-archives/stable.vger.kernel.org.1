@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228756-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIVXJkxJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228103-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:12 +0100
+	id 6A9XBqRWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228756-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD382F3E12
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F6A2F5BA9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD164300B116
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BC61632E03E6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703E63AE1AA;
-	Mon, 23 Mar 2026 13:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E8E3AF647;
+	Mon, 23 Mar 2026 14:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxA+2YPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH9aBSYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335F83AC0D2;
-	Mon, 23 Mar 2026 13:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3087B33CE9A;
+	Mon, 23 Mar 2026 14:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274134; cv=none; b=SVALcHmv3Ae/ehklxxMu6EERWZTgg5G9Wum2I129bP4tBXf+DtlbxfV8g1pcWm1GqlNzPVm1NFWCwFo/ctfHKN/ioDTP90rPTdXKxzhepUq2LcC9RQlLbkZlAw2Lx86C6pfkWhGcUzeNStmP2Zlz+erep31gyyttlcGPuCEniVU=
+	t=1774277039; cv=none; b=ZNypoeWSZvct7Pz0c+lBNL3v9EWGurrSAjQc6GVnSVYMEvuhhjFll8RPc8Npl4w4HgqKsKrgcVHCwFjZrEJI4krhLAmuj3omrQ4oKfqwlrBF1Yi1n+zR0y4Cu2cVOE48YOQbl0Qw6J+oJOeU9fZ+hDlpe+fH+k1JjGuLe39lf4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274134; c=relaxed/simple;
-	bh=WSeVqXUyh9l1DDYVdWrOVFqeiHzXQtFs8AG2NTsqkD0=;
+	s=arc-20240116; t=1774277039; c=relaxed/simple;
+	bh=1UCUmDknkmYjra8FXQ2nB4pFfw+UdedGBoSo4/VHUUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eK2f2i+bDNuRFWtev/U0v++JzmTKLF8exfRpB07suoT388KhcsjObbrBqoO7uqgmwYDhzon5RXGcYZ4vo+8m/++trRREZiq1JmWgaY78O52TTYlcdlsIgnRhl5QFQvxZT5m0noyonDX3mPcDDK3DipCysHviVBsPe7yZ3e6sbks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxA+2YPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A10C4CEF7;
-	Mon, 23 Mar 2026 13:55:33 +0000 (UTC)
+	 MIME-Version; b=ohoNYOXLZzT0562b/HnzLjDHdzFgRepCKbI2RQG4iVIPtYMgWiqUcXeZV+eB1VJfSn2TsWIn/uH1fUz/nOcMBZl50F1pYWeDwxj+D6SdCnQNOKhFHvqmnnGkrWou5dN9FAikKOAhMhbSO/nwJ7VfexOY/OAkTzLshmyWhct+7pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH9aBSYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F3DC4CEF7;
+	Mon, 23 Mar 2026 14:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274134;
-	bh=WSeVqXUyh9l1DDYVdWrOVFqeiHzXQtFs8AG2NTsqkD0=;
+	s=korg; t=1774277038;
+	bh=1UCUmDknkmYjra8FXQ2nB4pFfw+UdedGBoSo4/VHUUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxA+2YPk61JtFb4Lgpa6IKBJEzuZDWE6bRR1wqNBptyzvF6roBvGkWrkM9nG/YVkx
-	 9aTLTVXYarVTAn3+VUiuK47b7SHh3ANqgdBBu4lhTDG9qdKPLeQoLz1leOWHADcAOy
-	 moyoj25BHPP2ZfG8m6p7yL36cF31R9OJH59sS1JM=
+	b=bH9aBSYq+CTg9f62PJkbW4GtJMldQYRGnWB+W2g8Ae0+hKq2MaasAEEphJtwBEfmU
+	 PgX1CMzztFUEJcyTq03IA3w8QJ6v5I946p/vtmmUEnxaPdq2GptjptJUVZVK8Ocbx0
+	 Vez5uKKMo499IdhEQUVFC0+R6HfKayeZIWhlPsUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Eggers <ceggers@arri.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 118/220] Bluetooth: LE L2CAP: Disconnect if received packets SDU exceeds IMTU
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.12 299/460] s390/stackleak: Fix __stackleak_poison() inline assembly constraint
 Date: Mon, 23 Mar 2026 14:44:55 +0100
-Message-ID: <20260323134508.332575668@linuxfoundation.org>
+Message-ID: <20260323134533.829643205@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +65,75 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228756-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228103-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arri.de:email]
-X-Rspamd-Queue-Id: 1BD382F3E12
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 65F6A2F5BA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Eggers <ceggers@arri.de>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit e1d9a66889867c232657a9b6f25d451d7c3ab96f ]
+commit 674c5ff0f440a051ebf299d29a4c013133d81a65 upstream.
 
-Core 6.0, Vol 3, Part A, 3.4.3:
-"If the SDU length field value exceeds the receiver's MTU, the receiver
-shall disconnect the channel..."
+The __stackleak_poison() inline assembly comes with a "count" operand where
+the "d" constraint is used. "count" is used with the exrl instruction and
+"d" means that the compiler may allocate any register from 0 to 15.
 
-This fixes L2CAP/LE/CFC/BV-26-C (running together with 'l2test -r -P
-0x0027 -V le_public -I 100').
+If the compiler would allocate register 0 then the exrl instruction would
+not or the value of "count" into the executed instruction - resulting in a
+stackframe which is only partially poisoned.
 
-Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
-Signed-off-by: Christian Eggers <ceggers@arri.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use the correct "a" constraint, which excludes register 0 from register
+allocation.
+
+Fixes: 2a405f6bb3a5 ("s390/stackleak: provide fast __stackleak_poison() implementation")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Vasily Gorbik <gor@linux.ibm.com>
+Link: https://lore.kernel.org/r/20260302133500.1560531-4-hca@linux.ibm.com
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/s390/include/asm/processor.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 319c87bd795d5..1618fe98dce71 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6654,8 +6654,10 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
- 		return -ENOBUFS;
- 	}
- 
--	if (chan->imtu < skb->len) {
--		BT_ERR("Too big LE L2CAP PDU");
-+	if (skb->len > chan->imtu) {
-+		BT_ERR("Too big LE L2CAP PDU: len %u > %u", skb->len,
-+		       chan->imtu);
-+		l2cap_send_disconn_req(chan, ECONNRESET);
- 		return -ENOBUFS;
- 	}
- 
-@@ -6681,7 +6683,9 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
- 		       sdu_len, skb->len, chan->imtu);
- 
- 		if (sdu_len > chan->imtu) {
--			BT_ERR("Too big LE L2CAP SDU length received");
-+			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
-+			       skb->len, sdu_len);
-+			l2cap_send_disconn_req(chan, ECONNRESET);
- 			err = -EMSGSIZE;
- 			goto failed;
- 		}
--- 
-2.51.0
-
+--- a/arch/s390/include/asm/processor.h
++++ b/arch/s390/include/asm/processor.h
+@@ -168,7 +168,7 @@ static __always_inline void __stackleak_
+ 		"	j	4f\n"
+ 		"3:	mvc	8(1,%[addr]),0(%[addr])\n"
+ 		"4:\n"
+-		: [addr] "+&a" (erase_low), [count] "+&d" (count), [tmp] "=&a" (tmp)
++		: [addr] "+&a" (erase_low), [count] "+&a" (count), [tmp] "=&a" (tmp)
+ 		: [poison] "d" (poison)
+ 		: "memory", "cc"
+ 		);
 
 
 
