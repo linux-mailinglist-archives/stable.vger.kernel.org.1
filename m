@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229362-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKVuCKxQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228172-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:40 +0100
+	id MOVFInpewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229362-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7116D2F4F2B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22DE62F69CC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6776530E425D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:01:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C0EB53060A1B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF1E3B0ACD;
-	Mon, 23 Mar 2026 13:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4063BBA17;
+	Mon, 23 Mar 2026 15:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIMBFXJN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1u5s6CH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7963AEF25;
-	Mon, 23 Mar 2026 13:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B0B3B47CF;
+	Mon, 23 Mar 2026 15:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274345; cv=none; b=cMmGzSblOFITpx/PGAFkT3n9ZI4bHnrNNHsFa260zflpPPyksC2sFBsDmsQPM+Pc0ywlhrzjkQemVtDa5B7zM2DYOAMojJPlHzLe7dxc7HEu9ZqAOt9On+BpjK4Q1quGzwAyFBS0BwdV/5FVi0kD0n4jysWQxDTRO8Q5zeDGDBY=
+	t=1774278875; cv=none; b=eeQOrUQG9g02czx8+y0QZZSjpk2FNKVWJFpX3mTa0CS/lQQcsSAYkLDY8pj3g6e4JmdqMvFqDdeNf3u5+6M2RYwDJwUr2c5ZZ7Zz+h4A8M6GGDpuGD5TPT72e3M67xgWdM0Eo9oMwG9UigyPLa8iHpJdDH9/t9x6WRoy3JvM/6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274345; c=relaxed/simple;
-	bh=NA5QfgwimWWVNGX4QrCyegrmdQ/FsD2lui2InQvZpPI=;
+	s=arc-20240116; t=1774278875; c=relaxed/simple;
+	bh=q+T1pzfP83n+bMRmVRJcN5N8ezn9yRJr9lbLUlKHbOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V7dezjQvLv1OxdgS+Q1dt8bEjjBLKIQlA3PtkhCX+1zL8b+ydY80NQ6p3pB/zCPpNvkNF9rBuiZWq+0zqp3iyJ7RWJMfsJgQiiSxGXOrR6ATd9jkdo5+jqbwR/f+vhKrxKzlMc83aUgz6W2U2JfqvRwxtNvpD8TE0Ov1iqLdCUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIMBFXJN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF22EC2BCB1;
-	Mon, 23 Mar 2026 13:59:04 +0000 (UTC)
+	 MIME-Version; b=CtMnWkZiws7IhSUIZL/iqvktNOkqFEJRD2WOG+W4sTuYU1XAJTdkEwLxr2fk6agEZmn4ay+bbGUWv7ehYOQ3fbF1vvtSRzEDCJETKdumKk5f+vL/yiACTcwoL39W68gusgdHxRQ0FVCUc4NDXJ48aNJWgozXF95uwtLm/oFqKf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1u5s6CH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9FAC4CEF7;
+	Mon, 23 Mar 2026 15:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274345;
-	bh=NA5QfgwimWWVNGX4QrCyegrmdQ/FsD2lui2InQvZpPI=;
+	s=korg; t=1774278875;
+	bh=q+T1pzfP83n+bMRmVRJcN5N8ezn9yRJr9lbLUlKHbOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gIMBFXJNvsSHwcSuQjiqDp8TlsaI50Ch13aS33MenCHIS1EB3jYdwnNizB6g1erFs
-	 dL+P1zGiufwF88lT6EdAq66lrWP+YYyb47c8EGGC7Ceb6c5rKdQfzCraPdj4SqvM9l
-	 QV/iauopmHqlf2hJ1YXZPy3mkQMNT2036g98g8gk=
+	b=Q1u5s6CHnO/EDV9ya1DIbcM1j+0Tqe4RWpd4RQwtNTda1377/lsx9m2v4ijz+1xki
+	 jOYpXrpsT0twcdNoac0fh56KypZJwJi3Y1BgQTCqy4Ct3AJdxzEVMz9Mxr4sxE/1Kx
+	 8ZrWFk/YVHnS2mmos2YpfuwiAjeAqWatUcZgbU8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linusw@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.19 188/220] i2c: pxa: defer reset on Armada 3700 when recovery is used
-Date: Mon, 23 Mar 2026 14:46:05 +0100
-Message-ID: <20260323134510.529401112@linuxfoundation.org>
+	syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 446/567] mptcp: pm: in-kernel: always set ID as avail when rm endp
+Date: Mon, 23 Mar 2026 14:46:06 +0100
+Message-ID: <20260323134545.006365035@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,166 +65,202 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228172-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sartura.hr,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229362-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,f56f7d56e2c6e11a01b6];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7116D2F4F2B
+X-Rspamd-Queue-Id: 22DE62F69CC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 78a6ee14f8b9e1c8f7c77612122444f3be8dc8cc upstream.
+commit d191101dee25567c2af3b28565f45346c33d65f5 upstream.
 
-The I2C communication is completely broken on the Armada 3700 platform
-since commit 0b01392c18b9 ("i2c: pxa: move to generic GPIO recovery").
+Syzkaller managed to find a combination of actions that was generating
+this warning:
 
-For example, on the Methode uDPU board, probing of the two onboard
-temperature sensors fails ...
+  WARNING: net/mptcp/pm_kernel.c:1074 at __mark_subflow_endp_available net/mptcp/pm_kernel.c:1074 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_fullmesh net/mptcp/pm_kernel.c:1446 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_set_flags_all net/mptcp/pm_kernel.c:1474 [inline], CPU#1: syz.7.48/2535
+  WARNING: net/mptcp/pm_kernel.c:1074 at mptcp_pm_nl_set_flags+0x5de/0x640 net/mptcp/pm_kernel.c:1538, CPU#1: syz.7.48/2535
+  Modules linked in:
+  CPU: 1 UID: 0 PID: 2535 Comm: syz.7.48 Not tainted 6.18.0-03987-gea5f5e676cf5 #17 PREEMPT(voluntary)
+  Hardware name: QEMU Ubuntu 25.10 PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+  RIP: 0010:__mark_subflow_endp_available net/mptcp/pm_kernel.c:1074 [inline]
+  RIP: 0010:mptcp_pm_nl_fullmesh net/mptcp/pm_kernel.c:1446 [inline]
+  RIP: 0010:mptcp_pm_nl_set_flags_all net/mptcp/pm_kernel.c:1474 [inline]
+  RIP: 0010:mptcp_pm_nl_set_flags+0x5de/0x640 net/mptcp/pm_kernel.c:1538
+  Code: 89 c7 e8 c5 8c 73 fe e9 f7 fd ff ff 49 83 ef 80 e8 b7 8c 73 fe 4c 89 ff be 03 00 00 00 e8 4a 29 e3 fe eb ac e8 a3 8c 73 fe 90 <0f> 0b 90 e9 3d ff ff ff e8 95 8c 73 fe b8 a1 ff ff ff eb 1a e8 89
+  RSP: 0018:ffffc9001535b820 EFLAGS: 00010287
+  netdevsim0: tun_chr_ioctl cmd 1074025677
+  RAX: ffffffff82da294d RBX: 0000000000000001 RCX: 0000000000080000
+  RDX: ffffc900096d0000 RSI: 00000000000006d6 RDI: 00000000000006d7
+  netdevsim0: linktype set to 823
+  RBP: ffff88802cdb2240 R08: 00000000000104ae R09: ffffffffffffffff
+  R10: ffffffff82da27d4 R11: 0000000000000000 R12: 0000000000000000
+  R13: ffff88801246d8c0 R14: ffffc9001535b8b8 R15: ffff88802cdb1800
+  FS:  00007fc6ac5a76c0(0000) GS:ffff8880f90c8000(0000) knlGS:0000000000000000
+  netlink: 'syz.3.50': attribute type 5 has an invalid length.
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  netlink: 1232 bytes leftover after parsing attributes in process `syz.3.50'.
+  CR2: 0000200000010000 CR3: 0000000025b1a000 CR4: 0000000000350ef0
+  Call Trace:
+   <TASK>
+   mptcp_pm_set_flags net/mptcp/pm_netlink.c:277 [inline]
+   mptcp_pm_nl_set_flags_doit+0x1d7/0x210 net/mptcp/pm_netlink.c:282
+   genl_family_rcv_msg_doit+0x117/0x180 net/netlink/genetlink.c:1115
+   genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+   genl_rcv_msg+0x3a8/0x3f0 net/netlink/genetlink.c:1210
+   netlink_rcv_skb+0x16d/0x240 net/netlink/af_netlink.c:2550
+   genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+   netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+   netlink_unicast+0x3e9/0x4c0 net/netlink/af_netlink.c:1344
+   netlink_sendmsg+0x4ab/0x5b0 net/netlink/af_netlink.c:1894
+   sock_sendmsg_nosec net/socket.c:718 [inline]
+   __sock_sendmsg+0xc9/0xf0 net/socket.c:733
+   ____sys_sendmsg+0x272/0x3b0 net/socket.c:2608
+   ___sys_sendmsg+0x2de/0x320 net/socket.c:2662
+   __sys_sendmsg net/socket.c:2694 [inline]
+   __do_sys_sendmsg net/socket.c:2699 [inline]
+   __se_sys_sendmsg net/socket.c:2697 [inline]
+   __x64_sys_sendmsg+0x110/0x1a0 net/socket.c:2697
+   do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+   do_syscall_64+0xed/0x360 arch/x86/entry/syscall_64.c:94
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  RIP: 0033:0x7fc6adb66f6d
+  Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+  RSP: 002b:00007fc6ac5a6ff8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+  RAX: ffffffffffffffda RBX: 00007fc6addf5fa0 RCX: 00007fc6adb66f6d
+  RDX: 0000000000048084 RSI: 00002000000002c0 RDI: 000000000000000e
+  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+  netlink: 'syz.5.51': attribute type 2 has an invalid length.
+  R13: 00007fff25e91fe0 R14: 00007fc6ac5a7ce4 R15: 00007fff25e920d7
+   </TASK>
 
-  [    7.271713] i2c i2c-0: using pinctrl states for GPIO recovery
-  [    7.277503] i2c i2c-0:  PXA I2C adapter
-  [    7.282199] i2c i2c-1: using pinctrl states for GPIO recovery
-  [    7.288241] i2c i2c-1:  PXA I2C adapter
-  [    7.292947] sfp sfp-eth1: Host maximum power 3.0W
-  [    7.299614] sfp sfp-eth0: Host maximum power 3.0W
-  [    7.308178] lm75 1-0048: supply vs not found, using dummy regulator
-  [   32.489631] lm75 1-0048: probe with driver lm75 failed with error -121
-  [   32.496833] lm75 1-0049: supply vs not found, using dummy regulator
-  [   82.890614] lm75 1-0049: probe with driver lm75 failed with error -121
+The actions that caused that seem to be:
 
-... and accessing the plugged-in SFP modules also does not work:
+ - Create an MPTCP endpoint for address A without any flags
+ - Create a new MPTCP connection from address A
+ - Remove the MPTCP endpoint: the corresponding subflows will be removed
+ - Recreate the endpoint with the same ID, but with the subflow flag
+ - Change the same endpoint to add the fullmesh flag
 
-  [  511.298537] sfp sfp-eth1: please wait, module slow to respond
-  [  536.488530] sfp sfp-eth0: please wait, module slow to respond
-  ...
-  [ 1065.688536] sfp sfp-eth1: failed to read EEPROM: -EREMOTEIO
-  [ 1090.888532] sfp sfp-eth0: failed to read EEPROM: -EREMOTEIO
+In this case, msk->pm.local_addr_used has been kept to 0 as expected,
+but the corresponding bit in msk->pm.id_avail_bitmap was still unset
+after having removed the endpoint, causing the splat later on.
 
-After a discussion [1], there was an attempt to fix the problem by
-reverting the offending change by commit 7b211c767121 ("Revert "i2c:
-pxa: move to generic GPIO recovery""), but that only helped to fix
-the issue in the 6.1.y stable tree. The reason behind the partial succes
-is that there was another change in commit 20cb3fce4d60 ("i2c: Set i2c
-pinctrl recovery info from it's device pinctrl") in the 6.3-rc1 cycle
-which broke things further.
+When removing an endpoint, the corresponding endpoint ID was only marked
+as available for "signal" types with an announced address, plus all
+"subflow" types, but not the other types like an endpoint corresponding
+to the initial subflow. In these cases, re-creating an endpoint with the
+same ID didn't signal/create anything. Here, adding the fullmesh flag
+was creating the splat when calling __mark_subflow_endp_available() from
+mptcp_pm_nl_fullmesh(), because msk->pm.local_addr_used was set to 0
+while the ID was marked as used.
 
-The cause of the problem is the same in case of both offending commits
-mentioned above. Namely, the I2C core code changes the pinctrl state to
-GPIO while running the recovery initialization code. Although the PXA
-specific initialization also does this, but the key difference is that
-it happens before the controller is getting enabled in i2c_pxa_reset(),
-whereas in the case of the generic initialization it happens after that.
+To fix this issue, the corresponding bit in msk->pm.id_avail_bitmap can
+always be set as available when removing an MPTCP in-kernel endpoint. In
+other words, moving the call to __set_bit() to do it in all cases,
+except for "subflow" types where this bit is handled in a dedicated
+helper.
 
-Change the code to reset the controller only before the first transfer
-instead of before registering the controller. This ensures that the
-controller is not enabled at the time when the generic recovery code
-performs the pinctrl state changes, thus avoids the problem described
-above.
+Note: instead of adding a new spin_(un)lock_bh that would be taken in
+all cases, do all the actions requiring the spin lock under the same
+block.
 
-As the result this change restores the original behaviour, which in
-turn makes the I2C communication to work again as it can be seen from
-the following log:
+This modification potentially fixes another issue reported by syzbot,
+see [1]. But without a reproducer or more details about what exactly
+happened before, it is hard to confirm.
 
-  [    7.363250] i2c i2c-0: using pinctrl states for GPIO recovery
-  [    7.369041] i2c i2c-0:  PXA I2C adapter
-  [    7.373673] i2c i2c-1: using pinctrl states for GPIO recovery
-  [    7.379742] i2c i2c-1:  PXA I2C adapter
-  [    7.384506] sfp sfp-eth1: Host maximum power 3.0W
-  [    7.393013] sfp sfp-eth0: Host maximum power 3.0W
-  [    7.399266] lm75 1-0048: supply vs not found, using dummy regulator
-  [    7.407257] hwmon hwmon0: temp1_input not attached to any thermal zone
-  [    7.413863] lm75 1-0048: hwmon0: sensor 'tmp75c'
-  [    7.418746] lm75 1-0049: supply vs not found, using dummy regulator
-  [    7.426371] hwmon hwmon1: temp1_input not attached to any thermal zone
-  [    7.432972] lm75 1-0049: hwmon1: sensor 'tmp75c'
-  [    7.755092] sfp sfp-eth1: module MENTECHOPTO      POS22-LDCC-KR    rev 1.0  sn MNC208U90009     dc 200828
-  [    7.764997] mvneta d0040000.ethernet eth1: unsupported SFP module: no common interface modes
-  [    7.785362] sfp sfp-eth0: module Mikrotik         S-RJ01           rev 1.0  sn 61B103C55C58     dc 201022
-  [    7.803426] hwmon hwmon2: temp1_input not attached to any thermal zone
-
-Link: https://lore.kernel.org/r/20230926160255.330417-1-robert.marko@sartura.hr #1
-
-Cc: stable@vger.kernel.org # 6.3+
-Fixes: 20cb3fce4d60 ("i2c: Set i2c pinctrl recovery info from it's device pinctrl")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Tested-by: Robert Marko <robert.marko@sartura.hr>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260226-i2c-pxa-fix-i2c-communication-v4-1-797a091dae87@gmail.com
+Fixes: e255683c06df ("mptcp: pm: re-using ID of unused removed ADD_ADDR")
+Cc: stable@vger.kernel.org
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/606
+Reported-by: syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/68fcfc4a.050a0220.346f24.02fb.GAE@google.com [1]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260205-net-mptcp-misc-fixes-6-19-rc8-v2-1-c2720ce75c34@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflict in pm_netlink.c, because commit 8617e85e04bd ("mptcp: pm:
+  split in-kernel PM specific code") is not in this version, and move
+  code from pm_netlink.c to pm_kernel.c. Also, commit 636113918508
+  ("mptcp: pm: remove '_nl' from mptcp_pm_nl_rm_addr_received") renamed
+  mptcp_pm_nl_rm_subflow_received() to mptcp_pm_rm_subflow(). Apart from
+  that, the same patch can be applied in pm_netlink.c. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-pxa.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |   20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -268,6 +268,7 @@ struct pxa_i2c {
- 	struct pinctrl		*pinctrl;
- 	struct pinctrl_state	*pinctrl_default;
- 	struct pinctrl_state	*pinctrl_recovery;
-+	bool			reset_before_xfer;
- };
- 
- #define _IBMR(i2c)	((i2c)->reg_ibmr)
-@@ -1144,6 +1145,11 @@ static int i2c_pxa_xfer(struct i2c_adapt
- {
- 	struct pxa_i2c *i2c = adap->algo_data;
- 
-+	if (i2c->reset_before_xfer) {
-+		i2c_pxa_reset(i2c);
-+		i2c->reset_before_xfer = false;
-+	}
-+
- 	return i2c_pxa_internal_xfer(i2c, msgs, num, i2c_pxa_do_xfer);
- }
- 
-@@ -1521,7 +1527,16 @@ static int i2c_pxa_probe(struct platform
- 		}
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1647,10 +1647,8 @@ static bool mptcp_pm_remove_anno_addr(st
+ 	ret = remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+ 		spin_lock_bh(&msk->pm.lock);
+-		if (ret) {
+-			__set_bit(addr->id, msk->pm.id_avail_bitmap);
++		if (ret)
+ 			msk->pm.add_addr_signaled--;
+-		}
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		spin_unlock_bh(&msk->pm.lock);
  	}
+@@ -1688,17 +1686,15 @@ static int mptcp_nl_remove_subflow_and_s
+ 					  !(entry->flags & MPTCP_PM_ADDR_FLAG_IMPLICIT));
  
--	i2c_pxa_reset(i2c);
-+	/*
-+	 * Skip reset on Armada 3700 when recovery is used to avoid
-+	 * controller hang due to the pinctrl state changes done by
-+	 * the generic recovery initialization code. The reset will
-+	 * be performed later, prior to the first transfer.
-+	 */
-+	if (i2c_type == REGS_A3700 && i2c->adap.bus_recovery_info)
-+		i2c->reset_before_xfer = true;
-+	else
-+		i2c_pxa_reset(i2c);
+ 		list.ids[0] = mptcp_endp_get_local_id(msk, addr);
+-		if (remove_subflow) {
+-			spin_lock_bh(&msk->pm.lock);
+-			mptcp_pm_nl_rm_subflow_received(msk, &list);
+-			spin_unlock_bh(&msk->pm.lock);
+-		}
  
- 	ret = i2c_add_numbered_adapter(&i2c->adap);
- 	if (ret < 0)
+-		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
+-			spin_lock_bh(&msk->pm.lock);
++		spin_lock_bh(&msk->pm.lock);
++		if (remove_subflow)
++			mptcp_pm_nl_rm_subflow_received(msk, &list);
++		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW)
+ 			__mark_subflow_endp_available(msk, list.ids[0]);
+-			spin_unlock_bh(&msk->pm.lock);
+-		}
++		else /* mark endp ID as available, e.g. Signal or MPC endp */
++			__set_bit(addr->id, msk->pm.id_avail_bitmap);
++		spin_unlock_bh(&msk->pm.lock);
+ 
+ 		if (msk->mpc_endpoint_id == entry->addr.id)
+ 			msk->mpc_endpoint_id = 0;
 
 
 
