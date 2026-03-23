@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229385-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAVnMK9NwWmxSAQAu9opvQ
-	(envelope-from <stable+bounces-228214-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:55 +0100
+	id MCoBNs1cwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229385-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20CF42F4803
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E8A2F6695
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 352D13020FEC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1205B3035EE9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0243B5826;
-	Mon, 23 Mar 2026 14:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E6A3B5832;
+	Mon, 23 Mar 2026 15:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jq0MYFqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vY3W5WJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CC33B52F5;
-	Mon, 23 Mar 2026 14:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECFF2773D8;
+	Mon, 23 Mar 2026 15:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274471; cv=none; b=DMyPY5ek7+mWhQ+9SGRgNJVI5EYU3pvpi73SSmSc7dB78tmXFdW5fT8hool/bE90DoqI1919ACs0yWtj4gaElPgIHehVbTY1Ly8Gu2WEj9TNLK15k4Aah8IdDWQPrl8tneVyoKiz7UC7SW3S3AorZJXDG9fbm9SvC+vKefp0bkk=
+	t=1774278948; cv=none; b=QTX0B2TPf0TBawbNaMFiSVE7NrtYiIWAMKo0pSwllXxkGZVlF+iuj7JbiiSnhmEPeQsgMR2L7qHueAdWjCBesJe79PVJsuC/uPfMGimzaw8NGtPG91bTnN0BSF07r5qzO2qOTk8L72Re/V+2BOh3RwbSGzObAnDiUCKk3aPKVTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274471; c=relaxed/simple;
-	bh=0sV07C4vYro8LlX+T/h0g5IBrpL+QJ236Ujzf8fMVKM=;
+	s=arc-20240116; t=1774278948; c=relaxed/simple;
+	bh=ip2UikrUSLlBF8ONThPwIf5nuRH24rU/D9DhjYlnifw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q2XDHwAvSsQge30Eo0mFFh/s6yCpv4a7C1TXrUPn+02iUpZzTPzfk4wOq1zVwfQSVceXngWJ55OAU6OyIfyCdwSUGYvGO93GOPPyWwQZpgMP0crdpjFC61QxRzPO2T6fNYA3skQPP2DTVYtdgBiY0Y5K12ol2GLSAfT5ATHmwxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jq0MYFqD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C3EC4CEF7;
-	Mon, 23 Mar 2026 14:01:10 +0000 (UTC)
+	 MIME-Version; b=Sa4Cq52+ITrKsOU2MOuKhmaI6/JOss1GGZnz2Qji+Z8ZzCc/8q+ikJDL5REu0T0+VygCcQ3/vK0r6IMK3LfdrpYG3VRLrqfecLCJUoNqpeKz+KRudvX5nfsctUqnJLPifAwNq5ln20er7x936GgIvPwL+7/NQX6ktAclT54zDk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vY3W5WJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 672B3C4CEF7;
+	Mon, 23 Mar 2026 15:15:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274470;
-	bh=0sV07C4vYro8LlX+T/h0g5IBrpL+QJ236Ujzf8fMVKM=;
+	s=korg; t=1774278948;
+	bh=ip2UikrUSLlBF8ONThPwIf5nuRH24rU/D9DhjYlnifw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jq0MYFqDTcvLsPMj8ATdg6//SL2UpCRKBlSxLOTJeDWsD9fFaS8M7YkjlwXR4gGQ2
-	 cMz7Uplw/F1yxh8wkSlfJ1UjYASLWxJ2Q3rfErlwkGvmwd9IfTx3D0N59EZMIXiL6K
-	 +k3wQYkP+wLfOYNKDf7wUsG0VDyqfJOLFjDWbxDA=
+	b=vY3W5WJr9qDK1ZMnaK+laDpreDYE105LZmNC5AxYyHNQ1zcd0ob18NoHdKiV9ebOi
+	 CWRLZn5dwfvWNBDApAPlOiwEmcsKY7nAHx60bwRE75BOUMnuBYCSxzzJzUKAUInJt7
+	 rK/IsXbh/tp6In9RgvHqXQm5R1w+v4fm1N4ATNMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Bukte <rahul.bukte@sony.com>,
-	Suraj Kandpal <suraj.kandpal@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Harini Katakam <harini.katakam@amd.com>,
+	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 214/220] drm/i915/gt: Check set_default_submission() before deferencing
+Subject: [PATCH 6.6 471/567] net: macb: queue tie-off or disable during WOL suspend
 Date: Mon, 23 Mar 2026 14:46:31 +0100
-Message-ID: <20260323134511.287165652@linuxfoundation.org>
+Message-ID: <20260323134545.640113522@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,135 +72,217 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228214-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229385-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 20CF42F4803
+X-Rspamd-Queue-Id: 77E8A2F6695
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Bukte <rahul.bukte@sony.com>
+From: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
 
-[ Upstream commit 0162ab3220bac870e43e229e6e3024d1a21c3f26 ]
+[ Upstream commit 759cc793ebfc2d1a02f357ae97e5dcdcd63f758f ]
 
-When the i915 driver firmware binaries are not present, the
-set_default_submission pointer is not set. This pointer is
-dereferenced during suspend anyways.
+When GEM is used as a wake device, it is not mandatory for the RX DMA
+to be active. The RX engine in IP only needs to receive and identify
+a wake packet through an interrupt. The wake packet is of no further
+significance; hence, it is not required to be copied into memory.
+By disabling RX DMA during suspend, we can avoid unnecessary DMA
+processing of any incoming traffic.
 
-Add a check to make sure it is set before dereferencing.
+During suspend, perform either of the below operations:
 
-[   23.289926] PM: suspend entry (deep)
-[   23.293558] Filesystems sync: 0.000 seconds
-[   23.298010] Freezing user space processes
-[   23.302771] Freezing user space processes completed (elapsed 0.000 seconds)
-[   23.309766] OOM killer disabled.
-[   23.313027] Freezing remaining freezable tasks
-[   23.318540] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
-[   23.342038] serial 00:05: disabled
-[   23.345719] serial 00:02: disabled
-[   23.349342] serial 00:01: disabled
-[   23.353782] sd 0:0:0:0: [sda] Synchronizing SCSI cache
-[   23.358993] sd 1:0:0:0: [sdb] Synchronizing SCSI cache
-[   23.361635] ata1.00: Entering standby power mode
-[   23.368863] ata2.00: Entering standby power mode
-[   23.445187] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[   23.452194] #PF: supervisor instruction fetch in kernel mode
-[   23.457896] #PF: error_code(0x0010) - not-present page
-[   23.463065] PGD 0 P4D 0
-[   23.465640] Oops: Oops: 0010 [#1] SMP NOPTI
-[   23.469869] CPU: 8 UID: 0 PID: 211 Comm: kworker/u48:18 Tainted: G S      W           6.19.0-rc4-00020-gf0b9d8eb98df #10 PREEMPT(voluntary)
-[   23.482512] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
-[   23.496511] Workqueue: async async_run_entry_fn
-[   23.501087] RIP: 0010:0x0
-[   23.503755] Code: Unable to access opcode bytes at 0xffffffffffffffd6.
-[   23.510324] RSP: 0018:ffffb4a60065fca8 EFLAGS: 00010246
-[   23.515592] RAX: 0000000000000000 RBX: ffff9f428290e000 RCX: 000000000000000f
-[   23.522765] RDX: 0000000000000000 RSI: 0000000000000282 RDI: ffff9f428290e000
-[   23.529937] RBP: ffff9f4282907070 R08: ffff9f4281130428 R09: 00000000ffffffff
-[   23.537111] R10: 0000000000000000 R11: 0000000000000001 R12: ffff9f42829070f8
-[   23.544284] R13: ffff9f4282906028 R14: ffff9f4282900000 R15: ffff9f4282906b68
-[   23.551457] FS:  0000000000000000(0000) GS:ffff9f466b2cf000(0000) knlGS:0000000000000000
-[   23.559588] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[   23.565365] CR2: ffffffffffffffd6 CR3: 000000031c230001 CR4: 0000000000f70ef0
-[   23.572539] PKRU: 55555554
-[   23.575281] Call Trace:
-[   23.577770]  <TASK>
-[   23.579905]  intel_engines_reset_default_submission+0x42/0x60
-[   23.585695]  __intel_gt_unset_wedged+0x191/0x200
-[   23.590360]  intel_gt_unset_wedged+0x20/0x40
-[   23.594675]  gt_sanitize+0x15e/0x170
-[   23.598290]  i915_gem_suspend_late+0x6b/0x180
-[   23.602692]  i915_drm_suspend_late+0x35/0xf0
-[   23.607008]  ? __pfx_pci_pm_suspend_late+0x10/0x10
-[   23.611843]  dpm_run_callback+0x78/0x1c0
-[   23.615817]  device_suspend_late+0xde/0x2e0
-[   23.620037]  async_suspend_late+0x18/0x30
-[   23.624082]  async_run_entry_fn+0x25/0xa0
-[   23.628129]  process_one_work+0x15b/0x380
-[   23.632182]  worker_thread+0x2a5/0x3c0
-[   23.635973]  ? __pfx_worker_thread+0x10/0x10
-[   23.640279]  kthread+0xf6/0x1f0
-[   23.643464]  ? __pfx_kthread+0x10/0x10
-[   23.647263]  ? __pfx_kthread+0x10/0x10
-[   23.651045]  ret_from_fork+0x131/0x190
-[   23.654837]  ? __pfx_kthread+0x10/0x10
-[   23.658634]  ret_from_fork_asm+0x1a/0x30
-[   23.662597]  </TASK>
-[   23.664826] Modules linked in:
-[   23.667914] CR2: 0000000000000000
-[   23.671271] ------------[ cut here ]------------
+- tie-off/dummy descriptor: Disable unused queues by connecting
+  them to a looped descriptor chain without free slots.
 
-Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
-Link: https://patch.msgid.link/20260203044839.1555147-1-suraj.kandpal@intel.com
-(cherry picked from commit daa199abc3d3d1740c9e3a2c3e9216ae5b447cad)
-Fixes: ff44ad51ebf8 ("drm/i915: Move engine->submit_request selection to a vfunc")
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+- queue disable: The newer IP version allows disabling individual queues.
+
+Co-developed-by: Harini Katakam <harini.katakam@amd.com>
+Signed-off-by: Harini Katakam <harini.katakam@amd.com>
+Signed-off-by: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Tested-by: Claudiu Beznea <claudiu.beznea@tuxon.dev> # on SAMA7G5
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 718d0766ce4c ("net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/intel_engine_cs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb.h      |    7 +++
+ drivers/net/ethernet/cadence/macb_main.c |   60 +++++++++++++++++++++++++++++--
+ 2 files changed, 64 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-index b721bbd233567..ce8cdd517daa1 100644
---- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
-@@ -1969,7 +1969,8 @@ void intel_engines_reset_default_submission(struct intel_gt *gt)
- 		if (engine->sanitize)
- 			engine->sanitize(engine);
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -645,6 +645,10 @@
+ #define GEM_T2OFST_OFFSET			0 /* offset value */
+ #define GEM_T2OFST_SIZE				7
  
--		engine->set_default_submission(engine);
-+		if (engine->set_default_submission)
-+			engine->set_default_submission(engine);
- 	}
++/* Bitfields in queue pointer registers */
++#define MACB_QUEUE_DISABLE_OFFSET		0 /* disable queue */
++#define MACB_QUEUE_DISABLE_SIZE			1
++
+ /* Offset for screener type 2 compare values (T2CMPOFST).
+  * Note the offset is applied after the specified point,
+  * e.g. GEM_T2COMPOFST_ETYPE denotes the EtherType field, so an offset
+@@ -733,6 +737,7 @@
+ #define MACB_CAPS_NEEDS_RSTONUBR		0x00000100
+ #define MACB_CAPS_MIIONRGMII			0x00000200
+ #define MACB_CAPS_NEED_TSUCLK			0x00000400
++#define MACB_CAPS_QUEUE_DISABLE			0x00000800
+ #define MACB_CAPS_PCS				0x01000000
+ #define MACB_CAPS_HIGH_SPEED			0x02000000
+ #define MACB_CAPS_CLK_HW_CHG			0x04000000
+@@ -1253,6 +1258,8 @@ struct macb {
+ 	u32	(*macb_reg_readl)(struct macb *bp, int offset);
+ 	void	(*macb_reg_writel)(struct macb *bp, int offset, u32 value);
+ 
++	struct macb_dma_desc	*rx_ring_tieoff;
++	dma_addr_t		rx_ring_tieoff_dma;
+ 	size_t			rx_buffer_size;
+ 
+ 	unsigned int		rx_ring_size;
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -2573,6 +2573,12 @@ static void macb_free_consistent(struct
+ 	unsigned int q;
+ 	int size;
+ 
++	if (bp->rx_ring_tieoff) {
++		dma_free_coherent(&bp->pdev->dev, macb_dma_desc_get_size(bp),
++				  bp->rx_ring_tieoff, bp->rx_ring_tieoff_dma);
++		bp->rx_ring_tieoff = NULL;
++	}
++
+ 	bp->macbgem_ops.mog_free_rx_buffers(bp);
+ 
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+@@ -2664,6 +2670,16 @@ static int macb_alloc_consistent(struct
+ 	if (bp->macbgem_ops.mog_alloc_rx_buffers(bp))
+ 		goto out_err;
+ 
++	/* Required for tie off descriptor for PM cases */
++	if (!(bp->caps & MACB_CAPS_QUEUE_DISABLE)) {
++		bp->rx_ring_tieoff = dma_alloc_coherent(&bp->pdev->dev,
++							macb_dma_desc_get_size(bp),
++							&bp->rx_ring_tieoff_dma,
++							GFP_KERNEL);
++		if (!bp->rx_ring_tieoff)
++			goto out_err;
++	}
++
+ 	return 0;
+ 
+ out_err:
+@@ -2671,6 +2687,19 @@ out_err:
+ 	return -ENOMEM;
  }
  
--- 
-2.51.0
-
++static void macb_init_tieoff(struct macb *bp)
++{
++	struct macb_dma_desc *desc = bp->rx_ring_tieoff;
++
++	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
++		return;
++	/* Setup a wrapping descriptor with no free slots
++	 * (WRAP and USED) to tie off/disable unused RX queues.
++	 */
++	macb_set_addr(bp, desc, MACB_BIT(RX_WRAP) | MACB_BIT(RX_USED));
++	desc->ctrl = 0;
++}
++
+ static void gem_init_rings(struct macb *bp)
+ {
+ 	struct macb_queue *queue;
+@@ -2694,6 +2723,7 @@ static void gem_init_rings(struct macb *
+ 		gem_rx_refill(queue);
+ 	}
+ 
++	macb_init_tieoff(bp);
+ }
+ 
+ static void macb_init_rings(struct macb *bp)
+@@ -2711,6 +2741,8 @@ static void macb_init_rings(struct macb
+ 	bp->queues[0].tx_head = 0;
+ 	bp->queues[0].tx_tail = 0;
+ 	desc->ctrl |= MACB_BIT(TX_WRAP);
++
++	macb_init_tieoff(bp);
+ }
+ 
+ static void macb_reset_hw(struct macb *bp)
+@@ -5302,6 +5334,7 @@ static int __maybe_unused macb_suspend(s
+ 	unsigned long flags;
+ 	unsigned int q;
+ 	int err;
++	u32 tmp;
+ 
+ 	if (!device_may_wakeup(&bp->dev->dev))
+ 		phy_exit(bp->sgmii_phy);
+@@ -5311,17 +5344,38 @@ static int __maybe_unused macb_suspend(s
+ 
+ 	if (bp->wol & MACB_WOL_ENABLED) {
+ 		spin_lock_irqsave(&bp->lock, flags);
+-		/* Flush all status bits */
+-		macb_writel(bp, TSR, -1);
+-		macb_writel(bp, RSR, -1);
++
++		/* Disable Tx and Rx engines before  disabling the queues,
++		 * this is mandatory as per the IP spec sheet
++		 */
++		tmp = macb_readl(bp, NCR);
++		macb_writel(bp, NCR, tmp & ~(MACB_BIT(TE) | MACB_BIT(RE)));
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues;
+ 		     ++q, ++queue) {
++			/* Disable RX queues */
++			if (bp->caps & MACB_CAPS_QUEUE_DISABLE) {
++				queue_writel(queue, RBQP, MACB_BIT(QUEUE_DISABLE));
++			} else {
++				/* Tie off RX queues */
++				queue_writel(queue, RBQP,
++					     lower_32_bits(bp->rx_ring_tieoff_dma));
++#ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
++				queue_writel(queue, RBQPH,
++					     upper_32_bits(bp->rx_ring_tieoff_dma));
++#endif
++			}
+ 			/* Disable all interrupts */
+ 			queue_writel(queue, IDR, -1);
+ 			queue_readl(queue, ISR);
+ 			if (bp->caps & MACB_CAPS_ISR_CLEAR_ON_WRITE)
+ 				queue_writel(queue, ISR, -1);
+ 		}
++		/* Enable Receive engine */
++		macb_writel(bp, NCR, tmp | MACB_BIT(RE));
++		/* Flush all status bits */
++		macb_writel(bp, TSR, -1);
++		macb_writel(bp, RSR, -1);
++
+ 		/* Change interrupt handler and
+ 		 * Enable WoL IRQ on queue 0
+ 		 */
 
 
 
