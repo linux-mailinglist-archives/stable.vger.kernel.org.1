@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229269-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aCJWOM5swWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229763-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:42 +0100
+	id iLwDIV9vwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229269-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31CDE2F88E7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066FE2F8E53
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4AFEA32D7198
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADE903445D29
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6053B8BDA;
-	Mon, 23 Mar 2026 16:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC1C3B7778;
+	Mon, 23 Mar 2026 15:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUBO44+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOUtHTrP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F6D3AF662;
-	Mon, 23 Mar 2026 16:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DF93B47E8;
+	Mon, 23 Mar 2026 15:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282802; cv=none; b=DoIZ9OJ+HoRh4cg9gBFVjZfWbwnxQoyhSX1IBmofq6MnkHweG80wKHLWNf1NUyoreSMcSthDmORfU4Z3lL9eiz9MI9sP4ZgbMcrVJJIQu6gcDoqckOr7Pw7BBhV2iRPV5vDWoAqWvQxFjf6eD1vr+CTAv5WT31d2Jfjba1Iykg0=
+	t=1774278587; cv=none; b=EZMSH2639oPCo33f4ySS4+bTNK3tVtu0pi4Qvt7CjHnaVjRs+Aw7v3piWLLtZxP++BVQjLhnhiQ9ZS5GhT2RJiVNNCXXVV7hPJQTWPT4JKRFOcIkKRoP0AEexZ0pp2wSgAp4mrD/bFbL6EXIf0a9St4/y/Rm9ePlHdX8VIMxtOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282802; c=relaxed/simple;
-	bh=0xXBVUyDMzJPPIpC9KvzhYmWOzq/97pG2sBUwfjFl1E=;
+	s=arc-20240116; t=1774278587; c=relaxed/simple;
+	bh=qps0LLEhSBc8IT+zgVuHkfUwL2Pkr8eGeFDYIrduRvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mac62B77rDo8I14mmaDUsmCzdUKSZ7ED35BWCQRwW/plIg0VjzFg7WbkkFgT84wm6mzfSEdIdNELi5aftXTK2xtLrTuoLYM/zR8NMt7b3+UHmVDtU2GhzzUbhcZLbIsTa775/tWlbJPLdmSK1B/oDr/MI1Vw/NqyiBpMm7J5oZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUBO44+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62292C4CEF7;
-	Mon, 23 Mar 2026 16:20:02 +0000 (UTC)
+	 MIME-Version; b=m1I97Trb8wpvgRF3wjdOxVJqesTho4mOJlrUqioJRyBn/Exz3mmpGRp/6TjTL/h1Xy1bzkkD5L2kwZ+KcEEc9y7jSPOv/nI/TXy91uYZDzJxFyF1h01ILVvIqv4kPFZ439dbOJibdZ4G56+XqtFZnnwLzbMbMev+lq2XrJNJ3cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOUtHTrP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E717BC4CEF7;
+	Mon, 23 Mar 2026 15:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282802;
-	bh=0xXBVUyDMzJPPIpC9KvzhYmWOzq/97pG2sBUwfjFl1E=;
+	s=korg; t=1774278587;
+	bh=qps0LLEhSBc8IT+zgVuHkfUwL2Pkr8eGeFDYIrduRvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUBO44+qqjXgpvHgs4kF/j7nHXqFtI3INdGLKzXkU0ewSzlM3jWmRJaHTkNpmIkYz
-	 Ksudy6H50UrNpU4gqblUpvMre8BQxxNffAXecGXkWkwEHG144ncmpISiiFjK2WHrpl
-	 XUB946/1SMzayPtkOj54Xkj2f+5sFdCkQNKR7VP4=
+	b=yOUtHTrPpRjod4OIUu4FcolgxQbFLOzLolA82Tx97yKgTD2ZEa8w6MTS2+UWAq8ac
+	 vsj5rOJfnJJ3/4JeyVxQG9lrhLsEQncXGUsrKuoiZh9cbrWFwUvpVZsUzc3jnSXI0R
+	 nrJ51GJd0ugf3KKjoxWuvlEfPe2vkBlyFVcvwFtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luke Wang <ziniu.wang_1@nxp.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 292/481] mmc: sdhci: fix timing selection for 1-bit bus width
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Tomasz Duszynski <tduszyns@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 354/567] iio: chemical: sps30_serial: fix buffer size in sps30_serial_read_meas()
 Date: Mon, 23 Mar 2026 14:44:34 +0100
-Message-ID: <20260323134532.225949838@linuxfoundation.org>
+Message-ID: <20260323134542.593759352@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +68,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229763-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229269-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,gmail.com,intel.com,vger.kernel.org,huawei.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 31CDE2F88E7
+X-Rspamd-Queue-Id: 066FE2F8E53
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke Wang <ziniu.wang_1@nxp.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 5e3486e64094c28a526543f1e8aa0d5964b7f02d upstream.
+commit c3914ce1963c4db25e186112c90fa5d2361e9e0a upstream.
 
-When 1-bit bus width is used with HS200/HS400 capabilities set,
-mmc_select_hs200() returns 0 without actually switching. This
-causes mmc_select_timing() to skip mmc_select_hs(), leaving eMMC
-in legacy mode (26MHz) instead of High Speed SDR (52MHz).
+sizeof(num) evaluates to sizeof(size_t) which is 8 bytes on 64-bit,
+but the buffer elements are only 4 bytes. The same function already
+uses sizeof(*meas) on line 312, making the mismatch evident. Use
+sizeof(*meas) consistently.
 
-Per JEDEC eMMC spec section 5.3.2, 1-bit mode supports High Speed
-SDR. Drop incompatible HS200/HS400/UHS/DDR caps early so timing
-selection falls through to mmc_select_hs() correctly.
-
-Fixes: f2119df6b764 ("mmc: sd: add support for signal voltage switch procedure")
-Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: b2e171f5a5c6 ("iio: sps30: add support for serial interface")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Acked-by: Tomasz Duszynski <tduszyns@gmail.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/iio/chemical/sps30_serial.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci.c
-+++ b/drivers/mmc/host/sdhci.c
-@@ -4523,8 +4523,15 @@ int sdhci_setup_host(struct sdhci_host *
- 	 * their platform code before calling sdhci_add_host(), and we
- 	 * won't assume 8-bit width for hosts without that CAP.
- 	 */
--	if (!(host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA))
-+	if (host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA) {
-+		host->caps1 &= ~(SDHCI_SUPPORT_SDR104 | SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_DDR50);
-+		if (host->quirks2 & SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400)
-+			host->caps1 &= ~SDHCI_SUPPORT_HS400;
-+		mmc->caps2 &= ~(MMC_CAP2_HS200 | MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
-+		mmc->caps &= ~(MMC_CAP_DDR | MMC_CAP_UHS);
-+	} else {
- 		mmc->caps |= MMC_CAP_4_BIT_DATA;
-+	}
+--- a/drivers/iio/chemical/sps30_serial.c
++++ b/drivers/iio/chemical/sps30_serial.c
+@@ -303,7 +303,7 @@ static int sps30_serial_read_meas(struct
+ 	if (msleep_interruptible(1000))
+ 		return -EINTR;
  
- 	if (host->quirks2 & SDHCI_QUIRK2_HOST_NO_CMD23)
- 		mmc->caps &= ~MMC_CAP_CMD23;
+-	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(num));
++	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(*meas));
+ 	if (ret < 0)
+ 		return ret;
+ 	/* if measurements aren't ready sensor returns empty frame */
 
 
 
