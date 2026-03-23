@@ -1,198 +1,146 @@
-Return-Path: <stable+bounces-227953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227954-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KEA5DuUbwWn5QQQAu9opvQ
-	(envelope-from <stable+bounces-227953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:54:29 +0100
+	id OAG6JWMdwWlaQwQAu9opvQ
+	(envelope-from <stable+bounces-227954-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 12:00:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8642F095B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:54:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7105D2F0B7E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 12:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 66B5F3066D67
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:47:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5C8E33020663
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10750391820;
-	Mon, 23 Mar 2026 10:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AE1392C43;
+	Mon, 23 Mar 2026 10:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fi+lZNi0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IdtAkPGC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 923433909A2
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774262826; cv=pass; b=gMsHMVH/xZF3rIYfIsHFMwu2ae4OM3B9jZpqvpbSTLqWoIFs6T+12aL2ExOEtmDdlRvf4ALjTT4+Ds1LRpD7GTfbhvlVIwvw6fIjAoWC2mwFxzrYK4z0zOcPBolTrhTkMj15LO9tP+jwRuK3UB0mZ2EbTz/hGPLUt9LV1j2HGms=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774262826; c=relaxed/simple;
-	bh=HGjBs9EzjEBeKYIO3PCVP3mncbPfDlgRYA5LqqNc/+I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RjUV+dJ8f577AE5OyU6tmo5hwD0zIqOJ9w/JUJprsorxpsQa/CFygR5+23gXtMDJX1SNiLxHYViPUhG2ogXrITdJJDRLixRIf00DukS43kiN1OlBkQcDye4ccQ0WfbLz5NUJzm+ua7i74EdXw1IPJxvs7ZKSwLBOy9dMp0hi7rI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fi+lZNi0; arc=pass smtp.client-ip=209.85.167.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-467e8aaa865so15558b6e.2
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 03:47:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1774262824; cv=none;
-        d=google.com; s=arc-20240605;
-        b=EEZFGPKK4mKgdw4MQvMG1Kt7mGAqrHr6lxUpPWQX17ATXnDpKhpRzbsFwSClbNt1AA
-         Kqe0+5wmQ7mGxue7DSHqjyu0IkuOI0QL0WOhXI2BWxvLVJOtN2aHNVcxZLK3MB685XW1
-         tggXBTEV3Gv+BVDf92VnNtKcA7n7Fr2lU1S+xQGyd+rTfDXnWSPoGJZ86b2umsmJhaNB
-         POT/BnCyTFu4ybz0Gt4QaoUBILJ+s21qo+tLPz1wIkyi470eLiPQHYWBqT5Np6Hs6qJ+
-         0hlTB1mfCEtLvNWVAVOlK4cAc2dSzLMTFpufxijKqhsjQf0Enl8o/S0cBJ4dp8m/zyAJ
-         cpgA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=J4sER2GrGUkt7nT+8pQTI5YrRfltUa5SSK35UZE2tZ4=;
-        fh=mNvHKG12k46JPOA3zA/rCbjt06JTnFV6sX3PtPHfiYs=;
-        b=YDVis+pA7kQf4+7kZoptkGcpml5eKLECX6ukzdfdEHIvrXIU79LwNs4rUH2Ezd4fku
-         kRQEPVe6XXG8qbj16WPL1NnqU6DtEefvorKppEd+6cl/R35VDCjjZtvFyLB0cEMGLga0
-         QkkBCPD0SQOufq5APXWOOHdoh/keJuLYOCFMpdhBXUcPTZHX4FZF2stuvum3Q+Q8mqXj
-         qinJaoYjw6mKXQOy+vrS64smVCdqBE90ARswhTAtgE2kSSPWPVKLKLONpuyKz+fNcQ/1
-         zlxCn9/EB7iXJ5lW517Pc6qh+UVZsEFZrn04ONAseZF3+wdltPB9lzNtH75l6utpTpea
-         F3iw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1774262824; x=1774867624; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J4sER2GrGUkt7nT+8pQTI5YrRfltUa5SSK35UZE2tZ4=;
-        b=fi+lZNi0N35yr/96hiINANQNOY8A+l6/cnjmyG37nwmVclW00uEchE2jdzoxsSTwjG
-         1QiM3RK7EfD+w7oufCJetCKfEtGuRjRBrlo8WiB93KOrZ37oM9oKcYFEy9MuDEpc7ExN
-         E5ylBpkNN4TySSpgiTL3REIXAQOLXrDV2JoRuXSLboxBVBo6ukv8wwbr05Y6G+EPeM3b
-         UfVS2zzcZzujmLt+E7lGVaFGH86qJOEYuo94AxJHYpYj9OsYUg+NKiGCd4pd3KhdBwLQ
-         UQAuMncSVTzEEMHxyc8rRd0MnUXzQty6iExN6O0OjNiBCT3L2+/4Ydh988NsXyBTnCdF
-         TYuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774262824; x=1774867624;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=J4sER2GrGUkt7nT+8pQTI5YrRfltUa5SSK35UZE2tZ4=;
-        b=NK5GfrJBbbI4KbFzw9BOWL+YNMGmRKXZSRBCEbjo5BZhdznG6WHYEnu3Ju/17ACgPM
-         rekJcu0rRO6BJdkgxs67Xw35e8NwHoiPFqrV15vaGCmxmyemMMBI6FMdJVgTIJ82eD5S
-         piZ8RervFs6u431wOgjTcL9Ylmk+kMlawiSEvOkbrlJAw7h44Y/ogtBj1QP0pUrYCFoU
-         WOaD0VEwXRGwS3WJxZaJ5FBVQ05t+tyBkKvhQWzDB7iEFMjYmjcm2OWpIJRAHys3OyIg
-         o+fYeKHm7BDOCjOvevXxzsW0yZlQ1YitDfx+xlCTg0wiQFmS8oiKN9ICM/J4RpoM7B3m
-         bJjA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5tPhjDXyjGWC3IJ8kuKfqqh3tjHdeo1C7ASzSX0byz6iTDTrFRs+KNNp6Q8BKimgky/sC1WM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVOhu9XEM8ipx7qx7QLICnpTOBSGyRVBakL6D1wYilO1G+pfB1
-	+C7mzdKrnzZGgpNT/CiPv5ToRadkhNz23kxVAMPIrVEN+4eD6QJ1JmeCbg/8VEWIgxiysn6iSji
-	HDiKfeVPJj2tCadTBeIqBIsyLqU5qqcWh61Euk8lN
-X-Gm-Gg: ATEYQzxKG+kNi/eQZ6U4go9gNEeaGl5HtYSNDytfSLJtnj68Uz354eHwfJcRD0FQzru
-	a22QXmNEhutRvgvV9k/D+FfEbmxH9NwUEBCzxx9Fi28RN3ZFDCWXt1ExRdjJ6kAdR03mvznikBz
-	hIPMqIlbyZ/1NCvImuJGf50SfNMhsrXFHOBd0tt3xWmYQtDcF6MaQDN0KXLjPsvddAjWHmpYlem
-	Vcie8FjbR8khjpgaCEV5n2b19rB5z9RvZkMb9fE8tAAIesjZR/lBYhUYUmYZbXcdQRRSb83HZbp
-	pVTGzHkI3xoWpmDHtfNyifVDV6CMemWSDAfWa7WHBk9q/W07hDmIIP3uXEBrAYp9PjmfDA==
-X-Received: by 2002:a05:6808:250e:b0:460:f435:2a71 with SMTP id
- 5614622812f47-467e5f481acmr6504629b6e.46.1774262824231; Mon, 23 Mar 2026
- 03:47:04 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06AA139185C;
+	Mon, 23 Mar 2026 10:50:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774263001; cv=none; b=IiSbtK92XfV8WWnf3pvIPMpGzsgJJv6UXJgswvmDssS6riO8HznrNCB+CgOED1T7DFAd3qbPG1HYWVSIysH3u1RE7r/EJEilc2+iYOzTBnb1KkVlcH7xkNLLss/TDJw+5qIiyRSrOlfBD4POEfAfTXiBXLyafV5fA7cmrhQqzIQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774263001; c=relaxed/simple;
+	bh=64eGly1DBdIY4wQ+lw/es7xm3jGmQgoJsTMHjjplrB0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LMrzN8GNr6UwDTpwpv306eflVwBN7703FywP/bTSGcwKsI2QUL4IKcGbpoNrkH2/JDkC5l4emsOO518/shiq40BvCtf2sXmC4BwhJDHmV5hYngcizTIjjHRKdMWMt8SXvxgb+Apn9Shct2rQT5nF/L38902b6S4/akScq+GIgPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IdtAkPGC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8ACAC2BCB4;
+	Mon, 23 Mar 2026 10:50:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774263000;
+	bh=64eGly1DBdIY4wQ+lw/es7xm3jGmQgoJsTMHjjplrB0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IdtAkPGC6x41DpxCgQPUGfbNEc42m140drpyuCj2R9CcSZYhJltdo/2ExuyxScTcd
+	 mCDgk1B6VfxJgBt3L3Wo2wJRsvF0f9XcnQq3S7U+lZS4+c2P09MKPZrw4D8A681Ig2
+	 +wLRP2dPzAfhxUDVVzoYPAWJvTL+wkhW2SOqf2IbHI1mNJSVPWCooNIIhEl6N+rgc8
+	 gg/1eeAMn6SELJIpPPCFqWLszubBWR/CgTDH9yGXCt2w7xtCBBe/sQ1qS4160uYx7d
+	 sNaL/4m2dt0im2o0gvDYoLvD8TpoVvGWR0o0HNhordV69fc+zTcGJNKBBuLVxiowTw
+	 NkSobkiwC79JQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1w4cr8-00000003Xim-1WsK;
+	Mon, 23 Mar 2026 11:49:58 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Laxman Dewangan <ldewangan@nvidia.com>,
+	linux-spi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 1/5] spi: imx: fix use-after-free on unbind
+Date: Mon, 23 Mar 2026 11:49:44 +0100
+Message-ID: <20260323104948.844583-2-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260323104948.844583-1-johan@kernel.org>
+References: <20260323104948.844583-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260317220319.788561-1-nogikh@google.com> <20260321170841.179ceada68dc55bb22064fda@linux-foundation.org>
-In-Reply-To: <20260321170841.179ceada68dc55bb22064fda@linux-foundation.org>
-From: Aleksandr Nogikh <nogikh@google.com>
-Date: Mon, 23 Mar 2026 11:46:52 +0100
-X-Gm-Features: AaiRm52rx499ExyTFO6GE2_kFEksIg4FROgrnFEqj1WrKjemMDutkpP9UTsNmNo
-Message-ID: <CANp29Y52fCeN_niOZsk4dWF66UNXt3qyimam1MXyEp8RiehYhA@mail.gmail.com>
-Subject: Re: [PATCH v2] x86/kexec: Disable KCOV instrumentation after load_segments()
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: bp@alien8.de, tglx@kernel.org, mingo@redhat.com, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, dvyukov@google.com, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spamd-Result: default: False [-2.16 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[google.com,reject];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
-	R_DKIM_ALLOW(-0.20)[google.com:s=20251104];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227953-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[google.com:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MISSING_XM_UA(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[nogikh@google.com,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227954-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid,linux-foundation.org:email]
-X-Rspamd-Queue-Id: 1D8642F095B
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,pengutronix.de:email]
+X-Rspamd-Queue-Id: 7105D2F0B7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Sun, Mar 22, 2026 at 1:08=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->
-> On Tue, 17 Mar 2026 23:03:19 +0100 Aleksandr Nogikh <nogikh@google.com> w=
-rote:
->
-> > The load_segments() function changes segment registers, invalidating
-> > GS base (which KCOV relies on for per-cpu data). When CONFIG_KCOV is
-> > enabled, any subsequent instrumented C code call (e.g.
-> > native_gdt_invalidate()) begins crashing the kernel in an endless
-> > loop.
-> >
-> > ...
-> >
-> > Disabling instrumentation for the individual functions would be too
-> > fragile, so let's fix the bug by disabling KCOV instrumentation for
-> > the entire machine_kexec_64.c and physaddr.c. If coverage-guided
-> > fuzzing ever needs these components in the future, we should consider
-> > other approaches.
-> >
->
-> AI review has questions:
->         https://sashiko.dev/#/patchset/20260317220319.788561-1-nogikh@goo=
-gle.com
+The SPI subsystem frees the controller and any subsystem allocated
+driver data as part of deregistration (unless the allocation is device
+managed).
 
-Regarding the comments:
+Take another reference before deregistering the controller so that the
+driver data is not freed until the driver is done with it.
 
-> Does this fix cover the CONFIG_KEXEC_JUMP path where execution returns to=
- a KCOV-instrumented kernel?
+Fixes: 307c897db762 ("spi: spi-imx: replace struct spi_imx_data::bitbang by pointer to struct spi_controller")
+Cc: stable@vger.kernel.org	# 5.19
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/spi/spi-imx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-It doesn't. The fix only covers the main kexec functionality because
-that's where the problem manifested: on syzbot we only use `kexec -p`,
-not CONFIG_KEXEC_JUMP.
+diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
+index 64c6c09e1e7b..a8d90c86a8a1 100644
+--- a/drivers/spi/spi-imx.c
++++ b/drivers/spi/spi-imx.c
+@@ -2401,6 +2401,8 @@ static void spi_imx_remove(struct platform_device *pdev)
+ 	struct spi_imx_data *spi_imx = spi_controller_get_devdata(controller);
+ 	int ret;
+ 
++	spi_controller_get(controller);
++
+ 	spi_unregister_controller(controller);
+ 
+ 	ret = pm_runtime_get_sync(spi_imx->dev);
+@@ -2414,6 +2416,8 @@ static void spi_imx_remove(struct platform_device *pdev)
+ 	pm_runtime_disable(spi_imx->dev);
+ 
+ 	spi_imx_sdma_exit(spi_imx);
++
++	spi_controller_put(controller);
+ }
+ 
+ static int spi_imx_runtime_resume(struct device *dev)
+-- 
+2.52.0
 
-For CONFIG_KEXEC_JUMP, it should be (hopefully) enough to disable the
-KCOV instrumentation for `arch/x86/power/cpu.c`, but I am not sure if
-we want to also cover it here.
-
-> Is disabling KCOV for all of physaddr.c an overly broad fix that causes
-unnecessary loss of coverage for core memory primitives like __phys_addr()?
-
-Disabling the instrumentation at a more granular level would be more
-fragile (this was discussed in the v1 series and mentioned in the v2
-commit message). When preparing the patch, I tried annotating
-individual functions to resolve the problem, it was quite a
-whack-a-mole..
-
-Regarding the __phys_addr coverage: so far, it hasn't been super
-important during kernel fuzzing. If necessary, we can easily
-reconsider the approach later - for now it's just a few lines in
-Makefiles.
-
---=20
-Aleksandr
 
