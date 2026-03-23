@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kHiYNihfwWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229283-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:28 +0100
+	id ADJ5ImhGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599872F6B70
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A1F2F36DF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9490B30CCBD7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0A8BA300D4CA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24C73B7B61;
-	Mon, 23 Mar 2026 15:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C3F3AD539;
+	Mon, 23 Mar 2026 13:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSK8aYnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="id8VNFiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755043B4EB7;
-	Mon, 23 Mar 2026 15:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFDD3ACA68;
+	Mon, 23 Mar 2026 13:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278631; cv=none; b=dzFXVRJaFmqvl5XcRnZT8J7XpKIrMld8jL+RyuZkBWn9VVuPycJD2hffTose/r+1dL7E4JlB/GM93WgT7ijb2CALCWoy/EfTZ3kBlQpxsbgQYa3xKrnm43r4hUKlKOrZDAS+4dYeCeIKzrZSwpzQ60SCi8TU+M2FaI+pvDMTCXw=
+	t=1774274106; cv=none; b=GAwAop1R9GnN4xxGmG0msDfBDic4ENf0XiCjOe609s6zHdLJO3swQfN4nRLxBtbdPLtjMS0LMsSNFghMesauVGvGJO0H507iEjdVfY+fut/EhWglyP+vaSdFCbpeboELpOfgdFdU2kgpb+2p8SvQXBlHIWF/wQK6LyuOLzaKu5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278631; c=relaxed/simple;
-	bh=1eyP1xfxPtN+ldoI/lIaHc3mepvgqqt6nvQ/EpCQp0I=;
+	s=arc-20240116; t=1774274106; c=relaxed/simple;
+	bh=MMESxKYIhJzSnGUUH4zukG6CQX5jdtvVlzOSGsRfAzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qfkmVAZx4CHDsgLywu/10tJTIQ5z3X0o/tdelusvFAEFmWVPXncXb9UevMgwAsclgp/VFrxnm4zKCiyLTpbTHEwjlYNfb8ZdjuF+Cd8hmmE15JYKN8UN1t0Afv80CZXFin/d817hzK9GdG1gennDGhAl1eb9+USv9rOa8pKMwMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSK8aYnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6FA4C4CEF7;
-	Mon, 23 Mar 2026 15:10:30 +0000 (UTC)
+	 MIME-Version; b=kmF1t8l1/+dbwbTjR1NUXSgxvHqrsbvtOdGbDtGZl+hHm/9NG3ISlIUvlG2vI11Bm/BOhN04bBMKND2qTOSgmjPUio1biGi7OjsRC0UYyraJLArqjT3BEycCa2w4ID3MboJakcN3ezobZzvQQ6+I++akhUjqUSGDBcCmIU6N5KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=id8VNFiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D73C4CEF7;
+	Mon, 23 Mar 2026 13:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278631;
-	bh=1eyP1xfxPtN+ldoI/lIaHc3mepvgqqt6nvQ/EpCQp0I=;
+	s=korg; t=1774274106;
+	bh=MMESxKYIhJzSnGUUH4zukG6CQX5jdtvVlzOSGsRfAzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSK8aYnNcYU3024Xcjx2hl8//8iiEkx3NlhLi8hbfIiE3TJNo3Y/kEHvXoaSQAB6T
-	 kG4D+h25W3f/Fg2kcvSjH40XBKsKgwYowpuJ8XLdnDfhsLF9p7LTqpnvBS/sMJkw3t
-	 lntVkH+BTQ5b9XuQVLaDgPQ6qLzpAm/HgXziaZWs=
+	b=id8VNFiUY+YZl06U95bIe4oU56XWIPMb2JnfsEwGM11C5nOJzftdDCV1jglBQHaWc
+	 KPMCfSFEIWPUasRc6ZKYPxu4bSZ/MpkVY2ocxvLalmfFTGWL/WjVRr3NP7JJ1gWRP/
+	 sAy8r0hDqDWAPwPtVT6YK51rI6izln26dDWd3PLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 367/567] ksmbd: call ksmbd_vfs_kern_path_end_removing() on some error paths
+Subject: [PATCH 6.19 110/220] arm64: dts: renesas: r9a09g057: Remove wdt{0,2,3} nodes
 Date: Mon, 23 Mar 2026 14:44:47 +0100
-Message-ID: <20260323134542.898819941@linuxfoundation.org>
+Message-ID: <20260323134508.073885152@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +64,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229283-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228094-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable,renesas];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 599872F6B70
+	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,msgid.link:url,11c00800:email]
+X-Rspamd-Queue-Id: 23A1F2F36DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 
-[ Upstream commit a09dc10d1353f0e92c21eae2a79af1c2b1ddcde8 ]
+[ Upstream commit a3f34651de4287138c0da19ba321ad72622b4af3 ]
 
-There are two places where ksmbd_vfs_kern_path_end_removing() needs to be
-called in order to balance what the corresponding successful call to
-ksmbd_vfs_kern_path_start_removing() has done, i.e. drop inode locks and
-put the taken references.  Otherwise there might be potential deadlocks
-and unbalanced locks which are caught like:
+The HW user manual for the Renesas RZ/V2H(P) SoC (a.k.a r9a09g057)
+states that only WDT1 is supposed to be accessed by the CA55 cores.
+WDT0 is supposed to be used by the CM33 core, WDT2 is supposed
+to be used by the CR8 core 0, and WDT3 is supposed to be used
+by the CR8 core 1.
 
-BUG: workqueue leaked lock or atomic: kworker/5:21/0x00000000/7596
-     last function: handle_ksmbd_work
-2 locks held by kworker/5:21/7596:
- #0: ffff8881051ae448 (sb_writers#3){.+.+}-{0:0}, at: ksmbd_vfs_kern_path_locked+0x142/0x660
- #1: ffff888130e966c0 (&type->i_mutex_dir_key#3/1){+.+.}-{4:4}, at: ksmbd_vfs_kern_path_locked+0x17d/0x660
-CPU: 5 PID: 7596 Comm: kworker/5:21 Not tainted 6.1.162-00456-gc29b353f383b #138
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
-Workqueue: ksmbd-io handle_ksmbd_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x44/0x5b
- process_one_work.cold+0x57/0x5c
- worker_thread+0x82/0x600
- kthread+0x153/0x190
- ret_from_fork+0x22/0x30
- </TASK>
+Remove wdt{0,2,3} from the SoC specific device tree to make it
+compliant with the specification from the HW manual.
 
-Found by Linux Verification Center (linuxtesting.org).
+This change is harmless as there are currently no users of the
+wdt{0,2,3} device tree nodes, only the wdt1 node is actually used.
 
-Fixes: d5fc1400a34b ("smb/server: avoid deadlock when linking with ReplaceIfExists")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-[ ksmbd_vfs_kern_path_end_removing() call -> ksmbd_vfs_kern_path_unlock() ]
+Fixes: 095105496e7d ("arm64: dts: renesas: r9a09g057: Add WDT0-WDT3 nodes")
+Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260203124247.7320-3-fabrizio.castro.jz@renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/renesas/r9a09g057.dtsi | 30 ----------------------
+ 1 file changed, 30 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -6067,14 +6067,14 @@ static int smb2_create_link(struct ksmbd
- 				rc = -EINVAL;
- 				ksmbd_debug(SMB, "cannot delete %s\n",
- 					    link_name);
--				goto out;
- 			}
- 		} else {
- 			rc = -EEXIST;
- 			ksmbd_debug(SMB, "link already exists\n");
--			goto out;
- 		}
- 		ksmbd_vfs_kern_path_unlock(&parent_path, &path);
-+		if (rc)
-+			goto out;
- 	}
- 	rc = ksmbd_vfs_link(work, target_name, link_name);
- 	if (rc)
+diff --git a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
+index 4df32d7e99981..3d7f4dae5c195 100644
+--- a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
++++ b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
+@@ -581,16 +581,6 @@ ostm7: timer@12c03000 {
+ 			status = "disabled";
+ 		};
+ 
+-		wdt0: watchdog@11c00400 {
+-			compatible = "renesas,r9a09g057-wdt";
+-			reg = <0 0x11c00400 0 0x400>;
+-			clocks = <&cpg CPG_MOD 0x4b>, <&cpg CPG_MOD 0x4c>;
+-			clock-names = "pclk", "oscclk";
+-			resets = <&cpg 0x75>;
+-			power-domains = <&cpg>;
+-			status = "disabled";
+-		};
+-
+ 		wdt1: watchdog@14400000 {
+ 			compatible = "renesas,r9a09g057-wdt";
+ 			reg = <0 0x14400000 0 0x400>;
+@@ -601,26 +591,6 @@ wdt1: watchdog@14400000 {
+ 			status = "disabled";
+ 		};
+ 
+-		wdt2: watchdog@13000000 {
+-			compatible = "renesas,r9a09g057-wdt";
+-			reg = <0 0x13000000 0 0x400>;
+-			clocks = <&cpg CPG_MOD 0x4f>, <&cpg CPG_MOD 0x50>;
+-			clock-names = "pclk", "oscclk";
+-			resets = <&cpg 0x77>;
+-			power-domains = <&cpg>;
+-			status = "disabled";
+-		};
+-
+-		wdt3: watchdog@13000400 {
+-			compatible = "renesas,r9a09g057-wdt";
+-			reg = <0 0x13000400 0 0x400>;
+-			clocks = <&cpg CPG_MOD 0x51>, <&cpg CPG_MOD 0x52>;
+-			clock-names = "pclk", "oscclk";
+-			resets = <&cpg 0x78>;
+-			power-domains = <&cpg>;
+-			status = "disabled";
+-		};
+-
+ 		rtc: rtc@11c00800 {
+ 			compatible = "renesas,r9a09g057-rtca3", "renesas,rz-rtca3";
+ 			reg = <0 0x11c00800 0 0x400>;
+-- 
+2.51.0
+
 
 
 
