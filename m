@@ -1,166 +1,164 @@
-Return-Path: <stable+bounces-228077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228082-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KK8uLBtGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228077-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:54:35 +0100
+	id YLkzJjVIwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228082-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474442F3662
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:54:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40FE82F3BA9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6794330172EC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1076430B52A6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41E23AD534;
-	Mon, 23 Mar 2026 13:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEB93AE6F8;
+	Mon, 23 Mar 2026 13:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="T2i+g0/a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFqogznc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F0A3AE1AA
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 13:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CD883AE1AD;
+	Mon, 23 Mar 2026 13:54:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274058; cv=none; b=n07IBrImNN0jDgnBrh1cQDNcvJRMvRsg65l7CJBLuI/MlhXHZdeNuTSz5IYvOCfy729RJILfBdK0o9V0XPfXAp/Zxw8hTtAoMQj80VM8V6GZMRaMpX2UNRYfjZ2gTgY5cN7LHV+Qs6gaNSvvKWd2kgZ74Aqd1zKw7jFi0TvfHzo=
+	t=1774274070; cv=none; b=bSRNO3GMwaFbz9uYWvaHr9NhDJn8KbBV8LpFxWlOsWNGfHfNh5UO8oA3L0RFaCojXZ1EFVgjcILRnS4B1xLXWOKDsL3QBTZLHV9m/rh4C4VnYf1c698NYLmC8XnDyGIQC4ZdtXZ+NGTBhDfC+pPcNihvvPlFVME8PbFR4IMc11Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274058; c=relaxed/simple;
-	bh=j8+NLnpYEVro6v3X3zB3ByVB1aVEdc+kKTmLiXnpYfY=;
+	s=arc-20240116; t=1774274070; c=relaxed/simple;
+	bh=XSPhkD/KqDCw9VQ1qBsIZWpNqiQpkT++OcA+0lBT8fo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZEPKX/4X+Ls3LKyByiK76Z72XPBet3/1rrC6g/2PpQTY+NlFnD4uJBN2vAmseUZp9MY7pasbQpy/ohjyiz47LUwNtH2x6wGOZhIGI5hxsGIHrOhK1k+YTV7aEXrE34xcCToA8QzJY2yCWVvVEle0Sdp2a7u87qnl2VZfakufJrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=T2i+g0/a; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-509134ab2d2so1530731cf.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 06:54:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1774274056; x=1774878856; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cp9nHZf7NvuTaD3ZnAARZsLypmpLx61M2YmeLJUPLk8=;
-        b=T2i+g0/aNgWQCVOsRZQ/DBkuKhoOKS436F4MvDxebY12UgTnqFobiBK4kpzqn2vAGB
-         q5M7WIWu34f92xrOPgbzbcC0CSO1+EEZlLdvdGRJ4j8cyhab8zfo0YftVnywr/ANX4xU
-         gg6Z02dhC5ZqDjOEyuJlrPGxa98Td3sfTV3pHTDBX0tl4IoKB6X/+FhLgzAyzo6rw/7L
-         GtfNUdPRZOe9vGu2njbyFeFDd2TwPLbhQ/QxoUeODrZ1FAiArtyY7tTk/F/JDItUUXTX
-         B8v2lxFplBDGap/+BEdG3cPBHLgmymK43GsmlyjruFXDbmiyIUXHbgwrMnunGD0SZeJu
-         AeLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774274056; x=1774878856;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Cp9nHZf7NvuTaD3ZnAARZsLypmpLx61M2YmeLJUPLk8=;
-        b=cYGf+wchjvb3H/Qb3MvzDdhgfD25ZwDBoAmsnVtlQ/s3vijCjpLXcPs3lyqTr94tLH
-         CMW7I/Cde9y2AwhdXHGDT95e05SXMZcFa4sOrSeNjspVKNCoS5sZRtiUw3abpVQt/bS1
-         C0kbMK46rUBBACqyRD3RudilVKmTqr2b/h3D7D2Nt35ORUsUrJgaplnRArx1cuKGl9Ly
-         P5Xtin8rApzPhTz/dp4MeIO+aS911I1EAzDU+TtjZntbiPtWL7sJJEqc9Rjuwlv04U7K
-         cD8JgOmBAhJFZmhuwouRfzp3fiVZ80t0TGRsnLxvaP8139u7lIilNs6tA/YYjyTwui10
-         oxYw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2TN/YUYa9MyI77yY90R3+4HknywgSvbkdrA8/miCAikESvLG3CrSUQHiqxcWa6aDd87NyzA8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+SaBVaW0ozO3G2ux/NPqXJKm/bG+szPkbwR9/AtSOqUSUvO2e
-	Ia7jICS579GHqO3UzBoIiZt7jxiJa7ouN63LTk+ycVHmoSlYuKKwreXqQPNu7kPIMeo=
-X-Gm-Gg: ATEYQzwzQB5AgLo70de8KMQV7Y0yXoodHrVOVT1kP1uc1A7IQz5LAJkhTRjzW+5j7+S
-	YSEBVhOJ2gXvsEwpFIO5seVAFI1FuhH5sM5XOEN01koBgOAgVY1QNvOCFLD9psnqqk7qWDShxsH
-	wlKQUtWdDP8Y8BZWheJik3zuQYaefp+774Assu3nsPGuaSsFXyJnRn0/vTFmzY6+SlN0O80+Dl4
-	eY9SMC/ZrZkHtARvKmbJYjnguSE9tJ+ZaXyVom2kW+YzpZbBps6xmgeZxmOSlv7+xKUjkCqY+qw
-	9hgXPtUnLt6I0DCRUPhB4WS545fj2yWVFLKPfOG77gCI97h9VpitXiWeuD86S89N7qvXV9AvQUU
-	eR40cjsxvjCqIy/cKBSOXrSbKNnmiXpWqiNHNxj7yqfyQgag7awT5IoSQDEN8zFSdxUvdnGcgna
-	l0QO+1yXkcDsPJv5MYBLY6WLmnDee9lSqtMwnrOQmMPiwhSvaxgWB6QqGngIJrhyqADY454Q==
-X-Received: by 2002:ac8:5cc7:0:b0:509:2ef7:704c with SMTP id d75a77b69052e-50b375d5d24mr169439891cf.72.1774274055870;
-        Mon, 23 Mar 2026 06:54:15 -0700 (PDT)
-Received: from ziepe.ca (mctnnbsa70w-159-2-73-22.dhcp-dynamic.fibreop.nb.bellaliant.net. [159.2.73.22])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89c8534f9ccsm89564136d6.39.2026.03.23.06.54.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 06:54:15 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1w4fjS-000000004Z9-0f4n;
-	Mon, 23 Mar 2026 10:54:14 -0300
-Date: Mon, 23 Mar 2026 10:54:14 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Tudor Ambarus <tudor.ambarus@linaro.org>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Joerg Roedel <jroedel@suse.de>, Bjorn Helgaas <bhelgaas@google.com>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	peter.griffin@linaro.org, andre.draszik@linaro.org,
-	willmcvicker@google.com, jyescas@google.com,
-	kernel-team@android.com, stable@vger.kernel.org
-Subject: Re: [PATCH] iommu: Fix bypass of IOMMU readiness check for
- multi-IOMMU devices
-Message-ID: <20260323135414.GA8437@ziepe.ca>
-References: <20260323-iommu-ready-check-v1-1-5f6fef8f9f59@linaro.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=f9neHP00NQ/IxPs33SJ8KjfIc/CncpJz0rRXECTPMc9Qjyw1V4pRWHhn+++QiKwo7xcYHXPPaDdqykeJ12uJmIyionl6wUAXLREUMD+FuTf934RZ4iM+Kjd2mI1/Is2HG+HAsT+dgkv5Cx7fY4H7y9I3gfmxuLSLYwYy+LxRFgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFqogznc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97239C4CEF7;
+	Mon, 23 Mar 2026 13:54:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774274070;
+	bh=XSPhkD/KqDCw9VQ1qBsIZWpNqiQpkT++OcA+0lBT8fo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OFqogzncXobgl53KRC1+fTyYTpw6XJUpfL7mW3VMAEp9VDLl/K/HTKiKLfnaeuG9b
+	 FJK5E+uWBJe4O186G9cUNmLWPbG3KWRIsz2JhPQBFFZLuwmbTQ4Rx954Q+IBfGRQqB
+	 DLnz8vB58EtbjLpQr0bl+NxUwNXYf3oashmQ/HrhkArcJQIe1kjCYqpGONwVQ9olzn
+	 Q2YtsFZOAhIK+UhmkwRDFXU2WglZCTC0EEJvpjLfISANFJhiPRAp5M9op7ll7Uceue
+	 TRIXT1cgImm8rRxC7plKOtr1d9njChBp3e/dlsZA2REH1Vs+pU0tvC19ug7wKjRzYi
+	 gSlXFVy2id4HQ==
+Date: Mon, 23 Mar 2026 19:24:18 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: John Hancock <john@kernel.doghat.io>, 
+	Robin Murphy <robin.murphy@arm.com>
+Cc: stable@vger.kernel.org, bhelgaas@google.com, 
+	manivannan.sadhasivam@oss.qualcomm.com, joro@8bytes.org, linux-pci@vger.kernel.org, 
+	iommu@lists.linux.dev
+Subject: Re: [REGRESSION] PCI: Revert "Enable ACS after configuring IOMMU for
+ OF platforms"
+Message-ID: <o7nnlvtkmatzafs44um6h5wnqo755msiukfn6kbu2zxdhe45ws@mde5lt2ufusz>
+References: <20260320172335.29778-1-john@kernel.doghat.io>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260323-iommu-ready-check-v1-1-5f6fef8f9f59@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260320172335.29778-1-john@kernel.doghat.io>
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[ziepe.ca:s=google];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228077-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[ziepe.ca:+];
-	DMARC_NA(0.00)[ziepe.ca];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228082-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[jgg@ziepe.ca,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[mani@kernel.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 474442F3662
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,doghat.io:email]
+X-Rspamd-Queue-Id: 40FE82F3BA9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On Mon, Mar 23, 2026 at 01:09:27PM +0000, Tudor Ambarus wrote:
-> Commit da33e87bd2bf ("iommu: Handle yet another race around
-> registration") introduced a readiness check in `iommu_fwspec_init()` to
-> prevent client drivers from configuring their IOMMUs before
-> `bus_iommu_probe()` has completed.
++ Robin
+
+On Fri, Mar 20, 2026 at 01:23:35PM -0400, John Hancock wrote:
+> Commit 7a126c1b6cfa ("PCI: Enable ACS after configuring IOMMU for OF
+> platforms") introduced a regression affecting AMD IOMMU group isolation
+> on x86 systems, making PCIe passthrough non-functional.
 > 
-> To optimize the replay path, the readiness check was conditionally
-> gated behind `!dev->iommu`:
->     if (!dev->iommu && !READ_ONCE(iommu->ready))
->         return -EPROBE_DEFER;
+> While the commit addresses a legitimate ordering issue on OF/Device Tree
+> platforms, the fix modifies pci_dma_configure(), which executes on all
+> platforms regardless of firmware interface. On AMD systems with IOMMU,
+> moving pci_enable_acs() from pci_acs_init() to pci_dma_configure() alters
+> the point at which ACS is evaluated relative to IOMMU group assignment.
+> The result is that devices which previously occupied individual, exclusive
+> IOMMU groups are merged into a single group containing both passthrough
+> and non-passthrough members, violating IOMMU isolation requirements.
 > 
-> However, this assumption breaks down for devices that map to multiple
-> IOMMU instances.
 
-?? We don't directly support "multiple IOMMU instances". There is only
-one dev->iommu.
+Ouch! Sorry for the breakage.
 
-AFAIK if some drivers need to support multiple different instances of
-the same IOMMU driver they must deal with this fully internally and
-present to the core a "single instance" view.
+> The commit author notes that pci_enable_acs() is now called twice per
+> device and that this is "presumably not an issue." On AMD IOMMU hardware
+> this assumption does not hold -- the change in call ordering has
+> observable and breaking consequences for group topology.
+> 
+> It is worth noting that this is a stable/LTS series (6.12.y), where
+> changes to fundamental PCI initialization ordering carry significant
+> risk for production and specialized workloads that depend on stable
+> IOMMU behavior across kernel updates. A regression of this nature --
+> silently breaking PCIe passthrough without any configuration change on
+> the part of the user -- is particularly disruptive in a series that
+> users reasonably expect to be conservative.
+> 
 
-So, your explanation doesn't make sense to me. If dev->iommu is set
-then the driver must be ready, including any multi-instances it has.
+I still haven't investigated this failure deeply, but it is also worth noting
+that this regression only happens with v6.12 and earlier stable kernels as
+mentioned in [1].
 
-If it is not ready then this is really an iommu driver bug, not a core
-bug?
+> This revert restores pci_enable_acs() to pci_acs_init() and marks it
+> static again, fully restoring correct IOMMU group topology on affected
+> hardware.
+> 
+> Regression introduced in: 6.12.75
+> Tested on: 6.12.77 with this revert applied
+> 
+> Hardware:
+>   CPU:   AMD Ryzen Threadripper 2990WX (family 23h, Zen+)
+>   IOMMU: AMD-Vi
+> 
+> Bisect:
+>   6.12.74: GOOD -- IOMMU groups correct, passthrough functional
+>   6.12.75: BAD  -- IOMMU groups collapsed, passthrough broken
+>   6.12.76: BAD  -- still broken
+>   6.12.77: BAD  -- still broken
+> 
+> Fixes: 7a126c1b6cfa ("PCI: Enable ACS after configuring IOMMU for OF platforms")
+> Signed-off-by: John Hancock <john@kernel.doghat.io>
 
-Jason
+Acked-by: Manivannan Sadhasivam <mani@kernel.org>
+
+- Mani
+
+[1] https://lore.kernel.org/all/2c30f181-ffc6-4d63-a64e-763cf4528f48@leemhuis.info/
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
