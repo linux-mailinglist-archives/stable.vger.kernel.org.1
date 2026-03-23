@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-228748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCkQO8NTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228748-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:51 +0100
+	id WBmhASpIwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 994CE2F55BA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A2852F3B91
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 26D103093AA5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E151F3069257
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A38A3AEF28;
-	Mon, 23 Mar 2026 14:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81E73AD51A;
+	Mon, 23 Mar 2026 13:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4Ihl1I2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wa9mYQMm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22931A6808;
-	Mon, 23 Mar 2026 14:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5503AC0C9;
+	Mon, 23 Mar 2026 13:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277016; cv=none; b=Lde9J97QVDQQba9Y/BxTil/ow5S4mZhueCQJzURLXBnv4sy1cmBm93mpVKmVMAlIvO2e+IUmOnx5tn3kimIvirBiPOZQBfgC4FKdK2x1HvXdTlcFUYH6EirM0zq54F8HvSyd1evR2U453aRXg0qP1TelLHl31N5mhqI/LMo5fJI=
+	t=1774273967; cv=none; b=EncJomxHivcwQVEc2ry7I+T9TW1QSRKo+jsO8P/yHkQLWu9v3hDBnUDCDMfUWO2hjKhsPCA91edmtGlqGn+p8IWUKXszSxG2M3/7PFkGlxWN7qwE8XtKhD7W7VtHZ5MytItHvH85NuZqJfU8o2YizeoayflcUoGvaFQfXXiUKLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277016; c=relaxed/simple;
-	bh=Xq/B19SD6H9UJdLzjNCnBfX857Tv2KC6WBhRiXRHh2s=;
+	s=arc-20240116; t=1774273967; c=relaxed/simple;
+	bh=T9gI/5wRMpe6HkPeWuFDtuEzj8lCnl0H5a/9zSFDv2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LcIpc3woOV2CkDIjNAqujGG85+iAwdEyqmFlABe5Lsm/JV2i4qiRTMXcYLAg6ciIu2bT7LFy0bzKNbAb32EmdzpP7GSecJ5jQG67n+S3LxtXHdlnIoVPI5EyKVkCENVwUpTLeWP1Uo8NfT4PJc8+Y0axui04Xg1M7+G343p+11w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4Ihl1I2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E8AC4CEF7;
-	Mon, 23 Mar 2026 14:43:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TWPPOyTzbZDgZq8QomVUbCDKP4icycbcxvEovfGfJOfuB9nYA1xWhXT4z1CrJU+fBsZwPrmsMLVSib38nhQb0lTN1rI6kmD6ikdAMIHdifFfMFDu1UKvDgkdVocfTpI0v7QPbKg8TUSGBLCAxrvdoyzcs/Pq6b3xkkeAdi6GDWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wa9mYQMm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E551EC4CEF7;
+	Mon, 23 Mar 2026 13:52:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277016;
-	bh=Xq/B19SD6H9UJdLzjNCnBfX857Tv2KC6WBhRiXRHh2s=;
+	s=korg; t=1774273967;
+	bh=T9gI/5wRMpe6HkPeWuFDtuEzj8lCnl0H5a/9zSFDv2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N4Ihl1I2TnpPAzmiULUYvh0xkMvV/FFKPBmooXqvmPyO1Q/cKnyNHBPgmiZkef3Pr
-	 6sYYOYYNpIHFNgjYFcsQqvwvRHe7puvcX6bRL3Ir7B2cOVxso05nUm4RBh3NBw9vZ4
-	 NtJwZK60VlBrhRxGcXGRvSDAmRKmwzHlmU/s0kzU=
+	b=Wa9mYQMmaZg98PwE9ixRylRIn6vmCxogLnucJ44pK/TgcPVnOHNa6XIt2w9Aglat2
+	 io23syVJeIjY1hvZ1MEH5UV7qXJrtchw53lkfn1dX1A+NcDgAlKxZkaHQiWVwvyOKS
+	 5yCK1+X+PvM0nBTeVq8BNPfN1eRumh64m0Qg1pKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	"Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 246/460] KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated
+	"Bandal, Shankar" <shankar.bandal@intel.com>,
+	"Murthy, Shanth" <shanth.murthy@intel.com>,
+	stable <stable@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.19 065/220] serial: 8250_dw: Rework dw8250_handle_irq() locking and IIR handling
 Date: Mon, 23 Mar 2026 14:44:02 +0100
-Message-ID: <20260323134532.543633821@linuxfoundation.org>
+Message-ID: <20260323134506.648371362@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,134 +65,168 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228047-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228748-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 994CE2F55BA
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 3A2852F3B91
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 87d0f901a9bd8ae6be57249c737f20ac0cace93d ]
+commit 883c5a2bc934c165c4491d1ef7da0ac4e9765077 upstream.
 
-Explicitly set/clear CR8 write interception when AVIC is (de)activated to
-fix a bug where KVM leaves the interception enabled after AVIC is
-activated.  E.g. if KVM emulates INIT=>WFS while AVIC is deactivated, CR8
-will remain intercepted in perpetuity.
+dw8250_handle_irq() takes port's lock multiple times with no good
+reason to release it in between and calls serial8250_handle_irq()
+that also takes port's lock.
 
-On its own, the dangling CR8 intercept is "just" a performance issue, but
-combined with the TPR sync bug fixed by commit d02e48830e3f ("KVM: SVM:
-Sync TPR from LAPIC into VMCB::V_TPR even if AVIC is active"), the danging
-intercept is fatal to Windows guests as the TPR seen by hardware gets
-wildly out of sync with reality.
+Take port's lock only once in dw8250_handle_irq() and use
+serial8250_handle_irq_locked() to avoid releasing port's lock in
+between.
 
-Note, VMX isn't affected by the bug as TPR_THRESHOLD is explicitly ignored
-when Virtual Interrupt Delivery is enabled, i.e. when APICv is active in
-KVM's world.  I.e. there's no need to trigger update_cr8_intercept(), this
-is firmly an SVM implementation flaw/detail.
+As IIR_NO_INT check in serial8250_handle_irq() was outside of port's
+lock, it has to be done already in dw8250_handle_irq().
 
-WARN if KVM gets a CR8 write #VMEXIT while AVIC is active, as KVM should
-never enter the guest with AVIC enabled and CR8 writes intercepted.
+DW UART can, in addition to IIR_NO_INT, report BUSY_DETECT (0x7) which
+collided with the IIR_NO_INT (0x1) check in serial8250_handle_irq()
+(because & is used instead of ==) meaning that no other work is done by
+serial8250_handle_irq() during an BUSY_DETECT interrupt.
 
-Fixes: 3bbf3565f48c ("svm: Do not intercept CR8 when enable AVIC")
-Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-Cc: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20260203190711.458413-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Squash fix to avic_deactivate_vmcb. - Paolo]
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This allows reorganizing code in dw8250_handle_irq() to do both
+IIR_NO_INT and BUSY_DETECT handling right at the start simplifying
+the logic.
+
+Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260203171049.4353-5-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/avic.c |    7 +++++--
- arch/x86/kvm/svm/svm.c  |    7 ++++---
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c |   37 +++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -104,12 +104,12 @@ static void avic_activate_vmcb(struct vc
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -9,6 +9,9 @@
+  * LCR is written whilst busy.  If it is, then a busy detect interrupt is
+  * raised, the LCR needs to be rewritten and the uart status register read.
+  */
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -40,6 +43,8 @@
+ #define RZN1_UART_RDMACR 0x110 /* DMA Control Register Receive Mode */
  
- 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
--
- 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
- 	vmcb->control.avic_physical_id |= avic_get_max_physical_id(vcpu);
--
- 	vmcb->control.int_ctl |= AVIC_ENABLE_MASK;
- 
-+	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
+ /* DesignWare specific register fields */
++#define DW_UART_IIR_IID			GENMASK(3, 0)
 +
+ #define DW_UART_MCR_SIRE		BIT(6)
+ 
+ /* Renesas specific register fields */
+@@ -312,7 +317,19 @@ static int dw8250_handle_irq(struct uart
+ 	bool rx_timeout = (iir & 0x3f) == UART_IIR_RX_TIMEOUT;
+ 	unsigned int quirks = d->pdata->quirks;
+ 	unsigned int status;
+-	unsigned long flags;
++
++	switch (FIELD_GET(DW_UART_IIR_IID, iir)) {
++	case UART_IIR_NO_INT:
++		return 0;
++
++	case UART_IIR_BUSY:
++		/* Clear the USR */
++		serial_port_in(p, d->pdata->usr_reg);
++
++		return 1;
++	}
++
++	guard(uart_port_lock_irqsave)(p);
+ 
  	/*
- 	 * Note: KVM supports hybrid-AVIC mode, where KVM emulates x2APIC MSR
- 	 * accesses, while interrupt injection to a running vCPU can be
-@@ -141,6 +141,9 @@ static void avic_deactivate_vmcb(struct
- 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
- 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
+ 	 * There are ways to get Designware-based UARTs into a state where
+@@ -325,20 +342,15 @@ static int dw8250_handle_irq(struct uart
+ 	 * so we limit the workaround only to non-DMA mode.
+ 	 */
+ 	if (!up->dma && rx_timeout) {
+-		uart_port_lock_irqsave(p, &flags);
+ 		status = serial_lsr_in(up);
  
-+	if (!sev_es_guest(svm->vcpu.kvm))
-+		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
-+
- 	/*
- 	 * If running nested and the guest uses its own MSR bitmap, there
- 	 * is no need to update L0's msr bitmap
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1246,8 +1246,7 @@ static void init_vmcb(struct kvm_vcpu *v
- 	svm_set_intercept(svm, INTERCEPT_CR0_WRITE);
- 	svm_set_intercept(svm, INTERCEPT_CR3_WRITE);
- 	svm_set_intercept(svm, INTERCEPT_CR4_WRITE);
--	if (!kvm_vcpu_apicv_active(vcpu))
--		svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
-+	svm_set_intercept(svm, INTERCEPT_CR8_WRITE);
+ 		if (!(status & (UART_LSR_DR | UART_LSR_BI)))
+ 			serial_port_in(p, UART_RX);
+-
+-		uart_port_unlock_irqrestore(p, flags);
+ 	}
  
- 	set_dr_intercepts(svm);
+ 	/* Manually stop the Rx DMA transfer when acting as flow controller */
+ 	if (quirks & DW_UART_QUIRK_IS_DMA_FC && up->dma && up->dma->rx_running && rx_timeout) {
+-		uart_port_lock_irqsave(p, &flags);
+ 		status = serial_lsr_in(up);
+-		uart_port_unlock_irqrestore(p, flags);
  
-@@ -2862,9 +2861,11 @@ static int dr_interception(struct kvm_vc
+ 		if (status & (UART_LSR_DR | UART_LSR_BI)) {
+ 			dw8250_writel_ext(p, RZN1_UART_RDMACR, 0);
+@@ -346,17 +358,9 @@ static int dw8250_handle_irq(struct uart
+ 		}
+ 	}
  
- static int cr8_write_interception(struct kvm_vcpu *vcpu)
- {
-+	u8 cr8_prev = kvm_get_cr8(vcpu);
- 	int r;
+-	if (serial8250_handle_irq(p, iir))
+-		return 1;
+-
+-	if ((iir & UART_IIR_BUSY) == UART_IIR_BUSY) {
+-		/* Clear the USR */
+-		serial_port_in(p, d->pdata->usr_reg);
++	serial8250_handle_irq_locked(p, iir);
  
--	u8 cr8_prev = kvm_get_cr8(vcpu);
-+	WARN_ON_ONCE(kvm_vcpu_apicv_active(vcpu));
-+
- 	/* instruction emulation calls kvm_set_cr8() */
- 	r = cr_interception(vcpu);
- 	if (lapic_in_kernel(vcpu))
+-		return 1;
+-	}
+-
+-	return 0;
++	return 1;
+ }
+ 
+ static void dw8250_clk_work_cb(struct work_struct *work)
+@@ -865,6 +869,7 @@ static struct platform_driver dw8250_pla
+ 
+ module_platform_driver(dw8250_platform_driver);
+ 
++MODULE_IMPORT_NS("SERIAL_8250");
+ MODULE_AUTHOR("Jamie Iles");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Synopsys DesignWare 8250 serial port driver");
 
 
 
