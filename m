@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-229815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228132-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KD36IuhywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229815-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:05:44 +0100
+	id yP9hOgxJwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228132-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:08 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 116BA2F96CE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AAF22F3D9A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F336330AA024
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 04EF530312D1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60610285417;
-	Mon, 23 Mar 2026 16:22:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02B029A31C;
+	Mon, 23 Mar 2026 13:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVd7pSa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ktb9kt9o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246DC282F35;
-	Mon, 23 Mar 2026 16:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F1C1A6815;
+	Mon, 23 Mar 2026 13:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282940; cv=none; b=cYyqjilIuwelfl/6QAgwC/lr4IcPhR10KeZsyC09RuF1+pIo94nceveQuOJ6CZtPwwihKsrjFU43P16T3G6gcsEUVa3PwegeUE9hXwvq1DQ0doSTU+iDkak6kwiQs88flxbBRQ7wxI6EUBhoACuWx1woWB9lQOp9NbhiYgif+Ro=
+	t=1774274221; cv=none; b=izLnCij7tfPGJZWCjUHCf1I4OiXTwy9nsYzM85tpAwW25SijX5/oxAt9jLciLgJPPTMLoRy9YO0zh5/u//qBxcKeFbVcVYztEknufWZoy3z5n7ZqvyQS9FLG4qZe3LO1odVKtqw8kIJ3rUXt3T6nniW/g9doj07szwO27SG4smY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282940; c=relaxed/simple;
-	bh=z+9JAsozfNrZgakuwAo/zdXbRRX3LpqH9YUr/X/eFf4=;
+	s=arc-20240116; t=1774274221; c=relaxed/simple;
+	bh=fjV3AUe3TEOtpUdQmsnTnbDY+7DeWY8AJC08yjGvAes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chnbeTVBWy1p91jHkDBB8wS1/47fYfugE/Ws1rkL0Lywcmf3L+02loUqqcs1ebgFEVnLaCG5hsr91Trwgjw6HEH1ps8WPalVzVCLBnU0REZ5f7BLaNrx/TQBhf3XEHMbQbeokCv60VVr5stDBKi/V3MvnPcpk+RH+/Vbwgp/vMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVd7pSa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EADC4CEF7;
-	Mon, 23 Mar 2026 16:22:19 +0000 (UTC)
+	 MIME-Version; b=B+hVoG+ejNxrPdbo8tFFBt/mMleZjM2NgYv/Mt/rgCFDcNqMyl4DUN55R0I2751poxhQXmy+HbDfZ1pSe7+lrtrXQm4plJlYBFy07ktV5IGoINV+tQlLb91xu5ABvgaJYpIz1+b1puhWL+yt6Q2FaxSNc/jBQMFwnnv4ns91hfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ktb9kt9o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFE1C2BC9E;
+	Mon, 23 Mar 2026 13:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282939;
-	bh=z+9JAsozfNrZgakuwAo/zdXbRRX3LpqH9YUr/X/eFf4=;
+	s=korg; t=1774274221;
+	bh=fjV3AUe3TEOtpUdQmsnTnbDY+7DeWY8AJC08yjGvAes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVd7pSa1FGZYcFQa0iI9s1OHK8ePGeUi7d5HQrg5XjW1VqDZ5dXftqsmcOEEm5W0r
-	 BTxSGGewBjTS2MsH0aNAlJNkE77EzzwVVt3Wugcji6wvFVLvwaF/7Ih9MenagVQKc6
-	 ZOlHuIakg3MAGU+6aIeRaDhQBQNJaC1SNKeeKs6Y=
+	b=Ktb9kt9oQs9R9x/ndKyj56qg9stUa+gT38WU5uQtgq8tpV5Ce0gkZa+IHO0gg9+JD
+	 t8V/ma89QkM+ZVBmlCSTn/V8zzoVGaXVVuyG7mDz5SMnbk8ZXgKKP60hOkcYvu84Ld
+	 dNYSsoY9GSlLBDPa4qLuktAH1Hlas2B8JlfJH3rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 343/481] drm/bridge: ti-sn65dsi83: halve horizontal syncs for dual LVDS output
+Subject: [PATCH 6.19 148/220] bonding: prevent potential infinite loop in bond_header_parse()
 Date: Mon, 23 Mar 2026 14:45:25 +0100
-Message-ID: <20260323134533.459174155@linuxfoundation.org>
+Message-ID: <20260323134509.264617124@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,105 +67,242 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229815-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228132-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 116BA2F96CE
+	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,shopee.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,jvosburgh.net:email]
+X-Rspamd-Queue-Id: 7AAF22F3D9A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d0d727746944096a6681dc6adb5f123fc5aa018d ]
+[ Upstream commit b7405dcf7385445e10821777143f18c3ce20fa04 ]
 
-Dual LVDS output (available on the SN65DSI84) requires HSYNC_PULSE_WIDTH
-and HORIZONTAL_BACK_PORCH to be divided by two with respect to the values
-used for single LVDS output.
+bond_header_parse() can loop if a stack of two bonding devices is setup,
+because skb->dev always points to the hierarchy top.
 
-While not clearly stated in the datasheet, this is needed according to the
-DSI Tuner [0] output. It also makes sense intuitively because in dual LVDS
-output two pixels at a time are output and so the output clock is half of
-the pixel clock.
+Add new "const struct net_device *dev" parameter to
+(struct header_ops)->parse() method to make sure the recursion
+is bounded, and that the final leaf parse method is called.
 
-Some dual-LVDS panels refuse to show any picture without this fix.
-
-Divide by two HORIZONTAL_FRONT_PORCH too, even though this register is used
-only for test pattern generation which is not currently implemented by this
-driver.
-
-[0] https://www.ti.com/tool/DSI-TUNER
-
-Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
-Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-2-2e15f5a9a6a0@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-[ adapted variable declaration placement ]
+Fixes: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Tested-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Cc: Jay Vosburgh <jv@jvosburgh.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Link: https://patch.msgid.link/20260315104152.1436867-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/firewire/net.c          | 5 +++--
+ drivers/net/bonding/bond_main.c | 8 +++++---
+ include/linux/etherdevice.h     | 3 ++-
+ include/linux/if_ether.h        | 3 ++-
+ include/linux/netdevice.h       | 6 ++++--
+ net/ethernet/eth.c              | 9 +++------
+ net/ipv4/ip_gre.c               | 3 ++-
+ net/mac802154/iface.c           | 4 +++-
+ net/phonet/af_phonet.c          | 5 ++++-
+ 9 files changed, 28 insertions(+), 18 deletions(-)
 
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -325,6 +325,7 @@ static void sn65dsi83_atomic_pre_enable(
- 					struct drm_bridge_state *old_bridge_state)
+diff --git a/drivers/firewire/net.c b/drivers/firewire/net.c
+index 6d64467135395..e829454089550 100644
+--- a/drivers/firewire/net.c
++++ b/drivers/firewire/net.c
+@@ -257,9 +257,10 @@ static void fwnet_header_cache_update(struct hh_cache *hh,
+ 	memcpy((u8 *)hh->hh_data + HH_DATA_OFF(FWNET_HLEN), haddr, net->addr_len);
+ }
+ 
+-static int fwnet_header_parse(const struct sk_buff *skb, unsigned char *haddr)
++static int fwnet_header_parse(const struct sk_buff *skb, const struct net_device *dev,
++			      unsigned char *haddr)
  {
- 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
-+	const unsigned int dual_factor = ctx->lvds_dual_link ? 2 : 1;
- 	struct drm_atomic_state *state = old_bridge_state->base.state;
- 	const struct drm_bridge_state *bridge_state;
- 	const struct drm_crtc_state *crtc_state;
-@@ -452,18 +453,18 @@ static void sn65dsi83_atomic_pre_enable(
- 	/* 32 + 1 pixel clock to ensure proper operation */
- 	le16val = cpu_to_le16(32 + 1);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_SYNC_DELAY_LOW, &le16val, 2);
--	le16val = cpu_to_le16(mode->hsync_end - mode->hsync_start);
-+	le16val = cpu_to_le16((mode->hsync_end - mode->hsync_start) / dual_factor);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_HSYNC_PULSE_WIDTH_LOW,
- 			  &le16val, 2);
- 	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
- 			  &le16val, 2);
- 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
--		     mode->htotal - mode->hsync_end);
-+		     (mode->htotal - mode->hsync_end) / dual_factor);
- 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
- 		     mode->vtotal - mode->vsync_end);
- 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
--		     mode->hsync_start - mode->hdisplay);
-+		     (mode->hsync_start - mode->hdisplay) / dual_factor);
- 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
- 		     mode->vsync_start - mode->vdisplay);
- 	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
+-	memcpy(haddr, skb->dev->dev_addr, FWNET_ALEN);
++	memcpy(haddr, dev->dev_addr, FWNET_ALEN);
+ 
+ 	return FWNET_ALEN;
+ }
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index e8e261e0cb4e1..106cfe732a15e 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -1497,9 +1497,11 @@ static int bond_header_create(struct sk_buff *skb, struct net_device *bond_dev,
+ 	return ret;
+ }
+ 
+-static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
++static int bond_header_parse(const struct sk_buff *skb,
++			     const struct net_device *dev,
++			     unsigned char *haddr)
+ {
+-	struct bonding *bond = netdev_priv(skb->dev);
++	struct bonding *bond = netdev_priv(dev);
+ 	const struct header_ops *slave_ops;
+ 	struct slave *slave;
+ 	int ret = 0;
+@@ -1509,7 +1511,7 @@ static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
+ 	if (slave) {
+ 		slave_ops = READ_ONCE(slave->dev->header_ops);
+ 		if (slave_ops && slave_ops->parse)
+-			ret = slave_ops->parse(skb, haddr);
++			ret = slave_ops->parse(skb, slave->dev, haddr);
+ 	}
+ 	rcu_read_unlock();
+ 	return ret;
+diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
+index 9a1eacf35d370..df8f88f63a706 100644
+--- a/include/linux/etherdevice.h
++++ b/include/linux/etherdevice.h
+@@ -42,7 +42,8 @@ extern const struct header_ops eth_header_ops;
+ 
+ int eth_header(struct sk_buff *skb, struct net_device *dev, unsigned short type,
+ 	       const void *daddr, const void *saddr, unsigned len);
+-int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr);
++int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
++		     unsigned char *haddr);
+ int eth_header_cache(const struct neighbour *neigh, struct hh_cache *hh,
+ 		     __be16 type);
+ void eth_header_cache_update(struct hh_cache *hh, const struct net_device *dev,
+diff --git a/include/linux/if_ether.h b/include/linux/if_ether.h
+index 61b7335aa037c..ca9afa824aa4f 100644
+--- a/include/linux/if_ether.h
++++ b/include/linux/if_ether.h
+@@ -40,7 +40,8 @@ static inline struct ethhdr *inner_eth_hdr(const struct sk_buff *skb)
+ 	return (struct ethhdr *)skb_inner_mac_header(skb);
+ }
+ 
+-int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr);
++int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
++		     unsigned char *haddr);
+ 
+ extern ssize_t sysfs_format_mac(char *buf, const unsigned char *addr, int len);
+ 
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 444e52eb8ed99..1216f050f0699 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -311,7 +311,9 @@ struct header_ops {
+ 	int	(*create) (struct sk_buff *skb, struct net_device *dev,
+ 			   unsigned short type, const void *daddr,
+ 			   const void *saddr, unsigned int len);
+-	int	(*parse)(const struct sk_buff *skb, unsigned char *haddr);
++	int	(*parse)(const struct sk_buff *skb,
++			 const struct net_device *dev,
++			 unsigned char *haddr);
+ 	int	(*cache)(const struct neighbour *neigh, struct hh_cache *hh, __be16 type);
+ 	void	(*cache_update)(struct hh_cache *hh,
+ 				const struct net_device *dev,
+@@ -3442,7 +3444,7 @@ static inline int dev_parse_header(const struct sk_buff *skb,
+ 
+ 	if (!dev->header_ops || !dev->header_ops->parse)
+ 		return 0;
+-	return dev->header_ops->parse(skb, haddr);
++	return dev->header_ops->parse(skb, dev, haddr);
+ }
+ 
+ static inline __be16 dev_parse_header_protocol(const struct sk_buff *skb)
+diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
+index 13a63b48b7eeb..d9faadbe9b6c8 100644
+--- a/net/ethernet/eth.c
++++ b/net/ethernet/eth.c
+@@ -193,14 +193,11 @@ __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev)
+ }
+ EXPORT_SYMBOL(eth_type_trans);
+ 
+-/**
+- * eth_header_parse - extract hardware address from packet
+- * @skb: packet to extract header from
+- * @haddr: destination buffer
+- */
+-int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr)
++int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
++		     unsigned char *haddr)
+ {
+ 	const struct ethhdr *eth = eth_hdr(skb);
++
+ 	memcpy(haddr, eth->h_source, ETH_ALEN);
+ 	return ETH_ALEN;
+ }
+diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
+index e13244729ad8d..35f0baa99d409 100644
+--- a/net/ipv4/ip_gre.c
++++ b/net/ipv4/ip_gre.c
+@@ -919,7 +919,8 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
+ 	return -(t->hlen + sizeof(*iph));
+ }
+ 
+-static int ipgre_header_parse(const struct sk_buff *skb, unsigned char *haddr)
++static int ipgre_header_parse(const struct sk_buff *skb, const struct net_device *dev,
++			      unsigned char *haddr)
+ {
+ 	const struct iphdr *iph = (const struct iphdr *) skb_mac_header(skb);
+ 	memcpy(haddr, &iph->saddr, 4);
+diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
+index 9e4631fade90c..000be60d95803 100644
+--- a/net/mac802154/iface.c
++++ b/net/mac802154/iface.c
+@@ -469,7 +469,9 @@ static int mac802154_header_create(struct sk_buff *skb,
+ }
+ 
+ static int
+-mac802154_header_parse(const struct sk_buff *skb, unsigned char *haddr)
++mac802154_header_parse(const struct sk_buff *skb,
++		       const struct net_device *dev,
++		       unsigned char *haddr)
+ {
+ 	struct ieee802154_hdr hdr;
+ 
+diff --git a/net/phonet/af_phonet.c b/net/phonet/af_phonet.c
+index 238a9638d2b0f..d89225d6bfd3b 100644
+--- a/net/phonet/af_phonet.c
++++ b/net/phonet/af_phonet.c
+@@ -129,9 +129,12 @@ static int pn_header_create(struct sk_buff *skb, struct net_device *dev,
+ 	return 1;
+ }
+ 
+-static int pn_header_parse(const struct sk_buff *skb, unsigned char *haddr)
++static int pn_header_parse(const struct sk_buff *skb,
++			   const struct net_device *dev,
++			   unsigned char *haddr)
+ {
+ 	const u8 *media = skb_mac_header(skb);
++
+ 	*haddr = *media;
+ 	return 1;
+ }
+-- 
+2.51.0
+
 
 
 
