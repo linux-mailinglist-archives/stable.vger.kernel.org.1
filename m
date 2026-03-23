@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-228579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229638-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kITkKb9LwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228579-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:39 +0100
+	id AJM2J1RtwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229638-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A40022F4259
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3AD2F89FE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EE7C130091FA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B9C0330D8700
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EF13C07A;
-	Mon, 23 Mar 2026 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16D73BB9E8;
+	Mon, 23 Mar 2026 16:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnpEl96o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7dgF4gk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B750823DD;
-	Mon, 23 Mar 2026 14:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78EDF3BA234;
+	Mon, 23 Mar 2026 16:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275503; cv=none; b=oAvtp/qGDyiJ6OWqGTGoxRd2yQpuaYsAbAYTZePFIjPDlyQF3YBO1ysBahapIS4zsIFLypurrpymvFVs3ATsRrzxUalUxKq5Sdzf3wQL7ZWctq9MgxtjV086emnb7LNM/WLOzVYurfs0y8UIqKlSgNtNHIKoQ6b5ZoFgbEnFNog=
+	t=1774282464; cv=none; b=tiDIyLGSM629N64WwfrnmuIxO5CFSbwDOAiY619rImo8gvtTAHBAvEGszjh6HEUTFLL9vocqk//xEaMc7Ns7Z4fg+vMOdLABKbnkpMh8HYQcU7z35LvGFlO5Xif2Z7aBA6Ne2BiMm8xJSzRU8DkC228awDK7Eds35zOdz8AYqDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275503; c=relaxed/simple;
-	bh=YwSvAD491kvJ2tl7lbbD1/Mv+VLVCUdwR0hilbkzsA8=;
+	s=arc-20240116; t=1774282464; c=relaxed/simple;
+	bh=sMfjbdV0/DRmuyGSC28hcHw7hMnqcrRG4F3FRRZs1kE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKHAbHSwGImFPE/RoIVpkN28nqAp5iEGAu3YjDHisAhykKBzoDZFAGJ7IBZzG+oEZUUnTHdYSBKw4nYUhFRmYT/OAQPieEiwbOUdVwmQkfIGyCINLdunCMrBxqojO0v9wa4PyxUI++h0WPREe/qX7zNNWMDmoCPJ+73hZpp7N3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnpEl96o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98CBCC4CEF7;
-	Mon, 23 Mar 2026 14:18:22 +0000 (UTC)
+	 MIME-Version; b=b5IEfvfq5i7oaLn/+BHhxUwGUQZfLfT0NCettTynH3l2HLFLTLSeeIT7qgpTiwIQk4pSfZznM/XROZoCM1R1o7HIPJA3oRHYwRBL9EEJPN2WnmC2rdV4LaytKe+0+1vbneplaMO6cJNIh0sM2NvGM497QRWg/rNeej/N1zdRK/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7dgF4gk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07A0C4CEF7;
+	Mon, 23 Mar 2026 16:14:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275502;
-	bh=YwSvAD491kvJ2tl7lbbD1/Mv+VLVCUdwR0hilbkzsA8=;
+	s=korg; t=1774282464;
+	bh=sMfjbdV0/DRmuyGSC28hcHw7hMnqcrRG4F3FRRZs1kE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnpEl96oefK8pwKUwofP3UFrlW/YTj4+UXVx2Y8ejN1Ajce5NIEa/7eAhVZ9+5u58
-	 VbMf0p7R3GjP7kuNof5S/N/rW/UjKl9kfQdgRqPRi3EC6UoZDiYW23u/iEVUQjTmve
-	 GxH/OsEl/+/jPUlgkhnec7GN0UaRkdl84MOv79Sg=
+	b=T7dgF4gkJbx/KSsM0pOl3tBSWdxVPAA/dn8uQ3RBx7Cb/h2GJVgQQNIXcWlbujFKf
+	 We41Ch/By11IV/vzulL9617pIQtvVM69jqLVT+XtAPt4uTlxJycThmsA5ruhAou1cN
+	 CWCGZVSxs7xnydloA2HPK6hDxHIt6Xgi7i51x3LI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 125/460] ceph: add a bunch of missing ceph_path_info initializers
+	Ido Schimmel <idosch@nvidia.com>,
+	syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 139/481] net: ipv6: fix panic when IPv4 route references loopback IPv6 nexthop
 Date: Mon, 23 Mar 2026 14:42:01 +0100
-Message-ID: <20260323134529.691491364@linuxfoundation.org>
+Message-ID: <20260323134528.647549083@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,160 +67,119 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228579-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.910];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229638-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TAGGED_RCPT(0.00)[stable,334190e097a98a1b81bb];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A40022F4259
+X-Rspamd-Queue-Id: 5E3AD2F89FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-commit 43323a5934b660afae687e8e4e95ac328615a5c4 upstream.
+[ Upstream commit 21ec92774d1536f71bdc90b0e3d052eff99cf093 ]
 
-ceph_mdsc_build_path() must be called with a zero-initialized
-ceph_path_info parameter, or else the following
-ceph_mdsc_free_path_info() may crash.
+When a standalone IPv6 nexthop object is created with a loopback device
+(e.g., "ip -6 nexthop add id 100 dev lo"), fib6_nh_init() misclassifies
+it as a reject route. This is because nexthop objects have no destination
+prefix (fc_dst=::), causing fib6_is_reject() to match any loopback
+nexthop. The reject path skips fib_nh_common_init(), leaving
+nhc_pcpu_rth_output unallocated. If an IPv4 route later references this
+nexthop, __mkroute_output() dereferences NULL nhc_pcpu_rth_output and
+panics.
 
-Example crash (on Linux 6.18.12):
+Simplify the check in fib6_nh_init() to only match explicit reject
+routes (RTF_REJECT) instead of using fib6_is_reject(). The loopback
+promotion heuristic in fib6_is_reject() is handled separately by
+ip6_route_info_create_nh(). After this change, the three cases behave
+as follows:
 
-  virt_to_cache: Object is not a Slab page!
-  WARNING: CPU: 184 PID: 2871736 at mm/slub.c:6732 kmem_cache_free+0x316/0x400
-  [...]
-  Call Trace:
-   [...]
-   ceph_open+0x13d/0x3e0
-   do_dentry_open+0x134/0x480
-   vfs_open+0x2a/0xe0
-   path_openat+0x9a3/0x1160
-  [...]
-  cache_from_obj: Wrong slab cache. names_cache but object is from ceph_inode_info
-  WARNING: CPU: 184 PID: 2871736 at mm/slub.c:6746 kmem_cache_free+0x2dd/0x400
-  [...]
-  kernel BUG at mm/slub.c:634!
-  Oops: invalid opcode: 0000 [#1] SMP NOPTI
-  RIP: 0010:__slab_free+0x1a4/0x350
+1. Explicit reject route ("ip -6 route add unreachable 2001:db8::/64"):
+   RTF_REJECT is set, enters reject path, skips fib_nh_common_init().
+   No behavior change.
 
-Some of the ceph_mdsc_build_path() callers had initializers, but
-others had not, even though they were all added by commit 15f519e9f883
-("ceph: fix race condition validating r_parent before applying state").
-The ones without initializer are suspectible to random crashes.  (I can
-imagine it could even be possible to exploit this bug to elevate
-privileges.)
+2. Implicit loopback reject route ("ip -6 route add 2001:db8::/32 dev lo"):
+   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
+   called. ip6_route_info_create_nh() still promotes it to reject
+   afterward. nhc_pcpu_rth_output is allocated but unused, which is
+   harmless.
 
-Unfortunately, these Ceph functions are undocumented and its semantics
-can only be derived from the code.  I see that ceph_mdsc_build_path()
-initializes the structure only on success, but not on error.
+3. Standalone nexthop object ("ip -6 nexthop add id 100 dev lo"):
+   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
+   called. nhc_pcpu_rth_output is properly allocated, fixing the crash
+   when IPv4 routes reference this nexthop.
 
-Calling ceph_mdsc_free_path_info() after a failed
-ceph_mdsc_build_path() call does not even make sense, but that's what
-all callers do, and for it to be safe, the structure must be
-zero-initialized.  The least intrusive approach to fix this is
-therefore to add initializers everywhere.
-
-Cc: stable@vger.kernel.org
-Fixes: 15f519e9f883 ("ceph: fix race condition validating r_parent before applying state")
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
+Reported-by: syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/698f8482.a70a0220.2c38d7.00ca.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20260304113817.294966-2-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/debugfs.c |    4 ++--
- fs/ceph/dir.c     |    2 +-
- fs/ceph/file.c    |    4 ++--
- fs/ceph/inode.c   |    2 +-
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ net/ipv6/route.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/fs/ceph/debugfs.c
-+++ b/fs/ceph/debugfs.c
-@@ -79,7 +79,7 @@ static int mdsc_show(struct seq_file *s,
- 		if (req->r_inode) {
- 			seq_printf(s, " #%llx", ceph_ino(req->r_inode));
- 		} else if (req->r_dentry) {
--			struct ceph_path_info path_info;
-+			struct ceph_path_info path_info = {0};
- 			path = ceph_mdsc_build_path(mdsc, req->r_dentry, &path_info, 0);
- 			if (IS_ERR(path))
- 				path = NULL;
-@@ -98,7 +98,7 @@ static int mdsc_show(struct seq_file *s,
- 		}
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 5aa5390da1095..987ef0954e2ea 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3558,7 +3558,6 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ {
+ 	struct net_device *dev = NULL;
+ 	struct inet6_dev *idev = NULL;
+-	int addr_type;
+ 	int err;
  
- 		if (req->r_old_dentry) {
--			struct ceph_path_info path_info;
-+			struct ceph_path_info path_info = {0};
- 			path = ceph_mdsc_build_path(mdsc, req->r_old_dentry, &path_info, 0);
- 			if (IS_ERR(path))
- 				path = NULL;
---- a/fs/ceph/dir.c
-+++ b/fs/ceph/dir.c
-@@ -1354,7 +1354,7 @@ static int ceph_unlink(struct inode *dir
- 	if (!dn) {
- 		try_async = false;
- 	} else {
--		struct ceph_path_info path_info;
-+		struct ceph_path_info path_info = {0};
- 		path = ceph_mdsc_build_path(mdsc, dn, &path_info, 0);
- 		if (IS_ERR(path)) {
- 			try_async = false;
---- a/fs/ceph/file.c
-+++ b/fs/ceph/file.c
-@@ -397,7 +397,7 @@ int ceph_open(struct inode *inode, struc
- 	if (!dentry) {
- 		do_sync = true;
- 	} else {
--		struct ceph_path_info path_info;
-+		struct ceph_path_info path_info = {0};
- 		path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
- 		if (IS_ERR(path)) {
- 			do_sync = true;
-@@ -807,7 +807,7 @@ int ceph_atomic_open(struct inode *dir,
- 	if (!dn) {
- 		try_async = false;
- 	} else {
--		struct ceph_path_info path_info;
-+		struct ceph_path_info path_info = {0};
- 		path = ceph_mdsc_build_path(mdsc, dn, &path_info, 0);
- 		if (IS_ERR(path)) {
- 			try_async = false;
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -2546,7 +2546,7 @@ int __ceph_setattr(struct mnt_idmap *idm
- 	if (!dentry) {
- 		do_sync = true;
- 	} else {
--		struct ceph_path_info path_info;
-+		struct ceph_path_info path_info = {0};
- 		path = ceph_mdsc_build_path(mdsc, dentry, &path_info, 0);
- 		if (IS_ERR(path)) {
- 			do_sync = true;
+ 	fib6_nh->fib_nh_family = AF_INET6;
+@@ -3599,11 +3598,10 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 
+ 	fib6_nh->fib_nh_weight = 1;
+ 
+-	/* We cannot add true routes via loopback here,
+-	 * they would result in kernel looping; promote them to reject routes
++	/* Reset the nexthop device to the loopback device in case of reject
++	 * routes.
+ 	 */
+-	addr_type = ipv6_addr_type(&cfg->fc_dst);
+-	if (fib6_is_reject(cfg->fc_flags, dev, addr_type)) {
++	if (cfg->fc_flags & RTF_REJECT) {
+ 		/* hold loopback dev/idev if we haven't done so. */
+ 		if (dev != net->loopback_dev) {
+ 			if (dev) {
+-- 
+2.51.0
+
 
 
 
