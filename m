@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228122-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gDhrGANtwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229789-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:35 +0100
+	id eBVlMPhIwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228122-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:48 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBF5E2F8959
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 474E12F3D66
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1311432E7D68
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8646930396A2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD4F63AE6E6;
-	Mon, 23 Mar 2026 16:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E581A6815;
+	Mon, 23 Mar 2026 13:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9ZPuJzo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zptlhKN9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700DF35958;
-	Mon, 23 Mar 2026 16:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9A2D1DF25C;
+	Mon, 23 Mar 2026 13:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282869; cv=none; b=ifRCWQ9DpITweTD3bq2zyfcIpSuMKMeeccmwlJ92h9rOuHJzhQYvIo46TyTJ92It2WFfEXIeP0VZ08gwdwUNzd8yNaOQOCQigfL4mvlHP9mELeyeboU6fZcDQISg+bLSrFdEE9r8OCs6zCN9bhOuTR+lNimHT4kR7FfyzvdDfHU=
+	t=1774274189; cv=none; b=rZGQVT+d7vZqwrzMHvyUhTwCLLMwyXFB5OTuOniSIzQRDKXpec/qPaCgPSl6b7yb8NrkRlOV+atQ1PLpwRwkgmtcsaR5sqMKSGb6WAfvhx3568QuXhIK/4S6/JxzMpP53IUvOm7k0HOkRXixc3UanvKpY2tJJd8OdYUt8mcqSRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282869; c=relaxed/simple;
-	bh=fGtb9jzHxxEcjquKeI7+Rc6qSmp58yFRrZIP6tg2PAA=;
+	s=arc-20240116; t=1774274189; c=relaxed/simple;
+	bh=Asz9HWthUha/qED+G9P2fFUM3YhlAX/gU0nz+R0KWuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1qVcbR3GJ6Ja5ccNdEw7v1J1CYnRvp5MEF+UvMCuJQYKupY8xT+UwVUUiFBJyQbPIsMHJfqLihxJwDp5ENDC3UhFkZtcJG7W8Fmv7HkfrxYnSgcF51CcVIkRtyijRSjV7OXf682HhGrw0GKXCRCWw8uVUG5k+xjDi2La1HKWQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9ZPuJzo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02703C4CEF7;
-	Mon, 23 Mar 2026 16:21:08 +0000 (UTC)
+	 MIME-Version; b=g7+ggqw+3mLDWtTsP3Z91dAq56ZjYRklc9yBlyIwQSXuwZBnJwff9cgFYbDxU2dBV+qTpMerqqLmXpP5M3OxjlppctOthP2k98DtDmAgfVTUMNusglahdbc6CduWmVh8YyAH8Bo0ZQqHv65wHxUnAUUzO/NsXg7RzM09xEih1lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zptlhKN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0606C2BC9E;
+	Mon, 23 Mar 2026 13:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282869;
-	bh=fGtb9jzHxxEcjquKeI7+Rc6qSmp58yFRrZIP6tg2PAA=;
+	s=korg; t=1774274189;
+	bh=Asz9HWthUha/qED+G9P2fFUM3YhlAX/gU0nz+R0KWuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u9ZPuJzoN8k2IAPdaa7qfaTDh9yQXZmnexfl/XBER/dZMkXiXaxgUhMKqmLtQ4IUs
-	 eTG+HW+d4R5G2Z6PqXSq7O1OCiH0sGjQ19GDwQDerAU2+wdjhEVf5zqSd7cKkqH52/
-	 d1NrkEnCnn+eIiNYphr+tdkbt1VckiaKQu0MvhkQ=
+	b=zptlhKN9Aw2lw3Pc4iq4ckKaSDkknkdRHkmErDPiM7Q+FwAhjjoSu4wJpPV45/Wdj
+	 ww4NNwKqVKRrG2gUiQdw3ky3zcMwY1+ljieSAxHXhWKFCpBjK5G5ChqTABoxenDJxa
+	 aMoKl7aI7Hokp3XF1PhxArlbl0Cs5u25/8I6pbXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Foster <bfoster@redhat.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 315/481] ext4: fix dirtyclusters double decrement on fs shutdown
-Date: Mon, 23 Mar 2026 14:44:57 +0100
-Message-ID: <20260323134532.780372313@linuxfoundation.org>
+Subject: [PATCH 6.19 121/220] Bluetooth: ISO: Fix defer tests being unstable
+Date: Mon, 23 Mar 2026 14:44:58 +0100
+Message-ID: <20260323134508.420003827@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,137 +67,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229789-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228122-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EBF5E2F8959
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 474E12F3D66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Foster <bfoster@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 94a8cea54cd935c54fa2fba70354757c0fc245e3 ]
+[ Upstream commit 62bcaa6b351b6dc400f6c6b83762001fd9f5c12d ]
 
-fstests test generic/388 occasionally reproduces a warning in
-ext4_put_super() associated with the dirty clusters count:
+iso-tester defer tests seem to fail with hci_conn_hash_lookup_cig
+being unable to resolve a cig in set_cig_params_sync due a race
+where it is run immediatelly before hci_bind_cis is able to set
+the QoS settings into the hci_conn object.
 
-  WARNING: CPU: 7 PID: 76064 at fs/ext4/super.c:1324 ext4_put_super+0x48c/0x590 [ext4]
+So this moves the assigning of the QoS settings to be done directly
+by hci_le_set_cig_params to prevent that from happening again.
 
-Tracing the failure shows that the warning fires due to an
-s_dirtyclusters_counter value of -1. IOW, this appears to be a
-spurious decrement as opposed to some sort of leak. Further tracing
-of the dirty cluster count deltas and an LLM scan of the resulting
-output identified the cause as a double decrement in the error path
-between ext4_mb_mark_diskspace_used() and the caller
-ext4_mb_new_blocks().
-
-First, note that generic/388 is a shutdown vs. fsstress test and so
-produces a random set of operations and shutdown injections. In the
-problematic case, the shutdown triggers an error return from the
-ext4_handle_dirty_metadata() call(s) made from
-ext4_mb_mark_context(). The changed value is non-zero at this point,
-so ext4_mb_mark_diskspace_used() does not exit after the error
-bubbles up from ext4_mb_mark_context(). Instead, the former
-decrements both cluster counters and returns the error up to
-ext4_mb_new_blocks(). The latter falls into the !ar->len out path
-which decrements the dirty clusters counter a second time, creating
-the inconsistency.
-
-To avoid this problem and simplify ownership of the cluster
-reservation in this codepath, lift the counter reduction to a single
-place in the caller. This makes it more clear that
-ext4_mb_new_blocks() is responsible for acquiring cluster
-reservation (via ext4_claim_free_clusters()) in the !delalloc case
-as well as releasing it, regardless of whether it ends up consumed
-or returned due to failure.
-
-Fixes: 0087d9fb3f29 ("ext4: Fix s_dirty_blocks_counter if block allocation failed with nodelalloc")
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20260113171905.118284-1-bfoster@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Drop mballoc-test changes ]
+Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |   21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ net/bluetooth/hci_conn.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3815,8 +3815,7 @@ void ext4_exit_mballoc(void)
-  * Returns 0 if success or error code
-  */
- static noinline_for_stack int
--ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
--				handle_t *handle, unsigned int reserv_clstrs)
-+ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac, handle_t *handle)
- {
- 	struct buffer_head *bitmap_bh = NULL;
- 	struct ext4_group_desc *gdp;
-@@ -3904,13 +3903,6 @@ ext4_mb_mark_diskspace_used(struct ext4_
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index dc085856f5e91..0f512c2c2fd3c 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1944,6 +1944,8 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 		return false;
  
- 	ext4_unlock_group(sb, ac->ac_b_ex.fe_group);
- 	percpu_counter_sub(&sbi->s_freeclusters_counter, ac->ac_b_ex.fe_len);
--	/*
--	 * Now reduce the dirty block count also. Should not go negative
--	 */
--	if (!(ac->ac_flags & EXT4_MB_DELALLOC_RESERVED))
--		/* release all the reserved blocks if non delalloc */
--		percpu_counter_sub(&sbi->s_dirtyclusters_counter,
--				   reserv_clstrs);
- 
- 	if (sbi->s_log_groups_per_flex) {
- 		ext4_group_t flex_group = ext4_flex_group(sbi,
-@@ -5804,7 +5796,7 @@ repeat:
- 			ext4_mb_pa_free(ac);
+ done:
++	conn->iso_qos = *qos;
++
+ 	if (hci_cmd_sync_queue(hdev, set_cig_params_sync,
+ 			       UINT_PTR(qos->ucast.cig), NULL) < 0)
+ 		return false;
+@@ -2013,8 +2015,6 @@ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
  	}
- 	if (likely(ac->ac_status == AC_STATUS_FOUND)) {
--		*errp = ext4_mb_mark_diskspace_used(ac, handle, reserv_clstrs);
-+		*errp = ext4_mb_mark_diskspace_used(ac, handle);
- 		if (*errp) {
- 			ext4_discard_allocated_blocks(ac);
- 			goto errout;
-@@ -5836,12 +5828,9 @@ out:
- 		kmem_cache_free(ext4_ac_cachep, ac);
- 	if (inquota && ar->len < inquota)
- 		dquot_free_block(ar->inode, EXT4_C2B(sbi, inquota - ar->len));
--	if (!ar->len) {
--		if ((ar->flags & EXT4_MB_DELALLOC_RESERVED) == 0)
--			/* release all the reserved blocks if non delalloc */
--			percpu_counter_sub(&sbi->s_dirtyclusters_counter,
--						reserv_clstrs);
--	}
-+	/* release any reserved blocks */
-+	if (reserv_clstrs)
-+		percpu_counter_sub(&sbi->s_dirtyclusters_counter, reserv_clstrs);
  
- 	trace_ext4_allocate_blocks(ar, (unsigned long long)block);
+ 	hci_conn_hold(cis);
+-
+-	cis->iso_qos = *qos;
+ 	cis->state = BT_BOUND;
  
+ 	return cis;
+-- 
+2.51.0
+
 
 
 
