@@ -1,269 +1,232 @@
-Return-Path: <stable+bounces-227889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227890-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KMOzOMrewGn6NQQAu9opvQ
-	(envelope-from <stable+bounces-227889-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:33:46 +0100
+	id +KvIJP7hwGnAOAQAu9opvQ
+	(envelope-from <stable+bounces-227890-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:47:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2815F2ED1B3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:33:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA6902ED2A5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0DE213004CBD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 06:33:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBB45300D16D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 06:47:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31073191BB;
-	Mon, 23 Mar 2026 06:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CEA35BDAD;
+	Mon, 23 Mar 2026 06:47:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="CZh92Vqp"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k2YC9Yg2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508172FD7BE
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 06:33:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E23348883;
+	Mon, 23 Mar 2026 06:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774247613; cv=none; b=GPlyJnVXz6cs0IX4DsHRr3Q5N0Z+KGAgVjQ2MIBElrzgB9vOpajwmEgEZMdPQM8Q4/R9EpX+wuoTPuCyUeJCHNq6MNfC/JK0UcijGcMrBQMuwwyTjj1vGsp4is0RPSgzVRjs2TPf+3KGuyhP6MRUKDqvCFwBRPX8jlAa4QiMr3Y=
+	t=1774248443; cv=none; b=uPubC+s4nViCmSaWroOEqNGhHkzXq9vgwKC3keBUH2oLmapemtaKNs6WyXRYu8Mx+kt6fXVx3zY49KwOs/5aiyuZ51F1xn67kePNpyVY+qS2PfaDhvOEkjZ8zI28028FvpTull6UYHpzWfCdmPEx+WXUUeQapEKV0eYW9JjsDGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774247613; c=relaxed/simple;
-	bh=TEU6DYkEQGRfvG4wSTCS9MsLZyPrDr/7yC/Q1P9jTVU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AO6R7Z5rZ6zkich9+W+96uD5TOWb7C8aioB4yxwL9KUEReGp8cucG8BxAtZRsCu/VBCoiRm3T+mpi0T4Ids+I7gem3sfA1jJkG+p+7iyCwLp7h1yl2P+B2XZh+bQ/J3gWqSbgENa1B+2NXVIR/4ZHCC6+Upeu2CatipaN0Gi/2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=CZh92Vqp; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48540d21f7dso28551185e9.0
-        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 23:33:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1774247610; x=1774852410; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=YGTwgK5nYvcCyOG242Pe97TZCZ73pNnFR7VrLz4Ca/Y=;
-        b=CZh92Vqp71WT3svFN9TqQvz7NXrKGXJRRZSmU5xc3AZnwKVojxFqG5JRr9HODAvDBk
-         Lk8Up1C3KQSF0Na/1GPWHhwIgeSRgDJB4Dex6i6hvHyNSu576AhrrltgIhb7K5hqIOgU
-         zHGu9Liti7eg75xGEAB9ziENXA2iwCJJDTKfZNmSkto0T8Wbt+EmEodNGu3iqax3C/HS
-         GOi0ak69EVPGLB4Odes5q0uetAnWPbcY/+M7AIiVyRGPr6Zm8jeEWsl4DTOYV3hfHxAA
-         zXm/dN3GydoSgqEjqEHPsR6Pg4cY27rnnVpFncglC9orYo0ALW/bjluOdR3fLX9GVnP4
-         /1bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774247610; x=1774852410;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YGTwgK5nYvcCyOG242Pe97TZCZ73pNnFR7VrLz4Ca/Y=;
-        b=GYaIxHYE/Myu2qlkrlFW8nMSVxUkGZ5r8f61wUhpb+8MzHbYcMvtb70+nx16g873rO
-         8vZBZE55s9I0NEpCTznDht0tQqdDfrajJXPeMelJRU4hNomHXku09teXyRrbVSs9XzIZ
-         oeDaC83iSqcoXnFQuSlpcRMPJrRhG92m/knH+JQcUn5fT5Pc4iYQ6Ssxvh1h3rGhonS5
-         cRv+KgcP+VfsgAXB/NCnXUK3inNnv9+tKagaCwEPL9d9O1fNrrpJVZUjBujalPXerJL2
-         eEEPqYPtdeT783zyBQydFo+ld7Y9VciL3pypaElcm1YgPP+7KWKiPZX2A0NfTp2tEYt4
-         BJBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUO2Y6xXDzZtVTMxIpZJdCyRtO+tMEM5Mus9cqJCLtJj7Bxri73Xyx7xQf8KWXXTK8XGxJq2sI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoKaqpodnwdlZNGQ5D1ggoO1q6JzstGzIEWIEN3a2GofaQ3Hxa
-	cF8aD9/jSlN+j/t8J9joIQLqG7kObpU1BcTLtAONojJPCb39CbgGkUFGuO7YCsEX7uo=
-X-Gm-Gg: ATEYQzzEr0PEZxKqVljzp6fPrP3bY8g4N5fcgavbLPsHV6tyozzboBUSsZD/W8aOVps
-	fojCytokos/eussfOVzbeJgPzs9DSMRSSt1TuKggUZ7Wcc0HRKC3/EkeJDumSgH6+uecmgA9HY3
-	7el0XJBM+g73k+Sq8c0k4L+QozU33g57HZz9exAzvLAUNOHj8IBxk5dd5wHrTMaOF++f/iktD4k
-	jG/8gzb/OtKs6kcAD2LfJKxUI5p5xfqp3+nO1w3kUl69glIxvGUiu2dedtsfy07EOlnh9qCeqXo
-	j+pwMUx7nA+ebHPwSPbiggkcUTtKd5jMddpQkmOcEAch/T2eCNoOljzEVh35OqiZ/NylZog3ufh
-	gxK3DnsGONOBxM3Ls8MFjmBzFfTjhH3/J7KyhsOlMRabanh3sfBkjZy9dP92n1cEQcQWGMkLH5K
-	O1SKU7SIufjOTXtrp+jvpZO6FtGSrg9pYa7AAPfkCH596Y+0PTPD4=
-X-Received: by 2002:a05:600c:45c7:b0:485:3fd1:9936 with SMTP id 5b1f17b1804b1-486fede721amr142064755e9.5.1774247609567;
-        Sun, 22 Mar 2026 23:33:29 -0700 (PDT)
-Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083516ab1sm127821195ad.5.2026.03.22.23.33.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 22 Mar 2026 23:33:28 -0700 (PDT)
-Message-ID: <78228756-0f0c-4ecb-86d5-da6613160a72@suse.com>
-Date: Mon, 23 Mar 2026 17:03:23 +1030
+	s=arc-20240116; t=1774248443; c=relaxed/simple;
+	bh=fZ4dthvo6FiuhI8csVK1kkr1G1ANyOjv7U4MMqBAv48=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=t+DvuVBilVyipYDr0/pl5W4u0VrELwUn5bYMK/a3Z0ErtdXNGEuakvHJHP06QNeJ+JOkOxI/OvMS/g2bbHXOqRC8M+Jhe9GoC1NwcW0Fkx/p5EmqKUCEupHz4hzkKSNlbaEsgHPfqu61i7oqNBkz5Kuw/+oJfkzZDNLlXnBuJ4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k2YC9Yg2; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1774248441; x=1805784441;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=fZ4dthvo6FiuhI8csVK1kkr1G1ANyOjv7U4MMqBAv48=;
+  b=k2YC9Yg2ODZXxUAZ498Sk0fa74rAcpHelWUWa+nu8i7eidqetvs52IuR
+   g/gf6dp3IeBHTEjrSy4aOwW1PdrKRyJAx0we8ptNOAeEPUeegEmlmRydB
+   vnRMpvVf/+MOj5DEac6ot7KYS3hqRUOmb7JczsFFUXtHi4jUoNvQHfyl4
+   3aJiQHHkM2ZOwSvLHO3r2S95h9IHAng6WwKL3dx6budNvwzAPhaAMq3jX
+   PO6gqT+LyhrfBQ0UFzppiiHQsrOKg0jEU7IJpYxk62Ij7SxzhwbiUXDNd
+   ai3K3V0srsiE7QDln+xY3HnNxZXAWZecwymttk7W/B6pZbr2RwXisv142
+   g==;
+X-CSE-ConnectionGUID: /B1aq3lYSIqRGT1Ld3bxDQ==
+X-CSE-MsgGUID: gopsGW3sSqGTf7/3ns9EOQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="100692618"
+X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; 
+   d="scan'208";a="100692618"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 23:47:20 -0700
+X-CSE-ConnectionGUID: Mn0cimg9SXCAJWIQDhbnLg==
+X-CSE-MsgGUID: ErtolgvsRzSN77y7FlHs9w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,136,1770624000"; 
+   d="scan'208";a="261838000"
+Received: from intel-fishhawkfalls.iind.intel.com ([10.99.116.107])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Mar 2026 23:47:18 -0700
+From: Sonam Sanju <sonam.sanju@intel.com>
+To: Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vineeth Pillai <vineeth@bitbyteword.org>
+Cc: Dmitry Maluka <dmaluka@chromium.org>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Sonam Sanju <sonam.sanju@intel.com>
+Subject: [PATCH v2] KVM: irqfd: fix deadlock by moving synchronize_srcu out of resampler_lock
+Date: Mon, 23 Mar 2026 12:12:48 +0530
+Message-Id: <20260323064248.1660757-1-sonam.sanju@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260323053353.805336-1-sonam.sanju@intel.com>
+References: <20260323053353.805336-1-sonam.sanju@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] btrfs: Fix BTRFS arm64 tagged KASAN false-positive
-To: Daniel J Blueman <daniel@quora.org>, Chris Mason <clm@fb.com>,
- David Sterba <dsterba@suse.com>
-Cc: linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
- kasan-dev@googlegroups.com, stable@vger.kernel.org
-References: <20260323061827.22903-1-daniel@quora.org>
-Content-Language: en-US
-From: Qu Wenruo <wqu@suse.com>
-Autocrypt: addr=wqu@suse.com; keydata=
- xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
- 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
- 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
- 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
- gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
- AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
- FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
- Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
- fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
- 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
- V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
- rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
- rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
- Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
- E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
- vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
- g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
- AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
- cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
- qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
- /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
- o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
- JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
-In-Reply-To: <20260323061827.22903-1-daniel@quora.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227889-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227890-lists,stable=lfdr.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[sonam.sanju@intel.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,quora.org:email]
-X-Rspamd-Queue-Id: 2815F2ED1B3
+	DKIM_TRACE(0.00)[intel.com:+];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,intel.com:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: CA6902ED2A5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+irqfd_resampler_shutdown() and kvm_irqfd_assign() both call
+synchronize_srcu_expedited() while holding kvm->irqfds.resampler_lock.
+This can deadlock when multiple irqfd workers run concurrently on the
+kvm-irqfd-cleanup workqueue during VM teardown or when VMs are rapidly
+created and destroyed:
 
+  CPU A (mutex holder)               CPU B/C/D (mutex waiters)
+  irqfd_shutdown()                   irqfd_shutdown() / kvm_irqfd_assign()
+   irqfd_resampler_shutdown()         irqfd_resampler_shutdown()
+    mutex_lock(resampler_lock)  <---- mutex_lock(resampler_lock) //BLOCKED
+    list_del_rcu(...)                     ...blocked...
+    synchronize_srcu_expedited()      // Waiters block workqueue,
+      // waits for SRCU grace            preventing SRCU grace
+      // period which requires            period from completing
+      // workqueue progress          --- DEADLOCK ---
 
-在 2026/3/23 16:48, Daniel J Blueman 写道:
-> When booting Linux 7.0-rc5 on a Qualcomm Snapdragon X1 with KASAN
-> software tagging with a BTRFS filesystem, we see:
-> 
-> BUG: KASAN: invalid-access in xxh64_update (lib/xxhash.c:143 lib/xxhash.c:283)
-> Read of size 8 at addr 7bff000804fe1000 by task kworker/u49:2/138
-> Pointer tag: [7b], memory tag: [b2]
-> 
-> CPU: 0 UID: 0 PID: 138 Comm: kworker/u49:2 Not tainted 7.0.0-rc4+ #34 PREEMPTLAZY
-> Hardware name: LENOVO 83ED/LNVNB161216, BIOS NHCN60WW 09/11/2025
-> Workqueue: btrfs-endio-meta simple_end_io_work
-> Call trace:
-> show_stack (arch/arm64/kernel/stacktrace.c:501) (C)
-> dump_stack_lvl (lib/dump_stack.c:122)
-> print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
-> kasan_report (mm/kasan/report.c:597)
-> kasan_check_range (mm/kasan/sw_tags.c:86 (discriminator 1))
-> __hwasan_loadN_noabort (mm/kasan/sw_tags.c:158)
-> xxh64_update (lib/xxhash.c:143 lib/xxhash.c:283)
-> btrfs_csum_update (fs/btrfs/fs.c:106)
-> csum_tree_block (fs/btrfs/disk-io.c:103 (discriminator 3))
-> btrfs_validate_extent_buffer (fs/btrfs/disk-io.c:389)
-> end_bbio_meta_read (fs/btrfs/extent_io.c:3853 (discriminator 1))
-> btrfs_bio_end_io (fs/btrfs/bio.c:152)
-> simple_end_io_work (fs/btrfs/bio.c:388)
-> process_one_work (./arch/arm64/include/asm/jump_label.h:36 ./include/trace/events/workqueue.h:110 kernel/workqueue.c:3281)
-> worker_thread (kernel/workqueue.c:3353 (discriminator 2) kernel/workqueue.c:3440 (discriminator 2))
-> kthread (kernel/kthread.c:436)
-> ret_from_fork (arch/arm64/kernel/entry.S:861)
-> 
-> The buggy address belongs to the physical page:
-> page: refcount:3 mapcount:0 mapping:f1ff00080055dee8 index:0x2467bd pfn:0x884fe1
-> memcg:51ff000800e68ec0 aops:btree_aops ino:1
-> flags: 0x9340000000004000(private|zone=2|kasantag=0x4d)
-> raw: 9340000000004000 0000000000000000 dead000000000122 f1ff00080055dee8
-> raw: 00000000002467bd 43ff00081d0cc6f0 00000003ffffffff 51ff000800e68ec0
-> page dumped because: kasan: bad access detected
-> 
-> Memory state around the buggy address:
-> ffff000804fe0e00: 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b
-> ffff000804fe0f00: 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b
->> ffff000804fe1000: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
-> ^
-> ffff000804fe1100: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
-> ffff000804fe1200: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
-> 
-> This occurs as allocation in btrfs_alloc_page_array is from multiple
-> discrete pages thus different KASAN tags by design, leading to a tag
-> mismatch when linear access is used where the pages are physically
-> contiguous.
-> 
-> Fix this by retagging all the EB pages with the same KASAN tag.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Daniel J Blueman <daniel@quora.org>
-> Fixes: 397239ed6a6c ("btrfs: allow extent buffer helpers to skip cross-page handling")
-> Changelog:
->   v2: Retag pages rather than bypass linear access optimisation
->   v1: https://lore.kernel.org/lkml/20260319053413.14771-1-daniel@quora.org/
-> ---
->   fs/btrfs/extent_io.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
-> 
-> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-> index 5f97a3d2a8d7..37836d685f21 100644
-> --- a/fs/btrfs/extent_io.c
-> +++ b/fs/btrfs/extent_io.c
-> @@ -10,6 +10,7 @@
->   #include <linux/spinlock.h>
->   #include <linux/blkdev.h>
->   #include <linux/swap.h>
-> +#include <linux/kasan.h>
->   #include <linux/writeback.h>
->   #include <linux/pagevec.h>
->   #include <linux/prefetch.h>
-> @@ -706,6 +707,18 @@ static int alloc_eb_folio_array(struct extent_buffer *eb, bool nofail)
->   	if (ret < 0)
->   		return ret;
->   
-> +	/*
-> +	 * Since separate page allocations are used for the same extent with
-> +	 * linear addressing where physically contiguous, apply the same KASAN
-> +	 * tag to prevent false-positive warnings when crossing page boundaries
-> +	 */
-> +	u8 tag = page_kasan_tag(page_array[0]);
+In irqfd_resampler_shutdown(), the synchronize_srcu_expedited() in
+the else branch is called directly within the mutex.  In the if-last
+branch, kvm_unregister_irq_ack_notifier() also calls
+synchronize_srcu_expedited() internally.  In kvm_irqfd_assign(),
+synchronize_srcu_expedited() is called after list_add_rcu() but
+before mutex_unlock().  All paths can block indefinitely because:
 
-We do not mix definition and code.
+  1. synchronize_srcu_expedited() waits for an SRCU grace period
+  2. SRCU grace period completion needs workqueue workers to run
+  3. The blocked mutex waiters occupy workqueue slots preventing progress
+  4. The mutex holder never releases the lock -> deadlock
 
-> +
-> +	for (int i = 1; i < num_pages; i++) {
-> +		page_kasan_tag_set(page_array[i], tag);
+Fix both paths by releasing the mutex before calling
+synchronize_srcu_expedited().
 
-Please note that, at alloc_eb_folio_array() we have no idea if the 
-folios are contig yet.
+In irqfd_resampler_shutdown(), use a bool last flag to track whether
+this is the final irqfd for the resampler, then release the mutex
+before the SRCU synchronization.  This is safe because list_del_rcu()
+already removed the entries under the mutex, and
+kvm_unregister_irq_ack_notifier() uses its own locking (kvm->irq_lock).
 
-And if they are not contig, tagging them with the same tag will mask 
-some real bugs.
+In kvm_irqfd_assign(), simply move synchronize_srcu_expedited() after
+mutex_unlock().  The SRCU grace period still completes before the irqfd
+goes live (the subsequent srcu_read_lock() ensures ordering).
 
-To me, the proper re-tagging timing should be inside 
-alloc_extent_buffer(), under the "if (page_contig)" branch.
+Signed-off-by: Sonam Sanju <sonam.sanju@intel.com>
+---
+v2:
+ - Fix the same deadlock in kvm_irqfd_assign() (Vineeth Pillai)
 
-Thanks,
-Qu
+ virt/kvm/eventfd.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
 
-> +		kasan_unpoison_range(page_address(page_array[i]), PAGE_SIZE);
-> +	}
-> +
-
-
->   	for (int i = 0; i < num_pages; i++)
->   		eb->folios[i] = page_folio(page_array[i]);
->   	eb->folio_size = PAGE_SIZE;
+diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
+index 0e8b8a2c5b79..8ae9f81f8bb3 100644
+--- a/virt/kvm/eventfd.c
++++ b/virt/kvm/eventfd.c
+@@ -93,6 +93,7 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
+ {
+ 	struct kvm_kernel_irqfd_resampler *resampler = irqfd->resampler;
+ 	struct kvm *kvm = resampler->kvm;
++	bool last = false;
+ 
+ 	mutex_lock(&kvm->irqfds.resampler_lock);
+ 
+@@ -100,19 +101,27 @@ irqfd_resampler_shutdown(struct kvm_kernel_irqfd *irqfd)
+ 
+ 	if (list_empty(&resampler->list)) {
+ 		list_del_rcu(&resampler->link);
++		last = true;
++	}
++
++	mutex_unlock(&kvm->irqfds.resampler_lock);
++
++	/*
++	 * synchronize_srcu_expedited() (called explicitly below, or internally
++	 * by kvm_unregister_irq_ack_notifier()) must not be invoked under
++	 * resampler_lock.  Holding the mutex while waiting for an SRCU grace
++	 * period creates a deadlock: the blocked mutex waiters occupy workqueue
++	 * slots that the SRCU grace period machinery needs to make forward
++	 * progress.
++	 */
++	if (last) {
+ 		kvm_unregister_irq_ack_notifier(kvm, &resampler->notifier);
+-		/*
+-		 * synchronize_srcu_expedited(&kvm->irq_srcu) already called
+-		 * in kvm_unregister_irq_ack_notifier().
+-		 */
+ 		kvm_set_irq(kvm, KVM_IRQFD_RESAMPLE_IRQ_SOURCE_ID,
+ 			    resampler->notifier.gsi, 0, false);
+ 		kfree(resampler);
+ 	} else {
+ 		synchronize_srcu_expedited(&kvm->irq_srcu);
+ 	}
+-
+-	mutex_unlock(&kvm->irqfds.resampler_lock);
+ }
+ 
+ /*
+@@ -450,9 +459,16 @@ kvm_irqfd_assign(struct kvm *kvm, struct kvm_irqfd *args)
+ 		}
+ 
+ 		list_add_rcu(&irqfd->resampler_link, &irqfd->resampler->list);
+-		synchronize_srcu_expedited(&kvm->irq_srcu);
+ 
+ 		mutex_unlock(&kvm->irqfds.resampler_lock);
++
++		/*
++		 * Ensure the resampler_link is SRCU-visible before the irqfd
++		 * itself goes live.  Moving synchronize_srcu_expedited() outside
++		 * the resampler_lock avoids deadlock with shutdown workers waiting
++		 * for the mutex while SRCU waits for workqueue progress.
++		 */
++		synchronize_srcu_expedited(&kvm->irq_srcu);
+ 	}
+ 
+ 	/*
+-- 
+2.34.1
 
 
