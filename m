@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eLyJFK9cwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229032-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:55 +0100
+	id qB+rDypNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E922F6644
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4F4A2F4675
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2F4B5302E82E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7CE72303F7D0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C23383C7C;
-	Mon, 23 Mar 2026 14:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7646C3B0ACB;
+	Mon, 23 Mar 2026 14:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="00Kod5tN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oCd9m+xi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68A65242D7F;
-	Mon, 23 Mar 2026 14:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2783AEF3F;
+	Mon, 23 Mar 2026 14:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277841; cv=none; b=gP6rnMNmIt4XlOrQ3Lhf8TD5cXMk2fwbbbLPq8+NEL7GYWRjW1CG1tcGUnJ6Q1qdzmQxr7lnXda0gVld/hF03iji58Kh5Lei8fwp+0IY53+1o2vwkURn/0+mE0SUuDPxGNNwCnEPP4eWsZGqZlHnsauBw0/LnXXH/K9d2NBG7Ds=
+	t=1774275294; cv=none; b=VSfN8/hVbA36DigIzb6uZ+Z6UTU1j5x/9iMeuHh341WVWngcJT3e9g2HX9BxQcnlmePVzfzXLTwzWAOPmGc21J/aP+NbXR7HlRYdCXsA0Aw8/Uhoww48BufhcPBGOyFXBWdX4zTsfdVXitsy3Hysuv5PoyuYjF2K+0SYPhYAhMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277841; c=relaxed/simple;
-	bh=DV6ggbgmFZSCkp2UJxqs4yukNFLofua4hZrS8BBfL/I=;
+	s=arc-20240116; t=1774275294; c=relaxed/simple;
+	bh=/uYjWrmTMpD4BGHacohfGR3alsUQhXnC5ga1bt+hWiU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qIYOL6TfVRWz1AjWnz7cs8pGDLHtqqyWP0OiPg+EZ3N1XbOClNpFPQQwBZr8Oj4cVqM5/rWIRL9icUIi3QuQYrpn7W69IXvatTMrbnWmurHRin/OWPgnvsxTffIF3C8y1ZupMzJHYDMY/2NME2tByDYTngPLfULJRkJCcfRSsB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=00Kod5tN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5DC4C4CEF7;
-	Mon, 23 Mar 2026 14:57:20 +0000 (UTC)
+	 MIME-Version; b=Gqq8P5rfxNj0gShQmKHg4j/Z1n+bFbpRugavKDnxs7dyo8dP/RCKvAAw9IKVcFkXrb2tUhuUTeubOwEnDFgiUoIR5feFZ/WLi0P5TOYSm5+v9HtbBxKxuXDBYU1nBbV0qlcM4ysuqpwCUiDnJggdoqD+QF5+jnbfzQj6nsyT+tU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oCd9m+xi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C89C2BCB3;
+	Mon, 23 Mar 2026 14:14:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277841;
-	bh=DV6ggbgmFZSCkp2UJxqs4yukNFLofua4hZrS8BBfL/I=;
+	s=korg; t=1774275294;
+	bh=/uYjWrmTMpD4BGHacohfGR3alsUQhXnC5ga1bt+hWiU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=00Kod5tNpfz3Q8OM4DPX7E7SOOBNGqpaRptgEZ6EzJPWMA13aBV+3mZMPadUNYv42
-	 EEzMfyeV+BKgrC+I9eOhOeHX8JcyMnCY2qh5PBgN/Hw0R6m7PjX6VdZcxIRNrK7/km
-	 JEjblwslRq69ASyGiGm5B/RCk2rpURPNyyihHUGM=
+	b=oCd9m+xi36w3SoJuCnY/QH9wIHzJfKs7IfZWKUWcFTiYgZZhdtN/h/WNrmJEAPq3V
+	 7JF+e/2FyeuSJhwnVMcYzHr9+A6cpepDTZ6QvaKv/1QisD+OoGTd7UcLnkbmbV184f
+	 XHyExbJk1POi1EyZ3I47JhB6cQ0bh4OE0sBGDSu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 120/567] selftests: mptcp: join: check removing signal+subflow endp
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 044/460] ASoC: simple-card-utils: use __free(device_node) for device node
 Date: Mon, 23 Mar 2026 14:40:40 +0100
-Message-ID: <20260323134536.777217422@linuxfoundation.org>
+Message-ID: <20260323134527.797956242@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229032-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228499-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,66 +90,138 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 44E922F6644
+X-Rspamd-Queue-Id: E4F4A2F4675
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-commit 1777f349ff41b62dfe27454b69c27b0bc99ffca5 upstream.
+[ Upstream commit 419d1918105e5d9926ab02f1f834bb416dc76f65 ]
 
-This validates the previous commit: endpoints with both the signal and
-subflow flags should always be marked as used even if it was not
-possible to create new subflows due to the MPTCP PM limits.
+simple-card-utils handles many type of device_node, thus need to
+use of_node_put() in many place. Let's use __free(device_node)
+and avoid it.
 
-For this test, an extra endpoint is created with both the signal and the
-subflow flags, and limits are set not to create extra subflows. In this
-case, an ADD_ADDR is sent, but no subflows are created. Still, the local
-endpoint is marked as used, and no warning is fired when removing the
-endpoint, after having sent a RM_ADDR.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-5-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Link: https://patch.msgid.link/87r06pfre8.wl-kuninori.morimoto.gx@renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 4185b95f8a42 ("ASoC: simple-card-utils: fix graph_util_is_ports0() for DT overlays")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ sound/soc/generic/simple-card-utils.c | 44 +++++++++------------------
+ 1 file changed, 14 insertions(+), 30 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2424,6 +2424,19 @@ remove_tests()
- 		chk_rst_nr 0 0
- 	fi
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index 47933afdb7261..4857ceecbdc4a 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -999,35 +999,27 @@ EXPORT_SYMBOL_GPL(graph_util_card_probe);
  
-+	# signal+subflow with limits, remove
-+	if reset "remove signal+subflow with limits"; then
-+		pm_nl_set_limits $ns1 0 0
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,subflow
-+		pm_nl_set_limits $ns2 0 0
-+		addr_nr_ns1=-1 speed=slow \
-+			run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 0 0 0
-+		chk_add_nr 1 1
-+		chk_rm_nr 1 0 invert
-+		chk_rst_nr 0 0
-+	fi
-+
- 	# addresses remove
- 	if reset "remove addresses"; then
- 		pm_nl_set_limits $ns1 3 3
+ int graph_util_is_ports0(struct device_node *np)
+ {
+-	struct device_node *port, *ports, *ports0, *top;
+-	int ret;
++	struct device_node *parent __free(device_node) = of_get_parent(np);
++	struct device_node *port;
+ 
+ 	/* np is "endpoint" or "port" */
+-	if (of_node_name_eq(np, "endpoint")) {
+-		port = of_get_parent(np);
+-	} else {
++	if (of_node_name_eq(np, "endpoint"))
++		port = parent;
++	else
+ 		port = np;
+-		of_node_get(port);
+-	}
+-
+-	ports	= of_get_parent(port);
+-	top	= of_get_parent(ports);
+-	ports0	= of_get_child_by_name(top, "ports");
+-
+-	ret = ports0 == ports;
+ 
+-	of_node_put(port);
+-	of_node_put(ports);
+-	of_node_put(ports0);
+-	of_node_put(top);
++	struct device_node *ports  __free(device_node) = of_get_parent(port);
++	struct device_node *top    __free(device_node) = of_get_parent(ports);
++	struct device_node *ports0 __free(device_node) = of_get_child_by_name(top, "ports");
+ 
+-	return ret;
++	return ports0 == ports;
+ }
+ EXPORT_SYMBOL_GPL(graph_util_is_ports0);
+ 
+ static int graph_get_dai_id(struct device_node *ep)
+ {
+-	struct device_node *node;
++	struct device_node *node __free(device_node) = of_graph_get_port_parent(ep);
++	struct device_node *port __free(device_node) = of_get_parent(ep);
+ 	struct device_node *endpoint;
+ 	struct of_endpoint info;
+ 	int i, id;
+@@ -1050,13 +1042,10 @@ static int graph_get_dai_id(struct device_node *ep)
+ 		if (of_property_present(ep,   "reg"))
+ 			return info.id;
+ 
+-		node = of_get_parent(ep);
+-		ret = of_property_present(node, "reg");
+-		of_node_put(node);
++		ret = of_property_present(port, "reg");
+ 		if (ret)
+ 			return info.port;
+ 	}
+-	node = of_graph_get_port_parent(ep);
+ 
+ 	/*
+ 	 * Non HDMI sound case, counting port/endpoint on its DT
+@@ -1070,8 +1059,6 @@ static int graph_get_dai_id(struct device_node *ep)
+ 		i++;
+ 	}
+ 
+-	of_node_put(node);
+-
+ 	if (id < 0)
+ 		return -ENODEV;
+ 
+@@ -1081,7 +1068,6 @@ static int graph_get_dai_id(struct device_node *ep)
+ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
+ 			 struct snd_soc_dai_link_component *dlc, int *is_single_link)
+ {
+-	struct device_node *node;
+ 	struct of_phandle_args args = {};
+ 	struct snd_soc_dai *dai;
+ 	int ret;
+@@ -1089,7 +1075,7 @@ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
+ 	if (!ep)
+ 		return 0;
+ 
+-	node = of_graph_get_port_parent(ep);
++	struct device_node *node __free(device_node) = of_graph_get_port_parent(ep);
+ 
+ 	/*
+ 	 * Try to find from DAI node
+@@ -1131,10 +1117,8 @@ int graph_util_parse_dai(struct device *dev, struct device_node *ep,
+ 	 *    if he unbinded CPU or Codec.
+ 	 */
+ 	ret = snd_soc_get_dlc(&args, dlc);
+-	if (ret < 0) {
+-		of_node_put(node);
++	if (ret < 0)
+ 		return ret;
+-	}
+ 
+ parse_dai_end:
+ 	if (is_single_link)
+-- 
+2.51.0
+
 
 
 
