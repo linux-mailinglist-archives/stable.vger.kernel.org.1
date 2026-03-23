@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229401-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EJ40Njd/wWl2TgQAu9opvQ
-	(envelope-from <stable+bounces-229941-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:58:15 +0100
+	id 6ORAOFpgwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229401-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3474D2FAB67
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:58:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB4E2F6E25
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DFDB035C4497
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D17E83344FEC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B053C0613;
-	Mon, 23 Mar 2026 16:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7CE27E05E;
+	Mon, 23 Mar 2026 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DS/OgYLQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKiQnQ6H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3DE2550D5;
-	Mon, 23 Mar 2026 16:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F015242D7B;
+	Mon, 23 Mar 2026 15:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283321; cv=none; b=J1mTykiUbJncWRENtlQl2jNUgBAbK0rAXIgmwexcu6uzHDaaEr0gfjauyR8tU8cYBjjAvEUWE8hsPuxihEBwzfuBzXcG5zPy0FrjhuIf211g2878II4Ve90xMy9wFBnh/moqTMJkk4esHNECSqHTfHZYT37nB4UrZHpd7tR0zPY=
+	t=1774278998; cv=none; b=RQRCAKbzdJ5Mw0QRcRdn3xCrcADlQevUuilXm5ulq57NGs95quOd/neAOMa7RKAIA9gb8yUq9MfSugsl0Eq9pYa9YS1NKUJYeU1L/oyggk6ZPDviYmdCn9m9oBi5r3LYvBxTIscoNfJXiCvtz/LwRAYzB30guKqf+bFUss/2sxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283321; c=relaxed/simple;
-	bh=CtBDXZDSFN+Ivxr9mMUTs1cwpRwo7YAZ6pJY24WeQqo=;
+	s=arc-20240116; t=1774278998; c=relaxed/simple;
+	bh=VJ7m1SdxOyOVEgfcrD00qaIPDgonnRZllNhuG9wJIp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpOm91wXaeYHbuk1/OQcLO5OPWPBqejDM83I/dtJVZCe7J8imqD7ZhvjfrKY6/uY16SqEhgKhwcZtjbpy9FG7IP1wEpAz1Clhpd4okyw/g4vOpEng+CHL+1NnIASusKjPFmMGST3KXJOw6/IUwSJQp7iZCcdRRrwS0Oxbg1Uxo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DS/OgYLQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48316C2BCB6;
-	Mon, 23 Mar 2026 16:28:40 +0000 (UTC)
+	 MIME-Version; b=PmQt/LOF0t5iQFrY61gAHeebIBC1eQp8QjPOn+XfMAVqMHtYlYAaA6yB019sSU1gqhlPLXDaH1PBVdJikxGXIpttpsS6feDiTfdHkwy55BROifMevW8ft92wlO3mWdXqke2o1a9NPUMj72gCU1bwHjMi3c5Uo7v96TKi/w5Gsmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKiQnQ6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2D0C4CEF7;
+	Mon, 23 Mar 2026 15:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283320;
-	bh=CtBDXZDSFN+Ivxr9mMUTs1cwpRwo7YAZ6pJY24WeQqo=;
+	s=korg; t=1774278998;
+	bh=VJ7m1SdxOyOVEgfcrD00qaIPDgonnRZllNhuG9wJIp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DS/OgYLQMNLjHAPDB2q2AzPGj1hE79hvWrspuQOumBb9h6LjeaQ+sonfc1/vaWTOl
-	 ZsvjYUv4UvOOlV6vk1rkwktQxl128LHhhSRdoZo2/OSGw4lyFHzNGBqJ9QsTm/DEQR
-	 MEzqQ4x2EmBIx0Pqjs1mGLeeQkSEgnqFQ0fz3Fdw=
+	b=RKiQnQ6HTo9DhHCAYPTSKv4/69KVa+O+umGKtyFExH6hTN71zvLGudgYV5w+4JhkA
+	 b6rVBwrV5Q8tT9qJG33MqDpVLbl5YqQSa8DUtyM9zGMN4REY7ZJLNkDHj8FK/8vZ0O
+	 YxVPriraTZ7FxdpEmwxdHzjNygZV8fTugQ4d2kO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 423/481] PM: runtime: Fix a race condition related to device removal
-Date: Mon, 23 Mar 2026 14:46:45 +0100
-Message-ID: <20260323134535.502676187@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
+Subject: [PATCH 6.6 486/567] serial: uartlite: fix PM runtime usage count underflow on probe
+Date: Mon, 23 Mar 2026 14:46:46 +0100
+Message-ID: <20260323134546.007052723@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,163 +63,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229941-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229401-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6c905ab800f20cf4086c];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,appspotmail.com:email,acm.org:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3474D2FAB67
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,m-works.net:email,msgid.link:url]
+X-Rspamd-Queue-Id: 3CB4E2F6E25
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
 
-[ Upstream commit 29ab768277617452d88c0607c9299cdc63b6e9ff ]
+commit d54801cd509515f674a5aac1d3ea1401d2a05863 upstream.
 
-The following code in pm_runtime_work() may dereference the dev->parent
-pointer after the parent device has been freed:
+ulite_probe() calls pm_runtime_put_autosuspend() at the end of probe
+without holding a corresponding PM runtime reference for non-console
+ports.
 
-	/* Maybe the parent is now able to suspend. */
-	if (parent && !parent->power.ignore_children) {
-		spin_unlock(&dev->power.lock);
+During ulite_assign(), uart_add_one_port() triggers uart_configure_port()
+which calls ulite_pm() via uart_change_pm(). For non-console ports, the
+UART core performs a balanced get/put cycle:
 
-		spin_lock(&parent->power.lock);
-		rpm_idle(parent, RPM_ASYNC);
-		spin_unlock(&parent->power.lock);
+  uart_change_pm(ON)  -> ulite_pm() -> pm_runtime_get_sync()        +1
+  uart_change_pm(OFF) -> ulite_pm() -> pm_runtime_put_autosuspend() -1
 
-		spin_lock(&dev->power.lock);
-	}
+This leaves no spare reference for the pm_runtime_put_autosuspend() at
+the end of probe. The PM runtime core prevents the count from actually
+going below zero, and instead triggers a
+"Runtime PM usage count underflow!" warning.
 
-Fix this by inserting a flush_work() call in pm_runtime_remove().
+For console ports the bug is masked: the UART core skips the
+uart_change_pm(OFF) call, so the UART core's unbalanced get happens to
+pair with probe's trailing put.
 
-Without this patch blktest block/001 triggers the following complaint
-sporadically:
+Add pm_runtime_get_noresume() before pm_runtime_enable() to take an
+explicit probe-owned reference that the trailing
+pm_runtime_put_autosuspend() can release. This ensures a correct usage
+count regardless of whether the port is a console.
 
-BUG: KASAN: slab-use-after-free in lock_acquire+0x70/0x160
-Read of size 1 at addr ffff88812bef7198 by task kworker/u553:1/3081
-Workqueue: pm pm_runtime_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x61/0x80
- print_address_description.constprop.0+0x8b/0x310
- print_report+0xfd/0x1d7
- kasan_report+0xd8/0x1d0
- __kasan_check_byte+0x42/0x60
- lock_acquire.part.0+0x38/0x230
- lock_acquire+0x70/0x160
- _raw_spin_lock+0x36/0x50
- rpm_suspend+0xc6a/0xfe0
- rpm_idle+0x578/0x770
- pm_runtime_work+0xee/0x120
- process_one_work+0xde3/0x1410
- worker_thread+0x5eb/0xfe0
- kthread+0x37b/0x480
- ret_from_fork+0x6cb/0x920
- ret_from_fork_asm+0x11/0x20
- </TASK>
-
-Allocated by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_alloc_info+0x3d/0x50
- __kasan_kmalloc+0xa0/0xb0
- __kmalloc_noprof+0x311/0x990
- scsi_alloc_target+0x122/0xb60 [scsi_mod]
- __scsi_scan_target+0x101/0x460 [scsi_mod]
- scsi_scan_channel+0x179/0x1c0 [scsi_mod]
- scsi_scan_host_selected+0x259/0x2d0 [scsi_mod]
- store_scan+0x2d2/0x390 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
- do_syscall_64+0xee/0xfc0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Freed by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_free_info+0x3f/0x50
- __kasan_slab_free+0x67/0x80
- kfree+0x225/0x6c0
- scsi_target_dev_release+0x3d/0x60 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_dev_release+0xacf/0x12c0 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_put+0x7f/0xc0 [scsi_mod]
- sdev_store_delete+0xa5/0x120 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
-
-Reported-by: Ming Lei <ming.lei@redhat.com>
-Closes: https://lore.kernel.org/all/ZxdNvLNI8QaOfD2d@fedora/
-Reported-by: syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c13942.050a0220.2ff435.000b.GAE@google.com/
-Fixes: 5e928f77a09a ("PM: Introduce core framework for run-time PM of I/O devices (rev. 17)")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260312182720.2776083-1-bvanassche@acm.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5bbe10a6942d ("tty: serial: uartlite: Add runtime pm support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Maciej Andrzejewski ICEYE <maciej.andrzejewski@m-works.net>
+Link: https://patch.msgid.link/20260305123746.4152800-1-maciej.andrzejewski@m-works.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c | 1 +
+ drivers/tty/serial/uartlite.c |    1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index ad043709d7f3f..ca86d7bf804ca 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1813,6 +1813,7 @@ void pm_runtime_reinit(struct device *dev)
- void pm_runtime_remove(struct device *dev)
- {
- 	__pm_runtime_disable(dev, false);
-+	flush_work(&dev->power.work);
- 	pm_runtime_reinit(dev);
- }
+--- a/drivers/tty/serial/uartlite.c
++++ b/drivers/tty/serial/uartlite.c
+@@ -870,6 +870,7 @@ of_err:
+ 	pm_runtime_use_autosuspend(&pdev->dev);
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, UART_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_set_active(&pdev->dev);
++	pm_runtime_get_noresume(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
  
--- 
-2.51.0
-
+ 	ret = ulite_assign(&pdev->dev, id, res->start, irq, pdata);
 
 
 
