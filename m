@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229462-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8BROG512wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229953-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:21:33 +0100
+	id 4GnDC+FlwWlESwQAu9opvQ
+	(envelope-from <stable+bounces-229462-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:10:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAAFC2F9C64
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:21:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75362F7A56
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:10:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7687D35CD002
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 73677301BA8E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702053BFE5D;
-	Mon, 23 Mar 2026 16:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3683E3B95F0;
+	Mon, 23 Mar 2026 15:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdGOxcHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BKPjb6+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339943BE65E;
-	Mon, 23 Mar 2026 16:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB9F3B95E4;
+	Mon, 23 Mar 2026 15:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283353; cv=none; b=uqL7IYAiZeEdbeY6whd7gikIah5s5x+OOJXPpaHD+fW9Zh4qEZ5JjVwNMt+qDCpYeFEngwrCXisnh6IRzHwnJFMrD+2q85n4kKkDdQRPhZJHAlxZ2ck+uahDqPhhEdbrixBY27tUTdBHUpEr/Eeoz1ItWRiD8upPFgldkMrdNnI=
+	t=1774279310; cv=none; b=VAd6Yx0z/E6xTgw0MICuqh2GBvdWamAfhPRceJX2dZYn0zmzUyIiuOmFlOsCO/amKc/qUIHhqAb3qLGGP/ed7AKPGrkMgAQcDsRcvX3Jgnry4FJ0AK9P4dlUdlNUWo6S7Rg54yl9uyRp9/Q+6ZjHvVHCA4CxaakNwVG9LdQaSeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283353; c=relaxed/simple;
-	bh=Xpb6EE8ItKmBHxFgLpNf3roXx2LOl9yfCn7+d7s7Ask=;
+	s=arc-20240116; t=1774279310; c=relaxed/simple;
+	bh=oGOErewzg3Zart0rsb751sP/+kLp+n3gG51euZIUP3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlWnd6eBY1QxCkVDq0/cu2tjJ3nuD3jnjn23mKNA61AWbGtPOdPblqmvn7GxgSiJXY9+ZaOFxvBLL7VASlyn0V30DIvtHX79UEdRuXLr5gcLHnussr8z5P68iLsvyoMPnVvs/nbeUxor6RBIWuVgpoZXde3kSZoO2JGtGjB2C0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdGOxcHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BB2C4CEF7;
-	Mon, 23 Mar 2026 16:29:12 +0000 (UTC)
+	 MIME-Version; b=uCisdBS/ll0vt5YZsys2FrGFGdqbJia2w3GPUgVlssZe4CowrBGUBi/juvWY24aNqBUQgGKAvXLSLrWBNcmEzu+Clhfizz7LgJNShYH07zk2U/STnuOS8yO26z+PLfsAdZ7bm91oVOw+AM2PMt73mn1rBj+ZmNQO/UXhdK8zovA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BKPjb6+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE1EC4CEF7;
+	Mon, 23 Mar 2026 15:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283353;
-	bh=Xpb6EE8ItKmBHxFgLpNf3roXx2LOl9yfCn7+d7s7Ask=;
+	s=korg; t=1774279309;
+	bh=oGOErewzg3Zart0rsb751sP/+kLp+n3gG51euZIUP3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jdGOxcHPZ4QOtwHrbHXiparASz2qhwsWwmHMT39Vubo31mr+sWuQgmpHiz48St+23
-	 Y1UvNYx7pMcmm7kuZ9aVRXdjl3ZvgHlOPX+eb8TYSGIpASxrM4C05AjqvbG48wg3K3
-	 /juAigMUW1ApORGj/gOGBxoaGckyr7p63LbTZxRQ=
+	b=BKPjb6+tLQnChSU0oTtFQUS4nMK69NQaTOfCqnKjWgNv+wBikjUOEtde2aJemskCz
+	 j9uGL2NAKxWAmIL3r4WYrRclgPltnR5n7pVwn8bB6ME8wl7JA+3SrTPkFhD5DgouHi
+	 FrtROwZt4ZGYZ7JZX8zgDkT1A9zfuNjs/VriH6+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Patalano <mpatalan@redhat.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Jaskaran Singh <jsingh@cloudlinux.com>
-Subject: [PATCH 6.1 480/481] nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 542/567] net: bonding: fix NULL deref in bond_debug_rlb_hash_show
 Date: Mon, 23 Mar 2026 14:47:42 +0100
-Message-ID: <20260323134536.924745615@linuxfoundation.org>
+Message-ID: <20260323134547.416510630@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,122 +69,120 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229953-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229462-lists,stable=lfdr.de];
+	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CAAFC2F9C64
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,asu.edu:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D75362F7A56
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaskaran Singh <jsingh@cloudlinux.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-commit 0a2c5495b6d1ecb0fa18ef6631450f391a888256 upstream.
+[ Upstream commit 605b52497bf89b3b154674deb135da98f916e390 ]
 
-nvme_fc_delete_assocation() waits for pending I/O to complete before
-returning, and an error can cause ->ioerr_work to be queued after
-cancel_work_sync() had been called.  Move the call to cancel_work_sync() to
-be after nvme_fc_delete_association() to ensure ->ioerr_work is not running
-when the nvme_fc_ctrl object is freed.  Otherwise the following can occur:
+rlb_clear_slave intentionally keeps RLB hash-table entries on
+the rx_hashtbl_used_head list with slave set to NULL when no
+replacement slave is available. However, bond_debug_rlb_hash_show
+visites client_info->slave without checking if it's NULL.
 
-[ 1135.911754] list_del corruption, ff2d24c8093f31f8->next is NULL
-[ 1135.917705] ------------[ cut here ]------------
-[ 1135.922336] kernel BUG at lib/list_debug.c:52!
-[ 1135.926784] Oops: invalid opcode: 0000 [#1] SMP NOPTI
-[ 1135.931851] CPU: 48 UID: 0 PID: 726 Comm: kworker/u449:23 Kdump: loaded Not tainted 6.12.0 #1 PREEMPT(voluntary)
-[ 1135.943490] Hardware name: Dell Inc. PowerEdge R660/0HGTK9, BIOS 2.5.4 01/16/2025
-[ 1135.950969] Workqueue:  0x0 (nvme-wq)
-[ 1135.954673] RIP: 0010:__list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1135.961041] Code: c7 c7 98 68 72 94 e8 26 45 fe ff 0f 0b 48 c7 c7 70 68 72 94 e8 18 45 fe ff 0f 0b 48 89 fe 48 c7 c7 80 69 72 94 e8 07 45 fe ff <0f> 0b 48 89 d1 48 c7 c7 a0 6a 72 94 48 89 c2 e8 f3 44 fe ff 0f 0b
-[ 1135.979788] RSP: 0018:ff579b19482d3e50 EFLAGS: 00010046
-[ 1135.985015] RAX: 0000000000000033 RBX: ff2d24c8093f31f0 RCX: 0000000000000000
-[ 1135.992148] RDX: 0000000000000000 RSI: ff2d24d6bfa1d0c0 RDI: ff2d24d6bfa1d0c0
-[ 1135.999278] RBP: ff2d24c8093f31f8 R08: 0000000000000000 R09: ffffffff951e2b08
-[ 1136.006413] R10: ffffffff95122ac8 R11: 0000000000000003 R12: ff2d24c78697c100
-[ 1136.013546] R13: fffffffffffffff8 R14: 0000000000000000 R15: ff2d24c78697c0c0
-[ 1136.020677] FS:  0000000000000000(0000) GS:ff2d24d6bfa00000(0000) knlGS:0000000000000000
-[ 1136.028765] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 1136.034510] CR2: 00007fd207f90b80 CR3: 000000163ea22003 CR4: 0000000000f73ef0
-[ 1136.041641] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 1136.048776] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-[ 1136.055910] PKRU: 55555554
-[ 1136.058623] Call Trace:
-[ 1136.061074]  <TASK>
-[ 1136.063179]  ? show_trace_log_lvl+0x1b0/0x2f0
-[ 1136.067540]  ? show_trace_log_lvl+0x1b0/0x2f0
-[ 1136.071898]  ? move_linked_works+0x4a/0xa0
-[ 1136.075998]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1136.081744]  ? __die_body.cold+0x8/0x12
-[ 1136.085584]  ? die+0x2e/0x50
-[ 1136.088469]  ? do_trap+0xca/0x110
-[ 1136.091789]  ? do_error_trap+0x65/0x80
-[ 1136.095543]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1136.101289]  ? exc_invalid_op+0x50/0x70
-[ 1136.105127]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1136.110874]  ? asm_exc_invalid_op+0x1a/0x20
-[ 1136.115059]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
-[ 1136.120806]  move_linked_works+0x4a/0xa0
-[ 1136.124733]  worker_thread+0x216/0x3a0
-[ 1136.128485]  ? __pfx_worker_thread+0x10/0x10
-[ 1136.132758]  kthread+0xfa/0x240
-[ 1136.135904]  ? __pfx_kthread+0x10/0x10
-[ 1136.139657]  ret_from_fork+0x31/0x50
-[ 1136.143236]  ? __pfx_kthread+0x10/0x10
-[ 1136.146988]  ret_from_fork_asm+0x1a/0x30
-[ 1136.150915]  </TASK>
+Other used-list iterators in bond_alb.c already handle this NULL-slave
+state safely:
 
-Fixes: 19fce0470f05 ("nvme-fc: avoid calling _nvme_fc_abort_outstanding_ios from interrupt context")
-Cc: stable@vger.kernel.org
-Tested-by: Marco Patalano <mpatalan@redhat.com>
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Ewan D. Milne <emilne@redhat.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jaskaran Singh <jsingh@cloudlinux.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- rlb_update_client returns early on !client_info->slave
+- rlb_req_update_slave_clients, rlb_clear_slave, and rlb_rebalance
+compare slave values before visiting
+- lb_req_update_subnet_clients continues if slave is NULL
+
+The following NULL deref crash can be trigger in
+bond_debug_rlb_hash_show:
+
+[    1.289791] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[    1.292058] RIP: 0010:bond_debug_rlb_hash_show (drivers/net/bonding/bond_debugfs.c:41)
+[    1.293101] RSP: 0018:ffffc900004a7d00 EFLAGS: 00010286
+[    1.293333] RAX: 0000000000000000 RBX: ffff888102b48200 RCX: ffff888102b48204
+[    1.293631] RDX: ffff888102b48200 RSI: ffffffff839daad5 RDI: ffff888102815078
+[    1.293924] RBP: ffff888102815078 R08: ffff888102b4820e R09: 0000000000000000
+[    1.294267] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888100f929c0
+[    1.294564] R13: ffff888100f92a00 R14: 0000000000000001 R15: ffffc900004a7ed8
+[    1.294864] FS:  0000000001395380(0000) GS:ffff888196e75000(0000) knlGS:0000000000000000
+[    1.295239] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.295480] CR2: 0000000000000000 CR3: 0000000102adc004 CR4: 0000000000772ef0
+[    1.295897] Call Trace:
+[    1.296134]  seq_read_iter (fs/seq_file.c:231)
+[    1.296341]  seq_read (fs/seq_file.c:164)
+[    1.296493]  full_proxy_read (fs/debugfs/file.c:378 (discriminator 1))
+[    1.296658]  vfs_read (fs/read_write.c:572)
+[    1.296981]  ksys_read (fs/read_write.c:717)
+[    1.297132]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+[    1.297325]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Add a NULL check and print "(none)" for entries with no assigned slave.
+
+Fixes: caafa84251b88 ("bonding: add the debugfs interface to see RLB hash table")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Link: https://patch.msgid.link/20260317005034.1888794-1-xmei5@asu.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/bonding/bond_debugfs.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -3264,13 +3264,13 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nc
- {
- 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
+diff --git a/drivers/net/bonding/bond_debugfs.c b/drivers/net/bonding/bond_debugfs.c
+index b19492a7f6ad1..3c1945c3e850a 100644
+--- a/drivers/net/bonding/bond_debugfs.c
++++ b/drivers/net/bonding/bond_debugfs.c
+@@ -34,11 +34,17 @@ static int bond_debug_rlb_hash_show(struct seq_file *m, void *v)
+ 	for (; hash_index != RLB_NULL_INDEX;
+ 	     hash_index = client_info->used_next) {
+ 		client_info = &(bond_info->rx_hashtbl[hash_index]);
+-		seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
+-			&client_info->ip_src,
+-			&client_info->ip_dst,
+-			&client_info->mac_dst,
+-			client_info->slave->dev->name);
++		if (client_info->slave)
++			seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
++				   &client_info->ip_src,
++				   &client_info->ip_dst,
++				   &client_info->mac_dst,
++				   client_info->slave->dev->name);
++		else
++			seq_printf(m, "%-15pI4 %-15pI4 %-17pM (none)\n",
++				   &client_info->ip_src,
++				   &client_info->ip_dst,
++				   &client_info->mac_dst);
+ 	}
  
--	cancel_work_sync(&ctrl->ioerr_work);
- 	cancel_delayed_work_sync(&ctrl->connect_work);
- 	/*
- 	 * kill the association on the link side.  this will block
- 	 * waiting for io to terminate
- 	 */
- 	nvme_fc_delete_association(ctrl);
-+	cancel_work_sync(&ctrl->ioerr_work);
- }
- 
- static void
+ 	spin_unlock_bh(&bond->mode_lock);
+-- 
+2.51.0
+
 
 
 
