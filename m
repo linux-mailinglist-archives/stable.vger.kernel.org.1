@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-227994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229682-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNR+GFVFwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-227994-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:17 +0100
+	id aK20IdFtwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229682-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00E4B2F3577
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 184102F8B1A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B28FD30255FC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 39CBC30963C6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2433ACA5C;
-	Mon, 23 Mar 2026 13:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CC43AE19E;
+	Mon, 23 Mar 2026 16:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBnVWRfx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFo3XHw0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65F63A6B88;
-	Mon, 23 Mar 2026 13:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DBB3BC661;
+	Mon, 23 Mar 2026 16:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273803; cv=none; b=qn2y2Epgmhl6knDuijKkZ39nyf9dvdQ/Oh2crI05IYnDN/6UYA5UXPb72A62loPLEH9x5S7zeC1n5xegPYvECLXFaEJA0IU0GXfQl516wrDiBe0gfgPWQsOqGPzwW1zNpIMEfFc2kq+nZni5/Q1L1EB+jba8uLuQ6zPrpp5ESoE=
+	t=1774282582; cv=none; b=OeysFg6OLkMsq6lhVenTrGVCoznj3Kj1gXzk2iY5Nw2FvIcMNMdIqAiI8pmAWRVTXQo6KaK0orAfFCI6C71HP8guWHMSoIuCVdUmTYjXDhU/aQxobzHnx/hGEizsisSxfgBZQE+Wy7IzxTvaolD2+qMPrJB3S3nYgl7NV9fqYKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273803; c=relaxed/simple;
-	bh=fjnJO+5OCdwKKr/PZePzPX3+9+lmExRp7U02qVFXxCk=;
+	s=arc-20240116; t=1774282582; c=relaxed/simple;
+	bh=nmB55W6xbo6Py9WSUDXsZlHw3lO7QNtPHiF85FiKyEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KNZiCZTUqErNdoX0TtNj4wOamiqj45OFc1R/K8BVO+ZG4zGV/Cpe2QC5OhUPzaMRBEAhooaonDQIAtZFV13dZnqthYHosulNGksGvjb0/ub5aIo97SyROiobESWfJxTLuGvaGyaODdwHyZPSCC+NMgd57ZNN8ETK7oHv4+EADt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBnVWRfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2687DC4CEF7;
-	Mon, 23 Mar 2026 13:50:01 +0000 (UTC)
+	 MIME-Version; b=k7EmjXElB5TpjvEv34HkHL7fU6VTekxE1krokIWBKTgyvuQCeVE64xUe0wo0k3O30S7PkaUCIbr6vBQopq4VHJbVhJxEWmVLiptcht929PcetDnUDgbnAH/xQwiO2DzZlU2JZpq7YzpoX+TQwsci9luiiFF69rw+noZpkMubu4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFo3XHw0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 075B7C4CEF7;
+	Mon, 23 Mar 2026 16:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273802;
-	bh=fjnJO+5OCdwKKr/PZePzPX3+9+lmExRp7U02qVFXxCk=;
+	s=korg; t=1774282582;
+	bh=nmB55W6xbo6Py9WSUDXsZlHw3lO7QNtPHiF85FiKyEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBnVWRfxcpjZfPXH1DDWUBUIP/LmYMU3cuBhJmqZp1zGJRAm9aBc/MI0LrtUTNbOt
-	 LMYMHdrxOVsbo79h++cFS6MIc85E/6cmCG3phzcvVkDzLGS4FH9c0TkMwLSZpB3zCj
-	 t2ItaTcyo4tbMfPXq8PcdW+IwphfOVRD8YaX2N90=
+	b=GFo3XHw0IdaX7IIbT3/pUYZkEywdv+yv37xnI+b0xy/kqkPa7+oxJAzIFV51k/4a6
+	 e5aPeXlA1Gnuhxjpusx5c6O2qjGUlg18tf3qdalq/saThEvLNwW6qyWYsj+v0EAzG0
+	 VjZjTUeNqjdbQc8ts5FcM81T9W8gXLQvY74rYV4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.19 014/220] NFC: nxp-nci: allow GPIOs to sleep
-Date: Mon, 23 Mar 2026 14:43:11 +0100
-Message-ID: <20260323134505.026657127@linuxfoundation.org>
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.1 210/481] usb: core: dont power off roothub PHYs if phy_set_mode() fails
+Date: Mon, 23 Mar 2026 14:43:12 +0100
+Message-ID: <20260323134530.283177308@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +65,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227994-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229682-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,gehealthcare.com:email]
-X-Rspamd-Queue-Id: 00E4B2F3577
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 184102F8B1A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 55dc632ab2ac2889b15995a9eef56c753d48ebc7 upstream.
+commit e293015ba76eb96ce4ebed7e3b2cb1a7d319f3e9 upstream.
 
-Allow the firmware and enable GPIOs to sleep.
+Remove the error path from the usb_phy_roothub_set_mode() function.
+The code is clearly wrong, because phy_set_mode() calls can't be
+balanced with phy_power_off() calls.
 
-This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
-connected to I2C GPIO expanders.
+Additionally, the usb_phy_roothub_set_mode() function is called only
+from usb_add_hcd() before it powers on the PHYs, so powering off those
+makes no sense anyway.
 
--- >8 --
-kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
--- >8 --
+Presumably, the code is copy-pasted from the phy_power_on() function
+without adjusting the error handling.
 
-Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Link: https://patch.msgid.link/20260317085337.146545-1-ian.ray@gehealthcare.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org # v5.1+
+Fixes: b97a31348379 ("usb: core: comply to PHY framework")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://patch.msgid.link/20260218-usb-phy-poweroff-fix-v1-1-66e6831e860e@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/nxp-nci/i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/phy.c |    8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *ph
- {
- 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
+--- a/drivers/usb/core/phy.c
++++ b/drivers/usb/core/phy.c
+@@ -138,16 +138,10 @@ int usb_phy_roothub_set_mode(struct usb_
+ 	list_for_each_entry(roothub_entry, head, list) {
+ 		err = phy_set_mode(roothub_entry->phy, mode);
+ 		if (err)
+-			goto err_out;
++			return err;
+ 	}
  
--	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
--	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
- 	usleep_range(10000, 15000);
+ 	return 0;
+-
+-err_out:
+-	list_for_each_entry_continue_reverse(roothub_entry, head, list)
+-		phy_power_off(roothub_entry->phy);
+-
+-	return err;
+ }
+ EXPORT_SYMBOL_GPL(usb_phy_roothub_set_mode);
  
- 	if (mode == NXP_NCI_MODE_COLD)
 
 
 
