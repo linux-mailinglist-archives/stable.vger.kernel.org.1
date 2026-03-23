@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228479-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eGsoHFhmwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-229504-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:08 +0100
+	id iC6RMEhOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228479-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7B02F7BAC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:08 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BF712F4988
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1FB4830CE81B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2C9B43104751
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36E93BF69B;
-	Mon, 23 Mar 2026 15:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99813B2FED;
+	Mon, 23 Mar 2026 14:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCu2KTTc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDZmBK50"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EE0282F0F;
-	Mon, 23 Mar 2026 15:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD663AF663;
+	Mon, 23 Mar 2026 14:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279444; cv=none; b=O9E7cRfnWy3IMR1RAhdK1T+qjaSqQOk2hx70zNDf/uvN0HBx9xuCKghsVPIymOE8hFpL4sxBNeIu8HbnPEluDByJ6y4h1WYiC/w7tI1GebZ9d3698mbqLZ+WppNTJtatlgXhKNu50AgypgM3sOE4OB3Na2LY/7cgQ/jVYUDp37A=
+	t=1774275243; cv=none; b=a+dRjoxWV7sRLbrwcE0aAuBvT68irzu6LlsB/foakly4j3tQqx+ujyZwqjUL+ROu2vP/q+0K9qa8+OBGnKj0PZUgfJAu2y2fDbpqQHBRut3RF7XBX4zpWqTcDtvCnnux/X1XGJI1NJK50Eq+gedtPb6EW/J2doVjFD6hC+RvZNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279444; c=relaxed/simple;
-	bh=QDYkY1iwNPn1/rLgGN+6EjgGu57H/e7iVkhyIdhnc6c=;
+	s=arc-20240116; t=1774275243; c=relaxed/simple;
+	bh=xi+AzomZnFrGQxsUFflmKghbHdb5n0URBjeKv+Q1p2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q0mQZRtn0b7q+3CdY2ogQEixxIliNeeTjrvWQaUSigNxnQXdOkWlJYfoit45XV6H8MeYlGgRyZu76y1P0hRPRNEvO8b7LAuJQLM1/z599bSSGsSXjIVHSKS0RTxX5yVMmqpwFXiZ0LZ9jy1tKdRiCjYZq4A/mJfLK57gaxIcQoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCu2KTTc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1572CC4CEF7;
-	Mon, 23 Mar 2026 15:24:03 +0000 (UTC)
+	 MIME-Version; b=bGQf9bA7C6oz8R8HQ6/A7g186N+Kx/L6SLmCo9jcBIzp+bywyxfe5wgcuamhuB+53W/7AQbEUZQfAt5lj3uE4ToIgnT2gRYABeewRNV4bQFHh/TWghJ61hLGLAuaHgrqlJGcWdCYx+hkoymEyT97HDDlWtkZbhrW1jrhvB3wW9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDZmBK50; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67B1C4CEF7;
+	Mon, 23 Mar 2026 14:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279444;
-	bh=QDYkY1iwNPn1/rLgGN+6EjgGu57H/e7iVkhyIdhnc6c=;
+	s=korg; t=1774275243;
+	bh=xi+AzomZnFrGQxsUFflmKghbHdb5n0URBjeKv+Q1p2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wCu2KTTcDYXV0x/Yj+NixFfcVcJ1mt0MCKX5rkx9P9e5kOE+T/sdHmyJDv5k7vh/c
-	 3Ju8g2r6yBVUyGzbN+IHjel7yu4OAVHj1AwEDP61a4WXvhZzS8GxQ/hIxnxoRiwFDB
-	 iLlIiTbUX5E/Aj+r6Mu6IsHibUr8CCZ0zHrz1fm8=
+	b=dDZmBK504cf7aARz7PL0Nb83tq7GTlFfp9bUdqrmxEALqMsYJFUDGG8tRQPQkYwA8
+	 NRwbzulLN8pXytl4+NGlUGdWGl3xQlF4ecw31s+rvpUSQx3EWxyT5fZebtjy3pvuzT
+	 gXj8D2C1sXNsgm64W4TpUOba2PJxyZbvA/HUKmNc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Pengyu Luo <mitltlatltl@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/481] ext4: make ext4_es_remove_extent() return void
-Date: Mon, 23 Mar 2026 14:40:21 +0100
-Message-ID: <20260323134526.187172309@linuxfoundation.org>
+Subject: [PATCH 6.12 026/460] drm/msm/dsi: fix hdisplay calculation when programming dsi registers
+Date: Mon, 23 Mar 2026 14:40:22 +0100
+Message-ID: <20260323134527.335269458@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,226 +66,104 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229504-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228479-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,suse.cz:email]
-X-Rspamd-Queue-Id: 4F7B02F7BAC
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5BF712F4988
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Pengyu Luo <mitltlatltl@gmail.com>
 
-[ Upstream commit ed5d285b3f2a9a37ff778c5e440daf49351fcc4d ]
+[ Upstream commit ac47870fd795549f03d57e0879fc730c79119f4b ]
 
-Now ext4_es_remove_extent() never fails, so make it return void.
+Recently, the hdisplay calculation is working for 3:1 compressed ratio
+only. If we have a video panel with DSC BPP = 8, and BPC = 10, we still
+use the default bits_per_pclk = 24, then we get the wrong hdisplay. We
+can draw the conclusion by cross-comparing the calculation with the
+calculation in dsi_adjust_pclk_for_compression().
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230424033846.4732-10-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 22784ca541c0 ("ext4: subdivide EXT4_EXT_DATA_VALID1")
+Since CMD mode does not use this, we can remove
+!(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO) safely.
+
+Fixes: efcbd6f9cdeb ("drm/msm/dsi: Enable widebus for DSI")
+Signed-off-by: Pengyu Luo <mitltlatltl@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/704822/
+Link: https://lore.kernel.org/r/20260214105145.105308-1-mitltlatltl@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c        | 34 ++++++----------------------------
- fs/ext4/extents_status.c | 12 ++++++------
- fs/ext4/extents_status.h |  4 ++--
- fs/ext4/inline.c         | 12 ++----------
- fs/ext4/inode.c          |  8 ++------
- 5 files changed, 18 insertions(+), 52 deletions(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 1df7174774694..af4cae13685d7 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4463,15 +4463,8 @@ int ext4_ext_truncate(handle_t *handle, struct inode *inode)
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index d22e01751f5ee..c85d0d5fc5800 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -944,7 +944,7 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
  
- 	last_block = (inode->i_size + sb->s_blocksize - 1)
- 			>> EXT4_BLOCK_SIZE_BITS(sb);
--retry:
--	err = ext4_es_remove_extent(inode, last_block,
--				    EXT_MAX_BLOCKS - last_block);
--	if (err == -ENOMEM) {
--		memalloc_retry_wait(GFP_ATOMIC);
--		goto retry;
--	}
--	if (err)
--		return err;
-+	ext4_es_remove_extent(inode, last_block, EXT_MAX_BLOCKS - last_block);
-+
- retry_remove_space:
- 	err = ext4_ext_remove_space(inode, last_block, EXT_MAX_BLOCKS - 1);
- 	if (err == -ENOMEM) {
-@@ -5419,13 +5412,7 @@ static int ext4_collapse_range(struct file *file, loff_t offset, loff_t len)
+ 	if (msm_host->dsc) {
+ 		struct drm_dsc_config *dsc = msm_host->dsc;
+-		u32 bytes_per_pclk;
++		u32 bits_per_pclk;
  
- 	down_write(&EXT4_I(inode)->i_data_sem);
- 	ext4_discard_preallocations(inode, 0);
--
--	ret = ext4_es_remove_extent(inode, punch_start,
--				    EXT_MAX_BLOCKS - punch_start);
--	if (ret) {
--		up_write(&EXT4_I(inode)->i_data_sem);
--		goto out_stop;
--	}
-+	ext4_es_remove_extent(inode, punch_start, EXT_MAX_BLOCKS - punch_start);
+ 		/* update dsc params with timing params */
+ 		if (!dsc || !mode->hdisplay || !mode->vdisplay) {
+@@ -966,7 +966,9 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
  
- 	ret = ext4_ext_remove_space(inode, punch_start, punch_stop - 1);
- 	if (ret) {
-@@ -5611,12 +5598,7 @@ static int ext4_insert_range(struct file *file, loff_t offset, loff_t len)
- 		ext4_free_ext_path(path);
- 	}
- 
--	ret = ext4_es_remove_extent(inode, offset_lblk,
--			EXT_MAX_BLOCKS - offset_lblk);
--	if (ret) {
--		up_write(&EXT4_I(inode)->i_data_sem);
--		goto out_stop;
--	}
-+	ext4_es_remove_extent(inode, offset_lblk, EXT_MAX_BLOCKS - offset_lblk);
- 
- 	/*
- 	 * if offset_lblk lies in a hole which is at start of file, use
-@@ -5675,12 +5657,8 @@ ext4_swap_extents(handle_t *handle, struct inode *inode1,
- 	BUG_ON(!inode_is_locked(inode1));
- 	BUG_ON(!inode_is_locked(inode2));
- 
--	*erp = ext4_es_remove_extent(inode1, lblk1, count);
--	if (unlikely(*erp))
--		return 0;
--	*erp = ext4_es_remove_extent(inode2, lblk2, count);
--	if (unlikely(*erp))
--		return 0;
-+	ext4_es_remove_extent(inode1, lblk1, count);
-+	ext4_es_remove_extent(inode2, lblk2, count);
- 
- 	while (count) {
- 		struct ext4_extent *ex1, *ex2, tmp_ex;
-diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-index 592229027af72..862a8308cd9b0 100644
---- a/fs/ext4/extents_status.c
-+++ b/fs/ext4/extents_status.c
-@@ -1494,10 +1494,10 @@ static int __es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
-  * @len - number of blocks to remove
-  *
-  * Reduces block/cluster reservation count and for bigalloc cancels pending
-- * reservations as needed. Returns 0 on success, error code on failure.
-+ * reservations as needed.
-  */
--int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
--			  ext4_lblk_t len)
-+void ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
-+			   ext4_lblk_t len)
- {
- 	ext4_lblk_t end;
- 	int err = 0;
-@@ -1505,14 +1505,14 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 	struct extent_status *es = NULL;
- 
- 	if (EXT4_SB(inode->i_sb)->s_mount_state & EXT4_FC_REPLAY)
--		return 0;
-+		return;
- 
- 	trace_ext4_es_remove_extent(inode, lblk, len);
- 	es_debug("remove [%u/%u) from extent status tree of inode %lu\n",
- 		 lblk, len, inode->i_ino);
- 
- 	if (!len)
--		return err;
-+		return;
- 
- 	end = lblk + len - 1;
- 	BUG_ON(end < lblk);
-@@ -1539,7 +1539,7 @@ int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
- 
- 	ext4_es_print_tree(inode);
- 	ext4_da_release_space(inode, reserved);
--	return 0;
-+	return;
- }
- 
- static int __es_shrink(struct ext4_sb_info *sbi, int nr_to_scan,
-diff --git a/fs/ext4/extents_status.h b/fs/ext4/extents_status.h
-index 481ec4381bee6..1d1247bbfd477 100644
---- a/fs/ext4/extents_status.h
-+++ b/fs/ext4/extents_status.h
-@@ -133,8 +133,8 @@ extern void ext4_es_insert_extent(struct inode *inode, ext4_lblk_t lblk,
- extern void ext4_es_cache_extent(struct inode *inode, ext4_lblk_t lblk,
- 				 ext4_lblk_t len, ext4_fsblk_t pblk,
- 				 unsigned int status);
--extern int ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
--				 ext4_lblk_t len);
-+extern void ext4_es_remove_extent(struct inode *inode, ext4_lblk_t lblk,
-+				  ext4_lblk_t len);
- extern void ext4_es_find_extent_range(struct inode *inode,
- 				      int (*match_fn)(struct extent_status *es),
- 				      ext4_lblk_t lblk, ext4_lblk_t end,
-diff --git a/fs/ext4/inline.c b/fs/ext4/inline.c
-index a1fb99d2b472b..c15ea7589945f 100644
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -2004,16 +2004,8 @@ int ext4_inline_data_truncate(struct inode *inode, int *has_inline)
- 		 * the extent status cache must be cleared to avoid leaving
- 		 * behind stale delayed allocated extent entries
+ 		/*
+ 		 * DPU sends 3 bytes per pclk cycle to DSI. If widebus is
+-		 * enabled, bus width is extended to 6 bytes.
++		 * enabled, MDP always sends out 48-bit compressed data per
++		 * pclk and on average, DSI consumes an amount of compressed
++		 * data equivalent to the uncompressed pixel depth per pclk.
+ 		 *
+ 		 * Calculate the number of pclks needed to transmit one line of
+ 		 * the compressed data.
+@@ -978,12 +980,12 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+ 		 * unused anyway.
  		 */
--		if (!ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA)) {
--retry:
--			err = ext4_es_remove_extent(inode, 0, EXT_MAX_BLOCKS);
--			if (err == -ENOMEM) {
--				memalloc_retry_wait(GFP_ATOMIC);
--				goto retry;
--			}
--			if (err)
--				goto out_error;
--		}
-+		if (!ext4_test_inode_state(inode, EXT4_STATE_MAY_INLINE_DATA))
-+			ext4_es_remove_extent(inode, 0, EXT_MAX_BLOCKS);
+ 		h_total -= hdisplay;
+-		if (wide_bus_enabled && !(msm_host->mode_flags & MIPI_DSI_MODE_VIDEO))
+-			bytes_per_pclk = 6;
++		if (wide_bus_enabled)
++			bits_per_pclk = mipi_dsi_pixel_format_to_bpp(msm_host->format);
+ 		else
+-			bytes_per_pclk = 3;
++			bits_per_pclk = 24;
  
- 		/* Clear the content in the xattr space. */
- 		if (inline_size > EXT4_MIN_INLINE_DATA_SIZE) {
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index bf1f8319e2d74..79619f3db984f 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4134,12 +4134,8 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
- 		down_write(&EXT4_I(inode)->i_data_sem);
- 		ext4_discard_preallocations(inode, 0);
+-		hdisplay = DIV_ROUND_UP(msm_dsc_get_bytes_per_line(msm_host->dsc), bytes_per_pclk);
++		hdisplay = DIV_ROUND_UP(msm_dsc_get_bytes_per_line(msm_host->dsc) * 8, bits_per_pclk);
  
--		ret = ext4_es_remove_extent(inode, first_block,
--					    stop_block - first_block);
--		if (ret) {
--			up_write(&EXT4_I(inode)->i_data_sem);
--			goto out_stop;
--		}
-+		ext4_es_remove_extent(inode, first_block,
-+				      stop_block - first_block);
- 
- 		if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
- 			ret = ext4_ext_remove_space(inode, first_block,
+ 		h_total += hdisplay;
+ 		ha_end = ha_start + hdisplay;
 -- 
 2.51.0
 
