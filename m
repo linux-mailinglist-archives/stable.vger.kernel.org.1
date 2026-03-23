@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-228690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229185-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SFoEO7lUwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228690-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:57 +0100
+	id 4E/7My5fwWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229185-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F24162F57CD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCBD52F6B9B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C02513017B81
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A7C063081E00
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F7A3B0ADD;
-	Mon, 23 Mar 2026 14:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED6753B3895;
+	Mon, 23 Mar 2026 15:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJN30IkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DHrGF/hr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF133B27C1;
-	Mon, 23 Mar 2026 14:41:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B17103B3881;
+	Mon, 23 Mar 2026 15:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276862; cv=none; b=INenpmmjNDsy6noxdWgvB4fWIwVms32vojCRhidXyQ7TRRoFlhaoaZOzCAFyyt2dSXKcIkCpzBKHYtCXrkC4PgoJaUuBnajnEk6J2BUty405aZmJx2xQo0HyZw44Rw01twxeFwHftKoO5Fx+juPPEJjNNJN9LbBfrSDlMvopCPg=
+	t=1774278328; cv=none; b=mJGr4PYZQRZwP6arYjq51gUK9ncfNfyaInwowT88dy88RGhJru+itoJZnuk7KTYwN9G2JvsHngJpzN3x7UqNS/Y28QbARA3RlcWCVXHyfYfGny5qamQqaZRI15QUn8ybv3WiCxnwf4HRrME1GKiTuI01wLGe+lbGsyr3yN4bPuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276862; c=relaxed/simple;
-	bh=L6IJcBX5zoCCMVdNCUtBRC6IIQrI5VBhdd1BX/rAejA=;
+	s=arc-20240116; t=1774278328; c=relaxed/simple;
+	bh=1EX798hXlaIOIQnPa3mz2Is61dgZ9PLW6IZAfUbt9e8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOHOx2EUGbNZ1EWbdv3iOx6BANpjXmuEkCs2PyIMajVFgggcdI8RZ4nW7ONk2SC2p8S5dBfJWfuhMH1SuQ8l1w4wqb2M0KQ7L7+ETh2hh9jpVqaeoZ/2wm1bD0P1L5z0OdhBF4NfIs4LQ08E3RRnvSboSH3yOd5I1kUAJodG1i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJN30IkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29EDFC2BCB5;
-	Mon, 23 Mar 2026 14:41:02 +0000 (UTC)
+	 MIME-Version; b=Ebc7MLf79GLc2ZU/3Gv5QHn9ViHpcGOzEPM+RPP+8fiCJ5dWy2KkuySomtScE1EoRY8p2KAWv+r4mt6RAfRSre39jsL416kW4BRrNBOODj+oUVo4KTKwmiUmJE7S+M16HFR3unf7vDEsddqUUmLKEIh6qpx8a+MH1IXNOsih+OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DHrGF/hr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3576EC2BC9E;
+	Mon, 23 Mar 2026 15:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276862;
-	bh=L6IJcBX5zoCCMVdNCUtBRC6IIQrI5VBhdd1BX/rAejA=;
+	s=korg; t=1774278328;
+	bh=1EX798hXlaIOIQnPa3mz2Is61dgZ9PLW6IZAfUbt9e8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MJN30IkYyy1LFdW3BewrFygF/I239z0sWZPG8H85fRAcfgg4cqW6I6frbwlnRjEQ0
-	 FZiz9CQxtzEF6x7LTo3BJQhpPUF516cfQxq6Og7sRE6yD3G0ZtS4m3QBWVPdvh1vI8
-	 stGQt4QosT85JmzJ38dysCrE11rwA6qFgWkctlEM=
+	b=DHrGF/hrWqaw2F9Jvdtnk+Jeg1ug87oJmVaW5F+V/CXiA1s/46dwOwfx4S65lZrTI
+	 8uY7Tt55VTYklHhTXfyxSzs+ivIzCotIbl/GeXi60fY6bfvbiycFU8w+8qWjhUcdwG
+	 Rf1rcd9nn0lW1hx1KWF9t/ZwN7lb8rmx1E30Su/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.12 195/460] lib/bootconfig: fix snprintf truncation check in xbc_node_compose_key_after()
+	Vyacheslav Vahnenko <vahnenko2003@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 271/567] USB: ezcap401 needs USB_QUIRK_NO_BOS to function on 10gbs usb speed
 Date: Mon, 23 Mar 2026 14:43:11 +0100
-Message-ID: <20260323134531.338512938@linuxfoundation.org>
+Message-ID: <20260323134540.536782631@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,70 +68,65 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228690-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229185-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F24162F57CD
+X-Rspamd-Queue-Id: CCBD52F6B9B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Vyacheslav Vahnenko <vahnenko2003@gmail.com>
 
-commit 1120a36bb1e9b9e22de75ecb4ef0b998f73a97f1 upstream.
+commit d0d9b1f4f5391e6a00cee81d73ed2e8f98446d5f upstream.
 
-snprintf() returns the number of characters that would have been
-written excluding the NUL terminator.  Output is truncated when the
-return value is >= the buffer size, not just > the buffer size.
+Add USB_QUIRK_NO_BOS for ezcap401 capture card, without it dmesg will show
+"unable to get BOS descriptor or descriptor too short" and "unable to
+read config index 0 descriptor/start: -71" errors and device will not
+able to work at full speed at 10gbs
 
-When ret == size, the current code takes the non-truncated path,
-advancing buf by ret and reducing size to 0.  This is wrong because
-the output was actually truncated (the last character was replaced by
-NUL).  Fix by using >= so the truncation path is taken correctly.
-
-Link: https://lore.kernel.org/all/20260312191143.28719-4-objecting@objecting.org/
-
-Fixes: 76db5a27a827 ("bootconfig: Add Extra Boot Config support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Vyacheslav Vahnenko <vahnenko2003@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260313123638.20481-1-vahnenko2003@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/bootconfig.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -316,7 +316,7 @@ int __init xbc_node_compose_key_after(st
- 			       depth ? "." : "");
- 		if (ret < 0)
- 			return ret;
--		if (ret > size) {
-+		if (ret >= size) {
- 			size = 0;
- 		} else {
- 			size -= ret;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -585,6 +585,9 @@ static const struct usb_device_id usb_qu
+ 	/* Alcor Link AK9563 SC Reader used in 2022 Lenovo ThinkPads */
+ 	{ USB_DEVICE(0x2ce3, 0x9563), .driver_info = USB_QUIRK_NO_LPM },
+ 
++	/* ezcap401 - BOS descriptor fetch hangs at SuperSpeed Plus */
++	{ USB_DEVICE(0x32ed, 0x0401), .driver_info = USB_QUIRK_NO_BOS },
++
+ 	/* DELL USB GEN2 */
+ 	{ USB_DEVICE(0x413c, 0xb062), .driver_info = USB_QUIRK_NO_LPM | USB_QUIRK_RESET_RESUME },
+ 
 
 
 
