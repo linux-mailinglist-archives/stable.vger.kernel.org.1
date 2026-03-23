@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229087-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONS+G09SwWn+SAQAu9opvQ
-	(envelope-from <stable+bounces-228606-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:39 +0100
+	id oIIjMgFZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229087-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1357E2F52AA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAF902F60E7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F22F30C0739
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:54 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 591D130B48C8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D4C37E2FC;
-	Mon, 23 Mar 2026 14:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDB923A564;
+	Mon, 23 Mar 2026 15:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p03jTAJX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhG2JJfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C6C1FFC48;
-	Mon, 23 Mar 2026 14:19:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636D9237707;
+	Mon, 23 Mar 2026 15:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275584; cv=none; b=qMLQJMgKj/sgTLcWXVqrkQLLu/yDcQ1FdKyWVzoX3/PFyH/PELccmaDPDn4p/dGd3F6dnhjzVoEcfv7LEsCxBqQVZzr6gqueyARX823qcjLoN9IAqv/G4vKCvMwnD2c/deEwubEc+IsGls5kAmaO/iMrL+fouwdshesEpIHr/Bg=
+	t=1774278019; cv=none; b=IxtCi7DtvU3RYmkH9LFn5k34kH50m1l6JfVU71k5/OrXM8Y7K/AyUF1vgUwE1uxZqLRIPKig9dQf8B9kAuSHSDHAshXMXQeKedkR8EnjtujYIewLFV7kxuNE3/y1sk6cO5DgAekMBbfzaOstoHZsxGV5GkbSLvoTJnPIVol1KDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275584; c=relaxed/simple;
-	bh=7wm5D8fQIWuN5VCYTZBrVNRHiNphlL4CCYZ02WIO1YY=;
+	s=arc-20240116; t=1774278019; c=relaxed/simple;
+	bh=VPP6WI0exGG98Qi9wQ3chRkc1E3smq/Yh5TW78XJeLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EM3dlHVs6/LYa34jxhQWsbp8c9k6fVf8Gz6mEi+WWfRJX40Ah4hbhvyhnA0bUjf38QUwn54zXvHXWIAiGoalMfeBPgjIz2rrPoz2V9R3ZaTaYYhjK7cso2OoBG3Rd+I1DGcaU537ZHALBDxGW2PceDhAVnYlXmxvLlepG1Yzsyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p03jTAJX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AACC4CEF7;
-	Mon, 23 Mar 2026 14:19:43 +0000 (UTC)
+	 MIME-Version; b=e9kXJhqVIgUltnRit501GSDRzOn/qEIu4JuRpedCUmIybRqWivXDKPWVTZHFBuMToQhP41scvYqaauc8791G4BfNwNpzKBsLF0w1I4r0Sydx3sBsofgDySx0kwQs+nG3MHM4Hz0mO7aJZW81CGwjHlv3vQ9Y16fqSWu/OGivHQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhG2JJfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20C3C4CEF7;
+	Mon, 23 Mar 2026 15:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275584;
-	bh=7wm5D8fQIWuN5VCYTZBrVNRHiNphlL4CCYZ02WIO1YY=;
+	s=korg; t=1774278019;
+	bh=VPP6WI0exGG98Qi9wQ3chRkc1E3smq/Yh5TW78XJeLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p03jTAJXxPr+I7fftLtbont32qDc5pUaCls3a/SifOvK+l4DOcWSgd9ewXkb/gMEj
-	 X2X5iE1kpad4L9DwxVU3BBZlonL6ktQu4l2kEQOknTlWQxzbIZIFF6Gg+KZDgBdhL1
-	 sJHoX6kKI28M0IHsXEK1KRNqbPJUxEXcHC+CaTl4=
+	b=nhG2JJfMF1h9YhRAf16tiHe44jvN16ypI6wBnlcext+fRehlTK0r2JuV2nOQX6gqQ
+	 y+Kp/Px6IDUk5zy0dLG5LO7u9M3QY09bGny7aQj5enRV7rYbEUXgA5KtOKTBFeYRDq
+	 nN1tHk+mbna9TQWMnszda3I1PRNc2leyGMFPBqqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.12 097/460] KVM: SVM: Initialize AVIC VMCB fields if AVIC is enabled with in-kernel APIC
-Date: Mon, 23 Mar 2026 14:41:33 +0100
-Message-ID: <20260323134529.041470906@linuxfoundation.org>
+	Guruprasad C P <gurucp2005@gmail.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 174/567] net: bridge: fix nd_tbl NULL dereference when IPv6 is disabled
+Date: Mon, 23 Mar 2026 14:41:34 +0100
+Message-ID: <20260323134538.141346519@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,91 +72,113 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228606-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229087-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,nvidia.com,blackwall.org,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1357E2F52AA
+X-Rspamd-Queue-Id: EAF902F60E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit 3989a6d036c8ec82c0de3614bed23a1dacd45de5 upstream.
+[ Upstream commit e5e890630533bdc15b26a34bb8e7ef539bdf1322 ]
 
-Initialize all per-vCPU AVIC control fields in the VMCB if AVIC is enabled
-in KVM and the VM has an in-kernel local APIC, i.e. if it's _possible_ the
-vCPU could activate AVIC at any point in its lifecycle.  Configuring the
-VMCB if and only if AVIC is active "works" purely because of optimizations
-in kvm_create_lapic() to speculatively set apicv_active if AVIC is enabled
-*and* to defer updates until the first KVM_RUN.  In quotes because KVM
-likely won't do the right thing if kvm_apicv_activated() is false, i.e. if
-a vCPU is created while APICv is inhibited at the VM level for whatever
-reason.  E.g. if the inhibit is *removed* before KVM_REQ_APICV_UPDATE is
-handled in KVM_RUN, then __kvm_vcpu_update_apicv() will elide calls to
-vendor code due to seeing "apicv_active == activate".
+When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
+initialized because inet6_init() exits before ndisc_init() is called
+which initializes it. Then, if neigh_suppress is enabled and an ICMPv6
+Neighbor Discovery packet reaches the bridge, br_do_suppress_nd() will
+dereference ipv6_stub->nd_tbl which is NULL, passing it to
+neigh_lookup(). This causes a kernel NULL pointer dereference.
 
-Cleaning up the initialization code will also allow fixing a bug where KVM
-incorrectly leaves CR8 interception enabled when AVIC is activated without
-creating a mess with respect to whether AVIC is activated or not.
+ BUG: kernel NULL pointer dereference, address: 0000000000000268
+ Oops: 0000 [#1] PREEMPT SMP NOPTI
+ [...]
+ RIP: 0010:neigh_lookup+0x16/0xe0
+ [...]
+ Call Trace:
+  <IRQ>
+  ? neigh_lookup+0x16/0xe0
+  br_do_suppress_nd+0x160/0x290 [bridge]
+  br_handle_frame_finish+0x500/0x620 [bridge]
+  br_handle_frame+0x353/0x440 [bridge]
+  __netif_receive_skb_core.constprop.0+0x298/0x1110
+  __netif_receive_skb_one_core+0x3d/0xa0
+  process_backlog+0xa0/0x140
+  __napi_poll+0x2c/0x170
+  net_rx_action+0x2c4/0x3a0
+  handle_softirqs+0xd0/0x270
+  do_softirq+0x3f/0x60
 
-Cc: stable@vger.kernel.org
-Fixes: 67034bb9dd5e ("KVM: SVM: Add irqchip_split() checks before enabling AVIC")
-Fixes: 6c3e4422dd20 ("svm: Add support for dynamic APICv")
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20260203190711.458413-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by replacing IS_ENABLED(IPV6) call with ipv6_mod_enabled() in
+the callers. This is in essence disabling NS/NA suppression when IPv6 is
+disabled.
+
+Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
+Reported-by: Guruprasad C P <gurucp2005@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAHXs0ORzd62QOG-Fttqa2Cx_A_VFp=utE2H2VTX5nqfgs7LDxQ@mail.gmail.com/
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20260304120357.9778-1-fmancera@suse.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/avic.c |    2 +-
- arch/x86/kvm/svm/svm.c  |    2 +-
+ net/bridge/br_device.c | 2 +-
+ net/bridge/br_input.c  | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -253,7 +253,7 @@ void avic_init_vmcb(struct vcpu_svm *svm
- 	vmcb->control.avic_physical_id = ppa & AVIC_HPA_MASK;
- 	vmcb->control.avic_vapic_bar = APIC_DEFAULT_PHYS_BASE & VMCB_AVIC_APIC_BAR_MASK;
- 
--	if (kvm_apicv_activated(svm->vcpu.kvm))
-+	if (kvm_vcpu_apicv_active(&svm->vcpu))
- 		avic_activate_vmcb(svm);
- 	else
- 		avic_deactivate_vmcb(svm);
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1360,7 +1360,7 @@ static void init_vmcb(struct kvm_vcpu *v
- 	if (boot_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_SPEC_CTRL, 1, 1);
- 
--	if (kvm_vcpu_apicv_active(vcpu))
-+	if (enable_apicv && irqchip_in_kernel(vcpu->kvm))
- 		avic_init_vmcb(svm, vmcb);
- 
- 	if (vnmi)
+diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
+index 42d4c3727bf76..4af3e4c67038d 100644
+--- a/net/bridge/br_device.c
++++ b/net/bridge/br_device.c
+@@ -72,7 +72,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	     eth_hdr(skb)->h_proto == htons(ETH_P_RARP)) &&
+ 	    br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED)) {
+ 		br_do_proxy_suppress_arp(skb, br, vid, NULL);
+-	} else if (IS_ENABLED(CONFIG_IPV6) &&
++	} else if (ipv6_mod_enabled() &&
+ 		   skb->protocol == htons(ETH_P_IPV6) &&
+ 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
+ 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
+diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+index 847fe03a08ee8..46d2b20afd5ff 100644
+--- a/net/bridge/br_input.c
++++ b/net/bridge/br_input.c
+@@ -165,7 +165,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
+ 	    (skb->protocol == htons(ETH_P_ARP) ||
+ 	     skb->protocol == htons(ETH_P_RARP))) {
+ 		br_do_proxy_suppress_arp(skb, br, vid, p);
+-	} else if (IS_ENABLED(CONFIG_IPV6) &&
++	} else if (ipv6_mod_enabled() &&
+ 		   skb->protocol == htons(ETH_P_IPV6) &&
+ 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
+ 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
+-- 
+2.51.0
+
 
 
 
