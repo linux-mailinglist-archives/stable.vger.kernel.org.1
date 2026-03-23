@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228414-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aLotCnpWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228917-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:26 +0100
+	id gGxEJAxOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228414-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296C92F5B62
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 308AF2F4907
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7BD7430F1C87
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 89CE531C903D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EE93AE70F;
-	Mon, 23 Mar 2026 14:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C323AE1B9;
+	Mon, 23 Mar 2026 14:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1Hua3vp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dprp4Uz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B7E32470A;
-	Mon, 23 Mar 2026 14:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098BC3AD539;
+	Mon, 23 Mar 2026 14:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277482; cv=none; b=PZxG1WNij2h0x05Ed3Oj9n+FEmlRJnlTXEUWCyTFDcjRzQNbTmIWpVtFB2en7unl7vylfUKjFtuD+RICdZn5g4tUY3HmBViDQCKn5AfRWznvD3XgLG4HxxCHNDi53MQQiQBLdIhKmjmaf86/sFcZDukBuPWclEpAi+LK2t7trV8=
+	t=1774275055; cv=none; b=XPTWTkR4OduvjeDrZirGqhYE+F6X9F0tDnnAAQUCogT0P9s1t6TDEf/jhuVVQ+NSxVjFnFWkByqtSXlZATMK5MlFBDqmKTXZFN2MmjFPdkEekQy59F5LsoJAALTbhPHX2VrrbQSwNIvMPpo0yH++I7PjaMSdXlPth9mZGSxASmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277482; c=relaxed/simple;
-	bh=9jRb3F855/VZhspygaD4LxpPBWKa5OODgyKOq5sTK+E=;
+	s=arc-20240116; t=1774275055; c=relaxed/simple;
+	bh=mv8Pf3m6ocdx0EbCKQQJj8KMCqgt/nsHJDfIoQqdRY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pwu5h1Tw/bm1T/KRCqVG1O2vb+Mxs+luAuRPXseVQFeAlflKUjC6psSOjIBuvun5wlYSQerzCmDcOLYYn1zFpu/d1GBReoIOmtptNDBh9YvfVfu0y6JIMCiqGZc/qzKaV8BMuDBOn4Ny3KfHbHpv5xD2IP283SX3ehrPHBB/GfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1Hua3vp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4911BC4CEF7;
-	Mon, 23 Mar 2026 14:51:22 +0000 (UTC)
+	 MIME-Version; b=ozi+9AkMLFmMKBlaKK3Cd8EFotTjyZQvOr6+VTDOoaNTdp3VUNbeMB6T+Z3efpZlrmGmHpCiE51e4bLWsHZFx2iB5VcvwMT/QOOVxmzdsfPkqhsAjDwAJgoD/QsH5Vwdf0sl5JW15uxH5Z29xfLPCO+4umXV8rL5xTcURzbvRS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dprp4Uz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78227C4CEF7;
+	Mon, 23 Mar 2026 14:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277482;
-	bh=9jRb3F855/VZhspygaD4LxpPBWKa5OODgyKOq5sTK+E=;
+	s=korg; t=1774275054;
+	bh=mv8Pf3m6ocdx0EbCKQQJj8KMCqgt/nsHJDfIoQqdRY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1Hua3vpASyhoorHrYEwDnv53yHD2Cfma0XE9JoW17RUa31xRwPFXXLnVSc5Tbf1D
-	 6NpcL5uQlYI7ZiFWDMhCXlu5NjvQ9bc850XIrk7wusuTA9Vsd0PxlrBUhTXEXhps8E
-	 mGsjo4ZNrUs3ETJrbFThb2Dv/FMDb2Hs+S2RxWwY=
+	b=dprp4Uz3PxboDDraT3eaXZAAkiB63LpxEn7r3vlrQNYXiBSmdoVaeGSMGzkNQIFOP
+	 DAqTG1U1GoJBUJJ/uGnNfuX7tL2nLAo6sh+NzYii1ugfGSap7og/mccN/Zu8HkyTMl
+	 sq8EUi38Y7ufzyOxfEK++4io/vqVvWr10E7Xqe3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 429/460] netfilter: nf_tables: release flowtable after rcu grace period on error
-Date: Mon, 23 Mar 2026 14:47:05 +0100
-Message-ID: <20260323134537.095256409@linuxfoundation.org>
+Subject: [PATCH 6.18 205/212] ksmbd: fix use-after-free of share_conf in compound request
+Date: Mon, 23 Mar 2026 14:47:06 +0100
+Message-ID: <20260323134510.268059351@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,20 +70,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228917-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228414-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
@@ -92,56 +92,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 296C92F5B62
+X-Rspamd-Queue-Id: 308AF2F4907
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit d73f4b53aaaea4c95f245e491aa5eeb8a21874ce ]
+[ Upstream commit c33615f995aee80657b9fdfbc4ee7f49c2bd733d ]
 
-Call synchronize_rcu() after unregistering the hooks from error path,
-since a hook that already refers to this flowtable can be already
-registered, exposing this flowtable to packet path and nfnetlink_hook
-control plane.
+smb2_get_ksmbd_tcon() reuses work->tcon in compound requests without
+validating tcon->t_state. ksmbd_tree_conn_lookup() checks t_state ==
+TREE_CONNECTED on the initial lookup path, but the compound reuse path
+bypasses this check entirely.
 
-This error path is rare, it should only happen by reaching the maximum
-number hooks or by failing to set up to hardware offload, just call
-synchronize_rcu().
+If a prior command in the compound (SMB2_TREE_DISCONNECT) sets t_state
+to TREE_DISCONNECTED and frees share_conf via ksmbd_share_config_put(),
+subsequent commands dereference the freed share_conf through
+work->tcon->share_conf.
 
-There is a check for already used device hooks by different flowtable
-that could result in EEXIST at this late stage. The hook parser can be
-updated to perform this check earlier to this error path really becomes
-rarely exercised.
+KASAN report:
 
-Uncovered by KASAN reported as use-after-free from nfnetlink_hook path
-when dumping hooks.
+[    4.144653] ==================================================================
+[    4.145059] BUG: KASAN: slab-use-after-free in smb2_write+0xc74/0xe70
+[    4.145415] Read of size 4 at addr ffff88810430c194 by task kworker/1:1/44
+[    4.145772]
+[    4.145867] CPU: 1 UID: 0 PID: 44 Comm: kworker/1:1 Not tainted 7.0.0-rc3+ #60 PREEMPTLAZY
+[    4.145871] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    4.145875] Workqueue: ksmbd-io handle_ksmbd_work
+[    4.145888] Call Trace:
+[    4.145892]  <TASK>
+[    4.145894]  dump_stack_lvl+0x64/0x80
+[    4.145910]  print_report+0xce/0x660
+[    4.145919]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[    4.145928]  ? smb2_write+0xc74/0xe70
+[    4.145931]  kasan_report+0xce/0x100
+[    4.145934]  ? smb2_write+0xc74/0xe70
+[    4.145937]  smb2_write+0xc74/0xe70
+[    4.145939]  ? __pfx_smb2_write+0x10/0x10
+[    4.145942]  ? _raw_spin_unlock+0xe/0x30
+[    4.145945]  ? ksmbd_smb2_check_message+0xeb2/0x24c0
+[    4.145948]  ? smb2_tree_disconnect+0x31c/0x480
+[    4.145951]  handle_ksmbd_work+0x40f/0x1080
+[    4.145953]  process_one_work+0x5fa/0xef0
+[    4.145962]  ? assign_work+0x122/0x3e0
+[    4.145964]  worker_thread+0x54b/0xf70
+[    4.145967]  ? __pfx_worker_thread+0x10/0x10
+[    4.145970]  kthread+0x346/0x470
+[    4.145976]  ? recalc_sigpending+0x19b/0x230
+[    4.145980]  ? __pfx_kthread+0x10/0x10
+[    4.145984]  ret_from_fork+0x4fb/0x6c0
+[    4.145992]  ? __pfx_ret_from_fork+0x10/0x10
+[    4.145995]  ? __switch_to+0x36c/0xbe0
+[    4.145999]  ? __pfx_kthread+0x10/0x10
+[    4.146003]  ret_from_fork_asm+0x1a/0x30
+[    4.146013]  </TASK>
+[    4.146014]
+[    4.149858] Allocated by task 44:
+[    4.149953]  kasan_save_stack+0x33/0x60
+[    4.150061]  kasan_save_track+0x14/0x30
+[    4.150169]  __kasan_kmalloc+0x8f/0xa0
+[    4.150274]  ksmbd_share_config_get+0x1dd/0xdd0
+[    4.150401]  ksmbd_tree_conn_connect+0x7e/0x600
+[    4.150529]  smb2_tree_connect+0x2e6/0x1000
+[    4.150645]  handle_ksmbd_work+0x40f/0x1080
+[    4.150761]  process_one_work+0x5fa/0xef0
+[    4.150873]  worker_thread+0x54b/0xf70
+[    4.150978]  kthread+0x346/0x470
+[    4.151071]  ret_from_fork+0x4fb/0x6c0
+[    4.151176]  ret_from_fork_asm+0x1a/0x30
+[    4.151286]
+[    4.151332] Freed by task 44:
+[    4.151418]  kasan_save_stack+0x33/0x60
+[    4.151526]  kasan_save_track+0x14/0x30
+[    4.151634]  kasan_save_free_info+0x3b/0x60
+[    4.151751]  __kasan_slab_free+0x43/0x70
+[    4.151861]  kfree+0x1ca/0x430
+[    4.151952]  __ksmbd_tree_conn_disconnect+0xc8/0x190
+[    4.152088]  smb2_tree_disconnect+0x1cd/0x480
+[    4.152211]  handle_ksmbd_work+0x40f/0x1080
+[    4.152326]  process_one_work+0x5fa/0xef0
+[    4.152438]  worker_thread+0x54b/0xf70
+[    4.152545]  kthread+0x346/0x470
+[    4.152638]  ret_from_fork+0x4fb/0x6c0
+[    4.152743]  ret_from_fork_asm+0x1a/0x30
+[    4.152853]
+[    4.152900] The buggy address belongs to the object at ffff88810430c180
+[    4.152900]  which belongs to the cache kmalloc-96 of size 96
+[    4.153226] The buggy address is located 20 bytes inside of
+[    4.153226]  freed 96-byte region [ffff88810430c180, ffff88810430c1e0)
+[    4.153549]
+[    4.153596] The buggy address belongs to the physical page:
+[    4.153750] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0xffff88810430ce80 pfn:0x10430c
+[    4.154000] flags: 0x100000000000200(workingset|node=0|zone=2)
+[    4.154160] page_type: f5(slab)
+[    4.154251] raw: 0100000000000200 ffff888100041280 ffff888100040110 ffff888100040110
+[    4.154461] raw: ffff88810430ce80 0000000800200009 00000000f5000000 0000000000000000
+[    4.154668] page dumped because: kasan: bad access detected
+[    4.154820]
+[    4.154866] Memory state around the buggy address:
+[    4.155002]  ffff88810430c080: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[    4.155196]  ffff88810430c100: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[    4.155391] >ffff88810430c180: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+[    4.155587]                          ^
+[    4.155693]  ffff88810430c200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[    4.155891]  ffff88810430c280: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[    4.156087] ==================================================================
 
-Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Add the same t_state validation to the compound reuse path, consistent
+with ksmbd_tree_conn_lookup().
+
+Fixes: 5005bcb42191 ("ksmbd: validate session id and tree id in the compound request")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/smb2pdu.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 0c12560e94f3b..663c064135181 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8966,6 +8966,7 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
- 	return 0;
- 
- err_flowtable_hooks:
-+	synchronize_rcu();
- 	nft_trans_destroy(trans);
- err_flowtable_trans:
- 	nft_hooks_destroy(&flowtable->hook_list);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 1f04b761a8cf8..6796bc919d580 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -125,6 +125,8 @@ int smb2_get_ksmbd_tcon(struct ksmbd_work *work)
+ 			pr_err("The first operation in the compound does not have tcon\n");
+ 			return -EINVAL;
+ 		}
++		if (work->tcon->t_state != TREE_CONNECTED)
++			return -ENOENT;
+ 		if (tree_id != UINT_MAX && work->tcon->id != tree_id) {
+ 			pr_err("tree id(%u) is different with id(%u) in first operation\n",
+ 					tree_id, work->tcon->id);
 -- 
 2.51.0
 
