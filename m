@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229241-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OC5zOlhPwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228662-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:34:00 +0100
+	id 4EGyCGJcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229241-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4AF2F4BFC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:34:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F572F65BA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 83435316E752
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 48D21309FC1D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B8136F414;
-	Mon, 23 Mar 2026 14:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BBA3AD539;
+	Mon, 23 Mar 2026 15:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvp2Sm7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSHY11cw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC6C17DE36;
-	Mon, 23 Mar 2026 14:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9879B248F6F;
+	Mon, 23 Mar 2026 15:08:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275752; cv=none; b=rF5Na3qtygETFRqkFZ9jDm0ZysunRN6Y89nytsItpJgeNw3Oio2hSFm3gJGqyq+54/vX1IvN5/3/f29UusiYtUC8kWCzGAbKfDOCe1/iZf5PgIztqoRfGleDGveRJkt1UwjjtDEiHgyF/ocLZV89HRQracilHR8C3apZ8v8lPSk=
+	t=1774278503; cv=none; b=OHzbrI8D3OGmgHXQKU4AG9y+0Rwq1Gn9KVasB/LgLc/0dwdSI0DCsC0SlFkL91dmCz0hcU8Z8qzcdH2u3BDZoaWLLObWAvZclXP7YAIr5Oiy+ui/gskPc1+jGfq6zgIEu/QKjhe5qdbxjxIX0dl3d8gSdE1TupDmAbDUUQ7YpnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275752; c=relaxed/simple;
-	bh=fkwf5R4dKaUaky0XAP1SPXQKuZG7uTxdfuOM5BQhdYs=;
+	s=arc-20240116; t=1774278503; c=relaxed/simple;
+	bh=s7rosTRlsNzHNIW/CN/bJtRTlWOOhg4NFIGL671gKv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLd2fYZ7L0MCh5E0WIKCehDCRrQBi27Ox7H/95ayB3czc9vN3IKRphpxIAGs7eMdwW6xihlx//6Ejx2G8eBGdlbterPnbxxGXu9scAguzzyHSDZLekevIO74ZClhziSgNrP9xYqZNT4vPsIXUMBomqCJKSzCtdH9Os6QJ0SQmY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvp2Sm7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644DEC4CEF7;
-	Mon, 23 Mar 2026 14:22:31 +0000 (UTC)
+	 MIME-Version; b=UqdEaDU26ijZ/D/tDFrHpKMUZX1J0EPVChtNraBYYWgBpXSc9Kbsfz0+KIxQbctqs0EeabPbitz+28rgLFfAZMiX9BykLkleMcnDgir8oTxXJjoYRTZa9nhoeW/+1d8HIZx2OtwETpHI8jdG6WdvuSFdRI+B2bzCzhcBm8Tf5AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSHY11cw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D4FBC4CEF7;
+	Mon, 23 Mar 2026 15:08:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275751;
-	bh=fkwf5R4dKaUaky0XAP1SPXQKuZG7uTxdfuOM5BQhdYs=;
+	s=korg; t=1774278503;
+	bh=s7rosTRlsNzHNIW/CN/bJtRTlWOOhg4NFIGL671gKv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lvp2Sm7bwfV5laCz8AKhkiGVbYW6q8waaycczyOZqR+0eDpQdcke62/UfBP6bSYOz
-	 Maj8jlb6Wwu2tAI0bsLb1H5eUDzFdh+ShSubDXAHv1byTEJ9dFQ1+2mV5zcriBiR7p
-	 47BSSqXKTF3pXquIFo5A+JV/zPaIK/UGp/sHZ+3w=
+	b=VSHY11cwWtVDjEQ8dsyoYyHeKe+eq9X26CF6YrH5RnGW+saSSNTrjnbK7fPahxsQS
+	 6gB7Y170NTYEgmxGu9DKkhBGR2QbfWP9Sb8iN4beF+A2pT4Fhsa0Kb/6GsC8RIJSuw
+	 fN3SzfukwMpueEI1x6TOvd1jFr6T/3tQbVFaMhys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Lukas Schmid <lukas.schmid@netcube.li>
-Subject: [PATCH 6.12 207/460] iio: potentiometer: mcp4131: fix double application of wiper shift
-Date: Mon, 23 Mar 2026 14:43:23 +0100
-Message-ID: <20260323134531.611903438@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Fan Wu <fanwu01@zju.edu.cn>
+Subject: [PATCH 6.6 284/567] usb: renesas_usbhs: fix use-after-free in ISR during device removal
+Date: Mon, 23 Mar 2026 14:43:24 +0100
+Message-ID: <20260323134540.854186411@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228662-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229241-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,49 +90,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8E4AF2F4BFC
+X-Rspamd-Queue-Id: 89F572F65BA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Schmid <lukas.schmid@netcube.li>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit 85e4614524dca6c0a43874f475a17de2b9725648 upstream.
+commit 3cbc242b88c607f55da3d0d0d336b49bf1e20412 upstream.
 
-The MCP4131 wiper address is shifted twice when preparing the SPI
-command in mcp4131_write_raw().
+In usbhs_remove(), the driver frees resources (including the pipe array)
+while the interrupt handler (usbhs_interrupt) is still registered. If an
+interrupt fires after usbhs_pipe_remove() but before the driver is fully
+unbound, the ISR may access freed memory, causing a use-after-free.
 
-The address is already shifted when assigned to the local variable
-"address", but is then shifted again when written to data->buf[0].
-This results in an incorrect command being sent to the device and
-breaks wiper writes to the second channel.
+Fix this by calling devm_free_irq() before freeing resources. This ensures
+the interrupt handler is both disabled and synchronized (waits for any
+running ISR to complete) before usbhs_pipe_remove() is called.
 
-Remove the second shift and use the pre-shifted address directly
-when composing the SPI transfer.
-
-Fixes: 22d199a53910 ("iio: potentiometer: add driver for Microchip MCP413X/414X/415X/416X/423X/424X/425X/426X")
-Signed-off-by: Lukas Schmid <lukas.schmid@netcube.li>#
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
+Cc: stable <stable@kernel.org>
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260303073344.34577-1-fanwu01@zju.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/potentiometer/mcp4131.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/renesas_usbhs/common.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/iio/potentiometer/mcp4131.c
-+++ b/drivers/iio/potentiometer/mcp4131.c
-@@ -222,7 +222,7 @@ static int mcp4131_write_raw(struct iio_
+--- a/drivers/usb/renesas_usbhs/common.c
++++ b/drivers/usb/renesas_usbhs/common.c
+@@ -800,6 +800,15 @@ static void usbhs_remove(struct platform
  
- 	mutex_lock(&data->lock);
- 
--	data->buf[0] = address << MCP4131_WIPER_SHIFT;
-+	data->buf[0] = address;
- 	data->buf[0] |= MCP4131_WRITE | (val >> 8);
- 	data->buf[1] = val & 0xFF; /* 8 bits here */
- 
+ 	usbhs_platform_call(priv, hardware_exit, pdev);
+ 	reset_control_assert(priv->rsts);
++
++	/*
++	 * Explicitly free the IRQ to ensure the interrupt handler is
++	 * disabled and synchronized before freeing resources.
++	 * devm_free_irq() calls free_irq() which waits for any running
++	 * ISR to complete, preventing UAF.
++	 */
++	devm_free_irq(&pdev->dev, priv->irq, priv);
++
+ 	usbhs_mod_remove(priv);
+ 	usbhs_fifo_remove(priv);
+ 	usbhs_pipe_remove(priv);
 
 
 
