@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-229890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228861-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDMXOul1wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229890-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:18:33 +0100
+	id yJ3jLutpwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-228861-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 144A72F9B6E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:18:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65FBA2F81E9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3657330C173D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C66A30ACB1A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D1A3AF662;
-	Mon, 23 Mar 2026 16:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FD423EA97;
+	Mon, 23 Mar 2026 14:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdFNpG72"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBnegwKl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059263AE19E;
-	Mon, 23 Mar 2026 16:25:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980883AEF51;
+	Mon, 23 Mar 2026 14:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283139; cv=none; b=gy8QBb5zDUk1B+GVg4bZP6gF2NVpd2l3tAMiw/j5WRHGfJ/dhktOEoG3QixaTCg6Z5P4C/iPcdSBwJSFBQ+xsERxaCLtVId5OeaOPd1OeukWc1OmFOv9sndjOqjNPhMQ7nc+qSWcVWwzuW+82dmTLDowa7grXpEf5gFlf22wVZ4=
+	t=1774277332; cv=none; b=cHfRimQRtl/3mRrMD5E4PXPPzP1UzcKlwwJCsy8vB/juSl5hjIKEwrrpJ5o0I062nDKGvIPk8iIupRxWpXgELDgHf4JooMqSKC6AotV3Dg+s4xJalhyOvHpP3ZG/Cm+R17cldwfSX0UOrYdTK1wBTm3Ja/Zn8cZdLacSpMJ3MAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283139; c=relaxed/simple;
-	bh=k7gB3IEf9ipbNEoNFiX40zY9g2cyoi14N5gpUX/CIBQ=;
+	s=arc-20240116; t=1774277332; c=relaxed/simple;
+	bh=gS0j1ryNCnPU1V5TX6CwlU8rwl7gJwRb/kxWUduzPJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JsRklxfLgaY23CfIk/1Th8fBoJ+z/OZj63miKSpaF+RJdNsHwV9qCCNjZUb3a6EEO0jYsqjJMYFv4YCUZTLmmbgKPRWN8vLbqUoSNcpfDwu/TkwoaEQ1MUqfKidedXqYSPCMw4nI/UwRcLRmCcfqt7XNXI6v/XmsR/YmiM3wWAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdFNpG72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A81C4CEF7;
-	Mon, 23 Mar 2026 16:25:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X+94ev9lNUJGm7Wh1fIX+0wA1ypwSls3e19Tu2CrNel978Lf9AkV6egudoSnymfpEjWMZoXBJnB5/ublbMvOHwRhcpFkblvybjPfZDDjm3slvLd3s8ycFVOEO401kIZ6Ys/VRRkLnq+NZORdj9hkBnC3oXIPqW57jMQuZHTLGzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBnegwKl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72DEC4CEF7;
+	Mon, 23 Mar 2026 14:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283138;
-	bh=k7gB3IEf9ipbNEoNFiX40zY9g2cyoi14N5gpUX/CIBQ=;
+	s=korg; t=1774277332;
+	bh=gS0j1ryNCnPU1V5TX6CwlU8rwl7gJwRb/kxWUduzPJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NdFNpG72gs+IAx5eGHGJHpNbM59901ODJvFCp8favUTeBH+zmVIQU9aqEWDzXfLtl
-	 /Svy4soLBkms8v+bKRjMZ8L8IdKuQWMzu3QTZIEB0BY4N5F3ISDaQ5J8dugfJy3PcN
-	 2nhf77noOyryNUyTEpSRjMmrPDYhOIiAxDlNIJUo=
+	b=DBnegwKlQ99ntCSxijy/CzkAHF+95/Xy2jMYk56TJsHNR4+h846SYSx/UnfxYHEYV
+	 s4lcCah1/pE6jKEnr/lKGvVtiY0cXPXM/V8hEtn3/TUzLrle69ztNDFwd2P0rIcTMc
+	 //QXSFFPapTcS2JA9YB8+M3P4HkHA79kCWzDZc9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,12 +50,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jenny Guanni Qu <qguanni@gmail.com>,
 	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 414/481] netfilter: nf_conntrack_h323: fix OOB read in decode_int() CONS case
+Subject: [PATCH 6.12 400/460] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
 Date: Mon, 23 Mar 2026 14:46:36 +0100
-Message-ID: <20260323134535.275635577@linuxfoundation.org>
+Message-ID: <20260323134536.392359462@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,54 +70,54 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-229890-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228861-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 144A72F9B6E
+	DBL_BLOCKED_OPENRESOLVER(0.00)[vidocsecurity.com:email,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 65FBA2F81E9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 1e3a3593162c96e8a8de48b1e14f60c3b57fca8a ]
+[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
 
-In decode_int(), the CONS case calls get_bits(bs, 2) to read a length
-value, then calls get_uint(bs, len) without checking that len bytes
-remain in the buffer. The existing boundary check only validates the
-2 bits for get_bits(), not the subsequent 1-4 bytes that get_uint()
-reads. This allows a malformed H.323/RAS packet to cause a 1-4 byte
-slab-out-of-bounds read.
+In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
+the packet, then decrements it by 1 to skip the protocol discriminator
+byte before passing it to DecodeH323_UserInformation(). If the encoded
+length is 0, the decrement wraps to -1, which is then passed as a
+large value to the decoder, leading to an out-of-bounds read.
 
-Add a boundary check for len bytes after get_bits() and before
-get_uint().
+Add a check to ensure len is positive after the decrement.
 
 Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
 Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
 Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
 Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
@@ -126,18 +126,18 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index 62aa22a078769..c972e9488e16f 100644
+index c972e9488e16f..7b1497ed97d26 100644
 --- a/net/netfilter/nf_conntrack_h323_asn1.c
 +++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -331,6 +331,8 @@ static int decode_int(struct bitstr *bs, const struct field_t *f,
- 		if (nf_h323_error_boundary(bs, 0, 2))
- 			return H323_ERROR_BOUND;
- 		len = get_bits(bs, 2) + 1;
-+		if (nf_h323_error_boundary(bs, len, 0))
-+			return H323_ERROR_BOUND;
- 		BYTE_ALIGN(bs);
- 		if (base && (f->attr & DECODE)) {	/* timeToLive */
- 			unsigned int v = get_uint(bs, len) + f->lb;
+@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
+ 				break;
+ 			p++;
+ 			len--;
++			if (len <= 0)
++				break;
+ 			return DecodeH323_UserInformation(buf, p, len,
+ 							  &q931->UUIE);
+ 		}
 -- 
 2.51.0
 
