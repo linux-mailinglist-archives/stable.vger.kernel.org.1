@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228711-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GLkkFIpdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229287-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:34 +0100
+	id IEdRC/9mwWliSwQAu9opvQ
+	(envelope-from <stable+bounces-228711-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAE82F67E4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81D912F7CC2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9096E30537BC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AC98F322C629
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0E42773EE;
-	Mon, 23 Mar 2026 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C9F387593;
+	Mon, 23 Mar 2026 14:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VD2yelZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FVKQT5D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F6F3B52E2;
-	Mon, 23 Mar 2026 15:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1153AF643;
+	Mon, 23 Mar 2026 14:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278644; cv=none; b=Jkcwv2gNB01+oGHVC1cd5orlg7XUKyv85dZb5/XOK2EZgPGTo/pqhhAGojzMwpOxXSLLhtcaAGp9SS8U0oaDyOPa03ulyqVwDKpaHapo7tSHvh41eaGIgmBW5U9K2ZsxGH12RBJlgxJFK8ZF+lrkNysoxK0jLU3Br7lZhot5R8g=
+	t=1774276917; cv=none; b=eELjKZ56X/DFFM7WSGRTIilPppsg9XfaIRlmZTXqrL325/suj7mFYsxcmbaE0NUcQ8VZ1mUaeGieMHO6ndvVvrIPjJ3xl9hIXHklpo9kHhPJiSRFm1mJMhMERF4+LplRf3YTq7amokUfQCm7vOs8MrQqUjgymY6NEl+UNYpJNVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278644; c=relaxed/simple;
-	bh=ib43nOFM/G/9jaXO8zu9pfcnTNAPyN6N44kfRjxjgBE=;
+	s=arc-20240116; t=1774276917; c=relaxed/simple;
+	bh=jDv6B06yz0N5a5Ai/+sup7QjxswdEGAp63mWgGdcH7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CX3H+K0czlPoJ44BctyFMW25gsQZw+SfmB5ePunhE02w5yFTzqwKSRggn+WWCu7KBKmG4kip6j+OVgqGupTWXCCgZzjDCCPkQzPNPumW2wHnHei0jSi+j23n2MYwukAHO6SV91isWSxtMhC2oGkOUOdVM46yISnfWaqy88Sv328=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VD2yelZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77304C4CEF7;
-	Mon, 23 Mar 2026 15:10:43 +0000 (UTC)
+	 MIME-Version; b=J/hkmNPjbxYMejXl1oYCAX+fNatECnMRXfBuUNWKxrq71UdnGfjhuH7XgWf6vlBlqu8qhCpHuGLWOzvMa8qVCjtgL/N0DcpwGNxlJRvirI/F+YVf6wlwcq5ikSWDHDagwYhv3bpNXKYHQjiit5KX8x8gHqti0nM15NroKgv+oUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FVKQT5D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A947C4CEF7;
+	Mon, 23 Mar 2026 14:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278643;
-	bh=ib43nOFM/G/9jaXO8zu9pfcnTNAPyN6N44kfRjxjgBE=;
+	s=korg; t=1774276916;
+	bh=jDv6B06yz0N5a5Ai/+sup7QjxswdEGAp63mWgGdcH7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VD2yelZoq4qLpYEswr4QAB14RK2sNeqz6QeSlO0AVsG97dgUMWwVDrTNadrM2ElrE
-	 bYrjpBkS9ikfAUYIM+gyyl1Pa8k2zqooNVCphfHbP8yLRZKkqJ+uDUVnTQAB3CaSRS
-	 FXR75mJZETUfInns5bPYGp0xpoPARocl51XTtmX8=
+	b=1FVKQT5DivTFGgy0YKd4P0IIdFcJ9obmT829E6EB5V1sJUVR4bLudo1/rMEnRfqJS
+	 cv+H/jR28sZX+u9tSGohlrPl0Bjdj/wTzGih7yrL2Cilk/K8MU46kkUEL2D0Jyjn6D
+	 Vhr5ld4gNTblmUJc7m4KcY9HERZoZVPUgMIfKYAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 330/567] ksmbd: fix use-after-free by using call_rcu() for oplock_info
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.12 254/460] nsfs: tighten permission checks for ns iteration ioctls
 Date: Mon, 23 Mar 2026 14:44:10 +0100
-Message-ID: <20260323134541.998234861@linuxfoundation.org>
+Message-ID: <20260323134532.730734784@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,147 +67,104 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229287-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228711-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EBAE82F67E4
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 81D912F7CC2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 1dfd062caa165ec9d7ee0823087930f3ab8a6294 upstream.
+[ Upstream commit e6b899f08066e744f89df16ceb782e06868bd148 ]
 
-ksmbd currently frees oplock_info immediately using kfree(), even
-though it is accessed under RCU read-side critical sections in places
-like opinfo_get() and proc_show_files().
+Even privileged services should not necessarily be able to see other
+privileged service's namespaces so they can't leak information to each
+other. Use may_see_all_namespaces() helper that centralizes this policy
+until the nstree adapts.
 
-Since there is no RCU grace period delay between nullifying the pointer
-and freeing the memory, a reader can still access oplock_info
-structure after it has been freed. This can leads to a use-after-free
-especially in opinfo_get() where atomic_inc_not_zero() is called on
-already freed memory.
-
-Fix this by switching to deferred freeing using call_rcu().
-
-Fixes: 18b4fac5ef17 ("ksmbd: fix use-after-free in smb_break_all_levII_oplock()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://patch.msgid.link/20260226-work-visibility-fixes-v1-1-d2c2853313bd@kernel.org
+Fixes: a1d220d9dafa ("nsfs: iterate through mount namespaces")
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: stable@kernel.org # v6.12+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Different file names ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |   29 +++++++++++++++++++++--------
- fs/smb/server/oplock.h |    5 +++--
- 2 files changed, 24 insertions(+), 10 deletions(-)
+ fs/nsfs.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -120,7 +120,7 @@ static void free_lease(struct oplock_inf
- 	kfree(lease);
- }
+--- a/fs/nsfs.c
++++ b/fs/nsfs.c
+@@ -12,6 +12,7 @@
+ #include <linux/user_namespace.h>
+ #include <linux/nsfs.h>
+ #include <linux/uaccess.h>
++#include <linux/capability.h>
+ #include <linux/mnt_namespace.h>
  
--static void free_opinfo(struct oplock_info *opinfo)
-+static void __free_opinfo(struct oplock_info *opinfo)
- {
- 	if (opinfo->is_lease)
- 		free_lease(opinfo);
-@@ -129,6 +129,18 @@ static void free_opinfo(struct oplock_in
- 	kfree(opinfo);
- }
- 
-+static void free_opinfo_rcu(struct rcu_head *rcu)
-+{
-+	struct oplock_info *opinfo = container_of(rcu, struct oplock_info, rcu);
-+
-+	__free_opinfo(opinfo);
-+}
-+
-+static void free_opinfo(struct oplock_info *opinfo)
-+{
-+	call_rcu(&opinfo->rcu, free_opinfo_rcu);
-+}
-+
- struct oplock_info *opinfo_get(struct ksmbd_file *fp)
- {
- 	struct oplock_info *opinfo;
-@@ -176,9 +188,9 @@ void opinfo_put(struct oplock_info *opin
- 	free_opinfo(opinfo);
- }
- 
--static void opinfo_add(struct oplock_info *opinfo)
-+static void opinfo_add(struct oplock_info *opinfo, struct ksmbd_file *fp)
- {
--	struct ksmbd_inode *ci = opinfo->o_fp->f_ci;
-+	struct ksmbd_inode *ci = fp->f_ci;
- 
- 	down_write(&ci->m_lock);
- 	list_add(&opinfo->op_entry, &ci->m_op_list);
-@@ -1279,20 +1291,21 @@ set_lev:
- 	set_oplock_level(opinfo, req_op_level, lctx);
- 
- out:
--	rcu_assign_pointer(fp->f_opinfo, opinfo);
--	opinfo->o_fp = fp;
--
- 	opinfo_count_inc(fp);
--	opinfo_add(opinfo);
-+	opinfo_add(opinfo, fp);
-+
- 	if (opinfo->is_lease) {
- 		err = add_lease_global_list(opinfo);
- 		if (err)
- 			goto err_out;
- 	}
- 
-+	rcu_assign_pointer(fp->f_opinfo, opinfo);
-+	opinfo->o_fp = fp;
-+
+ #include "mount.h"
+@@ -152,6 +153,23 @@ static int copy_ns_info_to_user(const st
  	return 0;
- err_out:
--	free_opinfo(opinfo);
-+	__free_opinfo(opinfo);
- 	return err;
  }
  
---- a/fs/smb/server/oplock.h
-+++ b/fs/smb/server/oplock.h
-@@ -76,8 +76,9 @@ struct oplock_info {
- 	struct lease		*o_lease;
- 	struct list_head        op_entry;
- 	struct list_head        lease_entry;
--	wait_queue_head_t oplock_q; /* Other server threads */
--	wait_queue_head_t oplock_brk; /* oplock breaking wait */
-+	wait_queue_head_t	oplock_q; /* Other server threads */
-+	wait_queue_head_t	oplock_brk; /* oplock breaking wait */
-+	struct rcu_head		rcu;
- };
++static bool may_see_all_namespaces(void)
++{
++	return (task_active_pid_ns(current) == &init_pid_ns) &&
++	       ns_capable_noaudit(init_pid_ns.user_ns, CAP_SYS_ADMIN);
++}
++
++static bool may_use_nsfs_ioctl(unsigned int cmd)
++{
++	switch (_IOC_NR(cmd)) {
++	case _IOC_NR(NS_MNT_GET_NEXT):
++		fallthrough;
++	case _IOC_NR(NS_MNT_GET_PREV):
++		return may_see_all_namespaces();
++	}
++	return true;
++}
++
+ static long ns_ioctl(struct file *filp, unsigned int ioctl,
+ 			unsigned long arg)
+ {
+@@ -165,6 +183,9 @@ static long ns_ioctl(struct file *filp,
+ 	uid_t uid;
+ 	int ret;
  
- struct lease_break_info {
++	if (!may_use_nsfs_ioctl(ioctl))
++		return -EPERM;
++
+ 	switch (ioctl) {
+ 	case NS_GET_USERNS:
+ 		return open_related_ns(ns, ns_get_owner);
 
 
 
