@@ -1,59 +1,67 @@
-Return-Path: <stable+bounces-229938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228909-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4EuwD7dvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229938-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:07 +0100
+	id CPSVNpdqwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-228909-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:30:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD222F8F19
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CFBE2F8304
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:30:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5035231CF43F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E48DD33241FE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0230923AE87;
-	Mon, 23 Mar 2026 16:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593422741A0;
+	Mon, 23 Mar 2026 14:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EDpAB1x4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0L0cvii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8903C0601;
-	Mon, 23 Mar 2026 16:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6871A5B84;
+	Mon, 23 Mar 2026 14:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283313; cv=none; b=kDnVZA/KEeNist0OXjY9OWth2vBht4WvBgkhp6CO0ZT5bIw/qWfk4H+aOihNiQLSMOLjEhKkGhd1g0xxGDHNCNGB+fnSS5b2KGfYSsoQeuLjDDzREahky1t3Wo530fwp6HnRYvRIdtG+KVpODv422uBJWz+8TFsW/BZi+lldzws=
+	t=1774277461; cv=none; b=VdSa/56NfEndOjpCTQ5oLLsoG6eU5NCSsWEMat77EiW3qa+B2GzPUIWd0UoIX9hsqySwJOPy8E00EmA6E11HLR0YMd7JlMxCYazmusiSMGEbnyLJarqCavkbzvjTCdhaeng5ZNPYBCV1ShSlqdrG9AgUyXOmwNm087jh+0FB+Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283313; c=relaxed/simple;
-	bh=6dIBw0no85VvJQhmSHQgT7E4GXrUEIM9VK8jN0w1QDA=;
+	s=arc-20240116; t=1774277461; c=relaxed/simple;
+	bh=jJIc9dtLNTM6+nd0286zvZc8DqoBZOrWjv0pY0V3y6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i5bS6zmeSAb+v+yOeA441vz3ugCYJ81f7s35o5XZsSES0mmOH0lmbVacygrY3X+gYpBOFjRZyNw8G79LNbAvB0CVEFfRWLEaYX+Gfe8g8t15V0R1tfzObXeSyyhhFVmdNKP+5LvTuZsF5g/Ir9AP0LZIcoa/dToHxcahDpnTeic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EDpAB1x4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D072C4CEF7;
-	Mon, 23 Mar 2026 16:28:32 +0000 (UTC)
+	 MIME-Version; b=mR+BxcuVk8KScOG7nxIHUhuXlV+rldWG/x7p9//O/4Unh6rZ6kCYzrm/zeiXkRYUconfGutsTv0oSwtRiq1PyLo9qWjyY8PlN1/PJbjc8gHa8byJjD6JIHIm9bkwqMurzr7Z2WZGymAyLifTFaoAmJ2ChNPf2MvgMdwV2GH3uR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0L0cvii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D7AC4CEF7;
+	Mon, 23 Mar 2026 14:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283312;
-	bh=6dIBw0no85VvJQhmSHQgT7E4GXrUEIM9VK8jN0w1QDA=;
+	s=korg; t=1774277461;
+	bh=jJIc9dtLNTM6+nd0286zvZc8DqoBZOrWjv0pY0V3y6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EDpAB1x4cT8t3bpdlr5aEjgGjB+i+7cqN+hXEEuhilyJQdBfMAMKC8GKPtQIL+bNv
-	 HyF+RSYuVeoDoajVoBZTpnF1TlzHgWXmvod3ul4F0fkSKaYOaEudPK5m/X0eCj1GCV
-	 Y+tNUSpZs9gRqMFjZv9BRxfKtgGlAXlhRkb1j72c=
+	b=v0L0cviiH7ipbrJY0RROG4d7OBQc9Oxvw89xIT+j5LGHhS5/VtCQXQYxMmvZGfAjC
+	 JHzMkmu0r8nnC6CF7Acw8bQLQAOsBK+6EWJdRjcWum1n4/8SToZiP+9r2yLh2zBLcY
+	 wuRpYqsAZpun0XgxMwf9gaTUjwFMK6JulX7BVbRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Timur=20Krist=C3=B3f?= <timur.kristof@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rosen Penev <rosenp@gmail.com>
-Subject: [PATCH 6.1 462/481] drm/amd/pm: Use pm_display_cfg in legacy DPM (v2)
+	Kairui Song <kasong@tencent.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baoquan He <bhe@redhat.com>,
+	Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>,
+	Hugh Dickins <hughd@google.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 448/460] mm/shmem, swap: avoid redundant Xarray lookup during swapin
 Date: Mon, 23 Mar 2026 14:47:24 +0100
-Message-ID: <20260323134536.473398750@linuxfoundation.org>
+Message-ID: <20260323134537.596455704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,386 +71,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228909-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,tencent.com,huaweicloud.com,arm.com,linux.alibaba.com,redhat.com,kernel.org,google.com,infradead.org,gmail.com,linux-foundation.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229938-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: DFD222F8F19
+	DBL_BLOCKED_OPENRESOLVER(0.00)[arm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-foundation.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,infradead.org:email]
+X-Rspamd-Queue-Id: 7CFBE2F8304
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Timur Kristóf <timur.kristof@gmail.com>
+From: Kairui Song <kasong@tencent.com>
 
-[ Upstream commit 9d73b107a61b73e7101d4b728ddac3d2c77db111 ]
+commit 0cfc0e7e3d062b93e9eec6828de000981cdfb152 upstream.
 
-This commit is necessary for DC to function well with chips
-that use the legacy power management code, ie. SI and KV.
-Communicate display information from DC to the legacy PM code.
+Currently shmem calls xa_get_order to get the swap radix entry order,
+requiring a full tree walk.  This can be easily combined with the swap
+entry value checking (shmem_confirm_swap) to avoid the duplicated lookup
+and abort early if the entry is gone already.  Which should improve the
+performance.
 
-Currently DC uses pm_display_cfg to communicate power management
-requirements from the display code to the DPM code.
-However, the legacy (non-DC) code path used different fields
-and therefore could not take into account anything from DC.
+Link: https://lkml.kernel.org/r/20250728075306.12704-1-ryncsn@gmail.com
+Link: https://lkml.kernel.org/r/20250728075306.12704-3-ryncsn@gmail.com
+Signed-off-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-Change the legacy display code to fill the same pm_display_cfg
-struct as DC and use the same in the legacy DPM code.
-
-To ease review and reduce churn, this commit does not yet
-delete the now unneeded code, that is done in the next commit.
-
-v2:
-Rebase.
-Fix single_display in amdgpu_dpm_pick_power_state.
-
-Signed-off-by: Timur Kristóf <timur.kristof@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
+Stable-dep-of: 8a1968bd997f ("mm/shmem, swap: fix race of truncate and swap entry split")
+[ hughd: removed series cover letter and skip_swapcache dependencies ]
+Signed-off-by: Hugh Dickins <hughd@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c     |   67 +++++++++++++++++++++++
- drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h |    2 
- drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c       |    4 -
- drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c   |    6 +-
- drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c       |   65 +++++++---------------
- drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c |   11 ---
- 6 files changed, 97 insertions(+), 58 deletions(-)
+ mm/shmem.c |   34 +++++++++++++++++++++++++---------
+ 1 file changed, 25 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_dpm_internal.c
-@@ -100,3 +100,70 @@ u32 amdgpu_dpm_get_vrefresh(struct amdgp
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -499,15 +499,27 @@ static int shmem_replace_entry(struct ad
  
- 	return vrefresh;
+ /*
+  * Sometimes, before we decide whether to proceed or to fail, we must check
+- * that an entry was not already brought back from swap by a racing thread.
++ * that an entry was not already brought back or split by a racing thread.
+  *
+  * Checking folio is not enough: by the time a swapcache folio is locked, it
+  * might be reused, and again be swapcache, using the same swap as before.
++ * Returns the swap entry's order if it still presents, else returns -1.
+  */
+-static bool shmem_confirm_swap(struct address_space *mapping,
+-			       pgoff_t index, swp_entry_t swap)
++static int shmem_confirm_swap(struct address_space *mapping, pgoff_t index,
++			      swp_entry_t swap)
+ {
+-	return xa_load(&mapping->i_pages, index) == swp_to_radix_entry(swap);
++	XA_STATE(xas, &mapping->i_pages, index);
++	int ret = -1;
++	void *entry;
++
++	rcu_read_lock();
++	do {
++		entry = xas_load(&xas);
++		if (entry == swp_to_radix_entry(swap))
++			ret = xas_get_order(&xas);
++	} while (xas_retry(&xas, entry));
++	rcu_read_unlock();
++	return ret;
  }
-+
-+void amdgpu_dpm_get_display_cfg(struct amdgpu_device *adev)
-+{
-+	struct drm_device *ddev = adev_to_drm(adev);
-+	struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
-+	struct single_display_configuration *display_cfg;
-+	struct drm_crtc *crtc;
-+	struct amdgpu_crtc *amdgpu_crtc;
-+	struct amdgpu_connector *conn;
-+	int num_crtcs = 0;
-+	int vrefresh;
-+	u32 vblank_in_pixels, vblank_time_us;
-+
-+	cfg->min_vblank_time = 0xffffffff; /* if the displays are off, vblank time is max */
-+
-+	if (adev->mode_info.num_crtc && adev->mode_info.mode_config_initialized) {
-+		list_for_each_entry(crtc, &ddev->mode_config.crtc_list, head) {
-+			amdgpu_crtc = to_amdgpu_crtc(crtc);
-+
-+			/* The array should only contain active displays. */
-+			if (!amdgpu_crtc->enabled)
-+				continue;
-+
-+			conn = to_amdgpu_connector(amdgpu_crtc->connector);
-+			display_cfg = &adev->pm.pm_display_cfg.displays[num_crtcs++];
-+
-+			if (amdgpu_crtc->hw_mode.clock) {
-+				vrefresh = drm_mode_vrefresh(&amdgpu_crtc->hw_mode);
-+
-+				vblank_in_pixels =
-+					amdgpu_crtc->hw_mode.crtc_htotal *
-+					(amdgpu_crtc->hw_mode.crtc_vblank_end -
-+					amdgpu_crtc->hw_mode.crtc_vdisplay +
-+					(amdgpu_crtc->v_border * 2));
-+
-+				vblank_time_us =
-+					vblank_in_pixels * 1000 / amdgpu_crtc->hw_mode.clock;
-+
-+				/* The legacy (non-DC) code has issues with mclk switching
-+				 * with refresh rates over 120 Hz. Disable mclk switching.
-+				 */
-+				if (vrefresh > 120)
-+					vblank_time_us = 0;
-+
-+				/* Find minimum vblank time. */
-+				if (vblank_time_us < cfg->min_vblank_time)
-+					cfg->min_vblank_time = vblank_time_us;
-+
-+				/* Find vertical refresh rate of first active display. */
-+				if (!cfg->vrefresh)
-+					cfg->vrefresh = vrefresh;
-+			}
-+
-+			if (amdgpu_crtc->crtc_id < cfg->crtc_index) {
-+				/* Find first active CRTC and its line time. */
-+				cfg->crtc_index = amdgpu_crtc->crtc_id;
-+				cfg->line_time_in_us = amdgpu_crtc->line_time;
-+			}
-+
-+			display_cfg->controller_id = amdgpu_crtc->crtc_id;
-+			display_cfg->pixel_clock = conn->pixelclock_for_modeset;
-+		}
+ 
+ /*
+@@ -2155,16 +2167,20 @@ static int shmem_swapin_folio(struct ino
+ 		return -EIO;
+ 
+ 	si = get_swap_device(swap);
+-	if (!si) {
+-		if (!shmem_confirm_swap(mapping, index, swap))
++	order = shmem_confirm_swap(mapping, index, swap);
++	if (unlikely(!si)) {
++		if (order < 0)
+ 			return -EEXIST;
+ 		else
+ 			return -EINVAL;
+ 	}
++	if (unlikely(order < 0)) {
++		put_swap_device(si);
++		return -EEXIST;
 +	}
-+
-+	cfg->display_clk = adev->clock.default_dispclk;
-+	cfg->num_display = num_crtcs;
-+}
---- a/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h
-+++ b/drivers/gpu/drm/amd/pm/inc/amdgpu_dpm_internal.h
-@@ -29,4 +29,6 @@ u32 amdgpu_dpm_get_vblank_time(struct am
  
- u32 amdgpu_dpm_get_vrefresh(struct amdgpu_device *adev);
+ 	/* Look it up and read it in.. */
+ 	folio = swap_cache_get_folio(swap, NULL, 0);
+-	order = xa_get_order(&mapping->i_pages, index);
+ 	if (!folio) {
  
-+void amdgpu_dpm_get_display_cfg(struct amdgpu_device *adev);
-+
- #endif
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/kv_dpm.c
-@@ -2312,7 +2312,7 @@ static void kv_apply_state_adjust_rules(
- 
- 		if (pi->sys_info.nb_dpm_enable) {
- 			force_high = (mclk >= pi->sys_info.nbp_memory_clock[3]) ||
--				pi->video_start || (adev->pm.dpm.new_active_crtc_count >= 3) ||
-+				pi->video_start || (adev->pm.pm_display_cfg.num_display >= 3) ||
- 				pi->disable_nb_ps3_in_battery;
- 			ps->dpm0_pg_nb_ps_lo = force_high ? 0x2 : 0x3;
- 			ps->dpm0_pg_nb_ps_hi = 0x2;
-@@ -2371,7 +2371,7 @@ static int kv_calculate_nbps_level_setti
- 			return 0;
- 
- 		force_high = ((mclk >= pi->sys_info.nbp_memory_clock[3]) ||
--			      (adev->pm.dpm.new_active_crtc_count >= 3) || pi->video_start);
-+			      (adev->pm.pm_display_cfg.num_display >= 3) || pi->video_start);
- 
- 		if (force_high) {
- 			for (i = pi->lowest_valid; i <= pi->highest_valid; i++)
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
-@@ -797,8 +797,7 @@ static struct amdgpu_ps *amdgpu_dpm_pick
- 	int i;
- 	struct amdgpu_ps *ps;
- 	u32 ui_class;
--	bool single_display = (adev->pm.dpm.new_active_crtc_count < 2) ?
--		true : false;
-+	bool single_display = adev->pm.pm_display_cfg.num_display < 2;
- 
- 	/* check if the vblank period is too short to adjust the mclk */
- 	if (single_display && adev->powerplay.pp_funcs->vblank_too_short) {
-@@ -1003,7 +1002,8 @@ void amdgpu_legacy_dpm_compute_clocks(vo
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 
--	amdgpu_dpm_get_active_displays(adev);
-+	if (!adev->dc_enabled)
-+		amdgpu_dpm_get_display_cfg(adev);
- 
- 	amdgpu_dpm_change_power_state_locked(adev);
- }
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/si_dpm.c
-@@ -3058,7 +3058,7 @@ static int si_get_vce_clock_voltage(stru
- static bool si_dpm_vblank_too_short(void *handle)
- {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
--	u32 vblank_time = amdgpu_dpm_get_vblank_time(adev);
-+	u32 vblank_time = adev->pm.pm_display_cfg.min_vblank_time;
- 	/* we never hit the non-gddr5 limit so disable it */
- 	u32 switch_limit = adev->gmc.vram_type == AMDGPU_VRAM_TYPE_GDDR5 ? 450 : 0;
- 
-@@ -3424,9 +3424,10 @@ static void rv770_get_engine_memory_ss(s
- static void si_apply_state_adjust_rules(struct amdgpu_device *adev,
- 					struct amdgpu_ps *rps)
- {
-+	const struct amd_pp_display_configuration *display_cfg =
-+		&adev->pm.pm_display_cfg;
- 	struct  si_ps *ps = si_get_ps(rps);
- 	struct amdgpu_clock_and_voltage_limits *max_limits;
--	struct amdgpu_connector *conn;
- 	bool disable_mclk_switching = false;
- 	bool disable_sclk_switching = false;
- 	u32 mclk, sclk;
-@@ -3477,14 +3478,9 @@ static void si_apply_state_adjust_rules(
- 	 * For example, 4K 60Hz and 1080p 144Hz fall into this category.
- 	 * Find number of such displays connected.
+ 		/* Or update major stats only when swapin succeeds?? */
+@@ -2241,7 +2257,7 @@ static int shmem_swapin_folio(struct ino
  	 */
--	for (i = 0; i < adev->mode_info.num_crtc; i++) {
--		if (!(adev->pm.dpm.new_active_crtcs & (1 << i)) ||
--			!adev->mode_info.crtcs[i]->enabled)
--			continue;
--
--		conn = to_amdgpu_connector(adev->mode_info.crtcs[i]->connector);
--
--		if (conn->pixelclock_for_modeset > 297000)
-+	for (i = 0; i < display_cfg->num_display; i++) {
-+		/* The array only contains active displays. */
-+		if (display_cfg->displays[i].pixel_clock > 297000)
- 			high_pixelclock_count++;
- 	}
- 
-@@ -3517,7 +3513,7 @@ static void si_apply_state_adjust_rules(
- 		rps->ecclk = 0;
- 	}
- 
--	if ((adev->pm.dpm.new_active_crtc_count > 1) ||
-+	if ((adev->pm.pm_display_cfg.num_display > 1) ||
- 	    si_dpm_vblank_too_short(adev))
- 		disable_mclk_switching = true;
- 
-@@ -3665,7 +3661,7 @@ static void si_apply_state_adjust_rules(
- 						   ps->performance_levels[i].mclk,
- 						   max_limits->vddc,  &ps->performance_levels[i].vddc);
- 		btc_apply_voltage_dependency_rules(&adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk,
--						   adev->clock.current_dispclk,
-+						   display_cfg->display_clk,
- 						   max_limits->vddc,  &ps->performance_levels[i].vddc);
- 	}
- 
-@@ -4190,16 +4186,16 @@ static void si_program_ds_registers(stru
- 
- static void si_program_display_gap(struct amdgpu_device *adev)
- {
-+	const struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
- 	u32 tmp, pipe;
--	int i;
- 
- 	tmp = RREG32(CG_DISPLAY_GAP_CNTL) & ~(DISP1_GAP_MASK | DISP2_GAP_MASK);
--	if (adev->pm.dpm.new_active_crtc_count > 0)
-+	if (cfg->num_display > 0)
- 		tmp |= DISP1_GAP(R600_PM_DISPLAY_GAP_VBLANK_OR_WM);
- 	else
- 		tmp |= DISP1_GAP(R600_PM_DISPLAY_GAP_IGNORE);
- 
--	if (adev->pm.dpm.new_active_crtc_count > 1)
-+	if (cfg->num_display > 1)
- 		tmp |= DISP2_GAP(R600_PM_DISPLAY_GAP_VBLANK_OR_WM);
- 	else
- 		tmp |= DISP2_GAP(R600_PM_DISPLAY_GAP_IGNORE);
-@@ -4209,17 +4205,8 @@ static void si_program_display_gap(struc
- 	tmp = RREG32(DCCG_DISP_SLOW_SELECT_REG);
- 	pipe = (tmp & DCCG_DISP1_SLOW_SELECT_MASK) >> DCCG_DISP1_SLOW_SELECT_SHIFT;
- 
--	if ((adev->pm.dpm.new_active_crtc_count > 0) &&
--	    (!(adev->pm.dpm.new_active_crtcs & (1 << pipe)))) {
--		/* find the first active crtc */
--		for (i = 0; i < adev->mode_info.num_crtc; i++) {
--			if (adev->pm.dpm.new_active_crtcs & (1 << i))
--				break;
--		}
--		if (i == adev->mode_info.num_crtc)
--			pipe = 0;
--		else
--			pipe = i;
-+	if (cfg->num_display > 0 && pipe != cfg->crtc_index) {
-+		pipe = cfg->crtc_index;
- 
- 		tmp &= ~DCCG_DISP1_SLOW_SELECT_MASK;
- 		tmp |= DCCG_DISP1_SLOW_SELECT(pipe);
-@@ -4230,7 +4217,7 @@ static void si_program_display_gap(struc
- 	 * This can be a problem on PowerXpress systems or if you want to use the card
- 	 * for offscreen rendering or compute if there are no crtcs enabled.
- 	 */
--	si_notify_smc_display_change(adev, adev->pm.dpm.new_active_crtc_count > 0);
-+	si_notify_smc_display_change(adev, cfg->num_display > 0);
- }
- 
- static void si_enable_spread_spectrum(struct amdgpu_device *adev, bool enable)
-@@ -5535,7 +5522,7 @@ static int si_convert_power_level_to_smc
- 	    (pl->mclk <= pi->mclk_stutter_mode_threshold) &&
- 	    !eg_pi->uvd_enabled &&
- 	    (RREG32(DPG_PIPE_STUTTER_CONTROL) & STUTTER_ENABLE) &&
--	    (adev->pm.dpm.new_active_crtc_count <= 2)) {
-+	    (adev->pm.pm_display_cfg.num_display <= 2)) {
- 		level->mcFlags |= SISLANDS_SMC_MC_STUTTER_EN;
- 
- 		if (gmc_pg)
-@@ -5687,7 +5674,7 @@ static bool si_is_state_ulv_compatible(s
- 	/* XXX validate against display requirements! */
- 
- 	for (i = 0; i < adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count; i++) {
--		if (adev->clock.current_dispclk <=
-+		if (adev->pm.pm_display_cfg.display_clk <=
- 		    adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[i].clk) {
- 			if (ulv->pl.vddc <
- 			    adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[i].v)
-@@ -5841,30 +5828,22 @@ static int si_upload_ulv_state(struct am
- 
- static int si_upload_smc_data(struct amdgpu_device *adev)
- {
--	struct amdgpu_crtc *amdgpu_crtc = NULL;
--	int i;
-+	const struct amd_pp_display_configuration *cfg = &adev->pm.pm_display_cfg;
- 	u32 crtc_index = 0;
- 	u32 mclk_change_block_cp_min = 0;
- 	u32 mclk_change_block_cp_max = 0;
- 
--	for (i = 0; i < adev->mode_info.num_crtc; i++) {
--		if (adev->pm.dpm.new_active_crtcs & (1 << i)) {
--			amdgpu_crtc = adev->mode_info.crtcs[i];
--			break;
--		}
--	}
--
- 	/* When a display is plugged in, program these so that the SMC
- 	 * performs MCLK switching when it doesn't cause flickering.
- 	 * When no display is plugged in, there is no need to restrict
- 	 * MCLK switching, so program them to zero.
- 	 */
--	if (adev->pm.dpm.new_active_crtc_count && amdgpu_crtc) {
--		crtc_index = amdgpu_crtc->crtc_id;
-+	if (cfg->num_display) {
-+		crtc_index = cfg->crtc_index;
- 
--		if (amdgpu_crtc->line_time) {
--			mclk_change_block_cp_min = 200 / amdgpu_crtc->line_time;
--			mclk_change_block_cp_max = 100 / amdgpu_crtc->line_time;
-+		if (cfg->line_time_in_us) {
-+			mclk_change_block_cp_min = 200 / cfg->line_time_in_us;
-+			mclk_change_block_cp_max = 100 / cfg->line_time_in_us;
- 		}
- 	}
- 
---- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
-@@ -1568,16 +1568,7 @@ static void pp_pm_compute_clocks(void *h
- 	struct amdgpu_device *adev = hwmgr->adev;
- 
- 	if (!adev->dc_enabled) {
--		amdgpu_dpm_get_active_displays(adev);
--		adev->pm.pm_display_cfg.num_display = adev->pm.dpm.new_active_crtc_count;
--		adev->pm.pm_display_cfg.vrefresh = amdgpu_dpm_get_vrefresh(adev);
--		adev->pm.pm_display_cfg.min_vblank_time = amdgpu_dpm_get_vblank_time(adev);
--		/* we have issues with mclk switching with
--		 * refresh rates over 120 hz on the non-DC code.
--		 */
--		if (adev->pm.pm_display_cfg.vrefresh > 120)
--			adev->pm.pm_display_cfg.min_vblank_time = 0;
--
-+		amdgpu_dpm_get_display_cfg(adev);
- 		pp_display_configuration_change(handle,
- 						&adev->pm.pm_display_cfg);
- 	}
+ 	folio_lock(folio);
+ 	if (!folio_test_swapcache(folio) ||
+-	    !shmem_confirm_swap(mapping, index, swap) ||
++	    shmem_confirm_swap(mapping, index, swap) < 0 ||
+ 	    folio->swap.val != swap.val) {
+ 		error = -EEXIST;
+ 		goto unlock;
+@@ -2284,7 +2300,7 @@ static int shmem_swapin_folio(struct ino
+ 	*foliop = folio;
+ 	return 0;
+ failed:
+-	if (!shmem_confirm_swap(mapping, index, swap))
++	if (shmem_confirm_swap(mapping, index, swap) < 0)
+ 		error = -EEXIST;
+ 	if (error == -EIO)
+ 		shmem_set_folio_swapin_error(inode, index, folio, swap);
 
 
 
