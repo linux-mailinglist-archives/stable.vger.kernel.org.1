@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229526-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sKSTHDtZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229034-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:11 +0100
+	id 4JcxKa1zwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229526-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:09:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1D1A2F6138
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9FA2F980F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F37D30CEBF0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F58835C9ECC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C666C242D7F;
-	Mon, 23 Mar 2026 14:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97F73B2FD5;
+	Mon, 23 Mar 2026 15:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HX2o4i+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZftwizD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89242370D76;
-	Mon, 23 Mar 2026 14:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D70B3B27F9;
+	Mon, 23 Mar 2026 15:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277849; cv=none; b=grj2dcL00FaBgjpZ1KOZVtFILj2ecI4Q5QyV0VVXoK85Y2J/MlhqddJIEhP/jq4PFDjGwfiImfMpNCoo+P1ceiXTYzo8JWbpg0g3ibuSD9TBlAgB7fNKqX3rpwxj+pxTNodvGRKUS+jkQroEg+c8cEIZvxchKP9ilJoannodm3U=
+	t=1774279729; cv=none; b=qEocTrz/E+1sMFpgA8yNymgLLAE8RQvQLuVVU4JFzs3kEjpRCmkblg5nFk2EoiFrT70DBU8FQ4+YVcGnn9tui+iH80jWh0tdWrn4Wexo9d5+QrBBOb+o2LvQXnfBy1Gd1uBD+7URWHuYoqOWwU55SUp6nThMLLQE04BBuaWh7eU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277849; c=relaxed/simple;
-	bh=6e+7JIHUtbks7I7kTxVf1oEENw0xWo2IBiyVippnhOo=;
+	s=arc-20240116; t=1774279729; c=relaxed/simple;
+	bh=r0FfGvvLqUVA8mbPQHptREc5QJxOlrOWSIq/dQth7s0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2XvfK67wiHD558y4tywjy7sNSchJNFp6K7JR7MpejAwrrwWc1SFvS/xOuV11j4Huk//4NCyJj3bC5x0rQKBsyBm7inoD2P5fzWGX9z4cMCiEfnNMfCSelUAcRZbEVL+EF/uvCdtxXSsoZ8zS/OBlbiCUFbAn5qbvhS9wbzh/Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HX2o4i+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A93C4CEF7;
-	Mon, 23 Mar 2026 14:57:28 +0000 (UTC)
+	 MIME-Version; b=c1FGV0p+1hTFIf2kERsNU+/KaEEvGGT69ELFTVugQgDcbHsC0py5mm+aIJZpMnNNuQ/Ug2dR/migJmyIKTdlJXudYcFUEd8ptnWlEn4UC2Gz2yI3Lu0PasWLVEz70AP2YElPpq//FvI7O2zYTwnQHPcCFDWB/BF70yixI7I9i1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZftwizD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBF5C4CEF7;
+	Mon, 23 Mar 2026 15:28:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277849;
-	bh=6e+7JIHUtbks7I7kTxVf1oEENw0xWo2IBiyVippnhOo=;
+	s=korg; t=1774279729;
+	bh=r0FfGvvLqUVA8mbPQHptREc5QJxOlrOWSIq/dQth7s0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HX2o4i+sF/1Owj1Do3FL2CfAafcgwuN72XcrMnRWyMI9aPhytm67HCqJufeu/SfXE
-	 Hyjaf/FUlDVDzjvbn0XcHXD59PZ9ml8w2GlWxBPW+sfSshHbA7ggtAu2w5NE00VTo2
-	 sjVLszOIRTb5ddNvuuh6mAEjiXzP1cgJ0N3VEElk=
+	b=CZftwizDITCv7L/OmHNaG2hSL8D/0LglE8kHU4C7UNoJKnPQYl2B4RJ0hTpkTSbP5
+	 VtLrZ+PuGEWB7xmPD8rNTTp2ARVmr9dnpmNU28XaiKfZSyGibTSR1ciPRYCuohoDr+
+	 5J+IaJQ1yo7zsttjCqWernIIhkbZ429qhrNMbQf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhilesh Patil <akhilesh@ee.iitb.ac.in>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Hongyu Xie <xiehongyu1@kylinos.cn>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/567] hwmon: (aht10) Add support for dht20
+Subject: [PATCH 6.1 060/481] usb: cdns3: remove redundant if branch
 Date: Mon, 23 Mar 2026 14:40:42 +0100
-Message-ID: <20260323134536.824468474@linuxfoundation.org>
+Message-ID: <20260323134526.687038263@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229034-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229526-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,161 +90,61 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C1D1A2F6138
+X-Rspamd-Queue-Id: ED9FA2F980F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-[ Upstream commit 3eaf1b631506e8de2cb37c278d5bc042521e82c1 ]
+[ Upstream commit dedab674428f8a99468a4864c067128ba9ea83a6 ]
 
-Add support for dht20 temperature and humidity sensor from Aosong.
-Modify aht10 driver to handle different init command for dht20 sensor by
-adding init_cmd entry in the driver data. dht20 sensor is compatible with
-aht10 hwmon driver with this change.
+cdns->role_sw->dev->driver_data gets set in routines showing below,
+cdns_init
+  sw_desc.driver_data = cdns;
+  cdns->role_sw = usb_role_switch_register(dev, &sw_desc);
+    dev_set_drvdata(&sw->dev, desc->driver_data);
 
-Tested on TI am62x SK board with dht20 sensor connected at i2c-2 port.
+In cdns_resume,
+cdns->role = cdns_role_get(cdns->role_sw); //line redundant
+  struct cdns *cdns = usb_role_switch_get_drvdata(sw);
+    dev_get_drvdata(&sw->dev)
+      return dev->driver_data
+return cdns->role;
 
-Signed-off-by: Akhilesh Patil <akhilesh@ee.iitb.ac.in>
-Link: https://lore.kernel.org/r/2025112-94320-906858@bhairav-test.ee.iitb.ac.in
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: b7497b5a99f5 ("hwmon: (aht10) Fix initialization commands for AHT20")
+"line redundant" equals to,
+	cdns->role = cdns->role;
+
+So fix this if branch.
+
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/20241231013641.23908-1-xiehongyu1@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 87e4b043b98a ("usb: cdns3: fix role switching during resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/hwmon/aht10.rst | 10 +++++++++-
- drivers/hwmon/Kconfig         |  6 +++---
- drivers/hwmon/aht10.c         | 19 ++++++++++++++++---
- 3 files changed, 28 insertions(+), 7 deletions(-)
+ drivers/usb/cdns3/core.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/Documentation/hwmon/aht10.rst b/Documentation/hwmon/aht10.rst
-index 213644b4ecba6..7903b6434326d 100644
---- a/Documentation/hwmon/aht10.rst
-+++ b/Documentation/hwmon/aht10.rst
-@@ -20,6 +20,14 @@ Supported chips:
+diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
+index 7242591b346bc..d272d7b82bec1 100644
+--- a/drivers/usb/cdns3/core.c
++++ b/drivers/usb/cdns3/core.c
+@@ -528,9 +528,7 @@ int cdns_resume(struct cdns *cdns)
+ 	int ret = 0;
  
-       English: http://www.aosong.com/userfiles/files/media/Data%20Sheet%20AHT20.pdf
- 
-+  * Aosong DHT20
-+
-+    Prefix: 'dht20'
-+
-+    Addresses scanned: None
-+
-+    Datasheet: https://www.digikey.co.nz/en/htmldatasheets/production/9184855/0/0/1/101020932
-+
- Author: Johannes Cornelis Draaijer <jcdra1@gmail.com>
- 
- 
-@@ -33,7 +41,7 @@ The address of this i2c device may only be 0x38
- Special Features
- ----------------
- 
--AHT20 has additional CRC8 support which is sent as the last byte of the sensor
-+AHT20, DHT20 has additional CRC8 support which is sent as the last byte of the sensor
- values.
- 
- Usage Notes
-diff --git a/drivers/hwmon/Kconfig b/drivers/hwmon/Kconfig
-index a4c361b6619c1..2b090dbd836c5 100644
---- a/drivers/hwmon/Kconfig
-+++ b/drivers/hwmon/Kconfig
-@@ -257,12 +257,12 @@ config SENSORS_ADT7475
- 	  will be called adt7475.
- 
- config SENSORS_AHT10
--	tristate "Aosong AHT10, AHT20"
-+	tristate "Aosong AHT10, AHT20, DHT20"
- 	depends on I2C
- 	select CRC8
- 	help
--	  If you say yes here, you get support for the Aosong AHT10 and AHT20
--	  temperature and humidity sensors
-+	  If you say yes here, you get support for the Aosong AHT10, AHT20 and
-+	  DHT20 temperature and humidity sensors
- 
- 	  This driver can also be built as a module. If so, the module
- 	  will be called aht10.
-diff --git a/drivers/hwmon/aht10.c b/drivers/hwmon/aht10.c
-index f136bf3ff40ad..4f235dfb260f8 100644
---- a/drivers/hwmon/aht10.c
-+++ b/drivers/hwmon/aht10.c
-@@ -37,6 +37,8 @@
- #define AHT10_CMD_MEAS	0b10101100
- #define AHT10_CMD_RST	0b10111010
- 
-+#define DHT20_CMD_INIT	0x71
-+
- /*
-  * Flags in the answer byte/command
-  */
-@@ -48,11 +50,12 @@
- 
- #define AHT10_MAX_POLL_INTERVAL_LEN	30
- 
--enum aht10_variant { aht10, aht20 };
-+enum aht10_variant { aht10, aht20, dht20};
- 
- static const struct i2c_device_id aht10_id[] = {
- 	{ "aht10", aht10 },
- 	{ "aht20", aht20 },
-+	{ "dht20", dht20 },
- 	{ },
- };
- MODULE_DEVICE_TABLE(i2c, aht10_id);
-@@ -77,6 +80,7 @@ MODULE_DEVICE_TABLE(i2c, aht10_id);
-  *              AHT10/AHT20
-  *   @crc8: crc8 support flag
-  *   @meas_size: measurements data size
-+ *   @init_cmd: Initialization command
-  */
- 
- struct aht10_data {
-@@ -92,6 +96,7 @@ struct aht10_data {
- 	int humidity;
- 	bool crc8;
- 	unsigned int meas_size;
-+	u8 init_cmd;
- };
- 
- /**
-@@ -101,13 +106,13 @@ struct aht10_data {
-  */
- static int aht10_init(struct aht10_data *data)
- {
--	const u8 cmd_init[] = {AHT10_CMD_INIT, AHT10_CAL_ENABLED | AHT10_MODE_CYC,
-+	const u8 cmd_init[] = {data->init_cmd, AHT10_CAL_ENABLED | AHT10_MODE_CYC,
- 			       0x00};
- 	int res;
- 	u8 status;
- 	struct i2c_client *client = data->client;
- 
--	res = i2c_master_send(client, cmd_init, 3);
-+	res = i2c_master_send(client, cmd_init, sizeof(cmd_init));
- 	if (res < 0)
- 		return res;
- 
-@@ -353,9 +358,17 @@ static int aht10_probe(struct i2c_client *client)
- 		data->meas_size = AHT20_MEAS_SIZE;
- 		data->crc8 = true;
- 		crc8_populate_msb(crc8_table, AHT20_CRC8_POLY);
-+		data->init_cmd = AHT10_CMD_INIT;
-+		break;
-+	case dht20:
-+		data->meas_size = AHT20_MEAS_SIZE;
-+		data->crc8 = true;
-+		crc8_populate_msb(crc8_table, AHT20_CRC8_POLY);
-+		data->init_cmd = DHT20_CMD_INIT;
- 		break;
- 	default:
- 		data->meas_size = AHT10_MEAS_SIZE;
-+		data->init_cmd = AHT10_CMD_INIT;
- 		break;
- 	}
- 
+ 	if (cdns_power_is_lost(cdns)) {
+-		if (cdns->role_sw) {
+-			cdns->role = cdns_role_get(cdns->role_sw);
+-		} else {
++		if (!cdns->role_sw) {
+ 			real_role = cdns_hw_role_state_machine(cdns);
+ 			if (real_role != cdns->role) {
+ 				ret = cdns_hw_role_switch(cdns);
 -- 
 2.51.0
 
