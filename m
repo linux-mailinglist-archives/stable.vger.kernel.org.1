@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229307-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wIRCKNFGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:37 +0100
+	id MHapChFdwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229307-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 174892F37D2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6BC02F6722
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92F1E3016B99
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6E8EF30E293E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B073AC0FD;
-	Mon, 23 Mar 2026 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5723B583B;
+	Mon, 23 Mar 2026 15:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sF5A6UYg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlHZjAiK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593DE314A90;
-	Mon, 23 Mar 2026 13:56:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D7303B5820;
+	Mon, 23 Mar 2026 15:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274180; cv=none; b=D24JzSSM6WDL48F0jIiCm6m7XfNFG30CYSdkzPUFLTCgbPaZnRzejpHr/d27kvC67V8GazLf0cbVZB9e2QveWnmINNV0pNMsmFHf/+N1OwpT52WnzGf5P+ap8L2HWlR5aGAA5ICKEL6QD6dT52/qPtaQR1fMeyLDuyxWMIA0uUg=
+	t=1774278705; cv=none; b=PFnnlYTPMI2Cv3BxOessxakBpB4qBonMIfUD1hyS1XYwFgMClSClTr8P/ahwDEv6DCMAHyw4jDqupp62vy+HFVo5z/3no3fKj56uQvx+UjW6OXGvgCxWfRcMqloEkhymPWwvy3Abn55zqh/qybUVP3VW3UW39dSMy7dlZvATWaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274180; c=relaxed/simple;
-	bh=assNSItE7lvB2m+TskTmmELNr3scv/2dSz389DhUITE=;
+	s=arc-20240116; t=1774278705; c=relaxed/simple;
+	bh=SMHLygjbtTvWlb/4Y1Bo62OWj39W9dKlRetSlf+TBI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BpsPBjXcmUAv0bElKijPrl3eGaKs5X2mK+YuQOKkoT38GEdy1AWZHaNzxwAKBk1oml7HiXOr415P7LbAPuV0Vd/ldf2nojjHhXd8p2g5fMpcCCMmYrcIxd/ZOsFJXeWD/KhKrLaxLatxxtxdhFwibqLwjZhNo0bABiWsvfTAfJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sF5A6UYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A565DC4CEF7;
-	Mon, 23 Mar 2026 13:56:19 +0000 (UTC)
+	 MIME-Version; b=Av0sLOQsHa2U/qIddLyH3ImHvqEYHbPoU+6SNOWNRQni/e2VB+pXfDHHebI/3n3yl6TH9kllqLNX6jKB17zdC3lCRrepTkavyMqdbqiQWilSe9Y7Sx8bnos8eOwbyw+MAqFITDaATg5DcZQ46DJLD9qmk89W6e3xGDOx7tIkHWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlHZjAiK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11221C4CEF7;
+	Mon, 23 Mar 2026 15:11:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274180;
-	bh=assNSItE7lvB2m+TskTmmELNr3scv/2dSz389DhUITE=;
+	s=korg; t=1774278705;
+	bh=SMHLygjbtTvWlb/4Y1Bo62OWj39W9dKlRetSlf+TBI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sF5A6UYgQd1yROWAwr44S53ZwmciDlkBq6HYnCPS/16I/El3Efb3geskjn+aXFsdD
-	 Z+rfjuf4d2AX3WM1tIV53EOxrmFl8Tpp7KOU4jSIONr2x7WiEj2jBRVkQIwcm/9Xig
-	 RootYDzEL2rSz65jppqg1kLCjl7e3eJTBgWzzHF8=
+	b=TlHZjAiKT3XbuwD/Tzr+QcDb57/kNon1cdQnunUcd62aYASPTBYaci9KRq6nYTX0a
+	 EeEw4YHwnpQmL7XaWiMrciJ5f+MmFeTZHmRCkSkxjZ9ooVUy74j7PzFSi+A6k0S1qJ
+	 FTShj9tP0xVJSiC9vSN90MTQKVe9CW0w+K6bMYxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Carlos Maiolino <cem@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 136/220] netfilter: nf_conntrack_h323: fix OOB read in decode_int() CONS case
+Subject: [PATCH 6.6 393/567] xfs: fix integer overflow in bmap intent sort comparator
 Date: Mon, 23 Mar 2026 14:45:13 +0100
-Message-ID: <20260323134508.872591422@linuxfoundation.org>
+Message-ID: <20260323134543.581549379@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,83 +64,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228119-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229307-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vidocsecurity.com:email]
-X-Rspamd-Queue-Id: 174892F37D2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: B6BC02F6722
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Long Li <leo.lilong@huawei.com>
 
-[ Upstream commit 1e3a3593162c96e8a8de48b1e14f60c3b57fca8a ]
+[ Upstream commit 362c490980867930a098b99f421268fbd7ca05fd ]
 
-In decode_int(), the CONS case calls get_bits(bs, 2) to read a length
-value, then calls get_uint(bs, len) without checking that len bytes
-remain in the buffer. The existing boundary check only validates the
-2 bits for get_bits(), not the subsequent 1-4 bytes that get_uint()
-reads. This allows a malformed H.323/RAS packet to cause a 1-4 byte
-slab-out-of-bounds read.
+xfs_bmap_update_diff_items() sorts bmap intents by inode number using
+a subtraction of two xfs_ino_t (uint64_t) values, with the result
+truncated to int. This is incorrect when two inode numbers differ by
+more than INT_MAX (2^31 - 1), which is entirely possible on large XFS
+filesystems.
 
-Add a boundary check for len bytes after get_bits() and before
-get_uint().
+Fix this by replacing the subtraction with cmp_int().
 
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Cc: <stable@vger.kernel.org> # v4.9
+Fixes: 9f3afb57d5f1 ("xfs: implement deferred bmbt map/unmap operations")
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ replaced `bi_entry()` macro with `container_of()` and inlined `cmp_int()` as a manual three-way comparison expression ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/xfs/xfs_bmap_item.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index 62aa22a078769..c972e9488e16f 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -331,6 +331,8 @@ static int decode_int(struct bitstr *bs, const struct field_t *f,
- 		if (nf_h323_error_boundary(bs, 0, 2))
- 			return H323_ERROR_BOUND;
- 		len = get_bits(bs, 2) + 1;
-+		if (nf_h323_error_boundary(bs, len, 0))
-+			return H323_ERROR_BOUND;
- 		BYTE_ALIGN(bs);
- 		if (base && (f->attr & DECODE)) {	/* timeToLive */
- 			unsigned int v = get_uint(bs, len) + f->lb;
--- 
-2.51.0
-
+--- a/fs/xfs/xfs_bmap_item.c
++++ b/fs/xfs/xfs_bmap_item.c
+@@ -278,7 +278,8 @@ xfs_bmap_update_diff_items(
+ 
+ 	ba = container_of(a, struct xfs_bmap_intent, bi_list);
+ 	bb = container_of(b, struct xfs_bmap_intent, bi_list);
+-	return ba->bi_owner->i_ino - bb->bi_owner->i_ino;
++	return (ba->bi_owner->i_ino > bb->bi_owner->i_ino) -
++		(ba->bi_owner->i_ino < bb->bi_owner->i_ino);
+ }
+ 
+ /* Set the map extent flags for this mapping. */
 
 
 
