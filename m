@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228996-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJdLADlPwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228512-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:29 +0100
+	id aCZYAJ5UwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228996-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 745382F4B90
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B942F57A2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B7364318268D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 47DE63018F12
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93FCB3AB29B;
-	Mon, 23 Mar 2026 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEED383C7C;
+	Mon, 23 Mar 2026 14:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F6Qe1rid"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DprGIM4Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57579823DD;
-	Mon, 23 Mar 2026 14:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015E32D9ECB;
+	Mon, 23 Mar 2026 14:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275328; cv=none; b=YjcIwOS+lM90ihn8+tMGAc6oie+9+V8uW7JSdkh4f1hgWwq4I3uXRwiL2XBogHsvdLKhoUthLjGq/Qu4H4bb86eo4ktvV2o//58mHFfylixR0OIzNCCa8g4//FflR1Z52rj6YcDpLDbMQV8GJR+pFfUJClsqC86i2G3KXmk+SBg=
+	t=1774277729; cv=none; b=ZrU1fEEYbB0QZREc+5PdoVSs7g42MOMfFzXfXKkOn0AeZeW7RNUKE7vhlYSV1ECS+Qt44Dv/ZxMGKt6HeWfETGeIfPv6HdkLdND6jErVe0touFNlH5yvWAySdEzWlMbC0Ke1MeTiIanWtAK5bBSTKwf2ml6eh4DCxS0Tgq2Qbvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275328; c=relaxed/simple;
-	bh=nApvM6kscr5FImhaeEbAtO467ZW/yH3Fi+SqoDziSMo=;
+	s=arc-20240116; t=1774277729; c=relaxed/simple;
+	bh=fMT/Z88CzR3I7mI+fKdjnsrQzx0M9S1mqgL95r+V0ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X+iSk21Db6WUi63oCnOpm1K6dMfkxkTOvgpreBvx1NJT4dDkrMX7zXjAHXtD4ATV/D8Jz8VU6pRkZmHB6N+L7P5NCpkxJIoJOXt7KSEtg8cYVI/2/RCBW5m9OPUXs0txTYrFMwfi5eNmFyMU/0VJk116u44+YUzjzf+P3NVxw3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F6Qe1rid; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF75C2BC9E;
-	Mon, 23 Mar 2026 14:15:27 +0000 (UTC)
+	 MIME-Version; b=ldjbi8uO3YUg63IRfasuPton8S0vmiExzAaZOEB2iQdyoZsgJND0UaF+8ppnwbzNCw22YSANWKzXmiiKuFMgew+4RzYdz5MpuDYSW3k68eDBJyzmW2rE6CFlG66EZTky7BElQ8/Cu3RtPOjF0U23tfT54kfI9Oap1BzrE76l2Ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DprGIM4Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6FAC4CEF7;
+	Mon, 23 Mar 2026 14:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275328;
-	bh=nApvM6kscr5FImhaeEbAtO467ZW/yH3Fi+SqoDziSMo=;
+	s=korg; t=1774277728;
+	bh=fMT/Z88CzR3I7mI+fKdjnsrQzx0M9S1mqgL95r+V0ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F6Qe1ridaJre9Drzy6Pj56/QeG6RIOiev4eE/7xEUzHGIGUKruF8IZaBHkr/EC2/H
-	 LNIoUVSL1j32C8Zb2gWlqJX+IKcjGy5yVTkgXvKTv7s0ev595B7BLU7M1VyXg8d5RJ
-	 0u7f2ICYf7KCw3OghVYpgE26SCzv2ZTjlv2uNd9Y=
+	b=DprGIM4Za5P/Pxi1rpiKgm2mdJXHcptmukLNqRS+UZXbVQ/SqFOGVs74YWCueHaSg
+	 cgJ6k/C9Ims1+N3Vi+xyICkFVQQhae2NYTgCQkeN65MXp86bE2GJuDpHCDbW/v/FDG
+	 Ajh0UBX4S6KhDwMeIkRI+JXYUXyeypyijkQ2fLi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sofia Schneider <sofia@schn.dev>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 007/460] ACPI: OSI: Add DMI quirk for Acer Aspire One D255
+Subject: [PATCH 6.6 083/567] ALSA: hda/conexant: Fix headphone jack handling on Acer Swift SF314
 Date: Mon, 23 Mar 2026 14:40:03 +0100
-Message-ID: <20260323134526.835282399@linuxfoundation.org>
+Message-ID: <20260323134535.881567956@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,19 +68,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228512-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228996-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -90,57 +89,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 745382F4B90
+X-Rspamd-Queue-Id: A5B942F57A2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sofia Schneider <sofia@schn.dev>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5ede90206273ff156a778254f0f972a55e973c89 ]
+[ Upstream commit 7bc0df86c2384bc1e2012a2c946f82305054da64 ]
 
-The screen backlight turns off during boot (specifically during udev device
-initialization) when returning true for _OSI("Windows 2009").
+Acer Swift SF314 (SSID 1025:136d) needs a bit of tweaks of the pin
+configurations for NID 0x16 and 0x19 to make the headphone / headset
+jack working.  NID 0x17 can remain as is for the working speaker, and
+the built-in mic is supported via SOF.
 
-Analyzing the device's DSDT reveals that the firmware takes a different
-code path when Windows 7 is reported, which leads to the backlight shutoff.
-Add a DMI quirk to invoke dmi_disable_osi_win7 for this model.
-
-Signed-off-by: Sofia Schneider <sofia@schn.dev>
-Link: https://patch.msgid.link/20260223025240.518509-1-sofia@schn.dev
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: <stable@vger.kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221086
+Link: https://patch.msgid.link/20260217104414.62911-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/osi.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ sound/pci/hda/patch_conexant.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
-index f2c943b934be0..9470f1830ff50 100644
---- a/drivers/acpi/osi.c
-+++ b/drivers/acpi/osi.c
-@@ -389,6 +389,19 @@ static const struct dmi_system_id acpi_osi_dmi_table[] __initconst = {
- 		},
- 	},
+diff --git a/sound/pci/hda/patch_conexant.c b/sound/pci/hda/patch_conexant.c
+index 192d13f829e19..355b26583eb4e 100644
+--- a/sound/pci/hda/patch_conexant.c
++++ b/sound/pci/hda/patch_conexant.c
+@@ -312,6 +312,7 @@ enum {
+ 	CXT_PINCFG_SWS_JS201D,
+ 	CXT_PINCFG_TOP_SPEAKER,
+ 	CXT_FIXUP_HP_A_U,
++	CXT_FIXUP_ACER_SWIFT_HP,
+ };
  
-+	/*
-+	 * The screen backlight turns off during udev device creation
-+	 * when returning true for _OSI("Windows 2009")
-+	 */
-+	{
-+	.callback = dmi_disable_osi_win7,
-+	.ident = "Acer Aspire One D255",
-+	.matches = {
-+		     DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+		     DMI_MATCH(DMI_PRODUCT_NAME, "AOD255"),
+ /* for hda_fixup_thinkpad_acpi() */
+@@ -1028,6 +1029,14 @@ static const struct hda_fixup cxt_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = cxt_fixup_hp_a_u,
+ 	},
++	[CXT_FIXUP_ACER_SWIFT_HP] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x16, 0x0321403f }, /* Headphone */
++			{ 0x19, 0x40f001f0 }, /* Mic */
++			{ }
 +		},
 +	},
-+
- 	/*
- 	 * The wireless hotkey does not work on those machines when
- 	 * returning true for _OSI("Windows 2012")
+ };
+ 
+ static const struct hda_quirk cxt5045_fixups[] = {
+@@ -1077,6 +1086,7 @@ static const struct hda_quirk cxt5066_fixups[] = {
+ 	SND_PCI_QUIRK(0x1025, 0x0543, "Acer Aspire One 522", CXT_FIXUP_STEREO_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x054c, "Acer Aspire 3830TG", CXT_FIXUP_ASPIRE_DMIC),
+ 	SND_PCI_QUIRK(0x1025, 0x054f, "Acer Aspire 4830T", CXT_FIXUP_ASPIRE_DMIC),
++	SND_PCI_QUIRK(0x1025, 0x136d, "Acer Swift SF314", CXT_FIXUP_ACER_SWIFT_HP),
+ 	SND_PCI_QUIRK(0x103c, 0x8079, "HP EliteBook 840 G3", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x807C, "HP EliteBook 820 G3", CXT_FIXUP_HP_DOCK),
+ 	SND_PCI_QUIRK(0x103c, 0x80FD, "HP ProBook 640 G2", CXT_FIXUP_HP_DOCK),
 -- 
 2.51.0
 
