@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228031-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CIPcFYNRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228243-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:43:15 +0100
+	id mOb6FxhHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228031-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5062F50D0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:43:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8822F38B7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 872E83139ACD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0041F3074E10
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416DB3B19C6;
-	Mon, 23 Mar 2026 14:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C6FC1A6818;
+	Mon, 23 Mar 2026 13:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZY/nZPK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nC8LfBXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048DE3B19B4;
-	Mon, 23 Mar 2026 14:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604D821D00A;
+	Mon, 23 Mar 2026 13:51:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274559; cv=none; b=hZmk78m+7EnBL8FMKvMfcq9z7PPNUxQwcbDwNRTqv/MMgznYdlZkJOQcpzCtcfiUqaDf8FPLllhZskPMsb+eFJER5R9jI/49or12bZKbQWxq/9AqNDDSBXAPpHQgCiMG3E7RO30nhuMwYIKdQKR1397uzvjKLQCjoy23svoHjr0=
+	t=1774273918; cv=none; b=bUtRTyRXpB0qjYHOOfq5e7ARYrLVnM0sYtg+mAT9MMZwxlXtkSbbsNwroIjaqjIXx4Kx2DT+hOzxYHyCxzY5cB22wDR31kHgKEm9TRSFjROJNttxDPWwTMNPMZhfjXlZHxJ+NPybTZYQIvysIsAEIyiU+ABjvcKDMLWxqK5PJcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274559; c=relaxed/simple;
-	bh=qojsMIK9Ej/tnGcIhVvvuAwMGw+LWKUNwi15V1PN/Ys=;
+	s=arc-20240116; t=1774273918; c=relaxed/simple;
+	bh=h9Dnf4q6Lv0pOItWae+wlDsLQMCcEoxO70PIJ1RO7ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n14Zs6amCDEg17eYooESv8pTY7lOq6wgarCsCNEtPAnDyfnh64bD92XIcGe3OGnlPxN7C9PP6PdqR9H4El+bmBQ6MOTWmmb3b0G9c5FDaZi2hNIqJ5oPbxCPgNx5TdWkPNWAG4vdr40PrQyJKXGrMXeLMcNiFLlZuXrJzkGIO44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZY/nZPK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490AAC4CEF7;
-	Mon, 23 Mar 2026 14:02:38 +0000 (UTC)
+	 MIME-Version; b=eX5qIOWcWkbQPKz49szAcGNLcxRhfZD+ZTlMJchvjtQ4L2ICPgSfwIX97lpm0bIvxdS9b3I+adio8RQ3ajXjUMnBYF9CsDZVzJwMDsxboxqhlbZKdHOcOwsqQz8D9BoFHuE2qch/InlDPAWLI//XQFjO+JIki86g5hmemAtgtAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nC8LfBXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D959EC4CEF7;
+	Mon, 23 Mar 2026 13:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274558;
-	bh=qojsMIK9Ej/tnGcIhVvvuAwMGw+LWKUNwi15V1PN/Ys=;
+	s=korg; t=1774273918;
+	bh=h9Dnf4q6Lv0pOItWae+wlDsLQMCcEoxO70PIJ1RO7ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZY/nZPKnwY+Okr6rR1AymRP6JLToJYEc/wuVqFsAUF3yLAm80VR9Ito8kLlz75ld
-	 uRP+y3LK20S0UgHT9bSArvE17qv0UI48R0wQTUJp80aFboPYlK0AocA4l4RNPKBSDm
-	 CUq1THTcQPitjkrUiVhuSU8KaAGEsAULEAkm0JXI=
+	b=nC8LfBXW43hVid3pAMe9dCnli7yIfE62B8QHxX950Kwp6Pxmb4YZPn1VTzAnpFNbJ
+	 RNNmInivBBsi7pr5lQj/hvGZg4STzSjbam4lqNlCfvkf99tnWtMdcqSIJ7Zz9kldKw
+	 dC1ZqE2S87PTBJwZ9aBsyzuCVA4JX8RLFwO4TuJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@ownmail.net>,
-	stable@kernel.org,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.18 006/212] sunrpc: fix cache_request leak in cache_release
+	Olivier Sobrie <olivier@sobrie.be>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.19 050/220] mtd: rawnand: pl353: make sure optimal timings are applied
 Date: Mon, 23 Mar 2026 14:43:47 +0100
-Message-ID: <20260323134503.968577643@linuxfoundation.org>
+Message-ID: <20260323134506.166627195@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,118 +67,73 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228243-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ownmail.net,kernel.org,oracle.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228031-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CB5062F50D0
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sobrie.be:email]
+X-Rspamd-Queue-Id: BD8822F38B7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Olivier Sobrie <olivier@sobrie.be>
 
-commit 17ad31b3a43b72aec3a3d83605891e1397d0d065 upstream.
+commit b9465b04de4b90228de03db9a1e0d56b00814366 upstream.
 
-When a reader's file descriptor is closed while in the middle of reading
-a cache_request (rp->offset != 0), cache_release() decrements the
-request's readers count but never checks whether it should free the
-request.
+Timings of the nand are adjusted by pl35x_nfc_setup_interface() but
+actually applied by the pl35x_nand_select_target() function.
+If there is only one nand chip, the pl35x_nand_select_target() will only
+apply the timings once since the test at its beginning will always be true
+after the first call to this function. As a result, the hardware will
+keep using the default timings set at boot to detect the nand chip, not
+the optimal ones.
 
-In cache_read(), when readers drops to 0 and CACHE_PENDING is clear, the
-cache_request is removed from the queue and freed along with its buffer
-and cache_head reference. cache_release() lacks this cleanup.
+With this patch, we program directly the new timings when
+pl35x_nfc_setup_interface() is called.
 
-The only other path that frees requests with readers == 0 is
-cache_dequeue(), but it runs only when CACHE_PENDING transitions from
-set to clear. If that transition already happened while readers was
-still non-zero, cache_dequeue() will have skipped the request, and no
-subsequent call will clean it up.
-
-Add the same cleanup logic from cache_read() to cache_release(): after
-decrementing readers, check if it reached 0 with CACHE_PENDING clear,
-and if so, dequeue and free the cache_request.
-
-Reported-by: NeilBrown <neilb@ownmail.net>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@kernel.org
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
+Signed-off-by: Olivier Sobrie <olivier@sobrie.be>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/cache.c |   26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+ drivers/mtd/nand/raw/pl35x-nand-controller.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -1061,14 +1061,25 @@ static int cache_release(struct inode *i
- 	struct cache_reader *rp = filp->private_data;
+--- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
++++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+@@ -862,6 +862,9 @@ static int pl35x_nfc_setup_interface(str
+ 			  PL35X_SMC_NAND_TAR_CYCLES(tmgs.t_ar) |
+ 			  PL35X_SMC_NAND_TRR_CYCLES(tmgs.t_rr);
  
- 	if (rp) {
-+		struct cache_request *rq = NULL;
++	writel(plnand->timings, nfc->conf_regs + PL35X_SMC_CYCLES);
++	pl35x_smc_update_regs(nfc);
 +
- 		spin_lock(&queue_lock);
- 		if (rp->offset) {
- 			struct cache_queue *cq;
--			for (cq= &rp->q; &cq->list != &cd->queue;
--			     cq = list_entry(cq->list.next, struct cache_queue, list))
-+			for (cq = &rp->q; &cq->list != &cd->queue;
-+			     cq = list_entry(cq->list.next,
-+					     struct cache_queue, list))
- 				if (!cq->reader) {
--					container_of(cq, struct cache_request, q)
--						->readers--;
-+					struct cache_request *cr =
-+						container_of(cq,
-+						struct cache_request, q);
-+					cr->readers--;
-+					if (cr->readers == 0 &&
-+					    !test_bit(CACHE_PENDING,
-+						      &cr->item->flags)) {
-+						list_del(&cr->q.list);
-+						rq = cr;
-+					}
- 					break;
- 				}
- 			rp->offset = 0;
-@@ -1076,9 +1087,14 @@ static int cache_release(struct inode *i
- 		list_del(&rp->q.list);
- 		spin_unlock(&queue_lock);
+ 	return 0;
+ }
  
-+		if (rq) {
-+			cache_put(rq->item, cd);
-+			kfree(rq->buf);
-+			kfree(rq);
-+		}
-+
- 		filp->private_data = NULL;
- 		kfree(rp);
--
- 	}
- 	if (filp->f_mode & FMODE_WRITE) {
- 		atomic_dec(&cd->writers);
 
 
 
