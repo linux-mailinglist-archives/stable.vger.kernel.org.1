@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229079-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +GyaI7lRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228547-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:09 +0100
+	id eBlgDnRswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229079-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6752F513E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 998B02F87D1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AE1DA313785A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8323630649C5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F95B222590;
-	Mon, 23 Mar 2026 14:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6F832D45C;
+	Mon, 23 Mar 2026 14:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwrnX3DC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2b9d9j+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21972175A80;
-	Mon, 23 Mar 2026 14:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C5091A23B1;
+	Mon, 23 Mar 2026 14:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275420; cv=none; b=d3k8c9xpQznP6eeYSqsI2JxukKG8tWcTq1Xf6nUpkfbDtd1A/ke8/jp0PJUEm2Juz9sWxNjt9mBHBM6vHkK8pxO0svC076FxlxVvuKQyf0Y8tLEd7mz1siJrUG4J6jVQC1143NWFhyA+8S3kQVpBIAV6c2qrvnK7jFenKR1ZMXs=
+	t=1774277993; cv=none; b=jmP5P6zCTblu9AO2TGahBoIEvGNsttmd51llwXqBhEGHCT+o+GhKP3QkHW7HZVNYiyhmDIfDcjeZce/kb5VEn222tkeEEJP9ippt++foQpjqovzSYUaPSc06oRVkdWeQmS7pFP56jxVXaeL7sCfe+uAUJED2k8LXgIWJXV+2R8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275420; c=relaxed/simple;
-	bh=LZWa5Fn5ah7Fd5Ql/vO0rkkeqtFOVHWoMLev50GZ6yM=;
+	s=arc-20240116; t=1774277993; c=relaxed/simple;
+	bh=4iiz3FFYNh2FEhakyfJXyDMJ97noU7T8Q+KRjz4Sw6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrxqdncnrMTcNMLRBpZ9Z/otmJzsB+8SxlZpMDF8frOaRd41lhNiz3oxSfEdXKCxqWSZI4z9cKRBPAXkgKeakU/1ErbOoJMqdwXJIy7Hr2VcgHbknujLChIc4MEvafrbNMERl7XKAWcv7z2Umu5MNBqk6LFzdRrMVzN+ec/IxwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwrnX3DC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C56C4CEF7;
-	Mon, 23 Mar 2026 14:16:59 +0000 (UTC)
+	 MIME-Version; b=Axg6HYXgFaVZt7ugiJiNqsGVUAr5VNyx4CTuJDolaqcNLrOGTDya6Bk4fTH17dNta3dbmkDzeJAlV8H3rNV6mi8tR79MuSMEAOPLrusQPx0opXWgrDVgCGF9DwoKzlc2JTAsi14hMChgrtcREoThmybDbwdZ8kGRV3gObKVTYDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2b9d9j+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC444C4CEF7;
+	Mon, 23 Mar 2026 14:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275420;
-	bh=LZWa5Fn5ah7Fd5Ql/vO0rkkeqtFOVHWoMLev50GZ6yM=;
+	s=korg; t=1774277993;
+	bh=4iiz3FFYNh2FEhakyfJXyDMJ97noU7T8Q+KRjz4Sw6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OwrnX3DCpf2TSKOJY82rw0UXlXbpJnIwcRhpP4nYqljDKX+w9JcAzeYh/qd7zinEb
-	 OKG/2P6W7/e28FxkZ4HXLWwD7YusXsW/al72+Up76Zt/fvGmgmCRybNjtyd9vyHzx/
-	 rJ+6faxwFNgZxYiVFXN9iBk3LqWzJE+H+Cp7GJLc=
+	b=S2b9d9j+XD6GuLepnGQZiVlB1j7jLx+O5/wsSs0Sw4QeOlILgG0cGxZHADpqpnAOh
+	 dgheK77aDID/nW7RZiKvhMcGis9kHEys6YZnuvTPlEFg76IzL3p1NwjYw3qQuCZ3sa
+	 dz1jxa8YTfpsNKeYfD9aivlMSgp8ZISbVvUd2/qE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com,
-	syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 091/460] ALSA: usb-audio: Check endpoint numbers at parsing Scarlett2 mixer interfaces
+	Koichiro Den <den@valinux.co.jp>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 167/567] net: sched: avoid qdisc_reset_all_tx_gt() vs dequeue race for lockless qdiscs
 Date: Mon, 23 Mar 2026 14:41:27 +0100
-Message-ID: <20260323134528.904704417@linuxfoundation.org>
+Message-ID: <20260323134537.957034528@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +64,147 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228547-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229079-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,8f29539ef9a1c8334f42,ae893a8901067fde2741];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CF6752F513E
+X-Rspamd-Queue-Id: 998B02F87D1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Koichiro Den <den@valinux.co.jp>
 
-commit df1d8abf36ca3681c21a6809eaa9a1e01ef897a6 upstream.
+[ Upstream commit 7f083faf59d14c04e01ec05a7507f036c965acf8 ]
 
-The Scarlett2 mixer quirk in USB-audio driver may hit a NULL
-dereference when a malformed USB descriptor is passed, since it
-assumes the presence of an endpoint in the parsed interface in
-scarlett2_find_fc_interface(), as reported by fuzzer.
+When shrinking the number of real tx queues,
+netif_set_real_num_tx_queues() calls qdisc_reset_all_tx_gt() to flush
+qdiscs for queues which will no longer be used.
 
-For avoiding the NULL dereference, just add the sanity check of
-bNumEndpoints and skip the invalid interface.
+qdisc_reset_all_tx_gt() currently serializes qdisc_reset() with
+qdisc_lock(). However, for lockless qdiscs, the dequeue path is
+serialized by qdisc_run_begin/end() using qdisc->seqlock instead, so
+qdisc_reset() can run concurrently with __qdisc_run() and free skbs
+while they are still being dequeued, leading to UAF.
 
-Reported-by: syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/69acbbe1.050a0220.310d8.0001.GAE@google.com
-Reported-by: syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/69acf72a.050a0220.310d8.0004.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260309104632.141895-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This can easily be reproduced on e.g. virtio-net by imposing heavy
+traffic while frequently changing the number of queue pairs:
+
+  iperf3 -ub0 -c $peer -t 0 &
+  while :; do
+    ethtool -L eth0 combined 1
+    ethtool -L eth0 combined 2
+  done
+
+With KASAN enabled, this leads to reports like:
+
+  BUG: KASAN: slab-use-after-free in __qdisc_run+0x133f/0x1760
+  ...
+  Call Trace:
+   <TASK>
+   ...
+   __qdisc_run+0x133f/0x1760
+   __dev_queue_xmit+0x248f/0x3550
+   ip_finish_output2+0xa42/0x2110
+   ip_output+0x1a7/0x410
+   ip_send_skb+0x2e6/0x480
+   udp_send_skb+0xb0a/0x1590
+   udp_sendmsg+0x13c9/0x1fc0
+   ...
+   </TASK>
+
+  Allocated by task 1270 on cpu 5 at 44.558414s:
+   ...
+   alloc_skb_with_frags+0x84/0x7c0
+   sock_alloc_send_pskb+0x69a/0x830
+   __ip_append_data+0x1b86/0x48c0
+   ip_make_skb+0x1e8/0x2b0
+   udp_sendmsg+0x13a6/0x1fc0
+   ...
+
+  Freed by task 1306 on cpu 3 at 44.558445s:
+   ...
+   kmem_cache_free+0x117/0x5e0
+   pfifo_fast_reset+0x14d/0x580
+   qdisc_reset+0x9e/0x5f0
+   netif_set_real_num_tx_queues+0x303/0x840
+   virtnet_set_channels+0x1bf/0x260 [virtio_net]
+   ethnl_set_channels+0x684/0xae0
+   ethnl_default_set_doit+0x31a/0x890
+   ...
+
+Serialize qdisc_reset_all_tx_gt() against the lockless dequeue path by
+taking qdisc->seqlock for TCQ_F_NOLOCK qdiscs, matching the
+serialization model already used by dev_reset_queue().
+
+Additionally clear QDISC_STATE_NON_EMPTY after reset so the qdisc state
+reflects an empty queue, avoiding needless re-scheduling.
+
+Fixes: 6b3ba9146fe6 ("net: sched: allow qdiscs to handle locking")
+Signed-off-by: Koichiro Den <den@valinux.co.jp>
+Link: https://patch.msgid.link/20260228145307.3955532-1-den@valinux.co.jp
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett2.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/net/sch_generic.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -8579,6 +8579,8 @@ static int scarlett2_find_fc_interface(s
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 3287988a6a987..232b7b22e993a 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -756,13 +756,23 @@ static inline bool skb_skip_tc_classify(struct sk_buff *skb)
+ static inline void qdisc_reset_all_tx_gt(struct net_device *dev, unsigned int i)
+ {
+ 	struct Qdisc *qdisc;
++	bool nolock;
  
- 		if (desc->bInterfaceClass != 255)
- 			continue;
-+		if (desc->bNumEndpoints < 1)
-+			continue;
- 
- 		epd = get_endpoint(intf->altsetting, 0);
- 		private->bInterfaceNumber = desc->bInterfaceNumber;
+ 	for (; i < dev->num_tx_queues; i++) {
+ 		qdisc = rtnl_dereference(netdev_get_tx_queue(dev, i)->qdisc);
+ 		if (qdisc) {
++			nolock = qdisc->flags & TCQ_F_NOLOCK;
++
++			if (nolock)
++				spin_lock_bh(&qdisc->seqlock);
+ 			spin_lock_bh(qdisc_lock(qdisc));
+ 			qdisc_reset(qdisc);
+ 			spin_unlock_bh(qdisc_lock(qdisc));
++			if (nolock) {
++				clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
++				clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
++				spin_unlock_bh(&qdisc->seqlock);
++			}
+ 		}
+ 	}
+ }
+-- 
+2.51.0
+
 
 
 
