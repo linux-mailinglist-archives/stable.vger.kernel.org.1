@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-228388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228868-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mKQ/OAlPwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228388-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:41 +0100
+	id IHaGLuZVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228868-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79B762F4B2F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D032F5A7C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 75E7F30D01B5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 81666300FB5F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DC63B27E0;
-	Mon, 23 Mar 2026 14:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86823AEF3D;
+	Mon, 23 Mar 2026 14:49:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="El3+knBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywUDF8IW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EDA17DE36;
-	Mon, 23 Mar 2026 14:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD19242D9D;
+	Mon, 23 Mar 2026 14:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274978; cv=none; b=a9k1Q4PQqOi6U8/qtRUTJezkAyYLnKtmA68s9tT+rFRCxHNeappT0yoIcIM4I8IMp8KeX8nGnSdp+Wn0u7XHk6UfHg/SBuhK9EdXb881jr3zhsRg66vpzjiALN5QQaoXAViydHsARQtQDlCHk/IntonFv/iiNHWGYy+gme0j83s=
+	t=1774277352; cv=none; b=S37Aa7T8XV8a25TRk3jF+lHbyMicomO5KhqFkDPxx/R3yoIeTw0ejmm1TBxK9bQEWfLdn8xeXlwTBbGELRMqFByw/xHpDAnw3bzQiSvdMz6SaFI05iWVM2I0C+/L9o0wIzQD3RKt+bolbQFtn+BVA0hUBnqm+OX77eznxyz5lkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274978; c=relaxed/simple;
-	bh=RmZqgE0RmN9gLrA4M5pn53njs4wbi5vhk+GDfhJXaQ4=;
+	s=arc-20240116; t=1774277352; c=relaxed/simple;
+	bh=d/yY+HhtvxnfBsjU5ya9TAqTmKPIdeooUnnrpgAJeyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKOSdc8GKOt7krgczau79Y0z25Wc9Y3tJwXSr8/db0lT1shW8gXzlzpqqOe3AU8ssxFfLKTgvB9vG7foIcMsohDjfhcpfB+gaNhzxaR6ve42QW9gh32xIferYx/hLkj8vUKSiImh69tscUcPboQFjJMphSGAeWr36bpu+EJrW50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=El3+knBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FA4C4CEF7;
-	Mon, 23 Mar 2026 14:09:38 +0000 (UTC)
+	 MIME-Version; b=hezkwMtw5+Rw0t0jmHuLqBhmGp6Zw9vPc4Hasy7ifcsw5gDGrsrw06rU4NBzs3P1IJoNIX48iH513b2VU+Ry0UN7W0071wcIearjnLxYZsfbVTmpo4nnyQA3wmhugGcCTiB+8zNSoE9X4tevsXQ6qu0xt0dx2ne+usWXpOq9Z5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywUDF8IW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F87C4CEF7;
+	Mon, 23 Mar 2026 14:49:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274978;
-	bh=RmZqgE0RmN9gLrA4M5pn53njs4wbi5vhk+GDfhJXaQ4=;
+	s=korg; t=1774277351;
+	bh=d/yY+HhtvxnfBsjU5ya9TAqTmKPIdeooUnnrpgAJeyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=El3+knBr6ooslP8INeIjg5J91lm+d/asIjipAxAwituP1IVUmI3vskLgXHvyzl7Nd
-	 lYhM5L/HLcZA+hQUR1u8DkGpMFFcgMC9ePueKEDG9UU8bTRrN3TrklQys9ahvnFFpC
-	 JEVCkiISuLmKWNmkKF742FVKdiBzGaThrqgHJTCc=
+	b=ywUDF8IWIUMc8lEkPrpnjNhLX8d2sXFuWJw4izp11SxhJ3kJ7N6Rd+NWTxvqAb+2J
+	 63ehOuMmvUZzXXCmU4J52QIfDQqEwDOLdGt3iNd6iMznY9dmGCvuF2YWNhZl5X7hzC
+	 R8RhLAVWEYdeB6Uo6uzhtvZ/92t6T9eTKN3Wx850=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.18 181/212] hwmon: (pmbus/mp2975) Add error check for pmbus_read_word_data() return value
-Date: Mon, 23 Mar 2026 14:46:42 +0100
-Message-ID: <20260323134509.469406510@linuxfoundation.org>
+	Xianrui Dong <keenanat2000@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 407/460] net/sched: teql: Fix double-free in teql_master_xmit
+Date: Mon, 23 Mar 2026 14:46:43 +0100
+Message-ID: <20260323134536.558528293@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,71 +68,236 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228388-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228868-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 79B762F4B2F
+X-Rspamd-Queue-Id: B3D032F5A7C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit 19d4b9c8a136704d5f2544e7ac550f27918a5004 upstream.
+[ Upstream commit 66360460cab63c248ca5b1070a01c0c29133b960 ]
 
-mp2973_read_word_data() XORs the return value of pmbus_read_word_data()
-with PB_STATUS_POWER_GOOD_N without first checking for errors. If the I2C
-transaction fails, a negative error code is XORed with the constant,
-producing a corrupted value that is returned as valid status data instead
-of propagating the error.
+Whenever a TEQL devices has a lockless Qdisc as root, qdisc_reset should
+be called using the seq_lock to avoid racing with the datapath. Failure
+to do so may cause crashes like the following:
 
-Add the missing error check before modifying the return value.
+[  238.028993][  T318] BUG: KASAN: double-free in skb_release_data (net/core/skbuff.c:1139)
+[  238.029328][  T318] Free of addr ffff88810c67ec00 by task poc_teql_uaf_ke/318
+[  238.029749][  T318]
+[  238.029900][  T318] CPU: 3 UID: 0 PID: 318 Comm: poc_teql_ke Not tainted 7.0.0-rc3-00149-ge5b31d988a41 #704 PREEMPT(full)
+[  238.029906][  T318] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+[  238.029910][  T318] Call Trace:
+[  238.029913][  T318]  <TASK>
+[  238.029916][  T318]  dump_stack_lvl (lib/dump_stack.c:122)
+[  238.029928][  T318]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
+[  238.029940][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
+[  238.029944][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+...
+[  238.029957][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
+[  238.029969][  T318]  kasan_report_invalid_free (mm/kasan/report.c:221 mm/kasan/report.c:563)
+[  238.029979][  T318]  ? skb_release_data (net/core/skbuff.c:1139)
+[  238.029989][  T318]  check_slab_allocation (mm/kasan/common.c:231)
+[  238.029995][  T318]  kmem_cache_free (mm/slub.c:2637 (discriminator 1) mm/slub.c:6168 (discriminator 1) mm/slub.c:6298 (discriminator 1))
+[  238.030004][  T318]  skb_release_data (net/core/skbuff.c:1139)
+...
+[  238.030025][  T318]  sk_skb_reason_drop (net/core/skbuff.c:1256)
+[  238.030032][  T318]  pfifo_fast_reset (./include/linux/ptr_ring.h:171 ./include/linux/ptr_ring.h:309 ./include/linux/skb_array.h:98 net/sched/sch_generic.c:827)
+[  238.030039][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+...
+[  238.030054][  T318]  qdisc_reset (net/sched/sch_generic.c:1034)
+[  238.030062][  T318]  teql_destroy (./include/linux/spinlock.h:395 net/sched/sch_teql.c:157)
+[  238.030071][  T318]  __qdisc_destroy (./include/net/pkt_sched.h:328 net/sched/sch_generic.c:1077)
+[  238.030077][  T318]  qdisc_graft (net/sched/sch_api.c:1062 net/sched/sch_api.c:1053 net/sched/sch_api.c:1159)
+[  238.030089][  T318]  ? __pfx_qdisc_graft (net/sched/sch_api.c:1091)
+[  238.030095][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  238.030102][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  238.030106][  T318]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
+[  238.030114][  T318]  tc_get_qdisc (net/sched/sch_api.c:1529 net/sched/sch_api.c:1556)
+...
+[  238.072958][  T318] Allocated by task 303 on cpu 5 at 238.026275s:
+[  238.073392][  T318]  kasan_save_stack (mm/kasan/common.c:58)
+[  238.073884][  T318]  kasan_save_track (mm/kasan/common.c:64 (discriminator 5) mm/kasan/common.c:79 (discriminator 5))
+[  238.074230][  T318]  __kasan_slab_alloc (mm/kasan/common.c:369)
+[  238.074578][  T318]  kmem_cache_alloc_node_noprof (./include/linux/kasan.h:253 mm/slub.c:4542 mm/slub.c:4869 mm/slub.c:4921)
+[  238.076091][  T318]  kmalloc_reserve (net/core/skbuff.c:616 (discriminator 107))
+[  238.076450][  T318]  __alloc_skb (net/core/skbuff.c:713)
+[  238.076834][  T318]  alloc_skb_with_frags (./include/linux/skbuff.h:1383 net/core/skbuff.c:6763)
+[  238.077178][  T318]  sock_alloc_send_pskb (net/core/sock.c:2997)
+[  238.077520][  T318]  packet_sendmsg (net/packet/af_packet.c:2926 net/packet/af_packet.c:3019 net/packet/af_packet.c:3108)
+[  238.081469][  T318]
+[  238.081870][  T318] Freed by task 299 on cpu 1 at 238.028496s:
+[  238.082761][  T318]  kasan_save_stack (mm/kasan/common.c:58)
+[  238.083481][  T318]  kasan_save_track (mm/kasan/common.c:64 (discriminator 5) mm/kasan/common.c:79 (discriminator 5))
+[  238.085348][  T318]  kasan_save_free_info (mm/kasan/generic.c:587 (discriminator 1))
+[  238.085900][  T318]  __kasan_slab_free (mm/kasan/common.c:287)
+[  238.086439][  T318]  kmem_cache_free (mm/slub.c:6168 (discriminator 3) mm/slub.c:6298 (discriminator 3))
+[  238.087007][  T318]  skb_release_data (net/core/skbuff.c:1139)
+[  238.087491][  T318]  consume_skb (net/core/skbuff.c:1451)
+[  238.087757][  T318]  teql_master_xmit (net/sched/sch_teql.c:358)
+[  238.088116][  T318]  dev_hard_start_xmit (./include/linux/netdevice.h:5324 ./include/linux/netdevice.h:5333 net/core/dev.c:3871 net/core/dev.c:3887)
+[  238.088468][  T318]  sch_direct_xmit (net/sched/sch_generic.c:347)
+[  238.088820][  T318]  __qdisc_run (net/sched/sch_generic.c:420 (discriminator 1))
+[  238.089166][  T318]  __dev_queue_xmit (./include/net/sch_generic.h:229 ./include/net/pkt_sched.h:121 ./include/net/pkt_sched.h:117 net/core/dev.c:4196 net/core/dev.c:4802)
 
-Fixes: acda945afb465 ("hwmon: (pmbus/mp2975) Fix PGOOD in READ_STATUS_WORD")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260317173308.382545-3-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Workflow to reproduce:
+1. Initialize a TEQL topology (dummy0 and ifb0 as slaves, teql0 up).
+2. Start multiple sender workers continuously transmitting packets
+   through teql0 to drive teql_master_xmit().
+3. In parallel, repeatedly delete and re-add the root qdisc on
+   dummy0 and ifb0 via RTNETLINK, forcing frequent teardown and reset activity
+   (teql_destroy() / qdisc_reset()).
+4. After running both workloads concurrently for several iterations,
+   KASAN reports slab-use-after-free or double-free in the skb free path.
+
+Fix this by moving dev_reset_queue to sch_generic.h and calling it, instead
+of qdisc_reset, in teql_destroy since it handles both the lock and lockless
+cases correctly for root qdiscs.
+
+Fixes: 96009c7d500e ("sched: replace __QDISC_STATE_RUNNING bit with a spin lock")
+Reported-by: Xianrui Dong <keenanat2000@gmail.com>
+Tested-by: Xianrui Dong <keenanat2000@gmail.com>
+Co-developed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260315155422.147256-1-jhs@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/mp2975.c |    2 ++
- 1 file changed, 2 insertions(+)
+ include/net/sch_generic.h | 28 ++++++++++++++++++++++++++++
+ net/sched/sch_generic.c   | 27 ---------------------------
+ net/sched/sch_teql.c      |  7 ++-----
+ 3 files changed, 30 insertions(+), 32 deletions(-)
 
---- a/drivers/hwmon/pmbus/mp2975.c
-+++ b/drivers/hwmon/pmbus/mp2975.c
-@@ -313,6 +313,8 @@ static int mp2973_read_word_data(struct
- 	case PMBUS_STATUS_WORD:
- 		/* MP2973 & MP2971 return PGOOD instead of PB_STATUS_POWER_GOOD_N. */
- 		ret = pmbus_read_word_data(client, page, phase, reg);
-+		if (ret < 0)
-+			return ret;
- 		ret ^= PB_STATUS_POWER_GOOD_N;
- 		break;
- 	case PMBUS_OT_FAULT_LIMIT:
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index 75a0d6095d2eb..28a7aaa4c0cdf 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -696,6 +696,34 @@ void qdisc_destroy(struct Qdisc *qdisc);
+ void qdisc_put(struct Qdisc *qdisc);
+ void qdisc_put_unlocked(struct Qdisc *qdisc);
+ void qdisc_tree_reduce_backlog(struct Qdisc *qdisc, int n, int len);
++
++static inline void dev_reset_queue(struct net_device *dev,
++				   struct netdev_queue *dev_queue,
++				   void *_unused)
++{
++	struct Qdisc *qdisc;
++	bool nolock;
++
++	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
++	if (!qdisc)
++		return;
++
++	nolock = qdisc->flags & TCQ_F_NOLOCK;
++
++	if (nolock)
++		spin_lock_bh(&qdisc->seqlock);
++	spin_lock_bh(qdisc_lock(qdisc));
++
++	qdisc_reset(qdisc);
++
++	spin_unlock_bh(qdisc_lock(qdisc));
++	if (nolock) {
++		clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
++		clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
++		spin_unlock_bh(&qdisc->seqlock);
++	}
++}
++
+ #ifdef CONFIG_NET_SCHED
+ int qdisc_offload_dump_helper(struct Qdisc *q, enum tc_setup_type type,
+ 			      void *type_data);
+diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
+index d27383c54b70b..3e1dbb84bb837 100644
+--- a/net/sched/sch_generic.c
++++ b/net/sched/sch_generic.c
+@@ -1297,33 +1297,6 @@ static void dev_deactivate_queue(struct net_device *dev,
+ 	}
+ }
+ 
+-static void dev_reset_queue(struct net_device *dev,
+-			    struct netdev_queue *dev_queue,
+-			    void *_unused)
+-{
+-	struct Qdisc *qdisc;
+-	bool nolock;
+-
+-	qdisc = rtnl_dereference(dev_queue->qdisc_sleeping);
+-	if (!qdisc)
+-		return;
+-
+-	nolock = qdisc->flags & TCQ_F_NOLOCK;
+-
+-	if (nolock)
+-		spin_lock_bh(&qdisc->seqlock);
+-	spin_lock_bh(qdisc_lock(qdisc));
+-
+-	qdisc_reset(qdisc);
+-
+-	spin_unlock_bh(qdisc_lock(qdisc));
+-	if (nolock) {
+-		clear_bit(__QDISC_STATE_MISSED, &qdisc->state);
+-		clear_bit(__QDISC_STATE_DRAINING, &qdisc->state);
+-		spin_unlock_bh(&qdisc->seqlock);
+-	}
+-}
+-
+ static bool some_qdisc_is_busy(struct net_device *dev)
+ {
+ 	unsigned int i;
+diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+index 783300d8b0197..ec4039a201a2c 100644
+--- a/net/sched/sch_teql.c
++++ b/net/sched/sch_teql.c
+@@ -146,15 +146,12 @@ teql_destroy(struct Qdisc *sch)
+ 					master->slaves = NEXT_SLAVE(q);
+ 					if (q == master->slaves) {
+ 						struct netdev_queue *txq;
+-						spinlock_t *root_lock;
+ 
+ 						txq = netdev_get_tx_queue(master->dev, 0);
+ 						master->slaves = NULL;
+ 
+-						root_lock = qdisc_root_sleeping_lock(rtnl_dereference(txq->qdisc));
+-						spin_lock_bh(root_lock);
+-						qdisc_reset(rtnl_dereference(txq->qdisc));
+-						spin_unlock_bh(root_lock);
++						dev_reset_queue(master->dev,
++								txq, NULL);
+ 					}
+ 				}
+ 				skb_queue_purge(&dat->q);
+-- 
+2.51.0
+
 
 
 
