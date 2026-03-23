@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229693-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WPi/HHNGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228006-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:03 +0100
+	id yMEyDEt0wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229693-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:11:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12CC82F371C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB2D2F98F3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:11:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8FE323020A67
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:42 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BA1CC31080E5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887FE3A6B88;
-	Mon, 23 Mar 2026 13:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACE03BFE47;
+	Mon, 23 Mar 2026 16:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SiEeDJsD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGk4d/5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAC13A961B;
-	Mon, 23 Mar 2026 13:50:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7EF3BF698;
+	Mon, 23 Mar 2026 16:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273840; cv=none; b=S42Yd7bo3vKm78NjyT54wNQvgrMTTrNCamEnr4ravc94OgsX/lKgsFOibqgu6tVqJWLb8b2Mvxl/HuBBOSWgO0QIprYR6dBiM/C1ug8TdHNp8XHuJ1cDvSaW/W2vY5VpXp4kEITbGsZWBw6GVpLdh+8Cn+JsBzvDC5fnTKV8BAU=
+	t=1774282612; cv=none; b=MBXyqsGDU0/lWQj109QBCh5BXYXFLu7jblubwz3RcxxaaPSBgSL9PDoJzGN+b1lrHoS20v2xn+WCqTB85IL1Vp5OPVbYFoM1An098QoneuhsCv8qeEFhMjLydgotxU90MZg3OvXkkCMrUhbeyWARv/cXhr0mmkHjrg4JdNVfTrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273840; c=relaxed/simple;
-	bh=46lBygGMgGqLbhq0M/K0jsMNu6y2g6KmWkcPM3N9fU0=;
+	s=arc-20240116; t=1774282612; c=relaxed/simple;
+	bh=2suOl2UoOHn8QzZZEOGoYpUB/x+VWmbzrvAXwotj9Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Viw/ASRSf3IW+/gR8YhuxGd9YiFURkFPCuC6yIVWA1TFpjU8fBO3dwp9GS6wb1kWUY4GJ4RAunnd00z4bATUiVWGYovd/lRqO93aL1aWdUhgWPtLkPpd+x3neXhQ/f1zv8/1rMHw7vfBmsuwarItptGAq8W498NCLSUdAPkm0zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SiEeDJsD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F186C2BC9E;
-	Mon, 23 Mar 2026 13:50:39 +0000 (UTC)
+	 MIME-Version; b=IChJQLiVXaVC0c8/Lt6hnIOXncf0fvdlgmMY4WVfK/uYtgqtVgOgYfDyDeYhZlUIFw5RW3MdUNXkACa0FSXu/r05kMCscVzm3Dk1sgVRm12QdS/yYr4tdVxm66ZPKuIv3zyzrafP8qls9Gf42XBi6CMGF7BSvZlnk8gVDdPThYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGk4d/5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE595C4CEF7;
+	Mon, 23 Mar 2026 16:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273840;
-	bh=46lBygGMgGqLbhq0M/K0jsMNu6y2g6KmWkcPM3N9fU0=;
+	s=korg; t=1774282612;
+	bh=2suOl2UoOHn8QzZZEOGoYpUB/x+VWmbzrvAXwotj9Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SiEeDJsDn5v3orNPBgYJoBuEPYPq+XhSGPaswFmXb0n1QW80Dn7zgVy2f+bj+6Fqs
-	 /9NcNcyutEOBLgaUe9GxWrPpJ3z8RxpmEMmw+gsagQuIYUFDQmu3rLgq+UfeBK3ZoD
-	 2L5jfkvHXVvJJcRdxH3EQ4YjInps0SX+qjb3jFh8=
+	b=eGk4d/5x+k6LTxjd/8rBonGJd7G5qmlG0Dfh3rHWcqmsei0tIiBNTjG4ls6MisZgb
+	 yWizk8VfvbZMv8ZBiYPfAek3MtzfNI1ymXwuBWdtmfFtY+wYGFLqbJAMljvxTQaoDD
+	 aplmzqrMr74fvQc5Y92mF/PrWDwVL5dM996O+Kqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.19 025/220] ksmbd: unset conn->binding on failed binding request
+	Felix Gu <gu_0233@qq.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 220/481] mmc: mmci: Fix device_node reference leak in of_get_dml_pipe_index()
 Date: Mon, 23 Mar 2026 14:43:22 +0100
-Message-ID: <20260323134505.376368578@linuxfoundation.org>
+Message-ID: <20260323134530.514208440@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +68,62 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228006-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229693-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linaro.org];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 12CC82F371C
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2BB2D2F98F3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Felix Gu <ustc.gu@gmail.com>
 
-commit 282343cf8a4a5a3603b1cb0e17a7083e4a593b03 upstream.
+commit af12e64ae0661546e8b4f5d30d55c5f53a11efe7 upstream.
 
-When a multichannel SMB2_SESSION_SETUP request with
-SMB2_SESSION_REQ_FLAG_BINDING fails ksmbd sets conn->binding = true
-but never clears it on the error path. This leaves the connection in
-a binding state where all subsequent ksmbd_session_lookup_all() calls
-fall back to the global sessions table. This fix it by clearing
-conn->binding = false in the error path.
+When calling of_parse_phandle_with_args(), the caller is responsible
+to call of_node_put() to release the reference of device node.
+In of_get_dml_pipe_index(), it does not release the reference.
 
+Fixes: 9cb15142d0e3 ("mmc: mmci: Add qcom dml support to the driver.")
+Signed-off-by: Felix Gu <gu_0233@qq.com>
 Cc: stable@vger.kernel.org
-Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    1 +
+ drivers/mmc/host/mmci_qcom_dml.c |    1 +
  1 file changed, 1 insertion(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1947,6 +1947,7 @@ out_err:
- 			}
- 		}
- 		smb2_set_err_rsp(work);
-+		conn->binding = false;
- 	} else {
- 		unsigned int iov_len;
+--- a/drivers/mmc/host/mmci_qcom_dml.c
++++ b/drivers/mmc/host/mmci_qcom_dml.c
+@@ -109,6 +109,7 @@ static int of_get_dml_pipe_index(struct
+ 				       &dma_spec))
+ 		return -ENODEV;
+ 
++	of_node_put(dma_spec.np);
+ 	if (dma_spec.args_count)
+ 		return dma_spec.args[0];
  
 
 
