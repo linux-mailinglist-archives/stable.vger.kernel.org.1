@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-229199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228668-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DWHBOFawWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229199-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:13 +0100
+	id ECUuKZhSwWkPSQQAu9opvQ
+	(envelope-from <stable+bounces-228668-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:47:52 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 763662F6335
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2879B2F5327
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:47:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5479D303338E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:11:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F71C304B5FD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296DB3BBA01;
-	Mon, 23 Mar 2026 15:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CB13947A6;
+	Mon, 23 Mar 2026 14:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhypzANw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyR5/yvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09CD3BB9F8;
-	Mon, 23 Mar 2026 15:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDE5324B16;
+	Mon, 23 Mar 2026 14:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278374; cv=none; b=aHiSbH0RrgISbusxeYTeV5z6ESNmifQBJFqGViv/L50Ws70/5lqAKEG6bOGX/LwC1VfaM+c1BNFUlGwq6F1Hyw0CAVICZOqep3tDS+CDBftzc5WQmOcLgVnB9HJPbVTM/X+lKsPQZFpJroKBC1JVCslASb6xgW7vvYv2Si14iEw=
+	t=1774275771; cv=none; b=ahM2LOn3SKR3TTzGy5se1pxdYg2812gs/MJK+vnPB1xIr8v8GYKbYtRzHKIjbOrZDQ7+6l2kxC66tBng1O7kU4a4yDsED/+c5RMJqa/TIsN6V84vDt54aK8wgWsSs+UP1QeSFPxS9N43+QBe6vjBFgItRW9l60NuuGjTfLnMYLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278374; c=relaxed/simple;
-	bh=I47/3KP1FBWsyIbAJSyIEhjk8dtSW7vza8zE+WiclVM=;
+	s=arc-20240116; t=1774275771; c=relaxed/simple;
+	bh=iJIZ5T6KgtWpFygaC8EW5VLooi/0h2afS6CyGZCOZsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tUNLpT7bD/73WyECZMJdTsPZtWs8NV9MUKU0jJD2p4zibejcbB+T94jAvhijebdoxzqrZj2fDq+HB/1xJ51sMNSsJ3s2tVqT49ap4YrsJeQ5zhDNNzrQDbI5GaGRW+qI0a4x2c7j4iSGPoooZlM59cr6FUPnvC1TRM/2U0yUffM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhypzANw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151A8C2BCB1;
-	Mon, 23 Mar 2026 15:06:12 +0000 (UTC)
+	 MIME-Version; b=iMuWhuY+fm0JR19DpMPUWyak7CQ0uvfEagFQgVzKpHVmpcGsztuAlB1O3hyK10nuwD66JCNuRgVGzRxkCwvjEqxnrpkXIx5gcoxZGW8hVtJMxdUHLfrpH8wPCQuEOcuKV+UeJ0Z9yjSlFomIPp2zD+yDD7oGiSUMUc9HSemnw6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyR5/yvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA16C4CEF7;
+	Mon, 23 Mar 2026 14:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278373;
-	bh=I47/3KP1FBWsyIbAJSyIEhjk8dtSW7vza8zE+WiclVM=;
+	s=korg; t=1774275771;
+	bh=iJIZ5T6KgtWpFygaC8EW5VLooi/0h2afS6CyGZCOZsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhypzANw6jf2uOvu9ahYCA/diRz3SmOqAjqUEuyqjodW/xHqhK8WaVNHhwdAMnd5N
-	 z6YFuPd4C9t5ijhgN1W+veoZHgZiS4di+uK0Czjl4SqyGLS/XNbVSBeCq8LLK046RA
-	 636N2fzxikSAWmshfEdHnsvjWFyooQihPu2Nsvrc=
+	b=AyR5/yvKwYLnFtX2PALooSxeQPgx72lbSFbmIIXMIyxImaq98GZzAFqqELztDCkNV
+	 4D0PuSfKP2OFgIVo5/a8cWtGtLwJq6mZEwuJbWHIXzCs0dVdf9tuNvOo5zh4AFiL7P
+	 CjQBKDH4nJ9jFQtPWSMOLIprx9F1ZfbdMOZFQ4HY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <gu_0233@qq.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 288/567] mmc: mmci: Fix device_node reference leak in of_get_dml_pipe_index()
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 212/460] iio: imu: inv_icm42600: fix odr switch to the same value
 Date: Mon, 23 Mar 2026 14:43:28 +0100
-Message-ID: <20260323134540.950773417@linuxfoundation.org>
+Message-ID: <20260323134531.723725901@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,59 +72,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229199-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,qq.com,linaro.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228668-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 763662F6335
+X-Rspamd-Queue-Id: 2879B2F5327
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-commit af12e64ae0661546e8b4f5d30d55c5f53a11efe7 upstream.
+commit c9f3a593137d862d424130343e77d4b5260a4f5a upstream.
 
-When calling of_parse_phandle_with_args(), the caller is responsible
-to call of_node_put() to release the reference of device node.
-In of_get_dml_pipe_index(), it does not release the reference.
+ODR switch is done in 2 steps when FIFO is on : change the ODR register
+value and acknowledge change when reading the FIFO ODR change flag.
+When we are switching to the same odr value, we end up waiting for a
+FIFO ODR flag that is never happening.
 
-Fixes: 9cb15142d0e3 ("mmc: mmci: Add qcom dml support to the driver.")
-Signed-off-by: Felix Gu <gu_0233@qq.com>
+Fix the issue by doing nothing and exiting properly when we are
+switching to the same ODR value.
+
+Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/mmci_qcom_dml.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c |    2 ++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c  |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/mmc/host/mmci_qcom_dml.c
-+++ b/drivers/mmc/host/mmci_qcom_dml.c
-@@ -109,6 +109,7 @@ static int of_get_dml_pipe_index(struct
- 				       &dma_spec))
- 		return -ENODEV;
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c
+@@ -454,6 +454,8 @@ static int inv_icm42600_accel_write_odr(
+ 		return -EINVAL;
  
-+	of_node_put(dma_spec.np);
- 	if (dma_spec.args_count)
- 		return dma_spec.args[0];
+ 	conf.odr = inv_icm42600_accel_odr_conv[idx / 2];
++	if (conf.odr == st->conf.accel.odr)
++		return 0;
  
+ 	pm_runtime_get_sync(dev);
+ 	mutex_lock(&st->lock);
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c
+@@ -361,6 +361,8 @@ static int inv_icm42600_gyro_write_odr(s
+ 		return -EINVAL;
+ 
+ 	conf.odr = inv_icm42600_gyro_odr_conv[idx / 2];
++	if (conf.odr == st->conf.gyro.odr)
++		return 0;
+ 
+ 	pm_runtime_get_sync(dev);
+ 	mutex_lock(&st->lock);
 
 
 
