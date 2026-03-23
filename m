@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228181-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SKP3DaBLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228351-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:08 +0100
+	id IOmfOChLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228181-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E278A2F41E6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 289092F40E2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 35B2A305806C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7072E30F5C4C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C28B3B38A9;
-	Mon, 23 Mar 2026 14:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C37E3B19DA;
+	Mon, 23 Mar 2026 13:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4EsTc2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KA9C3z3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE173B38A3;
-	Mon, 23 Mar 2026 14:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F16E1A6818;
+	Mon, 23 Mar 2026 13:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274884; cv=none; b=Lt3PGSiC3RtQNYGOuLue6lccx9rugU4j4+XdqIcpoFR1UtXa5tdbLJPrJjzvnSLoeKpFX4DVX03umnIDhhvaZJidaI3pNiL3stN8jLEq6cjSjkCz4y8u6AmOZaQf2yYpvYzEeDLNszi6xuqIqBxL+uPSX6s40k+4FACDh6mVDsM=
+	t=1774274374; cv=none; b=d3aLdQiaRzgdoXEh27DZXJAog+GHs5jrQDeMQTHXf+AS0mJk81uV9Qu5fkNlNYyGMcyJViYP8THY/j1JUCm3JKq6wg6d5+xM77n64oilyIIDvVYub6vmIBeploE6vmiJbBP5VEsD8tfSVUe1PPNKMNkwd12guGHB3/t/J3I7bA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274884; c=relaxed/simple;
-	bh=1qjj7iOjuzjDqfI+HhCibzCPZOnSS37BPA4qHHfEK8o=;
+	s=arc-20240116; t=1774274374; c=relaxed/simple;
+	bh=Ad5HeNV6z/cOPrZGWG1nPwUL906DiRUdfLWxAvb0PQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tjpVQHWveA6nD+tLdZCpe/CzNcrhZ2D3WGWFzvGM1zriRfn//76I+vLQ1vyKVG0qNQ2fbUmNjBAiVPrUD6FIkQkeU7EjV75D59LcmzNsTZtuhGs8zfhbdkc05m38ltJXtj2ZpF/X7VzJqEDTRT+i1n04+ahRP89Nd0D8CEeVbqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V4EsTc2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C816EC4CEF7;
-	Mon, 23 Mar 2026 14:08:03 +0000 (UTC)
+	 MIME-Version; b=Wx0A9K+y5lmre7JeCJ/OSPKfS7q96L9z7tXKG/ZITf88gB6SfAaACaYIG1ndmyXlubBqDOt/kTZ2WW3qxxcHfbnkhwUiAy7vqxzdiZ+EcaHWPOp4JcJ16hJHeB3BwYcT+QD2hwbhIQ1Tilb1NZCQLjT9/cQFKbaYk75KeBVeL3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KA9C3z3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D682C2BC9E;
+	Mon, 23 Mar 2026 13:59:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274884;
-	bh=1qjj7iOjuzjDqfI+HhCibzCPZOnSS37BPA4qHHfEK8o=;
+	s=korg; t=1774274373;
+	bh=Ad5HeNV6z/cOPrZGWG1nPwUL906DiRUdfLWxAvb0PQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4EsTc2tjGDRgkDL8q14V/2bLkpIG1Fj9stI/AilzpTsV/SicwsBDyTjlQ7WauZiq
-	 PXyhgQvS/TOEIfzKJVLhOetfqzHCzjeLzfu/Y7FLla8xK3zEyOlBPkXhj+Gjg6Swaj
-	 XsTPYJuIaB/7k7tk4ur6hhjU4IuwQyjpIZoaaZ7U=
+	b=KA9C3z3SLMYOVqu0V/gILtHOJI4Y1ZqvlFDu4fb8BOCjK3tnB94UrVRXHzWY52Fpe
+	 LdoWCJYFTo/iuPhjYqXZl31rm45CDmvva86YwmRXg9R2km3/GR9g4F5ZP/xPT5ljux
+	 yPma0qF3w3rmT84lxzEPXd8ql79tQacdfQWsNxms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 126/212] Bluetooth: hci_sync: Fix hci_le_create_conn_sync
+Subject: [PATCH 6.19 170/220] net/mlx5e: Fix race condition during IPSec ESN update
 Date: Mon, 23 Mar 2026 14:45:47 +0100
-Message-ID: <20260323134507.751631244@linuxfoundation.org>
+Message-ID: <20260323134509.965716495@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,82 +68,159 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228351-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228181-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E278A2F41E6
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 289092F40E2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 2cabe7ff1001b7a197009cf50ba71701f9cbd354 ]
+[ Upstream commit beb6e2e5976a128b0cccf10d158124422210c5ef ]
 
-While introducing hci_le_create_conn_sync the functionality
-of hci_connect_le was ported to hci_le_create_conn_sync including
-the disable of the scan before starting the connection.
+In IPSec full offload mode, the device reports an ESN (Extended
+Sequence Number) wrap event to the driver. The driver validates this
+event by querying the IPSec ASO and checking that the esn_event_arm
+field is 0x0, which indicates an event has occurred. After handling
+the event, the driver must re-arm the context by setting esn_event_arm
+back to 0x1.
 
-When this code was run non synchronously the immediate call that was
-setting the flag HCI_LE_SCAN_INTERRUPTED had an impact. Since the
-completion handler for the LE_SCAN_DISABLE was not immediately called.
-In the completion handler of the LE_SCAN_DISABLE event, this flag is
-checked to set the state of the hdev to DISCOVERY_STOPPED.
+A race condition exists in this handling path. After validating the
+event, the driver calls mlx5_accel_esp_modify_xfrm() to update the
+kernel's xfrm state. This function temporarily releases and
+re-acquires the xfrm state lock.
 
-With the synchronised approach the later setting of the
-HCI_LE_SCAN_INTERRUPTED flag has not the same effect. The completion
-handler would immediately fire in the LE_SCAN_DISABLE call, check for
-the flag, which is then not yet set and do nothing.
+So, need to acknowledge the event first by setting esn_event_arm to
+0x1. This prevents the driver from reprocessing the same ESN update if
+the hardware sends events for other reason. Since the next ESN update
+only occurs after nearly 2^31 packets are received, there's no risk of
+missing an update, as it will happen long after this handling has
+finished.
 
-To fix this issue and make the function call work as before, we move the
-setting of the flag HCI_LE_SCAN_INTERRUPTED before disabling the scan.
+Processing the event twice causes the ESN high-order bits (esn_msb) to
+be incremented incorrectly. The driver then programs the hardware with
+this invalid ESN state, which leads to anti-replay failures and a
+complete halt of IPSec traffic.
 
-Fixes: 8e8b92ee60de ("Bluetooth: hci_sync: Add hci_le_create_conn_sync")
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fix this by re-arming the ESN event immediately after it is validated,
+before calling mlx5_accel_esp_modify_xfrm(). This ensures that any
+spurious, duplicate events are correctly ignored, closing the race
+window.
+
+Fixes: fef06678931f ("net/mlx5e: Fix ESN update kernel panic")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260316094603.6999-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../mlx5/core/en_accel/ipsec_offload.c        | 33 ++++++++-----------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 9f01837250a5e..e94b62844e1ef 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -6578,8 +6578,8 @@ static int hci_le_create_conn_sync(struct hci_dev *hdev, void *data)
- 	 * state.
- 	 */
- 	if (hci_dev_test_flag(hdev, HCI_LE_SCAN)) {
--		hci_scan_disable_sync(hdev);
- 		hci_dev_set_flag(hdev, HCI_LE_SCAN_INTERRUPTED);
-+		hci_scan_disable_sync(hdev);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index 2739ff490239d..e0611fa827971 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -310,10 +310,11 @@ static void mlx5e_ipsec_aso_update(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 	mlx5e_ipsec_aso_query(sa_entry, data);
+ }
+ 
+-static void mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
+-					 u32 mode_param)
++static void
++mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
++			     u32 mode_param,
++			     struct mlx5_accel_esp_xfrm_attrs *attrs)
+ {
+-	struct mlx5_accel_esp_xfrm_attrs attrs = {};
+ 	struct mlx5_wqe_aso_ctrl_seg data = {};
+ 
+ 	if (mode_param < MLX5E_IPSEC_ESN_SCOPE_MID) {
+@@ -323,18 +324,7 @@ static void mlx5e_ipsec_update_esn_state(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 		sa_entry->esn_state.overlap = 1;
  	}
  
- 	/* Update random address, but set require_privacy to false so
+-	mlx5e_ipsec_build_accel_xfrm_attrs(sa_entry, &attrs);
+-
+-	/* It is safe to execute the modify below unlocked since the only flows
+-	 * that could affect this HW object, are create, destroy and this work.
+-	 *
+-	 * Creation flow can't co-exist with this modify work, the destruction
+-	 * flow would cancel this work, and this work is a single entity that
+-	 * can't conflict with it self.
+-	 */
+-	spin_unlock_bh(&sa_entry->x->lock);
+-	mlx5_accel_esp_modify_xfrm(sa_entry, &attrs);
+-	spin_lock_bh(&sa_entry->x->lock);
++	mlx5e_ipsec_build_accel_xfrm_attrs(sa_entry, attrs);
+ 
+ 	data.data_offset_condition_operand =
+ 		MLX5_IPSEC_ASO_REMOVE_FLOW_PKT_CNT_OFFSET;
+@@ -451,7 +441,9 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 	struct mlx5e_ipsec_work *work =
+ 		container_of(_work, struct mlx5e_ipsec_work, work);
+ 	struct mlx5e_ipsec_sa_entry *sa_entry = work->data;
++	struct mlx5_accel_esp_xfrm_attrs tmp = {};
+ 	struct mlx5_accel_esp_xfrm_attrs *attrs;
++	bool need_modify = false;
+ 	int ret;
+ 
+ 	attrs = &sa_entry->attrs;
+@@ -461,19 +453,22 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 	if (ret)
+ 		goto unlock;
+ 
++	if (attrs->lft.soft_packet_limit != XFRM_INF)
++		mlx5e_ipsec_handle_limits(sa_entry);
++
+ 	if (attrs->replay_esn.trigger &&
+ 	    !MLX5_GET(ipsec_aso, sa_entry->ctx, esn_event_arm)) {
+ 		u32 mode_param = MLX5_GET(ipsec_aso, sa_entry->ctx,
+ 					  mode_parameter);
+ 
+-		mlx5e_ipsec_update_esn_state(sa_entry, mode_param);
++		mlx5e_ipsec_update_esn_state(sa_entry, mode_param, &tmp);
++		need_modify = true;
+ 	}
+ 
+-	if (attrs->lft.soft_packet_limit != XFRM_INF)
+-		mlx5e_ipsec_handle_limits(sa_entry);
+-
+ unlock:
+ 	spin_unlock_bh(&sa_entry->x->lock);
++	if (need_modify)
++		mlx5_accel_esp_modify_xfrm(sa_entry, &tmp);
+ 	kfree(work);
+ }
+ 
 -- 
 2.51.0
 
