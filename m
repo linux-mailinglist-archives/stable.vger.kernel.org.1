@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229128-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GMs3OhF8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229624-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:49 +0100
+	id 4BDyF95ZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229128-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747B32FA565
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60A22F621D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E97393051AB4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E865232133FD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA44F3BD638;
-	Mon, 23 Mar 2026 16:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5853282F33;
+	Mon, 23 Mar 2026 15:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxJbv+Rw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJh0bKad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C4F3A758D;
-	Mon, 23 Mar 2026 16:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777B5282F26;
+	Mon, 23 Mar 2026 15:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282426; cv=none; b=ejdK6G3DlvtPg7H80z+HIhdR+1LK9nol1Z27w5WNNXsY2twHLUerODCma56DgmzIXR0p/bMNY9edRnWozKdveZBNii123YVTt3VjXl9pL+7WPB2sC3VygJrtvzbV8GcssFlRdwkBeuhZbNzUUt2vpEM2l1E3sA+AyBeNwEqaZoI=
+	t=1774278149; cv=none; b=d2Aaddy0GlUkmWwITiYeX7tDj2VgVHvHQW3URDh4vEfcEpB+I5XXL8hPiGGDSK5RjSDrLBLHEgM1NKF8Iwuf5X7iwBhKJqDuxLuRPYNCuNx5tg3BnFgH97yyiUdts5PMf76HYQLSR2vTUpX9ns95OsMiEcqSDNbnFVeGo7MjHkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282426; c=relaxed/simple;
-	bh=KDv5Xos8XZQ/kg7bBsWOFmtcLJ5otXpAbCMD3Z+VUCc=;
+	s=arc-20240116; t=1774278149; c=relaxed/simple;
+	bh=Ktfpcqe0fZC9UbwFDqm6Kv+Af0dXDvLl/obvnCc5dso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s0EEMLdPbcExAGlfjOWmFM2cBhdiHAgGGbcvAXxLsRohULrn7/0JSKXdv40B7Kv7wQiTF42KHPw0AyU1aI6m91jZZLH7BHrF26BmaZJv/DsARoLMo79avbSdymYEqNrfzcF0sns1wWe5RQnc9Rg4c0F6zcBijb7Eb2FcF4aLeMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxJbv+Rw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5BFC2BCB0;
-	Mon, 23 Mar 2026 16:13:45 +0000 (UTC)
+	 MIME-Version; b=BKlXYVdOaTMCK9DnLrGWNxPb3tKu2ihltjHxwi1PW37E+8wuC2JqBhfl5HZgdPN+WfxmBnPOKX9z5s3m1+/vbRbpbiChPl95WA/A7jnQf5kmTDv3OFyCpdxtE54Y/fWnr4ELQVNnMsAu5/01lDJ3k+nCOZ4+T8hN2yrOojO1U3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJh0bKad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FEAC2BC9E;
+	Mon, 23 Mar 2026 15:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282426;
-	bh=KDv5Xos8XZQ/kg7bBsWOFmtcLJ5otXpAbCMD3Z+VUCc=;
+	s=korg; t=1774278149;
+	bh=Ktfpcqe0fZC9UbwFDqm6Kv+Af0dXDvLl/obvnCc5dso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vxJbv+Rwt2O8nX0d7wW56plAfTML2R7114PK5TNCRuIP7q0TzH0e3FlXraEtrdCmu
-	 HY6vo6BLafMwMbN28xaKLQgWOwoYWvuJ61qFCt9RTNkKQnfLtfpbax1qascW6bEKds
-	 2Ux38ocyhS0p0tCLV+46MlNyez3NStV4ZygvYRaI=
+	b=WJh0bKadbTyHYzSTaoF9t9QML+oPb9XOniEbWeQ0nfgaOl1+XTbfk+LcTwKHYvewo
+	 a+/ZL/C65spYsPGsy0ryzvHraFLaf3PyXIJ7eKXYi/fVL08p17S8UANxenJ7nJlXzh
+	 G2kwptrSU7kiA7uklLWdBc1cykeZNEWY6hGalHCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Azamat Almazbek uulu <almazbek1608@gmail.com>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/481] ASoC: amd: yc: Add ASUS EXPERTBOOK BM1503CDA to quirk table
+Subject: [PATCH 6.6 215/567] smb/server: Fix another refcount leak in smb2_open()
 Date: Mon, 23 Mar 2026 14:42:15 +0100
-Message-ID: <20260323134528.972919658@linuxfoundation.org>
+Message-ID: <20260323134539.148729402@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,76 +70,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-229624-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229128-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 747B32FA565
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A60A22F621D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Azamat Almazbek uulu <almazbek1608@gmail.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 32fc4168fa56f6301d858c778a3d712774e9657e ]
+[ Upstream commit c15e7c62feb3751cbdd458555819df1d70374890 ]
 
-The ASUS ExpertBook BM1503CDA (Ryzen 5 7535U, Barcelo-R) has an
-internal DMIC connected through the AMD ACP (Audio CoProcessor)
-but is missing from the DMI quirk table, so the acp6x machine
-driver probe returns -ENODEV and no DMIC capture device is created.
+If ksmbd_override_fsids() fails, we jump to err_out2. At that point, fp is
+NULL because it hasn't been assigned dh_info.fp yet, so ksmbd_fd_put(work,
+fp) will not be called. However, dh_info.fp was already inserted into the
+session file table by ksmbd_reopen_durable_fd(), so it will leak in the
+session file table until the session is closed.
 
-Add the DMI entry so the internal microphone works out of the box.
+Move fp = dh_info.fp; ahead of the ksmbd_override_fsids() check to fix the
+problem.
 
-Signed-off-by: Azamat Almazbek uulu <almazbek1608@gmail.com>
-Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://patch.msgid.link/20260221114813.5610-1-almazbek1608@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Found by an experimental AI code review agent at Google.
+
+Fixes: c8efcc786146a ("ksmbd: add support for durable handles v1/v2")
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/smb/server/smb2pdu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 31e4661f78671..715f1f76dab54 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -549,6 +549,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 				DMI_MATCH(DMI_PRODUCT_NAME, "Vivobook_ASUSLaptop M6501RR_M6501RR"),
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index da4d914c87ad2..5a112211a7111 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2990,13 +2990,14 @@ int smb2_open(struct ksmbd_work *work)
+ 				goto err_out2;
  			}
- 		},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK BM1503CDA"),
-+		}
-+	},
- 	{}
- };
  
++			fp = dh_info.fp;
++
+ 			if (ksmbd_override_fsids(work)) {
+ 				rc = -ENOMEM;
+ 				ksmbd_put_durable_fd(dh_info.fp);
+ 				goto err_out2;
+ 			}
+ 
+-			fp = dh_info.fp;
+ 			file_info = FILE_OPENED;
+ 
+ 			rc = ksmbd_vfs_getattr(&fp->filp->f_path, &stat);
 -- 
 2.51.0
 
