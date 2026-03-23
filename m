@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228825-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHcKEwNewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229356-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:35 +0100
+	id EMzII5ZUwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228825-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:22 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0622F68E9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A82A2F5776
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1243B312DDC4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 66E5E30F5241
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3288C3B2FD2;
-	Mon, 23 Mar 2026 15:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC234242D7F;
+	Mon, 23 Mar 2026 14:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQBybggh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sa6kgSjg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA78B3AC0EB;
-	Mon, 23 Mar 2026 15:14:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C68E23D288;
+	Mon, 23 Mar 2026 14:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278857; cv=none; b=BaFxdQyOXLfG7n7P6R6TYHsj0vjtkGPFE7ryjss5OyzyoSMytec0XimFXXCa7KDgVyiTQv0uZ94kk4L4um33HrW0RBsYeZg2H16xvaBNDAxmmybpIKBFNV+S1I9s6JCJ+CZ+aVHq3WmKRBRm4HuUSlVhAEkAmNjVWt7YH6u56P0=
+	t=1774277237; cv=none; b=VqkEKLMpwKlyXXYjdjmTbWAMZW/v7vNSEZnMKTpyo5ENDoPsVPSYB0jVN1l8tGorQ6f4GXitr1IwNLvoHFsysu0LVB8TfXdbOWbisOGo69WZsf24kwm+MO+xb1d3hyuiyE546RnCc/CAqXmR/UBD8zjthjtrGrio0hHfY6933iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278857; c=relaxed/simple;
-	bh=swgZ750nisCCA9k5TCjend08luBlZdmoXC3268bJbd4=;
+	s=arc-20240116; t=1774277237; c=relaxed/simple;
+	bh=gOSCU4aHn4gGReZ/AY9u6GnFSbQAagjiJ7hoMxH3sMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fop4na5YA4D+jCEgDeh1pRY1h/KF2xeo1vJcqdJOYyhk0IzGsR+dpzGqin1FKhjyKR2EI7l5tPhmp+MeqN78joY4toISLnjuwBmCUa4yxq8Jyxll8OC1kMoAhGl5YKWG9Ke27ALk7kG0AcKJ3rX1z9YUdi0nUW73WpZ+VM3qWkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQBybggh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6F3C2BC9E;
-	Mon, 23 Mar 2026 15:14:16 +0000 (UTC)
+	 MIME-Version; b=lnxeqcoDXWtMROGqibKT5PiR1o+N2bmSvGngRJ7Pc4VI1E7c18awAM/r2mGRtWHYXr1mkVxA2DK1+rCDLaDXGaEs7USpnjnZ98qB134vxYb9CSDT7s7SqsOgwv0yjcUqXM+kUroVEZqV9qmhG/8IFnVXklD2zQePsrbi+i2dIUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sa6kgSjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 297C9C4CEF7;
+	Mon, 23 Mar 2026 14:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278856;
-	bh=swgZ750nisCCA9k5TCjend08luBlZdmoXC3268bJbd4=;
+	s=korg; t=1774277237;
+	bh=gOSCU4aHn4gGReZ/AY9u6GnFSbQAagjiJ7hoMxH3sMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQBybgghg4h3F5VV8PkTAxvtLSoOgvlE+bDRHbreaV9lWQZ5y/HTQ+8JJYguUQZz7
-	 qvhbeniM3E5ShR/e0AzXIB9lBhCtntFx3KjE9b7/PQI7NPVlyTJiWrdJ+omfmRbArg
-	 17uahOzbmnynI+F2WN0+Yr2QQxOTD3GDM+LclK18=
+	b=Sa6kgSjgG+8gK7LeO3it/9/f3bt9hlVGrF7AgT+yG+qsndsKM/tIiPvpmdpB/ioKK
+	 iiUZhnmC1LCMJxNg8oYJhfAQ4slHgqgZQiPZs9wwxk0D6sgxH4++YZs8VTYBjEgAaW
+	 YJWLIu4zZ6nVzMBS+TNxO2hVzyDBukeiGDKZgr18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zqiang <qiang.zhang1211@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
-	Jianqiang kang <jianqkang@sina.cn>
-Subject: [PATCH 6.6 441/567] rcu/nocb: Fix possible invalid rdps->nocb_cb_kthread pointer access
+	Guenter Roeck <linux@roeck-us.net>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 365/460] ata: libata-scsi: report correct sense field pointer in ata_scsiop_maint_in()
 Date: Mon, 23 Mar 2026 14:46:01 +0100
-Message-ID: <20260323134544.865160413@linuxfoundation.org>
+Message-ID: <20260323134535.534805763@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,98 +65,73 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,sina.cn];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229356-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228825-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-0.994];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BD0622F68E9
+X-Rspamd-Queue-Id: 2A82A2F5776
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit 1bba3900ca18bdae28d1b9fa10f16a8f8cb2ada1 ]
+[ Upstream commit e6d7eba23b666d85cacee0643be280d6ce1ebffc ]
 
-In the preparation stage of CPU online, if the corresponding
-the rdp's->nocb_cb_kthread does not exist, will be created,
-there is a situation where the rdp's rcuop kthreads creation fails,
-and then de-offload this CPU's rdp, does not assign this CPU's
-rdp->nocb_cb_kthread pointer, but this rdp's->nocb_gp_rdp and
-rdp's->rdp_gp->nocb_gp_kthread is still valid.
+Commit 4ab7bb976343 ("ata: libata-scsi: Refactor ata_scsiop_maint_in()")
+modified ata_scsiop_maint_in() to directly call
+ata_scsi_set_invalid_field() to set the field pointer of the sense data
+of a failed MAINTENANCE IN command. However, in the case of an invalid
+command format, the sense data field incorrectly indicates byte 1 of
+the CDB. Fix this to indicate byte 2 of the command.
 
-This will cause the subsequent re-offload operation of this offline
-CPU, which will pass the conditional check and the kthread_unpark()
-will access invalid rdp's->nocb_cb_kthread pointer.
-
-This commit therefore use rdp's->nocb_gp_kthread instead of
-rdp_gp's->nocb_gp_kthread for safety check.
-
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 4ab7bb976343 ("ata: libata-scsi: Refactor ata_scsiop_maint_in()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/rcu/tree_nocb.h |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/ata/libata-scsi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/rcu/tree_nocb.h
-+++ b/kernel/rcu/tree_nocb.h
-@@ -1221,7 +1221,6 @@ static long rcu_nocb_rdp_offload(void *a
- 	struct rcu_segcblist *cblist = &rdp->cblist;
- 	unsigned long flags;
- 	int wake_gp;
--	struct rcu_data *rdp_gp = rdp->nocb_gp_rdp;
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3611,7 +3611,7 @@ static unsigned int ata_scsiop_maint_in(
  
- 	WARN_ON_ONCE(rdp->cpu != raw_smp_processor_id());
- 	/*
-@@ -1231,7 +1230,7 @@ static long rcu_nocb_rdp_offload(void *a
- 	if (!rdp->nocb_gp_rdp)
- 		return -EINVAL;
+ 	if (cdb[2] != 1 && cdb[2] != 3) {
+ 		ata_dev_warn(dev, "invalid command format %d\n", cdb[2]);
+-		ata_scsi_set_invalid_field(dev, cmd, 1, 0xff);
++		ata_scsi_set_invalid_field(dev, cmd, 2, 0xff);
+ 		return 0;
+ 	}
  
--	if (WARN_ON_ONCE(!rdp_gp->nocb_gp_kthread))
-+	if (WARN_ON_ONCE(!rdp->nocb_gp_kthread))
- 		return -EINVAL;
- 
- 	pr_info("Offloading %d\n", rdp->cpu);
-@@ -1260,7 +1259,7 @@ static long rcu_nocb_rdp_offload(void *a
- 	 */
- 	wake_gp = rdp_offload_toggle(rdp, true, flags);
- 	if (wake_gp)
--		wake_up_process(rdp_gp->nocb_gp_kthread);
-+		wake_up_process(rdp->nocb_gp_kthread);
- 	swait_event_exclusive(rdp->nocb_state_wq,
- 			      rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_CB) &&
- 			      rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_GP));
 
 
 
