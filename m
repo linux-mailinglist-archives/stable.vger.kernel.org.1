@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228853-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IOYsLCdhwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229427-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:49:59 +0100
+	id sExPDl5XwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228853-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4276E2F6FAF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:49:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E992F5D45
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CFB9E303EFCF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8C0F9302233E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CDF53CC9F2;
-	Mon, 23 Mar 2026 15:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B0D3AE1A6;
+	Mon, 23 Mar 2026 14:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFajC6r0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0CGhBoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19A913CC9E9;
-	Mon, 23 Mar 2026 15:20:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 169D33AA516;
+	Mon, 23 Mar 2026 14:48:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279212; cv=none; b=GyRR/OwlNxbDr68ZZGpPpIiwgq/1/YbDUoKyPK58dqtGHHQMri6WUSRXuTg8SQ7BBuoSyFRTCy9xbQH0PugttMgnBP+/UiFT1qdn9UGnMMLtuRTia9es1hBZa2dhyhdVhPYSoHnSwyBfBzCu1soC5Pvu5Bax8GI7vAd6znVQ86M=
+	t=1774277311; cv=none; b=VaPQR5JrKYd1KiMx40jQJ3gegViVHKBpvaUxW6XqZy7jqlU+FMSM4ceezO6zc5hZ+Sp1EKjfjKHpvU3r25omUQOtqbh+Mjuqn1gZrFMpm7tl1FfRMYl4Xym7rdeIlIWN7SKNo2dzOOZ4haA91lGWmg+o94XfnsVHMM4o0IacHKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279212; c=relaxed/simple;
-	bh=ZG2RI/yE7y3T2SbmDcVz2I3yLnhZ09ZVTRTodNEdCWA=;
+	s=arc-20240116; t=1774277311; c=relaxed/simple;
+	bh=yRXem0Pt361mm+3gN1RuwjUDfWOKftEywolsyNM/y+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ea5/zeqdGV6O+syTOCjReDludqwhzpUuT630+IqG0UFnMQizEgyvCrI4GWQSj+R+oMG+q9zYLIsWKVStmVjH/gIVS4oY3/J9uqCtsHXr/7bl12jYc1Kihdo9QUGdjt1Z1rF9OF+cdOpaueQvJpiCVE1rX3RT+P0JsvqzSqKOmqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFajC6r0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C31C2BC9E;
-	Mon, 23 Mar 2026 15:20:11 +0000 (UTC)
+	 MIME-Version; b=ZMltkim1LXEIhRE3dxY/2ViZAgrOrhqNHlEPvANdLGqtac5q/IeAL6EKP9tu8NnAXQigxG4KjXy2AnY1iJCruW87KhfjHetA56GIciHlSIvaTbICu9ZhzighVBnrfz+t+WEWjKEddl0rC//gISg5DYef5VHCLYKzeSKlqEMYFp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0CGhBoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EBF9C4CEF7;
+	Mon, 23 Mar 2026 14:48:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279211;
-	bh=ZG2RI/yE7y3T2SbmDcVz2I3yLnhZ09ZVTRTodNEdCWA=;
+	s=korg; t=1774277310;
+	bh=yRXem0Pt361mm+3gN1RuwjUDfWOKftEywolsyNM/y+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFajC6r02MwhsrirTd/HrgES1dM/JJVIjN1DUK4PfweTa29MkR6N00se4xTe6NB6z
-	 IUfGEEY3kzD/ux2xe56dnIqCUSDn142wgIfJcziypTzZJ7rndmqd3fcx/qqNLBgb6G
-	 0kKbJyQ8nRNYSww62wTTnxYNEQlli433TuHHVYZg=
+	b=a0CGhBoNLA03ciLry0HWsL2q2VfjfykI4UdlJtE38zNGXK+OLoBtHFx8CcyinXlX+
+	 MVig5wiVn3Ap0/t4ZwjOcMFVsvx3t2hpgPj/bTS1/2MPbcb4cFkx/FgvijlH5ef3ZI
+	 zOomp2NhGLyxjq3KRu/7nAN5B3nAR5J7h5jZBK6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Linus Walleij <linusw@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 468/567] iio: light: bh1780: fix PM runtime leak on error path
-Date: Mon, 23 Mar 2026 14:46:28 +0100
-Message-ID: <20260323134545.564306673@linuxfoundation.org>
+Subject: [PATCH 6.12 393/460] netfilter: ctnetlink: fix use-after-free in ctnetlink_dump_exp_ct()
+Date: Mon, 23 Mar 2026 14:46:29 +0100
+Message-ID: <20260323134536.224843043@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +66,157 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229427-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228853-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,analog.com:email,huawei.com:email]
-X-Rspamd-Queue-Id: 4276E2F6FAF
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 55E992F5D45
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit dd72e6c3cdea05cad24e99710939086f7a113fb5 ]
+[ Upstream commit 5cb81eeda909dbb2def209dd10636b51549a3f8a ]
 
-Move pm_runtime_put_autosuspend() before the error check to ensure
-the PM runtime reference count is always decremented after
-pm_runtime_get_sync(), regardless of whether the read operation
-succeeds or fails.
+ctnetlink_dump_exp_ct() stores a conntrack pointer in cb->data for the
+netlink dump callback ctnetlink_exp_ct_dump_table(), but drops the
+conntrack reference immediately after netlink_dump_start().  When the
+dump spans multiple rounds, the second recvmsg() triggers the dump
+callback which dereferences the now-freed conntrack via nfct_help(ct),
+leading to a use-after-free on ct->ext.
 
-Fixes: 1f0477f18306 ("iio: light: new driver for the ROHM BH1780")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ moved both pm_runtime_mark_last_busy() and pm_runtime_put_autosuspend() before the error check instead of just pm_runtime_put_autosuspend() ]
+The bug is that the netlink_dump_control has no .start or .done
+callbacks to manage the conntrack reference across dump rounds.  Other
+dump functions in the same file (e.g. ctnetlink_get_conntrack) properly
+use .start/.done callbacks for this purpose.
+
+Fix this by adding .start and .done callbacks that hold and release the
+conntrack reference for the duration of the dump, and move the
+nfct_help() call after the cb->args[0] early-return check in the dump
+callback to avoid dereferencing ct->ext unnecessarily.
+
+ BUG: KASAN: slab-use-after-free in ctnetlink_exp_ct_dump_table+0x4f/0x2e0
+ Read of size 8 at addr ffff88810597ebf0 by task ctnetlink_poc/133
+
+ CPU: 1 UID: 0 PID: 133 Comm: ctnetlink_poc Not tainted 7.0.0-rc2+ #3 PREEMPTLAZY
+ Call Trace:
+  <TASK>
+  ctnetlink_exp_ct_dump_table+0x4f/0x2e0
+  netlink_dump+0x333/0x880
+  netlink_recvmsg+0x3e2/0x4b0
+  ? aa_sk_perm+0x184/0x450
+  sock_recvmsg+0xde/0xf0
+
+ Allocated by task 133:
+  kmem_cache_alloc_noprof+0x134/0x440
+  __nf_conntrack_alloc+0xa8/0x2b0
+  ctnetlink_create_conntrack+0xa1/0x900
+  ctnetlink_new_conntrack+0x3cf/0x7d0
+  nfnetlink_rcv_msg+0x48e/0x510
+  netlink_rcv_skb+0xc9/0x1f0
+  nfnetlink_rcv+0xdb/0x220
+  netlink_unicast+0x3ec/0x590
+  netlink_sendmsg+0x397/0x690
+  __sys_sendmsg+0xf4/0x180
+
+ Freed by task 0:
+  slab_free_after_rcu_debug+0xad/0x1e0
+  rcu_core+0x5c3/0x9c0
+
+Fixes: e844a928431f ("netfilter: ctnetlink: allow to dump expectation per master conntrack")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/light/bh1780.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/light/bh1780.c
-+++ b/drivers/iio/light/bh1780.c
-@@ -109,10 +109,10 @@ static int bh1780_read_raw(struct iio_de
- 		case IIO_LIGHT:
- 			pm_runtime_get_sync(&bh1780->client->dev);
- 			value = bh1780_read_word(bh1780, BH1780_REG_DLOW);
--			if (value < 0)
--				return value;
- 			pm_runtime_mark_last_busy(&bh1780->client->dev);
- 			pm_runtime_put_autosuspend(&bh1780->client->dev);
-+			if (value < 0)
-+				return value;
- 			*val = value;
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 13836723223e0..627790fcb6bb0 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3206,7 +3206,7 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
+ 	struct nf_conn *ct = cb->data;
+-	struct nf_conn_help *help = nfct_help(ct);
++	struct nf_conn_help *help;
+ 	u_int8_t l3proto = nfmsg->nfgen_family;
+ 	unsigned long last_id = cb->args[1];
+ 	struct nf_conntrack_expect *exp;
+@@ -3214,6 +3214,10 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 	if (cb->args[0])
+ 		return 0;
  
- 			return IIO_VAL_INT;
++	help = nfct_help(ct);
++	if (!help)
++		return 0;
++
+ 	rcu_read_lock();
+ 
+ restart:
+@@ -3243,6 +3247,24 @@ ctnetlink_exp_ct_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return skb->len;
+ }
+ 
++static int ctnetlink_dump_exp_ct_start(struct netlink_callback *cb)
++{
++	struct nf_conn *ct = cb->data;
++
++	if (!refcount_inc_not_zero(&ct->ct_general.use))
++		return -ENOENT;
++	return 0;
++}
++
++static int ctnetlink_dump_exp_ct_done(struct netlink_callback *cb)
++{
++	struct nf_conn *ct = cb->data;
++
++	if (ct)
++		nf_ct_put(ct);
++	return 0;
++}
++
+ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
+ 				 struct sk_buff *skb,
+ 				 const struct nlmsghdr *nlh,
+@@ -3258,6 +3280,8 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
+ 	struct nf_conntrack_zone zone;
+ 	struct netlink_dump_control c = {
+ 		.dump = ctnetlink_exp_ct_dump_table,
++		.start = ctnetlink_dump_exp_ct_start,
++		.done = ctnetlink_dump_exp_ct_done,
+ 	};
+ 
+ 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
+-- 
+2.51.0
+
 
 
 
