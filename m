@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229501-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKzeN4RYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229046-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:08 +0100
+	id YCbRL2FjwWn/SgQAu9opvQ
+	(envelope-from <stable+bounces-229501-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B7612F5FC0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F1A2F7396
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B22B530BE408
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C342B342B419
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18E50387599;
-	Mon, 23 Mar 2026 14:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3873BF687;
+	Mon, 23 Mar 2026 15:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ejm1juGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKnCkGpx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAFA2737EB;
-	Mon, 23 Mar 2026 14:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD85280309;
+	Mon, 23 Mar 2026 15:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277887; cv=none; b=jhAqqnnwgbo26p1v9fvqXz/gflaqh4ZremwdlhMvIkLbZ9GdhOfQZhW3pXwEtN/050tWPfD85JlHo5+cT8G1ljK29KkzdfuooGXoEin1x3QHFdPCoH18E83PCxSPmNkdKWjl6mj4cZ6NgTBCpVnMue7tt/bT+gNk5JBUmqJEbVY=
+	t=1774279435; cv=none; b=hZjUQGbVIIR6hiRPxoifkaeiSFVScu2r2N1JtM+rLJfwgrYjmU1+rvFWOd/JPTDpOlYuk+NJFK34ULvD1z36Cs95LzY+uYKa2RRdBZUj1IiBRE8DmnU/ThtuxdmQVm0QjiDyTqIkqoMEVdEKDvdH4C06XAfc55EbD53aWHB5gYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277887; c=relaxed/simple;
-	bh=9mWObq2gcZiFQK3EyBzlQRSBypqv0wXMkXOwiCeEQp0=;
+	s=arc-20240116; t=1774279435; c=relaxed/simple;
+	bh=hhNRzz6g4EKB9LjkjZ24R73JjpxRkl3xo2AtGjnwPXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EYzh96EHg61KQvYGNvGWLuGpxVW3GpMsloK+0HMp76GfJe2XCJfkPtdkP34mRDoJ+9oWNEi3thMovl7M1VX8fRUdr04kqM1jAOoivGaRAbsdATqWu1c4ltGQEX4bI5+nhzoGiDyOilvsHlTySCwy7UFiveGrsIseLJN/BPRVkiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ejm1juGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527E0C4CEF7;
-	Mon, 23 Mar 2026 14:58:07 +0000 (UTC)
+	 MIME-Version; b=nelli206L0q5CxbC/VrXhXyoarfUyenQQaIhPSXln9YW4cPtu1wPEDmuNf9qjcvdAuh6yZ+odqXvJEL947m3RBfC0syWeKSetOxLh5jNPZy45fO7m8wNwnUq2nJz+GHfS4HmmGFrphoKFv/wn6TOvIuqnx0YMsqdlFKnEcAmDJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKnCkGpx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC41C4CEF7;
+	Mon, 23 Mar 2026 15:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277887;
-	bh=9mWObq2gcZiFQK3EyBzlQRSBypqv0wXMkXOwiCeEQp0=;
+	s=korg; t=1774279435;
+	bh=hhNRzz6g4EKB9LjkjZ24R73JjpxRkl3xo2AtGjnwPXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ejm1juGo1VCnsdGayyNpntCy1M7CFhDWyf+bojZ8xt6TVtgqXi84jT847L8d2KCf2
-	 lnm71dpZjFUBU91oCaS1cbQkSk9wZa2HDZQw5j307Tvt7WAxlhGEb/jp6eGkBXXZ1u
-	 o6vG2xL4/MSyMr92uiCu7hKb23vXMa9/S8e3Z5WU=
+	b=YKnCkGpxmuw+8DbxYrMuz5StJzf7ZjoIlOQtYsMEjsrtUSZ5evk2QI4LYm6xHihKS
+	 BdnA/rmtRFIqlbX5raSQf8O18KNtVwFyq1LK3+L4TJiD+CrdcjOovXzTTXeR18Ce84
+	 UtilJycPCCiaHjyjcImD6j5lfJy+o0SvjjHXG32Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ji-Ze Hong (Peter Hong)" <peter_hong@fintek.com.tw>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 097/567] can: usb: f81604: handle short interrupt urb messages properly
-Date: Mon, 23 Mar 2026 14:40:17 +0100
-Message-ID: <20260323134536.229183819@linuxfoundation.org>
+	Thierry Reding <treding@nvidia.com>,
+	Johan Hovold <johan@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 036/481] drm/tegra: dsi: fix device leak on probe
+Date: Mon, 23 Mar 2026 14:40:18 +0100
+Message-ID: <20260323134526.115798845@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +68,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229046-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229501-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5B7612F5FC0
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 45F1A2F7396
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 7299b1b39a255f6092ce4ec0b65f66e9d6a357af upstream.
+[ Upstream commit bfef062695570842cf96358f2f46f4c6642c6689 ]
 
-If an interrupt urb is received that is not the correct length, properly
-detect it and don't attempt to treat the data as valid.
+Make sure to drop the reference taken when looking up the companion
+(ganged) device and its driver data during probe().
 
-Cc: Ji-Ze Hong (Peter Hong) <peter_hong@fintek.com.tw>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Vincent Mailhol <mailhol@kernel.org>
-Cc: stable@kernel.org
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022331-opal-evaluator-a928@gregkh
-Fixes: 88da17436973 ("can: usb: f81604: add Fintek F81604 support")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Fixes: e94236cde4d5 ("drm/tegra: dsi: Add ganged mode support")
+Fixes: 221e3638feb8 ("drm/tegra: Fix reference leak in tegra_dsi_ganged_probe")
+Cc: stable@vger.kernel.org	# 3.19: 221e3638feb8
+Cc: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patch.msgid.link/20251121164201.13188-1-johan@kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/f81604.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/tegra/dsi.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/net/can/usb/f81604.c
-+++ b/drivers/net/can/usb/f81604.c
-@@ -626,6 +626,12 @@ static void f81604_read_int_callback(str
- 		netdev_info(netdev, "%s: Int URB aborted: %pe\n", __func__,
- 			    ERR_PTR(urb->status));
+diff --git a/drivers/gpu/drm/tegra/dsi.c b/drivers/gpu/drm/tegra/dsi.c
+index 7bb26655cb3cc..74d27b564d564 100644
+--- a/drivers/gpu/drm/tegra/dsi.c
++++ b/drivers/gpu/drm/tegra/dsi.c
+@@ -1539,11 +1539,9 @@ static int tegra_dsi_ganged_probe(struct tegra_dsi *dsi)
+ 			return -EPROBE_DEFER;
  
-+	if (urb->actual_length < sizeof(*data)) {
-+		netdev_warn(netdev, "%s: short int URB: %u < %zu\n",
-+			    __func__, urb->actual_length, sizeof(*data));
-+		goto resubmit_urb;
-+	}
-+
- 	switch (urb->status) {
- 	case 0: /* success */
- 		break;
+ 		dsi->slave = platform_get_drvdata(gangster);
+-
+-		if (!dsi->slave) {
+-			put_device(&gangster->dev);
++		put_device(&gangster->dev);
++		if (!dsi->slave)
+ 			return -EPROBE_DEFER;
+-		}
+ 
+ 		dsi->slave->master = dsi;
+ 	}
+-- 
+2.51.0
+
 
 
 
