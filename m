@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229110-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GCmhGOdRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228577-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:55 +0100
+	id AN6XNHdXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229110-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D36D62F5196
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E8E82F5D80
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 185C831A35CB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF7B830225C8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716921D63F3;
-	Mon, 23 Mar 2026 14:18:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4A736681E;
+	Mon, 23 Mar 2026 15:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIMlSsk3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3FBJPH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3595A3C07A;
-	Mon, 23 Mar 2026 14:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2201D25A2B5;
+	Mon, 23 Mar 2026 15:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275498; cv=none; b=NfYkhFIPY8AmGf77ItTKbzvFfi0CAqUGelRaHGpcHB2ADR5jeLq9M5cyKxJPpS8dnogFk+REfJlEoQHJi0nI4yHgJwnRwfEbHNzOcDXA7NpUve6BHO4pd0u2eiUeVPIRj7f4valZDKdyYMIHu5U5ukYUR9N3w68NHRChKa47lpM=
+	t=1774278091; cv=none; b=mrUVXEQAxKpmfEQjjv8eiEtYAKnTpckyD3pJVLti2wJe6EyVdz0yM5orKT82iAL9dSKsBT35pDHcVSXP0ucBoIG9FOqJ6+hMud/kK9yEn/Rct2C0jz8REnGegDpUfvKXVWQZSoS8RN+lepNhCgGDjRmij5Ceff3UtzDtDHScEw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275498; c=relaxed/simple;
-	bh=r4hgsSa7D/bfV64CLJgjZXiUWZr34sR/UnAt5A4Whr4=;
+	s=arc-20240116; t=1774278091; c=relaxed/simple;
+	bh=a0iiakJfTgMGALNxqPtocnXsIqpoTVQG4tn0dFTKsu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7YcOgAK/pS0tQQR7yXOyNhyUG0l0KYKSA1fZj3xMNekbvFHQKMrmrpYTj3ugf+84JuBno6Z4RLf10/dI+WhbVDGHMlq+eA1LYLztctDcExtUS5owch+sjXEXdCIUF5Fx8XCcMExU3KjXNV7n5iYHHfVnuz6ATU9c3XR6izR554=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIMlSsk3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 742A1C4CEF7;
-	Mon, 23 Mar 2026 14:18:17 +0000 (UTC)
+	 MIME-Version; b=fwp2dMbgEtKvaMDmCdZgMa4bX4VRZ+YrXm/B/vSK2OrfjTZxQ5dBI/ZmAY/No8R99kPh6w7yn9iKcCwyFh5wbV5PaliM8CprrC2XU/YFfwzn0zNOPIcKKS+VAyKoGpPmZzReqtlt3yLHuA8EBXxbnIUfrqTViddEPWdb+BlO8IQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3FBJPH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B482C2BC9E;
+	Mon, 23 Mar 2026 15:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275497;
-	bh=r4hgsSa7D/bfV64CLJgjZXiUWZr34sR/UnAt5A4Whr4=;
+	s=korg; t=1774278091;
+	bh=a0iiakJfTgMGALNxqPtocnXsIqpoTVQG4tn0dFTKsu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OIMlSsk3J/Is00lGzSpCfHJ/RBe8m2gO5oSZCwN0KzoXkB0b1cHNORCDBK7Kua9SE
-	 I4zFom5CiSh46c6EeZDXkWZoDnPvcSa4eSoYrQGCxtdlX3fBHqiLf3FHRpeKatSRIf
-	 dLcvr+2fOxVf9J0JeDzAWbtHqZrGo49Pvxpqfdds=
+	b=y3FBJPH4eq07PDrRs/v7Kwc6hDyqKq1Vus5mA9bWAx0aBVAHR+H/ofPcgb3jHcaNK
+	 x8kZQNG857EA3qwiE2mA0HU8VZSzTqrbfua+lZcAKZWiIrsmoKxuHIwehjPaHw8DVu
+	 butlkqeJJ8DfEM+/52werzcK4zgACZK2wjRuIRT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehul Rao <mehulrao@gmail.com>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 123/460] tipc: fix divide-by-zero in tipc_sk_filter_connect()
+	Piotr Mazek <pmazek@outlook.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 199/567] ACPI: PM: Save NVS memory on Lenovo G70-35
 Date: Mon, 23 Mar 2026 14:41:59 +0100
-Message-ID: <20260323134529.643850877@linuxfoundation.org>
+Message-ID: <20260323134538.772493628@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,20 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228577-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,est.tech,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229110-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,outlook.com,intel.com,kernel.org];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
@@ -91,64 +91,55 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D36D62F5196
+X-Rspamd-Queue-Id: 8E8E82F5D80
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehul Rao <mehulrao@gmail.com>
+From: Piotr Mazek <pmazek@outlook.com>
 
-commit 6c5a9baa15de240e747263aba435a0951da8d8d2 upstream.
+[ Upstream commit 023cd6d90f8aa2ef7b72d84be84a18e61ecebd64 ]
 
-A user can set conn_timeout to any value via
-setsockopt(TIPC_CONN_TIMEOUT), including values less than 4.  When a
-SYN is rejected with TIPC_ERR_OVERLOAD and the retry path in
-tipc_sk_filter_connect() executes:
+[821d6f0359b0614792ab8e2fb93b503e25a65079] prevented machines
+produced later than 2012 from saving NVS region to accelerate S3.
 
-    delay %= (tsk->conn_timeout / 4);
+Despite being made after 2012, Lenovo G70-35 still needs NVS memory
+saving during S3. A quirk is introduced for this platform.
 
-If conn_timeout is in the range [0, 3], the integer division yields 0,
-and the modulo operation triggers a divide-by-zero exception, causing a
-kernel oops/panic.
-
-Fix this by clamping conn_timeout to a minimum of 4 at the point of use
-in tipc_sk_filter_connect().
-
-Oops: divide error: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 119 Comm: poc-F144 Not tainted 7.0.0-rc2+
-RIP: 0010:tipc_sk_filter_rcv (net/tipc/socket.c:2236 net/tipc/socket.c:2362)
-Call Trace:
- tipc_sk_backlog_rcv (include/linux/instrumented.h:82 include/linux/atomic/atomic-instrumented.h:32 include/net/sock.h:2357 net/tipc/socket.c:2406)
- __release_sock (include/net/sock.h:1185 net/core/sock.c:3213)
- release_sock (net/core/sock.c:3797)
- tipc_connect (net/tipc/socket.c:2570)
- __sys_connect (include/linux/file.h:62 include/linux/file.h:83 net/socket.c:2098)
-
-Fixes: 6787927475e5 ("tipc: buffer overflow handling in listener socket")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mehul Rao <mehulrao@gmail.com>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20260310170730.28841-1-mehulrao@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Piotr Mazek <pmazek@outlook.com>
+[ rjw: Subject adjustment ]
+Link: https://patch.msgid.link/GV2PPF3CD5B63CC2442EE3F76F8443EAD90D499A@GV2PPF3CD5B63CC.EURP251.PROD.OUTLOOK.COM
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/socket.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/sleep.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/tipc/socket.c
-+++ b/net/tipc/socket.c
-@@ -2233,6 +2233,8 @@ static bool tipc_sk_filter_connect(struc
- 		if (skb_queue_empty(&sk->sk_write_queue))
- 			break;
- 		get_random_bytes(&delay, 2);
-+		if (tsk->conn_timeout < 4)
-+			tsk->conn_timeout = 4;
- 		delay %= (tsk->conn_timeout / 4);
- 		delay = msecs_to_jiffies(delay + 100);
- 		sk_reset_timer(sk, &sk->sk_timer, jiffies + delay);
+diff --git a/drivers/acpi/sleep.c b/drivers/acpi/sleep.c
+index 728acfeb774d8..2fd51b18d13c4 100644
+--- a/drivers/acpi/sleep.c
++++ b/drivers/acpi/sleep.c
+@@ -372,6 +372,14 @@ static const struct dmi_system_id acpisleep_dmi_table[] __initconst = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "80E1"),
+ 		},
+ 	},
++	{
++	.callback = init_nvs_save_s3,
++	.ident = "Lenovo G70-35",
++	.matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "80Q5"),
++		},
++	},
+ 	/*
+ 	 * ThinkPad X1 Tablet(2016) cannot do suspend-to-idle using
+ 	 * the Low Power S0 Idle firmware interface (see
+-- 
+2.51.0
+
 
 
 
