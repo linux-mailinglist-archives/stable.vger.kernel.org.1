@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-229269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228739-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iLwDIV9vwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229269-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:39 +0100
+	id 2EzhCLNTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228739-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066FE2F8E53
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:38 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E14832F558D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADE903445D29
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 480C330224CA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEC1C3B7778;
-	Mon, 23 Mar 2026 15:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF143B0AF0;
+	Mon, 23 Mar 2026 14:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOUtHTrP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6ZfBVno"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71DF93B47E8;
-	Mon, 23 Mar 2026 15:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41246399352;
+	Mon, 23 Mar 2026 14:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278587; cv=none; b=EZMSH2639oPCo33f4ySS4+bTNK3tVtu0pi4Qvt7CjHnaVjRs+Aw7v3piWLLtZxP++BVQjLhnhiQ9ZS5GhT2RJiVNNCXXVV7hPJQTWPT4JKRFOcIkKRoP0AEexZ0pp2wSgAp4mrD/bFbL6EXIf0a9St4/y/Rm9ePlHdX8VIMxtOM=
+	t=1774276992; cv=none; b=NtL5RwABE2ctoI2Jl2dh8Ja/IEVI0bhWiPrwNzpG3YcoFf/CGInjYxuZF7jE3KCVzZO57qUBKzGAZZ9Eetee16YdXeEjwnTsWYdWJLOV1u6VK62fkX9Z3i3zmnls1vuQPYe08TvTzaLZa5fYGAuuigbfVHCBcO2EWgrI6L527MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278587; c=relaxed/simple;
-	bh=qps0LLEhSBc8IT+zgVuHkfUwL2Pkr8eGeFDYIrduRvI=;
+	s=arc-20240116; t=1774276992; c=relaxed/simple;
+	bh=ZT2tpfoqCBSeOmNtCg8xBulrOENYZnCg/2Z5QmKezsE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m1I97Trb8wpvgRF3wjdOxVJqesTho4mOJlrUqioJRyBn/Exz3mmpGRp/6TjTL/h1Xy1bzkkD5L2kwZ+KcEEc9y7jSPOv/nI/TXy91uYZDzJxFyF1h01ILVvIqv4kPFZ439dbOJibdZ4G56+XqtFZnnwLzbMbMev+lq2XrJNJ3cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOUtHTrP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E717BC4CEF7;
-	Mon, 23 Mar 2026 15:09:46 +0000 (UTC)
+	 MIME-Version; b=nz3NB5yUv+A7AqMuyU4zD11LS6cY2+ZQPcV31p7yeAQjTrcuhNYdizQ58/Xpj09oRllvV5emMJ+GWV1Be/dBwuYC+xD8sNq/JO88I4mNa/07McjZb+LuP/eKG9qWyIFcMde/5X6Ez1004GYxQ3zznkduYPrBe2U7njrV4kl/X4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6ZfBVno; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E94BC4CEF7;
+	Mon, 23 Mar 2026 14:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278587;
-	bh=qps0LLEhSBc8IT+zgVuHkfUwL2Pkr8eGeFDYIrduRvI=;
+	s=korg; t=1774276992;
+	bh=ZT2tpfoqCBSeOmNtCg8xBulrOENYZnCg/2Z5QmKezsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yOUtHTrPpRjod4OIUu4FcolgxQbFLOzLolA82Tx97yKgTD2ZEa8w6MTS2+UWAq8ac
-	 vsj5rOJfnJJ3/4JeyVxQG9lrhLsEQncXGUsrKuoiZh9cbrWFwUvpVZsUzc3jnSXI0R
-	 nrJ51GJd0ugf3KKjoxWuvlEfPe2vkBlyFVcvwFtw=
+	b=D6ZfBVnoPTHRvxgaTS+ROxSlLspo+UPdgUA1pCP/hG7BxtkCrrmPufbW87qMqovNF
+	 7sC6S0/5stkQyG/v9NXkdsNexm9pwjAbybFZCt4gw/BnwIWLrWGWqicq8Z1DMxteP0
+	 nkk45muqbR0LlMhlZkmmsR+06FKtwY+12TM8TwuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Tomasz Duszynski <tduszyns@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 354/567] iio: chemical: sps30_serial: fix buffer size in sps30_serial_read_meas()
-Date: Mon, 23 Mar 2026 14:44:34 +0100
-Message-ID: <20260323134542.593759352@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Yao Kai <yaokai34@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Leon Chen <leonchen.oss@139.com>
+Subject: [PATCH 6.12 279/460] tracing: Add recursion protection in kernel stack trace recording
+Date: Mon, 23 Mar 2026 14:44:35 +0100
+Message-ID: <20260323134533.333321346@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +69,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229269-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,gmail.com,intel.com,vger.kernel.org,huawei.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,efficios.com,joelfernandes.org,gmail.com,huawei.com,goodmis.org,139.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228739-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 066FE2F8E53
+X-Rspamd-Queue-Id: E14832F558D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit c3914ce1963c4db25e186112c90fa5d2361e9e0a upstream.
+[ Upstream commit 5f1ef0dfcb5b7f4a91a9b0e0ba533efd9f7e2cdb ]
 
-sizeof(num) evaluates to sizeof(size_t) which is 8 bytes on 64-bit,
-but the buffer elements are only 4 bytes. The same function already
-uses sizeof(*meas) on line 312, making the mismatch evident. Use
-sizeof(*meas) consistently.
+A bug was reported about an infinite recursion caused by tracing the rcu
+events with the kernel stack trace trigger enabled. The stack trace code
+called back into RCU which then called the stack trace again.
 
-Fixes: b2e171f5a5c6 ("iio: sps30: add support for serial interface")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Acked-by: Tomasz Duszynski <tduszyns@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Expand the ftrace recursion protection to add a set of bits to protect
+events from recursion. Each bit represents the context that the event is
+in (normal, softirq, interrupt and NMI).
+
+Have the stack trace code use the interrupt context to protect against
+recursion.
+
+Note, the bug showed an issue in both the RCU code as well as the tracing
+stacktrace code. This only handles the tracing stack trace side of the
+bug. The RCU fix will be handled separately.
+
+Link: https://lore.kernel.org/all/20260102122807.7025fc87@gandalf.local.home/
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>
+Link: https://patch.msgid.link/20260105203141.515cd49f@gandalf.local.home
+Reported-by: Yao Kai <yaokai34@huawei.com>
+Tested-by: Yao Kai <yaokai34@huawei.com>
+Fixes: 5f5fa7ea89dc ("rcu: Don't use negative nesting depth in __rcu_read_unlock()")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Leon Chen <leonchen.oss@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/sps30_serial.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/trace_recursion.h |    9 +++++++++
+ kernel/trace/trace.c            |    6 ++++++
+ 2 files changed, 15 insertions(+)
 
---- a/drivers/iio/chemical/sps30_serial.c
-+++ b/drivers/iio/chemical/sps30_serial.c
-@@ -303,7 +303,7 @@ static int sps30_serial_read_meas(struct
- 	if (msleep_interruptible(1000))
- 		return -EINTR;
+--- a/include/linux/trace_recursion.h
++++ b/include/linux/trace_recursion.h
+@@ -34,6 +34,13 @@ enum {
+ 	TRACE_INTERNAL_SIRQ_BIT,
+ 	TRACE_INTERNAL_TRANSITION_BIT,
  
--	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(num));
-+	ret = sps30_serial_command(state, SPS30_SERIAL_READ_MEAS, NULL, 0, meas, num * sizeof(*meas));
- 	if (ret < 0)
- 		return ret;
- 	/* if measurements aren't ready sensor returns empty frame */
++	/* Internal event use recursion bits */
++	TRACE_INTERNAL_EVENT_BIT,
++	TRACE_INTERNAL_EVENT_NMI_BIT,
++	TRACE_INTERNAL_EVENT_IRQ_BIT,
++	TRACE_INTERNAL_EVENT_SIRQ_BIT,
++	TRACE_INTERNAL_EVENT_TRANSITION_BIT,
++
+ 	TRACE_BRANCH_BIT,
+ /*
+  * Abuse of the trace_recursion.
+@@ -58,6 +65,8 @@ enum {
+ 
+ #define TRACE_LIST_START	TRACE_INTERNAL_BIT
+ 
++#define TRACE_EVENT_START	TRACE_INTERNAL_EVENT_BIT
++
+ #define TRACE_CONTEXT_MASK	((1 << (TRACE_LIST_START + TRACE_CONTEXT_BITS)) - 1)
+ 
+ /*
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -2944,6 +2944,11 @@ static void __ftrace_trace_stack(struct
+ 	struct ftrace_stack *fstack;
+ 	struct stack_entry *entry;
+ 	int stackidx;
++	int bit;
++
++	bit = trace_test_and_set_recursion(_THIS_IP_, _RET_IP_, TRACE_EVENT_START);
++	if (bit < 0)
++		return;
+ 
+ 	/*
+ 	 * Add one, for this function and the call to save_stack_trace()
+@@ -3015,6 +3020,7 @@ static void __ftrace_trace_stack(struct
+ 	__this_cpu_dec(ftrace_stack_reserve);
+ 	preempt_enable_notrace();
+ 
++	trace_clear_recursion(bit);
+ }
+ 
+ static inline void ftrace_trace_stack(struct trace_array *tr,
 
 
 
