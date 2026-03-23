@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228069-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UEBkLvBKwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228252-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:12 +0100
+	id AFAOM9JHwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228069-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:54 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A1212F408A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89CBC2F3AAE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BC6CD312D6B8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7282F308EB4F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6A23B7B8A;
-	Mon, 23 Mar 2026 14:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88633AD535;
+	Mon, 23 Mar 2026 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y49nD/y/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeJTULHQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9AB3B27FB;
-	Mon, 23 Mar 2026 14:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7721A6818;
+	Mon, 23 Mar 2026 13:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274587; cv=none; b=EQmmyacEfgeBEnc66I/K1tJ/E+oSCl8HiL4L5DSeYUnUdPQkiXUHqjvCrInGJVVXy3/pt3bXi4wUi6IRE0hnkVVW/Qu51oDRsFKid+yY+BRepd/9/MXF/9ehuJQv8FBdsPWgTkhSfjT2hpVVcmMMo74oyCkLrNG2ER4oagFS95s=
+	t=1774274035; cv=none; b=DVCdTHBV1RRfkUWkbFPS2t5dsEkpfAc0iPY7lZmp1Q7UranNs4ydqYQaqn/XWzGR4QToH+XdJevaqnMEZu7Ww2qzuMzWrK53aktX32w2Ys34JkucwcduFd6TtGMxfU8j8xYhJPi7xbi70X39ytXVvxqbm6evI1seqTlsy3254CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274587; c=relaxed/simple;
-	bh=V4m2wKHCm7HLn2PQLYraIo9oPGErUOUtq3Ysgra3DCM=;
+	s=arc-20240116; t=1774274035; c=relaxed/simple;
+	bh=NAfy5qCX7tjse8rIrMcQERB3TvlmwND3kwrxNrmlR/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BO3Wr8BQ+Drq80Z8sf+iK9q3wmSE2DI49o79GRCr+hbn/rwRXkckHDAoSiewv1ludlWb54NYL33P6yOcw8yiw+iqJOYQkBKGkiWiEzgXpd06h+uhby3aW1K7dUphv44kaSupl5tQl+272mbjVJCWlcNVr/VLWizFNWSxJxZf+vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y49nD/y/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9843C4CEF7;
-	Mon, 23 Mar 2026 14:03:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gJQAdBaQF072Uw7F4S5iNfKbk45+F+QkLvCw5UPJZ4AV7PzjEt27LqjZ+KBbwOWtY728C1gWVtO/hDEAnCDcIaLGSNQalZSHZior5jZZGENuKHGOqiyBLPx3fwSge46647sF32069DPdaXdVuvWNVwKsoRbAs5+JkQs8CAeL77Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeJTULHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0ECC4CEF7;
+	Mon, 23 Mar 2026 13:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274587;
-	bh=V4m2wKHCm7HLn2PQLYraIo9oPGErUOUtq3Ysgra3DCM=;
+	s=korg; t=1774274035;
+	bh=NAfy5qCX7tjse8rIrMcQERB3TvlmwND3kwrxNrmlR/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y49nD/y/I8Joj09o8fPZBPSy6pvxRmDdc1fIRp3Q95VlGtXXPMqqHrN6A4N51zsee
-	 hkG6UFePNUzD0DeCCJw1MQYctqLB9P+yqUnQyQoPmYxrkrlQ3vHLgVH5whZd0BrIIi
-	 IdTs+YylIhzDLP9EJglPL9YMZzZ8gWgc69+gj2Hw=
+	b=yeJTULHQcHuvVCJNayr7xeA8T/njaygjBbDbeflTQ9cUQ7stnLY2QsfsqfCdwAvD8
+	 zR6rEjptzvauUUN3gjSVOb+DHgYSPsaxWgtmxUvUCbV69HMRw/DpUZDSIXHehiaVpi
+	 /ghhDSiwHVTtXjk5Pgm7r1EbqbG4FEIYsESBnM9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 045/212] sched_ext: Fix starvation of scx_enable() under fair-class saturation
+	Zhanjun Dong <zhanjun.dong@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.19 089/220] drm/xe/guc: Ensure CT state transitions via STOP before DISABLED
 Date: Mon, 23 Mar 2026 14:44:26 +0100
-Message-ID: <20260323134505.190598580@linuxfoundation.org>
+Message-ID: <20260323134507.408850074@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,175 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228252-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228069-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 3A1212F408A
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 89CBC2F3AAE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tejun Heo <tj@kernel.org>
+From: Zhanjun Dong <zhanjun.dong@intel.com>
 
-[ Upstream commit b06ccbabe2506fd70b9167a644978b049150224a ]
+commit 7838dd8367419e9fc43b79c038321cb3c04de2a2 upstream.
 
-During scx_enable(), the READY -> ENABLED task switching loop changes the
-calling thread's sched_class from fair to ext. Since fair has higher
-priority than ext, saturating fair-class workloads can indefinitely starve
-the enable thread, hanging the system. This was introduced when the enable
-path switched from preempt_disable() to scx_bypass() which doesn't protect
-against fair-class starvation. Note that the original preempt_disable()
-protection wasn't complete either - in partial switch modes, the calling
-thread could still be starved after preempt_enable() as it may have been
-switched to ext class.
+The GuC CT state transition requires moving to the STOP state before
+entering the DISABLED state. Update the driver teardown sequence to make
+the proper state machine transitions.
 
-Fix it by offloading the enable body to a dedicated system-wide RT
-(SCHED_FIFO) kthread which cannot be starved by either fair or ext class
-tasks. scx_enable() lazily creates the kthread on first use and passes the
-ops pointer through a struct scx_enable_cmd containing the kthread_work,
-then synchronously waits for completion.
-
-The workfn runs on a different kthread from sch->helper (which runs
-disable_work), so it can safely flush disable_work on the error path
-without deadlock.
-
-Fixes: 8c2090c504e9 ("sched_ext: Initialize in bypass mode")
-Cc: stable@vger.kernel.org # v6.12+
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee4b32220a6b ("drm/xe/guc: Add devm release action to safely tear down CT")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patch.msgid.link/20260310225039.1320161-6-zhanjun.dong@intel.com
+(cherry picked from commit dace8cb0032f57ea67c87b3b92ad73c89dd2db44)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/ext.c |   66 ++++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 56 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_ct.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/sched/ext.c
-+++ b/kernel/sched/ext.c
-@@ -4598,20 +4598,30 @@ static int validate_ops(struct scx_sched
- 	return 0;
- }
- 
--static int scx_enable(struct sched_ext_ops *ops, struct bpf_link *link)
-+/*
-+ * scx_enable() is offloaded to a dedicated system-wide RT kthread to avoid
-+ * starvation. During the READY -> ENABLED task switching loop, the calling
-+ * thread's sched_class gets switched from fair to ext. As fair has higher
-+ * priority than ext, the calling thread can be indefinitely starved under
-+ * fair-class saturation, leading to a system hang.
-+ */
-+struct scx_enable_cmd {
-+	struct kthread_work	work;
-+	struct sched_ext_ops	*ops;
-+	int			ret;
-+};
-+
-+static void scx_enable_workfn(struct kthread_work *work)
+--- a/drivers/gpu/drm/xe/xe_guc_ct.c
++++ b/drivers/gpu/drm/xe/xe_guc_ct.c
+@@ -265,6 +265,7 @@ static void guc_action_disable_ct(void *
  {
-+	struct scx_enable_cmd *cmd =
-+		container_of(work, struct scx_enable_cmd, work);
-+	struct sched_ext_ops *ops = cmd->ops;
- 	struct scx_sched *sch;
- 	struct scx_task_iter sti;
- 	struct task_struct *p;
- 	unsigned long timeout;
- 	int i, cpu, ret;
+ 	struct xe_guc_ct *ct = arg;
  
--	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
--			   cpu_possible_mask)) {
--		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
--		return -EINVAL;
--	}
--
- 	mutex_lock(&scx_enable_mutex);
- 
- 	if (scx_enable_state() != SCX_DISABLED) {
-@@ -4828,13 +4838,15 @@ static int scx_enable(struct sched_ext_o
- 
- 	atomic_long_inc(&scx_enable_seq);
- 
--	return 0;
-+	cmd->ret = 0;
-+	return;
- 
- err_free_pseqs:
- 	free_kick_pseqs();
- err_unlock:
- 	mutex_unlock(&scx_enable_mutex);
--	return ret;
-+	cmd->ret = ret;
-+	return;
- 
- err_disable_unlock_all:
- 	scx_cgroup_unlock();
-@@ -4853,7 +4865,41 @@ err_disable:
- 	 */
- 	scx_error(sch, "scx_enable() failed (%d)", ret);
- 	kthread_flush_work(&sch->disable_work);
--	return 0;
-+	cmd->ret = 0;
-+}
-+
-+static int scx_enable(struct sched_ext_ops *ops, struct bpf_link *link)
-+{
-+	static struct kthread_worker *helper;
-+	static DEFINE_MUTEX(helper_mutex);
-+	struct scx_enable_cmd cmd;
-+
-+	if (!cpumask_equal(housekeeping_cpumask(HK_TYPE_DOMAIN),
-+			   cpu_possible_mask)) {
-+		pr_err("sched_ext: Not compatible with \"isolcpus=\" domain isolation\n");
-+		return -EINVAL;
-+	}
-+
-+	if (!READ_ONCE(helper)) {
-+		mutex_lock(&helper_mutex);
-+		if (!helper) {
-+			helper = kthread_run_worker(0, "scx_enable_helper");
-+			if (IS_ERR_OR_NULL(helper)) {
-+				helper = NULL;
-+				mutex_unlock(&helper_mutex);
-+				return -ENOMEM;
-+			}
-+			sched_set_fifo(helper->task);
-+		}
-+		mutex_unlock(&helper_mutex);
-+	}
-+
-+	kthread_init_work(&cmd.work, scx_enable_workfn);
-+	cmd.ops = ops;
-+
-+	kthread_queue_work(READ_ONCE(helper), &cmd.work);
-+	kthread_flush_work(&cmd.work);
-+	return cmd.ret;
++	xe_guc_ct_stop(ct);
+ 	guc_ct_change_state(ct, XE_GUC_CT_STATE_DISABLED);
  }
- 
  
 
 
