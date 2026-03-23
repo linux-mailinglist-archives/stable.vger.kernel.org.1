@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229598-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yBIvAElXwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-229104-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:53 +0100
+	id MHSQKpxwwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229598-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80932F5D04
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527692F91FB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5DC383059CA7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 385AC3299EAC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D382848BA;
-	Mon, 23 Mar 2026 15:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A753B9D97;
+	Mon, 23 Mar 2026 16:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VZlQslZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEtKpJRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C59283FC8;
-	Mon, 23 Mar 2026 15:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D793B2FF5;
+	Mon, 23 Mar 2026 16:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278072; cv=none; b=ZtXgOM3+J+owYXzACqG9qgaK7GNbXMxQu/ipyVUlOn7BWWgfVIp6dsMX1//GjzGcs2WPEjvKmzvR0pIGyw+fKrp/lyX0ir24TSO2bNfjJSd6fmiljj+IGiO/CSf5S7KZQezI2m9tRkNtv2H/+7azx7Yf4o6WRwm+yq9xFvsuNNo=
+	t=1774282352; cv=none; b=s358Pklnfu6apxxvzk8w4l3XLM9pp2lcDvRM6eSkyRULxwlMRKEUDWi+hXk98I3hb9NtcVZtzUIgl7BKpWGPF9F6meJED5Y1qEjcwimhYFFJCSVko7HQI4wl2gCUOGtS1uXxq3fzh22c+H14VkJjLHqduZMBLzLRs1bwMYrXFIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278072; c=relaxed/simple;
-	bh=AV29Ny7yHNe0OytpfsWkaK/RQEIjvGV6LcmOmWhXXWs=;
+	s=arc-20240116; t=1774282352; c=relaxed/simple;
+	bh=k7NTReSOgCgXEgD/RTc+9LYvJNLAl+BMyuU9khpfwa4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uHTukusA1VMJ2UuZSCdg7eJPQ7ZCso0pmQWRb0uysgNmQMnLMElMfRH7gIEji3DTFBu3l2KHN76TOVkgZm+YULdEZQwKhNjAUXZv8FdYVehULcqlZIQQ9+vWFNkGt7zJC55gj3rrxHs+yetClzhe0vCyU59HvfHdy4rmd9XbV+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VZlQslZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB087C2BCB1;
-	Mon, 23 Mar 2026 15:01:11 +0000 (UTC)
+	 MIME-Version; b=hQL+v7LkN3hoPegGiBpuV6YwUADfD1Rve9mhRhp5zp8cEj5vOpBVkS1NaDHq4iKN9kUlzY9ek2wJCHizAjmWWyGTyd7XsZnlNtoHLyBTZu4AiWzPSuElBjMPVotw6RcelBfPzbTkzCoWJt651N5Tw5DNPZzGxCfIp0+/RrDqaf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEtKpJRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255C9C4CEF7;
+	Mon, 23 Mar 2026 16:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278072;
-	bh=AV29Ny7yHNe0OytpfsWkaK/RQEIjvGV6LcmOmWhXXWs=;
+	s=korg; t=1774282352;
+	bh=k7NTReSOgCgXEgD/RTc+9LYvJNLAl+BMyuU9khpfwa4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VZlQslZb0iqQZBtiYKKm5dJE0c7sSZ8nCqpmA33QXHuzqHMyrz1YaA2Cvj978dHy
-	 Ki4IlX6VTJr/c8rJCeywH3dtlkuzIOimghw1GySY7gejZhqQXrZ7oz/Y5bRJAHgPQJ
-	 XxyZCXSPCtDlSLA3ZpLY/g/m5DkKiT5jX25HSi6g=
+	b=dEtKpJRjvug2QAm5kNw2in5LHfcjOA8UY6wj/ae+BdN1yvNAGa1CjweI5i5b79mhO
+	 B+69+WQ2gcKyxeL28a4qlXcZEJJXv353XOrxf0SQSawgPlhj8AImtpujurNiLMTRJa
+	 VGrfWYF2tT9ebcInNyr68Gf4DpHChrYE/jcIxfkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	GangMin Kim <km.kim1503@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 185/567] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
-Date: Mon, 23 Mar 2026 14:41:45 +0100
-Message-ID: <20260323134538.430196877@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 124/481] indirect_call_wrapper: do not reevaluate function pointer
+Date: Mon, 23 Mar 2026 14:41:46 +0100
+Message-ID: <20260323134528.302861106@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +65,174 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229104-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229598-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B80932F5D04
+X-Rspamd-Queue-Id: 527692F91FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 upstream.
+[ Upstream commit 710f5c76580306cdb9ec51fac8fcf6a8faff7821 ]
 
-As Paolo said earlier [1]:
+We have an increasing number of READ_ONCE(xxx->function)
+combined with INDIRECT_CALL_[1234]() helpers.
 
-"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
-the current skb being held by the defragmentation engine. As reported by
-GangMin Kim, if such packet is that may cause a UaF when the defrag engine
-later on tries to tuch again such packet."
+Unfortunately this forces INDIRECT_CALL_[1234]() to read
+xxx->function many times, which is not what we wanted.
 
-act_ct was never meant to be used in the egress path, however some users
-are attaching it to egress today [2]. Attempting to reach a middle
-ground, we noticed that, while most qdiscs are not handling
-TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
-address the issue by only allowing act_ct to bind to clsact/ingress
-qdiscs and shared blocks. That way it's still possible to attach act_ct to
-egress (albeit only with clsact).
+Fix these macros so that xxx->function value is not reloaded.
 
-[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
-[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
+$ scripts/bloat-o-meter -t vmlinux.0 vmlinux
+add/remove: 0/0 grow/shrink: 1/65 up/down: 122/-1084 (-962)
+Function                                     old     new   delta
+ip_push_pending_frames                        59     181    +122
+ip6_finish_output                            687     681      -6
+__udp_enqueue_schedule_skb                  1078    1072      -6
+ioam6_output                                2319    2312      -7
+xfrm4_rcv_encap_finish2                       64      56      -8
+xfrm4_output                                 297     289      -8
+vrf_ip_local_out                             278     270      -8
+vrf_ip6_local_out                            278     270      -8
+seg6_input_finish                             64      56      -8
+rpl_output                                   700     692      -8
+ipmr_forward_finish                          124     116      -8
+ip_forward_finish                            143     135      -8
+ip6mr_forward2_finish                        100      92      -8
+ip6_forward_finish                            73      65      -8
+input_action_end_bpf                        1091    1083      -8
+dst_input                                     52      44      -8
+__xfrm6_output                               801     793      -8
+__xfrm4_output                                83      75      -8
+bpf_input                                    500     491      -9
+__tcp_check_space                            530     521      -9
+input_action_end_dt6                         291     280     -11
+vti6_tnl_xmit                               1634    1622     -12
+bpf_xmit                                    1203    1191     -12
+rpl_input                                    497     483     -14
+rawv6_send_hdrinc                           1355    1341     -14
+ndisc_send_skb                              1030    1016     -14
+ipv6_srh_rcv                                1377    1363     -14
+ip_send_unicast_reply                       1253    1239     -14
+ip_rcv_finish                                226     212     -14
+ip6_rcv_finish                               300     286     -14
+input_action_end_x_core                      205     191     -14
+input_action_end_x                           355     341     -14
+input_action_end_t                           205     191     -14
+input_action_end_dx6_finish                  127     113     -14
+input_action_end_dx4_finish                  373     359     -14
+input_action_end_dt4                         426     412     -14
+input_action_end_core                        186     172     -14
+input_action_end_b6_encap                    292     278     -14
+input_action_end_b6                          198     184     -14
+igmp6_send                                  1332    1318     -14
+ip_sublist_rcv                               864     848     -16
+ip6_sublist_rcv                             1091    1075     -16
+ipv6_rpl_srh_rcv                            1937    1920     -17
+xfrm_policy_queue_process                   1246    1228     -18
+seg6_output_core                             903     885     -18
+mld_sendpack                                 856     836     -20
+NF_HOOK                                      756     736     -20
+vti_tunnel_xmit                             1447    1426     -21
+input_action_end_dx6                         664     642     -22
+input_action_end                            1502    1480     -22
+sock_sendmsg_nosec                           134     111     -23
+ip6mr_forward2                               388     364     -24
+sock_recvmsg_nosec                           134     109     -25
+seg6_input_core                              836     810     -26
+ip_send_skb                                  172     146     -26
+ip_local_out                                 140     114     -26
+ip6_local_out                                140     114     -26
+__sock_sendmsg                               162     136     -26
+__ip_queue_xmit                             1196    1170     -26
+__ip_finish_output                           405     379     -26
+ipmr_queue_fwd_xmit                          373     346     -27
+sock_recvmsg                                 173     145     -28
+ip6_xmit                                    1635    1607     -28
+xfrm_output_resume                          1418    1389     -29
+ip_build_and_send_pkt                        625     591     -34
+dst_output                                   504     432     -72
+Total: Before=25217686, After=25216724, chg -0.00%
 
-Reported-by: GangMin Kim <km.kim1503@gmail.com>
-Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
-CC: stable@vger.kernel.org
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 283c16a2dfd3 ("indirect call wrappers: helpers to speed-up indirect calls of builtin")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260227172603.1700433-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/act_api.h |    1 +
- net/sched/act_ct.c    |    6 ++++++
- net/sched/cls_api.c   |    7 +++++++
- 3 files changed, 14 insertions(+)
+ include/linux/indirect_call_wrapper.h | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
---- a/include/net/act_api.h
-+++ b/include/net/act_api.h
-@@ -68,6 +68,7 @@ struct tc_action {
- #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
- #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
- #define TCA_ACT_FLAGS_AT_INGRESS	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
-+#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 5))
+diff --git a/include/linux/indirect_call_wrapper.h b/include/linux/indirect_call_wrapper.h
+index c1c76a70a6ce9..227cee5e2a98b 100644
+--- a/include/linux/indirect_call_wrapper.h
++++ b/include/linux/indirect_call_wrapper.h
+@@ -16,22 +16,26 @@
+  */
+ #define INDIRECT_CALL_1(f, f1, ...)					\
+ 	({								\
+-		likely(f == f1) ? f1(__VA_ARGS__) : f(__VA_ARGS__);	\
++		typeof(f) __f1 = (f);					\
++		likely(__f1 == f1) ? f1(__VA_ARGS__) : __f1(__VA_ARGS__);	\
+ 	})
+ #define INDIRECT_CALL_2(f, f2, f1, ...)					\
+ 	({								\
+-		likely(f == f2) ? f2(__VA_ARGS__) :			\
+-				  INDIRECT_CALL_1(f, f1, __VA_ARGS__);	\
++		typeof(f) __f2 = (f);					\
++		likely(__f2 == f2) ? f2(__VA_ARGS__) :			\
++				  INDIRECT_CALL_1(__f2, f1, __VA_ARGS__);	\
+ 	})
+ #define INDIRECT_CALL_3(f, f3, f2, f1, ...)					\
+ 	({									\
+-		likely(f == f3) ? f3(__VA_ARGS__) :				\
+-				  INDIRECT_CALL_2(f, f2, f1, __VA_ARGS__);	\
++		typeof(f) __f3 = (f);						\
++		likely(__f3 == f3) ? f3(__VA_ARGS__) :				\
++				  INDIRECT_CALL_2(__f3, f2, f1, __VA_ARGS__);	\
+ 	})
+ #define INDIRECT_CALL_4(f, f4, f3, f2, f1, ...)					\
+ 	({									\
+-		likely(f == f4) ? f4(__VA_ARGS__) :				\
+-				  INDIRECT_CALL_3(f, f3, f2, f1, __VA_ARGS__);	\
++		typeof(f) __f4 = (f);						\
++		likely(__f4 == f4) ? f4(__VA_ARGS__) :				\
++				  INDIRECT_CALL_3(__f4, f3, f2, f1, __VA_ARGS__);	\
+ 	})
  
- /* Update lastuse only if needed, to avoid dirtying a cache line.
-  * We use a temp variable to avoid fetching jiffies twice.
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -1327,6 +1327,12 @@ static int tcf_ct_init(struct net *net,
- 		return -EINVAL;
- 	}
- 
-+	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
-+		return -EOPNOTSUPP;
-+	}
-+
- 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
- 	if (err < 0)
- 		return err;
---- a/net/sched/cls_api.c
-+++ b/net/sched/cls_api.c
-@@ -2151,6 +2151,11 @@ static bool is_qdisc_ingress(__u32 class
- 	return (TC_H_MIN(classid) == TC_H_MIN(TC_H_MIN_INGRESS));
- }
- 
-+static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
-+{
-+	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
-+}
-+
- static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
- 			  struct netlink_ext_ack *extack)
- {
-@@ -2344,6 +2349,8 @@ replay:
- 		flags |= TCA_ACT_FLAGS_NO_RTNL;
- 	if (is_qdisc_ingress(parent))
- 		flags |= TCA_ACT_FLAGS_AT_INGRESS;
-+	if (is_ingress_or_clsact(block, q))
-+		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
- 	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
- 			      flags, extack);
- 	if (err == 0) {
+ #define INDIRECT_CALLABLE_DECLARE(f)	f
+-- 
+2.51.0
+
 
 
 
