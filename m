@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-229045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229047-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WK48Ju1VwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-229045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:02:05 +0100
+	id eKaXNdhcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229047-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2E72F5A83
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:02:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5C52F66B3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C8997304513F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF9C83035C58
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D273AD535;
-	Mon, 23 Mar 2026 14:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FC8E394461;
+	Mon, 23 Mar 2026 14:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvao9Z5+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyYWE3Re"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8627D383C7C;
-	Mon, 23 Mar 2026 14:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B86242D7F;
+	Mon, 23 Mar 2026 14:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277884; cv=none; b=CDwUPI22nAJhg+ecPTjdSUYPqszEsYJBHqb4p3Okud9dbP894OFcKRLodNu97YljU9lgSWkQtQ51Kt33nZoF8i6JB3FtLswqlFBI7fhHZZcjL01xPeqQj8QOhTCjvOdS86xtAN/WFISXtdWVXFgIWiQNh2mbLRlBah/Bm7qp+VE=
+	t=1774277891; cv=none; b=AZxrClfjuVjL7iMEJFiL583MwoZkhnjkbqV4GKs64oQAYTu8DJAMMsF47SgYORb6jgg0C9L0qoSzb/6Z5HjcaZhthMNHBL9JgsEJRWAPVlyYacXAt5Tas71GLTvXw1I6NXpeXWxna611Kx7EeMEUuLq0Dkb+uZfgDwLjq7x0zmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277884; c=relaxed/simple;
-	bh=Eg6Qo57yXPCj1aYPwUuV6G17if18pUbgaxZHVZB90t4=;
+	s=arc-20240116; t=1774277891; c=relaxed/simple;
+	bh=WsM2ccPDfl1xOcIonlo0ov8CGj9LQz9bsh0LNxoJmuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ohVbtn+hNCv5qgjuD+/0aztX7n19ftlPjX37PUbTgK7futE1ObfC/6+6MTYDaRbYZlzUYBchUQ5PZz37sikPsWTCIzgT2NVRpenO/ozF//MW9svLJm1QoWLVR0gGoRuygKn/aL0fIZ4qPmDwWHaqXKOIOuvW0Fh0zCsez9CxLi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvao9Z5+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A73C4CEF7;
-	Mon, 23 Mar 2026 14:58:03 +0000 (UTC)
+	 MIME-Version; b=pwD+wav8RStkPBfetgog7AYpt84uN/murTUoYzWHMAfnxcaKpJfEAszFra4ueYnONYpyDgkXsq3GHPRmiHHfmQSaLqd7RTqUl438uVMBdghPCsSIRw/zDdHr6tkwxuaaND5dkWHMRHaj4SLf7czroNzeM32Ecntr6Eh4LQvW7no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyYWE3Re; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CF8C4CEF7;
+	Mon, 23 Mar 2026 14:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277884;
-	bh=Eg6Qo57yXPCj1aYPwUuV6G17if18pUbgaxZHVZB90t4=;
+	s=korg; t=1774277891;
+	bh=WsM2ccPDfl1xOcIonlo0ov8CGj9LQz9bsh0LNxoJmuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zvao9Z5+RzlnKubPTHdlEfvck9mCvVlf3Hihi3j0RPAQUlLyCuZjmYluZms4QtiIH
-	 eT2CKkBHoUVla2Qn3rk/wJJAmI6hw7hxe84WH4wcPJ46fPMEhLOJhd1V/Bo7xHvWc6
-	 B8nuIeQoHBGq8RXtKcQD327G5uKThF68nQTELhaU=
+	b=jyYWE3ReBrQbUm9uD4GGgXDiIL/v+VrVnIHMlYrZhH22R1S+URuTiUdnAPUN2G5Av
+	 Kj5Zsmvz2iL65L5HmN324FHgZ+CamwDVtZH+/1lCZyPXoZvJh1YhiX6gzSM8Hhbzaj
+	 5okJtBK52mL+CbSYlBlelW4ZgBYLtJtIBaLt5CGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Francesco Lavra <flavra@baylibre.com>,
 	Javier Martinez Canillas <javierm@redhat.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/567] drm/ssd130x: Replace .page_height field in device info with a constant
-Date: Mon, 23 Mar 2026 14:40:52 +0100
-Message-ID: <20260323134537.074174677@linuxfoundation.org>
+Subject: [PATCH 6.6 133/567] drm/solomon: Fix page start when updating rectangle in page addressing mode
+Date: Mon, 23 Mar 2026 14:40:53 +0100
+Message-ID: <20260323134537.098270968@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -65,34 +64,33 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229045-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229047-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,renesas];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0F2E72F5A83
+X-Rspamd-Queue-Id: 0F5C52F66B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,189 +98,66 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Javier Martinez Canillas <javierm@redhat.com>
+From: Francesco Lavra <flavra@baylibre.com>
 
-[ Upstream commit ec5dceb8180f0cb110dc7029d55d6a83d0583015 ]
+[ Upstream commit 36d9579fed6c9429aa172f77bd28c58696ce8e2b ]
 
-This deemed useful to avoid hardcoding a page height and allow to support
-other Solomon controller families, but dividing the screen in pages seems
-to be something that is specific to the SSD130x chip family.
+In page addressing mode, the pixel values of a dirty rectangle must be sent
+to the display controller one page at a time. The range of pages
+corresponding to a given rectangle is being incorrectly calculated as if
+the Y value of the top left coordinate of the rectangle was 0. This can
+result in rectangle updates being displayed on wrong parts of the screen.
 
-For example, SSD132x chip family divides the screen in segments (columns)
-and common outputs (rows), so the concept of screen pages does not exist
-for the SSD132x family.
+Fix the above issue by consolidating the start page calculation in a single
+place at the beginning of the update_rect function, and using the
+calculated value for all addressing modes.
 
-Let's drop this field from the device info struct and just use a constant
-SSD130X_PAGE_HEIGHT macro to define the page height. While being there,
-replace hardcoded 8 values in places where it is used as the page height.
-
+Fixes: b0daaa5cfaa5 ("drm/ssd130x: Support page addressing mode")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patch.msgid.link/20260210180932.736502-1-flavra@baylibre.com
 Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231014071520.1342189-2-javierm@redhat.com
-Stable-dep-of: 36d9579fed6c ("drm/solomon: Fix page start when updating rectangle in page addressing mode")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/solomon/ssd130x.c | 37 +++++++++++++++----------------
- drivers/gpu/drm/solomon/ssd130x.h |  1 -
- 2 files changed, 18 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/solomon/ssd130x.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/gpu/drm/solomon/ssd130x.c b/drivers/gpu/drm/solomon/ssd130x.c
-index ef3e3832add90..81c85e67fa070 100644
+index 81c85e67fa070..0d6a2664cfbeb 100644
 --- a/drivers/gpu/drm/solomon/ssd130x.c
 +++ b/drivers/gpu/drm/solomon/ssd130x.c
-@@ -42,6 +42,8 @@
- #define DRIVER_MAJOR	1
- #define DRIVER_MINOR	0
- 
-+#define SSD130X_PAGE_HEIGHT 8
-+
- #define SSD130X_PAGE_COL_START_LOW		0x00
- #define SSD130X_PAGE_COL_START_HIGH		0x10
- #define SSD130X_SET_ADDRESS_MODE		0x20
-@@ -102,7 +104,6 @@ const struct ssd130x_deviceinfo ssd130x_variants[] = {
- 		.default_width = 132,
- 		.default_height = 64,
- 		.page_mode_only = 1,
--		.page_height = 8,
- 	},
- 	[SSD1305_ID] = {
- 		.default_vcomh = 0x34,
-@@ -110,7 +111,6 @@ const struct ssd130x_deviceinfo ssd130x_variants[] = {
- 		.default_dclk_frq = 7,
- 		.default_width = 132,
- 		.default_height = 64,
--		.page_height = 8,
- 	},
- 	[SSD1306_ID] = {
- 		.default_vcomh = 0x20,
-@@ -119,7 +119,6 @@ const struct ssd130x_deviceinfo ssd130x_variants[] = {
- 		.need_chargepump = 1,
- 		.default_width = 128,
- 		.default_height = 64,
--		.page_height = 8,
- 	},
- 	[SSD1307_ID] = {
- 		.default_vcomh = 0x20,
-@@ -128,7 +127,6 @@ const struct ssd130x_deviceinfo ssd130x_variants[] = {
- 		.need_pwm = 1,
- 		.default_width = 128,
- 		.default_height = 39,
--		.page_height = 8,
- 	},
- 	[SSD1309_ID] = {
- 		.default_vcomh = 0x34,
-@@ -136,7 +134,6 @@ const struct ssd130x_deviceinfo ssd130x_variants[] = {
- 		.default_dclk_frq = 10,
- 		.default_width = 128,
- 		.default_height = 64,
--		.page_height = 8,
- 	}
- };
- EXPORT_SYMBOL_NS_GPL(ssd130x_variants, DRM_SSD130X);
-@@ -465,13 +462,13 @@ static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
- 	unsigned int width = drm_rect_width(rect);
+@@ -463,6 +463,7 @@ static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
  	unsigned int height = drm_rect_height(rect);
  	unsigned int line_length = DIV_ROUND_UP(width, 8);
--	unsigned int page_height = ssd130x->device_info->page_height;
-+	unsigned int page_height = SSD130X_PAGE_HEIGHT;
+ 	unsigned int page_height = SSD130X_PAGE_HEIGHT;
++	u8 page_start = ssd130x->page_offset + y / page_height;
  	unsigned int pages = DIV_ROUND_UP(height, page_height);
  	struct drm_device *drm = &ssd130x->drm;
  	u32 array_idx = 0;
- 	int ret, i, j, k;
- 
--	drm_WARN_ONCE(drm, y % 8 != 0, "y must be aligned to screen page\n");
-+	drm_WARN_ONCE(drm, y % page_height != 0, "y must be aligned to screen page\n");
- 
- 	/*
- 	 * The screen is divided in pages, each having a height of 8
-@@ -503,27 +500,32 @@ static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
+@@ -500,14 +501,11 @@ static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
  	 */
  
  	if (!ssd130x->page_address_mode) {
-+		u8 page_start;
-+
+-		u8 page_start;
+-
  		/* Set address range for horizontal addressing mode */
  		ret = ssd130x_set_col_range(ssd130x, ssd130x->col_offset + x, width);
  		if (ret < 0)
  			return ret;
  
--		ret = ssd130x_set_page_range(ssd130x, ssd130x->page_offset + y / 8, pages);
-+		page_start = ssd130x->page_offset + y / page_height;
-+		ret = ssd130x_set_page_range(ssd130x, page_start, pages);
+-		page_start = ssd130x->page_offset + y / page_height;
+ 		ret = ssd130x_set_page_range(ssd130x, page_start, pages);
  		if (ret < 0)
  			return ret;
- 	}
- 
- 	for (i = 0; i < pages; i++) {
--		int m = 8;
-+		int m = page_height;
- 
- 		/* Last page may be partial */
--		if (8 * (y / 8 + i + 1) > ssd130x->height)
--			m = ssd130x->height % 8;
-+		if (page_height * (y / page_height + i + 1) > ssd130x->height)
-+			m = ssd130x->height % page_height;
-+
- 		for (j = 0; j < width; j++) {
- 			u8 data = 0;
- 
- 			for (k = 0; k < m; k++) {
--				u8 byte = buf[(8 * i + k) * line_length + j / 8];
-+				u32 idx = (page_height * i + k) * line_length + j / 8;
-+				u8 byte = buf[idx];
- 				u8 bit = (byte >> (j % 8)) & 1;
- 
- 				data |= bit << k;
-@@ -559,8 +561,7 @@ static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
- 
- static void ssd130x_clear_screen(struct ssd130x_device *ssd130x, u8 *data_array)
- {
--	unsigned int page_height = ssd130x->device_info->page_height;
--	unsigned int pages = DIV_ROUND_UP(ssd130x->height, page_height);
-+	unsigned int pages = DIV_ROUND_UP(ssd130x->height, SSD130X_PAGE_HEIGHT);
- 	unsigned int width = ssd130x->width;
- 	int ret, i;
- 
-@@ -605,14 +606,13 @@ static int ssd130x_fb_blit_rect(struct drm_framebuffer *fb,
- 				u8 *buf, u8 *data_array)
- {
- 	struct ssd130x_device *ssd130x = drm_to_ssd130x(fb->dev);
--	unsigned int page_height = ssd130x->device_info->page_height;
- 	struct iosys_map dst;
- 	unsigned int dst_pitch;
- 	int ret = 0;
- 
- 	/* Align y to display page boundaries */
--	rect->y1 = round_down(rect->y1, page_height);
--	rect->y2 = min_t(unsigned int, round_up(rect->y2, page_height), ssd130x->height);
-+	rect->y1 = round_down(rect->y1, SSD130X_PAGE_HEIGHT);
-+	rect->y2 = min_t(unsigned int, round_up(rect->y2, SSD130X_PAGE_HEIGHT), ssd130x->height);
- 
- 	dst_pitch = DIV_ROUND_UP(drm_rect_width(rect), 8);
- 
-@@ -814,8 +814,7 @@ static int ssd130x_crtc_helper_atomic_check(struct drm_crtc *crtc,
- 	struct ssd130x_device *ssd130x = drm_to_ssd130x(drm);
- 	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state, crtc);
- 	struct ssd130x_crtc_state *ssd130x_state = to_ssd130x_crtc_state(crtc_state);
--	unsigned int page_height = ssd130x->device_info->page_height;
--	unsigned int pages = DIV_ROUND_UP(ssd130x->height, page_height);
-+	unsigned int pages = DIV_ROUND_UP(ssd130x->height, SSD130X_PAGE_HEIGHT);
- 	int ret;
- 
- 	ret = drm_crtc_helper_atomic_check(crtc, state);
-diff --git a/drivers/gpu/drm/solomon/ssd130x.h b/drivers/gpu/drm/solomon/ssd130x.h
-index aa39b13615ebe..bbe374453605b 100644
---- a/drivers/gpu/drm/solomon/ssd130x.h
-+++ b/drivers/gpu/drm/solomon/ssd130x.h
-@@ -39,7 +39,6 @@ struct ssd130x_deviceinfo {
- 	u32 default_dclk_frq;
- 	u32 default_width;
- 	u32 default_height;
--	u32 page_height;
- 	bool need_pwm;
- 	bool need_chargepump;
- 	bool page_mode_only;
+@@ -539,7 +537,7 @@ static int ssd130x_update_rect(struct ssd130x_device *ssd130x,
+ 		 */
+ 		if (ssd130x->page_address_mode) {
+ 			ret = ssd130x_set_page_pos(ssd130x,
+-						   ssd130x->page_offset + i,
++						   page_start + i,
+ 						   ssd130x->col_offset + x);
+ 			if (ret < 0)
+ 				return ret;
 -- 
 2.51.0
 
