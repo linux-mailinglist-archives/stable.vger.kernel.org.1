@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228275-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ADJ5ImhGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228094-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:52 +0100
+	id sLyPHMlMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228275-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A1F2F36DF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D6A2F4554
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0A8BA300D4CA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BB22031FDDA0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C3F3AD539;
-	Mon, 23 Mar 2026 13:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817303AE70F;
+	Mon, 23 Mar 2026 14:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="id8VNFiU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rb1eek0q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFDD3ACA68;
-	Mon, 23 Mar 2026 13:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F4823BCFD;
+	Mon, 23 Mar 2026 14:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274106; cv=none; b=GAwAop1R9GnN4xxGmG0msDfBDic4ENf0XiCjOe609s6zHdLJO3swQfN4nRLxBtbdPLtjMS0LMsSNFghMesauVGvGJO0H507iEjdVfY+fut/EhWglyP+vaSdFCbpeboELpOfgdFdU2kgpb+2p8SvQXBlHIWF/wQK6LyuOLzaKu5U=
+	t=1774274658; cv=none; b=DJwtWokH7rYnkB/btHx3PcQbyyr6qFcf2ryvTA2RLnEXflDi8baYqVttw2j/lgsGkwpalYb0nF8Kn79XLK50dDp6jMvrCTOHBaNW4ioidVDfNKjWk4x34quNYQdypOHTbSuSGoxyO2BSGoiUSMrFCyAiQq5s1tSQkgM62g2Fao0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274106; c=relaxed/simple;
-	bh=MMESxKYIhJzSnGUUH4zukG6CQX5jdtvVlzOSGsRfAzs=;
+	s=arc-20240116; t=1774274658; c=relaxed/simple;
+	bh=ZGSkvr59zLDic5ydJw1JuwxnaLq6kQaTfaobWBgvMmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmF1t8l1/+dbwbTjR1NUXSgxvHqrsbvtOdGbDtGZl+hHm/9NG3ISlIUvlG2vI11Bm/BOhN04bBMKND2qTOSgmjPUio1biGi7OjsRC0UYyraJLArqjT3BEycCa2w4ID3MboJakcN3ezobZzvQQ6+I++akhUjqUSGDBcCmIU6N5KI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=id8VNFiU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D73C4CEF7;
-	Mon, 23 Mar 2026 13:55:05 +0000 (UTC)
+	 MIME-Version; b=mt/bcjHCpUQh93xt4iss/Uv90kK5CL+pVUYE0Eru9E2CGdaDeV1koPpQAVjMdVccEBetunnBpHxuHLF4f637sk4e8t6BCO76A4bBo5TqRuYKUO4q4sKROfbMIjbEqlCD6Q82YkzOgbNgv8Iz+6rg6EZzSyKC9KJJGI/rV7awqEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rb1eek0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C4CC4CEF7;
+	Mon, 23 Mar 2026 14:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274106;
-	bh=MMESxKYIhJzSnGUUH4zukG6CQX5jdtvVlzOSGsRfAzs=;
+	s=korg; t=1774274657;
+	bh=ZGSkvr59zLDic5ydJw1JuwxnaLq6kQaTfaobWBgvMmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=id8VNFiUY+YZl06U95bIe4oU56XWIPMb2JnfsEwGM11C5nOJzftdDCV1jglBQHaWc
-	 KPMCfSFEIWPUasRc6ZKYPxu4bSZ/MpkVY2ocxvLalmfFTGWL/WjVRr3NP7JJ1gWRP/
-	 sAy8r0hDqDWAPwPtVT6YK51rI6izln26dDWd3PLI=
+	b=rb1eek0qG0JLSLNIgJplOJzYyxHQd6yAHXAkCn+pLEtDrQDOAuoV+6+lWu4vcgLiO
+	 QQqOsfQdIriaSHzbVKnoJjA5tSCxdbVL6d6p4V0R1CBxVb6vZXEfWtNbmm0hhr6ofS
+	 bbZbTa8hAkfyU7/xmAAmDj+kEY+c7avvmhy1po/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 110/220] arm64: dts: renesas: r9a09g057: Remove wdt{0,2,3} nodes
+	stable <stable@kernel.org>,
+	Nicolas Pitre <npitre@baylibre.com>
+Subject: [PATCH 6.18 066/212] vt: save/restore unicode screen buffer for alternate screen
 Date: Mon, 23 Mar 2026 14:44:47 +0100
-Message-ID: <20260323134508.073885152@linuxfoundation.org>
+Message-ID: <20260323134505.856686795@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +63,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228094-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228275-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable,renesas];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[renesas.com:email,msgid.link:url,11c00800:email]
-X-Rspamd-Queue-Id: 23A1F2F36DF
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,baylibre.com:email]
+X-Rspamd-Queue-Id: D3D6A2F4554
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+From: Nicolas Pitre <npitre@baylibre.com>
 
-[ Upstream commit a3f34651de4287138c0da19ba321ad72622b4af3 ]
+commit 5eb608319bb56464674a71b4a66ea65c6c435d64 upstream.
 
-The HW user manual for the Renesas RZ/V2H(P) SoC (a.k.a r9a09g057)
-states that only WDT1 is supposed to be accessed by the CA55 cores.
-WDT0 is supposed to be used by the CM33 core, WDT2 is supposed
-to be used by the CR8 core 0, and WDT3 is supposed to be used
-by the CR8 core 1.
+The alternate screen support added by commit 23743ba64709 ("vt: add
+support for smput/rmput escape codes") only saves and restores the
+regular screen buffer (vc_origin), but completely ignores the corresponding
+unicode screen buffer (vc_uni_lines) creating a messed-up display.
 
-Remove wdt{0,2,3} from the SoC specific device tree to make it
-compliant with the specification from the HW manual.
+Add vc_saved_uni_lines to save the unicode screen buffer when entering
+the alternate screen, and restore it when leaving. Also ensure proper
+cleanup in reset_terminal() and vc_deallocate().
 
-This change is harmless as there are currently no users of the
-wdt{0,2,3} device tree nodes, only the wdt1 node is actually used.
-
-Fixes: 095105496e7d ("arm64: dts: renesas: r9a09g057: Add WDT0-WDT3 nodes")
-Signed-off-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260203124247.7320-3-fabrizio.castro.jz@renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 23743ba64709 ("vt: add support for smput/rmput escape codes")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nicolas Pitre <npitre@baylibre.com>
+Link: https://patch.msgid.link/5o2p6qp3-91pq-0p17-or02-1oors4417ns7@onlyvoer.pbz
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/renesas/r9a09g057.dtsi | 30 ----------------------
- 1 file changed, 30 deletions(-)
+ drivers/tty/vt/vt.c            |    8 ++++++++
+ include/linux/console_struct.h |    1 +
+ 2 files changed, 9 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-index 4df32d7e99981..3d7f4dae5c195 100644
---- a/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r9a09g057.dtsi
-@@ -581,16 +581,6 @@ ostm7: timer@12c03000 {
- 			status = "disabled";
- 		};
- 
--		wdt0: watchdog@11c00400 {
--			compatible = "renesas,r9a09g057-wdt";
--			reg = <0 0x11c00400 0 0x400>;
--			clocks = <&cpg CPG_MOD 0x4b>, <&cpg CPG_MOD 0x4c>;
--			clock-names = "pclk", "oscclk";
--			resets = <&cpg 0x75>;
--			power-domains = <&cpg>;
--			status = "disabled";
--		};
--
- 		wdt1: watchdog@14400000 {
- 			compatible = "renesas,r9a09g057-wdt";
- 			reg = <0 0x14400000 0 0x400>;
-@@ -601,26 +591,6 @@ wdt1: watchdog@14400000 {
- 			status = "disabled";
- 		};
- 
--		wdt2: watchdog@13000000 {
--			compatible = "renesas,r9a09g057-wdt";
--			reg = <0 0x13000000 0 0x400>;
--			clocks = <&cpg CPG_MOD 0x4f>, <&cpg CPG_MOD 0x50>;
--			clock-names = "pclk", "oscclk";
--			resets = <&cpg 0x77>;
--			power-domains = <&cpg>;
--			status = "disabled";
--		};
--
--		wdt3: watchdog@13000400 {
--			compatible = "renesas,r9a09g057-wdt";
--			reg = <0 0x13000400 0 0x400>;
--			clocks = <&cpg CPG_MOD 0x51>, <&cpg CPG_MOD 0x52>;
--			clock-names = "pclk", "oscclk";
--			resets = <&cpg 0x78>;
--			power-domains = <&cpg>;
--			status = "disabled";
--		};
--
- 		rtc: rtc@11c00800 {
- 			compatible = "renesas,r9a09g057-rtca3", "renesas,rz-rtca3";
- 			reg = <0 0x11c00800 0 0x400>;
--- 
-2.51.0
-
+--- a/drivers/tty/vt/vt.c
++++ b/drivers/tty/vt/vt.c
+@@ -1345,6 +1345,8 @@ struct vc_data *vc_deallocate(unsigned i
+ 			kfree(vc->vc_saved_screen);
+ 			vc->vc_saved_screen = NULL;
+ 		}
++		vc_uniscr_free(vc->vc_saved_uni_lines);
++		vc->vc_saved_uni_lines = NULL;
+ 	}
+ 	return vc;
+ }
+@@ -1890,6 +1892,8 @@ static void enter_alt_screen(struct vc_d
+ 	vc->vc_saved_screen = kmemdup((u16 *)vc->vc_origin, size, GFP_KERNEL);
+ 	if (vc->vc_saved_screen == NULL)
+ 		return;
++	vc->vc_saved_uni_lines = vc->vc_uni_lines;
++	vc->vc_uni_lines = NULL;
+ 	vc->vc_saved_rows = vc->vc_rows;
+ 	vc->vc_saved_cols = vc->vc_cols;
+ 	save_cur(vc);
+@@ -1911,6 +1915,8 @@ static void leave_alt_screen(struct vc_d
+ 		dest = ((u16 *)vc->vc_origin) + r * vc->vc_cols;
+ 		memcpy(dest, src, 2 * cols);
+ 	}
++	vc_uniscr_set(vc, vc->vc_saved_uni_lines);
++	vc->vc_saved_uni_lines = NULL;
+ 	restore_cur(vc);
+ 	/* Update the entire screen */
+ 	if (con_should_update(vc))
+@@ -2233,6 +2239,8 @@ static void reset_terminal(struct vc_dat
+ 	if (vc->vc_saved_screen != NULL) {
+ 		kfree(vc->vc_saved_screen);
+ 		vc->vc_saved_screen = NULL;
++		vc_uniscr_free(vc->vc_saved_uni_lines);
++		vc->vc_saved_uni_lines = NULL;
+ 		vc->vc_saved_rows = 0;
+ 		vc->vc_saved_cols = 0;
+ 	}
+--- a/include/linux/console_struct.h
++++ b/include/linux/console_struct.h
+@@ -160,6 +160,7 @@ struct vc_data {
+ 	struct uni_pagedict **uni_pagedict_loc; /* [!] Location of uni_pagedict variable for this console */
+ 	u32 **vc_uni_lines;			/* unicode screen content */
+ 	u16		*vc_saved_screen;
++	u32		**vc_saved_uni_lines;
+ 	unsigned int	vc_saved_cols;
+ 	unsigned int	vc_saved_rows;
+ 	/* additional information is in vt_kern.h */
 
 
 
