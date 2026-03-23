@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-229595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229149-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ONUOIJlwwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229595-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:53 +0100
+	id YAAhAQNbwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229149-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A0E2F91ED
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F6D2F6353
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 377A230A2F99
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B401133CC78C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3113B19AF;
-	Mon, 23 Mar 2026 16:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC6F3B6C1D;
+	Mon, 23 Mar 2026 15:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJH+oGYt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYI4W0Sr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 727433A960E;
-	Mon, 23 Mar 2026 16:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11946282F26;
+	Mon, 23 Mar 2026 15:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282344; cv=none; b=BMQv6DjujExGFCIq8lcu1ekbH4eDBuTq33Cyvbnms5ixLfiHFfCPl2l1QAREcvcg003dWo0VQorinrQjB8Rvq752Iq2Qcf63LhGO1jzdi5wPharACu/S49wmNwVCj6UbcP1eIVZxGG5E9xvojBvQA/7jbyqYlj4Kq16+mocAgwE=
+	t=1774278216; cv=none; b=d5HbHFsMkWzYp90A8ZkKRRTwfbfvSjcYoomqkPOtOBckOpJOmz+I9CZcNx0a1i3c2S+nbDhzXvm0/0xi26gRiKQbzXE0v9xxJ79TlbpUHnh6PhMokdb6RoHslLpK4PLve2kn+5aIS+Xi/GE1klhg15aylGHgpjTy577PdnKMmNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282344; c=relaxed/simple;
-	bh=/5iDdpVPIauM17IZjqhcRSJb4mOzuhgqVhTRt7AZ6pQ=;
+	s=arc-20240116; t=1774278216; c=relaxed/simple;
+	bh=l8qk98T3va4nd57oVH33YDIrDdMAKqwOrrl1NFhwnTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhhrV6STS2OKpYCOKI15tfwnPI5K9/OeCOqhk90BJcvfa3gnUlEjaJBdN2Uwn7TufmnjO7aXoCaUkjq6TOEs1RHkfYWn9475Zk58Zwbs96lB5YGlu+nAcgYQhkOHziIq/XtN9SblGhxSVq7LTuRYNfB5UEgfAu80mDlAQdpREwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJH+oGYt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02D7AC4CEF7;
-	Mon, 23 Mar 2026 16:12:23 +0000 (UTC)
+	 MIME-Version; b=tf32QWN1895rfjE6CeHrlivqv7zmBBYTOvnqFdz2ZobQwVg1V+8o4p7e0B8+zjxCW2BwM6alHZZ7NmVWGNJ/E7iazbx+leIHD9y65pswXurloG9Ntqox1Qif4mqzDk0FAyJmTe2uBOpCjT/jLoZ1ZGFxoCDKfgj04kzPnUg+1xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYI4W0Sr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA9DC4CEF7;
+	Mon, 23 Mar 2026 15:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282344;
-	bh=/5iDdpVPIauM17IZjqhcRSJb4mOzuhgqVhTRt7AZ6pQ=;
+	s=korg; t=1774278216;
+	bh=l8qk98T3va4nd57oVH33YDIrDdMAKqwOrrl1NFhwnTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KJH+oGYtg0+JV/MRxG5D5XPJcjEPkckkSB8PqzYgOC6fKrKSVoHh/uj7/Q2eYgyjR
-	 eBTCSR74i9/+lmv1x9t1mslGAS9uz+MR1Xa9cClH+vDjX4zxqO5IVVE8x9lCZyTNyY
-	 3NZa7QEQw2BEyuCA4fbjn6so4jSmQdXFVxnx4Moc=
+	b=dYI4W0SrIyGgvIYsGCjVV03UndwDoyEUBBoEVvJBiGvqy8UOBPUECJoDmwmozbRGT
+	 m+cILFWTXDVTkGMzAEoNLXCjaykX788kiNiORjKN0G4uhcJ9FZnxnvL4TYaDSlbv6Y
+	 a3wbZBpMkY4FuvhwAwZmDWIcUwtN3HafKnjslW9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/481] wifi: cw1200: Fix locking in error paths
-Date: Mon, 23 Mar 2026 14:41:43 +0100
-Message-ID: <20260323134528.232015992@linuxfoundation.org>
+Subject: [PATCH 6.6 184/567] tracing: Add NULL pointer check to trigger_data_free()
+Date: Mon, 23 Mar 2026 14:41:44 +0100
+Message-ID: <20260323134538.406638433@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,74 +69,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229595-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229149-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,efficios.com,goodmis.org,roeck-us.net];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 23A0E2F91ED
+X-Rspamd-Queue-Id: 54F6D2F6353
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit d98c24617a831e92e7224a07dcaed2dd0b02af96 ]
+[ Upstream commit 457965c13f0837a289c9164b842d0860133f6274 ]
 
-cw1200_wow_suspend() must only return with priv->conf_mutex locked if it
-returns zero. This mutex must be unlocked if an error is returned. Add
-mutex_unlock() calls to the error paths from which that call is missing.
-This has been detected by the Clang thread-safety analyzer.
+If trigger_data_alloc() fails and returns NULL, event_hist_trigger_parse()
+jumps to the out_free error path. While kfree() safely handles a NULL
+pointer, trigger_data_free() does not. This causes a NULL pointer
+dereference in trigger_data_free() when evaluating
+data->cmd_ops->set_filter.
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260223220102.2158611-25-bart.vanassche@linux.dev
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix the problem by adding a NULL pointer check to trigger_data_free().
+
+The problem was found by an experimental code review agent based on
+gemini-3.1-pro while reviewing backports into v6.18.y.
+
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
+Link: https://patch.msgid.link/20260305193339.2810953-1-linux@roeck-us.net
+Fixes: 0550069cc25f ("tracing: Properly process error handling in event_hist_trigger_parse()")
+Assisted-by: Gemini:gemini-3.1-pro
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/st/cw1200/pm.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/trace_events_trigger.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/st/cw1200/pm.c b/drivers/net/wireless/st/cw1200/pm.c
-index a20ab577a3644..212b6f2af8de4 100644
---- a/drivers/net/wireless/st/cw1200/pm.c
-+++ b/drivers/net/wireless/st/cw1200/pm.c
-@@ -264,12 +264,14 @@ int cw1200_wow_suspend(struct ieee80211_hw *hw, struct cfg80211_wowlan *wowlan)
- 		wiphy_err(priv->hw->wiphy,
- 			  "PM request failed: %d. WoW is disabled.\n", ret);
- 		cw1200_wow_resume(hw);
-+		mutex_unlock(&priv->conf_mutex);
- 		return -EBUSY;
- 	}
+diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
+index fe079ff82ef1b..3ef1fe15493d3 100644
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -19,6 +19,9 @@ static DEFINE_MUTEX(trigger_cmd_mutex);
  
- 	/* Force resume if event is coming from the device. */
- 	if (atomic_read(&priv->bh_rx)) {
- 		cw1200_wow_resume(hw);
-+		mutex_unlock(&priv->conf_mutex);
- 		return -EAGAIN;
- 	}
+ void trigger_data_free(struct event_trigger_data *data)
+ {
++	if (!data)
++		return;
++
+ 	if (data->cmd_ops->set_filter)
+ 		data->cmd_ops->set_filter(NULL, data, NULL);
  
 -- 
 2.51.0
