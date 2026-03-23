@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-229734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228229-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mB7PAf1xwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229734-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:49 +0100
+	id cPB5DK1KwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228229-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC8EB2F94F7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0562F4019
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC5EE30774FC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F91D3001C63
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0DBA3AF663;
-	Mon, 23 Mar 2026 16:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932843B634C;
+	Mon, 23 Mar 2026 14:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nl2EmqQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pd3Tk/ii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7FA3AE19E;
-	Mon, 23 Mar 2026 16:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C653B0AE5;
+	Mon, 23 Mar 2026 14:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282723; cv=none; b=mlPspKewUgDL5iyG+cha9sMGo6fidPcVMGuDwaV4U6G0YUzL/6XrC7dFcuipkLyZE5aM3Ph6HQepUKHDgAsjgEodFB4XRRZh2t3XReKvKkvyD+CAS+gh8V3rK8Ib9+997uvSFwU40iIv2KHxpkrHpeqe+DiTgABYhA0ckBzXV3A=
+	t=1774274518; cv=none; b=CKgzgGe2s0++hFYpOtZ9PGW2X0sRgwMyVLizLbXvuU+K1Nqi8hA//b4Ml3aukQKyl9SgTaelDo2q5uezezmgSSpOtI8RwkihgHE5fWZ3sTKJOU5pdWPPdw+6Z3SJcZXUScIJaoGrpYruZOXlEhE6qzFt1vrsw+Zj/wqMLpF4h0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282723; c=relaxed/simple;
-	bh=kB1AeSCer8Bo2OQ5B88q6bhA0d+BByYFnQ4t6U9cgFs=;
+	s=arc-20240116; t=1774274518; c=relaxed/simple;
+	bh=rgcotMo+LHICW+bx8Ftaux2NMvPXG9LRlJeBWBz0UWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DNxbB9iA1JNh/8l8KjLuk0ylhc9uW7TcEyAT2jzqDX+ztVzoHg6qFDD/jIktWUj9aPTTrDLXXiWPhxweyRzZUXr3meRjI58lrdVY5FC0zq5RqZnEFlEDC0K0fJ7NYFVNUAKjTygcnjNIlaAw68H3O9eoIzUjQGUPtg7w8ZWDZQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nl2EmqQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39ABC4CEF7;
-	Mon, 23 Mar 2026 16:18:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Cvz66HUGPtnhnnfWmxlM7xN3clxQMd/CrkR349/NYfsF8Tozm4lCTkZzYA9BaEdpcs6XOd0zAkD25VpDPSdorRpC0ZYYYW2A1zrKV/IeKpfNEuYxwu5qzRcDwemYpgjmbAzAh97OUCjf+coyKBOyDgd6atONgrRBmF7DY9MFECA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pd3Tk/ii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0038C4CEF7;
+	Mon, 23 Mar 2026 14:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282723;
-	bh=kB1AeSCer8Bo2OQ5B88q6bhA0d+BByYFnQ4t6U9cgFs=;
+	s=korg; t=1774274518;
+	bh=rgcotMo+LHICW+bx8Ftaux2NMvPXG9LRlJeBWBz0UWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nl2EmqQkVGgXMTsih0myU5aw/glwgmR68eVihZqEmfcuguWFDmLamJeFZdAoF8lex
-	 4kM6h5zn24IdGGkk54GmVQvp8Rgo75Tg9dOWbzaQEI8eA+C/zIypvQkZTszYsV7RHF
-	 6oQRYi073qWaQW408EglMnHf74P/tKI1R9RkNyXs=
+	b=Pd3Tk/iiSUN/BqFrlCmBxzRAfhDMTCaJeOJtt6nFNHint51v26gUz3w0Xm3G67K7o
+	 w9yoMNUm1Hi6yj6Zmz5ltfV70qiNIajvhXSSv69yE7Q63I3qslezm2SqkIXn1Nnq0V
+	 qpRk3AbR2fL40V0ph5lVF3BLdSkJVdd3fRcc6U8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Tom Talpey <tom@talpey.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 261/481] smb: client: fix atomic open with O_DIRECT & O_SYNC
+	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.18 022/212] Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
 Date: Mon, 23 Mar 2026 14:44:03 +0100
-Message-ID: <20260323134531.508517941@linuxfoundation.org>
+Message-ID: <20260323134504.457817246@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,139 +62,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229734-lists,stable=lfdr.de];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-228229-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RSPAMD_EMAILBL_FAIL(0.00)[henrique.carvalho.suse.com:query timed out,linux-cifs.vger.kernel.org:query timed out,pc.manguebit.org:query timed out,tom.talpey.com:query timed out,stfrench.microsoft.com:query timed out];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BC8EB2F94F7
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,johannes-moeller.dev:email]
+X-Rspamd-Queue-Id: 6C0562F4019
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Lukas Johannes Möller <research@johannes-moeller.dev>
 
-commit 4a7d2729dc99437dbb880a64c47828c0d191b308 upstream.
+commit dd815e6e3918dc75a49aaabac36e4f024d675101 upstream.
 
-When user application requests O_DIRECT|O_SYNC along with O_CREAT on
-open(2), CREATE_NO_BUFFER and CREATE_WRITE_THROUGH bits were missed in
-CREATE request when performing an atomic open, thus leading to
-potentially data integrity issues.
+l2cap_information_rsp() checks that cmd_len covers the fixed
+l2cap_info_rsp header (type + result, 4 bytes) but then reads
+rsp->data without verifying that the payload is present:
 
-Fix this by setting those missing bits in CREATE request when
-O_DIRECT|O_SYNC has been specified in cifs_do_create().
+ - L2CAP_IT_FEAT_MASK calls get_unaligned_le32(rsp->data), which reads
+   4 bytes past the header (needs cmd_len >= 8).
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Cc: Tom Talpey <tom@talpey.com>
-Cc: linux-cifs@vger.kernel.org
+ - L2CAP_IT_FIXED_CHAN reads rsp->data[0], 1 byte past the header
+   (needs cmd_len >= 5).
+
+A truncated L2CAP_INFO_RSP with result == L2CAP_IR_SUCCESS triggers an
+out-of-bounds read of adjacent skb data.
+
+Guard each data access with the required payload length check.  If the
+payload is too short, skip the read and let the state machine complete
+with safe defaults (feat_mask and remote_fixed_chan remain zero from
+kzalloc), so the info timer cleanup and l2cap_conn_start() still run
+and the connection is not stalled.
+
+Fixes: 4e8402a3f884 ("[Bluetooth] Retrieve L2CAP features mask on connection setup")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cifsglob.h |   11 +++++++++++
- fs/smb/client/dir.c      |    1 +
- fs/smb/client/file.c     |   18 +++---------------
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ net/bluetooth/l2cap_core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -20,6 +20,7 @@
- #include <linux/utsname.h>
- #include <linux/sched/mm.h>
- #include <linux/netfs.h>
-+#include <linux/fcntl.h>
- #include "cifs_fs_sb.h"
- #include "cifsacl.h"
- #include <crypto/internal/hash.h>
-@@ -2194,4 +2195,14 @@ static inline bool cifs_ses_exiting(stru
- 	return ret;
- }
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4622,7 +4622,8 @@ static inline int l2cap_information_rsp(
  
-+static inline int cifs_open_create_options(unsigned int oflags, int opts)
-+{
-+	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
-+	if (oflags & O_SYNC)
-+		opts |= CREATE_WRITE_THROUGH;
-+	if (oflags & O_DIRECT)
-+		opts |= CREATE_NO_BUFFER;
-+	return opts;
-+}
-+
- #endif	/* _CIFS_GLOB_H */
---- a/fs/smb/client/dir.c
-+++ b/fs/smb/client/dir.c
-@@ -304,6 +304,7 @@ static int cifs_do_create(struct inode *
- 		goto out;
- 	}
+ 	switch (type) {
+ 	case L2CAP_IT_FEAT_MASK:
+-		conn->feat_mask = get_unaligned_le32(rsp->data);
++		if (cmd_len >= sizeof(*rsp) + sizeof(u32))
++			conn->feat_mask = get_unaligned_le32(rsp->data);
  
-+	create_options |= cifs_open_create_options(oflags, create_options);
- 	/*
- 	 * if we're not using unix extensions, see if we need to set
- 	 * ATTR_READONLY on the create call
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -255,15 +255,8 @@ static int cifs_nt_open(const char *full
-  *********************************************************************/
+ 		if (conn->feat_mask & L2CAP_FEAT_FIXED_CHAN) {
+ 			struct l2cap_info_req req;
+@@ -4641,7 +4642,8 @@ static inline int l2cap_information_rsp(
+ 		break;
  
- 	disposition = cifs_get_disposition(f_flags);
--
- 	/* BB pass O_SYNC flag through on file attributes .. BB */
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(f_flags, create_options);
+ 	case L2CAP_IT_FIXED_CHAN:
+-		conn->remote_fixed_chan = rsp->data[0];
++		if (cmd_len >= sizeof(*rsp) + sizeof(rsp->data[0]))
++			conn->remote_fixed_chan = rsp->data[0];
+ 		conn->info_state |= L2CAP_INFO_FEAT_MASK_REQ_DONE;
+ 		conn->info_ident = 0;
  
- retry_open:
- 	oparms = (struct cifs_open_parms) {
-@@ -913,13 +906,8 @@ cifs_reopen_file(struct cifsFileInfo *cf
- 		rdwr_for_fscache = 1;
- 
- 	desired_access = cifs_convert_flags(cfile->f_flags, rdwr_for_fscache);
--
--	/* O_SYNC also has bit for O_DSYNC so following check picks up either */
--	if (cfile->f_flags & O_SYNC)
--		create_options |= CREATE_WRITE_THROUGH;
--
--	if (cfile->f_flags & O_DIRECT)
--		create_options |= CREATE_NO_BUFFER;
-+	create_options |= cifs_open_create_options(cfile->f_flags,
-+						   create_options);
- 
- 	if (server->ops->get_lease_key)
- 		server->ops->get_lease_key(inode, &cfile->fid);
 
 
 
