@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-228928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oH+wJaBYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228928-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:36 +0100
+	id MAzRKYZWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A3BB2F6019
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3642F5B77
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73697332BE65
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:52:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C159B305FDA5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCC8242D9D;
-	Mon, 23 Mar 2026 14:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76A843AEF50;
+	Mon, 23 Mar 2026 14:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfTul4+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1v4q20I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6046626F28D;
-	Mon, 23 Mar 2026 14:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38EE3395DB5;
+	Mon, 23 Mar 2026 14:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277513; cv=none; b=SvlGnN9WOPSlk1MyUDno8DGKH+asFfj6ffn9q+1xb7Rrn70gMrZPzvL/mTmyF8xYvqRRZvz6V+sOvtkhsk+XML+g+yJ5RVW81dEF1BmQw74HyepF5HhWkAXDOHz/wJNAcYoN4TJ81A9P6zDxCzTaDOTBYYHN/M/9WiuLnI7ZNlk=
+	t=1774277427; cv=none; b=Z6hYotJ4hAPVLW8jRA3GwCQDAxgxjvDGfieYCffw8Q4UL1RVf2NrjKDxEZNlgkoUAOT6zu0+V8I1Uj69jxlbbzo4mcD9Ftg3dezbTmdGByQyQ6MFba0lOQ2RLNoK0IfvEr3vV6tB7myDx9T4BYLQ+Fx5o2gBNh7TAyDBf4HXtDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277513; c=relaxed/simple;
-	bh=n8ybsdhuyvg2XLLGsXoN3vavRBsuu9IB1zu9qsKqtSc=;
+	s=arc-20240116; t=1774277427; c=relaxed/simple;
+	bh=RiZOT8H9TDFGZF6kqXx7qxXv0ZcP4ROfS065EP6RGJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cbSXj/9iC1BCNZOn+bXI8BFHZdY3tQYfyyRH+4UR9FVH5sJKVFbjdsa8LnFvDZbMYePugwn9IlA+HHKMJKdetL45FC4+u0K9gbZGPjfio+pBAFkkYscAgeWjtfGBER/LWSsPI/9H5LUNetBWhXklpZBzSBg43HnQc1FEe48bJbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfTul4+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD3DC4CEF7;
-	Mon, 23 Mar 2026 14:51:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Affvsyxg/Qz75vWolBpHIVN9lSIrkk/vCbS6XpRePXYY6kea9GxISLAHi8X3QHc3hSDEiN5SVExqG9Y6aZ0wo5bDNoLJrVPyDT9xy62hrSOOqrhl+YiFNoU6xctJocYUfp2VAVn52blZ5WrivQ1E9XP7onuCjGH2Zp+nbviqlmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1v4q20I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1201C4CEF7;
+	Mon, 23 Mar 2026 14:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277513;
-	bh=n8ybsdhuyvg2XLLGsXoN3vavRBsuu9IB1zu9qsKqtSc=;
+	s=korg; t=1774277427;
+	bh=RiZOT8H9TDFGZF6kqXx7qxXv0ZcP4ROfS065EP6RGJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfTul4+oQv6fhDzUVc5QzGxJbdj1ON6fAbn7YV4zxAUD1h2tHLltZEkqZuhqtb21N
-	 kIOWBnYVFmHJ2tS/4+iVHG3Mbt9AhzGhY7bBkWOGuiKlBKbiiyZZm2ypQ4kGtBz+vn
-	 7bPfm6XDORugtpwPf5Zj0OgKHUDFKg8PUX2AN/5c=
+	b=u1v4q20I2jgt8FsYxyzipeX3AwsjAK0fCuE/WzsJulk3i6ZFyr5kNSyiNBQ3xtXMq
+	 nlpswDoMw10CxQkilZIPjZFZQZ5hIOBED6XgLwnHKhb254fwG9Yd3fR5C/QsoTCI61
+	 dXVV05iJ0raXgCfFPDhYJVOfFup4A6Vc9jKcrbPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.12 435/460] hwmon: (pmbus/isl68137) Fix unchecked return value and use sysfs_emit()
-Date: Mon, 23 Mar 2026 14:47:11 +0100
-Message-ID: <20260323134537.252676013@linuxfoundation.org>
+	Mika Kahola <mika.kahola@intel.com>,
+	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 436/460] drm/i915/psr: Compute PSR entry_setup_frames into intel_crtc_state
+Date: Mon, 23 Mar 2026 14:47:12 +0100
+Message-ID: <20260323134537.275639618@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
 References: <20260323134526.647552166@linuxfoundation.org>
@@ -62,34 +65,34 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228928-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-228896-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1A3BB2F6019
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 1C3642F5B77
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -97,45 +100,62 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Jouni Högander <jouni.hogander@intel.com>
 
-commit 86259558e422b250aa6aa57163a6d759074573f5 upstream.
+commit 7caac659a837af9fd4cad85be851982b88859484 upstream.
 
-isl68137_avs_enable_show_page() uses the return value of
-pmbus_read_byte_data() without checking for errors. If the I2C transaction
-fails, a negative error code is passed through bitwise operations,
-producing incorrect output.
+PSR entry_setup_frames is currently computed directly into struct
+intel_dp:intel_psr:entry_setup_frames. This causes a problem if mode change
+gets rejected after PSR compute config: Psr_entry_setup_frames computed for
+this rejected state is in intel_dp:intel_psr:entry_setup_frame. Fix this by
+computing it into intel_crtc_state and copy the value into
+intel_dp:intel_psr:entry_setup_frames on PSR enable.
 
-Add an error check to propagate the return value if it is negative.
-Additionally, modernize the callback by replacing sprintf()
-with sysfs_emit().
-
-Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260318193952.47908-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 2b981d57e480 ("drm/i915/display: Support PSR entry VSC packet to be transmitted one frame earlier")
+Cc: Mika Kahola <mika.kahola@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260312083710.1593781-3-jouni.hogander@intel.com
+(cherry picked from commit 8c229b4aa00262c13787982e998c61c0783285e0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+[ dropped intel_psr_needs_wa_18037818876 hunk and adjusted surrounding context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/isl68137.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_types.h |    1 +
+ drivers/gpu/drm/i915/display/intel_psr.c           |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/hwmon/pmbus/isl68137.c
-+++ b/drivers/hwmon/pmbus/isl68137.c
-@@ -80,8 +80,11 @@ static ssize_t isl68137_avs_enable_show_
- {
- 	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1218,6 +1218,7 @@ struct intel_crtc_state {
+ 	bool wm_level_disabled;
+ 	u32 dc3co_exitline;
+ 	u16 su_y_granularity;
++	u8 entry_setup_frames;
  
--	return sprintf(buf, "%d\n",
--		       (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS ? 1 : 0);
-+	if (val < 0)
-+		return val;
-+
-+	return sysfs_emit(buf, "%d\n",
-+			   (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS);
- }
+ 	/*
+ 	 * Frequence the dpll for the port should run at. Differs from the
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1571,7 +1571,7 @@ static bool _psr_compute_config(struct i
+ 	entry_setup_frames = intel_psr_entry_setup_frames(intel_dp, adjusted_mode);
  
- static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
+ 	if (entry_setup_frames >= 0) {
+-		intel_dp->psr.entry_setup_frames = entry_setup_frames;
++		crtc_state->entry_setup_frames = entry_setup_frames;
+ 	} else {
+ 		drm_dbg_kms(display->drm,
+ 			    "PSR condition failed: PSR setup timing not met\n");
+@@ -1979,6 +1979,7 @@ static void intel_psr_enable_locked(stru
+ 	intel_dp->psr.psr2_sel_fetch_cff_enabled = false;
+ 	intel_dp->psr.req_psr2_sdp_prior_scanline =
+ 		crtc_state->req_psr2_sdp_prior_scanline;
++	intel_dp->psr.entry_setup_frames = crtc_state->entry_setup_frames;
+ 
+ 	if (!psr_interrupt_error_check(intel_dp))
+ 		return;
 
 
 
