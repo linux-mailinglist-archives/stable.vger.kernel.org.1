@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-228229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229290-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cPB5DK1KwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228229-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:05 +0100
+	id 0NTUEj1ewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229290-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0562F4019
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C292F6973
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9F91D3001C63
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86020344AFA8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 932843B634C;
-	Mon, 23 Mar 2026 14:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DA83B47E5;
+	Mon, 23 Mar 2026 15:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pd3Tk/ii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6rwR0BN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C653B0AE5;
-	Mon, 23 Mar 2026 14:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD071A00F0;
+	Mon, 23 Mar 2026 15:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274518; cv=none; b=CKgzgGe2s0++hFYpOtZ9PGW2X0sRgwMyVLizLbXvuU+K1Nqi8hA//b4Ml3aukQKyl9SgTaelDo2q5uezezmgSSpOtI8RwkihgHE5fWZ3sTKJOU5pdWPPdw+6Z3SJcZXUScIJaoGrpYruZOXlEhE6qzFt1vrsw+Zj/wqMLpF4h0c=
+	t=1774278653; cv=none; b=iCLDpjaVTEmUH3vEM6gTwyzlXMTW40Qp7paBofVpVjh+M2HdcQh8ReiVLEVddX4cRWXXnGC4tnw56KvNHk68G7g1k81xf8xQt1XMOak8w3r09wm46JHmZPdGmAscqgvrnfcusvq4KtyaVqqKSw3aWUygV+qrYgn8rwr+qPM++Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274518; c=relaxed/simple;
-	bh=rgcotMo+LHICW+bx8Ftaux2NMvPXG9LRlJeBWBz0UWM=;
+	s=arc-20240116; t=1774278653; c=relaxed/simple;
+	bh=v44Aew+DQO4lBE5bbMmfbKXbAuj5rgMPWtMIwH0CGDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cvz66HUGPtnhnnfWmxlM7xN3clxQMd/CrkR349/NYfsF8Tozm4lCTkZzYA9BaEdpcs6XOd0zAkD25VpDPSdorRpC0ZYYYW2A1zrKV/IeKpfNEuYxwu5qzRcDwemYpgjmbAzAh97OUCjf+coyKBOyDgd6atONgrRBmF7DY9MFECA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pd3Tk/ii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0038C4CEF7;
-	Mon, 23 Mar 2026 14:01:57 +0000 (UTC)
+	 MIME-Version; b=s5XYTkAzAPzOIHRZKfilZjWNZJMlQQRa+jwh2yhbswM1s/AmiAK6mM0GNEccUQYqiwnmxAojiesAN4+fpnYqDo4ckjHZ0JzvO8Dx/ZN95LcQ+fxZACkM61PaY/r0bjjjHxClMFDfSHfUN5o4iXWVPD1cv8bliLaiFpxN3tF2Bag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6rwR0BN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72B2C4CEF7;
+	Mon, 23 Mar 2026 15:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274518;
-	bh=rgcotMo+LHICW+bx8Ftaux2NMvPXG9LRlJeBWBz0UWM=;
+	s=korg; t=1774278653;
+	bh=v44Aew+DQO4lBE5bbMmfbKXbAuj5rgMPWtMIwH0CGDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pd3Tk/iiSUN/BqFrlCmBxzRAfhDMTCaJeOJtt6nFNHint51v26gUz3w0Xm3G67K7o
-	 w9yoMNUm1Hi6yj6Zmz5ltfV70qiNIajvhXSSv69yE7Q63I3qslezm2SqkIXn1Nnq0V
-	 qpRk3AbR2fL40V0ph5lVF3BLdSkJVdd3fRcc6U8Y=
+	b=n6rwR0BNvboGv2UfRnl+AguFJQ2eentLoBAyNV+t+gyh88J6VnmAwfJThLqmnATYh
+	 4ZSksTvrcXmcsHYINCImeRMBUnxqgkDKbsw5uza73lMV1yTBNlS3VYyGNxX0yv2v7s
+	 fK9vmydA/iLrVSz83Z9jNLvX3L9N7TsMtY8A/CXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.18 022/212] Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
+	Will Deacon <will@kernel.org>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 323/567] arm64: mm: Add PTE_DIRTY back to PAGE_KERNEL* to fix kexec/hibernation
 Date: Mon, 23 Mar 2026 14:44:03 +0100
-Message-ID: <20260323134504.457817246@linuxfoundation.org>
+Message-ID: <20260323134541.823390415@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +65,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228229-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229290-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,johannes-moeller.dev:email]
-X-Rspamd-Queue-Id: 6C0562F4019
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A4C292F6973
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Johannes Möller <research@johannes-moeller.dev>
+From: Catalin Marinas <catalin.marinas@arm.com>
 
-commit dd815e6e3918dc75a49aaabac36e4f024d675101 upstream.
+commit c25c4aa3f79a488cc270507935a29c07dc6bddfc upstream.
 
-l2cap_information_rsp() checks that cmd_len covers the fixed
-l2cap_info_rsp header (type + result, 4 bytes) but then reads
-rsp->data without verifying that the payload is present:
+Commit 143937ca51cc ("arm64, mm: avoid always making PTE dirty in
+pte_mkwrite()") changed pte_mkwrite_novma() to only clear PTE_RDONLY
+when PTE_DIRTY is set. This was to allow writable-clean PTEs for swap
+pages that haven't actually been written.
 
- - L2CAP_IT_FEAT_MASK calls get_unaligned_le32(rsp->data), which reads
-   4 bytes past the header (needs cmd_len >= 8).
+However, this broke kexec and hibernation for some platforms. Both go
+through trans_pgd_create_copy() -> _copy_pte(), which calls
+pte_mkwrite_novma() to make the temporary linear-map copy fully
+writable. With the updated pte_mkwrite_novma(), read-only kernel pages
+(without PTE_DIRTY) remain read-only in the temporary mapping.
+While such behaviour is fine for user pages where hardware DBM or
+trapping will make them writeable, subsequent in-kernel writes by the
+kexec relocation code will fault.
 
- - L2CAP_IT_FIXED_CHAN reads rsp->data[0], 1 byte past the header
-   (needs cmd_len >= 5).
+Add PTE_DIRTY back to all _PAGE_KERNEL* protection definitions. This was
+the case prior to 5.4, commit aa57157be69f ("arm64: Ensure
+VM_WRITE|VM_SHARED ptes are clean by default"). With the kernel
+linear-map PTEs always having PTE_DIRTY set, pte_mkwrite_novma()
+correctly clears PTE_RDONLY.
 
-A truncated L2CAP_INFO_RSP with result == L2CAP_IR_SUCCESS triggers an
-out-of-bounds read of adjacent skb data.
-
-Guard each data access with the required payload length check.  If the
-payload is too short, skip the read and let the state machine complete
-with safe defaults (feat_mask and remote_fixed_chan remain zero from
-kzalloc), so the info timer cleanup and l2cap_conn_start() still run
-and the connection is not stalled.
-
-Fixes: 4e8402a3f884 ("[Bluetooth] Retrieve L2CAP features mask on connection setup")
+Fixes: 143937ca51cc ("arm64, mm: avoid always making PTE dirty in pte_mkwrite()")
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Link: https://lore.kernel.org/r/20251204062722.3367201-1-jianpeng.chang.cn@windriver.com
+Cc: Will Deacon <will@kernel.org>
+Cc: Huang, Ying <ying.huang@linux.alibaba.com>
+Cc: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/pgtable-prot.h |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4622,7 +4622,8 @@ static inline int l2cap_information_rsp(
+--- a/arch/arm64/include/asm/pgtable-prot.h
++++ b/arch/arm64/include/asm/pgtable-prot.h
+@@ -45,11 +45,11 @@
  
- 	switch (type) {
- 	case L2CAP_IT_FEAT_MASK:
--		conn->feat_mask = get_unaligned_le32(rsp->data);
-+		if (cmd_len >= sizeof(*rsp) + sizeof(u32))
-+			conn->feat_mask = get_unaligned_le32(rsp->data);
+ #define _PAGE_DEFAULT		(_PROT_DEFAULT | PTE_ATTRINDX(MT_NORMAL))
  
- 		if (conn->feat_mask & L2CAP_FEAT_FIXED_CHAN) {
- 			struct l2cap_info_req req;
-@@ -4641,7 +4642,8 @@ static inline int l2cap_information_rsp(
- 		break;
+-#define _PAGE_KERNEL		(PROT_NORMAL)
+-#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY)
+-#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY)
+-#define _PAGE_KERNEL_EXEC	(PROT_NORMAL & ~PTE_PXN)
+-#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT)
++#define _PAGE_KERNEL		(PROT_NORMAL | PTE_DIRTY)
++#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY | PTE_DIRTY)
++#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY | PTE_DIRTY)
++#define _PAGE_KERNEL_EXEC	((PROT_NORMAL & ~PTE_PXN) | PTE_DIRTY)
++#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT | PTE_DIRTY)
  
- 	case L2CAP_IT_FIXED_CHAN:
--		conn->remote_fixed_chan = rsp->data[0];
-+		if (cmd_len >= sizeof(*rsp) + sizeof(rsp->data[0]))
-+			conn->remote_fixed_chan = rsp->data[0];
- 		conn->info_state |= L2CAP_INFO_FEAT_MASK_REQ_DONE;
- 		conn->info_ident = 0;
- 
+ #define _PAGE_SHARED		(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN | PTE_WRITE)
+ #define _PAGE_SHARED_EXEC	(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_WRITE)
 
 
 
