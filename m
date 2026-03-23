@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228277-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eIkiMfZdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229335-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:22 +0100
+	id yBJFJs5MwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228277-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1CD2F68CA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8E482F456D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 43537311C15B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E678C311D0DF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273D73B6C07;
-	Mon, 23 Mar 2026 15:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700213B38AD;
+	Mon, 23 Mar 2026 14:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d0WOexqx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUjl7Fs0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23B73B6C03;
-	Mon, 23 Mar 2026 15:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337313B3887;
+	Mon, 23 Mar 2026 14:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278793; cv=none; b=A9wFqkdoOMV0kxP8ZiOkuoTXm4fgp5gdXkhJmZSQrpCWatzEmifbF6sUARJbSPZ1ld4giOkTL0S3qaYaiy1aZa2LW4JPQIVUfvk7KAkNFQzNDRawkvMg/HFIzYkxF6qGT5TdSiNpLWFhhf6pSl3hjZNbLAkKPD1nIJwLnIkyeCY=
+	t=1774274664; cv=none; b=ldgcfAeqe5CJaa3S7bWXWmUH8yVpO+V+GrfsJzhPCsIgMVp0Xfrv4B5wyrk+6XHjWbLYkMX0vKuze50xsAVgYtc79aUL/emTBF/N+WfPFCXdpkcVjL5gpXr0JCBVmtUf9wHBxoFOZqdj3LtQVncFXFzAzWSE4ORWNdajtz0m8YY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278793; c=relaxed/simple;
-	bh=gCSuP0+F8sS7rAaUC/TnLaWZjLQITDs6EZSW80ZM24o=;
+	s=arc-20240116; t=1774274664; c=relaxed/simple;
+	bh=VfHdnWVsml7icsseu7xFQPhldr1/AC20Hiuzs/kwELQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zl/4/lUsW72Jnm03CAi7b6BvcG3ooHjsJQGDd73NET8pJPJa0S06ZUtCxoHiTwpmGeWjb0mzM5TR8t3jyLet3/fwVn3ExEzqDInkmo02GnX2AL2jPg2I3BDvcTXz3Pv0j4k9+JC2z39G2Kcw6SWODnq6rikqxLFdU+6vIJA/4H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d0WOexqx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAF2C2BC9E;
-	Mon, 23 Mar 2026 15:13:13 +0000 (UTC)
+	 MIME-Version; b=HbTrWyrcZXPexfq2btZYOtRkeTc8I2ExHgXHTEftYdO86V2D4O+bMXtLDTJ2w3oES/YBg3UFnSPQsd/NxIAkQKxKHzbFszFACQSn1PI0ijqTl5sW3TYj+rbig4nZMCYfXDnXHn2E3tjLuBLo2frUWlaZ/wLIUt8b4TLdsaSjCpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUjl7Fs0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAED7C4CEF7;
+	Mon, 23 Mar 2026 14:04:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278793;
-	bh=gCSuP0+F8sS7rAaUC/TnLaWZjLQITDs6EZSW80ZM24o=;
+	s=korg; t=1774274664;
+	bh=VfHdnWVsml7icsseu7xFQPhldr1/AC20Hiuzs/kwELQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d0WOexqxThiArnVi9kYxGAsq67YdFfCBxlWlWQEgyU/HgUxLzY61D8zljdszCr9E8
-	 saeR138wtkMtdTKI3MXLEbvA/WWRof8wk0IgevMNCbpi5vT60qbjBnrLE2S0GcQfEq
-	 0FQlmfTMEBUqBgcLx0+iFjH1p7oUGXNeoxZn8ay8=
+	b=gUjl7Fs0Ldl5iL0qLeYatk561i/uBsrfJHTKLnFPrBAVFW5OptUd5PYKCLxOpruF5
+	 5cMWAaI7mv3ZnPJdmNco0FDy8bRgRshPdGB5vJChFrFwPTxThfu1XfE8SWZ8Nl1eAe
+	 nZEKBslrA7T6+081ZYWDX/WSl51dMAL6tl+HNzWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kerry <p.kerry@sheffield.ac.uk>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 369/567] platform/x86: hp-bioscfg: Support allocations of larger data
+	stable <stable@kernel.org>,
+	Raul E Rangel <rrangel@google.com>
+Subject: [PATCH 6.18 068/212] serial: 8250: Fix TX deadlock when using DMA
 Date: Mon, 23 Mar 2026 14:44:49 +0100
-Message-ID: <20260323134542.951248817@linuxfoundation.org>
+Message-ID: <20260323134505.919588860@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +62,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-229335-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228277-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 6B1CD2F68CA
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email]
+X-Rspamd-Queue-Id: E8E482F456D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Raul E Rangel <rrangel@chromium.org>
 
-[ Upstream commit 916727cfdb72cd01fef3fa6746e648f8cb70e713 ]
+commit a424a34b8faddf97b5af41689087e7a230f79ba7 upstream.
 
-Some systems have much larger amounts of enumeration attributes
-than have been previously encountered. This can lead to page allocation
-failures when using kcalloc().  Switch over to using kvcalloc() to
-allow larger allocations.
+`dmaengine_terminate_async` does not guarantee that the
+`__dma_tx_complete` callback will run. The callback is currently the
+only place where `dma->tx_running` gets cleared. If the transaction is
+canceled and the callback never runs, then `dma->tx_running` will never
+get cleared and we will never schedule new TX DMA transactions again.
 
-Fixes: 6b2770bfd6f92 ("platform/x86: hp-bioscfg: enum-attributes")
-Cc: stable@vger.kernel.org
-Reported-by: Paul Kerry <p.kerry@sheffield.ac.uk>
-Tested-by: Paul Kerry <p.kerry@sheffield.ac.uk>
-Closes: https://bugs.debian.org/1127612
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/20260225210646.59381-1-mario.limonciello@amd.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[ kcalloc() => kvcalloc() ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change makes it so we clear `dma->tx_running` after we terminate
+the DMA transaction. This is "safe" because `serial8250_tx_dma_flush`
+is holding the UART port lock. The first thing the callback does is also
+grab the UART port lock, so access to `dma->tx_running` is serialized.
+
+Fixes: 9e512eaaf8f4 ("serial: 8250: Fix fifo underflow on flush")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Raul E Rangel <rrangel@google.com>
+Link: https://patch.msgid.link/20260209135815.1.I16366ecb0f62f3c96fe3dd5763fcf6f3c2b4d8cd@changeid
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/tty/serial/8250/8250_dma.c |   15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
---- a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-@@ -96,8 +96,11 @@ int hp_alloc_enumeration_data(void)
- 	bioscfg_drv.enumeration_instances_count =
- 		hp_get_instance_count(HP_WMI_BIOS_ENUMERATION_GUID);
+--- a/drivers/tty/serial/8250/8250_dma.c
++++ b/drivers/tty/serial/8250/8250_dma.c
+@@ -162,7 +162,22 @@ void serial8250_tx_dma_flush(struct uart
+ 	 */
+ 	dma->tx_size = 0;
  
--	bioscfg_drv.enumeration_data = kcalloc(bioscfg_drv.enumeration_instances_count,
--					       sizeof(*bioscfg_drv.enumeration_data), GFP_KERNEL);
-+	if (!bioscfg_drv.enumeration_instances_count)
-+		return -EINVAL;
-+	bioscfg_drv.enumeration_data = kvcalloc(bioscfg_drv.enumeration_instances_count,
-+						sizeof(*bioscfg_drv.enumeration_data), GFP_KERNEL);
++	/*
++	 * We can't use `dmaengine_terminate_sync` because `uart_flush_buffer` is
++	 * holding the uart port spinlock.
++	 */
+ 	dmaengine_terminate_async(dma->txchan);
 +
- 	if (!bioscfg_drv.enumeration_data) {
- 		bioscfg_drv.enumeration_instances_count = 0;
- 		return -ENOMEM;
-@@ -452,6 +455,6 @@ void hp_exit_enumeration_attributes(void
- 	}
- 	bioscfg_drv.enumeration_instances_count = 0;
- 
--	kfree(bioscfg_drv.enumeration_data);
-+	kvfree(bioscfg_drv.enumeration_data);
- 	bioscfg_drv.enumeration_data = NULL;
++	/*
++	 * The callback might or might not run. If it doesn't run, we need to ensure
++	 * that `tx_running` is cleared so that we can schedule new transactions.
++	 * If it does run, then the zombie callback will clear `tx_running` again
++	 * and perform a no-op since `tx_size` was cleared above.
++	 *
++	 * In either case, we ASSUME the DMA transaction will terminate before we
++	 * issue a new `serial8250_tx_dma`.
++	 */
++	dma->tx_running = 0;
  }
+ 
+ int serial8250_rx_dma(struct uart_8250_port *p)
 
 
 
