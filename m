@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-228625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229657-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oGXqIwJQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228625-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:50 +0100
+	id 6G8VOARxwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229657-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2452F4DA4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FB12F92FB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2FF7C3055FF7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D06FD323E1A0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE40199FAB;
-	Mon, 23 Mar 2026 14:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73523BD24A;
+	Mon, 23 Mar 2026 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGx0LDmN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJEdymt+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D562C181;
-	Mon, 23 Mar 2026 14:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455113BBA03;
+	Mon, 23 Mar 2026 16:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275640; cv=none; b=kcPw8BSPANKsYADlywNichhwJQ0zGBdQ3gppo9wooPCl4VK4xGlRDurH0Ejzegm4ySUdM154nIKp8sFl/v4bo7/z1SkuOB77EYulXjnWLUODF8qgsJ82uSTxW6RpANUTyxOtCR9CYMYFtciSHpVBtVGCq2O/kFTq0ctLdga9Jt0=
+	t=1774282515; cv=none; b=Y9dB83UgAFACskumAjmHxMT6dssHT3Db7/5AlP2sAncgo+D4eORRB5N4gp4wsGDX0GLrHCGaG8eyPuTafDew9o1gYsHVYqIJU9Bb99M2btfESk+5th5TF/vpRcTPnFzZ33DgB8rbrLRCPpK8R54qXnL1Twv2fQ2NY7n+IdUtrEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275640; c=relaxed/simple;
-	bh=LCPj7eOnIo0XffgYn4RaaR+aQ3nk1MMh3d01ahOLMpY=;
+	s=arc-20240116; t=1774282515; c=relaxed/simple;
+	bh=3up0qiJ9Omar2b0hroYMAkmfL3cbkNgVt1bxwStEI0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NP8Aq7FnJXZezpVgkpYZkFLkDgdWkTMVqN0ZpeL6vpkA6clURhQJlWJa5eAC3FZATIQrrxiqny5HdMa0gVxc1YkkqCwxucGBf9pI32LAwkSwpyMtUhXhOdBrxJ39nZL0j4Vbm7FYH4x4vAn4uMmzFrZiC0vY/QIMSmfmBN4MBr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGx0LDmN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46474C4CEF7;
-	Mon, 23 Mar 2026 14:20:40 +0000 (UTC)
+	 MIME-Version; b=tH2Yan2oVPzbee1aF7m4b31Di89vCie/WC3KoK8VPHDkei1vwRKr7RALetD5BWYN8aMrx+DCl1q+1Ndj6gyfMza6W9rSnaCb+WyAWO+kMmt1BcFfH9CfYM1PY4mPfgMAD+r+PAgjf8XMox+0S4trdKYFuXt76AgOiur0P1OT+q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJEdymt+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5341DC2BCB4;
+	Mon, 23 Mar 2026 16:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275640;
-	bh=LCPj7eOnIo0XffgYn4RaaR+aQ3nk1MMh3d01ahOLMpY=;
+	s=korg; t=1774282514;
+	bh=3up0qiJ9Omar2b0hroYMAkmfL3cbkNgVt1bxwStEI0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lGx0LDmNjy+IxhjAiYTjed7Lkmc6QesdhXVg38aMQ0Qr6FBHkfK+MdX1Ero/qu0yN
-	 X2+UXYRQOU8N8h7MgzjR7pPoWCJoM+EdxVzfF2ZcGv+B+VfsiTELzWNyzegBFHk5Cw
-	 uycl37KGkdDxIlIwwOBv4+C4LaGbGXM7/938a20Y=
+	b=TJEdymt+bQlIWTnHu9d0j5a/gMPEMXH2YNqaiPGgIR4oPu/8fSY0LWJf6dMxvICZ7
+	 kHDTG/y+Mkbz6iyUrHX54Xw4tyokC3kbkYymxKrdFI0JY8GJksVAh50r2FO9Nv3TRc
+	 c1Fh8USObvmxmpnVi2djfXXPhm2vwrD6aBDLnADU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Dillon Varone <Dillon.Varone@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Dan Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 169/460] drm/amd/display: Fallback to boot snapshot for dispclk
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 183/481] sched: idle: Make skipping governor callbacks more consistent
 Date: Mon, 23 Mar 2026 14:42:45 +0100
-Message-ID: <20260323134530.698339961@linuxfoundation.org>
+Message-ID: <20260323134529.665510825@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,72 +71,109 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228625-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229657-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4C2452F4DA4
+X-Rspamd-Queue-Id: 56FB12F92FB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dillon Varone <Dillon.Varone@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 30d937f63bd19bbcaafa4b892eb251f8bbbf04ef upstream.
+[ Upstream commit d557640e4ce589a24dca5ca7ce3b9680f471325f ]
 
-[WHY & HOW]
-If the dentist is unavailable, fallback to reading CLKIP via the boot
-snapshot to get the current dispclk.
+If the cpuidle governor .select() callback is skipped because there
+is only one idle state in the cpuidle driver, the .reflect() callback
+should be skipped as well, at least for consistency (if not for
+correctness), so do it.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Dillon Varone <Dillon.Varone@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Dan Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2ab77600d1e55a042c02437326d3c7563e853c6c)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5c9ffc6ae1b ("cpuidle: Skip governor when only one idle state is available")
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://patch.msgid.link/12857700.O9o76ZdvQC@rafael.j.wysocki
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/cpuidle/cpuidle.c | 10 ----------
+ kernel/sched/idle.c       | 11 ++++++++++-
+ 2 files changed, 10 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -65,7 +65,11 @@ static void dcn401_initialize_min_clocks
- 		 * audio corruption. Read current DISPCLK from DENTIST and request the same
- 		 * freq to ensure that the timing is valid and unchanged.
+diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
+index 482bf87354a38..fdd25271106a3 100644
+--- a/drivers/cpuidle/cpuidle.c
++++ b/drivers/cpuidle/cpuidle.c
+@@ -324,16 +324,6 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
+ int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 		   bool *stop_tick)
+ {
+-	/*
+-	 * If there is only a single idle state (or none), there is nothing
+-	 * meaningful for the governor to choose. Skip the governor and
+-	 * always use state 0 with the tick running.
+-	 */
+-	if (drv->state_count <= 1) {
+-		*stop_tick = false;
+-		return 0;
+-	}
+-
+ 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
+ }
+ 
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index 200a0fac03b8e..6ff593a8eeb17 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -220,7 +220,7 @@ static void cpuidle_idle_call(void)
+ 
+ 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
+ 		call_cpuidle(drv, dev, next_state);
+-	} else {
++	} else if (drv->state_count > 1) {
+ 		bool stop_tick = true;
+ 
+ 		/*
+@@ -238,6 +238,15 @@ static void cpuidle_idle_call(void)
+ 		 * Give the governor an opportunity to reflect on the outcome
  		 */
--		clocks->dispclk_khz = dc->clk_mgr->funcs->get_dispclk_from_dentist(dc->clk_mgr);
-+		if (dc->clk_mgr->funcs->get_dispclk_from_dentist) {
-+			clocks->dispclk_khz = dc->clk_mgr->funcs->get_dispclk_from_dentist(dc->clk_mgr);
-+		} else {
-+			clocks->dispclk_khz = dc->clk_mgr->boot_snapshot.dispclk * 1000;
-+		}
+ 		cpuidle_reflect(dev, entered_state);
++	} else {
++		tick_nohz_idle_retain_tick();
++
++		/*
++		 * If there is only a single idle state (or none), there is
++		 * nothing meaningful for the governor to choose.  Skip the
++		 * governor and always use state 0.
++		 */
++		call_cpuidle(drv, dev, 0);
  	}
- 	clocks->ref_dtbclk_khz = dc->clk_mgr->bw_params->clk_table.entries[0].dtbclk_mhz * 1000;
- 	clocks->fclk_p_state_change_support = true;
+ 
+ exit_idle:
+-- 
+2.51.0
+
 
 
 
