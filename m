@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-229784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228754-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CHskJttuwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229784-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:27 +0100
+	id wHPoM/pTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228754-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:53:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113602F8D57
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3B72F561C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BD8F73151950
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 14C1E3028F6B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD55D3BD240;
-	Mon, 23 Mar 2026 16:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBECA3AF648;
+	Mon, 23 Mar 2026 14:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UmSHRUg7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/d997k0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FED33B95FD;
-	Mon, 23 Mar 2026 16:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9E33AF643;
+	Mon, 23 Mar 2026 14:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282855; cv=none; b=ohGOR6+YY298BzhgOl7JJLrmYeT+6bMS5fiSpC8YK5R+KnM4sPa9aD67z6oAsYoL/+vqM23R4tZQIrk2kEBzmzgCmzNAm2QwlfdYbMT4XhPej1/XEfI7cuOFUR3zDGjWCFMMlgFzBTcA08nSsmnCyByar0P2nyIIuq8DsVcfNuA=
+	t=1774277033; cv=none; b=iqLu99YYlp0DLeBEtbe7SGSE8iLyPkMue/afJtrru29i+uHMMyujTT5+O2ysexEarkCskxbdlIj6TDOiEma0nvZkJOph6xFZUv9fsNMpNREccd50G7U8srp90ahclmQ+3dj8hHXNKLqaVkCXyHrLQFjNXYo70M0mxImudikU7P4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282855; c=relaxed/simple;
-	bh=2aNo8iab0AZNjAX5zhJbWqrkeym7fid7QGNcTxdjagM=;
+	s=arc-20240116; t=1774277033; c=relaxed/simple;
+	bh=Dlgz1hQDmwir1+6zLcC89BTwZEFzRrd0Vfs+XDvoYAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTFMrWosMTi3mOQR1IJ29K/ZpJXkmme0VLb35u1Qu+z23lqvOjzgy4uSlJ6wPY0sW3nDOqXRs9z0lb3nP7coPux+Bys+q7eAOV9h7X2UoGnXHXNxjdV9BvxYk8AA2lo1bjVAjcAAvtoFhR55xDwdP79ppKUfoOjyZ0C68Ycfr4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UmSHRUg7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2178CC4CEF7;
-	Mon, 23 Mar 2026 16:20:54 +0000 (UTC)
+	 MIME-Version; b=lY1AV2ij+tiNQQpPv2SiDsNIg/aZHhhA7QuGH+TttYb6bSyp+VtYboHLQB9w+ikJtEf46dcXcM3m2f5xXYeypZL3o+Hbfxj5HHQMJ7QPMYJufx6SbydeTuf7j4uP9wQIqL44JbPtG51Im9wnzJinCIfWPjEb+IzDKkNQC5wjmew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/d997k0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA7EC2BCB3;
+	Mon, 23 Mar 2026 14:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282855;
-	bh=2aNo8iab0AZNjAX5zhJbWqrkeym7fid7QGNcTxdjagM=;
+	s=korg; t=1774277033;
+	bh=Dlgz1hQDmwir1+6zLcC89BTwZEFzRrd0Vfs+XDvoYAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UmSHRUg7sR/io572kcoics0SkHa4pzfu54olUsr9/Wdb5kMuClo8AYti9p+OUBTdV
-	 7Ze0nKCP9cxMPOo5Hs5wEU4z7jStPvTAgtNdTfoxnku4d8gG1D63DqU07DR+6j050k
-	 A8xS40wvbE1eFb9L1SKRIYFciJ5jrq4LqJ1X2MZY=
+	b=N/d997k0kYTxT1/NB2Cez/pdb8mpS/qgFgLzZajHgQt0ONvssjgXv/ftMv93k7E6R
+	 UNzoGlbj7/RVBpoMWtP2xjSb7JMbp8azWEuekly+RVfTyMsaFzsfEQtCzCemX9yF9O
+	 XLXBxa5eTQkwA/6k1iXyht6orjmRKW1YXijwnueE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jane Chu <jane.chu@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	Jann Horn <jannh@google.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 6.1 310/481] mm/hugetlb: fix copy_hugetlb_page_range() to use ->pt_share_count
-Date: Mon, 23 Mar 2026 14:44:52 +0100
-Message-ID: <20260323134532.660068952@linuxfoundation.org>
+	Keenan Dong <keenanat2000@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 297/460] io_uring/kbuf: check if target buffer list is still legacy on recycle
+Date: Mon, 23 Mar 2026 14:44:53 +0100
+Message-ID: <20260323134533.782553626@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,120 +68,78 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229784-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-228754-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 113602F8D57
+X-Rspamd-Queue-Id: 4E3B72F561C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jane Chu <jane.chu@oracle.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 14967a9c7d247841b0312c48dcf8cd29e55a4cc8 upstream.
+Commit c2c185be5c85d37215397c8e8781abf0a69bec1f upstream.
 
-commit 59d9094df3d79 ("mm: hugetlb: independent PMD page table shared
-count") introduced ->pt_share_count dedicated to hugetlb PMD share count
-tracking, but omitted fixing copy_hugetlb_page_range(), leaving the
-function relying on page_count() for tracking that no longer works.
+There's a gap between when the buffer was grabbed and when it
+potentially gets recycled, where if the list is empty, someone could've
+upgraded it to a ring provided type. This can happen if the request
+is forced via io-wq. The legacy recycling is missing checking if the
+buffer_list still exists, and if it's of the correct type. Add those
+checks.
 
-When lazy page table copy for hugetlb is disabled, that is, revert commit
-bcd51a3c679d ("hugetlb: lazy page table copies in fork()") fork()'ing with
-hugetlb PMD sharing quickly lockup -
-
-[  239.446559] watchdog: BUG: soft lockup - CPU#75 stuck for 27s!
-[  239.446611] RIP: 0010:native_queued_spin_lock_slowpath+0x7e/0x2e0
-[  239.446631] Call Trace:
-[  239.446633]  <TASK>
-[  239.446636]  _raw_spin_lock+0x3f/0x60
-[  239.446639]  copy_hugetlb_page_range+0x258/0xb50
-[  239.446645]  copy_page_range+0x22b/0x2c0
-[  239.446651]  dup_mmap+0x3e2/0x770
-[  239.446654]  dup_mm.constprop.0+0x5e/0x230
-[  239.446657]  copy_process+0xd17/0x1760
-[  239.446660]  kernel_clone+0xc0/0x3e0
-[  239.446661]  __do_sys_clone+0x65/0xa0
-[  239.446664]  do_syscall_64+0x82/0x930
-[  239.446668]  ? count_memcg_events+0xd2/0x190
-[  239.446671]  ? syscall_trace_enter+0x14e/0x1f0
-[  239.446676]  ? syscall_exit_work+0x118/0x150
-[  239.446677]  ? arch_exit_to_user_mode_prepare.constprop.0+0x9/0xb0
-[  239.446681]  ? clear_bhb_loop+0x30/0x80
-[  239.446684]  ? clear_bhb_loop+0x30/0x80
-[  239.446686]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-There are two options to resolve the potential latent issue:
-  1. warn against PMD sharing in copy_hugetlb_page_range(),
-  2. fix it.
-This patch opts for the second option.
-While at it, simplify the comment, the details are not actually relevant
-anymore.
-
-Link: https://lkml.kernel.org/r/20250916004520.1604530-1-jane.chu@oracle.com
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ David: We don't have ptdesc and the wrappers, so work directly on the
-  page->pt_share_count. CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING is still
-  called CONFIG_ARCH_WANT_HUGE_PMD_SHARE. ]
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c7fb19428d67 ("io_uring: add support for ring mapped supplied buffers")
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/hugetlb.c |   13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ io_uring/kbuf.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5084,18 +5084,13 @@ int copy_hugetlb_page_range(struct mm_st
- 			break;
- 		}
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -62,9 +62,17 @@ bool io_kbuf_recycle_legacy(struct io_ki
  
--		/*
--		 * If the pagetables are shared don't copy or take references.
--		 *
--		 * dst_pte == src_pte is the common case of src/dest sharing.
--		 * However, src could have 'unshared' and dst shares with
--		 * another vma. So page_count of ptep page is checked instead
--		 * to reliably determine whether pte is shared.
--		 */
--		if (page_count(virt_to_page(dst_pte)) > 1) {
-+#ifdef CONFIG_ARCH_WANT_HUGE_PMD_SHARE
-+		/* If the pagetables are shared, there is nothing to do */
-+		if (atomic_read(&virt_to_page(dst_pte)->pt_share_count)) {
- 			addr |= last_addr_mask;
- 			continue;
- 		}
-+#endif
+ 	buf = req->kbuf;
+ 	bl = io_buffer_get_list(ctx, buf->bgid);
+-	list_add(&buf->list, &bl->buf_list);
+-	req->flags &= ~REQ_F_BUFFER_SELECTED;
++	/*
++	 * If the buffer list was upgraded to a ring-based one, or removed,
++	 * while the request was in-flight in io-wq, drop it.
++	 */
+ 	req->buf_index = buf->bgid;
++	if (bl && !(bl->flags & IOBL_BUF_RING))
++		list_add(&buf->list, &bl->buf_list);
++	else
++		kmem_cache_free(io_buf_cachep, buf);
++	req->flags &= ~REQ_F_BUFFER_SELECTED;
++	req->kbuf = NULL;
  
- 		dst_ptl = huge_pte_lock(h, dst, dst_pte);
- 		src_ptl = huge_pte_lockptr(h, src, src_pte);
+ 	io_ring_submit_unlock(ctx, issue_flags);
+ 	return true;
 
 
 
