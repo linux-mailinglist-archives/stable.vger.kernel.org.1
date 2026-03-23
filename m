@@ -1,61 +1,71 @@
-Return-Path: <stable+bounces-229760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJqUHEpywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229760-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:06 +0100
+	id CCbLEJlMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F65E2F958B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D28D72F44D7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B42332D65D8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7BE2830F580B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313383BD22C;
-	Mon, 23 Mar 2026 16:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5203B27E5;
+	Mon, 23 Mar 2026 14:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la1jPUuv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CJMnWMZQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC33537B03B;
-	Mon, 23 Mar 2026 16:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F723AD536;
+	Mon, 23 Mar 2026 14:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282794; cv=none; b=OKxTCLQ5N/0iGQLWPZI9ORurA4kgsu72kOWJ1mhTM+nwURL0GG0j5xl4fNHlKxPhcQyIdr1FiTIGUpgzdUgF5qAOFaUU0AH7ZlC9MaYq9WeQnd0quR03PxnaxHImQGr6aKS9TyV0cb+FR4le95K/G+ij1sogz5ZQjuDsieLJ3nU=
+	t=1774274603; cv=none; b=Kz3v0CjHph+8ZtSiiNFi5LLzLvtvWOJ44gR8/nkhT1SGgrCK5u9anbBFKptIdUZvBcKVEH/dKY5AgsYTBnJO6i6USRCwdJvSwFo6Z/PQmD+AkClLh0+TxbxTsuY+EKZ4Dwq4Rl1njIEkmB9FJZCAsMfXuI46p5R1ciUCFRivHxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282794; c=relaxed/simple;
-	bh=Tc070GCS/F2sDLOD5vpdnsDhr0/Xhv6nejzaJojK5yE=;
+	s=arc-20240116; t=1774274603; c=relaxed/simple;
+	bh=zLSeymyGUcZm5anTLOwc4mJbenr0OLiRF7TV43VEPQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p9hBQrrxdEE5gWjmMkTGFkp1x3y5jCE3uqfmNE0fnWYAl+p5CZN2D814mFQO1qvtbxc7I0Su3wyjeekzNEYVcmKL10Dqn473KAl+FhgXWEJxIvGfc1gi+/ko7Tbv5bfN15jiXTO3zn4BvrgDYh6uE7MYkWXSM4IjS9Aywb2o92g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la1jPUuv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C840C4CEF7;
-	Mon, 23 Mar 2026 16:19:54 +0000 (UTC)
+	 MIME-Version; b=pxVn4Ixm9Mh8B31KNfa/jgGilzrvGJbKi7mHmDdTxEg9UVs7NDCJ1RRcBQ+T+X/z987r3wonOZXtQH8qHYy2S8YyAnk6uwTolYelwgE5ukrUDz5nTNJ8pojqixbH3J63DM8c53hsbssmJf746nkmcvCgYVu/b7w48dxFfXTG5L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CJMnWMZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03E6C4CEF7;
+	Mon, 23 Mar 2026 14:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282794;
-	bh=Tc070GCS/F2sDLOD5vpdnsDhr0/Xhv6nejzaJojK5yE=;
+	s=korg; t=1774274602;
+	bh=zLSeymyGUcZm5anTLOwc4mJbenr0OLiRF7TV43VEPQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=la1jPUuvb3BHdBbmpIhwZ4LXoJEnr7pBqTz2Ehr5qdCwQX7uC8dfJIUllsqvEcP2I
-	 CI2HeIV7HY8bze4TvSLQ3VhRL24/Jh/gNNTP6S6QnOEBB3xQP9Rv1rESxbZDe+eehg
-	 e5K3yITGQnQdNHWkEn0y0UGbyJC+0NhdwVoQMGis=
+	b=CJMnWMZQHAy99KmCn9qZfoMNWUs159+q7X9eyGvhiZff/ez9B3/XVsrLzfcM59hN+
+	 Mi88BIoBVeHtzAbqjek53ENreFfrHAJ28JB655x7FgPFdI2w08625ULLXkB8X6UNvC
+	 2xdd9JoLDafsSVJnHWGAyOy6F7SGhZCZe0WFw9AY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oscar Santos <ossantos@redhat.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	David Howells <dhowells@redhat.com>,
-	linux-cifs@vger.kernel.org,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 289/481] smb: client: fix krb5 mount with username option
+	Zi Yan <ziy@nvidia.com>,
+	Bas van Dijk <bas@dfinity.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Barry Song <baohua@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Hugh Dickins <hughd@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 050/212] mm/huge_memory: fix a folio_split() race condition with folio_try_get()
 Date: Mon, 23 Mar 2026 14:44:31 +0100
-Message-ID: <20260323134532.154001720@linuxfoundation.org>
+Message-ID: <20260323134505.352928865@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +76,168 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229760-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[18];
+	TAGGED_FROM(0.00)[bounces-228257-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nvidia.com,dfinity.org,linux.dev,oracle.com,gmail.com,linux.alibaba.com,kernel.org,arm.com,google.com,infradead.org,redhat.com,linux-foundation.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9F65E2F958B
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D28D72F44D7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.org>
+From: Zi Yan <ziy@nvidia.com>
 
-commit 12b4c5d98cd7ca46d5035a57bcd995df614c14e1 upstream.
+During a pagecache folio split, the values in the related xarray should
+not be changed from the original folio at xarray split time until all
+after-split folios are well formed and stored in the xarray.  Current use
+of xas_try_split() in __split_unmapped_folio() lets some after-split
+folios show up at wrong indices in the xarray.  When these misplaced
+after-split folios are unfrozen, before correct folios are stored via
+__xa_store(), and grabbed by folio_try_get(), they are returned to
+userspace at wrong file indices, causing data corruption.  More detailed
+explanation is at the bottom.
 
-Customer reported that some of their krb5 mounts were failing against
-a single server as the client was trying to mount the shares with
-wrong credentials.  It turned out the client was reusing SMB session
-from first mount to try mounting the other shares, even though a
-different username= option had been specified to the other mounts.
+The reproducer is at: https://github.com/dfinity/thp-madv-remove-test
+It
+1. creates a memfd,
+2. forks,
+3. in the child process, maps the file with large folios (via shmem code
+   path) and reads the mapped file continuously with 16 threads,
+4. in the parent process, uses madvise(MADV_REMOVE) to punch poles in the
+   large folio.
 
-By using username mount option along with sec=krb5 to search for
-principals from keytab is supported by cifs.upcall(8) since
-cifs-utils-4.8.  So fix this by matching username mount option in
-match_session() even with Kerberos.
+Data corruption can be observed without the fix.  Basically, data from a
+wrong page->index is returned.
 
-For example, the second mount below should fail with -ENOKEY as there
-is no 'foobar' principal in keytab (/etc/krb5.keytab).  The client
-ends up reusing SMB session from first mount to perform the second
-one, which is wrong.
+Fix it by using the original folio in xas_try_split() calls, so that
+folio_try_get() can get the right after-split folios after the original
+folio is unfrozen.
 
-```
-$ ktutil
-ktutil:  add_entry -password -p testuser -k 1 -e aes256-cts
-Password for testuser@ZELDA.TEST:
-ktutil:  write_kt /etc/krb5.keytab
-ktutil:  quit
-$ klist -ke
-Keytab name: FILE:/etc/krb5.keytab
-KVNO Principal
- ---- ----------------------------------------------------------------
-   1 testuser@ZELDA.TEST (aes256-cts-hmac-sha1-96)
-$ mount.cifs //w22-root2/scratch /mnt/1 -o sec=krb5,username=testuser
-$ mount.cifs //w22-root2/scratch /mnt/2 -o sec=krb5,username=foobar
-$ mount -t cifs | grep -Po 'username=\K\w+'
-testuser
-testuser
-```
+Uniform split, split_huge_page*(), is not affected, since it uses
+xas_split_alloc() and xas_split() only once and stores the original folio
+in the xarray.  Change xas_split() used in uniform split branch to use the
+original folio to avoid confusion.
 
-Reported-by: Oscar Santos <ossantos@redhat.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Cc: David Howells <dhowells@redhat.com>
-Cc: linux-cifs@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes below points to the commit introduces the code, but folio_split() is
+used in a later commit 7460b470a131f ("mm/truncate: use folio_split() in
+truncate operation").
+
+More details:
+
+For example, a folio f is split non-uniformly into f, f2, f3, f4 like
+below:
++----------------+---------+----+----+
+|       f        |    f2   | f3 | f4 |
++----------------+---------+----+----+
+but the xarray would look like below after __split_unmapped_folio() is
+done:
++----------------+---------+----+----+
+|       f        |    f2   | f3 | f3 |
++----------------+---------+----+----+
+
+After __split_unmapped_folio(), the code changes the xarray and unfreezes
+after-split folios:
+
+1. unfreezes f2, __xa_store(f2)
+2. unfreezes f3, __xa_store(f3)
+3. unfreezes f4, __xa_store(f4), which overwrites the second f3 to f4.
+4. unfreezes f.
+
+Meanwhile, a parallel filemap_get_entry() can read the second f3 from the
+xarray and use folio_try_get() on it at step 2 when f3 is unfrozen. Then,
+f3 is wrongly returned to user.
+
+After the fix, the xarray looks like below after __split_unmapped_folio():
++----------------+---------+----+----+
+|       f        |    f    | f  | f  |
++----------------+---------+----+----+
+so that the race window no longer exists.
+
+[ziy@nvidia.com: move comment, per David]
+  Link: https://lkml.kernel.org/r/5C9FA053-A4C6-4615-BE05-74E47A6462B3@nvidia.com
+Link: https://lkml.kernel.org/r/20260302203159.3208341-1-ziy@nvidia.com
+Fixes: 00527733d0dc ("mm/huge_memory: add two new (not yet used) functions for folio_split()")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: Bas van Dijk <bas@dfinity.org>
+Closes: https://lore.kernel.org/all/CAKNNEtw5_kZomhkugedKMPOG-sxs5Q5OLumWJdiWXv+C9Yct0w@mail.gmail.com/
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Nico Pache <npache@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 577a1f495fd78d8fb61b67ac3d3b595b01f6fcb0)
+Signed-off-by: Zi Yan <ziy@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ mm/huge_memory.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -1909,6 +1909,10 @@ static int match_session(struct cifs_ses
- 	case Kerberos:
- 		if (!uid_eq(ctx->cred_uid, ses->cred_uid))
- 			return 0;
-+		if (strncmp(ses->user_name ?: "",
-+			    ctx->username ?: "",
-+			    CIFS_MAX_USERNAME_LEN))
-+			return 0;
- 		break;
- 	case NTLMv2:
- 	case RawNTLMSSP:
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3438,6 +3438,7 @@ static int __split_unmapped_folio(struct
+ {
+ 	int order = folio_order(folio);
+ 	int start_order = uniform_split ? new_order : order - 1;
++	struct folio *old_folio = folio;
+ 	bool stop_split = false;
+ 	struct folio *next;
+ 	int split_order;
+@@ -3468,12 +3469,16 @@ static int __split_unmapped_folio(struct
+ 			 * uniform split has xas_split_alloc() called before
+ 			 * irq is disabled to allocate enough memory, whereas
+ 			 * non-uniform split can handle ENOMEM.
++			 * Use the to-be-split folio, so that a parallel
++			 * folio_try_get() waits on it until xarray is updated
++			 * with after-split folios and the original one is
++			 * unfrozen.
+ 			 */
+ 			if (uniform_split)
+-				xas_split(xas, folio, old_order);
++				xas_split(xas, old_folio, old_order);
+ 			else {
+ 				xas_set_order(xas, folio->index, split_order);
+-				xas_try_split(xas, folio, old_order);
++				xas_try_split(xas, old_folio, old_order);
+ 				if (xas_error(xas)) {
+ 					ret = xas_error(xas);
+ 					stop_split = true;
 
 
 
