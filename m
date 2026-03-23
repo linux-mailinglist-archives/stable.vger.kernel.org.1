@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229620-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kAcrM8BZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229123-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:24 +0100
+	id gNncGbBrwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229620-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED302F61F1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE022F85BF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7FD59338918B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AB76130D050E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5733523E33D;
-	Mon, 23 Mar 2026 15:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 517213B9611;
+	Mon, 23 Mar 2026 16:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nySS/ErR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BmSqOk+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B104242D60;
-	Mon, 23 Mar 2026 15:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C55A3BD649;
+	Mon, 23 Mar 2026 16:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278133; cv=none; b=c0VeFigiW3e6vZoDELeJOFdxCU1QkXThACrGiHDsM2imoJt0Ie7aCOCl2TWNgmpvYoNj2i/DVeApXf1xn9uqByp/AYgQYHd8HOSD7Eq6jtRzV/YiCBmkg1KVAfEVNdt3fLwAnFFjSJrFL4o1N7err+Jxwm4V/zA2sRiJdMy18WQ=
+	t=1774282416; cv=none; b=mNpQjyYKd2I6KQjNwBhSbd4VCJT9xSqwQv+MnGkO2YR3slK5ERn+0TZi7DwOV3Ux0aI+W+zdDKygNck9h3tNbGOmS3d4OEkPCQhSSqAmnnwlpxYUMA9qrYHmyJzTzsX0wXtxRStBcy0/gL2eNv58rS4bXkpCYyylvhQbD3e85oM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278133; c=relaxed/simple;
-	bh=OeSxTLjHEHFOg3t9Xz9lH5YmKYM9xw9kYGZenYHcZCw=;
+	s=arc-20240116; t=1774282416; c=relaxed/simple;
+	bh=52HkgNG9onzppc1vHfoQj758ZXPky5WL7oQvQwl58t8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/Cx0fWmomimrldvcJPC9AIfKTlF0WJDF/TxcLGAndESTKL4UbpxO0nEbOTCzqOQOlbNI+zUx3iUTKilHH6soiHG/BBXYvjinItE/Mq9oT6AhesMlz/gQOCsAy2oCAS9L1FOmbsvBnTOWckpDz00OIrzEhb+Fi/C4NJGkQW4WME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nySS/ErR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BE6C4CEF7;
-	Mon, 23 Mar 2026 15:02:12 +0000 (UTC)
+	 MIME-Version; b=MjbwvpriD1I0Ac261OPEnF+FV+d5w1s8xMp7aP4IU3GlFytS8+bpnup0mA8olSTgnZurVexQFQPqiwHkcZ1Ak1mCLLLBDmOobICbE660tuU+9ucCA8UOVQKjl5hTPmNaaVdn2Pea6D2hgoPYMebkALJ49KIAtlTWYYMR6jeSY+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BmSqOk+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C22C2BCB4;
+	Mon, 23 Mar 2026 16:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278133;
-	bh=OeSxTLjHEHFOg3t9Xz9lH5YmKYM9xw9kYGZenYHcZCw=;
+	s=korg; t=1774282415;
+	bh=52HkgNG9onzppc1vHfoQj758ZXPky5WL7oQvQwl58t8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nySS/ErRtZY5giPjkrCEt+h0ZwOs9XjrlCm7NrM8H1QB2FqHUDF9l7y5O06qyvNGV
-	 l+EUXuVuyzjaKaHv2i7oTW07btmrxUU0ucGczBrEGpR55QA4hiCBXqRxBqJy5BIt6X
-	 aeOziX7eBJpo3gZEKCMSETGWah6Euo9ItFsCspbE=
+	b=BmSqOk+FWRKWqLtKEU4CmjqkHWhP1lnUqvXNYrPhEI9m+JJJvNbIfH2DWeE9g8BaX
+	 VhanMUqsB/2S8SGm52lT/QzVTiNO1itAYTpDYJ5fQGSHO5AEU4ekMDGvd9HsEPH3dJ
+	 v3pEmhVSNVHuWfT26mzBa8Y/3koBoA1m32WJDXFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Waiman Long <longman@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 211/567] powerpc/uaccess: Fix inline assembly for clang build on PPC32
+Subject: [PATCH 6.1 149/481] unshare: fix unshare_fs() handling
 Date: Mon, 23 Mar 2026 14:42:11 +0100
-Message-ID: <20260323134539.053415183@linuxfoundation.org>
+Message-ID: <20260323134528.879638101@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,119 +70,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229123-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229620-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2ED302F61F1
+X-Rspamd-Queue-Id: 0FE022F85BF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 0ee95a1d458630272d0415d0ffa9424fcb606c90 ]
+[ Upstream commit 6c4b2243cb6c0755159bd567130d5e12e7b10d9f ]
 
-Test robot reports the following error with clang-16.0.6:
+There's an unpleasant corner case in unshare(2), when we have a
+CLONE_NEWNS in flags and current->fs hadn't been shared at all; in that
+case copy_mnt_ns() gets passed current->fs instead of a private copy,
+which causes interesting warts in proof of correctness]
 
-   In file included from kernel/rseq.c:75:
-   include/linux/rseq_entry.h:141:3: error: invalid operand for instruction
-                   unsafe_get_user(offset, &ucs->post_commit_offset, efault);
-                   ^
-   include/linux/uaccess.h:608:2: note: expanded from macro 'unsafe_get_user'
-           arch_unsafe_get_user(x, ptr, local_label);      \
-           ^
-   arch/powerpc/include/asm/uaccess.h:518:2: note: expanded from macro 'arch_unsafe_get_user'
-           __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
-           ^
-   arch/powerpc/include/asm/uaccess.h:284:2: note: expanded from macro '__get_user_size_goto'
-           __get_user_size_allowed(x, ptr, size, __gus_retval);    \
-           ^
-   arch/powerpc/include/asm/uaccess.h:275:10: note: expanded from macro '__get_user_size_allowed'
-           case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
-                   ^
-   arch/powerpc/include/asm/uaccess.h:258:4: note: expanded from macro '__get_user_asm2'
-                   "       li %1+1,0\n"                    \
-                    ^
-   <inline asm>:7:5: note: instantiated into assembly here
-           li 31+1,0
-              ^
-   1 error generated.
+> I guess if private means fs->users == 1, the condition could still be true.
 
-On PPC32, for 64 bits vars a pair of registers is used. Usually the
-lower register in the pair is the high part and the higher register is
-the low part. GCC uses r3/r4 ... r11/r12 ... r14/r15 ... r30/r31
+Unfortunately, it's worse than just a convoluted proof of correctness.
+Consider the case when we have CLONE_NEWCGROUP in addition to CLONE_NEWNS
+(and current->fs->users == 1).
 
-In older kernel code inline assembly was using %1 and %1+1 to represent
-64 bits values. However here it looks like clang uses r31 as high part,
-allthough r32 doesn't exist hence the error.
+We pass current->fs to copy_mnt_ns(), all right.  Suppose it succeeds and
+flips current->fs->{pwd,root} to corresponding locations in the new namespace.
+Now we proceed to copy_cgroup_ns(), which fails (e.g. with -ENOMEM).
+We call put_mnt_ns() on the namespace created by copy_mnt_ns(), it's
+destroyed and its mount tree is dissolved, but...  current->fs->root and
+current->fs->pwd are both left pointing to now detached mounts.
 
-Allthoug %1+1 should work, most places now use %L1 instead of %1+1, so
-let's do the same here.
+They are pinning those, so it's not a UAF, but it leaves the calling
+process with unshare(2) failing with -ENOMEM _and_ leaving it with
+pwd and root on detached isolated mounts.  The last part is clearly a bug.
 
-With that change, the build doesn't fail anymore and a disassembly shows
-clang uses r17/r18 and r31/r14 pair when GCC would have used r16/r17 and
-r30/r31:
+There is other fun related to that mess (races with pivot_root(), including
+the one between pivot_root() and fork(), of all things), but this one
+is easy to isolate and fix - treat CLONE_NEWNS as "allocate a new
+fs_struct even if it hadn't been shared in the first place".  Sure, we could
+go for something like "if both CLONE_NEWNS *and* one of the things that might
+end up failing after copy_mnt_ns() call in create_new_namespaces() are set,
+force allocation of new fs_struct", but let's keep it simple - the cost
+of copy_fs_struct() is trivial.
 
-	Disassembly of section .fixup:
+Another benefit is that copy_mnt_ns() with CLONE_NEWNS *always* gets
+a freshly allocated fs_struct, yet to be attached to anything.  That
+seriously simplifies the analysis...
 
-	00000000 <.fixup>:
-	   0:	38 a0 ff f2 	li      r5,-14
-	   4:	3a 20 00 00 	li      r17,0
-	   8:	3a 40 00 00 	li      r18,0
-	   c:	48 00 00 00 	b       c <.fixup+0xc>
-				c: R_PPC_REL24	.text+0xbc
-	  10:	38 a0 ff f2 	li      r5,-14
-	  14:	3b e0 00 00 	li      r31,0
-	  18:	39 c0 00 00 	li      r14,0
-	  1c:	48 00 00 00 	b       1c <.fixup+0x1c>
-				1c: R_PPC_REL24	.text+0x144
+FWIW, that bug had been there since the introduction of unshare(2) ;-/
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202602021825.otcItxGi-lkp@intel.com/
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/8ca3a657a650e497a96bfe7acde2f637dadab344.1770103646.git.chleroy@kernel.org
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Link: https://patch.msgid.link/20260207082524.GE3183987@ZenIV
+Tested-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/uaccess.h | 2 +-
+ kernel/fork.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index ec7f001d03d01..fa6d8410bc07d 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -242,7 +242,7 @@ __gus_failed:								\
- 		".section .fixup,\"ax\"\n"		\
- 		"4:	li %0,%3\n"			\
- 		"	li %1,0\n"			\
--		"	li %1+1,0\n"			\
-+		"	li %L1,0\n"			\
- 		"	b 3b\n"				\
- 		".previous\n"				\
- 		EX_TABLE(1b, 4b)			\
+diff --git a/kernel/fork.c b/kernel/fork.c
+index c548538d3ade8..b8cf8891ffc7b 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -3193,7 +3193,7 @@ static int unshare_fs(unsigned long unshare_flags, struct fs_struct **new_fsp)
+ 		return 0;
+ 
+ 	/* don't need lock here; in the worst case we'll do useless copy */
+-	if (fs->users == 1)
++	if (!(unshare_flags & CLONE_NEWNS) && fs->users == 1)
+ 		return 0;
+ 
+ 	*new_fsp = copy_fs_struct(fs);
 -- 
 2.51.0
 
