@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229230-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OLB2KGhGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228004-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:52 +0100
+	id UETEEApvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229230-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23D9B2F36E0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E5132F8DA1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A8DD2301AA77
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 460F732A5F18
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A06D3AB295;
-	Mon, 23 Mar 2026 13:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EFF259CB2;
+	Mon, 23 Mar 2026 15:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VR1jSAYP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOK/3a6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D35E20125F;
-	Mon, 23 Mar 2026 13:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA604250BEC;
+	Mon, 23 Mar 2026 15:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273834; cv=none; b=VGe+94B19XgPyWCzhEo8XrW+AS13bUYbREP/fyJ2Dp1P8q9NSpzr0Lmn+XWoY+MhAL7FBQ6EsDkmZvIQP0rc/+roQwzY57MzPksBUDVSXQLKLdnVtMPOyR0pS+nZT6jFAhdayJWC/p9lPauQbzHP277DC579absfUtScV3qLbsU=
+	t=1774278469; cv=none; b=trQQSxMoOsRlf3PU0lpzvg3a0yC75UASoCOR/TNR/gGUVA4GsH+p74QvYkI5FG6bDZcBiFVyL4LUy0n3stbV8RQ5ZxwN5rahrf7KwiaFGWBl0xAZzgs/P7HHlP3iURqua6LHp/K4cVphvixU/WA3ayWi1MwsX/icmogaUcAzMEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273834; c=relaxed/simple;
-	bh=5t4M1XlwLUSorJna0EilYbU/ionyLIzSJxruZ7Lxv7M=;
+	s=arc-20240116; t=1774278469; c=relaxed/simple;
+	bh=YZalz3Hy4cM00fod2YrVwYtIQ7zacxMHVPuvK8IPX4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WRsmsr9+BNWQDvdp8cKzVBbYeAOMeKwMJnuStg8Ogzx7sa42HBY4Wi6+qYc4RwQ4g4s7MBGM91KemmCxQTV0LDu+sEZgcFFa3pZJjA/xtPu25Kv1ZahdBKSBsoTBdSqLL2tQDhJnM7GHgMdzjuy8pXyw9YHlN+51wHCx3ryWfew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VR1jSAYP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61328C4CEF7;
-	Mon, 23 Mar 2026 13:50:33 +0000 (UTC)
+	 MIME-Version; b=UewA6uKWgtIWPZr7ZYqNpPBe2iTP6iGBy7pnsJ5y1RoYBtAdJzDnyfLgHYAX68eUgU6wm+wMLjfHndsLCTcNWmxMtj2NC4bkfSiGRYuxyB7OsCxuH4jDaf9iPOir5pec+wkNtKc3noLsPqE+O0TZ850ujY81LkncpWbPJP1BCFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOK/3a6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233BEC4CEF7;
+	Mon, 23 Mar 2026 15:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273833;
-	bh=5t4M1XlwLUSorJna0EilYbU/ionyLIzSJxruZ7Lxv7M=;
+	s=korg; t=1774278468;
+	bh=YZalz3Hy4cM00fod2YrVwYtIQ7zacxMHVPuvK8IPX4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VR1jSAYPaER+5KbRELbK7+ratmmM18mtCvQmuZfbg8fEyeQvsyEK5ThFVeYXF0myY
-	 5R9KC4AKt4c2t18UgCQnOHKOb7AQwYMlwaoFbiiiXke54n/bYD3SauCXkDVmUbumYH
-	 VpBXASb3dUz4z+NfYbJU7tsIDxH2vHK7rGUIo8xU=
+	b=gOK/3a6eFd/Bt8taKXO6NaymR/9CQH9maWeJJjO001N3Weg/8+z5Ezlc7GIXidRwQ
+	 4IAOtB1gRDB7dvp+WtbfMRTJpt2BP4fsjcLsGTfk5DTmUKHe8FUVfLNPQFVOoFMMJB
+	 /kE643+X1204pJlnCJGPmoRQpTQJRyp23ybAk82k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cal Peake <cp@absolutedigital.net>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.19 023/220] drm/amd: Fix hang on amdgpu unload by using pci_dev_is_disconnected()
+	Alan Stern <stern@rowland.harvard.edu>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.6 280/567] USB: usbcore: Introduce usb_bulk_msg_killable()
 Date: Mon, 23 Mar 2026 14:43:20 +0100
-Message-ID: <20260323134505.316223428@linuxfoundation.org>
+Message-ID: <20260323134540.757605341@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +65,199 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229230-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228004-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 23D9B2F36E0
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7E5132F8DA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit f7afda7fcd169a9168695247d07ad94cf7b9798f upstream.
+commit 416909962e7cdf29fd01ac523c953f37708df93d upstream.
 
-The commit 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise
-disconnect") introduced early KFD cleanup when drm_dev_is_unplugged()
-returns true. However, this causes hangs during normal module unload
-(rmmod amdgpu).
+The synchronous message API in usbcore (usb_control_msg(),
+usb_bulk_msg(), and so on) uses uninterruptible waits.  However,
+drivers may call these routines in the context of a user thread, which
+means it ought to be possible to at least kill them.
 
-The issue occurs because drm_dev_unplug() is called in amdgpu_pci_remove()
-for all removal scenarios, not just surprise disconnects. This was done
-intentionally in commit 39934d3ed572 ("Revert "drm/amdgpu: TA unload
-messages are not actually sent to psp when amdgpu is uninstalled"") to
-fix IGT PCI software unplug test failures. As a result,
-drm_dev_is_unplugged() returns true even during normal module unload,
-triggering the early KFD cleanup inappropriately.
+For this reason, introduce a new usb_bulk_msg_killable() function
+which behaves the same as usb_bulk_msg() except for using
+wait_for_completion_killable_timeout() instead of
+wait_for_completion_timeout().  The same can be done later for
+usb_control_msg() later on, if it turns out to be needed.
 
-The correct check should distinguish between:
-- Actual surprise disconnect (eGPU unplugged): pci_dev_is_disconnected()
-  returns true
-- Normal module unload (rmmod): pci_dev_is_disconnected() returns false
-
-Replace drm_dev_is_unplugged() with pci_dev_is_disconnected() to ensure
-the early cleanup only happens during true hardware disconnect events.
-
-Cc: stable@vger.kernel.org
-Reported-by: Cal Peake <cp@absolutedigital.net>
-Closes: https://lore.kernel.org/all/b0c22deb-c0fa-3343-33cf-fd9a77d7db99@absolutedigital.net/
-Fixes: 6a23e7b4332c ("drm/amd: Clean up kfd node on surprise disconnect")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Suggested-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/248628b4-cc83-4e81-a620-3ce4e0376d41@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/message.c |   79 +++++++++++++++++++++++++++++++++++++++------
+ include/linux/usb.h        |    5 +-
+ 2 files changed, 72 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5081,7 +5081,7 @@ void amdgpu_device_fini_hw(struct amdgpu
- 	 * before ip_fini_early to prevent kfd locking refcount issues by calling
- 	 * amdgpu_amdkfd_suspend()
- 	 */
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_amdkfd_device_fini_sw(adev);
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -42,16 +42,17 @@ static void usb_api_blocking_completion(
  
- 	amdgpu_device_ip_fini_early(adev);
-@@ -5093,7 +5093,7 @@ void amdgpu_device_fini_hw(struct amdgpu
  
- 	amdgpu_gart_dummy_page_fini(adev);
+ /*
+- * Starts urb and waits for completion or timeout. Note that this call
+- * is NOT interruptible. Many device driver i/o requests should be
+- * interruptible and therefore these drivers should implement their
+- * own interruptible routines.
++ * Starts urb and waits for completion or timeout.
++ * Whether or not the wait is killable depends on the flag passed in.
++ * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
+  */
+-static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length)
++static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
++		bool killable)
+ {
+ 	struct api_context ctx;
+ 	unsigned long expire;
+ 	int retval;
++	long rc;
  
--	if (drm_dev_is_unplugged(adev_to_drm(adev)))
-+	if (pci_dev_is_disconnected(adev->pdev))
- 		amdgpu_device_unmap_mmio(adev);
+ 	init_completion(&ctx.done);
+ 	urb->context = &ctx;
+@@ -61,12 +62,21 @@ static int usb_start_wait_urb(struct urb
+ 		goto out;
  
+ 	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
+-	if (!wait_for_completion_timeout(&ctx.done, expire)) {
++	if (killable)
++		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
++	else
++		rc = wait_for_completion_timeout(&ctx.done, expire);
++	if (rc <= 0) {
+ 		usb_kill_urb(urb);
+-		retval = (ctx.status == -ENOENT ? -ETIMEDOUT : ctx.status);
++		if (ctx.status != -ENOENT)
++			retval = ctx.status;
++		else if (rc == 0)
++			retval = -ETIMEDOUT;
++		else
++			retval = rc;
+ 
+ 		dev_dbg(&urb->dev->dev,
+-			"%s timed out on ep%d%s len=%u/%u\n",
++			"%s timed out or killed on ep%d%s len=%u/%u\n",
+ 			current->comm,
+ 			usb_endpoint_num(&urb->ep->desc),
+ 			usb_urb_dir_in(urb) ? "in" : "out",
+@@ -100,7 +110,7 @@ static int usb_internal_control_msg(stru
+ 	usb_fill_control_urb(urb, usb_dev, pipe, (unsigned char *)cmd, data,
+ 			     len, usb_api_blocking_completion, NULL);
+ 
+-	retv = usb_start_wait_urb(urb, timeout, &length);
++	retv = usb_start_wait_urb(urb, timeout, &length, false);
+ 	if (retv < 0)
+ 		return retv;
+ 	else
+@@ -385,10 +395,59 @@ int usb_bulk_msg(struct usb_device *usb_
+ 		usb_fill_bulk_urb(urb, usb_dev, pipe, data, len,
+ 				usb_api_blocking_completion, NULL);
+ 
+-	return usb_start_wait_urb(urb, timeout, actual_length);
++	return usb_start_wait_urb(urb, timeout, actual_length, false);
  }
+ EXPORT_SYMBOL_GPL(usb_bulk_msg);
+ 
++/**
++ * usb_bulk_msg_killable - Builds a bulk urb, sends it off and waits for completion in a killable state
++ * @usb_dev: pointer to the usb device to send the message to
++ * @pipe: endpoint "pipe" to send the message to
++ * @data: pointer to the data to send
++ * @len: length in bytes of the data to send
++ * @actual_length: pointer to a location to put the actual length transferred
++ *	in bytes
++ * @timeout: time in msecs to wait for the message to complete before
++ *	timing out (if 0 the wait is forever)
++ *
++ * Context: task context, might sleep.
++ *
++ * This function is just like usb_blk_msg() except that it waits in a
++ * killable state.
++ *
++ * Return:
++ * If successful, 0. Otherwise a negative error number. The number of actual
++ * bytes transferred will be stored in the @actual_length parameter.
++ *
++ */
++int usb_bulk_msg_killable(struct usb_device *usb_dev, unsigned int pipe,
++		 void *data, int len, int *actual_length, int timeout)
++{
++	struct urb *urb;
++	struct usb_host_endpoint *ep;
++
++	ep = usb_pipe_endpoint(usb_dev, pipe);
++	if (!ep || len < 0)
++		return -EINVAL;
++
++	urb = usb_alloc_urb(0, GFP_KERNEL);
++	if (!urb)
++		return -ENOMEM;
++
++	if ((ep->desc.bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
++			USB_ENDPOINT_XFER_INT) {
++		pipe = (pipe & ~(3 << 30)) | (PIPE_INTERRUPT << 30);
++		usb_fill_int_urb(urb, usb_dev, pipe, data, len,
++				usb_api_blocking_completion, NULL,
++				ep->desc.bInterval);
++	} else
++		usb_fill_bulk_urb(urb, usb_dev, pipe, data, len,
++				usb_api_blocking_completion, NULL);
++
++	return usb_start_wait_urb(urb, timeout, actual_length, true);
++}
++EXPORT_SYMBOL_GPL(usb_bulk_msg_killable);
++
+ /*-------------------------------------------------------------------*/
+ 
+ static void sg_clean(struct usb_sg_request *io)
+--- a/include/linux/usb.h
++++ b/include/linux/usb.h
+@@ -1849,8 +1849,9 @@ extern int usb_control_msg(struct usb_de
+ extern int usb_interrupt_msg(struct usb_device *usb_dev, unsigned int pipe,
+ 	void *data, int len, int *actual_length, int timeout);
+ extern int usb_bulk_msg(struct usb_device *usb_dev, unsigned int pipe,
+-	void *data, int len, int *actual_length,
+-	int timeout);
++	void *data, int len, int *actual_length, int timeout);
++extern int usb_bulk_msg_killable(struct usb_device *usb_dev, unsigned int pipe,
++	void *data, int len, int *actual_length, int timeout);
+ 
+ /* wrappers around usb_control_msg() for the most common standard requests */
+ int usb_control_msg_send(struct usb_device *dev, __u8 endpoint, __u8 request,
 
 
 
