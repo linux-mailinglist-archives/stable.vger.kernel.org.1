@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228471-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uOS6FktWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-229058-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:03:39 +0100
+	id WJMOJD5RwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228471-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:42:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8362F5B0D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:03:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13FE32F5052
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:42:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6DB09302A381
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8F979311EB66
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B89439182F;
-	Mon, 23 Mar 2026 14:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF2F3B27F2;
+	Mon, 23 Mar 2026 14:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3+c60BK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqiAR50T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E1B235C01;
-	Mon, 23 Mar 2026 14:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28B538C41E;
+	Mon, 23 Mar 2026 14:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277927; cv=none; b=G8OwB4eFmUZsfkZKeXrEwJeYhEysv333GkIr0DV4fUwuuK5mYFSojZLzGqI5G8e7dcHhOMsThWMVKy8VxKw6hfesYlUtGr1f74QA2d2bT7jVHqELNz1KsWUQR72R8s1v0MNSndTL9yQagqaL5WdIfPEwGyC0tYwhO3PoypGXEng=
+	t=1774275223; cv=none; b=Y4GhcBoCFTHtqrn3HfcwA8/7F96cg/Oj7CykohWPYW8+ualI1U2hPVxyEpETZH2BShWo+Ganf2qM/nlMn8VW7/sMTyQJQ0Z38+LwfKh7iqg29Y8yT1Z9Z2W0wa+pXG8vVOwLWrSCNEHjMymxCovGCKiPV5teTF4SzA/RwTVxsJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277927; c=relaxed/simple;
-	bh=wXI3p4TOTLzrhKRpDPjDIjl88MF7n7cectm9N2afQgg=;
+	s=arc-20240116; t=1774275223; c=relaxed/simple;
+	bh=hbQQazYbllQ1E9UEnDbJeFXTr0rAIPJGJeMg6EJJTOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jhL9lchlOqxaOrzqhF7tHY8Jm0oM6P+JfBW21excPu4M1TPcHjcC26ytml69mB+PrlE8Gnn6K3OI7vxBtkidCX/G4B9cXivwTm4t+gaJhb5sisG/C/AhCmycvOzQXav94DQP5DA9zrGBsK9HfJDOTua19F1IyEhs8Cx46FZr9wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3+c60BK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B154C4CEF7;
-	Mon, 23 Mar 2026 14:58:46 +0000 (UTC)
+	 MIME-Version; b=TiTEi8VJJBaBrptYXsgod9xjvtjcykQjc4MHuoST39BblQCHncICzfzwZAaxVEKSz1VVtS0iY+TyEQ8f1/t7luqG6HsNyj2/g2AbvDVczD/JwbcM8NmXRiT9zl7Km0KJwCThhxMeFW1bu3KWgOj9MKtIcTZQQr3WsmIxaK4MdbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqiAR50T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8EFC4CEF7;
+	Mon, 23 Mar 2026 14:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277926;
-	bh=wXI3p4TOTLzrhKRpDPjDIjl88MF7n7cectm9N2afQgg=;
+	s=korg; t=1774275222;
+	bh=hbQQazYbllQ1E9UEnDbJeFXTr0rAIPJGJeMg6EJJTOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H3+c60BKfsjniBMgoxLpet08jueC4nPLvVmXDqwrBoKecn4Ail8kO0q3L5Cr5xdGF
-	 eVIkRZPfqHl6tnZgVlDgBGM8iTudv5qazJKFlbLAszJ0jk+2kMIqXGsLQobgXsNXxJ
-	 TnHofnNBbwd3Fe6gWRUo6/ZNwyVeOV/BZGb/sNDg=
+	b=uqiAR50TTWJ3xUJbOfzTGXHZXXZP0YdIS0AWTKRJMFM9vqYRSRKC2OjT+kDAuh2y7
+	 LefuiJV34r+1UuZNXAQD2CgoZBQi68VZz8GaTNFUYRtsvBiBlvcXd3WJ08YaQKD4aN
+	 /fh0rTcqkkDy4TEexiIvLqKUjcyK2pLwLu9cMGlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	stable@kernel.org
-Subject: [PATCH 6.6 093/567] can: ems_usb: ems_usb_read_bulk_callback(): check the proper length of a message
-Date: Mon, 23 Mar 2026 14:40:13 +0100
-Message-ID: <20260323134536.129221314@linuxfoundation.org>
+	Ben Collins <bcollins@kernel.org>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 018/460] kexec: Include kernel-end even without crashkernel
+Date: Mon, 23 Mar 2026 14:40:14 +0100
+Message-ID: <20260323134527.108173045@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,88 +67,135 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229058-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228471-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DC8362F5B0D
+X-Rspamd-Queue-Id: 13FE32F5052
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Ben Collins <bcollins@kernel.org>
 
-commit 38a01c9700b0dcafe97dfa9dc7531bf4a245deff upstream.
+[ Upstream commit 38c64dfe0af12778953846df5f259e913275cfe5 ]
 
-When looking at the data in a USB urb, the actual_length is the size of
-the buffer passed to the driver, not the transfer_buffer_length which is
-set by the driver as the max size of the buffer.
+Certain versions of kexec don't even work without kernel-end being
+added to the device-tree. Add it even if crash-kernel is disabled.
 
-When parsing the messages in ems_usb_read_bulk_callback() properly check
-the size both at the beginning of parsing the message to make sure it is
-big enough for the expected structure, and at the end of the message to
-make sure we don't overflow past the end of the buffer for the next
-message.
-
-Cc: Vincent Mailhol <mailhol@kernel.org>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: stable@kernel.org
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022316-answering-strainer-a5db@gregkh
-Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ben Collins <bcollins@kernel.org>
+Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/2025042122-inescapable-mandrill-8a5ff2@boujee-and-buff
+Stable-dep-of: 20197b967a6a ("powerpc/kexec/core: use big-endian types for crash variables")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/ems_usb.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/powerpc/kexec/core.c | 27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
---- a/drivers/net/can/usb/ems_usb.c
-+++ b/drivers/net/can/usb/ems_usb.c
-@@ -445,6 +445,11 @@ static void ems_usb_read_bulk_callback(s
- 		start = CPC_HEADER_SIZE;
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index 58a930a47422b..50e7cf4b992b1 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -22,6 +22,8 @@
+ #include <asm/setup.h>
+ #include <asm/firmware.h>
  
- 		while (msg_count) {
-+			if (start + CPC_MSG_HEADER_LEN > urb->actual_length) {
-+				netdev_err(netdev, "format error\n");
-+				break;
-+			}
++#define cpu_to_be_ulong __PASTE(cpu_to_be, BITS_PER_LONG)
 +
- 			msg = (struct ems_cpc_msg *)&ibuf[start];
+ #ifdef CONFIG_CRASH_DUMP
+ void machine_crash_shutdown(struct pt_regs *regs)
+ {
+@@ -156,17 +158,10 @@ int __init overlaps_crashkernel(unsigned long start, unsigned long size)
+ }
  
- 			switch (msg->type) {
-@@ -474,7 +479,7 @@ static void ems_usb_read_bulk_callback(s
- 			start += CPC_MSG_HEADER_LEN + msg->length;
- 			msg_count--;
+ /* Values we need to export to the second kernel via the device tree. */
+-static phys_addr_t kernel_end;
+ static phys_addr_t crashk_base;
+ static phys_addr_t crashk_size;
+ static unsigned long long mem_limit;
  
--			if (start > urb->transfer_buffer_length) {
-+			if (start > urb->actual_length) {
- 				netdev_err(netdev, "format error\n");
- 				break;
- 			}
+-static struct property kernel_end_prop = {
+-	.name = "linux,kernel-end",
+-	.length = sizeof(phys_addr_t),
+-	.value = &kernel_end,
+-};
+-
+ static struct property crashk_base_prop = {
+ 	.name = "linux,crashkernel-base",
+ 	.length = sizeof(phys_addr_t),
+@@ -185,8 +180,6 @@ static struct property memory_limit_prop = {
+ 	.value = &mem_limit,
+ };
+ 
+-#define cpu_to_be_ulong	__PASTE(cpu_to_be, BITS_PER_LONG)
+-
+ static void __init export_crashk_values(struct device_node *node)
+ {
+ 	/* There might be existing crash kernel properties, but we can't
+@@ -210,6 +203,15 @@ static void __init export_crashk_values(struct device_node *node)
+ 	mem_limit = cpu_to_be_ulong(memory_limit);
+ 	of_update_property(node, &memory_limit_prop);
+ }
++#endif /* CONFIG_CRASH_RESERVE */
++
++static phys_addr_t kernel_end;
++
++static struct property kernel_end_prop = {
++	.name = "linux,kernel-end",
++	.length = sizeof(phys_addr_t),
++	.value = &kernel_end,
++};
+ 
+ static int __init kexec_setup(void)
+ {
+@@ -220,16 +222,17 @@ static int __init kexec_setup(void)
+ 		return -ENOENT;
+ 
+ 	/* remove any stale properties so ours can be found */
+-	of_remove_property(node, of_find_property(node, kernel_end_prop.name, NULL));
++	of_remove_property(node, of_find_property(node, kernel_end_prop.name,
++						  NULL));
+ 
+ 	/* information needed by userspace when using default_machine_kexec */
+ 	kernel_end = cpu_to_be_ulong(__pa(_end));
+ 	of_add_property(node, &kernel_end_prop);
+ 
++#ifdef CONFIG_CRASH_RESERVE
+ 	export_crashk_values(node);
+-
++#endif
+ 	of_node_put(node);
+ 	return 0;
+ }
+ late_initcall(kexec_setup);
+-#endif /* CONFIG_CRASH_RESERVE */
+-- 
+2.51.0
+
 
 
 
