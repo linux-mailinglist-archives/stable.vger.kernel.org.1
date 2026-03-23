@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228396-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WB6JMlBwwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229885-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:40 +0100
+	id OPvAJOVNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228396-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B6342F9133
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E228E2F489E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8A13831A0E86
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4281F300A3B3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A561D3B38A4;
-	Mon, 23 Mar 2026 16:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110823B2FCE;
+	Mon, 23 Mar 2026 14:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVf6d90w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="byItbpEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68115283FC8;
-	Mon, 23 Mar 2026 16:25:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C791A680D;
+	Mon, 23 Mar 2026 14:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283126; cv=none; b=cJSs0PtwN3U4DGTm1d6DBqXgMkyTT0t2MGsjd9H7b90/5gP3wdVmZyL5LxzVcMEWHglH/3cjB9p648MVC8lMpeM4wJpfVaWwWFfq89YM0VQm6uAUk8W1q49wUlGgYh+oIi22WZv7i0L93hcfBsuuWymOkpQK9EL45d+BIkY2fro=
+	t=1774274999; cv=none; b=o7Qkw0RRjRBVLEcbqEkC9S+5zQPhqo2VGr+48SbOWY6B1MlKBVtuWAeMjkEGYGu1nwyEGfFAZiq/xeUdtv2dMnqUg19dzQBYG8DTTgfOmiACAC/+IJnPVLv06klcMLiNyIBI69+vfcUh58yBTEFZOx8dirtGuSEY839Qu29C104=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283126; c=relaxed/simple;
-	bh=FEXtK86SsHLjt3/bsFKUfg5WcZp0JNnKc29Q8Z+y0Dk=;
+	s=arc-20240116; t=1774274999; c=relaxed/simple;
+	bh=El/Z+WTxFHmhJRXXXM9z6mLu9rfvjMVuHAWoGMW3q50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X68nJKrajWgHpF1/LJtF4q3jIWEam9fReWcR2j8NhSYttGzihL+XTT2fUOP0I6OiDYkERCPaQbYCEVCBhopS008ZsPUy9sw98AVtulr/VTkNeS/A5yhuT8P+5diuiXlU7XDBfybwdaUHPDR7w4xjdzIngPUjMfkKfjzDb++IdhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVf6d90w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54C2C4CEF7;
-	Mon, 23 Mar 2026 16:25:25 +0000 (UTC)
+	 MIME-Version; b=vGO16GQGFHxZfIlq6/RyQUfFb6nabaFAa9AL/5Z+HJps7MCJPFPasCWz0sVihm6odGuuUI3gPveqNGi7HhWNR3WbYYFgdj277wk+I9lYFMZteMnF1ch1sQfHDSuQsy7DPC6pGz2kOlv75jfnfjY/WysOeVT6rKnPFfiIKxaKzi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=byItbpEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DC8C4CEF7;
+	Mon, 23 Mar 2026 14:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283126;
-	bh=FEXtK86SsHLjt3/bsFKUfg5WcZp0JNnKc29Q8Z+y0Dk=;
+	s=korg; t=1774274999;
+	bh=El/Z+WTxFHmhJRXXXM9z6mLu9rfvjMVuHAWoGMW3q50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVf6d90wpLwWtv5Mfw5s2YY7w1vzkSlhXETqXqJmZgPuE0BP3PEwQLCqFQpBJhxVX
-	 chm4Jn1jbfcYl90Z1hPrOZgtR63adCyoGJCQXFgVFdnF8SXiEdZF3SJP6Ox07yxMDc
-	 SXyepSBUI9is4u+m6E0nNRFV23M+/TaOX7W1Jbks=
+	b=byItbpEyEeOU7e3hGU82zcrKmBpia0CtkM5r6zrpixVYAS+hCFeaVHLCUt55U6Ch5
+	 YpmO2XIfMFzPXpMwPLcFAlxsUDrKlnZRBFguhaI7X6KIbQRBE/Pak7rpJ54VIgZnUy
+	 YMgIp8FA/O5IFQiiAn/JvKZJvUt6Ext6wc/35c1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 410/481] net/rose: fix NULL pointer dereference in rose_transmit_link on reconnect
+Subject: [PATCH 6.18 171/212] netfilter: bpf: defer hook memory release until rcu readers are done
 Date: Mon, 23 Mar 2026 14:46:32 +0100
-Message-ID: <20260323134535.173361395@linuxfoundation.org>
+Message-ID: <20260323134509.175833065@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,96 +64,80 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229885-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,d00f90e0af54102fb271];
+	TAGGED_FROM(0.00)[bounces-228396-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6B6342F9133
+X-Rspamd-Queue-Id: E228E2F489E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit e1f0a18c9564cdb16523c802e2c6fe5874e3d944 ]
+[ Upstream commit 24f90fa3994b992d1a09003a3db2599330a5232a ]
 
-syzkaller reported a bug [1], and the reproducer is available at [2].
+Yiming Qian reports UaF when concurrent process is dumping hooks via
+nfnetlink_hooks:
 
-ROSE sockets use four sk->sk_state values: TCP_CLOSE, TCP_LISTEN,
-TCP_SYN_SENT, and TCP_ESTABLISHED. rose_connect() already rejects
-calls for TCP_ESTABLISHED (-EISCONN) and TCP_CLOSE with SS_CONNECTING
-(-ECONNREFUSED), but lacks a check for TCP_SYN_SENT.
+BUG: KASAN: slab-use-after-free in nfnl_hook_dump_one.isra.0+0xe71/0x10f0
+Read of size 8 at addr ffff888003edbf88 by task poc/79
+Call Trace:
+ <TASK>
+ nfnl_hook_dump_one.isra.0+0xe71/0x10f0
+ netlink_dump+0x554/0x12b0
+ nfnl_hook_get+0x176/0x230
+ [..]
 
-When rose_connect() is called a second time while the first connection
-attempt is still in progress (TCP_SYN_SENT), it overwrites
-rose->neighbour via rose_get_neigh(). If that returns NULL, the socket
-is left with rose->state == ROSE_STATE_1 but rose->neighbour == NULL.
-When the socket is subsequently closed, rose_release() sees
-ROSE_STATE_1 and calls rose_write_internal() ->
-rose_transmit_link(skb, NULL), causing a NULL pointer dereference.
+Defer release until after concurrent readers have completed.
 
-Per connect(2), a second connect() while a connection is already in
-progress should return -EALREADY. Add this missing check for
-TCP_SYN_SENT to complete the state validation in rose_connect().
-
-[1] https://syzkaller.appspot.com/bug?extid=d00f90e0af54102fb271
-[2] https://gist.github.com/mrpre/9e6779e0d13e2c66779b1653fef80516
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0027.GAE@google.com/T/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260311070611.76913-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Fixes: 84601d6ee68a ("bpf: add bpf_link support for BPF_NETFILTER programs")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/af_rose.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nf_bpf_link.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index d13ec76a1fec3..066e2d91ce3d6 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -810,6 +810,11 @@ static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_le
- 		goto out_release;
- 	}
+diff --git a/net/netfilter/nf_bpf_link.c b/net/netfilter/nf_bpf_link.c
+index 46e667a50d988..248840dbca1b2 100644
+--- a/net/netfilter/nf_bpf_link.c
++++ b/net/netfilter/nf_bpf_link.c
+@@ -170,7 +170,7 @@ static int bpf_nf_link_update(struct bpf_link *link, struct bpf_prog *new_prog,
  
-+	if (sk->sk_state == TCP_SYN_SENT) {
-+		err = -EALREADY;
-+		goto out_release;
-+	}
-+
- 	sk->sk_state   = TCP_CLOSE;
- 	sock->state = SS_UNCONNECTED;
- 
+ static const struct bpf_link_ops bpf_nf_link_lops = {
+ 	.release = bpf_nf_link_release,
+-	.dealloc = bpf_nf_link_dealloc,
++	.dealloc_deferred = bpf_nf_link_dealloc,
+ 	.detach = bpf_nf_link_detach,
+ 	.show_fdinfo = bpf_nf_link_show_info,
+ 	.fill_link_info = bpf_nf_link_fill_link_info,
 -- 
 2.51.0
 
