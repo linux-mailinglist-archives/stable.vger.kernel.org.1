@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229667-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qIhDE51ZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229170-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:49 +0100
+	id 6Cp/Cc9zwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229667-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:09:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93D072F61A7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BAD2F9860
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5680305BC81
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1C16E318B0FF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA8B3AEF50;
-	Mon, 23 Mar 2026 15:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0213BC67F;
+	Mon, 23 Mar 2026 16:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2k1cxoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFPA/KL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D56B258EE0;
-	Mon, 23 Mar 2026 15:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5C13A960E;
+	Mon, 23 Mar 2026 16:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278282; cv=none; b=ZNOxR4VCgtCG/dMPIMu/CRH9LDOQEQTXdIjh32nUcf9WoRKljT3N3zHFkU9BxgNFVUxpWMoL+sR0ZEthP+sJhM5FzsOL4ABzDL4WAeZO42RuwZe3Y64sTG8fRXhisLQxiLoc3DZoCxcynlpd1GNNVLyE3DQ7vMoh+oe/qNouTWM=
+	t=1774282542; cv=none; b=LGFGXGh1cKmLY9CNde0Vjmq6QrMeokluSRzzv0Ij4LPpUfWoHfgrACyffX201I6tQvqmCeHK8Wr2JvktjTrnvn/tMX3ODARaAm04CnBM7cQsGNRDPRMBnM76QFrqeOPett5h8PCdts+dhlfXf9Z+llCe3xUGracJcraRI/z9NIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278282; c=relaxed/simple;
-	bh=GwsFVN5WLfRX/VL/I1WO+k60eZMvkH2vz7mvpTQvJbc=;
+	s=arc-20240116; t=1774282542; c=relaxed/simple;
+	bh=k6U/gvew15wB99F5AcUy4jzhOkbO+48mQFGKWaxJeqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3rDlsQdlm6bDxJutboLdUU3tJ9+wUwC+wneplt6AdR6IShdIHsEVSB9ts9JiVSnwkcY2+vZHN/KXOhwN/VU41BLMiJRTgPty4yGwFYnj/5f9xj7VVkpsZw08bcDYSVlbY753rkhFPbK75ce3yVtW9lxfRsIvhR/GpFSdBHWTS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2k1cxoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5797EC4CEF7;
-	Mon, 23 Mar 2026 15:04:41 +0000 (UTC)
+	 MIME-Version; b=Rlf7/5wciuPwQXB1fRrwYsmCZJj6uc7NjpOlOxHaHk03WeqXWqmkMf4VYl7IHUEFKkyRCffA+Pob7SOSMZQJO80qIgbaxWRYq+pKRwR1HDwMCu3VdcdbcYqCIENVO8lf6hJ05AUBOvM/6fXWAIr+nz5CXf6oGWBnwrDbynYZlFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFPA/KL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D86C4CEF7;
+	Mon, 23 Mar 2026 16:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278281;
-	bh=GwsFVN5WLfRX/VL/I1WO+k60eZMvkH2vz7mvpTQvJbc=;
+	s=korg; t=1774282541;
+	bh=k6U/gvew15wB99F5AcUy4jzhOkbO+48mQFGKWaxJeqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2k1cxoGbkhY3cUrkTYDVsnY0OHNaOE9hHehOgKxFCbQpubkogtcNC20ivI84E4mN
-	 OUtNE6BTvZM/mKd7Xc/UKkX7mA441OWq18wNK9QwsPs7oj8IriHak8g7Du/V6vfNnj
-	 CWy4AF1S848sen1tnWZVtSQsTSRb+NjIXzfAl4Ic=
+	b=CFPA/KL33SYe62dvTabu40diMegtIcXGTwk7qc7k9LuMn0C/js0i+6C3VY8RAFETE
+	 oMS/GSJxkLwG9NSBJxIhcz5vrYAbC+zKxzW5TxpX0sdZsIDER/mYDN0VIxkA5vrEIj
+	 CkF7S/V9MRDx85aesg2tRfQ5n/IAzXGt3gJIE1mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marco Mattiolo <marco.mattiolo@hotmail.it>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 258/567] octeontx2-af: devlink: fix NIX RAS reporter to use RAS interrupt status
+Subject: [PATCH 6.1 196/481] Revert "arm64: dts: qcom: sdm845-oneplus: Mark l14a regulator as boot-on"
 Date: Mon, 23 Mar 2026 14:42:58 +0100
-Message-ID: <20260323134540.216251498@linuxfoundation.org>
+Message-ID: <20260323134529.963975953@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,71 +68,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229170-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229667-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.it,kernel.org];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 93D072F61A7
+X-Rspamd-Queue-Id: 36BAD2F9860
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+This reverts commit d2a3230c1f655e5d1560ec005805f800b9873292.
 
-[ Upstream commit 87f7dff3ec75b91def0024ebaaf732457f47a63b ]
+The backport applied regulator-boot-on to vreg_l12a_1p8 (ldo12) instead
+of vreg_l14a_1p88 (ldo14) due to identical surrounding context lines.
 
-The NIX RAS health report path uses nix_af_rvu_err when handling the
-NIX_AF_RVU_RAS case, so the report prints the ERR interrupt status rather
-than the RAS interrupt status.
-
-Use nix_af_rvu_ras for the NIX_AF_RVU_RAS report.
-
-Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20260310184824.1183651-2-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Marco Mattiolo <marco.mattiolo@hotmail.it>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index e8c920c7b8d18..f524ecb4645a9 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -327,10 +327,10 @@ static int rvu_nix_report_show(struct devlink_fmsg *fmsg, void *ctx,
- 		rvu_report_pair_end(fmsg);
- 		break;
- 	case NIX_AF_RVU_RAS:
--		intr_val = nix_event_context->nix_af_rvu_err;
-+		intr_val = nix_event_context->nix_af_rvu_ras;
- 		rvu_report_pair_start(fmsg, "NIX_AF_RAS");
- 		devlink_fmsg_u64_pair_put(fmsg, "\tNIX RAS Interrupt Reg ",
--					  nix_event_context->nix_af_rvu_err);
-+					  nix_event_context->nix_af_rvu_ras);
- 		devlink_fmsg_string_put(fmsg, "\n\tPoison Data on:");
- 		if (intr_val & BIT_ULL(34))
- 			devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_INST_S");
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index ab2a9d1ff8865..281e1178a2f46 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -224,7 +224,6 @@ vreg_l12a_1p8: ldo12 {
+ 			regulator-min-microvolt = <1800000>;
+ 			regulator-max-microvolt = <1800000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+-			regulator-boot-on;
+ 		};
+ 
+ 		vreg_l14a_1p88: ldo14 {
 -- 
 2.51.0
 
