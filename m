@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CGnlMA5RwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228198-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:18 +0100
+	id 0HCGBrBLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4ED2F4FBA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E5D2F4221
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DAA643036773
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D3DE301C554
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875BD3B3BFC;
-	Mon, 23 Mar 2026 14:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F773B0ADC;
+	Mon, 23 Mar 2026 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDopCB7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoD/e2JX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7E33B38B5;
-	Mon, 23 Mar 2026 14:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705D921D00A;
+	Mon, 23 Mar 2026 14:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274421; cv=none; b=ZTjoua7xuJYP2UNb8xk2RPilcOlwa4VVJWnN/zjYpiwMRZtay92t+aYpqbgq0lZXkeapJ/EvJy4D87keHSMvjVpVUgTQSBuCKbpvCsyqsIwqdERZHTvbOaa+fr/YYP9UH9s+sYdKfA3KI3P2RgKAaZWewICpWs+9ZCT5iKAIk7k=
+	t=1774274948; cv=none; b=XA4Jjh7SMu12oxM4pZ1gffxdmHT/JfhJLxQBJKRcZZ+rVrUWWC1CUb8nl/EcYNNK6TxlgRznCxGJZ5w9Vn0JYiO4/hfPgNbFSYYloSnp8lKdA2+plOsm2HrHSUHXsRhHhyz4yVLEcptF4t5MFizbtXCtXMgSymCwRpORXAqVj4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274421; c=relaxed/simple;
-	bh=F4U/ANmC2TlyFx6U4PP8DtU1YWKlUg326IOcwr6z/e0=;
+	s=arc-20240116; t=1774274948; c=relaxed/simple;
+	bh=xkehVewhs6nx3Xn5pOS40HUahIKDTwe7/Eao30HCL54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giHYYD/Au6ZBKQRc+leTTkqjI/MxX3fO+w8SthJJy3dKb+D19gacVT5ftOyeiXXKNqVdZQkufXS001bFycBc8fttelPdL/oCnzBZbPGievE/5sUQZHJiud5KOIHp3v6+Bk4Dgnh/j4cu5U71Hxf2wyFR279itLTs9aYXsVPzU9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDopCB7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2655C4CEF7;
-	Mon, 23 Mar 2026 14:00:20 +0000 (UTC)
+	 MIME-Version; b=QvpQGGpKw3ZHwsNRqHcdD/deqzOdGYodbUh7jOH1gEpfwFee3SCSZjB0brn7MowhMWL8McmfFrZN0ffvTJ1F9vOeCrhqux+pG+8Un12utlD+9+RXdCeJFjdQ9Ebpz7Olzp25AkWTDGD6SfvcTLMT4QpyMWjBDGYu+heedie5l8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoD/e2JX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C32C4CEF7;
+	Mon, 23 Mar 2026 14:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274421;
-	bh=F4U/ANmC2TlyFx6U4PP8DtU1YWKlUg326IOcwr6z/e0=;
+	s=korg; t=1774274948;
+	bh=xkehVewhs6nx3Xn5pOS40HUahIKDTwe7/Eao30HCL54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDopCB7W/hQOIKyiQWwd3qEcL5hHZr+h25f+hqqmeGCb/P3dDlmEC/Jec713QqFMW
-	 W7CaVwXb7HDjB2faj1KY5ajZhnTn50JtLGcOTUcUjcjBsWQ4XxwGDd9zuYNEVfE4tL
-	 exSEExGXDihF3QOaNBPf2t7yAUJju7U/Km+WvxXg=
+	b=qoD/e2JXY+2ys7mLf8R1LJAQfJxbnLrVXZ143mKlkhySTjuIgeH63qVlucksdWc1U
+	 9xnI9IVC45lWnvOwWkxXqmGR1MSQRePN9dw9zjS+xhdVK9n6CTYen0mubyTF4IaAR8
+	 hkoyCKIItk8rH85G9KeZdGsYTf480MNcVI2pVImo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Nguyen <theofficialflow1996@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 210/220] drm/amd: fix dcn 2.01 check
+Subject: [PATCH 6.18 166/212] net/mlx5: qos: Restrict RTNL area to avoid a lock cycle
 Date: Mon, 23 Mar 2026 14:46:27 +0100
-Message-ID: <20260323134511.180177882@linuxfoundation.org>
+Message-ID: <20260323134508.977199839@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +68,142 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228198-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228376-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1E4ED2F4FBA
+X-Rspamd-Queue-Id: A8E5D2F4221
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Nguyen <theofficialflow1996@gmail.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 39f44f54afa58661ecae9c27e15f5dbce2372892 ]
+[ Upstream commit b7e3a5d9c0d66b7fb44f63aef3bd734821afa0c8 ]
 
-The ASICREV_IS_BEIGE_GOBY_P check always took precedence, because it includes all chip revisions upto NV_UNKNOWN.
+A lock dependency cycle exists where:
+1. mlx5_ib_roce_init -> mlx5_core_uplink_netdev_event_replay ->
+mlx5_blocking_notifier_call_chain (takes notifier_rwsem) ->
+mlx5e_mdev_notifier_event -> mlx5_netdev_notifier_register ->
+register_netdevice_notifier_dev_net (takes rtnl)
+=> notifier_rwsem -> rtnl
 
-Fixes: 54b822b3eac3 ("drm/amd/display: Use dce_version instead of chip_id")
-Signed-off-by: Andy Nguyen <theofficialflow1996@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9c7be0efa6f0daa949a5f3e3fdf9ea090b0713cb)
+2. mlx5e_probe -> _mlx5e_probe ->
+mlx5_core_uplink_netdev_set (takes uplink_netdev_lock) ->
+mlx5_blocking_notifier_call_chain (takes notifier_rwsem)
+=> uplink_netdev_lock -> notifier_rwsem
+
+3: devlink_nl_rate_set_doit -> devlink_nl_rate_set ->
+mlx5_esw_devlink_rate_leaf_tx_max_set -> esw_qos_devlink_rate_to_mbps ->
+mlx5_esw_qos_max_link_speed_get (takes rtnl) ->
+mlx5_esw_qos_lag_link_speed_get_locked ->
+mlx5_uplink_netdev_get (takes uplink_netdev_lock)
+=> rtnl -> uplink_netdev_lock
+=> BOOM! (lock cycle)
+
+Fix that by restricting the rtnl-protected section to just the necessary
+part, the call to netdev_master_upper_dev_get and speed querying, so
+that the last lock dependency is avoided and the cycle doesn't close.
+This is safe because mlx5_uplink_netdev_get uses netdev_hold to keep the
+uplink netdev alive while its master device is queried.
+
+Use this opportunity to rename the ambiguously-named "hold_rtnl_lock"
+argument to "take_rtnl" and remove the "_locked" suffix from
+mlx5_esw_qos_lag_link_speed_get_locked.
+
+Fixes: 6b4be64fd9fe ("net/mlx5e: Harden uplink netdev access against device unbind")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260316094603.6999-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/esw/qos.c | 23 ++++++++-----------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
-index 15cf13ec53026..c450feae5fa5b 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/clk_mgr.c
-@@ -255,6 +255,10 @@ struct clk_mgr *dc_clk_mgr_create(struct dc_context *ctx, struct pp_smu_funcs *p
- 			BREAK_TO_DEBUGGER();
- 			return NULL;
- 		}
-+		if (ctx->dce_version == DCN_VERSION_2_01) {
-+			dcn201_clk_mgr_construct(ctx, clk_mgr, pp_smu, dccg);
-+			return &clk_mgr->base;
-+		}
- 		if (ASICREV_IS_SIENNA_CICHLID_P(asic_id.hw_internal_rev)) {
- 			dcn3_clk_mgr_construct(ctx, clk_mgr, pp_smu, dccg);
- 			return &clk_mgr->base;
-@@ -267,10 +271,6 @@ struct clk_mgr *dc_clk_mgr_create(struct dc_context *ctx, struct pp_smu_funcs *p
- 			dcn3_clk_mgr_construct(ctx, clk_mgr, pp_smu, dccg);
- 			return &clk_mgr->base;
- 		}
--		if (ctx->dce_version == DCN_VERSION_2_01) {
--			dcn201_clk_mgr_construct(ctx, clk_mgr, pp_smu, dccg);
--			return &clk_mgr->base;
--		}
- 		dcn20_clk_mgr_construct(ctx, clk_mgr, pp_smu, dccg);
- 		return &clk_mgr->base;
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 56e6f54b1e2ed..af58ad72906ff 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -1497,24 +1497,24 @@ static int esw_qos_node_enable_tc_arbitration(struct mlx5_esw_sched_node *node,
+ 	return err;
+ }
+ 
+-static u32 mlx5_esw_qos_lag_link_speed_get_locked(struct mlx5_core_dev *mdev)
++static u32 mlx5_esw_qos_lag_link_speed_get(struct mlx5_core_dev *mdev,
++					   bool take_rtnl)
+ {
+ 	struct ethtool_link_ksettings lksettings;
+ 	struct net_device *slave, *master;
+ 	u32 speed = SPEED_UNKNOWN;
+ 
+-	/* Lock ensures a stable reference to master and slave netdevice
+-	 * while port speed of master is queried.
+-	 */
+-	ASSERT_RTNL();
+-
+ 	slave = mlx5_uplink_netdev_get(mdev);
+ 	if (!slave)
+ 		goto out;
+ 
++	if (take_rtnl)
++		rtnl_lock();
+ 	master = netdev_master_upper_dev_get(slave);
+ 	if (master && !__ethtool_get_link_ksettings(master, &lksettings))
+ 		speed = lksettings.base.speed;
++	if (take_rtnl)
++		rtnl_unlock();
+ 
+ out:
+ 	mlx5_uplink_netdev_put(mdev, slave);
+@@ -1522,20 +1522,15 @@ static u32 mlx5_esw_qos_lag_link_speed_get_locked(struct mlx5_core_dev *mdev)
+ }
+ 
+ static int mlx5_esw_qos_max_link_speed_get(struct mlx5_core_dev *mdev, u32 *link_speed_max,
+-					   bool hold_rtnl_lock, struct netlink_ext_ack *extack)
++					   bool take_rtnl,
++					   struct netlink_ext_ack *extack)
+ {
+ 	int err;
+ 
+ 	if (!mlx5_lag_is_active(mdev))
+ 		goto skip_lag;
+ 
+-	if (hold_rtnl_lock)
+-		rtnl_lock();
+-
+-	*link_speed_max = mlx5_esw_qos_lag_link_speed_get_locked(mdev);
+-
+-	if (hold_rtnl_lock)
+-		rtnl_unlock();
++	*link_speed_max = mlx5_esw_qos_lag_link_speed_get(mdev, take_rtnl);
+ 
+ 	if (*link_speed_max != (u32)SPEED_UNKNOWN)
+ 		return 0;
 -- 
 2.51.0
 
