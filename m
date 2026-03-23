@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDqXM5VcwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229024-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:29 +0100
+	id GFnxM89OwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1162F6618
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6132F4AA4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ECB2F3044604
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8AEA930F12E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C63387599;
-	Mon, 23 Mar 2026 14:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E40B63B27F7;
+	Mon, 23 Mar 2026 14:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lphWPA4r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNs4+MWy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFED1DE4E0;
-	Mon, 23 Mar 2026 14:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65E63AEF21;
+	Mon, 23 Mar 2026 14:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277815; cv=none; b=fpUs38rFu/1oXEFTEsWqxzCAs7FLzai56fQjf1f99bZQAaPeH9ULgE1DDsGsNqUe6dXFXHm4LwiyTm2Nhm3kBUSpFnVlkGwwOE4AYwenCT3oKm6O3MwpdhYnkxV2agPyzByB7bWs91PpxU41H6wIvkQWVBgdqsk4koQimxPZN+A=
+	t=1774275225; cv=none; b=Q4kvoqXEcmGXpra66/9OlHg07K2iNwSuXHpRB5Cn/ZbUt+ToiqLUZSP8xiSlvtQjpt5i0RjX2Jk0Zcs8uJX0ZrfZcWxLRuVnt6hVhvSKPZqbCsBVPN/WF1J0gJzGqSDT5Q98RaJB5poyeKKium6qkJToE44uNn+dknRURzaxGWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277815; c=relaxed/simple;
-	bh=W5f31ixmXji09/6s8eDnMrnweP+wrTStkdqJUjiKzR4=;
+	s=arc-20240116; t=1774275225; c=relaxed/simple;
+	bh=QovV3sWXQhny0zHgBvZYK2OuVNlHXPr71BmdeWG+ubE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQIocY4PgfqzHir1NvDJGK/Y15owsLF2iycfx/Qb1+Hjd5ESgVYtFMM8BeKFhUWCrHdz0kn3acjmsB6nKSg2YDlpROJuZ5b7At0FNCWRsnyAoxu6N2OVlLkN+XbKbJqfFPkKYeuDZnl4ltRNrJ+9WY18A9yCMbLIRGBpW0tcWR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lphWPA4r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F00C4CEF7;
-	Mon, 23 Mar 2026 14:56:55 +0000 (UTC)
+	 MIME-Version; b=sxN+Y65TjqF8kMHTza7pX1rHtlf5YAv29GRI4mT2U2pAxmbpREzU+lOrbS1nSzqlKOum4Lod+S2V16rNDIkIiljDjC5E9DptETDOst6jpoxFKMZmsa/HrXCQetqHuxgCG2YXAciwttHDD2shIcnACURzIqSDOGLVGJQnzll88gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNs4+MWy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD74C4CEF7;
+	Mon, 23 Mar 2026 14:13:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277815;
-	bh=W5f31ixmXji09/6s8eDnMrnweP+wrTStkdqJUjiKzR4=;
+	s=korg; t=1774275225;
+	bh=QovV3sWXQhny0zHgBvZYK2OuVNlHXPr71BmdeWG+ubE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lphWPA4r/jl2zhwQ5gQeQUrxI9e0upHmZgyGJyZUsC2cQJi7QVuwmJDzCR6M/n5Wv
-	 CvR/Gsmi6KIg6gqbWAzk5IuHkxokHgGV2/YJKDoNTv7nzqZ6PMtY11TosjTUgCJ/zQ
-	 Nxg8YP935UoeBQCIKgd2Ysgb7mD/WPVb5Hmn9MuI=
+	b=TNs4+MWyHQ6Y70CxDlH89V8av8YKfNRus/uaF55jQKE8V7R8k36uw9U6KBpVo48pY
+	 1WOFFt4QY/YZZzpeuxt66bn/bWA3N8uB2LhoXSJKTPDRmgPjTmvfVlWmrIc+Zmp+ge
+	 bAU/Ei0IDe21mutUycuYfuHvavRFHe7vXjCu1fv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 095/567] can: ucan: Fix infinite loop from zero-length messages
+	kernel test robot <lkp@intel.com>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 019/460] powerpc/kexec/core: use big-endian types for crash variables
 Date: Mon, 23 Mar 2026 14:40:15 +0100
-Message-ID: <20260323134536.178623756@linuxfoundation.org>
+Message-ID: <20260323134527.132119736@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +68,137 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229024-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228472-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BF1162F6618
+X-Rspamd-Queue-Id: 0D6132F4AA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
 
-commit 1e446fd0582ad8be9f6dafb115fc2e7245f9bea7 upstream.
+[ Upstream commit 20197b967a6a29dab81495f25a988515bda84cfe ]
 
-If a broken ucan device gets a message with the message length field set
-to 0, then the driver will loop for forever in
-ucan_read_bulk_callback(), hanging the system.  If the length is 0, just
-skip the message and go on to the next one.
+Use explicit word-sized big-endian types for kexec and crash related
+variables. This makes the endianness unambiguous and avoids type
+mismatches that trigger sparse warnings.
 
-This has been fixed in the kvaser_usb driver in the past in commit
-0c73772cd2b8 ("can: kvaser_usb: leaf: Fix potential infinite loop in
-command parsers"), so there must be some broken devices out there like
-this somewhere.
+The change addresses sparse warnings like below (seen on both 32-bit
+and 64-bit builds):
 
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Vincent Mailhol <mailhol@kernel.org>
-Cc: stable@kernel.org
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022319-huff-absurd-6a18@gregkh
-Fixes: 9f2d3eae88d2 ("can: ucan: add driver for Theobroma Systems UCAN devices")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CHECK   ../arch/powerpc/kexec/core.c
+sparse:    expected unsigned int static [addressable] [toplevel] [usertype] crashk_base
+sparse:    got restricted __be32 [usertype]
+sparse: warning: incorrect type in assignment (different base types)
+sparse:    expected unsigned int static [addressable] [toplevel] [usertype] crashk_size
+sparse:    got restricted __be32 [usertype]
+sparse: warning: incorrect type in assignment (different base types)
+sparse:    expected unsigned long long static [addressable] [toplevel] mem_limit
+sparse:    got restricted __be32 [usertype]
+sparse: warning: incorrect type in assignment (different base types)
+sparse:    expected unsigned int static [addressable] [toplevel] [usertype] kernel_end
+sparse:    got restricted __be32 [usertype]
+
+No functional change intended.
+
+Fixes: ea961a828fe7 ("powerpc: Fix endian issues in kexec and crash dump code")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512221405.VHPKPjnp-lkp@intel.com/
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20251224151257.28672-1-sourabhjain@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/usb/ucan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kexec/core.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -749,7 +749,7 @@ static void ucan_read_bulk_callback(stru
- 		len = le16_to_cpu(m->len);
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index 50e7cf4b992b1..31797f2145ec5 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -23,6 +23,7 @@
+ #include <asm/firmware.h>
  
- 		/* check sanity (length of content) */
--		if (urb->actual_length - pos < len) {
-+		if ((len == 0) || (urb->actual_length - pos < len)) {
- 			netdev_warn(up->netdev,
- 				    "invalid message (short; no data; l:%d)\n",
- 				    urb->actual_length);
+ #define cpu_to_be_ulong __PASTE(cpu_to_be, BITS_PER_LONG)
++#define __be_word __PASTE(__be, BITS_PER_LONG)
+ 
+ #ifdef CONFIG_CRASH_DUMP
+ void machine_crash_shutdown(struct pt_regs *regs)
+@@ -158,25 +159,25 @@ int __init overlaps_crashkernel(unsigned long start, unsigned long size)
+ }
+ 
+ /* Values we need to export to the second kernel via the device tree. */
+-static phys_addr_t crashk_base;
+-static phys_addr_t crashk_size;
+-static unsigned long long mem_limit;
++static __be_word crashk_base;
++static __be_word crashk_size;
++static __be_word mem_limit;
+ 
+ static struct property crashk_base_prop = {
+ 	.name = "linux,crashkernel-base",
+-	.length = sizeof(phys_addr_t),
++	.length = sizeof(__be_word),
+ 	.value = &crashk_base
+ };
+ 
+ static struct property crashk_size_prop = {
+ 	.name = "linux,crashkernel-size",
+-	.length = sizeof(phys_addr_t),
++	.length = sizeof(__be_word),
+ 	.value = &crashk_size,
+ };
+ 
+ static struct property memory_limit_prop = {
+ 	.name = "linux,memory-limit",
+-	.length = sizeof(unsigned long long),
++	.length = sizeof(__be_word),
+ 	.value = &mem_limit,
+ };
+ 
+@@ -205,11 +206,11 @@ static void __init export_crashk_values(struct device_node *node)
+ }
+ #endif /* CONFIG_CRASH_RESERVE */
+ 
+-static phys_addr_t kernel_end;
++static __be_word kernel_end;
+ 
+ static struct property kernel_end_prop = {
+ 	.name = "linux,kernel-end",
+-	.length = sizeof(phys_addr_t),
++	.length = sizeof(__be_word),
+ 	.value = &kernel_end,
+ };
+ 
+-- 
+2.51.0
+
 
 
 
