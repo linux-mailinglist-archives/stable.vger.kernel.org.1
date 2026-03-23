@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GGgVOEhGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228088-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:20 +0100
+	id kDgOM3xUwWlVSQQAu9opvQ
+	(envelope-from <stable+bounces-228798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC192F369D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:55:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514AC2F5750
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5ACD8301908A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7797A30EA419
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D383AE1AD;
-	Mon, 23 Mar 2026 13:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62AB6241695;
+	Mon, 23 Mar 2026 14:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/66gbN5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN/RO8+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40A13AD534;
-	Mon, 23 Mar 2026 13:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20801239085;
+	Mon, 23 Mar 2026 14:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274088; cv=none; b=EkKwolvJf8b4rHwSHW+eXh6j0AJqs8GtG90guvk70wPEjU3asaGt7zSPQDesuId2Bux/000ufug//PTWWp6L9MR569ttybdO3dY6FkjwqepsdmrIi1FL0euO/i1DMgpbp9vz8hLLuEGnPYrwQr655xjtecSXsJJl47VWGxcHp1Q=
+	t=1774277157; cv=none; b=Fyx7lRzp2PXj3MXXVhgQZIsDgvH9Vabz2JjbXCc6/X7BUE7CVhLFifC4VDiQew5+WbCEqwSospzl0zLX/Z9VkT9J18I1spHSB8/bJ1SiwK/3varN36Pwy3VqiHSVo3TMTI47wbMS9XLz9VBICOS2I8tlM4fjJidFjUlFHofYPlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274088; c=relaxed/simple;
-	bh=X+MoVVFeaoP5eU115xSZ9Ru5lo9Y8HyOPHA/6SVxfN8=;
+	s=arc-20240116; t=1774277157; c=relaxed/simple;
+	bh=0kwOgDzg0bl/lz2fgLcTYsn1oElrNyPa33NVaNLSM5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOlny+0GwtPKLYUZjA4ZfQ/Ehm5r9cDkX/QB05Mli/KDIl5EfUuX4A4OJmaqbrG6qz0Yxhr8G4rgdoPcgvTsmUPaA/qUbWnHY6ldlyo2WuPKRW/l/pgPQAXimeXT9QEDEujuZa283H08sH77Q9xFfMpapakh/wSYsJrgzWdgi/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/66gbN5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78966C2BCB4;
-	Mon, 23 Mar 2026 13:54:47 +0000 (UTC)
+	 MIME-Version; b=qUaPN3e3C/RjwpSEhk9hyeUyZ2hdodELaTEFvzB14ezGX3g/B6++vRcGdTlK10m8qGrRihPBnG8u3Jvs3oW5N+Qo9WIsSP3c2yVKImhgCjfeDyGLpF8RL5Hap+Sm+JJOCHIykQ9xlZaaHFQaaWq7PIp8NqQw+denJnj7QbBcQ0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN/RO8+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A97C4CEF7;
+	Mon, 23 Mar 2026 14:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274087;
-	bh=X+MoVVFeaoP5eU115xSZ9Ru5lo9Y8HyOPHA/6SVxfN8=;
+	s=korg; t=1774277157;
+	bh=0kwOgDzg0bl/lz2fgLcTYsn1oElrNyPa33NVaNLSM5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/66gbN5BFqHJeoaAUqfcGqQag3JitV8G83TderJWtwQvF+SYEYdtGBHCZ0r8iOfp
-	 V51e+G0kqCU6KbHjxP9lKVhiEEidxKuxxtGkVPbhnCv4Em9Sdnf3g9VZKUOIZzzMdt
-	 JC1AhbQDV1aiqHJvZfMLkGkuDpR7GPtJqN4oveqs=
+	b=MN/RO8+cModA26F/JmuMS3LgP6cNVtvAuDBdVenB8HFkmikg7NnxdY4cb5p+KlHIk
+	 iacRXb5n3tnMRtovH7pjY3qPAmUE+6lLJ1moDqU5nkzQn+ARh/qhGKGrHf7HBfdW3Z
+	 KxdSlWN+ZXpdQrCfUbS3KfwHdLVENMyNPz/JdHk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 104/220] wifi: mac80211: remove keys after disabling beaconing
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 285/460] net: stmmac: remove support for lpi_intr_o
 Date: Mon, 23 Mar 2026 14:44:41 +0100
-Message-ID: <20260323134507.893440203@linuxfoundation.org>
+Message-ID: <20260323134533.487623095@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,92 +64,247 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228798-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228088-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: AEC192F369D
+	TAGGED_RCPT(0.00)[stable,kernel];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 514AC2F5750
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 708bbb45537780a8d3721ca1e0cf1932c1d1bf5f ]
+commit 14eb64db8ff07b58a35b98375f446d9e20765674 upstream.
 
-We shouldn't remove keys before disable beaconing, at least when
-beacon protection is used, since that would remove keys that are
-still used for beacon transmission at the same time. Stop before
-removing keys so there's no race.
+The dwmac databook for v3.74a states that lpi_intr_o is a sideband
+signal which should be used to ungate the application clock, and this
+signal is synchronous to the receive clock. The receive clock can run
+at 2.5, 25 or 125MHz depending on the media speed, and can stop under
+the control of the link partner. This means that the time it takes to
+clear is dependent on the negotiated media speed, and thus can be 8,
+40, or 400ns after reading the LPI control and status register.
 
-Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260303150339.574e7887b3ab.I50d708f5aa22584506a91d0da7f8a73ba39fceac@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It has been observed with some aggressive link partners, this clock
+can stop while lpi_intr_o is still asserted, meaning that the signal
+remains asserted for an indefinite period that the local system has
+no direct control over.
+
+The LPI interrupts will still be signalled through the main interrupt
+path in any case, and this path is not dependent on the receive clock.
+
+This, since we do not gate the application clock, and the chances of
+adding clock gating in the future are slim due to the clocks being
+ill-defined, lpi_intr_o serves no useful purpose. Remove the code which
+requests the interrupt, and all associated code.
+
+Reported-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Tested-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com> # Renesas RZ/V2H board
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/E1vnJbt-00000007YYN-28nm@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/cfg.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/common.h          |    1 
+ drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c     |    4 --
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c  |    7 ---
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h          |    2 -
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c     |   36 ------------------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c |    8 ----
+ include/linux/stmmac.h                                |    1 
+ 7 files changed, 59 deletions(-)
 
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index c81091a5cc3a3..e480b48e8365d 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1889,12 +1889,6 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -374,7 +374,6 @@ enum request_irq_err {
+ 	REQ_IRQ_ERR_SFTY,
+ 	REQ_IRQ_ERR_SFTY_UE,
+ 	REQ_IRQ_ERR_SFTY_CE,
+-	REQ_IRQ_ERR_LPI,
+ 	REQ_IRQ_ERR_WOL,
+ 	REQ_IRQ_ERR_MAC,
+ 	REQ_IRQ_ERR_NO,
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+@@ -618,7 +618,6 @@ static int intel_mgbe_common_data(struct
  
- 	__sta_info_flush(sdata, true, link_id, NULL);
+ 	/* Setup MSI vector offset specific to Intel mGbE controller */
+ 	plat->msi_mac_vec = 29;
+-	plat->msi_lpi_vec = 28;
+ 	plat->msi_sfty_ce_vec = 27;
+ 	plat->msi_sfty_ue_vec = 26;
+ 	plat->msi_rx_base_vec = 0;
+@@ -1004,8 +1003,6 @@ static int stmmac_config_multi_msi(struc
+ 		res->irq = pci_irq_vector(pdev, plat->msi_mac_vec);
+ 	if (plat->msi_wol_vec < STMMAC_MSI_VEC_MAX)
+ 		res->wol_irq = pci_irq_vector(pdev, plat->msi_wol_vec);
+-	if (plat->msi_lpi_vec < STMMAC_MSI_VEC_MAX)
+-		res->lpi_irq = pci_irq_vector(pdev, plat->msi_lpi_vec);
+ 	if (plat->msi_sfty_ce_vec < STMMAC_MSI_VEC_MAX)
+ 		res->sfty_ce_irq = pci_irq_vector(pdev, plat->msi_sfty_ce_vec);
+ 	if (plat->msi_sfty_ue_vec < STMMAC_MSI_VEC_MAX)
+@@ -1087,7 +1084,6 @@ static int intel_eth_pci_probe(struct pc
+ 	 */
+ 	plat->msi_mac_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_wol_vec = STMMAC_MSI_VEC_MAX;
+-	plat->msi_lpi_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_sfty_ce_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_sfty_ue_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_rx_base_vec = STMMAC_MSI_VEC_MAX;
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -476,13 +476,6 @@ static int loongson_dwmac_dt_config(stru
+ 		res->wol_irq = res->irq;
+ 	}
  
--	ieee80211_remove_link_keys(link, &keys);
--	if (!list_empty(&keys)) {
--		synchronize_net();
--		ieee80211_free_key_list(local, &keys);
+-	res->lpi_irq = of_irq_get_byname(np, "eth_lpi");
+-	if (res->lpi_irq < 0) {
+-		dev_err(&pdev->dev, "IRQ eth_lpi not found\n");
+-		ret = -ENODEV;
+-		goto err_put_node;
 -	}
 -
- 	ieee80211_stop_mbssid(sdata);
- 	RCU_INIT_POINTER(link_conf->tx_bss_conf, NULL);
+ 	ret = device_get_phy_mode(&pdev->dev);
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "phy_mode not found\n");
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -29,7 +29,6 @@ struct stmmac_resources {
+ 	void __iomem *addr;
+ 	u8 mac[ETH_ALEN];
+ 	int wol_irq;
+-	int lpi_irq;
+ 	int irq;
+ 	int sfty_irq;
+ 	int sfty_ce_irq;
+@@ -314,7 +313,6 @@ struct stmmac_priv {
+ 	bool wol_irq_disabled;
+ 	int clk_csr;
+ 	struct timer_list eee_ctrl_timer;
+-	int lpi_irq;
+ 	int eee_enabled;
+ 	int eee_active;
+ 	int tx_lpi_timer;
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3580,10 +3580,6 @@ static void stmmac_free_irq(struct net_d
+ 			free_irq(priv->sfty_ce_irq, dev);
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_SFTY_CE:
+-		if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq)
+-			free_irq(priv->lpi_irq, dev);
+-		fallthrough;
+-	case REQ_IRQ_ERR_LPI:
+ 		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
+ 			free_irq(priv->wol_irq, dev);
+ 		fallthrough;
+@@ -3642,24 +3638,6 @@ static int stmmac_request_irq_multi_msi(
+ 		}
+ 	}
  
-@@ -1906,6 +1900,12 @@ static int ieee80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
- 	ieee80211_link_info_change_notify(sdata, link,
- 					  BSS_CHANGED_BEACON_ENABLED);
+-	/* Request the LPI IRQ in case of another line
+-	 * is used for LPI
+-	 */
+-	if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq) {
+-		int_name = priv->int_name_lpi;
+-		sprintf(int_name, "%s:%s", dev->name, "lpi");
+-		ret = request_irq(priv->lpi_irq,
+-				  stmmac_mac_interrupt,
+-				  0, int_name, dev);
+-		if (unlikely(ret < 0)) {
+-			netdev_err(priv->dev,
+-				   "%s: alloc lpi MSI %d (error: %d)\n",
+-				   __func__, priv->lpi_irq, ret);
+-			irq_err = REQ_IRQ_ERR_LPI;
+-			goto irq_error;
+-		}
+-	}
+-
+ 	/* Request the common Safety Feature Correctible/Uncorrectible
+ 	 * Error line in case of another line is used
+ 	 */
+@@ -3800,19 +3778,6 @@ static int stmmac_request_irq_single(str
+ 		}
+ 	}
  
-+	ieee80211_remove_link_keys(link, &keys);
-+	if (!list_empty(&keys)) {
-+		synchronize_net();
-+		ieee80211_free_key_list(local, &keys);
-+	}
-+
- 	if (sdata->wdev.links[link_id].cac_started) {
- 		chandef = link_conf->chanreq.oper;
- 		wiphy_delayed_work_cancel(wiphy, &link->dfs_cac_timer_work);
--- 
-2.51.0
-
+-	/* Request the IRQ lines */
+-	if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq) {
+-		ret = request_irq(priv->lpi_irq, stmmac_interrupt,
+-				  IRQF_SHARED, dev->name, dev);
+-		if (unlikely(ret < 0)) {
+-			netdev_err(priv->dev,
+-				   "%s: ERROR: allocating the LPI IRQ %d (%d)\n",
+-				   __func__, priv->lpi_irq, ret);
+-			irq_err = REQ_IRQ_ERR_LPI;
+-			goto irq_error;
+-		}
+-	}
+-
+ 	/* Request the common Safety Feature Correctible/Uncorrectible
+ 	 * Error line in case of another line is used
+ 	 */
+@@ -7576,7 +7541,6 @@ int stmmac_dvr_probe(struct device *devi
+ 
+ 	priv->dev->irq = res->irq;
+ 	priv->wol_irq = res->wol_irq;
+-	priv->lpi_irq = res->lpi_irq;
+ 	priv->sfty_irq = res->sfty_irq;
+ 	priv->sfty_ce_irq = res->sfty_ce_irq;
+ 	priv->sfty_ue_irq = res->sfty_ue_irq;
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -733,14 +733,6 @@ int stmmac_get_platform_resources(struct
+ 		stmmac_res->wol_irq = stmmac_res->irq;
+ 	}
+ 
+-	stmmac_res->lpi_irq =
+-		platform_get_irq_byname_optional(pdev, "eth_lpi");
+-	if (stmmac_res->lpi_irq < 0) {
+-		if (stmmac_res->lpi_irq == -EPROBE_DEFER)
+-			return -EPROBE_DEFER;
+-		dev_info(&pdev->dev, "IRQ eth_lpi not found\n");
+-	}
+-
+ 	stmmac_res->sfty_irq =
+ 		platform_get_irq_byname_optional(pdev, "sfty");
+ 	if (stmmac_res->sfty_irq < 0) {
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -268,7 +268,6 @@ struct plat_stmmacenet_data {
+ 	int int_snapshot_num;
+ 	int msi_mac_vec;
+ 	int msi_wol_vec;
+-	int msi_lpi_vec;
+ 	int msi_sfty_ce_vec;
+ 	int msi_sfty_ue_vec;
+ 	int msi_rx_base_vec;
 
 
 
