@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-228511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228469-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uA1kEvFTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228511-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:53:37 +0100
+	id YKN+KApNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228469-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C930F2F55EF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:53:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED602F4605
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A185330B848E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C3B7B309C07E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2C93ACA62;
-	Mon, 23 Mar 2026 14:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC73C3AF650;
+	Mon, 23 Mar 2026 14:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukLOl7eo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6sf0H9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C85823DD;
-	Mon, 23 Mar 2026 14:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD04B1EB9F2;
+	Mon, 23 Mar 2026 14:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275325; cv=none; b=bZ/dZv5vEPj9HgljIknFP7I6i0KXvGl9udnymQfnG+f/xE15+cjbTgPsVJK/+nyCY8HraCr+pLK96v35fezRMSmtKixgVhAxUOn/bJb5TAXvt69U0ouToS4yk+/SXDOIXqf6/3ludzxhTEbtBO9loWTcRrKixEaEB5rjyn4sEHA=
+	t=1774275220; cv=none; b=TdJbzVgpB+ysK555VK3KXkc18O6wmsTRngFp59tENJBIuHj/Em8pDcqfknrmaZBem99MQ+slNAnPYTFHYYGGqHSidNqNRwa8HcLq592QzeXtLrEJp0nj8mYLivfQq38PpK5wf93KXdRegI4CKYXZ/VZBk0UY2QRQtr5i+XnoI7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275325; c=relaxed/simple;
-	bh=HjTbMQQevAJ1OQ/SMkveBGVIYxls1Rim6gf9KZ2yNPc=;
+	s=arc-20240116; t=1774275220; c=relaxed/simple;
+	bh=zB1/bYfpLK0+5oADa9puVQWysDGPzAdasDMwEOivdqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMUWzeEYlYi2xHzZiiOPfcRMOPmuBbRO4tQ0JpYskai6YuV/CvLDIldTlh5vRyTxqsHbl856CpTezEsTZ43dML3AGVLMJzKYWPdbAJKxR3lBVaEeC8EjrgCIoqte3WKBRWizQAzj3XFSZnEM9xX2vuixcNPb5k4iuJCCpdICTC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukLOl7eo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D63EC4CEF7;
-	Mon, 23 Mar 2026 14:15:25 +0000 (UTC)
+	 MIME-Version; b=ZP5tC1oWfpdcWOlAhkVGk/0LX+jG/o0CDgZD+5s7qC4bi3sWfD7Wooi759f8bF7oba5hLswTiR92ddNHDLsYHg2hrWAAl45zUAFX1iB7JNJj268cF1P3tjDOg8NK3Od+3nOVL23285VuJjdnXLM0QOxKgtl+3Dr55tIVh/8fxME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6sf0H9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BD9C4CEF7;
+	Mon, 23 Mar 2026 14:13:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275325;
-	bh=HjTbMQQevAJ1OQ/SMkveBGVIYxls1Rim6gf9KZ2yNPc=;
+	s=korg; t=1774275220;
+	bh=zB1/bYfpLK0+5oADa9puVQWysDGPzAdasDMwEOivdqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukLOl7eo3SRn+HLZNFDtQ7zTHa1Xv3kmcOCiz2UUXGtIsfecyLz8lasW6mB+PvjB3
-	 krlmaq7o6hK7cPrADXNIbuFyJNh0yM3T2bsv4RJHL4j1WjXwTqGLiQxxtB07zHqxur
-	 IXBhNUV338QdKZ5rFHg/cr/H8ybMVi8vbfHe4oBA=
+	b=P6sf0H9nP5woTkva888MpQGgy53hdWMy/Tc75rSpXmgYge9BZoKnuAHvVHFNeDU1T
+	 AyCqCTT1SXoO4fPROat7qqDd2uEIoBfLy7wx5E6z/smiDf4ektMHU+14A919KyzCfk
+	 FWObe1kiDy1OTwB64bOOnT4D2l8Wn51cGrZMirYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Eliav Farber <farbere@amazon.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 016/460] powerpc/uaccess: Fix inline assembly for clang build on PPC32
-Date: Mon, 23 Mar 2026 14:40:12 +0100
-Message-ID: <20260323134527.061949009@linuxfoundation.org>
+Subject: [PATCH 6.12 017/460] kexec: Consolidate machine_kexec_mask_interrupts() implementation
+Date: Mon, 23 Mar 2026 14:40:13 +0100
+Message-ID: <20260323134527.084575420@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
 References: <20260323134526.647552166@linuxfoundation.org>
@@ -70,29 +68,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228511-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228469-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C930F2F55EF
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 2ED602F4605
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,90 +99,310 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+From: Eliav Farber <farbere@amazon.com>
 
-[ Upstream commit 0ee95a1d458630272d0415d0ffa9424fcb606c90 ]
+[ Upstream commit bad6722e478f5b17a5ceb039dfb4c680cf2c0b48 ]
 
-Test robot reports the following error with clang-16.0.6:
+Consolidate the machine_kexec_mask_interrupts implementation into a common
+function located in a new file: kernel/irq/kexec.c. This removes duplicate
+implementations from architecture-specific files in arch/arm, arch/arm64,
+arch/powerpc, and arch/riscv, reducing code duplication and improving
+maintainability.
 
-   In file included from kernel/rseq.c:75:
-   include/linux/rseq_entry.h:141:3: error: invalid operand for instruction
-                   unsafe_get_user(offset, &ucs->post_commit_offset, efault);
-                   ^
-   include/linux/uaccess.h:608:2: note: expanded from macro 'unsafe_get_user'
-           arch_unsafe_get_user(x, ptr, local_label);      \
-           ^
-   arch/powerpc/include/asm/uaccess.h:518:2: note: expanded from macro 'arch_unsafe_get_user'
-           __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
-           ^
-   arch/powerpc/include/asm/uaccess.h:284:2: note: expanded from macro '__get_user_size_goto'
-           __get_user_size_allowed(x, ptr, size, __gus_retval);    \
-           ^
-   arch/powerpc/include/asm/uaccess.h:275:10: note: expanded from macro '__get_user_size_allowed'
-           case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
-                   ^
-   arch/powerpc/include/asm/uaccess.h:258:4: note: expanded from macro '__get_user_asm2'
-                   "       li %1+1,0\n"                    \
-                    ^
-   <inline asm>:7:5: note: instantiated into assembly here
-           li 31+1,0
-              ^
-   1 error generated.
+The new implementation retains architecture-specific behavior for
+CONFIG_GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD, which was previously implemented
+for ARM64. When enabled (currently for ARM64), it clears the active state
+of interrupts forwarded to virtual machines (VMs) before handling other
+interrupt masking operations.
 
-On PPC32, for 64 bits vars a pair of registers is used. Usually the
-lower register in the pair is the high part and the higher register is
-the low part. GCC uses r3/r4 ... r11/r12 ... r14/r15 ... r30/r31
-
-In older kernel code inline assembly was using %1 and %1+1 to represent
-64 bits values. However here it looks like clang uses r31 as high part,
-allthough r32 doesn't exist hence the error.
-
-Allthoug %1+1 should work, most places now use %L1 instead of %1+1, so
-let's do the same here.
-
-With that change, the build doesn't fail anymore and a disassembly shows
-clang uses r17/r18 and r31/r14 pair when GCC would have used r16/r17 and
-r30/r31:
-
-	Disassembly of section .fixup:
-
-	00000000 <.fixup>:
-	   0:	38 a0 ff f2 	li      r5,-14
-	   4:	3a 20 00 00 	li      r17,0
-	   8:	3a 40 00 00 	li      r18,0
-	   c:	48 00 00 00 	b       c <.fixup+0xc>
-				c: R_PPC_REL24	.text+0xbc
-	  10:	38 a0 ff f2 	li      r5,-14
-	  14:	3b e0 00 00 	li      r31,0
-	  18:	39 c0 00 00 	li      r14,0
-	  1c:	48 00 00 00 	b       1c <.fixup+0x1c>
-				1c: R_PPC_REL24	.text+0x144
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202602021825.otcItxGi-lkp@intel.com/
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/8ca3a657a650e497a96bfe7acde2f637dadab344.1770103646.git.chleroy@kernel.org
+Signed-off-by: Eliav Farber <farbere@amazon.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20241204142003.32859-2-farbere@amazon.com
+Stable-dep-of: 20197b967a6a ("powerpc/kexec/core: use big-endian types for crash variables")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/uaccess.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/kernel/machine_kexec.c   | 23 ------------------
+ arch/arm64/Kconfig                |  1 +
+ arch/arm64/kernel/machine_kexec.c | 31 ------------------------
+ arch/powerpc/include/asm/kexec.h  |  1 -
+ arch/powerpc/kexec/core.c         | 22 -----------------
+ arch/powerpc/kexec/core_32.c      |  1 +
+ arch/riscv/kernel/machine_kexec.c | 23 ------------------
+ include/linux/irq.h               |  3 +++
+ kernel/irq/Kconfig                |  6 +++++
+ kernel/irq/Makefile               |  2 +-
+ kernel/irq/kexec.c                | 40 +++++++++++++++++++++++++++++++
+ 11 files changed, 52 insertions(+), 101 deletions(-)
+ create mode 100644 kernel/irq/kexec.c
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 3987a5c33558b..929f7050c73a6 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -253,7 +253,7 @@ __gus_failed:								\
- 		".section .fixup,\"ax\"\n"		\
- 		"4:	li %0,%3\n"			\
- 		"	li %1,0\n"			\
--		"	li %1+1,0\n"			\
-+		"	li %L1,0\n"			\
- 		"	b 3b\n"				\
- 		".previous\n"				\
- 		EX_TABLE(1b, 4b)			\
+diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
+index 80ceb5bd2680b..dd430477e7c13 100644
+--- a/arch/arm/kernel/machine_kexec.c
++++ b/arch/arm/kernel/machine_kexec.c
+@@ -127,29 +127,6 @@ void crash_smp_send_stop(void)
+ 	cpus_stopped = 1;
+ }
+ 
+-static void machine_kexec_mask_interrupts(void)
+-{
+-	unsigned int i;
+-	struct irq_desc *desc;
+-
+-	for_each_irq_desc(i, desc) {
+-		struct irq_chip *chip;
+-
+-		chip = irq_desc_get_chip(desc);
+-		if (!chip)
+-			continue;
+-
+-		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
+-			chip->irq_eoi(&desc->irq_data);
+-
+-		if (chip->irq_mask)
+-			chip->irq_mask(&desc->irq_data);
+-
+-		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
+-			chip->irq_disable(&desc->irq_data);
+-	}
+-}
+-
+ void machine_crash_shutdown(struct pt_regs *regs)
+ {
+ 	local_irq_disable();
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 0e2902f38e70e..f487c5e21e2f1 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -146,6 +146,7 @@ config ARM64
+ 	select GENERIC_IDLE_POLL_SETUP
+ 	select GENERIC_IOREMAP
+ 	select GENERIC_IRQ_IPI
++	select GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
+ 	select GENERIC_IRQ_PROBE
+ 	select GENERIC_IRQ_SHOW
+ 	select GENERIC_IRQ_SHOW_LEVEL
+diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
+index 82e2203d86a31..6f121a0164a48 100644
+--- a/arch/arm64/kernel/machine_kexec.c
++++ b/arch/arm64/kernel/machine_kexec.c
+@@ -207,37 +207,6 @@ void machine_kexec(struct kimage *kimage)
+ 	BUG(); /* Should never get here. */
+ }
+ 
+-static void machine_kexec_mask_interrupts(void)
+-{
+-	unsigned int i;
+-	struct irq_desc *desc;
+-
+-	for_each_irq_desc(i, desc) {
+-		struct irq_chip *chip;
+-		int ret;
+-
+-		chip = irq_desc_get_chip(desc);
+-		if (!chip)
+-			continue;
+-
+-		/*
+-		 * First try to remove the active state. If this
+-		 * fails, try to EOI the interrupt.
+-		 */
+-		ret = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
+-
+-		if (ret && irqd_irq_inprogress(&desc->irq_data) &&
+-		    chip->irq_eoi)
+-			chip->irq_eoi(&desc->irq_data);
+-
+-		if (chip->irq_mask)
+-			chip->irq_mask(&desc->irq_data);
+-
+-		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
+-			chip->irq_disable(&desc->irq_data);
+-	}
+-}
+-
+ /**
+  * machine_crash_shutdown - shutdown non-crashing cpus and save registers
+  */
+diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+index 270ee93a0f7d8..601e569303e1b 100644
+--- a/arch/powerpc/include/asm/kexec.h
++++ b/arch/powerpc/include/asm/kexec.h
+@@ -61,7 +61,6 @@ struct pt_regs;
+ extern void kexec_smp_wait(void);	/* get and clear naca physid, wait for
+ 					  master to copy new code to 0 */
+ extern void default_machine_kexec(struct kimage *image);
+-extern void machine_kexec_mask_interrupts(void);
+ 
+ void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_code_buffer,
+ 			 unsigned long start_address) __noreturn;
+diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+index b8333a49ea5da..58a930a47422b 100644
+--- a/arch/powerpc/kexec/core.c
++++ b/arch/powerpc/kexec/core.c
+@@ -22,28 +22,6 @@
+ #include <asm/setup.h>
+ #include <asm/firmware.h>
+ 
+-void machine_kexec_mask_interrupts(void) {
+-	unsigned int i;
+-	struct irq_desc *desc;
+-
+-	for_each_irq_desc(i, desc) {
+-		struct irq_chip *chip;
+-
+-		chip = irq_desc_get_chip(desc);
+-		if (!chip)
+-			continue;
+-
+-		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
+-			chip->irq_eoi(&desc->irq_data);
+-
+-		if (chip->irq_mask)
+-			chip->irq_mask(&desc->irq_data);
+-
+-		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
+-			chip->irq_disable(&desc->irq_data);
+-	}
+-}
+-
+ #ifdef CONFIG_CRASH_DUMP
+ void machine_crash_shutdown(struct pt_regs *regs)
+ {
+diff --git a/arch/powerpc/kexec/core_32.c b/arch/powerpc/kexec/core_32.c
+index c95f96850c9e1..deb28eb44f30f 100644
+--- a/arch/powerpc/kexec/core_32.c
++++ b/arch/powerpc/kexec/core_32.c
+@@ -7,6 +7,7 @@
+  * Copyright (C) 2005 IBM Corporation.
+  */
+ 
++#include <linux/irq.h>
+ #include <linux/kexec.h>
+ #include <linux/mm.h>
+ #include <linux/string.h>
+diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machine_kexec.c
+index 3c830a6f7ef46..2306ce3e5f229 100644
+--- a/arch/riscv/kernel/machine_kexec.c
++++ b/arch/riscv/kernel/machine_kexec.c
+@@ -114,29 +114,6 @@ void machine_shutdown(void)
+ #endif
+ }
+ 
+-static void machine_kexec_mask_interrupts(void)
+-{
+-	unsigned int i;
+-	struct irq_desc *desc;
+-
+-	for_each_irq_desc(i, desc) {
+-		struct irq_chip *chip;
+-
+-		chip = irq_desc_get_chip(desc);
+-		if (!chip)
+-			continue;
+-
+-		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
+-			chip->irq_eoi(&desc->irq_data);
+-
+-		if (chip->irq_mask)
+-			chip->irq_mask(&desc->irq_data);
+-
+-		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
+-			chip->irq_disable(&desc->irq_data);
+-	}
+-}
+-
+ /*
+  * machine_crash_shutdown - Prepare to kexec after a kernel crash
+  *
+diff --git a/include/linux/irq.h b/include/linux/irq.h
+index fa711f80957b6..25f51bf3c351f 100644
+--- a/include/linux/irq.h
++++ b/include/linux/irq.h
+@@ -694,6 +694,9 @@ extern int irq_chip_request_resources_parent(struct irq_data *data);
+ extern void irq_chip_release_resources_parent(struct irq_data *data);
+ #endif
+ 
++/* Disable or mask interrupts during a kernel kexec */
++extern void machine_kexec_mask_interrupts(void);
++
+ /* Handling of unhandled and spurious interrupts: */
+ extern void note_interrupt(struct irq_desc *desc, irqreturn_t action_ret);
+ 
+diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
+index 529adb1f58593..875f25ed6f710 100644
+--- a/kernel/irq/Kconfig
++++ b/kernel/irq/Kconfig
+@@ -141,6 +141,12 @@ config GENERIC_IRQ_DEBUGFS
+ 
+ 	  If you don't know what to do here, say N.
+ 
++# Clear forwarded VM interrupts during kexec.
++# This option ensures the kernel clears active states for interrupts
++# forwarded to virtual machines (VMs) during a machine kexec.
++config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
++	bool
++
+ endmenu
+ 
+ config GENERIC_IRQ_MULTI_HANDLER
+diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
+index f19d3080bf11a..c0f44c06d69df 100644
+--- a/kernel/irq/Makefile
++++ b/kernel/irq/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-obj-y := irqdesc.o handle.o manage.o spurious.o resend.o chip.o dummychip.o devres.o
++obj-y := irqdesc.o handle.o manage.o spurious.o resend.o chip.o dummychip.o devres.o kexec.o
+ obj-$(CONFIG_IRQ_TIMINGS) += timings.o
+ ifeq ($(CONFIG_TEST_IRQ_TIMINGS),y)
+ 	CFLAGS_timings.o += -DDEBUG
+diff --git a/kernel/irq/kexec.c b/kernel/irq/kexec.c
+new file mode 100644
+index 0000000000000..0f9548c1708dd
+--- /dev/null
++++ b/kernel/irq/kexec.c
+@@ -0,0 +1,40 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/irqdesc.h>
++#include <linux/irqnr.h>
++
++#include "internals.h"
++
++void machine_kexec_mask_interrupts(void)
++{
++	struct irq_desc *desc;
++	unsigned int i;
++
++	for_each_irq_desc(i, desc) {
++		struct irq_chip *chip;
++		int check_eoi = 1;
++
++		chip = irq_desc_get_chip(desc);
++		if (!chip)
++			continue;
++
++		if (IS_ENABLED(CONFIG_GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD)) {
++			/*
++			 * First try to remove the active state from an interrupt which is forwarded
++			 * to a VM. If the interrupt is not forwarded, try to EOI the interrupt.
++			 */
++			check_eoi = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
++		}
++
++		if (check_eoi && chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
++			chip->irq_eoi(&desc->irq_data);
++
++		if (chip->irq_mask)
++			chip->irq_mask(&desc->irq_data);
++
++		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
++			chip->irq_disable(&desc->irq_data);
++	}
++}
 -- 
 2.51.0
 
