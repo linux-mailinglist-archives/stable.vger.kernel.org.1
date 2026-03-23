@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229631-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aBvCAO5ZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:10 +0100
+	id qH1rHhh8wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229631-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 812A42F622D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BEC2FA573
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F01AD321745B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CAE13064655
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10125524C;
-	Mon, 23 Mar 2026 15:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7068C3BB9E3;
+	Mon, 23 Mar 2026 16:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R75r8oum"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zONMnbpj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6B125393B;
-	Mon, 23 Mar 2026 15:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B8327B340;
+	Mon, 23 Mar 2026 16:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278168; cv=none; b=PmhfZHpilcdlRRCWSM2KugDuHUQyfYbZb0FeuBvcVCqeo7CFaozrec7QGiOqyTCild6uB2WX0pHHwro+6wanqIKMSdwApH8lpNTq8bSMa0F6BJPa3mFRJxKrXCD/sW2aLCMVJGtiWc0X/EGkP4Y8jDfL2264huMH009hhWEH26c=
+	t=1774282445; cv=none; b=Je8f7I5enZjFzhbGrh4wkaPvP2VT4j4PsA3hzaN+LrpGeV3fMdWApGUBSgy9tbGqG8gR94Cjfb8A8TvcQL1UQSfBVpt0ANh1j/VaGttqE9CmPAZ7nbXwhWC9I+Mi/Fn3dR6QmSt1vBb67BI+yr/KJtnxD3Q0sph906YHCslRQBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278168; c=relaxed/simple;
-	bh=B6/zT3lc39Vydu7N5qrRISpji3Y1mWuK/O4vVuayAX8=;
+	s=arc-20240116; t=1774282445; c=relaxed/simple;
+	bh=fXkXL0g83ZznkRuookI7oMd6WuWTNtb/pcI+nXB0DMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1SO3jHUuQRcpeVJtnHmVsz1KbIU7D4YnDgFlrPUF6t6ZkVedNyP6QRU/I73muJADfFs5BqUpNFZfn/flPA0DuB7uzpQahi7YTWZC37Wk73YLr4At0fUaclYhQx+NtVQxxiZbGt8WY8qZQhpDnrAvMJDRX99jbpyBQY4UPYxbS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R75r8oum; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BB2C4CEF7;
-	Mon, 23 Mar 2026 15:02:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NvBkXyo8TryPdJB5hHbTdn9BQ3gVmw041EnyGIjle80x1ytNvkL9mvIAGkhfmGDy/krc4mE2frOTeiFg8Y7ZF9UwOgRGh7Zy4r/JOKo24N2kBK+iz+WG+jdo0AtKQUl4u6hgTQ70Gz5/XdGXq3p0FkdZuEaBc6j979ygMm7KFpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zONMnbpj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB69CC4CEF7;
+	Mon, 23 Mar 2026 16:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278168;
-	bh=B6/zT3lc39Vydu7N5qrRISpji3Y1mWuK/O4vVuayAX8=;
+	s=korg; t=1774282445;
+	bh=fXkXL0g83ZznkRuookI7oMd6WuWTNtb/pcI+nXB0DMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R75r8oumfuL4wT5zf6I2/9bGcgb2QZaMyeYm0wuTo8lmK/ycwxVdf1ZfSj+fJe51T
-	 A1q6pQ+DSO4luLPqO3YnJiDXlVf1d6JpxEU9gqiuG4yQWKqbEq1uyB22bp0npWVUGX
-	 Y/SA1xaPUP15VPKjaRnlDK+6wHOEh/PyDYkXqX+c=
+	b=zONMnbpjqv0M6DMvhlkJk+xKbs8OBa9kNBM3e3Kd/uMzy0ukXQtrFgr1UdOLv4y7d
+	 JaPe6xndunf66J4uQ7gt51gs+6ipd5gqBbX13C99QoPlqr2YufIKNuR1f/p0tjNBBe
+	 g/hMfk+ELb6MaDiCgOb6iY+rAUnKrSHhG3+Aj7mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Jurgens <danielj@nvidia.com>,
-	William Tu <witu@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	"=?UTF-8?q?J . =20Neusch=C3=A4fer?=" <j.ne@posteo.net>,
+	Heiko Schocher <hs@nabladev.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 221/567] net/mlx5: IFC updates for disabled host PF
+Subject: [PATCH 6.1 159/481] powerpc: 83xx: km83xx: Fix keymile vendor prefix
 Date: Mon, 23 Mar 2026 14:42:21 +0100
-Message-ID: <20260323134539.297183689@linuxfoundation.org>
+Message-ID: <20260323134529.109651715@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +64,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-229631-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229134-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 812A42F622D
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: D6BEC2FA573
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Jurgens <danielj@nvidia.com>
+From: J. Neuschäfer <j.ne@posteo.net>
 
-[ Upstream commit cd1746cb6555a2238c4aae9f9d60b637a61bf177 ]
+[ Upstream commit 691417ffe7821721e0a28bd25ad8c0dc0d4ae4ad ]
 
-The port 2 host PF can be disabled, this bit reflects that setting.
+When kmeter.c was refactored into km83xx.c in 2011, the "keymile" vendor
+prefix was changed to upper-case "Keymile". The devicetree at
+arch/powerpc/boot/dts/kmeter1.dts never underwent the same change,
+suggesting that this was simply a mistake.
 
-Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
-Reviewed-by: William Tu <witu@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1752064867-16874-3-git-send-email-tariqt@nvidia.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: aed763abf0e9 ("net/mlx5: Fix deadlock between devlink lock and esw->wq")
+Fixes: 93e2b95c81042d ("powerpc/83xx: rename and update kmeter1")
+Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+Reviewed-by: Heiko Schocher <hs@nabladev.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20260303-keymile-v1-1-463a11e71702@posteo.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mlx5/mlx5_ifc.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/83xx/km83xx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 4913d364e9774..c59fd31719a13 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -11799,7 +11799,9 @@ struct mlx5_ifc_mtrc_ctrl_bits {
+diff --git a/arch/powerpc/platforms/83xx/km83xx.c b/arch/powerpc/platforms/83xx/km83xx.c
+index 907acdecc94af..25135a1518fc8 100644
+--- a/arch/powerpc/platforms/83xx/km83xx.c
++++ b/arch/powerpc/platforms/83xx/km83xx.c
+@@ -155,8 +155,8 @@ machine_device_initcall(mpc83xx_km, mpc83xx_declare_of_platform_devices);
  
- struct mlx5_ifc_host_params_context_bits {
- 	u8         host_number[0x8];
--	u8         reserved_at_8[0x7];
-+	u8         reserved_at_8[0x5];
-+	u8         host_pf_not_exist[0x1];
-+	u8         reserved_at_14[0x1];
- 	u8         host_pf_disabled[0x1];
- 	u8         host_num_of_vfs[0x10];
+ /* list of the supported boards */
+ static char *board[] __initdata = {
+-	"Keymile,KMETER1",
+-	"Keymile,kmpbec8321",
++	"keymile,KMETER1",
++	"keymile,kmpbec8321",
+ 	NULL
+ };
  
 -- 
 2.51.0
