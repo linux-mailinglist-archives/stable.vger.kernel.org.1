@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-228066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229791-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0ELTMuhHwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228066-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:16 +0100
+	id kIGOLaZtwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229791-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 916E42F3ACD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96FBD2F8A9A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 562E43068D31
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BD02231ABC38
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E56C3AD527;
-	Mon, 23 Mar 2026 13:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7F63B9D85;
+	Mon, 23 Mar 2026 16:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRgjq79e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgCoHFIa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317C63ACA62;
-	Mon, 23 Mar 2026 13:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26DC1DA0E1;
+	Mon, 23 Mar 2026 16:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274026; cv=none; b=ZRpGy6LVN9k3xIyFlVW6znYiE3de+LyeQ/lXLlkrHHIUPjalNgulzCdKaIsCZC/DDbv/jMjs2uIWdllKWh3PXsW38Y04BaR64zIm2dPWcPKZp66AXlDPFQzWMisvJ5AEvU1VRC7lEdHGgwyjk+odRhaLHQJ3njXpeOP0N9dGZU4=
+	t=1774282874; cv=none; b=oruzDznhE1wjXIpsAo5GihlZnBEJ8uOOstZ83BRACb31RsIh05ykjyVFgj62oEzPrQfRXYpRAzf4Sah65dKWjNW6HpRLHMG2ZtxHhLbnS+uwAi9D4f4K6EX1TZmPsWuoeCvQAB5HGfv1Mc+wKLRODb1xDVTXf7gg4PazWD67DD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274026; c=relaxed/simple;
-	bh=HR1YGV6wBB+f1ygl5bYYIQb7NI8ysrjmgQRsdDcCQaQ=;
+	s=arc-20240116; t=1774282874; c=relaxed/simple;
+	bh=bwInDV4d/4W+KDHk3ZHzY48MzAg08fvjIDq8BtycXjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYVc1n64IQighUXdqNvWoWKfAn3vkJrEL5uga/7xP4D3GmGl7K1hxpqEfDQb16LqFTLypVnFTI1cJAjvR7IvQ/GOQuMaj4f9oWZXyrfUcR7qrZo7FhL6RJ+CjLrvCw30WttmowsWn9EDH8QsEDOsk9PpJ4X3d/T3a0g0jvZA1bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRgjq79e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A849FC4CEF7;
-	Mon, 23 Mar 2026 13:53:45 +0000 (UTC)
+	 MIME-Version; b=nuMwnIQBygKu2OVpI0DRnd0qulAM5kWk6P2TTPsrfqMkcNg73DfA0p6z9/UD+nthcgW8nnln7o5tEUoK5Fk1huj8u7BtIKdRuuDu7xNscrpVfB2otkjdNU/usHUUb95PW2bwJGsQr0sRNxlLV1Liqb/cisDU/WDJsuEABIqSZjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgCoHFIa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAAEC4CEF7;
+	Mon, 23 Mar 2026 16:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274026;
-	bh=HR1YGV6wBB+f1ygl5bYYIQb7NI8ysrjmgQRsdDcCQaQ=;
+	s=korg; t=1774282874;
+	bh=bwInDV4d/4W+KDHk3ZHzY48MzAg08fvjIDq8BtycXjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRgjq79e/Lx2/ziDROx7TTWlMsnKa7S8lwvHF/qx9FLQKOLkO49rsxW3va/itJoX0
-	 tWNxsYDe2N6Vzl8wfTeZKpnAiaiA/GLmi4hIOTB3O0dqgiFVhtReuA8IKiRIbX6sN7
-	 qnIXqZBMNCvAYhAS0q9SH/sClC/Np1UkmVNEoYqk=
+	b=NgCoHFIaBIQYzGuXjul7EpOee3+XlMG3fOrq1f029jnNYHYvkzgaVnDSLX4Uw4m+D
+	 TVMZDtB7Xd2nlXKpQC7aPgoaYdyGFFTd3p9k1z5eXtJqlhOeu+ffu+SG2atAVUvowr
+	 ZtpvCe+x+glY/Paex0/M4Au2FcqlALaRaRvwur54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Tao Liu <ltao@redhat.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.19 086/220] drm/i915/dmc: Fix an unlikely NULL pointer deference at probe
+	Keenan Dong <keenanat2000@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 281/481] io_uring/kbuf: check if target buffer list is still legacy on recycle
 Date: Mon, 23 Mar 2026 14:44:23 +0100
-Message-ID: <20260323134507.311612426@linuxfoundation.org>
+Message-ID: <20260323134531.963769842@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,117 +65,78 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228066-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229791-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RSPAMD_EMAILBL_FAIL(0.00)[jani.nikula.intel.com:query timed out];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
-X-Rspamd-Queue-Id: 916E42F3ACD
+	RCPT_COUNT_FIVE(0.00)[5];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 96FBD2F8A9A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit ac57eb3b7d2ad649025b5a0fa207315f755ac4f6 upstream.
+Commit c2c185be5c85d37215397c8e8781abf0a69bec1f upstream.
 
-intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
-initialized, and dmc is thus NULL.
+There's a gap between when the buffer was grabbed and when it
+potentially gets recycled, where if the list is empty, someone could've
+upgraded it to a ring provided type. This can happen if the request
+is forced via io-wq. The legacy recycling is missing checking if the
+buffer_list still exists, and if it's of the correct type. Add those
+checks.
 
-That would be the case when the call path is
-intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
-gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
-intel_power_domains_init_hw() is called *before* intel_dmc_init().
-
-However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
-conditionally, depending on the current and target DC states. At probe,
-the target is disabled, but if DC6 is enabled, the function is called,
-and an oops follows. Apparently it's quite unlikely that DC6 is enabled
-at probe, as we haven't seen this failure mode before.
-
-It is also strange to have DC6 enabled at boot, since that would require
-the DMC firmware (loaded by BIOS); the BIOS loading the DMC firmware and
-the driver stopping / reprogramming the firmware is a poorly specified
-sequence and as such unlikely an intentional BIOS behaviour. It's more
-likely that BIOS is leaving an unintentionally enabled DC6 HW state
-behind (without actually loading the required DMC firmware for this).
-
-The tracking of the DC6 allowed counter only works if starting /
-stopping the counter depends on the _SW_ DC6 state vs. the current _HW_
-DC6 state (since stopping the counter requires the DC5 counter captured
-when the counter was started). Thus, using the HW DC6 state is incorrect
-and it also leads to the above oops. Fix both issues by using the SW DC6
-state for the tracking.
-
-This is v2 of the fix originally sent by Jani, updated based on the
-first Link: discussion below.
-
-Link: https://lore.kernel.org/all/3626411dc9e556452c432d0919821b76d9991217@intel.com
-Link: https://lore.kernel.org/all/20260228130946.50919-2-ltao@redhat.com
-Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Tao Liu <ltao@redhat.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Tested-by: Tao Liu <ltao@redhat.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patch.msgid.link/20260309164803.1918158-1-imre.deak@intel.com
-(cherry picked from commit 2344b93af8eb5da5d496b4e0529d35f0f559eaf0)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Fixes: c7fb19428d67 ("io_uring: add support for ring mapped supplied buffers")
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_power_well.c |    2 +-
- drivers/gpu/drm/i915/display/intel_dmc.c                |    3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ io_uring/kbuf.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-@@ -798,7 +798,7 @@ void gen9_set_dc_state(struct intel_disp
- 			power_domains->dc_state, val & mask);
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -69,9 +69,15 @@ void io_kbuf_recycle_legacy(struct io_ki
  
- 	enable_dc6 = state & DC_STATE_EN_UPTO_DC6;
--	dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
-+	dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
- 	if (!dc6_was_enabled && enable_dc6)
- 		intel_dmc_update_dc6_allowed_count(display, true);
+ 	buf = req->kbuf;
+ 	bl = io_buffer_get_list(ctx, buf->bgid);
+-	list_add(&buf->list, &bl->buf_list);
++	/*
++	 * If the buffer list was upgraded to a ring-based one, or removed,
++	 * while the request was in-flight in io-wq, drop it.
++	 */
++	if (bl && !bl->buf_nr_pages)
++		list_add(&buf->list, &bl->buf_list);
+ 	req->flags &= ~REQ_F_BUFFER_SELECTED;
+ 	req->buf_index = buf->bgid;
++	req->kbuf = NULL;
  
---- a/drivers/gpu/drm/i915/display/intel_dmc.c
-+++ b/drivers/gpu/drm/i915/display/intel_dmc.c
-@@ -1591,8 +1591,7 @@ static bool intel_dmc_get_dc6_allowed_co
- 		return false;
- 
- 	mutex_lock(&power_domains->lock);
--	dc6_enabled = intel_de_read(display, DC_STATE_EN) &
--		      DC_STATE_EN_UPTO_DC6;
-+	dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
- 	if (dc6_enabled)
- 		intel_dmc_update_dc6_allowed_count(display, false);
- 
+ 	io_ring_submit_unlock(ctx, issue_flags);
+ 	return;
 
 
 
