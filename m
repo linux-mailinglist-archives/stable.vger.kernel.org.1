@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228816-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eJVMAAR2wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229899-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:19:00 +0100
+	id kPoTEWJpwWmoSwQAu9opvQ
+	(envelope-from <stable+bounces-228816-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:25:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2BA32F9B8C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:18:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970DC2F80BC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:25:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DB3DE30C6788
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B93393222592
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4BC39A7EF;
-	Mon, 23 Mar 2026 16:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA7C1A5B84;
+	Mon, 23 Mar 2026 14:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TMnK0kxu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzBj2Z5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F90B283FC8;
-	Mon, 23 Mar 2026 16:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED4323AB9D;
+	Mon, 23 Mar 2026 14:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283162; cv=none; b=HPuWiAj8fw8p3nd2QdMM8JMyAiuM7l9VzMZryWPRZk/Hu6kHIXws/r5XiTsqcUF+hmEmm70SiXU8jlOxK99uvVXhbXub5u6ixqn5dae+q8dvtEYtBhB83eddnB/79G3fO8uXVL8ZPV56iwXY331L3SiZf2yqvJ3dzcfmA89tFVs=
+	t=1774277214; cv=none; b=kW3FiVyAAH8wTI0juK+Ct93uI3BQQxh/3AOn0eevkVySoHrLKhnwWI9L7wikIP5o+Vi8maLLDn7Rb8bDKOGgKJ8/5rAU2UkkxBhlMAWwnxvINySZFskhsoU0C1upn5rs1NV8Cjh65qSsbDhaw3NqMhKjAwvNdZkzw8uxbrr3TV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283162; c=relaxed/simple;
-	bh=C7ZrJCkPoWLBqGlQ588qIlV4+RBOUgml78Ah9J7ckJo=;
+	s=arc-20240116; t=1774277214; c=relaxed/simple;
+	bh=pYnlgfgrmqspE6eYJFps3cEJE2aN0zNFiNC4f8CpE6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLMAtMQ6hIyDj1DnsBeQk1dW72/pORks4DFyiXfMXwdLXB3wHN89Ukhdh75WMAWd5o8W8nI3doQSWZ5j1tUQraXm3IIqFzd/GcE+KqV+wBBBhP2P56ux7bGXV0uW8NQ+faICK2vDkD1fl5L02Rh8jf7M36oxhmERgjiqkV9xtSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TMnK0kxu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B37C4CEF7;
-	Mon, 23 Mar 2026 16:26:02 +0000 (UTC)
+	 MIME-Version; b=Twa8g5wwsMSTp8rXBZeLIK43/cXAPRGkwXNk5yoNJyMIju/mcrOkOM+mghAG4ttVM1RJ9QCqRcBECS+pQfX0SaSbEDr9CdXw5GvE4vwYa51ajp4q5GHYgog8qvMcpZcMCsbMCAzf3FuVtzUtxwZ0DvACpxOO0JwtsrC6nUxSfVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzBj2Z5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B83C4CEF7;
+	Mon, 23 Mar 2026 14:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283162;
-	bh=C7ZrJCkPoWLBqGlQ588qIlV4+RBOUgml78Ah9J7ckJo=;
+	s=korg; t=1774277213;
+	bh=pYnlgfgrmqspE6eYJFps3cEJE2aN0zNFiNC4f8CpE6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TMnK0kxuXPgoFcQKNuEiQLvqBdL+hq5ZkQDEiLPr3alJCbn7V86zFZqXqJ8dc3SuS
-	 SQgdsfpBTk0ZWAqQsPSoBwRd9n5PUvnrbVBjSRVCD7uhaAIjDn3I3bgnyJ2T8e94kk
-	 9zTNdmGOrqo7+Y16uOUD0V373Tk9GlU/6cRFc2A8=
+	b=SzBj2Z5uinqzetvJMBu0Swgkc//iO1sp8SC771+gwygw6FwWZVv0h3OsRAY9vQxbb
+	 izZIfMy80DOZii1g+2QjGmziHHqFk1hXjvyZwX5PSYqvvYMgq5qXfp74eR2Id5ZGrp
+	 PpW+Zusj6Sdq/IiUJj+W+PnRjdGyobooJRs+MFJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.1 371/481] net: dsa: improve shutdown sequence
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 357/460] drm/amdgpu/mmhub4.1.0: add bounds checking for cid
 Date: Mon, 23 Mar 2026 14:45:53 +0100
-Message-ID: <20260323134534.172666584@linuxfoundation.org>
+Message-ID: <20260323134535.326775043@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,151 +67,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229899-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,siemens.com,nxp.com,redhat.com,139.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.939];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228816-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F2BA32F9B8C
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.993];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 970DC2F80BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 6c24a03a61a245fe34d47582898331fa034b6ccd ]
+commit 3cdd405831d8cc50a5eae086403402697bb98a4a upstream.
 
-Alexander Sverdlin presents 2 problems during shutdown with the
-lan9303 driver. One is specific to lan9303 and the other just happens
-to reproduce there.
+The value should never exceed the array size as those
+are the only values the hardware is expected to return,
+but add checks anyway.
 
-The first problem is that lan9303 is unique among DSA drivers in that it
-calls dev_get_drvdata() at "arbitrary runtime" (not probe, not shutdown,
-not remove):
-
-phy_state_machine()
--> ...
-   -> dsa_user_phy_read()
-      -> ds->ops->phy_read()
-         -> lan9303_phy_read()
-            -> chip->ops->phy_read()
-               -> lan9303_mdio_phy_read()
-                  -> dev_get_drvdata()
-
-But we never stop the phy_state_machine(), so it may continue to run
-after dsa_switch_shutdown(). Our common pattern in all DSA drivers is
-to set drvdata to NULL to suppress the remove() method that may come
-afterwards. But in this case it will result in an NPD.
-
-The second problem is that the way in which we set
-dp->master->dsa_ptr = NULL; is concurrent with receive packet
-processing. dsa_switch_rcv() checks once whether dev->dsa_ptr is NULL,
-but afterwards, rather than continuing to use that non-NULL value,
-dev->dsa_ptr is dereferenced again and again without NULL checks:
-dsa_master_find_slave() and many other places. In between dereferences,
-there is no locking to ensure that what was valid once continues to be
-valid.
-
-Both problems have the common aspect that closing the master interface
-solves them.
-
-In the first case, dev_close(master) triggers the NETDEV_GOING_DOWN
-event in dsa_slave_netdevice_event() which closes slave ports as well.
-dsa_port_disable_rt() calls phylink_stop(), which synchronously stops
-the phylink state machine, and ds->ops->phy_read() will thus no longer
-call into the driver after this point.
-
-In the second case, dev_close(master) should do this, as per
-Documentation/networking/driver.rst:
-
-| Quiescence
-| ----------
-|
-| After the ndo_stop routine has been called, the hardware must
-| not receive or transmit any data.  All in flight packets must
-| be aborted. If necessary, poll or wait for completion of
-| any reset commands.
-
-So it should be sufficient to ensure that later, when we zeroize
-master->dsa_ptr, there will be no concurrent dsa_switch_rcv() call
-on this master.
-
-The addition of the netif_device_detach() function is to ensure that
-ioctls, rtnetlinks and ethtool requests on the slave ports no longer
-propagate down to the driver - we're no longer prepared to handle them.
-
-The race condition actually did not exist when commit 0650bf52b31f
-("net: dsa: be compatible with masters which unregister on shutdown")
-first introduced dsa_switch_shutdown(). It was created later, when we
-stopped unregistering the slave interfaces from a bad spot, and we just
-replaced that sequence with a racy zeroization of master->dsa_ptr
-(one which doesn't ensure that the interfaces aren't up).
-
-Reported-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Closes: https://lore.kernel.org/netdev/2d2e3bba17203c14a5ffdabc174e3b6bbb9ad438.camel@siemens.com/
-Closes: https://lore.kernel.org/netdev/c1bf4de54e829111e0e4a70e7bd1cf523c9550ff.camel@siemens.com/
-Fixes: ee534378f005 ("net: dsa: fix panic when DSA master device unbinds on shutdown")
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20240913203549.3081071-1-vladimir.oltean@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Modification: dsa.c -> dsa2.c to line up the source path in kernel 6.1
-Using dp->master and dp->slave instead of dp->conduit and dp->user ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 04f063d85090f5dd0c671010ce88ee49d9dcc8ed)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/dsa2.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/dsa/dsa2.c
-+++ b/net/dsa/dsa2.c
-@@ -1829,6 +1829,7 @@ EXPORT_SYMBOL_GPL(dsa_unregister_switch)
- void dsa_switch_shutdown(struct dsa_switch *ds)
- {
- 	struct net_device *master, *slave_dev;
-+	LIST_HEAD(close_list);
- 	struct dsa_port *dp;
- 
- 	mutex_lock(&dsa2_mutex);
-@@ -1838,10 +1839,16 @@ void dsa_switch_shutdown(struct dsa_swit
- 
- 	rtnl_lock();
- 
-+	dsa_switch_for_each_cpu_port(dp, ds)
-+		list_add(&dp->master->close_list, &close_list);
-+
-+	dev_close_many(&close_list, true);
-+
- 	dsa_switch_for_each_user_port(dp, ds) {
- 		master = dsa_port_to_master(dp);
- 		slave_dev = dp->slave;
- 
-+		netif_device_detach(slave_dev);
- 		netdev_upper_dev_unlink(master, slave_dev);
- 	}
- 
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v4_1_0.c
+@@ -102,7 +102,8 @@ mmhub_v4_1_0_print_l2_protection_fault_s
+ 		status);
+ 	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
+ 	case IP_VERSION(4, 1, 0):
+-		mmhub_cid = mmhub_client_ids_v4_1_0[cid][rw];
++		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v4_1_0) ?
++			mmhub_client_ids_v4_1_0[cid][rw] : NULL;
+ 		break;
+ 	default:
+ 		mmhub_cid = NULL;
 
 
 
