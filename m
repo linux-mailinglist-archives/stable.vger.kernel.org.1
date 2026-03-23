@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228493-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AO5VBzxwwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229568-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:20 +0100
+	id IERPAaxTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228493-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959902F90D8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CF6B2F5568
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B51E7319272B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1458432AAEE0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C6023B9DAC;
-	Mon, 23 Mar 2026 16:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCC153AE706;
+	Mon, 23 Mar 2026 14:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ixypm6Vm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k16mfJjX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F023B2FF5;
-	Mon, 23 Mar 2026 16:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983903AE1A6;
+	Mon, 23 Mar 2026 14:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282273; cv=none; b=bMIrDsjtU0D4InHxOBw76vKEs0/mieI4JqzZx5jrk+2Ckt3Hlqf7KNdbknVaQ1JWYp9If0OX1lhUZ5PsE42RCyDQLR07CGYm7Z5UBOwC8ueWa7GXo7mUJ6a2LfrdkHybVQBebDCuk/riWI7gJsngPQn/4+7jsZMUpUloPnOcdlk=
+	t=1774275278; cv=none; b=f8Gug9pvwhesWmgL/d15qjkK9/eMupbbXNIgPR3GVi9mz9R8/GjldH7wY/EzdZYzyxS/IshSveJ5yWg/3INGRl3tAhoUQdTvCFOOoe61ntPIIjPO/n9qz7SN6izPa5ZBVUmoGsAZjuIaEmS0wUqhfJvb8gV/mdbAmWC14K/Dv7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282273; c=relaxed/simple;
-	bh=wl18seA7KJkLgAqQqEuMJYbSAHhiP8xzCRcpOn/Yg1U=;
+	s=arc-20240116; t=1774275278; c=relaxed/simple;
+	bh=+c7DR6ioV2QE/cMTTN6c42X453GKhNDPOxF1/OtLops=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfeNGuYq0wo3XOCDWfj7KLW7ljNiaHScylwegN0ybPcga8nDgisxImcQZZdeRBFfCHbkrUgjMhbtYW4Ho8PIMETNIG2r5f+kb2kHIW6PQ+a8OUEjbpDYiJDRHbfqD0umyEewrlKCcTl3pDGYF2T2Lcp2gldHkCRSJwfs/BVbRrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ixypm6Vm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69695C4CEF7;
-	Mon, 23 Mar 2026 16:11:12 +0000 (UTC)
+	 MIME-Version; b=reZasxhhjLxBBqbV9MXKeg5Qk273oqUL2od1VHLGgAKkCslZaNyLx7mNrxfv2Z5EdExRPckLjNFo+FmQ2eR/NjaXaxjFefUeyltLcwajYMAR7pw4bsXBkn555+lA3SF0B0mi9RE2tOhrB1yv4xcHrUNBlvPDRknOQLPr8RGRVjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k16mfJjX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A227C4CEF7;
+	Mon, 23 Mar 2026 14:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282272;
-	bh=wl18seA7KJkLgAqQqEuMJYbSAHhiP8xzCRcpOn/Yg1U=;
+	s=korg; t=1774275278;
+	bh=+c7DR6ioV2QE/cMTTN6c42X453GKhNDPOxF1/OtLops=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ixypm6VmZNsVmiSyy272dWtWT96WugeCpvsBWeST1YP19wa3PNRExzTrJ/mCRIaWB
-	 JZ7fk48fI57s/lntrThutIbhBatoE8hMt+ypAMqxXjhLbBY2SR+bNF9H7VUvvz+CBG
-	 /7tynffIdAvLr6NZNl8GHAL4aYAuD/k5NnJEgxY0=
+	b=k16mfJjXlcyy4BCVXO+IuHTjJd1HLahVYgWSipMgUdrlQJtlw6KiLA+hIFMCxBPP8
+	 85tdkbkuKeHy69Izj7dPCKx0WqSDMs93xF6Azyz0BjuFlnm3DJZcKdCeVeT1YCepnj
+	 cu9pfze9ngdTBBdypAHEJLYRtJC3DljAmJTf6dyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Theodore Tso <tytso@mit.edu>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/481] ext4: convert bd_buddy_page to bd_buddy_folio
+Subject: [PATCH 6.12 038/460] net/mlx5: Fix crash when moving to switchdev mode
 Date: Mon, 23 Mar 2026 14:40:34 +0100
-Message-ID: <20260323134526.494697737@linuxfoundation.org>
+Message-ID: <20260323134527.643824277@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,302 +68,178 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229568-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228493-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 959902F90D8
+X-Rspamd-Queue-Id: 6CF6B2F5568
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 5eea586b47f05b5f5518cf8f9dd9283a01a8066d ]
+[ Upstream commit 24b2795f9683e092dc22a68f487e7aaaf2ddafea ]
 
-There is no need to make this a multi-page folio, so leave all the
-infrastructure around it in pages.  But since we're locking it, playing
-with its refcount and checking whether it's uptodate, it needs to move
-to the folio API.
+When moving to switchdev mode when the device doesn't support IPsec,
+we try to clean up the IPsec resources anyway which causes the crash
+below, fix that by correctly checking for IPsec support before trying
+to clean up its resources.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20240416172900.244637-3-willy@infradead.org
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: bdc56a9c46b2 ("ext4: fix e4b bitmap inconsistency reports")
+[27642.515799] WARNING: arch/x86/mm/fault.c:1276 at
+do_user_addr_fault+0x18a/0x680, CPU#4: devlink/6490
+[27642.517159] Modules linked in: xt_conntrack xt_MASQUERADE
+ip6table_nat ip6table_filter ip6_tables iptable_nat nf_nat xt_addrtype
+rpcsec_gss_krb5 auth_rpcgss oid_registry overlay mlx5_fwctl nfnetlink
+zram zsmalloc mlx5_ib fuse rpcrdma rdma_ucm ib_uverbs ib_iser libiscsi
+scsi_transport_iscsi ib_umad rdma_cm ib_ipoib iw_cm ib_cm mlx5_core
+ib_core
+[27642.521358] CPU: 4 UID: 0 PID: 6490 Comm: devlink Not tainted
+6.19.0-rc5_for_upstream_min_debug_2026_01_14_16_47 #1 NONE
+[27642.522923] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+[27642.524528] RIP: 0010:do_user_addr_fault+0x18a/0x680
+[27642.525362] Code: ff 0f 84 75 03 00 00 48 89 ee 4c 89 e7 e8 5e b9 22
+00 49 89 c0 48 85 c0 0f 84 a8 02 00 00 f7 c3 60 80 00 00 74 22 31 c9 eb
+   ae <0f> 0b 48 83 c4 10 48 89 ea 48 89 de 4c 89 f7 5b 5d 41 5c 41 5d
+41
+[27642.528166] RSP: 0018:ffff88810770f6b8 EFLAGS: 00010046
+[27642.529038] RAX: 0000000000000000 RBX: 0000000000000002 RCX:
+ffff88810b980f00
+[27642.530158] RDX: 00000000000000a0 RSI: 0000000000000002 RDI:
+ffff88810770f728
+[27642.531270] RBP: 00000000000000a0 R08: 0000000000000000 R09:
+0000000000000000
+[27642.532383] R10: 0000000000000000 R11: 0000000000000000 R12:
+ffff888103f3c4c0
+[27642.533499] R13: 0000000000000000 R14: ffff88810770f728 R15:
+0000000000000000
+[27642.534614] FS:  00007f197c741740(0000) GS:ffff88856a94c000(0000)
+knlGS:0000000000000000
+[27642.535915] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[27642.536858] CR2: 00000000000000a0 CR3: 000000011334c003 CR4:
+0000000000172eb0
+[27642.537982] Call Trace:
+[27642.538466]  <TASK>
+[27642.538907]  exc_page_fault+0x76/0x140
+[27642.539583]  asm_exc_page_fault+0x22/0x30
+[27642.540282] RIP: 0010:_raw_spin_lock_irqsave+0x10/0x30
+[27642.541134] Code: 07 85 c0 75 11 ba ff 00 00 00 f0 0f b1 17 75 06 b8
+01 00 00 00 c3 31 c0 c3 90 0f 1f 44 00 00 53 9c 5b fa 31 c0 ba 01 00 00
+   00 <f0> 0f b1 17 75 05 48 89 d8 5b c3 89 c6 e8 7e 02 00 00 48 89 d8
+      5b
+[27642.543936] RSP: 0018:ffff88810770f7d8 EFLAGS: 00010046
+[27642.544803] RAX: 0000000000000000 RBX: 0000000000000202 RCX:
+ffff888113ad96d8
+[27642.545916] RDX: 0000000000000001 RSI: ffff88810770f818 RDI:
+00000000000000a0
+[27642.547027] RBP: 0000000000000098 R08: 0000000000000400 R09:
+ffff88810b980f00
+[27642.548140] R10: 0000000000000001 R11: ffff888101845a80 R12:
+00000000000000a8
+[27642.549263] R13: ffffffffa02a9060 R14: 00000000000000a0 R15:
+ffff8881130d8a40
+[27642.550379]  complete_all+0x20/0x90
+[27642.551010]  mlx5e_ipsec_disable_events+0xb6/0xf0 [mlx5_core]
+[27642.552022]  mlx5e_nic_disable+0x12d/0x220 [mlx5_core]
+[27642.552929]  mlx5e_detach_netdev+0x66/0xf0 [mlx5_core]
+[27642.553822]  mlx5e_netdev_change_profile+0x5b/0x120 [mlx5_core]
+[27642.554821]  mlx5e_vport_rep_load+0x419/0x590 [mlx5_core]
+[27642.555757]  ? xa_load+0x53/0x90
+[27642.556361]  __esw_offloads_load_rep+0x54/0x70 [mlx5_core]
+[27642.557328]  mlx5_esw_offloads_rep_load+0x45/0xd0 [mlx5_core]
+[27642.558320]  esw_offloads_enable+0xb4b/0xc90 [mlx5_core]
+[27642.559247]  mlx5_eswitch_enable_locked+0x34e/0x4f0 [mlx5_core]
+[27642.560257]  ? mlx5_rescan_drivers_locked+0x222/0x2d0 [mlx5_core]
+[27642.561284]  mlx5_devlink_eswitch_mode_set+0x5ac/0x9c0 [mlx5_core]
+[27642.562334]  ? devlink_rate_set_ops_supported+0x21/0x3a0
+[27642.563220]  devlink_nl_eswitch_set_doit+0x67/0xe0
+[27642.564026]  genl_family_rcv_msg_doit+0xe0/0x130
+[27642.564816]  genl_rcv_msg+0x183/0x290
+[27642.565466]  ? __devlink_nl_pre_doit.isra.0+0x160/0x160
+[27642.566329]  ? devlink_nl_eswitch_get_doit+0x290/0x290
+[27642.567181]  ? devlink_nl_pre_doit_parent_dev_optional+0x20/0x20
+[27642.568147]  ? genl_family_rcv_msg_dumpit+0xf0/0xf0
+[27642.568966]  netlink_rcv_skb+0x4b/0xf0
+[27642.569629]  genl_rcv+0x24/0x40
+[27642.570215]  netlink_unicast+0x255/0x380
+[27642.570901]  ? __alloc_skb+0xfa/0x1e0
+[27642.571560]  netlink_sendmsg+0x1f3/0x420
+[27642.572249]  __sock_sendmsg+0x38/0x60
+[27642.572911]  __sys_sendto+0x119/0x180
+[27642.573561]  ? __sys_recvmsg+0x5c/0xb0
+[27642.574227]  __x64_sys_sendto+0x20/0x30
+[27642.574904]  do_syscall_64+0x55/0xc10
+[27642.575554]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[27642.576391] RIP: 0033:0x7f197c85e807
+[27642.577050] Code: c7 c0 ff ff ff ff eb be 66 2e 0f 1f 84 00 00 00 00
+00 90 f3 0f 1e fa 80 3d 45 08 0d 00 00 41 89 ca 74 10 b8 2c 00 00 00 0f
+   05 <48> 3d 00 f0 ff ff 77 69 c3 55 48 89 e5 53 48 83 ec 38 44 89 4d
+      d0
+[27642.579846] RSP: 002b:00007ffebd4e2248 EFLAGS: 00000202 ORIG_RAX:
+000000000000002c
+[27642.581082] RAX: ffffffffffffffda RBX: 000055cfcd9cd2a0 RCX:
+00007f197c85e807
+[27642.582200] RDX: 0000000000000038 RSI: 000055cfcd9cd490 RDI:
+0000000000000003
+[27642.583320] RBP: 00007ffebd4e2290 R08: 00007f197c942200 R09:
+000000000000000c
+[27642.584437] R10: 0000000000000000 R11: 0000000000000202 R12:
+0000000000000000
+[27642.585555] R13: 000055cfcd9cd490 R14: 00007ffebd4e45d1 R15:
+000055cfcd9cd2a0
+[27642.586671]  </TASK>
+[27642.587121] ---[ end trace 0000000000000000 ]---
+[27642.587910] BUG: kernel NULL pointer dereference, address:
+00000000000000a0
+
+Fixes: 664f76be38a1 ("net/mlx5: Fix IPsec cleanup over MPV device")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260305142634.1813208-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 91 +++++++++++++++++++++++------------------------
- fs/ext4/mballoc.h |  2 +-
- 2 files changed, 46 insertions(+), 47 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 083e4904ed679..19e5b57387d60 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -1336,7 +1336,7 @@ static int ext4_mb_init_cache(struct page *page, char *incore, gfp_t gfp)
-  * Lock the buddy and bitmap pages. This make sure other parallel init_group
-  * on the same buddy page doesn't happen whild holding the buddy page lock.
-  * Return locked buddy and bitmap pages on e4b struct. If buddy and bitmap
-- * are on the same page e4b->bd_buddy_page is NULL and return value is 0.
-+ * are on the same page e4b->bd_buddy_folio is NULL and return value is 0.
-  */
- static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
- 		ext4_group_t group, struct ext4_buddy *e4b, gfp_t gfp)
-@@ -1344,10 +1344,9 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
- 	struct inode *inode = EXT4_SB(sb)->s_buddy_cache;
- 	int block, pnum, poff;
- 	int blocks_per_page;
--	struct page *page;
- 	struct folio *folio;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index 831d4b17ad07a..c48eeb399a422 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -2449,7 +2449,7 @@ void mlx5e_ipsec_disable_events(struct mlx5e_priv *priv)
+ 		goto out;
  
--	e4b->bd_buddy_page = NULL;
-+	e4b->bd_buddy_folio = NULL;
- 	e4b->bd_bitmap_folio = NULL;
+ 	peer_priv = mlx5_devcom_get_next_peer_data(priv->devcom, &tmp);
+-	if (peer_priv)
++	if (peer_priv && peer_priv->ipsec)
+ 		complete_all(&peer_priv->ipsec->comp);
  
- 	blocks_per_page = PAGE_SIZE / sb->s_blocksize;
-@@ -1373,11 +1372,12 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
- 	}
- 
- 	/* blocks_per_page == 1, hence we need another page for the buddy */
--	page = find_or_create_page(inode->i_mapping, block + 1, gfp);
--	if (!page)
--		return -ENOMEM;
--	BUG_ON(page->mapping != inode->i_mapping);
--	e4b->bd_buddy_page = page;
-+	folio = __filemap_get_folio(inode->i_mapping, block + 1,
-+			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
-+	if (IS_ERR(folio))
-+		return PTR_ERR(folio);
-+	BUG_ON(folio->mapping != inode->i_mapping);
-+	e4b->bd_buddy_folio = folio;
- 	return 0;
- }
- 
-@@ -1387,9 +1387,9 @@ static void ext4_mb_put_buddy_page_lock(struct ext4_buddy *e4b)
- 		folio_unlock(e4b->bd_bitmap_folio);
- 		folio_put(e4b->bd_bitmap_folio);
- 	}
--	if (e4b->bd_buddy_page) {
--		unlock_page(e4b->bd_buddy_page);
--		put_page(e4b->bd_buddy_page);
-+	if (e4b->bd_buddy_folio) {
-+		folio_unlock(e4b->bd_buddy_folio);
-+		folio_put(e4b->bd_buddy_folio);
- 	}
- }
- 
-@@ -1404,7 +1404,6 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
- 
- 	struct ext4_group_info *this_grp;
- 	struct ext4_buddy e4b;
--	struct page *page;
- 	struct folio *folio;
- 	int ret = 0;
- 
-@@ -1441,7 +1440,7 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
- 		goto err;
- 	}
- 
--	if (e4b.bd_buddy_page == NULL) {
-+	if (e4b.bd_buddy_folio == NULL) {
- 		/*
- 		 * If both the bitmap and buddy are in
- 		 * the same page we don't need to force
-@@ -1451,11 +1450,11 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
- 		goto err;
- 	}
- 	/* init buddy cache */
--	page = e4b.bd_buddy_page;
--	ret = ext4_mb_init_cache(page, e4b.bd_bitmap, gfp);
-+	folio = e4b.bd_buddy_folio;
-+	ret = ext4_mb_init_cache(&folio->page, e4b.bd_bitmap, gfp);
- 	if (ret)
- 		goto err;
--	if (!PageUptodate(page)) {
-+	if (!folio_test_uptodate(folio)) {
- 		ret = -EIO;
- 		goto err;
- 	}
-@@ -1477,7 +1476,6 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	int block;
- 	int pnum;
- 	int poff;
--	struct page *page;
- 	struct folio *folio;
- 	int ret;
- 	struct ext4_group_info *grp;
-@@ -1496,7 +1494,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	e4b->bd_info = grp;
- 	e4b->bd_sb = sb;
- 	e4b->bd_group = group;
--	e4b->bd_buddy_page = NULL;
-+	e4b->bd_buddy_folio = NULL;
- 	e4b->bd_bitmap_folio = NULL;
- 
- 	if (unlikely(EXT4_MB_GRP_NEED_INIT(grp))) {
-@@ -1562,7 +1560,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 		goto err;
- 	}
- 
--	/* Pages marked accessed already */
-+	/* Folios marked accessed already */
- 	e4b->bd_bitmap_folio = folio;
- 	e4b->bd_bitmap = folio_address(folio) + (poff * sb->s_blocksize);
- 
-@@ -1570,48 +1568,49 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
- 	pnum = block / blocks_per_page;
- 	poff = block % blocks_per_page;
- 
--	page = find_get_page_flags(inode->i_mapping, pnum, FGP_ACCESSED);
--	if (page == NULL || !PageUptodate(page)) {
--		if (page)
--			put_page(page);
--		page = find_or_create_page(inode->i_mapping, pnum, gfp);
--		if (page) {
--			if (WARN_RATELIMIT(page->mapping != inode->i_mapping,
--	"ext4: buddy bitmap's page->mapping != inode->i_mapping\n")) {
-+	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
-+	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
-+		if (!IS_ERR(folio))
-+			folio_put(folio);
-+		folio = __filemap_get_folio(inode->i_mapping, pnum,
-+				FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
-+		if (!IS_ERR(folio)) {
-+			if (WARN_RATELIMIT(folio->mapping != inode->i_mapping,
-+	"ext4: buddy bitmap's mapping != inode->i_mapping\n")) {
- 				/* should never happen */
--				unlock_page(page);
-+				folio_unlock(folio);
- 				ret = -EINVAL;
- 				goto err;
- 			}
--			if (!PageUptodate(page)) {
--				ret = ext4_mb_init_cache(page, e4b->bd_bitmap,
-+			if (!folio_test_uptodate(folio)) {
-+				ret = ext4_mb_init_cache(&folio->page, e4b->bd_bitmap,
- 							 gfp);
- 				if (ret) {
--					unlock_page(page);
-+					folio_unlock(folio);
- 					goto err;
- 				}
- 			}
--			unlock_page(page);
-+			folio_unlock(folio);
- 		}
- 	}
--	if (page == NULL) {
--		ret = -ENOMEM;
-+	if (IS_ERR(folio)) {
-+		ret = PTR_ERR(folio);
- 		goto err;
- 	}
--	if (!PageUptodate(page)) {
-+	if (!folio_test_uptodate(folio)) {
- 		ret = -EIO;
- 		goto err;
- 	}
- 
--	/* Pages marked accessed already */
--	e4b->bd_buddy_page = page;
--	e4b->bd_buddy = page_address(page) + (poff * sb->s_blocksize);
-+	/* Folios marked accessed already */
-+	e4b->bd_buddy_folio = folio;
-+	e4b->bd_buddy = folio_address(folio) + (poff * sb->s_blocksize);
- 
- 	return 0;
- 
- err:
--	if (page)
--		put_page(page);
-+	if (folio)
-+		folio_put(folio);
- 	if (e4b->bd_bitmap_folio)
- 		folio_put(e4b->bd_bitmap_folio);
- 
-@@ -1630,8 +1629,8 @@ static void ext4_mb_unload_buddy(struct ext4_buddy *e4b)
- {
- 	if (e4b->bd_bitmap_folio)
- 		folio_put(e4b->bd_bitmap_folio);
--	if (e4b->bd_buddy_page)
--		put_page(e4b->bd_buddy_page);
-+	if (e4b->bd_buddy_folio)
-+		folio_put(e4b->bd_buddy_folio);
- }
- 
- 
-@@ -2056,7 +2055,7 @@ static void ext4_mb_use_best_found(struct ext4_allocation_context *ac,
- 	 */
- 	ac->ac_bitmap_page = &e4b->bd_bitmap_folio->page;
- 	get_page(ac->ac_bitmap_page);
--	ac->ac_buddy_page = e4b->bd_buddy_page;
-+	ac->ac_buddy_page = &e4b->bd_buddy_folio->page;
- 	get_page(ac->ac_buddy_page);
- 	/* store last allocated for subsequent stream allocation */
- 	if (ac->ac_flags & EXT4_MB_STREAM_ALLOC) {
-@@ -3718,7 +3717,7 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
- 		/* No more items in the per group rb tree
- 		 * balance refcounts from ext4_mb_free_metadata()
- 		 */
--		put_page(e4b.bd_buddy_page);
-+		folio_put(e4b.bd_buddy_folio);
- 		folio_put(e4b.bd_bitmap_folio);
- 	}
- 	ext4_unlock_group(sb, entry->efd_group);
-@@ -5893,7 +5892,7 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
- 
- 	BUG_ON(!ext4_handle_valid(handle));
- 	BUG_ON(e4b->bd_bitmap_folio == NULL);
--	BUG_ON(e4b->bd_buddy_page == NULL);
-+	BUG_ON(e4b->bd_buddy_folio == NULL);
- 
- 	new_node = &new_entry->efd_node;
- 	cluster = new_entry->efd_start_cluster;
-@@ -5904,7 +5903,7 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
- 		 * otherwise we'll refresh it from
- 		 * on-disk bitmap and lose not-yet-available
- 		 * blocks */
--		get_page(e4b->bd_buddy_page);
-+		folio_get(e4b->bd_buddy_folio);
- 		folio_get(e4b->bd_bitmap_folio);
- 	}
- 	while (*n) {
-diff --git a/fs/ext4/mballoc.h b/fs/ext4/mballoc.h
-index 24e7c7a04f674..fe4dbbbbe8725 100644
---- a/fs/ext4/mballoc.h
-+++ b/fs/ext4/mballoc.h
-@@ -201,7 +201,7 @@ struct ext4_allocation_context {
- #define AC_STATUS_BREAK		3
- 
- struct ext4_buddy {
--	struct page *bd_buddy_page;
-+	struct folio *bd_buddy_folio;
- 	void *bd_buddy;
- 	struct folio *bd_bitmap_folio;
- 	void *bd_bitmap;
+ 	mlx5_devcom_for_each_peer_end(priv->devcom);
 -- 
 2.51.0
 
