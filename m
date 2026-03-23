@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-228743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228266-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gLg3K7tTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228743-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:43 +0100
+	id oNpkAi9OwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228266-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA822F55A4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 804652F494D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5AE0C303E829
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D84023175202
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DC43AEF58;
-	Mon, 23 Mar 2026 14:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1103B388B;
+	Mon, 23 Mar 2026 14:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvFZe5Fi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUgOcgym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793BE387593;
-	Mon, 23 Mar 2026 14:43:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDEE3AEF5C;
+	Mon, 23 Mar 2026 14:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277003; cv=none; b=sEav317OxS4jiZJvIHrP9455XMXfpmtU5f0vm0n/9yjmiLTf8e76crsS2FE5C6uRD3mzJTGKaQgC14Ckg0hOU7qekeMWknomKweIHfFvPGEW8lDF2K2zF35iq3Jy4tlo6vcD70l+y0yT/QYKI2tM7K9dk8zhJrJNZ0oKeKzWM90=
+	t=1774274630; cv=none; b=Y3enebYKQDFe5myjUMRajUM+57h5FuKAhSBtlZ4+wECvScgOhs4HmROLDi2m1YA3kWjw3xvyvxa6EKB+jCtDX52HS156OKhU3kM2eASyn7qXcTxvT/wy4CasaSLWQGDWNpqtgnN8Dr/jizaYBKo1xVDmkQr/RtcsHR2jEs5R0Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277003; c=relaxed/simple;
-	bh=kqRPCrZ4nE6KG8qmahWuSNm1epCY76tDrPZmox8U0dY=;
+	s=arc-20240116; t=1774274630; c=relaxed/simple;
+	bh=sA6stgT5XinxbngCPZ33Zv3jBLyp2KyhPMmT6iJUjfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TUVLdjQ5dOmx5IFZa68ez3SQel7qVvFprAHIGnZ9cupM0zi9vtena4ITWU6tp4dnnf+SBPCsglnW3E2QY3lxVINp4RuRbWcZtHiAl9L6NYyfT6+qZxHRYs+X6aTSy5CbAb9ppLFHexmOsjKmKfiXCjIuHrSxec5s6jwAuIo8VGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvFZe5Fi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13946C4CEF7;
-	Mon, 23 Mar 2026 14:43:22 +0000 (UTC)
+	 MIME-Version; b=aKJFpX6RWOcmjryHBwR9G4TkeTCSIuQd+DctXN8t1DcdjsYjehk7R2kL7YyCNmFF57hxrA5zy5pbAF20fR7Npu7gZ9B5DzePIUl2IjwdEPM00Ieu6BetZYDPQ8UN3j+pvwkHrCjyQ4I3gqyEPvEO8WfWvfkMwJ9ocQF0PJp9de4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUgOcgym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D7AC4CEF7;
+	Mon, 23 Mar 2026 14:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277003;
-	bh=kqRPCrZ4nE6KG8qmahWuSNm1epCY76tDrPZmox8U0dY=;
+	s=korg; t=1774274630;
+	bh=sA6stgT5XinxbngCPZ33Zv3jBLyp2KyhPMmT6iJUjfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvFZe5FiMiiRQHFbj3LfcKhJbXW5DP319mlOR18s4nGU81CKyl/1ftKJ5TBxZs5sw
-	 9mR/FsavY/gjtL/1B1t0OYt2Hdti6bj8LOzfufnMqW/roQMl0+2roRH8kK2HtM0jSm
-	 fatJeLsKtndLlJZIv4D4kXV/r2eCrdd9NO/WK7Cs=
+	b=oUgOcgymxN+QxLwkl/aBw9icaDn0DhRHUcjPt02iPvo3uys4m/wBlaND99NxDu+vo
+	 2BV99j6aoJVni8L45qN1vYpJ1FOen9PDaq23T/Nhgk7BhtDB3JBaLPxqI6q8+RgLrt
+	 +eQ29Uw4+xxgY64GNOy44QQBBtCCxlFdt+m/0RmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Alva Lan <alvalan9@foxmail.com>
-Subject: [PATCH 6.12 283/460] platform/x86/amd/pmc: Add support for Van Gogh SoC
+	Olivier Sobrie <olivier@sobrie.be>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.18 058/212] mtd: rawnand: pl353: make sure optimal timings are applied
 Date: Mon, 23 Mar 2026 14:44:39 +0100
-Message-ID: <20260323134533.434177889@linuxfoundation.org>
+Message-ID: <20260323134505.606810808@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,antheas.dev,kernel.org,amd.com,linux.intel.com,foxmail.com];
-	TAGGED_FROM(0.00)[bounces-228743-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228266-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 5FA822F55A4
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 804652F494D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Olivier Sobrie <olivier@sobrie.be>
 
-[ Upstream commit db4a3f0fbedb0398f77b9047e8b8bb2b49f355bb ]
+commit b9465b04de4b90228de03db9a1e0d56b00814366 upstream.
 
-The ROG Xbox Ally (non-X) SoC features a similar architecture to the
-Steam Deck. While the Steam Deck supports S3 (s2idle causes a crash),
-this support was dropped by the Xbox Ally which only S0ix suspend.
+Timings of the nand are adjusted by pl35x_nfc_setup_interface() but
+actually applied by the pl35x_nand_select_target() function.
+If there is only one nand chip, the pl35x_nand_select_target() will only
+apply the timings once since the test at its beginning will always be true
+after the first call to this function. As a result, the hardware will
+keep using the default timings set at boot to detect the nand chip, not
+the optimal ones.
 
-Since the handler is missing here, this causes the device to not suspend
-and the AMD GPU driver to crash while trying to resume afterwards due to
-a power hang.
+With this patch, we program directly the new timings when
+pl35x_nfc_setup_interface() is called.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4659
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Reviewed-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://patch.msgid.link/20251024152152.3981721-2-lkml@antheas.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-[ Adjust context ]
-Signed-off-by: Alva Lan <alvalan9@foxmail.com>
+Fixes: 08d8c62164a3 ("mtd: rawnand: pl353: Add support for the ARM PL353 SMC NAND controller")
+Signed-off-by: Olivier Sobrie <olivier@sobrie.be>
+Cc: stable@vger.kernel.org
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc.c |    3 +++
- drivers/platform/x86/amd/pmc/pmc.h |    1 +
- 2 files changed, 4 insertions(+)
+ drivers/mtd/nand/raw/pl35x-nand-controller.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -347,6 +347,7 @@ static void amd_pmc_get_ip_info(struct a
- 	switch (dev->cpu_id) {
- 	case AMD_CPU_ID_PCO:
- 	case AMD_CPU_ID_RN:
-+	case AMD_CPU_ID_VG:
- 	case AMD_CPU_ID_YC:
- 	case AMD_CPU_ID_CB:
- 		dev->num_ips = 12;
-@@ -765,6 +766,7 @@ static int amd_pmc_get_os_hint(struct am
- 	case AMD_CPU_ID_PCO:
- 		return MSG_OS_HINT_PCO;
- 	case AMD_CPU_ID_RN:
-+	case AMD_CPU_ID_VG:
- 	case AMD_CPU_ID_YC:
- 	case AMD_CPU_ID_CB:
- 	case AMD_CPU_ID_PS:
-@@ -977,6 +979,7 @@ static const struct pci_device_id pmc_pc
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_PCO) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_RV) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_SP) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, AMD_CPU_ID_VG) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M20H_ROOT) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMD, PCI_DEVICE_ID_AMD_1AH_M60H_ROOT) },
- 	{ }
---- a/drivers/platform/x86/amd/pmc/pmc.h
-+++ b/drivers/platform/x86/amd/pmc/pmc.h
-@@ -62,6 +62,7 @@ void amd_mp2_stb_deinit(struct amd_pmc_d
- #define AMD_CPU_ID_RN			0x1630
- #define AMD_CPU_ID_PCO			AMD_CPU_ID_RV
- #define AMD_CPU_ID_CZN			AMD_CPU_ID_RN
-+#define AMD_CPU_ID_VG			0x1645
- #define AMD_CPU_ID_YC			0x14B5
- #define AMD_CPU_ID_CB			0x14D8
- #define AMD_CPU_ID_PS			0x14E8
+--- a/drivers/mtd/nand/raw/pl35x-nand-controller.c
++++ b/drivers/mtd/nand/raw/pl35x-nand-controller.c
+@@ -862,6 +862,9 @@ static int pl35x_nfc_setup_interface(str
+ 			  PL35X_SMC_NAND_TAR_CYCLES(tmgs.t_ar) |
+ 			  PL35X_SMC_NAND_TRR_CYCLES(tmgs.t_rr);
+ 
++	writel(plnand->timings, nfc->conf_regs + PL35X_SMC_CYCLES);
++	pl35x_smc_update_regs(nfc);
++
+ 	return 0;
+ }
+ 
 
 
 
