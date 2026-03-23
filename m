@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229100-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKBLO4xywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229559-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:12 +0100
+	id wAJwHdFWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229100-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 077702F95FB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1596C2F5C44
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 565023052D08
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 171D9303A487
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0003AEF5C;
-	Mon, 23 Mar 2026 16:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B5923BD1D;
+	Mon, 23 Mar 2026 15:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4TNx+Q6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVbkmdfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDEC284881;
-	Mon, 23 Mar 2026 16:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8DC1A6822;
+	Mon, 23 Mar 2026 15:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282248; cv=none; b=Op0h4yQupUM59TOCbkteg6hFQSkvHA1y7h3m2o+b/KMY+5YsH2PpYkBVEbhx1hCeaRz2dC0v1LTofvOsz1ZOuSFEzLlE/9qvoIGoaAQ1oXLZ8tBIncAZ6MmwCR7S0//4jAVSb4T/3h8nmoclBwFIXoOYOo46F+mRVhzWNmpA2F0=
+	t=1774278060; cv=none; b=ThIsKqDZP2bstJCbTtWKUzI7/MigoCDtFTVI+tw0/yT44BGOIcOVay3KVqgIQ1cB07rXP9LfddVH1jjy3Dyr2YHnIIRrRidGkDtr16vBC69j+lJoAojpkzJKMSVZqdKTVidVVqppuaSatABG92XkMeKRTQ268Ih62ol+d7pWeuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282248; c=relaxed/simple;
-	bh=Z+3dPlPLWoeJUjC/a+1sfoSMbvF8PhpY+h4dep+sGk8=;
+	s=arc-20240116; t=1774278060; c=relaxed/simple;
+	bh=tQGnBmDSCGxkSKEVyiifJfJrZQagBPNq2lScJIvzOl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pWRcK+u0LyLHyFeQ2dEnrAv4BAgRoPJQN67xYtHsA+W6Ce8K6wamOh78vCJazq+ZwZt8ZuYHUuEH9whTbLnZ3drE59MyCPUjmdiZUacbliHYrqLl6nPH1Tgauuaw+L7/Bm/6PgrFCLp1/R2xDDyMwgOy4E6GSgLtRMnAY5ej5TY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4TNx+Q6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD293C4CEF7;
-	Mon, 23 Mar 2026 16:10:47 +0000 (UTC)
+	 MIME-Version; b=k+vvd1oqM5VjMNPABcamgpEKX1RLAITctzImMkBTYHYX6W4oKRntNmaMBai7W2YGSw7GLGN9GvNuBRFiL2RiK5BjCFR9dUClbEz1o0useTS9jouGhzF3HIDDs/vl3ZxqyThseR+jC/Gv+zzBCfJ2x3LKgrLKTfaMNyF7tjJft6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVbkmdfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CBF8C4CEF7;
+	Mon, 23 Mar 2026 15:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282248;
-	bh=Z+3dPlPLWoeJUjC/a+1sfoSMbvF8PhpY+h4dep+sGk8=;
+	s=korg; t=1774278059;
+	bh=tQGnBmDSCGxkSKEVyiifJfJrZQagBPNq2lScJIvzOl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4TNx+Q6d8MEy02EnI8MyGx+yjmiuueOOpgqOdFTPPzg0rBtO1C/zLkUZKCiPHEge
-	 osm1tsSPcG4tr0fC2Bo35LkpFVhcTIpCc9G7Z7LCEYkOJ6Sp1UXyys9gBIUpUWRyQ0
-	 9IXbNcQ3L31UpLqKiQ+8Uv++ZAaCXMd/NHE04pJ4=
+	b=wVbkmdfxqv/ETutstZnw3FUFfCnIPxAZj8YMAlz19+t5FBqRl1jNnGzkwC5ALEC6t
+	 CPLEeY3au7pMs6XDh3ohwPSlE+WT03ChSQbDVK6zl9LPC4NMXfSxo2HpOjSj+k8eGW
+	 NX8/0VA5zuU8RBKyVuth2BdgoWtF3R4eodJOZSc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vahagn Vardanian <vahagn@redrays.io>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 084/481] wifi: mac80211: fix NULL pointer dereference in mesh_rx_csa_frame()
+	Shuvam Pandey <shuvampandey1@gmail.com>,
+	David Gow <david@davidgow.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 146/567] kunit: tool: copy caller args in run_kernel to prevent mutation
 Date: Mon, 23 Mar 2026 14:41:06 +0100
-Message-ID: <20260323134527.310523713@linuxfoundation.org>
+Message-ID: <20260323134537.442153954@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +67,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229559-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229100-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,davidgow.net,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 077702F95FB
+X-Rspamd-Queue-Id: 1596C2F5C44
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vahagn Vardanian <vahagn@redrays.io>
+From: Shuvam Pandey <shuvampandey1@gmail.com>
 
-commit 017c1792525064a723971f0216e6ef86a8c7af11 upstream.
+[ Upstream commit 40804c4974b8df2adab72f6475d343eaff72b7f6 ]
 
-In mesh_rx_csa_frame(), elems->mesh_chansw_params_ie is dereferenced
-at lines 1638 and 1642 without a prior NULL check:
+run_kernel() appended KUnit flags directly to the caller-provided args
+list. When exec_tests() calls run_kernel() repeatedly (e.g. with
+--run_isolated), each call mutated the same list, causing later runs
+to inherit stale filter_glob values and duplicate kunit.enable flags.
 
-    ifmsh->chsw_ttl = elems->mesh_chansw_params_ie->mesh_ttl;
-    ...
-    pre_value = le16_to_cpu(elems->mesh_chansw_params_ie->mesh_pre_value);
+Fix this by copying args at the start of run_kernel(). Add a regression
+test that calls run_kernel() twice with the same list and verifies the
+original remains unchanged.
 
-The mesh_matches_local() check above only validates the Mesh ID,
-Mesh Configuration, and Supported Rates IEs.  It does not verify the
-presence of the Mesh Channel Switch Parameters IE (element ID 118).
-When a received CSA action frame omits that IE, ieee802_11_parse_elems()
-leaves elems->mesh_chansw_params_ie as NULL, and the unconditional
-dereference causes a kernel NULL pointer dereference.
-
-A remote mesh peer with an established peer link (PLINK_ESTAB) can
-trigger this by sending a crafted SPECTRUM_MGMT/CHL_SWITCH action frame
-that includes a matching Mesh ID and Mesh Configuration IE but omits the
-Mesh Channel Switch Parameters IE.  No authentication beyond the default
-open mesh peering is required.
-
-Crash confirmed on kernel 6.17.0-5-generic via mac80211_hwsim:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  Oops: Oops: 0000 [#1] SMP NOPTI
-  RIP: 0010:ieee80211_mesh_rx_queued_mgmt+0x143/0x2a0 [mac80211]
-  CR2: 0000000000000000
-
-Fix by adding a NULL check for mesh_chansw_params_ie after
-mesh_matches_local() returns, consistent with how other optional IEs
-are guarded throughout the mesh code.
-
-The bug has been present since v3.13 (released 2014-01-19).
-
-Fixes: 8f2535b92d68 ("mac80211: process the CSA frame for mesh accordingly")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vahagn Vardanian <vahagn@redrays.io>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ff9e09a3762f ("kunit: tool: support running each suite/test separately")
+Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
+Reviewed-by: David Gow <david@davidgow.net>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh.c |    3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/kunit/kunit_kernel.py    |  6 ++++--
+ tools/testing/kunit/kunit_tool_test.py | 26 ++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 2 deletions(-)
 
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -1474,6 +1474,9 @@ static void mesh_rx_csa_frame(struct iee
- 	if (!mesh_matches_local(sdata, elems))
- 		goto free;
+diff --git a/tools/testing/kunit/kunit_kernel.py b/tools/testing/kunit/kunit_kernel.py
+index 0b6488efed47a..df7622dac0ff1 100644
+--- a/tools/testing/kunit/kunit_kernel.py
++++ b/tools/testing/kunit/kunit_kernel.py
+@@ -331,8 +331,10 @@ class LinuxSourceTree:
+ 		return self.validate_config(build_dir)
  
-+	if (!elems->mesh_chansw_params_ie)
-+		goto free;
+ 	def run_kernel(self, args: Optional[List[str]]=None, build_dir: str='', filter_glob: str='', filter: str='', filter_action: Optional[str]=None, timeout: Optional[int]=None) -> Iterator[str]:
+-		if not args:
+-			args = []
++		# Copy to avoid mutating the caller-supplied list. exec_tests() reuses
++		# the same args across repeated run_kernel() calls (e.g. --run_isolated),
++		# so appending to the original would accumulate stale flags on each call.
++		args = list(args) if args else []
+ 		if filter_glob:
+ 			args.append('kunit.filter_glob=' + filter_glob)
+ 		if filter:
+diff --git a/tools/testing/kunit/kunit_tool_test.py b/tools/testing/kunit/kunit_tool_test.py
+index b28c1510be2eb..5254a25ad2d9d 100755
+--- a/tools/testing/kunit/kunit_tool_test.py
++++ b/tools/testing/kunit/kunit_tool_test.py
+@@ -461,6 +461,32 @@ class LinuxSourceTreeTest(unittest.TestCase):
+ 			with open(kunit_kernel.get_outfile_path(build_dir), 'rt') as outfile:
+ 				self.assertEqual(outfile.read(), 'hi\nbye\n', msg='Missing some output')
+ 
++	def test_run_kernel_args_not_mutated(self):
++		"""Verify run_kernel() copies args so callers can reuse them."""
++		start_calls = []
 +
- 	ifmsh->chsw_ttl = elems->mesh_chansw_params_ie->mesh_ttl;
- 	if (!--ifmsh->chsw_ttl)
- 		fwd_csa = false;
++		def fake_start(start_args, unused_build_dir):
++			start_calls.append(list(start_args))
++			return subprocess.Popen(['printf', 'KTAP version 1\n'],
++						text=True, stdout=subprocess.PIPE)
++
++		with tempfile.TemporaryDirectory('') as build_dir:
++			tree = kunit_kernel.LinuxSourceTree(build_dir,
++					kunitconfig_paths=[os.devnull])
++			with mock.patch.object(tree._ops, 'start', side_effect=fake_start), \
++			     mock.patch.object(kunit_kernel.subprocess, 'call'):
++				kernel_args = ['mem=1G']
++				for _ in tree.run_kernel(args=kernel_args, build_dir=build_dir,
++							 filter_glob='suite.test1'):
++					pass
++				for _ in tree.run_kernel(args=kernel_args, build_dir=build_dir,
++							 filter_glob='suite.test2'):
++					pass
++				self.assertEqual(kernel_args, ['mem=1G'],
++					'run_kernel() should not modify caller args')
++				self.assertIn('kunit.filter_glob=suite.test1', start_calls[0])
++				self.assertIn('kunit.filter_glob=suite.test2', start_calls[1])
++
+ 	def test_build_reconfig_no_config(self):
+ 		with tempfile.TemporaryDirectory('') as build_dir:
+ 			with open(kunit_kernel.get_kunitconfig_path(build_dir), 'w') as f:
+-- 
+2.51.0
+
 
 
 
