@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-229814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229319-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDC4ABtvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229814-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:31 +0100
+	id eNBXAJFewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229319-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71F382F8DD5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90EE72F6A13
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CE4E130CF6F8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4C5431FA13D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F5335958;
-	Mon, 23 Mar 2026 16:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7270B3B6349;
+	Mon, 23 Mar 2026 15:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acLQmQ9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0I5Ubxw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5AE12CDA5;
-	Mon, 23 Mar 2026 16:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35494242D70;
+	Mon, 23 Mar 2026 15:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282937; cv=none; b=doR709PR1yUJQUgQ9JWYl9pWCdqRvdbnJpWOxhrfCHGNZlzq8ZfTD9mdBHhrV9yeBS1PoYbt+vQzMLFavBfXR4IBkXwtie5QH4Re/H/26q580+tIW+Vej/xj9FZB7o1AM4ZGuOgtJldnqWdOKV4WpFvfsRLSGfylEAj/l/T0Wjc=
+	t=1774278743; cv=none; b=tYJQtfttR5Hr0Rh6KLv3hMUdn36x8ncUGN5rTgFGVEUKDmXMIc1fQxlzPKHcaOQZ9PreDT5eC7uWZhkylagx+h4Kv6ksj55Qnax0c38GKqVZwiluOAV8WTHdFhcQBWDaOi7AEt0ptwSACL60V86AEC32UxQOexBpxATo82yykuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282937; c=relaxed/simple;
-	bh=ql1C9y9yNEtrUXFoWW91kfu1m2OlJ4UDRNxXBB+yg34=;
+	s=arc-20240116; t=1774278743; c=relaxed/simple;
+	bh=erVJntiwZLNctjGOVQ8ljM1F6bTFjCti0Ig1cLHQBEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iczTRHKJ5V7RyaW21uXdLOAzz+i19bOEUnweaFfyLtUGvOWEE+M2ogMcoqrAODdTK3M1TO0mSLDsIi19ERFyEC49e/ETRDk7Uu4yP+W27t8VtR/OfaPYQGxCbYmOOR5bjsqYVp72MttKnpaPqt3ur45wopnAEJcpL3WNBqo7aOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acLQmQ9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0929C4CEF7;
-	Mon, 23 Mar 2026 16:22:16 +0000 (UTC)
+	 MIME-Version; b=EoK3UeCyTLRrmgEQQSQCayKO+c5K+tIoo78Cs1eb/JIcBfe0c1bh/78/qPmoZoGvWIUksih/FogRsMKYhY6TJUBsZv7YFJK3dOudBKOWEbMgPHSk2HCwAJzWHx5bLz26QI86sbmfHOkVptdH6Wm+mYSr4jlMEZb0OIbDhzbzg6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0I5Ubxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22C7C4CEF7;
+	Mon, 23 Mar 2026 15:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282937;
-	bh=ql1C9y9yNEtrUXFoWW91kfu1m2OlJ4UDRNxXBB+yg34=;
+	s=korg; t=1774278743;
+	bh=erVJntiwZLNctjGOVQ8ljM1F6bTFjCti0Ig1cLHQBEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=acLQmQ9saFi9dyPKFxhjjaftRfVCS7WJwlhL64iVZFzgff0jOH3e7rsPDXNHZfO1s
-	 TFFhTNSj+e19NIIwINn8UaQ17fKBlh7FRwnEoIDUF09RIWfvWO4mJ40PP0Oq+3ZHGV
-	 18Z1TFgqmhz+WYZjovw7zVCHaZ4EfCSGdbF+0xbw=
+	b=C0I5UbxwlH4LyO/gmdLwbLJLHoq4r0yUWby5F8HDOHwJwpswzIzRi8SsusphehYi1
+	 1CTdCSQZ8fNXjAi7fiF0xKA8zAYOEFX5HQzgwmF7aeEc0w4iY9fsI03glDwQo/mWhY
+	 2fP7+vyN7yOyX9DR8vMnljqSM967LRClDCNyP50g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 342/481] drm/msm: Fix dma_free_attrs() buffer size
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 404/567] arm64: mm: Dont remap pgtables for allocate vs populate
 Date: Mon, 23 Mar 2026 14:45:24 +0100
-Message-ID: <20260323134533.434562575@linuxfoundation.org>
+Message-ID: <20260323134543.866808148@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +67,209 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,oss.qualcomm.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229814-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.976];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229319-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 71F382F8DD5
+X-Rspamd-Queue-Id: 90EE72F6A13
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit e4eb6e4dd6348dd00e19c2275e3fbaed304ca3bd ]
+[ Upstream commit 0e9df1c905d8293d333ace86c13d147382f5caf9 ]
 
-The gpummu->table buffer is alloc'd with size TABLE_SIZE + 32 in
-a2xx_gpummu_new() but freed with size TABLE_SIZE in
-a2xx_gpummu_destroy().
+During linear map pgtable creation, each pgtable is fixmapped /
+fixunmapped twice; once during allocation to zero the memory, and a
+again during population to write the entries. This means each table has
+2 TLB invalidations issued against it. Let's fix this so that each table
+is only fixmapped/fixunmapped once, halving the number of TLBIs, and
+improving performance.
 
-Change the free size to match the allocation.
+Achieve this by separating allocation and initialization (zeroing) of
+the page. The allocated page is now fixmapped directly by the walker and
+initialized, before being populated and finally fixunmapped.
 
-Fixes: c2052a4e5c99 ("drm/msm: implement a2xx mmu")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/707340/
-Message-ID: <20260226095714.12126-2-fourier.thomas@gmail.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This approach keeps the change small, but has the side effect that late
+allocations (using __get_free_page()) must also go through the generic
+memory clearing routine. So let's tell __get_free_page() not to zero the
+memory to avoid duplication.
+
+Additionally this approach means that fixmap/fixunmap is still used for
+late pgtable modifications. That's not technically needed since the
+memory is all mapped in the linear map by that point. That's left as a
+possible future optimization if found to be needed.
+
+Execution time of map_mem(), which creates the kernel linear map page
+tables, was measured on different machines with different RAM configs:
+
+               | Apple M2 VM | Ampere Altra| Ampere Altra| Ampere Altra
+               | VM, 16G     | VM, 64G     | VM, 256G    | Metal, 512G
+---------------|-------------|-------------|-------------|-------------
+               |   ms    (%) |   ms    (%) |   ms    (%) |    ms    (%)
+---------------|-------------|-------------|-------------|-------------
+before         |   11   (0%) |  161   (0%) |  656   (0%) |  1654   (0%)
+after          |   10 (-11%) |  104 (-35%) |  438 (-33%) |  1223 (-26%)
+
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Suggested-by: Mark Rutland <mark.rutland@arm.com>
+Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Tested-by: Eric Chanudet <echanude@redhat.com>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240412131908.433043-4-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Ryan: Trivial backport ]
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_gpummu.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/mmu.c |   58 ++++++++++++++++++++++++++--------------------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
 
---- a/drivers/gpu/drm/msm/msm_gpummu.c
-+++ b/drivers/gpu/drm/msm/msm_gpummu.c
-@@ -76,7 +76,7 @@ static void msm_gpummu_destroy(struct ms
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -106,28 +106,12 @@ EXPORT_SYMBOL(phys_mem_access_prot);
+ static phys_addr_t __init early_pgtable_alloc(int shift)
  {
- 	struct msm_gpummu *gpummu = to_msm_gpummu(mmu);
+ 	phys_addr_t phys;
+-	void *ptr;
  
--	dma_free_attrs(mmu->dev, TABLE_SIZE, gpummu->table, gpummu->pt_base,
-+	dma_free_attrs(mmu->dev, TABLE_SIZE + 32, gpummu->table, gpummu->pt_base,
- 		DMA_ATTR_FORCE_CONTIGUOUS);
+ 	phys = memblock_phys_alloc_range(PAGE_SIZE, PAGE_SIZE, 0,
+ 					 MEMBLOCK_ALLOC_NOLEAKTRACE);
+ 	if (!phys)
+ 		panic("Failed to allocate page table page\n");
  
- 	kfree(gpummu);
+-	/*
+-	 * The FIX_{PGD,PUD,PMD} slots may be in active use, but the FIX_PTE
+-	 * slot will be free, so we can (ab)use the FIX_PTE slot to initialise
+-	 * any level of table.
+-	 */
+-	ptr = pte_set_fixmap(phys);
+-
+-	memset(ptr, 0, PAGE_SIZE);
+-
+-	/*
+-	 * Implicit barriers also ensure the zeroed page is visible to the page
+-	 * table walker
+-	 */
+-	pte_clear_fixmap();
+-
+ 	return phys;
+ }
+ 
+@@ -169,6 +153,14 @@ bool pgattr_change_is_safe(u64 old, u64
+ 	return ((old ^ new) & ~mask) == 0;
+ }
+ 
++static void init_clear_pgtable(void *table)
++{
++	clear_page(table);
++
++	/* Ensure the zeroing is observed by page table walks. */
++	dsb(ishst);
++}
++
+ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+ 		     phys_addr_t phys, pgprot_t prot)
+ {
+@@ -211,12 +203,15 @@ static void alloc_init_cont_pte(pmd_t *p
+ 			pmdval |= PMD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pte_phys = pgtable_alloc(PAGE_SHIFT);
++		ptep = pte_set_fixmap(pte_phys);
++		init_clear_pgtable(ptep);
++		ptep += pte_index(addr);
+ 		__pmd_populate(pmdp, pte_phys, pmdval);
+-		pmd = READ_ONCE(*pmdp);
++	} else {
++		BUG_ON(pmd_bad(pmd));
++		ptep = pte_set_fixmap_offset(pmdp, addr);
+ 	}
+-	BUG_ON(pmd_bad(pmd));
+ 
+-	ptep = pte_set_fixmap_offset(pmdp, addr);
+ 	do {
+ 		pgprot_t __prot = prot;
+ 
+@@ -295,12 +290,15 @@ static void alloc_init_cont_pmd(pud_t *p
+ 			pudval |= PUD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pmd_phys = pgtable_alloc(PMD_SHIFT);
++		pmdp = pmd_set_fixmap(pmd_phys);
++		init_clear_pgtable(pmdp);
++		pmdp += pmd_index(addr);
+ 		__pud_populate(pudp, pmd_phys, pudval);
+-		pud = READ_ONCE(*pudp);
++	} else {
++		BUG_ON(pud_bad(pud));
++		pmdp = pmd_set_fixmap_offset(pudp, addr);
+ 	}
+-	BUG_ON(pud_bad(pud));
+ 
+-	pmdp = pmd_set_fixmap_offset(pudp, addr);
+ 	do {
+ 		pgprot_t __prot = prot;
+ 
+@@ -338,12 +336,15 @@ static void alloc_init_pud(pgd_t *pgdp,
+ 			p4dval |= P4D_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+ 		pud_phys = pgtable_alloc(PUD_SHIFT);
++		pudp = pud_set_fixmap(pud_phys);
++		init_clear_pgtable(pudp);
++		pudp += pud_index(addr);
+ 		__p4d_populate(p4dp, pud_phys, p4dval);
+-		p4d = READ_ONCE(*p4dp);
++	} else {
++		BUG_ON(p4d_bad(p4d));
++		pudp = pud_set_fixmap_offset(p4dp, addr);
+ 	}
+-	BUG_ON(p4d_bad(p4d));
+ 
+-	pudp = pud_set_fixmap_offset(p4dp, addr);
+ 	do {
+ 		pud_t old_pud = READ_ONCE(*pudp);
+ 
+@@ -425,11 +426,10 @@ void create_kpti_ng_temp_pgd(pgd_t *pgdi
+ 
+ static phys_addr_t __pgd_pgtable_alloc(int shift)
+ {
+-	void *ptr = (void *)__get_free_page(GFP_PGTABLE_KERNEL);
+-	BUG_ON(!ptr);
++	/* Page is zeroed by init_clear_pgtable() so don't duplicate effort. */
++	void *ptr = (void *)__get_free_page(GFP_PGTABLE_KERNEL & ~__GFP_ZERO);
+ 
+-	/* Ensure the zeroed page is visible to the page table walker */
+-	dsb(ishst);
++	BUG_ON(!ptr);
+ 	return __pa(ptr);
+ }
+ 
 
 
 
