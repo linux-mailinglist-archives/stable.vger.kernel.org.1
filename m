@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229636-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WA0HG2dewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229140-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:15 +0100
+	id 4DquNqJrwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229636-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 731532F69AE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE15E2F858E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C311C312C295
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4D92030D7BDF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D9E3B47E8;
-	Mon, 23 Mar 2026 15:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F703BA227;
+	Mon, 23 Mar 2026 16:14:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhzrteTJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stgDSqkp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B163B47DA;
-	Mon, 23 Mar 2026 15:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9C5D2980A8;
+	Mon, 23 Mar 2026 16:14:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278188; cv=none; b=T8Tw1AWeE8nvqnsfjV3NnlD2l01vf/k4/q5hXRgFr4d9zssWxf/j1wmsW/6DV556O8K+vT7eKcCvIi1piqWHnlffFay63QZkV4OqAKsliAvqQdRdN3IMwwE9Tx/MIorCQsNFYl7eRMw8kLI3ggJhIGckJE2IAcrF+f+NqAt7ofM=
+	t=1774282458; cv=none; b=pHth16DPCwgGYlmMgEV5qAi9rWGk8RuOGAJuZZbXs3ZS23hfS6xr+X9zYSHikWSQy/LRzfpGsCdozdqfl+bY3x7SqbYZpkAXQInrAZpjxdF1arQknxjHef5CQHvifRim/GvbM1DL0hEntIDbkDYvF+iiimOxVzP4pXm0MPJnyCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278188; c=relaxed/simple;
-	bh=YajZ8N0A91SHcIk3gqkjD0Xl9JY138Bc+gJzO5Xowm4=;
+	s=arc-20240116; t=1774282458; c=relaxed/simple;
+	bh=LVOeXSx6pakpFEXfRDyC1ljLW61TH4Gi1p1qmVKHb8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKu3Cndn/ppf5Rlk2o0Lm3W2uAMvkDPR4sSP/UzwZTbdaDJZ4ZlwS8FQgtLiKi9pY6elzU3AAumwNQ0IRSiMjPLrO3MfIbKa0+8wc7s+cNcXWzwCGepgD74rlRU3Ib1F2kVR/9UWGQcf8LrrzUofeR7tYtuCXFjEinh8YdUyyz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhzrteTJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41585C2BCB1;
-	Mon, 23 Mar 2026 15:03:07 +0000 (UTC)
+	 MIME-Version; b=pChk1Um/bCJ6MEztgVg7QBPPY1Muw/y95GX8X6Bw49mtYN/I7UKFAVRZb8OymOy4YiHEqLGOlYFtXzslJpWfPdhsPh05PmG5AMWVck3GZcnBlrsmS95FoW3kaWnn5BQKRlXhsBYuFyrgzkjhl2+Cg3+tk9ElMEt7jkNp+9QP894=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stgDSqkp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C880C4CEF7;
+	Mon, 23 Mar 2026 16:14:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278187;
-	bh=YajZ8N0A91SHcIk3gqkjD0Xl9JY138Bc+gJzO5Xowm4=;
+	s=korg; t=1774282458;
+	bh=LVOeXSx6pakpFEXfRDyC1ljLW61TH4Gi1p1qmVKHb8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhzrteTJIiQ6R7S4cylN0cIjGacPC/bmir4DrX2MCBtpMAv/bdhwMPKxVTEMpW4WN
-	 JFCfnrchugn+ZI+r9JNCsVYavnfRUcE+JN2/p5IoPyQ7x7YxEgtQV8IQLakwZa1DoB
-	 3F+0FFFfgGgYpN0x6vzhGmkFgDUmkB8UfOk96DwA=
+	b=stgDSqkpYBlLn1enPn6vrtAExNNds2sZu64tB5tssY0FzPdewfFYxhtrxbzw/p2ZA
+	 23a3vvKDvZ+kwAACZUjcsgW/14qeoIl5CFpEhZRmwEOk3HbCMCp1M8D8uHQnr+3C35
+	 EDjIEq083YIZsHK/ylkZTn3knb3vsdrlB7+a111Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Cotifava <cotifavamatteo@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Daniel Jurgens <danielj@nvidia.com>,
+	William Tu <witu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 226/567] ASoC: soc-core: drop delayed_work_pending() check before flush
+Subject: [PATCH 6.1 164/481] net/mlx5: Query to see if host PF is disabled
 Date: Mon, 23 Mar 2026 14:42:26 +0100
-Message-ID: <20260323134539.426870297@linuxfoundation.org>
+Message-ID: <20260323134529.227649335@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +68,110 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229140-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229636-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 731532F69AE
+X-Rspamd-Queue-Id: BE15E2F858E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: matteo.cotifava <cotifavamatteo@gmail.com>
+From: Daniel Jurgens <danielj@nvidia.com>
 
-[ Upstream commit 3c99c9f0ed60582c1c9852b685d78d5d3a50de63 ]
+[ Upstream commit 9e84de72aef9bcf0e751a0bff3ac91b0cf52366f ]
 
-The delayed_work_pending() check before flush_delayed_work() in
-soc_free_pcm_runtime() is unnecessary and racy. flush_delayed_work()
-is safe to call unconditionally - it is a no-op when no work is
-pending. Remove the check.
+The host PF can be disabled, query firmware to check if the host PF of
+this function exists.
 
-The original check was added by commit 9c9b65203492 ("ASoC: core:
-only flush inited work during free") but delayed_work_pending()
-followed by flush_delayed_work() has a time-of-check/time-of-use
-window where work can become pending between the two calls.
-
-Fixes: 9c9b65203492 ("ASoC: core: only flush inited work during free")
-Signed-off-by: Matteo Cotifava <cotifavamatteo@gmail.com>
-Link: https://patch.msgid.link/20260309215412.545628-2-cotifavamatteo@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+Reviewed-by: William Tu <witu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1755112796-467444-2-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: aed763abf0e9 ("net/mlx5: Fix deadlock between devlink lock and esw->wq")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c | 23 +++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h |  1 +
+ 2 files changed, 24 insertions(+)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index dc95b6f415558..39570e0e92bbc 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -456,8 +456,7 @@ static void soc_free_pcm_runtime(struct snd_soc_pcm_runtime *rtd)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 9ba825df9be0e..3255af4313a29 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -969,6 +969,25 @@ const u32 *mlx5_esw_query_functions(struct mlx5_core_dev *dev)
+ 	return ERR_PTR(err);
+ }
  
- 	list_del(&rtd->list);
++static int mlx5_esw_host_functions_enabled_query(struct mlx5_eswitch *esw)
++{
++	const u32 *query_host_out;
++
++	if (!mlx5_core_is_ecpf_esw_manager(esw->dev))
++		return 0;
++
++	query_host_out = mlx5_esw_query_functions(esw->dev);
++	if (IS_ERR(query_host_out))
++		return PTR_ERR(query_host_out);
++
++	esw->esw_funcs.host_funcs_disabled =
++		MLX5_GET(query_esw_functions_out, query_host_out,
++			 host_params_context.host_pf_not_exist);
++
++	kvfree(query_host_out);
++	return 0;
++}
++
+ static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
+ {
+ 	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev)) {
+@@ -1596,6 +1615,10 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 		goto abort;
+ 	}
  
--	if (delayed_work_pending(&rtd->delayed_work))
--		flush_delayed_work(&rtd->delayed_work);
-+	flush_delayed_work(&rtd->delayed_work);
- 	snd_soc_pcm_component_free(rtd);
++	err = mlx5_esw_host_functions_enabled_query(esw);
++	if (err)
++		goto abort;
++
+ 	err = mlx5_esw_vports_init(esw);
+ 	if (err)
+ 		goto abort;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index a3daca44f74b1..ff20b43a551de 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -279,6 +279,7 @@ struct mlx5_host_work {
  
- 	/*
+ struct mlx5_esw_functions {
+ 	struct mlx5_nb		nb;
++	bool			host_funcs_disabled;
+ 	u16			num_vfs;
+ };
+ 
 -- 
 2.51.0
 
