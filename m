@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-229910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229912-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uNRSDNx7wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229910-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:43:56 +0100
+	id OAlIHDluwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229912-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830632FA4CF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:43:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8872F8C34
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90396318D921
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4518C31C3D6A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EE03BD649;
-	Mon, 23 Mar 2026 16:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE04A3B38A4;
+	Mon, 23 Mar 2026 16:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtDnfjwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKjxv1f9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E753F3BD64E;
-	Mon, 23 Mar 2026 16:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7035212CDA5;
+	Mon, 23 Mar 2026 16:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283192; cv=none; b=rperFlG7p1sQSwLbC8W10z7UFstvh3qLBAAH/yQyGvlnkEuhU71J5QIxh3HkKlwC+lQmeaXBpKhfz3O2jdwnyLHNhfepkVPy1kM/BsaQDOpb0DPIU3klRCHDiYsbyzSitmFYtKdVWzmQXQBLCp35AEUN6VmnpbbwMmUl2Wnu79M=
+	t=1774283197; cv=none; b=FvzHStWI9plOX0BJDTWaH9k+uS5A5Girn9qawIS0wNWUItsRH8AWEfL20rssCGF3XsaqHdzdI0dqxGXpsnSfkynpD/ahgriP4AjJPOUdOUyOuE7hquSdmYlw44nYEQaxULYhL5ho2cyjw4s8LIW4gKrluY3/4iJ1xQIg6gJqqtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283192; c=relaxed/simple;
-	bh=BAU8UneOQOyfMUOzJSrAWzWP5KNAnyTNF0DwU6ow0bo=;
+	s=arc-20240116; t=1774283197; c=relaxed/simple;
+	bh=fpGDeq6kYEKNfygvpAuglXyBOcErow9mYFv+a5rsAsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=slwvVGsaH82vY2q0vtZlMC3HCKU7Xmdd4on1ei/pZEB/pJD8ynrtbW4fgoUIvKk1I9CzFCsXtP+/GJMCeoPe8jV8vJgkiz+pWyVCeXeTOVbQKKxhzCz96Frg9k1QEQObqttiLCMIBtOqU/+lbtwd7JIwxfS+Gbwyj2zhoFSggsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtDnfjwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5E1C4CEF7;
-	Mon, 23 Mar 2026 16:26:31 +0000 (UTC)
+	 MIME-Version; b=YVxcvF9ftSIWGWyYWCj4f+JiiRsy44IoSXXGyYvU9dr2UAGTL8owkQ7yA0lS10Lh2XmvKc/omFTB2N8+takprB33EI2ZVo2tKY71+uWAYfge0cmTexnVPTKBcz3FodHNlSoNXVc3ALJlSU5nv0iGtaxn6kR3IyVRJimhQJeyu2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKjxv1f9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF2EC4CEF7;
+	Mon, 23 Mar 2026 16:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283191;
-	bh=BAU8UneOQOyfMUOzJSrAWzWP5KNAnyTNF0DwU6ow0bo=;
+	s=korg; t=1774283197;
+	bh=fpGDeq6kYEKNfygvpAuglXyBOcErow9mYFv+a5rsAsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZtDnfjwefXbvpbNFfnYLTiZGJaIVlRXMhphxw/Gaj4IKqQSmvbt8li28UW92vlx1e
-	 fpTfZN8Z+xUkqjmWC5smVymIx8oQxOKoJOWgs7S8eTdqNqnjVT4+0WuI1vUI9R5VhJ
-	 UMG0JQKmwXdPqd9ryPHgwwdydhTc0GKhQGpw5eWA=
+	b=jKjxv1f9re3XAu6YLKw9jCTKWdiJDjAEC+GUd1oXxv6z7V3puYFRYU6eBpNayRwUF
+	 HIO5GeSXnXgj9NZK9xegxUJSyJ+EdiJDX+v3rJeqbNU5sCngzT64eZAJlnQzxlQ8Py
+	 NYESYPsYhT7auYY+CvLe0cQ+0hNQ/qFqMFlfUqBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
-	Gunnar Kudrjavets <gunnarku@amazon.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Anas Iqbal <mohd.abd.6602@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 437/481] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
-Date: Mon, 23 Mar 2026 14:46:59 +0100
-Message-ID: <20260323134535.858871493@linuxfoundation.org>
+Subject: [PATCH 6.1 438/481] net: dsa: bcm_sf2: fix missing clk_disable_unprepare() in error paths
+Date: Mon, 23 Mar 2026 14:47:00 +0100
+Message-ID: <20260323134535.884996884@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
 References: <20260323134525.256603107@linuxfoundation.org>
@@ -65,34 +66,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,broadcom.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229910-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229912-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 830632FA4CF
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 3F8872F8C34
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -100,83 +102,57 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+From: Anas Iqbal <mohd.abd.6602@gmail.com>
 
-[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
+[ Upstream commit b48731849609cbd8c53785a48976850b443153fd ]
 
-mvpp2_bm_switch_buffers() unconditionally calls
-mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
-shared buffer pool modes. This function programs CM3 flow control
-registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
-priv->cm3_base without any NULL check.
+Smatch reports:
+drivers/net/dsa/bcm_sf2.c:997 bcm_sf2_sw_resume() warn:
+'priv->clk' from clk_prepare_enable() not released on lines: 983,990.
 
-When the CM3 SRAM resource is not present in the device tree (the
-third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
-SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
-NULL and priv->global_tx_fc is false. Any operation that triggers
-mvpp2_bm_switch_buffers(), for example an MTU change that crosses
-the jumbo frame threshold, will crash:
+The clock enabled by clk_prepare_enable() in bcm_sf2_sw_resume()
+is not released if bcm_sf2_sw_rst() or bcm_sf2_cfp_resume() fails.
 
-  Unable to handle kernel NULL pointer dereference at
-  virtual address 0000000000000000
-  Mem abort info:
-    ESR = 0x0000000096000006
-    EC = 0x25: DABT (current EL), IL = 32 bits
-  pc : readl+0x0/0x18
-  lr : mvpp2_cm3_read.isra.0+0x14/0x20
-  Call trace:
-   readl+0x0/0x18
-   mvpp2_bm_pool_update_fc+0x40/0x12c
-   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
-   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
-   mvpp2_change_mtu+0x140/0x380
-   __dev_set_mtu+0x1c/0x38
-   dev_set_mtu_ext+0x78/0x118
-   dev_set_mtu+0x48/0xa8
-   dev_ifsioc+0x21c/0x43c
-   dev_ioctl+0x2d8/0x42c
-   sock_ioctl+0x314/0x378
+Add the missing clk_disable_unprepare() calls in the error paths
+to properly release the clock resource.
 
-Every other flow control call site in the driver already guards
-hardware access with either priv->global_tx_fc or port->tx_fc.
-mvpp2_bm_switch_buffers() is the only place that omits this check.
-
-Add the missing priv->global_tx_fc guard to both the disable and
-re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
-rest of the driver.
-
-Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
-Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
-Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
-Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: e9ec5c3bd238 ("net: dsa: bcm_sf2: request and handle clocks")
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Anas Iqbal <mohd.abd.6602@gmail.com>
+Link: https://patch.msgid.link/20260318084212.1287-1-mohd.abd.6602@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/bcm_sf2.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-index ec69bb90f5740..b42c2c498faa2 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
-@@ -5009,7 +5009,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 	if (priv->percpu_pools)
- 		numbufs = port->nrxqs * 2;
- 
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, false);
- 
- 	for (i = 0; i < numbufs; i++)
-@@ -5026,7 +5026,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
- 			mvpp2_open(port->dev);
+diff --git a/drivers/net/dsa/bcm_sf2.c b/drivers/net/dsa/bcm_sf2.c
+index 257df16768750..7defcfd1c213f 100644
+--- a/drivers/net/dsa/bcm_sf2.c
++++ b/drivers/net/dsa/bcm_sf2.c
+@@ -971,15 +971,19 @@ static int bcm_sf2_sw_resume(struct dsa_switch *ds)
+ 	ret = bcm_sf2_sw_rst(priv);
+ 	if (ret) {
+ 		pr_err("%s: failed to software reset switch\n", __func__);
++		if (!priv->wol_ports_mask)
++			clk_disable_unprepare(priv->clk);
+ 		return ret;
  	}
  
--	if (change_percpu)
-+	if (change_percpu && priv->global_tx_fc)
- 		mvpp2_bm_pool_update_priv_fc(priv, true);
+ 	bcm_sf2_crossbar_setup(priv);
  
- 	return 0;
+ 	ret = bcm_sf2_cfp_resume(ds);
+-	if (ret)
++	if (ret) {
++		if (!priv->wol_ports_mask)
++			clk_disable_unprepare(priv->clk);
+ 		return ret;
+-
++	}
+ 	if (priv->hw_params.num_gphy == 1)
+ 		bcm_sf2_gphy_enable_set(ds, true);
+ 
 -- 
 2.51.0
 
