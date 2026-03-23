@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229240-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FT3EiZOwWm7SAQAu9opvQ
-	(envelope-from <stable+bounces-228661-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:54 +0100
+	id EJw1KH5bwWlKSgQAu9opvQ
+	(envelope-from <stable+bounces-229240-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C902F493F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1595B2F644C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B3208301FD9A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 043E1309E7CB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F831FC101;
-	Mon, 23 Mar 2026 14:22:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A1C3ACEF0;
+	Mon, 23 Mar 2026 15:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1KLRGk0o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSVa0hgX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8931D63F3;
-	Mon, 23 Mar 2026 14:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E131839657B;
+	Mon, 23 Mar 2026 15:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275748; cv=none; b=QpIzX0Dwzv6hRngWkINLDlvbj9FgGrMhYAYBWaxiJBjwcnnq/N3zjfLcplBScUZjs7i63z6bWInpBi0Q9/bFm7nWNW/g45MMsi4S4XtZuOr7CC45xJ4h+X5JfTkr9NyLdaMieq+Qx09VGNoKEtwoLhTRDeJf5M+WIvXz+GVLjbE=
+	t=1774278501; cv=none; b=RKI7P4jU3KTQdnFjC2BeRsuf1dlD1zsk08wPIkUvMOq2zq0+5MFPpErYYHukC+mOU9HfalNaEwmvmsULjnYjgRIodfKyKegy9ro0SBox1UUMay8pRgusjUW74fg+3K0miFyFgim17A8DQrDU6thDFSjdwehSV4tPByRFEG4Wcnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275748; c=relaxed/simple;
-	bh=nadLwXW4hogQ0T3t1Yzw7vJQp5ADXRx/p2HKaHBnV48=;
+	s=arc-20240116; t=1774278501; c=relaxed/simple;
+	bh=Lfn784DPtC3qn2iT2erj82p9kqJHVTASt7bJKDZwFVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RJYnpdWvnfyboIJEgPoNad11L2tNWjAwkJdL4HHwgDLOoLimTQDjPq8ky3f0JjOJpJAB+DYtHKGka4RnuiLPiJoxxbfSq8RG9X7wk6NlK4SJRAl5emhthnyk8YRIskk4pSnr8DbuoqTbZudM/4wKLRPcdeuYntQr0np20waIqPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1KLRGk0o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D534C4CEF7;
-	Mon, 23 Mar 2026 14:22:28 +0000 (UTC)
+	 MIME-Version; b=u+y71wN9dEz/QzCRxRf0iWCIA8gGwVId17vtoBSqKrqj3+kwz2hF3+rT9Xb2pcO/rOKGhtv+LgIjEBYbEwRmL3Q+TvO/Gytvi+WVzDODeHiYjvBFoT7fbPUzTD/KhoEWtF7LOAJqtsDF4Tc76k+uoUVCjpcxHVCoiH1Hqk4sm9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSVa0hgX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A237C4CEF7;
+	Mon, 23 Mar 2026 15:08:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275748;
-	bh=nadLwXW4hogQ0T3t1Yzw7vJQp5ADXRx/p2HKaHBnV48=;
+	s=korg; t=1774278500;
+	bh=Lfn784DPtC3qn2iT2erj82p9kqJHVTASt7bJKDZwFVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1KLRGk0oIrgaL4BMeb/0pCO3gw2p7PCi+L4Zmy12MjpCOsxxJ0/xjcRm4XBEHq6xO
-	 QOgfY1QhljIsiBI4lZVLpBmRP9s46XRBkbOCaWmVg4QI9nVK0H01FzJgCG89wP+RJ6
-	 4Kq3cWz9U8g6eEuABkkB5aUW6fj9pYCQcU9lwU6I=
+	b=nSVa0hgXW7ut/IcgH5DhKZ4V1r26nOEO0USBGqgqhStYlAirV8gdTvOyRXwPI2BCy
+	 sgnpuURHqfb8iqwrFfPH7/KjVyu1iCZ1+DAkF+1PAZMF4zhxS5dLpqvynzwx3sbH1k
+	 YgPAX7ThymQ4VaNIZfLM+lidQXPJpkUu9sJO21po=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Tomasz Duszynski <tduszyns@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 206/460] iio: chemical: sps30_i2c: fix buffer size in sps30_i2c_read_meas()
-Date: Mon, 23 Mar 2026 14:43:22 +0100
-Message-ID: <20260323134531.590821706@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Gui-Dong Han <hanguidong02@gmail.com>
+Subject: [PATCH 6.6 283/567] usb: class: cdc-wdm: fix reordering issue in read code path
+Date: Mon, 23 Mar 2026 14:43:23 +0100
+Message-ID: <20260323134540.829521402@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,69 +66,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228661-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,analog.com,gmail.com,intel.com,vger.kernel.org,huawei.com];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229240-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,suse.com,gmail.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 97C902F493F
+X-Rspamd-Queue-Id: 1595B2F644C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 216345f98cae7fcc84f49728c67478ac00321c87 upstream.
+commit 8df672bfe3ec2268c2636584202755898e547173 upstream.
 
-sizeof(num) evaluates to sizeof(size_t) (8 bytes on 64-bit) instead
-of the intended __be32 element size (4 bytes). Use sizeof(*meas) to
-correctly match the buffer element type.
+Quoting the bug report:
 
-Fixes: 8f3f13085278 ("iio: sps30: separate core and interface specific code")
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Acked-by: Tomasz Duszynski <tduszyns@gmail.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Due to compiler optimization or CPU out-of-order execution, the
+desc->length update can be reordered before the memmove. If this
+happens, wdm_read() can see the new length and call copy_to_user() on
+uninitialized memory. This also violates LKMM data race rules [1].
+
+Fix it by using WRITE_ONCE and memory barriers.
+
+Fixes: afba937e540c9 ("USB: CDC WDM driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Closes: https://lore.kernel.org/linux-usb/CALbr=LbrUZn_cfp7CfR-7Z5wDTHF96qeuM=3fO2m-q4cDrnC4A@mail.gmail.com/
+Reported-by: Gui-Dong Han <hanguidong02@gmail.com>
+Reviewed-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://patch.msgid.link/20260304130116.1721682-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/chemical/sps30_i2c.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/class/cdc-wdm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/chemical/sps30_i2c.c
-+++ b/drivers/iio/chemical/sps30_i2c.c
-@@ -171,7 +171,7 @@ static int sps30_i2c_read_meas(struct sp
- 	if (!sps30_i2c_meas_ready(state))
- 		return -ETIMEDOUT;
+--- a/drivers/usb/class/cdc-wdm.c
++++ b/drivers/usb/class/cdc-wdm.c
+@@ -225,7 +225,8 @@ static void wdm_in_callback(struct urb *
+ 		/* we may already be in overflow */
+ 		if (!test_bit(WDM_OVERFLOW, &desc->flags)) {
+ 			memmove(desc->ubuf + desc->length, desc->inbuf, length);
+-			desc->length += length;
++			smp_wmb(); /* against wdm_read() */
++			WRITE_ONCE(desc->length, desc->length + length);
+ 		}
+ 	}
+ skip_error:
+@@ -533,6 +534,7 @@ static ssize_t wdm_read
+ 		return -ERESTARTSYS;
  
--	return sps30_i2c_command(state, SPS30_I2C_READ_MEAS, NULL, 0, meas, sizeof(num) * num);
-+	return sps30_i2c_command(state, SPS30_I2C_READ_MEAS, NULL, 0, meas, sizeof(*meas) * num);
- }
- 
- static int sps30_i2c_clean_fan(struct sps30_state *state)
+ 	cntr = READ_ONCE(desc->length);
++	smp_rmb(); /* against wdm_in_callback() */
+ 	if (cntr == 0) {
+ 		desc->read = 0;
+ retry:
 
 
 
