@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228063-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJkMK4BRwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228240-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:43:12 +0100
+	id uN2IIspHwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228063-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:46 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBF32F50C9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:43:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 509FF2F3A8C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E33031CF61C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 954A8309660C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93A9E3B0ADB;
-	Mon, 23 Mar 2026 14:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377403ACA68;
+	Mon, 23 Mar 2026 13:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxpaKV9c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vd8Z+tqA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562CA40DFC4;
-	Mon, 23 Mar 2026 14:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA54E3AC0D2;
+	Mon, 23 Mar 2026 13:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274549; cv=none; b=Eny+ToosJVo9JGzbnHEoHUvaocKY8Hc8UDm0LECYJFy95r7Vo7PMTC/OshQ+ETepE2pPjfb08EvzJdrDnsry3PjoDNd6Icp+ibY8Y9sRZPphMA+F5iVKA2Nz39zqWjku1qTc3G1cCemc5Snb5LK556x06NLEXIkHd/KCd4xilHs=
+	t=1774274017; cv=none; b=WqcEBlKkTVL4uaTuLAwigrkUwQ0QlfDI7RNLnEAim6OkMM5j5KwSO8+yxopCXngwXN7biP6lY/kWDAtY3a+N9xsjXeoc+7+cdxdow/nJOyZqC1EIndtCJZklAKLixOjfzf4XTCEwnF0IqLVsBcEKgf6x6ZSfcrvtw3xn7YVy81U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274549; c=relaxed/simple;
-	bh=2RQRbrDwnr0lHBnybZlTD1KHrlvxNhkTnMF6UlY2mNs=;
+	s=arc-20240116; t=1774274017; c=relaxed/simple;
+	bh=5swBKE+dd+cNACsBQIRrbeeP09Katip6JdvzHIRarKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vAAxiyiUyU9yZ60OGEekeOB4l9J744zCvUQd+ycflh1y7J+rX4VGeXPT/Q0w6m+ZNY+ez0Yu30SonL9ZlciiTiNtk3zL8qTGXCs+VeBFUfjuC0ez/weNwqGDem6nXSzgj0FLlbX1Qm7vGIjk8Cc4HUnCZT4swEkVmUqqEKG+yx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxpaKV9c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC02C4CEF7;
-	Mon, 23 Mar 2026 14:02:28 +0000 (UTC)
+	 MIME-Version; b=pLWdwZybliEOcqTGAVj/3lrcVwVaoR7Vii2dKj8ZZcPFKEYuAwgVyqCv+QyhRq+Ta2IT7w84+yY71yZXxhSSAsfmK19Tu/hhL3kZnsVd2tNBik13QgwjKotybse32QDaZCcvSsauQ6dUBtj1lUxvHZkAfUwB9JbkpHAzIgTGzM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vd8Z+tqA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAC1C4CEF7;
+	Mon, 23 Mar 2026 13:53:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274549;
-	bh=2RQRbrDwnr0lHBnybZlTD1KHrlvxNhkTnMF6UlY2mNs=;
+	s=korg; t=1774274016;
+	bh=5swBKE+dd+cNACsBQIRrbeeP09Katip6JdvzHIRarKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VxpaKV9csHPRJuaSGZx8nJdhvuvzCNPPuwy+jM2AX7H4XXAjivPWqRD6yuDKB2aR1
-	 e114Vj3VnpWa3boA5ufmg0GlQcErUpBfT9ydVjXubD0JgDSFZwbE5wZ5mlScUDGWt9
-	 JRGzEg02sIxiRul3AXD+f+bHySotS1Sqa5XySo5k=
+	b=vd8Z+tqAY7cTyOfsihzvzzrRCcXjniC3/lr6D/rr2X6kuRe8+pPpjr2bu1BeNlgL/
+	 +ldki0zS2nwDiVKV0p2JrgXN2dy8hdyQfFMHIvGGoSaXvlShWzRdBvEe8ygxmVbM4w
+	 HmH46AZibKbCP9rgbs6/L5C4Bu8mqm7XdW8tWhhY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 031/212] LoongArch: Check return values for set_memory_{rw,rox}
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.19 075/220] drm/amdgpu/mmhub2.3: add bounds checking for cid
 Date: Mon, 23 Mar 2026 14:44:12 +0100
-Message-ID: <20260323134504.750031229@linuxfoundation.org>
+Message-ID: <20260323134506.966960069@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +68,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228063-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228240-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	RSPAMD_EMAILBL_FAIL(0.00)[benjamin.cheng.amd.com:query timed out];
+	NEURAL_HAM(-0.00)[-0.993];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0FBF32F50C9
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 509FF2F3A8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 431ce839dad66d0d56fb604785452c6a57409f35 ]
+commit a54403a534972af5d9ba5aaa3bb6ead612500ec6 upstream.
 
-set_memory_rw() and set_memory_rox() may fail, so we should check the
-return values and return immediately in larch_insn_text_copy().
+The value should never exceed the array size as those
+are the only values the hardware is expected to return,
+but add checks anyway.
 
+Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 89cd90375c19fb45138990b70e9f4ba4806f05c4)
 Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-[ kept `stop_machine()` instead of `stop_machine_cpuslocked()` ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/kernel/inst.c |   15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/loongarch/kernel/inst.c
-+++ b/arch/loongarch/kernel/inst.c
-@@ -260,6 +260,7 @@ static int text_copy_cb(void *data)
- int larch_insn_text_copy(void *dst, void *src, size_t len)
- {
- 	int ret = 0;
-+	int err = 0;
- 	size_t start, end;
- 	struct insn_copy copy = {
- 		.dst = dst,
-@@ -271,9 +272,19 @@ int larch_insn_text_copy(void *dst, void
- 	start = round_down((size_t)dst, PAGE_SIZE);
- 	end   = round_up((size_t)dst + len, PAGE_SIZE);
- 
--	set_memory_rw(start, (end - start) / PAGE_SIZE);
-+	err = set_memory_rw(start, (end - start) / PAGE_SIZE);
-+	if (err) {
-+		pr_info("%s: set_memory_rw() failed\n", __func__);
-+		return err;
-+	}
-+
- 	ret = stop_machine(text_copy_cb, &copy, cpu_online_mask);
--	set_memory_rox(start, (end - start) / PAGE_SIZE);
-+
-+	err = set_memory_rox(start, (end - start) / PAGE_SIZE);
-+	if (err) {
-+		pr_info("%s: set_memory_rox() failed\n", __func__);
-+		return err;
-+	}
- 
- 	return ret;
- }
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v2_3.c
+@@ -94,7 +94,8 @@ mmhub_v2_3_print_l2_protection_fault_sta
+ 	case IP_VERSION(2, 3, 0):
+ 	case IP_VERSION(2, 4, 0):
+ 	case IP_VERSION(2, 4, 1):
+-		mmhub_cid = mmhub_client_ids_vangogh[cid][rw];
++		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_vangogh) ?
++			mmhub_client_ids_vangogh[cid][rw] : NULL;
+ 		break;
+ 	default:
+ 		mmhub_cid = NULL;
 
 
 
