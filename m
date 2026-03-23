@@ -1,59 +1,63 @@
-Return-Path: <stable+bounces-229877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228195-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eI91I1t+wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229877-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:54:35 +0100
+	id UMUuGwVRwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228195-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BA82FA9BF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:54:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A75192F4FAC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:41:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E11B3105D18
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F23B0310FEFD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD2B43BB9F6;
-	Mon, 23 Mar 2026 16:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAB43BA25F;
+	Mon, 23 Mar 2026 14:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aiJGuyXR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xR3161IB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F36E39A7EF;
-	Mon, 23 Mar 2026 16:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4203BA252;
+	Mon, 23 Mar 2026 14:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283104; cv=none; b=T05xW7ZrDwpubs20UOt5dzPw3uuDhgAF/Du6xAEDd3Crhy31URBOnwiJshclo6nPK5vby5FHzjdAx6jx58oxGqf1X30ZeBSrgBpaSJ6RUw1D7Z0n3Bm0PYDCzywAmjEFMgQ3kQbDyyUetX7tqtyQXJ1dtVJC1SjRp/LZ0Abf8a8=
+	t=1774274412; cv=none; b=QmzSxXWb0EgHFFOjSd6XZ9JVQmyLZEqZZ6Juw5NwGAKbksdRFMyg19neBkyXRXv9asxiSPmo28zHwT/3x/Hzw4czc5FJhYemuiL6RXvuSZ4DXV0tWFnx8ejNYMdsUD0lDrEyL+RZBsopNyuWSLulGRXbz+S2/BobBePNVTh+XIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283104; c=relaxed/simple;
-	bh=uNjtrpOqaOy/C0y59WCmLl6Qa7jAJ404updyiHBA3qY=;
+	s=arc-20240116; t=1774274412; c=relaxed/simple;
+	bh=9ncozbRRlZC1rSgdD1jgslGFXfvZC802+gp4gw5WRnU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kx2yOQyQdyOakm30CfR2gwV/qrcXgr53fpW28Jj8TA+xVC6oz0yiUt44aY0qM3lHFybxOUZ6DvqoigARsh8+IanR0zrcjf8YXBL0EK9mr45VkFCl5Hgl2c5En4RvvsqJMBwdjupAnUjtG9FDum7MKR0C5T4aXLHk5OLZ8L5Xjjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aiJGuyXR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1841EC4CEF7;
-	Mon, 23 Mar 2026 16:25:03 +0000 (UTC)
+	 MIME-Version; b=qWc+gyAPOqGpJ2OasjYBTdlDJhJVNnjypQm2+DrwTxgzg4uIGX8etX6WTFkdZLQ9D28wbCNunaJrqP+FIdZKBk5ZXo8dmr4G7N1c0TM5+6m/gRr2jWerK5yNP0pxaDgXTV608sHu3wQYtvOtUxHHeE1oW9A7Bvh/U0LsZhyHHx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xR3161IB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBBFC2BC9E;
+	Mon, 23 Mar 2026 14:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283104;
-	bh=uNjtrpOqaOy/C0y59WCmLl6Qa7jAJ404updyiHBA3qY=;
+	s=korg; t=1774274412;
+	bh=9ncozbRRlZC1rSgdD1jgslGFXfvZC802+gp4gw5WRnU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aiJGuyXRsAhy46X7sLi6oEaQ5rfXBaHVXjLpKxirOME5cZ2eKwSOMFLtuXB/b7/2Y
-	 eqHBp6CzEnzOvBjH+9lUYJhGYJ8VvaQ6qm5ztZADId79HSq5TltumlZrJKemvwgAsK
-	 AxNL1Hl1CKLGJ5ZkxrR8WqMeS91Lydv6oWI45Qps=
+	b=xR3161IBzSpIvcCV+VFTMliO8mzNHCPpMkN16yqCKF3hedmA4svqW5OpWBG6QmhfZ
+	 SCNd4VqRzkRWF4gja8Hj9nfe8xIAI9k+GjXr8vGUp0NVWhlPrKYkT3s3ERScsQoQEX
+	 Fo7HfqOPwRoBwzIwkimPCl/3Qk2KBiaGIRdtcKfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 402/481] wifi: cfg80211: cancel pmsr_free_wk in cfg80211_pmsr_wdev_down
+Subject: [PATCH 6.19 207/220] iommu/sva: Fix crash in iommu_sva_unbind_device()
 Date: Mon, 23 Mar 2026 14:46:24 +0100
-Message-ID: <20260323134534.967504625@linuxfoundation.org>
+Message-ID: <20260323134511.098960498@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,80 +72,87 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228195-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229877-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,qualcomm.com:email]
-X-Rspamd-Queue-Id: 06BA82FA9BF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: A75192F4FAC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
 
-[ Upstream commit 6dccbc9f3e1d38565dff7730d2b7d1e8b16c9b09 ]
+[ Upstream commit 06e14c36e20b48171df13d51b89fe67c594ed07a ]
 
-When the nl80211 socket that originated a PMSR request is
-closed, cfg80211_release_pmsr() sets the request's nl_portid
-to zero and schedules pmsr_free_wk to process the abort
-asynchronously. If the interface is concurrently torn down
-before that work runs, cfg80211_pmsr_wdev_down() calls
-cfg80211_pmsr_process_abort() directly. However, the already-
-scheduled pmsr_free_wk work item remains pending and may run
-after the interface has been removed from the driver. This
-could cause the driver's abort_pmsr callback to operate on a
-torn-down interface, leading to undefined behavior and
-potential crashes.
+domain->mm->iommu_mm can be freed by iommu_domain_free():
+  iommu_domain_free()
+    mmdrop()
+      __mmdrop()
+        mm_pasid_drop()
+After iommu_domain_free() returns, accessing domain->mm->iommu_mm may
+dereference a freed mm structure, leading to a crash.
 
-Cancel pmsr_free_wk synchronously in cfg80211_pmsr_wdev_down()
-before calling cfg80211_pmsr_process_abort(). This ensures any
-pending or in-progress work is drained before interface teardown
-proceeds, preventing the work from invoking the driver abort
-callback after the interface is gone.
+Fix this by moving the code that accesses domain->mm->iommu_mm to before
+the call to iommu_domain_free().
 
-Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
-Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260305160712.1263829-3-peddolla.reddy@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: e37d5a2d60a3 ("iommu/sva: invalidate stale IOTLB entries for kernel address space")
+Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/pmsr.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/iommu-sva.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
-index d26daa0370e71..656464f2de516 100644
---- a/net/wireless/pmsr.c
-+++ b/net/wireless/pmsr.c
-@@ -640,6 +640,7 @@ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev)
+diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
+index e1e63c2be82b2..fd735aaae9e3f 100644
+--- a/drivers/iommu/iommu-sva.c
++++ b/drivers/iommu/iommu-sva.c
+@@ -182,13 +182,13 @@ void iommu_sva_unbind_device(struct iommu_sva *handle)
+ 	iommu_detach_device_pasid(domain, dev, iommu_mm->pasid);
+ 	if (--domain->users == 0) {
+ 		list_del(&domain->next);
+-		iommu_domain_free(domain);
+-	}
++		if (list_empty(&iommu_mm->sva_domains)) {
++			list_del(&iommu_mm->mm_list_elm);
++			if (list_empty(&iommu_sva_mms))
++				iommu_sva_present = false;
++		}
+ 
+-	if (list_empty(&iommu_mm->sva_domains)) {
+-		list_del(&iommu_mm->mm_list_elm);
+-		if (list_empty(&iommu_sva_mms))
+-			iommu_sva_present = false;
++		iommu_domain_free(domain);
  	}
- 	spin_unlock_bh(&wdev->pmsr_lock);
  
-+	cancel_work_sync(&wdev->pmsr_free_wk);
- 	if (found)
- 		cfg80211_pmsr_process_abort(wdev);
- 
+ 	mutex_unlock(&iommu_sva_lock);
 -- 
 2.51.0
 
