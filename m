@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229686-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gJoGNBBVwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228629-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:24 +0100
+	id 8C7qI+NtwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229686-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70F542F5897
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:58:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B2F2F8B6A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B44A3301225D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 94378310FA9B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC531FFC48;
-	Mon, 23 Mar 2026 14:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B0233BED7A;
+	Mon, 23 Mar 2026 16:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZU73wbG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gRY/tX4+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212F21A6828;
-	Mon, 23 Mar 2026 14:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 854373BED69;
+	Mon, 23 Mar 2026 16:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275653; cv=none; b=EGlrq9DUsbPoxIWmGSZM7iHKZt/1UBMYeBsQs7dvLr7aaZ27sosK6OOGUauo6SkGcyyUbTDRAE0sLcAL8ilN4x6D3gAI28C1QF/7LKUPw6lap43ay4mYDpX24PIzPhNNE2I5QSlvj4lPGCSbH4XGX2A4glqXfwf9Lo8sWPJkmJY=
+	t=1774282593; cv=none; b=dzERHLYHFiCe2wghJ3fn8RnOUVUvuyYtad/1N3/tyaxRpdZ+z6X0iMmh/9xsBHtwitUmGwh5EyPEz8hfviKNd8NUli8R+3oDHeBXflLWbP8wZEWi1GzYCkV3XseTdSECWHkpI68wurzs4FLwai4GUkfDS7m25OZPl54wIscUlOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275653; c=relaxed/simple;
-	bh=cfS8CBFXGbY/Vf3Mec7FrmKJMWd8edR47TDIWp8Kz7A=;
+	s=arc-20240116; t=1774282593; c=relaxed/simple;
+	bh=mCEAzdzugb8BQXfd71AViFriBcOuv72oyNkCQXxBdc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=evhAOvdPImjUmaRbOdxXf+PN5634rYh0nKxSTWxqKwvT8P5jg0v0jT6wg9n06iFSJjSHOZcQvPjNeB7Oyq9MJf9OlWQXSAVmsUZpPok9GTzcH0wqoOrRHiDIFLRlK/K16BGXnQY8jSNEVmBpvJtmWVVmCs9rLgSoN+z/+Ghjrvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZU73wbG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9828FC4CEF7;
-	Mon, 23 Mar 2026 14:20:52 +0000 (UTC)
+	 MIME-Version; b=kvvx48PFx2O4awHMxvo5wPPRn63lBgHIEvr0+E+OZvitkXH2bc9FKynQnV+SDaCJagvBO/Bp8Ogb3EDGfZnndw4OHPX5wXChR+qyCEAnThOQKynRTWSmde6hDNiaTjt26Uy8k/wzL7nTC15Hk6SzYCF6bCDVoKiwSMgy1e0lpWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gRY/tX4+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9DB0C2BCB3;
+	Mon, 23 Mar 2026 16:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275653;
-	bh=cfS8CBFXGbY/Vf3Mec7FrmKJMWd8edR47TDIWp8Kz7A=;
+	s=korg; t=1774282593;
+	bh=mCEAzdzugb8BQXfd71AViFriBcOuv72oyNkCQXxBdc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZU73wbGiVnAUbCJg6jwxv0fegJSWg2WYxtSK42GayRQefulHoWXxz5K+j6t/XaAp
-	 R0Corx1quiH42/CWX2uLzMs7VXtPkRx35hWZZ9F6VaX5UHJO4ysGj5o9a3IZVnEpLs
-	 djpar31/aPnCpLqPcGRF0SpuAm3WGgJgLnfY88Bw=
+	b=gRY/tX4+zAPfcxJC9Ld6H0pw5ScMQ9izSS/ooBEVM91ZXgpocqMdYJXrRFJTaHZOA
+	 F/hkQaY2R7wLofoyfxIcXdih1OMvVX9Cb/FqOhdQLvOCHffbMCksyGEaZQiuoazUMo
+	 j/i4FKn2E9vgky5nUzvBkwsv4DwnE8Y+T119ENzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehul Rao <mehulrao@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 173/460] net: nexthop: fix percpu use-after-free in remove_nh_grp_entry
+	Matt Vollrath <tactii@gmail.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 187/481] e1000/e1000e: Fix leak in DMA error cleanup
 Date: Mon, 23 Mar 2026 14:42:49 +0100
-Message-ID: <20260323134530.786994603@linuxfoundation.org>
+Message-ID: <20260323134529.758103747@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,120 +63,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,nvidia.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228629-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229686-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 70F542F5897
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 04B2F2F8B6A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehul Rao <mehulrao@gmail.com>
+From: Matt Vollrath <tactii@gmail.com>
 
-commit b2662e7593e94ae09b1cf7ee5f09160a3612bcb2 upstream.
+[ Upstream commit e94eaef11142b01f77bf8ba4d0b59720b7858109 ]
 
-When removing a nexthop from a group, remove_nh_grp_entry() publishes
-the new group via rcu_assign_pointer() then immediately frees the
-removed entry's percpu stats with free_percpu(). However, the
-synchronize_net() grace period in the caller remove_nexthop_from_groups()
-runs after the free. RCU readers that entered before the publish still
-see the old group and can dereference the freed stats via
-nh_grp_entry_stats_inc() -> get_cpu_ptr(nhge->stats), causing a
-use-after-free on percpu memory.
+If an error is encountered while mapping TX buffers, the driver should
+unmap any buffers already mapped for that skb.
 
-Fix by deferring the free_percpu() until after synchronize_net() in the
-caller. Removed entries are chained via nh_list onto a local deferred
-free list. After the grace period completes and all RCU readers have
-finished, the percpu stats are safely freed.
+Because count is incremented after a successful mapping, it will always
+match the correct number of unmappings needed when dma_error is reached.
+Decrementing count before the while loop in dma_error causes an
+off-by-one error. If any mapping was successful before an unsuccessful
+mapping, exactly one DMA mapping would leak.
 
-Fixes: f4676ea74b85 ("net: nexthop: Add nexthop group entry stats")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mehul Rao <mehulrao@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20260306233821.196789-1-mehulrao@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In these commits, a faulty while condition caused an infinite loop in
+dma_error:
+Commit 03b1320dfcee ("e1000e: remove use of skb_dma_map from e1000e
+driver")
+Commit 602c0554d7b0 ("e1000: remove use of skb_dma_map from e1000 driver")
+
+Commit c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of
+unsigned in *_tx_map()") fixed the infinite loop, but introduced the
+off-by-one error.
+
+This issue may still exist in the igbvf driver, but I did not address it
+in this patch.
+
+Fixes: c1fa347f20f1 ("e1000/e1000e/igb/igbvf/ixgb/ixgbe: Fix tests of unsigned in *_tx_map()")
+Assisted-by: Claude:claude-4.6-opus
+Signed-off-by: Matt Vollrath <tactii@gmail.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/e1000/e1000_main.c | 2 --
+ drivers/net/ethernet/intel/e1000e/netdev.c    | 2 --
+ 2 files changed, 4 deletions(-)
 
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -1992,7 +1992,8 @@ static void nh_hthr_group_rebalance(stru
- }
+diff --git a/drivers/net/ethernet/intel/e1000/e1000_main.c b/drivers/net/ethernet/intel/e1000/e1000_main.c
+index 50436fee40463..372481e945513 100644
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -2951,8 +2951,6 @@ static int e1000_tx_map(struct e1000_adapter *adapter,
+ dma_error:
+ 	dev_err(&pdev->dev, "TX DMA map failed\n");
+ 	buffer_info->dma = 0;
+-	if (count)
+-		count--;
  
- static void remove_nh_grp_entry(struct net *net, struct nh_grp_entry *nhge,
--				struct nl_info *nlinfo)
-+				struct nl_info *nlinfo,
-+				struct list_head *deferred_free)
- {
- 	struct nh_grp_entry *nhges, *new_nhges;
- 	struct nexthop *nhp = nhge->nh_parent;
-@@ -2052,8 +2053,8 @@ static void remove_nh_grp_entry(struct n
- 	rcu_assign_pointer(nhp->nh_grp, newg);
+ 	while (count--) {
+ 		if (i == 0)
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index cbd8357c61edc..fd056c17bd62e 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -5632,8 +5632,6 @@ static int e1000_tx_map(struct e1000_ring *tx_ring, struct sk_buff *skb,
+ dma_error:
+ 	dev_err(&pdev->dev, "Tx DMA map failed\n");
+ 	buffer_info->dma = 0;
+-	if (count)
+-		count--;
  
- 	list_del(&nhge->nh_list);
--	free_percpu(nhge->stats);
- 	nexthop_put(nhge->nh);
-+	list_add(&nhge->nh_list, deferred_free);
- 
- 	/* Removal of a NH from a resilient group is notified through
- 	 * bucket notifications.
-@@ -2073,6 +2074,7 @@ static void remove_nexthop_from_groups(s
- 				       struct nl_info *nlinfo)
- {
- 	struct nh_grp_entry *nhge, *tmp;
-+	LIST_HEAD(deferred_free);
- 
- 	/* If there is nothing to do, let's avoid the costly call to
- 	 * synchronize_net()
-@@ -2081,10 +2083,16 @@ static void remove_nexthop_from_groups(s
- 		return;
- 
- 	list_for_each_entry_safe(nhge, tmp, &nh->grp_list, nh_list)
--		remove_nh_grp_entry(net, nhge, nlinfo);
-+		remove_nh_grp_entry(net, nhge, nlinfo, &deferred_free);
- 
- 	/* make sure all see the newly published array before releasing rtnl */
- 	synchronize_net();
-+
-+	/* Now safe to free percpu stats — all RCU readers have finished */
-+	list_for_each_entry_safe(nhge, tmp, &deferred_free, nh_list) {
-+		list_del(&nhge->nh_list);
-+		free_percpu(nhge->stats);
-+	}
- }
- 
- static void remove_nexthop_group(struct nexthop *nh, struct nl_info *nlinfo)
+ 	while (count--) {
+ 		if (i == 0)
+-- 
+2.51.0
+
 
 
 
