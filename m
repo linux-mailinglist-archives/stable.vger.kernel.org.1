@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228666-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2AJSFK1bwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229182-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:37 +0100
+	id oEwaNdNUwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228666-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:23 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A484D2F64BB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 429262F5827
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8AFB93223322
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B2A9431F5C1F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 602CD3B27DC;
-	Mon, 23 Mar 2026 15:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E23DA20125F;
+	Mon, 23 Mar 2026 14:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEOaxlwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J6fH+fqP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21B0B3AC0EB;
-	Mon, 23 Mar 2026 15:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EDF39A055;
+	Mon, 23 Mar 2026 14:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278319; cv=none; b=ekvX2Yz+gXWxqoiuHAkQGrkRe93R8VjDWUA7r8ANcXbjA/8H58hDSmcFYimvOoR9qYllGg1xo+A1VpzGXdh5/hab1UNIm3aWY6JhkN0cjAa4/N1WaFK+6UhmYgk9SlP0jfLETjh1HeXd601DcYJiv4WsaqcTISavmLvAdZKeZ5U=
+	t=1774275765; cv=none; b=QgncTFLv4il+uzJF19lJrdJ5UKjVLfgRr86Ddsa+lSTL11pRrQ/B/6QQ/oHkvBgM9l6KEfeS8m82JfD6MC8KIo/XuN5qIKGHxfjiuxL/x67iIMLD7ZwsmNYbVxn2pbv36mGHftd/FBZbsqqFEP51W+w/zWek4OivlVTCJu5vKHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278319; c=relaxed/simple;
-	bh=eEtclVZgtxEp1L42u0VyXvaj0VPinjwHOaJJLYqdWOg=;
+	s=arc-20240116; t=1774275765; c=relaxed/simple;
+	bh=z//uCOUTRWA/sC7bvRBYy5vxGnobZ1qjCwCCudkWaAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RASnp70zRKA8gh6SZIWgfqv9ojPiqHLNmm5FS/dQDUv2B+8i4LmvnOfxh6TiSOQJpTcZtMFezz+DzBkCMTFGksvhrsSK58Pu+p/o3o6QJ8XCOXOOGycYgFp9vkxwtlPJbhpu2C9RnXlsI6kdx1QKPOGQjK3BQG1F40i/dVnBcNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEOaxlwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BE8C2BC9E;
-	Mon, 23 Mar 2026 15:05:18 +0000 (UTC)
+	 MIME-Version; b=nooUPexq1AxGVwwbgAp6qrDShRgbNkyCWJ3//weZnvy/chnTjYOPIE3lBIeEUr0AACltbKXfuHLjcqhbLnc2SlVxLPWmZVhQKxcqp0iw9N5+NBwYNqV/n5vs7N0r/iFNl5lTjLCzHZz7lp++KIxduXox1iew0CLkQQNLOBISqIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J6fH+fqP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB5BC4CEF7;
+	Mon, 23 Mar 2026 14:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278318;
-	bh=eEtclVZgtxEp1L42u0VyXvaj0VPinjwHOaJJLYqdWOg=;
+	s=korg; t=1774275765;
+	bh=z//uCOUTRWA/sC7bvRBYy5vxGnobZ1qjCwCCudkWaAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEOaxlwA7YvA7bllk9meqrLvG1FxluUeTnPqkkI9cJjCXhGp9ORDtOnaHVAxHIqk2
-	 cosdkGZYmM7fukjy5BDXhDSYLxUDuCq39s9ubKANE3mvXWHoQme9D/afv2zDgvirhp
-	 pFs5pC1Pnz5/trH9stB009+yiSX9J0GLUXfHeMmQ=
+	b=J6fH+fqPWx6FAdy4e3RxLPAHNPWgiYeNmykYEfFywSlZNRHAZ96gNXTtTiVKQW5yu
+	 IQmEh69aWIIDDVAbXRAFDFikNh4wIxjFbjMNsA5Ehorl6uLaCrTB3I96nXwW812YKQ
+	 i3Jp5FyQKny6PL2LXyaG9Ifvf3AI1wBMJOcyqP+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	A1RM4X <dev@a1rm4x.com>
-Subject: [PATCH 6.6 269/567] USB: add QUIRK_NO_BOS for video capture several devices
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 193/460] scsi: core: Fix error handling for scsi_alloc_sdev()
 Date: Mon, 23 Mar 2026 14:43:09 +0100
-Message-ID: <20260323134540.490341319@linuxfoundation.org>
+Message-ID: <20260323134531.290423651@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,92 +67,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229182-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228666-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A484D2F64BB
+X-Rspamd-Queue-Id: 429262F5827
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: A1RM4X <dev@a1rm4x.com>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-commit 93cd0d664661f58f7e7bed7373714ab2ace41734 upstream.
+commit 4ce7ada40c008fa21b7e52ab9d04e8746e2e9325 upstream.
 
-Several USB capture devices also need the USB_QUIRK_NO_BOS set for them
-to work properly, odds are they are all the same chip inside, just
-different vendor/product ids.
+After scsi_sysfs_device_initialize() was called, error paths must call
+__scsi_remove_device().
 
-This fixes up:
-  - ASUS TUF 4K PRO
-  - Avermedia Live Gamer Ultra 2.1 (GC553G2)
-  - UGREEN 35871
-to now run at full speed (10 Gbps/4K 60 fps mode.)
-
-Link: https://lore.kernel.org/r/CACy+XB-f-51xGpNQFCSm5pE_momTQLu=BaZggHYU1DiDmFX=ug@mail.gmail.com
-Cc: stable <stable@kernel.org>
-Signed-off-by: A1RM4X <dev@a1rm4x.com>
+Fixes: 1ac22c8eae81 ("scsi: core: Fix refcount leak for tagset_refcnt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260304164603.51528-1-junxiao.bi@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/scsi/scsi_scan.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -377,6 +377,9 @@ static const struct usb_device_id usb_qu
- 	/* SanDisk Extreme 55AE */
- 	{ USB_DEVICE(0x0781, 0x55ae), .driver_info = USB_QUIRK_NO_LPM },
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -353,12 +353,8 @@ static struct scsi_device *scsi_alloc_sd
+ 	 * default device queue depth to figure out sbitmap shift
+ 	 * since we use this queue depth most of times.
+ 	 */
+-	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
+-		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
+-		put_device(&starget->dev);
+-		kfree(sdev);
+-		goto out;
+-	}
++	if (scsi_realloc_sdev_budget_map(sdev, depth))
++		goto out_device_destroy;
  
-+	/* Avermedia Live Gamer Ultra 2.1 (GC553G2) - BOS descriptor fetch hangs at SuperSpeed Plus */
-+	{ USB_DEVICE(0x07ca, 0x2553), .driver_info = USB_QUIRK_NO_BOS },
-+
- 	/* Realforce 87U Keyboard */
- 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
+ 	scsi_change_queue_depth(sdev, depth);
  
-@@ -434,6 +437,9 @@ static const struct usb_device_id usb_qu
- 	{ USB_DEVICE(0x0b05, 0x17e0), .driver_info =
- 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
- 
-+	/* ASUS TUF 4K PRO - BOS descriptor fetch hangs at SuperSpeed Plus */
-+	{ USB_DEVICE(0x0b05, 0x1ab9), .driver_info = USB_QUIRK_NO_BOS },
-+
- 	/* Realtek Semiconductor Corp. Mass Storage Device (Multicard Reader)*/
- 	{ USB_DEVICE(0x0bda, 0x0151), .driver_info = USB_QUIRK_CONFIG_INTF_STRINGS },
- 
-@@ -562,6 +568,9 @@ static const struct usb_device_id usb_qu
- 
- 	{ USB_DEVICE(0x2386, 0x350e), .driver_info = USB_QUIRK_NO_LPM },
- 
-+	/* UGREEN 35871 - BOS descriptor fetch hangs at SuperSpeed Plus */
-+	{ USB_DEVICE(0x2b89, 0x5871), .driver_info = USB_QUIRK_NO_BOS },
-+
- 	/* APTIV AUTOMOTIVE HUB */
- 	{ USB_DEVICE(0x2c48, 0x0132), .driver_info =
- 			USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT },
 
 
 
