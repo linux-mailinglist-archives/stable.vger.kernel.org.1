@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228799-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2F+SJsNvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229325-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:19 +0100
+	id sOwtK1lXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228799-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADCC2F8F47
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 146102F5D3E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6F588346C8AA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A2BA3213BFF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B17A280CD2;
-	Mon, 23 Mar 2026 15:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8508423EAB2;
+	Mon, 23 Mar 2026 14:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEvsUSzj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OR/3bx9K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28F32459C6;
-	Mon, 23 Mar 2026 15:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339E723AB9D;
+	Mon, 23 Mar 2026 14:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278762; cv=none; b=Ia0ge7Y1Gt6QGfqdTgbTWdrb7Jq4Ny6ksLz8wpJ+QLvojKeR7YWyWg4XsBrnzaT/EYFGQI3PA8I5BPhHvdgWq2NRgGBjsViGk2h01VSNMtWrL9Bm/WtcbJoEq+fpNUhWHcx1AMvHP0vSZFrhVWbRrKw5E94ufyhSv632Zmipu+Y=
+	t=1774277160; cv=none; b=ODlUB5AGvBh1axfIwjGNtkr7yFBsmzyGCSZdDKABo48QpRfPmaGYPCEkWgOARODLcjO3DR8PHePvMyJvMAlpIO8lXAlHsYFNbXwxtmtOknVn2k9wZtYtrk1Z94jNUgD0VGT2xl2EBwV20sRdw6BmOeyR/gZ/qKkf+VKfD6jZIJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278762; c=relaxed/simple;
-	bh=vVqqMyfohjUeQ4Vn+j5lSsAoT2ZHQjN3GMUrF3+IQgE=;
+	s=arc-20240116; t=1774277160; c=relaxed/simple;
+	bh=TOISTTeIpRlbA80MBxa4ivSyumZkkUBALtLfs2/f+wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dX/+Us9mlQMw2rxvdDJHa4EIuv+jx1YtjXDk6TESLsjPC9tgq0+qpgRpq/DHkrvsK4It063NCQos5qtBb3iOO6MirqfBgITxuJptfXgX8ixeWI4ERnZE7H60V0Ubj3y+zr2EMPNxhRvj48ZzuWVGaOTmwcGACaPK896QF1ogAF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEvsUSzj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B5BC4CEF7;
-	Mon, 23 Mar 2026 15:12:42 +0000 (UTC)
+	 MIME-Version; b=AqwlRT4BqgbitkkjzkbivaezN0OwuZuuH3yGj9Nx5KeyLDh/95c59xcxPy87V232tC+Uial0QOgBCR/m6j0cGzAY/3kSX2PYqOeXDP/kEn8SUBCUIeXkf6FGI1oQdyPiVwDQZxN0WHgFxULLvnVGGEusLFyL93/JyckSO6FIxqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OR/3bx9K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49F2C4CEF7;
+	Mon, 23 Mar 2026 14:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278762;
-	bh=vVqqMyfohjUeQ4Vn+j5lSsAoT2ZHQjN3GMUrF3+IQgE=;
+	s=korg; t=1774277160;
+	bh=TOISTTeIpRlbA80MBxa4ivSyumZkkUBALtLfs2/f+wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vEvsUSzjYFDHssEos8Mf3mplNxxpBk4ggxa546VumgDNfS6aWxZpEI39vZTbAlpHP
-	 Ji5K7Zg8KMRU7kq9lA4AYClJAgvO9DoXRBuWjh/8qfvwlX9dEuduc7QRdkLR4OeV6R
-	 vZKBujbh+blEb833uKqY4GSgFNcNfSzlWjSiY7Ts=
+	b=OR/3bx9KqdXGeUblrFKxTVm/n7LBkexn6ZbfS5veWrGQ5h5Jm1h7he3bkwrU2OmEe
+	 H7dSp2l5h092sbgejtu7Po3jRhhLUJ9Bb9Vr4a2mj59qmyhvYC4I2gC3di8JS5eu0+
+	 Kz2JZ+h7nJ294lYf/5bHmIQshCaaWo03MG2pYoGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@hammerspace.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 409/567] pNFS: Fix a deadlock when returning a delegation during open()
+	Quanyang Wang <quanyang.wang@windriver.com>,
+	Kevin Hao <haokexin@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 333/460] net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
 Date: Mon, 23 Mar 2026 14:45:29 +0100
-Message-ID: <20260323134543.999296788@linuxfoundation.org>
+Message-ID: <20260323134534.711162592@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,245 +68,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229325-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hammerspace.com,139.com];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228799-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,windriver.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1ADCC2F8F47
+X-Rspamd-Queue-Id: 146102F5D3E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Kevin Hao <haokexin@gmail.com>
 
-[ Upstream commit 857bf9056291a16785ae3be1d291026b2437fc48 ]
+[ Upstream commit 718d0766ce4c7634ce62fa78b526ea7263487edd ]
 
-Ben Coddington reports seeing a hang in the following stack trace:
-  0 [ffffd0b50e1774e0] __schedule at ffffffff9ca05415
-  1 [ffffd0b50e177548] schedule at ffffffff9ca05717
-  2 [ffffd0b50e177558] bit_wait at ffffffff9ca061e1
-  3 [ffffd0b50e177568] __wait_on_bit at ffffffff9ca05cfb
-  4 [ffffd0b50e1775c8] out_of_line_wait_on_bit at ffffffff9ca05ea5
-  5 [ffffd0b50e177618] pnfs_roc at ffffffffc154207b [nfsv4]
-  6 [ffffd0b50e1776b8] _nfs4_proc_delegreturn at ffffffffc1506586 [nfsv4]
-  7 [ffffd0b50e177788] nfs4_proc_delegreturn at ffffffffc1507480 [nfsv4]
-  8 [ffffd0b50e1777f8] nfs_do_return_delegation at ffffffffc1523e41 [nfsv4]
-  9 [ffffd0b50e177838] nfs_inode_set_delegation at ffffffffc1524a75 [nfsv4]
- 10 [ffffd0b50e177888] nfs4_process_delegation at ffffffffc14f41dd [nfsv4]
- 11 [ffffd0b50e1778a0] _nfs4_opendata_to_nfs4_state at ffffffffc1503edf [nfsv4]
- 12 [ffffd0b50e1778c0] _nfs4_open_and_get_state at ffffffffc1504e56 [nfsv4]
- 13 [ffffd0b50e177978] _nfs4_do_open at ffffffffc15051b8 [nfsv4]
- 14 [ffffd0b50e1779f8] nfs4_do_open at ffffffffc150559c [nfsv4]
- 15 [ffffd0b50e177a80] nfs4_atomic_open at ffffffffc15057fb [nfsv4]
- 16 [ffffd0b50e177ad0] nfs4_file_open at ffffffffc15219be [nfsv4]
- 17 [ffffd0b50e177b78] do_dentry_open at ffffffff9c09e6ea
- 18 [ffffd0b50e177ba8] vfs_open at ffffffff9c0a082e
- 19 [ffffd0b50e177bd0] dentry_open at ffffffff9c0a0935
+On certain platforms, such as AMD Versal boards, the tx/rx queue pointer
+registers are cleared after suspend, and the rx queue pointer register
+is also disabled during suspend if WOL is enabled. Previously, we assumed
+that these registers would be restored by macb_mac_link_up(). However,
+in commit bf9cf80cab81, macb_init_buffers() was moved from
+macb_mac_link_up() to macb_open(). Therefore, we should call
+macb_init_buffers() to reinitialize the tx/rx queue pointer registers
+during resume.
 
-The issue is that the delegreturn is being asked to wait for a layout
-return that cannot complete because a state recovery was initiated. The
-state recovery cannot complete until the open() finishes processing the
-delegations it was given.
+Due to the reset of these two registers, we also need to adjust the
+tx/rx rings accordingly. The tx ring will be handled by
+gem_shuffle_tx_rings() in macb_mac_link_up(), so we only need to
+initialize the rx ring here.
 
-The solution is to propagate the existing flags that indicate a
-non-blocking call to the function pnfs_roc(), so that it knows not to
-wait in this situation.
-
-Reported-by: Benjamin Coddington <bcodding@hammerspace.com>
-Fixes: 29ade5db1293 ("pNFS: Wait on outstanding layoutreturns to complete in pnfs_roc()")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
+Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Tested-by: Quanyang Wang <quanyang.wang@windriver.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20260312-macb-versal-v1-2-467647173fa4@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c |    6 ++---
- fs/nfs/pnfs.c     |   58 ++++++++++++++++++++++++++++++++++++++----------------
- fs/nfs/pnfs.h     |   17 ++++++---------
- 3 files changed, 51 insertions(+), 30 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3792,8 +3792,8 @@ int nfs4_do_close(struct nfs4_state *sta
- 	calldata->res.seqid = calldata->arg.seqid;
- 	calldata->res.server = server;
- 	calldata->res.lr_ret = -NFS4ERR_NOMATCHING_LAYOUT;
--	calldata->lr.roc = pnfs_roc(state->inode,
--			&calldata->lr.arg, &calldata->lr.res, msg.rpc_cred);
-+	calldata->lr.roc = pnfs_roc(state->inode, &calldata->lr.arg,
-+				    &calldata->lr.res, msg.rpc_cred, wait);
- 	if (calldata->lr.roc) {
- 		calldata->arg.lr_args = &calldata->lr.arg;
- 		calldata->res.lr_res = &calldata->lr.res;
-@@ -6742,7 +6742,7 @@ static int _nfs4_proc_delegreturn(struct
- 	data->inode = nfs_igrab_and_active(inode);
- 	if (data->inode || issync) {
- 		data->lr.roc = pnfs_roc(inode, &data->lr.arg, &data->lr.res,
--					cred);
-+					cred, issync);
- 		if (data->lr.roc) {
- 			data->args.lr_args = &data->lr.arg;
- 			data->res.lr_res = &data->lr.res;
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -1427,10 +1427,9 @@ pnfs_commit_and_return_layout(struct ino
- 	return ret;
- }
- 
--bool pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred)
-+bool pnfs_roc(struct inode *ino, struct nfs4_layoutreturn_args *args,
-+	      struct nfs4_layoutreturn_res *res, const struct cred *cred,
-+	      bool sync)
- {
- 	struct nfs_inode *nfsi = NFS_I(ino);
- 	struct nfs_open_context *ctx;
-@@ -1441,7 +1440,7 @@ bool pnfs_roc(struct inode *ino,
- 	nfs4_stateid stateid;
- 	enum pnfs_iomode iomode = 0;
- 	bool layoutreturn = false, roc = false;
--	bool skip_read = false;
-+	bool skip_read;
- 
- 	if (!nfs_have_layout(ino))
- 		return false;
-@@ -1454,20 +1453,14 @@ retry:
- 		lo = NULL;
- 		goto out_noroc;
- 	}
--	pnfs_get_layout_hdr(lo);
--	if (test_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags)) {
--		spin_unlock(&ino->i_lock);
--		rcu_read_unlock();
--		wait_on_bit(&lo->plh_flags, NFS_LAYOUT_RETURN,
--				TASK_UNINTERRUPTIBLE);
--		pnfs_put_layout_hdr(lo);
--		goto retry;
--	}
- 
- 	/* no roc if we hold a delegation */
-+	skip_read = false;
- 	if (nfs4_check_delegation(ino, FMODE_READ)) {
--		if (nfs4_check_delegation(ino, FMODE_WRITE))
-+		if (nfs4_check_delegation(ino, FMODE_WRITE)) {
-+			lo = NULL;
- 			goto out_noroc;
-+		}
- 		skip_read = true;
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5527,8 +5527,18 @@ static int __maybe_unused macb_resume(st
+ 		rtnl_unlock();
  	}
  
-@@ -1476,12 +1469,43 @@ retry:
- 		if (state == NULL)
- 			continue;
- 		/* Don't return layout if there is open file state */
--		if (state->state & FMODE_WRITE)
-+		if (state->state & FMODE_WRITE) {
-+			lo = NULL;
- 			goto out_noroc;
-+		}
- 		if (state->state & FMODE_READ)
- 			skip_read = true;
- 	}
- 
-+	if (skip_read) {
-+		bool writes = false;
++	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
++		macb_init_buffers(bp);
 +
-+		list_for_each_entry(lseg, &lo->plh_segs, pls_list) {
-+			if (lseg->pls_range.iomode != IOMODE_READ) {
-+				writes = true;
-+				break;
-+			}
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues;
+ 	     ++q, ++queue) {
++		if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
++			if (macb_is_gem(bp))
++				gem_init_rx_ring(queue);
++			else
++				macb_init_rx_ring(queue);
 +		}
-+		if (!writes) {
-+			lo = NULL;
-+			goto out_noroc;
-+		}
-+	}
 +
-+	pnfs_get_layout_hdr(lo);
-+	if (test_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags)) {
-+		if (!sync) {
-+			pnfs_set_plh_return_info(
-+				lo, skip_read ? IOMODE_RW : IOMODE_ANY, 0);
-+			goto out_noroc;
-+		}
-+		spin_unlock(&ino->i_lock);
-+		rcu_read_unlock();
-+		wait_on_bit(&lo->plh_flags, NFS_LAYOUT_RETURN,
-+			    TASK_UNINTERRUPTIBLE);
-+		pnfs_put_layout_hdr(lo);
-+		goto retry;
-+	}
- 
- 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list) {
- 		if (skip_read && lseg->pls_range.iomode == IOMODE_READ)
-@@ -1521,7 +1545,7 @@ retry:
- out_noroc:
- 	spin_unlock(&ino->i_lock);
- 	rcu_read_unlock();
--	pnfs_layoutcommit_inode(ino, true);
-+	pnfs_layoutcommit_inode(ino, sync);
- 	if (roc) {
- 		struct pnfs_layoutdriver_type *ld = NFS_SERVER(ino)->pnfs_curr_ld;
- 		if (ld->prepare_layoutreturn)
---- a/fs/nfs/pnfs.h
-+++ b/fs/nfs/pnfs.h
-@@ -295,10 +295,9 @@ int pnfs_mark_matching_lsegs_return(stru
- 				u32 seq);
- int pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
- 		struct list_head *lseg_list);
--bool pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred);
-+bool pnfs_roc(struct inode *ino, struct nfs4_layoutreturn_args *args,
-+	      struct nfs4_layoutreturn_res *res, const struct cred *cred,
-+	      bool sync);
- int pnfs_roc_done(struct rpc_task *task, struct nfs4_layoutreturn_args **argpp,
- 		  struct nfs4_layoutreturn_res **respp, int *ret);
- void pnfs_roc_release(struct nfs4_layoutreturn_args *args,
-@@ -769,12 +768,10 @@ pnfs_layoutcommit_outstanding(struct ino
- 	return false;
- }
- 
--
--static inline bool
--pnfs_roc(struct inode *ino,
--		struct nfs4_layoutreturn_args *args,
--		struct nfs4_layoutreturn_res *res,
--		const struct cred *cred)
-+static inline bool pnfs_roc(struct inode *ino,
-+			    struct nfs4_layoutreturn_args *args,
-+			    struct nfs4_layoutreturn_res *res,
-+			    const struct cred *cred, bool sync)
- {
- 	return false;
- }
+ 		napi_enable(&queue->napi_rx);
+ 		napi_enable(&queue->napi_tx);
+ 	}
 
 
 
