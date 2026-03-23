@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-228045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228225-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8PPNESVIwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228045-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:17 +0100
+	id SILuBb9NwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228225-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61FEF2F3B7B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 920852F4844
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7C3553067E97
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6A70130D81AA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EA53AD53C;
-	Mon, 23 Mar 2026 13:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 282453B0ADC;
+	Mon, 23 Mar 2026 14:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRuvacnQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6JYwcFT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD343AC0C9;
-	Mon, 23 Mar 2026 13:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD713AEF5F;
+	Mon, 23 Mar 2026 14:01:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273961; cv=none; b=rF3eiyY6icuYLSsx/ndQz9VLxRBqk1kQV+kqvTvD52APE88CIEa6MyvtZUsw5PH2qvFlSs9og8emB0rg0nmgbJEM4WHOBsC0gyBDIQEXtn0VpyGLzCFOIs26uo3W5e1nWiX0gRezvUCgckGl+MTLcWjJ0a4GZ9tWvcF0CRkzkI0=
+	t=1774274504; cv=none; b=Ns2jh8UqBuO4jl8DTsHEJg0hIoDGIkmjhUqhwQ9fgs0iwJrfhEOTy4njz1/pfl/WicmZodVYJodgZMhkcCx3eoDkZLSCjCfVaT4t59oOiWPjiZ1uN3a5uLcKSJGtiL1ui21b3uE3ZdK9ebazY2APh35C2MmY7pCMnkl0ygCmi6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273961; c=relaxed/simple;
-	bh=T0rxlSycWTmnhfiTnWrYQwaQe3EDPdEMh5vfuGWj6co=;
+	s=arc-20240116; t=1774274504; c=relaxed/simple;
+	bh=nI57aAdO1R8Zwc5kguQ6zWdeQ/T1lTP1dpjnM9T0DrE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BtZfV3LCBRFJieLeEsL6/ilwaukikZAbn8W0GUzWGwbmd8aNtCknKxIoW6jS5zWTy/QMNC/QhCTzr07KFJh3fd2U9PsZ6fIDkcFrwAYWzi/e1YhpWQw9QJ/c86qNQ2K1a+7peoBLlQq3by9d3DMTxgq25BnOq3K6LLJHfoqA7e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRuvacnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36F9C4CEF7;
-	Mon, 23 Mar 2026 13:52:40 +0000 (UTC)
+	 MIME-Version; b=pC01TQZ28PPhNw4L0i2eVqcMXU6/T2zJ+OwHuZsUacCaCzruPH+eqZSa2HcjEOkf3Cme+t+R/QG8I1Kq1Lj/b4v5G2+lScMSTXIoAi2Ugj3OGievxiO3rZwVxaFsNePmfCKUjfSKEteNTKaIcAk/JEjypYp+bX4bUvfeS8WgNE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6JYwcFT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F34C4CEF7;
+	Mon, 23 Mar 2026 14:01:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273961;
-	bh=T0rxlSycWTmnhfiTnWrYQwaQe3EDPdEMh5vfuGWj6co=;
+	s=korg; t=1774274504;
+	bh=nI57aAdO1R8Zwc5kguQ6zWdeQ/T1lTP1dpjnM9T0DrE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRuvacnQjFlF7WCtQUarNhUOC6UGqezt5BKfAFWXaMLOgRK1hNn0GlI7L7jrBb8rw
-	 RrLl7ifXBk/qeVySBahG9pnsAFcjEUrLLNJGLvvlbzpRvYSkOTUaht8YXeNOE39O6P
-	 zjGSYB1S1OnS6XfbtX1X31KPkusBW6HTsd7n/JgU=
+	b=l6JYwcFTF7GIHc+WEgJhUoRKi9eAono6HxQ098DahD6y/tSIlRNbQPqQyCJ+iDo4a
+	 tNGscTYvuQP4x+N3R0t1KnGkJz8LgMG6Jw2R6eNSP3RDcsa388Eu3nlkdqa9pNblhf
+	 nPf9g52pf2pHyrWVELATTPAoKtc0tfSdEdScoE4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	stable <stable@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.19 063/220] serial: 8250_dw: Avoid unnecessary LCR writes
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 019/212] mac80211: fix crash in ieee80211_chan_bw_change for AP_VLAN stations
 Date: Mon, 23 Mar 2026 14:44:00 +0100
-Message-ID: <20260323134506.582825175@linuxfoundation.org>
+Message-ID: <20260323134504.367397086@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,141 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228045-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228225-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
-X-Rspamd-Queue-Id: 61FEF2F3B7B
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 920852F4844
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 8002d6d6d0d8a36a7d6ca523b17a51cb0fa7c3c3 upstream.
+commit 672e5229e1ecfc2a3509b53adcb914d8b024a853 upstream.
 
-When DW UART is configured with BUSY flag, LCR writes may not always
-succeed which can make any LCR write complex and very expensive.
-Performing write directly can trigger IRQ and the driver has to perform
-complex and distruptive sequence while retrying the write.
+ieee80211_chan_bw_change() iterates all stations and accesses
+link->reserved.oper via sta->sdata->link[link_id]. For stations on
+AP_VLAN interfaces (e.g. 4addr WDS clients), sta->sdata points to
+the VLAN sdata, whose link never participates in chanctx reservations.
+This leaves link->reserved.oper zero-initialized with chan == NULL,
+causing a NULL pointer dereference in __ieee80211_sta_cap_rx_bw()
+when accessing chandef->chan->band during CSA.
 
-Therefore, it's better to avoid doing LCR write that would not change
-the value of the LCR register. Add LCR write avoidance code into the
-8250_dw driver's .serial_out() functions.
+Resolve the VLAN sdata to its parent AP sdata using get_bss_sdata()
+before accessing link data.
 
-Reported-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
-Cc: stable <stable@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260203171049.4353-3-ilpo.jarvinen@linux.intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20260305170812.2904208-1-nbd@nbd.name
+[also change sta->sdata in ARRAY_SIZE even if it doesn't matter]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_dw.c |   31 +++++++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ net/mac80211/chan.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_dw.c
-+++ b/drivers/tty/serial/8250/8250_dw.c
-@@ -181,6 +181,22 @@ static void dw8250_check_lcr(struct uart
- 	 */
- }
+--- a/net/mac80211/chan.c
++++ b/net/mac80211/chan.c
+@@ -441,14 +441,16 @@ static void ieee80211_chan_bw_change(str
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(sta, &local->sta_list,
+ 				list) {
+-		struct ieee80211_sub_if_data *sdata = sta->sdata;
++		struct ieee80211_sub_if_data *sdata;
+ 		enum ieee80211_sta_rx_bandwidth new_sta_bw;
+ 		unsigned int link_id;
  
-+/*
-+ * With BUSY, LCR writes can be very expensive (IRQ + complex retry logic).
-+ * If the write does not change the value of the LCR register, skip it entirely.
-+ */
-+static bool dw8250_can_skip_reg_write(struct uart_port *p, unsigned int offset, u32 value)
-+{
-+	struct dw8250_data *d = to_dw8250_data(p->private_data);
-+	u32 lcr;
-+
-+	if (offset != UART_LCR || d->uart_16550_compatible)
-+		return false;
-+
-+	lcr = serial_port_in(p, offset);
-+	return lcr == value;
-+}
-+
- /* Returns once the transmitter is empty or we run out of retries */
- static void dw8250_tx_wait_empty(struct uart_port *p)
- {
-@@ -207,12 +223,18 @@ static void dw8250_tx_wait_empty(struct
+ 		if (!ieee80211_sdata_running(sta->sdata))
+ 			continue;
  
- static void dw8250_serial_out(struct uart_port *p, unsigned int offset, u32 value)
- {
-+	if (dw8250_can_skip_reg_write(p, offset, value))
-+		return;
+-		for (link_id = 0; link_id < ARRAY_SIZE(sta->sdata->link); link_id++) {
++		sdata = get_bss_sdata(sta->sdata);
 +
- 	writeb(value, p->membase + (offset << p->regshift));
- 	dw8250_check_lcr(p, offset, value);
- }
- 
- static void dw8250_serial_out38x(struct uart_port *p, unsigned int offset, u32 value)
- {
-+	if (dw8250_can_skip_reg_write(p, offset, value))
-+		return;
-+
- 	/* Allow the TX to drain before we reconfigure */
- 	if (offset == UART_LCR)
- 		dw8250_tx_wait_empty(p);
-@@ -237,6 +259,9 @@ static u32 dw8250_serial_inq(struct uart
- 
- static void dw8250_serial_outq(struct uart_port *p, unsigned int offset, u32 value)
- {
-+	if (dw8250_can_skip_reg_write(p, offset, value))
-+		return;
-+
- 	value &= 0xff;
- 	__raw_writeq(value, p->membase + (offset << p->regshift));
- 	/* Read back to ensure register write ordering. */
-@@ -248,6 +273,9 @@ static void dw8250_serial_outq(struct ua
- 
- static void dw8250_serial_out32(struct uart_port *p, unsigned int offset, u32 value)
- {
-+	if (dw8250_can_skip_reg_write(p, offset, value))
-+		return;
-+
- 	writel(value, p->membase + (offset << p->regshift));
- 	dw8250_check_lcr(p, offset, value);
- }
-@@ -261,6 +289,9 @@ static u32 dw8250_serial_in32(struct uar
- 
- static void dw8250_serial_out32be(struct uart_port *p, unsigned int offset, u32 value)
- {
-+	if (dw8250_can_skip_reg_write(p, offset, value))
-+		return;
-+
- 	iowrite32be(value, p->membase + (offset << p->regshift));
- 	dw8250_check_lcr(p, offset, value);
- }
++		for (link_id = 0; link_id < ARRAY_SIZE(sdata->link); link_id++) {
+ 			struct ieee80211_link_data *link =
+ 				rcu_dereference(sdata->link[link_id]);
+ 			struct ieee80211_bss_conf *link_conf;
 
 
 
