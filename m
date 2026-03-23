@@ -1,316 +1,207 @@
-Return-Path: <stable+bounces-229991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229992-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2JwPDeuIwWn+TgQAu9opvQ
-	(envelope-from <stable+bounces-229991-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:39:39 +0100
+	id yKpoFaSPwWmuTwQAu9opvQ
+	(envelope-from <stable+bounces-229992-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:08:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DD992FB689
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:39:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D934A2FBE84
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:08:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4F7C8323634A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C3F6315BF5C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0BB3C9EEB;
-	Mon, 23 Mar 2026 18:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A873CF04E;
+	Mon, 23 Mar 2026 18:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="XaeKKwUY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHec/hfo"
 X-Original-To: stable@vger.kernel.org
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11022122.outbound.protection.outlook.com [52.101.53.122])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40493C9EE0;
-	Mon, 23 Mar 2026 18:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.122
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774289036; cv=fail; b=pQJhxo+75s+UVsI6KJB6S7qIEW70yMFrjlWqS5WcWKfrhOrMTDBNEZwnUNJpSyaDMl0EHqX5OGe28AiZPyQMIjajNkkkGQPBXN9GqoQ3Q3suNeXVxpL8mkqMVPz0zE2pM4X8e9R4spJ7kU4hRTSYACfxqDtuVlDr/bO1ih11zCg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774289036; c=relaxed/simple;
-	bh=IC3Zt6jZ8RbBGiTa092uzQGXH5ruuKbocVAFpR2EM3Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=q5ZWBdzxHQHNoT21hWXckk2t4iXf03ElXCjVHUZAMUEYSK2OZB2o5dy1HOfV6eC0t01kbiAeC9V245ubOkkY99NKzTWY4LPNQMMR9PluHyyW1q7s9Q9KvSP3b3kXW765w7MCm+eaY/4FOlcRYjkilH674gWxt3ORiVOh78TViAg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=XaeKKwUY; arc=fail smtp.client-ip=52.101.53.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MvJyFvBmcvyZsedJ6urlWWwhwzZe31RLxM6Nr9FIQ2JAR2iBgqRlpY1ee0yJqDjzuzxJMGyPCj0wRDbCFsVkjaL/We+kZHL5UwbOjHV+eZCiKIQa6crw+DcKODfym5IOX3XzzqAZV79DbrXdp7AHPUoNftXjQ198w5M5BBzvbb90+YKskgpZ8YlyGu5YEqhuzk1PqoXIYiZzvFwbg5L1lCrpKKA16832MCy4Sap1MjAAE4/rcXZQc1enQK+12BLMpF/4lXhElNXHu+10C6Bsmf2xV7e0fO7rofD2OqhaqyeGgiqjFWMIcGrjCC4ESf92wmKU6KdIwDIS0dSgeBIUrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5uCPFQpGX35syGPzECbbpnomSHuxKfUuEoQbI/toJ5s=;
- b=ShKalBsOEJTHE/UyjZkzvyhO/C/jmQo4CvGdLvJAZ5VC08XFM5FvhcTdmCgY15FC2mqxXiJzPJxIF23lKNA1CbWNMwiSLJBA1s40Mb10cMGBJwlTDiiNAeSj+qpKpKJWYRV2VBKPx/7Yp6hZ9jE/l6oJeloNM4mwvVp255ij0J2C+JJdhW6Y3ilh16hCllLLvz+KOZlID4Df4cXtm0J8uWJTO17JNq7O9H973qqgiRwdMgkbJXiUxVQr96SP0HHJOLrtfa5voj6uTig3iVidu1j4dnjnmH1RX+wOLua3gzyuYHGMeHNpmCypx6nxxqyIDslvRolv15vpDB8Aah4PGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5uCPFQpGX35syGPzECbbpnomSHuxKfUuEoQbI/toJ5s=;
- b=XaeKKwUY6F55fOO7pbJaqjEA8zxvavNiGasHPUOZp5lohM1DWMTGITOHL+k89CRjF96Vy/OCDdnxXMil/Oep46NpgAzZ9pjzL79Dj4iEssIax9J0jvLGuGtJCydZLLTQGjHpgDsdqrLk2gtsRbDO/t/GBA5QXx8kDkGDRnIyKl4=
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com (2603:10b6:806:4a4::6)
- by SA1PR21MB6634.namprd21.prod.outlook.com (2603:10b6:806:4a9::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9769.5; Mon, 23 Mar
- 2026 18:03:51 +0000
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::879f:eec1:ca0e:d219]) by SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::879f:eec1:ca0e:d219%3]) with mapi id 15.20.9769.004; Mon, 23 Mar 2026
- 18:03:51 +0000
-From: Long Li <longli@microsoft.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: Konstantin Taranov <kotaranov@microsoft.com>, Jakub Kicinski
-	<kuba@kernel.org>, "David S . Miller" <davem@davemloft.net>, Paolo Abeni
-	<pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Jason Gunthorpe <jgg@ziepe.ca>, Haiyang Zhang
-	<haiyangz@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Wei Liu
-	<wei.liu@kernel.org>, Dexuan Cui <DECUI@microsoft.com>, Simon Horman
-	<horms@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [EXTERNAL] Re: [PATCH rdma] RDMA/mana_ib: Disable RX steering on
- RSS QP destroy
-Thread-Topic: [EXTERNAL] Re: [PATCH rdma] RDMA/mana_ib: Disable RX steering on
- RSS QP destroy
-Thread-Index: AQHcuMmzZYdhNaefSkOhy1v7huhDC7W653UAgAGFgzA=
-Date: Mon, 23 Mar 2026 18:03:51 +0000
-Message-ID:
- <SA1PR21MB668362600130B8167EEE32E4CE4BA@SA1PR21MB6683.namprd21.prod.outlook.com>
-References: <20260321002842.1607179-1-longli@microsoft.com>
- <20260322184848.GC814676@unreal>
-In-Reply-To: <20260322184848.GC814676@unreal>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=e6e683a7-5f5f-463b-a2ef-1dc09abed4bc;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-03-23T18:02:54Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB6683:EE_|SA1PR21MB6634:EE_
-x-ms-office365-filtering-correlation-id: c20106c2-3902-4640-a45e-08de89068a04
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|1800799024|366016|38070700021|18002099003|56012099003|22082099003;
-x-microsoft-antispam-message-info:
- K6ow/RpMGz0EjcUzzKMYS/ugOCrZmaamqC1gm1yXj+8fwBwY3YdQtXDllRkuNm4sThI0Jcfikt58A/Lly/v44hAQI6xin34bFYxmGN4tQlopJzf81Imsm+q+lPEXckV1yY9klO6dgc9zZoI/sc81TFBvKKDaTNvXLQMfXbT8m2Hpe3JthmmqLbFtz3Qyv9i8vnIhqk8gUslVwkOAb5KHJ5pwme0nD4ru/7BmdZ4Zhbl5vBVoPsZYtLCcG3tNyaUAvSl1+8douWLF237DZh5FPvrR9pLI1I0FaSnenFlfpt2L2fjS773lEjx7HJ1ioPts9aT+sqFKMElb9iWr7AcvBF9zKkXxQBpBdjoUd7xt89rhVe3CFV3Pn8H0s44xROZ6hSeFi3i69CRQU9p6gGzb3D1IfFkzjmjdSzD4jY2Y/bHGnbnEhANre1SqyMXsFYTosrlBpvYHYAYMGCvW9jvy9UZ64OY8FOy30PNUwLdEyhGmAe9Rxs/ll7/XaLJqm+rqZ22U3EZ1sKUX5P4vVf2zFYEi6adwlOB8IaqQIuwUghAdUkKL0VKOoG7+zfda0E1p+ZwtiDVllpFfrFOsfDTy1BCQpDity3DqMlmf2Z1RC4xL8y/EhN3En+XMcAH7+TtEHWlt1AiHfYAoFnk7oQ5DVsW+nBWqld/6dVRsy19MvKWLveJene7iyod0DVk3ziQp8aBB9ep3LrAR0Qg4pnmfpgemFkqT/mdDrqnTGwDB24w4JMn5wthTnL02Yrsm2qK944e7mhrsqI8tDOoZbnHdPxdYFU4OGn0d2oiiUnEzQAM=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6683.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(38070700021)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?c6NW0XtOhTou1+DCoxo4RHoCa7wQ/W5fgPAL6XwSpj0VmuG/eMIWPB2Z3Soe?=
- =?us-ascii?Q?c8g20zMy05s3YPm5wiQu7M+B+uwd3BTacRIDhWKAYakwgYoBAoGuh43vzOnn?=
- =?us-ascii?Q?t/wadVNWi8FoUPgeick+eAEmCw3WCoOBifWpLFvzcQXx4Y+wSQlJPZqe6JA2?=
- =?us-ascii?Q?CINrGEW1VTZLmW4fr8z32ytEs6hyl5jYf9Ghl0lRb/MZyoozCn57tAu6Is8A?=
- =?us-ascii?Q?qb13ZRZl++2YEcU59sXJoRbrUbELRGDUcZRCH4Xqoypv0m6su/8xvQf+cSX4?=
- =?us-ascii?Q?xXedquNtrx1H2pXZPHy/pI21ECGLc+Fah6c2BvNcqOV3g1KZpOfvUxItAvi1?=
- =?us-ascii?Q?fcCEFSZfH3sQeNe7EORoUUW6cObD8wsVH+VRsG3/Lo5Dy67Bl7ZMQSg7xTJJ?=
- =?us-ascii?Q?OJaUtSA6fGvYJI7gK2RUfbgwUhmu7UVLMh//Bbe2b+Fo35gi5KuopYLSGpNn?=
- =?us-ascii?Q?9aiuLl6ucuLYvS02bl8xRs2ZhBcviKxyOWfsKZoBUFQm9Jj0Q/s4Svbi+Gk+?=
- =?us-ascii?Q?PMtvVM0HHNqCvuhE98zFdoftDm4zE7pFzNBqhqj+y/cxeQWGqsX5kGhzn/7H?=
- =?us-ascii?Q?R1MhePOxp3RfGntZqQZ3+kCKU6AE23HOuNyng0x6isug/swMQ72tYO0VhpNK?=
- =?us-ascii?Q?bHdexZXFhOGj7EKA/1vtSWK8oKHxYzK+MIAgy9cdr6hHktBSQykz4TmXw+YU?=
- =?us-ascii?Q?9uLysyLTmjpD0c1nBeLEV3jbysiIUvfJwFGA/i0cpHh9keXi/PVoR+MGjPMy?=
- =?us-ascii?Q?lBryWBZ56CrvThHUtyzSpp+AnZYNtj6p6MtUxdYYybYhh+X9CstUP8YEENiA?=
- =?us-ascii?Q?cz4aws1rSORHowsMMCWojaiAjoHGipvAD1mV5XuqhjIeivrQnpdbckmNkqtB?=
- =?us-ascii?Q?zj3Bghhot7o/KpQEXiCYVkni7S8+kqkhOE7ts23Fr+90eJoHobtYm2cXL5Gj?=
- =?us-ascii?Q?51s4JkduTaGMwkmf4DwTvPcXUga8RbrsuOsnABa3YMq1oVx2bZxN9lO5TR2u?=
- =?us-ascii?Q?373toiGcjCHoLuahuqlmln8JrTGxInHlRqNyrJH27elorwJ6Yn/Nw09PCJ+x?=
- =?us-ascii?Q?eIa403csk+vUwAVWfzd7w+eRhoZRG8fENyIHczm/742CpPCJqfKLk4W7Ez2s?=
- =?us-ascii?Q?l6yABkPjQ3tKMankvfVwUKjWCX9xHLPMlOLq8h2BRjHdXq4Ce1Fnt+/JvG7j?=
- =?us-ascii?Q?7tccHWPxRp5P0y4JEx6+YKhu4IbG5CNLna3hJZqSIRU1byieYNq7vap7Utrg?=
- =?us-ascii?Q?OmnancCHG+0mbflxkDLpE/aD49gF551i0pLOrg8Mf6FQ7U/qeElYmMop1bTL?=
- =?us-ascii?Q?o0M8LksO+w252rUA/pAGzuGQkNBD7LmyK30mDzndGR5u3hDab8m1MZgGaudG?=
- =?us-ascii?Q?wD0pp1r44EpuHObww8uNs1+heQ3Mu2vtwkPxttYM1eBDx/X5fP18R+Y5seUf?=
- =?us-ascii?Q?REM8FkZwwgX+4V1Z1Y2cbNDN79PSDx2XxI92IQJ+svt3KUTlwG1d4FycgDhS?=
- =?us-ascii?Q?eJ8Cnq/pn79pwqH8vK4w3jHEkcuIdhjtqJcyX3co2jVEhZON8UXHlcHbhXo6?=
- =?us-ascii?Q?ViLHRn4JcdeGo/1XVqNpRoNz9KWb1YTJndjBB0MSsF9RVmHwkVNTg3GDGA2X?=
- =?us-ascii?Q?jY9QUXM5NVmtXGDSwKh++qQXJ59QJxWc6/DlEFV52R6jk03MLsrxded0EzP/?=
- =?us-ascii?Q?b2lIWDApCDUkwVGJJ4Er7XedmPoO5h24uPW87Td/ZGP02zCN?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3156E2F532C;
+	Mon, 23 Mar 2026 18:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774290656; cv=none; b=VrymgiMvzlx4f+nBq0J1G4CrlTq/bX/+Dx9eGA18X1CRS6PyUBm17NB/qAvNAaUwosYwkohetM9e3cnOr9eG9kGFxtuXBnQ3u6XUYpLlD9Tn8k/5NT7ig7MD8xMZG2KqIzyoc8Cod0Gfti3k1yLJ/CMbBr4F/15Iea4w7t/pvg8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774290656; c=relaxed/simple;
+	bh=BTj6faIFVDBxcuvZCXtOL40uLPTYUH+bjw6mwF0OGAM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bhQea8pFRdQ4757eN4MpsPZ+pDEONHipHYsdTtjwL+vuwZQfs3QdsVfpDe89ergthmQW2qX9sFJ1ObakvtPb8kM3Y7XrjA0cSkIBaHIu4wP3EBWDjVn/L7cOzdfVfC0rfaWWKdTJqavGdi2kYdqcxd9mbN0LvKeREO9QbY8NV3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHec/hfo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78ABCC4CEF7;
+	Mon, 23 Mar 2026 18:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1774290655;
+	bh=BTj6faIFVDBxcuvZCXtOL40uLPTYUH+bjw6mwF0OGAM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aHec/hfoZNsIz60+LI97byVoUl0gB62rPrxLVnfMaLSnNnBYYCVoj3fENKAip/KO9
+	 oYr1eA+rkYYibdF97xgv8fXo27haY3z9/eGOaEWgGkhKUQ74HSpvss4jb4JB3TOdsH
+	 7IhHL/kBHqV9VWTNQndX6P2M98oyVFxHORU7X1yoPTvAMpqo93UcoYp08MOkxy6Wu3
+	 sjXW/4kjgSaPSIQvgaRFdK5nnnrJjzmf1JwD+w/sMlDvQftLpZwF8iEYsglQn5XFCi
+	 zrxOLSl6y5ZNVGNeJ8q6BYzgS1UlHcvur8thMDuWPIFy5/077Kf0lNiffutIsxTnbv
+	 5N/cJGj3FvcZA==
+Message-ID: <4628c5e1-5c27-4715-ac52-c4157a45eaa8@kernel.org>
+Date: Mon, 23 Mar 2026 19:30:52 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6683.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c20106c2-3902-4640-a45e-08de89068a04
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Mar 2026 18:03:51.1010
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RyZPq525mtEX71w2xdSZ7wRssAoDHD9Z6RNhg3lpCY5+QPGS4luQh45OhIxZ+tzKodld2kbYHK03Mn9+Ibzhaw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR21MB6634
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[microsoft.com,reject];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[microsoft.com:s=selector2];
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH 6.1 095/481] selftests: mptcp: join: check removing
+ signal+subflow endp
+Content-Language: fr
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>
+References: <20260323134525.256603107@linuxfoundation.org>
+ <20260323134527.595315873@linuxfoundation.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260323134527.595315873@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229991-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_EQ_ADDR_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[18];
+	RCVD_COUNT_THREE(0.00)[4];
+	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[microsoft.com:+];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229992-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[longli@microsoft.com,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,SA1PR21MB6683.namprd21.prod.outlook.com:mid]
-X-Rspamd-Queue-Id: 7DD992FB689
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[kernel.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email]
+X-Rspamd-Queue-Id: D934A2FBE84
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-> On Fri, Mar 20, 2026 at 05:28:42PM -0700, Long Li wrote:
-> > When an RSS QP is destroyed (e.g. DPDK exit), mana_ib_destroy_qp_rss()
-> > destroys the RX WQ objects but does not disable vPort RX steering in
-> > firmware. This leaves stale steering configuration that still points
-> > to the destroyed RX objects.
-> >
-> > If traffic continues to arrive (e.g. peer VM is still transmitting)
-> > and the VF interface is subsequently brought up (mana_open), the
-> > firmware may deliver completions using stale CQ IDs from the old RX obj=
-ects.
-> > These CQ IDs can be reused by the ethernet driver for new TX CQs,
-> > causing RX completions to land on TX CQs:
-> >
-> >   WARNING: mana_poll_tx_cq+0x1b8/0x220 [mana]  (is_sq =3D=3D false)
-> >   WARNING: mana_gd_process_eq_events+0x209/0x290 (cq_table lookup
-> > fails)
-> >
-> > Fix this by disabling vPort RX steering before destroying RX WQ objects=
-.
-> > Note that mana_fence_rqs() cannot be used here because the fence
-> > completion is delivered on the CQ, which is polled by user-mode (e.g.
-> > DPDK) and not visible to the kernel driver.
-> >
-> > Refactor the disable logic into a shared mana_disable_vport_rx() in
-> > mana_en, exported for use by mana_ib, replacing the duplicate code.
-> > The ethernet driver's mana_dealloc_queues() is also updated to call
-> > this common function.
-> >
-> > Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure
-> > Network Adapter")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Long Li <longli@microsoft.com>
-> > ---
-> >  drivers/infiniband/hw/mana/qp.c               | 17 ++++++++++++++++-
-> >  drivers/net/ethernet/microsoft/mana/mana_en.c | 11 ++++++++++-
-> >  include/net/mana/mana.h                       |  1 +
-> >  3 files changed, 27 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/infiniband/hw/mana/qp.c
-> > b/drivers/infiniband/hw/mana/qp.c index 80cf4ade4b75..b27084c53a14
-> > 100644
-> > --- a/drivers/infiniband/hw/mana/qp.c
-> > +++ b/drivers/infiniband/hw/mana/qp.c
-> > @@ -829,11 +829,26 @@ static int mana_ib_destroy_qp_rss(struct
-> mana_ib_qp *qp,
-> >  	struct net_device *ndev;
-> >  	struct mana_ib_wq *wq;
-> >  	struct ib_wq *ibwq;
-> > -	int i;
-> > +	int i, err;
-> >
-> >  	ndev =3D mana_ib_get_netdev(qp->ibqp.device, qp->port);
-> >  	mpc =3D netdev_priv(ndev);
-> >
-> > +	/* Disable vPort RX steering before destroying RX WQ objects.
-> > +	 * Otherwise firmware still routes traffic to the destroyed queues,
-> > +	 * which can cause bogus completions on reused CQ IDs when the
-> > +	 * ethernet driver later creates new queues on mana_open().
-> > +	 *
-> > +	 * Unlike the ethernet teardown path, mana_fence_rqs() cannot be
-> > +	 * used here because the fence completion CQE is delivered on the
-> > +	 * CQ which is polled by userspace (e.g. DPDK), so there is no way
-> > +	 * for the kernel to wait for fence completion.
-> > +	 */
-> > +	err =3D mana_disable_vport_rx(mpc);
-> > +	if (err)
-> > +		ibdev_err(&mdev->ib_dev,
-> > +			  "Failed to disable vPort RX: %d\n", err);
->=20
-> mana_cfg_vport_steering() is already prints in all failure scenarios.
->=20
-> Thanks
+Hi Greg,
 
-I'm sending v2 with this message removed.
+On 23/03/2026 14:41, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Thanks,
-Long
+I do!
 
->=20
-> > +
-> >  	for (i =3D 0; i < (1 << ind_tbl->log_ind_tbl_size); i++) {
-> >  		ibwq =3D ind_tbl->ind_tbl[i];
-> >  		wq =3D container_of(ibwq, struct mana_ib_wq, ibwq); diff --git
-> > a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > index 22444c7530a5..51719ef1c09b 100644
-> > --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> > @@ -2934,6 +2934,13 @@ static void mana_rss_table_init(struct
-> mana_port_context *apc)
-> >  			ethtool_rxfh_indir_default(i, apc->num_queues);  }
-> >
-> > +int mana_disable_vport_rx(struct mana_port_context *apc) {
-> > +	return mana_cfg_vport_steering(apc, TRI_STATE_FALSE, false, false,
-> > +				       false);
-> > +}
-> > +EXPORT_SYMBOL_NS(mana_disable_vport_rx, "NET_MANA");
-> > +
-> >  int mana_config_rss(struct mana_port_context *apc, enum TRI_STATE rx,
-> >  		    bool update_hash, bool update_tab)  { @@ -3339,10 +3346,12
-> @@
-> > static int mana_dealloc_queues(struct net_device *ndev)
-> >  	 */
-> >
-> >  	apc->rss_state =3D TRI_STATE_FALSE;
-> > -	err =3D mana_config_rss(apc, TRI_STATE_FALSE, false, false);
-> > +	err =3D mana_disable_vport_rx(apc);
-> >  	if (err && mana_en_need_log(apc, err))
-> >  		netdev_err(ndev, "Failed to disable vPort: %d\n", err);
-> >
-> > +	mana_fence_rqs(apc);
-> > +
-> >  	/* Even in err case, still need to cleanup the vPort */
-> >  	mana_destroy_rxqs(apc);
-> >  	mana_destroy_txq(apc);
-> > diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h index
-> > 204c2b612a62..2634e9135eed 100644
-> > --- a/include/net/mana/mana.h
-> > +++ b/include/net/mana/mana.h
-> > @@ -574,6 +574,7 @@ struct mana_port_context {  netdev_tx_t
-> > mana_start_xmit(struct sk_buff *skb, struct net_device *ndev);  int
-> > mana_config_rss(struct mana_port_context *ac, enum TRI_STATE rx,
-> >  		    bool update_hash, bool update_tab);
-> > +int mana_disable_vport_rx(struct mana_port_context *apc);
-> >
-> >  int mana_alloc_queues(struct net_device *ndev);  int
-> > mana_attach(struct net_device *ndev);
-> > --
-> > 2.43.0
-> >
+> ------------------
+> 
+> From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> 
+> commit 1777f349ff41b62dfe27454b69c27b0bc99ffca5 upstream.
+> 
+> This validates the previous commit: endpoints with both the signal and
+> subflow flags should always be marked as used even if it was not
+> possible to create new subflows due to the MPTCP PM limits.
+> 
+> For this test, an extra endpoint is created with both the signal and the
+> subflow flags, and limits are set not to create extra subflows. In this
+> case, an ADD_ADDR is sent, but no subflows are created. Still, the local
+> endpoint is marked as used, and no warning is fired when removing the
+> endpoint, after having sent a RM_ADDR.
+> 
+> The 'Fixes' tag here below is the same as the one from the previous
+> commit: this patch here is not fixing anything wrong in the selftests,
+> but it validates the previous fix for an issue introduced by this commit
+> ID.
+> 
+> Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Mat Martineau <martineau@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-5-4b5462b6f016@kernel.org
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  tools/testing/selftests/net/mptcp/mptcp_join.sh |   13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+> 
+> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
+> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+> @@ -2389,6 +2389,19 @@ remove_tests()
+>  		chk_rst_nr 0 0
+>  	fi
+>  
+> +	# signal+subflow with limits, remove
+> +	if reset "remove signal+subflow with limits"; then
+> +		pm_nl_set_limits $ns1 0 0
+> +		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,subflow
+> +		pm_nl_set_limits $ns2 0 0
+> +		addr_nr_ns1=-1 speed=slow \
+> +			run_tests $ns1 $ns2 10.0.1.1
+
+In this kernel version, these two lines should be replaced by:
+
+  run_tests $ns1 $ns2 10.0.1.1 0 -1 0 slow
+
+If that's easier, you can drop this patch and I can resend it with the fix.
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
 
