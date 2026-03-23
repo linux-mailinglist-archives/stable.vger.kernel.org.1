@@ -1,150 +1,154 @@
-Return-Path: <stable+bounces-229533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229532-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCSjMIlqwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-229533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:30:01 +0100
+	id qOF4IF56wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229532-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:37:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3622F82EF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:30:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F41BD2FA169
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:37:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4410330C34CD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8211C34F7E82
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B88D3B9DAE;
-	Mon, 23 Mar 2026 16:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7664F3B9D8B;
+	Mon, 23 Mar 2026 16:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="bHj+jVhd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2073B892D
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 16:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFFA3B961F;
+	Mon, 23 Mar 2026 16:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774281855; cv=none; b=qqwGvqaDx7r34LtKcPyrE8wyQlXiiOXtV3KoOUofoF3C67wgoR8la0NiZtZstbmkDhaCi8WwTVGNastdo98VY5thRe1r0LIvqzKPYHI5UwnK5Gzt4mRiHAs7D5xHdLrJM3AYxA2mI+JHUKiIl85GRKllnydZkhSh9zzFfgQnrac=
+	t=1774281787; cv=none; b=FneMOYHnT5D3r7i05QyLzSDs96PaAKeJi42m8311DgRsVieWtei5JqpLz2FrCwBr8LIYf/84rBv35jxCVmHUJdT4q8DPioTbnA3ZNsnqMjzg5BuVVVQv1G0emaD+1i2/+o24KxZ+vkk4lhqcjVQy9EDJnDPggUYxQhA85yV8+7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774281855; c=relaxed/simple;
-	bh=j1nys86vdQ3OgScx4BoNFUJyP5NANV0YQfrVBwxiiUo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0q3Zh5/u81W2eyhT+koWXRazC1qGL6FufZdy8J+1MjOYL6j/J3virQRoiPlAfFu+RNsqrsiLVkOCecNr8tEDALnCR8AqLtOfOo5X7BTxq60FM9VE2qs+J31pk2PkdullIdBsCeW4rTqTHF79zouL7cTV3la7SunGqmFDrEM7Cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 146725BD74;
-	Mon, 23 Mar 2026 16:04:12 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3DAB4396A;
-	Mon, 23 Mar 2026 16:04:11 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WJhjLntkwWlfBAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 23 Mar 2026 16:04:11 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: jfalempe@redhat.com,
-	airlied@redhat.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH 01/15] drm/ast: dp501: Fix initialization of SCU2C
-Date: Mon, 23 Mar 2026 16:56:14 +0100
-Message-ID: <20260323160407.245773-2-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323160407.245773-1-tzimmermann@suse.de>
-References: <20260323160407.245773-1-tzimmermann@suse.de>
+	s=arc-20240116; t=1774281787; c=relaxed/simple;
+	bh=xEt1T+5IaD2kByZSscV0lMn0HH53U/nhFkZ0bQ/2eZ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=q1zW2rxz/4BYMHKJ1UvRgk0aQHAZiXFyazoWMQWfgOB55jPmUn4cT1Kkig5LupdpmKywLqvZo/g4mf1cXg9uv+dssgY49FOICJsvmKnaVvdxxIIKeKPj0Crcxr3IgRwO6Fwv+Gp/xEGDijBbnysHWfBjn6KJYngZkFxhnN2yE7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=bHj+jVhd; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from ideasonboard.com (net-93-65-100-155.cust.vodafonedsl.it [93.65.100.155])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 993D719DF;
+	Mon, 23 Mar 2026 17:01:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1774281706;
+	bh=xEt1T+5IaD2kByZSscV0lMn0HH53U/nhFkZ0bQ/2eZ8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bHj+jVhdypJ3PdOJJ+vxoW4Mrt6GXypueUbe6MFnf3SYcKN2qAgR5D0p2h8OorLcC
+	 8A+TznZMrbjxQQQkKxYzSnw6mgVOqb0bEFY3lzbwKaAfwl2JN+RW7P69Zu7lktQEOH
+	 5T+yrqd9OUBjl6ZkEtx4Q6IxRwLbevYt/CayLbrI=
+Date: Mon, 23 Mar 2026 17:03:00 +0100
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+To: Mikhail Rudenko <mike.rudenko@gmail.com>
+Cc: Dafna Hirschfeld <dafna@fastmail.com>, 
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, Tomasz Figa <tfiga@chromium.org>, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Hans Verkuil <hverkuil@xs4all.nl>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] Allow non-coherent video capture buffers on
+ Rockchip ISP V1
+Message-ID: <acFkAPreOFBvoHid@zed>
+References: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [0.14 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250303-b4-rkisp-noncoherent-v4-0-e32e843fb6ef@gmail.com>
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[ideasonboard.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[ideasonboard.com:s=mail];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[suse.de : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229533-lists,stable=lfdr.de];
-	RCVD_COUNT_FIVE(0.00)[6];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,linux.intel.com,kernel.org,gmail.com,ffwll.ch];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229532-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[tzimmermann@suse.de,stable@vger.kernel.org];
-	PRECEDENCE_BULK(0.00)[];
-	R_DKIM_NA(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[ideasonboard.com:+];
 	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[jacopo.mondi@ideasonboard.com,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[fastmail.com,ideasonboard.com,kernel.org,sntech.de,chromium.org,samsung.com,xs4all.nl,vger.kernel.org,lists.infradead.org];
+	TAGGED_RCPT(0.00)[stable,huawei];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[lists.freedesktop.org:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,suse.de:email,suse.de:mid]
-X-Rspamd-Queue-Id: 4D3622F82EF
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: F41BD2FA169
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Ast's DP501 initialization reads the register SCU2C at offset 0x1202c
-and tries to set it to source data from VGA. But writes the update to
-offset 0x0, with unknown results. Write the result to SCU instead.
+Hello
 
-The bug only happens in ast_init_analog(). There's similar code in
-ast_init_dvo(), which works correctly.
+On Mon, Mar 03, 2025 at 02:40:08PM +0300, Mikhail Rudenko wrote:
+> This small series adds support for non-coherent video capture buffers
+> on Rockchip ISP V1. Patch 1 fixes cache management for dmabuf's
+> allocated by dma-contig allocator. Patch 2 allows non-coherent
+> allocations on the rkisp1 capture queue. Some timing measurements are
+> provided in the commit message of patch 2.
+>
+> Signed-off-by: Mikhail Rudenko <mike.rudenko@gmail.com>
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 83c6620bae3f ("drm/ast: initial DP501 support (v0.2)")
-Cc: Dave Airlie <airlied@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.16+
----
- drivers/gpu/drm/ast/ast_dp501.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I regularly get back to this series everytime I have to reason about
+the caching policies in vb2..
 
-diff --git a/drivers/gpu/drm/ast/ast_dp501.c b/drivers/gpu/drm/ast/ast_dp501.c
-index 9e19d8c17730..677c52c0d99a 100644
---- a/drivers/gpu/drm/ast/ast_dp501.c
-+++ b/drivers/gpu/drm/ast/ast_dp501.c
-@@ -436,7 +436,7 @@ static void ast_init_analog(struct ast_device *ast)
- 	/* Finally, clear bits [17:16] of SCU2c */
- 	data = ast_read32(ast, 0x1202c);
- 	data &= 0xfffcffff;
--	ast_write32(ast, 0, data);
-+	ast_write32(ast, 0x1202c, data);
- 
- 	/* Disable DVO */
- 	ast_set_index_reg_mask(ast, AST_IO_VGACRI, 0xa3, 0xcf, 0x00);
--- 
-2.53.0
+Is there any reason why it didn't get in ?
 
+> ---
+> Changes in v4:
+> - rebase to media/next
+> - use `direction` instead of `buf->dma_dir` in dma_sync_sgtable_*
+> - Link to v3: https://lore.kernel.org/r/20250128-b4-rkisp-noncoherent-v3-0-baf39c997d2a@gmail.com
+>
+> Changes in v3:
+> - ignore skip_cache_sync_* flags in vb2_dc_dmabuf_ops_{begin,end}_cpu_access
+> - invalidate/flush kernel mappings as appropriate if they exist
+> - use dma_sync_sgtable_* instead of dma_sync_sg_*
+> - Link to v2: https://lore.kernel.org/r/20250115-b4-rkisp-noncoherent-v2-0-0853e1a24012@gmail.com
+>
+> Changes in v2:
+> - Fix vb2_dc_dmabuf_ops_{begin,end}_cpu_access() for non-coherent buffers.
+> - Add cache management timing information to patch 2 commit message.
+> - Link to v1: https://lore.kernel.org/r/20250102-b4-rkisp-noncoherent-v1-1-bba164f7132c@gmail.com
+>
+> ---
+> Mikhail Rudenko (2):
+>       media: videobuf2: Fix dmabuf cache sync/flush in dma-contig
+>       media: rkisp1: Allow non-coherent video capture buffers
+>
+>  .../media/common/videobuf2/videobuf2-dma-contig.c  | 22 ++++++++++++++++++++++
+>  .../platform/rockchip/rkisp1/rkisp1-capture.c      |  1 +
+>  2 files changed, 23 insertions(+)
+> ---
+> base-commit: b2c4bf0c102084e77ed1b12090d77a76469a6814
+> change-id: 20241231-b4-rkisp-noncoherent-ad6e7c7a68ba
+>
+> Best regards,
+> --
+> Mikhail Rudenko <mike.rudenko@gmail.com>
+>
+>
 
