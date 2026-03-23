@@ -1,165 +1,183 @@
-Return-Path: <stable+bounces-229974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ULjVA9p0wWl5TQQAu9opvQ
-	(envelope-from <stable+bounces-229974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:14:02 +0100
+	id wACzBEqDwWnATgQAu9opvQ
+	(envelope-from <stable+bounces-229975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:15:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6DD32F99C0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:14:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69E462FB162
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:15:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E3B6530B4898
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:48:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E05A332B122
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4BC63C2764;
-	Mon, 23 Mar 2026 16:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b="dLHhCDWd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B533BED75;
+	Mon, 23 Mar 2026 16:52:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from sender-of-o57.zoho.eu (sender-of-o57.zoho.eu [136.143.169.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A533BFE34;
-	Mon, 23 Mar 2026 16:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.169.57
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774284518; cv=pass; b=rLMS6FAlknDKUAKWDR1eJK+QbM7Ea0A/BoJZtSWoLYQAzrrq9YSdYyQoWx3ccS6E/RhvzVPjJ2SoVqOO+7HXq5ZpFKsWnPrtBpjZw1poiyD59WmMghC7T5zCoYJ3tjvnmRlJNgGWQKQUuW3QjC+aTdIsp5dOpFz5TTR6RG6CXRU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774284518; c=relaxed/simple;
-	bh=vLkitsin3lDqtkqjZQ2znIuW91wlP+ot4ojlzdgsSug=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=h6lUX4ycyU75kpAzuhOXTcVOxXAY4MrOJ01kemq7yJse8ulm8ygcYuVnJ9JWoO70NeT28rYLshTVTDXTvwhYMZOdRUAsALl7Yx6pVnGBnUu2Zg/2r6JGfxzCaDqCOKZU99ovPMYsJxYR2nvzti1sSW+Q93BhZU5dCd9xyeP4njM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org; spf=pass smtp.mailfrom=objecting.org; dkim=pass (1024-bit key) header.d=objecting.org header.i=objecting@objecting.org header.b=dLHhCDWd; arc=pass smtp.client-ip=136.143.169.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=objecting.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=objecting.org
-ARC-Seal: i=1; a=rsa-sha256; t=1774284501; cv=none; 
-	d=zohomail.eu; s=zohoarc; 
-	b=TUr8chheOvYFMZxGGYScjnN+EsYrP5DvaQA6zT9fmDaScNNQVdiZRK/vBfaUvs9cqNYJbwsQHDAIa51x42XHo0r6/dieyC6FGfhTEl8qJFN5sG5b7GhxdAtNpSLSlfWakHQm6fLDbr54EMmkhhv6wQkiIgzVRVqTWGiVM/eDZz4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1774284501; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=xuIcoUTBkBsZgUn7ZrvmHbUUe+AYpBylLNG6S3yEuAA=; 
-	b=H5yDN/olrH2qhebEP05H5BiLoV1FT9l12HySF3PVURXVOYs+TMGUR52/XaBRYndsycr1X2VGGnvg4vWaUSKU3224yGLq8kKgxwm0pbGjszrs/kdiCCXmWJaBGSlER16Sru/n3JzEPyYl9ucv2KNlwt9lPY6epeSop/+5e5eKKm8=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-	dkim=pass  header.i=objecting.org;
-	spf=pass  smtp.mailfrom=objecting@objecting.org;
-	dmarc=pass header.from=<objecting@objecting.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1774284501;
-	s=zmail; d=objecting.org; i=objecting@objecting.org;
-	h=Date:Date:From:From:To:To:CC:Subject:Subject:In-Reply-To:References:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To:Cc;
-	bh=xuIcoUTBkBsZgUn7ZrvmHbUUe+AYpBylLNG6S3yEuAA=;
-	b=dLHhCDWdAnlY4xWHugxDQ+jhBSGVh0FCYNrqVzeP44ASiliqjtgH37/+LzTgyEs5
-	Mob/sv7ZB2dCH4YT5ENVMUJ6EUy0MD6vvaHkTV5uQtePuabNnl8ceu1IKdWGL6khBgE
-	6m+k7G6RBtRKWLXoMoQeDKNZdTOlPcur0QkN+WoM=
-Received: by mx.zoho.eu with SMTPS id 1774284499534665.7592129103313;
-	Mon, 23 Mar 2026 17:48:19 +0100 (CET)
-Date: Mon, 23 Mar 2026 16:48:19 +0000
-From: Josh Law <objecting@objecting.org>
-To: SeongJae Park <sj@kernel.org>, Markus Elfring <Markus.Elfring@web.de>
-CC: damon@lists.linux.dev, linux-mm@kvack.org,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5Bv3_1/3=5D_mm/damon/sysfs=3A_fix_param=5Fctx?=
- =?US-ASCII?Q?_leak_on_damon=5Fsysfs=5Fnew=5Ftest=5Fctx=28=29_failure?=
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260323152453.81603-1-sj@kernel.org>
-References:  <20260323152453.81603-1-sj@kernel.org>
-Message-ID: <0E185D9C-311B-47C5-AF28-06F8D1235926@objecting.org>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE293B2FC6;
+	Mon, 23 Mar 2026 16:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1774284776; cv=none; b=sAjdeV+lC+HT/IOgi7Q/Cp2DuTNEZQCUBaoScrK56CEvqvfrR8ADu0La4zPsQA/Fg9Xbq+Ql1gPojiZL43ZYQKzWwWhN4lOFw92gE8RjL97BphcFxDi8/TWpJJNnjaOeCMKc+shjne1lBr3hFME7jjqyG1kb3+bf7PTNx2h271g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1774284776; c=relaxed/simple;
+	bh=/G2Xfa4BBLTfPc6udUHxh6tIMJj57mjoBsV95yr/xco=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cTZlBjD8IYguHTn67r9jkHOGMPPo2veO88IbcbULvdIJYEEr3nfimlFf0gCr21xiU3g4Uqq/31ybtXLnzZ1LjH4rzq1wcI80PyAcqgkV1Q4WYnkZ2mQ9W9fg7YPrZV22x9Drj8xP9vwrbqpVqUFO6cgytY85bnwuDX6HNY5yp34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 201FD14BF;
+	Mon, 23 Mar 2026 09:52:48 -0700 (PDT)
+Received: from [10.57.58.207] (unknown [10.57.58.207])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A68A33F73B;
+	Mon, 23 Mar 2026 09:52:51 -0700 (PDT)
+Message-ID: <71261065-7895-492f-8457-998901391530@arm.com>
+Date: Mon, 23 Mar 2026 17:52:48 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-ZohoMailClient: External
-X-Spamd-Result: default: False [-0.95 / 15.00];
-	SUBJ_EXCESS_QP(1.20)[];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
-	DMARC_POLICY_ALLOW(-0.50)[objecting.org,quarantine];
-	R_DKIM_ALLOW(-0.20)[objecting.org:s=zmail];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/3] arm64: mm: Fix rodata=full block mapping support
+ for realm guests
+To: Ryan Roberts <ryan.roberts@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Dev Jain <dev.jain@arm.com>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Jinjiang Tu <tujinjiang@huawei.com>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260323130317.1737522-1-ryan.roberts@arm.com>
+ <20260323130317.1737522-2-ryan.roberts@arm.com>
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20260323130317.1737522-2-ryan.roberts@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.36 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229974-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_TO(0.00)[kernel.org,web.de];
-	DKIM_TRACE(0.00)[objecting.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MIME_TRACE(0.00)[0:+];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[objecting@objecting.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229975-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: A6DD32F99C0
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[kevin.brodsky@arm.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 69E462FB162
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-
-
-On 23 March 2026 15:24:52 GMT, SeongJae Park <sj@kernel=2Eorg> wrote:
->On Mon, 23 Mar 2026 09:25:52 +0100 Markus Elfring <Markus=2EElfring@web=
-=2Ede> wrote:
+On 23/03/2026 14:03, Ryan Roberts wrote:
+> [...]
 >
->> > Markus these patches are already merged
->
->It's still in mm-hotfixes-unstable=2E  We can still make changes if neede=
-d=2E
->
->I understand what Markus is suggesting is adding another goto label to ma=
-ke
->the flow cleaner=2E  Because this is a hotfix that aims to be also applie=
-d to
->stable kernels, I think the change is better to be as simple as possible=
-=2E
->Adding another goto label could make it better, but I'm concerned if it w=
-ill
->make porting difficult=2E
->
->IMHO, it is better to do that as a followup cleanup, rather than make cha=
-nge
->into the hotfix=2E  Let me know if this change is somewhat critical and I=
-'m
->missing that=2E
->
->>=20
->> Are there still development interests for the application of a better g=
-oto chain?
->
->Sure, if it makes it better, why not? :)
->
->
->Thanks,
->SJ
->
->[=2E=2E=2E]
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 96711b8578fd0..b9b248d24fd10 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -350,7 +350,6 @@ void __init arch_mm_preinit(void)
+>  	}
+>  
+>  	swiotlb_init(swiotlb, flags);
+> -	swiotlb_update_mem_attributes();
+>  
+>  	/*
+>  	 * Check boundaries twice: Some fundamental inconsistencies can be
+> @@ -377,6 +376,14 @@ void __init arch_mm_preinit(void)
+>  	}
+>  }
+>  
+> +bool page_alloc_available __ro_after_init;
+> +
+> +void __init mem_init(void)
+> +{
+> +	page_alloc_available = true;
+> +	swiotlb_update_mem_attributes();
 
+The move seems reasonable, x86 calls this function even later (from
+arch_cpu_finalize_init()).
 
+> +}
+> +
+>  void free_initmem(void)
+>  {
+>  	void *lm_init_begin = lm_alias(__init_begin);
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index a6a00accf4f93..5b6a8d53e64b7 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -773,14 +773,33 @@ int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
+>  {
+>  	int ret;
+>  
+> -	/*
+> -	 * !BBML2_NOABORT systems should not be trying to change permissions on
+> -	 * anything that is not pte-mapped in the first place. Just return early
+> -	 * and let the permission change code raise a warning if not already
+> -	 * pte-mapped.
+> -	 */
+> -	if (!system_supports_bbml2_noabort())
+> -		return 0;
+> +	if (!system_supports_bbml2_noabort()) {
+> +		/*
+> +		 * !BBML2_NOABORT systems should not be trying to change
+> +		 * permissions on anything that is not pte-mapped in the first
+> +		 * place. Just return early and let the permission change code
+> +		 * raise a warning if not already pte-mapped.
+> +		 */
+> +		if (system_capabilities_finalized() ||
+> +		    !cpu_supports_bbml2_noabort())
+> +			return 0;
+> +
+> +		/*
+> +		 * Boot-time: split_kernel_leaf_mapping_locked() allocates from
+> +		 * page allocator. Can't split until it's available.
+> +		 */
+> +		extern bool page_alloc_available;
 
-Also, unconnected to our topic!
+Could we at least have the declaration in say <asm/mmu.h>? x86 defines a
+similar global so we could eventually have a generic global (defined
+before mem_init() is called).
 
+Looks good otherwise:
 
-I've tried to backport Damon to 4=2E19 (for a personal android thing, and =
-failed! Of course)
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
-Can I have a bit of help if that's fine with you? The tree is based on Git=
-Hub a bit
-
-
-V/R
-
-
-Josh Law
+> +		if (WARN_ON(!page_alloc_available))
+> +			return -EBUSY;
+> +
+> +		/*
+> +		 * Boot-time: Started secondary cpus but don't know if they
+> +		 * support BBML2_NOABORT yet. Can't allow splitting in this
+> +		 * window in case they don't.
+> +		 */
+> +		if (WARN_ON(num_online_cpus() > 1))
+> +			return -EBUSY;
+> +	}
+>  
+>  	/*
+>  	 * If the region is within a pte-mapped area, there is no need to try to
 
