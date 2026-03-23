@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCt7M21MwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228250-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:33 +0100
+	id QLxBFyNTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:50:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60A2B2F4459
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071172F5454
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:50:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DA32F30DCECC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 90AB2302690C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D434C145;
-	Mon, 23 Mar 2026 14:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8D23B27F4;
+	Mon, 23 Mar 2026 14:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtAwhXc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9OmSQ3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52443B27EB;
-	Mon, 23 Mar 2026 14:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F304D3ACEED;
+	Mon, 23 Mar 2026 14:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274580; cv=none; b=dkb3QUOURiBACuFQtf2OnZXx3TJ3wMxJ9c1kTdth4cnfu4ZkG62eVcJQw4oSRYhH+SlqNASrcQJVRNmtp2GrCSPAXD7IeD52D10U1TpePbw1cxV4/7OMzTyC2y+QBri/GDnvT6AxiU9mMc+Lf7IzF6SOUsbH22GXoQN2dVCJp20=
+	t=1774276959; cv=none; b=dQj/Vcr5uXRNfCjRW15lMVKGXnpFObHMNsYmQ2qbljEkUEeYrGLaz0QvSkRV7sgL9e6egGgKO0CY3e7XeFeQKHTmKEER2tO9xBpOlPTJhO8WO+P7u2fUUef9650ACHSh8GdrPiwsumsHhmv0B5QBwdtVHRsDBMaBhMx37JSebAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274580; c=relaxed/simple;
-	bh=iW97RUDSYKs8j0+hIbtFzkZmmlKTI+YHWBVhblsJ+iM=;
+	s=arc-20240116; t=1774276959; c=relaxed/simple;
+	bh=b0H06tpZXzPaCKuNu6ISAbMBAaPAApLdcl+XxQFBGUc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bn5a8qd2O9t3aNnHiNMj4QE2F/D3Jt8l85ojNiw0XuVGKLmWWrCaBOvI1D3S879jM1sL48nkEMRz3Y1UO+ZsZdVU0jB7gTN8A3l7KSCwR8ulA3l8F5+CVdZsrf3tClSiignTS3jQsuoabuwLHxPRtyStxwrJeYN4b1j4oXowjCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtAwhXc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DF45C4CEF7;
-	Mon, 23 Mar 2026 14:03:00 +0000 (UTC)
+	 MIME-Version; b=A0hViBAuzTAGASlzdEEiDOMRAKn56d8FPUP0D8OabvVk0X1CqdPsh4S08q6LxFG18DvzCXpBtmjiGKcY5HNAdOqY4qpQUVUU5fsIX5D3rul9BsGArZLqFkPL+lYSG42f9ynR/ONu+yFmY2PTtUdvrCqsYjR3U0eB+m9cbjk1Q2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9OmSQ3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D464C4CEF7;
+	Mon, 23 Mar 2026 14:42:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274580;
-	bh=iW97RUDSYKs8j0+hIbtFzkZmmlKTI+YHWBVhblsJ+iM=;
+	s=korg; t=1774276958;
+	bh=b0H06tpZXzPaCKuNu6ISAbMBAaPAApLdcl+XxQFBGUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtAwhXc5btB9pUyWu5+jV0ezy5zqOnnALqms3VGmIvCzt5s1V2CnyG24tmNupZFm9
-	 FPqxffZ3hqAPhARe7TRByriCT2hMN567JpQcg90uFm7fNPp3wAk9+tVAZVLSIclSBx
-	 X5B2yrcdo8x+Nsfh/WWfp41srm/4ggeC11qHi7MM=
+	b=c9OmSQ3Gquxp8BejnTWL3k4QxI9xa8B+0y8PImCJgrE1SG18tb4p6k/LhTHeienNl
+	 EHscmQKHF7ea5/jUFh8GEY6IzpQHUR8GDRV7DDmuBzN62cIltBKAeS7eRddLaYWM1n
+	 rymn6oQ4e9J4gOdCE8LTdcA+8wa91S2Qb0fT24Fw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 043/212] drm/xe/sync: Fix user fence leak on alloc failure
+Subject: [PATCH 6.12 268/460] drm/bridge: ti-sn65dsi83: halve horizontal syncs for dual LVDS output
 Date: Mon, 23 Mar 2026 14:44:24 +0100
-Message-ID: <20260323134505.127936350@linuxfoundation.org>
+Message-ID: <20260323134533.074567903@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +66,103 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[intel.com:server fail,linuxfoundation.org:server fail,msgid.link:server fail];
-	TAGGED_FROM(0.00)[bounces-228250-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228727-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 60A2B2F4459
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 071172F5454
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuicheng Lin <shuicheng.lin@intel.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 0879c3f04f67e2a1677c25dcc24669ce21eb6a6c ]
+[ Upstream commit d0d727746944096a6681dc6adb5f123fc5aa018d ]
 
-When dma_fence_chain_alloc() fails, properly release the user fence
-reference to prevent a memory leak.
+Dual LVDS output (available on the SN65DSI84) requires HSYNC_PULSE_WIDTH
+and HORIZONTAL_BACK_PORCH to be divided by two with respect to the values
+used for single LVDS output.
 
-Fixes: 0995c2fc39b0 ("drm/xe: Enforce correct user fence signaling order using")
-Cc: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260219233516.2938172-6-shuicheng.lin@intel.com
-(cherry picked from commit a5d5634cde48a9fcd68c8504aa07f89f175074a0)
+While not clearly stated in the datasheet, this is needed according to the
+DSI Tuner [0] output. It also makes sense intuitively because in dual LVDS
+output two pixels at a time are output and so the output clock is half of
+the pixel clock.
+
+Some dual-LVDS panels refuse to show any picture without this fix.
+
+Divide by two HORIZONTAL_FRONT_PORCH too, even though this register is used
+only for test pattern generation which is not currently implemented by this
+driver.
+
+[0] https://www.ti.com/tool/DSI-TUNER
+
+Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
+Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-2-2e15f5a9a6a0@bootlin.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+[ adapted variable declaration placement ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_sync.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi83.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_sync.c
-+++ b/drivers/gpu/drm/xe/xe_sync.c
-@@ -206,8 +206,10 @@ int xe_sync_entry_parse(struct xe_device
- 			if (XE_IOCTL_DBG(xe, IS_ERR(sync->ufence)))
- 				return PTR_ERR(sync->ufence);
- 			sync->ufence_chain_fence = dma_fence_chain_alloc();
--			if (!sync->ufence_chain_fence)
--				return -ENOMEM;
-+			if (!sync->ufence_chain_fence) {
-+				err = -ENOMEM;
-+				goto free_sync;
-+			}
- 			sync->ufence_syncobj = ufence_syncobj;
- 		}
- 
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
+@@ -325,6 +325,7 @@ static void sn65dsi83_atomic_pre_enable(
+ 					struct drm_bridge_state *old_bridge_state)
+ {
+ 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
++	const unsigned int dual_factor = ctx->lvds_dual_link ? 2 : 1;
+ 	struct drm_atomic_state *state = old_bridge_state->base.state;
+ 	const struct drm_bridge_state *bridge_state;
+ 	const struct drm_crtc_state *crtc_state;
+@@ -452,18 +453,18 @@ static void sn65dsi83_atomic_pre_enable(
+ 	/* 32 + 1 pixel clock to ensure proper operation */
+ 	le16val = cpu_to_le16(32 + 1);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_SYNC_DELAY_LOW, &le16val, 2);
+-	le16val = cpu_to_le16(mode->hsync_end - mode->hsync_start);
++	le16val = cpu_to_le16((mode->hsync_end - mode->hsync_start) / dual_factor);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_HSYNC_PULSE_WIDTH_LOW,
+ 			  &le16val, 2);
+ 	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
+ 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
+ 			  &le16val, 2);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
+-		     mode->htotal - mode->hsync_end);
++		     (mode->htotal - mode->hsync_end) / dual_factor);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
+ 		     mode->vtotal - mode->vsync_end);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
+-		     mode->hsync_start - mode->hdisplay);
++		     (mode->hsync_start - mode->hdisplay) / dual_factor);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
+ 		     mode->vsync_start - mode->vdisplay);
+ 	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
 
 
 
