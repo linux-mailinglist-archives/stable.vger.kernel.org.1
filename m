@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229892-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAKeJKdiwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229392-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:23 +0100
+	id ILStCptwwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229892-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A312F7236
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9FFC2F91F4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 183263065D16
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:22:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32DCC31A2C7B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784A1275AF5;
-	Mon, 23 Mar 2026 15:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E883B388C;
+	Mon, 23 Mar 2026 16:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N53fvT7E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLNAdwUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C012242D60;
-	Mon, 23 Mar 2026 15:16:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463BC39A7EF;
+	Mon, 23 Mar 2026 16:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278971; cv=none; b=cLIEyDP8SsLCbG5O32tL6uUcleSiETEe0GeIC88vw3bwbBUWzoTcSL7k0DeH+NaGLyv7KG2abuevDjYMtn0CXNdPjo5Cff0+XRyAkBusXzEPxyTZBwtwNLMvOKFFCpvXTDzHd4JVrP+2OyIJtZ9UUZfA/yvdUkWob90WlZJY5fY=
+	t=1774283144; cv=none; b=lwpj4Gv65UANUSBjgyBB7lEsPTm4LZd69qAET41rCWrmV/X4zQATsTQCNz8oUKYOiPfkhvXporykCxIvXvV69OGCEqqRPhXAeP4YPj8VlOemSmJiPODpQbcKPxMhfcTzTFSOTuSXz8WSb2ixgtVzKiqpLnHS36cakXjoDMrcO5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278971; c=relaxed/simple;
-	bh=sPlhitbKlewSo9EY9TCh1XIllx2Jx0BhUyjNH2idlFI=;
+	s=arc-20240116; t=1774283144; c=relaxed/simple;
+	bh=kDnytxX5FcU/ziN4F5v2iR2gQojDID0AH2N2RI9SB4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXt2htltDyZ5hIwBDBgnAgLBPI6E9l7r9dQMdQaNLN936ev+GhBXvQ7436J5RjImUHSPK2cYyEHPuU4CdcB+nDIsUszGUHJ0eouOD8v6lPgjJUxSQ/A4resfDcBejVVypIg4MPNvHxg4PORM1vl/brBRut02PPInwKHK5z+u6pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N53fvT7E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D5EC4CEF7;
-	Mon, 23 Mar 2026 15:16:10 +0000 (UTC)
+	 MIME-Version; b=c6Heu2xVhPVhxjExgoCxkMLKya8aZdklPMpBr4DbHDe6KFehhv5DTEZudjIOySsYIYcBP8tGCECBAnFD9ZtiSnrP0mxRGS5+j5Pa0mdHY3gO8dYnHthtoGtiQot7tRklck646w2gPpDhXrEP4weUKO0OI8uOGq6z6s43aZe2LMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLNAdwUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32DEC4CEF7;
+	Mon, 23 Mar 2026 16:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278970;
-	bh=sPlhitbKlewSo9EY9TCh1XIllx2Jx0BhUyjNH2idlFI=;
+	s=korg; t=1774283144;
+	bh=kDnytxX5FcU/ziN4F5v2iR2gQojDID0AH2N2RI9SB4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N53fvT7EFhIHOPfJBCG4nQz//FjfRM7z8iDgritxxMnPnWuMsh9NfFZp4gnowG+c/
-	 oHYONs7YVaUX5SVLupLzq93pSuZhHXg3lAh7bj9IUr/q9N/dVjljAEsg5uD6uOOkMv
-	 bW9GePaCUXkFpzHF0dv8O80fQNly2h5oK2FufEUo=
+	b=zLNAdwUo4o0YLXtrz3AgoGZ4N5csqB9uXkgz9hwTfSOb7hhJXpFBAcqkQwPl0PyrM
+	 PREcdIakdMFR2LU0b3EiZ3oRqffUpw1Ijfunner9/5cn2j1/8aaglBPQitz8gUW8FW
+	 7brZFcbpAikNN+xGI5j2ggWUCtBs7xeMca3g2lYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jander <david@protonic.nl>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 478/567] spi: fix statistics allocation
+	Yiming Qian <yimingqian591@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 416/481] netfilter: nft_ct: drop pending enqueued packets on removal
 Date: Mon, 23 Mar 2026 14:46:38 +0100
-Message-ID: <20260323134545.806472322@linuxfoundation.org>
+Message-ID: <20260323134535.326872401@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,108 +69,102 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229892-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229392-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: B0A312F7236
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D9FFC2F91F4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit dee0774bbb2abb172e9069ce5ffef579b12b3ae9 upstream.
+[ Upstream commit 36eae0956f659e48d5366d9b083d9417f3263ddc ]
 
-The controller per-cpu statistics is not allocated until after the
-controller has been registered with driver core, which leaves a window
-where accessing the sysfs attributes can trigger a NULL-pointer
-dereference.
+Packets sitting in nfqueue might hold a reference to:
 
-Fix this by moving the statistics allocation to controller allocation
-while tying its lifetime to that of the controller (rather than using
-implicit devres).
+- templates that specify the conntrack zone, because a percpu area is
+  used and module removal is possible.
+- conntrack timeout policies and helper, where object removal leave
+  a stale reference.
 
-Fixes: 6598b91b5ac3 ("spi: spi.c: Convert statistics to per-cpu u64_stats_t")
-Cc: stable@vger.kernel.org	# 6.0
-Cc: David Jander <david@protonic.nl>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260312151817.32100-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since these objects can just go away, drop enqueued packets to avoid
+stale reference to them.
+
+If there is a need for finer grain removal, this logic can be revisited
+to make selective packet drop upon dependencies.
+
+Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi.c |   17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+ net/netfilter/nft_ct.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -2777,6 +2777,8 @@ static void spi_controller_release(struc
- 	struct spi_controller *ctlr;
+diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+index 70783671a2b01..c5d78f2525226 100644
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -23,6 +23,7 @@
+ #include <net/netfilter/nf_conntrack_l4proto.h>
+ #include <net/netfilter/nf_conntrack_expect.h>
+ #include <net/netfilter/nf_conntrack_seqadj.h>
++#include "nf_internals.h"
  
- 	ctlr = container_of(dev, struct spi_controller, dev);
-+
-+	free_percpu(ctlr->pcpu_statistics);
- 	kfree(ctlr);
- }
+ struct nft_ct {
+ 	enum nft_ct_keys	key:8;
+@@ -537,6 +538,7 @@ static void __nft_ct_set_destroy(const struct nft_ctx *ctx, struct nft_ct *priv)
+ #endif
+ #ifdef CONFIG_NF_CONNTRACK_ZONES
+ 	case NFT_CT_ZONE:
++		nf_queue_nf_hook_drop(ctx->net);
+ 		mutex_lock(&nft_ct_pcpu_mutex);
+ 		if (--nft_ct_pcpu_template_refcnt == 0)
+ 			nft_ct_tmpl_put_pcpu();
+@@ -980,6 +982,7 @@ static void nft_ct_timeout_obj_destroy(const struct nft_ctx *ctx,
+ 	struct nft_ct_timeout_obj *priv = nft_obj_data(obj);
+ 	struct nf_ct_timeout *timeout = priv->timeout;
  
-@@ -2928,6 +2930,12 @@ struct spi_controller *__spi_alloc_contr
- 	if (!ctlr)
- 		return NULL;
++	nf_queue_nf_hook_drop(ctx->net);
+ 	nf_ct_untimeout(ctx->net, timeout);
+ 	nf_ct_netns_put(ctx->net, ctx->family);
+ 	kfree(priv->timeout);
+@@ -1112,6 +1115,7 @@ static void nft_ct_helper_obj_destroy(const struct nft_ctx *ctx,
+ {
+ 	struct nft_ct_helper_obj *priv = nft_obj_data(obj);
  
-+	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(NULL);
-+	if (!ctlr->pcpu_statistics) {
-+		kfree(ctlr);
-+		return NULL;
-+	}
-+
- 	device_initialize(&ctlr->dev);
- 	INIT_LIST_HEAD(&ctlr->queue);
- 	spin_lock_init(&ctlr->queue_lock);
-@@ -3216,13 +3224,6 @@ int spi_register_controller(struct spi_c
- 		if (status)
- 			goto del_ctrl;
- 	}
--	/* Add statistics */
--	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(dev);
--	if (!ctlr->pcpu_statistics) {
--		dev_err(dev, "Error allocating per-cpu statistics\n");
--		status = -ENOMEM;
--		goto destroy_queue;
--	}
- 
- 	mutex_lock(&board_lock);
- 	list_add_tail(&ctlr->list, &spi_controller_list);
-@@ -3235,8 +3236,6 @@ int spi_register_controller(struct spi_c
- 	acpi_register_spi_devices(ctlr);
- 	return status;
- 
--destroy_queue:
--	spi_destroy_queue(ctlr);
- del_ctrl:
- 	device_del(&ctlr->dev);
- free_bus_id:
++	nf_queue_nf_hook_drop(ctx->net);
+ 	if (priv->helper4)
+ 		nf_conntrack_helper_put(priv->helper4);
+ 	if (priv->helper6)
+-- 
+2.51.0
+
 
 
 
