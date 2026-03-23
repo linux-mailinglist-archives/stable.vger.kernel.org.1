@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-229255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228051-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBUBF0JvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229255-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:10 +0100
+	id wLV+Ls1FwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228051-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:17 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 011A82F8E0F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 304AD2F35F8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5B5E3334C42C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4122230117D3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40893B2FEB;
-	Mon, 23 Mar 2026 15:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A6F3AD534;
+	Mon, 23 Mar 2026 13:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SEBIGg16"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPz9Puoe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8617026ED28;
-	Mon, 23 Mar 2026 15:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95CA3AD527;
+	Mon, 23 Mar 2026 13:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278546; cv=none; b=R8VK8KDc0ym3QGD5EmqxWxS1CKGmKC5KMoq6Mf2cONGtbOTphHCzXnTtOwAOBUfvXCsNcMSceJVWw2x5KAFjjBeB24ik9YbUFvuynGk5IIjFsqunSCnmfb33/PEXaoa1UGIBZ02yGloqF6QnCTXWs2gkEgl4Wx0CAg2iusX7xyw=
+	t=1774273979; cv=none; b=ms62xwalrmPStIq0Hm/2hKPtUxKjJBf5oCFxkaLsrEBuabbkICG+5sPCP37tUowt3SLPH5Rf2lALRwatO8tCMUtTQKIqLpZMg14u9/PBbaPasH+q2H4RVpuv+N+Xi4AeISUjgr0xnT0nxpL5GXWXTtXQkJdiwT7nr5HDVscIVqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278546; c=relaxed/simple;
-	bh=NV2O5Du4DEfiTHRT1ujdXNZINl4rzL63D3BXuaIaIpA=;
+	s=arc-20240116; t=1774273979; c=relaxed/simple;
+	bh=L+4gCllCUeHmnWHvAvIIQJhNyESJVEZFpnPwZTGgJeM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjuDH3xL2BSsLlZSg+Tt+edZlAf4hlfYzOtxJvMi4MbXvRzPXS7vr3059oyMnnnX5xt6BBl5a7KvouxyCK/A6XJd/bixvKvEZSejGYePwqFnw5G58GBBUmTeN7x77PTIbnCe8bg64qhr2np0SzuTnc6z0lbKceDyMkHR7eZsR88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SEBIGg16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF4FC4CEF7;
-	Mon, 23 Mar 2026 15:09:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W+1U953kpY7EOPtLqzOgQqjlcKcMXkQeSjrfJxZ2tJNiWHz/fcV23Rt2vlNcLn70bXZDy95U11rd1n0RFJq9UwDcuSuJowYjYxQiaqiI0UsuOh+cFXtoLgXSLXKbYdNV4uvlX/GvXJG1bxEGm2mBWrY+xfOsLHuPPFdjCwI+nk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPz9Puoe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DA92C4CEF7;
+	Mon, 23 Mar 2026 13:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278546;
-	bh=NV2O5Du4DEfiTHRT1ujdXNZINl4rzL63D3BXuaIaIpA=;
+	s=korg; t=1774273979;
+	bh=L+4gCllCUeHmnWHvAvIIQJhNyESJVEZFpnPwZTGgJeM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SEBIGg16NVfSNMykBwjQKeW/FxVhxJu80pzg+Y31cnf2lUheOWKBIxUhveQVy8JLy
-	 LuRh0qv3kfRcM4ZbRkRUmwSJY3hUAuuLwyg5NIHuEem6+NKZvHImNt+ExZdVelmklP
-	 vLst8NnhYGljH1tPVkpAbJI8lClYI7FpoHKjmLkM=
+	b=vPz9PuoePzg9sAtGJfjk1EAtZAAaGJ29RUEEfpnSrwP6oJaXSyeVVGp4DnHCG6gNi
+	 m9IHuzXluooedlkumflTh7kfdYMjvptVvLYRRv+IUZwjQtd3XtlMFXtUZPHazirkga
+	 ty6z6cxos0QqChYAj2VROzl3KiKro2iWZ17Hx3IE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 325/567] parisc: Fix initial page table creation for boot
+	stable <stable@kernel.org>,
+	qianfan Zhao <qianfanguijin@163.com>,
+	Adriana Nicolae <adriana@arista.com>,
+	"Bandal, Shankar" <shankar.bandal@intel.com>,
+	"Murthy, Shanth" <shanth.murthy@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.19 068/220] serial: 8250_dw: Ensure BUSY is deasserted
 Date: Mon, 23 Mar 2026 14:44:05 +0100
-Message-ID: <20260323134541.873437563@linuxfoundation.org>
+Message-ID: <20260323134506.739180957@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +67,455 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,163.com,arista.com,intel.com,linux.intel.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229255-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228051-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 011A82F8E0F
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,arista.com:email]
+X-Rspamd-Queue-Id: 304AD2F35F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 8475d8fe21ec9c7eb2faca555fbc5b68cf0d2597 upstream.
+commit a7b9ce39fbe4ae2919fe4f7ac16c293cb6632d30 upstream.
 
-The KERNEL_INITIAL_ORDER value defines the initial size (usually 32 or
-64 MB) of the page table during bootup. Up until now the whole area was
-initialized with PTE entries, but there was no check if we filled too
-many entries.  Change the code to fill up with so many entries that the
-"_end" symbol can be reached by the kernel, but not more entries than
-actually fit into the initial PTE tables.
+DW UART cannot write to LCR, DLL, and DLH while BUSY is asserted.
+Existance of BUSY depends on uart_16550_compatible, if UART HW is
+configured with it those registers can always be written.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
+There currently is dw8250_force_idle() which attempts to achieve
+non-BUSY state by disabling FIFO, however, the solution is unreliable
+when Rx keeps getting more and more characters.
+
+Create a sequence of operations that ensures UART cannot keep BUSY
+asserted indefinitely. The new sequence relies on enabling loopback mode
+temporarily to prevent incoming Rx characters keeping UART BUSY.
+
+Ensure no Tx in ongoing while the UART is switches into the loopback
+mode (requires exporting serial8250_fifo_wait_for_lsr_thre() and adding
+DMA Tx pause/resume functions).
+
+According to tests performed by Adriana Nicolae <adriana@arista.com>,
+simply disabling FIFO or clearing FIFOs only once does not always
+ensure BUSY is deasserted but up to two tries may be needed. This could
+be related to ongoing Rx of a character (a guess, not known for sure).
+Therefore, retry FIFO clearing a few times (retry limit 4 is arbitrary
+number but using, e.g., p->fifosize seems overly large). Tests
+performed by others did not exhibit similar challenge but it does not
+seem harmful to leave the FIFO clearing loop in place for all DW UARTs
+with BUSY functionality.
+
+Use the new dw8250_idle_enter/exit() to do divisor writes and LCR
+writes. In case of plain LCR writes, opportunistically try to update
+LCR first and only invoke dw8250_idle_enter() if the write did not
+succeed (it has been observed that in practice most LCR writes do
+succeed without complications).
+
+This issue was first reported by qianfan Zhao who put lots of debugging
+effort into understanding the solution space.
+
+Fixes: c49436b657d0 ("serial: 8250_dw: Improve unwritable LCR workaround")
+Fixes: 7d4008ebb1c9 ("tty: add a DesignWare 8250 driver")
+Cc: stable <stable@kernel.org>
+Reported-by: qianfan Zhao <qianfanguijin@163.com>
+Link: https://lore.kernel.org/linux-serial/289bb78a-7509-1c5c-2923-a04ed3b6487d@163.com/
+Reported-by: Adriana Nicolae <adriana@arista.com>
+Link: https://lore.kernel.org/linux-serial/20250819182322.3451959-1-adriana@arista.com/
+Reported-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260203171049.4353-8-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/head.S |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250.h      |   25 +++++
+ drivers/tty/serial/8250/8250_dw.c   |  163 ++++++++++++++++++++++++++----------
+ drivers/tty/serial/8250/8250_port.c |   28 +++---
+ 3 files changed, 161 insertions(+), 55 deletions(-)
 
---- a/arch/parisc/kernel/head.S
-+++ b/arch/parisc/kernel/head.S
-@@ -56,6 +56,7 @@ ENTRY(parisc_kernel_start)
+--- a/drivers/tty/serial/8250/8250.h
++++ b/drivers/tty/serial/8250/8250.h
+@@ -175,7 +175,9 @@ static unsigned int __maybe_unused seria
+ 	return value;
+ }
  
- 	.import __bss_start,data
- 	.import __bss_stop,data
-+	.import __end,data
++void serial8250_clear_fifos(struct uart_8250_port *p);
+ void serial8250_clear_and_reinit_fifos(struct uart_8250_port *p);
++void serial8250_fifo_wait_for_lsr_thre(struct uart_8250_port *up, unsigned int count);
  
- 	load32		PA(__bss_start),%r3
- 	load32		PA(__bss_stop),%r4
-@@ -149,7 +150,11 @@ $cpu_ok:
- 	 * everything ... it will get remapped correctly later */
- 	ldo		0+_PAGE_KERNEL_RWX(%r0),%r3 /* Hardwired 0 phys addr start */
- 	load32		(1<<(KERNEL_INITIAL_ORDER-PAGE_SHIFT)),%r11 /* PFN count */
--	load32		PA(pg0),%r1
-+	load32		PA(_end),%r1
-+	SHRREG		%r1,PAGE_SHIFT,%r1  /* %r1 is PFN count for _end symbol */
-+	cmpb,<<,n	%r11,%r1,1f
-+	copy		%r1,%r11	/* %r1 PFN count smaller than %r11 */
-+1:	load32		PA(pg0),%r1
+ void serial8250_rpm_get(struct uart_8250_port *p);
+ void serial8250_rpm_put(struct uart_8250_port *p);
+@@ -400,6 +402,26 @@ static inline bool serial8250_tx_dma_run
  
- $pgt_fill_loop:
- 	STREGM          %r3,ASM_PTE_ENTRY_SIZE(%r1)
+ 	return dma && dma->tx_running;
+ }
++
++static inline void serial8250_tx_dma_pause(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	if (!dma->tx_running)
++		return;
++
++	dmaengine_pause(dma->txchan);
++}
++
++static inline void serial8250_tx_dma_resume(struct uart_8250_port *p)
++{
++	struct uart_8250_dma *dma = p->dma;
++
++	if (!dma->tx_running)
++		return;
++
++	dmaengine_resume(dma->txchan);
++}
+ #else
+ static inline int serial8250_tx_dma(struct uart_8250_port *p)
+ {
+@@ -421,6 +443,9 @@ static inline bool serial8250_tx_dma_run
+ {
+ 	return false;
+ }
++
++static inline void serial8250_tx_dma_pause(struct uart_8250_port *p) { }
++static inline void serial8250_tx_dma_resume(struct uart_8250_port *p) { }
+ #endif
+ 
+ static inline int ns16550a_goto_highspeed(struct uart_8250_port *up)
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -16,6 +16,7 @@
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/io.h>
++#include <linux/lockdep.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/notifier.h>
+@@ -47,6 +48,8 @@
+ 
+ #define DW_UART_MCR_SIRE		BIT(6)
+ 
++#define DW_UART_USR_BUSY		BIT(0)
++
+ /* Renesas specific register fields */
+ #define RZN1_UART_xDMACR_DMA_EN		BIT(0)
+ #define RZN1_UART_xDMACR_1_WORD_BURST	(0 << 1)
+@@ -89,6 +92,7 @@ struct dw8250_data {
+ 
+ 	unsigned int		skip_autocfg:1;
+ 	unsigned int		uart_16550_compatible:1;
++	unsigned int		in_idle:1;
+ 
+ 	u8			no_int_count;
+ };
+@@ -121,78 +125,151 @@ static inline u32 dw8250_modify_msr(stru
+ 	return value;
+ }
+ 
++static void dw8250_idle_exit(struct uart_port *p)
++{
++	struct dw8250_data *d = to_dw8250_data(p->private_data);
++	struct uart_8250_port *up = up_to_u8250p(p);
++
++	if (d->uart_16550_compatible)
++		return;
++
++	if (up->capabilities & UART_CAP_FIFO)
++		serial_port_out(p, UART_FCR, up->fcr);
++	serial_port_out(p, UART_MCR, up->mcr);
++	serial_port_out(p, UART_IER, up->ier);
++
++	/* DMA Rx is restarted by IRQ handler as needed. */
++	if (up->dma)
++		serial8250_tx_dma_resume(up);
++
++	d->in_idle = 0;
++}
++
+ /*
+- * This function is being called as part of the uart_port::serial_out()
+- * routine. Hence, it must not call serial_port_out() or serial_out()
+- * against the modified registers here, i.e. LCR.
++ * Ensure BUSY is not asserted. If DW UART is configured with
++ * !uart_16550_compatible, the writes to LCR, DLL, and DLH fail while
++ * BUSY is asserted.
++ *
++ * Context: port's lock must be held
+  */
+-static void dw8250_force_idle(struct uart_port *p)
++static int dw8250_idle_enter(struct uart_port *p)
+ {
++	struct dw8250_data *d = to_dw8250_data(p->private_data);
++	unsigned int usr_reg = d->pdata ? d->pdata->usr_reg : DW_UART_USR;
+ 	struct uart_8250_port *up = up_to_u8250p(p);
+-	unsigned int lsr;
++	int retries;
++	u32 lsr;
+ 
+-	/*
+-	 * The following call currently performs serial_out()
+-	 * against the FCR register. Because it differs to LCR
+-	 * there will be no infinite loop, but if it ever gets
+-	 * modified, we might need a new custom version of it
+-	 * that avoids infinite recursion.
+-	 */
+-	serial8250_clear_and_reinit_fifos(up);
++	lockdep_assert_held_once(&p->lock);
++
++	if (d->uart_16550_compatible)
++		return 0;
++
++	d->in_idle = 1;
++
++	/* Prevent triggering interrupt from RBR filling */
++	serial_port_out(p, UART_IER, 0);
++
++	if (up->dma) {
++		serial8250_rx_dma_flush(up);
++		if (serial8250_tx_dma_running(up))
++			serial8250_tx_dma_pause(up);
++	}
+ 
+ 	/*
+-	 * With PSLVERR_RESP_EN parameter set to 1, the device generates an
+-	 * error response when an attempt to read an empty RBR with FIFO
+-	 * enabled.
++	 * Wait until Tx becomes empty + one extra frame time to ensure all bits
++	 * have been sent on the wire.
++	 *
++	 * FIXME: frame_time delay is too long with very low baudrates.
+ 	 */
+-	if (up->fcr & UART_FCR_ENABLE_FIFO) {
+-		lsr = serial_port_in(p, UART_LSR);
+-		if (!(lsr & UART_LSR_DR))
+-			return;
++	serial8250_fifo_wait_for_lsr_thre(up, p->fifosize);
++	ndelay(p->frame_time);
++
++	serial_port_out(p, UART_MCR, up->mcr | UART_MCR_LOOP);
++
++	retries = 4;	/* Arbitrary limit, 2 was always enough in tests */
++	do {
++		serial8250_clear_fifos(up);
++		if (!(serial_port_in(p, usr_reg) & DW_UART_USR_BUSY))
++			break;
++		/* FIXME: frame_time delay is too long with very low baudrates. */
++		ndelay(p->frame_time);
++	} while (--retries);
++
++	lsr = serial_lsr_in(up);
++	if (lsr & UART_LSR_DR) {
++		serial_port_in(p, UART_RX);
++		up->lsr_saved_flags = 0;
+ 	}
+ 
+-	serial_port_in(p, UART_RX);
++	/* Now guaranteed to have BUSY deasserted? Just sanity check */
++	if (serial_port_in(p, usr_reg) & DW_UART_USR_BUSY) {
++		dw8250_idle_exit(p);
++		return -EBUSY;
++	}
++
++	return 0;
++}
++
++static void dw8250_set_divisor(struct uart_port *p, unsigned int baud,
++			       unsigned int quot, unsigned int quot_frac)
++{
++	struct uart_8250_port *up = up_to_u8250p(p);
++	int ret;
++
++	ret = dw8250_idle_enter(p);
++	if (ret < 0)
++		return;
++
++	serial_port_out(p, UART_LCR, up->lcr | UART_LCR_DLAB);
++	if (!(serial_port_in(p, UART_LCR) & UART_LCR_DLAB))
++		goto idle_failed;
++
++	serial_dl_write(up, quot);
++	serial_port_out(p, UART_LCR, up->lcr);
++
++idle_failed:
++	dw8250_idle_exit(p);
+ }
+ 
+ /*
+  * This function is being called as part of the uart_port::serial_out()
+- * routine. Hence, it must not call serial_port_out() or serial_out()
+- * against the modified registers here, i.e. LCR.
++ * routine. Hence, special care must be taken when serial_port_out() or
++ * serial_out() against the modified registers here, i.e. LCR (d->in_idle is
++ * used to break recursion loop).
+  */
+ static void dw8250_check_lcr(struct uart_port *p, unsigned int offset, u32 value)
+ {
+ 	struct dw8250_data *d = to_dw8250_data(p->private_data);
+-	void __iomem *addr = p->membase + (offset << p->regshift);
+-	int tries = 1000;
++	u32 lcr;
++	int ret;
+ 
+ 	if (offset != UART_LCR || d->uart_16550_compatible)
+ 		return;
+ 
++	lcr = serial_port_in(p, UART_LCR);
++
+ 	/* Make sure LCR write wasn't ignored */
+-	while (tries--) {
+-		u32 lcr = serial_port_in(p, offset);
++	if ((value & ~UART_LCR_SPAR) == (lcr & ~UART_LCR_SPAR))
++		return;
+ 
+-		if ((value & ~UART_LCR_SPAR) == (lcr & ~UART_LCR_SPAR))
+-			return;
++	if (d->in_idle)
++		goto write_err;
+ 
+-		dw8250_force_idle(p);
++	ret = dw8250_idle_enter(p);
++	if (ret < 0)
++		goto write_err;
++
++	serial_port_out(p, UART_LCR, value);
++	dw8250_idle_exit(p);
++	return;
+ 
+-#ifdef CONFIG_64BIT
+-		if (p->type == PORT_OCTEON)
+-			__raw_writeq(value & 0xff, addr);
+-		else
+-#endif
+-		if (p->iotype == UPIO_MEM32)
+-			writel(value, addr);
+-		else if (p->iotype == UPIO_MEM32BE)
+-			iowrite32be(value, addr);
+-		else
+-			writeb(value, addr);
+-	}
++write_err:
+ 	/*
+ 	 * FIXME: this deadlocks if port->lock is already held
+ 	 * dev_err(p->dev, "Couldn't set LCR to %d\n", value);
+ 	 */
++	return;		/* Silences "label at the end of compound statement" */
+ }
+ 
+ /*
+@@ -632,8 +709,10 @@ static int dw8250_probe(struct platform_
+ 	p->type		= PORT_8250;
+ 	p->flags	= UPF_FIXED_PORT;
+ 	p->dev		= dev;
++
+ 	p->set_ldisc	= dw8250_set_ldisc;
+ 	p->set_termios	= dw8250_set_termios;
++	p->set_divisor	= dw8250_set_divisor;
+ 
+ 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -489,7 +489,7 @@ serial_port_out_sync(struct uart_port *p
+ /*
+  * FIFO support.
+  */
+-static void serial8250_clear_fifos(struct uart_8250_port *p)
++void serial8250_clear_fifos(struct uart_8250_port *p)
+ {
+ 	if (p->capabilities & UART_CAP_FIFO) {
+ 		serial_out(p, UART_FCR, UART_FCR_ENABLE_FIFO);
+@@ -498,6 +498,7 @@ static void serial8250_clear_fifos(struc
+ 		serial_out(p, UART_FCR, 0);
+ 	}
+ }
++EXPORT_SYMBOL_NS_GPL(serial8250_clear_fifos, "SERIAL_8250");
+ 
+ static enum hrtimer_restart serial8250_em485_handle_start_tx(struct hrtimer *t);
+ static enum hrtimer_restart serial8250_em485_handle_stop_tx(struct hrtimer *t);
+@@ -3198,6 +3199,17 @@ void serial8250_set_defaults(struct uart
+ }
+ EXPORT_SYMBOL_GPL(serial8250_set_defaults);
+ 
++void serial8250_fifo_wait_for_lsr_thre(struct uart_8250_port *up, unsigned int count)
++{
++	unsigned int i;
++
++	for (i = 0; i < count; i++) {
++		if (wait_for_lsr(up, UART_LSR_THRE))
++			return;
++	}
++}
++EXPORT_SYMBOL_NS_GPL(serial8250_fifo_wait_for_lsr_thre, "SERIAL_8250");
++
+ #ifdef CONFIG_SERIAL_8250_CONSOLE
+ 
+ static void serial8250_console_putchar(struct uart_port *port, unsigned char ch)
+@@ -3239,16 +3251,6 @@ static void serial8250_console_restore(s
+ 	serial8250_out_MCR(up, up->mcr | UART_MCR_DTR | UART_MCR_RTS);
+ }
+ 
+-static void fifo_wait_for_lsr(struct uart_8250_port *up, unsigned int count)
+-{
+-	unsigned int i;
+-
+-	for (i = 0; i < count; i++) {
+-		if (wait_for_lsr(up, UART_LSR_THRE))
+-			return;
+-	}
+-}
+-
+ /*
+  * Print a string to the serial port using the device FIFO
+  *
+@@ -3267,7 +3269,7 @@ static void serial8250_console_fifo_writ
+ 
+ 	while (s != end) {
+ 		/* Allow timeout for each byte of a possibly full FIFO */
+-		fifo_wait_for_lsr(up, fifosize);
++		serial8250_fifo_wait_for_lsr_thre(up, fifosize);
+ 
+ 		for (i = 0; i < fifosize && s != end; ++i) {
+ 			if (*s == '\n' && !cr_sent) {
+@@ -3285,7 +3287,7 @@ static void serial8250_console_fifo_writ
+ 	 * Allow timeout for each byte written since the caller will only wait
+ 	 * for UART_LSR_BOTH_EMPTY using the timeout of a single character
+ 	 */
+-	fifo_wait_for_lsr(up, tx_count);
++	serial8250_fifo_wait_for_lsr_thre(up, tx_count);
+ }
+ 
+ /*
 
 
 
