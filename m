@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-229527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229534-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFfCCNpmwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-229527-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:18 +0100
+	id +AVoCB97wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229534-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB3B92F7C6B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:14:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 741D92FA2AD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F3D473021414
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 205AE30D9E28
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97E0A242D70;
-	Mon, 23 Mar 2026 15:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523632773FF;
+	Mon, 23 Mar 2026 16:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bt6gx574"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XT9e07F6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F743B7759;
-	Mon, 23 Mar 2026 15:28:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02EB012CDA5;
+	Mon, 23 Mar 2026 16:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279732; cv=none; b=BpJCKDMfKQgUJU1/5ImI+JI9C35q5rVXlZN31lpodLVXxN/dPzkIhH5pC/BGcElDiSZ5RVUjD7iVV7bCT9MBTPCR89cf3czKlO4jg8QNJBXGjx5ZH7LfL+In0TVHeTqIfj84i9uHLzm8WbVGpr17xs7SZmlDSDxR3tIMxUjL/kg=
+	t=1774282181; cv=none; b=cnwc0bNBTwnMgQxNO2g40oT26NgdjPhLKMQXDaqEvcExn2MP5hH0CzDICc+NO8a4z9ab/k0x0siYk8AJN+040o1TxXZnM/SREHD/xIyFdZuEtroGUH3c2wlEcIu4IgnHitObtXtDe3rAic/dmpwLcwGSqjf3I/X9CJsSqheuJLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279732; c=relaxed/simple;
-	bh=Jc7VzgeAID/z3EP0o1+87HiqL50ebwKhfs4FCtol9LU=;
+	s=arc-20240116; t=1774282181; c=relaxed/simple;
+	bh=t/DF04G4JQz0rRLCjJnzDxvlPOAZbFS5lWlb/l4kfgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ewuIEPoncVmdoZy9U7Hbew16nB3eViYJDL6xezQr2ipoQLfxSK5LPq5ZKVU18pWeJtRdrWfLv1P6Gt7MWLpNtEQ/hsUGYMsn7cQBLRSeqX7+F/tWuB+zSj4n9YDgg8H0n85SQCB0tZ4eTuWt2HegzHGZ6CEhrZeMNxlmM84Gzqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bt6gx574; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB94EC4CEF7;
-	Mon, 23 Mar 2026 15:28:51 +0000 (UTC)
+	 MIME-Version; b=EE7ZwM49LWnYabUsIZXYGZrTswa3OzGO7Ht5FoffNYL3ZfNIr3uZVpZSGg3bCSPBiwsdoFlGPdjFeu8GWcPNe9bpHY4Vplb+0IsDmdujRrTb9iGeDeoeMgoRUI14oTYBfRVQuZRhWBefgRXRsOwo/cTo6TwX42zQ5Fx7RY9QpQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XT9e07F6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21CE0C4CEF7;
+	Mon, 23 Mar 2026 16:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279732;
-	bh=Jc7VzgeAID/z3EP0o1+87HiqL50ebwKhfs4FCtol9LU=;
+	s=korg; t=1774282180;
+	bh=t/DF04G4JQz0rRLCjJnzDxvlPOAZbFS5lWlb/l4kfgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bt6gx574ldrkx19ZVE5mqUNhZL+J6nBusMOv5KZD3grTqtNNeFMxBKyIoXPStW5n6
-	 +Qbx5Po/foxnRDomKucJ79jirmiHQaiFl1fs0Ovb3kwrky+X8txzSkfy7C+TszlM/U
-	 9WRfTH4uJd95n/1DpdSP0sSezi42MGGTb5aVJbVc=
+	b=XT9e07F6kSMtFKj5s2WhJh+QmLvl5SdBiMyTPY1d/Ye0jdfnYwfO6oefu/G0xRW4e
+	 OMUnuOmZefURRHxZOXpxj6Kl7RJ/+nISr6aw2A4k8hOTlWh1PvcZ4MUH9l94SuHQL0
+	 1dxGFYWlGxhQ71SPNRXJylur4GJx84XPaVTsZbqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	stable <stable@kernel.org>,
+	"Thomas Richard (TI)" <thomas.richard@bootlin.com>,
+	Peter Chen <peter.chen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 061/481] usb: cdns3: call cdns_power_is_lost() only once in cdns_resume()
-Date: Mon, 23 Mar 2026 14:40:43 +0100
-Message-ID: <20260323134526.711128618@linuxfoundation.org>
+Subject: [PATCH 6.1 062/481] usb: cdns3: fix role switching during resume
+Date: Mon, 23 Mar 2026 14:40:44 +0100
+Message-ID: <20260323134526.734450788@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
 References: <20260323134525.256603107@linuxfoundation.org>
@@ -62,35 +64,35 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229527-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229534-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,bootlin.com:email]
-X-Rspamd-Queue-Id: BB3B92F7C6B
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,msgid.link:url]
+X-Rspamd-Queue-Id: 741D92FA2AD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -98,49 +100,91 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Thomas Richard (TI) <thomas.richard@bootlin.com>
 
-[ Upstream commit 17c6526b333cfd89a4c888a6f7c876c8c326e5ae ]
+[ Upstream commit 87e4b043b98a1d269be0b812f383881abee0ca45 ]
 
-cdns_power_is_lost() does a register read.
-Call it only once rather than twice.
+If the role change while we are suspended, the cdns3 driver switches to the
+new mode during resume. However, switching to host mode in this context
+causes a NULL pointer dereference.
 
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://lore.kernel.org/r/20250205-s2r-cdns-v7-4-13658a271c3c@bootlin.com
+The host role's start() operation registers a xhci-hcd device, but its
+probe is deferred while we are in the resume path. The host role's resume()
+operation assumes the xhci-hcd device is already probed, which is not the
+case, leading to the dereference. Since the start() operation of the new
+role is already called, the resume operation can be skipped.
+
+So skip the resume operation for the new role if a role switch occurs
+during resume. Once the resume sequence is complete, the xhci-hcd device
+can be probed in case of host mode.
+
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000208
+Mem abort info:
+...
+Data abort info:
+...
+[0000000000000208] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1]  SMP
+Modules linked in:
+CPU: 0 UID: 0 PID: 146 Comm: sh Not tainted
+6.19.0-rc7-00013-g6e64f4aabfae-dirty #135 PREEMPT
+Hardware name: Texas Instruments J7200 EVM (DT)
+pstate: 20000005 (nzCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : usb_hcd_is_primary_hcd+0x0/0x1c
+lr : cdns_host_resume+0x24/0x5c
+...
+Call trace:
+ usb_hcd_is_primary_hcd+0x0/0x1c (P)
+ cdns_resume+0x6c/0xbc
+ cdns3_controller_resume.isra.0+0xe8/0x17c
+ cdns3_plat_resume+0x18/0x24
+ platform_pm_resume+0x2c/0x68
+ dpm_run_callback+0x90/0x248
+ device_resume+0x100/0x24c
+ dpm_resume+0x190/0x2ec
+ dpm_resume_end+0x18/0x34
+ suspend_devices_and_enter+0x2b0/0xa44
+ pm_suspend+0x16c/0x5fc
+ state_store+0x80/0xec
+ kobj_attr_store+0x18/0x2c
+ sysfs_kf_write+0x7c/0x94
+ kernfs_fop_write_iter+0x130/0x1dc
+ vfs_write+0x240/0x370
+ ksys_write+0x70/0x108
+ __arm64_sys_write+0x1c/0x28
+ invoke_syscall+0x48/0x10c
+ el0_svc_common.constprop.0+0x40/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x34/0x108
+ el0t_64_sync_handler+0xa0/0xe4
+ el0t_64_sync+0x198/0x19c
+Code: 52800003 f9407ca5 d63f00a0 17ffffe4 (f9410401)
+---[ end trace 0000000000000000 ]---
+
+Cc: stable <stable@kernel.org>
+Fixes: 2cf2581cd229 ("usb: cdns3: add power lost support for system resume")
+Signed-off-by: Thomas Richard (TI) <thomas.richard@bootlin.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://patch.msgid.link/20260130-usb-cdns3-fix-role-switching-during-resume-v1-1-44c456852b52@bootlin.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 87e4b043b98a ("usb: cdns3: fix role switching during resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/cdns3/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/cdns3/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/usb/cdns3/core.c b/drivers/usb/cdns3/core.c
-index d272d7b82bec1..8e46fd36b0e56 100644
+index 8e46fd36b0e56..93e93bb9a314f 100644
 --- a/drivers/usb/cdns3/core.c
 +++ b/drivers/usb/cdns3/core.c
-@@ -523,11 +523,12 @@ EXPORT_SYMBOL_GPL(cdns_suspend);
- 
- int cdns_resume(struct cdns *cdns)
- {
-+	bool power_lost = cdns_power_is_lost(cdns);
- 	enum usb_role real_role;
- 	bool role_changed = false;
- 	int ret = 0;
- 
--	if (cdns_power_is_lost(cdns)) {
-+	if (power_lost) {
- 		if (!cdns->role_sw) {
- 			real_role = cdns_hw_role_state_machine(cdns);
- 			if (real_role != cdns->role) {
-@@ -550,7 +551,7 @@ int cdns_resume(struct cdns *cdns)
+@@ -550,7 +550,7 @@ int cdns_resume(struct cdns *cdns)
+ 		}
  	}
  
- 	if (cdns->roles[cdns->role]->resume)
--		cdns->roles[cdns->role]->resume(cdns, cdns_power_is_lost(cdns));
-+		cdns->roles[cdns->role]->resume(cdns, power_lost);
+-	if (cdns->roles[cdns->role]->resume)
++	if (!role_changed && cdns->roles[cdns->role]->resume)
+ 		cdns->roles[cdns->role]->resume(cdns, power_lost);
  
  	return 0;
- }
 -- 
 2.51.0
 
