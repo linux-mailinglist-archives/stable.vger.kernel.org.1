@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-229963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229947-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HDrL9l2wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229963-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:22:33 +0100
+	id YLObAAN3wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229947-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:23:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE382F9CE4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:22:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E052F9D2E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:23:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C143435E561D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F217630E5F9A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370893BE634;
-	Mon, 23 Mar 2026 16:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24843C063C;
+	Mon, 23 Mar 2026 16:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHGu0vPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jmix2qZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51323C2764;
-	Mon, 23 Mar 2026 16:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E033B47C9;
+	Mon, 23 Mar 2026 16:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283380; cv=none; b=Xs26Oil6xHjcZ2QfbAj00HEyy7cozUvCJHW2uhBjx46lOywXbKkU6zTKnLV1zUpM6oX9aaZ0re4xeDJQE9Jio/0D0ZjbGSTPpQrn88imuEAOKe7VuhesZaWBnbU8ssAx/M8zBiQzsRXkTI/3WxbvgbAje+purnEvEYSVYTqHvn4=
+	t=1774283337; cv=none; b=NrGs45fcraMn3NdwPGvPmfvqZodJBtT/cMQL2Db1TJLlVirfIEYlbsYSbKkZJrIqVYH8VXeJiHdvYW9HdchX5uX9kRm5hohboeJ8EVsbHSFAzm8ZUjrkD0DC8bg6dYKdAQy7RKSnBoE8hj+3uEZWVvrISko6oMIU0chfKSZoTXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283380; c=relaxed/simple;
-	bh=+j2+syTLgW6wYaFmPS3EYLBE2xoQYhMx20Ca8waVSyk=;
+	s=arc-20240116; t=1774283337; c=relaxed/simple;
+	bh=iKtjEPY9L9IXoeE547y84K3kKyeWO3aapxTdGG7xx8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WytGMkt1qAYz1oS6DDxfvHh7OkL6bN2POpDdMhlzAceN+WnXTnhZbHG8Fi1IeimjWVzICojKCSUbY5XWqcItS+WH3QY6lyphZGL37wTXN3cpxjujxvxjbGw/BweFYoEIqY+Fpfs+hxFZ/X+YGYcNWDqiwR0wBVmNHXMxHB952kQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHGu0vPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BBAC4CEF7;
-	Mon, 23 Mar 2026 16:29:40 +0000 (UTC)
+	 MIME-Version; b=h06ggh4tI4X7pTPJTcsq6BmuG4c7EAkZO+LTLVzn+qi0pYyiRVgi0X+qdYK72XzzXK+R/7RLXhYQGpOfJdNPDBLx+PLtphjwpRUMVXaNIfIcBhNO7F75o1oh6UB5t1u8J2axceZfEvApGte9X0fLpjd8WTmQeM8IOBY/PXwFkiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jmix2qZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 509B6C4CEF7;
+	Mon, 23 Mar 2026 16:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283380;
-	bh=+j2+syTLgW6wYaFmPS3EYLBE2xoQYhMx20Ca8waVSyk=;
+	s=korg; t=1774283336;
+	bh=iKtjEPY9L9IXoeE547y84K3kKyeWO3aapxTdGG7xx8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pHGu0vPvaKq4DKmLEibudwAt6DU+C7fnl1QX9yWRtEtSp6os6SUSLtOe5Cqwuo2jd
-	 3Ryr2Vn4LDVEhrl/M3Kj3JJLhc8/3C2ifSkVE10Oin0DSQk3ozCcUQcd5E6l436Di5
-	 QzQ/R/UMGSTqdE9kIqrtDAGQxOhKiQcHOgfQtMvk=
+	b=Jmix2qZWxRPkFn/wtO5INMkqL06jTae8neZDRZpzFVdV3wUJZcjKOpY80Vr+1/0hU
+	 pyQZbGhCgq4qNVdiECv9OKNKbF6O/JWC6A67T6CSecgKaNAL5dFMzqDs9DjLkMNFAV
+	 YmdmKkHH9hTtECwFkXw1fvjc/NgCmZhlaXUXm2w4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jibin Zhang <jibin.zhang@mediatek.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.1 465/481] net: fix segmentation of forwarding fraglist GRO
-Date: Mon, 23 Mar 2026 14:47:27 +0100
-Message-ID: <20260323134536.544791211@linuxfoundation.org>
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.upadhyay@kernel.org>,
+	Jianqiang kang <jianqkang@sina.cn>
+Subject: [PATCH 6.1 466/481] rcu/nocb: Fix possible invalid rdps->nocb_cb_kthread pointer access
+Date: Mon, 23 Mar 2026 14:47:28 +0100
+Message-ID: <20260323134536.570791934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
 References: <20260323134525.256603107@linuxfoundation.org>
@@ -64,34 +65,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229963-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,mediatek.com,redhat.com,139.com];
-	TO_DN_SOME(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,sina.cn];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229947-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1EE382F9CE4
+X-Rspamd-Queue-Id: 06E052F9D2E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,101 +101,62 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Jibin Zhang <jibin.zhang@mediatek.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 426ca15c7f6cb6562a081341ca88893a50c59fa2 ]
+[ Upstream commit 1bba3900ca18bdae28d1b9fa10f16a8f8cb2ada1 ]
 
-This patch enhances GSO segment handling by properly checking
-the SKB_GSO_DODGY flag for frag_list GSO packets, addressing
-low throughput issues observed when a station accesses IPv4
-servers via hotspots with an IPv6-only upstream interface.
+In the preparation stage of CPU online, if the corresponding
+the rdp's->nocb_cb_kthread does not exist, will be created,
+there is a situation where the rdp's rcuop kthreads creation fails,
+and then de-offload this CPU's rdp, does not assign this CPU's
+rdp->nocb_cb_kthread pointer, but this rdp's->nocb_gp_rdp and
+rdp's->rdp_gp->nocb_gp_kthread is still valid.
 
-Specifically, it fixes a bug in GSO segmentation when forwarding
-GRO packets containing a frag_list. The function skb_segment_list
-cannot correctly process GRO skbs that have been converted by XLAT,
-since XLAT only translates the header of the head skb. Consequently,
-skbs in the frag_list may remain untranslated, resulting in protocol
-inconsistencies and reduced throughput.
+This will cause the subsequent re-offload operation of this offline
+CPU, which will pass the conditional check and the kthread_unpark()
+will access invalid rdp's->nocb_cb_kthread pointer.
 
-To address this, the patch explicitly sets the SKB_GSO_DODGY flag
-for GSO packets in XLAT's IPv4/IPv6 protocol translation helpers
-(bpf_skb_proto_4_to_6 and bpf_skb_proto_6_to_4). This marks GSO
-packets as potentially modified after protocol translation. As a
-result, GSO segmentation will avoid using skb_segment_list and
-instead falls back to skb_segment for packets with the SKB_GSO_DODGY
-flag. This ensures that only safe and fully translated frag_list
-packets are processed by skb_segment_list, resolving protocol
-inconsistencies and improving throughput when forwarding GRO packets
-converted by XLAT.
+This commit therefore use rdp's->nocb_gp_kthread instead of
+rdp_gp's->nocb_gp_kthread for safety check.
 
-Signed-off-by: Jibin Zhang <jibin.zhang@mediatek.com>
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260126152114.1211-1-jibin.zhang@mediatek.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.upadhyay@kernel.org>
+[ Minor conflict resolved. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/filter.c        |    2 ++
- net/ipv4/tcp_offload.c   |    3 ++-
- net/ipv4/udp_offload.c   |    3 ++-
- net/ipv6/tcpv6_offload.c |    3 ++-
- 4 files changed, 8 insertions(+), 3 deletions(-)
+ kernel/rcu/tree_nocb.h |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3333,6 +3333,7 @@ static int bpf_skb_proto_4_to_6(struct s
- 			shinfo->gso_type &= ~SKB_GSO_TCPV4;
- 			shinfo->gso_type |=  SKB_GSO_TCPV6;
- 		}
-+		shinfo->gso_type |=  SKB_GSO_DODGY;
- 	}
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -1112,7 +1112,6 @@ static long rcu_nocb_rdp_offload(void *a
+ 	struct rcu_segcblist *cblist = &rdp->cblist;
+ 	unsigned long flags;
+ 	int wake_gp;
+-	struct rcu_data *rdp_gp = rdp->nocb_gp_rdp;
  
- 	bpf_skb_change_protocol(skb, ETH_P_IPV6);
-@@ -3363,6 +3364,7 @@ static int bpf_skb_proto_6_to_4(struct s
- 			shinfo->gso_type &= ~SKB_GSO_TCPV6;
- 			shinfo->gso_type |=  SKB_GSO_TCPV4;
- 		}
-+		shinfo->gso_type |=  SKB_GSO_DODGY;
- 	}
+ 	WARN_ON_ONCE(rdp->cpu != raw_smp_processor_id());
+ 	/*
+@@ -1122,7 +1121,7 @@ static long rcu_nocb_rdp_offload(void *a
+ 	if (!rdp->nocb_gp_rdp)
+ 		return -EINVAL;
  
- 	bpf_skb_change_protocol(skb, ETH_P_IP);
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -106,7 +106,8 @@ static struct sk_buff *tcp4_gso_segment(
- 	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
- 		struct tcphdr *th = tcp_hdr(skb);
+-	if (WARN_ON_ONCE(!rdp_gp->nocb_gp_kthread))
++	if (WARN_ON_ONCE(!rdp->nocb_gp_kthread))
+ 		return -EINVAL;
  
--		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
-+		if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
-+		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
- 			return __tcp4_gso_segment_list(skb, features);
- 
- 		skb->ip_summed = CHECKSUM_NONE;
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -351,7 +351,8 @@ struct sk_buff *__udp_gso_segment(struct
- 
- 	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
- 		 /* Detect modified geometry and pass those to skb_segment. */
--		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
-+		if ((skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size) &&
-+		    !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_DODGY))
- 			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
- 
- 		ret = __skb_linearize(gso_skb);
---- a/net/ipv6/tcpv6_offload.c
-+++ b/net/ipv6/tcpv6_offload.c
-@@ -108,7 +108,8 @@ static struct sk_buff *tcp6_gso_segment(
- 	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
- 		struct tcphdr *th = tcp_hdr(skb);
- 
--		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
-+		if ((skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size) &&
-+		    !(skb_shinfo(skb)->gso_type & SKB_GSO_DODGY))
- 			return __tcp6_gso_segment_list(skb, features);
- 
- 		skb->ip_summed = CHECKSUM_NONE;
+ 	pr_info("Offloading %d\n", rdp->cpu);
+@@ -1151,7 +1150,7 @@ static long rcu_nocb_rdp_offload(void *a
+ 	 */
+ 	wake_gp = rdp_offload_toggle(rdp, true, flags);
+ 	if (wake_gp)
+-		wake_up_process(rdp_gp->nocb_gp_kthread);
++		wake_up_process(rdp->nocb_gp_kthread);
+ 	swait_event_exclusive(rdp->nocb_state_wq,
+ 			      rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_CB) &&
+ 			      rcu_segcblist_test_flags(cblist, SEGCBLIST_KTHREAD_GP));
 
 
 
