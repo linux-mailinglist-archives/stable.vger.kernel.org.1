@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-228168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229898-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CECuIvRMwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228168-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:48 +0100
+	id 4K1eEzJ9wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229898-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:49:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F350E2F45DB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C3D2FA79A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5167307F389
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:00:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C48D312CF63
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFF33AF665;
-	Mon, 23 Mar 2026 13:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F53C3AE6F8;
+	Mon, 23 Mar 2026 16:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDGoflIN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vajafh/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C543B5303;
-	Mon, 23 Mar 2026 13:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1323837B02A;
+	Mon, 23 Mar 2026 16:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274332; cv=none; b=qLCksZbjHfHWkNHh8LqRvqOWYIPUEpEG/HFr8kGeqjRZzwulHtPJJZuBX6b5EwGJzy4zKddpACnp37Z/kUxYlaccnWVFljSFagfDzczNmQX/80/hwa6TAoNEw79vXIxFT26POTWDrFYpOqNoCpP8h/QghAHO/30OfQSupdD9J9Q=
+	t=1774283160; cv=none; b=teeAot5CAAtmAnBnH8dcttHThP6XZLLSQYW2+DYTIjC+8UxnOrVj/0DE9MCReWNlZ0GKHzPaKf7iprVopOROmT276Xp4AyUYzhy0kpBIF4jkVENG595DDCtXK+Qy6Y93m1A0Ea3bud2RBdAraoUTrlSjyIKXWBfdGtu/J1ZyQP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274332; c=relaxed/simple;
-	bh=UHyJzWMCazCspACIyd94ctY0p52OjbJ9ZUrSk8AkQA0=;
+	s=arc-20240116; t=1774283160; c=relaxed/simple;
+	bh=HiPvVPNkamwDRzrOn7V4kUHv0vR+YntLklJvuT4bHaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NO3s7gZ/efI/LoYPrheHEm7dm0i34fRweMnuB7i03MZGs6Dyb0IsmMrF5vZVogN2OMwDDTa7om6AEt1mPIzE6W7BQca/sipW4JQU2I+KmU7GDfi0xs1QnSgU4sMa6rPnWJmF75q9SMUQfVD3Wrf5eW9Yc7dO3J+x6mCHZ/bNE1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDGoflIN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2636CC2BC9E;
-	Mon, 23 Mar 2026 13:58:51 +0000 (UTC)
+	 MIME-Version; b=kVFVk7eSKcJHCMpipFdNFgxc3DRyeD5uNOYt3qGodgeecQByTqxbUxj2x5Q2KBh6K19cj2fhl4JBBC+rwJQJFmTT/lFzCB4SwPOwNTVsKsIR7yBmfOus1JmogGesjtsFUPHKmbpVB5RHoIHT+whcaJfr04Za1GzAxjX2rNWZ4W8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vajafh/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9746FC4CEF7;
+	Mon, 23 Mar 2026 16:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274332;
-	bh=UHyJzWMCazCspACIyd94ctY0p52OjbJ9ZUrSk8AkQA0=;
+	s=korg; t=1774283160;
+	bh=HiPvVPNkamwDRzrOn7V4kUHv0vR+YntLklJvuT4bHaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDGoflINJQ6PQplGcE4+H2uh3MxErt3f4B3SMIy3B/V1UO5onlAEEyOeeyU9Fd86W
-	 /1Oi2ttMlY/yf/Sv9VrDQyTVVbYkuCGjTYPsf7NI+twvFHS6dWkVbOgZw/xxCb94i0
-	 Ps/Ukba90+Q/HsYm2bqhKFdYQE242+JM0wqq7YNI=
+	b=vajafh/XIVTjnNjmsBZtB9gVjbI6mmETnMCAyD+sfO8fO3/T/6XZ8kGsUOMIctdsN
+	 5Df7TzuK3URAXhAzDjZu5qeFa6EsBhsKPuo7HyiJlmRom/MsrCICHcEPCmE+EBm0M6
+	 qNyVLPtLgFF4T03pz+EZmztjb08IAoDoxPPF2iBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.19 185/220] hwmon: (pmbus/isl68137) Fix unchecked return value and use sysfs_emit()
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 380/481] dm-verity: disable recursive forward error correction
 Date: Mon, 23 Mar 2026 14:46:02 +0100
-Message-ID: <20260323134510.423072294@linuxfoundation.org>
+Message-ID: <20260323134534.394171993@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,76 +70,98 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,google.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-229898-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228168-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[juniper.net:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,roeck-us.net:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: F350E2F45DB
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A6C3D2FA79A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 86259558e422b250aa6aa57163a6d759074573f5 upstream.
+[ Upstream commit d9f3e47d3fae0c101d9094bc956ed24e7a0ee801 ]
 
-isl68137_avs_enable_show_page() uses the return value of
-pmbus_read_byte_data() without checking for errors. If the I2C transaction
-fails, a negative error code is passed through bitwise operations,
-producing incorrect output.
+There are two problems with the recursive correction:
 
-Add an error check to propagate the return value if it is negative.
-Additionally, modernize the callback by replacing sprintf()
-with sysfs_emit().
+1. It may cause denial-of-service. In fec_read_bufs, there is a loop that
+has 253 iterations. For each iteration, we may call verity_hash_for_block
+recursively. There is a limit of 4 nested recursions - that means that
+there may be at most 253^4 (4 billion) iterations. Red Hat QE team
+actually created an image that pushes dm-verity to this limit - and this
+image just makes the udev-worker process get stuck in the 'D' state.
 
-Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260318193952.47908-2-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+2. It doesn't work. In fec_read_bufs we store data into the variable
+"fio->bufs", but fio bufs is shared between recursive invocations, if
+"verity_hash_for_block" invoked correction recursively, it would
+overwrite partially filled fio->bufs.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+[ The context change is due to the commit bdf253d580d7
+("dm-verity: remove support for asynchronous hashes")
+in v6.18 and the commit 9356fcfe0ac4
+("dm verity: set DM_TARGET_SINGLETON feature flag") in v6.9
+which are irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/isl68137.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/md/dm-verity-fec.c |    4 +---
+ drivers/md/dm-verity-fec.h |    3 ---
+ 2 files changed, 1 insertion(+), 6 deletions(-)
 
---- a/drivers/hwmon/pmbus/isl68137.c
-+++ b/drivers/hwmon/pmbus/isl68137.c
-@@ -98,8 +98,11 @@ static ssize_t isl68137_avs_enable_show_
- {
- 	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -439,10 +439,8 @@ int verity_fec_decode(struct dm_verity *
+ 	if (!verity_fec_is_enabled(v))
+ 		return -EOPNOTSUPP;
  
--	return sprintf(buf, "%d\n",
--		       (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS ? 1 : 0);
-+	if (val < 0)
-+		return val;
-+
-+	return sysfs_emit(buf, "%d\n",
-+			   (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS);
- }
+-	if (fio->level >= DM_VERITY_FEC_MAX_RECURSION) {
+-		DMWARN_LIMIT("%s: FEC: recursion too deep", v->data_dev->name);
++	if (fio->level)
+ 		return -EIO;
+-	}
  
- static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
+ 	fio->level++;
+ 
+--- a/drivers/md/dm-verity-fec.h
++++ b/drivers/md/dm-verity-fec.h
+@@ -23,9 +23,6 @@
+ #define DM_VERITY_FEC_BUF_MAX \
+ 	(1 << (PAGE_SHIFT - DM_VERITY_FEC_BUF_RS_BITS))
+ 
+-/* maximum recursion level for verity_fec_decode */
+-#define DM_VERITY_FEC_MAX_RECURSION	4
+-
+ #define DM_VERITY_OPT_FEC_DEV		"use_fec_from_device"
+ #define DM_VERITY_OPT_FEC_BLOCKS	"fec_blocks"
+ #define DM_VERITY_OPT_FEC_START		"fec_start"
 
 
 
