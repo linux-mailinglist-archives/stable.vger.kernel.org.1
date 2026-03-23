@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-229256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0PAPObNcwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229256-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:59 +0100
+	id 0ELTMuhHwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611F12F664C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 916E42F3ACD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5C67730B7B53
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 562E43068D31
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1663C3B2FEC;
-	Mon, 23 Mar 2026 15:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E56C3AD527;
+	Mon, 23 Mar 2026 13:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fB3MXkdH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRgjq79e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF13274B5F;
-	Mon, 23 Mar 2026 15:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317C63ACA62;
+	Mon, 23 Mar 2026 13:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278549; cv=none; b=Hb9cYOTlsUpkY0oJaAMaz9gznhfIKROx1eL+bhkxhSaZEm6+fry1oauLFd9+9ryuXlDyVzdo+pp+w3WrEFt0TM5zp0U8XKYVoiyJe9XX35wqqNwRMaa5P9bLth03MQDHFvjIcneh0qDTgEGJkLNeakyUb0XC4oBw6IzOZ5U87/Y=
+	t=1774274026; cv=none; b=ZRpGy6LVN9k3xIyFlVW6znYiE3de+LyeQ/lXLlkrHHIUPjalNgulzCdKaIsCZC/DDbv/jMjs2uIWdllKWh3PXsW38Y04BaR64zIm2dPWcPKZp66AXlDPFQzWMisvJ5AEvU1VRC7lEdHGgwyjk+odRhaLHQJ3njXpeOP0N9dGZU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278549; c=relaxed/simple;
-	bh=aa0lYpD1CnLDB1KPFtzl2JRFTawwb0+7v+AQPpxqXAs=;
+	s=arc-20240116; t=1774274026; c=relaxed/simple;
+	bh=HR1YGV6wBB+f1ygl5bYYIQb7NI8ysrjmgQRsdDcCQaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDKtt5riZOtkLcNeLrCjQbbRFLmuFQ3uUq1zgobj1E4Mv87GBA5Nxn2QuASQRs/SkH8piANOhLe19fH3bGb8D+UxCbcL2iitkkgHa2l2wWchwFCeXYkq4w7CWzlW+ksGp4ilSnb+4kHhTD1hXx2gMxZD/oAjlEOMOv7kTvk10ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fB3MXkdH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4F2C4CEF7;
-	Mon, 23 Mar 2026 15:09:09 +0000 (UTC)
+	 MIME-Version; b=JYVc1n64IQighUXdqNvWoWKfAn3vkJrEL5uga/7xP4D3GmGl7K1hxpqEfDQb16LqFTLypVnFTI1cJAjvR7IvQ/GOQuMaj4f9oWZXyrfUcR7qrZo7FhL6RJ+CjLrvCw30WttmowsWn9EDH8QsEDOsk9PpJ4X3d/T3a0g0jvZA1bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRgjq79e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A849FC4CEF7;
+	Mon, 23 Mar 2026 13:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278549;
-	bh=aa0lYpD1CnLDB1KPFtzl2JRFTawwb0+7v+AQPpxqXAs=;
+	s=korg; t=1774274026;
+	bh=HR1YGV6wBB+f1ygl5bYYIQb7NI8ysrjmgQRsdDcCQaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fB3MXkdHJMjPl2tAjojsZFWJDzhtpbCm2QAXXLpjpdy+QDxwVQst2vhzaMkfX2MlR
-	 goIBXUnOUFZnCjxf3tyBbGxp90LW28mM/DNHRB8PeKjLWaiuiBKlXuC5JIeV/zgOj2
-	 o8Yke3ciUSLGGWf3v/l0JHdjqL6521ibBoKZONjQ=
+	b=TRgjq79e/Lx2/ziDROx7TTWlMsnKa7S8lwvHF/qx9FLQKOLkO49rsxW3va/itJoX0
+	 tWNxsYDe2N6Vzl8wfTeZKpnAiaiA/GLmi4hIOTB3O0dqgiFVhtReuA8IKiRIbX6sN7
+	 qnIXqZBMNCvAYhAS0q9SH/sClC/Np1UkmVNEoYqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 343/567] lib/bootconfig: fix off-by-one in xbc_verify_tree() unclosed brace error
+	Mohammed Thasleem <mohammed.thasleem@intel.com>,
+	Jani Nikula <jani.nikula@linux.intel.com>,
+	Tao Liu <ltao@redhat.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Imre Deak <imre.deak@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.19 086/220] drm/i915/dmc: Fix an unlikely NULL pointer deference at probe
 Date: Mon, 23 Mar 2026 14:44:23 +0100
-Message-ID: <20260323134542.321481353@linuxfoundation.org>
+Message-ID: <20260323134507.311612426@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,76 +69,117 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229256-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228066-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RSPAMD_EMAILBL_FAIL(0.00)[jani.nikula.intel.com:query timed out];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 611F12F664C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,intel.com:email]
+X-Rspamd-Queue-Id: 916E42F3ACD
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Imre Deak <imre.deak@intel.com>
 
-commit 39ebc8d7f561e1b64eca87353ef9b18e2825e591 upstream.
+commit ac57eb3b7d2ad649025b5a0fa207315f755ac4f6 upstream.
 
-__xbc_open_brace() pushes entries with post-increment
-(open_brace[brace_index++]), so brace_index always points one past
-the last valid entry.  xbc_verify_tree() reads open_brace[brace_index]
-to report which brace is unclosed, but this is one past the last
-pushed entry and contains stale/zero data, causing the error message
-to reference the wrong node.
+intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
+initialized, and dmc is thus NULL.
 
-Use open_brace[brace_index - 1] to correctly identify the unclosed
-brace.  brace_index is known to be > 0 here since we are inside the
-if (brace_index) guard.
+That would be the case when the call path is
+intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
+gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
+intel_power_domains_init_hw() is called *before* intel_dmc_init().
 
-Link: https://lore.kernel.org/all/20260312191143.28719-2-objecting@objecting.org/
+However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
+conditionally, depending on the current and target DC states. At probe,
+the target is disabled, but if DC6 is enabled, the function is called,
+and an oops follows. Apparently it's quite unlikely that DC6 is enabled
+at probe, as we haven't seen this failure mode before.
 
-Fixes: ead1e19ad905 ("lib/bootconfig: Fix a bug of breaking existing tree nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+It is also strange to have DC6 enabled at boot, since that would require
+the DMC firmware (loaded by BIOS); the BIOS loading the DMC firmware and
+the driver stopping / reprogramming the firmware is a poorly specified
+sequence and as such unlikely an intentional BIOS behaviour. It's more
+likely that BIOS is leaving an unintentionally enabled DC6 HW state
+behind (without actually loading the required DMC firmware for this).
+
+The tracking of the DC6 allowed counter only works if starting /
+stopping the counter depends on the _SW_ DC6 state vs. the current _HW_
+DC6 state (since stopping the counter requires the DC5 counter captured
+when the counter was started). Thus, using the HW DC6 state is incorrect
+and it also leads to the above oops. Fix both issues by using the SW DC6
+state for the tracking.
+
+This is v2 of the fix originally sent by Jani, updated based on the
+first Link: discussion below.
+
+Link: https://lore.kernel.org/all/3626411dc9e556452c432d0919821b76d9991217@intel.com
+Link: https://lore.kernel.org/all/20260228130946.50919-2-ltao@redhat.com
+Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
+Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Tao Liu <ltao@redhat.com>
+Cc: <stable@vger.kernel.org> # v6.16+
+Tested-by: Tao Liu <ltao@redhat.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patch.msgid.link/20260309164803.1918158-1-imre.deak@intel.com
+(cherry picked from commit 2344b93af8eb5da5d496b4e0529d35f0f559eaf0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/bootconfig.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/display/intel_display_power_well.c |    2 +-
+ drivers/gpu/drm/i915/display/intel_dmc.c                |    3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -793,7 +793,7 @@ static int __init xbc_verify_tree(void)
+--- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
++++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
+@@ -798,7 +798,7 @@ void gen9_set_dc_state(struct intel_disp
+ 			power_domains->dc_state, val & mask);
  
- 	/* Brace closing */
- 	if (brace_index) {
--		n = &xbc_nodes[open_brace[brace_index]];
-+		n = &xbc_nodes[open_brace[brace_index - 1]];
- 		return xbc_parse_error("Brace is not closed",
- 					xbc_node_get_data(n));
- 	}
+ 	enable_dc6 = state & DC_STATE_EN_UPTO_DC6;
+-	dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
++	dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
+ 	if (!dc6_was_enabled && enable_dc6)
+ 		intel_dmc_update_dc6_allowed_count(display, true);
+ 
+--- a/drivers/gpu/drm/i915/display/intel_dmc.c
++++ b/drivers/gpu/drm/i915/display/intel_dmc.c
+@@ -1591,8 +1591,7 @@ static bool intel_dmc_get_dc6_allowed_co
+ 		return false;
+ 
+ 	mutex_lock(&power_domains->lock);
+-	dc6_enabled = intel_de_read(display, DC_STATE_EN) &
+-		      DC_STATE_EN_UPTO_DC6;
++	dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
+ 	if (dc6_enabled)
+ 		intel_dmc_update_dc6_allowed_count(display, false);
+ 
 
 
 
