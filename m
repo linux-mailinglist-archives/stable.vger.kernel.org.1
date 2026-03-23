@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-229078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228547-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kJ/QNnFswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229078-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:09 +0100
+	id +GyaI7lRwWnqSAQAu9opvQ
+	(envelope-from <stable+bounces-228547-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4540F2F87C9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF6752F513E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A762305BBC0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE1DA313785A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FE1383C7C;
-	Mon, 23 Mar 2026 14:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F95B222590;
+	Mon, 23 Mar 2026 14:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8w+X/4X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OwrnX3DC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2453F235C01;
-	Mon, 23 Mar 2026 14:59:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21972175A80;
+	Mon, 23 Mar 2026 14:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277990; cv=none; b=qO//UxT6mdKsm0HdBM2lNkPfsdxjLhVP/XHUtCSTNKK805JFt2ArT8+w46NBqM+uhLPmFkS0V0RHv2i9+y/b3z//0sicq7P/wReOlSKFo3Nx06skbA4IbNtyGkQPKfbU4H6HTLOOfQa5982H2iVevKBq6LWYKKoAnP3gdtoA+cQ=
+	t=1774275420; cv=none; b=d3k8c9xpQznP6eeYSqsI2JxukKG8tWcTq1Xf6nUpkfbDtd1A/ke8/jp0PJUEm2Juz9sWxNjt9mBHBM6vHkK8pxO0svC076FxlxVvuKQyf0Y8tLEd7mz1siJrUG4J6jVQC1143NWFhyA+8S3kQVpBIAV6c2qrvnK7jFenKR1ZMXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277990; c=relaxed/simple;
-	bh=cQrnKTZwBHg1JRlIPuSoqvqEjHt2UXgjHtzUB8fWj/E=;
+	s=arc-20240116; t=1774275420; c=relaxed/simple;
+	bh=LZWa5Fn5ah7Fd5Ql/vO0rkkeqtFOVHWoMLev50GZ6yM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fslt34oAOJn9mXpTAj9/GxuwOtk+eX+GDG4Bpt0zxLRHniSv3OBr9Tm2uwvzCUCTe8aaURSEgoBNGzA5jRRINM/1wSx8eSy0uJpnCkuF5zOkMnIZCiQe6kxjeZoyfA27yIKrCUmw4AZK4kpYsanc+hS2cqTvRFuoI3ZJZSKsNZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8w+X/4X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2C6C4CEF7;
-	Mon, 23 Mar 2026 14:59:49 +0000 (UTC)
+	 MIME-Version; b=KrxqdncnrMTcNMLRBpZ9Z/otmJzsB+8SxlZpMDF8frOaRd41lhNiz3oxSfEdXKCxqWSZI4z9cKRBPAXkgKeakU/1ErbOoJMqdwXJIy7Hr2VcgHbknujLChIc4MEvafrbNMERl7XKAWcv7z2Umu5MNBqk6LFzdRrMVzN+ec/IxwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OwrnX3DC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6C56C4CEF7;
+	Mon, 23 Mar 2026 14:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277990;
-	bh=cQrnKTZwBHg1JRlIPuSoqvqEjHt2UXgjHtzUB8fWj/E=;
+	s=korg; t=1774275420;
+	bh=LZWa5Fn5ah7Fd5Ql/vO0rkkeqtFOVHWoMLev50GZ6yM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8w+X/4X61FvBzv8LO/Ham1wZ6azrs/5jklCrfmw79tUbGiJ15UkrEdGfE5Fb+ANZ
-	 v2BU+Ove8J/jMHc+8HFNY41bxuz9a9rZLoZRQEoZrlfb/F8S72FrsgBoJorFr/EeOs
-	 Lgt1g9neJP94XfWFA45iI8XCjkbXgQsCmN2A3vpo=
+	b=OwrnX3DCpf2TSKOJY82rw0UXlXbpJnIwcRhpP4nYqljDKX+w9JcAzeYh/qd7zinEb
+	 OKG/2P6W7/e28FxkZ4HXLWwD7YusXsW/al72+Up76Zt/fvGmgmCRybNjtyd9vyHzx/
+	 rJ+6faxwFNgZxYiVFXN9iBk3LqWzJE+H+Cp7GJLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Shi <cshi008@fiu.edu>,
-	Weidong Zhu <weizhu@fiu.edu>,
-	Dave Tian <daveti@purdue.edu>,
-	Christoph Hellwig <hch@lst.de>,
-	Hannes Reinecke <hare@suse.de>,
-	Sungwoo Kim <iam@sung-woo.kim>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/567] nvme: fix memory allocation in nvme_pr_read_keys()
-Date: Mon, 23 Mar 2026 14:41:26 +0100
-Message-ID: <20260323134537.932532180@linuxfoundation.org>
+	syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com,
+	syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 091/460] ALSA: usb-audio: Check endpoint numbers at parsing Scarlett2 mixer interfaces
+Date: Mon, 23 Mar 2026 14:41:27 +0100
+Message-ID: <20260323134528.904704417@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,145 +64,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [3.84 / 15.00];
-	SEM_URIBL(3.50)[purdue.edu:email];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
-	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229078-lists,stable=lfdr.de];
-	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228547-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	NEURAL_SPAM(0.00)[0.999];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	R_SPF_ALLOW(0.00)[+ip4:172.234.253.10:c];
-	TAGGED_RCPT(0.00)[stable];
-	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,8f29539ef9a1c8334f42,ae893a8901067fde2741];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4540F2F87C9
+X-Rspamd-Queue-Id: CF6752F513E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sungwoo Kim <iam@sung-woo.kim>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit c3320153769f05fd7fe9d840cb555dd3080ae424 ]
+commit df1d8abf36ca3681c21a6809eaa9a1e01ef897a6 upstream.
 
-nvme_pr_read_keys() takes num_keys from userspace and uses it to
-calculate the allocation size for rse via struct_size(). The upper
-limit is PR_KEYS_MAX (64K).
+The Scarlett2 mixer quirk in USB-audio driver may hit a NULL
+dereference when a malformed USB descriptor is passed, since it
+assumes the presence of an endpoint in the parsed interface in
+scarlett2_find_fc_interface(), as reported by fuzzer.
 
-A malicious or buggy userspace can pass a large num_keys value that
-results in a 4MB allocation attempt at most, causing a warning in
-the page allocator when the order exceeds MAX_PAGE_ORDER.
+For avoiding the NULL dereference, just add the sanity check of
+bNumEndpoints and skip the invalid interface.
 
-To fix this, use kvzalloc() instead of kzalloc().
-
-This bug has the same reasoning and fix with the patch below:
-https://lore.kernel.org/linux-block/20251212013510.3576091-1-kartikey406@gmail.com/
-
-Warning log:
-WARNING: mm/page_alloc.c:5216 at __alloc_frozen_pages_noprof+0x5aa/0x2300 mm/page_alloc.c:5216, CPU#1: syz-executor117/272
-Modules linked in:
-CPU: 1 UID: 0 PID: 272 Comm: syz-executor117 Not tainted 6.19.0 #1 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:__alloc_frozen_pages_noprof+0x5aa/0x2300 mm/page_alloc.c:5216
-Code: ff 83 bd a8 fe ff ff 0a 0f 86 69 fb ff ff 0f b6 1d f9 f9 c4 04 80 fb 01 0f 87 3b 76 30 ff 83 e3 01 75 09 c6 05 e4 f9 c4 04 01 <0f> 0b 48 c7 85 70 fe ff ff 00 00 00 00 e9 8f fd ff ff 31 c0 e9 0d
-RSP: 0018:ffffc90000fcf450 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 1ffff920001f9ea0
-RDX: 0000000000000000 RSI: 000000000000000b RDI: 0000000000040dc0
-RBP: ffffc90000fcf648 R08: ffff88800b6c3380 R09: 0000000000000001
-R10: ffffc90000fcf840 R11: ffff88807ffad280 R12: 0000000000000000
-R13: 0000000000040dc0 R14: 0000000000000001 R15: ffffc90000fcf620
-FS:  0000555565db33c0(0000) GS:ffff8880be26c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000002000000c CR3: 0000000003b72000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- alloc_pages_mpol+0x236/0x4d0 mm/mempolicy.c:2486
- alloc_frozen_pages_noprof+0x149/0x180 mm/mempolicy.c:2557
- ___kmalloc_large_node+0x10c/0x140 mm/slub.c:5598
- __kmalloc_large_node_noprof+0x25/0xc0 mm/slub.c:5629
- __do_kmalloc_node mm/slub.c:5645 [inline]
- __kmalloc_noprof+0x483/0x6f0 mm/slub.c:5669
- kmalloc_noprof include/linux/slab.h:961 [inline]
- kzalloc_noprof include/linux/slab.h:1094 [inline]
- nvme_pr_read_keys+0x8f/0x4c0 drivers/nvme/host/pr.c:245
- blkdev_pr_read_keys block/ioctl.c:456 [inline]
- blkdev_common_ioctl+0x1b71/0x29b0 block/ioctl.c:730
- blkdev_ioctl+0x299/0x700 block/ioctl.c:786
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x1bf/0x220 fs/ioctl.c:583
- x64_sys_call+0x1280/0x21b0 mnt/fuzznvme_1/fuzznvme/linux-build/v6.19/./arch/x86/include/generated/asm/syscalls_64.h:17
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x71/0x330 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fb893d3108d
-Code: 28 c3 e8 46 1e 00 00 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffff61f2f38 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007ffff61f3138 RCX: 00007fb893d3108d
-RDX: 0000000020000040 RSI: 00000000c01070ce RDI: 0000000000000003
-RBP: 0000000000000001 R08: 0000000000000000 R09: 00007ffff61f3138
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-R13: 00007ffff61f3128 R14: 00007fb893dae530 R15: 0000000000000001
- </TASK>
-
-Fixes: 5fd96a4e15de (nvme: Add pr_ops read_keys support)
-Acked-by: Chao Shi <cshi008@fiu.edu>
-Acked-by: Weidong Zhu <weizhu@fiu.edu>
-Acked-by: Dave Tian <daveti@purdue.edu>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/69acbbe1.050a0220.310d8.0001.GAE@google.com
+Reported-by: syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/69acf72a.050a0220.310d8.0004.GAE@google.com
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20260309104632.141895-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/pr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/usb/mixer_scarlett2.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/nvme/host/pr.c b/drivers/nvme/host/pr.c
-index 0636fa4d6f77b..1df7cb3155601 100644
---- a/drivers/nvme/host/pr.c
-+++ b/drivers/nvme/host/pr.c
-@@ -217,7 +217,7 @@ static int nvme_pr_read_keys(struct block_device *bdev,
- 	if (rse_len > U32_MAX)
- 		return -EINVAL;
+--- a/sound/usb/mixer_scarlett2.c
++++ b/sound/usb/mixer_scarlett2.c
+@@ -8579,6 +8579,8 @@ static int scarlett2_find_fc_interface(s
  
--	rse = kzalloc(rse_len, GFP_KERNEL);
-+	rse = kvzalloc(rse_len, GFP_KERNEL);
- 	if (!rse)
- 		return -ENOMEM;
+ 		if (desc->bInterfaceClass != 255)
+ 			continue;
++		if (desc->bNumEndpoints < 1)
++			continue;
  
-@@ -242,7 +242,7 @@ static int nvme_pr_read_keys(struct block_device *bdev,
- 	}
- 
- free_rse:
--	kfree(rse);
-+	kvfree(rse);
- 	return ret;
- }
- 
--- 
-2.51.0
-
+ 		epd = get_endpoint(intf->altsetting, 0);
+ 		private->bInterfaceNumber = desc->bInterfaceNumber;
 
 
 
