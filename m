@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229718-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNiOAiVHwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228033-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:01 +0100
+	id oHcKM+ZxwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229718-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 656252F38E4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A4B42F94C6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E97B23076726
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6AAB031FF6A7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46F73ACA68;
-	Mon, 23 Mar 2026 13:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4BA3BD63C;
+	Mon, 23 Mar 2026 16:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJbd32zZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oYvNnQjd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8785E1A6818;
-	Mon, 23 Mar 2026 13:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D74A3BD22E;
+	Mon, 23 Mar 2026 16:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273924; cv=none; b=R6g1FcZ3Pj09STuOH+9wC+GjM5RxvUX7xZ5vXur4HFnIHiukeJP7emz6OZd1atxpCj6Hbhr5d5u/tBUTZ0uZdMoC/Y/KUOiAEBdK4yRy7vVzFbW9dsPdw3PLXViH9FpcMExYySsFzTylXlJZ7YeD2e7984mM5kdMUfRL6BUrhDY=
+	t=1774282680; cv=none; b=NiSLfbzsSAUvY0IpX05Anx7KpQGzdH9JbYSpdrubEpIeCJiiKLyRUvztdw8qeHmZwNPHLAmvpxyajIzjVUK02BqPRXfCOBlvo5Qryt9tQI56E4idDMKW4hJiM41oM716Is8N6PNi7slE0NsWyCeeFRb6D1OktU+FsYR1OxICI44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273924; c=relaxed/simple;
-	bh=Sg185neczz+Ma96TwtFK0rYaRKz2Exil10sYvaqB3MQ=;
+	s=arc-20240116; t=1774282680; c=relaxed/simple;
+	bh=gOSUrDf9lOK4Ab6eA1V1KL4vx5HMdiKxPUkbQUDwdq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=orjHyZ8nzbBBKcFhJHzoPhKB1GsSeBGwgOV63ZSH2NV9YdQw55EtRDGhWb8NirCDY35lJRPbez6PDYdrpHTVQNM9o2QShdUpJVwVxrTSOTW3bUqADV+n3w6MrEIR0tnL3VkSAZzc9KmTVxCNguklUiuOhnLw925oYuDp8aHALio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJbd32zZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC45C4CEF7;
-	Mon, 23 Mar 2026 13:52:03 +0000 (UTC)
+	 MIME-Version; b=Tx6xClpvVSFfOcK4fcX3sxvhUX7jFnuDTPUPcPInRsjeYJ0+4g48VHf3AFfpXnEvcWF1Pj7TF9/P9OvG+6QYuUUmrOS7QyLsu8/T97B0sgo3WPyqFTnvI22lkMmnhbDzyFogz/sinpntZQchwuBe23ip2sTntIYxTqCKBpnhdEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oYvNnQjd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93598C2BCB0;
+	Mon, 23 Mar 2026 16:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273924;
-	bh=Sg185neczz+Ma96TwtFK0rYaRKz2Exil10sYvaqB3MQ=;
+	s=korg; t=1774282679;
+	bh=gOSUrDf9lOK4Ab6eA1V1KL4vx5HMdiKxPUkbQUDwdq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kJbd32zZZs7l3anM58+h1o1ttSlmOdXIsPBUy1hpMUJmTDqU/ygyqUsTUMjBZ5x/9
-	 +CF3kATFFWNSP+XcgVlsBOdHhmP8Dsp9bWgdb2SY7KBO+IWpJ26U9SAHnCimS88TJ6
-	 g62BJA5BqElxGkUu9oK6QQzs0jPMQyGO++bqwpzs=
+	b=oYvNnQjd8msFuWWtLLDVpcWKVy5yNnEYn4ZXt1CmDruipVA2t1EeyAUMByKx3Gy3+
+	 KvLrhJqsRYZMQd8NqXWC3AOTKs4pzPYJOrskRcA4Nh4btzoeNXYvqyCFfO0SRdN/Nd
+	 K5OLuILdfnn6B92iZoyiJNYG0Y3Uzz6YDOjgMfb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <kees@kernel.org>,
-	linux-hardening@vger.kernel.org,
-	Finn Thain <fthain@linux-m68k.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.19 052/220] mtd: Avoid boot crash in RedBoot partition table parser
+	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 247/481] net: ncsi: fix skb leak in error paths
 Date: Mon, 23 Mar 2026 14:43:49 +0100
-Message-ID: <20260323134506.231583293@linuxfoundation.org>
+Message-ID: <20260323134531.172567319@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,90 +65,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RSPAMD_URIBL_FAIL(0.00)[bytedance.com:query timed out];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228033-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229718-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
+	ASN_FAIL(0.00)[114.105.105.172.asn.rspamd.com:query timed out];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,linux-m68k.org:email]
-X-Rspamd-Queue-Id: 656252F38E4
+	RSPAMD_EMAILBL_FAIL(0.00)[zhangjian.3032.bytedance.com:query timed out,kuba.kernel.org:query timed out];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6A4B42F94C6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Jian Zhang <zhangjian.3032@bytedance.com>
 
-commit 8e2f8020270af7777d49c2e7132260983e4fc566 upstream.
+commit 5c3398a54266541610c8d0a7082e654e9ff3e259 upstream.
 
-Given CONFIG_FORTIFY_SOURCE=y and a recent compiler,
-commit 439a1bcac648 ("fortify: Use __builtin_dynamic_object_size() when
-available") produces the warning below and an oops.
+Early return paths in NCSI RX and AEN handlers fail to release
+the received skb, resulting in a memory leak.
 
-    Searching for RedBoot partition table in 50000000.flash at offset 0x7e0000
-    ------------[ cut here ]------------
-    WARNING: lib/string_helpers.c:1035 at 0xc029e04c, CPU#0: swapper/0/1
-    memcmp: detected buffer overflow: 15 byte read of buffer size 14
-    Modules linked in:
-    CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.19.0 #1 NONE
+Specifically, ncsi_aen_handler() returns on invalid AEN packets
+without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
+when failing to resolve the NCSI device, response handler, or
+request, leaving the skb unfreed.
 
-As Kees said, "'names' is pointing to the final 'namelen' many bytes
-of the allocation ... 'namelen' could be basically any length at all.
-This fortify warning looks legit to me -- this code used to be reading
-beyond the end of the allocation."
-
-Since the size of the dynamic allocation is calculated with strlen()
-we can use strcmp() instead of memcmp() and remain within bounds.
-
-Cc: Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org
-Cc: linux-hardening@vger.kernel.org
-Link: https://lore.kernel.org/all/202602151911.AD092DFFCD@keescook/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Suggested-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+CC: stable@vger.kernel.org
+Fixes: 7a82ecf4cfb8 ("net/ncsi: NCSI AEN packet handler")
+Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Link: https://patch.msgid.link/20260305060656.3357250-1-zhangjian.3032@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/parsers/redboot.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/ncsi/ncsi-aen.c |    3 ++-
+ net/ncsi/ncsi-rsp.c |   16 ++++++++++++----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/mtd/parsers/redboot.c
-+++ b/drivers/mtd/parsers/redboot.c
-@@ -270,9 +270,9 @@ nogood:
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_pri
+ 	if (!nah) {
+ 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
+ 			    h->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto out;
+ 	}
  
- 		strcpy(names, fl->img->name);
- #ifdef CONFIG_MTD_REDBOOT_PARTS_READONLY
--		if (!memcmp(names, "RedBoot", 8) ||
--		    !memcmp(names, "RedBoot config", 15) ||
--		    !memcmp(names, "FIS directory", 14)) {
-+		if (!strcmp(names, "RedBoot") ||
-+		    !strcmp(names, "RedBoot config") ||
-+		    !strcmp(names, "FIS directory")) {
- 			parts[i].mask_flags = MTD_WRITEABLE;
- 		}
- #endif
+ 	ret = ncsi_validate_aen_pkt(h, nah->payload);
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -1176,8 +1176,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	/* Find the NCSI device */
+ 	nd = ncsi_find_dev(orig_dev);
+ 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+-	if (!ndp)
+-		return -ENODEV;
++	if (!ndp) {
++		ret = -ENODEV;
++		goto err_free_skb;
++	}
+ 
+ 	/* Check if it is AEN packet */
+ 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
+@@ -1199,7 +1201,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	if (!nrh) {
+ 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
+ 			   hdr->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto err_free_skb;
+ 	}
+ 
+ 	/* Associate with the request */
+@@ -1207,7 +1210,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	nr = &ndp->requests[hdr->id];
+ 	if (!nr->used) {
+ 		spin_unlock_irqrestore(&ndp->lock, flags);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_free_skb;
+ 	}
+ 
+ 	nr->rsp = skb;
+@@ -1261,4 +1265,8 @@ out_netlink:
+ out:
+ 	ncsi_free_request(nr);
+ 	return ret;
++
++err_free_skb:
++	kfree_skb(skb);
++	return ret;
+ }
 
 
 
