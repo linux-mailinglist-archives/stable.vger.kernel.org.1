@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-228193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228371-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yB1dOnhLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228193-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:28 +0100
+	id KC6OKnZMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228371-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47EE72F418C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559CB2F4485
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5CB04319EEF9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:52 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C878302A9F6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E890E3B3888;
-	Mon, 23 Mar 2026 14:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D203AB295;
+	Mon, 23 Mar 2026 14:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHGrFLDO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIs0RN6c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5E83BA235;
-	Mon, 23 Mar 2026 14:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE8C3B0ADA;
+	Mon, 23 Mar 2026 14:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274405; cv=none; b=RreR4j8e5P3og2Ek521C1vEy3tIYPuBrtrrDjDGqkDomuIehXO/xTpi3tNBPI0YsEBExz2okxh80QaLHx5egbo9FXBAvYvvPT/1oOf14i8GogrMbmij0B2Qx1MmHAcVglf+tVSHEOrocI5kKL7XBnOrBYDt7Oxv1d4mrbtdj+Vo=
+	t=1774274935; cv=none; b=T5eBvdM1AhjYGWrXXDSopaFbIQjwwkQMtHVnxkR6LRgsxH8ecK4RaFmbfjayJMYUUc+0CSLCnBfVFvMLMW8LJz+Q/a10tTBQfI6m9qt+zbUJN5zHcmUVfigGpHbG4q5TXiyganiye4gAsmKFU9X3X0RPdum3KpkvAhr+GBbHYY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274405; c=relaxed/simple;
-	bh=UB2QMPaWYzT0kzkyfhKdLS3nUGijDQkfZKvz1u+uIS8=;
+	s=arc-20240116; t=1774274935; c=relaxed/simple;
+	bh=5KVLNqs7TAy6OePVTI2jeTFIMb5sMuOiXI9xlYRHNww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAVcbD5LTCgldiIvu2RQGzM2PsS0eLg6gs2qoM6doRYu915hycu6iPWzjd7N/70FHBAtyDNaHXNCLRF+4jzQizdZp+Ok6KNA3XLH5O0HsRxORxQM+e9ShNHVYQxb9uS0sQlzQ5vlYM4cdX/5cggWxs90aqhBBWAugd6xr3vPITI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHGrFLDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F376C4CEF7;
-	Mon, 23 Mar 2026 14:00:04 +0000 (UTC)
+	 MIME-Version; b=JEyVsZFqpaOHK7XQmOEKSRhsNv7VMf4rvea4tzxU1xRkrQ5y1GQpCNjGw3i1uGHhhrcGRcY/gC3Tfa2WgYnvJfy7RRyiwSeQNEW4s+Y48PsaeUECx1sRTYpBpOx0TW0xIkEiu6XDwO6A4CfBKm2fbfzW3kggCzDV4BS/NRSjVRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIs0RN6c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34CBC4CEF7;
+	Mon, 23 Mar 2026 14:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274405;
-	bh=UB2QMPaWYzT0kzkyfhKdLS3nUGijDQkfZKvz1u+uIS8=;
+	s=korg; t=1774274935;
+	bh=5KVLNqs7TAy6OePVTI2jeTFIMb5sMuOiXI9xlYRHNww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHGrFLDOB69AbIWAlm6yK244RYp/AxfkMjVoa0IhlLWf59bNkioL8QWM4gp96XNnI
-	 5OvAusXYLU8kFZaor4K7CRtaF/8Hug1DbhnWWbepe5bHO0sGOV1z4RDat0DdiCUhY3
-	 ZeILr0u8wNvDMjmExTuPcrT+3M1koQluyjFuwiVA=
+	b=kIs0RN6c3T0UTzwESZmHbRgInyqmZOyvzEo1B8BPxvwQRXwvCoX7zQJyYnR7O0U5J
+	 pzcOBPW0XdxkPmNANPtZp8iS7Tn5iKOA6zSg4fDtLTwTEJMth7kv8rMaMzasPnzk86
+	 mmi4suwT1nyWuDpf8nbTVdu5+XrIOdwnMnbOG1JE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Antheas Kapenekakis <lkml@antheas.dev>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 206/220] iommu: Fix mapping check for 0x0 to avoid re-mapping it
+Subject: [PATCH 6.18 162/212] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
 Date: Mon, 23 Mar 2026 14:46:23 +0100
-Message-ID: <20260323134511.073155680@linuxfoundation.org>
+Message-ID: <20260323134508.862461362@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,104 +66,152 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228193-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228371-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[msgid.link:server fail,linuxfoundation.org:server fail];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 47EE72F418C
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,nbd.name:email]
+X-Rspamd-Queue-Id: 559CB2F4485
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Antheas Kapenekakis <lkml@antheas.dev>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 0a4d00e2e99a39a5698e4b63c394415dcbb39d90 ]
+[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
 
-Commit 789a5913b29c ("iommu/amd: Use the generic iommu page table")
-introduces the shared iommu page table for AMD IOMMU. Some bioses
-contain an identity mapping for address 0x0, which is not parsed
-properly (e.g., certain Strix Halo devices). This causes the DMA
-components of the device to fail to initialize (e.g., the NVMe SSD
-controller), leading to a failed post.
+ieee80211_tx_prepare_skb() has three error paths, but only two of them
+free the skb. The first error path (ieee80211_tx_prepare() returning
+TX_DROP) does not free it, while invoke_tx_handlers() failure and the
+fragmentation check both do.
 
-Specifically, on the GPD Win 5, the NVME and SSD GPU fail to mount,
-making collecting errors difficult. While debugging, it was found that
-a -EADDRINUSE error was emitted and its source was traced to
-iommu_iova_to_phys(). After adding some debug prints, it was found that
-phys_addr becomes 0, which causes the code to try to re-map the 0
-address and fail, causing a cascade leading to a failed post. This is
-because the GPD Win 5 contains a 0x0-0x1 identity mapping for DMA
-devices, causing it to be repeated for each device.
+Add kfree_skb() to the first error path so all three are consistent,
+and remove the now-redundant frees in callers (ath9k, mt76,
+mac80211_hwsim) to avoid double-free.
 
-The cause of this failure is the following check in
-iommu_create_device_direct_mappings(), where address aliasing is handled
-via the following check:
+Document the skb ownership guarantee in the function's kdoc.
 
-```
-phys_addr = iommu_iova_to_phys(domain, addr);
-if (!phys_addr) {
-        map_size += pg_size;
-        continue;
-}
-````
-
-Obviously, the iommu_iova_to_phys() signature is faulty and aliases
-unmapped and 0 together, causing the allocation code to try to
-re-allocate the 0 address per device. However, it has too many
-instantiations to fix. Therefore, use a ternary so that when addr
-is 0, the check is done for address 1 instead.
-
-Suggested-by: Robin Murphy <robin.murphy@arm.com>
-Fixes: 789a5913b29c ("iommu/amd: Use the generic iommu page table")
-Signed-off-by: Antheas Kapenekakis <lkml@antheas.dev>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
+Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/channel.c      | 6 ++----
+ drivers/net/wireless/mediatek/mt76/scan.c     | 4 +---
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 1 -
+ include/net/mac80211.h                        | 4 +++-
+ net/mac80211/tx.c                             | 4 +++-
+ 5 files changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-index 2ca990dfbb884..3a0c0e4b42fff 100644
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -1207,7 +1207,11 @@ static int iommu_create_device_direct_mappings(struct iommu_domain *domain,
- 			if (addr == end)
- 				goto map_end;
+diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
+index 121e51ce1bc0e..8b27d8cc086ab 100644
+--- a/drivers/net/wireless/ath/ath9k/channel.c
++++ b/drivers/net/wireless/ath/ath9k/channel.c
+@@ -1006,7 +1006,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
+ 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
  
--			phys_addr = iommu_iova_to_phys(domain, addr);
-+			/*
-+			 * Return address by iommu_iova_to_phys for 0 is
-+			 * ambiguous. Offset to address 1 if addr is 0.
-+			 */
-+			phys_addr = iommu_iova_to_phys(domain, addr ? addr : 1);
- 			if (!phys_addr) {
- 				map_size += pg_size;
+ 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
+-		goto error;
++		return;
+ 
+ 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
+ 	if (ath_tx_start(sc->hw, skb, &txctl))
+@@ -1119,10 +1119,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
+ 
+ 		skb->priority = 7;
+ 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
+-		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
+-			dev_kfree_skb_any(skb);
++		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
+ 			return false;
+-		}
+ 		break;
+ 	default:
+ 		return false;
+diff --git a/drivers/net/wireless/mediatek/mt76/scan.c b/drivers/net/wireless/mediatek/mt76/scan.c
+index 5a875aac410fc..3d9cf6f5e137f 100644
+--- a/drivers/net/wireless/mediatek/mt76/scan.c
++++ b/drivers/net/wireless/mediatek/mt76/scan.c
+@@ -63,10 +63,8 @@ mt76_scan_send_probe(struct mt76_dev *dev, struct cfg80211_ssid *ssid)
+ 
+ 	rcu_read_lock();
+ 
+-	if (!ieee80211_tx_prepare_skb(phy->hw, vif, skb, band, NULL)) {
+-		ieee80211_free_txskb(phy->hw, skb);
++	if (!ieee80211_tx_prepare_skb(phy->hw, vif, skb, band, NULL))
+ 		goto out;
+-	}
+ 
+ 	info = IEEE80211_SKB_CB(skb);
+ 	if (req->no_cck)
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 2f263d89d2d69..20815fdc9d376 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -3021,7 +3021,6 @@ static void hw_scan_work(struct work_struct *work)
+ 						      hwsim->tmp_chan->band,
+ 						      NULL)) {
+ 				rcu_read_unlock();
+-				kfree_skb(probe);
  				continue;
+ 			}
+ 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index a55085cf4ec49..ac2546b121385 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -7289,7 +7289,9 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
+  * @band: the band to transmit on
+  * @sta: optional pointer to get the station to send the frame to
+  *
+- * Return: %true if the skb was prepared, %false otherwise
++ * Return: %true if the skb was prepared, %false otherwise.
++ * On failure, the skb is freed by this function; callers must not
++ * free it again.
+  *
+  * Note: must be called under RCU lock
+  */
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 160667be3f4d2..2f830001b0cd6 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1896,8 +1896,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
+ 	struct ieee80211_tx_data tx;
+ 	struct sk_buff *skb2;
+ 
+-	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
++	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
++		kfree_skb(skb);
+ 		return false;
++	}
+ 
+ 	info->band = band;
+ 	info->control.vif = vif;
 -- 
 2.51.0
 
