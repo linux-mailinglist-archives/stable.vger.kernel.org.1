@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228904-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sFV0EoxiwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229437-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:55:56 +0100
+	id GIjUOpZWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228904-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EB12F720D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:55:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6602E2F5BA1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF3C1328BD68
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 31059311B8AC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CC23CF047;
-	Mon, 23 Mar 2026 15:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA9C242D9D;
+	Mon, 23 Mar 2026 14:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/aqBSPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHuvwHVD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9C03B3C1F;
-	Mon, 23 Mar 2026 15:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61A393AF650;
+	Mon, 23 Mar 2026 14:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279231; cv=none; b=pfNkcXdQsI6MpmxWWWbKtqCPf9F1pzjSDldvJ3taxiuUyyo0wIJGQ0ZZcPte3ExJjcJR7DpAOBROyPVMh7Gxn2X8vv3+kOMAu25FQgl/dYQdn3IG0qlYzYg75NQ7nwXabH15vOov3z00v0FnxzgKLyuykPNzG8CfnjIoQx2t+1M=
+	t=1774277448; cv=none; b=oWgFd8L3Lw5HeqiUnbPiGAEcE+7dnGJdvWuul2AjOY3wz98/tHIAF1961upl4fDtzkjLXbCH4vurtJ3PpN3APJ27wfyJ6V230Lyfs8c1P2jslUmNMsl/hGeBTGcVUTDhNTxjOQRSBo93zxNsv1KB7udZ2XsvXEnQCqq3e6Ijj0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279231; c=relaxed/simple;
-	bh=1LqqhXtNMRWpzklj2IfeXA8KOlld2G6KMbJuGoA1ccE=;
+	s=arc-20240116; t=1774277448; c=relaxed/simple;
+	bh=MDq1V4EsEkImeJ7XM0k0PfieP+VfuUramSS1XsMLyds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxJGBjt700/p7+Np5LoHIOKcOKRG3wwi8Px/T61HXTtkA9LdM3pHMD1t1i9SfO4NA3lBbBWbCLRquGmZXaTzb02PcBOWGDm4XM9iyWbsQSoAuPLmltlWSlzyOlGdqRcaKsxEBri7sgH6hdobUYzqjL36+0wYzW318pmBO81pX5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/aqBSPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15100C4CEF7;
-	Mon, 23 Mar 2026 15:20:30 +0000 (UTC)
+	 MIME-Version; b=PiUa1eLPMJv0JYnvRO403euRSA4D3JRzbCVKaSkshsUmRjvns/LagLRpAkxw0ljLX4NaLkwh9PY9CZS44wD3reJd9+HXoinDC+Fhblv9+HCDK3tnxk6kPJVlHrCemOu/Ve0OqMp2HS6A7rIWUITU1rtHSIWvEeB4k3cSQr5GHDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHuvwHVD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2E1C2BC9E;
+	Mon, 23 Mar 2026 14:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279231;
-	bh=1LqqhXtNMRWpzklj2IfeXA8KOlld2G6KMbJuGoA1ccE=;
+	s=korg; t=1774277448;
+	bh=MDq1V4EsEkImeJ7XM0k0PfieP+VfuUramSS1XsMLyds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x/aqBSPooT6NEj+2a9PTjg+7gCBTvFybsXbUU1W8Lkdm4SUsOR+PWs7er3/58bxxs
-	 zJKRz/XFkGfTYKOSrv9Ag3/RYNi6+yln8qYyhvbVmZrSupCWQCdqx2WWkedZREBcPC
-	 7N0gQyhuixOuJct5c/OHHLzWmymK8lm/Tru8YP7Y=
+	b=FHuvwHVDDdsf5NdvKX3gnmAI0V/HkXEXL8viKWSLvN+Uf3RjfTiO4IO+h3xyM64RA
+	 Z3szNxVuWu8QAdIjm2w6MPoTPW5Atilhy3XYPOZ+mE73+JthTn3GLBN/vaP3qu5A+s
+	 057YqpkUJbOCPR/0uBKp/ZDlzFh5IsBMws3kZOuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yiming Qian <yimingqian591@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 519/567] netfilter: xt_CT: drop pending enqueued packets on template removal
-Date: Mon, 23 Mar 2026 14:47:19 +0100
-Message-ID: <20260323134546.850553517@linuxfoundation.org>
+	Pratyush Yadav <p.yadav@ti.com>,
+	Michael Walle <michael@walle.cc>,
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Pratyush Yadav <pratyush@kernel.org>
+Subject: [PATCH 6.12 444/460] mtd: spi-nor: core: avoid odd length/address writes in 8D-8D-8D mode
+Date: Mon, 23 Mar 2026 14:47:20 +0100
+Message-ID: <20260323134537.494711058@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,22 +69,20 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-229437-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228904-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -92,64 +90,121 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,strlen.de:email]
-X-Rspamd-Queue-Id: A0EB12F720D
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6602E2F5BA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Pratyush Yadav <p.yadav@ti.com>
 
-[ Upstream commit f62a218a946b19bb59abdd5361da85fa4606b96b ]
+commit 17926cd770ec837ed27d9856cf07f2da8dda4131 upstream.
 
-Templates refer to objects that can go away while packets are sitting in
-nfqueue refer to:
+On Octal DTR capable flashes like Micron Xcella the writes cannot start
+or end at an odd address in Octal DTR mode. Extra 0xff bytes need to be
+appended or prepended to make sure the start address and end address are
+even. 0xff is used because on NOR flashes a program operation can only
+flip bits from 1 to 0, not the other way round. 0 to 1 flip needs to
+happen via erases.
 
-- helper, this can be an issue on module removal.
-- timeout policy, nfnetlink_cttimeout might remove it.
-
-The use of templates with zone and event cache filter are safe, since
-this just copies values.
-
-Flush these enqueued packets in case the template rule gets removed.
-
-Fixes: 24de58f46516 ("netfilter: xt_CT: allow to attach timeout policy + glue code")
-Reported-by: Yiming Qian <yimingqian591@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Pratyush Yadav <p.yadav@ti.com>
+Reviewed-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
+Link: https://lore.kernel.org/r/20250708091646.292-2-ziniu.wang_1@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_CT.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mtd/spi-nor/core.c |   69 ++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 68 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/xt_CT.c b/net/netfilter/xt_CT.c
-index 3ba94c34297cf..498f5871c84a0 100644
---- a/net/netfilter/xt_CT.c
-+++ b/net/netfilter/xt_CT.c
-@@ -16,6 +16,7 @@
- #include <net/netfilter/nf_conntrack_ecache.h>
- #include <net/netfilter/nf_conntrack_timeout.h>
- #include <net/netfilter/nf_conntrack_zones.h>
-+#include "nf_internals.h"
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2152,6 +2152,68 @@ read_err:
+ }
  
- static inline int xt_ct_target(struct sk_buff *skb, struct nf_conn *ct)
- {
-@@ -283,6 +284,9 @@ static void xt_ct_tg_destroy(const struct xt_tgdtor_param *par,
- 	struct nf_conn_help *help;
- 
- 	if (ct) {
-+		if (info->helper[0] || info->timeout[0])
-+			nf_queue_nf_hook_drop(par->net);
+ /*
++ * On Octal DTR capable flashes, writes cannot start or end at an odd address
++ * in Octal DTR mode. Extra 0xff bytes need to be appended or prepended to
++ * make sure the start address and end address are even. 0xff is used because
++ * on NOR flashes a program operation can only flip bits from 1 to 0, not the
++ * other way round. 0 to 1 flip needs to happen via erases.
++ */
++static int spi_nor_octal_dtr_write(struct spi_nor *nor, loff_t to, size_t len,
++				   const u8 *buf)
++{
++	u8 *tmp_buf;
++	size_t bytes_written;
++	loff_t start, end;
++	int ret;
 +
- 		help = nfct_help(ct);
- 		xt_ct_put_helper(help);
++	if (IS_ALIGNED(to, 2) && IS_ALIGNED(len, 2))
++		return spi_nor_write_data(nor, to, len, buf);
++
++	tmp_buf = kmalloc(nor->params->page_size, GFP_KERNEL);
++	if (!tmp_buf)
++		return -ENOMEM;
++
++	memset(tmp_buf, 0xff, nor->params->page_size);
++
++	start = round_down(to, 2);
++	end = round_up(to + len, 2);
++
++	memcpy(tmp_buf + (to - start), buf, len);
++
++	ret = spi_nor_write_data(nor, start, end - start, tmp_buf);
++	if (ret == 0) {
++		ret = -EIO;
++		goto out;
++	}
++	if (ret < 0)
++		goto out;
++
++	/*
++	 * More bytes are written than actually requested, but that number can't
++	 * be reported to the calling function or it will confuse its
++	 * calculations. Calculate how many of the _requested_ bytes were
++	 * written.
++	 */
++	bytes_written = ret;
++
++	if (to != start)
++		ret -= to - start;
++
++	/*
++	 * Only account for extra bytes at the end if they were actually
++	 * written. For example, if for some reason the controller could only
++	 * complete a partial write then the adjustment for the extra bytes at
++	 * the end is not needed.
++	 */
++	if (start + bytes_written == end)
++		ret -= end - (to + len);
++
++out:
++	kfree(tmp_buf);
++	return ret;
++}
++
++/*
+  * Write an address range to the nor chip.  Data must be written in
+  * FLASH_PAGESIZE chunks.  The address range may be any size provided
+  * it is within the physical boundaries.
+@@ -2187,7 +2249,12 @@ static int spi_nor_write(struct mtd_info
+ 			goto write_err;
+ 		}
  
--- 
-2.51.0
-
+-		ret = spi_nor_write_data(nor, addr, page_remain, buf + i);
++		if (nor->write_proto == SNOR_PROTO_8_8_8_DTR)
++			ret = spi_nor_octal_dtr_write(nor, addr, page_remain,
++						      buf + i);
++		else
++			ret = spi_nor_write_data(nor, addr, page_remain,
++						 buf + i);
+ 		spi_nor_unlock_device(nor);
+ 		if (ret < 0)
+ 			goto write_err;
 
 
 
