@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228415-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CPybGRxmwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-229477-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:11:08 +0100
+	id WGKXEp9NwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228415-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:39 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D2452F7B0C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:11:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC932F47C2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C727131B9161
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:34:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3576A30CA84A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7735279DC8;
-	Mon, 23 Mar 2026 15:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD1C3AEF35;
+	Mon, 23 Mar 2026 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rkw0bsRa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNiMQrQk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 887943B9D9E;
-	Mon, 23 Mar 2026 15:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501B13AE6EE;
+	Mon, 23 Mar 2026 14:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279358; cv=none; b=f8V0aTRsXRxbflOurPJZ73bmyqVtmEm06asniZJ1sQpdXVGpFWbk5rgztFCTNpVIT5sJJXbA5UWMSXDua0pb5qZRFzBgyQaMaYt+QakhFyRvFJZ7jY5QSlO5RDTmW+Ss4XDnAiFNJv7kvfuEvb3BoKVxiy0F7c3ZBa5IgjOqtno=
+	t=1774275058; cv=none; b=H4aCpMvqJtUlY4hYMTjfbm4e0Xz5Gcp2/xGxGUWyEojnZZflHUwrYZxV3y2NX0okTzuv3ICdIR+/RPBMqQijiRa5NUvRZ1c1gqFOu1L5rH/7mzEGq6bzc29SgAnrs0j7SNeOzwrIuOsTcEYsiSo6juWEWf4x4iWAR24mUrqB94o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279358; c=relaxed/simple;
-	bh=ZKvzamMD5QCpjdFVGHU1sQjlT1KNpDsWeH9Bnqo9ecs=;
+	s=arc-20240116; t=1774275058; c=relaxed/simple;
+	bh=lMYfwvDgy9a9Cq9T4MQLA8MhGrhLpOizBC3pLo/0a/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akKWq9qzapjdAJe/RTMk9B8rWLNiibZ8ywuLeHmbkCJ+7BvVw/JH04UAZKgIckYoYQnC/iu39wXOT+PJ+fZvHwldYsmTQ5Xd3Z1an/DFGtsEQYhrfo8paPvejjkjDI3oP5JcvZATKMKauy84/7pb6HjFv+li+22rIrlXoCk/7gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rkw0bsRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10A4C4CEF7;
-	Mon, 23 Mar 2026 15:22:37 +0000 (UTC)
+	 MIME-Version; b=SzaNCwCoDcmO9QmggFSvrML6EHgMINBubiYYwRi3lO06nMmuntIYKieslf9qgVHRWzq8W2u8gJ5LuX9zlbitj6i60cMOE8rEv4XWlOMr2wUqGFtaa2bwGxPiHcPoeJTuxWBE/s4GzAuXDxDIrJlR+ZnrpNLvueXl7u84JFVutrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNiMQrQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80182C4CEF7;
+	Mon, 23 Mar 2026 14:10:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279358;
-	bh=ZKvzamMD5QCpjdFVGHU1sQjlT1KNpDsWeH9Bnqo9ecs=;
+	s=korg; t=1774275057;
+	bh=lMYfwvDgy9a9Cq9T4MQLA8MhGrhLpOizBC3pLo/0a/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rkw0bsRaC3IfbAB2cG1YTctKzgmHDv+HCw2ptEStyW+D2M+0ucUuzdxFDTJ7J2ysQ
-	 epYGHg/opOJxMv75pfmtqobCyv3I8oz9aYZxfX+EA+EjVT9PaCMoMjgUv5ffsVAIHi
-	 uVz2ohqBYkV8qhVm6c+ir/0/9IhUQIWBcoRbRX3M=
+	b=hNiMQrQk5NnSdHavxIo1gYZhtPLU7I2tFMQNiYN6Ylc8Q3iMPE782FOTGxmkcrdUL
+	 tenqTleWd1UvDLliUnGbZ1aWCiIEs2h4Q4emuGuDyG2tZW58QJlig9FYFSRtrVu0mf
+	 GUkLazEriPHsqDPKCSF/qzJEPSNwl8LwjUN8jhFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 506/567] Bluetooth: ISO: Fix defer tests being unstable
-Date: Mon, 23 Mar 2026 14:47:06 +0100
-Message-ID: <20260323134546.539276215@linuxfoundation.org>
+Subject: [PATCH 6.18 206/212] ksmbd: fix use-after-free in durable v2 replay of active file handles
+Date: Mon, 23 Mar 2026 14:47:07 +0100
+Message-ID: <20260323134510.296743377@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +69,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228415-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229477-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 1D2452F7B0C
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0BC932F47C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 62bcaa6b351b6dc400f6c6b83762001fd9f5c12d ]
+[ Upstream commit b425e4d0eb321a1116ddbf39636333181675d8f4 ]
 
-iso-tester defer tests seem to fail with hci_conn_hash_lookup_cig
-being unable to resolve a cig in set_cig_params_sync due a race
-where it is run immediatelly before hci_bind_cis is able to set
-the QoS settings into the hci_conn object.
+parse_durable_handle_context() unconditionally assigns dh_info->fp->conn
+to the current connection when handling a DURABLE_REQ_V2 context with
+SMB2_FLAGS_REPLAY_OPERATION. ksmbd_lookup_fd_cguid() does not filter by
+fp->conn, so it returns file handles that are already actively connected.
+The unconditional overwrite replaces fp->conn, and when the overwriting
+connection is subsequently freed, __ksmbd_close_fd() dereferences the
+stale fp->conn via spin_lock(&fp->conn->llist_lock), causing a
+use-after-free.
 
-So this moves the assigning of the QoS settings to be done directly
-by hci_le_set_cig_params to prevent that from happening again.
+KASAN report:
 
-Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[    7.349357] ==================================================================
+[    7.349607] BUG: KASAN: slab-use-after-free in _raw_spin_lock+0x75/0xe0
+[    7.349811] Write of size 4 at addr ffff8881056ac18c by task kworker/1:2/108
+[    7.350010]
+[    7.350064] CPU: 1 UID: 0 PID: 108 Comm: kworker/1:2 Not tainted 7.0.0-rc3+ #58 PREEMPTLAZY
+[    7.350068] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    7.350070] Workqueue: ksmbd-io handle_ksmbd_work
+[    7.350083] Call Trace:
+[    7.350087]  <TASK>
+[    7.350087]  dump_stack_lvl+0x64/0x80
+[    7.350094]  print_report+0xce/0x660
+[    7.350100]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
+[    7.350101]  ? __pfx___mod_timer+0x10/0x10
+[    7.350106]  ? _raw_spin_lock+0x75/0xe0
+[    7.350108]  kasan_report+0xce/0x100
+[    7.350109]  ? _raw_spin_lock+0x75/0xe0
+[    7.350114]  kasan_check_range+0x105/0x1b0
+[    7.350116]  _raw_spin_lock+0x75/0xe0
+[    7.350118]  ? __pfx__raw_spin_lock+0x10/0x10
+[    7.350119]  ? __call_rcu_common.constprop.0+0x25e/0x780
+[    7.350125]  ? close_id_del_oplock+0x2cc/0x4e0
+[    7.350128]  __ksmbd_close_fd+0x27f/0xaf0
+[    7.350131]  ksmbd_close_fd+0x135/0x1b0
+[    7.350133]  smb2_close+0xb19/0x15b0
+[    7.350142]  ? __pfx_smb2_close+0x10/0x10
+[    7.350143]  ? xas_load+0x18/0x270
+[    7.350146]  ? _raw_spin_lock+0x84/0xe0
+[    7.350148]  ? __pfx__raw_spin_lock+0x10/0x10
+[    7.350150]  ? _raw_spin_unlock+0xe/0x30
+[    7.350151]  ? ksmbd_smb2_check_message+0xeb2/0x24c0
+[    7.350153]  ? ksmbd_tree_conn_lookup+0xcd/0xf0
+[    7.350154]  handle_ksmbd_work+0x40f/0x1080
+[    7.350156]  process_one_work+0x5fa/0xef0
+[    7.350162]  ? assign_work+0x122/0x3e0
+[    7.350163]  worker_thread+0x54b/0xf70
+[    7.350165]  ? __pfx_worker_thread+0x10/0x10
+[    7.350166]  kthread+0x346/0x470
+[    7.350170]  ? recalc_sigpending+0x19b/0x230
+[    7.350176]  ? __pfx_kthread+0x10/0x10
+[    7.350178]  ret_from_fork+0x4fb/0x6c0
+[    7.350183]  ? __pfx_ret_from_fork+0x10/0x10
+[    7.350185]  ? __switch_to+0x36c/0xbe0
+[    7.350188]  ? __pfx_kthread+0x10/0x10
+[    7.350190]  ret_from_fork_asm+0x1a/0x30
+[    7.350197]  </TASK>
+[    7.350197]
+[    7.355160] Allocated by task 123:
+[    7.355261]  kasan_save_stack+0x33/0x60
+[    7.355373]  kasan_save_track+0x14/0x30
+[    7.355484]  __kasan_kmalloc+0x8f/0xa0
+[    7.355593]  ksmbd_conn_alloc+0x44/0x6d0
+[    7.355711]  ksmbd_kthread_fn+0x243/0xd70
+[    7.355839]  kthread+0x346/0x470
+[    7.355942]  ret_from_fork+0x4fb/0x6c0
+[    7.356051]  ret_from_fork_asm+0x1a/0x30
+[    7.356164]
+[    7.356214] Freed by task 134:
+[    7.356305]  kasan_save_stack+0x33/0x60
+[    7.356416]  kasan_save_track+0x14/0x30
+[    7.356527]  kasan_save_free_info+0x3b/0x60
+[    7.356646]  __kasan_slab_free+0x43/0x70
+[    7.356761]  kfree+0x1ca/0x430
+[    7.356862]  ksmbd_tcp_disconnect+0x59/0xe0
+[    7.356993]  ksmbd_conn_handler_loop+0x77e/0xd40
+[    7.357138]  kthread+0x346/0x470
+[    7.357240]  ret_from_fork+0x4fb/0x6c0
+[    7.357350]  ret_from_fork_asm+0x1a/0x30
+[    7.357463]
+[    7.357513] The buggy address belongs to the object at ffff8881056ac000
+[    7.357513]  which belongs to the cache kmalloc-1k of size 1024
+[    7.357857] The buggy address is located 396 bytes inside of
+[    7.357857]  freed 1024-byte region [ffff8881056ac000, ffff8881056ac400)
+
+Fix by removing the unconditional fp->conn assignment and rejecting the
+replay when fp->conn is non-NULL. This is consistent with
+ksmbd_lookup_durable_fd(), which also rejects file handles with a
+non-NULL fp->conn. For disconnected file handles (fp->conn == NULL),
+ksmbd_reopen_durable_fd() handles setting fp->conn.
+
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 30feeaf7e6424..97e48c1f69aff 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -1837,6 +1837,8 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
- 		return false;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 6796bc919d580..60a8f53443082 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2840,7 +2840,11 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
+ 						goto out;
+ 					}
  
- done:
-+	conn->iso_qos = *qos;
-+
- 	if (hci_cmd_sync_queue(hdev, set_cig_params_sync,
- 			       UINT_PTR(qos->ucast.cig), NULL) < 0)
- 		return false;
-@@ -1903,8 +1905,6 @@ struct hci_conn *hci_bind_cis(struct hci_dev *hdev, bdaddr_t *dst,
- 	}
- 
- 	hci_conn_hold(cis);
--
--	cis->iso_qos = *qos;
- 	cis->state = BT_BOUND;
- 
- 	return cis;
+-					dh_info->fp->conn = conn;
++					if (dh_info->fp->conn) {
++						ksmbd_put_durable_fd(dh_info->fp);
++						err = -EBADF;
++						goto out;
++					}
+ 					dh_info->reconnected = true;
+ 					goto out;
+ 				}
 -- 
 2.51.0
 
