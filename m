@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCT6DKpbwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229181-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:34 +0100
+	id KHyTJ7htwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962AC2F64A6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EDA02F8AD7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 711EA33EDB99
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8AC1730A0AD8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3892F23BF9B;
-	Mon, 23 Mar 2026 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A453BE652;
+	Mon, 23 Mar 2026 16:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODBiQ705"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/UhKM7b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC503AC0EB;
-	Mon, 23 Mar 2026 15:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110BF3BE64A;
+	Mon, 23 Mar 2026 16:16:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278316; cv=none; b=T+FTaQw8WK/1MIdic6FY6WlpDKQGGepy7inDsPnB6FRwvK3OANAkwW3z5hwqcrZhBWsELFCIGjgxW6m0k/+9Ek1AK8aKsK04vNZNp+mo0DuGDazrYrDdlnpPUqQ9+v4BAwFs7dQjfKn6G5XIOC7T3Y+IHr1cLnq/R+vHZqGydkg=
+	t=1774282572; cv=none; b=NLA77IjkHlKvRjRxUpQIpJz1Tqr/O9kafUML/55BIStQ2/GqZUGU0QT5nCjiPTeHZYYbprxzG9XiDAXzXu53l0gUUxWJaIeZDsq1wBIZ9OkW6QakLIb9wiMBL598fgGxFS2kS/XYMsg7gYEHtNKa9sRgyXgJMgFNmJ1ktzKepZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278316; c=relaxed/simple;
-	bh=KF+X9ETunkXjG7cQq/no0fW+zbCQiWPWgEiwQ6I7DC0=;
+	s=arc-20240116; t=1774282572; c=relaxed/simple;
+	bh=/DgUV81pLnyocjw1jaCyI2cAW28hJnsvbl1Wca/OCZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ksz//be6E3fJN56Cw7sAQbBOl+9FEU4onrFbwLswDUGOggG61rySNPsYo5Zvd7lw3LztruwjgTt136Cf/ILaBL+nqFT8U2Eb/26OJsO28brZk65BaE8VM0TA2oNkA95tQvwldp/sZ+smfEfrGVMVTA4OpiZqHYr2WJKlq6wrx4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODBiQ705; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72979C4CEF7;
-	Mon, 23 Mar 2026 15:05:15 +0000 (UTC)
+	 MIME-Version; b=jHiLjtZe0JodblwmmkEtFI+aXUD8msaSWVAM1sk5nZ0vJxz5ebXh/MjouyPY0wXHcz50tX5Dx+ssS5U63R0y0SUKc0blPIME0gj70JhH0NFibqoRh1F3dGSbRdGEDXpNg3Qc3sDpCKlUHLiHRpp7C2NQwZGF5sw3QpB1wx+Hot8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/UhKM7b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94286C2BCB4;
+	Mon, 23 Mar 2026 16:16:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278315;
-	bh=KF+X9ETunkXjG7cQq/no0fW+zbCQiWPWgEiwQ6I7DC0=;
+	s=korg; t=1774282571;
+	bh=/DgUV81pLnyocjw1jaCyI2cAW28hJnsvbl1Wca/OCZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODBiQ705IVzXhqb0T4D+8WMqcoKUx4esDTXTxqFRuVWc9o7+oSri1Y/ahOumip9o7
-	 Y4qdShR9HTRc9QtND5F7qtuTIq+GbFwy68Qz3J4s5LnRkRYh5rGjPaFAekdm1cMWkW
-	 XzV8tZS2J/AAmIeqVxo7jY+5hdhqEYMyUgyA0BJY=
+	b=0/UhKM7bQzQbdmrwEG9NKh232iJObU/Hm69AoYruYWxO1ddhLqu60MKn8M9I+mOsm
+	 N20pyWjSU43fetEROUGQ4k5uWWJWhLjoyIrU2ARj7ebiGCBKL0VXZ4GCxm2I+lsEdS
+	 sLDKu7TIs4Ji9PfVlamPdLuok5qUD0ATH6usaW1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 268/567] KVM: SVM: Initialize AVIC VMCB fields if AVIC is enabled with in-kernel APIC
+	Vyacheslav Vahnenko <vahnenko2003@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 206/481] USB: ezcap401 needs USB_QUIRK_NO_BOS to function on 10gbs usb speed
 Date: Mon, 23 Mar 2026 14:43:08 +0100
-Message-ID: <20260323134540.462373236@linuxfoundation.org>
+Message-ID: <20260323134530.191251649@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,94 +65,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229181-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229678-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 962AC2F64A6
+X-Rspamd-Queue-Id: 3EDA02F8AD7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Vyacheslav Vahnenko <vahnenko2003@gmail.com>
 
-commit 3989a6d036c8ec82c0de3614bed23a1dacd45de5 upstream.
+commit d0d9b1f4f5391e6a00cee81d73ed2e8f98446d5f upstream.
 
-Initialize all per-vCPU AVIC control fields in the VMCB if AVIC is enabled
-in KVM and the VM has an in-kernel local APIC, i.e. if it's _possible_ the
-vCPU could activate AVIC at any point in its lifecycle.  Configuring the
-VMCB if and only if AVIC is active "works" purely because of optimizations
-in kvm_create_lapic() to speculatively set apicv_active if AVIC is enabled
-*and* to defer updates until the first KVM_RUN.  In quotes because KVM
-likely won't do the right thing if kvm_apicv_activated() is false, i.e. if
-a vCPU is created while APICv is inhibited at the VM level for whatever
-reason.  E.g. if the inhibit is *removed* before KVM_REQ_APICV_UPDATE is
-handled in KVM_RUN, then __kvm_vcpu_update_apicv() will elide calls to
-vendor code due to seeing "apicv_active == activate".
+Add USB_QUIRK_NO_BOS for ezcap401 capture card, without it dmesg will show
+"unable to get BOS descriptor or descriptor too short" and "unable to
+read config index 0 descriptor/start: -71" errors and device will not
+able to work at full speed at 10gbs
 
-Cleaning up the initialization code will also allow fixing a bug where KVM
-incorrectly leaves CR8 interception enabled when AVIC is activated without
-creating a mess with respect to whether AVIC is activated or not.
-
-Cc: stable@vger.kernel.org
-Fixes: 67034bb9dd5e ("KVM: SVM: Add irqchip_split() checks before enabling AVIC")
-Fixes: 6c3e4422dd20 ("svm: Add support for dynamic APICv")
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Reviewed-by: Jim Mattson <jmattson@google.com>
-Link: https://patch.msgid.link/20260203190711.458413-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Vyacheslav Vahnenko <vahnenko2003@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260313123638.20481-1-vahnenko2003@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/avic.c |    2 +-
- arch/x86/kvm/svm/svm.c  |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -253,7 +253,7 @@ void avic_init_vmcb(struct vcpu_svm *svm
- 	vmcb->control.avic_physical_id = ppa & AVIC_HPA_MASK;
- 	vmcb->control.avic_vapic_bar = APIC_DEFAULT_PHYS_BASE & VMCB_AVIC_APIC_BAR_MASK;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -585,6 +585,9 @@ static const struct usb_device_id usb_qu
+ 	/* Alcor Link AK9563 SC Reader used in 2022 Lenovo ThinkPads */
+ 	{ USB_DEVICE(0x2ce3, 0x9563), .driver_info = USB_QUIRK_NO_LPM },
  
--	if (kvm_apicv_activated(svm->vcpu.kvm))
-+	if (kvm_vcpu_apicv_active(&svm->vcpu))
- 		avic_activate_vmcb(svm);
- 	else
- 		avic_deactivate_vmcb(svm);
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1375,7 +1375,7 @@ static void init_vmcb(struct kvm_vcpu *v
- 	if (boot_cpu_has(X86_FEATURE_V_SPEC_CTRL))
- 		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_SPEC_CTRL, 1, 1);
++	/* ezcap401 - BOS descriptor fetch hangs at SuperSpeed Plus */
++	{ USB_DEVICE(0x32ed, 0x0401), .driver_info = USB_QUIRK_NO_BOS },
++
+ 	/* DELL USB GEN2 */
+ 	{ USB_DEVICE(0x413c, 0xb062), .driver_info = USB_QUIRK_NO_LPM | USB_QUIRK_RESET_RESUME },
  
--	if (kvm_vcpu_apicv_active(vcpu))
-+	if (enable_apicv && irqchip_in_kernel(vcpu->kvm))
- 		avic_init_vmcb(svm, vmcb);
- 
- 	if (vnmi)
 
 
 
