@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228924-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WGKXEp9NwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228415-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:39 +0100
+	id AJwxMt1WwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228924-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC932F47C2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 417DC2F5C5A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3576A30CA84A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 26B6730BD018
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD1C3AEF35;
-	Mon, 23 Mar 2026 14:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEF623EA97;
+	Mon, 23 Mar 2026 14:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNiMQrQk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TveudPeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501B13AE6EE;
-	Mon, 23 Mar 2026 14:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FEB836C59E;
+	Mon, 23 Mar 2026 14:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275058; cv=none; b=H4aCpMvqJtUlY4hYMTjfbm4e0Xz5Gcp2/xGxGUWyEojnZZflHUwrYZxV3y2NX0okTzuv3ICdIR+/RPBMqQijiRa5NUvRZ1c1gqFOu1L5rH/7mzEGq6bzc29SgAnrs0j7SNeOzwrIuOsTcEYsiSo6juWEWf4x4iWAR24mUrqB94o=
+	t=1774277501; cv=none; b=R/KBwk8mZQtHodksC411d9B3GgpSaZJJ1Kn4o487JVcVDIbGuSgKaHngI2JaHxJxFJh+6L0mGBPWQXhQkbUhZoGjsgscI7hENKBTGGuWuVJgeQeCsvDTvSAOLZmI7o2jwOdvdFlJjXMyKpXLH1kE4zkYp/TEsP4RDtctAcA2a24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275058; c=relaxed/simple;
-	bh=lMYfwvDgy9a9Cq9T4MQLA8MhGrhLpOizBC3pLo/0a/4=;
+	s=arc-20240116; t=1774277501; c=relaxed/simple;
+	bh=F7aJ+7cZptlrttFsjA6AiS6KG8K1/oS/XNIHLXguA3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SzaNCwCoDcmO9QmggFSvrML6EHgMINBubiYYwRi3lO06nMmuntIYKieslf9qgVHRWzq8W2u8gJ5LuX9zlbitj6i60cMOE8rEv4XWlOMr2wUqGFtaa2bwGxPiHcPoeJTuxWBE/s4GzAuXDxDIrJlR+ZnrpNLvueXl7u84JFVutrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNiMQrQk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80182C4CEF7;
-	Mon, 23 Mar 2026 14:10:57 +0000 (UTC)
+	 MIME-Version; b=XcQmytnoooWV6WEDSFilC5tb/SFRm4NFnc7jEK19nT2T9O5FaI92/CFipFqIsY8nH31Rt+b5f3qfnB607RQSvY4wg/O6UOPOIMKI89A/4hUNxEYUau9BKUmX73k1KVrxf4/+oAHENzheLVcj13k4jkUADPm5ks2Hhp+BjI6SnQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TveudPeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AB2C4CEF7;
+	Mon, 23 Mar 2026 14:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275057;
-	bh=lMYfwvDgy9a9Cq9T4MQLA8MhGrhLpOizBC3pLo/0a/4=;
+	s=korg; t=1774277501;
+	bh=F7aJ+7cZptlrttFsjA6AiS6KG8K1/oS/XNIHLXguA3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNiMQrQk5NnSdHavxIo1gYZhtPLU7I2tFMQNiYN6Ylc8Q3iMPE782FOTGxmkcrdUL
-	 tenqTleWd1UvDLliUnGbZ1aWCiIEs2h4Q4emuGuDyG2tZW58QJlig9FYFSRtrVu0mf
-	 GUkLazEriPHsqDPKCSF/qzJEPSNwl8LwjUN8jhFA=
+	b=TveudPeQoyUf7y7daMaziBvm9pY2zwMgxbprlt/Zl7LoVaZ/CRnSWTsqFr8kS2Eb3
+	 HiAgthqnIL4OwdsRzdaAkAMNq1TC9eg16BLO2EIvjv/Ll3WDDB6lUFOqrjVafnY/Bn
+	 vIfJxpdHhZnSz4pcAx4xYKSd6nKDAj9oy/QTJcWo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 206/212] ksmbd: fix use-after-free in durable v2 replay of active file handles
+Subject: [PATCH 6.12 431/460] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
 Date: Mon, 23 Mar 2026 14:47:07 +0100
-Message-ID: <20260323134510.296743377@linuxfoundation.org>
+Message-ID: <20260323134537.143865734@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,156 +70,112 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228415-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,microsoft.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228924-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0BC932F47C2
+X-Rspamd-Queue-Id: 417DC2F5C5A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
 
-[ Upstream commit b425e4d0eb321a1116ddbf39636333181675d8f4 ]
+[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
 
-parse_durable_handle_context() unconditionally assigns dh_info->fp->conn
-to the current connection when handling a DURABLE_REQ_V2 context with
-SMB2_FLAGS_REPLAY_OPERATION. ksmbd_lookup_fd_cguid() does not filter by
-fp->conn, so it returns file handles that are already actively connected.
-The unconditional overwrite replaces fp->conn, and when the overwriting
-connection is subsequently freed, __ksmbd_close_fd() dereferences the
-stale fp->conn via spin_lock(&fp->conn->llist_lock), causing a
-use-after-free.
+mvpp2_bm_switch_buffers() unconditionally calls
+mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
+shared buffer pool modes. This function programs CM3 flow control
+registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
+priv->cm3_base without any NULL check.
 
-KASAN report:
+When the CM3 SRAM resource is not present in the device tree (the
+third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
+SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
+NULL and priv->global_tx_fc is false. Any operation that triggers
+mvpp2_bm_switch_buffers(), for example an MTU change that crosses
+the jumbo frame threshold, will crash:
 
-[    7.349357] ==================================================================
-[    7.349607] BUG: KASAN: slab-use-after-free in _raw_spin_lock+0x75/0xe0
-[    7.349811] Write of size 4 at addr ffff8881056ac18c by task kworker/1:2/108
-[    7.350010]
-[    7.350064] CPU: 1 UID: 0 PID: 108 Comm: kworker/1:2 Not tainted 7.0.0-rc3+ #58 PREEMPTLAZY
-[    7.350068] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[    7.350070] Workqueue: ksmbd-io handle_ksmbd_work
-[    7.350083] Call Trace:
-[    7.350087]  <TASK>
-[    7.350087]  dump_stack_lvl+0x64/0x80
-[    7.350094]  print_report+0xce/0x660
-[    7.350100]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[    7.350101]  ? __pfx___mod_timer+0x10/0x10
-[    7.350106]  ? _raw_spin_lock+0x75/0xe0
-[    7.350108]  kasan_report+0xce/0x100
-[    7.350109]  ? _raw_spin_lock+0x75/0xe0
-[    7.350114]  kasan_check_range+0x105/0x1b0
-[    7.350116]  _raw_spin_lock+0x75/0xe0
-[    7.350118]  ? __pfx__raw_spin_lock+0x10/0x10
-[    7.350119]  ? __call_rcu_common.constprop.0+0x25e/0x780
-[    7.350125]  ? close_id_del_oplock+0x2cc/0x4e0
-[    7.350128]  __ksmbd_close_fd+0x27f/0xaf0
-[    7.350131]  ksmbd_close_fd+0x135/0x1b0
-[    7.350133]  smb2_close+0xb19/0x15b0
-[    7.350142]  ? __pfx_smb2_close+0x10/0x10
-[    7.350143]  ? xas_load+0x18/0x270
-[    7.350146]  ? _raw_spin_lock+0x84/0xe0
-[    7.350148]  ? __pfx__raw_spin_lock+0x10/0x10
-[    7.350150]  ? _raw_spin_unlock+0xe/0x30
-[    7.350151]  ? ksmbd_smb2_check_message+0xeb2/0x24c0
-[    7.350153]  ? ksmbd_tree_conn_lookup+0xcd/0xf0
-[    7.350154]  handle_ksmbd_work+0x40f/0x1080
-[    7.350156]  process_one_work+0x5fa/0xef0
-[    7.350162]  ? assign_work+0x122/0x3e0
-[    7.350163]  worker_thread+0x54b/0xf70
-[    7.350165]  ? __pfx_worker_thread+0x10/0x10
-[    7.350166]  kthread+0x346/0x470
-[    7.350170]  ? recalc_sigpending+0x19b/0x230
-[    7.350176]  ? __pfx_kthread+0x10/0x10
-[    7.350178]  ret_from_fork+0x4fb/0x6c0
-[    7.350183]  ? __pfx_ret_from_fork+0x10/0x10
-[    7.350185]  ? __switch_to+0x36c/0xbe0
-[    7.350188]  ? __pfx_kthread+0x10/0x10
-[    7.350190]  ret_from_fork_asm+0x1a/0x30
-[    7.350197]  </TASK>
-[    7.350197]
-[    7.355160] Allocated by task 123:
-[    7.355261]  kasan_save_stack+0x33/0x60
-[    7.355373]  kasan_save_track+0x14/0x30
-[    7.355484]  __kasan_kmalloc+0x8f/0xa0
-[    7.355593]  ksmbd_conn_alloc+0x44/0x6d0
-[    7.355711]  ksmbd_kthread_fn+0x243/0xd70
-[    7.355839]  kthread+0x346/0x470
-[    7.355942]  ret_from_fork+0x4fb/0x6c0
-[    7.356051]  ret_from_fork_asm+0x1a/0x30
-[    7.356164]
-[    7.356214] Freed by task 134:
-[    7.356305]  kasan_save_stack+0x33/0x60
-[    7.356416]  kasan_save_track+0x14/0x30
-[    7.356527]  kasan_save_free_info+0x3b/0x60
-[    7.356646]  __kasan_slab_free+0x43/0x70
-[    7.356761]  kfree+0x1ca/0x430
-[    7.356862]  ksmbd_tcp_disconnect+0x59/0xe0
-[    7.356993]  ksmbd_conn_handler_loop+0x77e/0xd40
-[    7.357138]  kthread+0x346/0x470
-[    7.357240]  ret_from_fork+0x4fb/0x6c0
-[    7.357350]  ret_from_fork_asm+0x1a/0x30
-[    7.357463]
-[    7.357513] The buggy address belongs to the object at ffff8881056ac000
-[    7.357513]  which belongs to the cache kmalloc-1k of size 1024
-[    7.357857] The buggy address is located 396 bytes inside of
-[    7.357857]  freed 1024-byte region [ffff8881056ac000, ffff8881056ac400)
+  Unable to handle kernel NULL pointer dereference at
+  virtual address 0000000000000000
+  Mem abort info:
+    ESR = 0x0000000096000006
+    EC = 0x25: DABT (current EL), IL = 32 bits
+  pc : readl+0x0/0x18
+  lr : mvpp2_cm3_read.isra.0+0x14/0x20
+  Call trace:
+   readl+0x0/0x18
+   mvpp2_bm_pool_update_fc+0x40/0x12c
+   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
+   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
+   mvpp2_change_mtu+0x140/0x380
+   __dev_set_mtu+0x1c/0x38
+   dev_set_mtu_ext+0x78/0x118
+   dev_set_mtu+0x48/0xa8
+   dev_ifsioc+0x21c/0x43c
+   dev_ioctl+0x2d8/0x42c
+   sock_ioctl+0x314/0x378
 
-Fix by removing the unconditional fp->conn assignment and rejecting the
-replay when fp->conn is non-NULL. This is consistent with
-ksmbd_lookup_durable_fd(), which also rejects file handles with a
-non-NULL fp->conn. For disconnected file handles (fp->conn == NULL),
-ksmbd_reopen_durable_fd() handles setting fp->conn.
+Every other flow control call site in the driver already guards
+hardware access with either priv->global_tx_fc or port->tx_fc.
+mvpp2_bm_switch_buffers() is the only place that omits this check.
 
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Add the missing priv->global_tx_fc guard to both the disable and
+re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
+rest of the driver.
+
+Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
+Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 6796bc919d580..60a8f53443082 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2840,7 +2840,11 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
- 						goto out;
- 					}
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index 66b5a80c9c28a..51e35c4d9ea97 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -5025,7 +5025,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
+ 	if (priv->percpu_pools)
+ 		numbufs = port->nrxqs * 2;
  
--					dh_info->fp->conn = conn;
-+					if (dh_info->fp->conn) {
-+						ksmbd_put_durable_fd(dh_info->fp);
-+						err = -EBADF;
-+						goto out;
-+					}
- 					dh_info->reconnected = true;
- 					goto out;
- 				}
+-	if (change_percpu)
++	if (change_percpu && priv->global_tx_fc)
+ 		mvpp2_bm_pool_update_priv_fc(priv, false);
+ 
+ 	for (i = 0; i < numbufs; i++)
+@@ -5050,7 +5050,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
+ 			mvpp2_open(port->dev);
+ 	}
+ 
+-	if (change_percpu)
++	if (change_percpu && priv->global_tx_fc)
+ 		mvpp2_bm_pool_update_priv_fc(priv, true);
+ 
+ 	return 0;
 -- 
 2.51.0
 
