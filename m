@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-229200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229702-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CA6mAhBbwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229200-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:00 +0100
+	id oLVDDM5swWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229702-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C7BB2F6363
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064F62F88DF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 70201306EE9F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:11:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7E389313E8B2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4353BC661;
-	Mon, 23 Mar 2026 15:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBE73C13F1;
+	Mon, 23 Mar 2026 16:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TC3pzby"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3W3CcNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF4D3BBA1C;
-	Mon, 23 Mar 2026 15:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B57286413;
+	Mon, 23 Mar 2026 16:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278376; cv=none; b=u5ZttImTjFkKJwQTN1ngEOgu9ctWk+wPysJstpfWz1/nteKJunfM8m/alkP4vpp3iQZIN++9enfyuH5wFBhaiJCy3K3Zxehzz2jD/6Al/pDfeU049CxKfuj3A5zvI/nyqyURVaKh0sX+9nDovMNW6l0W6j4d39h52XTOMxcQVIc=
+	t=1774282636; cv=none; b=MY3cN1o35lLMbcpfpRUcL4u6NKvYrsWMorxcao8BwhmO7y1xhGreKVbh2Yrkrc01tR0zmoa/7bTTW0kMq0h1gZ6F9/eLjJ4AiZd9rT9+FTYIcIXQFdJ51dzr06LCc478SnyFLA9WI32UoC2EQMVU8Tt40/CpaHEIyXKsVkMWipU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278376; c=relaxed/simple;
-	bh=ga7q7hsHK8hnHVZlM0pFxuSRpHSACHoOfOdzvaP2QNg=;
+	s=arc-20240116; t=1774282636; c=relaxed/simple;
+	bh=+Ia2B3phEFLkm/DIFMJXJnAxwvHmFSscuM0TMCbbUBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSsMfut5T/M2yqe0eyw7SJmOST2Mvy2fJ8i+lQa2xsAqEPNLJlWlQdQwqR0MKqj3iB4pjYRumKNPsrqUnOg1qo4L71iRVEMu8QFSeHJNs2BlPRRzylKUtUifqA8JcE8/7oDzHRF7++qU13eq+N8gLoARCUQTIoLxiCQSfp3BpX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TC3pzby; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F7EC4CEF7;
-	Mon, 23 Mar 2026 15:06:16 +0000 (UTC)
+	 MIME-Version; b=r4k4uLpauqRVQP7zb6EAieaCKp/7P32VEnaI1j4w60ASUkI/mSBKnNJydJOa69k7FbqSEyNyDqNkmVvcd3dd+PTu4PmBwMwgedi+YmBosYX6pyyhZ+683GKQa5Y9qhskkRC/aYHfGQ1Ia6B7eZGOlQDGsta6yhOD0Pz17H/vBGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y3W3CcNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C0EC2BC9E;
+	Mon, 23 Mar 2026 16:17:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278376;
-	bh=ga7q7hsHK8hnHVZlM0pFxuSRpHSACHoOfOdzvaP2QNg=;
+	s=korg; t=1774282636;
+	bh=+Ia2B3phEFLkm/DIFMJXJnAxwvHmFSscuM0TMCbbUBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TC3pzbyhwPy1vq4S/K1RmfoWCq4gywXWJ3iXsIsg0eR2s/u8o0BsDRC2SrzVJs17
-	 VM1H9M2TaOJjeICN9p8vw6SZEKo+B4XtzbISU/l48HyspyKfyn+6RnUOdDA2m0yN3l
-	 ToxRxhdIKgYk19PL0Y/j+6Tt9GOthA02+N/txtug=
+	b=Y3W3CcNQMEPS6dhfdIYPMUieF7SLu7T8ktF4Vxq+Sl+/NL6Ih53wMwYTLJqxjH5Kc
+	 AsC8lGXoQOSMoChF+T9kqjbnwKnYinCv2pbUsIDVoyralQVvMSjCHIy36RNBreadGW
+	 fAXqGF4JCV4iIoGnD9BcAa05V1JXhcXOSr3IwADY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 289/567] mm/kfence: disable KFENCE upon KASAN HW tags enablement
-Date: Mon, 23 Mar 2026 14:43:29 +0100
-Message-ID: <20260323134540.973125562@linuxfoundation.org>
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 228/481] ceph: fix i_nlink underrun during async unlink
+Date: Mon, 23 Mar 2026 14:43:30 +0100
+Message-ID: <20260323134530.696925884@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,104 +64,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,tugraz.at,kernel.org,linux-foundation.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229200-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-229702-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[11];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9C7BB2F6363
+X-Rspamd-Queue-Id: 064F62F88DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit 09833d99db36d74456a4d13eb29c32d56ff8f2b6 upstream.
+commit ce0123cbb4a40a2f1bbb815f292b26e96088639f upstream.
 
-KFENCE does not currently support KASAN hardware tags.  As a result, the
-two features are incompatible when enabled simultaneously.
+During async unlink, we drop the `i_nlink` counter before we receive
+the completion (that will eventually update the `i_nlink`) because "we
+assume that the unlink will succeed".  That is not a bad idea, but it
+races against deletions by other clients (or against the completion of
+our own unlink) and can lead to an underrun which emits a WARNING like
+this one:
 
-Given that MTE provides deterministic protection and KFENCE is a
-sampling-based debugging tool, prioritize the stronger hardware
-protections.  Disable KFENCE initialization and free the pre-allocated
-pool if KASAN hardware tags are detected to ensure the system maintains
-the security guarantees provided by MTE.
+ WARNING: CPU: 85 PID: 25093 at fs/inode.c:407 drop_nlink+0x50/0x68
+ Modules linked in:
+ CPU: 85 UID: 3221252029 PID: 25093 Comm: php-cgi8.1 Not tainted 6.14.11-cm4all1-ampere #655
+ Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
+ pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : drop_nlink+0x50/0x68
+ lr : ceph_unlink+0x6c4/0x720
+ sp : ffff80012173bc90
+ x29: ffff80012173bc90 x28: ffff086d0a45aaf8 x27: ffff0871d0eb5680
+ x26: ffff087f2a64a718 x25: 0000020000000180 x24: 0000000061c88647
+ x23: 0000000000000002 x22: ffff07ff9236d800 x21: 0000000000001203
+ x20: ffff07ff9237b000 x19: ffff088b8296afc0 x18: 00000000f3c93365
+ x17: 0000000000070000 x16: ffff08faffcbdfe8 x15: ffff08faffcbdfec
+ x14: 0000000000000000 x13: 45445f65645f3037 x12: 34385f6369706f74
+ x11: 0000a2653104bb20 x10: ffffd85f26d73290 x9 : ffffd85f25664f94
+ x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000002
+ x5 : 0000000000000081 x4 : 0000000000000481 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff08727d3f91e8
+ Call trace:
+  drop_nlink+0x50/0x68 (P)
+  vfs_unlink+0xb0/0x2e8
+  do_unlinkat+0x204/0x288
+  __arm64_sys_unlinkat+0x3c/0x80
+  invoke_syscall.constprop.0+0x54/0xe8
+  do_el0_svc+0xa4/0xc8
+  el0_svc+0x18/0x58
+  el0t_64_sync_handler+0x104/0x130
+  el0t_64_sync+0x154/0x158
 
-Link: https://lkml.kernel.org/r/20260213095410.1862978-1-glider@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Suggested-by: Marco Elver <elver@google.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+In ceph_unlink(), a call to ceph_mdsc_submit_request() submits the
+CEPH_MDS_OP_UNLINK to the MDS, but does not wait for completion.
+
+Meanwhile, between this call and the following drop_nlink() call, a
+worker thread may process a CEPH_CAP_OP_IMPORT, CEPH_CAP_OP_GRANT or
+just a CEPH_MSG_CLIENT_REPLY (the latter of which could be our own
+completion).  These will lead to a set_nlink() call, updating the
+`i_nlink` counter to the value received from the MDS.  If that new
+`i_nlink` value happens to be zero, it is illegal to decrement it
+further.  But that is exactly what ceph_unlink() will do then.
+
+The WARNING can be reproduced this way:
+
+1. Force async unlink; only the async code path is affected.  Having
+   no real clue about Ceph internals, I was unable to find out why the
+   MDS wouldn't give me the "Fxr" capabilities, so I patched
+   get_caps_for_async_unlink() to always succeed.
+
+   (Note that the WARNING dump above was found on an unpatched kernel,
+   without this kludge - this is not a theoretical bug.)
+
+2. Add a sleep call after ceph_mdsc_submit_request() so the unlink
+   completion gets handled by a worker thread before drop_nlink() is
+   called.  This guarantees that the `i_nlink` is already zero before
+   drop_nlink() runs.
+
+The solution is to skip the counter decrement when it is already zero,
+but doing so without a lock is still racy (TOCTOU).  Since
+ceph_fill_inode() and handle_cap_grant() both hold the
+`ceph_inode_info.i_ceph_lock` spinlock while set_nlink() runs, this
+seems like the proper lock to protect the `i_nlink` updates.
+
+I found prior art in NFS and SMB (using `inode.i_lock`) and AFS (using
+`afs_vnode.cb_lock`).  All three have the zero check as well.
+
+Cc: stable@vger.kernel.org
+Fixes: 2ccb45462aea ("ceph: perform asynchronous unlink if we have sufficient caps")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kfence/core.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/ceph/dir.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -13,6 +13,7 @@
- #include <linux/hash.h>
- #include <linux/irq_work.h>
- #include <linux/jhash.h>
-+#include <linux/kasan-enabled.h>
- #include <linux/kcsan-checks.h>
- #include <linux/kfence.h>
- #include <linux/kmemleak.h>
-@@ -862,6 +863,20 @@ void __init kfence_alloc_pool_and_metada
- 		return;
- 
- 	/*
-+	 * If KASAN hardware tags are enabled, disable KFENCE, because it
-+	 * does not support MTE yet.
-+	 */
-+	if (kasan_hw_tags_enabled()) {
-+		pr_info("disabled as KASAN HW tags are enabled\n");
-+		if (__kfence_pool) {
-+			memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
-+			__kfence_pool = NULL;
-+		}
-+		kfence_sample_interval = 0;
-+		return;
-+	}
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1183,6 +1183,7 @@ static int ceph_unlink(struct inode *dir
+ 	struct ceph_fs_client *fsc = ceph_sb_to_client(dir->i_sb);
+ 	struct ceph_mds_client *mdsc = fsc->mdsc;
+ 	struct inode *inode = d_inode(dentry);
++	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_mds_request *req;
+ 	bool try_async = ceph_test_mount_opt(fsc, ASYNC_DIROPS);
+ 	int err = -EROFS;
+@@ -1240,7 +1241,19 @@ retry:
+ 			 * We have enough caps, so we assume that the unlink
+ 			 * will succeed. Fix up the target inode and dcache.
+ 			 */
+-			drop_nlink(inode);
 +
-+	/*
- 	 * If the pool has already been initialized by arch, there is no need to
- 	 * re-allocate the memory pool.
- 	 */
++			/*
++			 * Protect the i_nlink update with i_ceph_lock
++			 * to precent racing against ceph_fill_inode()
++			 * handling our completion on a worker thread
++			 * and don't decrement if i_nlink has already
++			 * been updated to zero by this completion.
++			 */
++			spin_lock(&ci->i_ceph_lock);
++			if (inode->i_nlink > 0)
++				drop_nlink(inode);
++			spin_unlock(&ci->i_ceph_lock);
++
+ 			d_delete(dentry);
+ 		} else {
+ 			spin_lock(&fsc->async_unlink_conflict_lock);
 
 
 
