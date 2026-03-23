@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229430-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MI4yMnpqwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228900-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:29:46 +0100
+	id sOyHHEliwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229430-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:54:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2747B2F82C0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:29:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB5A72F71A8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:54:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4F9A30DFC3E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D18EF3288DA1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07C283AF669;
-	Mon, 23 Mar 2026 14:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55B23BD62E;
+	Mon, 23 Mar 2026 15:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOACfSH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CyeP9axB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5AB1E2614;
-	Mon, 23 Mar 2026 14:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769C53B47FE;
+	Mon, 23 Mar 2026 15:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277437; cv=none; b=L9leeRrTzZrqFIUxDQD3F3UXqMaxT/YzQB3olkD/55povXzlSSTNqWV01+tagYhZpBV9uv3OLmSidLFSyCYzFACcQH9JPExyvwsKpVAa/dh/7yAzt/9D+jB7qNPwnwWoWG+yzdr8ERh3xd00uC1zkmpDeMwQa+9vowW6u9J1JUA=
+	t=1774279221; cv=none; b=j8Jq68/e34fnytjcr0hwAqjExcR4ayXH/DT7ZSK/EmpBD1PreNwLbGD8VT5Q429ScxAKtF/3Xfqr7v9KTHQESB8tW89w7B0WFFmqM9UaiVginYqd6COwcjJL311nJPItDeXXX8p2qCqzpryiSeplHJtgb1kBM/TOQ0JVJoSx530=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277437; c=relaxed/simple;
-	bh=YgGXorLJPEcA/t7+SraLIvZyyO7XOb7ItsEoVIMi5qI=;
+	s=arc-20240116; t=1774279221; c=relaxed/simple;
+	bh=e8bSwvkmXKw005kE+Eto/zc7wTE1uoCca+9C1y/NwH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8sN4jam3AKnqR6cTCtJzh16Vf8e7E98bVhLTuaFvgoSiVHUrtEgc0leC69Q6r7tVE4dy/YYBWeTGZaQuYBr5+yrZVVvEVdrH9JyU4BA5NSkProKpYjvLQy20cBZj7WyrfJavSfQ6eer4TPwnGQoPWVvV+ae7kJNaN8irfYdRFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YOACfSH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B9A4C4CEF7;
-	Mon, 23 Mar 2026 14:50:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hh3GzsN2eBLBzPGOWWM8TucgcKCwgQKpjEej59x8efEUoTpoRDrcLItW/rpAVMh/lhUnqVGEqzASl0fs9zKhmW9uoqEb0rUhPWZSKBSB4J0kFxtmvVcV2E0ZjErIVKejMeKqXXJrNmS1zQwOeHr+0bDOgbK7elwpXONT34wMpsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CyeP9axB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E30D9C2BCB3;
+	Mon, 23 Mar 2026 15:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277437;
-	bh=YgGXorLJPEcA/t7+SraLIvZyyO7XOb7ItsEoVIMi5qI=;
+	s=korg; t=1774279221;
+	bh=e8bSwvkmXKw005kE+Eto/zc7wTE1uoCca+9C1y/NwH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YOACfSH3gwJ9UksOa1bsXuuOrEP4Zs0qbavFzhFJIDYxl+647qNvzSrjSChVDlYiX
-	 6W/Sr9POsGdzNKq/1bZdPuJZRncKNeklNQ0weJOB2VWyP/27vPkxxf+XHdACsYDat2
-	 XbkWV9ipE4+FeCK1c1sUp0uaimsE9gLUDUjkQC5k=
+	b=CyeP9axBD4uf3rehfB4YKib5efD72B2Z8QoRLhah57e56NFCl/ytAoQdoircDMyYT
+	 8MjXe/3Xes1RkPzTlPKA5aimt8uwjJFkwtAFxEY7hjRd5ayOIXUSn36agW/t7EqG7t
+	 s4oueS2QN/lVjN2fVPTbJ3/yUjFxjG3Qqq7rNZd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Robert Marko <robert.marko@sartura.hr>,
-	Linus Walleij <linusw@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 440/460] i2c: pxa: defer reset on Armada 3700 when recovery is used
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 516/567] netfilter: nf_conntrack_h323: fix OOB read in decode_int() CONS case
 Date: Mon, 23 Mar 2026 14:47:16 +0100
-Message-ID: <20260323134537.390676108@linuxfoundation.org>
+Message-ID: <20260323134546.779918555@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,168 +65,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,sartura.hr,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228900-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229430-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sartura.hr:email]
-X-Rspamd-Queue-Id: 2747B2F82C0
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DB5A72F71A8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-commit 78a6ee14f8b9e1c8f7c77612122444f3be8dc8cc upstream.
+[ Upstream commit 1e3a3593162c96e8a8de48b1e14f60c3b57fca8a ]
 
-The I2C communication is completely broken on the Armada 3700 platform
-since commit 0b01392c18b9 ("i2c: pxa: move to generic GPIO recovery").
+In decode_int(), the CONS case calls get_bits(bs, 2) to read a length
+value, then calls get_uint(bs, len) without checking that len bytes
+remain in the buffer. The existing boundary check only validates the
+2 bits for get_bits(), not the subsequent 1-4 bytes that get_uint()
+reads. This allows a malformed H.323/RAS packet to cause a 1-4 byte
+slab-out-of-bounds read.
 
-For example, on the Methode uDPU board, probing of the two onboard
-temperature sensors fails ...
+Add a boundary check for len bytes after get_bits() and before
+get_uint().
 
-  [    7.271713] i2c i2c-0: using pinctrl states for GPIO recovery
-  [    7.277503] i2c i2c-0:  PXA I2C adapter
-  [    7.282199] i2c i2c-1: using pinctrl states for GPIO recovery
-  [    7.288241] i2c i2c-1:  PXA I2C adapter
-  [    7.292947] sfp sfp-eth1: Host maximum power 3.0W
-  [    7.299614] sfp sfp-eth0: Host maximum power 3.0W
-  [    7.308178] lm75 1-0048: supply vs not found, using dummy regulator
-  [   32.489631] lm75 1-0048: probe with driver lm75 failed with error -121
-  [   32.496833] lm75 1-0049: supply vs not found, using dummy regulator
-  [   82.890614] lm75 1-0049: probe with driver lm75 failed with error -121
-
-... and accessing the plugged-in SFP modules also does not work:
-
-  [  511.298537] sfp sfp-eth1: please wait, module slow to respond
-  [  536.488530] sfp sfp-eth0: please wait, module slow to respond
-  ...
-  [ 1065.688536] sfp sfp-eth1: failed to read EEPROM: -EREMOTEIO
-  [ 1090.888532] sfp sfp-eth0: failed to read EEPROM: -EREMOTEIO
-
-After a discussion [1], there was an attempt to fix the problem by
-reverting the offending change by commit 7b211c767121 ("Revert "i2c:
-pxa: move to generic GPIO recovery""), but that only helped to fix
-the issue in the 6.1.y stable tree. The reason behind the partial succes
-is that there was another change in commit 20cb3fce4d60 ("i2c: Set i2c
-pinctrl recovery info from it's device pinctrl") in the 6.3-rc1 cycle
-which broke things further.
-
-The cause of the problem is the same in case of both offending commits
-mentioned above. Namely, the I2C core code changes the pinctrl state to
-GPIO while running the recovery initialization code. Although the PXA
-specific initialization also does this, but the key difference is that
-it happens before the controller is getting enabled in i2c_pxa_reset(),
-whereas in the case of the generic initialization it happens after that.
-
-Change the code to reset the controller only before the first transfer
-instead of before registering the controller. This ensures that the
-controller is not enabled at the time when the generic recovery code
-performs the pinctrl state changes, thus avoids the problem described
-above.
-
-As the result this change restores the original behaviour, which in
-turn makes the I2C communication to work again as it can be seen from
-the following log:
-
-  [    7.363250] i2c i2c-0: using pinctrl states for GPIO recovery
-  [    7.369041] i2c i2c-0:  PXA I2C adapter
-  [    7.373673] i2c i2c-1: using pinctrl states for GPIO recovery
-  [    7.379742] i2c i2c-1:  PXA I2C adapter
-  [    7.384506] sfp sfp-eth1: Host maximum power 3.0W
-  [    7.393013] sfp sfp-eth0: Host maximum power 3.0W
-  [    7.399266] lm75 1-0048: supply vs not found, using dummy regulator
-  [    7.407257] hwmon hwmon0: temp1_input not attached to any thermal zone
-  [    7.413863] lm75 1-0048: hwmon0: sensor 'tmp75c'
-  [    7.418746] lm75 1-0049: supply vs not found, using dummy regulator
-  [    7.426371] hwmon hwmon1: temp1_input not attached to any thermal zone
-  [    7.432972] lm75 1-0049: hwmon1: sensor 'tmp75c'
-  [    7.755092] sfp sfp-eth1: module MENTECHOPTO      POS22-LDCC-KR    rev 1.0  sn MNC208U90009     dc 200828
-  [    7.764997] mvneta d0040000.ethernet eth1: unsupported SFP module: no common interface modes
-  [    7.785362] sfp sfp-eth0: module Mikrotik         S-RJ01           rev 1.0  sn 61B103C55C58     dc 201022
-  [    7.803426] hwmon hwmon2: temp1_input not attached to any thermal zone
-
-Link: https://lore.kernel.org/r/20230926160255.330417-1-robert.marko@sartura.hr #1
-
-Cc: stable@vger.kernel.org # 6.3+
-Fixes: 20cb3fce4d60 ("i2c: Set i2c pinctrl recovery info from it's device pinctrl")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Tested-by: Robert Marko <robert.marko@sartura.hr>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20260226-i2c-pxa-fix-i2c-communication-v4-1-797a091dae87@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-pxa.c |   17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/i2c/busses/i2c-pxa.c
-+++ b/drivers/i2c/busses/i2c-pxa.c
-@@ -268,6 +268,7 @@ struct pxa_i2c {
- 	struct pinctrl		*pinctrl;
- 	struct pinctrl_state	*pinctrl_default;
- 	struct pinctrl_state	*pinctrl_recovery;
-+	bool			reset_before_xfer;
- };
- 
- #define _IBMR(i2c)	((i2c)->reg_ibmr)
-@@ -1144,6 +1145,11 @@ static int i2c_pxa_xfer(struct i2c_adapt
- {
- 	struct pxa_i2c *i2c = adap->algo_data;
- 
-+	if (i2c->reset_before_xfer) {
-+		i2c_pxa_reset(i2c);
-+		i2c->reset_before_xfer = false;
-+	}
-+
- 	return i2c_pxa_internal_xfer(i2c, msgs, num, i2c_pxa_do_xfer);
- }
- 
-@@ -1521,7 +1527,16 @@ static int i2c_pxa_probe(struct platform
- 		}
- 	}
- 
--	i2c_pxa_reset(i2c);
-+	/*
-+	 * Skip reset on Armada 3700 when recovery is used to avoid
-+	 * controller hang due to the pinctrl state changes done by
-+	 * the generic recovery initialization code. The reset will
-+	 * be performed later, prior to the first transfer.
-+	 */
-+	if (i2c_type == REGS_A3700 && i2c->adap.bus_recovery_info)
-+		i2c->reset_before_xfer = true;
-+	else
-+		i2c_pxa_reset(i2c);
- 
- 	ret = i2c_add_numbered_adapter(&i2c->adap);
- 	if (ret < 0)
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index 62aa22a078769..c972e9488e16f 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -331,6 +331,8 @@ static int decode_int(struct bitstr *bs, const struct field_t *f,
+ 		if (nf_h323_error_boundary(bs, 0, 2))
+ 			return H323_ERROR_BOUND;
+ 		len = get_bits(bs, 2) + 1;
++		if (nf_h323_error_boundary(bs, len, 0))
++			return H323_ERROR_BOUND;
+ 		BYTE_ALIGN(bs);
+ 		if (base && (f->attr & DECODE)) {	/* timeToLive */
+ 			unsigned int v = get_uint(bs, len) + f->lb;
+-- 
+2.51.0
+
 
 
 
