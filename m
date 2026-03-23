@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228475-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YCbRL2FjwWn/SgQAu9opvQ
-	(envelope-from <stable+bounces-229501-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:29 +0100
+	id sMKUG5BTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228475-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:52:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F1A2F7396
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:59:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E82772F5525
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C342B342B419
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4BEFF3153C24
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3873BF687;
-	Mon, 23 Mar 2026 15:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC433B2FDD;
+	Mon, 23 Mar 2026 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YKnCkGpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ns3B5rYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DD85280309;
-	Mon, 23 Mar 2026 15:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5803B2FD5;
+	Mon, 23 Mar 2026 14:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279435; cv=none; b=hZjUQGbVIIR6hiRPxoifkaeiSFVScu2r2N1JtM+rLJfwgrYjmU1+rvFWOd/JPTDpOlYuk+NJFK34ULvD1z36Cs95LzY+uYKa2RRdBZUj1IiBRE8DmnU/ThtuxdmQVm0QjiDyTqIkqoMEVdEKDvdH4C06XAfc55EbD53aWHB5gYc=
+	t=1774275233; cv=none; b=bGouTYzq7TfInn4vf0LzxovjzTB0THGP58jj2lSyh6TYba/7EUaDhw3/B68wMEJnpZP/QDScXRxwrUUUm/UeilgOostRX1cbcBWQkwS2xS3UtLsiPl4KD49xiDzH6YnZYdGIHbtHrx38e7fC4zSNS0h0h2/rok/88JEPDKMifSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279435; c=relaxed/simple;
-	bh=hhNRzz6g4EKB9LjkjZ24R73JjpxRkl3xo2AtGjnwPXs=;
+	s=arc-20240116; t=1774275233; c=relaxed/simple;
+	bh=Mi7XkuYUf7dxHm+0iCHkD5V3llz3G+FFbz+AeHeWaGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nelli206L0q5CxbC/VrXhXyoarfUyenQQaIhPSXln9YW4cPtu1wPEDmuNf9qjcvdAuh6yZ+odqXvJEL947m3RBfC0syWeKSetOxLh5jNPZy45fO7m8wNwnUq2nJz+GHfS4HmmGFrphoKFv/wn6TOvIuqnx0YMsqdlFKnEcAmDJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YKnCkGpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DC41C4CEF7;
-	Mon, 23 Mar 2026 15:23:54 +0000 (UTC)
+	 MIME-Version; b=Gj3CajrSKB6By8J+bHm5VVL4NL863RiKp1iV/QdUJJD8et7PkZq8UrZkIfH5aOMXPoZNMEvFFm9lAnnxtjbRGAy6kCI8BXdXLjHWMLzxRjKGNHxtPbF+Y9FZPvnnBu6qW34cK9XkIcHjHBspneQ5pVKLSZABr2rK2cVbzdhJNGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ns3B5rYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA217C4CEF7;
+	Mon, 23 Mar 2026 14:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279435;
-	bh=hhNRzz6g4EKB9LjkjZ24R73JjpxRkl3xo2AtGjnwPXs=;
+	s=korg; t=1774275233;
+	bh=Mi7XkuYUf7dxHm+0iCHkD5V3llz3G+FFbz+AeHeWaGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YKnCkGpxmuw+8DbxYrMuz5StJzf7ZjoIlOQtYsMEjsrtUSZ5evk2QI4LYm6xHihKS
-	 BdnA/rmtRFIqlbX5raSQf8O18KNtVwFyq1LK3+L4TJiD+CrdcjOovXzTTXeR18Ce84
-	 UtilJycPCCiaHjyjcImD6j5lfJy+o0SvjjHXG32Y=
+	b=ns3B5rYLOEdewOH45ONMDvrlOJw1Qy+zjhF/wFdwDIdGO6GWd5XmedNU0MRw2sazD
+	 oiI7Af12r9lbQ+TqCLZ8GGy6Ks2/hRFs+CNSstN6c6uZLrBdRjOwT5tk+rYNb0CSDb
+	 vKClGfaa+GISefXkEdyIyqfkWCkWfEBqIkcGwkzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thierry Reding <treding@nvidia.com>,
-	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/481] drm/tegra: dsi: fix device leak on probe
+Subject: [PATCH 6.12 022/460] remoteproc: mediatek: Unprepare SCP clock during system suspend
 Date: Mon, 23 Mar 2026 14:40:18 +0100
-Message-ID: <20260323134526.115798845@linuxfoundation.org>
+Message-ID: <20260323134527.231391231@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,77 +69,127 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228475-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229501-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 45F1A2F7396
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E82772F5525
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit bfef062695570842cf96358f2f46f4c6642c6689 ]
+[ Upstream commit 35c3f72a2d55dbf52f28f4ecae51c76be1acf545 ]
 
-Make sure to drop the reference taken when looking up the companion
-(ganged) device and its driver data during probe().
+Prior to commit d935187cfb27 ("remoteproc: mediatek: Break lock
+dependency to prepare_lock"), `scp->clk` was prepared and enabled only
+when it needs to communicate with the SCP.  The commit d935187cfb27
+moved the prepare operation to remoteproc's prepare(), keeping the clock
+prepared as long as the SCP is running.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+The power consumption due to the prolonged clock preparation can be
+negligible when the system is running, as SCP is designed to be a very
+power efficient processor.
 
-Fixes: e94236cde4d5 ("drm/tegra: dsi: Add ganged mode support")
-Fixes: 221e3638feb8 ("drm/tegra: Fix reference leak in tegra_dsi_ganged_probe")
-Cc: stable@vger.kernel.org	# 3.19: 221e3638feb8
-Cc: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patch.msgid.link/20251121164201.13188-1-johan@kernel.org
+However, the clock remains prepared even when the system enters system
+suspend.  This prevents the underlying clock controller (and potentially
+the parent PLLs) from shutting down, which increases power consumption
+and may block the system from entering deep sleep states.
+
+Add suspend and resume callbacks.  Unprepare the clock in suspend() if
+it was active and re-prepare it in resume() to ensure the clock is
+properly disabled during system suspend, while maintaining the "always
+prepared" semantics while the system is active.  The driver doesn't
+implement .attach() callback, hence it only checks for RPROC_RUNNING.
+
+Fixes: d935187cfb27 ("remoteproc: mediatek: Break lock dependency to prepare_lock")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Link: https://lore.kernel.org/r/20260206033034.3031781-1-tzungbi@kernel.org
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/dsi.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/remoteproc/mtk_scp.c | 39 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
 
-diff --git a/drivers/gpu/drm/tegra/dsi.c b/drivers/gpu/drm/tegra/dsi.c
-index 7bb26655cb3cc..74d27b564d564 100644
---- a/drivers/gpu/drm/tegra/dsi.c
-+++ b/drivers/gpu/drm/tegra/dsi.c
-@@ -1539,11 +1539,9 @@ static int tegra_dsi_ganged_probe(struct tegra_dsi *dsi)
- 			return -EPROBE_DEFER;
+diff --git a/drivers/remoteproc/mtk_scp.c b/drivers/remoteproc/mtk_scp.c
+index ae20d2221c8e0..fcd2665f7abbc 100644
+--- a/drivers/remoteproc/mtk_scp.c
++++ b/drivers/remoteproc/mtk_scp.c
+@@ -1544,12 +1544,51 @@ static const struct of_device_id mtk_scp_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, mtk_scp_of_match);
  
- 		dsi->slave = platform_get_drvdata(gangster);
--
--		if (!dsi->slave) {
--			put_device(&gangster->dev);
-+		put_device(&gangster->dev);
-+		if (!dsi->slave)
- 			return -EPROBE_DEFER;
--		}
++static int __maybe_unused scp_suspend(struct device *dev)
++{
++	struct mtk_scp *scp = dev_get_drvdata(dev);
++	struct rproc *rproc = scp->rproc;
++
++	/*
++	 * Only unprepare if the SCP is running and holding the clock.
++	 *
++	 * Note: `scp_ops` doesn't implement .attach() callback, hence
++	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
++	 * should also be checked here.
++	 */
++	if (rproc->state == RPROC_RUNNING)
++		clk_unprepare(scp->clk);
++	return 0;
++}
++
++static int __maybe_unused scp_resume(struct device *dev)
++{
++	struct mtk_scp *scp = dev_get_drvdata(dev);
++	struct rproc *rproc = scp->rproc;
++
++	/*
++	 * Only prepare if the SCP was running and holding the clock.
++	 *
++	 * Note: `scp_ops` doesn't implement .attach() callback, hence
++	 * `rproc->state` can never be RPROC_ATTACHED.  Otherwise, it
++	 * should also be checked here.
++	 */
++	if (rproc->state == RPROC_RUNNING)
++		return clk_prepare(scp->clk);
++	return 0;
++}
++
++static const struct dev_pm_ops scp_pm_ops = {
++	SET_SYSTEM_SLEEP_PM_OPS(scp_suspend, scp_resume)
++};
++
+ static struct platform_driver mtk_scp_driver = {
+ 	.probe = scp_probe,
+ 	.remove_new = scp_remove,
+ 	.driver = {
+ 		.name = "mtk-scp",
+ 		.of_match_table = mtk_scp_of_match,
++		.pm = &scp_pm_ops,
+ 	},
+ };
  
- 		dsi->slave->master = dsi;
- 	}
 -- 
 2.51.0
 
