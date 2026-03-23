@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228587-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SCTyAKBXwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-229119-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:20 +0100
+	id INmSCsVQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228587-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C1AD2F5DEE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92B002F4F47
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 74B3630607E3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AD8733276851
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE5A2765F5;
-	Mon, 23 Mar 2026 15:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A4A3C07A;
+	Mon, 23 Mar 2026 14:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbBh0wcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rDWkOir"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41822275AEB;
-	Mon, 23 Mar 2026 15:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D311A680B;
+	Mon, 23 Mar 2026 14:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278119; cv=none; b=IVV9UqTu3+gbSdSWQjXg+eO6Ex3lLXf3Sdwutf+Q2Awg1gIU+qCiNq6HgvxM8HFbjlmDaZFbaQ9A2L014It9wzxUeLjoUZALbZxdb/TLnO/wi5qi/36H7x+q53FvCzZZxu5glKcboCEjscRqwVuPYdEcuddkJvuASjrnTeyXgDk=
+	t=1774275525; cv=none; b=c09+h8Kcjn+XM+/GrHJkd69jG0SP2ZtIW4XQWgEA+TcgkOqsNZMlvnwhYPrRsUxuFFX28DWz09KDmn9/mVd7zFA0DiSERQllyZ7sOTw77EWN7Wz8dXWAyWXEiwNtryaOuO4ytItj/FTFj585OuyIXTv1QH4GZr3IulreqhUbXCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278119; c=relaxed/simple;
-	bh=/CdCN24DouzjQ499tVLRSxreyLzMbNsKr6obSe47IVg=;
+	s=arc-20240116; t=1774275525; c=relaxed/simple;
+	bh=YaU+m4OF7KHkL1PsW7VeGY8IKPfgJ03KOWDJkYJa5jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CH1rM3HuT4zj2bAtu9JFWLSmP0T8qKm0h4IBlbMi7pl1Sc/T0dJVEvpCIBDxUJ/PuidB5ZxiTDT1rOUrfmMTCohsKsp46jbc40cW/8o6d7nfSEAJzi3mS1VxNGIx6jXg9elkJavjQidQ5esAVeSC5AcJ+JoktNhruQCOkugG0pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbBh0wcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E1DC4CEF7;
-	Mon, 23 Mar 2026 15:01:58 +0000 (UTC)
+	 MIME-Version; b=RVPd7Xdq/Qyf1YUYsOOlROxPe6NGK8zZHm1LseMSj6V4gjQY44AazdFSbYYkhrEhQubjxlZ5/oVTnwXJuZRfd8sjBQG0zR8cKMQ7CYj/7+SbC2Xj9zI+CulDqfP/KIYY8qPUFpz15TOjr1byvf/ah5aicDsIPEyrDNgE3Fu1dtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rDWkOir; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89568C4CEF7;
+	Mon, 23 Mar 2026 14:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278119;
-	bh=/CdCN24DouzjQ499tVLRSxreyLzMbNsKr6obSe47IVg=;
+	s=korg; t=1774275525;
+	bh=YaU+m4OF7KHkL1PsW7VeGY8IKPfgJ03KOWDJkYJa5jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbBh0wcb372ZBO4mN1+I7xyhgnH9Jhdr5KxLH6CTKvcdl+eTCVqw5zzHVBITeZ8+y
-	 P/Uf3nOcrGAZRTlwynfrlgGqEgTVppHQFPptP9MIkAn96HpHP0Sug9FmdofUhgFHg1
-	 3EZC7s1fbXjwBFYMqXLmdySKDPbq7hZiOkh8SGcI=
+	b=0rDWkOirRt0ZZlqrpJAv33G8vCw+T55tpHo+OV5Bk3EJZocAFc6Z0LiVUVCd6SRHy
+	 SP9fmkXKgZz4sg95Tv3ZIZZhPUK5hhbCu6mbf+iiM6Fb6Lgkm6UFFO+MzLqGGk+y/U
+	 TvTObvjyWXF6MagEovsZPrEEshpsorCEJGAK5l6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Wang <peter.wang@mediatek.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 207/567] scsi: ufs: core: Fix possible NULL pointer dereference in ufshcd_add_command_trace()
+	Max Kellermann <max.kellermann@ionos.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.12 131/460] ceph: fix i_nlink underrun during async unlink
 Date: Mon, 23 Mar 2026 14:42:07 +0100
-Message-ID: <20260323134538.960062388@linuxfoundation.org>
+Message-ID: <20260323134529.828104690@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,109 +66,155 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229119-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-228587-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ionos.com,ibm.com,gmail.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-0.998];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9C1AD2F5DEE
+X-Rspamd-Queue-Id: 92B002F4F47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit 30df81f2228d65bddf492db3929d9fcaffd38fc5 ]
+commit ce0123cbb4a40a2f1bbb815f292b26e96088639f upstream.
 
-The kernel log indicates a crash in ufshcd_add_command_trace, due to a NULL
-pointer dereference when accessing hwq->id.  This can happen if
-ufshcd_mcq_req_to_hwq() returns NULL.
+During async unlink, we drop the `i_nlink` counter before we receive
+the completion (that will eventually update the `i_nlink`) because "we
+assume that the unlink will succeed".  That is not a bad idea, but it
+races against deletions by other clients (or against the completion of
+our own unlink) and can lead to an underrun which emits a WARNING like
+this one:
 
-This patch adds a NULL check for hwq before accessing its id field to
-prevent a kernel crash.
+ WARNING: CPU: 85 PID: 25093 at fs/inode.c:407 drop_nlink+0x50/0x68
+ Modules linked in:
+ CPU: 85 UID: 3221252029 PID: 25093 Comm: php-cgi8.1 Not tainted 6.14.11-cm4all1-ampere #655
+ Hardware name: Supermicro ARS-110M-NR/R12SPD-A, BIOS 1.1b 10/17/2023
+ pstate: 60400009 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : drop_nlink+0x50/0x68
+ lr : ceph_unlink+0x6c4/0x720
+ sp : ffff80012173bc90
+ x29: ffff80012173bc90 x28: ffff086d0a45aaf8 x27: ffff0871d0eb5680
+ x26: ffff087f2a64a718 x25: 0000020000000180 x24: 0000000061c88647
+ x23: 0000000000000002 x22: ffff07ff9236d800 x21: 0000000000001203
+ x20: ffff07ff9237b000 x19: ffff088b8296afc0 x18: 00000000f3c93365
+ x17: 0000000000070000 x16: ffff08faffcbdfe8 x15: ffff08faffcbdfec
+ x14: 0000000000000000 x13: 45445f65645f3037 x12: 34385f6369706f74
+ x11: 0000a2653104bb20 x10: ffffd85f26d73290 x9 : ffffd85f25664f94
+ x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000002
+ x5 : 0000000000000081 x4 : 0000000000000481 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff08727d3f91e8
+ Call trace:
+  drop_nlink+0x50/0x68 (P)
+  vfs_unlink+0xb0/0x2e8
+  do_unlinkat+0x204/0x288
+  __arm64_sys_unlinkat+0x3c/0x80
+  invoke_syscall.constprop.0+0x54/0xe8
+  do_el0_svc+0xa4/0xc8
+  el0_svc+0x18/0x58
+  el0t_64_sync_handler+0x104/0x130
+  el0t_64_sync+0x154/0x158
 
-Kernel log excerpt:
-[<ffffffd5d192dc4c>] notify_die+0x4c/0x8c
-[<ffffffd5d1814e58>] __die+0x60/0xb0
-[<ffffffd5d1814d64>] die+0x4c/0xe0
-[<ffffffd5d181575c>] die_kernel_fault+0x74/0x88
-[<ffffffd5d1864db4>] __do_kernel_fault+0x314/0x318
-[<ffffffd5d2a3cdf8>] do_page_fault+0xa4/0x5f8
-[<ffffffd5d2a3cd34>] do_translation_fault+0x34/0x54
-[<ffffffd5d1864524>] do_mem_abort+0x50/0xa8
-[<ffffffd5d2a297dc>] el1_abort+0x3c/0x64
-[<ffffffd5d2a29718>] el1h_64_sync_handler+0x44/0xcc
-[<ffffffd5d181133c>] el1h_64_sync+0x80/0x88
-[<ffffffd5d255c1dc>] ufshcd_add_command_trace+0x23c/0x320
-[<ffffffd5d255bad8>] ufshcd_compl_one_cqe+0xa4/0x404
-[<ffffffd5d2572968>] ufshcd_mcq_poll_cqe_lock+0xac/0x104
-[<ffffffd5d11c7460>] ufs_mtk_mcq_intr+0x54/0x74 [ufs_mediatek_mod]
-[<ffffffd5d19ab92c>] __handle_irq_event_percpu+0xc8/0x348
-[<ffffffd5d19abca8>] handle_irq_event+0x3c/0xa8
-[<ffffffd5d19b1f0c>] handle_fasteoi_irq+0xf8/0x294
-[<ffffffd5d19aa778>] generic_handle_domain_irq+0x54/0x80
-[<ffffffd5d18102bc>] gic_handle_irq+0x1d4/0x330
-[<ffffffd5d1838210>] call_on_irq_stack+0x44/0x68
-[<ffffffd5d183af30>] do_interrupt_handler+0x78/0xd8
-[<ffffffd5d2a29c00>] el1_interrupt+0x48/0xa8
-[<ffffffd5d2a29ba8>] el1h_64_irq_handler+0x14/0x24
-[<ffffffd5d18113c4>] el1h_64_irq+0x80/0x88
-[<ffffffd5d2527fb4>] arch_local_irq_enable+0x4/0x1c
-[<ffffffd5d25282e4>] cpuidle_enter+0x34/0x54
-[<ffffffd5d195a678>] do_idle+0x1dc/0x2f8
-[<ffffffd5d195a7c4>] cpu_startup_entry+0x30/0x3c
-[<ffffffd5d18155c4>] secondary_start_kernel+0x134/0x1ac
-[<ffffffd5d18640bc>] __secondary_switched+0xc4/0xcc
+In ceph_unlink(), a call to ceph_mdsc_submit_request() submits the
+CEPH_MDS_OP_UNLINK to the MDS, but does not wait for completion.
 
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260223065657.2432447-1-peter.wang@mediatek.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Meanwhile, between this call and the following drop_nlink() call, a
+worker thread may process a CEPH_CAP_OP_IMPORT, CEPH_CAP_OP_GRANT or
+just a CEPH_MSG_CLIENT_REPLY (the latter of which could be our own
+completion).  These will lead to a set_nlink() call, updating the
+`i_nlink` counter to the value received from the MDS.  If that new
+`i_nlink` value happens to be zero, it is illegal to decrement it
+further.  But that is exactly what ceph_unlink() will do then.
+
+The WARNING can be reproduced this way:
+
+1. Force async unlink; only the async code path is affected.  Having
+   no real clue about Ceph internals, I was unable to find out why the
+   MDS wouldn't give me the "Fxr" capabilities, so I patched
+   get_caps_for_async_unlink() to always succeed.
+
+   (Note that the WARNING dump above was found on an unpatched kernel,
+   without this kludge - this is not a theoretical bug.)
+
+2. Add a sleep call after ceph_mdsc_submit_request() so the unlink
+   completion gets handled by a worker thread before drop_nlink() is
+   called.  This guarantees that the `i_nlink` is already zero before
+   drop_nlink() runs.
+
+The solution is to skip the counter decrement when it is already zero,
+but doing so without a lock is still racy (TOCTOU).  Since
+ceph_fill_inode() and handle_cap_grant() both hold the
+`ceph_inode_info.i_ceph_lock` spinlock while set_nlink() runs, this
+seems like the proper lock to protect the `i_nlink` updates.
+
+I found prior art in NFS and SMB (using `inode.i_lock`) and AFS (using
+`afs_vnode.cb_lock`).  All three have the zero check as well.
+
+Cc: stable@vger.kernel.org
+Fixes: 2ccb45462aea ("ceph: perform asynchronous unlink if we have sufficient caps")
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ceph/dir.c |   15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 0b74ef63e6721..4b34f65e6d8e2 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -461,8 +461,8 @@ static void ufshcd_add_command_trace(struct ufs_hba *hba, unsigned int tag,
- 
- 	if (is_mcq_enabled(hba)) {
- 		struct ufs_hw_queue *hwq = ufshcd_mcq_req_to_hwq(hba, rq);
--
--		hwq_id = hwq->id;
-+		if (hwq)
-+			hwq_id = hwq->id;
- 	} else {
- 		doorbell = ufshcd_readl(hba, REG_UTP_TRANSFER_REQ_DOOR_BELL);
- 	}
--- 
-2.51.0
-
+--- a/fs/ceph/dir.c
++++ b/fs/ceph/dir.c
+@@ -1330,6 +1330,7 @@ static int ceph_unlink(struct inode *dir
+ 	struct ceph_client *cl = fsc->client;
+ 	struct ceph_mds_client *mdsc = fsc->mdsc;
+ 	struct inode *inode = d_inode(dentry);
++	struct ceph_inode_info *ci = ceph_inode(inode);
+ 	struct ceph_mds_request *req;
+ 	bool try_async = ceph_test_mount_opt(fsc, ASYNC_DIROPS);
+ 	struct dentry *dn;
+@@ -1415,7 +1416,19 @@ retry:
+ 			 * We have enough caps, so we assume that the unlink
+ 			 * will succeed. Fix up the target inode and dcache.
+ 			 */
+-			drop_nlink(inode);
++
++			/*
++			 * Protect the i_nlink update with i_ceph_lock
++			 * to precent racing against ceph_fill_inode()
++			 * handling our completion on a worker thread
++			 * and don't decrement if i_nlink has already
++			 * been updated to zero by this completion.
++			 */
++			spin_lock(&ci->i_ceph_lock);
++			if (inode->i_nlink > 0)
++				drop_nlink(inode);
++			spin_unlock(&ci->i_ceph_lock);
++
+ 			d_delete(dentry);
+ 		} else {
+ 			spin_lock(&fsc->async_unlink_conflict_lock);
 
 
 
