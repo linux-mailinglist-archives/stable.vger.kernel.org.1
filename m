@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-228175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229859-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2EZjMvlKwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:21 +0100
+	id kLTSAZFzwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229859-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:08:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8042F40A2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D95F2F97E4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:08:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 52A7730EA886
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85B1F3037C1E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237FC3B19A2;
-	Mon, 23 Mar 2026 13:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAE53BBA12;
+	Mon, 23 Mar 2026 16:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkegOeUK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpooZEc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA22D3ACA5C;
-	Mon, 23 Mar 2026 13:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFEB037B02A;
+	Mon, 23 Mar 2026 16:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274354; cv=none; b=LCaG3FYnUb9hs18P4iGL/EWW0/wSRpghY/ZzP5YpFtxA2giwk1rXfNsTLACof+YKRg4NI8arrSqjwAZ/DaCSydeINDH0NwYGaxVoJZubJGzXhumWu42pf4p/2ClwyFYJscnhtvpGlhQdRkgrHtgydBGV1VAKCZIad0KRR1oIr7g=
+	t=1774283055; cv=none; b=Fsr0yInn/dZNhhJ9l7cQbALei2jtWUm6suI2c185zy+Xloda3nQYpbM+fvuRVXYYWj3YOnblubQtavfChkQC3FCAJ6ILJzo1GcKLl3uYL/xmBwB4OqdHLXrCtia+6ISV3Ep1QSeGhgsg4Vu3XWQ5YzZ7WEGk2HxparL87FB2b/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274354; c=relaxed/simple;
-	bh=Xe3mm8Njr3gatif5mFRTL9u3rrY7smcPIDjXUK1NexE=;
+	s=arc-20240116; t=1774283055; c=relaxed/simple;
+	bh=kdbzlocChMHC6WqLzvdyoPA/+3DWhCLnvIv1dd5euIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TXO/jNpKSAvGAXQNlRtzDwwRdgTYjr7XPZgVBWxBw6d7nK0RewI2JDTjcZSlO+hsz8vsFG7WuZ83siXiIGxZyeT2eKvDnyNPXf2M/ncqjXutn6yNtqjkjJwa5zEYciU5hVOcRv9UkTM8WLpdK0JENrOOCYr1fuSEntO8VAxNH2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkegOeUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE1EC4CEF7;
-	Mon, 23 Mar 2026 13:59:14 +0000 (UTC)
+	 MIME-Version; b=mYJGEkwpSAc7wGkzilaWevwr3jGzNqLMgSOVKWR+hHTQAFtBzplHOdo+AAa5/RGLFb11vIYLUfBPZKnLaINWUkEND/a8xh0oE8cGguw14go2R0YKCV2AmiJb87pr/r63RLbUdin80OcqaoKpeIa5GNVyfhtHkO1kUrUC22TaE8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpooZEc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82953C4CEF7;
+	Mon, 23 Mar 2026 16:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274354;
-	bh=Xe3mm8Njr3gatif5mFRTL9u3rrY7smcPIDjXUK1NexE=;
+	s=korg; t=1774283054;
+	bh=kdbzlocChMHC6WqLzvdyoPA/+3DWhCLnvIv1dd5euIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GkegOeUK4tQCRj7OHvNcxKzfMzT65tmmJ258nctQFKPBRsaUeZTw98/bTZDr/Ee0r
-	 xbONZ3hGcrv+kQ8lDkMu+BNs0Qlgi3a5R7FYrx6c4wuP6jSQfudHkc0hjtCrgVz81/
-	 25N/UvTcNxg0bdXqaE7aF4CCqikmUEc0U2c5v72w=
+	b=NpooZEc5xD95CF5AYm5tMs+/CnqUsbRPh47R89Cxi/hT7szF+w8/IkYGd6O/Yaf9q
+	 +V0UVmPgJ9SOaQUiglYozRsAAoTCEEpBC7ZfUhXuDwcT+o77jY5cZnK3RHu9PRgakg
+	 ht2Flcn/omHGxokGvC3wiK6A5xkAx3jxCn3AfMho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.19 191/220] perf/x86: Move event pointer setup earlier in x86_pmu_enable()
+	Ankit Garg <nktgrg@google.com>,
+	Jordan Rhee <jordanrhee@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 386/481] gve: defer interrupt enabling until NAPI registration
 Date: Mon, 23 Mar 2026 14:46:08 +0100
-Message-ID: <20260323134510.630680335@linuxfoundation.org>
+Message-ID: <20260323134534.549696663@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,142 +70,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229859-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228175-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 2A8042F40A2
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6D95F2F97E4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Ankit Garg <nktgrg@google.com>
 
-commit 8d5fae6011260de209aaf231120e8146b14bc8e0 upstream.
+commit 3d970eda003441f66551a91fda16478ac0711617 upstream.
 
-A production AMD EPYC system crashed with a NULL pointer dereference
-in the PMU NMI handler:
+Currently, interrupts are automatically enabled immediately upon
+request. This allows interrupt to fire before the associated NAPI
+context is fully initialized and cause failures like below:
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000198
-  RIP: x86_perf_event_update+0xc/0xa0
-  Call Trace:
-   <NMI>
-   amd_pmu_v2_handle_irq+0x1a6/0x390
-   perf_event_nmi_handler+0x24/0x40
+[    0.946369] Call Trace:
+[    0.946369]  <IRQ>
+[    0.946369]  __napi_poll+0x2a/0x1e0
+[    0.946369]  net_rx_action+0x2f9/0x3f0
+[    0.946369]  handle_softirqs+0xd6/0x2c0
+[    0.946369]  ? handle_edge_irq+0xc1/0x1b0
+[    0.946369]  __irq_exit_rcu+0xc3/0xe0
+[    0.946369]  common_interrupt+0x81/0xa0
+[    0.946369]  </IRQ>
+[    0.946369]  <TASK>
+[    0.946369]  asm_common_interrupt+0x22/0x40
+[    0.946369] RIP: 0010:pv_native_safe_halt+0xb/0x10
 
-The faulting instruction is `cmpq $0x0, 0x198(%rdi)` with RDI=0,
-corresponding to the `if (unlikely(!hwc->event_base))` check in
-x86_perf_event_update() where hwc = &event->hw and event is NULL.
+Use the `IRQF_NO_AUTOEN` flag when requesting interrupts to prevent auto
+enablement and explicitly enable the interrupt in NAPI initialization
+path (and disable it during NAPI teardown).
 
-drgn inspection of the vmcore on CPU 106 showed a mismatch between
-cpuc->active_mask and cpuc->events[]:
+This ensures that interrupt lifecycle is strictly coupled with
+readiness of NAPI context.
 
-  active_mask: 0x1e (bits 1, 2, 3, 4)
-  events[1]:   0xff1100136cbd4f38  (valid)
-  events[2]:   0x0                 (NULL, but active_mask bit 2 set)
-  events[3]:   0xff1100076fd2cf38  (valid)
-  events[4]:   0xff1100079e990a90  (valid)
-
-The event that should occupy events[2] was found in event_list[2]
-with hw.idx=2 and hw.state=0x0, confirming x86_pmu_start() had run
-(which clears hw.state and sets active_mask) but events[2] was
-never populated.
-
-Another event (event_list[0]) had hw.state=0x7 (STOPPED|UPTODATE|ARCH),
-showing it was stopped when the PMU rescheduled events, confirming the
-throttle-then-reschedule sequence occurred.
-
-The root cause is commit 7e772a93eb61 ("perf/x86: Fix NULL event access
-and potential PEBS record loss") which moved the cpuc->events[idx]
-assignment out of x86_pmu_start() and into step 2 of x86_pmu_enable(),
-after the PERF_HES_ARCH check. This broke any path that calls
-pmu->start() without going through x86_pmu_enable() -- specifically
-the unthrottle path:
-
-  perf_adjust_freq_unthr_events()
-    -> perf_event_unthrottle_group()
-      -> perf_event_unthrottle()
-        -> event->pmu->start(event, 0)
-          -> x86_pmu_start()     // sets active_mask but not events[]
-
-The race sequence is:
-
-  1. A group of perf events overflows, triggering group throttle via
-     perf_event_throttle_group(). All events are stopped: active_mask
-     bits cleared, events[] preserved (x86_pmu_stop no longer clears
-     events[] after commit 7e772a93eb61).
-
-  2. While still throttled (PERF_HES_STOPPED), x86_pmu_enable() runs
-     due to other scheduling activity. Stopped events that need to
-     move counters get PERF_HES_ARCH set and events[old_idx] cleared.
-     In step 2 of x86_pmu_enable(), PERF_HES_ARCH causes these events
-     to be skipped -- events[new_idx] is never set.
-
-  3. The timer tick unthrottles the group via pmu->start(). Since
-     commit 7e772a93eb61 removed the events[] assignment from
-     x86_pmu_start(), active_mask[new_idx] is set but events[new_idx]
-     remains NULL.
-
-  4. A PMC overflow NMI fires. The handler iterates active counters,
-     finds active_mask[2] set, reads events[2] which is NULL, and
-     crashes dereferencing it.
-
-Move the cpuc->events[hwc->idx] assignment in x86_pmu_enable() to
-before the PERF_HES_ARCH check, so that events[] is populated even
-for events that are not immediately started. This ensures the
-unthrottle path via pmu->start() always finds a valid event pointer.
-
-Fixes: 7e772a93eb61 ("perf/x86: Fix NULL event access and potential PEBS record loss")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310-perf-v2-1-4a3156fce43c@debian.org
+Fixes: 1dfc2e46117e ("gve: Refactor napi add and remove functions")
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Joshua Washington <joshwash@google.com>
+Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Link: https://patch.msgid.link/20251219102945.2193617-1-hramamurthy@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ modified to re-introduce the irq member to struct gve_notify_block,
+  which was introuduced in commit 9a5e0776d11f ("gve: Avoid rescheduling
+  napi if on wrong cpu"). ]
+Signed-off-by: Joshua Washington <joshwash@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve.h      |    1 +
+ drivers/net/ethernet/google/gve/gve_main.c |    5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1369,6 +1369,8 @@ static void x86_pmu_enable(struct pmu *p
- 			else if (i < n_running)
- 				continue;
+--- a/drivers/net/ethernet/google/gve/gve.h
++++ b/drivers/net/ethernet/google/gve/gve.h
+@@ -450,6 +450,7 @@ struct gve_notify_block {
+ 	struct gve_priv *priv;
+ 	struct gve_tx_ring *tx; /* tx rings on this block */
+ 	struct gve_rx_ring *rx; /* rx rings on this block */
++	u32 irq;
+ };
  
-+			cpuc->events[hwc->idx] = event;
-+
- 			if (hwc->state & PERF_HES_ARCH)
- 				continue;
+ /* Tracks allowed and current queue settings */
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -353,9 +353,10 @@ static int gve_alloc_notify_blocks(struc
+ 		snprintf(block->name, sizeof(block->name), "%s-ntfy-block.%d",
+ 			 name, i);
+ 		block->priv = priv;
++		block->irq = priv->msix_vectors[msix_idx].vector;
+ 		err = request_irq(priv->msix_vectors[msix_idx].vector,
+ 				  gve_is_gqi(priv) ? gve_intr : gve_intr_dqo,
+-				  0, block->name, block);
++				  IRQF_NO_AUTOEN, block->name, block);
+ 		if (err) {
+ 			dev_err(&priv->pdev->dev,
+ 				"Failed to receive msix vector %d\n", i);
+@@ -521,6 +522,7 @@ static void gve_add_napi(struct gve_priv
+ 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
  
-@@ -1376,7 +1378,6 @@ static void x86_pmu_enable(struct pmu *p
- 			 * if cpuc->enabled = 0, then no wrmsr as
- 			 * per x86_pmu_enable_event()
- 			 */
--			cpuc->events[hwc->idx] = event;
- 			x86_pmu_start(event, PERF_EF_RELOAD);
- 		}
- 		cpuc->n_added = 0;
+ 	netif_napi_add(priv->dev, &block->napi, gve_poll);
++	enable_irq(block->irq);
+ }
+ 
+ static void gve_remove_napi(struct gve_priv *priv, int ntfy_idx)
+@@ -528,6 +530,7 @@ static void gve_remove_napi(struct gve_p
+ 	struct gve_notify_block *block = &priv->ntfy_blocks[ntfy_idx];
+ 
+ 	netif_napi_del(&block->napi);
++	disable_irq(block->irq);
+ }
+ 
+ static int gve_register_qpls(struct gve_priv *priv)
 
 
 
