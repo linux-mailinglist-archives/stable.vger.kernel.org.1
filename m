@@ -1,58 +1,70 @@
-Return-Path: <stable+bounces-229719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228246-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iO2OBVBuwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229719-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:08 +0100
+	id 6APoA99KwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228246-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F0E2F8C57
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B9632F4069
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0E9C306CB18
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFEFE31B448B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE573BC675;
-	Mon, 23 Mar 2026 16:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8293A3AD538;
+	Mon, 23 Mar 2026 14:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfZNGspW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRJIQ2px"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB343BE168;
-	Mon, 23 Mar 2026 16:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44D793AD52E;
+	Mon, 23 Mar 2026 14:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282683; cv=none; b=jvnFGfWJ7qxLhn9oTb9q0oPcdfwaBKkxkR4849y6njbtOKUpjtJF8DZztQTsnL4QSNbHw1e119nreAtVg+WyJRbGBzOQS0TxZlCPg/wNx02yMtObhrPfX9kTZBYfRlvBwNUtplrAL4SoXaORzXv4kThxwojRHR/G0CGJHni3o2o=
+	t=1774274568; cv=none; b=Zt3QUjxnD6lnSj0DbHvm34vHHRMkMYUsI0NtROTHIUSG241uk4+SxzH9JQm3kEjsM78ATPaJMYeBpAQ3WQALDvHmsBeYxJqTj0d/hHYCgrkeC02ys2chqLR6J8woB9P+WR2OJPWetbNDF2/2y8Kyd3aWgF4tj+f5pFnxgJ//bs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282683; c=relaxed/simple;
-	bh=EZFjr8uPhCSlbMTxaG1372wCrp7xImH4Izsc4OJ2ZJs=;
+	s=arc-20240116; t=1774274568; c=relaxed/simple;
+	bh=0PlqvNZfV0ZoBm6+1SQeyU4K+zt4vGgT72q5wAkrLNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SKPeFsp+bGSfmBxpj/akxMDga2Y4rqPkYZ8Kk4jJvmO6syU1+p71xu0UtgY4xf3VUGo0tHH3BWjexTY8KU35dGJpoQkEJCZZqUzatHeXV9p0J/6FCxJZyr+4B56EijVbdZzFIxkJts8whKa2bsdRH2fbsL3YAwaA1uYJkp8KCh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfZNGspW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F6C4CEF7;
-	Mon, 23 Mar 2026 16:18:02 +0000 (UTC)
+	 MIME-Version; b=mwv7X5oW+tF/GqCPxf/D8o9zAG6W6NDpGAFekZwOXvQGs5DChwocL1fmLt/h3fqxp2CKz3VKgAo8Ix00n4EufA/tavbsWKdwF8I0AqPuCgzbzwf9CQUHlHlGqL8Rp1cCSgM45AEQkuoeDXCbfkglCpFWqxSQGjADnxsyZv9ioTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRJIQ2px; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DDABC4CEF7;
+	Mon, 23 Mar 2026 14:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282682;
-	bh=EZFjr8uPhCSlbMTxaG1372wCrp7xImH4Izsc4OJ2ZJs=;
+	s=korg; t=1774274568;
+	bh=0PlqvNZfV0ZoBm6+1SQeyU4K+zt4vGgT72q5wAkrLNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KfZNGspWp6tPkr9ffxvU4wLacx7M4uOGhDUzcDM4eYezpXvd8/UE0AsUAaH62Jqm3
-	 IWi2+H/RzZYmNMdYi02bErc4QIal1WSX4qYraNDy4ebpaoGJceMLikRL8bTaivZUY6
-	 +ZE/+5fIpNYQztne+lxxxXERj5Pk8AZuy5tAXdFs=
+	b=IRJIQ2pxQ+3O+hqqWjiE6yXh7b8J/PMr9UhG6LGqh4Op8VTWJo0/HCk4LYb/7dFfI
+	 ibEkkEaBmO0GD8SKHywCigrgAZsWfvnyhBv5Z2Wbm6aPLWo1LZB/sFfpNQY62s7FP9
+	 hD8j+TwDIJMiXX2GeTz+xDVrcEyWPD9eQ2JX6M0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fan Wu <fanwu01@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 248/481] net: ethernet: arc: emac: quiesce interrupts before requesting IRQ
+	Dev Jain <dev.jain@arm.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Barry Song <baohua@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Rik van Riel <riel@surriel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 009/212] mm/rmap: fix incorrect pte restoration for lazyfree folios
 Date: Mon, 23 Mar 2026 14:43:50 +0100
-Message-ID: <20260323134531.196592372@linuxfoundation.org>
+Message-ID: <20260323134504.063065499@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +75,241 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229719-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWELVE(0.00)[17];
+	TAGGED_FROM(0.00)[bounces-228246-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,arm.com,kernel.org,oracle.com,gmail.com,linux.dev,google.com,surriel.com,suse.cz,linux-foundation.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A8F0E2F8C57
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4B9632F4069
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fan Wu <fanwu01@zju.edu.cn>
+From: Dev Jain <dev.jain@arm.com>
 
-commit 2503d08f8a2de618e5c3a8183b250ff4a2e2d52c upstream.
+commit 29f40594a28114b9a9bc87f6cf7bbee9609628f2 upstream.
 
-Normal RX/TX interrupts are enabled later, in arc_emac_open(), so probe
-should not see interrupt delivery in the usual case. However, hardware may
-still present stale or latched interrupt status left by firmware or the
-bootloader.
+We batch unmap anonymous lazyfree folios by folio_unmap_pte_batch.  If the
+batch has a mix of writable and non-writable bits, we may end up setting
+the entire batch writable.  Fix this by respecting writable bit during
+batching.
 
-If probe later unwinds after devm_request_irq() has installed the handler,
-such a stale interrupt can still reach arc_emac_intr() during teardown and
-race with release of the associated net_device.
+Although on a successful unmap of a lazyfree folio, the soft-dirty bit is
+lost, preserve it on pte restoration by respecting the bit during
+batching, to make the fix consistent w.r.t both writable bit and
+soft-dirty bit.
 
-Avoid that window by putting the device into a known quiescent state before
-requesting the IRQ: disable all EMAC interrupt sources and clear any
-pending EMAC interrupt status bits. This keeps the change hardware-focused
-and minimal, while preventing spurious IRQ delivery from leftover state.
+I was able to write the below reproducer and crash the kernel.
+Explanation of reproducer (set 64K mTHP to always):
 
-Fixes: e4f2379db6c6 ("ethernet/arc/arc_emac - Add new driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
-Link: https://patch.msgid.link/20260309132409.584966-1-fanwu01@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fault in a 64K large folio.  Split the VMA at mid-point with
+MADV_DONTFORK.  fork() - parent points to the folio with 8 writable ptes
+and 8 non-writable ptes.  Merge the VMAs with MADV_DOFORK so that
+folio_unmap_pte_batch() can determine all the 16 ptes as a batch.  Do
+MADV_FREE on the range to mark the folio as lazyfree.  Write to the memory
+to dirty the pte, eventually rmap will dirty the folio.  Then trigger
+reclaim, we will hit the pte restoration path, and the kernel will crash
+with the trace given below.
+
+The BUG happens at:
+
+	BUG_ON(atomic_inc_return(&ptc->anon_map_count) > 1 && rw);
+
+The code path is asking for anonymous page to be mapped writable into the
+pagetable.  The BUG_ON() firing implies that such a writable page has been
+mapped into the pagetables of more than one process, which breaks
+anonymous memory/CoW semantics.
+
+[   21.134473] kernel BUG at mm/page_table_check.c:118!
+[   21.134497] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+[   21.135917] Modules linked in:
+[   21.136085] CPU: 1 UID: 0 PID: 1735 Comm: dup-lazyfree Not tainted 7.0.0-rc1-00116-g018018a17770 #1028 PREEMPT
+[   21.136858] Hardware name: linux,dummy-virt (DT)
+[   21.137019] pstate: 21400005 (nzCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[   21.137308] pc : page_table_check_set+0x28c/0x2a8
+[   21.137607] lr : page_table_check_set+0x134/0x2a8
+[   21.137885] sp : ffff80008a3b3340
+[   21.138124] x29: ffff80008a3b3340 x28: fffffdffc3d14400 x27: ffffd1a55e03d000
+[   21.138623] x26: 0040000000000040 x25: ffffd1a55f7dd000 x24: 0000000000000001
+[   21.139045] x23: 0000000000000001 x22: 0000000000000001 x21: ffffd1a55f217f30
+[   21.139629] x20: 0000000000134521 x19: 0000000000134519 x18: 005c43e000040000
+[   21.140027] x17: 0001400000000000 x16: 0001700000000000 x15: 000000000000ffff
+[   21.140578] x14: 000000000000000c x13: 005c006000000000 x12: 0000000000000020
+[   21.140828] x11: 0000000000000000 x10: 005c000000000000 x9 : ffffd1a55c079ee0
+[   21.141077] x8 : 0000000000000001 x7 : 005c03e000040000 x6 : 000000004000ffff
+[   21.141490] x5 : ffff00017fffce00 x4 : 0000000000000001 x3 : 0000000000000002
+[   21.141741] x2 : 0000000000134510 x1 : 0000000000000000 x0 : ffff0000c08228c0
+[   21.141991] Call trace:
+[   21.142093]  page_table_check_set+0x28c/0x2a8 (P)
+[   21.142265]  __page_table_check_ptes_set+0x144/0x1e8
+[   21.142441]  __set_ptes_anysz.constprop.0+0x160/0x1a8
+[   21.142766]  contpte_set_ptes+0xe8/0x140
+[   21.142907]  try_to_unmap_one+0x10c4/0x10d0
+[   21.143177]  rmap_walk_anon+0x100/0x250
+[   21.143315]  try_to_unmap+0xa0/0xc8
+[   21.143441]  shrink_folio_list+0x59c/0x18a8
+[   21.143759]  shrink_lruvec+0x664/0xbf0
+[   21.144043]  shrink_node+0x218/0x878
+[   21.144285]  __node_reclaim.constprop.0+0x98/0x338
+[   21.144763]  user_proactive_reclaim+0x2a4/0x340
+[   21.145056]  reclaim_store+0x3c/0x60
+[   21.145216]  dev_attr_store+0x20/0x40
+[   21.145585]  sysfs_kf_write+0x84/0xa8
+[   21.145835]  kernfs_fop_write_iter+0x130/0x1c8
+[   21.145994]  vfs_write+0x2b8/0x368
+[   21.146119]  ksys_write+0x70/0x110
+[   21.146240]  __arm64_sys_write+0x24/0x38
+[   21.146380]  invoke_syscall+0x50/0x120
+[   21.146513]  el0_svc_common.constprop.0+0x48/0xf8
+[   21.146679]  do_el0_svc+0x28/0x40
+[   21.146798]  el0_svc+0x34/0x110
+[   21.146926]  el0t_64_sync_handler+0xa0/0xe8
+[   21.147074]  el0t_64_sync+0x198/0x1a0
+[   21.147225] Code: f9400441 b4fff241 17ffff94 d4210000 (d4210000)
+[   21.147440] ---[ end trace 0000000000000000 ]---
+
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <sys/mman.h>
+#include <string.h>
+#include <sys/wait.h>
+#include <sched.h>
+#include <fcntl.h>
+
+void write_to_reclaim() {
+    const char *path = "/sys/devices/system/node/node0/reclaim";
+    const char *value = "409600000000";
+    int fd = open(path, O_WRONLY);
+    if (fd == -1) {
+        perror("open");
+        exit(EXIT_FAILURE);
+    }
+
+    if (write(fd, value, sizeof("409600000000") - 1) == -1) {
+        perror("write");
+        close(fd);
+        exit(EXIT_FAILURE);
+    }
+
+    printf("Successfully wrote %s to %s\n", value, path);
+    close(fd);
+}
+
+int main()
+{
+	char *ptr = mmap((void *)(1UL << 30), 1UL << 16, PROT_READ | PROT_WRITE,
+			 MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if ((unsigned long)ptr != (1UL << 30)) {
+		perror("mmap");
+		return 1;
+	}
+
+	/* a 64K folio gets faulted in */
+	memset(ptr, 0, 1UL << 16);
+
+	/* 32K half will not be shared into child */
+	if (madvise(ptr, 1UL << 15, MADV_DONTFORK)) {
+		perror("madvise madv dontfork");
+		return 1;
+	}
+
+	pid_t pid = fork();
+
+	if (pid < 0) {
+		perror("fork");
+		return 1;
+	} else if (pid == 0) {
+		sleep(15);
+	} else {
+		/* merge VMAs. now first half of the 16 ptes are writable, the other half not. */
+		if (madvise(ptr, 1UL << 15, MADV_DOFORK)) {
+			perror("madvise madv fork");
+			return 1;
+		}
+		if (madvise(ptr, (1UL << 16), MADV_FREE)) {
+			perror("madvise madv free");
+			return 1;
+		}
+
+		/* dirty the large folio */
+		(*ptr) += 10;
+
+		write_to_reclaim();
+		// sleep(10);
+		waitpid(pid, NULL, 0);
+
+	}
+}
+
+Link: https://lkml.kernel.org/r/20260303061528.2429162-1-dev.jain@arm.com
+Fixes: 354dffd29575 ("mm: support batched unmap for lazyfree large folios during reclamation")
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+Tested-by: Lance Yang <lance.yang@linux.dev>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/arc/emac_main.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ mm/rmap.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/arc/emac_main.c
-+++ b/drivers/net/ethernet/arc/emac_main.c
-@@ -934,6 +934,17 @@ int arc_emac_probe(struct net_device *nd
- 	/* Set poll rate so that it polls every 1 ms */
- 	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1856,7 +1856,14 @@ static inline unsigned int folio_unmap_p
+ 	if (pte_unused(pte))
+ 		return 1;
  
+-	return folio_pte_batch(folio, pvmw->pte, pte, max_nr);
 +	/*
-+	 * Put the device into a known quiescent state before requesting
-+	 * the IRQ. Clear only EMAC interrupt status bits here; leave the
-+	 * MDIO completion bit alone and avoid writing TXPL_MASK, which is
-+	 * used to force TX polling rather than acknowledge interrupts.
++	 * If unmap fails, we need to restore the ptes. To avoid accidentally
++	 * upgrading write permissions for ptes that were not originally
++	 * writable, and to avoid losing the soft-dirty bit, use the
++	 * appropriate FPB flags.
 +	 */
-+	arc_reg_set(priv, R_ENABLE, 0);
-+	arc_reg_set(priv, R_STATUS, RXINT_MASK | TXINT_MASK | ERR_MASK |
-+		    TXCH_MASK | MSER_MASK | RXCR_MASK |
-+		    RXFR_MASK | RXFL_MASK);
-+
- 	ndev->irq = irq;
- 	dev_info(dev, "IRQ is %d\n", ndev->irq);
++	return folio_pte_batch_flags(folio, vma, pvmw->pte, &pte, max_nr,
++				     FPB_RESPECT_WRITE | FPB_RESPECT_SOFT_DIRTY);
+ }
  
+ /*
 
 
 
