@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229013-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WJMOJD5RwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228471-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:42:06 +0100
+	id 6HBCLWRVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-229013-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:59:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13FE32F5052
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:42:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 655A42F5980
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:59:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8F979311EB66
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BC60F300DEEC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF2F3B27F2;
-	Mon, 23 Mar 2026 14:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB16C2C0298;
+	Mon, 23 Mar 2026 14:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqiAR50T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmdaMrMf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28B538C41E;
-	Mon, 23 Mar 2026 14:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E40938837F;
+	Mon, 23 Mar 2026 14:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275223; cv=none; b=Y4GhcBoCFTHtqrn3HfcwA8/7F96cg/Oj7CykohWPYW8+ualI1U2hPVxyEpETZH2BShWo+Ganf2qM/nlMn8VW7/sMTyQJQ0Z38+LwfKh7iqg29Y8yT1Z9Z2W0wa+pXG8vVOwLWrSCNEHjMymxCovGCKiPV5teTF4SzA/RwTVxsJU=
+	t=1774277781; cv=none; b=iHv5DbpL5bcA9x64hDdxPR6PYNoG/5e3DJA445Rl9lu3qbc8StVXrEMHQAy5YHN/G3/vUn2EA3OkV+Ra1NQM7g/qS9x7LCqimDCees7fuGiGly9F64idpZAjgxLR8PIFsWnBtc3aqIkRoN6UltVBYAqhMXPflmoyd8dCrTfcycM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275223; c=relaxed/simple;
-	bh=hbQQazYbllQ1E9UEnDbJeFXTr0rAIPJGJeMg6EJJTOA=;
+	s=arc-20240116; t=1774277781; c=relaxed/simple;
+	bh=60gKl/g6Q+ZkD+Atgz0w4q+4/p0Yzz8WTSYopWxTpzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiTEi8VJJBaBrptYXsgod9xjvtjcykQjc4MHuoST39BblQCHncICzfzwZAaxVEKSz1VVtS0iY+TyEQ8f1/t7luqG6HsNyj2/g2AbvDVczD/JwbcM8NmXRiT9zl7Km0KJwCThhxMeFW1bu3KWgOj9MKtIcTZQQr3WsmIxaK4MdbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqiAR50T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A8EFC4CEF7;
-	Mon, 23 Mar 2026 14:13:42 +0000 (UTC)
+	 MIME-Version; b=EBesHisJ+8FOBTsuU67evsXhIeFRPEwjkSzi79Uy+Odb6Oktpm6iBHSrSGAlCduMw6Yk6hz3OUO/778iH50+WgFeY+gWRSWHZjnfyjTmChklJtjiazsvHbArwxeU4gdLQFGrPogA4ELFH2hJWiEq5ZEXhbAbCHbdTDKt+FFm23c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmdaMrMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1941CC4CEF7;
+	Mon, 23 Mar 2026 14:56:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275222;
-	bh=hbQQazYbllQ1E9UEnDbJeFXTr0rAIPJGJeMg6EJJTOA=;
+	s=korg; t=1774277781;
+	bh=60gKl/g6Q+ZkD+Atgz0w4q+4/p0Yzz8WTSYopWxTpzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqiAR50TTWJ3xUJbOfzTGXHZXXZP0YdIS0AWTKRJMFM9vqYRSRKC2OjT+kDAuh2y7
-	 LefuiJV34r+1UuZNXAQD2CgoZBQi68VZz8GaTNFUYRtsvBiBlvcXd3WJ08YaQKD4aN
-	 /fh0rTcqkkDy4TEexiIvLqKUjcyK2pLwLu9cMGlc=
+	b=OmdaMrMfWCcisQFwoMYTmoX615mjrJW4rPMhZV5ZM2Zf5ziZWIPI2/xIB5IRbN61w
+	 eWCnFGwSYWWBc9+ahqbBMIgjPvUXjpe42hFXRfeFjvzj2kllQL7urKEdct4eYtCh5C
+	 X2vfMzMMddkbUdetvrc49CWtEqjreeiKw+ZM/lpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Collins <bcollins@kernel.org>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/460] kexec: Include kernel-end even without crashkernel
+	"Ji-Ze Hong (Peter Hong)" <peter_hong@fintek.com.tw>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.6 094/567] can: usb: f81604: correctly anchor the urb in the read bulk callback
 Date: Mon, 23 Mar 2026 14:40:14 +0100
-Message-ID: <20260323134527.108173045@linuxfoundation.org>
+Message-ID: <20260323134536.154525091@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228471-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229013-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,111 +91,82 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 13FE32F5052
+X-Rspamd-Queue-Id: 655A42F5980
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Collins <bcollins@kernel.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit 38c64dfe0af12778953846df5f259e913275cfe5 ]
+commit 952caa5da10bed22be09612433964f6877ba0dde upstream.
 
-Certain versions of kexec don't even work without kernel-end being
-added to the device-tree. Add it even if crash-kernel is disabled.
+When submitting an urb, that is using the anchor pattern, it needs to be
+anchored before submitting it otherwise it could be leaked if
+usb_kill_anchored_urbs() is called.  This logic is correctly done
+elsewhere in the driver, except in the read bulk callback so do that
+here also.
 
-Signed-off-by: Ben Collins <bcollins@kernel.org>
-Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/2025042122-inescapable-mandrill-8a5ff2@boujee-and-buff
-Stable-dep-of: 20197b967a6a ("powerpc/kexec/core: use big-endian types for crash variables")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Ji-Ze Hong (Peter Hong) <peter_hong@fintek.com.tw>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: Vincent Mailhol <mailhol@kernel.org>
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/2026022334-starlight-scaling-2cea@gregkh
+Fixes: 88da17436973 ("can: usb: f81604: add Fintek F81604 support")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kexec/core.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/net/can/usb/f81604.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index 58a930a47422b..50e7cf4b992b1 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -22,6 +22,8 @@
- #include <asm/setup.h>
- #include <asm/firmware.h>
- 
-+#define cpu_to_be_ulong __PASTE(cpu_to_be, BITS_PER_LONG)
-+
- #ifdef CONFIG_CRASH_DUMP
- void machine_crash_shutdown(struct pt_regs *regs)
+--- a/drivers/net/can/usb/f81604.c
++++ b/drivers/net/can/usb/f81604.c
+@@ -413,6 +413,7 @@ static void f81604_read_bulk_callback(st
  {
-@@ -156,17 +158,10 @@ int __init overlaps_crashkernel(unsigned long start, unsigned long size)
- }
+ 	struct f81604_can_frame *frame = urb->transfer_buffer;
+ 	struct net_device *netdev = urb->context;
++	struct f81604_port_priv *priv = netdev_priv(netdev);
+ 	int ret;
  
- /* Values we need to export to the second kernel via the device tree. */
--static phys_addr_t kernel_end;
- static phys_addr_t crashk_base;
- static phys_addr_t crashk_size;
- static unsigned long long mem_limit;
+ 	if (!netif_device_present(netdev))
+@@ -445,10 +446,15 @@ static void f81604_read_bulk_callback(st
+ 	f81604_process_rx_packet(netdev, frame);
  
--static struct property kernel_end_prop = {
--	.name = "linux,kernel-end",
--	.length = sizeof(phys_addr_t),
--	.value = &kernel_end,
--};
--
- static struct property crashk_base_prop = {
- 	.name = "linux,crashkernel-base",
- 	.length = sizeof(phys_addr_t),
-@@ -185,8 +180,6 @@ static struct property memory_limit_prop = {
- 	.value = &mem_limit,
- };
- 
--#define cpu_to_be_ulong	__PASTE(cpu_to_be, BITS_PER_LONG)
--
- static void __init export_crashk_values(struct device_node *node)
- {
- 	/* There might be existing crash kernel properties, but we can't
-@@ -210,6 +203,15 @@ static void __init export_crashk_values(struct device_node *node)
- 	mem_limit = cpu_to_be_ulong(memory_limit);
- 	of_update_property(node, &memory_limit_prop);
- }
-+#endif /* CONFIG_CRASH_RESERVE */
+ resubmit_urb:
++	usb_anchor_urb(urb, &priv->urbs_anchor);
+ 	ret = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!ret)
++		return;
++	usb_unanchor_urb(urb);
 +
-+static phys_addr_t kernel_end;
+ 	if (ret == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (ret)
++	else
+ 		netdev_err(netdev,
+ 			   "%s: failed to resubmit read bulk urb: %pe\n",
+ 			   __func__, ERR_PTR(ret));
+@@ -646,10 +652,15 @@ static void f81604_read_int_callback(str
+ 		f81604_handle_tx(priv, data);
+ 
+ resubmit_urb:
++	usb_anchor_urb(urb, &priv->urbs_anchor);
+ 	ret = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!ret)
++		return;
++	usb_unanchor_urb(urb);
 +
-+static struct property kernel_end_prop = {
-+	.name = "linux,kernel-end",
-+	.length = sizeof(phys_addr_t),
-+	.value = &kernel_end,
-+};
- 
- static int __init kexec_setup(void)
- {
-@@ -220,16 +222,17 @@ static int __init kexec_setup(void)
- 		return -ENOENT;
- 
- 	/* remove any stale properties so ours can be found */
--	of_remove_property(node, of_find_property(node, kernel_end_prop.name, NULL));
-+	of_remove_property(node, of_find_property(node, kernel_end_prop.name,
-+						  NULL));
- 
- 	/* information needed by userspace when using default_machine_kexec */
- 	kernel_end = cpu_to_be_ulong(__pa(_end));
- 	of_add_property(node, &kernel_end_prop);
- 
-+#ifdef CONFIG_CRASH_RESERVE
- 	export_crashk_values(node);
--
-+#endif
- 	of_node_put(node);
- 	return 0;
+ 	if (ret == -ENODEV)
+ 		netif_device_detach(netdev);
+-	else if (ret)
++	else
+ 		netdev_err(netdev, "%s: failed to resubmit int urb: %pe\n",
+ 			   __func__, ERR_PTR(ret));
  }
- late_initcall(kexec_setup);
--#endif /* CONFIG_CRASH_RESERVE */
--- 
-2.51.0
-
 
 
 
