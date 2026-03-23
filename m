@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-228467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228464-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yHcZLupPwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228467-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:26 +0100
+	id KG5NOndTwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228464-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30FC02F4D54
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C8702F5500
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 57FAB310A8AC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EE4E130E5093
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52D33B19B3;
-	Mon, 23 Mar 2026 14:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDCB3B27EB;
+	Mon, 23 Mar 2026 14:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZlz2rn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilvOa/ov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D973ACEF1;
-	Mon, 23 Mar 2026 14:13:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E38A13B27D9;
+	Mon, 23 Mar 2026 14:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275215; cv=none; b=nLlw6gbLd7smKXB4bYx3kQYow93w1qGWYnClZ3UtmfCzG5pb6GMsUpAPgS5Am+N4sgReuGuOcWOIfDWyhcighKcYGqW3iKlFnLM5cC1k2qK2XAzsxuuuOHM0Iw5DcL8aqKyvNVcntJE8vmzICqSdR9ExpOvve7H97GV4JhRXoXk=
+	t=1774275208; cv=none; b=ulE3NaRljqw2oklN0vBAO5SBqsUZA6bDHPht0xHk1n0s5dtPMAR7z8x8sAQEjAtI+0d8rSS+5/7Hx1i0Ks13JuwuBiVKX2VhERZrpFKYpWDSHFe+V7L9fCRp2zTtIHp+3oggD2CJi4xUribfT04ER0PCozFS93uZf1YfdP69Emo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275215; c=relaxed/simple;
-	bh=vDo1Q7DocCk1oWmOyRKT80sDmaoBYtPPH+tz4Mls9r4=;
+	s=arc-20240116; t=1774275208; c=relaxed/simple;
+	bh=af06i7TCsEVswL2s/XTS9+GdL5QQyVhXhW1mnrmr98U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WARk2x0K2dlehnZfiZBft00z9tIFqkZGA4HfJGagkO7PGTI1IMy29xsLpr5akzi3YVaGFd7l28WxTLyl+0PGk5U9IqdUy1a+0kiO3mv7TZOT+RXxfC5iVjd5sdhZ1Ylcfh62ZFJ1pnYocKBahAlJrMMsY1NNDPWSc/C1POsZHDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZlz2rn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF046C4CEF7;
-	Mon, 23 Mar 2026 14:13:34 +0000 (UTC)
+	 MIME-Version; b=TdNeX7Z56rhltiJpMncpYshNcfjEOYgiGjkU2dPnyvpEgSoomBLtABOEhx+TSfI3LCYPbouiiLaUQAJg6yGT1YJWfqJ/TlNZDeGFKlW0Czytd79iKGm6cK3z9ksBeolLCeRjBs4Q3K1aqZGr5yQO+kL2dE9INAQwfNQFzKq2e/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilvOa/ov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAA7C4CEF7;
+	Mon, 23 Mar 2026 14:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275215;
-	bh=vDo1Q7DocCk1oWmOyRKT80sDmaoBYtPPH+tz4Mls9r4=;
+	s=korg; t=1774275207;
+	bh=af06i7TCsEVswL2s/XTS9+GdL5QQyVhXhW1mnrmr98U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZlz2rn20uU1U0ohMUYUgnXHA9YTqGBFFUvGTn+C+rPfMS3Gwcwt8/fmynk8V2XD9
-	 aXw4fTJoXJAGEBSKh+LAuWhUbZGr8LtTfPvRFInCNBRRNp/vZnfNzxQQsZGKMnkz9c
-	 5YwQlh28ycYOZaCdyNXzt5WDWo0zpfIrwTpENIwg=
+	b=ilvOa/ovDriz4fibVrH/BchZudgKnM8FMv6rJPZcb6QEaulZEeIQI6TY+c+2XvMq4
+	 zJDps6G/FJsoxel1hVCFRjXER5Uk5yQeMYwZFxjxlywu1ZKlKskdy2VstNvo2wl0tf
+	 wb9diLTHxlNGmI6rq+HPQZMlPtk6Tv2FO9s/qa9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simond Hu <cmdhh1767@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 012/567] perf: Fix __perf_event_overflow() vs perf_remove_from_context() race
-Date: Mon, 23 Mar 2026 14:38:52 +0100
-Message-ID: <20260323134534.061615867@linuxfoundation.org>
+Subject: [PATCH 6.6 013/567] ALSA: pci: hda: use snd_kcontrol_chip()
+Date: Mon, 23 Mar 2026 14:38:53 +0100
+Message-ID: <20260323134534.089968635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -69,29 +69,28 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228467-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,infradead.org,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228464-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 30FC02F4D54
+X-Rspamd-Queue-Id: 5C8702F5500
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -99,116 +98,79 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 
-[ Upstream commit c9bc1753b3cc41d0e01fbca7f035258b5f4db0ae ]
+[ Upstream commit 483dd12dbe34c6d4e71d4d543bcb1292bcb62d08 ]
 
-Make sure that __perf_event_overflow() runs with IRQs disabled for all
-possible callchains. Specifically the software events can end up running
-it with only preemption disabled.
+We can use snd_kcontrol_chip(). Let's use it.
 
-This opens up a race vs perf_event_exit_event() and friends that will go
-and free various things the overflow path expects to be present, like
-the BPF program.
-
-Fixes: 592903cdcbf6 ("perf_counter: add an event_list")
-Reported-by: Simond Hu <cmdhh1767@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Simond Hu <cmdhh1767@gmail.com>
-Link: https://patch.msgid.link/20260224122909.GV1395416@noisy.programming.kicks-ass.net
+Signed-off-by: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/87plglauda.wl-kuninori.morimoto.gx@renesas.com
+Stable-dep-of: 003ce8c9b2ca ("ALSA: hda: cs35l56: Fix signedness error in cs35l56_hda_posture_put()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 42 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 41 insertions(+), 1 deletion(-)
+ sound/pci/hda/cs35l56_hda.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 9a6be06176bb4..652baf91c629e 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9729,6 +9729,13 @@ int perf_event_overflow(struct perf_event *event,
- 			struct perf_sample_data *data,
- 			struct pt_regs *regs)
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index b84f3b3eb1409..03b2a6a919b4d 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -174,7 +174,7 @@ static int cs35l56_hda_mixer_info(struct snd_kcontrol *kcontrol,
+ static int cs35l56_hda_mixer_get(struct snd_kcontrol *kcontrol,
+ 				 struct snd_ctl_elem_value *ucontrol)
  {
-+	/*
-+	 * Entry point from hardware PMI, interrupts should be disabled here.
-+	 * This serializes us against perf_event_remove_from_context() in
-+	 * things like perf_event_release_kernel().
-+	 */
-+	lockdep_assert_irqs_disabled();
-+
- 	return __perf_event_overflow(event, 1, data, regs);
- }
+-	struct cs35l56_hda *cs35l56 = (struct cs35l56_hda *)kcontrol->private_data;
++	struct cs35l56_hda *cs35l56 = snd_kcontrol_chip(kcontrol);
+ 	unsigned int reg_val;
+ 	int i;
  
-@@ -9809,6 +9816,19 @@ static void perf_swevent_event(struct perf_event *event, u64 nr,
+@@ -194,7 +194,7 @@ static int cs35l56_hda_mixer_get(struct snd_kcontrol *kcontrol,
+ static int cs35l56_hda_mixer_put(struct snd_kcontrol *kcontrol,
+ 				 struct snd_ctl_elem_value *ucontrol)
  {
- 	struct hw_perf_event *hwc = &event->hw;
+-	struct cs35l56_hda *cs35l56 = (struct cs35l56_hda *)kcontrol->private_data;
++	struct cs35l56_hda *cs35l56 = snd_kcontrol_chip(kcontrol);
+ 	unsigned int item = ucontrol->value.enumerated.item[0];
+ 	bool changed;
  
-+	/*
-+	 * This is:
-+	 *   - software		preempt
-+	 *   - tracepoint	preempt
-+	 *   -   tp_target_task	irq (ctx->lock)
-+	 *   - uprobes		preempt/irq
-+	 *   - kprobes		preempt/irq
-+	 *   - hw_breakpoint	irq
-+	 *
-+	 * Any of these are sufficient to hold off RCU and thus ensure @event
-+	 * exists.
-+	 */
-+	lockdep_assert_preemption_disabled();
- 	local64_add(nr, &event->count);
+@@ -221,7 +221,7 @@ static int cs35l56_hda_posture_info(struct snd_kcontrol *kcontrol,
+ static int cs35l56_hda_posture_get(struct snd_kcontrol *kcontrol,
+ 				   struct snd_ctl_elem_value *ucontrol)
+ {
+-	struct cs35l56_hda *cs35l56 = (struct cs35l56_hda *)kcontrol->private_data;
++	struct cs35l56_hda *cs35l56 = snd_kcontrol_chip(kcontrol);
+ 	unsigned int pos;
+ 	int ret;
  
- 	if (!regs)
-@@ -9817,6 +9837,16 @@ static void perf_swevent_event(struct perf_event *event, u64 nr,
- 	if (!is_sampling_event(event))
- 		return;
- 
-+	/*
-+	 * Serialize against event_function_call() IPIs like normal overflow
-+	 * event handling. Specifically, must not allow
-+	 * perf_event_release_kernel() -> perf_remove_from_context() to make
-+	 * progress and 'release' the event from under us.
-+	 */
-+	guard(irqsave)();
-+	if (event->state != PERF_EVENT_STATE_ACTIVE)
-+		return;
-+
- 	if ((event->attr.sample_type & PERF_SAMPLE_PERIOD) && !event->attr.freq) {
- 		data->period = nr;
- 		return perf_swevent_overflow(event, 1, data, regs);
-@@ -10320,6 +10350,11 @@ void perf_tp_event(u16 event_type, u64 count, void *record, int entry_size,
- 	struct perf_sample_data data;
- 	struct perf_event *event;
- 
-+	/*
-+	 * Per being a tracepoint, this runs with preemption disabled.
-+	 */
-+	lockdep_assert_preemption_disabled();
-+
- 	struct perf_raw_record raw = {
- 		.frag = {
- 			.size = entry_size,
-@@ -10733,6 +10768,11 @@ void perf_bp_event(struct perf_event *bp, void *data)
- 	struct perf_sample_data sample;
- 	struct pt_regs *regs = data;
- 
-+	/*
-+	 * Exception context, will have interrupts disabled.
-+	 */
-+	lockdep_assert_irqs_disabled();
-+
- 	perf_sample_data_init(&sample, bp->attr.bp_addr, 0);
- 
- 	if (!bp->hw.state && !perf_exclude_event(bp, regs))
-@@ -11185,7 +11225,7 @@ static enum hrtimer_restart perf_swevent_hrtimer(struct hrtimer *hrtimer)
- 
- 	if (regs && !perf_exclude_event(event, regs)) {
- 		if (!(event->attr.exclude_idle && is_idle_task(current)))
--			if (__perf_event_overflow(event, 1, &data, regs))
-+			if (perf_event_overflow(event, &data, regs))
- 				ret = HRTIMER_NORESTART;
- 	}
- 
+@@ -237,7 +237,7 @@ static int cs35l56_hda_posture_get(struct snd_kcontrol *kcontrol,
+ static int cs35l56_hda_posture_put(struct snd_kcontrol *kcontrol,
+ 				   struct snd_ctl_elem_value *ucontrol)
+ {
+-	struct cs35l56_hda *cs35l56 = (struct cs35l56_hda *)kcontrol->private_data;
++	struct cs35l56_hda *cs35l56 = snd_kcontrol_chip(kcontrol);
+ 	unsigned long pos = ucontrol->value.integer.value[0];
+ 	bool changed;
+ 	int ret;
+@@ -284,7 +284,7 @@ static int cs35l56_hda_vol_info(struct snd_kcontrol *kcontrol,
+ static int cs35l56_hda_vol_get(struct snd_kcontrol *kcontrol,
+ 			       struct snd_ctl_elem_value *ucontrol)
+ {
+-	struct cs35l56_hda *cs35l56 = (struct cs35l56_hda *)kcontrol->private_data;
++	struct cs35l56_hda *cs35l56 = snd_kcontrol_chip(kcontrol);
+ 	unsigned int raw_vol;
+ 	int vol;
+ 	int ret;
+@@ -308,7 +308,7 @@ static int cs35l56_hda_vol_get(struct snd_kcontrol *kcontrol,
+ static int cs35l56_hda_vol_put(struct snd_kcontrol *kcontrol,
+ 			       struct snd_ctl_elem_value *ucontrol)
+ {
+-	struct cs35l56_hda *cs35l56 = (struct cs35l56_hda *)kcontrol->private_data;
++	struct cs35l56_hda *cs35l56 = snd_kcontrol_chip(kcontrol);
+ 	long vol = ucontrol->value.integer.value[0];
+ 	unsigned int raw_vol;
+ 	bool changed;
 -- 
 2.51.0
 
