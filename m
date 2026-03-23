@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-228866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228387-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +C1zDP1pwWmoSwQAu9opvQ
-	(envelope-from <stable+bounces-228866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:41 +0100
+	id gEXeAeNLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228387-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955642F8207
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D3F2F42B9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E8F2231403A8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 36BC83125424
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 206B93ACEFE;
-	Mon, 23 Mar 2026 14:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4E83B27D9;
+	Mon, 23 Mar 2026 14:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qt27MU0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4Wfuq1l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC13241695;
-	Mon, 23 Mar 2026 14:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1B3C145;
+	Mon, 23 Mar 2026 14:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277347; cv=none; b=pnQ9smt24XCs6uHRnPaUZ6ygMEvEdxMKELqnJZLEfk2TG9V+5+yt4xmF34qvBT/Xx0irndTumnFxx3vF5kPsNr5GPnlFLzPFEu0AtD6O1n/hG9/zSlX4sBkvosEGnUf3ZaA1G1W/R3QKTLm2BH93sdwpLKAPyhrnp/OrSBNiqcE=
+	t=1774274976; cv=none; b=EMxfMy7Mg3tN60+4x5Fv8IpsPtREhfuZadAJbvlwRMoaeOGHv48hdIq0I50BHLCQCC2z/1apA4vGTIL5p+s1D+iQ144/5NroW5J5vUOClXPiGWa/peJ3L5ZUz/w8z44Zyzkey8ic7cdtm+HRjrGulBPE4IPnIqWDyMJ6D9oqM5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277347; c=relaxed/simple;
-	bh=TLlRPt+4Jl3y+/QFJcll2PosRr50yT8WZMzVTN8s1BY=;
+	s=arc-20240116; t=1774274976; c=relaxed/simple;
+	bh=6BcDBpZ+6je4hqORrMrey82icHS0YHRqka8KNPUo0xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASRMcJW4ornZcPIbmj4d6fTj6hc8o/bGSbNcsC78EB86GO8XcBPhT24yKPgFS8mUGm1+/XWxUrp+5ECVivoK7vUcfyf8wSN/ItuHeg3shSFDnq96NhJu1wC+pfwv/lF4Gil3l3OflBXGqoZvL/2icYI9kGTKrc0DTt9GecBRzsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qt27MU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB38C4CEF7;
-	Mon, 23 Mar 2026 14:49:06 +0000 (UTC)
+	 MIME-Version; b=mW8hGZyj83c9NT7pTtgF26Txi5vL/qStRawCJslkAYSVO1M+YqfAGZ8bCk7AQfjbydYxRzyrp7+pnd9FI04EwaryyDFsYxy0LnMtZUDHDI0vtLckHQDjgOZPuJrHGkVW2qmWymAbTFfc9YxB/M76V4B8ZZgJcgcZCSXFNS/8WzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4Wfuq1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF9FC4CEF7;
+	Mon, 23 Mar 2026 14:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277346;
-	bh=TLlRPt+4Jl3y+/QFJcll2PosRr50yT8WZMzVTN8s1BY=;
+	s=korg; t=1774274976;
+	bh=6BcDBpZ+6je4hqORrMrey82icHS0YHRqka8KNPUo0xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0qt27MU0UCOhwF7iX6FSKYKbjdhnCAXeU5ofO53zQ0LZ5JDnjQsI/b184wOx61xfp
-	 BlMzHjYrdGqjaQPsLvWS4jz3/H5VsXxTfD0Spa844qkKV+8JWth28JutuX4Cum7e19
-	 yCzJND+ZIm4+cOiu17bwG4ytXLsEZL6Vy4G0VqWc=
+	b=W4Wfuq1lLTMze+jcHavABRjNF19HZ5EJDl1nXv1Yx3CpzPxOjhYnb6QK/S0mclHBr
+	 FIPMUze3sb/+5qbICgW+7HWBnVMvSmGZECiDx62n8BhZFOXyFBPOnSi4sD3t2b4lCq
+	 /RDq8GyYP0zsg34EkIRaHP8szaGCo8uz3jyFpZGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 405/460] bonding: prevent potential infinite loop in bond_header_parse()
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 180/212] hwmon: (pmbus/ina233) Add error check for pmbus_read_word_data() return value
 Date: Mon, 23 Mar 2026 14:46:41 +0100
-Message-ID: <20260323134536.510884245@linuxfoundation.org>
+Message-ID: <20260323134509.441774434@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,241 +63,77 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228866-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228387-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,shopee.com:email]
-X-Rspamd-Queue-Id: 955642F8207
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 97D3F2F42B9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit b7405dcf7385445e10821777143f18c3ce20fa04 ]
+commit 32f59301b9898c0ab5e72908556d553e2d481945 upstream.
 
-bond_header_parse() can loop if a stack of two bonding devices is setup,
-because skb->dev always points to the hierarchy top.
+ina233_read_word_data() uses the return value of pmbus_read_word_data()
+directly in a DIV_ROUND_CLOSEST() computation without first checking for
+errors. If the underlying I2C transaction fails, a negative error code is
+used in the arithmetic, producing a garbage sensor value instead of
+propagating the error.
 
-Add new "const struct net_device *dev" parameter to
-(struct header_ops)->parse() method to make sure the recursion
-is bounded, and that the final leaf parse method is called.
+Add the missing error check before using the return value.
 
-Fixes: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Tested-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Link: https://patch.msgid.link/20260315104152.1436867-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b64b6cb163f16 ("hwmon: Add driver for TI INA233 Current and Power Monitor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260317174553.385567-1-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/net.c          | 5 +++--
- drivers/net/bonding/bond_main.c | 8 +++++---
- include/linux/etherdevice.h     | 3 ++-
- include/linux/if_ether.h        | 3 ++-
- include/linux/netdevice.h       | 6 ++++--
- net/ethernet/eth.c              | 9 +++------
- net/ipv4/ip_gre.c               | 3 ++-
- net/mac802154/iface.c           | 4 +++-
- net/phonet/af_phonet.c          | 5 ++++-
- 9 files changed, 28 insertions(+), 18 deletions(-)
+ drivers/hwmon/pmbus/ina233.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/firewire/net.c b/drivers/firewire/net.c
-index 1bf0e15c15408..423ead5fa9c13 100644
---- a/drivers/firewire/net.c
-+++ b/drivers/firewire/net.c
-@@ -257,9 +257,10 @@ static void fwnet_header_cache_update(struct hh_cache *hh,
- 	memcpy((u8 *)hh->hh_data + HH_DATA_OFF(FWNET_HLEN), haddr, net->addr_len);
- }
+diff --git a/drivers/hwmon/pmbus/ina233.c b/drivers/hwmon/pmbus/ina233.c
+index dde1e1678394..2d8b5a5347ed 100644
+--- a/drivers/hwmon/pmbus/ina233.c
++++ b/drivers/hwmon/pmbus/ina233.c
+@@ -67,6 +67,8 @@ static int ina233_read_word_data(struct i2c_client *client, int page,
+ 	switch (reg) {
+ 	case PMBUS_VIRT_READ_VMON:
+ 		ret = pmbus_read_word_data(client, 0, 0xff, MFR_READ_VSHUNT);
++		if (ret < 0)
++			return ret;
  
--static int fwnet_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int fwnet_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+			      unsigned char *haddr)
- {
--	memcpy(haddr, skb->dev->dev_addr, FWNET_ALEN);
-+	memcpy(haddr, dev->dev_addr, FWNET_ALEN);
- 
- 	return FWNET_ALEN;
- }
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index d11ca46a5b1f7..5035cfa74f1ac 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1563,9 +1563,11 @@ static int bond_header_create(struct sk_buff *skb, struct net_device *bond_dev,
- 	return ret;
- }
- 
--static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int bond_header_parse(const struct sk_buff *skb,
-+			     const struct net_device *dev,
-+			     unsigned char *haddr)
- {
--	struct bonding *bond = netdev_priv(skb->dev);
-+	struct bonding *bond = netdev_priv(dev);
- 	const struct header_ops *slave_ops;
- 	struct slave *slave;
- 	int ret = 0;
-@@ -1575,7 +1577,7 @@ static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
- 	if (slave) {
- 		slave_ops = READ_ONCE(slave->dev->header_ops);
- 		if (slave_ops && slave_ops->parse)
--			ret = slave_ops->parse(skb, haddr);
-+			ret = slave_ops->parse(skb, slave->dev, haddr);
- 	}
- 	rcu_read_unlock();
- 	return ret;
-diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
-index ecf203f010343..a3ae683affa58 100644
---- a/include/linux/etherdevice.h
-+++ b/include/linux/etherdevice.h
-@@ -42,7 +42,8 @@ extern const struct header_ops eth_header_ops;
- 
- int eth_header(struct sk_buff *skb, struct net_device *dev, unsigned short type,
- 	       const void *daddr, const void *saddr, unsigned len);
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr);
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr);
- int eth_header_cache(const struct neighbour *neigh, struct hh_cache *hh,
- 		     __be16 type);
- void eth_header_cache_update(struct hh_cache *hh, const struct net_device *dev,
-diff --git a/include/linux/if_ether.h b/include/linux/if_ether.h
-index 8a9792a6427ad..47a0feffc1215 100644
---- a/include/linux/if_ether.h
-+++ b/include/linux/if_ether.h
-@@ -37,7 +37,8 @@ static inline struct ethhdr *inner_eth_hdr(const struct sk_buff *skb)
- 	return (struct ethhdr *)skb_inner_mac_header(skb);
- }
- 
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr);
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr);
- 
- extern ssize_t sysfs_format_mac(char *buf, const unsigned char *addr, int len);
- 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 12edeeb172c4e..fcc1509ca7cb8 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -308,7 +308,9 @@ struct header_ops {
- 	int	(*create) (struct sk_buff *skb, struct net_device *dev,
- 			   unsigned short type, const void *daddr,
- 			   const void *saddr, unsigned int len);
--	int	(*parse)(const struct sk_buff *skb, unsigned char *haddr);
-+	int	(*parse)(const struct sk_buff *skb,
-+			 const struct net_device *dev,
-+			 unsigned char *haddr);
- 	int	(*cache)(const struct neighbour *neigh, struct hh_cache *hh, __be16 type);
- 	void	(*cache_update)(struct hh_cache *hh,
- 				const struct net_device *dev,
-@@ -3163,7 +3165,7 @@ static inline int dev_parse_header(const struct sk_buff *skb,
- 
- 	if (!dev->header_ops || !dev->header_ops->parse)
- 		return 0;
--	return dev->header_ops->parse(skb, haddr);
-+	return dev->header_ops->parse(skb, dev, haddr);
- }
- 
- static inline __be16 dev_parse_header_protocol(const struct sk_buff *skb)
-diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
-index 43e211e611b16..ca4e3a01237d0 100644
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -193,14 +193,11 @@ __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev)
- }
- EXPORT_SYMBOL(eth_type_trans);
- 
--/**
-- * eth_header_parse - extract hardware address from packet
-- * @skb: packet to extract header from
-- * @haddr: destination buffer
-- */
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr)
- {
- 	const struct ethhdr *eth = eth_hdr(skb);
-+
- 	memcpy(haddr, eth->h_source, ETH_ALEN);
- 	return ETH_ALEN;
- }
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index be85dbe74ac8c..084556b03a2e2 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -917,7 +917,8 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
- 	return -(t->hlen + sizeof(*iph));
- }
- 
--static int ipgre_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int ipgre_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+			      unsigned char *haddr)
- {
- 	const struct iphdr *iph = (const struct iphdr *) skb_mac_header(skb);
- 	memcpy(haddr, &iph->saddr, 4);
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index 9e4631fade90c..000be60d95803 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -469,7 +469,9 @@ static int mac802154_header_create(struct sk_buff *skb,
- }
- 
- static int
--mac802154_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+mac802154_header_parse(const struct sk_buff *skb,
-+		       const struct net_device *dev,
-+		       unsigned char *haddr)
- {
- 	struct ieee802154_hdr hdr;
- 
-diff --git a/net/phonet/af_phonet.c b/net/phonet/af_phonet.c
-index a27efa4faa4ef..532ee4e10ba94 100644
---- a/net/phonet/af_phonet.c
-+++ b/net/phonet/af_phonet.c
-@@ -129,9 +129,12 @@ static int pn_header_create(struct sk_buff *skb, struct net_device *dev,
- 	return 1;
- }
- 
--static int pn_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int pn_header_parse(const struct sk_buff *skb,
-+			   const struct net_device *dev,
-+			   unsigned char *haddr)
- {
- 	const u8 *media = skb_mac_header(skb);
-+
- 	*haddr = *media;
- 	return 1;
- }
+ 		/* Adjust returned value to match VIN coefficients */
+ 		/* VIN: 1.25 mV VSHUNT: 2.5 uV LSB */
 -- 
-2.51.0
+2.53.0
 
 
 
