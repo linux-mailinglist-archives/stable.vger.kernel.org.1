@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229194-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CMQ6CPNwwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229651-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:23 +0100
+	id 2HFtAs1cwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229194-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A586C2F92D7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2DC2F668E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99A373237C05
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD57D32253BB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C33828751B;
-	Mon, 23 Mar 2026 16:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5073BA22C;
+	Mon, 23 Mar 2026 15:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLomew6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uM9MS/NC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDC127E049;
-	Mon, 23 Mar 2026 16:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EAB3B9DBB;
+	Mon, 23 Mar 2026 15:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282499; cv=none; b=YZsst8EFgMiqO4QeyfTAQZjgmbBEuSZHVjqD79Jvmd0oFHGJJqYh2L8CF7c5symxmzN/gOGVHAQxkf2/WABb9HrVZoTYpOMWL+ivGxLXGGDOxSzX7IkK0jyuFgvzoh0sMHlXwET20L8zGK1TERKySo0LxRm86w77jd8XBrWlqi8=
+	t=1774278358; cv=none; b=ZNiAmbzNVxlFUq7989cXQku9cEWNjf2R0C9eW5mcQUNplpr6emygQ1o1hdJmmEtFOHc1Etj/SEPsGFNKZZW9k7+oZKMRHu0O8ifv22ZPUnz4Zo+UMJL5wWn06Wjap26U3vbzPqON3WSph12KL+ex9qJNpj8y2t1xkh0Y5p/hdxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282499; c=relaxed/simple;
-	bh=lrZdm6V6f+TXrN8KvqSF0cicG0WQ8xEu8wuZYyUC3fM=;
+	s=arc-20240116; t=1774278358; c=relaxed/simple;
+	bh=/eTzFrwSuLt7tEWjNbJZCvQkpWHbUr9xjHrXkxUS4MI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKEAllRPW6zq5Q3SbA8Nzsbj/SU6s5hKzopMpIzOqZWu7jEEETxzH9pB7o/PYJSMsIFbbabSSrz4ERAp5UEdJxTnkT4BNEbSpxBt9lDX289CWPCfd0phNJwAxr7GDwPSWKd70QHrRzi1nmvqb05frBFTow+Cxp3HUR3D0/hHp7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLomew6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A04F4C4CEF7;
-	Mon, 23 Mar 2026 16:14:58 +0000 (UTC)
+	 MIME-Version; b=jsBQyOF6DsvzMXRgkA4z67ll3oAapuQhqSd1d7KLU4aAQviahWk/1pgf5Ppdc97FJC6dI+SpIXMYU09YvAMY2vOOtbclTN6cbPuTSQKgG+++HBsFiqmbKrwYWzXsPlorsP1ksVRS/CIllx8qYLjDZm8vjC7TiRuRnSVaaMY6IRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uM9MS/NC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC201C2BC9E;
+	Mon, 23 Mar 2026 15:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282499;
-	bh=lrZdm6V6f+TXrN8KvqSF0cicG0WQ8xEu8wuZYyUC3fM=;
+	s=korg; t=1774278358;
+	bh=/eTzFrwSuLt7tEWjNbJZCvQkpWHbUr9xjHrXkxUS4MI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TLomew6hbxZKNGEtR8EViUwbBFVHQ6SJHIsBl3Q9UbCp8ndH1P7kDFHZey8+Q0oRe
-	 zGM5AbwAaqecHqVYtCdAU6hIIMXr/8faA9Nv5An6YC/bESFAVitIDnP84eQn6XwBKP
-	 0osvAd6vUWziM7Qb33FQPVii51PsUv26Tl4XHq5s=
+	b=uM9MS/NCpmN/cgGeiJf7wzy7AjS8E6oo8DGm32BQWShc3cgerzuKFSrm5A8XK/wgb
+	 5F/eSOhiI3ePhu6O3QSqP4yMMhw9Xj2TH9Mdf4b4LwCV4c4vRSWypxAgWvvRh3AR3B
+	 tSMKNffBZpLT1M1svVgDivmnzO0/8qoESfub9Nk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Dull <monderasdor@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 177/481] netfilter: x_tables: guard option walkers against 1-byte tail reads
+Subject: [PATCH 6.6 239/567] amd-xgbe: prevent CRC errors during RX adaptation with AN disabled
 Date: Mon, 23 Mar 2026 14:42:39 +0100
-Message-ID: <20260323134529.528252794@linuxfoundation.org>
+Message-ID: <20260323134539.747902471@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,90 +69,195 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229651-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229194-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A586C2F92D7
+X-Rspamd-Queue-Id: 5F2DC2F668E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Dull <monderasdor@gmail.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-[ Upstream commit cfe770220ac2dbd3e104c6b45094037455da81d4 ]
+[ Upstream commit 27a4dd0c702b3b2b9cf2c045d100cc2fe8720b81 ]
 
-When the last byte of options is a non-single-byte option kind, walkers
-that advance with i += op[i + 1] ? : 1 can read op[i + 1] past the end
-of the option area.
+When operating in 10GBASE-KR mode with auto-negotiation disabled and RX
+adaptation enabled, CRC errors can occur during the RX adaptation
+process. This happens because the driver continues transmitting and
+receiving packets while adaptation is in progress.
 
-Add an explicit i == optlen - 1 check before dereferencing op[i + 1]
-in xt_tcpudp and xt_dccp option walkers.
+Fix this by stopping TX/RX immediately when the link goes down and RX
+adaptation needs to be re-triggered, and only re-enabling TX/RX after
+adaptation completes and the link is confirmed up. Introduce a flag to
+track whether TX/RX was disabled for adaptation so it can be restored
+correctly.
 
-Fixes: 2e4e6a17af35 ("[NETFILTER] x_tables: Abstraction layer for {ip,ip6,arp}_tables")
-Signed-off-by: David Dull <monderasdor@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+This prevents packets from being transmitted or received during the RX
+adaptation window and avoids CRC errors from corrupted frames.
+
+The flag tracking the data path state is synchronized with hardware
+state in xgbe_start() to prevent stale state after device restarts.
+This ensures that after a restart cycle (where xgbe_stop disables
+TX/RX and xgbe_start re-enables them), the flag correctly reflects
+that the data path is active.
+
+Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Link: https://patch.msgid.link/20260306111629.1515676-3-Raju.Rangoju@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/xt_dccp.c   | 4 ++--
- net/netfilter/xt_tcpudp.c | 6 ++++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c    |  4 ++
+ drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 63 ++++++++++++++++++++-
+ drivers/net/ethernet/amd/xgbe/xgbe.h        |  4 ++
+ 3 files changed, 69 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/xt_dccp.c b/net/netfilter/xt_dccp.c
-index e5a13ecbe67a0..037ab93e25d0a 100644
---- a/net/netfilter/xt_dccp.c
-+++ b/net/netfilter/xt_dccp.c
-@@ -62,10 +62,10 @@ dccp_find_option(u_int8_t option,
- 			return true;
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+index 256969ac2cb9e..67e1d8eacdaed 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
+@@ -1338,6 +1338,10 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
+ 
+ 	hw_if->enable_tx(pdata);
+ 	hw_if->enable_rx(pdata);
++	/* Synchronize flag with hardware state after enabling TX/RX.
++	 * This prevents stale state after device restart cycles.
++	 */
++	pdata->data_path_stopped = false;
+ 
+ 	udp_tunnel_nic_reset_ntf(netdev);
+ 
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+index 469b28c159e7d..0a99a21af5815 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+@@ -2125,6 +2125,48 @@ static void xgbe_phy_rx_adaptation(struct xgbe_prv_data *pdata)
+ 	xgbe_rx_adaptation(pdata);
+ }
+ 
++/*
++ * xgbe_phy_stop_data_path - Stop TX/RX to prevent packet corruption
++ * @pdata: driver private data
++ *
++ * This function stops the data path (TX and RX) to prevent packet
++ * corruption during critical PHY operations like RX adaptation.
++ * Must be called before initiating RX adaptation when link goes down.
++ */
++static void xgbe_phy_stop_data_path(struct xgbe_prv_data *pdata)
++{
++	if (pdata->data_path_stopped)
++		return;
++
++	/* Stop TX/RX to prevent packet corruption during RX adaptation */
++	pdata->hw_if.disable_tx(pdata);
++	pdata->hw_if.disable_rx(pdata);
++	pdata->data_path_stopped = true;
++
++	netif_dbg(pdata, link, pdata->netdev,
++		  "stopping data path for RX adaptation\n");
++}
++
++/*
++ * xgbe_phy_start_data_path - Re-enable TX/RX after RX adaptation
++ * @pdata: driver private data
++ *
++ * This function re-enables the data path (TX and RX) after RX adaptation
++ * has completed successfully. Only called when link is confirmed up.
++ */
++static void xgbe_phy_start_data_path(struct xgbe_prv_data *pdata)
++{
++	if (!pdata->data_path_stopped)
++		return;
++
++	pdata->hw_if.enable_rx(pdata);
++	pdata->hw_if.enable_tx(pdata);
++	pdata->data_path_stopped = false;
++
++	netif_dbg(pdata, link, pdata->netdev,
++		  "restarting data path after RX adaptation\n");
++}
++
+ static void xgbe_phy_rx_reset(struct xgbe_prv_data *pdata)
+ {
+ 	int reg;
+@@ -2918,13 +2960,27 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
+ 	if (pdata->en_rx_adap) {
+ 		/* if the link is available and adaptation is done,
+ 		 * declare link up
++		 *
++		 * Note: When link is up and adaptation is done, we can
++		 * safely re-enable the data path if it was stopped
++		 * for adaptation.
+ 		 */
+-		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done)
++		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done) {
++			xgbe_phy_start_data_path(pdata);
+ 			return 1;
++		}
+ 		/* If either link is not available or adaptation is not done,
+ 		 * retrigger the adaptation logic. (if the mode is not set,
+ 		 * then issue mailbox command first)
+ 		 */
++
++		/* CRITICAL: Stop data path BEFORE triggering RX adaptation
++		 * to prevent CRC errors from packets corrupted during
++		 * the adaptation process. This is especially important
++		 * when AN is OFF in 10G KR mode.
++		 */
++		xgbe_phy_stop_data_path(pdata);
++
+ 		if (pdata->mode_set) {
+ 			xgbe_phy_rx_adaptation(pdata);
+ 		} else {
+@@ -2932,8 +2988,11 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
+ 			xgbe_phy_set_mode(pdata, phy_data->cur_mode);
  		}
  
--		if (op[i] < 2)
-+		if (op[i] < 2 || i == optlen - 1)
- 			i++;
- 		else
--			i += op[i+1]?:1;
-+			i += op[i + 1] ? : 1;
- 	}
+-		if (pdata->rx_adapt_done)
++		if (pdata->rx_adapt_done) {
++			/* Adaptation complete, safe to re-enable data path */
++			xgbe_phy_start_data_path(pdata);
+ 			return 1;
++		}
+ 	} else if (reg & MDIO_STAT1_LSTATUS)
+ 		return 1;
  
- 	spin_unlock_bh(&dccp_buflock);
-diff --git a/net/netfilter/xt_tcpudp.c b/net/netfilter/xt_tcpudp.c
-index 11ec2abf0c727..73f50dc01b19f 100644
---- a/net/netfilter/xt_tcpudp.c
-+++ b/net/netfilter/xt_tcpudp.c
-@@ -56,8 +56,10 @@ tcp_find_option(u_int8_t option,
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
+index 82a88d0c15e31..ac0f728c5c85d 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe.h
++++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
+@@ -1321,6 +1321,10 @@ struct xgbe_prv_data {
+ 	bool en_rx_adap;
+ 	int rx_adapt_retries;
+ 	bool rx_adapt_done;
++	/* Flag to track if data path (TX/RX) was stopped for RX adaptation.
++	 * This prevents packet corruption during the adaptation window.
++	 */
++	bool data_path_stopped;
+ 	bool mode_set;
+ };
  
- 	for (i = 0; i < optlen; ) {
- 		if (op[i] == option) return !invert;
--		if (op[i] < 2) i++;
--		else i += op[i+1]?:1;
-+		if (op[i] < 2 || i == optlen - 1)
-+			i++;
-+		else
-+			i += op[i + 1] ? : 1;
- 	}
- 
- 	return invert;
 -- 
 2.51.0
 
