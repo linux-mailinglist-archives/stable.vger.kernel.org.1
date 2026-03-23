@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228137-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sOwtK1lXwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228799-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:09 +0100
+	id GBojI3NJwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228137-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:51 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146102F5D3E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E05962F3E3F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A2BA3213BFF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 23EE13050D76
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8508423EAB2;
-	Mon, 23 Mar 2026 14:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C243AB29B;
+	Mon, 23 Mar 2026 13:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OR/3bx9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzsjKN/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339E723AB9D;
-	Mon, 23 Mar 2026 14:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71B5286A4;
+	Mon, 23 Mar 2026 13:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277160; cv=none; b=ODlUB5AGvBh1axfIwjGNtkr7yFBsmzyGCSZdDKABo48QpRfPmaGYPCEkWgOARODLcjO3DR8PHePvMyJvMAlpIO8lXAlHsYFNbXwxtmtOknVn2k9wZtYtrk1Z94jNUgD0VGT2xl2EBwV20sRdw6BmOeyR/gZ/qKkf+VKfD6jZIJ4=
+	t=1774274236; cv=none; b=nb+na9CJ742atDAR1m48B5+VUb0kyF+EEfw02qIbf+khMCBfcyRxrkigaTJWEmpTm4QHF6vM2EG3/6ICpJh/9gmmraF/2JYE/c/hyqi3tv/BUYaH0GmQvzQm+tyNS09zi5CTSJ4yWO0X9qRAAx5r8VTjB34c+Um47m1X3zPN1FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277160; c=relaxed/simple;
-	bh=TOISTTeIpRlbA80MBxa4ivSyumZkkUBALtLfs2/f+wk=;
+	s=arc-20240116; t=1774274236; c=relaxed/simple;
+	bh=qK5+I27ULJOvzgO9fvgDBMYadE/ZFZDox570ZVjDUDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AqwlRT4BqgbitkkjzkbivaezN0OwuZuuH3yGj9Nx5KeyLDh/95c59xcxPy87V232tC+Uial0QOgBCR/m6j0cGzAY/3kSX2PYqOeXDP/kEn8SUBCUIeXkf6FGI1oQdyPiVwDQZxN0WHgFxULLvnVGGEusLFyL93/JyckSO6FIxqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OR/3bx9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49F2C4CEF7;
-	Mon, 23 Mar 2026 14:45:59 +0000 (UTC)
+	 MIME-Version; b=qbz4wiulA77jx+8mV2LB/YVjuT3M4O3lnrSwrM6xnlfyKT+8xnOK1Cn6qTUAHYHecUrKWKk4sznNRnJcMMGMYbHMWT5xHAim1Mu8Jupp0/RSiB7i0PvlAY7dc36FDJ66PIoswR/thWosgp2eNvg0kFGoUamAL8q44zIw3KKKyJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzsjKN/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39559C4CEF7;
+	Mon, 23 Mar 2026 13:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277160;
-	bh=TOISTTeIpRlbA80MBxa4ivSyumZkkUBALtLfs2/f+wk=;
+	s=korg; t=1774274236;
+	bh=qK5+I27ULJOvzgO9fvgDBMYadE/ZFZDox570ZVjDUDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OR/3bx9KqdXGeUblrFKxTVm/n7LBkexn6ZbfS5veWrGQ5h5Jm1h7he3bkwrU2OmEe
-	 H7dSp2l5h092sbgejtu7Po3jRhhLUJ9Bb9Vr4a2mj59qmyhvYC4I2gC3di8JS5eu0+
-	 Kz2JZ+h7nJ294lYf/5bHmIQshCaaWo03MG2pYoGA=
+	b=vzsjKN/RgkC7xObX19R96t+E9qIuOnAp4FFg7KC0b0X5eu7TirUkDS2ccZITWAvV5
+	 2NSTKcTae6IYMzGZR7haMGSB/7ZiOMXRT9ZmtNMwtfGIgmkzmKnyTwis5z91QJEYo7
+	 tTYcLjaLk0TVPczKbulWOprN6rj2qjdX7ZOrvgMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanyang Wang <quanyang.wang@windriver.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
+	Tobi Gaertner <tob.gaertner@me.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 333/460] net: macb: Reinitialize tx/rx queue pointer registers and rx ring during resume
+Subject: [PATCH 6.19 152/220] net: usb: cdc_ncm: add ndpoffset to NDP16 nframes bounds check
 Date: Mon, 23 Mar 2026 14:45:29 +0100
-Message-ID: <20260323134534.711162592@linuxfoundation.org>
+Message-ID: <20260323134509.385767030@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,92 +66,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228137-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228799-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,windriver.com,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.971];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 146102F5D3E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,me.com:email]
+X-Rspamd-Queue-Id: E05962F3E3F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Tobi Gaertner <tob.gaertner@me.com>
 
-[ Upstream commit 718d0766ce4c7634ce62fa78b526ea7263487edd ]
+[ Upstream commit 2aa8a4fa8d5b7d0e1ebcec100e1a4d80a1f4b21a ]
 
-On certain platforms, such as AMD Versal boards, the tx/rx queue pointer
-registers are cleared after suspend, and the rx queue pointer register
-is also disabled during suspend if WOL is enabled. Previously, we assumed
-that these registers would be restored by macb_mac_link_up(). However,
-in commit bf9cf80cab81, macb_init_buffers() was moved from
-macb_mac_link_up() to macb_open(). Therefore, we should call
-macb_init_buffers() to reinitialize the tx/rx queue pointer registers
-during resume.
+cdc_ncm_rx_verify_ndp16() validates that the NDP header and its DPE
+entries fit within the skb. The first check correctly accounts for
+ndpoffset:
 
-Due to the reset of these two registers, we also need to adjust the
-tx/rx rings accordingly. The tx ring will be handled by
-gem_shuffle_tx_rings() in macb_mac_link_up(), so we only need to
-initialize the rx ring here.
+  if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len)
 
-Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
-Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Tested-by: Quanyang Wang <quanyang.wang@windriver.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260312-macb-versal-v1-2-467647173fa4@gmail.com
+but the second check omits it:
+
+  if ((sizeof(struct usb_cdc_ncm_ndp16) +
+       ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len)
+
+This validates the DPE array size against the total skb length as if
+the NDP were at offset 0, rather than at ndpoffset. When the NDP is
+placed near the end of the NTB (large wNdpIndex), the DPE entries can
+extend past the skb data buffer even though the check passes.
+cdc_ncm_rx_fixup() then reads out-of-bounds memory when iterating
+the DPE array.
+
+Add ndpoffset to the nframes bounds check and use struct_size_t() to
+express the NDP-plus-DPE-array size more clearly.
+
+Fixes: ff06ab13a4cc ("net: cdc_ncm: splitting rx_fixup for code reuse")
+Signed-off-by: Tobi Gaertner <tob.gaertner@me.com>
+Link: https://patch.msgid.link/20260314054640.2895026-2-tob.gaertner@me.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/usb/cdc_ncm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5527,8 +5527,18 @@ static int __maybe_unused macb_resume(st
- 		rtnl_unlock();
- 	}
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 5d123df0a866b..a9d0162b5ee01 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -1656,6 +1656,7 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
+ 	struct usbnet *dev = netdev_priv(skb_in->dev);
+ 	struct usb_cdc_ncm_ndp16 *ndp16;
+ 	int ret = -EINVAL;
++	size_t ndp_len;
  
-+	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
-+		macb_init_buffers(bp);
-+
- 	for (q = 0, queue = bp->queues; q < bp->num_queues;
- 	     ++q, ++queue) {
-+		if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
-+			if (macb_is_gem(bp))
-+				gem_init_rx_ring(queue);
-+			else
-+				macb_init_rx_ring(queue);
-+		}
-+
- 		napi_enable(&queue->napi_rx);
- 		napi_enable(&queue->napi_tx);
+ 	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len) {
+ 		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
+@@ -1675,8 +1676,8 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
+ 					sizeof(struct usb_cdc_ncm_dpe16));
+ 	ret--; /* we process NDP entries except for the last one */
+ 
+-	if ((sizeof(struct usb_cdc_ncm_ndp16) +
+-	     ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len) {
++	ndp_len = struct_size_t(struct usb_cdc_ncm_ndp16, dpe16, ret);
++	if (ndpoffset + ndp_len > skb_in->len) {
+ 		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
+ 		ret = -EINVAL;
  	}
+-- 
+2.51.0
+
 
 
 
