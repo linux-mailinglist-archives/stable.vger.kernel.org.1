@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-229137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UDu3CAdYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229137-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:03 +0100
+	id YFUaJuF7wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C73EE2F5ECA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3943D2FA4E6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 20E18302DD6B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:04:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90919302E7AF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA578285061;
-	Mon, 23 Mar 2026 15:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBE33BBA06;
+	Mon, 23 Mar 2026 16:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBsik0jH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjhRzTkH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5FC28488F;
-	Mon, 23 Mar 2026 15:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1047B12CDA5;
+	Mon, 23 Mar 2026 16:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278177; cv=none; b=n7WE5J67et6pq6PupUVWjed5F2dj80vD3aVaOFQ5bZlAX9jmEcXOe5MOXn1awQ4oVXRevW3LlOzhjNjdKAjoaAcRijzeA9/5nq6pUKMMXBUXi0i2+0v0EIa0uZwcHR6ZY+ESvaVH6ONLEmMvnkQ/8Kf1Zeez1KILXVjTd5BoiVM=
+	t=1774282358; cv=none; b=nVa0TUcCiEsaq0yez2356nAOqOMagHhuhze5umJG4K6LHGaOb1rrpxuaLhiZ5sIxHqMGnnDJqYg+dQztij8CS09xAdMAm+UwVS+PCwDlShdOwitWvddphIZVNyzApdRuHPa2axTir2GpGpLz4R2eXzbIdWYDRUa/N4a2Xqt2RVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278177; c=relaxed/simple;
-	bh=evQ9ivZM7xQes2EtbpfuCKSxWrQ1Sd/MoyBse4lGdBI=;
+	s=arc-20240116; t=1774282358; c=relaxed/simple;
+	bh=vTiKB06/JsN4HvP0zTam/9qz5jo8J5+6fAiNhwUB1kQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GqAbIP3/idgR2yBO+ep6n13jErn3yvac+fVVGTSxt1fGZMDGZNy1IW3VQRazNtlTib3ZWyVSUClY8JyThz7iu7guRtcVR4DIuM9+4u4sXoAVZQ1eZzJi53IH7uo1c6AGXjazBGjz+RGKwHyl59aOx52ypvOCZPvIqYuWDQt8pEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBsik0jH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0197C4CEF7;
-	Mon, 23 Mar 2026 15:02:56 +0000 (UTC)
+	 MIME-Version; b=WCtUt92C7yBT2xJNmVLW4Qz8BUFHxK0AdHBjjoB6JUiEs6gqBSCQ1I4NnnPW11i0s1yePaYZHQsq/n46ff7ccyBANGTJMk0yT8aQC/BHwUxj+1aW4h0nQbxoxKe3DQcfu1tCEsRhYuQb87AoYhwTe9HAStBX5tmKVuNUQ+ttQd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjhRzTkH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBA8C4CEF7;
+	Mon, 23 Mar 2026 16:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278177;
-	bh=evQ9ivZM7xQes2EtbpfuCKSxWrQ1Sd/MoyBse4lGdBI=;
+	s=korg; t=1774282357;
+	bh=vTiKB06/JsN4HvP0zTam/9qz5jo8J5+6fAiNhwUB1kQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBsik0jHqpvzKKbYIWLFkJt0itIzEyBm/pi56PksSZwy0V40k/laO6HhfbIPD3+u6
-	 KvL9/ctqp08thcn1FxSzcIs3QUIEoGDdtPt+Dttgv0FGLz5tCgAkEj7cfTcklarlTZ
-	 Nw4/hFlSurE9zqzXQt1Vv8BypkfRLsFe6tT/exm8=
+	b=XjhRzTkHEmxDsxWPtz/zr6hBc36r4kiKIJULn9vg6eu+ChogZWesXk6U8Q1bTRfLZ
+	 kk942klGTU1S7Xp+/mFRaHDgc2mQAp0NHHpUj4CiAjf4YWfrjQwS3evd4Et3hRpTFE
+	 vsQUg6eHMwyTv40xlvlyoNrm0LCncJ6XmoZnyRu8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.6 188/567] apparmor: fix memory leak in verify_header
+	Kui-Feng Lee <thinker.li@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 126/481] bpf: export bpf_link_inc_not_zero.
 Date: Mon, 23 Mar 2026 14:41:48 +0100
-Message-ID: <20260323134538.505442132@linuxfoundation.org>
+Message-ID: <20260323134528.348325269@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,75 +64,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229137-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C73EE2F5ECA
+	TAGGED_FROM(0.00)[bounces-229600-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 3943D2FA4E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: Kui-Feng Lee <thinker.li@gmail.com>
 
-commit e38c55d9f834e5b848bfed0f5c586aaf45acb825 upstream.
+[ Upstream commit 67c3e8353f45c27800eecc46e00e8272f063f7d1 ]
 
-The function sets `*ns = NULL` on every call, leaking the namespace
-string allocated in previous iterations when multiple profiles are
-unpacked. This also breaks namespace consistency checking since *ns
-is always NULL when the comparison is made.
+bpf_link_inc_not_zero() will be used by kernel modules.  We will use it in
+bpf_testmod.c later.
 
-Remove the incorrect assignment.
-The caller (aa_unpack) initializes *ns to NULL once before the loop,
-which is sufficient.
-
-Fixes: dd51c8485763 ("apparmor: provide base for multiple profiles to be replaced at once")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kui-Feng Lee <thinker.li@gmail.com>
+Link: https://lore.kernel.org/r/20240530065946.979330-5-thinker.li@gmail.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Stable-dep-of: 56145d237385 ("bpf: Fix a UAF issue in bpf_trampoline_link_cgroup_shim")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack.c |    1 -
- 1 file changed, 1 deletion(-)
+ include/linux/bpf.h  | 6 ++++++
+ kernel/bpf/syscall.c | 3 ++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -1132,7 +1132,6 @@ static int verify_header(struct aa_ext *
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 142a21f019ff8..3045de8e3f660 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1907,6 +1907,7 @@ int bpf_link_prime(struct bpf_link *link, struct bpf_link_primer *primer);
+ int bpf_link_settle(struct bpf_link_primer *primer);
+ void bpf_link_cleanup(struct bpf_link_primer *primer);
+ void bpf_link_inc(struct bpf_link *link);
++struct bpf_link *bpf_link_inc_not_zero(struct bpf_link *link);
+ void bpf_link_put(struct bpf_link *link);
+ int bpf_link_new_fd(struct bpf_link *link);
+ struct file *bpf_link_new_file(struct bpf_link *link, int *reserved_fd);
+@@ -2254,6 +2255,11 @@ static inline void bpf_link_inc(struct bpf_link *link)
  {
- 	int error = -EPROTONOSUPPORT;
- 	const char *name = NULL;
--	*ns = NULL;
+ }
  
- 	/* get the interface version */
- 	if (!aa_unpack_u32(e, &e->version, "version")) {
++static inline struct bpf_link *bpf_link_inc_not_zero(struct bpf_link *link)
++{
++	return NULL;
++}
++
+ static inline void bpf_link_put(struct bpf_link *link)
+ {
+ }
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index b559d99e5959a..ed8f55bdc1370 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -4763,10 +4763,11 @@ static int link_detach(union bpf_attr *attr)
+ 	return ret;
+ }
+ 
+-static struct bpf_link *bpf_link_inc_not_zero(struct bpf_link *link)
++struct bpf_link *bpf_link_inc_not_zero(struct bpf_link *link)
+ {
+ 	return atomic64_fetch_add_unless(&link->refcnt, 1, 0) ? link : ERR_PTR(-ENOENT);
+ }
++EXPORT_SYMBOL(bpf_link_inc_not_zero);
+ 
+ struct bpf_link *bpf_link_by_id(u32 id)
+ {
+-- 
+2.51.0
+
 
 
 
