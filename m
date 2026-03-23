@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228030-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4Dk0OZFdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229220-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:41 +0100
+	id SORUFQpHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228030-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:34 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603112F6807
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82FE22F389F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 843D5319F4D0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04694307339A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC6FB3B6C12;
-	Mon, 23 Mar 2026 15:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2613A961B;
+	Mon, 23 Mar 2026 13:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Afn8n0hH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qnR3tlaR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1A9282F18;
-	Mon, 23 Mar 2026 15:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E809340298;
+	Mon, 23 Mar 2026 13:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278436; cv=none; b=Ee0rjgQ1CnY3fieHtbppe/vmH93WuKAVaU9q2P5b7hAKLru/9YrTjcJGzve7qkrgkR1KxDw7QtTbmbx8js52XmmFKqCBe7yJT/YM5r2ffvzYb6niqDDctNGsMJ2qdZS/LpJf646Vgzmt34z7u9QE6kolxg5wEPlt2LlnM9PxBZs=
+	t=1774273915; cv=none; b=t4F3N5qfLeAL18uMtajSKwdiajxfApfIDO3IM3qTt8IKO4plg6sDXyPR/eDO7o7YDy0V5Ql7iIW4Qn3EblK+04/ExvchHtRJ8u2WTsEGS6PQcbsnMSLowB7l41s0E6mf4iBMtA/chEntBrOP5bteKjvDx3y0T20VqeleKl6ZoDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278436; c=relaxed/simple;
-	bh=LtAjJ7IiVfake5uZFrI85OZ5dszcz+e9GsWT7Qh0pb8=;
+	s=arc-20240116; t=1774273915; c=relaxed/simple;
+	bh=CLYtgUJ4aaAnfa3phsISxPxovvL3yyhj+u8x9pDQ9SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4sXfc1ARS09dtQcVzC6VW7BB0qXkOJ4mPM2xN8uT3CDJjDbPW86z+1FzuhP9bRL9W/e+Mj8Ti/hSsKsGeZBco+rra8yCOrysXZ6eqAhXLDA1qrN5YWSY+4/LmQPKHpoLQ3WLj0/3A/MwLqf1dO702u3bOcxrOOep8raI58KTVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Afn8n0hH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAE9CC4CEF7;
-	Mon, 23 Mar 2026 15:07:15 +0000 (UTC)
+	 MIME-Version; b=C9HLJgSTVY2vW8zDoeWHox9u3jLkKecCdSwsZPRZnqHrSv7gICPNO33roDgpPZdnnia3sjG0KT3yZZ6cQVohXBhe7gQys5+EjNkOc2EPqYYvu/6Gu2SOkfMMmwflh+dq9GvCsbuvBMxuXP/4qpDq1/qMu/nHB5cRDCePVeMBn5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qnR3tlaR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C884FC4CEF7;
+	Mon, 23 Mar 2026 13:51:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278436;
-	bh=LtAjJ7IiVfake5uZFrI85OZ5dszcz+e9GsWT7Qh0pb8=;
+	s=korg; t=1774273915;
+	bh=CLYtgUJ4aaAnfa3phsISxPxovvL3yyhj+u8x9pDQ9SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Afn8n0hHstDLErKogpqQoxwsqs7448+ssW7gK8D69HSPJQsvFacYrBSD57ds5H9AO
-	 M1VowskPMnNnwlABKjg3C35AVorJksq0ufSxA8xcdazTzZf07UKyCG+KlF1QqpOGHo
-	 FAAqgEq33RybfDGZQxpDzJvB9CaJiSolAsFHblSY=
+	b=qnR3tlaRD9zjtrpJP5tIi5/zxI8g8JsHFfuVUeUc2SxQtvkiR3AcFyFecK076WQpT
+	 Dkaz0Brteh5Y7Tu7YgWilp+zvzHSDx3bUKi2/Vukn05AJf5Yp7xJeo2zIi1h1bKItu
+	 yNShS1ruOoCNWdHvXgLVaLmY/MlIwvr0bSJKyQSY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Yihang Li <liyihang9@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 306/567] scsi: hisi_sas: Fix NULL pointer exception during user_scan()
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Takahiro Kuwano <takahiro.kuwano@infineon.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.19 049/220] mtd: spi-nor: Fix RDCR controller capability core check
 Date: Mon, 23 Mar 2026 14:43:46 +0100
-Message-ID: <20260323134541.392468704@linuxfoundation.org>
+Message-ID: <20260323134506.138186567@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +69,89 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229220-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228030-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 603112F6807
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,bootlin.com:email]
+X-Rspamd-Queue-Id: 82FE22F389F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 8ddc0c26916574395447ebf4cff684314f6873a9 ]
+commit ac512cd351f7e4ab4569f6a52c116f4ab3a239cc upstream.
 
-user_scan() invokes updated sas_user_scan() for channel 0, and if
-successful, iteratively scans remaining channels (1 to shost->max_channel)
-via scsi_scan_host_selected() in commit 37c4e72b0651 ("scsi: Fix
-sas_user_scan() to handle wildcard and multi-channel scans"). However,
-hisi_sas supports only one channel, and the current value of max_channel is
-1. sas_user_scan() for channel 1 will trigger the following NULL pointer
-exception:
+Commit 5008c3ec3f89 ("mtd: spi-nor: core: Check read CR support") adds a
+controller check to make sure the core will not use CR reads on
+controllers not supporting them. The approach is valid but the fix is
+incorrect. Unfortunately, the author could not catch it, because the
+expected behavior was met. The patch indeed drops the RDCR capability,
+but it does it for all controllers!
 
-[  441.554662] Unable to handle kernel NULL pointer dereference at virtual address 00000000000008b0
-[  441.554699] Mem abort info:
-[  441.554710]   ESR = 0x0000000096000004
-[  441.554718]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  441.554723]   SET = 0, FnV = 0
-[  441.554726]   EA = 0, S1PTW = 0
-[  441.554730]   FSC = 0x04: level 0 translation fault
-[  441.554735] Data abort info:
-[  441.554737]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[  441.554742]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  441.554747]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  441.554752] user pgtable: 4k pages, 48-bit VAs, pgdp=00000828377a6000
-[  441.554757] [00000000000008b0] pgd=0000000000000000, p4d=0000000000000000
-[  441.554769] Internal error: Oops: 0000000096000004 [#1]  SMP
-[  441.629589] Modules linked in: arm_spe_pmu arm_smmuv3_pmu tpm_tis_spi hisi_uncore_sllc_pmu hisi_uncore_pa_pmu hisi_uncore_l3c_pmu hisi_uncore_hha_pmu hisi_uncore_ddrc_pmu hisi_uncore_cpa_pmu hns3_pmu hisi_ptt hisi_pcie_pmu tpm_tis_core spidev spi_hisi_sfc_v3xx hisi_uncore_pmu spi_dw_mmio fuse hclge hclge_common hisi_sec2 hisi_hpre hisi_zip hisi_qm hns3 hisi_sas_v3_hw sm3_ce sbsa_gwdt hnae3 hisi_sas_main uacce hisi_dma i2c_hisi dm_mirror dm_region_hash dm_log dm_mod
-[  441.670819] CPU: 46 UID: 0 PID: 6994 Comm: bash Kdump: loaded Not tainted 7.0.0-rc2+ #84 PREEMPT
-[  441.691327] pstate: 81400009 (Nzcv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
-[  441.698277] pc : sas_find_dev_by_rphy+0x44/0x118
-[  441.702896] lr : sas_find_dev_by_rphy+0x3c/0x118
-[  441.707502] sp : ffff80009abbba40
-[  441.710805] x29: ffff80009abbba40 x28: ffff082819a40008 x27: ffff082810c37c08
-[  441.717930] x26: ffff082810c37c28 x25: ffff082819a40290 x24: ffff082810c37c00
-[  441.725054] x23: 0000000000000000 x22: 0000000000000001 x21: ffff082819a40000
-[  441.732179] x20: ffff082819a40290 x19: 0000000000000000 x18: 0000000000000020
-[  441.739304] x17: 0000000000000000 x16: ffffb5dad6bda690 x15: 00000000ffffffff
-[  441.746428] x14: ffff082814c3b26c x13: 00000000ffffffff x12: ffff082814c3b26a
-[  441.753553] x11: 00000000000000c0 x10: 000000000000003a x9 : ffffb5dad5ea94f4
-[  441.760678] x8 : 000000000000003a x7 : ffff80009abbbab0 x6 : 0000000000000030
-[  441.767802] x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
-[  441.774926] x2 : ffff08280f35a300 x1 : ffffb5dad7127180 x0 : 0000000000000000
-[  441.782053] Call trace:
-[  441.784488]  sas_find_dev_by_rphy+0x44/0x118 (P)
-[  441.789095]  sas_target_alloc+0x24/0xb0
-[  441.792920]  scsi_alloc_target+0x290/0x330
-[  441.797010]  __scsi_scan_target+0x88/0x258
-[  441.801096]  scsi_scan_channel+0x74/0xb8
-[  441.805008]  scsi_scan_host_selected+0x170/0x188
-[  441.809615]  sas_user_scan+0xfc/0x148
-[  441.813267]  store_scan+0x10c/0x180
-[  441.816743]  dev_attr_store+0x20/0x40
-[  441.820398]  sysfs_kf_write+0x84/0xa8
-[  441.824054]  kernfs_fop_write_iter+0x130/0x1c8
-[  441.828487]  vfs_write+0x2c0/0x370
-[  441.831880]  ksys_write+0x74/0x118
-[  441.835271]  __arm64_sys_write+0x24/0x38
-[  441.839182]  invoke_syscall+0x50/0x120
-[  441.842919]  el0_svc_common.constprop.0+0xc8/0xf0
-[  441.847611]  do_el0_svc+0x24/0x38
-[  441.850913]  el0_svc+0x38/0x158
-[  441.854043]  el0t_64_sync_handler+0xa0/0xe8
-[  441.858214]  el0t_64_sync+0x1ac/0x1b0
-[  441.861865] Code: aa1303e0 97ff70a8 34ffff80 d10a4273 (f9445a75)
-[  441.867946] ---[ end trace 0000000000000000 ]---
+The issue comes from the use of spi_nor_spimem_check_op() which is an
+internal helper dedicated to check read/write operations only, despite
+its generic name.
 
-Therefore, set max_channel to 0.
+This helper looks for the biggest number of address bytes that can be
+used for a page operation and tries 4 then 3. It then calls the usual
+spi-mem helpers to do the checks. These will always fail because there
+is now an inconsistency: the address cycles are forced to 4 (then 3)
+bytes, but the bus width during the address cycles rightfully remains
+0. There is a non-zero address length but a zero address bus width,
+which is an invalid combination.
 
-Fixes: e21fe3a52692 ("scsi: hisi_sas: add initialisation for v3 pci-based controller")
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://patch.msgid.link/20260305064039.4096775-1-liyihang9@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The correct check in this case is to directly call spi_mem_supports_op()
+which doesn't messes up with the operation content.
+
+Fixes: 5008c3ec3f89 ("mtd: spi-nor: core: Check read CR support")
+Cc: stable@vger.kernel.org
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Acked-by: Takahiro Kuwano <takahiro.kuwano@infineon.com>
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 2 +-
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/spi-nor/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 0a52e7ba504cb..578f7c6117d3d 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -2537,7 +2537,7 @@ int hisi_sas_probe(struct platform_device *pdev,
- 	shost->transportt = hisi_sas_stt;
- 	shost->max_id = HISI_SAS_MAX_DEVICES;
- 	shost->max_lun = ~0;
--	shost->max_channel = 1;
-+	shost->max_channel = 0;
- 	shost->max_cmd_len = HISI_SAS_MAX_CDB_LEN;
- 	if (hisi_hba->hw->slot_index_alloc) {
- 		shost->can_queue = HISI_SAS_MAX_COMMANDS;
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index e8f5a8023a1af..7075dde4584db 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -5087,7 +5087,7 @@ hisi_sas_v3_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	shost->transportt = hisi_sas_stt;
- 	shost->max_id = HISI_SAS_MAX_DEVICES;
- 	shost->max_lun = ~0;
--	shost->max_channel = 1;
-+	shost->max_channel = 0;
- 	shost->max_cmd_len = HISI_SAS_MAX_CDB_LEN;
- 	shost->can_queue = HISI_SAS_UNRESERVED_IPTT;
- 	shost->cmd_per_lun = HISI_SAS_UNRESERVED_IPTT;
+diff --git a/drivers/mtd/spi-nor/core.c b/drivers/mtd/spi-nor/core.c
+index 8ffeb41c3e08..13201908a69f 100644
+--- a/drivers/mtd/spi-nor/core.c
++++ b/drivers/mtd/spi-nor/core.c
+@@ -2466,7 +2466,7 @@ spi_nor_spimem_adjust_hwcaps(struct spi_nor *nor, u32 *hwcaps)
+ 
+ 		spi_nor_spimem_setup_op(nor, &op, nor->reg_proto);
+ 
+-		if (spi_nor_spimem_check_op(nor, &op))
++		if (!spi_mem_supports_op(nor->spimem, &op))
+ 			nor->flags |= SNOR_F_NO_READ_CR;
+ 	}
+ }
 -- 
-2.51.0
+2.53.0
 
 
 
