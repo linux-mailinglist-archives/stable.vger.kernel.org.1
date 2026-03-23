@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-229807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228304-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cJ4+JsVtwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229807-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:49 +0100
+	id QFzxJlpLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228304-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B7352F8AED
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CB52F4151
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 25DD03068D9A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2174131168FB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062393B8D4F;
-	Mon, 23 Mar 2026 16:21:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393073B0ACB;
+	Mon, 23 Mar 2026 14:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3shejrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5BGKb4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD44A3B9D9D;
-	Mon, 23 Mar 2026 16:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20163B47D9;
+	Mon, 23 Mar 2026 14:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282917; cv=none; b=jsEY/jjB4CRBDRCbiMAy/DEDH5SM5W3keZqNaAxTQ+I/CwcrdHzEb1eV8lqReqwpe++xSdOy74rHAodZn3wB6u7uZUTkEw3gvC7PYXSdlOKCp8G/6+G6e0Vk/s9krtQznQE7sGutfMzWYRJdVB3/5PuLTzCaZIGqX5/PDmrJ6KQ=
+	t=1774274749; cv=none; b=C+cdlFu5piuJQSKYRIJkaZvg80eQAILmemNxo6fg8L6GxMPmBOYY4zvdk3vCzH55XivdbXI9VSiPlyL2+GbNrxP9gY+pAjgeEit2KcHOU2N9XlqJjyF3ezuvCgJcrA8y0XosDoDkNz5r5fiuOBPaPwztldNRMAGqb57tsKRkOBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282917; c=relaxed/simple;
-	bh=rBaU7MS0a+GE3xIXRJFpaRm7qEviipYtfRjEiE7M0+I=;
+	s=arc-20240116; t=1774274749; c=relaxed/simple;
+	bh=AJ59eZPaFvnZdvf+h/mRMBh5O3s//DceHotovBWLbpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ElPFKbrgjoqVY279+WCLVDSkbz9gDj3UvyiG+52xQ42GQx5lXKWks683ILX1j8UV3HraBBOkG/RHNh5v1FFHKfaUv7KAiXPc7c2e3nSPpE+mWcUYV5/VbWItK16tL9PbSWH650Jbjy6gY6cYosKNClndhO5UsjpbKzQsfIz89J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3shejrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C069C4CEF7;
-	Mon, 23 Mar 2026 16:21:57 +0000 (UTC)
+	 MIME-Version; b=HoPDfY3jjZTtqqZYvqg5GGTlvQLOvl9WhRnNwkcMxRYG8Qj8Egv4VUdFG+gtYe9VTcQLhE6shZmSQh/Sl28ZAnDb/yRI3fr0rMR3t2UvzmKtNtkzxk1wtWlaQmu/pnYedFk/So0h3u14yh0uaTRxw0AtaKgpDxt+z6eM//+vibY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5BGKb4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 613B5C4CEF7;
+	Mon, 23 Mar 2026 14:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282917;
-	bh=rBaU7MS0a+GE3xIXRJFpaRm7qEviipYtfRjEiE7M0+I=;
+	s=korg; t=1774274748;
+	bh=AJ59eZPaFvnZdvf+h/mRMBh5O3s//DceHotovBWLbpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3shejrk0ed3rKXV/J78i+xjIYsyiMY9HGi/h7YQEq36UH74RypfaSpml+o6YgN7a
-	 iSoSnVOaVdNgVdRAnUSJPDTp2ToxLkB8PsKgpsjvvsoS/E4SJyZS6fL3sf6ovaW0hw
-	 HxFSPKu8XEmxFJSMos8u3flro7yPW1GjZq7C5Oak=
+	b=S5BGKb4qy5pg5aPx424llj6Z9HCqhoALHpd1jJF4sAjEAtauYUvVrvD1uOrzf0WFW
+	 WwLCI8IQdACvCcCQ7mPQFDu1QuMg6CuY3ksJ1cwpoS8adJmjm6oliu8K8DvU9e5qaZ
+	 kWiNF9hoCpjWvYo60AI+ShStmraLKh30RoMQ2Li8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>,
-	Kees Cook <kees@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 335/481] mm/kfence: disable KFENCE upon KASAN HW tags enablement
-Date: Mon, 23 Mar 2026 14:45:17 +0100
-Message-ID: <20260323134533.260402015@linuxfoundation.org>
+	Yiming Qian <yimingqian591@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.18 097/212] Bluetooth: L2CAP: Fix accepting multiple L2CAP_ECRED_CONN_REQ
+Date: Mon, 23 Mar 2026 14:45:18 +0100
+Message-ID: <20260323134506.838298103@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,106 +63,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229807-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,gmail.com,tugraz.at,kernel.org,linux-foundation.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-228304-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	HAS_WP_URI(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9B7352F8AED
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,bluetooth.com:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 35CB52F4151
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 09833d99db36d74456a4d13eb29c32d56ff8f2b6 ]
+commit 5b3e2052334f2ff6d5200e952f4aa66994d09899 upstream.
 
-KFENCE does not currently support KASAN hardware tags.  As a result, the
-two features are incompatible when enabled simultaneously.
+Currently the code attempts to accept requests regardless of the
+command identifier which may cause multiple requests to be marked
+as pending (FLAG_DEFER_SETUP) which can cause more than
+L2CAP_ECRED_MAX_CID(5) to be allocated in l2cap_ecred_rsp_defer
+causing an overflow.
 
-Given that MTE provides deterministic protection and KFENCE is a
-sampling-based debugging tool, prioritize the stronger hardware
-protections.  Disable KFENCE initialization and free the pre-allocated
-pool if KASAN hardware tags are detected to ensure the system maintains
-the security guarantees provided by MTE.
+The spec is quite clear that the same identifier shall not be used on
+subsequent requests:
 
-Link: https://lkml.kernel.org/r/20260213095410.1862978-1-glider@google.com
-Fixes: 0ce20dd84089 ("mm: add Kernel Electric-Fence infrastructure")
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Suggested-by: Marco Elver <elver@google.com>
-Reviewed-by: Marco Elver <elver@google.com>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Ernesto Martinez Garcia <ernesto.martinezgarcia@tugraz.at>
-Cc: Greg KH <gregkh@linuxfoundation.org>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+'Within each signaling channel a different Identifier shall be used
+for each successive request or indication.'
+https://www.bluetooth.com/wp-content/uploads/Files/Specification/HTML/Core-62/out/en/host/logical-link-control-and-adaptation-protocol-specification.html#UUID-32a25a06-4aa4-c6c7-77c5-dcfe3682355d
+
+So this attempts to check if there are any channels pending with the
+same identifier and rejects if any are found.
+
+Fixes: 15f02b910562 ("Bluetooth: L2CAP: Add initial code for Enhanced Credit Based Mode")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/kfence/core.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ net/bluetooth/l2cap_core.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/mm/kfence/core.c
-+++ b/mm/kfence/core.c
-@@ -13,6 +13,7 @@
- #include <linux/hash.h>
- #include <linux/irq_work.h>
- #include <linux/jhash.h>
-+#include <linux/kasan-enabled.h>
- #include <linux/kcsan-checks.h>
- #include <linux/kfence.h>
- #include <linux/kmemleak.h>
-@@ -844,6 +845,20 @@ void __init kfence_alloc_pool(void)
- 	if (!kfence_sample_interval)
- 		return;
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5045,7 +5045,7 @@ static inline int l2cap_ecred_conn_req(s
+ 	u16 mtu, mps;
+ 	__le16 psm;
+ 	u8 result, rsp_len = 0;
+-	int i, num_scid;
++	int i, num_scid = 0;
+ 	bool defer = false;
  
-+	/*
-+	 * If KASAN hardware tags are enabled, disable KFENCE, because it
-+	 * does not support MTE yet.
-+	 */
-+	if (kasan_hw_tags_enabled()) {
-+		pr_info("disabled as KASAN HW tags are enabled\n");
-+		if (__kfence_pool) {
-+			memblock_free(__kfence_pool, KFENCE_POOL_SIZE);
-+			__kfence_pool = NULL;
-+		}
-+		kfence_sample_interval = 0;
-+		return;
-+	}
+ 	if (!enable_ecred)
+@@ -5057,6 +5057,14 @@ static inline int l2cap_ecred_conn_req(s
+ 		result = L2CAP_CR_LE_INVALID_PARAMS;
+ 		goto response;
+ 	}
 +
- 	/* if the pool has already been initialized by arch, skip the below. */
- 	if (__kfence_pool)
- 		return;
++	/* Check if there are no pending channels with the same ident */
++	__l2cap_chan_list_id(conn, cmd->ident, l2cap_ecred_list_defer,
++			     &num_scid);
++	if (num_scid) {
++		result = L2CAP_CR_LE_INVALID_PARAMS;
++		goto response;
++	}
+ 
+ 	cmd_len -= sizeof(*req);
+ 	num_scid = cmd_len / sizeof(u16);
 
 
 
