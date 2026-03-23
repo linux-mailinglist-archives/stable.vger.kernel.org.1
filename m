@@ -1,61 +1,63 @@
-Return-Path: <stable+bounces-229768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228723-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKXkEF1ywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229768-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:25 +0100
+	id wCa2Oh1TwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228723-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:50:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A8E2F95AA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADC6F2F5446
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E4C1317762C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BE1DE3019CB2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4516F3BADB2;
-	Mon, 23 Mar 2026 16:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4013B27E0;
+	Mon, 23 Mar 2026 14:42:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyWGWcy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qswCxhiT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03EE63BB9F0;
-	Mon, 23 Mar 2026 16:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56263B27EB;
+	Mon, 23 Mar 2026 14:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282816; cv=none; b=gX93+7eDrm9xeNjmhF5iMfTxnf0H0L4dUdQsl6fmm6n+JzR6zhkQAYQr91Be8mkLLTSvyKfhF6BXa87oHPcnzSB9G0JgkW5oR+4FWMTbAUDCiVQuIHtGQQfb0TKYSex2V/VBKE9SkOm5AeCMu61BS+JshQf7hfpUoI3Yu1y205g=
+	t=1774276948; cv=none; b=u2oIHBr99SRSsYo0ZiRquqOZJ4N4Jr0FMSvwzPh1k2QECVwehHzPIgZbV15RBnpBOO+n0f6ujEG1fcRNYAepYPGpjN2TXvtBkpn66PwiHSzejUECqpgLQwRiKvnnW3u+Hq5X/RwbXV5UgRA9h9AKYg06j2/DzdCX2uC8rwf9T/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282816; c=relaxed/simple;
-	bh=bvnmXEIKaym+KN6GPDx7xt/VP0gY/Rh6SZRCtRML6Yo=;
+	s=arc-20240116; t=1774276948; c=relaxed/simple;
+	bh=WvIDynjntsXqHLM9V218QIVeQ5zqoWBGPk2EfdMDGk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BeaIxugdLXg4/hmIxIk7NBMy087cZF+CaKiMQhPofdt3vTpldlFYAHK21DYl/i+QHAzcS6EekWVONgIZAKKfhbfobG7mNO3Gu2G7LrcwmQvokUtAN8e8C10sU6LQeAp6EZqpuf7F3l2jSfkYLvO8addFpZJGT3jXeHD613F11AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyWGWcy8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 859EBC4CEF7;
-	Mon, 23 Mar 2026 16:20:15 +0000 (UTC)
+	 MIME-Version; b=bwdm8GciYDZd1cefiIu16Q0DBf4DQZXGJFVC+To9blQlFfa/nhqm7FULuNTJKmboGDngXWLIYsuhp1p8B9oO4YGXhp3/1Xz6J1K3W8OxUpTlEo7A1prL0cni/MmbT6ETnUvxHTbYjmJ6PoFQAlkWUuZEHRQwVdUcXFw5WUvQmGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qswCxhiT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7484FC4CEF7;
+	Mon, 23 Mar 2026 14:42:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282815;
-	bh=bvnmXEIKaym+KN6GPDx7xt/VP0gY/Rh6SZRCtRML6Yo=;
+	s=korg; t=1774276947;
+	bh=WvIDynjntsXqHLM9V218QIVeQ5zqoWBGPk2EfdMDGk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyWGWcy8siDiG+LgSA4FQd1DfwG/HQ3HiUhjQPMokle6IOFCqaie3EJd+Xmgi2xbP
-	 3Isi0ix+nePP7CWK7/U29lM34kiygEKQvem/38T8tLXX4/Aazp0FK43Mem2I+/NJsx
-	 +QIkRU+J0c1nYzgc9t42FbvvkqgP8mTue2bQBJ54=
+	b=qswCxhiTKcBex9U55mx0vOMOuGkqGfQARlR/FSvptx770vNNOo1/DOG4M3fc25zUG
+	 euJYBh79nx2Xi5ZHgUAjSkJNn6AaAtLWd5M0nC+bcWFYTTN97udrq/ODI3BUoTUt9/
+	 3i5vYzr8AcB2ZgXyzfzsntNBikiMjQtTW07tzDXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	James Chapman <jchapman@katalix.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Qingfang Deng <dqfext@gmail.com>
-Subject: [PATCH 6.1 279/481] l2tp: do not use sock_hold() in pppol2tp_session_get_sock()
+	Mathias Krause <minipli@grsecurity.net>,
+	John Allen <john.allen@amd.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Chao Gao <chao.gao@intel.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 265/460] KVM: nVMX: Add consistency checks for CR0.WP and CR4.CET
 Date: Mon, 23 Mar 2026 14:44:21 +0100
-Message-ID: <20260323134531.917194364@linuxfoundation.org>
+Message-ID: <20260323134532.995801111@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,139 +73,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229768-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,katalix.com,redhat.com,kernel.org,gmail.com];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228723-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 99A8E2F95AA
+X-Rspamd-Queue-Id: ADC6F2F5446
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Chao Gao <chao.gao@intel.com>
 
-commit 9b8c88f875c04d4cb9111bd5dd9291c7e9691bf5 upstream.
+[ Upstream commit 8060b2bd2dd05a19ad7ec248489d374f2bd2b057 ]
 
-pppol2tp_session_get_sock() is using RCU, it must be ready
-for sk_refcnt being zero.
+Add consistency checks for CR4.CET and CR0.WP in guest-state or host-state
+area in the VMCS12. This ensures that configurations with CR4.CET set and
+CR0.WP not set result in VM-entry failure, aligning with architectural
+behavior.
 
-Commit ee40fb2e1eb5 ("l2tp: protect sock pointer of
-struct pppol2tp_session with RCU") was correct because it
-had a call_rcu(..., pppol2tp_put_sk) which was later removed in blamed commit.
-
-pppol2tp_recv() can use pppol2tp_session_get_sock() as well.
-
-Fixes: c5cbaef992d6 ("l2tp: refactor ppp socket/session relationship")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: James Chapman <jchapman@katalix.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Link: https://patch.msgid.link/20250826134435.1683435-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+Tested-by: Mathias Krause <minipli@grsecurity.net>
+Tested-by: John Allen <john.allen@amd.com>
+Tested-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Link: https://lore.kernel.org/r/20250919223258.1604852-33-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: e2ffe85b6d2b ("KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/l2tp/l2tp_ppp.c |   25 ++++++++-----------------
- 1 file changed, 8 insertions(+), 17 deletions(-)
+ arch/x86/kvm/vmx/nested.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -130,22 +130,12 @@ static const struct ppp_channel_ops pppo
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3022,6 +3022,9 @@ static int nested_vmx_check_host_state(s
+ 	    CC(!kvm_vcpu_is_legal_cr3(vcpu, vmcs12->host_cr3)))
+ 		return -EINVAL;
  
- static const struct proto_ops pppol2tp_ops;
++	if (CC(vmcs12->host_cr4 & X86_CR4_CET && !(vmcs12->host_cr0 & X86_CR0_WP)))
++		return -EINVAL;
++
+ 	if (CC(is_noncanonical_msr_address(vmcs12->host_ia32_sysenter_esp, vcpu)) ||
+ 	    CC(is_noncanonical_msr_address(vmcs12->host_ia32_sysenter_eip, vcpu)))
+ 		return -EINVAL;
+@@ -3136,6 +3139,9 @@ static int nested_vmx_check_guest_state(
+ 	    CC(!nested_guest_cr4_valid(vcpu, vmcs12->guest_cr4)))
+ 		return -EINVAL;
  
--/* Retrieves the pppol2tp socket associated to a session.
-- * A reference is held on the returned socket, so this function must be paired
-- * with sock_put().
-- */
-+/* Retrieves the pppol2tp socket associated to a session. */
- static struct sock *pppol2tp_session_get_sock(struct l2tp_session *session)
- {
- 	struct pppol2tp_session *ps = l2tp_session_priv(session);
--	struct sock *sk;
- 
--	rcu_read_lock();
--	sk = rcu_dereference(ps->sk);
--	if (sk)
--		sock_hold(sk);
--	rcu_read_unlock();
--
--	return sk;
-+	return rcu_dereference(ps->sk);
- }
- 
- /* Helpers to obtain tunnel/session contexts from sockets.
-@@ -211,14 +201,13 @@ end:
- 
- static void pppol2tp_recv(struct l2tp_session *session, struct sk_buff *skb, int data_len)
- {
--	struct pppol2tp_session *ps = l2tp_session_priv(session);
--	struct sock *sk = NULL;
-+	struct sock *sk;
- 
- 	/* If the socket is bound, send it in to PPP's input queue. Otherwise
- 	 * queue it on the session socket.
- 	 */
- 	rcu_read_lock();
--	sk = rcu_dereference(ps->sk);
-+	sk = pppol2tp_session_get_sock(session);
- 	if (!sk)
- 		goto no_sock;
- 
-@@ -528,13 +517,14 @@ static void pppol2tp_show(struct seq_fil
- 	struct l2tp_session *session = arg;
- 	struct sock *sk;
- 
-+	rcu_read_lock();
- 	sk = pppol2tp_session_get_sock(session);
- 	if (sk) {
- 		struct pppox_sock *po = pppox_sk(sk);
- 
- 		seq_printf(m, "   interface %s\n", ppp_dev_name(&po->chan));
--		sock_put(sk);
- 	}
-+	rcu_read_unlock();
- }
- 
- static void pppol2tp_session_init(struct l2tp_session *session)
-@@ -1540,6 +1530,7 @@ static void pppol2tp_seq_session_show(st
- 		port = ntohs(inet->inet_sport);
- 	}
- 
-+	rcu_read_lock();
- 	sk = pppol2tp_session_get_sock(session);
- 	if (sk) {
- 		state = sk->sk_state;
-@@ -1575,8 +1566,8 @@ static void pppol2tp_seq_session_show(st
- 		struct pppox_sock *po = pppox_sk(sk);
- 
- 		seq_printf(m, "   interface %s\n", ppp_dev_name(&po->chan));
--		sock_put(sk);
- 	}
-+	rcu_read_unlock();
- }
- 
- static int pppol2tp_seq_show(struct seq_file *m, void *v)
++	if (CC(vmcs12->guest_cr4 & X86_CR4_CET && !(vmcs12->guest_cr0 & X86_CR0_WP)))
++		return -EINVAL;
++
+ 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) &&
+ 	    (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
+ 	     CC(!vmx_is_valid_debugctl(vcpu, vmcs12->guest_ia32_debugctl, false))))
 
 
 
