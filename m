@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228613-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aHZ4MBZuwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229183-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:10 +0100
+	id iJqRLeJPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228613-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244082F8BDB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54EF02F4D2D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9A54133EE2CE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1CDF930626F6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9143D3B19BC;
-	Mon, 23 Mar 2026 15:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 723783AE1AA;
+	Mon, 23 Mar 2026 14:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbvLiO2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItaV2v7T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5527A265620;
-	Mon, 23 Mar 2026 15:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333B72343D2;
+	Mon, 23 Mar 2026 14:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278322; cv=none; b=blD9LqK+TQC/Y92619syLn86ZutWonBsCz8WAVZP8sMPoloz0N9tFffgIYXsxlvr+vIhKHarcjxEPg/15XQRsJnw7bpohCBoSulqC1jFYnYTS9TCbEig6cTj4RtzbVwRju7pYakA0TG3v9AIcmgGdlj3JLitAfkPnbNcwSD6u7U=
+	t=1774275604; cv=none; b=poRQpW3wlTRqERA7a+f+4TEFC/fbOeCCQ7zV21HZvaWxhhDV+JpAsIHowLC1Gj0+4GjXbAu3kEMiCxH/+zN0LyYx3Y2d3P6sETWNI2xeIf81Lqy922t5KqluvFuIfKYUX25kn9RjyuiyGHcMIJD7lRt7IwFRy9pdbV41JC/Emlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278322; c=relaxed/simple;
-	bh=AgdZz/516yz1e+imFD4jgpinYqZ6GOceJ10YQEzIDkk=;
+	s=arc-20240116; t=1774275604; c=relaxed/simple;
+	bh=hOV/R3fccmtyNoCoNLw+jnOUDWeIfPtQfJS1QQLKKg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TNsHP8cYskKsJSGyQt9dk/R8ZKSPHCbJzZb9Ip79wBrp05C19rZPtyPGu40VrV76V94z9SS1/v/JVIbiRLXOd/Do0rLdhEw72s3eaJ23GNZE1n5dmeWCbPoEzrE33x1Tq/fLeZOhb/HyMn9xN3n+KDGUO3m5pbPYcOqLNDXEF6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbvLiO2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE0AC4CEF7;
-	Mon, 23 Mar 2026 15:05:21 +0000 (UTC)
+	 MIME-Version; b=ge0AZAo/UbdeZ2T9tKLiGUQTKc3qJMvzRAa6FcgBu9Ez1MYvXW7chVeHePeL+dQAcVQ7NJcxjK4jZcnjilj3u5p16ChwR3IfGTtJDgYz6kzXWm7np90zKNFZQUK/z0UpNS7wcOJpqbdS20mj6i2gofaniI8DDurnTvk95/Vt2q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItaV2v7T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551D0C2BC9E;
+	Mon, 23 Mar 2026 14:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278322;
-	bh=AgdZz/516yz1e+imFD4jgpinYqZ6GOceJ10YQEzIDkk=;
+	s=korg; t=1774275603;
+	bh=hOV/R3fccmtyNoCoNLw+jnOUDWeIfPtQfJS1QQLKKg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tbvLiO2zd/cuWRkzvCYVmcM6nkN95XtMFvhwYOyOtgBKyCSDF9oVOi1+xB8VKrF3Y
-	 l7Fq5GIWY9k7xgRf6avzf0d5nTBXJkocCgnSZagnWAw2r1jv82KMZ2BB5jo2nWsomb
-	 u6zB7Y0SBXaCXx6ICl4x21J3Hi+glPUPibYC0DWI=
+	b=ItaV2v7Tix3mo6v4/fviJEtrBPVnjqL+APgM7ewULF8X84+jCW3AUPHWWUxTMsNZ0
+	 Q0YHyxTjcIAQ9BgUKSGhYchh3q3SmMAA1xYHROTVII+Rc6hDRvPVHEcE7LndYgR4tE
+	 rKBwgetfYtVEzOflBXPJ4H9QaTeroQGXlOv77b50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuangpeng Bai <shuangpeng.kernel@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 234/567] serial: caif: hold tty->link reference in ldisc_open and ser_release
+	Eric Biggers <ebiggers@kernel.org>,
+	Dmitry Safonov <0x7f454c46@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 158/460] net/tcp-ao: Fix MAC comparison to be constant-time
 Date: Mon, 23 Mar 2026 14:42:34 +0100
-Message-ID: <20260323134539.626822615@linuxfoundation.org>
+Message-ID: <20260323134530.444731097@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,100 +64,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229183-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-228613-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,kernel.org,gmail.com];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 244082F8BDB
+X-Rspamd-Queue-Id: 54EF02F4D2D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 288598d80a068a0e9281de35bcb4ce495f189e2a ]
+commit 67edfec516d30d3e62925c397be4a1e5185802fc upstream.
 
-A reproducer triggers a KASAN slab-use-after-free in pty_write_room()
-when caif_serial's TX path calls tty_write_room(). The faulting access
-is on tty->link->port.
+To prevent timing attacks, MACs need to be compared in constant
+time.  Use the appropriate helper function for this.
 
-Hold an extra kref on tty->link for the lifetime of the caif_serial line
-discipline: get it in ldisc_open() and drop it in ser_release(), and
-also drop it on the ldisc_open() error path.
-
-With this change applied, the reproducer no longer triggers the UAF in
-my testing.
-
-Link: https://gist.github.com/shuangpengbai/c898debad6bdf170a84be7e6b3d8707f
-Link: https://lore.kernel.org/netdev/20260301220525.1546355-1-shuangpeng.kernel@gmail.com
-Fixes: e31d5a05948e ("caif: tty's are kref objects so take a reference")
-Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260306034006.3395740-1-shuangpeng.kernel@gmail.com
+Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Reviewed-by: Dmitry Safonov <0x7f454c46@gmail.com>
+Link: https://patch.msgid.link/20260302203600.13561-1-ebiggers@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/caif/caif_serial.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/Kconfig  |    1 +
+ net/ipv4/tcp_ao.c |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-index 699ed0ff461e8..6799dbf80f484 100644
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ -311,6 +311,7 @@ static void ser_release(struct work_struct *work)
- 			dev_close(ser->dev);
- 			unregister_netdevice(ser->dev);
- 			debugfs_deinit(ser);
-+			tty_kref_put(tty->link);
- 			tty_kref_put(tty);
- 		}
- 		rtnl_unlock();
-@@ -345,6 +346,7 @@ static int ldisc_open(struct tty_struct *tty)
+--- a/net/ipv4/Kconfig
++++ b/net/ipv4/Kconfig
+@@ -748,6 +748,7 @@ config TCP_SIGPOOL
+ config TCP_AO
+ 	bool "TCP: Authentication Option (RFC5925)"
+ 	select CRYPTO
++	select CRYPTO_LIB_UTILS
+ 	select TCP_SIGPOOL
+ 	depends on 64BIT && IPV6 != m # seq-number extension needs WRITE_ONCE(u64)
+ 	help
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -10,6 +10,7 @@
+ #define pr_fmt(fmt) "TCP: " fmt
  
- 	ser = netdev_priv(dev);
- 	ser->tty = tty_kref_get(tty);
-+	tty_kref_get(tty->link);
- 	ser->dev = dev;
- 	debugfs_init(ser, tty);
- 	tty->receive_room = N_TTY_BUF_SIZE;
-@@ -353,6 +355,7 @@ static int ldisc_open(struct tty_struct *tty)
- 	rtnl_lock();
- 	result = register_netdevice(dev);
- 	if (result) {
-+		tty_kref_put(tty->link);
- 		tty_kref_put(tty);
- 		rtnl_unlock();
- 		free_netdev(dev);
--- 
-2.51.0
-
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <linux/inetdevice.h>
+ #include <linux/tcp.h>
+ 
+@@ -923,7 +924,7 @@ tcp_ao_verify_hash(const struct sock *sk
+ 	/* XXX: make it per-AF callback? */
+ 	tcp_ao_hash_skb(family, hash_buf, key, sk, skb, traffic_key,
+ 			(phash - (u8 *)th), sne);
+-	if (memcmp(phash, hash_buf, maclen)) {
++	if (crypto_memneq(phash, hash_buf, maclen)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOBAD);
+ 		atomic64_inc(&info->counters.pkt_bad);
+ 		atomic64_inc(&key->pkt_bad);
 
 
 
