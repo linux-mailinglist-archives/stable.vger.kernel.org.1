@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-229479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229480-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KCAsGBVjwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229479-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:58:13 +0100
+	id MHbjKlNhwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229480-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:50:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B73BD2F730C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:58:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F5122F700A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:50:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DF28232B6439
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:34:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32B7130537B8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FCC3B9D9C;
-	Mon, 23 Mar 2026 15:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3D13B531A;
+	Mon, 23 Mar 2026 15:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZqSwEUR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBEbF1l8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A61FC279DB1;
-	Mon, 23 Mar 2026 15:22:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBE927A10F;
+	Mon, 23 Mar 2026 15:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279365; cv=none; b=jyVFV/AwzJExyGSn4vG1N5n1yJ6N34BxVyGt/bX7EAsjVhGyGKD4kuvEUjJVN1nBsbJJGhXpOqCYxglnHAyfjfypqX9d4GLvACgCCR15xQr6JRzLdPIBHbV5a3cVUxfgIJK26d6cKpFkuvmSqOhgQ4U1mYXqwRS0HXx6yZGvLg0=
+	t=1774279369; cv=none; b=FE63TVhBHnTcbvaqk6o16I8SQSN205apI1WMSAs0fmXZxecQlyEDj1HZ3566r8G83FQGNdl1n4ROgNNLmSVAourMN5NkKuMrPKHe/eaEDaI8dTRBBP4jFoW1U5oe3rPssAL2STuPdbvquZquapMAX4roKu7yfcxrgjvM8/rh42c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279365; c=relaxed/simple;
-	bh=E+IyMIZkfumY9brqDzJT7jAcl38xLdazqorq15nyFOE=;
+	s=arc-20240116; t=1774279369; c=relaxed/simple;
+	bh=/3AFGUDIxMdGO1UFPGwujHTYBeVomMY8EP6NDmad6+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gFoiSHtmpnVuSM8FhlZv7J0Gw3X2I9q1xQyIaxoLiKw1mBw0TNFyNj/45KHrIZ0ymPYgnTs/9mj7Be++Km0K4n1UjuIuIcN9Qq8rPW76FmRzaudr1E0W6qYg5eAsBnkFCPUbw1Fz4xtK4C+JXj9OTBJv/tn8N+ZEjdUUhI41qdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZqSwEUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148ACC4CEF7;
-	Mon, 23 Mar 2026 15:22:44 +0000 (UTC)
+	 MIME-Version; b=MIhNtKQsBYwIveH8TsJ96zCSbVf+1UxbfRB2NMGi6FgQg7rG+56SWkVEJWc46IYAMo6qqAcYIWak9iBd9GUsZEFu16D/eMmYZrCY7pQmqT6FpEw9KXFzFbS/NvB+OYLShW1eENt/YfG4dfxfFj9ErcZk0nZ89vpKOr7VrTx9YLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBEbF1l8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AF3DC4CEF7;
+	Mon, 23 Mar 2026 15:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279365;
-	bh=E+IyMIZkfumY9brqDzJT7jAcl38xLdazqorq15nyFOE=;
+	s=korg; t=1774279369;
+	bh=/3AFGUDIxMdGO1UFPGwujHTYBeVomMY8EP6NDmad6+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZqSwEURbKvk7cRZfK5jaGlGrrMQlIb6nZeZG6b/LNiS+UWUhL3GxuG4xThYjaJaw
-	 w2OjHA3Ul8ytc4C3T8Ya/x6Mj05rRSN7ll5gmvWnd+z/T9rHDGeLDxrUPeMO5tnMLM
-	 mC3FLXSJJlBtn0sUBYWY4OFXcrey0gQJrHLfXOG8=
+	b=EBEbF1l8WCWYHgDC44j7ZXLsnwQLlaIbllQtEowJ0BbKxt0gShtvxNgyeK81e3w9B
+	 Hv8wsTkAYmOYiCkRD3+l139UHnwL0bGUD+gVZoFOVprAiOq7/J8x0sneVVcgegBEEg
+	 PiCdf2//oK2zze3yoEkkw0IMVs1p8t5LkpwQX8Gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Sun peng Li <sunpeng.li@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 561/567] mtd: rawnand: brcmnand: skip DMA during panic write
-Date: Mon, 23 Mar 2026 14:48:01 +0100
-Message-ID: <20260323134547.910894812@linuxfoundation.org>
+Subject: [PATCH 6.6 562/567] drm/amd/display: Fix DisplayID not-found handling in parse_edid_displayid_vrr()
+Date: Mon, 23 Mar 2026 14:48:02 +0100
+Message-ID: <20260323134547.933607896@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -70,30 +75,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229479-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229480-lists,stable=lfdr.de];
+	RCPT_COUNT_TWELVE(0.00)[13];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,bootlin.com:email]
-X-Rspamd-Queue-Id: B73BD2F730C
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,linaro.org:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 4F5122F700A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,47 +106,69 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit da9ba4dcc01e7cf52b7676f0ee9607b8358c2171 ]
+[ Upstream commit 2323b019651ad81c20a0f7f817c63392b3110652 ]
 
-When oops_panic_write is set, the driver disables interrupts and
-switches to PIO polling mode but still falls through into the DMA
-path. DMA cannot be used reliably in panic context, so make the
-DMA path an else branch to ensure only PIO is used during panic
-writes.
+parse_edid_displayid_vrr() searches the EDID extension blocks for a
+DisplayID extension before parsing the dynamic video timing range.
 
-Fixes: c1ac2dc34b51 ("mtd: rawnand: brcmnand: When oops in progress use pio and interrupt polling")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+The code previously checked whether edid_ext was NULL after the search
+loop. However, edid_ext is assigned during each iteration of the loop,
+so it will never be NULL once the loop has executed. If no DisplayID
+extension is found, edid_ext ends up pointing to the last extension
+block, and the NULL check does not correctly detect the failure case.
+
+Instead, check whether the loop completed without finding a matching
+DisplayID block by testing "i == edid->extensions". This ensures the
+function exits early when no DisplayID extension is present and avoids
+parsing an unrelated EDID extension block.
+
+Also simplify the EDID validation check using "!edid ||
+!edid->extensions".
+
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:13079 parse_edid_displayid_vrr() warn: variable dereferenced before check 'edid_ext' (see line 13075)
+
+Fixes: a638b837d0e6 ("drm/amd/display: Fix refresh rate range for some panel")
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Jerry Zuo <jerry.zuo@amd.com>
+Cc: Sun peng Li <sunpeng.li@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 91c7e6342e98c846b259c57273436fdea4c043f2)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 03d7e26d49537..ece399705bd73 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2411,14 +2411,12 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
- 	for (i = 0; i < ctrl->max_oob; i += 4)
- 		oob_reg_write(ctrl, i, 0xffffffff);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 26047109726eb..f51c3921cbc26 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10695,7 +10695,7 @@ static void parse_edid_displayid_vrr(struct drm_connector *connector,
+ 	u16 min_vfreq;
+ 	u16 max_vfreq;
  
--	if (mtd->oops_panic_write)
-+	if (mtd->oops_panic_write) {
- 		/* switch to interrupt polling and PIO mode */
- 		disable_ctrl_irqs(ctrl);
--
--	if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
-+	} else if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
- 		if (ctrl->dma_trans(host, addr, (u32 *)buf, oob, mtd->writesize,
- 				    CMD_PROGRAM_PAGE))
--
- 			ret = -EIO;
+-	if (edid == NULL || edid->extensions == 0)
++	if (!edid || !edid->extensions)
+ 		return;
  
- 		goto out;
+ 	/* Find DisplayID extension */
+@@ -10705,7 +10705,7 @@ static void parse_edid_displayid_vrr(struct drm_connector *connector,
+ 			break;
+ 	}
+ 
+-	if (edid_ext == NULL)
++	if (i == edid->extensions)
+ 		return;
+ 
+ 	while (j < EDID_LENGTH) {
 -- 
 2.51.0
 
