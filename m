@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-229147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228569-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CKynNQlZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229147-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:21 +0100
+	id 0FpSMotQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228569-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F252F60EF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FBC72F4ED1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4189C301C14A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D6A0030F831B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3275D2820C6;
-	Mon, 23 Mar 2026 15:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCBE1FFC48;
+	Mon, 23 Mar 2026 14:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULH6eJJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYdh8pcE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E966C3B6C01;
-	Mon, 23 Mar 2026 15:03:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D41D63F3;
+	Mon, 23 Mar 2026 14:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278210; cv=none; b=Nu/WtBJ8CZc4m8FJwobQ0CiZDt2NW84bNaaLg/mr8pKDYRkNhtuJDlBj8YVtg2Fzx0SqhYlr2IrlhWHwrka6OXxxrYxpZIAd157NK+nZkBLWhKwjPq+UDrm5KRtRmPCB9mw16JgMpgvJ0BT3VsnkeTYHR5UvGeecf/TiOAUUlGI=
+	t=1774275477; cv=none; b=eMfYPE+PI/4wwAspiVTauXFu3c0HyP6uiXeOdkNv0fGWUSZoG37w4/Shui3ZZCG2j7Meo/iXqlrIEGapr/og7+No4fvFPqRP1S0TA9O/E3+eZh7VueIdayJaKRdRjQlThVtlTVJAENaKm4DG3WTuRknNoqHlytvlO3aA8DtDt3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278210; c=relaxed/simple;
-	bh=WqHupteWO8nICKSnExrFvdbmOnSgouMpD8my3Ci9m+Y=;
+	s=arc-20240116; t=1774275477; c=relaxed/simple;
+	bh=yOICwsUH/VkFRKBRDQYiqZZmxo7nm4Ufql/6+BhVvR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1TpfiARvhlCHZSFXE/1eOj0KGUAfQoBcAgy4YMEZPMrCZimH0ukU6EJjp1GsdP0XRICpefNFfVYAL/qHz1v1t2SlB5moD2Bey4UgrysnitUb4Ss7AOrpHFAqbXzA5NfleWADyS6HwdX1X8Rzbh7UfOhUKLgu7O7H3TVTi7Iu2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULH6eJJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644E0C4CEF7;
-	Mon, 23 Mar 2026 15:03:29 +0000 (UTC)
+	 MIME-Version; b=kgWd6nLljqrOzx8gNqtWNqmMVColm389rVubTP4h59+WWym7yD+CgnlB/fCa7BKsSnOi8czDleyF/DnBg8+gmrqtY6uBefxqGRiSx0VqXm67l/FRIxRz4dig6D34kPz6MSS+vXxFMMoHX5UkOhU6Zxyj7zM46s7arfBVvUVNKW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYdh8pcE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 978A7C2BCB3;
+	Mon, 23 Mar 2026 14:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278209;
-	bh=WqHupteWO8nICKSnExrFvdbmOnSgouMpD8my3Ci9m+Y=;
+	s=korg; t=1774275476;
+	bh=yOICwsUH/VkFRKBRDQYiqZZmxo7nm4Ufql/6+BhVvR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ULH6eJJmxSsAxonWQhnBsiQm1vL07KwA3XFm+PTlOgWWCwRJsaN2PHjY5LjCFkhpj
-	 Ez9lVlr2JEYeCSijl3ywXa7JAYI7R/x0QIXqUsw/xLcybWxC4pHR0B0ram3WuHc9UF
-	 4zr64zApByiJ9zJ7mibpXfJZhW5SA0xqRoGXA+EY=
+	b=CYdh8pcEHzwDtNKAr7CP6kQFphqT9W+7PvvmbYLfIeOZLGUf9gb8qCNYseBa5KcvP
+	 /CG0MLgqjGSvSwyxcMfd/lYQwwARpMV+Dweukw/kK3pbefLAQLBJ5qwGDGliWOHNiJ
+	 DetqzwTgLJpMYq95QfFPjo6ylG+/HuIwHig9A0Kc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.6 192/567] apparmor: fix missing bounds check on DEFAULT table in verify_dfa()
+	Ziyi Guo <n7l8m4@u.northwestern.edu>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 116/460] usb: image: mdc800: kill download URB on timeout
 Date: Mon, 23 Mar 2026 14:41:52 +0100
-Message-ID: <20260323134538.602335462@linuxfoundation.org>
+Message-ID: <20260323134529.485156111@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,124 +65,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229147-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228569-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 77F252F60EF
+X-Rspamd-Queue-Id: 5FBC72F4ED1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
 
-commit d352873bbefa7eb39995239d0b44ccdf8aaa79a4 upstream.
+commit 1be3b77de4eb89af8ae2fd6610546be778e25589 upstream.
 
-The verify_dfa() function only checks DEFAULT_TABLE bounds when the state
-is not differentially encoded.
+mdc800_device_read() submits download_urb and waits for completion.
+If the timeout fires and the device has not responded, the function
+returns without killing the URB, leaving it active.
 
-When the verification loop traverses the differential encoding chain,
-it reads k = DEFAULT_TABLE[j] and uses k as an array index without
-validation. A malformed DFA with DEFAULT_TABLE[j] >= state_count,
-therefore, causes both out-of-bounds reads and writes.
+A subsequent read() resubmits the same URB while it is still
+in-flight, triggering the WARN in usb_submit_urb():
 
-[   57.179855] ==================================================================
-[   57.180549] BUG: KASAN: slab-out-of-bounds in verify_dfa+0x59a/0x660
-[   57.180904] Read of size 4 at addr ffff888100eadec4 by task su/993
+  "URB submitted while active"
 
-[   57.181554] CPU: 1 UID: 0 PID: 993 Comm: su Not tainted 6.19.0-rc7-next-20260127 #1 PREEMPT(lazy)
-[   57.181558] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-[   57.181563] Call Trace:
-[   57.181572]  <TASK>
-[   57.181577]  dump_stack_lvl+0x5e/0x80
-[   57.181596]  print_report+0xc8/0x270
-[   57.181605]  ? verify_dfa+0x59a/0x660
-[   57.181608]  kasan_report+0x118/0x150
-[   57.181620]  ? verify_dfa+0x59a/0x660
-[   57.181623]  verify_dfa+0x59a/0x660
-[   57.181627]  aa_dfa_unpack+0x1610/0x1740
-[   57.181629]  ? __kmalloc_cache_noprof+0x1d0/0x470
-[   57.181640]  unpack_pdb+0x86d/0x46b0
-[   57.181647]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181653]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181656]  ? aa_unpack_nameX+0x1a8/0x300
-[   57.181659]  aa_unpack+0x20b0/0x4c30
-[   57.181662]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181664]  ? stack_depot_save_flags+0x33/0x700
-[   57.181681]  ? kasan_save_track+0x4f/0x80
-[   57.181683]  ? kasan_save_track+0x3e/0x80
-[   57.181686]  ? __kasan_kmalloc+0x93/0xb0
-[   57.181688]  ? __kvmalloc_node_noprof+0x44a/0x780
-[   57.181693]  ? aa_simple_write_to_buffer+0x54/0x130
-[   57.181697]  ? policy_update+0x154/0x330
-[   57.181704]  aa_replace_profiles+0x15a/0x1dd0
-[   57.181707]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181710]  ? __kvmalloc_node_noprof+0x44a/0x780
-[   57.181712]  ? aa_loaddata_alloc+0x77/0x140
-[   57.181715]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   57.181717]  ? _copy_from_user+0x2a/0x70
-[   57.181730]  policy_update+0x17a/0x330
-[   57.181733]  profile_replace+0x153/0x1a0
-[   57.181735]  ? rw_verify_area+0x93/0x2d0
-[   57.181740]  vfs_write+0x235/0xab0
-[   57.181745]  ksys_write+0xb0/0x170
-[   57.181748]  do_syscall_64+0x8e/0x660
-[   57.181762]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[   57.181765] RIP: 0033:0x7f6192792eb2
+Check the return value of wait_event_timeout() and kill the URB if
+it indicates timeout, ensuring the URB is complete before its status
+is inspected or the URB is resubmitted.
 
-Remove the MATCH_FLAG_DIFF_ENCODE condition to validate all DEFAULT_TABLE
-entries unconditionally.
+Similar to
+- commit 372c93131998 ("USB: yurex: fix control-URB timeout handling")
+- commit b98d5000c505 ("media: rc: iguanair: handle timeouts")
 
-Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260209151937.2247202-1-n7l8m4@u.northwestern.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/match.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/image/mdc800.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -160,9 +160,10 @@ static int verify_dfa(struct aa_dfa *dfa
- 	if (state_count == 0)
- 		goto out;
- 	for (i = 0; i < state_count; i++) {
--		if (!(BASE_TABLE(dfa)[i] & MATCH_FLAG_DIFF_ENCODE) &&
--		    (DEFAULT_TABLE(dfa)[i] >= state_count))
-+		if (DEFAULT_TABLE(dfa)[i] >= state_count) {
-+			pr_err("AppArmor DFA default state out of bounds");
- 			goto out;
-+		}
- 		if (BASE_TABLE(dfa)[i] & MATCH_FLAGS_INVALID) {
- 			pr_err("AppArmor DFA state with invalid match flags");
- 			goto out;
+--- a/drivers/usb/image/mdc800.c
++++ b/drivers/usb/image/mdc800.c
+@@ -730,9 +730,11 @@ static ssize_t mdc800_device_read (struc
+ 					mutex_unlock(&mdc800->io_lock);
+ 					return len-left;
+ 				}
+-				wait_event_timeout(mdc800->download_wait,
++				retval = wait_event_timeout(mdc800->download_wait,
+ 				     mdc800->downloaded,
+ 				     msecs_to_jiffies(TO_DOWNLOAD_GET_READY));
++				if (!retval)
++					usb_kill_urb(mdc800->download_urb);
+ 				mdc800->downloaded = 0;
+ 				if (mdc800->download_urb->status != 0)
+ 				{
 
 
 
