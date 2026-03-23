@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229325-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uAn4MTR1wWl5TQQAu9opvQ
-	(envelope-from <stable+bounces-229820-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:32 +0100
+	id 2F+SJsNvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229325-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11C02F9A4D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:15:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADCC2F8F47
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6AA973131ACE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6F588346C8AA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE37135958;
-	Mon, 23 Mar 2026 16:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B17A280CD2;
+	Mon, 23 Mar 2026 15:12:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfhjaYAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEvsUSzj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823761DA0E1;
-	Mon, 23 Mar 2026 16:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28F32459C6;
+	Mon, 23 Mar 2026 15:12:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282953; cv=none; b=jwHCKPIQedUDidcZ5TlPAD1nxHkKNOpRMgEWvnetWlofnasaHrZ1ywhIKscckeXWhHpBBZiKMDfKjttiQrAKeh9dZgweJhU41WFxtmx2YEWyZM2hFNde7Kp9PPv3oL7T3LAllPy+VGb3yjb1CmMEFX68Q+q5cSibz+T25DMRoJU=
+	t=1774278762; cv=none; b=Ia0ge7Y1Gt6QGfqdTgbTWdrb7Jq4Ny6ksLz8wpJ+QLvojKeR7YWyWg4XsBrnzaT/EYFGQI3PA8I5BPhHvdgWq2NRgGBjsViGk2h01VSNMtWrL9Bm/WtcbJoEq+fpNUhWHcx1AMvHP0vSZFrhVWbRrKw5E94ufyhSv632Zmipu+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282953; c=relaxed/simple;
-	bh=CCMNrLekyZhq9vJReGEoDjLP49s1pDRWL2pywqkksGI=;
+	s=arc-20240116; t=1774278762; c=relaxed/simple;
+	bh=vVqqMyfohjUeQ4Vn+j5lSsAoT2ZHQjN3GMUrF3+IQgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEpkCIHRQ3FLvuMe5rBwn8BbyvVvnfLtvAAOD39ZIffs4YMfpbJ/ZqLbbeI4TtRGG25wQrIPxyPfpnjFBI1gizEdG7ghjEa3k6sXPrgB9y6LxMR1YKTyCGsojhH/L7qWufp8hvGXQePs1grsCWEElDW4rdbHiz3LXJ0VrAbhByk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfhjaYAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48BCC4CEF7;
-	Mon, 23 Mar 2026 16:22:32 +0000 (UTC)
+	 MIME-Version; b=dX/+Us9mlQMw2rxvdDJHa4EIuv+jx1YtjXDk6TESLsjPC9tgq0+qpgRpq/DHkrvsK4It063NCQos5qtBb3iOO6MirqfBgITxuJptfXgX8ixeWI4ERnZE7H60V0Ubj3y+zr2EMPNxhRvj48ZzuWVGaOTmwcGACaPK896QF1ogAF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEvsUSzj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B5BC4CEF7;
+	Mon, 23 Mar 2026 15:12:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282953;
-	bh=CCMNrLekyZhq9vJReGEoDjLP49s1pDRWL2pywqkksGI=;
+	s=korg; t=1774278762;
+	bh=vVqqMyfohjUeQ4Vn+j5lSsAoT2ZHQjN3GMUrF3+IQgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfhjaYAIJGSUZbSEoU+7jHYrnluYizX5yF5/A9aY6LaIhCf9hFwhe0KP82mbtEasR
-	 cryX4EVzf6cdet4wtAgsVvLdX/LYM5LQ6+K1nlXXlbGtixO00NQx7DBkXmktstZP4Q
-	 VnivoDsPAxSuFYLulD9c205/teRS7zKK8boCUWWA=
+	b=vEvsUSzjYFDHssEos8Mf3mplNxxpBk4ggxa546VumgDNfS6aWxZpEI39vZTbAlpHP
+	 Ji5K7Zg8KMRU7kq9lA4AYClJAgvO9DoXRBuWjh/8qfvwlX9dEuduc7QRdkLR4OeV6R
+	 vZKBujbh+blEb833uKqY4GSgFNcNfSzlWjSiY7Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 347/481] xfs: ensure dquot item is deleted from AIL only after log shutdown
+	Benjamin Coddington <bcodding@hammerspace.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.6 409/567] pNFS: Fix a deadlock when returning a delegation during open()
 Date: Mon, 23 Mar 2026 14:45:29 +0100
-Message-ID: <20260323134533.556376184@linuxfoundation.org>
+Message-ID: <20260323134543.999296788@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,100 +66,245 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229820-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229325-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hammerspace.com,139.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E11C02F9A4D
+X-Rspamd-Queue-Id: 1ADCC2F8F47
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 186ac39b8a7d3ec7ce9c5dd45e5c2730177f375c ]
+[ Upstream commit 857bf9056291a16785ae3be1d291026b2437fc48 ]
 
-In xfs_qm_dqflush(), when a dquot flush fails due to corruption
-(the out_abort error path), the original code removed the dquot log
-item from the AIL before calling xfs_force_shutdown(). This ordering
-introduces a subtle race condition that can lead to data loss after
-a crash.
+Ben Coddington reports seeing a hang in the following stack trace:
+  0 [ffffd0b50e1774e0] __schedule at ffffffff9ca05415
+  1 [ffffd0b50e177548] schedule at ffffffff9ca05717
+  2 [ffffd0b50e177558] bit_wait at ffffffff9ca061e1
+  3 [ffffd0b50e177568] __wait_on_bit at ffffffff9ca05cfb
+  4 [ffffd0b50e1775c8] out_of_line_wait_on_bit at ffffffff9ca05ea5
+  5 [ffffd0b50e177618] pnfs_roc at ffffffffc154207b [nfsv4]
+  6 [ffffd0b50e1776b8] _nfs4_proc_delegreturn at ffffffffc1506586 [nfsv4]
+  7 [ffffd0b50e177788] nfs4_proc_delegreturn at ffffffffc1507480 [nfsv4]
+  8 [ffffd0b50e1777f8] nfs_do_return_delegation at ffffffffc1523e41 [nfsv4]
+  9 [ffffd0b50e177838] nfs_inode_set_delegation at ffffffffc1524a75 [nfsv4]
+ 10 [ffffd0b50e177888] nfs4_process_delegation at ffffffffc14f41dd [nfsv4]
+ 11 [ffffd0b50e1778a0] _nfs4_opendata_to_nfs4_state at ffffffffc1503edf [nfsv4]
+ 12 [ffffd0b50e1778c0] _nfs4_open_and_get_state at ffffffffc1504e56 [nfsv4]
+ 13 [ffffd0b50e177978] _nfs4_do_open at ffffffffc15051b8 [nfsv4]
+ 14 [ffffd0b50e1779f8] nfs4_do_open at ffffffffc150559c [nfsv4]
+ 15 [ffffd0b50e177a80] nfs4_atomic_open at ffffffffc15057fb [nfsv4]
+ 16 [ffffd0b50e177ad0] nfs4_file_open at ffffffffc15219be [nfsv4]
+ 17 [ffffd0b50e177b78] do_dentry_open at ffffffff9c09e6ea
+ 18 [ffffd0b50e177ba8] vfs_open at ffffffff9c0a082e
+ 19 [ffffd0b50e177bd0] dentry_open at ffffffff9c0a0935
 
-The AIL tracks the oldest dirty metadata in the journal. The position
-of the tail item in the AIL determines the log tail LSN, which is the
-oldest LSN that must be preserved for crash recovery. When an item is
-removed from the AIL, the log tail can advance past the LSN of that item.
+The issue is that the delegreturn is being asked to wait for a layout
+return that cannot complete because a state recovery was initiated. The
+state recovery cannot complete until the open() finishes processing the
+delegations it was given.
 
-The race window is as follows: if the dquot item happens to be at
-the tail of the log, removing it from the AIL allows the log tail
-to advance. If a concurrent log write is sampling the tail LSN at
-the same time and subsequently writes a complete checkpoint (i.e.,
-one containing a commit record) to disk before the shutdown takes
-effect, the journal will no longer protect the dquot's last
-modification. On the next mount, log recovery will not replay the
-dquot changes, even though they were never written back to disk,
-resulting in silent data loss.
+The solution is to propagate the existing flags that indicate a
+non-blocking call to the function pnfs_roc(), so that it knows not to
+wait in this situation.
 
-Fix this by calling xfs_force_shutdown() before xfs_trans_ail_delete()
-in the out_abort path. Once the log is shut down, no new log writes
-can complete with an updated tail LSN, making it safe to remove the
-dquot item from the AIL.
-
-Cc: stable@vger.kernel.org
-Fixes: b707fffda6a3 ("xfs: abort consistently on dquot flush failure")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ adapted error path to preserve existing out_unlock label between xfs_trans_ail_delete and xfs_dqfunlock ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Benjamin Coddington <bcodding@hammerspace.com>
+Fixes: 29ade5db1293 ("pNFS: Wait on outstanding layoutreturns to complete in pnfs_roc()")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_dquot.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c |    6 ++---
+ fs/nfs/pnfs.c     |   58 ++++++++++++++++++++++++++++++++++++++----------------
+ fs/nfs/pnfs.h     |   17 ++++++---------
+ 3 files changed, 51 insertions(+), 30 deletions(-)
 
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -1297,9 +1297,15 @@ xfs_qm_dqflush(
- 	return 0;
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3792,8 +3792,8 @@ int nfs4_do_close(struct nfs4_state *sta
+ 	calldata->res.seqid = calldata->arg.seqid;
+ 	calldata->res.server = server;
+ 	calldata->res.lr_ret = -NFS4ERR_NOMATCHING_LAYOUT;
+-	calldata->lr.roc = pnfs_roc(state->inode,
+-			&calldata->lr.arg, &calldata->lr.res, msg.rpc_cred);
++	calldata->lr.roc = pnfs_roc(state->inode, &calldata->lr.arg,
++				    &calldata->lr.res, msg.rpc_cred, wait);
+ 	if (calldata->lr.roc) {
+ 		calldata->arg.lr_args = &calldata->lr.arg;
+ 		calldata->res.lr_res = &calldata->lr.res;
+@@ -6742,7 +6742,7 @@ static int _nfs4_proc_delegreturn(struct
+ 	data->inode = nfs_igrab_and_active(inode);
+ 	if (data->inode || issync) {
+ 		data->lr.roc = pnfs_roc(inode, &data->lr.arg, &data->lr.res,
+-					cred);
++					cred, issync);
+ 		if (data->lr.roc) {
+ 			data->args.lr_args = &data->lr.arg;
+ 			data->res.lr_res = &data->lr.res;
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1427,10 +1427,9 @@ pnfs_commit_and_return_layout(struct ino
+ 	return ret;
+ }
  
- out_abort:
-+	/*
-+	 * Shut down the log before removing the dquot item from the AIL.
-+	 * Otherwise, the log tail may advance past this item's LSN while
-+	 * log writes are still in progress, making these unflushed changes
-+	 * unrecoverable on the next mount.
-+	 */
-+	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- 	dqp->q_flags &= ~XFS_DQFLAG_DIRTY;
- 	xfs_trans_ail_delete(lip, 0);
--	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- out_unlock:
- 	xfs_dqfunlock(dqp);
- 	return error;
+-bool pnfs_roc(struct inode *ino,
+-		struct nfs4_layoutreturn_args *args,
+-		struct nfs4_layoutreturn_res *res,
+-		const struct cred *cred)
++bool pnfs_roc(struct inode *ino, struct nfs4_layoutreturn_args *args,
++	      struct nfs4_layoutreturn_res *res, const struct cred *cred,
++	      bool sync)
+ {
+ 	struct nfs_inode *nfsi = NFS_I(ino);
+ 	struct nfs_open_context *ctx;
+@@ -1441,7 +1440,7 @@ bool pnfs_roc(struct inode *ino,
+ 	nfs4_stateid stateid;
+ 	enum pnfs_iomode iomode = 0;
+ 	bool layoutreturn = false, roc = false;
+-	bool skip_read = false;
++	bool skip_read;
+ 
+ 	if (!nfs_have_layout(ino))
+ 		return false;
+@@ -1454,20 +1453,14 @@ retry:
+ 		lo = NULL;
+ 		goto out_noroc;
+ 	}
+-	pnfs_get_layout_hdr(lo);
+-	if (test_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags)) {
+-		spin_unlock(&ino->i_lock);
+-		rcu_read_unlock();
+-		wait_on_bit(&lo->plh_flags, NFS_LAYOUT_RETURN,
+-				TASK_UNINTERRUPTIBLE);
+-		pnfs_put_layout_hdr(lo);
+-		goto retry;
+-	}
+ 
+ 	/* no roc if we hold a delegation */
++	skip_read = false;
+ 	if (nfs4_check_delegation(ino, FMODE_READ)) {
+-		if (nfs4_check_delegation(ino, FMODE_WRITE))
++		if (nfs4_check_delegation(ino, FMODE_WRITE)) {
++			lo = NULL;
+ 			goto out_noroc;
++		}
+ 		skip_read = true;
+ 	}
+ 
+@@ -1476,12 +1469,43 @@ retry:
+ 		if (state == NULL)
+ 			continue;
+ 		/* Don't return layout if there is open file state */
+-		if (state->state & FMODE_WRITE)
++		if (state->state & FMODE_WRITE) {
++			lo = NULL;
+ 			goto out_noroc;
++		}
+ 		if (state->state & FMODE_READ)
+ 			skip_read = true;
+ 	}
+ 
++	if (skip_read) {
++		bool writes = false;
++
++		list_for_each_entry(lseg, &lo->plh_segs, pls_list) {
++			if (lseg->pls_range.iomode != IOMODE_READ) {
++				writes = true;
++				break;
++			}
++		}
++		if (!writes) {
++			lo = NULL;
++			goto out_noroc;
++		}
++	}
++
++	pnfs_get_layout_hdr(lo);
++	if (test_bit(NFS_LAYOUT_RETURN_LOCK, &lo->plh_flags)) {
++		if (!sync) {
++			pnfs_set_plh_return_info(
++				lo, skip_read ? IOMODE_RW : IOMODE_ANY, 0);
++			goto out_noroc;
++		}
++		spin_unlock(&ino->i_lock);
++		rcu_read_unlock();
++		wait_on_bit(&lo->plh_flags, NFS_LAYOUT_RETURN,
++			    TASK_UNINTERRUPTIBLE);
++		pnfs_put_layout_hdr(lo);
++		goto retry;
++	}
+ 
+ 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list) {
+ 		if (skip_read && lseg->pls_range.iomode == IOMODE_READ)
+@@ -1521,7 +1545,7 @@ retry:
+ out_noroc:
+ 	spin_unlock(&ino->i_lock);
+ 	rcu_read_unlock();
+-	pnfs_layoutcommit_inode(ino, true);
++	pnfs_layoutcommit_inode(ino, sync);
+ 	if (roc) {
+ 		struct pnfs_layoutdriver_type *ld = NFS_SERVER(ino)->pnfs_curr_ld;
+ 		if (ld->prepare_layoutreturn)
+--- a/fs/nfs/pnfs.h
++++ b/fs/nfs/pnfs.h
+@@ -295,10 +295,9 @@ int pnfs_mark_matching_lsegs_return(stru
+ 				u32 seq);
+ int pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
+ 		struct list_head *lseg_list);
+-bool pnfs_roc(struct inode *ino,
+-		struct nfs4_layoutreturn_args *args,
+-		struct nfs4_layoutreturn_res *res,
+-		const struct cred *cred);
++bool pnfs_roc(struct inode *ino, struct nfs4_layoutreturn_args *args,
++	      struct nfs4_layoutreturn_res *res, const struct cred *cred,
++	      bool sync);
+ int pnfs_roc_done(struct rpc_task *task, struct nfs4_layoutreturn_args **argpp,
+ 		  struct nfs4_layoutreturn_res **respp, int *ret);
+ void pnfs_roc_release(struct nfs4_layoutreturn_args *args,
+@@ -769,12 +768,10 @@ pnfs_layoutcommit_outstanding(struct ino
+ 	return false;
+ }
+ 
+-
+-static inline bool
+-pnfs_roc(struct inode *ino,
+-		struct nfs4_layoutreturn_args *args,
+-		struct nfs4_layoutreturn_res *res,
+-		const struct cred *cred)
++static inline bool pnfs_roc(struct inode *ino,
++			    struct nfs4_layoutreturn_args *args,
++			    struct nfs4_layoutreturn_res *res,
++			    const struct cred *cred, bool sync)
+ {
+ 	return false;
+ }
 
 
 
