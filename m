@@ -1,91 +1,72 @@
-Return-Path: <stable+bounces-227887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227888-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMHAGsTbwGn6NQQAu9opvQ
-	(envelope-from <stable+bounces-227887-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:20:52 +0100
+	id iK6sIWnewGn6NQQAu9opvQ
+	(envelope-from <stable+bounces-227888-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:32:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5536E2ECFB1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:20:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F7042ED161
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:32:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 48325300989A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 06:20:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8E5E73003BC2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 06:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E26502D781E;
-	Mon, 23 Mar 2026 06:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6962C234E;
+	Mon, 23 Mar 2026 06:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=quora.org header.i=@quora.org header.b="QNXzDK8M"
+	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="apiZGX1x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail115-100.sinamail.sina.com.cn (mail115-100.sinamail.sina.com.cn [218.30.115.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808182D7398
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 06:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243DE2C21F4
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 06:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774246832; cv=none; b=Y4g4ym/O7WxZzlxvjlydXbPt6HcsmHY3pWBCNnHnzUxd2u3geudKyJrlRbJsOrtVtW5+wcO9L3D4GJeRzMgQTqCmg8ZRgotb91v72h3NdegY5v6A3wh5D6l8D0fVt31zIc8AbWZf+SV/sBpDyvOV8DmbCZHCHMxH4u1wfIY1Bq4=
+	t=1774247522; cv=none; b=WIdxWUJPIvkTg3ytBw7vfPLrGEk6QbmJbY80145I7SpvKLBbWLF90Zgyyj10j6ckJnahNHgt9fMo0axBjaM0wW3aNOsazPIbJbUm1WZ6gd6QkRxRXbHXvoYsRRV25xKGOcCTcYMh789VsylVoMR4rL0rsnGd5zQ70yQI0M0pb8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774246832; c=relaxed/simple;
-	bh=EaqVAWQj1+JhnM0aduwM8TyiqVz99tNZ9GgCmbJeEd4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d6s3dWNx8D2BR+Jb/8dnt4fn9zuOVVjoaE+wABlfxmOM4BnLr40u9lvWVvC63IFQO/4Jj7EZ8kEmnqBWryqs/rSbIpRxWZpKbgOXgkCeNjNN/guWWLTxwvnRzBUV9oCqpFgU4jczsVmZSOwiwFQRFIeAqUscylHVDbI2Foyay7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=quora.org; spf=pass smtp.mailfrom=quora.org; dkim=pass (1024-bit key) header.d=quora.org header.i=@quora.org header.b=QNXzDK8M; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=quora.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quora.org
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-82a646c96bdso3056825b3a.2
-        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 23:20:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=quora.org; s=google; t=1774246824; x=1774851624; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=szc7+D5ToNJHA+7kPaHA4IjzMkDBvZLOp0vWoYKX35U=;
-        b=QNXzDK8MQDh/t770ggkSVC69++yRKbf+ukgUpM/g7ewPNPIcvpGfl/qboqyBhOMHte
-         vcJ/tApE3yMaFGm5llWW2uDLlWC8dRhZuDur9wyMa7x0P9M4p15NOufp1lewYd+yD2Bc
-         hk3WkrtgMGI8qV42cCGteNjSuolr+T89TuhSE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774246824; x=1774851624;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=szc7+D5ToNJHA+7kPaHA4IjzMkDBvZLOp0vWoYKX35U=;
-        b=P92hblKUshT+1sWPQug9FI+0mDaf2VAAZyoowTZrH0o6x0qNRD6gpi9HasVqlNmaWw
-         eC0lX8o3rhbVKilJp3S5XcdLFKjE3EZpvDKBpQyniN3HJx8LJL4TAPF3WD3GGQikwiDi
-         C219WSOXKOUIj2TlBNuQHg4R2tn/UGkpZNC1Ba7Tb0xQA/nWMWckUtXxR+Y5W0O1Pex7
-         kbu2F0LVhrJNXZm8xVfg2BdsB/9EeMb5OiSie20SYuMiokrn4K6qN9S8CEoFtGiIrg4W
-         uSpHuKjX7GsmVsmU0jLRWR1+ZQUoDfPRMdgTs6SEUOwxiHgicT62MNN5hEPzAJ0bTpHT
-         coyw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9YcUauRwyTZC7E3gehiun+trBptSqnM+hQKWTphqGGiN7cQuXM+9cYkBtcdFaxcQGN9UT/rc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxiKPRvJaVzpOi1AXm2vfk2FWShJJthkVIf9YjGyvHtvt+SzHa
-	+stDu1Ep1ms4IIno+J9jM3wWBOeGk8YuxIH0l9xQZfuc9GG3ZOdvDAffknPYIUKK0xU=
-X-Gm-Gg: ATEYQzxzcraF2LPXTlC+wJ9HarEI00nk9hhP8K4MD6xz+MEPuQTN9/7ix1AWqfLke7E
-	qsX2QzlGX5DNT6G+qr8h2euVdmAeGUvdQ5Eha3MnTPGyFwwUV3zIGl7MtrcBBQkdWXWnTMKCjTf
-	CTSNlU2voic5jJqpf15avdXZfAP0iizolEHogaM+JnjLGVvso4aRQec3FojvqK8nWfTWQCIfnC5
-	m8riYKdMg35ws9LwBhlA9GTRYvik05e39Qq8kNz6BdlvKBMMVWv+cHwYMKy1CHUffxfMDet+ovZ
-	5f4aW04eK1zvW1NWW3QxnxKhMAAIeBZiLwo/SE1Erj698VlJWZEBuSmmeg4DXZo0lDf9Vb1xkWf
-	hZu2X20K5JmwRvHvjZtM3fpUYIrNpH/e4OxKiR50KF9Wmst7Hub5a5OxqWbwj+VbfDWmCpqnIL6
-	BuF6d5wtMU9lpShsdIZsZXKt/gy/+ZYpC435/t1TcdD8p2Kf5FVBXNPJ9i2+mmMZQGA0vWbwRla
-	cenKfq9uC4GTdo7dm0to0pgnqJEpbZyywURbLEaNl4xrgNnkziCDHSEnVmCq0Be2ceFZJ2Q+mZ7
-	aMIybChukeShjTMbYHPtFw40Vl92Owj9e9qzkPCOdlsJZTDwz16KBxr8GMs1z10mgC6sVcY=
-X-Received: by 2002:a05:6a00:300a:b0:82c:254b:79fb with SMTP id d2e1a72fcca58-82c254b86eamr6645766b3a.9.1774246823837;
-        Sun, 22 Mar 2026 23:20:23 -0700 (PDT)
-Received: from aegis ([131.226.111.218])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b040da9c3sm8305814b3a.44.2026.03.22.23.20.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Mar 2026 23:20:23 -0700 (PDT)
-From: Daniel J Blueman <daniel@quora.org>
-To: Chris Mason <clm@fb.com>,
-	David Sterba <dsterba@suse.com>,
-	Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org,
+	s=arc-20240116; t=1774247522; c=relaxed/simple;
+	bh=Rs2neo4FxLnmJGr6Qjf/JC9WoglZcU1W5DKFZwrmMtY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a7mHArbz4/VFP9g4eEIdX36jw7Zz1x8vrIP4EyHB3NHibRPQGth20djSLKJ6XhzF7lW6Hkocu1qmhNNKZAF//6tk5m8wpxKCImjpfHKA2nuxLdsCFIhRktVyXFJL9yg129dyYeTlyAsolspg57V83ulL6BwQ51Nj8VHtHP+QA8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=apiZGX1x; arc=none smtp.client-ip=218.30.115.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1774247519;
+	bh=w/6QTn2RrWbgNuU6QaGGcFWM01G6XO+tMUvHhd4TYjY=;
+	h=From:Subject:Date:Message-Id;
+	b=apiZGX1xPLe0/OOKwdf6suNVwdnBU5rmu4fwPshn/sIMJhR8XqxSXrNpTtU0qydDd
+	 IT7mEGyCvMSmwhd3b9t2bu5af5sdtiYkkj4dLhqBdPQP8VPXzdNrq+L5yVarXf9eFz
+	 re2RQM+57zhvtMux1CI7JRu3xTAgzocqRz4XNrY4=
+X-SMAIL-HELO: NTT-kernel-dev
+Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
+	by sina.cn (10.185.250.23) with ESMTP
+	id 69C0DE330000165C; Mon, 23 Mar 2026 14:31:19 +0800 (CST)
+X-Sender: jianqkang@sina.cn
+X-Auth-ID: jianqkang@sina.cn
+Authentication-Results: sina.cn;
+	 spf=none smtp.mailfrom=jianqkang@sina.cn;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=jianqkang@sina.cn
+X-SMAIL-MID: 6027208913430
+X-SMAIL-UIID: F608F980582B4633BEBF41786CA6AB3D-20260323-143119-1
+From: Jianqiang kang <jianqkang@sina.cn>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org,
+	zhangchunyan@iscas.ac.cn
+Cc: patches@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	Daniel J Blueman <daniel@quora.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] btrfs: Fix BTRFS arm64 tagged KASAN false-positive
-Date: Mon, 23 Mar 2026 14:18:26 +0800
-Message-ID: <20260323061827.22903-1-daniel@quora.org>
-X-Mailer: git-send-email 2.53.0
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	xujiakai2025@iscas.ac.cn,
+	linux-riscv@lists.infradead.org,
+	pjw@kernel.org
+Subject: [PATCH 6.1.y] riscv: stacktrace: Disable KASAN checks for non-current tasks
+Date: Mon, 23 Mar 2026 14:31:14 +0800
+Message-Id: <20260323063115.3555043-1-jianqkang@sina.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -93,131 +74,104 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
-	R_DKIM_ALLOW(-0.20)[quora.org:s=google];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[quora.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227887-lists,stable=lfdr.de];
-	DMARC_NA(0.00)[quora.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[daniel@quora.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-227888-lists,stable=lfdr.de];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
 	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[sina.cn:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,quora.org:dkim,quora.org:email,quora.org:mid]
-X-Rspamd-Queue-Id: 5536E2ECFB1
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[sina.cn];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[seclists.org:url,iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 8F7042ED161
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-When booting Linux 7.0-rc5 on a Qualcomm Snapdragon X1 with KASAN
-software tagging with a BTRFS filesystem, we see:
+From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 
-BUG: KASAN: invalid-access in xxh64_update (lib/xxhash.c:143 lib/xxhash.c:283)
-Read of size 8 at addr 7bff000804fe1000 by task kworker/u49:2/138
-Pointer tag: [7b], memory tag: [b2]
+[ Upstream commit 060ea84a484e852b52b938f234bf9b5503a6c910 ]
 
-CPU: 0 UID: 0 PID: 138 Comm: kworker/u49:2 Not tainted 7.0.0-rc4+ #34 PREEMPTLAZY
-Hardware name: LENOVO 83ED/LNVNB161216, BIOS NHCN60WW 09/11/2025
-Workqueue: btrfs-endio-meta simple_end_io_work
-Call trace:
-show_stack (arch/arm64/kernel/stacktrace.c:501) (C)
-dump_stack_lvl (lib/dump_stack.c:122)
-print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
-kasan_report (mm/kasan/report.c:597)
-kasan_check_range (mm/kasan/sw_tags.c:86 (discriminator 1))
-__hwasan_loadN_noabort (mm/kasan/sw_tags.c:158)
-xxh64_update (lib/xxhash.c:143 lib/xxhash.c:283)
-btrfs_csum_update (fs/btrfs/fs.c:106)
-csum_tree_block (fs/btrfs/disk-io.c:103 (discriminator 3))
-btrfs_validate_extent_buffer (fs/btrfs/disk-io.c:389)
-end_bbio_meta_read (fs/btrfs/extent_io.c:3853 (discriminator 1))
-btrfs_bio_end_io (fs/btrfs/bio.c:152)
-simple_end_io_work (fs/btrfs/bio.c:388)
-process_one_work (./arch/arm64/include/asm/jump_label.h:36 ./include/trace/events/workqueue.h:110 kernel/workqueue.c:3281)
-worker_thread (kernel/workqueue.c:3353 (discriminator 2) kernel/workqueue.c:3440 (discriminator 2))
-kthread (kernel/kthread.c:436)
-ret_from_fork (arch/arm64/kernel/entry.S:861)
+Unwinding the stack of a task other than current, KASAN would report
+"BUG: KASAN: out-of-bounds in walk_stackframe+0x41c/0x460"
 
-The buggy address belongs to the physical page:
-page: refcount:3 mapcount:0 mapping:f1ff00080055dee8 index:0x2467bd pfn:0x884fe1
-memcg:51ff000800e68ec0 aops:btree_aops ino:1
-flags: 0x9340000000004000(private|zone=2|kasantag=0x4d)
-raw: 9340000000004000 0000000000000000 dead000000000122 f1ff00080055dee8
-raw: 00000000002467bd 43ff00081d0cc6f0 00000003ffffffff 51ff000800e68ec0
-page dumped because: kasan: bad access detected
+There is a same issue on x86 and has been resolved by the commit
+84936118bdf3 ("x86/unwind: Disable KASAN checks for non-current tasks")
+The solution could be applied to RISC-V too.
 
-Memory state around the buggy address:
-ffff000804fe0e00: 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b
-ffff000804fe0f00: 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b
->ffff000804fe1000: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
-^
-ffff000804fe1100: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
-ffff000804fe1200: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
+This patch also can solve the issue:
+https://seclists.org/oss-sec/2025/q4/23
 
-This occurs as allocation in btrfs_alloc_page_array is from multiple
-discrete pages thus different KASAN tags by design, leading to a tag
-mismatch when linear access is used where the pages are physically
-contiguous.
-
-Fix this by retagging all the EB pages with the same KASAN tag.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Daniel J Blueman <daniel@quora.org>
-Fixes: 397239ed6a6c ("btrfs: allow extent buffer helpers to skip cross-page handling")
-Changelog:
- v2: Retag pages rather than bypass linear access optimisation
- v1: https://lore.kernel.org/lkml/20260319053413.14771-1-daniel@quora.org/
+Fixes: 5d8544e2d007 ("RISC-V: Generic library routines and assembly")
+Co-developed-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20251022072608.743484-1-zhangchunyan@iscas.ac.cn
+[pjw@kernel.org: clean up checkpatch issues]
+Signed-off-by: Paul Walmsley <pjw@kernel.org>
+[ Minor conflict resolved. ]
+Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
 ---
- fs/btrfs/extent_io.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/riscv/kernel/stacktrace.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 5f97a3d2a8d7..37836d685f21 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -10,6 +10,7 @@
- #include <linux/spinlock.h>
- #include <linux/blkdev.h>
- #include <linux/swap.h>
-+#include <linux/kasan.h>
- #include <linux/writeback.h>
- #include <linux/pagevec.h>
- #include <linux/prefetch.h>
-@@ -706,6 +707,18 @@ static int alloc_eb_folio_array(struct extent_buffer *eb, bool nofail)
- 	if (ret < 0)
- 		return ret;
+diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
+index 10e311b2759d..4f78b7962651 100644
+--- a/arch/riscv/kernel/stacktrace.c
++++ b/arch/riscv/kernel/stacktrace.c
+@@ -16,6 +16,22 @@
  
-+	/*
-+	 * Since separate page allocations are used for the same extent with
-+	 * linear addressing where physically contiguous, apply the same KASAN
-+	 * tag to prevent false-positive warnings when crossing page boundaries
-+	 */
-+	u8 tag = page_kasan_tag(page_array[0]);
+ #ifdef CONFIG_FRAME_POINTER
+ 
++/*
++ * This disables KASAN checking when reading a value from another task's stack,
++ * since the other task could be running on another CPU and could have poisoned
++ * the stack in the meantime.
++ */
++#define READ_ONCE_TASK_STACK(task, x)			\
++({							\
++	unsigned long val;				\
++	unsigned long addr = x;				\
++	if ((task) == current)				\
++		val = READ_ONCE(addr);			\
++	else						\
++		val = READ_ONCE_NOCHECK(addr);		\
++	val;						\
++})
 +
-+	for (int i = 1; i < num_pages; i++) {
-+		page_kasan_tag_set(page_array[i], tag);
-+		kasan_unpoison_range(page_address(page_array[i]), PAGE_SIZE);
-+	}
-+
- 	for (int i = 0; i < num_pages; i++)
- 		eb->folios[i] = page_folio(page_array[i]);
- 	eb->folio_size = PAGE_SIZE;
+ extern asmlinkage void ret_from_exception(void);
+ 
+ static inline int fp_is_valid(unsigned long fp, unsigned long sp)
+@@ -68,8 +84,9 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
+ 			fp = frame->ra;
+ 			pc = regs->ra;
+ 		} else {
+-			fp = frame->fp;
+-			pc = ftrace_graph_ret_addr(current, &graph_idx, frame->ra,
++			fp = READ_ONCE_TASK_STACK(task, frame->fp);
++			pc = READ_ONCE_TASK_STACK(task, frame->ra);
++			pc = ftrace_graph_ret_addr(current, &graph_idx, pc,
+ 						   &frame->ra);
+ 			if (pc == (unsigned long)ret_from_exception) {
+ 				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
 -- 
-2.53.0
+2.34.1
 
 
