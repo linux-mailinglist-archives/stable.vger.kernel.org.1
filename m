@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229542-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mG/WCHZQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228546-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:46 +0100
+	id 0IpKMgJ7wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229542-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 784812F4EAE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B302FA27E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E97B9310E140
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F25AD3173B43
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4AF93AD525;
-	Mon, 23 Mar 2026 14:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A713AD539;
+	Mon, 23 Mar 2026 16:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5khF4L1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4vxikC0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A620F1A6808;
-	Mon, 23 Mar 2026 14:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0BD5285068;
+	Mon, 23 Mar 2026 16:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275417; cv=none; b=rLC4AjSlbR0PS9XJzcroCdHUqso8zV70s51Hp3l05duTfByvfYtlksQDaV73y8xadvasqgGZd1FHbZQ8uRz1L+ylE2USpdRgLohcEh1qOVlV7LBtaZmmE6Rb0+eiFfR6A3y5tJBIvyPbsi0Up3dxCo2RYte1snMzgutdSWi3Ilk=
+	t=1774282202; cv=none; b=tP8wFR7nyEBYYj5WIZWalkFkmoUGQqaANV6gOIPcoZ2Pffj0dpYCDr+hjxWu5lPuWL2a6zSLL8g3yPZ3b+3w9gRJNyBnVK1ltN/lmNeavxb6kjm9T3HnnXY2DZcTgLGe27PP0c2UioUQETSL93KKUqK58o++ZY9lOmGpxYxY6ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275417; c=relaxed/simple;
-	bh=tPnGfR3fTcsy3EAK2U3A6iBRZPYTT4fXFsWrizXNa7g=;
+	s=arc-20240116; t=1774282202; c=relaxed/simple;
+	bh=n0KhDbU8gJ/QY0q76aS+7fUtCVBHmNOVgsTkoC6A96E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oi6oV18hsXb0harJgFWFe1EMAXbEJiAF7vPZoYFmLC13W62YRFzJI1ZyHdR1OnTGRiZcaqoINhCO+ZlbJlseImWDE5qKxb4voHoKN1DKXMdjKSPXtapNXyGbw6+atL+3xHL5VcPkJKIoH6HYzo9CNL+Vc5xoTmdERjo5e++wJBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5khF4L1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D93C4CEF7;
-	Mon, 23 Mar 2026 14:16:56 +0000 (UTC)
+	 MIME-Version; b=SSqaCs5CKpbpK6jD+GfHX3hp+WBI7lRJDe7U5/LLHGe7Gx/rfMljWhEQfDiVBYJaArSurhnxPaM3AsCu2KTptBqkDYKRcW2Zk0GaDZlYB0mkG4N9UeT3JwiIZZu0DAC4Kww8C3GjQZRv6i+6NQntkWw6JV87RTHs0Gz/r1hfK+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4vxikC0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6288C4CEF7;
+	Mon, 23 Mar 2026 16:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275417;
-	bh=tPnGfR3fTcsy3EAK2U3A6iBRZPYTT4fXFsWrizXNa7g=;
+	s=korg; t=1774282202;
+	bh=n0KhDbU8gJ/QY0q76aS+7fUtCVBHmNOVgsTkoC6A96E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5khF4L16D7lYWlNWdLgQ8oyjMahout7nrEcQiffT5JUpOBDkwr1rjVKOJM5hKxMi
-	 iMU86MIBncGLLLko0F3qapdGgqZotDrqFEfQ9+1KHaJgGCSAv3ym0iYSBma/QKb/Ps
-	 6SS3Bz1Mgjrvw2i4JWJ1HlJsmZ+ABFKjhxUrO9uU=
+	b=M4vxikC0CNa3y/Uj+cXkiUN9iAvxqv1CpMNhLz1u0r5ySc73OAbMz77kqNHk38PGT
+	 AmJZIuqiVRVAmYMwgCFmBnFDvQiSH6aK+yGGm5YQz1qVn7M+Qo6I20iHGR+OMMsLd2
+	 bJjEqHSOo0wNC+fgPt4qN4IzeT2y77DaewliZptQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/460] bonding: fix type confusion in bond_setup_by_slave()
+	Guenter Roeck <linux@roeck-us.net>,
+	Jann Horn <jannh@google.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 069/481] eventpoll: Fix integer overflow in ep_loop_check_proc()
 Date: Mon, 23 Mar 2026 14:40:51 +0100
-Message-ID: <20260323134528.058693667@linuxfoundation.org>
+Message-ID: <20260323134526.912736035@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,182 +68,81 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228546-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229542-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 784812F4EAE
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 51B302FA27E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 950803f7254721c1c15858fbbfae3deaaeeecb11 ]
+commit fdcfce93073d990ed4b71752e31ad1c1d6e9d58b upstream.
 
-kernel BUG at net/core/skbuff.c:2306!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-RIP: 0010:pskb_expand_head+0xa08/0xfe0 net/core/skbuff.c:2306
-RSP: 0018:ffffc90004aff760 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff88807e3c8780 RCX: ffffffff89593e0e
-RDX: ffff88807b7c4900 RSI: ffffffff89594747 RDI: ffff88807b7c4900
-RBP: 0000000000000820 R08: 0000000000000005 R09: 0000000000000000
-R10: 00000000961a63e0 R11: 0000000000000000 R12: ffff88807e3c8780
-R13: 00000000961a6560 R14: dffffc0000000000 R15: 00000000961a63e0
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fe1a0ed8df0 CR3: 000000002d816000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- ipgre_header+0xdd/0x540 net/ipv4/ip_gre.c:900
- dev_hard_header include/linux/netdevice.h:3439 [inline]
- packet_snd net/packet/af_packet.c:3028 [inline]
- packet_sendmsg+0x3ae5/0x53c0 net/packet/af_packet.c:3108
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- ____sys_sendmsg+0xa54/0xc30 net/socket.c:2592
- ___sys_sendmsg+0x190/0x1e0 net/socket.c:2646
- __sys_sendmsg+0x170/0x220 net/socket.c:2678
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x106/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe1a0e6c1a9
+If a recursive call to ep_loop_check_proc() hits the `result = INT_MAX`,
+an integer overflow will occur in the calling ep_loop_check_proc() at
+`result = max(result, ep_loop_check_proc(ep_tovisit, depth + 1) + 1)`,
+breaking the recursion depth check.
 
-When a non-Ethernet device (e.g. GRE tunnel) is enslaved to a bond,
-bond_setup_by_slave() directly copies the slave's header_ops to the
-bond device:
+Fix it by using a different placeholder value that can't lead to an
+overflow.
 
-    bond_dev->header_ops = slave_dev->header_ops;
-
-This causes a type confusion when dev_hard_header() is later called
-on the bond device. Functions like ipgre_header(), ip6gre_header(),all use
-netdev_priv(dev) to access their device-specific private data. When
-called with the bond device, netdev_priv() returns the bond's private
-data (struct bonding) instead of the expected type (e.g. struct
-ip_tunnel), leading to garbage values being read and kernel crashes.
-
-Fix this by introducing bond_header_ops with wrapper functions that
-delegate to the active slave's header_ops using the slave's own
-device. This ensures netdev_priv() in the slave's header functions
-always receives the correct device.
-
-The fix is placed in the bonding driver rather than individual device
-drivers, as the root cause is bond blindly inheriting header_ops from
-the slave without considering that these callbacks expect a specific
-netdev_priv() layout.
-
-The type confusion can be observed by adding a printk in
-ipgre_header() and running the following commands:
-
-    ip link add dummy0 type dummy
-    ip addr add 10.0.0.1/24 dev dummy0
-    ip link set dummy0 up
-    ip link add gre1 type gre local 10.0.0.1
-    ip link add bond1 type bond mode active-backup
-    ip link set gre1 master bond1
-    ip link set gre1 up
-    ip link set bond1 up
-    ip addr add fe80::1/64 dev bond1
-
-Fixes: 1284cd3a2b74 ("bonding: two small fixes for IPoIB support")
-Suggested-by: Jay Vosburgh <jv@jvosburgh.net>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Link: https://patch.msgid.link/20260306021508.222062-1-jiayuan.chen@linux.dev
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: f2e467a48287 ("eventpoll: Fix semi-unbounded recursion")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jann Horn <jannh@google.com>
+Link: https://patch.msgid.link/20260223-epoll-int-overflow-v1-1-452f35132224@google.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 47 ++++++++++++++++++++++++++++++++-
- 1 file changed, 46 insertions(+), 1 deletion(-)
+ fs/eventpoll.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 6f2b4734c9c06..546c9004c9e30 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1542,6 +1542,50 @@ static netdev_features_t bond_fix_features(struct net_device *dev,
- 	return features;
- }
- 
-+static int bond_header_create(struct sk_buff *skb, struct net_device *bond_dev,
-+			      unsigned short type, const void *daddr,
-+			      const void *saddr, unsigned int len)
-+{
-+	struct bonding *bond = netdev_priv(bond_dev);
-+	const struct header_ops *slave_ops;
-+	struct slave *slave;
-+	int ret = 0;
-+
-+	rcu_read_lock();
-+	slave = rcu_dereference(bond->curr_active_slave);
-+	if (slave) {
-+		slave_ops = READ_ONCE(slave->dev->header_ops);
-+		if (slave_ops && slave_ops->create)
-+			ret = slave_ops->create(skb, slave->dev,
-+						type, daddr, saddr, len);
-+	}
-+	rcu_read_unlock();
-+	return ret;
-+}
-+
-+static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+{
-+	struct bonding *bond = netdev_priv(skb->dev);
-+	const struct header_ops *slave_ops;
-+	struct slave *slave;
-+	int ret = 0;
-+
-+	rcu_read_lock();
-+	slave = rcu_dereference(bond->curr_active_slave);
-+	if (slave) {
-+		slave_ops = READ_ONCE(slave->dev->header_ops);
-+		if (slave_ops && slave_ops->parse)
-+			ret = slave_ops->parse(skb, haddr);
-+	}
-+	rcu_read_unlock();
-+	return ret;
-+}
-+
-+static const struct header_ops bond_header_ops = {
-+	.create	= bond_header_create,
-+	.parse	= bond_header_parse,
-+};
-+
- static void bond_setup_by_slave(struct net_device *bond_dev,
- 				struct net_device *slave_dev)
+--- a/fs/eventpoll.c
++++ b/fs/eventpoll.c
+@@ -1872,7 +1872,8 @@ static int ep_poll(struct eventpoll *ep,
+  * @ep: the &struct eventpoll to be currently checked.
+  * @depth: Current depth of the path being checked.
+  *
+- * Return: depth of the subtree, or INT_MAX if we found a loop or went too deep.
++ * Return: depth of the subtree, or a value bigger than EP_MAX_NESTS if we found
++ * a loop or went too deep.
+  */
+ static int ep_loop_check_proc(struct eventpoll *ep, int depth)
  {
-@@ -1549,7 +1593,8 @@ static void bond_setup_by_slave(struct net_device *bond_dev,
- 
- 	dev_close(bond_dev);
- 
--	bond_dev->header_ops	    = slave_dev->header_ops;
-+	bond_dev->header_ops	    = slave_dev->header_ops ?
-+				      &bond_header_ops : NULL;
- 
- 	bond_dev->type		    = slave_dev->type;
- 	bond_dev->hard_header_len   = slave_dev->hard_header_len;
--- 
-2.51.0
-
+@@ -1891,7 +1892,7 @@ static int ep_loop_check_proc(struct eve
+ 			struct eventpoll *ep_tovisit;
+ 			ep_tovisit = epi->ffd.file->private_data;
+ 			if (ep_tovisit == inserting_into || depth > EP_MAX_NESTS)
+-				result = INT_MAX;
++				result = EP_MAX_NESTS+1;
+ 			else
+ 				result = max(result, ep_loop_check_proc(ep_tovisit, depth + 1) + 1);
+ 			if (result > EP_MAX_NESTS)
 
 
 
