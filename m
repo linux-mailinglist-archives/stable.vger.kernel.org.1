@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229300-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uCn0FbZtwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229805-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:34 +0100
+	id 2L8RJAVdwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229300-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2878A2F8AC8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 058EC2F6710
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0F9ED31219FC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CFEC330DFB3D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894C2285417;
-	Mon, 23 Mar 2026 16:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED63D3B5306;
+	Mon, 23 Mar 2026 15:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHN/oUYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFHdy9Uz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C46D35958;
-	Mon, 23 Mar 2026 16:21:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D2725392A;
+	Mon, 23 Mar 2026 15:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282912; cv=none; b=SYeeh3E+oxQdXXxVLzDanjjuYcGDsTCqUGh3YpSTZWsOUkEZP7CDXTy0ZwD6lnl5S/zoQP6GFOMPrH2hD/RSJnlgtT77kq8NIObmrhPviOpmN4Ja+Ihi5cSBTj/DY6WqDDX5vBMzUsBt1t004NnwDXuic6M3J5Jfvfvk6HkCCQk=
+	t=1774278684; cv=none; b=CgGpHWAHYy2+xilgc26/j42x54ubx9EdSKO9/3YOjFfxfOSMDPGNMfzwMhDKjb+U3PVDHRJxuEuGlBq3irLS1j1lu47RcVMaZDAOWM4oXKVAAj93lYLUBTNuUU2UiFRU+gLgYiWIoJHeUELSxWuIl7/l3623UF4IoQLhhA/8Bvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282912; c=relaxed/simple;
-	bh=yW6yA6aWwGvEARyb3nm+RblejYvVEPZE3LCvfYC/Fxs=;
+	s=arc-20240116; t=1774278684; c=relaxed/simple;
+	bh=dqvrWmMIL4NOHrbNNpsSmoulsEReZFjfzXYNk8MKwt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcAtbOkubn93zjc1LRlr9ISzYNO4PflGGTl9NbXubN5GwCP/Q8YdihlGJvL964+dcOyf4OMk8WbRUwZusulv7pDX1C5/oVu74srYEBt6WMCi2auKuW+14Rtz6BvOAD/74B6a5Xs28cayrIG+ntvhy0JJPo/GWlbRNTm+TovzXg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHN/oUYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17EDC4CEF7;
-	Mon, 23 Mar 2026 16:21:51 +0000 (UTC)
+	 MIME-Version; b=AI7pZWIWBPef834JIYkX3p2k0qiBS5IR4soXk4xpa2wZLCR1S5nPLuRJt2QRcojl/06dGgRPJU8nKRZRf0p68bVXLvuuEnbJIJdZ0GiEWPzulYcmWQbG8R+TTwbbIyYvzvqqYo51tBHFUiovyHfNMlYA0/RJAK/n9HCCFnOsK/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFHdy9Uz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA7A2C4CEF7;
+	Mon, 23 Mar 2026 15:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282912;
-	bh=yW6yA6aWwGvEARyb3nm+RblejYvVEPZE3LCvfYC/Fxs=;
+	s=korg; t=1774278684;
+	bh=dqvrWmMIL4NOHrbNNpsSmoulsEReZFjfzXYNk8MKwt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eHN/oUYYjoSneg32nA60apZ8ABsDkCsfl5UYd9XtPS8JeTpW9J8m569AJ/7cXoC3Y
-	 6oJj7dfKPT1SiCDmIZnwCTLSFCuyvl9Tj+vUXLeYLQbswoEZ5JzFY9lJqfn4Ug3s5/
-	 rYkudjEMSIchZe0YT5cSg214oa2GBiSUxB7YPR58=
+	b=IFHdy9UzJFEaEvDGCyUrGqmj0wtNRhF/Q6nhW5eoiA40jFR5y1Wim2RxQRg2catzQ
+	 fzNHiPQLmjvpBPKrX/kdx7//zmHKUe8wSj7m6ekRa1BAAFhoX4eDm/+aWUYn137t52
+	 r7llRZGiqS5HeMWvfIgoafCbSxF9JojyFstn0LTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 325/481] selftests: mptcp: join: check RM_ADDR not sent over same subflow
+Subject: [PATCH 6.6 387/567] ksmbd: Dont log keys in SMB3 signing and encryption key generation
 Date: Mon, 23 Mar 2026 14:45:07 +0100
-Message-ID: <20260323134533.022011986@linuxfoundation.org>
+Message-ID: <20260323134543.428664081@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229805-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229300-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,121 +91,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2878A2F8AC8
+X-Rspamd-Queue-Id: 058EC2F6710
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 560edd99b5f58b2d4bbe3c8e51e1eed68d887b0e ]
+[ Upstream commit 441336115df26b966575de56daf7107ed474faed ]
 
-This validates the previous commit: RM_ADDR were sent over the first
-found active subflow which could be the same as the one being removed.
-It is more likely to loose this notification.
+When KSMBD_DEBUG_AUTH logging is enabled, generate_smb3signingkey() and
+generate_smb3encryptionkey() log the session, signing, encryption, and
+decryption key bytes. Remove the logs to avoid exposing credentials.
 
-For this check, RM_ADDR are explicitly dropped when trying to send them
-over the initial subflow, when removing the endpoint attached to it. If
-it is dropped, the test will complain because some RM_ADDR have not been
-received.
-
-Note that only the RM_ADDR are dropped, to allow the linked subflow to
-be quickly and cleanly closed. To only drop those RM_ADDR, a cBPF byte
-code is used. If the IPTables commands fail, that's OK, the tests will
-continue to pass, but not validate this part. This can be ignored:
-another subtest fully depends on such command, and will be marked as
-skipped.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-3-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted chk_subflow_nr calls to include extra empty first argument ]
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ Context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   36 ++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ fs/smb/server/auth.c |   22 ++--------------------
+ 1 file changed, 2 insertions(+), 20 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -64,6 +64,24 @@ CBPF_MPTCP_SUBOPTION_ADD_ADDR="14,
- 			       6 0 0 65535,
- 			       6 0 0 0"
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -797,12 +797,8 @@ static int generate_smb3signingkey(struc
+ 	if (!(conn->dialect >= SMB30_PROT_ID && signing->binding))
+ 		memcpy(chann->smb3signingkey, key, SMB3_SIGN_KEY_SIZE);
  
-+# IPv4: TCP hdr of 48B, a first suboption of 12B (DACK8), the RM_ADDR suboption
-+# generated using "nfbpf_compile '(ip[32] & 0xf0) == 0xc0 && ip[53] == 0x0c &&
-+#				  (ip[66] & 0xf0) == 0x40'"
-+CBPF_MPTCP_SUBOPTION_RM_ADDR="13,
-+			      48 0 0 0,
-+			      84 0 0 240,
-+			      21 0 9 64,
-+			      48 0 0 32,
-+			      84 0 0 240,
-+			      21 0 6 192,
-+			      48 0 0 53,
-+			      21 0 4 12,
-+			      48 0 0 66,
-+			      84 0 0 240,
-+			      21 0 1 64,
-+			      6 0 0 65535,
-+			      6 0 0 0"
-+
- init_partial()
- {
- 	capout=$(mktemp)
-@@ -3468,6 +3486,14 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		chk_subflow_nr "" "after no reject" 3
+-	ksmbd_debug(AUTH, "dumping generated AES signing keys\n");
++	ksmbd_debug(AUTH, "generated SMB3 signing key\n");
+ 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
+-	ksmbd_debug(AUTH, "Session Key   %*ph\n",
+-		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
+-	ksmbd_debug(AUTH, "Signing Key   %*ph\n",
+-		    SMB3_SIGN_KEY_SIZE, key);
+ 	return 0;
+ }
  
-+		# To make sure RM_ADDR are sent over a different subflow, but
-+		# allow the rest to quickly and cleanly close the subflow
-+		local ipt=1
-+		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
-+			-p tcp -m tcp --tcp-option 30 \
-+			-m bpf --bytecode \
-+			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
-+			-j DROP || ipt=0
- 		local i
- 		for i in $(seq 3); do
- 			pm_nl_del_endpoint $ns2 1 10.0.1.2
-@@ -3478,6 +3504,7 @@ endpoint_tests()
- 			wait_mpj $ns2
- 			chk_subflow_nr "" "after re-add id 0 ($i)" 3
- 		done
-+		[ ${ipt} = 1 ] && ip netns exec "${ns2}" ${iptables} -D OUTPUT 1
+@@ -866,23 +862,9 @@ static int generate_smb3encryptionkey(st
+ 	if (rc)
+ 		return rc;
  
- 		kill_wait "${tests_pid}"
- 		kill_events_pids
-@@ -3527,9 +3554,18 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		chk_subflow_nr "" "after re-add" 3
+-	ksmbd_debug(AUTH, "dumping generated AES encryption keys\n");
++	ksmbd_debug(AUTH, "generated SMB3 encryption/decryption keys\n");
+ 	ksmbd_debug(AUTH, "Cipher type   %d\n", conn->cipher_type);
+ 	ksmbd_debug(AUTH, "Session Id    %llu\n", sess->id);
+-	ksmbd_debug(AUTH, "Session Key   %*ph\n",
+-		    SMB2_NTLMV2_SESSKEY_SIZE, sess->sess_key);
+-	if (conn->cipher_type == SMB2_ENCRYPTION_AES256_CCM ||
+-	    conn->cipher_type == SMB2_ENCRYPTION_AES256_GCM) {
+-		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
+-			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3encryptionkey);
+-		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
+-			    SMB3_GCM256_CRYPTKEY_SIZE, sess->smb3decryptionkey);
+-	} else {
+-		ksmbd_debug(AUTH, "ServerIn Key  %*ph\n",
+-			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3encryptionkey);
+-		ksmbd_debug(AUTH, "ServerOut Key %*ph\n",
+-			    SMB3_GCM128_CRYPTKEY_SIZE, sess->smb3decryptionkey);
+-	}
+ 	return 0;
+ }
  
-+		# To make sure RM_ADDR are sent over a different subflow, but
-+		# allow the rest to quickly and cleanly close the subflow
-+		local ipt=1
-+		ip netns exec "${ns1}" ${iptables} -I OUTPUT -s "10.0.1.1" \
-+			-p tcp -m tcp --tcp-option 30 \
-+			-m bpf --bytecode \
-+			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
-+			-j DROP || ipt=0
- 		pm_nl_del_endpoint $ns1 42 10.0.1.1
- 		sleep 0.5
- 		chk_subflow_nr "" "after delete ID 0" 2
-+		[ ${ipt} = 1 ] && ip netns exec "${ns1}" ${iptables} -D OUTPUT 1
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
- 		wait_mpj $ns2
 
 
 
