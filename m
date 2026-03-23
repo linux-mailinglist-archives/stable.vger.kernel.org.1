@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-229603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SPO/Iq9wwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:56:15 +0100
+	id iOszMLdtwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1379E2F9240
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:56:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6B32F8AD0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6B42430603ED
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2AE693011108
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67613BE150;
-	Mon, 23 Mar 2026 16:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179403B6BE4;
+	Mon, 23 Mar 2026 15:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXnjQoyT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aOLr46xF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 798B53BE148;
-	Mon, 23 Mar 2026 16:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94FF27FB3A;
+	Mon, 23 Mar 2026 15:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282366; cv=none; b=HjYEhk4pcxS/kXa2AkXnI/x4iR279Gr9bRj3gDw34BC+Rw01qnfDBvZXwWlQWMIl2obaHQpbxmdv8PNp9yrhoLwElS3txrRu2rBFeX2+PFfNsvgdVeR07EtZZlYOPfTcb3Ha03wLcx/2OKoyTQVJL6j/FTB2Pg2gRimbVXZAn1U=
+	t=1774278206; cv=none; b=fXxr8ln9kWqGunCuhu0cdYGgVtDyRMcBDj1lp/Lagcu4ff5NMAjFtD0K1xc6MAHHd1T9vdZqt5tA7g3BuD6E8Z3LTPQikXuihCSnIrHdPnd/yQ7qcyZRsFElM9NgVa67v58nnWe3yO5h99ftuzaDRR2pYIzIi3R8M1uYiVOpjKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282366; c=relaxed/simple;
-	bh=DtYPlWXNjWGW59oIwy0vVex7Q2odoURksihFvsLMaFw=;
+	s=arc-20240116; t=1774278206; c=relaxed/simple;
+	bh=ZVYg+qJPwm1ONaOtiQQ37rtq2SNGnpThMrqpL/q7Tp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NiRZpQMCEttrxza3N2km6OSwegPCMVSVdHg16GaJ2J7YrbJpL8Wd2Cz0na4iCbr5A42LUTQIvN2cZcjdmGt6xMfLV4GeAVD8T32tqvdgDX4ffC3UAgO7N2i0niyrCScop/V8asOQor4OioHT9oUDDCLEG3I8PFIcoVCK4m7AvoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXnjQoyT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92EBC2BCB4;
-	Mon, 23 Mar 2026 16:12:45 +0000 (UTC)
+	 MIME-Version; b=GB5xEYZdTMlwVIwRS1qwOOKqwaUO8qHc1SQ5nADz1WpSr9qtkixqY4XBewBzHAWgktyWZ1eTcETToc+SV8p5mkyKaW2Np96KPuoKnuBd88AIDsfvs3/4LIQEk2E8CkZd+pXZp6tYidgHs/MTpgEDE8r87+9pWEw3gAUV7LqCcfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aOLr46xF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA71C4CEF7;
+	Mon, 23 Mar 2026 15:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282366;
-	bh=DtYPlWXNjWGW59oIwy0vVex7Q2odoURksihFvsLMaFw=;
+	s=korg; t=1774278206;
+	bh=ZVYg+qJPwm1ONaOtiQQ37rtq2SNGnpThMrqpL/q7Tp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXnjQoyTbGPp7lYU6A7wV04DCDuZiWd34SQbVpUA8EKS7Y2hiU31ksLE+rPaysnBg
-	 moOM/KWzwhXcNaQCSAQbbpGtbJvW6fP0L2Bt1z1ZWuL0tLJTIAs9NIOVBpICLTcfL+
-	 uV4D47Owc8hW6h0NgaGPJLPOSTPyR8byNHogs6e0=
+	b=aOLr46xFplNX+h4g8LL6CMoOhz7LjN42Grz5TpPB3z1ZtdEEkYtS0uyWdAmXWB8iq
+	 X0VsHb3p/lXY418+Ba6hdZ3Nm4Xd1n3u5jVQ2Ypkc1ryUVPZMkpdMJFGgLyL7p10wo
+	 kBBqoo+i09yBWmWvnji3J0nTJT5thDSWlecrx0Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 129/481] amd-xgbe: fix sleep while atomic on suspend/resume
+	Qualys Security Advisory <qsa@qualys.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.6 191/567] apparmor: fix side-effect bug in match_char() macro usage
 Date: Mon, 23 Mar 2026 14:41:51 +0100
-Message-ID: <20260323134528.415731957@linuxfoundation.org>
+Message-ID: <20260323134538.578177431@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,153 +69,156 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229603-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229146-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1379E2F9240
+X-Rspamd-Queue-Id: 1E6B32F8AD0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
 
-[ Upstream commit e2f27363aa6d983504c6836dd0975535e2e9dba0 ]
+commit 8756b68edae37ff546c02091989a4ceab3f20abd upstream.
 
-The xgbe_powerdown() and xgbe_powerup() functions use spinlocks
-(spin_lock_irqsave) while calling functions that may sleep:
-- napi_disable() can sleep waiting for NAPI polling to complete
-- flush_workqueue() can sleep waiting for pending work items
+The match_char() macro evaluates its character parameter multiple
+times when traversing differential encoding chains. When invoked
+with *str++, the string pointer advances on each iteration of the
+inner do-while loop, causing the DFA to check different characters
+at each iteration and therefore skip input characters.
+This results in out-of-bounds reads when the pointer advances past
+the input buffer boundary.
 
-This causes a "BUG: scheduling while atomic" error during suspend/resume
-cycles on systems using the AMD XGBE Ethernet controller.
+[   94.984676] ==================================================================
+[   94.985301] BUG: KASAN: slab-out-of-bounds in aa_dfa_match+0x5ae/0x760
+[   94.985655] Read of size 1 at addr ffff888100342000 by task file/976
 
-The spinlock protection in these functions is unnecessary as these
-functions are called from suspend/resume paths which are already serialized
-by the PM core
+[   94.986319] CPU: 7 UID: 1000 PID: 976 Comm: file Not tainted 6.19.0-rc7-next-20260127 #1 PREEMPT(lazy)
+[   94.986322] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   94.986329] Call Trace:
+[   94.986341]  <TASK>
+[   94.986347]  dump_stack_lvl+0x5e/0x80
+[   94.986374]  print_report+0xc8/0x270
+[   94.986384]  ? aa_dfa_match+0x5ae/0x760
+[   94.986388]  kasan_report+0x118/0x150
+[   94.986401]  ? aa_dfa_match+0x5ae/0x760
+[   94.986405]  aa_dfa_match+0x5ae/0x760
+[   94.986408]  __aa_path_perm+0x131/0x400
+[   94.986418]  aa_path_perm+0x219/0x2f0
+[   94.986424]  apparmor_file_open+0x345/0x570
+[   94.986431]  security_file_open+0x5c/0x140
+[   94.986442]  do_dentry_open+0x2f6/0x1120
+[   94.986450]  vfs_open+0x38/0x2b0
+[   94.986453]  ? may_open+0x1e2/0x2b0
+[   94.986466]  path_openat+0x231b/0x2b30
+[   94.986469]  ? __x64_sys_openat+0xf8/0x130
+[   94.986477]  do_file_open+0x19d/0x360
+[   94.986487]  do_sys_openat2+0x98/0x100
+[   94.986491]  __x64_sys_openat+0xf8/0x130
+[   94.986499]  do_syscall_64+0x8e/0x660
+[   94.986515]  ? count_memcg_events+0x15f/0x3c0
+[   94.986526]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   94.986540]  ? handle_mm_fault+0x1639/0x1ef0
+[   94.986551]  ? vma_start_read+0xf0/0x320
+[   94.986558]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   94.986561]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   94.986563]  ? fpregs_assert_state_consistent+0x50/0xe0
+[   94.986572]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   94.986574]  ? arch_exit_to_user_mode_prepare+0x9/0xb0
+[   94.986587]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   94.986588]  ? irqentry_exit+0x3c/0x590
+[   94.986595]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   94.986597] RIP: 0033:0x7fda4a79c3ea
 
-Fix this by removing the spinlock. Since only code that takes this lock
-is xgbe_powerdown() and xgbe_powerup(), remove it completely.
+Fix by extracting the character value before invoking match_char,
+ensuring single evaluation per outer loop.
 
-Fixes: c5aa9e3b8156 ("amd-xgbe: Initial AMD 10GbE platform driver")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260302042124.1386445-1-Raju.Rangoju@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 074c1cd798cb ("apparmor: dfa move character match into a macro")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  | 10 ----------
- drivers/net/ethernet/amd/xgbe/xgbe-main.c |  1 -
- drivers/net/ethernet/amd/xgbe/xgbe.h      |  3 ---
- 3 files changed, 14 deletions(-)
+ security/apparmor/match.c |   30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 3d6f8f3a83366..256969ac2cb9e 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1181,7 +1181,6 @@ int xgbe_powerdown(struct net_device *netdev, unsigned int caller)
- {
- 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
- 	struct xgbe_hw_if *hw_if = &pdata->hw_if;
--	unsigned long flags;
- 
- 	DBGPR("-->xgbe_powerdown\n");
- 
-@@ -1192,8 +1191,6 @@ int xgbe_powerdown(struct net_device *netdev, unsigned int caller)
- 		return -EINVAL;
+--- a/security/apparmor/match.c
++++ b/security/apparmor/match.c
+@@ -408,13 +408,18 @@ aa_state_t aa_dfa_match_len(struct aa_df
+ 	if (dfa->tables[YYTD_ID_EC]) {
+ 		/* Equivalence class table defined */
+ 		u8 *equiv = EQUIV_TABLE(dfa);
+-		for (; len; len--)
+-			match_char(state, def, base, next, check,
+-				   equiv[(u8) *str++]);
++		for (; len; len--) {
++			u8 c = equiv[(u8) *str];
++
++			match_char(state, def, base, next, check, c);
++			str++;
++		}
+ 	} else {
+ 		/* default is direct to next state */
+-		for (; len; len--)
+-			match_char(state, def, base, next, check, (u8) *str++);
++		for (; len; len--) {
++			match_char(state, def, base, next, check, (u8) *str);
++			str++;
++		}
  	}
  
--	spin_lock_irqsave(&pdata->lock, flags);
--
- 	if (caller == XGMAC_DRIVER_CONTEXT)
- 		netif_device_detach(netdev);
- 
-@@ -1209,8 +1206,6 @@ int xgbe_powerdown(struct net_device *netdev, unsigned int caller)
- 
- 	pdata->power_down = 1;
- 
--	spin_unlock_irqrestore(&pdata->lock, flags);
--
- 	DBGPR("<--xgbe_powerdown\n");
- 
- 	return 0;
-@@ -1220,7 +1215,6 @@ int xgbe_powerup(struct net_device *netdev, unsigned int caller)
- {
- 	struct xgbe_prv_data *pdata = netdev_priv(netdev);
- 	struct xgbe_hw_if *hw_if = &pdata->hw_if;
--	unsigned long flags;
- 
- 	DBGPR("-->xgbe_powerup\n");
- 
-@@ -1231,8 +1225,6 @@ int xgbe_powerup(struct net_device *netdev, unsigned int caller)
- 		return -EINVAL;
+ 	return state;
+@@ -448,13 +453,18 @@ aa_state_t aa_dfa_match(struct aa_dfa *d
+ 		/* Equivalence class table defined */
+ 		u8 *equiv = EQUIV_TABLE(dfa);
+ 		/* default is direct to next state */
+-		while (*str)
+-			match_char(state, def, base, next, check,
+-				   equiv[(u8) *str++]);
++		while (*str) {
++			u8 c = equiv[(u8) *str];
++
++			match_char(state, def, base, next, check, c);
++			str++;
++		}
+ 	} else {
+ 		/* default is direct to next state */
+-		while (*str)
+-			match_char(state, def, base, next, check, (u8) *str++);
++		while (*str) {
++			match_char(state, def, base, next, check, (u8) *str);
++			str++;
++		}
  	}
  
--	spin_lock_irqsave(&pdata->lock, flags);
--
- 	pdata->power_down = 0;
- 
- 	xgbe_napi_enable(pdata, 0);
-@@ -1247,8 +1239,6 @@ int xgbe_powerup(struct net_device *netdev, unsigned int caller)
- 
- 	xgbe_start_timers(pdata);
- 
--	spin_unlock_irqrestore(&pdata->lock, flags);
--
- 	DBGPR("<--xgbe_powerup\n");
- 
- 	return 0;
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-main.c b/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-index 0e8698928e4d7..6e8fafb2acbaa 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-main.c
-@@ -185,7 +185,6 @@ struct xgbe_prv_data *xgbe_alloc_pdata(struct device *dev)
- 	pdata->netdev = netdev;
- 	pdata->dev = dev;
- 
--	spin_lock_init(&pdata->lock);
- 	spin_lock_init(&pdata->xpcs_lock);
- 	mutex_init(&pdata->rss_mutex);
- 	spin_lock_init(&pdata->tstamp_lock);
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index f3ba76530b67b..92c40142c4576 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -1077,9 +1077,6 @@ struct xgbe_prv_data {
- 	unsigned int pp3;
- 	unsigned int pp4;
- 
--	/* Overall device lock */
--	spinlock_t lock;
--
- 	/* XPCS indirect addressing lock */
- 	spinlock_t xpcs_lock;
- 	unsigned int xpcs_window_def_reg;
--- 
-2.51.0
-
+ 	return state;
 
 
 
