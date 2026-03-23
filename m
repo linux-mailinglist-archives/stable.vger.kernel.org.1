@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODYNLxNuwWnVTAQAu9opvQ
-	(envelope-from <stable+bounces-229866-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:07 +0100
+	id 8LLhDFRYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6CC2F8BD4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B48DE2F5F50
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 34BE531BAC4A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6FED330AD4A6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A193B38A4;
-	Mon, 23 Mar 2026 16:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336E53AE6E1;
+	Mon, 23 Mar 2026 14:50:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlqaLBLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m13NMrBq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64B3283C82;
-	Mon, 23 Mar 2026 16:24:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB43926D4F9;
+	Mon, 23 Mar 2026 14:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283074; cv=none; b=kMg+DS8g+tZy4x9n9XykmCIvRTMEFks/nrIq46OLLdQXD/QTdBSvtGxJmdTbNG7xqVdTal9TrtggXkzI/afzeT1Tdn0nrZDDvJo05i5ToKd0UtiPM0mVyMWLyR3SeBIJqshmduwYPXQ2REGwxTmxYGxwFWnd62uSHC37KKY1+Ok=
+	t=1774277422; cv=none; b=UpVEE57aEYQryvSUPT3CaDc+mz8PLUUMFbqZXp4oomCy5sunbjtVO97N2zN3vPc+hMa6WN7HRB2VRpQyC026XLuB55Um8VFEaP8+OlPq5YVmhQlLI0ysihTucLp8i1ttgc9o7G6tS8gvECCQ5scsMMOy8AFA7VRm9+CheIXxOCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283074; c=relaxed/simple;
-	bh=16RDQAF0mJ/gXhBBAVlVlM/qsGqF5MrGH+DcxVEjc/c=;
+	s=arc-20240116; t=1774277422; c=relaxed/simple;
+	bh=aT3d9HVxZFT2k1POyW5s2zlY9smWBYNQk6OlUxdeimU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J6or4t4jmPTtQFC6CVCUhh6REGGY+GJVb3Uy8QS+Uxhl6uGZvYtHsEK66ftgcTD9BpVvD2hCMIvvHogYSvWhgHHySFLXBAWJbTcue9MrQo564bmwT1HlaUwmIP4qDVHGxgYQETNBL1v2i2j3YHkU5v/n19/8qdg+SmTfsHfdAvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlqaLBLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0B2C4CEF7;
-	Mon, 23 Mar 2026 16:24:33 +0000 (UTC)
+	 MIME-Version; b=Ym/udwNjNCOsyWH8NELQzwwR20xpc/IjCOL5gdbyEHdq3WWBFFQA7e5wzltCqRoI4qnS8EwUbCT2cyIUdtEyqwcjuRebfblHz1mcc0UHTt2ckxBeJZpD1lDNkrpZmcHqvc04ohYp7/peWvHMZeI63PLqs3MQHpeLgP0Ybv4ixRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m13NMrBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBBFC4CEF7;
+	Mon, 23 Mar 2026 14:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283073;
-	bh=16RDQAF0mJ/gXhBBAVlVlM/qsGqF5MrGH+DcxVEjc/c=;
+	s=korg; t=1774277421;
+	bh=aT3d9HVxZFT2k1POyW5s2zlY9smWBYNQk6OlUxdeimU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlqaLBLeoO4lneYPyqcnzfIR9cV4jQBN3NyRQElMt/IsUFHl2ZJZWDRAT8fFXeAuG
-	 kXf4U9jZtH9B7VNbSXJv1/NxgS568Ma2OvFYFIZisNqoPWV7Tp+67b+G/bvYH8ANOY
-	 cNl7U7pv6tqzmAPH4o2vxsDnMjbBnDPeGQn6tuo8=
+	b=m13NMrBq1/T73skTfpz6gBUlfmZANbwUmocoXNGDfb/sJCMD2J5G3yVo8wpsXdWA3
+	 nHLpjwrZnrM8JzFEAHN5pvg13cM0bXDxJLBtj8wtmAwXHFpmhLTqm3rxrQ3zovxWA/
+	 EsRo4fmoOTgvCJhMok9Rq0UjJ9PjKNPeRjg3GHNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.1 392/481] btrfs: do not strictly require dirty metadata threshold for metadata writepages
-Date: Mon, 23 Mar 2026 14:46:14 +0100
-Message-ID: <20260323134534.713614370@linuxfoundation.org>
+	Felix Gu <ustc.gu@gmail.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 379/460] firmware: arm_scpi: Fix device_node reference leak in probe path
+Date: Mon, 23 Mar 2026 14:46:15 +0100
+Message-ID: <20260323134535.882101054@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,200 +64,95 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229866-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.cz,bur.io,suse.com,163.com];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228894-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BD6CC2F8BD4
+X-Rspamd-Queue-Id: B48DE2F5F50
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Felix Gu <ustc.gu@gmail.com>
 
-[ Upstream commit 4e159150a9a56d66d247f4b5510bed46fe58aa1c ]
+[ Upstream commit 879c001afbac3df94160334fe5117c0c83b2cf48 ]
 
-[BUG]
-There is an internal report that over 1000 processes are
-waiting at the io_schedule_timeout() of balance_dirty_pages(), causing
-a system hang and trigger a kernel coredump.
+A device_node reference obtained from the device tree is not released
+on all error paths in the arm_scpi probe path. Specifically, a node
+returned by of_parse_phandle() could be leaked when the probe failed
+after the node was acquired. The probe function returns early and
+the shmem reference is not released.
 
-The kernel is v6.4 kernel based, but the root problem still applies to
-any upstream kernel before v6.18.
+Use __free(device_node) scope-based cleanup to automatically release
+the reference when the variable goes out of scope.
 
-[CAUSE]
->From Jan Kara for his wisdom on the dirty page balance behavior first.
-
-  This cgroup dirty limit was what was actually playing the role here
-  because the cgroup had only a small amount of memory and so the dirty
-  limit for it was something like 16MB.
-
-  Dirty throttling is responsible for enforcing that nobody can dirty
-  (significantly) more dirty memory than there's dirty limit. Thus when
-  a task is dirtying pages it periodically enters into balance_dirty_pages()
-  and we let it sleep there to slow down the dirtying.
-
-  When the system is over dirty limit already (either globally or within
-  a cgroup of the running task), we will not let the task exit from
-  balance_dirty_pages() until the number of dirty pages drops below the
-  limit.
-
-  So in this particular case, as I already mentioned, there was a cgroup
-  with relatively small amount of memory and as a result with dirty limit
-  set at 16MB. A task from that cgroup has dirtied about 28MB worth of
-  pages in btrfs btree inode and these were practically the only dirty
-  pages in that cgroup.
-
-So that means the only way to reduce the dirty pages of that cgroup is
-to writeback the dirty pages of btrfs btree inode, and only after that
-those processes can exit balance_dirty_pages().
-
-Now back to the btrfs part, btree_writepages() is responsible for
-writing back dirty btree inode pages.
-
-The problem here is, there is a btrfs internal threshold that if the
-btree inode's dirty bytes are below the 32M threshold, it will not
-do any writeback.
-
-This behavior is to batch as much metadata as possible so we won't write
-back those tree blocks and then later re-COW them again for another
-modification.
-
-This internal 32MiB is higher than the existing dirty page size (28MiB),
-meaning no writeback will happen, causing a deadlock between btrfs and
-cgroup:
-
-- Btrfs doesn't want to write back btree inode until more dirty pages
-
-- Cgroup/MM doesn't want more dirty pages for btrfs btree inode
-  Thus any process touching that btree inode is put into sleep until
-  the number of dirty pages is reduced.
-
-Thanks Jan Kara a lot for the analysis of the root cause.
-
-[ENHANCEMENT]
-Since kernel commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
-btree_inode"), btrfs btree inode pages will only be charged to the root
-cgroup which should have a much larger limit than btrfs' 32MiB
-threshold.
-So it should not affect newer kernels.
-
-But for all current LTS kernels, they are all affected by this problem,
-and backporting the whole AS_KERNEL_FILE may not be a good idea.
-
-Even for newer kernels I still think it's a good idea to get
-rid of the internal threshold at btree_writepages(), since for most cases
-cgroup/MM has a better view of full system memory usage than btrfs' fixed
-threshold.
-
-For internal callers using btrfs_btree_balance_dirty() since that
-function is already doing internal threshold check, we don't need to
-bother them.
-
-But for external callers of btree_writepages(), just respect their
-requests and write back whatever they want, ignoring the internal
-btrfs threshold to avoid such deadlock on btree inode dirty page
-balancing.
-
-CC: stable@vger.kernel.org
-CC: Jan Kara <jack@suse.cz>
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ The context change is due to the commit 41044b41ad2c
-("btrfs: add helper to get fs_info from struct inode pointer")
-in v6.9 and the commit c66f2afc7148
-("btrfs: remove pointless writepages callback wrapper")
-in v6.10 which are irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ed7ecb883901 ("firmware: arm_scpi: Add compatibility checks for shmem node")
+Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+Message-Id: <20260121-arm_scpi_2-v2-1-702d7fa84acb@gmail.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c   |   22 ----------------------
- fs/btrfs/extent_io.c |    3 +--
- fs/btrfs/extent_io.h |    3 +--
- 3 files changed, 2 insertions(+), 26 deletions(-)
+ drivers/firmware/arm_scpi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -800,28 +800,6 @@ static int btree_migrate_folio(struct ad
- #define btree_migrate_folio NULL
- #endif
+diff --git a/drivers/firmware/arm_scpi.c b/drivers/firmware/arm_scpi.c
+index f4d47577f83ee..2d33771917bb4 100644
+--- a/drivers/firmware/arm_scpi.c
++++ b/drivers/firmware/arm_scpi.c
+@@ -18,6 +18,7 @@
  
--static int btree_writepages(struct address_space *mapping,
--			    struct writeback_control *wbc)
--{
--	struct btrfs_fs_info *fs_info;
--	int ret;
--
--	if (wbc->sync_mode == WB_SYNC_NONE) {
--
--		if (wbc->for_kupdate)
--			return 0;
--
--		fs_info = BTRFS_I(mapping->host)->root->fs_info;
--		/* this is a bit racy, but that's ok */
--		ret = __percpu_counter_compare(&fs_info->dirty_metadata_bytes,
--					     BTRFS_DIRTY_METADATA_THRESH,
--					     fs_info->dirty_metadata_batch);
--		if (ret < 0)
--			return 0;
--	}
--	return btree_write_cache_pages(mapping, wbc);
--}
--
- static bool btree_release_folio(struct folio *folio, gfp_t gfp_flags)
- {
- 	if (folio_test_writeback(folio) || folio_test_dirty(folio))
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2959,8 +2959,7 @@ static int submit_eb_page(struct page *p
- 	return 1;
- }
+ #include <linux/bitmap.h>
+ #include <linux/bitfield.h>
++#include <linux/cleanup.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/export.h>
+@@ -940,13 +941,13 @@ static int scpi_probe(struct platform_device *pdev)
+ 		int idx = scpi_drvinfo->num_chans;
+ 		struct scpi_chan *pchan = scpi_drvinfo->channels + idx;
+ 		struct mbox_client *cl = &pchan->cl;
+-		struct device_node *shmem = of_parse_phandle(np, "shmem", idx);
++		struct device_node *shmem __free(device_node) =
++			of_parse_phandle(np, "shmem", idx);
  
--int btree_write_cache_pages(struct address_space *mapping,
--				   struct writeback_control *wbc)
-+int btree_writepages(struct address_space *mapping, struct writeback_control *wbc)
- {
- 	struct extent_buffer *eb_context = NULL;
- 	struct extent_page_data epd = {
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -152,8 +152,7 @@ int btrfs_read_folio(struct file *file,
- int extent_write_locked_range(struct inode *inode, u64 start, u64 end);
- int extent_writepages(struct address_space *mapping,
- 		      struct writeback_control *wbc);
--int btree_write_cache_pages(struct address_space *mapping,
--			    struct writeback_control *wbc);
-+int btree_writepages(struct address_space *mapping, struct writeback_control *wbc);
- void extent_readahead(struct readahead_control *rac);
- int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 		  u64 start, u64 len);
+ 		if (!of_match_node(shmem_of_match, shmem))
+ 			return -ENXIO;
+ 
+ 		ret = of_address_to_resource(shmem, 0, &res);
+-		of_node_put(shmem);
+ 		if (ret) {
+ 			dev_err(dev, "failed to get SCPI payload mem resource\n");
+ 			return ret;
+-- 
+2.51.0
+
 
 
 
