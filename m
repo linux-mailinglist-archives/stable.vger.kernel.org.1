@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228126-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SHh+EZhfwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229314-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:43:20 +0100
+	id iMdkFP5IwWlmSAQAu9opvQ
+	(envelope-from <stable+bounces-228126-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:54 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D41602F6C6D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:43:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B92E52F3D7B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BC6D9307B6B4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F0B0B302C761
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97B832798EA;
-	Mon, 23 Mar 2026 15:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1281F91F6;
+	Mon, 23 Mar 2026 13:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slzl9el5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whhkCKHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E12242D60;
-	Mon, 23 Mar 2026 15:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E46661DF25C;
+	Mon, 23 Mar 2026 13:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278727; cv=none; b=HGV5zmIjy57FFUDido3w0MZxwBj6yzWNEOfHsAp0nwL7GH5wzCAlA8Q0qxe6Db/Xuss4H+OTet9JPjfhFZrC0WG2kFvMyHwcVEaE/N9kGShujHJo7w+3GrzPUhPvN4Wem6viO+VH1GQOaKPk70eiRU9wu2BLL9jNRuHUpms9fM8=
+	t=1774274202; cv=none; b=TYw77PYHpGilUhKRIXS9Zu7yS9116rmIj/sUK/7JoVIcr+Mi4Luew3esu6/zo5TJPIbZs439ibpDK2b0XoT+LvivBoVFf60+EZ3MEy7K32c/sNnI4rL68Wx4PCDCa/SCBtPtIbiqBYUcMkaPVJHbX9MCpBarWU6gqNQXx6Pcs68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278727; c=relaxed/simple;
-	bh=S9NDBUMsxmdmIcTrZOVeOv6aO11bvV5qghHzxKg8kXo=;
+	s=arc-20240116; t=1774274202; c=relaxed/simple;
+	bh=bSfoZTqHr25xWyL4fQLf8by0F8YFR6f4PnfODL77654=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZP8kZXohPaERdu4v8zC0w0BbfL3Q5uGp5izW1mXspGTG39WIYTrfH7ipXxRbn9zXhZHHdgiAbuBlaT94zJqlxF1ZCtALTAo2xTn5VmuTvMuATR3fufVEiS5QJbo6bmBhm46Kdez58uyOVqdt6ZbJs9AHcShSUQWgN8RNAP02kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slzl9el5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1BCC2BC9E;
-	Mon, 23 Mar 2026 15:12:06 +0000 (UTC)
+	 MIME-Version; b=UCJs1cYifrd8KPzRJvZyZe+scEIJi3NFXZRWHpDVkChLRpOwGrbkmIPKa9B22Y1NyDg81bb6yYO3mrDstz0b3gwJZtA80v639gFT8xicoc73JtEpE3FSfQpH35YY1BbeTUTUUcePQtFq0UR2URlE/oVNuDsUqRyfwk6fOvLaAgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whhkCKHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A54C4CEF7;
+	Mon, 23 Mar 2026 13:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278727;
-	bh=S9NDBUMsxmdmIcTrZOVeOv6aO11bvV5qghHzxKg8kXo=;
+	s=korg; t=1774274201;
+	bh=bSfoZTqHr25xWyL4fQLf8by0F8YFR6f4PnfODL77654=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slzl9el5FXh92CKxYZADSYnf2KPndLk0Kcn9Z72CNqr+Vrrzs2lkP1M80neuDrQLG
-	 PtxX7xzooklnNpP5623MTpmFKRX8dlpywvQT+PRU8b1fXnBcOhT1NvP5n4nIDPrln6
-	 liUGVNKu8rTzEcqnL4oM8T9ysgGf1QO6LpZkvv4o=
+	b=whhkCKHeb25BUQvcgPSQAHLxDBZQbrKbzcVsIn+MK2i+0zipzTCzJUrcTSnCyh01u
+	 bmioOnSZOMOpo49cFyTRGZDIChKpAztRfSSKYtr0puO71lRmI3p7S1nkWzqijZpHAZ
+	 B7csHn4/tJUfc2XtSSYnqhBmCiFJVM64VIsAAIds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Foster <bfoster@redhat.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
+	"Tycho Andersen (AMD)" <tycho@kernel.org>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 399/567] ext4: fix dirtyclusters double decrement on fs shutdown
+Subject: [PATCH 6.19 142/220] crypto: ccp - Fix leaking the same page twice
 Date: Mon, 23 Mar 2026 14:45:19 +0100
-Message-ID: <20260323134543.737971649@linuxfoundation.org>
+Message-ID: <20260323134509.050512167@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,137 +70,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229314-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228126-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D41602F6C6D
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-0.994];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,amd.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,apana.org.au:email]
+X-Rspamd-Queue-Id: B92E52F3D7B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Foster <bfoster@redhat.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 94a8cea54cd935c54fa2fba70354757c0fc245e3 ]
+[ Upstream commit 5c52607c43c397b79a9852ce33fc61de58c3645c ]
 
-fstests test generic/388 occasionally reproduces a warning in
-ext4_put_super() associated with the dirty clusters count:
+Commit 551120148b67 ("crypto: ccp - Fix a case where SNP_SHUTDOWN is
+missed") fixed a case where SNP is left in INIT state if page reclaim
+fails. It removes the transition to the INIT state for this command and
+adjusts the page state management.
 
-  WARNING: CPU: 7 PID: 76064 at fs/ext4/super.c:1324 ext4_put_super+0x48c/0x590 [ext4]
+While doing this, it added a call to snp_leak_pages() after a call to
+snp_reclaim_pages() failed. Since snp_reclaim_pages() already calls
+snp_leak_pages() internally on the pages it fails to reclaim, calling
+it again leaks the exact same page twice.
 
-Tracing the failure shows that the warning fires due to an
-s_dirtyclusters_counter value of -1. IOW, this appears to be a
-spurious decrement as opposed to some sort of leak. Further tracing
-of the dirty cluster count deltas and an LLM scan of the resulting
-output identified the cause as a double decrement in the error path
-between ext4_mb_mark_diskspace_used() and the caller
-ext4_mb_new_blocks().
+Fix by removing the extra call to snp_leak_pages().
 
-First, note that generic/388 is a shutdown vs. fsstress test and so
-produces a random set of operations and shutdown injections. In the
-problematic case, the shutdown triggers an error return from the
-ext4_handle_dirty_metadata() call(s) made from
-ext4_mb_mark_context(). The changed value is non-zero at this point,
-so ext4_mb_mark_diskspace_used() does not exit after the error
-bubbles up from ext4_mb_mark_context(). Instead, the former
-decrements both cluster counters and returns the error up to
-ext4_mb_new_blocks(). The latter falls into the !ar->len out path
-which decrements the dirty clusters counter a second time, creating
-the inconsistency.
+The problem was found by an experimental code review agent based on
+gemini-3.1-pro while reviewing backports into v6.18.y.
 
-To avoid this problem and simplify ownership of the cluster
-reservation in this codepath, lift the counter reduction to a single
-place in the caller. This makes it more clear that
-ext4_mb_new_blocks() is responsible for acquiring cluster
-reservation (via ext4_claim_free_clusters()) in the !delalloc case
-as well as releasing it, regardless of whether it ends up consumed
-or returned due to failure.
-
-Fixes: 0087d9fb3f29 ("ext4: Fix s_dirty_blocks_counter if block allocation failed with nodelalloc")
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20260113171905.118284-1-bfoster@redhat.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Drop mballoc-test changes ]
+Assisted-by: Gemini:gemini-3.1-pro
+Fixes: 551120148b67 ("crypto: ccp - Fix a case where SNP_SHUTDOWN is missed")
+Cc: Tycho Andersen (AMD) <tycho@kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Tycho Andersen (AMD) <tycho@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |   21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
+ drivers/crypto/ccp/sev-dev.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -3999,8 +3999,7 @@ void ext4_exit_mballoc(void)
-  * Returns 0 if success or error code
-  */
- static noinline_for_stack int
--ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac,
--				handle_t *handle, unsigned int reserv_clstrs)
-+ext4_mb_mark_diskspace_used(struct ext4_allocation_context *ac, handle_t *handle)
- {
- 	struct buffer_head *bitmap_bh = NULL;
- 	struct ext4_group_desc *gdp;
-@@ -4086,13 +4085,6 @@ ext4_mb_mark_diskspace_used(struct ext4_
- 
- 	ext4_unlock_group(sb, ac->ac_b_ex.fe_group);
- 	percpu_counter_sub(&sbi->s_freeclusters_counter, ac->ac_b_ex.fe_len);
--	/*
--	 * Now reduce the dirty block count also. Should not go negative
--	 */
--	if (!(ac->ac_flags & EXT4_MB_DELALLOC_RESERVED))
--		/* release all the reserved blocks if non delalloc */
--		percpu_counter_sub(&sbi->s_dirtyclusters_counter,
--				   reserv_clstrs);
- 
- 	if (sbi->s_log_groups_per_flex) {
- 		ext4_group_t flex_group = ext4_flex_group(sbi,
-@@ -6265,7 +6257,7 @@ repeat:
- 			ext4_mb_pa_put_free(ac);
+diff --git a/drivers/crypto/ccp/sev-dev.c b/drivers/crypto/ccp/sev-dev.c
+index 0d90b5f6a4548..a554fe3de3fd2 100644
+--- a/drivers/crypto/ccp/sev-dev.c
++++ b/drivers/crypto/ccp/sev-dev.c
+@@ -2408,10 +2408,8 @@ static int sev_ioctl_do_snp_platform_status(struct sev_issue_cmd *argp)
+ 		 * in Firmware state on failure. Use snp_reclaim_pages() to
+ 		 * transition either case back to Hypervisor-owned state.
+ 		 */
+-		if (snp_reclaim_pages(__pa(data), 1, true)) {
+-			snp_leak_pages(__page_to_pfn(status_page), 1);
++		if (snp_reclaim_pages(__pa(data), 1, true))
+ 			return -EFAULT;
+-		}
  	}
- 	if (likely(ac->ac_status == AC_STATUS_FOUND)) {
--		*errp = ext4_mb_mark_diskspace_used(ac, handle, reserv_clstrs);
-+		*errp = ext4_mb_mark_diskspace_used(ac, handle);
- 		if (*errp) {
- 			ext4_discard_allocated_blocks(ac);
- 			goto errout;
-@@ -6296,12 +6288,9 @@ errout:
- out:
- 	if (inquota && ar->len < inquota)
- 		dquot_free_block(ar->inode, EXT4_C2B(sbi, inquota - ar->len));
--	if (!ar->len) {
--		if ((ar->flags & EXT4_MB_DELALLOC_RESERVED) == 0)
--			/* release all the reserved blocks if non delalloc */
--			percpu_counter_sub(&sbi->s_dirtyclusters_counter,
--						reserv_clstrs);
--	}
-+	/* release any reserved blocks */
-+	if (reserv_clstrs)
-+		percpu_counter_sub(&sbi->s_dirtyclusters_counter, reserv_clstrs);
  
- 	trace_ext4_allocate_blocks(ar, (unsigned long long)block);
- 
+ 	if (ret)
+-- 
+2.51.0
+
 
 
 
