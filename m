@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229707-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mLNGLIlZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:29 +0100
+	id KCVFLNdswWmqTAQAu9opvQ
+	(envelope-from <stable+bounces-229707-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E2E2F6198
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1A4C2F890D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:39:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D93293088034
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 69F983194E1D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753A03ACEF0;
-	Mon, 23 Mar 2026 15:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB35A3BC661;
+	Mon, 23 Mar 2026 16:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2q+NcsS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4l3+nTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3848F258EE0;
-	Mon, 23 Mar 2026 15:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA1C3BED43;
+	Mon, 23 Mar 2026 16:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278266; cv=none; b=mMV+w/9JYMycCuVaJmmHLCr/+i6oi/gbW6nUpdnbsASR33LJsHDBUeSEbALlJZJjoqWGikSkcbyfhAPrDyo+Pj71BlXPIkBxSQ7NB/uu/d4VhgSZ24X2mkIK1sIFGFeh3GfxOh6aAnax6QATO8Mff1bSAGlQDvkiR1H+CvpNjGI=
+	t=1774282649; cv=none; b=Tex1qICERwP29BXVXsEU0aCyyQXvjMoEup89MkClbIqhe73OGCJTQbAjry254uOojuu1pBDHaLi41zb6tKQKIMs/6clg7+BLiJB9rQQuWXM8K/p+QI0LzlZeSi+b4FXcz14J7rhKR4QJ3s/IGJOANAYgJ3BkpHZgLNj4mKsU/+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278266; c=relaxed/simple;
-	bh=ORWSxSL94EbT9v/iSZq+yhCJHmqTSfxFUxz0Q0rSMW4=;
+	s=arc-20240116; t=1774282649; c=relaxed/simple;
+	bh=2w9hR/aw3Ovuwss4tOtVyPg30X+zEmBxIpKI+0hHqkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tFejWf7SfEkE660sooQGlmnTDR/udpYsz7bCmjOUk1Hgdw/rXsTtfJYz6/HWwtlP2WZ76bUJuYJ63j7OtpquknUItqqXFNR827ZU47YWrM5uvgEVEqMIUp71LfS4EetwHxh1SVUlgW6e40pjCMnE0462y39BEb4wFHwr8Ht0NxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2q+NcsS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCEBC4CEF7;
-	Mon, 23 Mar 2026 15:04:25 +0000 (UTC)
+	 MIME-Version; b=AV+ghVOPh3ebufMB5m4urGVUpFiIePXSkvnCV6eOae91cbof/v56lpdcJWRNPw2wEo8GzHQJ/hua6Itlnqe5fE8hsZDD0sASpce7KvhyHQ/BWLZUOOnrGO8Fx19XLWpiwVDuFr04jU98ykhHGfFTP3T2LGeUZoXAVCw5n+DCiUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4l3+nTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37BCC4CEF7;
+	Mon, 23 Mar 2026 16:17:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278265;
-	bh=ORWSxSL94EbT9v/iSZq+yhCJHmqTSfxFUxz0Q0rSMW4=;
+	s=korg; t=1774282649;
+	bh=2w9hR/aw3Ovuwss4tOtVyPg30X+zEmBxIpKI+0hHqkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2q+NcsSv37mbIyFOChyS254B3TZfpDZr88sbY5ga/ARSIcR9vOmbzwyHp5NsLeWr
-	 APb8jXAl0lytW4wBXEuLFVXVrmU6Jo2RYRjpko6ch2zUsHpeBOAyZZ2Y52uPuXl969
-	 fso0p0HqsBZeisRjrRmxcuu4r3h/7ewqcXxa6Nuo=
+	b=p4l3+nTA6R5Cbuou0NDgZ6mDAT9VXP3BJSd3pZNIPnUE1zjM2OB3w7LXo02N1jk5n
+	 YU6NbJw60yGJuZWHQ+SMTG77AdRPWr3oCP2rtPMUoXPqziKvc8uigT+/kTtVUXuAk6
+	 u0AJzkC0Or2F8K6ypVqV523F9LnWo+tvadqunOKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/567] ASoC: amd: acp3x-rt5682-max9836: Add missing error check for clock acquisition
-Date: Mon, 23 Mar 2026 14:42:53 +0100
-Message-ID: <20260323134540.095139585@linuxfoundation.org>
+Subject: [PATCH 6.1 192/481] octeontx2-af: devlink: fix NIX RAS reporter recovery condition
+Date: Mon, 23 Mar 2026 14:42:54 +0100
+Message-ID: <20260323134529.873105805@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229165-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229707-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,55 +90,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 64E2E2F6198
+X-Rspamd-Queue-Id: B1A4C2F890D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 53f3a900e9a383d47af7253076e19f510c5708d0 ]
+[ Upstream commit dc26ca99b835e21e76a58b1463b84adb0ca34f58 ]
 
-The acp3x_5682_init() function did not check the return value of
-clk_get(), which could lead to dereferencing error pointers in
-rt5682_clk_enable().
+The NIX RAS health reporter recovery routine checks nix_af_rvu_int to
+decide whether to re-enable NIX_AF_RAS interrupts. This is the RVU
+interrupt status field and is unrelated to RAS events, so the recovery
+flow may incorrectly skip re-enabling NIX_AF_RAS interrupts.
 
-Fix this by:
-1. Changing clk_get() to the device-managed devm_clk_get().
-2. Adding proper IS_ERR() checks for both clock acquisitions.
+Check nix_af_rvu_ras instead before writing NIX_AF_RAS_ENA_W1S.
 
-Fixes: 6b8e4e7db3cd ("ASoC: amd: Add machine driver for Raven based platform")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Link: https://patch.msgid.link/20260310024246.2153827-1-nichen@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 5ed66306eab6 ("octeontx2-af: Add devlink health reporters for NIX")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20260310184824.1183651-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp3x-rt5682-max9836.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp3x-rt5682-max9836.c b/sound/soc/amd/acp3x-rt5682-max9836.c
-index 28ad5f5b9a766..73575f6de1ee3 100644
---- a/sound/soc/amd/acp3x-rt5682-max9836.c
-+++ b/sound/soc/amd/acp3x-rt5682-max9836.c
-@@ -94,8 +94,13 @@ static int acp3x_5682_init(struct snd_soc_pcm_runtime *rtd)
- 		return ret;
- 	}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+index 32fa8f2c5f4ee..48ce98ae56611 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
+@@ -579,7 +579,7 @@ static int rvu_hw_nix_ras_recover(struct devlink_health_reporter *reporter,
+ 	if (blkaddr < 0)
+ 		return blkaddr;
  
--	rt5682_dai_wclk = clk_get(component->dev, "rt5682-dai-wclk");
--	rt5682_dai_bclk = clk_get(component->dev, "rt5682-dai-bclk");
-+	rt5682_dai_wclk = devm_clk_get(component->dev, "rt5682-dai-wclk");
-+	if (IS_ERR(rt5682_dai_wclk))
-+		return PTR_ERR(rt5682_dai_wclk);
-+
-+	rt5682_dai_bclk = devm_clk_get(component->dev, "rt5682-dai-bclk");
-+	if (IS_ERR(rt5682_dai_bclk))
-+		return PTR_ERR(rt5682_dai_bclk);
+-	if (nix_event_ctx->nix_af_rvu_int)
++	if (nix_event_ctx->nix_af_rvu_ras)
+ 		rvu_write64(rvu, blkaddr, NIX_AF_RAS_ENA_W1S, ~0ULL);
  
- 	ret = snd_soc_card_jack_new_pins(card, "Headset Jack",
- 					 SND_JACK_HEADSET |
+ 	return 0;
 -- 
 2.51.0
 
