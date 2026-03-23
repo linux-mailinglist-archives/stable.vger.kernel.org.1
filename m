@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229104-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNOEJkdUwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:03 +0100
+	id yBIvAElXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229104-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E62C2F56CA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B80932F5D04
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7731F3115EF2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5DC383059CA7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8688D381B03;
-	Mon, 23 Mar 2026 14:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D382848BA;
+	Mon, 23 Mar 2026 15:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vzbr2Xrb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VZlQslZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46457175A80;
-	Mon, 23 Mar 2026 14:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C59283FC8;
+	Mon, 23 Mar 2026 15:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275459; cv=none; b=N9gEOeQVIZyef9q8d5kN2DnGIB9k1t2uU1fh0Pg+tcr/zuZLz0hoUhsk3u9ncbbR/dTaw7Ti/UXZXvLTnrCLiWbJZoxkUksvWLoKqvZ8YsH6F5yDsUvobQZtQj1hges2vHKSgid+SaQNQh7SInI15minluFdGS0vDw1cMul1Gc4=
+	t=1774278072; cv=none; b=ZtXgOM3+J+owYXzACqG9qgaK7GNbXMxQu/ipyVUlOn7BWWgfVIp6dsMX1//GjzGcs2WPEjvKmzvR0pIGyw+fKrp/lyX0ir24TSO2bNfjJSd6fmiljj+IGiO/CSf5S7KZQezI2m9tRkNtv2H/+7azx7Yf4o6WRwm+yq9xFvsuNNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275459; c=relaxed/simple;
-	bh=fI3gq+UKo+oSXXc66iKBhWnAb4cNGfxsn+LXNO3bwKw=;
+	s=arc-20240116; t=1774278072; c=relaxed/simple;
+	bh=AV29Ny7yHNe0OytpfsWkaK/RQEIjvGV6LcmOmWhXXWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A2VltHlrRaOIX10FVF3hNA8IXS4JwTQjEvdY8Nes8KwKF17RgyemiMdIyiwTbwU7g/KahrHagvXSnnBzopXTsGMPdQGAkSVzNM8sW2fUzn8bmW4XayT13i3nrbU2QEQEXzqGxguOMF5NenfZNK/drP55jZESQtqhBA9LRRmLOVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzbr2Xrb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4CBC4CEF7;
-	Mon, 23 Mar 2026 14:17:38 +0000 (UTC)
+	 MIME-Version; b=uHTukusA1VMJ2UuZSCdg7eJPQ7ZCso0pmQWRb0uysgNmQMnLMElMfRH7gIEji3DTFBu3l2KHN76TOVkgZm+YULdEZQwKhNjAUXZv8FdYVehULcqlZIQQ9+vWFNkGt7zJC55gj3rrxHs+yetClzhe0vCyU59HvfHdy4rmd9XbV+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VZlQslZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB087C2BCB1;
+	Mon, 23 Mar 2026 15:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275459;
-	bh=fI3gq+UKo+oSXXc66iKBhWnAb4cNGfxsn+LXNO3bwKw=;
+	s=korg; t=1774278072;
+	bh=AV29Ny7yHNe0OytpfsWkaK/RQEIjvGV6LcmOmWhXXWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vzbr2Xrb0THIE5QCm8xxJiDON1Ack5FJhADVMr1ry1E3664wYv5hjxIGLVbe8NtnI
-	 Ke3aM93MSiJk8YdjW4PRU5/+Yzw+ms3LMl58pmvvgavUmgCPZqbimyGyke2Sf5yaou
-	 hWZ0W1D+KW/fBZYRNofCywGhZfQ3cv6NsWd6MWBI=
+	b=0VZlQslZb0iqQZBtiYKKm5dJE0c7sSZ8nCqpmA33QXHuzqHMyrz1YaA2Cvj978dHy
+	 Ki4IlX6VTJr/c8rJCeywH3dtlkuzIOimghw1GySY7gejZhqQXrZ7oz/Y5bRJAHgPQJ
+	 XxyZCXSPCtDlSLA3ZpLY/g/m5DkKiT5jX25HSi6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	RD Babiera <rdbabiera@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.12 109/460] usb: typec: altmode/displayport: set displayport signaling rate in configure message
+	GangMin Kim <km.kim1503@gmail.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 185/567] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
 Date: Mon, 23 Mar 2026 14:41:45 +0100
-Message-ID: <20260323134529.319475261@linuxfoundation.org>
+Message-ID: <20260323134538.430196877@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +65,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228562-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229104-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1E62C2F56CA
+X-Rspamd-Queue-Id: B80932F5D04
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit e8557acfa079a54b59a21f447c82a31aec7717df upstream.
+commit 11cb63b0d1a0685e0831ae3c77223e002ef18189 upstream.
 
-dp_altmode_configure sets the signaling rate to the current
-configuration's rate and then shifts the value to the Select
-Configuration bitfield. On the initial configuration, dp->data.conf
-is 0 to begin with, so the signaling rate field is never set, which
-leads to some DisplayPort Alt Mode partners sending NAK to the
-Configure message.
+As Paolo said earlier [1]:
 
-Set the signaling rate to the capabilities supported by both the
-port and the port partner. If the cable supports DisplayPort Alt Mode,
-then include its capabilities as well.
+"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
+the current skb being held by the defragmentation engine. As reported by
+GangMin Kim, if such packet is that may cause a UaF when the defrag engine
+later on tries to tuch again such packet."
 
-Fixes: a17fae8fc38e ("usb: typec: Add Displayport Alternate Mode 2.1 Support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://patch.msgid.link/20260310204106.3939862-2-rdbabiera@google.com
+act_ct was never meant to be used in the egress path, however some users
+are attaching it to egress today [2]. Attempting to reach a middle
+ground, we noticed that, while most qdiscs are not handling
+TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
+address the issue by only allowing act_ct to bind to clsact/ingress
+qdiscs and shared blocks. That way it's still possible to attach act_ct to
+egress (albeit only with clsact).
+
+[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
+[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
+
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
+CC: stable@vger.kernel.org
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20260225134349.1287037-1-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/altmodes/displayport.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ include/net/act_api.h |    1 +
+ net/sched/act_ct.c    |    6 ++++++
+ net/sched/cls_api.c   |    7 +++++++
+ 3 files changed, 14 insertions(+)
 
---- a/drivers/usb/typec/altmodes/displayport.c
-+++ b/drivers/usb/typec/altmodes/displayport.c
-@@ -93,9 +93,14 @@ static int dp_altmode_configure(struct d
- {
- 	u8 pin_assign = 0;
- 	u32 conf;
-+	u32 signal;
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -68,6 +68,7 @@ struct tc_action {
+ #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
+ #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
+ #define TCA_ACT_FLAGS_AT_INGRESS	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
++#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 5))
  
- 	/* DP Signalling */
--	conf = (dp->data.conf & DP_CONF_SIGNALLING_MASK) >> DP_CONF_SIGNALLING_SHIFT;
-+	signal = DP_CAP_DP_SIGNALLING(dp->port->vdo) & DP_CAP_DP_SIGNALLING(dp->alt->vdo);
-+	if (dp->plug_prime)
-+		signal &= DP_CAP_DP_SIGNALLING(dp->plug_prime->vdo);
+ /* Update lastuse only if needed, to avoid dirtying a cache line.
+  * We use a temp variable to avoid fetching jiffies twice.
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1327,6 +1327,12 @@ static int tcf_ct_init(struct net *net,
+ 		return -EINVAL;
+ 	}
+ 
++	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
++		return -EOPNOTSUPP;
++	}
 +
-+	conf = signal << DP_CONF_SIGNALLING_SHIFT;
+ 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
+ 	if (err < 0)
+ 		return err;
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -2151,6 +2151,11 @@ static bool is_qdisc_ingress(__u32 class
+ 	return (TC_H_MIN(classid) == TC_H_MIN(TC_H_MIN_INGRESS));
+ }
  
- 	switch (con) {
- 	case DP_STATUS_CON_DISABLED:
++static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
++{
++	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
++}
++
+ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 			  struct netlink_ext_ack *extack)
+ {
+@@ -2344,6 +2349,8 @@ replay:
+ 		flags |= TCA_ACT_FLAGS_NO_RTNL;
+ 	if (is_qdisc_ingress(parent))
+ 		flags |= TCA_ACT_FLAGS_AT_INGRESS;
++	if (is_ingress_or_clsact(block, q))
++		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
+ 	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
+ 			      flags, extack);
+ 	if (err == 0) {
 
 
 
