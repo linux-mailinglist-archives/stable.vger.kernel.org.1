@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-229562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228527-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ODZhIShywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229562-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:32 +0100
+	id 4HToCLdOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228527-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3182E2F9558
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 992CC2F4A70
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 57286312DE71
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:12 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA662303BAC9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73413BA229;
-	Mon, 23 Mar 2026 16:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 113E83AE1AA;
+	Mon, 23 Mar 2026 14:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HssMIjnc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FeQx03q7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2573B95F8;
-	Mon, 23 Mar 2026 16:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C741A1FC101;
+	Mon, 23 Mar 2026 14:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282256; cv=none; b=sQaGa8Naj4gxOd3bU0l1L03s4HHpZCEcCeDN9+apoNp6eoqBNS/Ic7202dg+MSUeVsx6+7Rs/lEWDxbAOTu8miY6HvG7+iXK13BYTRIDCzRL+sPjNd5zD/rjHspSGzESK7PH64p6Fv4u+BTe/yzjQFTogabn2ZDwzoyeUC/C+6s=
+	t=1774275367; cv=none; b=dMI9oZkFjAvmet15486bVb++9iu85EoAT1Cq32Mw7cup0k1GnsZBkCLokbRLTtCc+IODZuQ92U2pD2Mt1/WLcLaebNJ1CVUdCgPPMwyqCdE+D0lRNxJT/VItD616XL7Hl2n6XepkR0RvEEi5zoIWfYQDXwt9pjk3arE0n2x+nAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282256; c=relaxed/simple;
-	bh=JdqEvhAEhA842CqXLxII9swXUZhBI9zXHzRABjXiHDk=;
+	s=arc-20240116; t=1774275367; c=relaxed/simple;
+	bh=AJefUeFJIdcbLwM2VgrSEOHtAe4SchYrqind1ITXhTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AA/le+gIOJtPxiELklkz9cWHk9Spsdedhzg1diG1w5jga9JflcP/WwCgeK7XLlyS99Z+7SUr4YjhNHzisLbLLFfiEN9GrS7J9SpjJh8c66mgypIUmpwiSvO70U7oZxaGKRFSt26y8xffMpoNGs6+uBRAoQwpuc+px+VXJkeW+uY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HssMIjnc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C10C4CEF7;
-	Mon, 23 Mar 2026 16:10:55 +0000 (UTC)
+	 MIME-Version; b=IZZzaB+9QLMkUcu3r4LIEdzu+s6j10AP2ryiYr+/dhMZw6/UXVJOLgZeHZixu36/N1Rgy60OGj2Qxx/HtRLfObrN4iJmgi0sh50l+HhOiS3AUQnnW0ZxaAWXldzeigggXVnVId/7Vp9baFVmNK4zgAgHmiLT3XsHi8iyJ8rVrrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FeQx03q7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592EBC4CEF7;
+	Mon, 23 Mar 2026 14:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282256;
-	bh=JdqEvhAEhA842CqXLxII9swXUZhBI9zXHzRABjXiHDk=;
+	s=korg; t=1774275367;
+	bh=AJefUeFJIdcbLwM2VgrSEOHtAe4SchYrqind1ITXhTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HssMIjncYBcT7vcu0qPVStw+dwUBplAyXI9gFOatxB06IkDG5IwapNYN40sz5toQS
-	 aONh/TPDCAl8XLkR/BNNTyESx1rNyb9ehjN28tUSRs3LcwkXxE1zLAJCclZ9pP+Tam
-	 RkzT3nQcS63Av+lfwq2GmFxzDKA4Zx71jplz47bs=
+	b=FeQx03q7bXA6OR4lXdyEuR+nQIV8y3jqrwMBSUXdYE3ZKQtxfr8AXhX1ZL186Hdgu
+	 I+8CYcWg+Mu2pe3ZYO3Q5nUXCIOu5WckmKNZVRalOJCIqEyQQJRVkr5c+OBAFHeXUL
+	 jwwcWPxVrNrVOmLzu6NztrweM2El/2OIsxw/GQJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davide Caratti <dcaratti@redhat.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 087/481] net/sched: ets: fix divide by zero in the offload path
+	Chao Shi <cshi008@fiu.edu>,
+	Weidong Zhu <weizhu@fiu.edu>,
+	Dave Tian <daveti@purdue.edu>,
+	Christoph Hellwig <hch@lst.de>,
+	Sungwoo Kim <iam@sung-woo.kim>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 073/460] nvme-pci: Fix race bug in nvme_poll_irqdisable()
 Date: Mon, 23 Mar 2026 14:41:09 +0100
-Message-ID: <20260323134527.387020384@linuxfoundation.org>
+Message-ID: <20260323134528.485547681@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,150 +68,159 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
-	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+X-Spamd-Result: default: False [3.84 / 15.00];
+	SEM_URIBL(3.50)[purdue.edu:email];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
+	BAD_REP_POLICIES(0.10)[];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228527-lists,stable=lfdr.de];
+	DMARC_POLICY_ALLOW(0.00)[linuxfoundation.org,none];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229562-lists,stable=lfdr.de];
+	R_DKIM_ALLOW(0.00)[linuxfoundation.org:s=korg];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	NEURAL_SPAM(0.00)[0.951];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	R_SPF_ALLOW(0.00)[+ip6:2600:3c09:e001:a7::/64:c];
+	TAGGED_RCPT(0.00)[stable];
+	ARC_ALLOW(0.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3182E2F9558
+X-Rspamd-Queue-Id: 992CC2F4A70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Sungwoo Kim <iam@sung-woo.kim>
 
-commit e35626f610f3d2b7953ccddf6a77453da22b3a9e upstream.
+[ Upstream commit fc71f409b22ca831a9f87a2712eaa09ef2bb4a5e ]
 
-Offloading ETS requires computing each class' WRR weight: this is done by
-averaging over the sums of quanta as 'q_sum' and 'q_psum'. Using unsigned
-int, the same integer size as the individual DRR quanta, can overflow and
-even cause division by zero, like it happened in the following splat:
+In the following scenario, pdev can be disabled between (1) and (3) by
+(2). This sets pdev->msix_enabled = 0. Then, pci_irq_vector() will
+return MSI-X IRQ(>15) for (1) whereas return INTx IRQ(<=15) for (2).
+This causes IRQ warning because it tries to enable INTx IRQ that has
+never been disabled before.
 
- Oops: divide error: 0000 [#1] SMP PTI
- CPU: 13 UID: 0 PID: 487 Comm: tc Tainted: G            E       6.19.0-virtme #45 PREEMPT(full)
- Tainted: [E]=UNSIGNED_MODULE
- Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
- RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
- Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
- RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
- RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
- RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
- R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
- R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
- FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  ets_qdisc_change+0x870/0xf40 [sch_ets]
-  qdisc_create+0x12b/0x540
-  tc_modify_qdisc+0x6d7/0xbd0
-  rtnetlink_rcv_msg+0x168/0x6b0
-  netlink_rcv_skb+0x5c/0x110
-  netlink_unicast+0x1d6/0x2b0
-  netlink_sendmsg+0x22e/0x470
-  ____sys_sendmsg+0x38a/0x3c0
-  ___sys_sendmsg+0x99/0xe0
-  __sys_sendmsg+0x8a/0xf0
-  do_syscall_64+0x111/0xf80
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7f440b81c77e
- Code: 4d 89 d8 e8 d4 bc 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
- RSP: 002b:00007fff951e4c10 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000000000481820 RCX: 00007f440b81c77e
- RDX: 0000000000000000 RSI: 00007fff951e4cd0 RDI: 0000000000000003
- RBP: 00007fff951e4c20 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff951f4fa8
- R13: 00000000699ddede R14: 00007f440bb01000 R15: 0000000000486980
-  </TASK>
- Modules linked in: sch_ets(E) netdevsim(E)
- ---[ end trace 0000000000000000 ]---
- RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
- Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
- RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
- RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
- RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
- R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
- R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
- FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
- Kernel panic - not syncing: Fatal exception
- Kernel Offset: 0x30000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
- ---[ end Kernel panic - not syncing: Fatal exception ]---
+To fix this, save IRQ number into a local variable and ensure
+disable_irq() and enable_irq() operate on the same IRQ number.  Even if
+pci_free_irq_vectors() frees the IRQ concurrently, disable_irq() and
+enable_irq() on a stale IRQ number is still valid and safe, and the
+depth accounting reamins balanced.
 
-Fix this using 64-bit integers for 'q_sum' and 'q_psum'.
+task 1:
+nvme_poll_irqdisable()
+  disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector)) ...(1)
+  enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector))  ...(3)
 
-Cc: stable@vger.kernel.org
-Fixes: d35eb52bd2ac ("net: sch_ets: Make the ETS qdisc offloadable")
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/28504887df314588c7255e9911769c36f751edee.1771964872.git.dcaratti@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+task 2:
+nvme_reset_work()
+  nvme_dev_disable()
+    pdev->msix_enable = 0;  ...(2)
+
+crash log:
+
+------------[ cut here ]------------
+Unbalanced enable for IRQ 10
+WARNING: kernel/irq/manage.c:753 at __enable_irq+0x102/0x190 kernel/irq/manage.c:753, CPU#1: kworker/1:0H/26
+Modules linked in:
+CPU: 1 UID: 0 PID: 26 Comm: kworker/1:0H Not tainted 6.19.0-dirty #9 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+Workqueue: kblockd blk_mq_timeout_work
+RIP: 0010:__enable_irq+0x107/0x190 kernel/irq/manage.c:753
+Code: ff df 48 89 fa 48 c1 ea 03 0f b6 14 02 48 89 f8 83 e0 07 83 c0 03 38 d0 7c 04 84 d2 75 79 48 8d 3d 2e 7a 3f 05 41 8b 74 24 2c <67> 48 0f b9 3a e8 ef b9 21 00 5b 41 5c 5d e9 46 54 66 03 e8 e1 b9
+RSP: 0018:ffffc900001bf550 EFLAGS: 00010046
+RAX: 0000000000000007 RBX: 0000000000000000 RCX: ffffffffb20c0e90
+RDX: 0000000000000000 RSI: 000000000000000a RDI: ffffffffb74b88f0
+RBP: ffffc900001bf560 R08: ffff88800197cf00 R09: 0000000000000001
+R10: 0000000000000003 R11: 0000000000000003 R12: ffff8880012a6000
+R13: 1ffff92000037eae R14: 000000000000000a R15: 0000000000000293
+FS:  0000000000000000(0000) GS:ffff8880b49f7000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000555da4a25fa8 CR3: 00000000208e8000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ enable_irq+0x121/0x1e0 kernel/irq/manage.c:797
+ nvme_poll_irqdisable+0x162/0x1c0 drivers/nvme/host/pci.c:1494
+ nvme_timeout+0x965/0x14b0 drivers/nvme/host/pci.c:1744
+ blk_mq_rq_timed_out block/blk-mq.c:1653 [inline]
+ blk_mq_handle_expired+0x227/0x2d0 block/blk-mq.c:1721
+ bt_iter+0x2fc/0x3a0 block/blk-mq-tag.c:292
+ __sbitmap_for_each_set include/linux/sbitmap.h:269 [inline]
+ sbitmap_for_each_set include/linux/sbitmap.h:290 [inline]
+ bt_for_each block/blk-mq-tag.c:324 [inline]
+ blk_mq_queue_tag_busy_iter+0x969/0x1e80 block/blk-mq-tag.c:536
+ blk_mq_timeout_work+0x627/0x870 block/blk-mq.c:1763
+ process_one_work+0x956/0x1aa0 kernel/workqueue.c:3257
+ process_scheduled_works kernel/workqueue.c:3340 [inline]
+ worker_thread+0x65c/0xe60 kernel/workqueue.c:3421
+ kthread+0x41a/0x930 kernel/kthread.c:463
+ ret_from_fork+0x6f8/0x8c0 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:246
+ </TASK>
+irq event stamp: 74478
+hardirqs last  enabled at (74477): [<ffffffffb5720a9c>] __raw_spin_unlock_irq include/linux/spinlock_api_smp.h:159 [inline]
+hardirqs last  enabled at (74477): [<ffffffffb5720a9c>] _raw_spin_unlock_irq+0x2c/0x60 kernel/locking/spinlock.c:202
+hardirqs last disabled at (74478): [<ffffffffb57207b5>] __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:108 [inline]
+hardirqs last disabled at (74478): [<ffffffffb57207b5>] _raw_spin_lock_irqsave+0x85/0xa0 kernel/locking/spinlock.c:162
+softirqs last  enabled at (74304): [<ffffffffb1e9466c>] __do_softirq kernel/softirq.c:656 [inline]
+softirqs last  enabled at (74304): [<ffffffffb1e9466c>] invoke_softirq kernel/softirq.c:496 [inline]
+softirqs last  enabled at (74304): [<ffffffffb1e9466c>] __irq_exit_rcu+0xdc/0x120 kernel/softirq.c:723
+softirqs last disabled at (74287): [<ffffffffb1e9466c>] __do_softirq kernel/softirq.c:656 [inline]
+softirqs last disabled at (74287): [<ffffffffb1e9466c>] invoke_softirq kernel/softirq.c:496 [inline]
+softirqs last disabled at (74287): [<ffffffffb1e9466c>] __irq_exit_rcu+0xdc/0x120 kernel/softirq.c:723
+---[ end trace 0000000000000000 ]---
+
+Fixes: fa059b856a59 (nvme-pci: Simplify nvme_poll_irqdisable)
+Acked-by: Chao Shi <cshi008@fiu.edu>
+Acked-by: Weidong Zhu <weizhu@fiu.edu>
+Acked-by: Dave Tian <daveti@purdue.edu>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sungwoo Kim <iam@sung-woo.kim>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/nvme/host/pci.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -115,12 +115,12 @@ static void ets_offload_change(struct Qd
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct tc_ets_qopt_offload qopt;
- 	unsigned int w_psum_prev = 0;
--	unsigned int q_psum = 0;
--	unsigned int q_sum = 0;
- 	unsigned int quantum;
- 	unsigned int w_psum;
- 	unsigned int weight;
- 	unsigned int i;
-+	u64 q_psum = 0;
-+	u64 q_sum = 0;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index c7d1e9c2b1571..6bd02c9116501 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -1201,14 +1201,16 @@ static irqreturn_t nvme_irq_check(int irq, void *data)
+ static void nvme_poll_irqdisable(struct nvme_queue *nvmeq)
+ {
+ 	struct pci_dev *pdev = to_pci_dev(nvmeq->dev->dev);
++	int irq;
  
- 	if (!tc_can_offload(dev) || !dev->netdev_ops->ndo_setup_tc)
- 		return;
-@@ -138,8 +138,12 @@ static void ets_offload_change(struct Qd
+ 	WARN_ON_ONCE(test_bit(NVMEQ_POLLED, &nvmeq->flags));
  
- 	for (i = 0; i < q->nbands; i++) {
- 		quantum = q->classes[i].quantum;
--		q_psum += quantum;
--		w_psum = quantum ? q_psum * 100 / q_sum : 0;
-+		if (quantum) {
-+			q_psum += quantum;
-+			w_psum = div64_u64(q_psum * 100, q_sum);
-+		} else {
-+			w_psum = 0;
-+		}
- 		weight = w_psum - w_psum_prev;
- 		w_psum_prev = w_psum;
+-	disable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
++	irq = pci_irq_vector(pdev, nvmeq->cq_vector);
++	disable_irq(irq);
+ 	spin_lock(&nvmeq->cq_poll_lock);
+ 	nvme_poll_cq(nvmeq, NULL);
+ 	spin_unlock(&nvmeq->cq_poll_lock);
+-	enable_irq(pci_irq_vector(pdev, nvmeq->cq_vector));
++	enable_irq(irq);
+ }
  
+ static int nvme_poll(struct blk_mq_hw_ctx *hctx, struct io_comp_batch *iob)
+-- 
+2.51.0
+
 
 
 
