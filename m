@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-228132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229320-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yP9hOgxJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228132-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:08 +0100
+	id AJ6GCL1vwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229320-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:13 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AAF22F3D9A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F0B2F8F28
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04EF530312D1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3D3D320F42C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02B029A31C;
-	Mon, 23 Mar 2026 13:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256B2280338;
+	Mon, 23 Mar 2026 15:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ktb9kt9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pH2FFaG/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F1C1A6815;
-	Mon, 23 Mar 2026 13:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC81A242D70;
+	Mon, 23 Mar 2026 15:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274221; cv=none; b=izLnCij7tfPGJZWCjUHCf1I4OiXTwy9nsYzM85tpAwW25SijX5/oxAt9jLciLgJPPTMLoRy9YO0zh5/u//qBxcKeFbVcVYztEknufWZoy3z5n7ZqvyQS9FLG4qZe3LO1odVKtqw8kIJ3rUXt3T6nniW/g9doj07szwO27SG4smY=
+	t=1774278746; cv=none; b=ISBdcZQJ9YT0A1+hcEVkHCfsx+eKjUwve3HCfVXIjC0yNzgMO+b3npZMkHPvIWK/VWKLK0a9Ve/P1Kur1PmOOaW1+N7dJ2g3aXtOhRpabUekS6KoA6MhVVGmbdgHVDFXfrvllj5t5GJVMMEw6U78Di+8PqyJGTCZr01h3xHmL6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274221; c=relaxed/simple;
-	bh=fjV3AUe3TEOtpUdQmsnTnbDY+7DeWY8AJC08yjGvAes=;
+	s=arc-20240116; t=1774278746; c=relaxed/simple;
+	bh=lz+IhvxSRairiKgW5rYs1e7SfPxEcWpekR5S90ynUkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B+hVoG+ejNxrPdbo8tFFBt/mMleZjM2NgYv/Mt/rgCFDcNqMyl4DUN55R0I2751poxhQXmy+HbDfZ1pSe7+lrtrXQm4plJlYBFy07ktV5IGoINV+tQlLb91xu5ABvgaJYpIz1+b1puhWL+yt6Q2FaxSNc/jBQMFwnnv4ns91hfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ktb9kt9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFE1C2BC9E;
-	Mon, 23 Mar 2026 13:57:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PXX0SyX2CmNpoPTS02gqgX1FBQmd+ZCy8DjrvsCURhLIqRghP6irny5VCQjTmLQTploELIaS7GVM5SuH37WA6uZ2NOStFXNUtVPeb3KyH2Qpj1OEKcczDKjAsFpoOwI8p/uf8jDN5YjsPh0n3stB1FGADkxnfBe1bS8/31h59EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pH2FFaG/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484DBC4CEF7;
+	Mon, 23 Mar 2026 15:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274221;
-	bh=fjV3AUe3TEOtpUdQmsnTnbDY+7DeWY8AJC08yjGvAes=;
+	s=korg; t=1774278746;
+	bh=lz+IhvxSRairiKgW5rYs1e7SfPxEcWpekR5S90ynUkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ktb9kt9oQs9R9x/ndKyj56qg9stUa+gT38WU5uQtgq8tpV5Ce0gkZa+IHO0gg9+JD
-	 t8V/ma89QkM+ZVBmlCSTn/V8zzoVGaXVVuyG7mDz5SMnbk8ZXgKKP60hOkcYvu84Ld
-	 dNYSsoY9GSlLBDPa4qLuktAH1Hlas2B8JlfJH3rY=
+	b=pH2FFaG/S5rj6GnzzYJ8rww5JdMrn0tIsyccyRBJgQ9OTJLU/wZREEBHy6dBjdjXy
+	 VCulVbgABDxwFgrGxTnnjU0C0Q9FPobDhZ6ovZDHxHaXXXw38dL4feWTrj6vvoMicY
+	 HI1EyHdoD+OM/FLUPceQxpEsAHKkek4e1tqWeSjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 148/220] bonding: prevent potential infinite loop in bond_header_parse()
+	syzbot+d991fea1b4b23b1f6bf8@syzkaller.appspotmail.com,
+	=?UTF-8?q?Miquel=20Sabat=C3=A9=20Sol=C3=A0?= <mssola@mssola.com>,
+	David Sterba <dsterba@suse.com>,
+	Bin Lan <lanbincn@139.com>
+Subject: [PATCH 6.6 405/567] btrfs: fix NULL dereference on root when tracing inode eviction
 Date: Mon, 23 Mar 2026 14:45:25 +0100
-Message-ID: <20260323134509.264617124@linuxfoundation.org>
+Message-ID: <20260323134543.895486237@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,243 +64,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228132-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,mssola.com,suse.com,139.com];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229320-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,d991fea1b4b23b1f6bf8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,netdev];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,shopee.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,jvosburgh.net:email]
-X-Rspamd-Queue-Id: 7AAF22F3D9A
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 62F0B2F8F28
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Miquel Sabaté Solà <mssola@mssola.com>
 
-[ Upstream commit b7405dcf7385445e10821777143f18c3ce20fa04 ]
+[ Upstream commit f157dd661339fc6f5f2b574fe2429c43bd309534 ]
 
-bond_header_parse() can loop if a stack of two bonding devices is setup,
-because skb->dev always points to the hierarchy top.
+When evicting an inode the first thing we do is to setup tracing for it,
+which implies fetching the root's id. But in btrfs_evict_inode() the
+root might be NULL, as implied in the next check that we do in
+btrfs_evict_inode().
 
-Add new "const struct net_device *dev" parameter to
-(struct header_ops)->parse() method to make sure the recursion
-is bounded, and that the final leaf parse method is called.
+Hence, we either should set the ->root_objectid to 0 in case the root is
+NULL, or we move tracing setup after checking that the root is not
+NULL. Setting the rootid to 0 at least gives us the possibility to trace
+this call even in the case when the root is NULL, so that's the solution
+taken here.
 
-Fixes: 950803f72547 ("bonding: fix type confusion in bond_setup_by_slave()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Tested-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Cc: Jay Vosburgh <jv@jvosburgh.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Link: https://patch.msgid.link/20260315104152.1436867-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1abe9b8a138c ("Btrfs: add initial tracepoint support for btrfs")
+Reported-by: syzbot+d991fea1b4b23b1f6bf8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d991fea1b4b23b1f6bf8
+Signed-off-by: Miquel Sabaté Solà <mssola@mssola.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Adjust context ]
+Signed-off-by: Bin Lan <lanbincn@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/net.c          | 5 +++--
- drivers/net/bonding/bond_main.c | 8 +++++---
- include/linux/etherdevice.h     | 3 ++-
- include/linux/if_ether.h        | 3 ++-
- include/linux/netdevice.h       | 6 ++++--
- net/ethernet/eth.c              | 9 +++------
- net/ipv4/ip_gre.c               | 3 ++-
- net/mac802154/iface.c           | 4 +++-
- net/phonet/af_phonet.c          | 5 ++++-
- 9 files changed, 28 insertions(+), 18 deletions(-)
+ include/trace/events/btrfs.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firewire/net.c b/drivers/firewire/net.c
-index 6d64467135395..e829454089550 100644
---- a/drivers/firewire/net.c
-+++ b/drivers/firewire/net.c
-@@ -257,9 +257,10 @@ static void fwnet_header_cache_update(struct hh_cache *hh,
- 	memcpy((u8 *)hh->hh_data + HH_DATA_OFF(FWNET_HLEN), haddr, net->addr_len);
- }
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -225,8 +225,8 @@ DECLARE_EVENT_CLASS(btrfs__inode,
+ 		__entry->generation = BTRFS_I(inode)->generation;
+ 		__entry->last_trans = BTRFS_I(inode)->last_trans;
+ 		__entry->logged_trans = BTRFS_I(inode)->logged_trans;
+-		__entry->root_objectid =
+-				BTRFS_I(inode)->root->root_key.objectid;
++		__entry->root_objectid = BTRFS_I(inode)->root ?
++					 btrfs_root_id(BTRFS_I(inode)->root) : 0;
+ 	),
  
--static int fwnet_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int fwnet_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+			      unsigned char *haddr)
- {
--	memcpy(haddr, skb->dev->dev_addr, FWNET_ALEN);
-+	memcpy(haddr, dev->dev_addr, FWNET_ALEN);
- 
- 	return FWNET_ALEN;
- }
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index e8e261e0cb4e1..106cfe732a15e 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1497,9 +1497,11 @@ static int bond_header_create(struct sk_buff *skb, struct net_device *bond_dev,
- 	return ret;
- }
- 
--static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int bond_header_parse(const struct sk_buff *skb,
-+			     const struct net_device *dev,
-+			     unsigned char *haddr)
- {
--	struct bonding *bond = netdev_priv(skb->dev);
-+	struct bonding *bond = netdev_priv(dev);
- 	const struct header_ops *slave_ops;
- 	struct slave *slave;
- 	int ret = 0;
-@@ -1509,7 +1511,7 @@ static int bond_header_parse(const struct sk_buff *skb, unsigned char *haddr)
- 	if (slave) {
- 		slave_ops = READ_ONCE(slave->dev->header_ops);
- 		if (slave_ops && slave_ops->parse)
--			ret = slave_ops->parse(skb, haddr);
-+			ret = slave_ops->parse(skb, slave->dev, haddr);
- 	}
- 	rcu_read_unlock();
- 	return ret;
-diff --git a/include/linux/etherdevice.h b/include/linux/etherdevice.h
-index 9a1eacf35d370..df8f88f63a706 100644
---- a/include/linux/etherdevice.h
-+++ b/include/linux/etherdevice.h
-@@ -42,7 +42,8 @@ extern const struct header_ops eth_header_ops;
- 
- int eth_header(struct sk_buff *skb, struct net_device *dev, unsigned short type,
- 	       const void *daddr, const void *saddr, unsigned len);
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr);
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr);
- int eth_header_cache(const struct neighbour *neigh, struct hh_cache *hh,
- 		     __be16 type);
- void eth_header_cache_update(struct hh_cache *hh, const struct net_device *dev,
-diff --git a/include/linux/if_ether.h b/include/linux/if_ether.h
-index 61b7335aa037c..ca9afa824aa4f 100644
---- a/include/linux/if_ether.h
-+++ b/include/linux/if_ether.h
-@@ -40,7 +40,8 @@ static inline struct ethhdr *inner_eth_hdr(const struct sk_buff *skb)
- 	return (struct ethhdr *)skb_inner_mac_header(skb);
- }
- 
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr);
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr);
- 
- extern ssize_t sysfs_format_mac(char *buf, const unsigned char *addr, int len);
- 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 444e52eb8ed99..1216f050f0699 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -311,7 +311,9 @@ struct header_ops {
- 	int	(*create) (struct sk_buff *skb, struct net_device *dev,
- 			   unsigned short type, const void *daddr,
- 			   const void *saddr, unsigned int len);
--	int	(*parse)(const struct sk_buff *skb, unsigned char *haddr);
-+	int	(*parse)(const struct sk_buff *skb,
-+			 const struct net_device *dev,
-+			 unsigned char *haddr);
- 	int	(*cache)(const struct neighbour *neigh, struct hh_cache *hh, __be16 type);
- 	void	(*cache_update)(struct hh_cache *hh,
- 				const struct net_device *dev,
-@@ -3442,7 +3444,7 @@ static inline int dev_parse_header(const struct sk_buff *skb,
- 
- 	if (!dev->header_ops || !dev->header_ops->parse)
- 		return 0;
--	return dev->header_ops->parse(skb, haddr);
-+	return dev->header_ops->parse(skb, dev, haddr);
- }
- 
- static inline __be16 dev_parse_header_protocol(const struct sk_buff *skb)
-diff --git a/net/ethernet/eth.c b/net/ethernet/eth.c
-index 13a63b48b7eeb..d9faadbe9b6c8 100644
---- a/net/ethernet/eth.c
-+++ b/net/ethernet/eth.c
-@@ -193,14 +193,11 @@ __be16 eth_type_trans(struct sk_buff *skb, struct net_device *dev)
- }
- EXPORT_SYMBOL(eth_type_trans);
- 
--/**
-- * eth_header_parse - extract hardware address from packet
-- * @skb: packet to extract header from
-- * @haddr: destination buffer
-- */
--int eth_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+int eth_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+		     unsigned char *haddr)
- {
- 	const struct ethhdr *eth = eth_hdr(skb);
-+
- 	memcpy(haddr, eth->h_source, ETH_ALEN);
- 	return ETH_ALEN;
- }
-diff --git a/net/ipv4/ip_gre.c b/net/ipv4/ip_gre.c
-index e13244729ad8d..35f0baa99d409 100644
---- a/net/ipv4/ip_gre.c
-+++ b/net/ipv4/ip_gre.c
-@@ -919,7 +919,8 @@ static int ipgre_header(struct sk_buff *skb, struct net_device *dev,
- 	return -(t->hlen + sizeof(*iph));
- }
- 
--static int ipgre_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int ipgre_header_parse(const struct sk_buff *skb, const struct net_device *dev,
-+			      unsigned char *haddr)
- {
- 	const struct iphdr *iph = (const struct iphdr *) skb_mac_header(skb);
- 	memcpy(haddr, &iph->saddr, 4);
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index 9e4631fade90c..000be60d95803 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -469,7 +469,9 @@ static int mac802154_header_create(struct sk_buff *skb,
- }
- 
- static int
--mac802154_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+mac802154_header_parse(const struct sk_buff *skb,
-+		       const struct net_device *dev,
-+		       unsigned char *haddr)
- {
- 	struct ieee802154_hdr hdr;
- 
-diff --git a/net/phonet/af_phonet.c b/net/phonet/af_phonet.c
-index 238a9638d2b0f..d89225d6bfd3b 100644
---- a/net/phonet/af_phonet.c
-+++ b/net/phonet/af_phonet.c
-@@ -129,9 +129,12 @@ static int pn_header_create(struct sk_buff *skb, struct net_device *dev,
- 	return 1;
- }
- 
--static int pn_header_parse(const struct sk_buff *skb, unsigned char *haddr)
-+static int pn_header_parse(const struct sk_buff *skb,
-+			   const struct net_device *dev,
-+			   unsigned char *haddr)
- {
- 	const u8 *media = skb_mac_header(skb);
-+
- 	*haddr = *media;
- 	return 1;
- }
--- 
-2.51.0
-
+ 	TP_printk_btrfs("root=%llu(%s) gen=%llu ino=%llu blocks=%llu "
 
 
 
