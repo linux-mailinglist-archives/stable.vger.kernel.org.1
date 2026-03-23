@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228026-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QATQJ6FKwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228226-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:53 +0100
+	id eBEkNAFHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228026-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B10C2F4003
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8892F3880
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E092B3088D47
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 16AC430692E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B0A3B0ADA;
-	Mon, 23 Mar 2026 14:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E7CA3ACF03;
+	Mon, 23 Mar 2026 13:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuhaLU8O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzoaSroo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10A03AEF5F;
-	Mon, 23 Mar 2026 14:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41240340298;
+	Mon, 23 Mar 2026 13:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274508; cv=none; b=TPoiJbVPlnIXta7bqjRUDRdgE1wzKrMGqb/KvjN8k6ZzBJz+8fJcCdmPGc3lK/w8lwD2n2P44kZEf+NiPlWB2Z9tFjtR5yPcFbwBfddZcsnxyerh/pwZUmUaXCG++WEU52+4+9KFXAAdo1zp2Yu6/Ra7rpDhkIBXvaM514yJQB8=
+	t=1774273903; cv=none; b=WwQxho2rMd8EBg0c4FdAA6DcDZJl5GDpAeKN57Y/2AOC8XyZiEfzecrPLHygrXPUMe1HFTq9O15csv1zKb9cw1di+5M6yCPzAt8bh/c2X+tEY4lj6vZ1CUJdNMbkHhAoFEU5e9bL5AW/xduqasLcC0FRr++5fwUheimjYw0fLEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274508; c=relaxed/simple;
-	bh=7iVFwWDbERo5gG9RyFA072wQJFIvwHS3c/kHNW8BpEs=;
+	s=arc-20240116; t=1774273903; c=relaxed/simple;
+	bh=fU6iOIGs8vC2LFwFy+4RpF7Q2v7QsKtEp03OZJoNQLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sT/FkKEk4h0K3Nds4HPIzT+il4lV2MxylC8ssHUwILWpayJb8jRdC5YnGaPHtvXMLDgkJwXR5rUCB50y3BaINiKF3OHEhzjrOnaLtKt5/XkGkkhlW64ZNESV6aRm+uM9tD9qbCACoWsXrCCV6/EQhCA9/xbTdDAn4QPmzcyBBUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuhaLU8O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A8FC4CEF7;
-	Mon, 23 Mar 2026 14:01:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cE/F8PF3zbc9XVLRXYJCN4dJwu9HTywKVQodfpnDnNDuVMv1XNmoNTaamSxjDd6aik59Xhz5YhaMeb3bRrPNKnxr5/XabvyHILZUBxGO7bE3NqZdE+S/jVT2oeILHOvOKw6KGTwkFysA5+YDKzJX+JpNkcgqbO616N0gnWcDy24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzoaSroo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 775B9C2BCB1;
+	Mon, 23 Mar 2026 13:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274507;
-	bh=7iVFwWDbERo5gG9RyFA072wQJFIvwHS3c/kHNW8BpEs=;
+	s=korg; t=1774273902;
+	bh=fU6iOIGs8vC2LFwFy+4RpF7Q2v7QsKtEp03OZJoNQLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuhaLU8OXCQDJwVociq+jRXVAZdxllstih0HPvHYGKQMv8qybV4+qGXsQL1kgSmYO
-	 9WTWET2IRaNkvQrWyw280lQG18tyw0SWm3e8Zm2GEoCCygmTsuNB5/+T0meVB2ONMj
-	 F1sJX5obyxfaWumEQih/30+qtU4p4CwxlkCOC6zE=
+	b=rzoaSrooy6ulUA2UjvgvoGcPVHqzvmgsbdERD2C6uBpGDFkmvNY/bawif1Bp7tIYl
+	 +ZPLjPwThUmyFIxIdO5GOJ92b0AwAQEtih/wAtm89mKdy4vUBbhk3KAl6QXEvD9zUe
+	 pf/045qXY6HLYJD7dQ84HMUFPy+wgZMkxT2j5fhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Misbah Anjum N <misanjum@linux.ibm.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.18 002/212] NFSD: Hold net reference for the lifetime of /proc/fs/nfs/exports fd
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.19 046/220] pmdomain: bcm: bcm2835-power: Increase ASB control timeout
 Date: Mon, 23 Mar 2026 14:43:43 +0100
-Message-ID: <20260323134503.847271012@linuxfoundation.org>
+Message-ID: <20260323134506.041637554@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,117 +63,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228226-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228026-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,gmx.net,linaro.org];
 	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,brown.name:email]
-X-Rspamd-Queue-Id: 2B10C2F4003
+	RCPT_COUNT_FIVE(0.00)[6];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,igalia.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email]
+X-Rspamd-Queue-Id: 2E8892F3880
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit e7fcf179b82d3a3730fd8615da01b087cc654d0b upstream.
+commit b826d2c0b0ecb844c84431ba6b502e744f5d919a upstream.
 
-The /proc/fs/nfs/exports proc entry is created at module init
-and persists for the module's lifetime. exports_proc_open()
-captures the caller's current network namespace and stores
-its svc_export_cache in seq->private, but takes no reference
-on the namespace. If the namespace is subsequently torn down
-(e.g. container destruction after the opener does setns() to a
-different namespace), nfsd_net_exit() calls nfsd_export_shutdown()
-which frees the cache. Subsequent reads on the still-open fd
-dereference the freed cache_detail, walking a freed hash table.
+The bcm2835_asb_control() function uses a tight polling loop to wait
+for the ASB bridge to acknowledge a request. During intensive workloads,
+this handshake intermittently fails for V3D's master ASB on BCM2711,
+resulting in "Failed to disable ASB master for v3d" errors during
+runtime PM suspend. As a consequence, the failed power-off leaves V3D in
+a broken state, leading to bus faults or system hangs on later accesses.
 
-Hold a reference on the struct net for the lifetime of the open
-file descriptor. This prevents nfsd_net_exit() from running --
-and thus prevents nfsd_export_shutdown() from freeing the cache
--- while any exports fd is open. cache_detail already stores
-its net pointer (cd->net, set by cache_create_net()), so
-exports_release() can retrieve it without additional per-file
-storage.
+As the timeout is insufficient in some scenarios, increase the polling
+timeout from 1us to 5us, which is still negligible in the context of a
+power domain transition. Also, replace the open-coded ktime_get_ns()/
+cpu_relax() polling loop with readl_poll_timeout_atomic().
 
-Reported-by: Misbah Anjum N <misanjum@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-nfs/dcd371d3a95815a84ba7de52cef447b8@linux.ibm.com/
-Fixes: 96d851c4d28d ("nfsd: use proper net while reading "exports" file")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
-Tested-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power domains under a new binding.")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfsctl.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/pmdomain/bcm/bcm2835-power.c |   12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -149,9 +149,19 @@ static int exports_net_open(struct net *
+--- a/drivers/pmdomain/bcm/bcm2835-power.c
++++ b/drivers/pmdomain/bcm/bcm2835-power.c
+@@ -9,6 +9,7 @@
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/io.h>
++#include <linux/iopoll.h>
+ #include <linux/mfd/bcm2835-pm.h>
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+@@ -153,7 +154,6 @@ struct bcm2835_power {
+ static int bcm2835_asb_control(struct bcm2835_power *power, u32 reg, bool enable)
+ {
+ 	void __iomem *base = power->asb;
+-	u64 start;
+ 	u32 val;
  
- 	seq = file->private_data;
- 	seq->private = nn->svc_export_cache;
-+	get_net(net);
+ 	switch (reg) {
+@@ -166,8 +166,6 @@ static int bcm2835_asb_control(struct bc
+ 		break;
+ 	}
+ 
+-	start = ktime_get_ns();
+-
+ 	/* Enable the module's async AXI bridges. */
+ 	if (enable) {
+ 		val = readl(base + reg) & ~ASB_REQ_STOP;
+@@ -176,11 +174,9 @@ static int bcm2835_asb_control(struct bc
+ 	}
+ 	writel(PM_PASSWORD | val, base + reg);
+ 
+-	while (!!(readl(base + reg) & ASB_ACK) == enable) {
+-		cpu_relax();
+-		if (ktime_get_ns() - start >= 1000)
+-			return -ETIMEDOUT;
+-	}
++	if (readl_poll_timeout_atomic(base + reg, val,
++				      !!(val & ASB_ACK) != enable, 0, 5))
++		return -ETIMEDOUT;
+ 
  	return 0;
  }
- 
-+static int exports_release(struct inode *inode, struct file *file)
-+{
-+	struct seq_file *seq = file->private_data;
-+	struct cache_detail *cd = seq->private;
-+
-+	put_net(cd->net);
-+	return seq_release(inode, file);
-+}
-+
- static int exports_nfsd_open(struct inode *inode, struct file *file)
- {
- 	return exports_net_open(inode->i_sb->s_fs_info, file);
-@@ -161,7 +171,7 @@ static const struct file_operations expo
- 	.open		= exports_nfsd_open,
- 	.read		= seq_read,
- 	.llseek		= seq_lseek,
--	.release	= seq_release,
-+	.release	= exports_release,
- };
- 
- static int export_features_show(struct seq_file *m, void *v)
-@@ -1375,7 +1385,7 @@ static const struct proc_ops exports_pro
- 	.proc_open	= exports_proc_open,
- 	.proc_read	= seq_read,
- 	.proc_lseek	= seq_lseek,
--	.proc_release	= seq_release,
-+	.proc_release	= exports_release,
- };
- 
- static int create_proc_exports_entry(void)
 
 
 
