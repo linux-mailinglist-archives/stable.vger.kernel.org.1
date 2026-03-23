@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-228398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229407-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNOGOKZSwWkPSQQAu9opvQ
-	(envelope-from <stable+bounces-228398-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:48:06 +0100
+	id gE07FcJhwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229407-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:52:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3B92F5363
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:48:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC562F70B0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:52:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B2D0632331EB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCBBB340BC56
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB6773B2FC4;
-	Mon, 23 Mar 2026 14:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 449353BADA2;
+	Mon, 23 Mar 2026 15:19:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEnGKHMQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVzde7TN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADF4E3B2FD4;
-	Mon, 23 Mar 2026 14:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084B03B389F;
+	Mon, 23 Mar 2026 15:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275004; cv=none; b=dO2gYhjgFZWdSL861NV28G8pNWVUbr8IkJd3kap7pN2t49lc1RlOD6IIuIgAb4Ni80H786UGVxk17TbnHBTpRdSAEysWiQSetjUy9r9JP2OEpHIoXmjMejAO32h9CdOnCG3ixYLj6ZH/avuIOjFrsFwyrtT52ufm0gfYyokNbyw=
+	t=1774279150; cv=none; b=LQ8sUkczOUnMYKD7ZJmkGDkzW5uE10ZfGkUfOSf1f+feGCKJfra6Z0uEgUP+IcC9Ps5jJal/fPv3HS6LdfeB8XwbYVEZs86sKPmZ+xelhACqUAJn5ZuXv4BaVR1Az1xjZAa3a6oqkmH3GAUstDhNg7+veQBfqWac7OFPVZLnnwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275004; c=relaxed/simple;
-	bh=7CGcG6Ba1/Hue0o67wba5zg7Okg0eQm70Gj10wRxfpI=;
+	s=arc-20240116; t=1774279150; c=relaxed/simple;
+	bh=qqL0zhly+FuiyFyEetMioI9dR1bobeIhiDAKXWobwa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EdoGXVBQKhmD7wLtLUvik20rHlGdSExzvByoY3Ac2MeGm4a/JjyA7cowbHRrHXQVerqXNGSESk4vxJSR+pbFjSDLKkx7pp5NE7OeNf5YdTyUfYyQXNdszj9qUn5Zy2AfhPKrNLZEpLCGuTGPMkKZd9q0CAH6nFrCoLzEuBOIxEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEnGKHMQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C22C2BCB1;
-	Mon, 23 Mar 2026 14:10:04 +0000 (UTC)
+	 MIME-Version; b=F8vYgQnGFiVuCqbp5rdc6/nemaMvSezjMKRkm+3dAgj2WEq+wOAElxlbttVgWLwthd6wOO4iiP6olu/vLN99WHn53PhEgPyjXzE1PFU9khktT2QzH402asKhY04e2a141sRHT87V/4CAqExX0C9JHZjVpLvTbdURp/8U0atYi2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVzde7TN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4768AC4CEF7;
+	Mon, 23 Mar 2026 15:19:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275004;
-	bh=7CGcG6Ba1/Hue0o67wba5zg7Okg0eQm70Gj10wRxfpI=;
+	s=korg; t=1774279149;
+	bh=qqL0zhly+FuiyFyEetMioI9dR1bobeIhiDAKXWobwa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEnGKHMQi/kBTUB8YoUEzhXdOvZ7I9/ASCQvolbalugrglDDrg/G3IJdCkfOiUNp1
-	 O+tRKiguPkCk2p+zEFsdanKKqQ++8sb+iREmVmWKkSjV+NfDqVc0No6LlxSRTGkgII
-	 z9qbgXZD4Dz2j8Wvik/laVuz00gUC/qikMy1VnUA=
+	b=lVzde7TNihUZml2+0u78ZcnFOYAKQkjET799k3vGd6M822W31gyXawsegR06DBMKZ
+	 jeAiiCq0N1zW4tJBOw10tGnNAd7i1YEHQt+ONVfwja7YHcYzj5Q3nZk4kXBpjT7GXI
+	 pOuOWDAPm7BoraQoH5ciSZ7sw5abn7esfA0OCnIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.18 190/212] perf/x86: Move event pointer setup earlier in x86_pmu_enable()
+	Benjamin Cheng <benjamin.cheng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 491/567] drm/amdgpu/mmhub3.0.2: add bounds checking for cid
 Date: Mon, 23 Mar 2026 14:46:51 +0100
-Message-ID: <20260323134509.740691924@linuxfoundation.org>
+Message-ID: <20260323134546.129616706@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,143 +65,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228398-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229407-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5C3B92F5363
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,amd.com:email]
+X-Rspamd-Queue-Id: AAC562F70B0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 8d5fae6011260de209aaf231120e8146b14bc8e0 upstream.
+commit e5e6d67b1ce9764e67aef2d0eef9911af53ad99a upstream.
 
-A production AMD EPYC system crashed with a NULL pointer dereference
-in the PMU NMI handler:
+The value should never exceed the array size as those
+are the only values the hardware is expected to return,
+but add checks anyway.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000198
-  RIP: x86_perf_event_update+0xc/0xa0
-  Call Trace:
-   <NMI>
-   amd_pmu_v2_handle_irq+0x1a6/0x390
-   perf_event_nmi_handler+0x24/0x40
-
-The faulting instruction is `cmpq $0x0, 0x198(%rdi)` with RDI=0,
-corresponding to the `if (unlikely(!hwc->event_base))` check in
-x86_perf_event_update() where hwc = &event->hw and event is NULL.
-
-drgn inspection of the vmcore on CPU 106 showed a mismatch between
-cpuc->active_mask and cpuc->events[]:
-
-  active_mask: 0x1e (bits 1, 2, 3, 4)
-  events[1]:   0xff1100136cbd4f38  (valid)
-  events[2]:   0x0                 (NULL, but active_mask bit 2 set)
-  events[3]:   0xff1100076fd2cf38  (valid)
-  events[4]:   0xff1100079e990a90  (valid)
-
-The event that should occupy events[2] was found in event_list[2]
-with hw.idx=2 and hw.state=0x0, confirming x86_pmu_start() had run
-(which clears hw.state and sets active_mask) but events[2] was
-never populated.
-
-Another event (event_list[0]) had hw.state=0x7 (STOPPED|UPTODATE|ARCH),
-showing it was stopped when the PMU rescheduled events, confirming the
-throttle-then-reschedule sequence occurred.
-
-The root cause is commit 7e772a93eb61 ("perf/x86: Fix NULL event access
-and potential PEBS record loss") which moved the cpuc->events[idx]
-assignment out of x86_pmu_start() and into step 2 of x86_pmu_enable(),
-after the PERF_HES_ARCH check. This broke any path that calls
-pmu->start() without going through x86_pmu_enable() -- specifically
-the unthrottle path:
-
-  perf_adjust_freq_unthr_events()
-    -> perf_event_unthrottle_group()
-      -> perf_event_unthrottle()
-        -> event->pmu->start(event, 0)
-          -> x86_pmu_start()     // sets active_mask but not events[]
-
-The race sequence is:
-
-  1. A group of perf events overflows, triggering group throttle via
-     perf_event_throttle_group(). All events are stopped: active_mask
-     bits cleared, events[] preserved (x86_pmu_stop no longer clears
-     events[] after commit 7e772a93eb61).
-
-  2. While still throttled (PERF_HES_STOPPED), x86_pmu_enable() runs
-     due to other scheduling activity. Stopped events that need to
-     move counters get PERF_HES_ARCH set and events[old_idx] cleared.
-     In step 2 of x86_pmu_enable(), PERF_HES_ARCH causes these events
-     to be skipped -- events[new_idx] is never set.
-
-  3. The timer tick unthrottles the group via pmu->start(). Since
-     commit 7e772a93eb61 removed the events[] assignment from
-     x86_pmu_start(), active_mask[new_idx] is set but events[new_idx]
-     remains NULL.
-
-  4. A PMC overflow NMI fires. The handler iterates active counters,
-     finds active_mask[2] set, reads events[2] which is NULL, and
-     crashes dereferencing it.
-
-Move the cpuc->events[hwc->idx] assignment in x86_pmu_enable() to
-before the PERF_HES_ARCH check, so that events[] is populated even
-for events that are not immediately started. This ensures the
-unthrottle path via pmu->start() always finds a valid event pointer.
-
-Fixes: 7e772a93eb61 ("perf/x86: Fix NULL event access and potential PEBS record loss")
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 1441f52c7f6ae6553664aa9e3e4562f6fc2fe8ea)
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260310-perf-v2-1-4a3156fce43c@debian.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/core.c |    3 ++-
+ drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c |    3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/events/core.c
-+++ b/arch/x86/events/core.c
-@@ -1359,6 +1359,8 @@ static void x86_pmu_enable(struct pmu *p
- 			else if (i < n_running)
- 				continue;
+--- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c
+@@ -108,7 +108,8 @@ mmhub_v3_0_2_print_l2_protection_fault_s
+ 		"MMVM_L2_PROTECTION_FAULT_STATUS:0x%08X\n",
+ 		status);
  
-+			cpuc->events[hwc->idx] = event;
-+
- 			if (hwc->state & PERF_HES_ARCH)
- 				continue;
- 
-@@ -1366,7 +1368,6 @@ static void x86_pmu_enable(struct pmu *p
- 			 * if cpuc->enabled = 0, then no wrmsr as
- 			 * per x86_pmu_enable_event()
- 			 */
--			cpuc->events[hwc->idx] = event;
- 			x86_pmu_start(event, PERF_EF_RELOAD);
- 		}
- 		cpuc->n_added = 0;
+-	mmhub_cid = mmhub_client_ids_v3_0_2[cid][rw];
++	mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v3_0_2) ?
++		mmhub_client_ids_v3_0_2[cid][rw] : NULL;
+ 	dev_err(adev->dev, "\t Faulty UTCL2 client ID: %s (0x%x)\n",
+ 		mmhub_cid ? mmhub_cid : "unknown", cid);
+ 	dev_err(adev->dev, "\t MORE_FAULTS: 0x%lx\n",
 
 
 
