@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229867-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COdyFp5wwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229372-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:58 +0100
+	id QL1zIANwwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229867-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:23 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB58D2F9211
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:57 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EF7D2F9022
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60B5330EF408
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0CF6F318A639
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A013B6368;
-	Mon, 23 Mar 2026 15:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D22AB39A7EF;
+	Mon, 23 Mar 2026 16:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqgaS7Uz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCJp4rPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711FE3B7B83;
-	Mon, 23 Mar 2026 15:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932D43B8959;
+	Mon, 23 Mar 2026 16:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278908; cv=none; b=FOFg5sM76JSdlnx3v9569eGIVdQ4y9IpbFePiFMmyuiCgn5Z5nRYfLpKZ3T7676no31q7pasaT3kyGpbSAVjU8l3k/0lhpReOPafkt0naQKpVxp+x26FAfZKTKtKzqHjFlXjaZKwenS2iTYw0uFBo7Rg/Xwq20jLY+fBZcUjZHg=
+	t=1774283076; cv=none; b=iNilGRIGUAN1NRRm5da7S5cbBfZRR0ZH/my3IRyROyJ/1RdzouMIEG1nXVcmnLUvcblOaMLg6CQ6j0iquWAN/Fq+O7BHCSQiU5QAkOpoUg97UqZNNDTj5eT9X9KGStKajBegF4CGQAU+ESk4Xnjb7BN7zIk9izqCPIxJfD6JpLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278908; c=relaxed/simple;
-	bh=Ek6J78bQdF6tvH4psKo1n+4JVR7Ebz8QKjneSrYqT78=;
+	s=arc-20240116; t=1774283076; c=relaxed/simple;
+	bh=g2vQ8taGFEVJKCwpo/6gaXq6qFlpHO+W+HcrQnzV2bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aIo49yY/WmVKMVihmwNMTxvjcNuGb3xYUuAevGpnXsiNaLSle7RfdvQYxDNHEh8q3npkBkJ4LeZRO0P08dAqehqAmAYaX+9OzZp0PJaLYW+9BjIHDnY/66JcBPr3Fl/uoJQIUubxJfIy6l2CQVw42fw4lY66GQKw65wmfsySyxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqgaS7Uz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4E5C2BCB8;
-	Mon, 23 Mar 2026 15:15:07 +0000 (UTC)
+	 MIME-Version; b=ci1oXbbxWAbkK+aquvukQ9wXPz/zMnmZDSsEJO2x/WfiSEVLSD7SJdiG/mFgbifXaGThJp3C1RtYNaBoIusrY2vpaEwmcTGYHpVfvWWD++5n5VzhkDXoP+sOZxho0SWcSde7l95gADRr1iZ9HoPrwmZ+jLCfK0WInN4qazr6gWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCJp4rPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251DDC4CEF7;
+	Mon, 23 Mar 2026 16:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278908;
-	bh=Ek6J78bQdF6tvH4psKo1n+4JVR7Ebz8QKjneSrYqT78=;
+	s=korg; t=1774283076;
+	bh=g2vQ8taGFEVJKCwpo/6gaXq6qFlpHO+W+HcrQnzV2bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqgaS7Uz7XXZOQh9XSdvvNwlyJqz4nsYX63hDHDv5jtsXw3v2SZI8FdDFj5QddQNh
-	 A0qDimStZxA4V071UEAvkBaHtIdphtbFpOKGCf+4tbcHoTeyJ8ZzN6mxBtlkJOkojv
-	 IS/UzPJNDgzD3csxmeiQUcwqiztYE2XtihvVDmYk=
+	b=mCJp4rPEdWVpYJLBFGHRZjnR4r7LOBTWG4TpBDHRQy592F9jYqSl+Z7wyYrLDyHkS
+	 oHPVusovIvZuR01bwM4ERJEjmZKAfb7ferSYCJ1Y1nWovqUBZNkKgSNRYUzC1pjIXt
+	 ELB7EUtZqQuhn5ZNVkG2S+YZvuwgXSjakJJ/U0Ws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 455/567] LoongArch: Give more information if kmem access failed
+	Michael Chan <michael.chan@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 393/481] eth: bnxt: always recalculate features after XDP clearing, fix null-deref
 Date: Mon, 23 Mar 2026 14:46:15 +0100
-Message-ID: <20260323134545.238411310@linuxfoundation.org>
+Message-ID: <20260323134534.739465493@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +67,192 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229372-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229867-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,broadcom.com,kernel.org,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AB58D2F9211
+X-Rspamd-Queue-Id: 2EF7D2F9022
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit a47f0754bdd01f971c9715acdbdd3a07515c8f83 upstream.
+[ Upstream commit f0aa6a37a3dbb40b272df5fc6db93c114688adcd ]
 
-If memory access such as copy_{from, to}_kernel_nofault() failed, its
-users do not know what happened, so it is very useful to print the
-exception code for such cases. Furthermore, it is better to print the
-caller function to know where is the entry.
+Recalculate features when XDP is detached.
 
-Here are the low level call chains:
+Before:
+  # ip li set dev eth0 xdp obj xdp_dummy.bpf.o sec xdp
+  # ip li set dev eth0 xdp off
+  # ethtool -k eth0 | grep gro
+  rx-gro-hw: off [requested on]
 
-  copy_from_kernel_nofault()
-    copy_from_kernel_nofault_loop()
-      __get_kernel_nofault()
+After:
+  # ip li set dev eth0 xdp obj xdp_dummy.bpf.o sec xdp
+  # ip li set dev eth0 xdp off
+  # ethtool -k eth0 | grep gro
+  rx-gro-hw: on
 
-  copy_to_kernel_nofault()
-    copy_to_kernel_nofault_loop()
-      __put_kernel_nofault()
+The fact that HW-GRO doesn't get re-enabled automatically is just
+a minor annoyance. The real issue is that the features will randomly
+come back during another reconfiguration which just happens to invoke
+netdev_update_features(). The driver doesn't handle reconfiguring
+two things at a time very robustly.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Starting with commit 98ba1d931f61 ("bnxt_en: Fix RSS logic in
+__bnxt_reserve_rings()") we only reconfigure the RSS hash table
+if the "effective" number of Rx rings has changed. If HW-GRO is
+enabled "effective" number of rings is 2x what user sees.
+So if we are in the bad state, with HW-GRO re-enablement "pending"
+after XDP off, and we lower the rings by / 2 - the HW-GRO rings
+doing 2x and the ethtool -L doing / 2 may cancel each other out,
+and the:
+
+  if (old_rx_rings != bp->hw_resc.resv_rx_rings &&
+
+condition in __bnxt_reserve_rings() will be false.
+The RSS map won't get updated, and we'll crash with:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000168
+  RIP: 0010:__bnxt_hwrm_vnic_set_rss+0x13a/0x1a0
+    bnxt_hwrm_vnic_rss_cfg_p5+0x47/0x180
+    __bnxt_setup_vnic_p5+0x58/0x110
+    bnxt_init_nic+0xb72/0xf50
+    __bnxt_open_nic+0x40d/0xab0
+    bnxt_open_nic+0x2b/0x60
+    ethtool_set_channels+0x18c/0x1d0
+
+As we try to access a freed ring.
+
+The issue is present since XDP support was added, really, but
+prior to commit 98ba1d931f61 ("bnxt_en: Fix RSS logic in
+__bnxt_reserve_rings()") it wasn't causing major issues.
+
+Fixes: 1054aee82321 ("bnxt_en: Use NETIF_F_GRO_HW.")
+Fixes: 98ba1d931f61 ("bnxt_en: Fix RSS logic in __bnxt_reserve_rings()")
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Link: https://patch.msgid.link/20250109043057.2888953-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ The context change is due to the commit 1f6e77cb9b32
+("bnxt_en: Add bnxt_l2_filter hash table.") in v6.8 and the commit
+8336a974f37d ("bnxt_en: Save user configured filters in a lookup list")
+in v6.9 which are irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/uaccess.h |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |   25 ++++++++++++++++++++-----
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h     |    2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |    7 -------
+ 3 files changed, 21 insertions(+), 13 deletions(-)
 
---- a/arch/loongarch/include/asm/uaccess.h
-+++ b/arch/loongarch/include/asm/uaccess.h
-@@ -196,8 +196,13 @@ do {									\
- 									\
- 	__get_kernel_common(*((type *)(dst)), sizeof(type),		\
- 			    (__force type *)(src));			\
--	if (unlikely(__gu_err))						\
-+	if (unlikely(__gu_err))	{					\
-+		pr_info("%s: memory access failed, ecode 0x%x\n",	\
-+			__func__, read_csr_excode());			\
-+		pr_info("%s: the caller is %pS\n",			\
-+			__func__, __builtin_return_address(0));		\
- 		goto err_label;						\
-+	}								\
- } while (0)
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -4045,7 +4045,7 @@ void bnxt_set_ring_params(struct bnxt *b
+ /* Changing allocation mode of RX rings.
+  * TODO: Update when extending xdp_rxq_info to support allocation modes.
+  */
+-int bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
++static void __bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
+ {
+ 	struct net_device *dev = bp->dev;
  
- #define __put_kernel_nofault(dst, src, type, err_label)			\
-@@ -207,8 +212,13 @@ do {									\
- 									\
- 	__pu_val = *(__force type *)(src);				\
- 	__put_kernel_common(((type *)(dst)), sizeof(type));		\
--	if (unlikely(__pu_err))						\
-+	if (unlikely(__pu_err))	{					\
-+		pr_info("%s: memory access failed, ecode 0x%x\n",	\
-+			__func__, read_csr_excode());			\
-+		pr_info("%s: the caller is %pS\n",			\
-+			__func__, __builtin_return_address(0));		\
- 		goto err_label;						\
-+	}								\
- } while (0)
+@@ -4066,15 +4066,30 @@ int bnxt_set_rx_skb_mode(struct bnxt *bp
+ 			bp->rx_skb_func = bnxt_rx_page_skb;
+ 		}
+ 		bp->rx_dir = DMA_BIDIRECTIONAL;
+-		/* Disable LRO or GRO_HW */
+-		netdev_update_features(dev);
+ 	} else {
+ 		dev->max_mtu = bp->max_mtu;
+ 		bp->flags &= ~BNXT_FLAG_RX_PAGE_MODE;
+ 		bp->rx_dir = DMA_FROM_DEVICE;
+ 		bp->rx_skb_func = bnxt_rx_skb;
+ 	}
+-	return 0;
++}
++
++void bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
++{
++	__bnxt_set_rx_skb_mode(bp, page_mode);
++
++	if (!page_mode) {
++		int rx, tx;
++
++		bnxt_get_max_rings(bp, &rx, &tx, true);
++		if (rx > 1) {
++			bp->flags &= ~BNXT_FLAG_NO_AGG_RINGS;
++			bp->dev->hw_features |= NETIF_F_LRO;
++		}
++	}
++
++	/* Update LRO and GRO_HW availability */
++	netdev_update_features(bp->dev);
+ }
  
- extern unsigned long __copy_user(void *to, const void *from, __kernel_size_t n);
+ static void bnxt_free_vnic_attributes(struct bnxt *bp)
+@@ -13778,7 +13793,7 @@ static int bnxt_init_one(struct pci_dev
+ 	if (rc)
+ 		goto init_err_pci_clean;
+ 
+-	bnxt_set_rx_skb_mode(bp, false);
++	__bnxt_set_rx_skb_mode(bp, false);
+ 	bnxt_set_tpa_flags(bp);
+ 	bnxt_set_ring_params(bp);
+ 	rc = bnxt_set_dflt_rings(bp, true);
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -2315,7 +2315,7 @@ void bnxt_reuse_rx_data(struct bnxt_rx_r
+ u32 bnxt_fw_health_readl(struct bnxt *bp, int reg_idx);
+ void bnxt_set_tpa_flags(struct bnxt *bp);
+ void bnxt_set_ring_params(struct bnxt *);
+-int bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode);
++void bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode);
+ int bnxt_hwrm_func_drv_rgtr(struct bnxt *bp, unsigned long *bmap,
+ 			    int bmap_size, bool async_only);
+ int bnxt_hwrm_func_drv_unrgtr(struct bnxt *bp);
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
+@@ -423,14 +423,7 @@ static int bnxt_xdp_set(struct bnxt *bp,
+ 	if (prog) {
+ 		bnxt_set_rx_skb_mode(bp, true);
+ 	} else {
+-		int rx, tx;
+-
+ 		bnxt_set_rx_skb_mode(bp, false);
+-		bnxt_get_max_rings(bp, &rx, &tx, true);
+-		if (rx > 1) {
+-			bp->flags &= ~BNXT_FLAG_NO_AGG_RINGS;
+-			bp->dev->hw_features |= NETIF_F_LRO;
+-		}
+ 	}
+ 	bp->tx_nr_rings_xdp = tx_xdp;
+ 	bp->tx_nr_rings = bp->tx_nr_rings_per_tc * tc + tx_xdp;
 
 
 
