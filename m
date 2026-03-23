@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229910-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id ICBsEnhywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229416-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:52 +0100
+	id uNRSDNx7wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229910-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:43:56 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC88B2F95CF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 830632FA4CF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D5213553983
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90396318D921
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F663B38AF;
-	Mon, 23 Mar 2026 15:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EE03BD649;
+	Mon, 23 Mar 2026 16:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZHbuj1ZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtDnfjwe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 784263B27C5;
-	Mon, 23 Mar 2026 15:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E753F3BD64E;
+	Mon, 23 Mar 2026 16:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279177; cv=none; b=rHD5vo3V4OV/O2twOO7ebo08dhsmbWth4TrhXkevRAWzMoXw1lsX0KicdlDCDJGFTnlNJrjVUDHf1jT9ENOD3hAET7loSy56ax5kFVHSA2Fj4gfzlt+6Cg0IMCSibKVHzKbPUSkEXwczv15mdOIuSpeB79UPjCfh00o71il39YM=
+	t=1774283192; cv=none; b=rperFlG7p1sQSwLbC8W10z7UFstvh3qLBAAH/yQyGvlnkEuhU71J5QIxh3HkKlwC+lQmeaXBpKhfz3O2jdwnyLHNhfepkVPy1kM/BsaQDOpb0DPIU3klRCHDiYsbyzSitmFYtKdVWzmQXQBLCp35AEUN6VmnpbbwMmUl2Wnu79M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279177; c=relaxed/simple;
-	bh=ADEbv0+WP72UdrZRsIcrOF4paoBd5v+Ydj1+AGuZYoc=;
+	s=arc-20240116; t=1774283192; c=relaxed/simple;
+	bh=BAU8UneOQOyfMUOzJSrAWzWP5KNAnyTNF0DwU6ow0bo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QJD0aGG12t/Ir5hxH9sPMkeFrf8oXXIhgFToarylX2Q/dpa72qA4v2NfM5kV+aHPVWpnBYjQ2tlRR/Trf2fbTP2NUj04cBAquLeMtiwxVA9FzMNKsW7ThWrR0mfXuRflTffnYSvWqrnP769rA0bOLMLLfoiv96h6Ba6Wm1HQoOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZHbuj1ZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F29BAC4CEF7;
-	Mon, 23 Mar 2026 15:19:36 +0000 (UTC)
+	 MIME-Version; b=slwvVGsaH82vY2q0vtZlMC3HCKU7Xmdd4on1ei/pZEB/pJD8ynrtbW4fgoUIvKk1I9CzFCsXtP+/GJMCeoPe8jV8vJgkiz+pWyVCeXeTOVbQKKxhzCz96Frg9k1QEQObqttiLCMIBtOqU/+lbtwd7JIwxfS+Gbwyj2zhoFSggsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtDnfjwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A5E1C4CEF7;
+	Mon, 23 Mar 2026 16:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279177;
-	bh=ADEbv0+WP72UdrZRsIcrOF4paoBd5v+Ydj1+AGuZYoc=;
+	s=korg; t=1774283191;
+	bh=BAU8UneOQOyfMUOzJSrAWzWP5KNAnyTNF0DwU6ow0bo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZHbuj1ZKuPUWd96N81Sd0GtHoGUo0ZyqPTp1zcFLEXC1ukZ2s4blTRU0ZKYj/65VG
-	 Z/gFua0YYUO7BlM0/xo6vODO2kwaayGYqJjYaPQA/OCa5cIuS4eGe5sHdxEf4da7tt
-	 xCgtmmliQOaC6MOKhf6mK0SYyii6LTfKnR9rsHX4=
+	b=ZtDnfjwefXbvpbNFfnYLTiZGJaIVlRXMhphxw/Gaj4IKqQSmvbt8li28UW92vlx1e
+	 fpTfZN8Z+xUkqjmWC5smVymIx8oQxOKoJOWgs7S8eTdqNqnjVT4+0WuI1vUI9R5VhJ
+	 UMG0JQKmwXdPqd9ryPHgwwdydhTc0GKhQGpw5eWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Genoud <richard.genoud@bootlin.com>,
-	CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 499/567] soc: fsl: qbman: fix race condition in qman_destroy_fq
+Subject: [PATCH 6.1 437/481] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
 Date: Mon, 23 Mar 2026 14:46:59 +0100
-Message-ID: <20260323134546.372073244@linuxfoundation.org>
+Message-ID: <20260323134535.858871493@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,120 +69,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229416-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229910-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BC88B2F95CF
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 830632FA4CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Genoud <richard.genoud@bootlin.com>
+From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
 
-[ Upstream commit 014077044e874e270ec480515edbc1cadb976cf2 ]
+[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
 
-When QMAN_FQ_FLAG_DYNAMIC_FQID is set, there's a race condition between
-fq_table[fq->idx] state and freeing/allocating from the pool and
-WARN_ON(fq_table[fq->idx]) in qman_create_fq() gets triggered.
+mvpp2_bm_switch_buffers() unconditionally calls
+mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
+shared buffer pool modes. This function programs CM3 flow control
+registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
+priv->cm3_base without any NULL check.
 
-Indeed, we can have:
-         Thread A                             Thread B
-    qman_destroy_fq()                    qman_create_fq()
-      qman_release_fqid()
-        qman_shutdown_fq()
-        gen_pool_free()
-           -- At this point, the fqid is available again --
-                                           qman_alloc_fqid()
-           -- so, we can get the just-freed fqid in thread B --
-                                           fq->fqid = fqid;
-                                           fq->idx = fqid * 2;
-                                           WARN_ON(fq_table[fq->idx]);
-                                           fq_table[fq->idx] = fq;
-     fq_table[fq->idx] = NULL;
+When the CM3 SRAM resource is not present in the device tree (the
+third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
+SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
+NULL and priv->global_tx_fc is false. Any operation that triggers
+mvpp2_bm_switch_buffers(), for example an MTU change that crosses
+the jumbo frame threshold, will crash:
 
-And adding some logs between qman_release_fqid() and
-fq_table[fq->idx] = NULL makes the WARN_ON() trigger a lot more.
+  Unable to handle kernel NULL pointer dereference at
+  virtual address 0000000000000000
+  Mem abort info:
+    ESR = 0x0000000096000006
+    EC = 0x25: DABT (current EL), IL = 32 bits
+  pc : readl+0x0/0x18
+  lr : mvpp2_cm3_read.isra.0+0x14/0x20
+  Call trace:
+   readl+0x0/0x18
+   mvpp2_bm_pool_update_fc+0x40/0x12c
+   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
+   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
+   mvpp2_change_mtu+0x140/0x380
+   __dev_set_mtu+0x1c/0x38
+   dev_set_mtu_ext+0x78/0x118
+   dev_set_mtu+0x48/0xa8
+   dev_ifsioc+0x21c/0x43c
+   dev_ioctl+0x2d8/0x42c
+   sock_ioctl+0x314/0x378
 
-To prevent that, ensure that fq_table[fq->idx] is set to NULL before
-gen_pool_free() is called by using smp_wmb().
+Every other flow control call site in the driver already guards
+hardware access with either priv->global_tx_fc or port->tx_fc.
+mvpp2_bm_switch_buffers() is the only place that omits this check.
 
-Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
-Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
-Tested-by: CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>
-Link: https://lore.kernel.org/r/20251223072549.397625-1-richard.genoud@bootlin.com
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Add the missing priv->global_tx_fc guard to both the disable and
+re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
+rest of the driver.
+
+Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
+Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/fsl/qbman/qman.c | 24 ++++++++++++++++++++++--
- 1 file changed, 22 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
-index 7e9074519ad22..bcbf6bf2e8f45 100644
---- a/drivers/soc/fsl/qbman/qman.c
-+++ b/drivers/soc/fsl/qbman/qman.c
-@@ -1827,6 +1827,8 @@ EXPORT_SYMBOL(qman_create_fq);
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index ec69bb90f5740..b42c2c498faa2 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -5009,7 +5009,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
+ 	if (priv->percpu_pools)
+ 		numbufs = port->nrxqs * 2;
  
- void qman_destroy_fq(struct qman_fq *fq)
- {
-+	int leaked;
-+
- 	/*
- 	 * We don't need to lock the FQ as it is a pre-condition that the FQ be
- 	 * quiesced. Instead, run some checks.
-@@ -1834,11 +1836,29 @@ void qman_destroy_fq(struct qman_fq *fq)
- 	switch (fq->state) {
- 	case qman_fq_state_parked:
- 	case qman_fq_state_oos:
--		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID))
--			qman_release_fqid(fq->fqid);
-+		/*
-+		 * There's a race condition here on releasing the fqid,
-+		 * setting the fq_table to NULL, and freeing the fqid.
-+		 * To prevent it, this order should be respected:
-+		 */
-+		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID)) {
-+			leaked = qman_shutdown_fq(fq->fqid);
-+			if (leaked)
-+				pr_debug("FQID %d leaked\n", fq->fqid);
-+		}
+-	if (change_percpu)
++	if (change_percpu && priv->global_tx_fc)
+ 		mvpp2_bm_pool_update_priv_fc(priv, false);
  
- 		DPAA_ASSERT(fq_table[fq->idx]);
- 		fq_table[fq->idx] = NULL;
-+
-+		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID) && !leaked) {
-+			/*
-+			 * fq_table[fq->idx] should be set to null before
-+			 * freeing fq->fqid otherwise it could by allocated by
-+			 * qman_alloc_fqid() while still being !NULL
-+			 */
-+			smp_wmb();
-+			gen_pool_free(qm_fqalloc, fq->fqid | DPAA_GENALLOC_OFF, 1);
-+		}
- 		return;
- 	default:
- 		break;
+ 	for (i = 0; i < numbufs; i++)
+@@ -5026,7 +5026,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
+ 			mvpp2_open(port->dev);
+ 	}
+ 
+-	if (change_percpu)
++	if (change_percpu && priv->global_tx_fc)
+ 		mvpp2_bm_pool_update_priv_fc(priv, true);
+ 
+ 	return 0;
 -- 
 2.51.0
 
