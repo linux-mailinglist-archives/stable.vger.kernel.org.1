@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6G8VOARxwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229657-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:40 +0100
+	id iCx8FtttwWnVTAQAu9opvQ
+	(envelope-from <stable+bounces-229156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FB12F92FB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:57:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADB3D2F8B48
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:44:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D06FD323E1A0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1FB7833D5649
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73523BD24A;
-	Mon, 23 Mar 2026 16:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B97F259CB9;
+	Mon, 23 Mar 2026 15:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJEdymt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OaKeMObX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455113BBA03;
-	Mon, 23 Mar 2026 16:15:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D0A255F52;
+	Mon, 23 Mar 2026 15:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282515; cv=none; b=Y9dB83UgAFACskumAjmHxMT6dssHT3Db7/5AlP2sAncgo+D4eORRB5N4gp4wsGDX0GLrHCGaG8eyPuTafDew9o1gYsHVYqIJU9Bb99M2btfESk+5th5TF/vpRcTPnFzZ33DgB8rbrLRCPpK8R54qXnL1Twv2fQ2NY7n+IdUtrEE=
+	t=1774278237; cv=none; b=bhCf+iF4UnL4UqfePrqsfLM41lqcRYLA2//wsWkCQZz5Bseup7domqDtycQzRou9mDjDZRdbMBGIcz41CYR3jNIDjcgLV2bqCIrbBQnwludCX9XS2jk9WyCNJ7E5tEtlpH80e+POD7wHOygYeFHyH0ztj9sb6ASqrWgYuco0GF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282515; c=relaxed/simple;
-	bh=3up0qiJ9Omar2b0hroYMAkmfL3cbkNgVt1bxwStEI0M=;
+	s=arc-20240116; t=1774278237; c=relaxed/simple;
+	bh=dule0daOZS5rGBuUz10ICo86Qpf4Dt/8wkbcIiBWKOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tH2Yan2oVPzbee1aF7m4b31Di89vCie/WC3KoK8VPHDkei1vwRKr7RALetD5BWYN8aMrx+DCl1q+1Ndj6gyfMza6W9rSnaCb+WyAWO+kMmt1BcFfH9CfYM1PY4mPfgMAD+r+PAgjf8XMox+0S4trdKYFuXt76AgOiur0P1OT+q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJEdymt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5341DC2BCB4;
-	Mon, 23 Mar 2026 16:15:14 +0000 (UTC)
+	 MIME-Version; b=HvqFIu5cfcb3/XUtz/fVv6ClZze/lYh9gu1OfpdIUzpoBmYbTJIZEeVLpWWdznonzzXPWXpnMCI7iRFcCcuDjs7GsLzAsPslxMi9fZWWwEG3FZtSM0nWiTsZjl5ln2YhF1eH3TnbJp6FjUkS/oyUP2+rs7Gbw17Ugpj9cnHJtbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OaKeMObX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BC5C4CEF7;
+	Mon, 23 Mar 2026 15:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282514;
-	bh=3up0qiJ9Omar2b0hroYMAkmfL3cbkNgVt1bxwStEI0M=;
+	s=korg; t=1774278237;
+	bh=dule0daOZS5rGBuUz10ICo86Qpf4Dt/8wkbcIiBWKOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJEdymt+bQlIWTnHu9d0j5a/gMPEMXH2YNqaiPGgIR4oPu/8fSY0LWJf6dMxvICZ7
-	 kHDTG/y+Mkbz6iyUrHX54Xw4tyokC3kbkYymxKrdFI0JY8GJksVAh50r2FO9Nv3TRc
-	 c1Fh8USObvmxmpnVi2djfXXPhm2vwrD6aBDLnADU=
+	b=OaKeMObXN6FUPnqbd0pgXC8orv2aXH40Y3f5TbyWxoew4pOoZ6LsSurGIiyxOdb7A
+	 39fo/y0U2tOB75L6nbW8hKjkLVh7A/7hmB72ynLrkEDNPCYVw8u5+/SyL5Dremug3N
+	 7X7cm3bmvd5FUg7+PQtK2cR38Kj1PuW8W0G6RAhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/481] sched: idle: Make skipping governor callbacks more consistent
+Subject: [PATCH 6.6 245/567] regulator: pca9450: Make IRQ optional
 Date: Mon, 23 Mar 2026 14:42:45 +0100
-Message-ID: <20260323134529.665510825@linuxfoundation.org>
+Message-ID: <20260323134539.895493590@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,109 +66,113 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229657-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229156-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 56FB12F92FB
+X-Rspamd-Queue-Id: ADB3D2F8B48
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Frieder Schrempf <frieder.schrempf@kontron.de>
 
-[ Upstream commit d557640e4ce589a24dca5ca7ce3b9680f471325f ]
+[ Upstream commit 83808c54064eef620ad8645dfdcaffe125551532 ]
 
-If the cpuidle governor .select() callback is skipped because there
-is only one idle state in the cpuidle driver, the .reflect() callback
-should be skipped as well, at least for consistency (if not for
-correctness), so do it.
+The IRQ line might not be connected on some boards. Allow the driver
+to be probed without it.
 
-Fixes: e5c9ffc6ae1b ("cpuidle: Skip governor when only one idle state is available")
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://patch.msgid.link/12857700.O9o76ZdvQC@rafael.j.wysocki
+Signed-off-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Link: https://patch.msgid.link/20240708084107.38986-5-frieder@fris.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 5d0efaf47ee9 ("regulator: pca9450: Correct interrupt type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle.c | 10 ----------
- kernel/sched/idle.c       | 11 ++++++++++-
- 2 files changed, 10 insertions(+), 11 deletions(-)
+ drivers/regulator/pca9450-regulator.c | 41 +++++++++++++--------------
+ 1 file changed, 19 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle.c b/drivers/cpuidle/cpuidle.c
-index 482bf87354a38..fdd25271106a3 100644
---- a/drivers/cpuidle/cpuidle.c
-+++ b/drivers/cpuidle/cpuidle.c
-@@ -324,16 +324,6 @@ int cpuidle_enter_state(struct cpuidle_device *dev, struct cpuidle_driver *drv,
- int cpuidle_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
- 		   bool *stop_tick)
- {
--	/*
--	 * If there is only a single idle state (or none), there is nothing
--	 * meaningful for the governor to choose. Skip the governor and
--	 * always use state 0 with the tick running.
--	 */
--	if (drv->state_count <= 1) {
--		*stop_tick = false;
--		return 0;
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index 2ab365d2749f9..b8f7b13b0cb08 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -711,11 +711,6 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ 	unsigned int reset_ctrl;
+ 	int ret;
+ 
+-	if (!i2c->irq) {
+-		dev_err(&i2c->dev, "No IRQ configured?\n");
+-		return -EINVAL;
 -	}
 -
- 	return cpuidle_curr_governor->select(drv, dev, stop_tick);
- }
- 
-diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
-index 200a0fac03b8e..6ff593a8eeb17 100644
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -220,7 +220,7 @@ static void cpuidle_idle_call(void)
- 
- 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
- 		call_cpuidle(drv, dev, next_state);
--	} else {
-+	} else if (drv->state_count > 1) {
- 		bool stop_tick = true;
- 
- 		/*
-@@ -238,6 +238,15 @@ static void cpuidle_idle_call(void)
- 		 * Give the governor an opportunity to reflect on the outcome
- 		 */
- 		cpuidle_reflect(dev, entered_state);
-+	} else {
-+		tick_nohz_idle_retain_tick();
-+
-+		/*
-+		 * If there is only a single idle state (or none), there is
-+		 * nothing meaningful for the governor to choose.  Skip the
-+		 * governor and always use state 0.
-+		 */
-+		call_cpuidle(drv, dev, 0);
+ 	pca9450 = devm_kzalloc(&i2c->dev, sizeof(struct pca9450), GFP_KERNEL);
+ 	if (!pca9450)
+ 		return -ENOMEM;
+@@ -782,23 +777,25 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ 		}
  	}
  
- exit_idle:
+-	ret = devm_request_threaded_irq(pca9450->dev, pca9450->irq, NULL,
+-					pca9450_irq_handler,
+-					(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
+-					"pca9450-irq", pca9450);
+-	if (ret != 0) {
+-		dev_err(pca9450->dev, "Failed to request IRQ: %d\n",
+-			pca9450->irq);
+-		return ret;
+-	}
+-	/* Unmask all interrupt except PWRON/WDOG/RSVD */
+-	ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_INT1_MSK,
+-				IRQ_VR_FLT1 | IRQ_VR_FLT2 | IRQ_LOWVSYS |
+-				IRQ_THERM_105 | IRQ_THERM_125,
+-				IRQ_PWRON | IRQ_WDOGB | IRQ_RSVD);
+-	if (ret) {
+-		dev_err(&i2c->dev, "Unmask irq error\n");
+-		return ret;
++	if (pca9450->irq) {
++		ret = devm_request_threaded_irq(pca9450->dev, pca9450->irq, NULL,
++						pca9450_irq_handler,
++						(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
++						"pca9450-irq", pca9450);
++		if (ret != 0) {
++			dev_err(pca9450->dev, "Failed to request IRQ: %d\n",
++				pca9450->irq);
++			return ret;
++		}
++		/* Unmask all interrupt except PWRON/WDOG/RSVD */
++		ret = regmap_update_bits(pca9450->regmap, PCA9450_REG_INT1_MSK,
++					IRQ_VR_FLT1 | IRQ_VR_FLT2 | IRQ_LOWVSYS |
++					IRQ_THERM_105 | IRQ_THERM_125,
++					IRQ_PWRON | IRQ_WDOGB | IRQ_RSVD);
++		if (ret) {
++			dev_err(&i2c->dev, "Unmask irq error\n");
++			return ret;
++		}
+ 	}
+ 
+ 	/* Clear PRESET_EN bit in BUCK123_DVS to use DVS registers */
 -- 
 2.51.0
 
