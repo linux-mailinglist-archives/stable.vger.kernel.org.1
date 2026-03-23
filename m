@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229070-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uIGkEklQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228518-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:01 +0100
+	id QDmmMNVYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229070-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010F12F4E44
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CBFF2F6098
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 08263317D993
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9887330ADD4E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634943AEF28;
-	Mon, 23 Mar 2026 14:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E523A38B7C4;
+	Mon, 23 Mar 2026 14:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZoA/ZX6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSLAvxP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C06397E84;
-	Mon, 23 Mar 2026 14:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7202242D7F;
+	Mon, 23 Mar 2026 14:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275344; cv=none; b=OaOC2G6MNEnmCfkrhI+BIewrXSOLX5dsxC5r+swKqL7PZtPfWxIx/fZ5k8hd9nbCueyXHbHxQ3Q4jaS5dw/i4kG6lFQqNcLJvcBTCRXYJLxefv/vMyqB1Kznr9d26RDENjs2BGGwdGUKr6WGnMMqd4K0GEl+5SY4Gg0m10SQn0I=
+	t=1774277964; cv=none; b=fyJDQ6Xh1hZVq6FWKUsJ88s+dxL1Xu/hV/flkxYeprNm+txhLfu7ctyipz6venE0/h8QkeppiTZ8wTGkIjiDAyO5IpemGKWQZKPwvdIYnb+wb1EyHRI+7hnNLhkUBtXSkioQWN0xB3zkVaWXomI4vAmSaJhGXUuBgag9jav+d+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275344; c=relaxed/simple;
-	bh=u0Hpa0Ovr0wD/qwPUcpc1W0kKAbCSL34P5dRjMxjHG8=;
+	s=arc-20240116; t=1774277964; c=relaxed/simple;
+	bh=uaJ7IMl3+OXYxuo7SzIW2vMqKd2lzp9be8ULwfpDd58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OxtbWCZBoKrgNj4ctya7tewPoZ6xUjIjDTMoG1qjFwXdcJbOf3jqEXXJtK2V1BS7wqpRoq9zTm85RFrmAxkRdPWuA/yNasrOYseVGx/1898bBdJHRbEQTV6DgzBm+z4t+RLu4qj6Rlh2sQ/f18QOvu3l2Nr6RsKIuBl6dty/m80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZoA/ZX6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE56BC4CEF7;
-	Mon, 23 Mar 2026 14:15:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C7ZgXac8e3y0QCEPTIW/c3AemdyKzg68ETwjqw6pbg0dTLKo5Av6FutwBIRIiHftFFGvfta57W55RLcV7cZ+K7vtN9+n7fpLRQVLZq4n+nO5pCdr8tmt7xOkNFCCdGvoV2A16tMOIyoPwUHUigz9ixSAiHn1TWk9R6bh3k7Wxa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSLAvxP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DB9C4CEF7;
+	Mon, 23 Mar 2026 14:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275344;
-	bh=u0Hpa0Ovr0wD/qwPUcpc1W0kKAbCSL34P5dRjMxjHG8=;
+	s=korg; t=1774277964;
+	bh=uaJ7IMl3+OXYxuo7SzIW2vMqKd2lzp9be8ULwfpDd58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZoA/ZX6CN5kTbJnK9T/K9rVRaX2JhGKgyPe7tbfs2DjKJA3aEfL9brKjNn1nytY0
-	 6EZFYKSL/MVPx6zCzgPnxWA0QNTxaWLyBT/GFgnbNA9/Mg4Vpi5jUMuzI3AmRyQmT2
-	 3Yq6e6Z8oasnkr+QgzBiifKcOU93tAzTzj+vK1ao=
+	b=GSLAvxP+dpHNzcqic+Iuw6yQiMns3IxZ1PNqR9fw1+XUc01GBQ+tXKQno8REGvh78
+	 emYus+noIw7+u5atTi8iEn2gufK5M4kwbA81d5LO2/FzvermKysVd0ir7Z16tdX886
+	 zoWb1fkcQN0Qf5UbnM955f+nZoCgMnM0PwiXQtxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Dull <monderasdor@gmail.com>,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/460] netfilter: nfnetlink_queue: fix entry leak in bridge verdict error path
+Subject: [PATCH 6.6 141/567] atm: lec: fix null-ptr-deref in lec_arp_clear_vccs
 Date: Mon, 23 Mar 2026 14:41:01 +0100
-Message-ID: <20260323134528.303452383@linuxfoundation.org>
+Message-ID: <20260323134537.300580081@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +66,137 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.66 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228518-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229070-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,72e3ea390c305de0e259];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 010F12F4E44
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 5CBFF2F6098
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit f1ba83755d81c6fc66ac7acd723d238f974091e9 ]
+[ Upstream commit 101bacb303e89dc2e0640ae6a5e0fb97c4eb45bb ]
 
-nfqnl_recv_verdict() calls find_dequeue_entry() to remove the queue
-entry from the queue data structures, taking ownership of the entry.
-For PF_BRIDGE packets, it then calls nfqa_parse_bridge() to parse VLAN
-attributes.  If nfqa_parse_bridge() returns an error (e.g. NFQA_VLAN
-present but NFQA_VLAN_TCI missing), the function returns immediately
-without freeing the dequeued entry or its sk_buff.
+syzkaller reported a null-ptr-deref in lec_arp_clear_vccs().
+This issue can be easily reproduced using the syzkaller reproducer.
 
-This leaks the nf_queue_entry, its associated sk_buff, and all held
-references (net_device refcounts, struct net refcount).  Repeated
-triggering exhausts kernel memory.
+In the ATM LANE (LAN Emulation) module, the same atm_vcc can be shared by
+multiple lec_arp_table entries (e.g., via entry->vcc or entry->recv_vcc).
+When the underlying VCC is closed, lec_vcc_close() iterates over all
+ARP entries and calls lec_arp_clear_vccs() for each matched entry.
 
-Fix this by dropping the entry via nfqnl_reinject() with NF_DROP verdict
-on the error path, consistent with other error handling in this file.
+For example, when lec_vcc_close() iterates through the hlists in
+priv->lec_arp_empty_ones or other ARP tables:
 
-Fixes: 8d45ff22f1b4 ("netfilter: bridge: nf queue verdict to use NFQA_VLAN and NFQA_L2HDR")
-Reviewed-by: David Dull <monderasdor@gmail.com>
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+1. In the first iteration, for the first matched ARP entry sharing the VCC,
+lec_arp_clear_vccs() frees the associated vpriv (which is vcc->user_back)
+and sets vcc->user_back to NULL.
+2. In the second iteration, for the next matched ARP entry sharing the same
+VCC, lec_arp_clear_vccs() is called again. It obtains a NULL vpriv from
+vcc->user_back (via LEC_VCC_PRIV(vcc)) and then attempts to dereference it
+via `vcc->pop = vpriv->old_pop`, leading to a null-ptr-deref crash.
+
+Fix this by adding a null check for vpriv before dereferencing
+it. If vpriv is already NULL, it means the VCC has been cleared
+by a previous call, so we can safely skip the cleanup and just
+clear the entry's vcc/recv_vcc pointers.
+
+The entire cleanup block (including vcc_release_async()) is placed inside
+the vpriv guard because a NULL vpriv indicates the VCC has already been
+fully released by a prior iteration — repeating the teardown would
+redundantly set flags and trigger callbacks on an already-closing socket.
+
+The Fixes tag points to the initial commit because the entry->vcc path has
+been vulnerable since the original code. The entry->recv_vcc path was later
+added by commit 8d9f73c0ad2f ("atm: fix a memory leak of vcc->user_back")
+with the same pattern, and both paths are fixed here.
+
+Reported-by: syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68c95a83.050a0220.3c6139.0e5c.GAE@google.com/T/
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260225123250.189289-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_queue.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/atm/lec.c | 26 +++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 11 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index af35dbc19864a..df0232cf24ce2 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -1547,8 +1547,10 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index b7fa48a9b7205..0d4b8e5936dcf 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -1260,24 +1260,28 @@ static void lec_arp_clear_vccs(struct lec_arp_table *entry)
+ 		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
+ 		struct net_device *dev = (struct net_device *)vcc->proto_data;
  
- 	if (entry->state.pf == PF_BRIDGE) {
- 		err = nfqa_parse_bridge(entry, nfqa);
--		if (err < 0)
-+		if (err < 0) {
-+			nfqnl_reinject(entry, NF_DROP);
- 			return err;
+-		vcc->pop = vpriv->old_pop;
+-		if (vpriv->xoff)
+-			netif_wake_queue(dev);
+-		kfree(vpriv);
+-		vcc->user_back = NULL;
+-		vcc->push = entry->old_push;
+-		vcc_release_async(vcc, -EPIPE);
++		if (vpriv) {
++			vcc->pop = vpriv->old_pop;
++			if (vpriv->xoff)
++				netif_wake_queue(dev);
++			kfree(vpriv);
++			vcc->user_back = NULL;
++			vcc->push = entry->old_push;
++			vcc_release_async(vcc, -EPIPE);
 +		}
+ 		entry->vcc = NULL;
  	}
+ 	if (entry->recv_vcc) {
+ 		struct atm_vcc *vcc = entry->recv_vcc;
+ 		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
  
- 	if (nfqa[NFQA_PAYLOAD]) {
+-		kfree(vpriv);
+-		vcc->user_back = NULL;
++		if (vpriv) {
++			kfree(vpriv);
++			vcc->user_back = NULL;
+ 
+-		entry->recv_vcc->push = entry->old_recv_push;
+-		vcc_release_async(entry->recv_vcc, -EPIPE);
++			entry->recv_vcc->push = entry->old_recv_push;
++			vcc_release_async(entry->recv_vcc, -EPIPE);
++		}
+ 		entry->recv_vcc = NULL;
+ 	}
+ }
 -- 
 2.51.0
 
