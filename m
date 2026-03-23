@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228148-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNRxOGJXwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228801-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:18 +0100
+	id iPxMGr5JwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228148-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F812F5D54
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBE912F3EA4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ED755326FDCC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4116A312E2CA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B19724E4D4;
-	Mon, 23 Mar 2026 14:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D03803AB29B;
+	Mon, 23 Mar 2026 13:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAduL9oJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8UN7+ho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D27923D288;
-	Mon, 23 Mar 2026 14:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92FDB1F91F6;
+	Mon, 23 Mar 2026 13:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277166; cv=none; b=h/o0plxNUWmf3XySSz/XtJk3zXqsnK67KIIKf2+NxT9jAzb2bRdyJM5g/6g79wIbcYvxoijbgoP8I9S3RfXKPGU0KOoowzFwAeH7gjK7k0aMw55MpO8Kgzryqf+mzxPDKhb9E5jyPqk2pUbSDs+pm9qzNHENEsvVs7ETU7NzrxI=
+	t=1774274270; cv=none; b=Y7CF7oWGEVp9jw/umow6cIqM5XtxQidnVfLsh94OqrACQsqHqO1eCctAtHdYKlpOcA0IM9UsOyBQAKl3cWaEDV3y2pSA1++3SbKLPvKqQOtn7Wf1T9RjihLHJ7yo1h/LMXF0ACz3fB3yHbaasJB1iZ7xwDhXGU10hkCW62nRcj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277166; c=relaxed/simple;
-	bh=FEwdjA4xqf46dkA04vW9tctU0IS2OefHOmv3mv65hrA=;
+	s=arc-20240116; t=1774274270; c=relaxed/simple;
+	bh=FE5bcdLuoBjRzdnobwRPiclxA5F82PO8ghJiKkhOvSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qix1W4FD4wRuHrqtsCWZPw/dRBRxXvggBcIQK0rmM73CGSlUfa0dQjyZiLQgMzhuqVjRICzRWupxsrv6BLryoHjEsiCgFYcDox1wfEaoPrYjoDXQsIMA2hlM0vxeGXrfdxylSaFbPGdbZk+bMTGv4++3QVU4mCW0EpgWhsLdY/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAduL9oJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C836AC2BCB1;
-	Mon, 23 Mar 2026 14:46:05 +0000 (UTC)
+	 MIME-Version; b=sZrIW5e4JLYxaD3m961FgTONg+SWUxk+sR2I+FtA/cvzZyt61n/RPV92RSqvw+Fj3qC5Xs5CxH+3VqoeOUWeBZ7mtYhON/9cbbL4GLInMUlzTZq1dmgi/bN2hu/QPuomTj1XnLy521OpfcHT0fMsiod8CYl9pZfFzhaKJTFYgJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8UN7+ho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1757AC4CEF7;
+	Mon, 23 Mar 2026 13:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277166;
-	bh=FEwdjA4xqf46dkA04vW9tctU0IS2OefHOmv3mv65hrA=;
+	s=korg; t=1774274270;
+	bh=FE5bcdLuoBjRzdnobwRPiclxA5F82PO8ghJiKkhOvSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aAduL9oJbFCLv/lxOaIyR44W8IpIiejXplw9Dr3rmybhFe4D4CYTR8GiXSdbP8Tzy
-	 +iEAsbV7sYp4j6NAzpFJAnHjx7VZx5BIsk93/7gmVRr3DJkCZeetJyWj4ih8NY8TLQ
-	 lcJUa4v8dwTWPej2Bgl5hgLDJH5L1ne6vnkxVm5k=
+	b=J8UN7+hoq+0L0mhh01zvYd8MfC9AeSBmxHKgPEiXKCMC1blX7my8alUDlKPWhaNEN
+	 0NDZqvfRIIUXnEZOwRdGc7ZSrtqg/G3YQjtY25veXmP2mpr0eKiKUPIO1lVNWI0jBE
+	 3cTJ2htqhW+LYheXG6OHf8witwrbkrLxFnyqMsMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.12 343/460] iommu/vt-d: Fix intel iommu iotlb sync hardlockup and retry
+	Peter Astrand <astrand@lysator.liu.se>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 162/220] wifi: wlcore: Return -ENOMEM instead of -EAGAIN if there is not enough headroom
 Date: Mon, 23 Mar 2026 14:45:39 +0100
-Message-ID: <20260323134534.967686282@linuxfoundation.org>
+Message-ID: <20260323134509.682985491@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228801-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228148-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -87,68 +86,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 69F812F5D54
+X-Rspamd-Queue-Id: BBE912F3EA4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit fe89277c9ceb0d6af0aa665bcf24a41d8b1b79cd upstream.
+[ Upstream commit deb353d9bb009638b7762cae2d0b6e8fdbb41a69 ]
 
-During the qi_check_fault process after an IOMMU ITE event, requests at
-odd-numbered positions in the queue are set to QI_ABORT, only satisfying
-single-request submissions. However, qi_submit_sync now supports multiple
-simultaneous submissions, and can't guarantee that the wait_desc will be
-at an odd-numbered position. Therefore, if an item times out, IOMMU can't
-re-initiate the request, resulting in an infinite polling wait.
+Since upstream commit e75665dd0968 ("wifi: wlcore: ensure skb headroom
+before skb_push"), wl1271_tx_allocate() and with it
+wl1271_prepare_tx_frame() returns -EAGAIN if pskb_expand_head() fails.
+However, in wlcore_tx_work_locked(), a return value of -EAGAIN from
+wl1271_prepare_tx_frame() is interpreted as the aggregation buffer being
+full. This causes the code to flush the buffer, put the skb back at the
+head of the queue, and immediately retry the same skb in a tight while
+loop.
 
-This modifies the process by setting the status of all requests already
-fetched by IOMMU and recorded as QI_IN_USE status (including wait_desc
-requests) to QI_ABORT, thus enabling multiple requests to be resubmitted.
+Because wlcore_tx_work_locked() holds wl->mutex, and the retry happens
+immediately with GFP_ATOMIC, this will result in an infinite loop and a
+CPU soft lockup. Return -ENOMEM instead so the packet is dropped and
+the loop terminates.
 
-Fixes: 8a1d82462540 ("iommu/vt-d: Multiple descriptors per qi_submit_sync()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Tested-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Samiullah Khawaja <skhawaja@google.com>
-Link: https://lore.kernel.org/r/20260306101516.3885775-1-guanghuifeng@linux.alibaba.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Fixes: 8a1d82462540 ("iommu/vt-d: Multiple descriptors per  qi_submit_sync()")
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The problem was found by an experimental code review agent based on
+gemini-3.1-pro while reviewing backports into v6.18.y.
+
+Assisted-by: Gemini:gemini-3.1-pro
+Fixes: e75665dd0968 ("wifi: wlcore: ensure skb headroom before skb_push")
+Cc: Peter Astrand <astrand@lysator.liu.se>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://patch.msgid.link/20260318064636.3065925-1-linux@roeck-us.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/dmar.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/ti/wlcore/tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1313,7 +1313,6 @@ static int qi_check_fault(struct intel_i
- 	if (fault & DMA_FSTS_ITE) {
- 		head = readl(iommu->reg + DMAR_IQH_REG);
- 		head = ((head >> shift) - 1 + QI_LENGTH) % QI_LENGTH;
--		head |= 1;
- 		tail = readl(iommu->reg + DMAR_IQT_REG);
- 		tail = ((tail >> shift) - 1 + QI_LENGTH) % QI_LENGTH;
+diff --git a/drivers/net/wireless/ti/wlcore/tx.c b/drivers/net/wireless/ti/wlcore/tx.c
+index 6241866d39df6..75cfbcfb7626d 100644
+--- a/drivers/net/wireless/ti/wlcore/tx.c
++++ b/drivers/net/wireless/ti/wlcore/tx.c
+@@ -210,7 +210,7 @@ static int wl1271_tx_allocate(struct wl1271 *wl, struct wl12xx_vif *wlvif,
+ 		if (skb_headroom(skb) < (total_len - skb->len) &&
+ 		    pskb_expand_head(skb, (total_len - skb->len), 0, GFP_ATOMIC)) {
+ 			wl1271_free_tx_id(wl, id);
+-			return -EAGAIN;
++			return -ENOMEM;
+ 		}
+ 		desc = skb_push(skb, total_len - skb->len);
  
-@@ -1330,7 +1329,7 @@ static int qi_check_fault(struct intel_i
- 		do {
- 			if (qi->desc_status[head] == QI_IN_USE)
- 				qi->desc_status[head] = QI_ABORT;
--			head = (head - 2 + QI_LENGTH) % QI_LENGTH;
-+			head = (head - 1 + QI_LENGTH) % QI_LENGTH;
- 		} while (head != tail);
- 
- 		/*
+-- 
+2.51.0
+
 
 
 
