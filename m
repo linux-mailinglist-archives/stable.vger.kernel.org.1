@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SBPCBcxiwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229461-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:57:00 +0100
+	id 8BROG512wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:21:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B052F7290
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAAFC2F9C64
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:21:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C64832DF5DC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7687D35CD002
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530003B8BA4;
-	Mon, 23 Mar 2026 15:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702053BFE5D;
+	Mon, 23 Mar 2026 16:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIU9hSDx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jdGOxcHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1655327E1A1;
-	Mon, 23 Mar 2026 15:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339943BE65E;
+	Mon, 23 Mar 2026 16:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279307; cv=none; b=ujY8wkF9xFj6GvpEs4rGUYoMdzJ5K9npX6dLrF6aOKaI6SMrh1aLxFlQoCmT75sRgYeMLvwSr8GfkpnvJF/v8GpEqD1ysES0GHVOZV234VCSxEcGinHAhyc5Pf/PJ4Q7hlRdyYZ1PEuEQKCu3ibSGQfEU849ZEFNHvU442iljDA=
+	t=1774283353; cv=none; b=uqL7IYAiZeEdbeY6whd7gikIah5s5x+OOJXPpaHD+fW9Zh4qEZ5JjVwNMt+qDCpYeFEngwrCXisnh6IRzHwnJFMrD+2q85n4kKkDdQRPhZJHAlxZ2ck+uahDqPhhEdbrixBY27tUTdBHUpEr/Eeoz1ItWRiD8upPFgldkMrdNnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279307; c=relaxed/simple;
-	bh=EEZcx43LwuY7c/nbu7wQH23q+/uoIIKhtbbYMuEXnlU=;
+	s=arc-20240116; t=1774283353; c=relaxed/simple;
+	bh=Xpb6EE8ItKmBHxFgLpNf3roXx2LOl9yfCn7+d7s7Ask=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mRLKoiNXwFFYktqkuZTackGHYZ0a24h081E+/TKBsVebmU+HRqzpZHp5f98pgOEa7LLIiu5NYnr1C1pK61gcLquHpI8B8t0Fs2zmZERWsbbRC3PNsv5bfUnbvXDwGjahsoXxlAiZBuhmls3mjl1xsVTWIg/nu8BTqmd5gEb312U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIU9hSDx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54FB6C4CEF7;
-	Mon, 23 Mar 2026 15:21:46 +0000 (UTC)
+	 MIME-Version; b=VlWnd6eBY1QxCkVDq0/cu2tjJ3nuD3jnjn23mKNA61AWbGtPOdPblqmvn7GxgSiJXY9+ZaOFxvBLL7VASlyn0V30DIvtHX79UEdRuXLr5gcLHnussr8z5P68iLsvyoMPnVvs/nbeUxor6RBIWuVgpoZXde3kSZoO2JGtGjB2C0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jdGOxcHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8BB2C4CEF7;
+	Mon, 23 Mar 2026 16:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279306;
-	bh=EEZcx43LwuY7c/nbu7wQH23q+/uoIIKhtbbYMuEXnlU=;
+	s=korg; t=1774283353;
+	bh=Xpb6EE8ItKmBHxFgLpNf3roXx2LOl9yfCn7+d7s7Ask=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIU9hSDxdgCYiTaHVEBaZO0ZNK6veQo7pKTG4bZAP505MvawJAiSuSKrrjPZlnttM
-	 u9DgxdKhKiooTcRHazMcmTsf8ZnQX0bphPKFFsW59Yh++Od0wcYvU2m4lEITUdrzOv
-	 yTPcMtMdvQzPK/6ytNocSlAj0gJDWot5gud0V8cA=
+	b=jdGOxcHPZ4QOtwHrbHXiparASz2qhwsWwmHMT39Vubo31mr+sWuQgmpHiz48St+23
+	 Y1UvNYx7pMcmm7kuZ9aVRXdjl3ZvgHlOPX+eb8TYSGIpASxrM4C05AjqvbG48wg3K3
+	 /juAigMUW1ApORGj/gOGBxoaGckyr7p63LbTZxRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 541/567] udp_tunnel: fix NULL deref caused by udp_sock_create6 when CONFIG_IPV6=n
-Date: Mon, 23 Mar 2026 14:47:41 +0100
-Message-ID: <20260323134547.392091393@linuxfoundation.org>
+	Marco Patalano <mpatalan@redhat.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jaskaran Singh <jsingh@cloudlinux.com>
+Subject: [PATCH 6.1 480/481] nvme: nvme-fc: Ensure ->ioerr_work is cancelled in nvme_fc_delete_ctrl()
+Date: Mon, 23 Mar 2026 14:47:42 +0100
+Message-ID: <20260323134536.924745615@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,96 +70,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,kernel.org];
-	TAGGED_FROM(0.00)[bounces-229461-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229953-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 78B052F7290
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: CAAFC2F9C64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Jaskaran Singh <jsingh@cloudlinux.com>
 
-[ Upstream commit b3a6df291fecf5f8a308953b65ca72b7fc9e015d ]
+commit 0a2c5495b6d1ecb0fa18ef6631450f391a888256 upstream.
 
-When CONFIG_IPV6 is disabled, the udp_sock_create6() function returns 0
-(success) without actually creating a socket. Callers such as
-fou_create() then proceed to dereference the uninitialized socket
-pointer, resulting in a NULL pointer dereference.
+nvme_fc_delete_assocation() waits for pending I/O to complete before
+returning, and an error can cause ->ioerr_work to be queued after
+cancel_work_sync() had been called.  Move the call to cancel_work_sync() to
+be after nvme_fc_delete_association() to ensure ->ioerr_work is not running
+when the nvme_fc_ctrl object is freed.  Otherwise the following can occur:
 
-The captured NULL deref crash:
-  BUG: kernel NULL pointer dereference, address: 0000000000000018
-  RIP: 0010:fou_nl_add_doit (net/ipv4/fou_core.c:590 net/ipv4/fou_core.c:764)
-  [...]
-  Call Trace:
-    <TASK>
-    genl_family_rcv_msg_doit.constprop.0 (net/netlink/genetlink.c:1114)
-    genl_rcv_msg (net/netlink/genetlink.c:1194 net/netlink/genetlink.c:1209)
-    [...]
-    netlink_rcv_skb (net/netlink/af_netlink.c:2550)
-    genl_rcv (net/netlink/genetlink.c:1219)
-    netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
-    netlink_sendmsg (net/netlink/af_netlink.c:1894)
-    __sock_sendmsg (net/socket.c:727 (discriminator 1) net/socket.c:742 (discriminator 1))
-    __sys_sendto (./include/linux/file.h:62 (discriminator 1) ./include/linux/file.h:83 (discriminator 1) net/socket.c:2183 (discriminator 1))
-    __x64_sys_sendto (net/socket.c:2213 (discriminator 1) net/socket.c:2209 (discriminator 1) net/socket.c:2209 (discriminator 1))
-    do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-    entry_SYSCALL_64_after_hwframe (net/arch/x86/entry/entry_64.S:130)
+[ 1135.911754] list_del corruption, ff2d24c8093f31f8->next is NULL
+[ 1135.917705] ------------[ cut here ]------------
+[ 1135.922336] kernel BUG at lib/list_debug.c:52!
+[ 1135.926784] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[ 1135.931851] CPU: 48 UID: 0 PID: 726 Comm: kworker/u449:23 Kdump: loaded Not tainted 6.12.0 #1 PREEMPT(voluntary)
+[ 1135.943490] Hardware name: Dell Inc. PowerEdge R660/0HGTK9, BIOS 2.5.4 01/16/2025
+[ 1135.950969] Workqueue:  0x0 (nvme-wq)
+[ 1135.954673] RIP: 0010:__list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1135.961041] Code: c7 c7 98 68 72 94 e8 26 45 fe ff 0f 0b 48 c7 c7 70 68 72 94 e8 18 45 fe ff 0f 0b 48 89 fe 48 c7 c7 80 69 72 94 e8 07 45 fe ff <0f> 0b 48 89 d1 48 c7 c7 a0 6a 72 94 48 89 c2 e8 f3 44 fe ff 0f 0b
+[ 1135.979788] RSP: 0018:ff579b19482d3e50 EFLAGS: 00010046
+[ 1135.985015] RAX: 0000000000000033 RBX: ff2d24c8093f31f0 RCX: 0000000000000000
+[ 1135.992148] RDX: 0000000000000000 RSI: ff2d24d6bfa1d0c0 RDI: ff2d24d6bfa1d0c0
+[ 1135.999278] RBP: ff2d24c8093f31f8 R08: 0000000000000000 R09: ffffffff951e2b08
+[ 1136.006413] R10: ffffffff95122ac8 R11: 0000000000000003 R12: ff2d24c78697c100
+[ 1136.013546] R13: fffffffffffffff8 R14: 0000000000000000 R15: ff2d24c78697c0c0
+[ 1136.020677] FS:  0000000000000000(0000) GS:ff2d24d6bfa00000(0000) knlGS:0000000000000000
+[ 1136.028765] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 1136.034510] CR2: 00007fd207f90b80 CR3: 000000163ea22003 CR4: 0000000000f73ef0
+[ 1136.041641] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 1136.048776] DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+[ 1136.055910] PKRU: 55555554
+[ 1136.058623] Call Trace:
+[ 1136.061074]  <TASK>
+[ 1136.063179]  ? show_trace_log_lvl+0x1b0/0x2f0
+[ 1136.067540]  ? show_trace_log_lvl+0x1b0/0x2f0
+[ 1136.071898]  ? move_linked_works+0x4a/0xa0
+[ 1136.075998]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.081744]  ? __die_body.cold+0x8/0x12
+[ 1136.085584]  ? die+0x2e/0x50
+[ 1136.088469]  ? do_trap+0xca/0x110
+[ 1136.091789]  ? do_error_trap+0x65/0x80
+[ 1136.095543]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.101289]  ? exc_invalid_op+0x50/0x70
+[ 1136.105127]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.110874]  ? asm_exc_invalid_op+0x1a/0x20
+[ 1136.115059]  ? __list_del_entry_valid_or_report.cold+0xf/0x6f
+[ 1136.120806]  move_linked_works+0x4a/0xa0
+[ 1136.124733]  worker_thread+0x216/0x3a0
+[ 1136.128485]  ? __pfx_worker_thread+0x10/0x10
+[ 1136.132758]  kthread+0xfa/0x240
+[ 1136.135904]  ? __pfx_kthread+0x10/0x10
+[ 1136.139657]  ret_from_fork+0x31/0x50
+[ 1136.143236]  ? __pfx_kthread+0x10/0x10
+[ 1136.146988]  ret_from_fork_asm+0x1a/0x30
+[ 1136.150915]  </TASK>
 
-This patch makes udp_sock_create6 return -EPFNOSUPPORT instead, so
-callers correctly take their error paths. There is only one caller of
-the vulnerable function and only privileged users can trigger it.
-
-Fixes: fd384412e199b ("udp_tunnel: Seperate ipv6 functions into its own file.")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260317010241.1893893-1-xmei5@asu.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 19fce0470f05 ("nvme-fc: avoid calling _nvme_fc_abort_outstanding_ios from interrupt context")
+Cc: stable@vger.kernel.org
+Tested-by: Marco Patalano <mpatalan@redhat.com>
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Ewan D. Milne <emilne@redhat.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jaskaran Singh <jsingh@cloudlinux.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/udp_tunnel.h | 2 +-
+ drivers/nvme/host/fc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
-index 29251c3519cf0..0e6eb40cd7778 100644
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -47,7 +47,7 @@ int udp_sock_create6(struct net *net, struct udp_port_cfg *cfg,
- static inline int udp_sock_create6(struct net *net, struct udp_port_cfg *cfg,
- 				   struct socket **sockp)
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -3264,13 +3264,13 @@ nvme_fc_delete_ctrl(struct nvme_ctrl *nc
  {
--	return 0;
-+	return -EPFNOSUPPORT;
- }
- #endif
+ 	struct nvme_fc_ctrl *ctrl = to_fc_ctrl(nctrl);
  
--- 
-2.51.0
-
+-	cancel_work_sync(&ctrl->ioerr_work);
+ 	cancel_delayed_work_sync(&ctrl->connect_work);
+ 	/*
+ 	 * kill the association on the link side.  this will block
+ 	 * waiting for io to terminate
+ 	 */
+ 	nvme_fc_delete_association(ctrl);
++	cancel_work_sync(&ctrl->ioerr_work);
+ }
+ 
+ static void
 
 
 
