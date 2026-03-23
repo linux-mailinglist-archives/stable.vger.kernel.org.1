@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229222-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228244-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2NfqFJxdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229222-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:52 +0100
+	id WPViNu9NwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228244-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5222F682B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C232F48BB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45ED63422390
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C52A030DFF4E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F97B25333F;
-	Mon, 23 Mar 2026 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27AC93B776C;
+	Mon, 23 Mar 2026 14:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFTXZsiu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zvTKEhzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5264E246BD5;
-	Mon, 23 Mar 2026 15:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAF193AE18C;
+	Mon, 23 Mar 2026 14:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278443; cv=none; b=usdvnKUKnMBds4ucf+khE+1VqPkK0/rK56bSk/TmjXpbA9bpdRbF/Q1glfSycsm8BE3NJ2LhXLckRbv7aDVFILz3Qsl1COLU7Uc3Xy4Ze9aERdH+2rcW36VfyMGzqEFxg4/DXFjZj3uGuhqtWhFhkbYGowCynDVLfzldrGb3t/M=
+	t=1774274561; cv=none; b=KTS1Ptp0KoMMNkAK3HPkwtJXRQGrKuXzFOawY9ixWYKLMVXWOORUyuLVmTl8ImsoBenGteCiwBtMCBnzejxZQa3AMZoH7UCp9QVIKl9yKO3m0wULg7UyxkDTOSlR/y5ZsKK/8dt50O39tl7HrZvhM6bEEAP9pAmKAI2k64jF/i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278443; c=relaxed/simple;
-	bh=yWnt8I9Ae56AdmtFBj+rV2qtpd9C5TM81OoLscLq8jQ=;
+	s=arc-20240116; t=1774274561; c=relaxed/simple;
+	bh=1HkOMo5b2BHLK8kYUBIM+D/M2pfcjX0jf20tZ8t9Abs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edmkx4X20yZVRBhjyKCdsMlWsQMXvkTjsbFSo63L1hlfkxDaIg80ROnTOtMi5A7boY/QuIYSbt5iOfi+h2DJz2GqTNK/pqv2K9REZ1ofw748n6SOKUJqu6YKKGOLHyQKOjXMZ+2R279hzay5kJCQhB3E1Cr4DW7KfzJtjOBqZb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFTXZsiu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA7BC4CEF7;
-	Mon, 23 Mar 2026 15:07:22 +0000 (UTC)
+	 MIME-Version; b=OUr2L3fRUpu4MOpZ02rcyAY5YmYZpMgu89QTN4C9U3msl0pK2KbOq4QMrgnbUMoTdv14ATzbpolTnG0k9ut8dRS7x/ZX9Ay9HGDeSJYWtL6A+RsHRfyyIENCslGdaBnddHzGn77Y3UuFNhxvegjOZIihw0spPAmcNMhd9aRnju0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zvTKEhzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DAF5C2BCB7;
+	Mon, 23 Mar 2026 14:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278443;
-	bh=yWnt8I9Ae56AdmtFBj+rV2qtpd9C5TM81OoLscLq8jQ=;
+	s=korg; t=1774274561;
+	bh=1HkOMo5b2BHLK8kYUBIM+D/M2pfcjX0jf20tZ8t9Abs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kFTXZsiu9WB/K4jiC9vcQWCW6ZyhrXc3dW72a5qJGJQj8lK9SDHQiDSBeby49nYJs
-	 F+2Xl0IGpBXJ6jTZ/N8GAyahvOm6YXtBe0kbVnSErKW3o7Dfi0WlYuJgn8CGBfSEXm
-	 DhMEPklvdSYFr0+1Kbe4pyF2WyWPdKsulCasMPdM=
+	b=zvTKEhzQGUhpuT4TnlQ/fR2lTMsJMdYmQiaWrwCB2ahawUc1H8ILpyojVrCbreOcZ
+	 VdZGpPkjBA6AqqPmfX9in6cQXC/E+9uGJhZnVnVJlr19orGCo+4z/1per2jz92VHl/
+	 qqvOFKAhnWXX8jfEPYs4DCnAbpVcdzOX9o95wHPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Abdelkader <osama.abdelkader@gmail.com>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>
-Subject: [PATCH 6.6 308/567] drm/bridge: samsung-dsim: Fix memory leak in error path
+	Dingisoul <dingiso.kernel@gmail.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>
+Subject: [PATCH 6.18 007/212] nvdimm/bus: Fix potential use after free in asynchronous initialization
 Date: Mon, 23 Mar 2026 14:43:48 +0100
-Message-ID: <20260323134541.444249313@linuxfoundation.org>
+Message-ID: <20260323134504.001502710@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,20 +69,20 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229222-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228244-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,intel.com];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
+	RCPT_COUNT_FIVE(0.00)[6];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,98 +90,66 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BB5222F682B
+X-Rspamd-Queue-Id: 51C232F48BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Abdelkader <osama.abdelkader@gmail.com>
+From: Ira Weiny <ira.weiny@intel.com>
 
-commit 803ec1faf7c1823e6e3b1f2aaa81be18528c9436 upstream.
+commit a8aec14230322ed8f1e8042b6d656c1631d41163 upstream.
 
-In samsung_dsim_host_attach(), drm_bridge_add() is called to add the
-bridge. However, if samsung_dsim_register_te_irq() or
-pdata->host_ops->attach() fails afterwards, the function returns
-without removing the bridge, causing a memory leak.
+Dingisoul with KASAN reports a use after free if device_add() fails in
+nd_async_device_register().
 
-Fix this by adding proper error handling with goto labels to ensure
-drm_bridge_remove() is called in all error paths. Also ensure that
-samsung_dsim_unregister_te_irq() is called if the attach operation
-fails after the TE IRQ has been registered.
+Commit b6eae0f61db2 ("libnvdimm: Hold reference on parent while
+scheduling async init") correctly added a reference on the parent device
+to be held until asynchronous initialization was complete.  However, if
+device_add() results in an allocation failure the ref count of the
+device drops to 0 prior to the parent pointer being accessed.  Thus
+resulting in use after free.
 
-samsung_dsim_unregister_te_irq() function is moved without changes
-to be before samsung_dsim_host_attach() to avoid forward declaration.
+The bug bot AI correctly identified the fix.  Save a reference to the
+parent pointer to be used to drop the parent reference regardless of the
+outcome of device_add().
 
-Fixes: e7447128ca4a ("drm: bridge: Generalize Exynos-DSI driver into a Samsung DSIM bridge")
+Reported-by: Dingisoul <dingiso.kernel@gmail.com>
+Closes: http://lore.kernel.org/8855544b-be9e-4153-aa55-0bc328b13733@gmail.com
+Fixes: b6eae0f61db2 ("libnvdimm: Hold reference on parent while scheduling async init")
 Cc: stable@vger.kernel.org
-Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Link: https://patch.msgid.link/20260209184115.10937-1-osama.abdelkader@gmail.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://patch.msgid.link/20260306-fix-uaf-async-init-v1-1-a28fd7526723@intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/samsung-dsim.c |   25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/nvdimm/bus.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/bridge/samsung-dsim.c
-+++ b/drivers/gpu/drm/bridge/samsung-dsim.c
-@@ -1642,6 +1642,14 @@ static int samsung_dsim_register_te_irq(
- 	return 0;
- }
- 
-+static void samsung_dsim_unregister_te_irq(struct samsung_dsim *dsi)
-+{
-+	if (dsi->te_gpio) {
-+		free_irq(gpiod_to_irq(dsi->te_gpio), dsi);
-+		gpiod_put(dsi->te_gpio);
-+	}
-+}
-+
- static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
- 				    struct mipi_dsi_device *device)
+--- a/drivers/nvdimm/bus.c
++++ b/drivers/nvdimm/bus.c
+@@ -486,14 +486,15 @@ EXPORT_SYMBOL_GPL(nd_synchronize);
+ static void nd_async_device_register(void *d, async_cookie_t cookie)
  {
-@@ -1713,13 +1721,13 @@ of_find_panel_or_bridge:
- 	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO)) {
- 		ret = samsung_dsim_register_te_irq(dsi, &device->dev);
- 		if (ret)
--			return ret;
-+			goto err_remove_bridge;
+ 	struct device *dev = d;
++	struct device *parent = dev->parent;
+ 
+ 	if (device_add(dev) != 0) {
+ 		dev_err(dev, "%s: failed\n", __func__);
+ 		put_device(dev);
  	}
- 
- 	if (pdata->host_ops && pdata->host_ops->attach) {
- 		ret = pdata->host_ops->attach(dsi, device);
- 		if (ret)
--			return ret;
-+			goto err_unregister_te_irq;
- 	}
- 
- 	dsi->lanes = device->lanes;
-@@ -1727,14 +1735,13 @@ of_find_panel_or_bridge:
- 	dsi->mode_flags = device->mode_flags;
- 
- 	return 0;
--}
- 
--static void samsung_dsim_unregister_te_irq(struct samsung_dsim *dsi)
--{
--	if (dsi->te_gpio) {
--		free_irq(gpiod_to_irq(dsi->te_gpio), dsi);
--		gpiod_put(dsi->te_gpio);
--	}
-+err_unregister_te_irq:
-+	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO))
-+		samsung_dsim_unregister_te_irq(dsi);
-+err_remove_bridge:
-+	drm_bridge_remove(&dsi->bridge);
-+	return ret;
+ 	put_device(dev);
+-	if (dev->parent)
+-		put_device(dev->parent);
++	if (parent)
++		put_device(parent);
  }
  
- static int samsung_dsim_host_detach(struct mipi_dsi_host *host,
+ static void nd_async_device_unregister(void *d, async_cookie_t cookie)
 
 
 
