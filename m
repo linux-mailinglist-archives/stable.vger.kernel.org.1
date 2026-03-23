@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229354-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wCaDBMhMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228165-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:04 +0100
+	id yLcUNC9ewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229354-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CD62F454D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9297E2F693F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 90B9930709AA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:00:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B67B4305F1B5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6DD3B3892;
-	Mon, 23 Mar 2026 13:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CA73B7759;
+	Mon, 23 Mar 2026 15:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoqvyvKs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8gtEFT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314773B3890;
-	Mon, 23 Mar 2026 13:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BFFE3B27CE;
+	Mon, 23 Mar 2026 15:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274323; cv=none; b=ELKXmjnynUaDEzmJUnMfaXt8KYXy6AscOE+QIEN/CCP9qjuGV+GJ8pbmJp4L8HU4/LP0BEhwIAqX/CH2EE/4HwqqJndEQGEzcWpJ/fQWvk/CT7R6RZisavfixYaWYhv6UR0NnL7+uH4g0BX5h3Y4IZrIfhCIf3he+q6uXiPe0ZY=
+	t=1774278850; cv=none; b=UgoAzbXnQmGW6wSbASBcHbe8cQeKMpzATyNfG7v/3kqoOSfVcz591iRya1/dqpdxuSMPF9CuWr7+K1Je/fslCfjEHPHZ6WxUHBcHahnfTDisAJb7G0NNXklJqgTaRKVdXUW19QVwsbLonagzO0hKr3hkjRnQ5eBxG84o1zp3+jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274323; c=relaxed/simple;
-	bh=vd4ZAOnh06TKWyg+5bUiFTOZzGADuAyF6jReF5AYFgo=;
+	s=arc-20240116; t=1774278850; c=relaxed/simple;
+	bh=n4DwRlgYq4qDD4zzoM0kbaa41UpUmQ+Wsv25rWSCwLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FR203YnZI45HIjnLg5FluoxOAmIE18ueEd075FhkoQ/NaR31c0SUwmhz6NzCq1eXZFliq/Ne39CRqY5hsi7klYKuu5fJjcxxSjPwjlwHLTKlxDYllUopLIz5pEaXgUZvMagehvv8lk5mPcOUYdNmLuawaSmtNyH3NlIBGRI/PPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoqvyvKs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF55DC4AF09;
-	Mon, 23 Mar 2026 13:58:42 +0000 (UTC)
+	 MIME-Version; b=aDJEMxlvgWddTHflwipOSxBfIKFTYx6L1ilJeyo5O2/8JYoPhDz98dSIDOpsxtsUBHWpBGfQ1kbEFt2VSxubnIMtePRzvJwqs0h7c9koADACsBCpHYgXj/P20RytGKnzTu2zV0mOE//pMmGho49Cftxu4qiwA/ZPbbR4RqbUCUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8gtEFT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3B5C2BC9E;
+	Mon, 23 Mar 2026 15:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274323;
-	bh=vd4ZAOnh06TKWyg+5bUiFTOZzGADuAyF6jReF5AYFgo=;
+	s=korg; t=1774278850;
+	bh=n4DwRlgYq4qDD4zzoM0kbaa41UpUmQ+Wsv25rWSCwLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yoqvyvKsdvvfqz6pcX0V4T8E05g0F8S3u0m4cPWIkyTZ1u2wo0srqXNFSN08Snona
-	 1BhBk7r55BFWJPgYLtp8C8zb0PPraOsQtu/5lqGX+kXGeMQSbEruTZguxGdV/HidAv
-	 JySCyS2Q+dWpJbm9JqZ1SXd6Wt2lAlQlEIlvjrYA=
+	b=o8gtEFT80FcLN0wK0m1NoOKwZojR71tmUAnSWB7ovBodvwzG+vSl28c+2SfK8SeHG
+	 Tl0uIuib05rP5+dk0JkemFOwLk703v/bgdSCuzP24RJ8rzLTQRlOe2vhlbeDQJ+XfJ
+	 ky5UZAfSrqyTjooP88xXmlPAQ9yaqMuSoDmm0ES4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sanman Pradhan <psanman@juniper.net>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.19 182/220] hwmon: (pmbus/ina233) Add error check for pmbus_read_word_data() return value
+	Paulo Andrade <pandrade@redhat.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 439/567] x86/uprobes: Fix XOL allocation failure for 32-bit tasks
 Date: Mon, 23 Mar 2026 14:45:59 +0100
-Message-ID: <20260323134510.324874120@linuxfoundation.org>
+Message-ID: <20260323134544.813579271@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,70 +69,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229354-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228165-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,roeck-us.net:email,juniper.net:email]
-X-Rspamd-Queue-Id: 96CD62F454D
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 9297E2F693F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanman Pradhan <psanman@juniper.net>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 32f59301b9898c0ab5e72908556d553e2d481945 upstream.
+[ Upstream commit d55c571e4333fac71826e8db3b9753fadfbead6a ]
 
-ina233_read_word_data() uses the return value of pmbus_read_word_data()
-directly in a DIV_ROUND_CLOSEST() computation without first checking for
-errors. If the underlying I2C transaction fails, a negative error code is
-used in the arithmetic, producing a garbage sensor value instead of
-propagating the error.
+This script
 
-Add the missing error check before using the return value.
+	#!/usr/bin/bash
 
-Fixes: b64b6cb163f16 ("hwmon: Add driver for TI INA233 Current and Power Monitor")
+	echo 0 > /proc/sys/kernel/randomize_va_space
+
+	echo 'void main(void) {}' > TEST.c
+
+	# -fcf-protection to ensure that the 1st endbr32 insn can't be emulated
+	gcc -m32 -fcf-protection=branch TEST.c -o test
+
+	bpftrace -e 'uprobe:./test:main {}' -c ./test
+
+"hangs", the probed ./test task enters an endless loop.
+
+The problem is that with randomize_va_space == 0
+get_unmapped_area(TASK_SIZE - PAGE_SIZE) called by xol_add_vma() can not
+just return the "addr == TASK_SIZE - PAGE_SIZE" hint, this addr is used
+by the stack vma.
+
+arch_get_unmapped_area_topdown() doesn't take TIF_ADDR32 into account and
+in_32bit_syscall() is false, this leads to info.high_limit > TASK_SIZE.
+vm_unmapped_area() happily returns the high address > TASK_SIZE and then
+get_unmapped_area() returns -ENOMEM after the "if (addr > TASK_SIZE - len)"
+check.
+
+handle_swbp() doesn't report this failure (probably it should) and silently
+restarts the probed insn. Endless loop.
+
+I think that the right fix should change the x86 get_unmapped_area() paths
+to rely on TIF_ADDR32 rather than in_32bit_syscall(). Note also that if
+CONFIG_X86_X32_ABI=y, in_x32_syscall() falsely returns true in this case
+because ->orig_ax = -1.
+
+But we need a simple fix for -stable, so this patch just sets TS_COMPAT if
+the probed task is 32-bit to make in_ia32_syscall() true.
+
+Fixes: 1b028f784e8c ("x86/mm: Introduce mmap_compat_base() for 32-bit mmap()")
+Reported-by: Paulo Andrade <pandrade@redhat.com>
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/all/aV5uldEvV7pb4RA8@redhat.com/
 Cc: stable@vger.kernel.org
-Signed-off-by: Sanman Pradhan <psanman@juniper.net>
-Link: https://lore.kernel.org/r/20260317174553.385567-1-sanman.pradhan@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://patch.msgid.link/aWO7Fdxn39piQnxu@redhat.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/pmbus/ina233.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/uprobes.c |   24 ++++++++++++++++++++++++
+ include/linux/uprobes.h   |    1 +
+ kernel/events/uprobes.c   |   10 +++++++---
+ 3 files changed, 32 insertions(+), 3 deletions(-)
 
---- a/drivers/hwmon/pmbus/ina233.c
-+++ b/drivers/hwmon/pmbus/ina233.c
-@@ -67,6 +67,8 @@ static int ina233_read_word_data(struct
- 	switch (reg) {
- 	case PMBUS_VIRT_READ_VMON:
- 		ret = pmbus_read_word_data(client, 0, 0xff, MFR_READ_VSHUNT);
-+		if (ret < 0)
-+			return ret;
+--- a/arch/x86/kernel/uprobes.c
++++ b/arch/x86/kernel/uprobes.c
+@@ -1102,3 +1102,27 @@ bool arch_uretprobe_is_alive(struct retu
+ 	else
+ 		return regs->sp <= ret->stack;
+ }
++
++#ifdef CONFIG_IA32_EMULATION
++unsigned long arch_uprobe_get_xol_area(void)
++{
++	struct thread_info *ti = current_thread_info();
++	unsigned long vaddr;
++
++	/*
++	 * HACK: we are not in a syscall, but x86 get_unmapped_area() paths
++	 * ignore TIF_ADDR32 and rely on in_32bit_syscall() to calculate
++	 * vm_unmapped_area_info.high_limit.
++	 *
++	 * The #ifdef above doesn't cover the CONFIG_X86_X32_ABI=y case,
++	 * but in this case in_32bit_syscall() -> in_x32_syscall() always
++	 * (falsely) returns true because ->orig_ax == -1.
++	 */
++	if (test_thread_flag(TIF_ADDR32))
++		ti->status |= TS_COMPAT;
++	vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++	ti->status &= ~TS_COMPAT;
++
++	return vaddr;
++}
++#endif
+--- a/include/linux/uprobes.h
++++ b/include/linux/uprobes.h
+@@ -140,6 +140,7 @@ extern bool arch_uretprobe_is_alive(stru
+ extern bool arch_uprobe_ignore(struct arch_uprobe *aup, struct pt_regs *regs);
+ extern void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 					 void *src, unsigned long len);
++extern unsigned long arch_uprobe_get_xol_area(void);
+ #else /* !CONFIG_UPROBES */
+ struct uprobes_state {
+ };
+--- a/kernel/events/uprobes.c
++++ b/kernel/events/uprobes.c
+@@ -1449,6 +1449,12 @@ void uprobe_munmap(struct vm_area_struct
+ 		set_bit(MMF_RECALC_UPROBES, &vma->vm_mm->flags);
+ }
  
- 		/* Adjust returned value to match VIN coefficients */
- 		/* VIN: 1.25 mV VSHUNT: 2.5 uV LSB */
++unsigned long __weak arch_uprobe_get_xol_area(void)
++{
++	/* Try to map as high as possible, this is only a hint. */
++	return get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE, PAGE_SIZE, 0, 0);
++}
++
+ /* Slot allocation for XOL */
+ static int xol_add_vma(struct mm_struct *mm, struct xol_area *area)
+ {
+@@ -1464,9 +1470,7 @@ static int xol_add_vma(struct mm_struct
+ 	}
+ 
+ 	if (!area->vaddr) {
+-		/* Try to map as high as possible, this is only a hint. */
+-		area->vaddr = get_unmapped_area(NULL, TASK_SIZE - PAGE_SIZE,
+-						PAGE_SIZE, 0, 0);
++		area->vaddr = arch_uprobe_get_xol_area();
+ 		if (IS_ERR_VALUE(area->vaddr)) {
+ 			ret = area->vaddr;
+ 			goto fail;
 
 
 
