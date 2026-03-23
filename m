@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228064-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4NmkFExOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228291-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:32 +0100
+	id SJZtE+9FwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228064-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C2E2F4997
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:29:31 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF79A2F3615
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7D7283110FEF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5FAC7300E288
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:53:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E327C3B3C1F;
-	Mon, 23 Mar 2026 14:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6E73ACA62;
+	Mon, 23 Mar 2026 13:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9zPdUDX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="moEfEmSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65343B3C11;
-	Mon, 23 Mar 2026 14:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A27D21D00A;
+	Mon, 23 Mar 2026 13:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274708; cv=none; b=kMYsTV90iOUeqp3M8QgMdDUVq6aJga2cYtWJCHqsDm76Va62JA/KXPOovuK60iKrv+9QMKlMtQPAyah1hB+Gsj3scMHOypB10YmEJlDtiNwEylucrlwTvpx41F19JCHGhobo3QNwNvLTafBX06GkEMMyWibkvfmED05nzfLgTAU=
+	t=1774274020; cv=none; b=a0FB+f42ISo+8ujKEG9ohbZAdZXkfZHTySadjQId2OvD/RS+dtaQ1XsiFQXCJ+C6Rkjn3TUrTCY4ffk27/UaSVnYXNu15CDal50SdezzeO04p6Q3nK8Xw/0x5SD6h3lVrDys+zC2rM2FxKAfvyIaaiSxSoXxNVitWnord7HJ3fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274708; c=relaxed/simple;
-	bh=NN/ExGxhZJE0rCHXhWjC2kTXTaVtmkZMqbGhiLHNfE4=;
+	s=arc-20240116; t=1774274020; c=relaxed/simple;
+	bh=K0YJJH70MUULU9XnOQOhDycr0L52e1JJPTeMUi/firM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+SSSho4e2QLdy+qYjmK9p/3KKhv7+dikSdVMbbLg96AH28L5l9a3VestNsFg6CNrIw81Sg5fgObHcNuqrBU3RFgZmH/8lzdRaoo+CvjnWE4NyEiCEYLxUjpRlkaviMqnTDfVjXp9QZisEUchsuukGs2dB3JKoGfJZSVUouRV4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9zPdUDX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BAF2C2BCB3;
-	Mon, 23 Mar 2026 14:05:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MKseid3iwwfK9XGWQSHR8h4MWPwf4nLKgge30C6ShiIJy53kw1Sv63WZT7YAFGC89S3wTu2nTVwlXa3o9fGbnZx9N2Zbpr2zRdklnCgAjUkAoBMWIxMPHQU9ji63QkDXdoUKDbVRuJ2Ybnf5oowH06ZBb5xfmMIJHVfpdpmL39c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=moEfEmSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82DC2C2BC9E;
+	Mon, 23 Mar 2026 13:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274708;
-	bh=NN/ExGxhZJE0rCHXhWjC2kTXTaVtmkZMqbGhiLHNfE4=;
+	s=korg; t=1774274019;
+	bh=K0YJJH70MUULU9XnOQOhDycr0L52e1JJPTeMUi/firM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9zPdUDXUVFQ2hKc6cyjddLKcaept1CvPzHy3kwO4VKBSbgNYC8GNviwqtNqu9w8/
-	 iu5wJz6Jk/QsOH8VfGV2A8J+YEvck1gZsdCeFokb8FKBXgEr0t4dnO7CikP83gTjKi
-	 Nb2Az6FaZqnm2mZzeiemM8kU4p/J0n+EdRBIZNL4=
+	b=moEfEmSqcQmPHLoepoTigQ5sj5HfDwbI1z5poX0MBC1zH+RMkZmptbSFDasbFnG3I
+	 IztIxCvWpLJa2INfHuNRJG4K2J3Z7T9lCtU3FS0zmgqWWwp6J3GDDjUTkiPWZfb8Lb
+	 AxO2xPS2uD7b4+LCNL/HNN9ldAziYNqnSN0y0+YI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanyang Wang <quanyang.wang@windriver.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 040/212] net: macb: Shuffle the tx ring before enabling tx
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jesse Zhang <jesse.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.19 084/220] drm/amdgpu: Limit BO list entry count to prevent resource exhaustion
 Date: Mon, 23 Mar 2026 14:44:21 +0100
-Message-ID: <20260323134505.033845053@linuxfoundation.org>
+Message-ID: <20260323134507.249294514@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,222 +63,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228291-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,windriver.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228064-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D8C2E2F4997
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: DF79A2F3615
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-[ Upstream commit 881a0263d502e1a93ebc13a78254e9ad19520232 ]
+commit 6270b1a5dab94665d7adce3dc78bc9066ed28bdd upstream.
 
-Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
-the rootfs may take an extended time to recover after a suspend.
-Upon investigation, it was determined that the issue originates from a
-problem in the macb driver.
+Userspace can pass an arbitrary number of BO list entries via the
+bo_number field. Although the previous multiplication overflow check
+prevents out-of-bounds allocation, a large number of entries could still
+cause excessive memory allocation (up to potentially gigabytes) and
+unnecessarily long list processing times.
 
-According to the Zynq UltraScale TRM [1], when transmit is disabled,
-the transmit buffer queue pointer resets to point to the address
-specified by the transmit buffer queue base address register.
+Introduce a hard limit of 128k entries per BO list, which is more than
+sufficient for any realistic use case (e.g., a single list containing all
+buffers in a large scene). This prevents memory exhaustion attacks and
+ensures predictable performance.
 
-In the current implementation, the code merely resets `queue->tx_head`
-and `queue->tx_tail` to '0'. This approach presents several issues:
+Return -EINVAL if the requested entry count exceeds the limit
 
-- Packets already queued in the tx ring are silently lost,
-  leading to memory leaks since the associated skbs cannot be released.
-
-- Concurrent write access to `queue->tx_head` and `queue->tx_tail` may
-  occur from `macb_tx_poll()` or `macb_start_xmit()` when these values
-  are reset to '0'.
-
-- The transmission may become stuck on a packet that has already been sent
-  out, with its 'TX_USED' bit set, but has not yet been processed. However,
-  due to the manipulation of 'queue->tx_head' and 'queue->tx_tail',
-  `macb_tx_poll()` incorrectly assumes there are no packets to handle
-  because `queue->tx_head == queue->tx_tail`. This issue is only resolved
-  when a new packet is placed at this position. This is the root cause of
-  the prolonged recovery time observed for the NFS root filesystem.
-
-To resolve this issue, shuffle the tx ring and tx skb array so that
-the first unsent packet is positioned at the start of the tx ring.
-Additionally, ensure that updates to `queue->tx_head` and
-`queue->tx_tail` are properly protected with the appropriate lock.
-
-[1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
-
-Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
-Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 688b87d39e0aa8135105b40dc167d74b5ada5332)
 Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   98 ++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -37,6 +37,7 @@
- #include <linux/tcp.h>
- #include <linux/types.h>
- #include <linux/udp.h>
-+#include <linux/gcd.h>
- #include <net/pkt_sched.h>
- #include "macb.h"
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_bo_list.c
+@@ -36,6 +36,7 @@
  
-@@ -705,6 +706,97 @@ static void macb_mac_link_down(struct ph
- 	netif_tx_stop_all_queues(ndev);
- }
+ #define AMDGPU_BO_LIST_MAX_PRIORITY	32u
+ #define AMDGPU_BO_LIST_NUM_BUCKETS	(AMDGPU_BO_LIST_MAX_PRIORITY + 1)
++#define AMDGPU_BO_LIST_MAX_ENTRIES	(128 * 1024)
  
-+/* Use juggling algorithm to left rotate tx ring and tx skb array */
-+static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
-+{
-+	unsigned int head, tail, count, ring_size, desc_size;
-+	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
-+	struct macb_dma_desc *desc_curr, *desc_next;
-+	unsigned int i, cycles, shift, curr, next;
-+	struct macb *bp = queue->bp;
-+	unsigned char desc[24];
-+	unsigned long flags;
-+
-+	desc_size = macb_dma_desc_get_size(bp);
-+
-+	if (WARN_ON_ONCE(desc_size > ARRAY_SIZE(desc)))
-+		return;
-+
-+	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
-+	head = queue->tx_head;
-+	tail = queue->tx_tail;
-+	ring_size = bp->tx_ring_size;
-+	count = CIRC_CNT(head, tail, ring_size);
-+
-+	if (!(tail % ring_size))
-+		goto unlock;
-+
-+	if (!count) {
-+		queue->tx_head = 0;
-+		queue->tx_tail = 0;
-+		goto unlock;
-+	}
-+
-+	shift = tail % ring_size;
-+	cycles = gcd(ring_size, shift);
-+
-+	for (i = 0; i < cycles; i++) {
-+		memcpy(&desc, macb_tx_desc(queue, i), desc_size);
-+		memcpy(&tx_skb, macb_tx_skb(queue, i),
-+		       sizeof(struct macb_tx_skb));
-+
-+		curr = i;
-+		next = (curr + shift) % ring_size;
-+
-+		while (next != i) {
-+			desc_curr = macb_tx_desc(queue, curr);
-+			desc_next = macb_tx_desc(queue, next);
-+
-+			memcpy(desc_curr, desc_next, desc_size);
-+
-+			if (next == ring_size - 1)
-+				desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
-+			if (curr == ring_size - 1)
-+				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
-+
-+			skb_curr = macb_tx_skb(queue, curr);
-+			skb_next = macb_tx_skb(queue, next);
-+			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
-+
-+			curr = next;
-+			next = (curr + shift) % ring_size;
-+		}
-+
-+		desc_curr = macb_tx_desc(queue, curr);
-+		memcpy(desc_curr, &desc, desc_size);
-+		if (i == ring_size - 1)
-+			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
-+		if (curr == ring_size - 1)
-+			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
-+		memcpy(macb_tx_skb(queue, curr), &tx_skb,
-+		       sizeof(struct macb_tx_skb));
-+	}
-+
-+	queue->tx_head = count;
-+	queue->tx_tail = 0;
-+
-+	/* Make descriptor updates visible to hardware */
-+	wmb();
-+
-+unlock:
-+	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
-+}
-+
-+/* Rotate the queue so that the tail is at index 0 */
-+static void gem_shuffle_tx_rings(struct macb *bp)
-+{
-+	struct macb_queue *queue;
-+	int q;
-+
-+	for (q = 0, queue = bp->queues; q < bp->num_queues; q++, queue++)
-+		gem_shuffle_tx_one_ring(queue);
-+}
-+
- static void macb_mac_link_up(struct phylink_config *config,
- 			     struct phy_device *phy,
- 			     unsigned int mode, phy_interface_t interface,
-@@ -743,8 +835,6 @@ static void macb_mac_link_up(struct phyl
- 			ctrl |= MACB_BIT(PAE);
+ static void amdgpu_bo_list_free_rcu(struct rcu_head *rcu)
+ {
+@@ -190,6 +191,9 @@ int amdgpu_bo_create_list_entry_array(st
+ 	const uint32_t bo_number = in->bo_number;
+ 	struct drm_amdgpu_bo_list_entry *info;
  
- 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--			queue->tx_head = 0;
--			queue->tx_tail = 0;
- 			queue_writel(queue, IER,
- 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
- 		}
-@@ -758,8 +848,10 @@ static void macb_mac_link_up(struct phyl
- 
- 	spin_unlock_irqrestore(&bp->lock, flags);
- 
--	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
-+	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
- 		macb_set_tx_clk(bp, speed);
-+		gem_shuffle_tx_rings(bp);
-+	}
- 
- 	/* Enable Rx and Tx; Enable PTP unicast */
- 	ctrl = macb_readl(bp, NCR);
++	if (bo_number > AMDGPU_BO_LIST_MAX_ENTRIES)
++		return -EINVAL;
++
+ 	/* copy the handle array from userspace to a kernel buffer */
+ 	if (likely(info_size == bo_info_size)) {
+ 		info = vmemdup_array_user(uptr, bo_number, info_size);
 
 
 
