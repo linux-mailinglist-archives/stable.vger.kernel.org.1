@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229265-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNRiOMF0wWl5TQQAu9opvQ
-	(envelope-from <stable+bounces-229759-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:13:37 +0100
+	id eEpPDMhcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229265-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:20 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E64FD2F9995
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:13:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2042F667E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 74F1C319CC4E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4EC4C30BCB74
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A75B3AEF5C;
-	Mon, 23 Mar 2026 16:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6343F3B47CE;
+	Mon, 23 Mar 2026 15:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAgqQMb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsPI5wjt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3AF284881;
-	Mon, 23 Mar 2026 16:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0743B3C1D;
+	Mon, 23 Mar 2026 15:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282792; cv=none; b=T5va9miuPncwEiB1xbVq6Nbso7msFJJCNtRYxihwRDrV/gqPY4B9X+DFoMylp619d5PYB6a2pUcIfgmEU8mgSmvkxAREitEmDNk+WWk1/AcpYc7p43MQlntenA3eZtNCpWUw73lsI1HapfydE1EiP+hqpMJRQonMirGEFMtM+40=
+	t=1774278575; cv=none; b=tK5JClBbqqRdXlfCqHhoFHsTpaDFwYFtDOhJbLgrBfVfLevZJOTprjPWuCWFysgv/dByQ/lKk4a3V+rr196b9IgQQsOFHASvv8iDaRMQu+zPYI0umJsgVZ9phvpkxThXpDROCrjcHQtftLdobpmaraFP5GzwSHB16wLiolaavfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282792; c=relaxed/simple;
-	bh=FlliSh2lwpYz+itSZUCN2NQxFv4q4Ybg+iAUImnx5do=;
+	s=arc-20240116; t=1774278575; c=relaxed/simple;
+	bh=07AQdiML0RskApom3OJ8weM1AO3tgfvLIM7Cx5QrHYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=evwUZJEeRrvw8VbOagS7o55CCYmHiV+jZ9fvW+pUp93Yt4lTqFXsI/rdpZbITRGROHZqp1jeyqnTr3a1Je1t5nvpvB9vWxpr/DCYlH6yNxGES+6MVAi4bDGfkKQREyliQ8HdPEACjVS23qM9agd8D0ceoAGte7oSavEWN85zHCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAgqQMb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4EBC4CEF7;
-	Mon, 23 Mar 2026 16:19:51 +0000 (UTC)
+	 MIME-Version; b=rForgGWinw7d4cBcUDL+mzS8KXjQduIp1a6Zrm+//08g6IkZ6guvrU8FfJfEKaCgaJtmNFSg5LPAO+G4NXsx3BEIgca87gyAW28YXZXkjo5d8jThb1jy/bGc/2t4z6bvsYg3TM7BO5ZDSsh2DMCLPqClhPCHAR78EUvWVDS8JK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsPI5wjt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D23EC4CEF7;
+	Mon, 23 Mar 2026 15:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282792;
-	bh=FlliSh2lwpYz+itSZUCN2NQxFv4q4Ybg+iAUImnx5do=;
+	s=korg; t=1774278574;
+	bh=07AQdiML0RskApom3OJ8weM1AO3tgfvLIM7Cx5QrHYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eAgqQMb1ot4YYMKTok+uy63+gDFtCEQcDpBYbYmlAbBmFMQK9G1g/7eKfCs9nWQ6d
-	 NGNOUkmSTEbM+IT45m+8jQ0/X9Hj2Acy2Atql+CgbTa/iJh4f5jYLBXlK5rHf5WGD8
-	 b+60FV9OkcRw2/FNsc94Y53vML/cheBZxmQE4QPc=
+	b=OsPI5wjtWeiq45+6eWtCVUR/qq8jfQ713kzrZ5PrzoonETy//MKt0v2Hoi3vy1mCX
+	 6QLejF3cN8oXocWvyUDGx9RhlPSXdNDTAAMNZWNeJMlqGl2s8YRpbTdH8hEm0EFiaK
+	 Vw3x6Syq3NWqPJW7Y/emKpN4eA8+5e5/vHm3ya8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 288/481] Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
-Date: Mon, 23 Mar 2026 14:44:30 +0100
-Message-ID: <20260323134532.131272013@linuxfoundation.org>
+	Anand Jain <asj@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 351/567] btrfs: abort transaction on failure to update root in the received subvol ioctl
+Date: Mon, 23 Mar 2026 14:44:31 +0100
+Message-ID: <20260323134542.520587125@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229759-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229265-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: E64FD2F9995
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DA2042F667E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Johannes Möller <research@johannes-moeller.dev>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit dd815e6e3918dc75a49aaabac36e4f024d675101 upstream.
+commit 0f475ee0ebce5c9492b260027cd95270191675fa upstream.
 
-l2cap_information_rsp() checks that cmd_len covers the fixed
-l2cap_info_rsp header (type + result, 4 bytes) but then reads
-rsp->data without verifying that the payload is present:
+If we failed to update the root we don't abort the transaction, which is
+wrong since we already used the transaction to remove an item from the
+uuid tree.
 
- - L2CAP_IT_FEAT_MASK calls get_unaligned_le32(rsp->data), which reads
-   4 bytes past the header (needs cmd_len >= 8).
-
- - L2CAP_IT_FIXED_CHAN reads rsp->data[0], 1 byte past the header
-   (needs cmd_len >= 5).
-
-A truncated L2CAP_INFO_RSP with result == L2CAP_IR_SUCCESS triggers an
-out-of-bounds read of adjacent skb data.
-
-Guard each data access with the required payload length check.  If the
-payload is too short, skip the read and let the state machine complete
-with safe defaults (feat_mask and remote_fixed_chan remain zero from
-kzalloc), so the info timer cleanup and l2cap_conn_start() still run
-and the connection is not stalled.
-
-Fixes: 4e8402a3f884 ("[Bluetooth] Retrieve L2CAP features mask on connection setup")
-Cc: stable@vger.kernel.org
-Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
+CC: stable@vger.kernel.org # 3.12+
+Reviewed-by: Anand Jain <asj@kernel.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/btrfs/ioctl.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -4861,7 +4861,8 @@ static inline int l2cap_information_rsp(
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -4037,7 +4037,8 @@ static long _btrfs_ioctl_set_received_su
  
- 	switch (type) {
- 	case L2CAP_IT_FEAT_MASK:
--		conn->feat_mask = get_unaligned_le32(rsp->data);
-+		if (cmd_len >= sizeof(*rsp) + sizeof(u32))
-+			conn->feat_mask = get_unaligned_le32(rsp->data);
- 
- 		if (conn->feat_mask & L2CAP_FEAT_FIXED_CHAN) {
- 			struct l2cap_info_req req;
-@@ -4880,7 +4881,8 @@ static inline int l2cap_information_rsp(
- 		break;
- 
- 	case L2CAP_IT_FIXED_CHAN:
--		conn->remote_fixed_chan = rsp->data[0];
-+		if (cmd_len >= sizeof(*rsp) + sizeof(rsp->data[0]))
-+			conn->remote_fixed_chan = rsp->data[0];
- 		conn->info_state |= L2CAP_INFO_FEAT_MASK_REQ_DONE;
- 		conn->info_ident = 0;
- 
+ 	ret = btrfs_update_root(trans, fs_info->tree_root,
+ 				&root->root_key, &root->root_item);
+-	if (ret < 0) {
++	if (unlikely(ret < 0)) {
++		btrfs_abort_transaction(trans, ret);
+ 		btrfs_end_transaction(trans);
+ 		goto out;
+ 	}
 
 
 
