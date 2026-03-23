@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229472-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCwPA0JPwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228420-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:38 +0100
+	id WDpdAUFlwWkzSwQAu9opvQ
+	(envelope-from <stable+bounces-229472-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:07:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE992F4BB3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2462F7976
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:07:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6E0DD31A81C5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6F40730A421B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235043AEF22;
-	Mon, 23 Mar 2026 14:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6F43B9D81;
+	Mon, 23 Mar 2026 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7ouLZA6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGf0r6a0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97553AE6EE;
-	Mon, 23 Mar 2026 14:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAE53B5820;
+	Mon, 23 Mar 2026 15:22:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275073; cv=none; b=RTLCJJ4t2KafJ3PMd4UA3W+2Vgeik+0/FUsZ6y57/j41AMwdSLaamlEMKBUlmjmi1vHPRpHrjeo91ycfnoh9S3MxjwAIJrjDu2iJWv89XQTITZIW6fZo0L1SRZD/J79gHDYT10WGG4ZbDMArC1yFNUVfxN4YEeELcq7d6ZTn1wY=
+	t=1774279342; cv=none; b=IWjc39KSU0qHmIIaju53LG0ats1VIYmrMUR5+9V7sMlhdDEJIbzwMEy2ONPpsPr4NyEqZZstRZL4o2hpJDnq9Y6gdlxr5DVnuAE7oKuDVnZAVD18GeRTgX5FI3T3D0NEPdPLxzSpznok5EMDf1VtDNAaBvnn+b6Hla0qdyHhQqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275073; c=relaxed/simple;
-	bh=O98PyuiM5jPiR9BkgNaeyLWYQpWE8OjECKUCe6cbRgM=;
+	s=arc-20240116; t=1774279342; c=relaxed/simple;
+	bh=wDsFXAWS4xoV0U9bhH42h2DoXNsolcVmqiWbMSbSa1k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MgVD69ekbbRXjyxRWpTzRp+BYpMe7pkMq7LXozarUo3nCI2W2boUaSYvsXFFjR0NpfCj4aVnEvMqu+fM2jX1q9VCPb96zdwzeMnU4a+qZeODoz8p4qjb7xogJSB3NhJjcP7nWGo72axrvHZ2M/bPOWC1rMSOF9G0GfMy18G36Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7ouLZA6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7BCC4CEF7;
-	Mon, 23 Mar 2026 14:11:13 +0000 (UTC)
+	 MIME-Version; b=tNnQ9nsVbOE+G+oNS4m/WykyyWW9mdiduw6zX1MY7DcTEBxBOXoIQzzeLQDUtBe3q0AyxHVvpw19nMKriM6gsQ5gVBk969Ln4qb0N4HrXj2EdbFUGFev2Uie6oCbKZqVK5JjJ22IpbctFaE6qFJpAIcgMjqvFICAYeELket70c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGf0r6a0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1ECFC2BC9E;
+	Mon, 23 Mar 2026 15:22:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275073;
-	bh=O98PyuiM5jPiR9BkgNaeyLWYQpWE8OjECKUCe6cbRgM=;
+	s=korg; t=1774279342;
+	bh=wDsFXAWS4xoV0U9bhH42h2DoXNsolcVmqiWbMSbSa1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K7ouLZA6Pk2NTPxfGeoqDC4F8JTK0+WO9d/dxGiFlOkVI0kGF5T8yZKb8NpSz1Bk6
-	 cm/+0P0NnpO09ZEEV9GO3yAHmAlf0L5Gxk1RpTP+3AfcNReJJ4j+87T7oroGTxrmSd
-	 lqtj9QvVjP+eRNPfD/U+wlY+Z4wxP5EvrCjPouPo=
+	b=AGf0r6a0h8PU+kq0GN+bInNTmhoezCBlcBYyzi4dMKFDBaMMgx+ySutZy7trj8z44
+	 ao0caAcasg/LQqa/JsRkOphoqOhwZ1gdJ8pBDS5CScOmt5qFd6D1YKl6EIn98zX96h
+	 KptITbitfnwOy4NRr3RKnm3rD9RnQCge9VhmBjzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 210/212] tools/bootconfig: fix fd leak in load_xbc_file() on fstat failure
+Subject: [PATCH 6.6 511/567] net/rose: fix NULL pointer dereference in rose_transmit_link on reconnect
 Date: Mon, 23 Mar 2026 14:47:11 +0100
-Message-ID: <20260323134510.420829481@linuxfoundation.org>
+Message-ID: <20260323134546.658741340@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +66,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228420-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229472-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8CE992F4BB3
+	TAGGED_RCPT(0.00)[stable,d00f90e0af54102fb271];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,msgid.link:url,shopee.com:email,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 7C2462F7976
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit 3b2c2ab4ceb82af484310c3087541eab00ea288b ]
+[ Upstream commit e1f0a18c9564cdb16523c802e2c6fe5874e3d944 ]
 
-If fstat() fails after open() succeeds, the function returns without
-closing the file descriptor. Also preserve errno across close(), since
-close() may overwrite it before the error is returned.
+syzkaller reported a bug [1], and the reproducer is available at [2].
 
-Link: https://lore.kernel.org/all/20260318155847.78065-3-objecting@objecting.org/
+ROSE sockets use four sk->sk_state values: TCP_CLOSE, TCP_LISTEN,
+TCP_SYN_SENT, and TCP_ESTABLISHED. rose_connect() already rejects
+calls for TCP_ESTABLISHED (-EISCONN) and TCP_CLOSE with SS_CONNECTING
+(-ECONNREFUSED), but lacks a check for TCP_SYN_SENT.
 
-Fixes: 950313ebf79c ("tools: bootconfig: Add bootconfig command")
-Signed-off-by: Josh Law <objecting@objecting.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+When rose_connect() is called a second time while the first connection
+attempt is still in progress (TCP_SYN_SENT), it overwrites
+rose->neighbour via rose_get_neigh(). If that returns NULL, the socket
+is left with rose->state == ROSE_STATE_1 but rose->neighbour == NULL.
+When the socket is subsequently closed, rose_release() sees
+ROSE_STATE_1 and calls rose_write_internal() ->
+rose_transmit_link(skb, NULL), causing a NULL pointer dereference.
+
+Per connect(2), a second connect() while a connection is already in
+progress should return -EALREADY. Add this missing check for
+TCP_SYN_SENT to complete the state validation in rose_connect().
+
+[1] https://syzkaller.appspot.com/bug?extid=d00f90e0af54102fb271
+[2] https://gist.github.com/mrpre/9e6779e0d13e2c66779b1653fef80516
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0027.GAE@google.com/T/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260311070611.76913-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bootconfig/main.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/rose/af_rose.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-index 55d59ed507d54..643f707b8f1da 100644
---- a/tools/bootconfig/main.c
-+++ b/tools/bootconfig/main.c
-@@ -162,8 +162,11 @@ static int load_xbc_file(const char *path, char **buf)
- 	if (fd < 0)
- 		return -errno;
- 	ret = fstat(fd, &stat);
--	if (ret < 0)
--		return -errno;
-+	if (ret < 0) {
-+		ret = -errno;
-+		close(fd);
-+		return ret;
-+	}
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 1cc5eaeb1c608..e80bc7788bec5 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -810,6 +810,11 @@ static int rose_connect(struct socket *sock, struct sockaddr *uaddr, int addr_le
+ 		goto out_release;
+ 	}
  
- 	ret = load_xbc_fd(fd, buf, stat.st_size);
++	if (sk->sk_state == TCP_SYN_SENT) {
++		err = -EALREADY;
++		goto out_release;
++	}
++
+ 	sk->sk_state   = TCP_CLOSE;
+ 	sock->state = SS_UNCONNECTED;
  
 -- 
 2.51.0
