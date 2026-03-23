@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229115-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MHSQKpxwwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229598-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:56 +0100
+	id CD2JCahZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229115-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527692F91FB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BDB2F61AE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 385AC3299EAC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A08D3023355
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A753B9D97;
-	Mon, 23 Mar 2026 16:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F314F269CE6;
+	Mon, 23 Mar 2026 15:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEtKpJRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2YSfo1A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D793B2FF5;
-	Mon, 23 Mar 2026 16:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CE926A1CF;
+	Mon, 23 Mar 2026 15:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282352; cv=none; b=s358Pklnfu6apxxvzk8w4l3XLM9pp2lcDvRM6eSkyRULxwlMRKEUDWi+hXk98I3hb9NtcVZtzUIgl7BKpWGPF9F6meJED5Y1qEjcwimhYFFJCSVko7HQI4wl2gCUOGtS1uXxq3fzh22c+H14VkJjLHqduZMBLzLRs1bwMYrXFIk=
+	t=1774278106; cv=none; b=mFU3iTjm15wRudimUXvdQNpiY8tync4BPL127ncPsMfkzeoDPHSCesZEY36Yf/5tIbwF2GW0uQxRwy19yyyVrWfFFmSFfL+EI4HxozQyrgMtRiDM3xdfAN2RbOJG4CnrakcGvgcES22T5F4PXZ/ucPVQyd3BTNzKhElxYGgflnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282352; c=relaxed/simple;
-	bh=k7NTReSOgCgXEgD/RTc+9LYvJNLAl+BMyuU9khpfwa4=;
+	s=arc-20240116; t=1774278106; c=relaxed/simple;
+	bh=/1OreGp+H0X0ZP2p2ZjnZipD/5+IfZis14gFNDqJpjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQL+v7LkN3hoPegGiBpuV6YwUADfD1Rve9mhRhp5zp8cEj5vOpBVkS1NaDHq4iKN9kUlzY9ek2wJCHizAjmWWyGTyd7XsZnlNtoHLyBTZu4AiWzPSuElBjMPVotw6RcelBfPzbTkzCoWJt651N5Tw5DNPZzGxCfIp0+/RrDqaf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEtKpJRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 255C9C4CEF7;
-	Mon, 23 Mar 2026 16:12:31 +0000 (UTC)
+	 MIME-Version; b=EzpqR9iIPlz2yQcWMhXwtXKx7xD7yPfI0pBi3cQtGo9yxnWD07Pwgx1l3BcIU+gRFjT6ZdABHTAPGhvEcImM0n9fDpJXzdw9jgE30ELgoHY+BEXyOC1jj9uOdQsbhaH0+KKJmt+dRmJQltfd48kWAU+6n/qsJ0v134WV2pieMnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2YSfo1A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD6EC4CEF7;
+	Mon, 23 Mar 2026 15:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282352;
-	bh=k7NTReSOgCgXEgD/RTc+9LYvJNLAl+BMyuU9khpfwa4=;
+	s=korg; t=1774278106;
+	bh=/1OreGp+H0X0ZP2p2ZjnZipD/5+IfZis14gFNDqJpjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dEtKpJRjvug2QAm5kNw2in5LHfcjOA8UY6wj/ae+BdN1yvNAGa1CjweI5i5b79mhO
-	 B+69+WQ2gcKyxeL28a4qlXcZEJJXv353XOrxf0SQSawgPlhj8AImtpujurNiLMTRJa
-	 VGrfWYF2tT9ebcInNyr68Gf4DpHChrYE/jcIxfkM=
+	b=k2YSfo1ApzlvJQbZ0kh1eJjHcm2oj89F1uMrnWrn86q0JTpKwgJbj27Q1MavADc2w
+	 5PO0Mjk2BoebOb9O1IMUKjqQrvI5JK/G+j3bLIbqfrVzymMLGZHZ6SWE359o1Lc1ae
+	 xuB5xSrWwQpfAbP+xcpSU/uw9LUETCoY1BrpmiZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Menglong Dong <menglong8.dong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 124/481] indirect_call_wrapper: do not reevaluate function pointer
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 186/567] net: tcp: accept old ack during closing
 Date: Mon, 23 Mar 2026 14:41:46 +0100
-Message-ID: <20260323134528.302861106@linuxfoundation.org>
+Message-ID: <20260323134538.455237073@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,174 +65,112 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229598-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,google.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229115-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 527692F91FB
+X-Rspamd-Queue-Id: 82BDB2F61AE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Menglong Dong <menglong8.dong@gmail.com>
 
-[ Upstream commit 710f5c76580306cdb9ec51fac8fcf6a8faff7821 ]
+commit 795a7dfbc3d95e4c7c09569f319f026f8c7f5a9c upstream.
 
-We have an increasing number of READ_ONCE(xxx->function)
-combined with INDIRECT_CALL_[1234]() helpers.
+For now, the packet with an old ack is not accepted if we are in
+FIN_WAIT1 state, which can cause retransmission. Taking the following
+case as an example:
 
-Unfortunately this forces INDIRECT_CALL_[1234]() to read
-xxx->function many times, which is not what we wanted.
+    Client                               Server
+      |                                    |
+  FIN_WAIT1(Send FIN, seq=10)          FIN_WAIT1(Send FIN, seq=20, ack=10)
+      |                                    |
+      |                                Send ACK(seq=21, ack=11)
+   Recv ACK(seq=21, ack=11)
+      |
+   Recv FIN(seq=20, ack=10)
 
-Fix these macros so that xxx->function value is not reloaded.
+In the case above, simultaneous close is happening, and the FIN and ACK
+packet that send from the server is out of order. Then, the FIN will be
+dropped by the client, as it has an old ack. Then, the server has to
+retransmit the FIN, which can cause delay if the server has set the
+SO_LINGER on the socket.
 
-$ scripts/bloat-o-meter -t vmlinux.0 vmlinux
-add/remove: 0/0 grow/shrink: 1/65 up/down: 122/-1084 (-962)
-Function                                     old     new   delta
-ip_push_pending_frames                        59     181    +122
-ip6_finish_output                            687     681      -6
-__udp_enqueue_schedule_skb                  1078    1072      -6
-ioam6_output                                2319    2312      -7
-xfrm4_rcv_encap_finish2                       64      56      -8
-xfrm4_output                                 297     289      -8
-vrf_ip_local_out                             278     270      -8
-vrf_ip6_local_out                            278     270      -8
-seg6_input_finish                             64      56      -8
-rpl_output                                   700     692      -8
-ipmr_forward_finish                          124     116      -8
-ip_forward_finish                            143     135      -8
-ip6mr_forward2_finish                        100      92      -8
-ip6_forward_finish                            73      65      -8
-input_action_end_bpf                        1091    1083      -8
-dst_input                                     52      44      -8
-__xfrm6_output                               801     793      -8
-__xfrm4_output                                83      75      -8
-bpf_input                                    500     491      -9
-__tcp_check_space                            530     521      -9
-input_action_end_dt6                         291     280     -11
-vti6_tnl_xmit                               1634    1622     -12
-bpf_xmit                                    1203    1191     -12
-rpl_input                                    497     483     -14
-rawv6_send_hdrinc                           1355    1341     -14
-ndisc_send_skb                              1030    1016     -14
-ipv6_srh_rcv                                1377    1363     -14
-ip_send_unicast_reply                       1253    1239     -14
-ip_rcv_finish                                226     212     -14
-ip6_rcv_finish                               300     286     -14
-input_action_end_x_core                      205     191     -14
-input_action_end_x                           355     341     -14
-input_action_end_t                           205     191     -14
-input_action_end_dx6_finish                  127     113     -14
-input_action_end_dx4_finish                  373     359     -14
-input_action_end_dt4                         426     412     -14
-input_action_end_core                        186     172     -14
-input_action_end_b6_encap                    292     278     -14
-input_action_end_b6                          198     184     -14
-igmp6_send                                  1332    1318     -14
-ip_sublist_rcv                               864     848     -16
-ip6_sublist_rcv                             1091    1075     -16
-ipv6_rpl_srh_rcv                            1937    1920     -17
-xfrm_policy_queue_process                   1246    1228     -18
-seg6_output_core                             903     885     -18
-mld_sendpack                                 856     836     -20
-NF_HOOK                                      756     736     -20
-vti_tunnel_xmit                             1447    1426     -21
-input_action_end_dx6                         664     642     -22
-input_action_end                            1502    1480     -22
-sock_sendmsg_nosec                           134     111     -23
-ip6mr_forward2                               388     364     -24
-sock_recvmsg_nosec                           134     109     -25
-seg6_input_core                              836     810     -26
-ip_send_skb                                  172     146     -26
-ip_local_out                                 140     114     -26
-ip6_local_out                                140     114     -26
-__sock_sendmsg                               162     136     -26
-__ip_queue_xmit                             1196    1170     -26
-__ip_finish_output                           405     379     -26
-ipmr_queue_fwd_xmit                          373     346     -27
-sock_recvmsg                                 173     145     -28
-ip6_xmit                                    1635    1607     -28
-xfrm_output_resume                          1418    1389     -29
-ip_build_and_send_pkt                        625     591     -34
-dst_output                                   504     432     -72
-Total: Before=25217686, After=25216724, chg -0.00%
+Old ack is accepted in the ESTABLISHED and TIME_WAIT state, and I think
+it should be better to keep the same logic.
 
-Fixes: 283c16a2dfd3 ("indirect call wrappers: helpers to speed-up indirect calls of builtin")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260227172603.1700433-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In this commit, we accept old ack in FIN_WAIT1/FIN_WAIT2/CLOSING/LAST_ACK
+states. Maybe we should limit it to FIN_WAIT1 for now?
+
+Signed-off-by: Menglong Dong <menglong8.dong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240126040519.1846345-1-menglong8.dong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/indirect_call_wrapper.h | 18 +++++++++++-------
+ net/ipv4/tcp_input.c |   18 +++++++++++-------
  1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/indirect_call_wrapper.h b/include/linux/indirect_call_wrapper.h
-index c1c76a70a6ce9..227cee5e2a98b 100644
---- a/include/linux/indirect_call_wrapper.h
-+++ b/include/linux/indirect_call_wrapper.h
-@@ -16,22 +16,26 @@
-  */
- #define INDIRECT_CALL_1(f, f1, ...)					\
- 	({								\
--		likely(f == f1) ? f1(__VA_ARGS__) : f(__VA_ARGS__);	\
-+		typeof(f) __f1 = (f);					\
-+		likely(__f1 == f1) ? f1(__VA_ARGS__) : __f1(__VA_ARGS__);	\
- 	})
- #define INDIRECT_CALL_2(f, f2, f1, ...)					\
- 	({								\
--		likely(f == f2) ? f2(__VA_ARGS__) :			\
--				  INDIRECT_CALL_1(f, f1, __VA_ARGS__);	\
-+		typeof(f) __f2 = (f);					\
-+		likely(__f2 == f2) ? f2(__VA_ARGS__) :			\
-+				  INDIRECT_CALL_1(__f2, f1, __VA_ARGS__);	\
- 	})
- #define INDIRECT_CALL_3(f, f3, f2, f1, ...)					\
- 	({									\
--		likely(f == f3) ? f3(__VA_ARGS__) :				\
--				  INDIRECT_CALL_2(f, f2, f1, __VA_ARGS__);	\
-+		typeof(f) __f3 = (f);						\
-+		likely(__f3 == f3) ? f3(__VA_ARGS__) :				\
-+				  INDIRECT_CALL_2(__f3, f2, f1, __VA_ARGS__);	\
- 	})
- #define INDIRECT_CALL_4(f, f4, f3, f2, f1, ...)					\
- 	({									\
--		likely(f == f4) ? f4(__VA_ARGS__) :				\
--				  INDIRECT_CALL_3(f, f3, f2, f1, __VA_ARGS__);	\
-+		typeof(f) __f4 = (f);						\
-+		likely(__f4 == f4) ? f4(__VA_ARGS__) :				\
-+				  INDIRECT_CALL_3(__f4, f3, f2, f1, __VA_ARGS__);	\
- 	})
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6705,17 +6705,21 @@ int tcp_rcv_state_process(struct sock *s
+ 		return 0;
  
- #define INDIRECT_CALLABLE_DECLARE(f)	f
--- 
-2.51.0
-
+ 	/* step 5: check the ACK field */
+-	acceptable = tcp_ack(sk, skb, FLAG_SLOWPATH |
+-				      FLAG_UPDATE_TS_RECENT |
+-				      FLAG_NO_CHALLENGE_ACK) > 0;
++	reason = tcp_ack(sk, skb, FLAG_SLOWPATH |
++				  FLAG_UPDATE_TS_RECENT |
++				  FLAG_NO_CHALLENGE_ACK);
+ 
+-	if (!acceptable) {
++	if ((int)reason <= 0) {
+ 		if (sk->sk_state == TCP_SYN_RECV)
+ 			return 1;	/* send one RST */
+-		tcp_send_challenge_ack(sk);
+-		SKB_DR_SET(reason, TCP_OLD_ACK);
+-		goto discard;
++		/* accept old ack during closing */
++		if ((int)reason < 0) {
++			tcp_send_challenge_ack(sk);
++			reason = -reason;
++			goto discard;
++		}
+ 	}
++	SKB_DR_SET(reason, NOT_SPECIFIED);
+ 	switch (sk->sk_state) {
+ 	case TCP_SYN_RECV:
+ 		tp->delivered++; /* SYN-ACK delivery isn't tracked in tcp_ack */
 
 
 
