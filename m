@@ -1,278 +1,164 @@
-Return-Path: <stable+bounces-227944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227945-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cCNXBhgSwWk7QQQAu9opvQ
-	(envelope-from <stable+bounces-227944-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:12:40 +0100
+	id GE81IooVwWn5QQQAu9opvQ
+	(envelope-from <stable+bounces-227945-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:27:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9B2D2EFC8D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:12:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F7F2F0035
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:27:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1314530065F3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:11:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A188730197DA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:19:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2EA338A73C;
-	Mon, 23 Mar 2026 10:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79FB38AC9F;
+	Mon, 23 Mar 2026 10:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AM9DPV3H"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FGxRsxJv"
 X-Original-To: stable@vger.kernel.org
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010005.outbound.protection.outlook.com [52.101.61.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE0483563FA
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78CB2385517
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774260688; cv=fail; b=iN1NHXgra+gKvAvYA39NKJceKilFLA5l4F6xULh1bpNaFQuacMRmdoZjSwhTO1YduLH2vcMHXfX5W7BKO7KhGMcMxNr5ZfV+bw9RqjF303uCMxdcxBxrRXO1hh0laTJuw1F6R6IeM6qd07UC5Fx0y5lXrODzwQdbyhFP3NeTNFg=
+	t=1774261144; cv=pass; b=OOfcaxGuf322/n0ydARY2M6V/xjqNSqnoua4212zQdcL46wYajFVd/vQkIzxj5h2Q+epH333KWs+1aRKA87kxU+ds4iXHiZDxrmIYQu4DWfPkiSV0QAezWkXG1f8XnmPTKrAOlSs96kO0MxAcJeLjBoDvc1FtkRwUXDHJnmUCug=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774260688; c=relaxed/simple;
-	bh=Oy0dC807Mk555+OyPL6j33PkA87DHdJK2426s5jAokY=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ksgSNEkf2uQ6WVUlXtc5xpGHKIVx0OfwhVoC88bz8a5vc/9Myx3GQ49nHF/kXgvjL3R0Ra3u3F//R48iry8w4eiYqZGMFFcxz/5xHC+tprD6nw12eHyMLnoDQ5arVNf4oHR0pRugP/kl0kUXJTPTK9frlXaSef/TeLggwzhoD4A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AM9DPV3H; arc=fail smtp.client-ip=52.101.61.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D6dy/CwFrGOeesBEIMViHws0EX8BibVScphJtxGTD+439+5ApyYAyFkv5qFN9gfKwwNDN7gEM+hsGVBKJN9anMlvmeDMHcuKdSkjXAqMyNbnEVrIAQ6WuTcXbWxi21K9YiRcYU1enkVPOwyFNEcjBnw4te7IGSCJAxO6qAkCDe7rfmf4EE0jf61K4i/QDnQzwY1cEYdIlSDa3aWNb0aEIY+luBsvXtPuLXaffxUF3ZeKTEtz0Q2IRiDElNam70m9171yGUz0QVy8Ki09OZKm12ovGHYi0Auqcbo2pOw4/Z08OuEZTKhMl/xbh2ocr9vRdTk+HNfo9iDRgS4COUP/LA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8gaG0grzEJxalodJvD0jxXbIwXebjUCpl9Wyou4awP8=;
- b=eJB3aql5106U9dABB9yZSQjgVdo4xBwp+5M/aVr1+ZBNwKt1uhKhqjbTVKikHrdqGaD3uAKekcmCSo/yx9hPdE4O8ice7SZAuNJskvY2z0DWLjfzDiJToypGQtPm92ZnGXP37iLs3KfXx2rH5M/VHG9A6JgVikpVoQhYNv0Gcedcd0lDdxi6/f1f65nnV9ogLLKoeAOZqXDhzENWpCj+knCAjFoHAKHBpCL8ptmhWBCdRHpsZv6rhWX7i8VGPhrES7Q0dDaM0RzNW1aSCSu/sjdDh7jlCTLvB9NMimZVCNClURmFc3wNqLU4bw4WUm1Hii2T4WtqwhYXHVYVYBPFHA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8gaG0grzEJxalodJvD0jxXbIwXebjUCpl9Wyou4awP8=;
- b=AM9DPV3HgakIB0GX2iKlo2JnZfCJzDqnvQVxTXoBGybiNSULXgYdSOJHM2tw1B6b8r5X1yIO2NZb/LNQAKBaCAbdalXzFh/6fgNGHJW6nrNqdckwvXQJCEPJG8qqPPP3SaP4ZqGLjgur/2deQoe7K0rFo7WsnqwfWkMGS5NR2K0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by DS7PR12MB6240.namprd12.prod.outlook.com (2603:10b6:8:94::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9745.19; Mon, 23 Mar
- 2026 10:11:24 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%5]) with mapi id 15.20.9745.019; Mon, 23 Mar 2026
- 10:11:23 +0000
-Message-ID: <65a96159-1266-4b42-91ce-359fcd1a76ea@amd.com>
-Date: Mon, 23 Mar 2026 11:11:19 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RESEND RFC PATCH v3 1/6] drm/amdgpu: Change
- AMDGPU_VA_RESERVED_TRAP_SIZE to 2 PAGE_SIZE pages
-To: Donet Tom <donettom@linux.ibm.com>, amd-gfx@lists.freedesktop.org,
- Felix Kuehling <Felix.Kuehling@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>,
- Alex Deucher <alexdeucher@gmail.com>, Philip Yang <yangp@amd.com>
-Cc: David.YatSin@amd.com, Kent.Russell@amd.com,
- Ritesh Harjani <ritesh.list@gmail.com>,
- Vaidyanathan Srinivasan <svaidy@linux.ibm.com>, stable@vger.kernel.org
-References: <cover.1774239489.git.donettom@linux.ibm.com>
- <d3a5bd9b4bcff28c1c43c4c46479cd95d4dcf7f0.1774239489.git.donettom@linux.ibm.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <d3a5bd9b4bcff28c1c43c4c46479cd95d4dcf7f0.1774239489.git.donettom@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0177.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b7::14) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	s=arc-20240116; t=1774261144; c=relaxed/simple;
+	bh=Nz9/2a5/50fvCc1KLouJs7sTDCfItMzZ7aatbbpHwtA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IGl9/cjzcAhO2PzI1b0Aj2jKlAz439BErNJxBTQaGDHiqwlwIvv91iR0MsbPf3ZTluaOlANMQ7Nfkpxt0/vRozS5cL2JsavJP1sg4Ou4hpqZqLMeVcf7x+UqCAB34MtHe+/JvYaSSyfVbJQqj48huJ1cYxbVynSS1cJQUQwM6gs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FGxRsxJv; arc=pass smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-12a77005d69so100669c88.1
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 03:19:03 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1774261142; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gE+LIOCRlUS23N/Tpqya1iCAxF0izDAXXdmLwNDvXMFjg5lB5qwZNV689Y8oqt9eD/
+         Xow9F8Vm8+KWL9MplUpzyeGIA4Ayf7jebtWV1y38TOPJKzcYPKgfLMMK+e/Ba2WmFzkq
+         5MfMuHnr06qwf68WgRIn6QTcTcKTwTTmNEVOfieAP0Ew9IMd3q7TKGRnKUobTYzynFKw
+         2BRzWvjd28/uZLiXpQvccjpr1zMpp8sncFC147RUBBDkMobr9IDjv4PUkUkok5PjyZqb
+         Q2jjUV+3b6fUPy6Mvk48ezZ2+VDmP0+PvTxhnkWn0Yiah9WxFOmQlGo2k/iQcocxovvp
+         KgGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Nz9/2a5/50fvCc1KLouJs7sTDCfItMzZ7aatbbpHwtA=;
+        fh=7jmKIHPmJfK0pQcn+0tG+pTj5WF2B8IRsnjGAIPvUnk=;
+        b=PUlhzpSChb8a42Jg5K7M2ZFyOuEKaBjSyx/HzldP5o4kp5wcoLzp+B9RIpl+o7aTML
+         ltLJ5DR5tvXiLzZ/lrO6gPPrNUJvjyGK4s12gsZ/rZQ+Bb1mT58LrP5LGLDt/GsBG/+p
+         7OKjtOQjvDojtoLh1wd6dLD4yY1ti4MdeddV4B4/5LH2p9t0xlxsnRYBJ/v4PqB6CEKD
+         mMWtz36VJGqRQ15EhXlNyZzLPqgmDMyBMdH5K7tN/8yotJBlQS9wDmcwPkNC3MjXkoyy
+         A0MW7P8A+a6LlDmn/s+OUi2ETWpKbqRExVVe1n1JI39jdfnv5xjqjfbI2OKXXGmAkVO2
+         /EuQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774261142; x=1774865942; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nz9/2a5/50fvCc1KLouJs7sTDCfItMzZ7aatbbpHwtA=;
+        b=FGxRsxJvgDMsnOtwwBhE+J+CITGeCo9yVt4rUQO6or9XN00YS8/9ENG8OC/SWj2ui8
+         ede7s3C41IbD9MTZkrs/2/AmoXmZL4LMccqCN38D4SRxVUZd3bk62n9pNzGAlzyh1DW/
+         hxeAtFSBYsf+TMtXwKKBh6VGSnl4vpBMK+lZ2RGWlAwQ/Z5+GAozMZ7f4jr6/hrkzT98
+         HR8FWFDNnl3Fs8B1sug34SuuJKx7MUMVazTN2IE+jLipvs2ljJ2mu6UT+CCwqYw6iBLW
+         wvC7lOwBclhBIl86+8xrA8mTmWWaijZ9YcbpA10xe82kHTl/zcSv8eUAmy1QWDKPnMLx
+         Yc+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774261142; x=1774865942;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Nz9/2a5/50fvCc1KLouJs7sTDCfItMzZ7aatbbpHwtA=;
+        b=SSKC3wBctWjd53yNqtuGWc1qutQjCnSvYCcE0fs/FppPd+N1m0ft2Njxabr4VyaD80
+         ZzurV4fmg/GMZYUsO3i1rcprxe1t2p6uKwft0MVZXJ6rwy4qrgrz/FK60/FejM3Uk35c
+         MuSObsvJ5ldpmwPRtHhiLgqePkdmqphqOu+rOZk1ZCs8LB623WjlkcvuJN8fUKwZBbKu
+         xiHqGtscHsgUdH6BWaqrm+PX46LHVJui6eF+KdG7t/0f2KHTLfm2WTm2+1ko5hCu3OJ+
+         Bdi1zPWu/qGwNwj8vffwgHuN0t+UZjNzK1NcrQpDjKJNy2aa5jvXxYlmzXiN3qU/kqSI
+         X0NA==
+X-Gm-Message-State: AOJu0YwKRTvRDkzyaFUJAd1aUnzanmvqPx3g08Ll1kk8yNIRjpfBbTmy
+	3hrIk7tUIo8XooTIsu387y8H7XU7HtMLXj7LuMNTZ/6nralVdwU086W6xr9i1xMKBXrP/g3PkXW
+	dscTygT95lqk7eAvLbc/FDBX7xlkHbsE=
+X-Gm-Gg: ATEYQzw6Dd9GzuBO13NNZwY6PwIgGc2mhqR2fYWmFpL+cL9dRGbnCCGPc5BeExuVp01
+	FWCat30diq7VkD3VyX81NDBfDccXB2uo7n/R1Qix2SlQAtt/S6+V08SQbYg4TWPRuyESbSh25EE
+	v6wzU+9nSypyqeiJ+N2Nc6ky7DcHJCETAr0uS0t9h8lVjpPDVGCkDHwD1ISkYolRIBv35J868ag
+	Br6GqeUijokzUQT1Z9aG7c0GIc9Skgsb9YdiIMGRxW8Mr24+Xm2UDYwb/auolmz0eHeyw9750va
+	KI5pkNGTZ1sCYh9fiIEAGt0WQinmSfwN5qJRDBs0qxLtOV74pEiGe7fBUtw9U6vIq95YjjeovUl
+	y0FYCKDWMeAZjtAOzvUn9EOk=
+X-Received: by 2002:a05:693c:2b01:b0:2be:6e6:e47a with SMTP id
+ 5a478bee46e88-2c1093faeb5mr2505500eec.0.1774261142465; Mon, 23 Mar 2026
+ 03:19:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DS7PR12MB6240:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6cdfdf6a-ee95-4f3a-eec8-08de88c48993
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	9+BN2l9v/QqN2T+zcmJcSH4ul7cXLQbmGDJXjYobV/94B3PWTf5ndZ/VJcOyrtlChJuPzcaUCOXhYSZJxFwc+IsFZ0t6zKXOtaEmsHg9KQ+BQuCqM1DfB2ByF6Dlp2FTRVF+5tbiLCZ7muRFHgzdUcqbtYRjuxDRj06c62zMybaWL/Gtrew6uURYPK8sYXAu2qtMrfbJaqqE1w5LDmtzoNVkx5xLUgqF9JQ0Jf9eKp9/ZySOAiSxpUtriu0CRouIIhLcl+5fPLsTcwCnR4Z5b+Ol3VE3deeBKypwRTl0H6j9yOa3d0Qzcewc6OBplMp1g6p0kUVt0InMnDkeBO/8UxinTdslxBZZ2pVwsgwHFMh0F9nLU0thqJr5b0Sdj9cWZ/8C7mXlBA5PwZMm9zUKxokLFc7T8VVmpwXJrAKnaU0k0NdLa2UsAgcAPNAM/qq2ZNwjln81/7o+PQuhGmOwcJWs/vI6HjFQHaqn6YAFPg77rJW6TRWih9U6uhDOiSqMOB3GUWCe2B4dOGB0s2JDdCImtZ2Hrvmh+cAXMwXzk+UkyoombHlhSvTdLOjyQn8O/9gqQMMienq/5BXRnY1YHSh2e97T15L1LFO+vbk7myZ3xzJ9d4RQSFXPENYlXY9vGu5Tg7PUUqm6iAKmHeWFNhQMfaz/OU3aRLPtigkwMmboByDwFuvkTOXy8VR8JliGF9eQuXby1jxphw6CpRpxHl8MYD3irIfDx5NxmEPq7Ls=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?OHFqUTI3cHlFU3hWbm56RHFHY2ViUTRNemFEZDJTeDlvQTU0eXZoZ2dmeXgv?=
- =?utf-8?B?MS8zMDYrVTJnKzllY2FuMmFoTndCejlwaDJycWs3L052U2RJYVFaL1NYOHB5?=
- =?utf-8?B?VVZJUFBnOXlRVE9iT1ZuUHk1aTc0S2FCTzVJL0t6aENJN29FSUZEWm5WdWl1?=
- =?utf-8?B?ZG1kaVVHNk5VRlVUMFMvYkNXWUZ1eFJ4eitCOVZGbkE3bXBEWURJQ0FLM2sw?=
- =?utf-8?B?WFVNUVFDbWtTWWk2MkZEQzBmY0Z1SU5PY0RyQWRySVlYVE9GVFc0clJka0R4?=
- =?utf-8?B?cjFKM0VWaVpIdFFidE9rQkRGbmY3SHRjYnp5aThHS2s5Zmg1d1IydExpRnRk?=
- =?utf-8?B?RWdFZkZ4T054Ynl1ZXpoUnlwUGhnblUwajJncHF3WlF2NWhHd3AzRm8vVWN1?=
- =?utf-8?B?VERMVDBPYXZYbCtjOTMyTU9vM1kzM2NsWkROTDRRUWlHNlhsNDc0Z0pGejE0?=
- =?utf-8?B?MW1hTkVsMnhsQzJXalpTVGZFanh1SDNMbkVPOFEzdk1QQm83d3lRdEtYUHZw?=
- =?utf-8?B?V3BLYmRheXFQd3pyeDA1UzRRNUQ5OWJtSXpoRHJjaWdnbDlsTkZTaGhrVmFk?=
- =?utf-8?B?cEI3MUExdFFuQ0RjMWhYMWo4eERlUHE3VUlMRlE0RW91OVZyK3dNRkN0bENS?=
- =?utf-8?B?SEhXZzVRZnNvZXV3MEdHbG03YXpvd0VidFhFSUx4ZnhOVytVZHZNYzVRSFpp?=
- =?utf-8?B?VjZqZ3d3YzNCenVxb25yampvT2VMQlFqWUpLVEhNS2J4bC95TDNmMUZjR1pY?=
- =?utf-8?B?MWUyL0pLN1MyRkt1aEQrekVGeDl4RmpUOEwraTd4Y0lHNlYyaTdaek1vTXE5?=
- =?utf-8?B?VHkxS3A1dGVPdEhXOXhic0pFNDdRQUpPRmxHNGVrdUlWMVZnNXZoeUlSK054?=
- =?utf-8?B?SFEyNE04TU1pMllhKzFsb0lrVkloVVBOZHUvYkVIenhYaStHMXhOYS9MVC9h?=
- =?utf-8?B?RlhzWFV3RHhWOGZpUFNYVVBlOG0xbi93ZCtmajZPYjUzMnhTbEVscTBINWlI?=
- =?utf-8?B?a1A3M0xhbXJqanN3RWUzY29CeklYZkc5NlVLSzdUTERoOTAyUEVqaGJkV1hr?=
- =?utf-8?B?SXIrYnhQUkNIbVpYRnMzUkNrK280WEdXWDgzQzZ4ZC9YOHdVNzlvbmErOGwr?=
- =?utf-8?B?TUsvUlRpUFZUQzRjTnNOdG52N1pHUEh0SUp6bldZY0ZnYXpRY010MnFNUEtD?=
- =?utf-8?B?R1hGWDFHSXp5cFowc2JqR01JVDJRVGZNeG1wUHBNOWNEc0JhRzlYZk5sR2NC?=
- =?utf-8?B?UDA2cHFLcitDTGYxcWRxbWkrY1VCeXFEZkwybGNDN3E3Ky9XRlJvQjJQU1Q2?=
- =?utf-8?B?Wk44OU8ydWswdVcvNFFmVGVFYlpLSVEzMFdWdlBDM1Q3c2NPOHRWcG5Pb2Nv?=
- =?utf-8?B?UFBhWkFCY0hQakZidDRRMzBtbFIzenJyRzV4bFFpMUkrcmYzeCtDeEpaeG5i?=
- =?utf-8?B?N1dTOFVPckhtRkt1bGZwZkI5QzUycDRkaUs5Mm5ueVh1TmVmMzYvRnBCM2NX?=
- =?utf-8?B?SERuOHhGbm5PQUN5TnZaVUVqaGdxeFYyb3dPb3hYd3MySTJxZU43cWFuSGVh?=
- =?utf-8?B?Z1Y1Tzg4L2hqRC9LT3pFcXAwT3FQcm5aR0Z4eGhaRzV6L1R2MUVDb2hQQUZa?=
- =?utf-8?B?aHZRU0FrNzBPVm02S1ZObFVtOUVZVUhvc1NUbi81YkJCVTlqVExpVUFzWTho?=
- =?utf-8?B?ZmNjSzNpMWs4M1BvSTl0MzN5ZmlxVWl0d3VlR3BsU1BkSUFIYzJQQ3J5b3dq?=
- =?utf-8?B?eDNsSEpWdlNIK25kM3NLa3hmV0hPRW1zaTAva3h6S2dzZFhjdGxoQTZjMlJQ?=
- =?utf-8?B?c29ZVnB6R0VMeXN0UW9wRWt1ekt0MVN0U2Y1QzRFOVFZZGFSWEc1UVZ5SmY2?=
- =?utf-8?B?clhiZnBoVWZGK0o1VkNKOVVEalZHTHcrQmxPQ0ZQV1I0UXBTNG12cFF3RUFw?=
- =?utf-8?B?TXNtUFlVRHF1TGIyam9wZXNHYmxYbVNubks2VGtHN3VveEo2OGVrZDZETlh3?=
- =?utf-8?B?dE95enJxWmN4enJIR0JOM3BkSmtOaGlCL0pYSTdraWVqaVlzYzVKWUhEeVBh?=
- =?utf-8?B?U2FObTg1NG01Z1JaS3YybnZ0V285YzRmdUlxdEtienVUVW8vMWlGMnZlN29j?=
- =?utf-8?B?c0hqTFpnYWxKOTZ1RkE1aFRtbnZ5Z1hpOHY3Qm9LakZyazJ1MzBQWDVsUFhC?=
- =?utf-8?B?TzdZaEgveVVXS2UxV2FtTjZrTWo0YVBaQjNNSU5rZDFJL0JYeDNMMVcrN2JR?=
- =?utf-8?B?Skc0b21oaGR1c01oRUFyVWJwNDhGdm83YjlXaUFPcXlYTWVXVit0Zm1FajRJ?=
- =?utf-8?Q?fHPz686J5lKord1L8U?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6cdfdf6a-ee95-4f3a-eec8-08de88c48993
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2026 10:11:23.8015
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IyER33H1V3ud+sW29zge6aXB2mm1ECUCk6WxgAe+k19BtqwIoL+od+THPesFeRgM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6240
-X-Spamd-Result: default: False [1.34 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
-	ARC_REJECT(1.00)[cv is fail on i=2];
-	DMARC_POLICY_ALLOW(-0.50)[amd.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
-	R_DKIM_ALLOW(-0.20)[amd.com:s=selector1];
+References: <20260221161726.4075998-1-sashal@kernel.org> <CAH5fLggmuHNXpfHo2mPS0TYu8mwr8G6EKH0YPuCLX77u_dxF5Q@mail.gmail.com>
+In-Reply-To: <CAH5fLggmuHNXpfHo2mPS0TYu8mwr8G6EKH0YPuCLX77u_dxF5Q@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 23 Mar 2026 11:18:50 +0100
+X-Gm-Features: AQROBzC2XDPjLTgsTPYyi1ZAGqFwZbgHl5L7dNdV_gSgKrmqGXLNFxmXQGX8HcY
+Message-ID: <CANiq72k6=OSk-vLbmKjqcAUza700v-OtToEXiVbqWPkNpPbVVw@mail.gmail.com>
+Subject: Re: Patch "rust: task: restrict Task::group_leader() to current" has
+ been added to the 6.18-stable tree
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
+	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=2];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[linux.ibm.com,lists.freedesktop.org,amd.com,gmail.com];
-	TAGGED_FROM(0.00)[bounces-227944-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[amd.com,gmail.com,linux.ibm.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227945-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[vger.kernel.org,kernel.org,garyguo.net,protonmail.com,umich.edu];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[christian.koenig@amd.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[amd.com:+];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[miguelojedasandonis@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:dkim,amd.com:mid]
-X-Rspamd-Queue-Id: A9B2D2EFC8D
+	RCPT_COUNT_SEVEN(0.00)[11];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,mail.gmail.com:mid]
+X-Rspamd-Queue-Id: 65F7F2F0035
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-On 3/23/26 05:28, Donet Tom wrote:
-> Currently, AMDGPU_VA_RESERVED_TRAP_SIZE is hardcoded to 8KB, while
-> KFD_CWSR_TBA_TMA_SIZE is defined as 2 * PAGE_SIZE. On systems with
-> 4K pages, both values match (8KB), so allocation and reserved space
-> are consistent.
-> 
-> However, on 64K page-size systems, KFD_CWSR_TBA_TMA_SIZE becomes 128KB,
-> while the reserved trap area remains 8KB. This mismatch causes the
-> kernel to crash when running rocminfo or rccl unit tests.
-> 
-> Kernel attempted to read user page (2) - exploit attempt? (uid: 1001)
-> BUG: Kernel NULL pointer dereference on read at 0x00000002
-> Faulting instruction address: 0xc0000000002c8a64
-> Oops: Kernel access of bad area, sig: 11 [#1]
-> LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
-> CPU: 34 UID: 1001 PID: 9379 Comm: rocminfo Tainted: G E
-> 6.19.0-rc4-amdgpu-00320-gf23176405700 #56 VOLUNTARY
-> Tainted: [E]=UNSIGNED_MODULE
-> Hardware name: IBM,9105-42A POWER10 (architected) 0x800200 0xf000006
-> of:IBM,FW1060.30 (ML1060_896) hv:phyp pSeries
-> NIP:  c0000000002c8a64 LR: c00000000125dbc8 CTR: c00000000125e730
-> REGS: c0000001e0957580 TRAP: 0300 Tainted: G E
-> MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE> CR: 24008268
-> XER: 00000036
-> CFAR: c00000000125dbc4 DAR: 0000000000000002 DSISR: 40000000
-> IRQMASK: 1
-> GPR00: c00000000125d908 c0000001e0957820 c0000000016e8100
-> c00000013d814540
-> GPR04: 0000000000000002 c00000013d814550 0000000000000045
-> 0000000000000000
-> GPR08: c00000013444d000 c00000013d814538 c00000013d814538
-> 0000000084002268
-> GPR12: c00000000125e730 c000007e2ffd5f00 ffffffffffffffff
-> 0000000000020000
-> GPR16: 0000000000000000 0000000000000002 c00000015f653000
-> 0000000000000000
-> GPR20: c000000138662400 c00000013d814540 0000000000000000
-> c00000013d814500
-> GPR24: 0000000000000000 0000000000000002 c0000001e0957888
-> c0000001e0957878
-> GPR28: c00000013d814548 0000000000000000 c00000013d814540
-> c0000001e0957888
-> NIP [c0000000002c8a64] __mutex_add_waiter+0x24/0xc0
-> LR [c00000000125dbc8] __mutex_lock.constprop.0+0x318/0xd00
-> Call Trace:
-> 0xc0000001e0957890 (unreliable)
-> __mutex_lock.constprop.0+0x58/0xd00
-> amdgpu_amdkfd_gpuvm_alloc_memory_of_gpu+0x6fc/0xb60 [amdgpu]
-> kfd_process_alloc_gpuvm+0x54/0x1f0 [amdgpu]
-> kfd_process_device_init_cwsr_dgpu+0xa4/0x1a0 [amdgpu]
-> kfd_process_device_init_vm+0xd8/0x2e0 [amdgpu]
-> kfd_ioctl_acquire_vm+0xd0/0x130 [amdgpu]
-> kfd_ioctl+0x514/0x670 [amdgpu]
-> sys_ioctl+0x134/0x180
-> system_call_exception+0x114/0x300
-> system_call_vectored_common+0x15c/0x2ec
-> 
-> This patch changes AMDGPU_VA_RESERVED_TRAP_SIZE to 2 * PAGE_SIZE,
-> ensuring that the reserved trap area matches the allocation size
-> across all page sizes.
-> 
-> cc: stable@vger.kernel.org
-> Fixes: 34a1de0f7935 ("drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole")
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-> index 139642eacdd0..a5eae49f9471 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.h
-> @@ -173,7 +173,7 @@ struct amdgpu_bo_vm;
->  #define AMDGPU_VA_RESERVED_SEQ64_SIZE		(2ULL << 20)
->  #define AMDGPU_VA_RESERVED_SEQ64_START(adev)	(AMDGPU_VA_RESERVED_CSA_START(adev) \
->  						 - AMDGPU_VA_RESERVED_SEQ64_SIZE)
-> -#define AMDGPU_VA_RESERVED_TRAP_SIZE		(2ULL << 12)
-> +#define AMDGPU_VA_RESERVED_TRAP_SIZE		(2ULL << PAGE_SHIFT)
+On Mon, Mar 23, 2026 at 11:11=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> I noticed that this was backported to 6.18, but not to 6.12. Is that
+> because the first user of this function was merged in 6.18, or is
+> there some other reason?
 
-Well using PAGE_SHIFT in amdgpu_vm.h looks quite broken to me.
+If it was meant to be backported, then the commit should have Cc:
+stable@vger.kernel.org.
 
-That makes the GPU VA reservation depend on the CPU page size and that is clearly not something we want to have.
+Perhaps it was picked for 6.18 (and 6.19) because it applied cleanly.
 
-Where is KFD_CWSR_TBA_TMA_SIZE defined?
-
-Regards,
-Christian.
-
->  #define AMDGPU_VA_RESERVED_TRAP_START(adev)	(AMDGPU_VA_RESERVED_SEQ64_START(adev) \
->  						 - AMDGPU_VA_RESERVED_TRAP_SIZE)
->  #define AMDGPU_VA_RESERVED_BOTTOM		(1ULL << 16)
-
+Cheers,
+Miguel
 
