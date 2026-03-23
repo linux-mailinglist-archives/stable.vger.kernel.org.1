@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GNhMCfJMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228623-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:46 +0100
+	id EBFVKtdewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:07 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2731F2F45CE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7D12F6AEA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 408C53012807
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:45 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF50B3067E84
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E011137E2FC;
-	Mon, 23 Mar 2026 14:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CA43B7772;
+	Mon, 23 Mar 2026 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4srZLEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoX5iYru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DFC199FAB;
-	Mon, 23 Mar 2026 14:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55A9263F4A;
+	Mon, 23 Mar 2026 15:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275634; cv=none; b=TN8XphpwpiseQ6GwfTn1Fs+ctdYtVoxHNgACLqdL5JiZzTojUcXgYKsoNmJuRF7JrDYCfOPcqKVNTBsxPXjorbJJHZaxLLjx+yIRw+U9RA3LvoaHHgnAw8FQpyU7JUPFh3FMYYf3YDimHMKWX64KjcuwK6djKAsJuuh/tIEkASE=
+	t=1774278232; cv=none; b=oP98L3s5bsEhddniO30SwuagmEr+6ptHWMsizqW2UpdMLJKI8F/oIsfldLWDBDhW9gZTQgmOmb8rLgmq4kH5ITt1lMj9jsAgSjLu4MhhjydWg5UkjQiW1dP/DWDohtv5b0dnzBXMJp579PHz94EItKgVAKwcCNqHpmvTZRXfSm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275634; c=relaxed/simple;
-	bh=QY68GLT8PpWj2nSkQlo57g/LhjfMDmGwDExz6TBc0Jw=;
+	s=arc-20240116; t=1774278232; c=relaxed/simple;
+	bh=Kj48/zOAdd9exSlbhUc3L35GGnEiSgxJYOncGZEuh9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aVN8luE0AINHD4vXF5khYuTzRB55ikiVrOTeuGKZ4V/NZu5eu+2DYujrOsIT6rS6Ql/qiXRM9Mf/2848pn4CQSjXQKcKs/IMVzM279jTa20fcTmzLZ/FO/KteV6zK1ecz9VdiwlTkzXKTN9k+hb25sD/RpPIw7uMyAZLxc/j6gE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4srZLEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AA9C4CEF7;
-	Mon, 23 Mar 2026 14:20:33 +0000 (UTC)
+	 MIME-Version; b=b5opOdwT8iaPqmWlLgBMUar0radW5faT4h4T34nVDkvZNGlG7N8bIcKyKB8wopiMqE5zEjZ1ecRLxv98vHkCE39vWQnEpYowikE1W/y+8lnAglumdlq6Q3KN3wEyxZ8rb+gy5i1PBAqA/9wAitguzuT0TuFwQnMVW6N34EcIoCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoX5iYru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31294C2BCB3;
+	Mon, 23 Mar 2026 15:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275634;
-	bh=QY68GLT8PpWj2nSkQlo57g/LhjfMDmGwDExz6TBc0Jw=;
+	s=korg; t=1774278231;
+	bh=Kj48/zOAdd9exSlbhUc3L35GGnEiSgxJYOncGZEuh9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l4srZLEet0e8aZMOPAjJNTnUL43AD3VwtwJkOPD6Ffy0EOczezn4zXuGKhp2tGojE
-	 07qTlAM/lpCgg04SblPqk6+QfZxRFeOVoM0dx4JxEU3lPDWuK4BWKm8hgTS7+RZNW1
-	 SdR4Gro5AN56pOrFZL6J0W3yiDpIl/oyCiQ9iJxU=
+	b=AoX5iYru99t+hL8VzXew3WjH+vZtwz1d2W8Cw66+W89N/DNWT27bRtN7IRnBVvzcN
+	 hx/tdfWnv9mSRyFXM1NZvFmUxh79RppHIaW/MDq7vSFdGfvU54CG1sxylCbF3IThQQ
+	 ilKlE3YLHiEelAsyHhl0XZzR11iQOYmTNIG/9hrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 167/460] pmdomain: bcm: bcm2835-power: Fix broken reset status read
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 243/567] netfilter: nfnetlink_cthelper: fix OOB read in nfnl_cthelper_dump_table()
 Date: Mon, 23 Mar 2026 14:42:43 +0100
-Message-ID: <20260323134530.653395836@linuxfoundation.org>
+Message-ID: <20260323134539.845853687@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,90 +63,107 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,broadcom.com,gmx.net,linaro.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228623-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229154-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,broadcom.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,igalia.com:email]
-X-Rspamd-Queue-Id: 2731F2F45CE
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: AE7D12F6AEA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-commit 550bae2c0931dbb664a61b08c21cf156f0a5362a upstream.
+[ Upstream commit 6dcee8496d53165b2d8a5909b3050b62ae71fe89 ]
 
-bcm2835_reset_status() has a misplaced parenthesis on every PM_READ()
-call. Since PM_READ(reg) expands to readl(power->base + (reg)), the
-expression:
+nfnl_cthelper_dump_table() has a 'goto restart' that jumps to a label
+inside the for loop body.  When the "last" helper saved in cb->args[1]
+is deleted between dump rounds, every entry fails the (cur != last)
+check, so cb->args[1] is never cleared.  The for loop finishes with
+cb->args[0] == nf_ct_helper_hsize, and the 'goto restart' jumps back
+into the loop body bypassing the bounds check, causing an 8-byte
+out-of-bounds read on nf_ct_helper_hash[nf_ct_helper_hsize].
 
-    PM_READ(PM_GRAFX & PM_V3DRSTN)
+The 'goto restart' block was meant to re-traverse the current bucket
+when "last" is no longer found, but it was placed after the for loop
+instead of inside it.  Move the block into the for loop body so that
+the restart only occurs while cb->args[0] is still within bounds.
 
-computes the bitwise AND of the register offset PM_GRAFX with the
-bitmask PM_V3DRSTN before using the result as a register offset, reading
-from the wrong MMIO address instead of the intended PM_GRAFX register.
-The same issue affects the PM_IMAGE cases.
+ BUG: KASAN: slab-out-of-bounds in nfnl_cthelper_dump_table+0x9f/0x1b0
+ Read of size 8 at addr ffff888104ca3000 by task poc_cthelper/131
+ Call Trace:
+  nfnl_cthelper_dump_table+0x9f/0x1b0
+  netlink_dump+0x333/0x880
+  netlink_recvmsg+0x3e2/0x4b0
+  sock_recvmsg+0xde/0xf0
+  __sys_recvfrom+0x150/0x200
+  __x64_sys_recvfrom+0x76/0x90
+  do_syscall_64+0xc3/0x6e0
 
-Fix by moving the closing parenthesis so PM_READ() receives only the
-register offset, and the bitmask is applied to the value returned by
-the read.
+ Allocated by task 1:
+  __kvmalloc_node_noprof+0x21b/0x700
+  nf_ct_alloc_hashtable+0x65/0xd0
+  nf_conntrack_helper_init+0x21/0x60
+  nf_conntrack_init_start+0x18d/0x300
+  nf_conntrack_standalone_init+0x12/0xc0
 
-Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power domains under a new binding.")
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/bcm/bcm2835-power.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nfnetlink_cthelper.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/pmdomain/bcm/bcm2835-power.c
-+++ b/drivers/pmdomain/bcm/bcm2835-power.c
-@@ -580,11 +580,11 @@ static int bcm2835_reset_status(struct r
- 
- 	switch (id) {
- 	case BCM2835_RESET_V3D:
--		return !PM_READ(PM_GRAFX & PM_V3DRSTN);
-+		return !(PM_READ(PM_GRAFX) & PM_V3DRSTN);
- 	case BCM2835_RESET_H264:
--		return !PM_READ(PM_IMAGE & PM_H264RSTN);
-+		return !(PM_READ(PM_IMAGE) & PM_H264RSTN);
- 	case BCM2835_RESET_ISP:
--		return !PM_READ(PM_IMAGE & PM_ISPRSTN);
-+		return !(PM_READ(PM_IMAGE) & PM_ISPRSTN);
- 	default:
- 		return -EINVAL;
+diff --git a/net/netfilter/nfnetlink_cthelper.c b/net/netfilter/nfnetlink_cthelper.c
+index 97248963a7d3b..71a248cca746a 100644
+--- a/net/netfilter/nfnetlink_cthelper.c
++++ b/net/netfilter/nfnetlink_cthelper.c
+@@ -603,10 +603,10 @@ nfnl_cthelper_dump_table(struct sk_buff *skb, struct netlink_callback *cb)
+ 				goto out;
+ 			}
+ 		}
+-	}
+-	if (cb->args[1]) {
+-		cb->args[1] = 0;
+-		goto restart;
++		if (cb->args[1]) {
++			cb->args[1] = 0;
++			goto restart;
++		}
  	}
+ out:
+ 	rcu_read_unlock();
+-- 
+2.51.0
+
 
 
 
