@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228611-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QKnWF1JbwWlKSgQAu9opvQ
-	(envelope-from <stable+bounces-229161-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:06 +0100
+	id SBaVAuRQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228611-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B497E2F63EC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B0432F4F75
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:40:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 40E65302BB99
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C492D3122BBF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7B6285072;
-	Mon, 23 Mar 2026 15:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0CD1F91F6;
+	Mon, 23 Mar 2026 14:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjDO04eh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayg/WCy7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC0F285056;
-	Mon, 23 Mar 2026 15:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508D61A680D;
+	Mon, 23 Mar 2026 14:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278253; cv=none; b=jHZkp5sZl4jkxWSMBfIzONt9NZsJzYUhe3pbm2h3H6Fv5FxZmsx187nUbWa7HuJp+KFwCAZ0jqwRZXAggi27MWtOJ9dBAGOuHcurEdByKWT0bhukuTvC1AoiYHanUJ8TQDTyZeWXQY9vqL43sEyTetqUxW42nlEskySt/Q0rUuk=
+	t=1774275600; cv=none; b=NwAwfKqxpOen1YDmQEerH/TtAvYJfG6CJv0Kg1abx+HGZb5HwI2piwUl5H3XjF2Ug9ips+ZmWNTpKtD0ItiJcozY2fdkGnNcav7a+BgxmKg/19/5TNS7uW4B6X6g+dh5XsqW7tVuDEkzfnAf4ttUxjI/ihoC5R3xTbW+fdziCRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278253; c=relaxed/simple;
-	bh=kwZ5sQW5MNiZrqfW4WOlSOxeIal45BGl7hoQ0bZAt6g=;
+	s=arc-20240116; t=1774275600; c=relaxed/simple;
+	bh=Zu6OLowadA8zGf+5R74d3IJfvP50OYfhvxxZU55SDls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VuF57/op+OdNDad/ZN9193EaC1ZKbpixM+QXacshAgPr7l2XvnTJfnLSwMiaybU31XMluGHpwiKdFk0J3H7NZBRVeZEkGyZDmXKWYoNU/nBq3giwBk/x8ygG+Hj0r45eD7TYnaOHiojldQJg7v3axWTC97zMnvzKF9gggpCSqeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjDO04eh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 314CFC4CEF7;
-	Mon, 23 Mar 2026 15:04:12 +0000 (UTC)
+	 MIME-Version; b=k/y2/5irh9GygnWzk4Jqoqu8Hmjhk/3XODcamiXRdmSiysMcuTJH8qbgv1rJ0u7SYZemN245ufTYefcCPH+MG4B/Pfpap3FLmBqbDnpjDUcfj/wp0VErtexAwHRAuV3UXzWyhqIVzSfKf9p13b/92o2ay+7xfzkzmHFFdr6Rbbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayg/WCy7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 921C2C2BC9E;
+	Mon, 23 Mar 2026 14:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278253;
-	bh=kwZ5sQW5MNiZrqfW4WOlSOxeIal45BGl7hoQ0bZAt6g=;
+	s=korg; t=1774275600;
+	bh=Zu6OLowadA8zGf+5R74d3IJfvP50OYfhvxxZU55SDls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjDO04ehp6xITzDid6VGzTDKc0OEDj6qcCJh+BeJIN/TJhcTVEjz2eDmktK8o9RLz
-	 GzeFUZz3W58nytJEJsCcnpO+QWRpaayz5KzEo08VhLBL2bdzBqDtq4ThOKqSQIYotP
-	 GNUW37k9BIzv5RzKgrEgqYX7Rq0m8x1jME+y3Txw=
+	b=ayg/WCy7tGCLVtPWawX5jtDFsBd34tCoIPmPWCvMwgayhLn/DK48ik27uLVMVC36J
+	 Tojg5MjziQu4QRVJcO+X0slZ/bIrQS6D91DpK+/jT6a7OzIfwF5NFJX4slIyw/O2S1
+	 Ce19yRR70n6s4cYMGKvew/I2MZLZI3AoEt3rrTAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 232/567] net: sfp: add quirk for Potron SFP+ XGSPON ONU Stick
-Date: Mon, 23 Mar 2026 14:42:32 +0100
-Message-ID: <20260323134539.573791778@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Huiwen He <hehuiwen@kylinos.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 157/460] tracing: Fix syscall events activation by ensuring refcount hits zero
+Date: Mon, 23 Mar 2026 14:42:33 +0100
+Message-ID: <20260323134530.421214209@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +67,152 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229161-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,hotmail.com,kernel.org];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228611-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B497E2F63EC
+X-Rspamd-Queue-Id: 6B0432F4F75
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Huiwen He <hehuiwen@kylinos.cn>
 
-[ Upstream commit dfec1c14aecee6813f9bafc7b560cc3a31d24079 ]
+commit 0a663b764dbdf135a126284f454c9f01f95a87d4 upstream.
 
-Add quirk for Potron SFP+ XGSPON ONU Stick (YV SFP+ONT-XGSPON).
+When multiple syscall events are specified in the kernel command line
+(e.g., trace_event=syscalls:sys_enter_openat,syscalls:sys_enter_close),
+they are often not captured after boot, even though they appear enabled
+in the tracing/set_event file.
 
-This device uses pins 2 and 7 for UART communication, so disable
-TX_FAULT and LOS. Additionally as it is an embedded system in an
-SFP+ form factor provide it enough time to fully boot before we
-attempt to use it.
+The issue stems from how syscall events are initialized. Syscall
+tracepoints require the global reference count (sys_tracepoint_refcount)
+to transition from 0 to 1 to trigger the registration of the syscall
+work (TIF_SYSCALL_TRACEPOINT) for tasks, including the init process (pid 1).
 
-https://www.potrontec.com/index/index/list/cat_id/2.html#11-83
-https://pon.wiki/xgs-pon/ont/potron-technology/x-onu-sfpp/
+The current implementation of early_enable_events() with disable_first=true
+used an interleaved sequence of "Disable A -> Enable A -> Disable B -> Enable B".
+If multiple syscalls are enabled, the refcount never drops to zero,
+preventing the 0->1 transition that triggers actual registration.
 
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Link: https://patch.msgid.link/20250617180324.229487-1-macroalpha82@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 87d126852158 ("net: sfp: improve Huawei MA5671a fixup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by splitting early_enable_events() into two distinct phases:
+1. Disable all events specified in the buffer.
+2. Enable all events specified in the buffer.
+
+This ensures the refcount hits zero before re-enabling, allowing syscall
+events to be properly activated during early boot.
+
+The code is also refactored to use a helper function to avoid logic
+duplication between the disable and enable phases.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260224023544.1250787-1-hehuiwen@kylinos.cn
+Fixes: ce1039bd3a89 ("tracing: Fix enabling of syscall events on the command line")
+Signed-off-by: Huiwen He <hehuiwen@kylinos.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/sfp.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ kernel/trace/trace_events.c |   52 +++++++++++++++++++++++++++++++-------------
+ 1 file changed, 37 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index c47d7232d1c6e..6ef50d1ce2eda 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -359,6 +359,11 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
- 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -4173,26 +4173,22 @@ static __init int event_trace_memsetup(v
+ 	return 0;
  }
  
-+static void sfp_fixup_ignore_hw(struct sfp *sfp, unsigned int mask)
-+{
-+	sfp->state_hw_mask &= ~mask;
-+}
-+
- static void sfp_fixup_nokia(struct sfp *sfp)
+-__init void
+-early_enable_events(struct trace_array *tr, char *buf, bool disable_first)
++/*
++ * Helper function to enable or disable a comma-separated list of events
++ * from the bootup buffer.
++ */
++static __init void __early_set_events(struct trace_array *tr, char *buf, bool enable)
  {
- 	sfp_fixup_long_startup(sfp);
-@@ -392,7 +397,19 @@ static void sfp_fixup_halny_gsfp(struct sfp *sfp)
- 	 * these are possibly used for other purposes on this
- 	 * module, e.g. a serial port.
- 	 */
--	sfp->state_hw_mask &= ~(SFP_F_TX_FAULT | SFP_F_LOS);
-+	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
-+}
-+
-+static void sfp_fixup_potron(struct sfp *sfp)
-+{
-+	/*
-+	 * The TX_FAULT and LOS pins on this device are used for serial
-+	 * communication, so ignore them. Additionally, provide extra
-+	 * time for this device to fully start up.
-+	 */
-+
-+	sfp_fixup_long_startup(sfp);
-+	sfp_fixup_ignore_hw(sfp, SFP_F_TX_FAULT | SFP_F_LOS);
+ 	char *token;
+-	int ret;
+-
+-	while (true) {
+-		token = strsep(&buf, ",");
+-
+-		if (!token)
+-			break;
+ 
++	while ((token = strsep(&buf, ","))) {
+ 		if (*token) {
+-			/* Restarting syscalls requires that we stop them first */
+-			if (disable_first)
++			if (enable) {
++				if (ftrace_set_clr_event(tr, token, 1))
++					pr_warn("Failed to enable trace event: %s\n", token);
++			} else {
+ 				ftrace_set_clr_event(tr, token, 0);
+-
+-			ret = ftrace_set_clr_event(tr, token, 1);
+-			if (ret)
+-				pr_warn("Failed to enable trace event: %s\n", token);
++			}
+ 		}
+ 
+ 		/* Put back the comma to allow this to be called again */
+@@ -4201,6 +4197,32 @@ early_enable_events(struct trace_array *
+ 	}
  }
  
- static void sfp_fixup_rollball(struct sfp *sfp)
-@@ -500,6 +517,8 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	SFP_QUIRK_F("Walsun", "HXSX-ATRC-1", sfp_fixup_fs_10gt),
- 	SFP_QUIRK_F("Walsun", "HXSX-ATRI-1", sfp_fixup_fs_10gt),
- 
-+	SFP_QUIRK_F("YV", "SFP+ONU-XGSPON", sfp_fixup_potron),
++/**
++ * early_enable_events - enable events from the bootup buffer
++ * @tr: The trace array to enable the events in
++ * @buf: The buffer containing the comma separated list of events
++ * @disable_first: If true, disable all events in @buf before enabling them
++ *
++ * This function enables events from the bootup buffer. If @disable_first
++ * is true, it will first disable all events in the buffer before enabling
++ * them.
++ *
++ * For syscall events, which rely on a global refcount to register the
++ * SYSCALL_WORK_SYSCALL_TRACEPOINT flag (especially for pid 1), we must
++ * ensure the refcount hits zero before re-enabling them. A simple
++ * "disable then enable" per-event is not enough if multiple syscalls are
++ * used, as the refcount will stay above zero. Thus, we need a two-phase
++ * approach: disable all, then enable all.
++ */
++__init void
++early_enable_events(struct trace_array *tr, char *buf, bool disable_first)
++{
++	if (disable_first)
++		__early_set_events(tr, buf, false);
 +
- 	// OEM SFP-GE-T is a 1000Base-T module with broken TX_FAULT indicator
- 	SFP_QUIRK_F("OEM", "SFP-GE-T", sfp_fixup_ignore_tx_fault),
- 
--- 
-2.51.0
-
++	__early_set_events(tr, buf, true);
++}
++
+ static __init int event_trace_enable(void)
+ {
+ 	struct trace_array *tr = top_trace_array();
 
 
 
