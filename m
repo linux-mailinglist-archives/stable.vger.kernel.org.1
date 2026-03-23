@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229439-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OFmZLwh9wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229935-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:56 +0100
+	id UGa4GFlgwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229439-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F29C2FA729
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84A02F6E11
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D72AB3238A3B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3D3C9306B7B2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E430B3BD649;
-	Mon, 23 Mar 2026 16:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6696B3CF051;
+	Mon, 23 Mar 2026 15:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xklfccjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSojMKu0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BD13BED34;
-	Mon, 23 Mar 2026 16:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144AD3B38A0;
+	Mon, 23 Mar 2026 15:20:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283264; cv=none; b=WPKH6PR5CfKf/iCIKEzZoZ2B622qge4Sj7n8IS8+IqGVo5LyuLbYuSNQ/KUv0r0xFD+G8IeyAS1VaPIDjj9KM+rXbk73CVjJaZAqFgPewPPH0Qsapp1WN3ijvNYTdkaXsLAzP1J+eYUXb60cUtqWte33kOgz7FLYBmBQMRVBqjk=
+	t=1774279238; cv=none; b=u4HIpKXKLC1lYUYs6GM0iMsFcl29uptahSfHdssRkMXcOyuqUuF7MKygQUwOCNdxHJJHMTsB9K8uit398VCalxZWlR4ssG066n68gWaGwC7zhKv+3eBwi2bNoorK7OAIjZ8lzYayiiecC3DU9ave8EhleugYi5yrjdJdlVFuFVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283264; c=relaxed/simple;
-	bh=k4CpwRwoOIEGQiD8PwhvUuw3iTMM4B2A6abeZbCtY8k=;
+	s=arc-20240116; t=1774279238; c=relaxed/simple;
+	bh=iapayuxHvqEvq5uX89ztw4TIBUF8Lzn9AFKWGaOYrhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DbgmrETaNc1NQAUR+uFVegzDm4ZXQmlvuUWuHQcGrUIAxEhptqrTRQ3yqPktNvssbm93DtiIAQQbGc7G8f2CQXqEcE2RMO3o6fjiub/93mz1ZNXKGWW0OKUHpgFnHLGH1zph4RE+3MDT1NvcSYKE8Ll2aAwRpEZ1YYT8qKkh0Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xklfccjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBC0C4CEF7;
-	Mon, 23 Mar 2026 16:27:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aZo6DYwTsAAqknLFo3p0NuBciJg4qXFu0+YSP+W1FQm47BGAO8q4GDnWZzDZp3NGjMVnNX4squtkN2KH3Yd/SSQ45K1f23Wh9tDEEasimIGXxkX6BqJpYMaO8DgpPDV03AcRyrzuxoK0Ijncv3CMiAkhhVHOgcl3XhQ7EeiIcVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSojMKu0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41A45C2BCB1;
+	Mon, 23 Mar 2026 15:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283263;
-	bh=k4CpwRwoOIEGQiD8PwhvUuw3iTMM4B2A6abeZbCtY8k=;
+	s=korg; t=1774279237;
+	bh=iapayuxHvqEvq5uX89ztw4TIBUF8Lzn9AFKWGaOYrhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XklfccjjFNtwmUlvO4iWpYDkKF8GlcmZzhiEEB7wQnkwtcLMsuMEplDxYyDRHS6ZY
-	 eHPRe0U4oKeSJRECyszQuEyzXYr/GirIj7htyU+9WlE/Ov+egxDdJgk7etwHIDNfxS
-	 pecorSq+C04EvrbOmYSOFq6BBKGQtBk4E6nasml0=
+	b=hSojMKu0dBRHVQFmrd/nqZkcPgdX0jNJM1S2wSHcmaxJE2s3/g/UpUu8Wqg9/3Oxk
+	 n5S6CqBuD21d/63vsgj6+JsYFM7kMjHrMEDY0KflPpao7CRmuUoZlfV2BxMpOo4sjM
+	 dGcdMaFzb2Z2DVAHTYvMXgLY1hL4VUxVCeDncwyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Rosen Penev <rosenp@gmail.com>
-Subject: [PATCH 6.1 459/481] drm/amdgpu: use proper DC check in amdgpu_display_supported_domains()
+	Klaudia Kloc <klaudia@vidocsecurity.com>,
+	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
+	Jenny Guanni Qu <qguanni@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 521/567] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
 Date: Mon, 23 Mar 2026 14:47:21 +0100
-Message-ID: <20260323134536.400614772@linuxfoundation.org>
+Message-ID: <20260323134546.897182423@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,67 +70,77 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229935-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	TAGGED_FROM(0.00)[bounces-229439-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 3F29C2FA729
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E84A02F6E11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jenny Guanni Qu <qguanni@gmail.com>
 
-[ Upstream commit 96ce96f8773da4814622fd97e5226915a2c30706 ]
+[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
 
-amdgpu_device_asic_has_dc_support() just checks the asic itself.
-amdgpu_device_has_dc_support() is a runtime check which not
-only checks the asic, but also other things in the driver
-like whether virtual display is enabled.  We want the latter
-here.
+In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
+the packet, then decrements it by 1 to skip the protocol discriminator
+byte before passing it to DecodeH323_UserInformation(). If the encoded
+length is 0, the decrement wraps to -1, which is then passed as a
+large value to the decoder, leading to an out-of-bounds read.
 
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a check to ensure len is positive after the decrement.
+
+Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
+Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
+Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
+Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_display.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-@@ -534,7 +534,7 @@ uint32_t amdgpu_display_supported_domain
- 	 */
- 	if ((bo_flags & AMDGPU_GEM_CREATE_CPU_GTT_USWC) &&
- 	    amdgpu_bo_support_uswc(bo_flags) &&
--	    amdgpu_device_asic_has_dc_support(adev->asic_type) &&
-+	    amdgpu_device_has_dc_support(adev) &&
- 	    adev->mode_info.gpu_vm_support)
- 		domain |= AMDGPU_GEM_DOMAIN_GTT;
- #endif
+diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
+index c972e9488e16f..7b1497ed97d26 100644
+--- a/net/netfilter/nf_conntrack_h323_asn1.c
++++ b/net/netfilter/nf_conntrack_h323_asn1.c
+@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
+ 				break;
+ 			p++;
+ 			len--;
++			if (len <= 0)
++				break;
+ 			return DecodeH323_UserInformation(buf, p, len,
+ 							  &q931->UUIE);
+ 		}
+-- 
+2.51.0
+
 
 
 
