@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228139-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iC6SG5lewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:05 +0100
+	id EF6kM9FPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228139-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C568E2F6A3D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 650D22F4CFA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A94B9320FF67
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2D17830524E6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C0B282F2A;
-	Mon, 23 Mar 2026 15:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A99B1F91F6;
+	Mon, 23 Mar 2026 13:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLoqF0Qp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inL62ASU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E425227FD6D;
-	Mon, 23 Mar 2026 15:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E756286A4;
+	Mon, 23 Mar 2026 13:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278769; cv=none; b=kuJ6UjmLAiE7Wvae1EH7JJCUsfkB5SQGGHBcLTUxcPSMZUEa6KKT4X7NZrHQDcy18Ozl+JGeBWaxVpYymzSlurm6wd7JZq/1+BkjgYI/jgIFrA0FzCFyBaFi59a++/jcIYxTdfABXQxgF6dJ0lRE+SAMUyh9PzpJk3gipjhvHFk=
+	t=1774274243; cv=none; b=RlYJZxDJsFZQMmieGmhs66IhZroWNF668C1xRVDSnFhgCZyH7lPtkbYRZ7zuPBuTy1Aoecn8cgEwMGdrM5pgJ5ppyd5uzy2Md1ljejIc9+0ESIIwJGJZrjrdjxYWcf60WCReEzi9aLHy57QADyS0IpYT/zfiVJ1bWIw+gqKzd1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278769; c=relaxed/simple;
-	bh=LGB0OnmxfiXsOVTrb1PMBSk2enZZWkY4hVqqFsB4HF8=;
+	s=arc-20240116; t=1774274243; c=relaxed/simple;
+	bh=rAFzf61TrFTOlaNSSwxbD7cnKJknnY2x2TZqRoFQ65U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCtYcEIiyoVqu3+OgX+x38D41Co7VmJmU+HCgj9kHMNiO9G+isb0sC1M/YP2cV0BrUow83xkkJvISNyVT8alM1ajse92p5/WEoJGbSpz2L7VPtJv3lxb2t0htzaoEDldJG56VjBRzJDzLwY4N6JEe0KjqYxWRedIHf3ciOsT3to=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLoqF0Qp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D96C4CEF7;
-	Mon, 23 Mar 2026 15:12:48 +0000 (UTC)
+	 MIME-Version; b=EXGPSfh8sMoyS8Ofecy1FsQI95yp5ee64t4BJXMDrKiDVfDbVu3JVNM1+0hkcj5BXNzLUBRM+PcCVFUbiBAdJpAcBkzDZoXORrFChYhTMlHQYBGe/iCGdFugQZu1wU45UhsF0isDhBV3aPA9J/lyFtNFDr6uOmNUNyMDO6xWEEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inL62ASU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61210C4CEF7;
+	Mon, 23 Mar 2026 13:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278768;
-	bh=LGB0OnmxfiXsOVTrb1PMBSk2enZZWkY4hVqqFsB4HF8=;
+	s=korg; t=1774274242;
+	bh=rAFzf61TrFTOlaNSSwxbD7cnKJknnY2x2TZqRoFQ65U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLoqF0QpIHOp6Hps7ykbczFHcw6PKR+ZXNZpQmt8MVKWRFF8Szh5yFLeQUpsVnh+L
-	 fAG/tuqTskLpQsfnCuK8qlnQ07/C+AbGNpGYgSjgb6dMSTDvIAt8u4euVMjXVJJZOa
-	 RE801bD1FhIuYmyZp8bSWBtfJPLRn5V+UEdot9gc=
+	b=inL62ASUKBrGEfHy/rGk8EK9iorsA0WLe/PfaY1426+iQG8FcTTnmUWRtpG2xWm4p
+	 fPPT3eRmWkCOSawaMmhffBhMExEHK9SPn8rv/aVwa/JyfxHhNRDxiNtYbbUzKUy4Ex
+	 FT5mMc+ymYyvbGd2MMDf3v5J1uvbiEFf+gwWHFKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chan <michael.chan@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.6 411/567] eth: bnxt: always recalculate features after XDP clearing, fix null-deref
+	Keenan Dong <keenanat2000@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 154/220] clsact: Fix use-after-free in init/destroy rollback asymmetry
 Date: Mon, 23 Mar 2026 14:45:31 +0100
-Message-ID: <20260323134544.053385511@linuxfoundation.org>
+Message-ID: <20260323134509.441929970@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,190 +71,147 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229327-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,broadcom.com,kernel.org,163.com];
+	TAGGED_FROM(0.00)[bounces-228139-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,iogearbox.net,kernel.org,redhat.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C568E2F6A3D
+X-Rspamd-Queue-Id: 650D22F4CFA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit f0aa6a37a3dbb40b272df5fc6db93c114688adcd ]
+[ Upstream commit a0671125d4f55e1e98d9bde8a0b671941987e208 ]
 
-Recalculate features when XDP is detached.
+Fix a use-after-free in the clsact qdisc upon init/destroy rollback asymmetry.
+The latter is achieved by first fully initializing a clsact instance, and
+then in a second step having a replacement failure for the new clsact qdisc
+instance. clsact_init() initializes ingress first and then takes care of the
+egress part. This can fail midway, for example, via tcf_block_get_ext(). Upon
+failure, the kernel will trigger the clsact_destroy() callback.
 
-Before:
-  # ip li set dev eth0 xdp obj xdp_dummy.bpf.o sec xdp
-  # ip li set dev eth0 xdp off
-  # ethtool -k eth0 | grep gro
-  rx-gro-hw: off [requested on]
+Commit 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry") details the
+way how the transition is happening. If tcf_block_get_ext on the q->ingress_block
+ends up failing, we took the tcx_miniq_inc reference count on the ingress
+side, but not yet on the egress side. clsact_destroy() tests whether the
+{ingress,egress}_entry was non-NULL. However, even in midway failure on the
+replacement, both are in fact non-NULL with a valid egress_entry from the
+previous clsact instance.
 
-After:
-  # ip li set dev eth0 xdp obj xdp_dummy.bpf.o sec xdp
-  # ip li set dev eth0 xdp off
-  # ethtool -k eth0 | grep gro
-  rx-gro-hw: on
+What we really need to test for is whether the qdisc instance-specific ingress
+or egress side previously got initialized. This adds a small helper for checking
+the miniq initialization called mini_qdisc_pair_inited, and utilizes that upon
+clsact_destroy() in order to fix the use-after-free scenario. Convert the
+ingress_destroy() side as well so both are consistent to each other.
 
-The fact that HW-GRO doesn't get re-enabled automatically is just
-a minor annoyance. The real issue is that the features will randomly
-come back during another reconfiguration which just happens to invoke
-netdev_update_features(). The driver doesn't handle reconfiguring
-two things at a time very robustly.
-
-Starting with commit 98ba1d931f61 ("bnxt_en: Fix RSS logic in
-__bnxt_reserve_rings()") we only reconfigure the RSS hash table
-if the "effective" number of Rx rings has changed. If HW-GRO is
-enabled "effective" number of rings is 2x what user sees.
-So if we are in the bad state, with HW-GRO re-enablement "pending"
-after XDP off, and we lower the rings by / 2 - the HW-GRO rings
-doing 2x and the ethtool -L doing / 2 may cancel each other out,
-and the:
-
-  if (old_rx_rings != bp->hw_resc.resv_rx_rings &&
-
-condition in __bnxt_reserve_rings() will be false.
-The RSS map won't get updated, and we'll crash with:
-
-  BUG: kernel NULL pointer dereference, address: 0000000000000168
-  RIP: 0010:__bnxt_hwrm_vnic_set_rss+0x13a/0x1a0
-    bnxt_hwrm_vnic_rss_cfg_p5+0x47/0x180
-    __bnxt_setup_vnic_p5+0x58/0x110
-    bnxt_init_nic+0xb72/0xf50
-    __bnxt_open_nic+0x40d/0xab0
-    bnxt_open_nic+0x2b/0x60
-    ethtool_set_channels+0x18c/0x1d0
-
-As we try to access a freed ring.
-
-The issue is present since XDP support was added, really, but
-prior to commit 98ba1d931f61 ("bnxt_en: Fix RSS logic in
-__bnxt_reserve_rings()") it wasn't causing major issues.
-
-Fixes: 1054aee82321 ("bnxt_en: Use NETIF_F_GRO_HW.")
-Fixes: 98ba1d931f61 ("bnxt_en: Fix RSS logic in __bnxt_reserve_rings()")
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Link: https://patch.msgid.link/20250109043057.2888953-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ The context change is due to the commit 1f6e77cb9b32
-("bnxt_en: Add bnxt_l2_filter hash table.") in v6.8 and the commit
-8336a974f37d ("bnxt_en: Save user configured filters in a lookup list")
-in v6.9 which are irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry")
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20260313065531.98639-1-daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c     |   25 ++++++++++++++++++++-----
- drivers/net/ethernet/broadcom/bnxt/bnxt.h     |    2 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c |    7 -------
- 3 files changed, 21 insertions(+), 13 deletions(-)
+ include/net/sch_generic.h |  5 +++++
+ net/sched/sch_ingress.c   | 14 ++++++++------
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -3996,7 +3996,7 @@ void bnxt_set_ring_params(struct bnxt *b
- /* Changing allocation mode of RX rings.
-  * TODO: Update when extending xdp_rxq_info to support allocation modes.
-  */
--int bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
-+static void __bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
- {
- 	struct net_device *dev = bp->dev;
+diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
+index cafb266a0b80d..c3d657359a3d2 100644
+--- a/include/net/sch_generic.h
++++ b/include/net/sch_generic.h
+@@ -1457,6 +1457,11 @@ void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
+ void mini_qdisc_pair_block_init(struct mini_Qdisc_pair *miniqp,
+ 				struct tcf_block *block);
  
-@@ -4017,15 +4017,30 @@ int bnxt_set_rx_skb_mode(struct bnxt *bp
- 			bp->rx_skb_func = bnxt_rx_page_skb;
- 		}
- 		bp->rx_dir = DMA_BIDIRECTIONAL;
--		/* Disable LRO or GRO_HW */
--		netdev_update_features(dev);
- 	} else {
- 		dev->max_mtu = bp->max_mtu;
- 		bp->flags &= ~BNXT_FLAG_RX_PAGE_MODE;
- 		bp->rx_dir = DMA_FROM_DEVICE;
- 		bp->rx_skb_func = bnxt_rx_skb;
- 	}
--	return 0;
++static inline bool mini_qdisc_pair_inited(struct mini_Qdisc_pair *miniqp)
++{
++	return !!miniqp->p_miniq;
 +}
 +
-+void bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
-+{
-+	__bnxt_set_rx_skb_mode(bp, page_mode);
-+
-+	if (!page_mode) {
-+		int rx, tx;
-+
-+		bnxt_get_max_rings(bp, &rx, &tx, true);
-+		if (rx > 1) {
-+			bp->flags &= ~BNXT_FLAG_NO_AGG_RINGS;
-+			bp->dev->hw_features |= NETIF_F_LRO;
-+		}
-+	}
-+
-+	/* Update LRO and GRO_HW availability */
-+	netdev_update_features(bp->dev);
- }
+ void mq_change_real_num_tx(struct Qdisc *sch, unsigned int new_real_tx);
  
- static void bnxt_free_vnic_attributes(struct bnxt *bp)
-@@ -13773,7 +13788,7 @@ static int bnxt_init_one(struct pci_dev
- 	if (rc)
- 		goto init_err_pci_clean;
+ int sch_frag_xmit_hook(struct sk_buff *skb, int (*xmit)(struct sk_buff *skb));
+diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
+index cc6051d4f2ef8..c3e18bae8fbfc 100644
+--- a/net/sched/sch_ingress.c
++++ b/net/sched/sch_ingress.c
+@@ -113,14 +113,15 @@ static void ingress_destroy(struct Qdisc *sch)
+ {
+ 	struct ingress_sched_data *q = qdisc_priv(sch);
+ 	struct net_device *dev = qdisc_dev(sch);
+-	struct bpf_mprog_entry *entry = rtnl_dereference(dev->tcx_ingress);
++	struct bpf_mprog_entry *entry;
  
--	bnxt_set_rx_skb_mode(bp, false);
-+	__bnxt_set_rx_skb_mode(bp, false);
- 	bnxt_set_tpa_flags(bp);
- 	bnxt_set_ring_params(bp);
- 	rc = bnxt_set_dflt_rings(bp, true);
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -2332,7 +2332,7 @@ void bnxt_reuse_rx_data(struct bnxt_rx_r
- u32 bnxt_fw_health_readl(struct bnxt *bp, int reg_idx);
- void bnxt_set_tpa_flags(struct bnxt *bp);
- void bnxt_set_ring_params(struct bnxt *);
--int bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode);
-+void bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode);
- int bnxt_hwrm_func_drv_rgtr(struct bnxt *bp, unsigned long *bmap,
- 			    int bmap_size, bool async_only);
- int bnxt_hwrm_func_drv_unrgtr(struct bnxt *bp);
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-@@ -422,15 +422,8 @@ static int bnxt_xdp_set(struct bnxt *bp,
- 		bnxt_set_rx_skb_mode(bp, true);
- 		xdp_features_set_redirect_target(dev, true);
- 	} else {
--		int rx, tx;
--
- 		xdp_features_clear_redirect_target(dev);
- 		bnxt_set_rx_skb_mode(bp, false);
--		bnxt_get_max_rings(bp, &rx, &tx, true);
--		if (rx > 1) {
--			bp->flags &= ~BNXT_FLAG_NO_AGG_RINGS;
--			bp->dev->hw_features |= NETIF_F_LRO;
--		}
+ 	if (sch->parent != TC_H_INGRESS)
+ 		return;
+ 
+ 	tcf_block_put_ext(q->block, sch, &q->block_info);
+ 
+-	if (entry) {
++	if (mini_qdisc_pair_inited(&q->miniqp)) {
++		entry = rtnl_dereference(dev->tcx_ingress);
+ 		tcx_miniq_dec(entry);
+ 		if (!tcx_entry_is_active(entry)) {
+ 			tcx_entry_update(dev, NULL, true);
+@@ -290,10 +291,9 @@ static int clsact_init(struct Qdisc *sch, struct nlattr *opt,
+ 
+ static void clsact_destroy(struct Qdisc *sch)
+ {
++	struct bpf_mprog_entry *ingress_entry, *egress_entry;
+ 	struct clsact_sched_data *q = qdisc_priv(sch);
+ 	struct net_device *dev = qdisc_dev(sch);
+-	struct bpf_mprog_entry *ingress_entry = rtnl_dereference(dev->tcx_ingress);
+-	struct bpf_mprog_entry *egress_entry = rtnl_dereference(dev->tcx_egress);
+ 
+ 	if (sch->parent != TC_H_CLSACT)
+ 		return;
+@@ -301,7 +301,8 @@ static void clsact_destroy(struct Qdisc *sch)
+ 	tcf_block_put_ext(q->ingress_block, sch, &q->ingress_block_info);
+ 	tcf_block_put_ext(q->egress_block, sch, &q->egress_block_info);
+ 
+-	if (ingress_entry) {
++	if (mini_qdisc_pair_inited(&q->miniqp_ingress)) {
++		ingress_entry = rtnl_dereference(dev->tcx_ingress);
+ 		tcx_miniq_dec(ingress_entry);
+ 		if (!tcx_entry_is_active(ingress_entry)) {
+ 			tcx_entry_update(dev, NULL, true);
+@@ -309,7 +310,8 @@ static void clsact_destroy(struct Qdisc *sch)
+ 		}
  	}
- 	bp->tx_nr_rings_xdp = tx_xdp;
- 	bp->tx_nr_rings = bp->tx_nr_rings_per_tc * tc + tx_xdp;
+ 
+-	if (egress_entry) {
++	if (mini_qdisc_pair_inited(&q->miniqp_egress)) {
++		egress_entry = rtnl_dereference(dev->tcx_egress);
+ 		tcx_miniq_dec(egress_entry);
+ 		if (!tcx_entry_is_active(egress_entry)) {
+ 			tcx_entry_update(dev, NULL, false);
+-- 
+2.51.0
+
 
 
 
