@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228911-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IMRdCUFgwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229445-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:09 +0100
+	id 2M7vCZpqwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-228911-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:30:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99CCB2F6DF3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5EAC2F8312
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:30:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5A482306EE34
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C7A132A9FC9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1F43B47F5;
-	Mon, 23 Mar 2026 15:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBE926A08F;
+	Mon, 23 Mar 2026 14:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ta/KfNlg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGL05jE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B763A9D86;
-	Mon, 23 Mar 2026 15:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834A826ED46;
+	Mon, 23 Mar 2026 14:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279256; cv=none; b=SO6bnVhGxru6r0PrMQim1NGuwztTHXgsCyFZCfl2fZ3P7SC8NG2f+KbgolmC8C0/pMXs+ha55pt7ojqtuhDlzQF0pszw2NaKDStDvRotNjbjhK7iJAGfQznJMW20TnPsMoPonN093MXrKE+PW+FXo9zxhLVfJQ5yZMyOP32JbSM=
+	t=1774277466; cv=none; b=NaeXQk+yZit3tMZh3vQPGj/ltxXkNaRBhVtdNOf1VWedaCnl1THRbTXUfk1qKZtu2QEI6kh7KwBLHCPwywQMWlf+ggTjTnhrpqKS1nUK8rTBNjGdgPFIPkXj0goPhAFFf3QxkU53epWHpEPMD4Lyk2/3gsmspW/SbtTDVzd8Iyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279256; c=relaxed/simple;
-	bh=qTbrJ1pJ16jLL5jxu2MCOv41LXaXGnJ1oP9lKCXEnwU=;
+	s=arc-20240116; t=1774277466; c=relaxed/simple;
+	bh=0sEVdAI1vu7okh33FF4Fe5Lxm1/XQh5oYa6ku3eGESE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O1ICyg2JzskuTQmFrrxHkhmGS57Jl3kFi4vYvHTWb4bO8joHVjkZVVx2OiyE6pFrQIHx7Wsd0DGLdl8LOcrQ/UWFiUbOO6JQ5vaP/UE2V/TiWjI1E4a5fVS2970uIvsNPjdKXtk29lfYAs88asU5SMRZviq45xb87YDHVlF3CgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ta/KfNlg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EABFCC4CEF7;
-	Mon, 23 Mar 2026 15:20:55 +0000 (UTC)
+	 MIME-Version; b=CKrE51kR16YZNAuW6biJEn5uqeU49Pn7fEAHSXCNiYcrxNy21UWz2emtztDmE5bTWbiIs2RotNdytlrqRuE4AnouoSOTG6V7Z2HfgtbjQisTQk+ZYcVZj10krlVLpn2uI/H8DwRMPS0qI/ywfYZrFx+/K7hmREdbKblj22bvgMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGL05jE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16519C4CEF7;
+	Mon, 23 Mar 2026 14:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279256;
-	bh=qTbrJ1pJ16jLL5jxu2MCOv41LXaXGnJ1oP9lKCXEnwU=;
+	s=korg; t=1774277466;
+	bh=0sEVdAI1vu7okh33FF4Fe5Lxm1/XQh5oYa6ku3eGESE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ta/KfNlgU/PSzWXo51aMxPhXS8cF87VTOLkksrExT+cnk+PQOXWzEiQ7RXExNUCBY
-	 nrbfjqCU0/e+R7yNsaCDecj0RtNBtifPZigEcdV5h3sqnTo0jLPiH80HrUUHjXBu6J
-	 RxhYlAGsr/1mHiCjAgGDt59eGYsr+PKSBP03DqkA=
+	b=fGL05jE7kcLRfqMZN/8NEQDjLHtqvV+56F1BSO22hZVYeUSXNcku6R1wV48xafmDq
+	 sr4L7oQ3HbsTfYfsavVL34+k6ndRoFwTZ9+jqHlrUlz//Sa0HUi2q8hXSLhmUYK6M1
+	 YVHGIHKN/3E5HQtyuSizMoqT81/VMmjwOS+gPrdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Kamal Dasu <kamal.dasu@broadcom.com>,
+	William Zhang <william.zhang@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 526/567] net/smc: fix NULL dereference and UAF in smc_tcp_syn_recv_sock()
+Subject: [PATCH 6.12 450/460] mtd: rawnand: brcmnand: skip DMA during panic write
 Date: Mon, 23 Mar 2026 14:47:26 +0100
-Message-ID: <20260323134547.016024215@linuxfoundation.org>
+Message-ID: <20260323134537.642077777@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,241 +66,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229445-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228911-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,827ae2bfb3a3529333e9];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 99CCB2F6DF3
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[broadcom.com:email,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: B5EAC2F8312
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Kamal Dasu <kamal.dasu@broadcom.com>
 
-[ Upstream commit 6d5e4538364b9ceb1ac2941a4deb86650afb3538 ]
+[ Upstream commit da9ba4dcc01e7cf52b7676f0ee9607b8358c2171 ]
 
-Syzkaller reported a panic in smc_tcp_syn_recv_sock() [1].
+When oops_panic_write is set, the driver disables interrupts and
+switches to PIO polling mode but still falls through into the DMA
+path. DMA cannot be used reliably in panic context, so make the
+DMA path an else branch to ensure only PIO is used during panic
+writes.
 
-smc_tcp_syn_recv_sock() is called in the TCP receive path
-(softirq) via icsk_af_ops->syn_recv_sock on the clcsock (TCP
-listening socket). It reads sk_user_data to get the smc_sock
-pointer. However, when the SMC listen socket is being closed
-concurrently, smc_close_active() sets clcsock->sk_user_data
-to NULL under sk_callback_lock, and then the smc_sock itself
-can be freed via sock_put() in smc_release().
-
-This leads to two issues:
-
-1) NULL pointer dereference: sk_user_data is NULL when
-   accessed.
-2) Use-after-free: sk_user_data is read as non-NULL, but the
-   smc_sock is freed before its fields (e.g., queued_smc_hs,
-   ori_af_ops) are accessed.
-
-The race window looks like this (the syzkaller crash [1]
-triggers via the SYN cookie path: tcp_get_cookie_sock() ->
-smc_tcp_syn_recv_sock(), but the normal tcp_check_req() path
-has the same race):
-
-  CPU A (softirq)              CPU B (process ctx)
-
-  tcp_v4_rcv()
-    TCP_NEW_SYN_RECV:
-    sk = req->rsk_listener
-    sock_hold(sk)
-    /* No lock on listener */
-                               smc_close_active():
-                                 write_lock_bh(cb_lock)
-                                 sk_user_data = NULL
-                                 write_unlock_bh(cb_lock)
-                                 ...
-                                 smc_clcsock_release()
-                                 sock_put(smc->sk) x2
-                                   -> smc_sock freed!
-    tcp_check_req()
-      smc_tcp_syn_recv_sock():
-        smc = user_data(sk)
-          -> NULL or dangling
-        smc->queued_smc_hs
-          -> crash!
-
-Note that the clcsock and smc_sock are two independent objects
-with separate refcounts. TCP stack holds a reference on the
-clcsock, which keeps it alive, but this does NOT prevent the
-smc_sock from being freed.
-
-Fix this by using RCU and refcount_inc_not_zero() to safely
-access smc_sock. Since smc_tcp_syn_recv_sock() is called in
-the TCP three-way handshake path, taking read_lock_bh on
-sk_callback_lock is too heavy and would not survive a SYN
-flood attack. Using rcu_read_lock() is much more lightweight.
-
-- Set SOCK_RCU_FREE on the SMC listen socket so that
-  smc_sock freeing is deferred until after the RCU grace
-  period. This guarantees the memory is still valid when
-  accessed inside rcu_read_lock().
-- Use rcu_read_lock() to protect reading sk_user_data.
-- Use refcount_inc_not_zero(&smc->sk.sk_refcnt) to pin the
-  smc_sock. If the refcount has already reached zero (close
-  path completed), it returns false and we bail out safely.
-
-Note: smc_hs_congested() has a similar lockless read of
-sk_user_data without rcu_read_lock(), but it only checks for
-NULL and accesses the global smc_hs_wq, never dereferencing
-any smc_sock field, so it is not affected.
-
-Reproducer was verified with mdelay injection and smc_run,
-the issue no longer occurs with this patch applied.
-
-[1] https://syzkaller.appspot.com/bug?extid=827ae2bfb3a3529333e9
-
-Fixes: 8270d9c21041 ("net/smc: Limit backlog connections")
-Reported-by: syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67eaf9b8.050a0220.3c3d88.004a.GAE@google.com/T/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Link: https://patch.msgid.link/20260312092909.48325-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c1ac2dc34b51 ("mtd: rawnand: brcmnand: When oops in progress use pio and interrupt polling")
+Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
+Reviewed-by: William Zhang <william.zhang@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/smc/af_smc.c    | 23 +++++++++++++++++------
- net/smc/smc.h       |  5 +++++
- net/smc/smc_close.c |  2 +-
- 3 files changed, 23 insertions(+), 7 deletions(-)
+ drivers/mtd/nand/raw/brcmnand/brcmnand.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index b3bfd0f18d418..0e9a3b8da6a63 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -124,7 +124,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
- 	struct smc_sock *smc;
- 	struct sock *child;
+diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+index 2eb44c1428fbc..bbba3cf477e98 100644
+--- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
++++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
+@@ -2303,14 +2303,12 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
+ 	for (i = 0; i < ctrl->max_oob; i += 4)
+ 		oob_reg_write(ctrl, i, 0xffffffff);
  
--	smc = smc_clcsock_user_data(sk);
-+	rcu_read_lock();
-+	smc = smc_clcsock_user_data_rcu(sk);
-+	if (!smc || !refcount_inc_not_zero(&smc->sk.sk_refcnt)) {
-+		rcu_read_unlock();
-+		smc = NULL;
-+		goto drop;
-+	}
-+	rcu_read_unlock();
+-	if (mtd->oops_panic_write)
++	if (mtd->oops_panic_write) {
+ 		/* switch to interrupt polling and PIO mode */
+ 		disable_ctrl_irqs(ctrl);
+-
+-	if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
++	} else if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
+ 		if (ctrl->dma_trans(host, addr, (u32 *)buf, oob, mtd->writesize,
+ 				    CMD_PROGRAM_PAGE))
+-
+ 			ret = -EIO;
  
- 	if (READ_ONCE(sk->sk_ack_backlog) + atomic_read(&smc->queued_smc_hs) >
- 				sk->sk_max_ack_backlog)
-@@ -146,11 +153,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
- 		if (inet_csk(child)->icsk_af_ops == inet_csk(sk)->icsk_af_ops)
- 			inet_csk(child)->icsk_af_ops = smc->ori_af_ops;
- 	}
-+	sock_put(&smc->sk);
- 	return child;
- 
- drop:
- 	dst_release(dst);
- 	tcp_listendrop(sk);
-+	if (smc)
-+		sock_put(&smc->sk);
- 	return NULL;
- }
- 
-@@ -249,7 +259,7 @@ static void smc_fback_restore_callbacks(struct smc_sock *smc)
- 	struct sock *clcsk = smc->clcsock->sk;
- 
- 	write_lock_bh(&clcsk->sk_callback_lock);
--	clcsk->sk_user_data = NULL;
-+	rcu_assign_sk_user_data(clcsk, NULL);
- 
- 	smc_clcsock_restore_cb(&clcsk->sk_state_change, &smc->clcsk_state_change);
- 	smc_clcsock_restore_cb(&clcsk->sk_data_ready, &smc->clcsk_data_ready);
-@@ -882,7 +892,7 @@ static void smc_fback_replace_callbacks(struct smc_sock *smc)
- 	struct sock *clcsk = smc->clcsock->sk;
- 
- 	write_lock_bh(&clcsk->sk_callback_lock);
--	clcsk->sk_user_data = (void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
-+	__rcu_assign_sk_user_data_with_flags(clcsk, smc, SK_USER_DATA_NOCOPY);
- 
- 	smc_clcsock_replace_cb(&clcsk->sk_state_change, smc_fback_state_change,
- 			       &smc->clcsk_state_change);
-@@ -2651,8 +2661,8 @@ static int smc_listen(struct socket *sock, int backlog)
- 	 * smc-specific sk_data_ready function
- 	 */
- 	write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
--	smc->clcsock->sk->sk_user_data =
--		(void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
-+	__rcu_assign_sk_user_data_with_flags(smc->clcsock->sk, smc,
-+					     SK_USER_DATA_NOCOPY);
- 	smc_clcsock_replace_cb(&smc->clcsock->sk->sk_data_ready,
- 			       smc_clcsock_data_ready, &smc->clcsk_data_ready);
- 	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
-@@ -2673,10 +2683,11 @@ static int smc_listen(struct socket *sock, int backlog)
- 		write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
- 		smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
- 				       &smc->clcsk_data_ready);
--		smc->clcsock->sk->sk_user_data = NULL;
-+		rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
- 		write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
  		goto out;
- 	}
-+	sock_set_flag(sk, SOCK_RCU_FREE);
- 	sk->sk_max_ack_backlog = backlog;
- 	sk->sk_ack_backlog = 0;
- 	sk->sk_state = SMC_LISTEN;
-diff --git a/net/smc/smc.h b/net/smc/smc.h
-index 36699ba551887..49bf6971610df 100644
---- a/net/smc/smc.h
-+++ b/net/smc/smc.h
-@@ -304,6 +304,11 @@ static inline struct smc_sock *smc_clcsock_user_data(const struct sock *clcsk)
- 	       ((uintptr_t)clcsk->sk_user_data & ~SK_USER_DATA_NOCOPY);
- }
- 
-+static inline struct smc_sock *smc_clcsock_user_data_rcu(const struct sock *clcsk)
-+{
-+	return (struct smc_sock *)rcu_dereference_sk_user_data(clcsk);
-+}
-+
- /* save target_cb in saved_cb, and replace target_cb with new_cb */
- static inline void smc_clcsock_replace_cb(void (**target_cb)(struct sock *),
- 					  void (*new_cb)(struct sock *),
-diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
-index 10219f55aad14..bb0313ef5f7c1 100644
---- a/net/smc/smc_close.c
-+++ b/net/smc/smc_close.c
-@@ -218,7 +218,7 @@ int smc_close_active(struct smc_sock *smc)
- 			write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
- 			smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
- 					       &smc->clcsk_data_ready);
--			smc->clcsock->sk->sk_user_data = NULL;
-+			rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
- 			write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
- 			rc = kernel_sock_shutdown(smc->clcsock, SHUT_RDWR);
- 		}
 -- 
 2.51.0
 
