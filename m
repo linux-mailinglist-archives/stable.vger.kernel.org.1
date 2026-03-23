@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-229716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228691-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EOo0JkxuwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229716-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:04 +0100
+	id yFtnBr5mwWlESwQAu9opvQ
+	(envelope-from <stable+bounces-228691-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:13:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C80B2F8C50
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B402F7C40
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:13:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 225A73112B5B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAC313012C7B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2293BED27;
-	Mon, 23 Mar 2026 16:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 647033B2FE4;
+	Mon, 23 Mar 2026 14:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7pH2iUe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQKIDksa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662583BE168;
-	Mon, 23 Mar 2026 16:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272D23B2FD5;
+	Mon, 23 Mar 2026 14:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282674; cv=none; b=CUCbYr62OBG/X/B7CKhpT1pNL4rPBhnUx/F/Rf0uTD+QA8f7YKLztn6O3eeTru4X7T7Gf9hDy6U/fo3bFAY4SENHSQG26j30MLLrxR7O0g6ByIuDIX+13wMT4TPzmYGHdWIyZYx6HWGn/mQAwYrGkAN/XY/fJt5lw/GqcnjNsYg=
+	t=1774276865; cv=none; b=mWob/85TUTWLAa87o97RipHDjlFbHDeBz6cCPVmhtFMPTIKqwiXbkMo3VZorXxjA9RcQTYO8KfT7KXogyQbXHBrnmuyfsdN3amYUSZxjozH1BdNmMLDWRU1A6jyaDbFj3rj9c+HY5j40uAhkv/zDBlUqDMRhyR3hof4LQXXAmGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282674; c=relaxed/simple;
-	bh=uZ2H+zgBoIOZX3mXFE1scyQzCjX0u5IYVym+f4+8s2c=;
+	s=arc-20240116; t=1774276865; c=relaxed/simple;
+	bh=wrHBWuND6Pxg8QZZInWGxfQoCOtI4eGLJVfnUpr9hJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eWQuoMWe/xyaHUwVj4sNMFlVTeQL+7rzpshX1sqWSTOTcD0VYoddZk9BB5I7PUvyfL5VxvydnTo0nMBAVdGAarkaFpoDAGz9+zBNFxfTbNVSotAYvjGy6ABMcLr5QPi46P931ODX9wu9p8EYI5Rh0KTpdzr7DnOJAR7Az6AoINM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7pH2iUe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1148C2BC9E;
-	Mon, 23 Mar 2026 16:17:53 +0000 (UTC)
+	 MIME-Version; b=RNdFywoqpAb0Qiw0iORun7QCtrMr91k/FlLGXAyDqtlGlYl+CvwF4iwWeywyMDgu46nLeWLI9mCgjt41sImdnnyRps5YDSy8BgP8lM/pohkp0S8zb3kuw5H/QS+zhFo5G8No8F+kvt46okEtmBv5rRoxo1SCixPiB5cRxJFfSG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQKIDksa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1332C4CEF7;
+	Mon, 23 Mar 2026 14:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282674;
-	bh=uZ2H+zgBoIOZX3mXFE1scyQzCjX0u5IYVym+f4+8s2c=;
+	s=korg; t=1774276865;
+	bh=wrHBWuND6Pxg8QZZInWGxfQoCOtI4eGLJVfnUpr9hJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7pH2iUezCHtvBSkxnG8vGsir/pyNKqRVSLsvkWc3eFwIfm2D2cPwkimbVeMnTY0S
-	 f6jhWQx6Y1LgqgXjJ9OUPrtrUPui/UD6Jcy/JgArylV6TdrHnLg+EQQ/N+5Hx4XXke
-	 sqPx1c0sie6HCxcEppG6xZiS152elgziYpYvjEow=
+	b=CQKIDksa/WLN90Awe9bEtyDZqwhR1gV7NP7BeRrzA/IqS632Djm2RjHsK9Pce3KRf
+	 1Q9EhMKq3k6sGpzp2gTg5JQwkI4fYZY6etH9JxF4Fyn6lt4LJZEqlRBftx+IozfD1f
+	 sX/aIiKZf2RLYDGY2MhscksNjf+CntZ8SC4BnAAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 245/481] parisc: Check kernel mapping earlier at bootup
+	Reinette Chatre <reinette.chatre@intel.com>,
+	Zide Chen <zide.chen@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 231/460] perf/x86/intel/uncore: Add per-scheduler IMC CAS count events
 Date: Mon, 23 Mar 2026 14:43:47 +0100
-Message-ID: <20260323134531.124128965@linuxfoundation.org>
+Message-ID: <20260323134532.172888130@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +68,116 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmx.de];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228691-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229716-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	RCPT_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5C80B2F8C50
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,infradead.org:email,msgid.link:url,intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 63B402F7C40
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Zide Chen <zide.chen@intel.com>
 
-commit 17c144f1104bfc29a3ce3f7d0931a1bfb7a3558c upstream.
+[ Upstream commit 6a8a48644c4b804123e59dbfc5d6cd29a0194046 ]
 
-The check if the initial mapping is sufficient needs to happen much
-earlier during bootup. Move this test directly to the start_parisc()
-function and use native PDC iodc functions to print the warning, because
-panic() and printk() are not functional yet.
+IMC on SPR and EMR does not support sub-channels.  In contrast, CPUs
+that use gnr_uncores[] (e.g. Granite Rapids and Sierra Forest)
+implement two command schedulers (SCH0/SCH1) per memory channel,
+providing logically independent command and data paths.
 
-This fixes boot when enabling various KALLSYSMS options which need
-much more space.
+Do not reuse the spr_uncore_imc[] configuration for these CPUs.
+Instead, introduce a dedicated gnr_uncore_imc[] with per-scheduler
+events, so userspace can monitor SCH0 and SCH1 independently.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v6.0+
+On these CPUs, replace cas_count_{read,write} with
+cas_count_{read,write}_sch{0,1}.  This may break existing userspace
+that relies on cas_count_{read,write}, prompting it to switch to the
+per-scheduler events, as the legacy event reports only partial
+traffic (SCH0).
+
+Fixes: 632c4bf6d007 ("perf/x86/intel/uncore: Support Granite Rapids")
+Fixes: cb4a6ccf3583 ("perf/x86/intel/uncore: Support Sierra Forest and Grand Ridge")
+Reported-by: Reinette Chatre <reinette.chatre@intel.com>
+Signed-off-by: Zide Chen <zide.chen@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260210005225.20311-1-zide.chen@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/setup.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c |   28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/setup.c
-+++ b/arch/parisc/kernel/setup.c
-@@ -135,14 +135,6 @@ void __init setup_arch(char **cmdline_p)
- #endif
- 	printk(KERN_CONT ".\n");
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6607,6 +6607,32 @@ static struct intel_uncore_type gnr_unco
+ 	.attr_update		= uncore_alias_groups,
+ };
  
--	/*
--	 * Check if initial kernel page mappings are sufficient.
--	 * panic early if not, else we may access kernel functions
--	 * and variables which can't be reached.
--	 */
--	if (__pa((unsigned long) &_end) >= KERNEL_INITIAL_SIZE)
--		panic("KERNEL_INITIAL_ORDER too small!");
--
- #ifdef CONFIG_64BIT
- 	if(parisc_narrow_firmware) {
- 		printk(KERN_INFO "Kernel is using PDC in 32-bit mode.\n");
-@@ -398,6 +390,18 @@ void __init start_parisc(void)
- 	int ret, cpunum;
- 	struct pdc_coproc_cfg coproc_cfg;
- 
-+	/*
-+	 * Check if initial kernel page mapping is sufficient.
-+	 * Print warning if not, because we may access kernel functions and
-+	 * variables which can't be reached yet through the initial mappings.
-+	 * Note that the panic() and printk() functions are not functional
-+	 * yet, so we need to use direct iodc() firmware calls instead.
-+	 */
-+	const char warn1[] = "CRITICAL: Kernel may crash because "
-+			     "KERNEL_INITIAL_ORDER is too small.\n";
-+	if (__pa((unsigned long) &_end) >= KERNEL_INITIAL_SIZE)
-+		pdc_iodc_print(warn1, sizeof(warn1) - 1);
++static struct uncore_event_desc gnr_uncore_imc_events[] = {
++	INTEL_UNCORE_EVENT_DESC(clockticks,      "event=0x01,umask=0x00"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0,  "event=0x05,umask=0xcf"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch0.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1,  "event=0x06,umask=0xcf"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_read_sch1.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0, "event=0x05,umask=0xf0"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch0.unit, "MiB"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1, "event=0x06,umask=0xf0"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.scale, "6.103515625e-5"),
++	INTEL_UNCORE_EVENT_DESC(cas_count_write_sch1.unit, "MiB"),
++	{ /* end: all zeroes */ },
++};
 +
- 	/* check QEMU/SeaBIOS marker in PAGE0 */
- 	running_on_qemu = (memcmp(&PAGE0->pad0, "SeaBIOS", 8) == 0);
- 
++static struct intel_uncore_type gnr_uncore_imc = {
++	SPR_UNCORE_MMIO_COMMON_FORMAT(),
++	.name			= "imc",
++	.fixed_ctr_bits		= 48,
++	.fixed_ctr		= SNR_IMC_MMIO_PMON_FIXED_CTR,
++	.fixed_ctl		= SNR_IMC_MMIO_PMON_FIXED_CTL,
++	.event_descs		= gnr_uncore_imc_events,
++};
++
+ static struct intel_uncore_type gnr_uncore_pciex8 = {
+ 	SPR_UNCORE_PCI_COMMON_FORMAT(),
+ 	.name			= "pciex8",
+@@ -6654,7 +6680,7 @@ static struct intel_uncore_type *gnr_unc
+ 	NULL,
+ 	&spr_uncore_pcu,
+ 	&gnr_uncore_ubox,
+-	&spr_uncore_imc,
++	&gnr_uncore_imc,
+ 	NULL,
+ 	&gnr_uncore_upi,
+ 	NULL,
 
 
 
