@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229312-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +I8VEthGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228125-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:44 +0100
+	id SMU9MiJdwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229312-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3365E2F37F1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC482F674E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E6A4D301A2F2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E3BC3059364
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE86C3A9D9D;
-	Mon, 23 Mar 2026 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDA63B584A;
+	Mon, 23 Mar 2026 15:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fZPJ2O0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHhix/O5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24AF1A6815;
-	Mon, 23 Mar 2026 13:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FFB3B5842;
+	Mon, 23 Mar 2026 15:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274198; cv=none; b=dQHSHmcKiNrRWla20HKfiatGEUjGUPktj8wbXNr5qELEYXcowS9DjR/jY6I4jK1EHt35i+3sgM9h3IABMaJLBam+NVisaOQwJBiCFcG/NVwPN7wF839DXExJnGuCKQZJIX+gsZeczYoHApIrTsNczana++fiI5tE6Fo807shdC0=
+	t=1774278721; cv=none; b=kltQFI/fWuEpuViILfq1K5qG6ClMXlP5wWay0cv/AmYeB1UMfNFuLg6k4RMKqiX3n4sNFX7cSGQsD07GH2bABHKvo4O5WWhT4Odx2ASGOsaJwK5huzyKdsH5mOhF+/7+NDKirrnYCkvS766AlXgz4bgdKE1n8mWLK9h8clfDvRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274198; c=relaxed/simple;
-	bh=Um30luMYxWKuWS8dIm9gfKJFA154LC2TyQ10aDORglU=;
+	s=arc-20240116; t=1774278721; c=relaxed/simple;
+	bh=t1YyZk5P6xxkRjw1P2VoJ70h2UpOJjKgEukxlLDjxr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gaILcrKnXoYFZuN/95drBF90QNQUANPy6QX2OjcwlK6azp0CGIFTwr8i1i+mfjh2Z0EZX3XLB2a78OXTZpvIz9CJi/oKYleFxKOe8SJ6A2yRwNNttnZ51HZfMdMya4mRAiIODKnVdkOG/laQHYA9shNEQ+np/PI9ZkeC7TJgMBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fZPJ2O0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A73C2BC9E;
-	Mon, 23 Mar 2026 13:56:37 +0000 (UTC)
+	 MIME-Version; b=c8Ei40ZxyMAMj0PBnbBp6UCea6a9vVg19ULt7gZhpjV8NHkARFrLEYkptZkOMw1EDwqHO0MV8gAqwgkg8gR6vH56s0Q7f9SYUqroM5SdDq89tKo/fOkJltdNyM8EcFqF3f42G1CkFnuR3YP4VjflvHvMaELsr9jj2sh/ndZPKic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHhix/O5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5F6C4CEF7;
+	Mon, 23 Mar 2026 15:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274198;
-	bh=Um30luMYxWKuWS8dIm9gfKJFA154LC2TyQ10aDORglU=;
+	s=korg; t=1774278721;
+	bh=t1YyZk5P6xxkRjw1P2VoJ70h2UpOJjKgEukxlLDjxr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fZPJ2O0nldtScfGpsgDzhwwUu7K/+nIGHQ84OEw7Ttqqg04GnNTzyucHz3KE+22Vm
-	 bMIP6TsOTFniPiOTSN1RlPshrFNXmIUc1o6vP2k7s8VFYTNjK3j5JqWzPgzj5zx75p
-	 MxNy/CsbpCK4OULvm+8qEmWZZArDAqje9HjxXIEU=
+	b=YHhix/O5nTESAMwWE0yHXKV+er97zKVC3I7OKkNaT3eeyAwH/g/UtmSIKYO1Hf8H0
+	 ptnDIMXQXa0QvYSsWxwwu3m/ltuCuh1ri99wdWdtVtLqZSLrYSAlHdSlaeMSxhudJd
+	 tNMCo4Ku/2MROJZxMDnwamZ21ZrKyb0CBoq6IrlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	"stable@vger.kernel.org, Chao Yu" <chao@kernel.org>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 141/220] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
+	Daeho Jeong <daehojeong@google.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 6.6 398/567] f2fs: fix to avoid migrating empty section
 Date: Mon, 23 Mar 2026 14:45:18 +0100
-Message-ID: <20260323134509.020340452@linuxfoundation.org>
+Message-ID: <20260323134543.708606112@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +64,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228125-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229312-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,163.com];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,vidocsecurity.com:email]
-X-Rspamd-Queue-Id: 3365E2F37F1
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6DC482F674E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
+[ Upstream commit d625a2b08c089397d3a03bff13fa8645e4ec7a01 ]
 
-In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
-the packet, then decrements it by 1 to skip the protocol discriminator
-byte before passing it to DecodeH323_UserInformation(). If the encoded
-length is 0, the decrement wraps to -1, which is then passed as a
-large value to the decoder, leading to an out-of-bounds read.
+It reports a bug from device w/ zufs:
 
-Add a check to ensure len is positive after the decrement.
+F2FS-fs (dm-64): Inconsistent segment (173822) type [1, 0] in SSA and SIT
+F2FS-fs (dm-64): Stopped filesystem due to reason: 4
 
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Thread A				Thread B
+- f2fs_expand_inode_data
+ - f2fs_allocate_pinning_section
+  - f2fs_gc_range
+   - do_garbage_collect w/ segno #x
+					- writepage
+					 - f2fs_allocate_data_block
+					  - new_curseg
+					   - allocate segno #x
+
+The root cause is: fallocate on pinning file may race w/ block allocation
+as above, result in do_garbage_collect() from fallocate() may migrate
+segment which is just allocated by a log, the log will update segment type
+in its in-memory structure, however GC will get segment type from on-disk
+SSA block, once segment type changes by log, we can detect such
+inconsistency, then shutdown filesystem.
+
+In this case, on-disk SSA shows type of segno #173822 is 1 (SUM_TYPE_NODE),
+however segno #173822 was just allocated as data type segment, so in-memory
+SIT shows type of segno #173822 is 0 (SUM_TYPE_DATA).
+
+Change as below to fix this issue:
+- check whether current section is empty before gc
+- add sanity checks on do_garbage_collect() to avoid any race case, result
+in migrating segment used by log.
+- btw, it fixes misc issue in printed logs: "SSA and SIT" -> "SIT and SSA".
+
+Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
+Cc: Daeho Jeong <daehojeong@google.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ Use IS_CURSEC instead of is_cursec according to
+commit c1cfc87e49525 ("f2fs: introduce is_cur{seg,sec}()"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/gc.c |   16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index c972e9488e16f..7b1497ed97d26 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
- 				break;
- 			p++;
- 			len--;
-+			if (len <= 0)
-+				break;
- 			return DecodeH323_UserInformation(buf, p, len,
- 							  &q931->UUIE);
- 		}
--- 
-2.51.0
-
+--- a/fs/f2fs/gc.c
++++ b/fs/f2fs/gc.c
+@@ -1742,6 +1742,13 @@ static int do_garbage_collect(struct f2f
+ 					GET_SUM_BLOCK(sbi, segno));
+ 		f2fs_put_page(sum_page, 0);
+ 
++		if (IS_CURSEC(sbi, GET_SEC_FROM_SEG(sbi, segno))) {
++			f2fs_err(sbi, "%s: segment %u is used by log",
++							__func__, segno);
++			f2fs_bug_on(sbi, 1);
++			goto skip;
++		}
++
+ 		if (get_valid_blocks(sbi, segno, false) == 0)
+ 			goto freed;
+ 		if (gc_type == BG_GC && __is_large_section(sbi) &&
+@@ -1752,7 +1759,7 @@ static int do_garbage_collect(struct f2f
+ 
+ 		sum = page_address(sum_page);
+ 		if (type != GET_SUM_TYPE((&sum->footer))) {
+-			f2fs_err(sbi, "Inconsistent segment (%u) type [%d, %d] in SSA and SIT",
++			f2fs_err(sbi, "Inconsistent segment (%u) type [%d, %d] in SIT and SSA",
+ 				 segno, type, GET_SUM_TYPE((&sum->footer)));
+ 			set_sbi_flag(sbi, SBI_NEED_FSCK);
+ 			f2fs_stop_checkpoint(sbi, false,
+@@ -2005,6 +2012,13 @@ int f2fs_gc_range(struct f2fs_sb_info *s
+ 			.iroot = RADIX_TREE_INIT(gc_list.iroot, GFP_NOFS),
+ 		};
+ 
++		/*
++		 * avoid migrating empty section, as it can be allocated by
++		 * log in parallel.
++		 */
++		if (!get_valid_blocks(sbi, segno, true))
++			continue;
++
+ 		do_garbage_collect(sbi, segno, &gc_list, FG_GC,
+ 						dry_run_sections == 0);
+ 		put_gc_inode(&gc_list);
 
 
 
