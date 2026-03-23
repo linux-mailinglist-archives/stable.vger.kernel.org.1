@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229420-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +FUMI4RWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:36 +0100
+	id SI1TIhtlwWkzSwQAu9opvQ
+	(envelope-from <stable+bounces-229420-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:06:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002E92F5B70
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 266FE2F7952
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C2C58311A040
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CA3473193DB1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19AF3AF647;
-	Mon, 23 Mar 2026 14:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67693BBA01;
+	Mon, 23 Mar 2026 15:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azwEbmYb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o10/CVTS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7457B3AEF50;
-	Mon, 23 Mar 2026 14:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85F7A3BBA17;
+	Mon, 23 Mar 2026 15:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277424; cv=none; b=e1LOPXdDNGjrICxCxU4PFI47rOJh0PVjm2gqEsvGn4fWzWHDx5gL5raCnj8RjJOfwAJKFKJvbOHmHHEp9u2lWiZSPain60XJ511+OGAFITC4PzS4f/FTzQnIXe2VX9xt9qLFaUSCPn9cxLYJh02bROSAfz7NYkaWWc3afRuGocA=
+	t=1774279190; cv=none; b=Krwkc6v/hEZBlXOD5oNxeHPVKl/gXZLOfBH2r64YQt0PVNedAGyX9LopaCFp61gWsEky0AqEDTOnyIfJYgsJP9vAJzzCZzrrU0BwWvl4Uki5wDtcjyTNmRha7sYgWaVdkW3apyJrHySqRgy/ORhyShmU2brlu92NS4UCfxd06rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277424; c=relaxed/simple;
-	bh=/Q8SCDnmUy0r0Job8qz517lf4RRcHd24Okz+Rizinf4=;
+	s=arc-20240116; t=1774279190; c=relaxed/simple;
+	bh=HCDEHoA4eyGw2SYMejdiIuAarVEREKXtzfEIo5BsAS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TMiWwRGbHv4lC1tWHCt9/yOL+XMGJi9GJiXrhu2E/T6cU9qQA7WeCxtWJwXmf7HIFA2g1SZnedp+F84m9ujhFw7L4NGzxNk1M2zwwC79r8K7sNrwxag+tQZsvb+dID9t7WBaLo0hlSHDpE9kXI88hJOqimJTcgXo7+7hskXEgyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azwEbmYb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7945C4CEF7;
-	Mon, 23 Mar 2026 14:50:23 +0000 (UTC)
+	 MIME-Version; b=dei5w1rLtmH0N5uq4Ri6EHpHEf6PVz3mjFLFA0GgIZfWUzQdF7eIuTlMBXlsqdjvgciVTGd/E1bT+P0Xz3Lr0SV3eDPX8E3uJLpfieflCie6m9JfKOraLxQujBmrfv/yedZ4IqReOO/M+QKk+rdV8M+YTSAl+VQG7BuZS3Q5hn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o10/CVTS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C02F3C4CEF7;
+	Mon, 23 Mar 2026 15:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277424;
-	bh=/Q8SCDnmUy0r0Job8qz517lf4RRcHd24Okz+Rizinf4=;
+	s=korg; t=1774279190;
+	bh=HCDEHoA4eyGw2SYMejdiIuAarVEREKXtzfEIo5BsAS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azwEbmYbepf4JoFY6igDmK2B3NbE22JpW5XC/qlGSocPJKQ8uXYGCwcJW0Z1FRgpj
-	 0E1eZmr+rxBIJk8nn+sTl9OCDPY8EHZc83gY+9+6DFukkw4teE44hp1wyq25GKijWs
-	 ShnJ5UhFkiPhaovP/1eOUZwAGubZRu/zRJZnQpGw=
+	b=o10/CVTSe11um9QjrrFV6fr/vSSntgMTBof0w7HCLymHA8urC3wU9IGSuh/+VXx0s
+	 SEFwJw9O6Fpu8XlEq0CH+H2InrRhHaXlL+8/wldlNXut0CKXk9D3ppweBWNtBhaAi+
+	 m1BNyziNw6edKRZGSRz0/OE6/8FIZeay+ov5iFOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 427/460] net: bonding: fix NULL deref in bond_debug_rlb_hash_show
+Subject: [PATCH 6.6 503/567] Bluetooth: LE L2CAP: Disconnect if received packets SDU exceeds IMTU
 Date: Mon, 23 Mar 2026 14:47:03 +0100
-Message-ID: <20260323134537.044582366@linuxfoundation.org>
+Message-ID: <20260323134546.464048769@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,116 +68,84 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228895-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_FROM(0.00)[bounces-229420-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 002E92F5B70
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arri.de:email]
+X-Rspamd-Queue-Id: 266FE2F7952
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Christian Eggers <ceggers@arri.de>
 
-[ Upstream commit 605b52497bf89b3b154674deb135da98f916e390 ]
+[ Upstream commit e1d9a66889867c232657a9b6f25d451d7c3ab96f ]
 
-rlb_clear_slave intentionally keeps RLB hash-table entries on
-the rx_hashtbl_used_head list with slave set to NULL when no
-replacement slave is available. However, bond_debug_rlb_hash_show
-visites client_info->slave without checking if it's NULL.
+Core 6.0, Vol 3, Part A, 3.4.3:
+"If the SDU length field value exceeds the receiver's MTU, the receiver
+shall disconnect the channel..."
 
-Other used-list iterators in bond_alb.c already handle this NULL-slave
-state safely:
+This fixes L2CAP/LE/CFC/BV-26-C (running together with 'l2test -r -P
+0x0027 -V le_public -I 100').
 
-- rlb_update_client returns early on !client_info->slave
-- rlb_req_update_slave_clients, rlb_clear_slave, and rlb_rebalance
-compare slave values before visiting
-- lb_req_update_subnet_clients continues if slave is NULL
-
-The following NULL deref crash can be trigger in
-bond_debug_rlb_hash_show:
-
-[    1.289791] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[    1.292058] RIP: 0010:bond_debug_rlb_hash_show (drivers/net/bonding/bond_debugfs.c:41)
-[    1.293101] RSP: 0018:ffffc900004a7d00 EFLAGS: 00010286
-[    1.293333] RAX: 0000000000000000 RBX: ffff888102b48200 RCX: ffff888102b48204
-[    1.293631] RDX: ffff888102b48200 RSI: ffffffff839daad5 RDI: ffff888102815078
-[    1.293924] RBP: ffff888102815078 R08: ffff888102b4820e R09: 0000000000000000
-[    1.294267] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888100f929c0
-[    1.294564] R13: ffff888100f92a00 R14: 0000000000000001 R15: ffffc900004a7ed8
-[    1.294864] FS:  0000000001395380(0000) GS:ffff888196e75000(0000) knlGS:0000000000000000
-[    1.295239] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    1.295480] CR2: 0000000000000000 CR3: 0000000102adc004 CR4: 0000000000772ef0
-[    1.295897] Call Trace:
-[    1.296134]  seq_read_iter (fs/seq_file.c:231)
-[    1.296341]  seq_read (fs/seq_file.c:164)
-[    1.296493]  full_proxy_read (fs/debugfs/file.c:378 (discriminator 1))
-[    1.296658]  vfs_read (fs/read_write.c:572)
-[    1.296981]  ksys_read (fs/read_write.c:717)
-[    1.297132]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
-[    1.297325]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
-
-Add a NULL check and print "(none)" for entries with no assigned slave.
-
-Fixes: caafa84251b88 ("bonding: add the debugfs interface to see RLB hash table")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260317005034.1888794-1-xmei5@asu.edu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_debugfs.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ net/bluetooth/l2cap_core.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_debugfs.c b/drivers/net/bonding/bond_debugfs.c
-index b19492a7f6ad1..3c1945c3e850a 100644
---- a/drivers/net/bonding/bond_debugfs.c
-+++ b/drivers/net/bonding/bond_debugfs.c
-@@ -34,11 +34,17 @@ static int bond_debug_rlb_hash_show(struct seq_file *m, void *v)
- 	for (; hash_index != RLB_NULL_INDEX;
- 	     hash_index = client_info->used_next) {
- 		client_info = &(bond_info->rx_hashtbl[hash_index]);
--		seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
--			&client_info->ip_src,
--			&client_info->ip_dst,
--			&client_info->mac_dst,
--			client_info->slave->dev->name);
-+		if (client_info->slave)
-+			seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
-+				   &client_info->ip_src,
-+				   &client_info->ip_dst,
-+				   &client_info->mac_dst,
-+				   client_info->slave->dev->name);
-+		else
-+			seq_printf(m, "%-15pI4 %-15pI4 %-17pM (none)\n",
-+				   &client_info->ip_src,
-+				   &client_info->ip_dst,
-+				   &client_info->mac_dst);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 0253bdbbfc593..94dee7c227f74 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6610,8 +6610,10 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		return -ENOBUFS;
  	}
  
- 	spin_unlock_bh(&bond->mode_lock);
+-	if (chan->imtu < skb->len) {
+-		BT_ERR("Too big LE L2CAP PDU");
++	if (skb->len > chan->imtu) {
++		BT_ERR("Too big LE L2CAP PDU: len %u > %u", skb->len,
++		       chan->imtu);
++		l2cap_send_disconn_req(chan, ECONNRESET);
+ 		return -ENOBUFS;
+ 	}
+ 
+@@ -6637,7 +6639,9 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		       sdu_len, skb->len, chan->imtu);
+ 
+ 		if (sdu_len > chan->imtu) {
+-			BT_ERR("Too big LE L2CAP SDU length received");
++			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
++			       skb->len, sdu_len);
++			l2cap_send_disconn_req(chan, ECONNRESET);
+ 			err = -EMSGSIZE;
+ 			goto failed;
+ 		}
 -- 
 2.51.0
 
