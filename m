@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-229755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228024-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gMinCptuwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229755-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:47:23 +0100
+	id oNBZErlHwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228024-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3C22F8CDF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:47:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4FF2F3A5C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6C18C3163569
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0ADD83058FE9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 664FF3AF678;
-	Mon, 23 Mar 2026 16:19:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783A03AD51E;
+	Mon, 23 Mar 2026 13:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkxS9Q0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pOLZ8Yeq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293D535958;
-	Mon, 23 Mar 2026 16:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F573ACA5C;
+	Mon, 23 Mar 2026 13:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282781; cv=none; b=stGoDXQSDZ1JCIgYsV3ron1tLx1uyomRUC0hmbbeA8rCfgD5DCVbngyS5jFbbeYfLFYOtsTTL6MFDRLiww2qOWm2ZtqEvsQW0QBpXINCrY9QdKrmdqIZ2rr4ninaUPEJqQuOC+OGH7Fc9KLy8d/qIK6hueem3CEs2QsbgX39a0o=
+	t=1774273896; cv=none; b=PKNcltX8IVW9v3R3VuRl5UYDVXvKDG0YS+/Kbcc3boGxS50H44BEZUHWi+wpELeAKRXPOPC/xWAmXqRYwhBr+gi13i5JhIoOVBV+j8UIGXydjRdXZJh7gEbm7V8LLTNoxlGP+lzy4Vg4t+zasqtT/FzlWJy3DNA1IcKmTDKmUFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282781; c=relaxed/simple;
-	bh=QVvprI1ekJgj+WiXVBeATlriePRSAq83kWIC4vtfDxE=;
+	s=arc-20240116; t=1774273896; c=relaxed/simple;
+	bh=Q3D75tZayzY8HIO6kArQwrFA9K9IvgQkLBbIq2gVMb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rh24iFVBahHXFpmrorMSJx13Q5bLnLW35N0aIM0Px/+yMRsKTBSW/FRrvcpIwdB28qirvs7FdHzdse8DqCdkUwdHCA3oRqAio5QcdjlBEFQ9unrCnUr5KfWNvIzlCs09vKtPqcSqCz7L5Dn1VQq1P+30mVjQgNykpNsOhP+sY00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkxS9Q0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76B95C4CEF7;
-	Mon, 23 Mar 2026 16:19:40 +0000 (UTC)
+	 MIME-Version; b=Q2t7v9Yyi1Sc0J9jW4uObqtWfREzHDu2DBsV2w/HVHwJoRTcPUvWworCAWDLZLyqIdT9r0KGpdPqDNfarAFjVfytmKva34C1Y0nb2pOxRe9geJgo3J/+H8LBMFWVi4jG1XvOK08bi7Fuecw4j7+tS9xRgt7m9fNoIit7KP3Lpng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pOLZ8Yeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2B7C2BCB3;
+	Mon, 23 Mar 2026 13:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282780;
-	bh=QVvprI1ekJgj+WiXVBeATlriePRSAq83kWIC4vtfDxE=;
+	s=korg; t=1774273895;
+	bh=Q3D75tZayzY8HIO6kArQwrFA9K9IvgQkLBbIq2gVMb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkxS9Q0B63HYNVgwwJvKTORIQ3lwIAyCPazS4UBkQizHLA1NB29e/Eya1YbtqDkIt
-	 srF+jwYUMy0z6Myt642hkOf1/llAJSFBu6NcnQfbfuNTSuNQkkDYwAY8HF5HkNPO7n
-	 QmBsKHh36bbSwWU9N+uf2Tg8U6V/GnYZV5VFFUOo=
+	b=pOLZ8YeqPYVcZ1YdRiAcV9ThpsM8tok0AxzYG7yBJStci+aON/diIYnGWG8rujhQl
+	 p+A2i2j4kDVWxlU3V8dWusA0yWtod4kZdPfY560iroeKsewBzUhBfy8AH9/XTzkFki
+	 F/vyJy3ZerPJG0Bq5uPvugaYM4KkQ5HfHbqApmjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.1 239/481] ice: fix retry for AQ command 0x06EE
+	Luke Wang <ziniu.wang_1@nxp.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.19 044/220] mmc: sdhci: fix timing selection for 1-bit bus width
 Date: Mon, 23 Mar 2026 14:43:41 +0100
-Message-ID: <20260323134530.963980942@linuxfoundation.org>
+Message-ID: <20260323134505.981010360@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,134 +68,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229755-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228024-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AB3C22F8CDF
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linaro.org:email,nxp.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,intel.com:email]
+X-Rspamd-Queue-Id: 3F4FF2F3A5C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+From: Luke Wang <ziniu.wang_1@nxp.com>
 
-commit fb4903b3354aed4a2301180cf991226f896c87ed upstream.
+commit 5e3486e64094c28a526543f1e8aa0d5964b7f02d upstream.
 
-Executing ethtool -m can fail reporting a netlink I/O error while firmware
-link management holds the i2c bus used to communicate with the module.
+When 1-bit bus width is used with HS200/HS400 capabilities set,
+mmc_select_hs200() returns 0 without actually switching. This
+causes mmc_select_timing() to skip mmc_select_hs(), leaving eMMC
+in legacy mode (26MHz) instead of High Speed SDR (52MHz).
 
-According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
-Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
-request should to be retried upon receiving EBUSY from firmware.
+Per JEDEC eMMC spec section 5.3.2, 1-bit mode supports High Speed
+SDR. Drop incompatible HS200/HS400/UHS/DDR caps early so timing
+selection falls through to mmc_select_hs() correctly.
 
-Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-implemented it only for part of ice_get_module_eeprom(), leaving all other
-calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
-EBUSY without retrying.
-
-Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
-(AQ) command with opcode 0x06EE to the list of commands that should be
-retried on receiving EBUSY from firmware.
-
+Fixes: f2119df6b764 ("mmc: sd: add support for signal voltage switch procedure")
+Signed-off-by: Luke Wang <ziniu.wang_1@nxp.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
-Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c  |    1 
- drivers/net/ethernet/intel/ice/ice_ethtool.c |   35 ++++++++++-----------------
- 2 files changed, 15 insertions(+), 21 deletions(-)
+ drivers/mmc/host/sdhci.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1570,6 +1570,7 @@ static bool ice_should_retry_sq_send_cmd
- 	case ice_aqc_opc_lldp_stop:
- 	case ice_aqc_opc_lldp_start:
- 	case ice_aqc_opc_lldp_filter_ctrl:
-+	case ice_aqc_opc_sff_eeprom:
- 		return true;
- 	}
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -4532,8 +4532,15 @@ int sdhci_setup_host(struct sdhci_host *
+ 	 * their platform code before calling sdhci_add_host(), and we
+ 	 * won't assume 8-bit width for hosts without that CAP.
+ 	 */
+-	if (!(host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA))
++	if (host->quirks & SDHCI_QUIRK_FORCE_1_BIT_DATA) {
++		host->caps1 &= ~(SDHCI_SUPPORT_SDR104 | SDHCI_SUPPORT_SDR50 | SDHCI_SUPPORT_DDR50);
++		if (host->quirks2 & SDHCI_QUIRK2_CAPS_BIT63_FOR_HS400)
++			host->caps1 &= ~SDHCI_SUPPORT_HS400;
++		mmc->caps2 &= ~(MMC_CAP2_HS200 | MMC_CAP2_HS400 | MMC_CAP2_HS400_ES);
++		mmc->caps &= ~(MMC_CAP_DDR | MMC_CAP_UHS);
++	} else {
+ 		mmc->caps |= MMC_CAP_4_BIT_DATA;
++	}
  
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -4089,7 +4089,7 @@ ice_get_module_eeprom(struct net_device
- 	struct ice_pf *pf = vsi->back;
- 	struct ice_hw *hw = &pf->hw;
- 	bool is_sfp = false;
--	unsigned int i, j;
-+	unsigned int i;
- 	u16 offset = 0;
- 	u8 page = 0;
- 	int status;
-@@ -4131,26 +4131,19 @@ ice_get_module_eeprom(struct net_device
- 		if (page == 0 || !(data[0x2] & 0x4)) {
- 			u32 copy_len;
- 
--			/* If i2c bus is busy due to slow page change or
--			 * link management access, call can fail. This is normal.
--			 * So we retry this a few times.
--			 */
--			for (j = 0; j < 4; j++) {
--				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
--							   !is_sfp, value,
--							   SFF_READ_BLOCK_SIZE,
--							   0, NULL);
--				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
--					   addr, offset, page, is_sfp,
--					   value[0], value[1], value[2], value[3],
--					   value[4], value[5], value[6], value[7],
--					   status);
--				if (status) {
--					usleep_range(1500, 2500);
--					memset(value, 0, SFF_READ_BLOCK_SIZE);
--					continue;
--				}
--				break;
-+			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
-+						   !is_sfp, value,
-+						   SFF_READ_BLOCK_SIZE,
-+						   0, NULL);
-+			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
-+				   addr, offset, page, is_sfp,
-+				   value[0], value[1], value[2], value[3],
-+				   value[4], value[5], value[6], value[7],
-+				   ERR_PTR(status));
-+			if (status) {
-+				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
-+					   __func__, ERR_PTR(status));
-+				return status;
- 			}
- 
- 			/* Make sure we have enough room for the new block */
+ 	if (host->quirks2 & SDHCI_QUIRK2_HOST_NO_CMD23)
+ 		mmc->caps &= ~MMC_CAP_CMD23;
 
 
 
