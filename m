@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228607-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qH1rHhh8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229631-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:56 +0100
+	id 0DGMJsFPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228607-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BEC2FA573
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DEE02F4CCA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8CAE13064655
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BB1FF30518E0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7068C3BB9E3;
-	Mon, 23 Mar 2026 16:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088AF36F414;
+	Mon, 23 Mar 2026 14:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zONMnbpj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gg+mREb3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B8327B340;
-	Mon, 23 Mar 2026 16:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BCF1FFC48;
+	Mon, 23 Mar 2026 14:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282445; cv=none; b=Je8f7I5enZjFzhbGrh4wkaPvP2VT4j4PsA3hzaN+LrpGeV3fMdWApGUBSgy9tbGqG8gR94Cjfb8A8TvcQL1UQSfBVpt0ANh1j/VaGttqE9CmPAZ7nbXwhWC9I+Mi/Fn3dR6QmSt1vBb67BI+yr/KJtnxD3Q0sph906YHCslRQBA=
+	t=1774275587; cv=none; b=qGkUo1aaZCTmkb5IVz8cSWOEX7cejfxxi90+Hm9iN+YMD6HpzBOALtvlPndTr3AIJ9zU0C8Xvxvfs/rPEFxGbF6yxdBBwD841w7n34bwkeL5+/UbFhqDPJAy9BsUEXk7MlIApV/e0cUJcBdNxwkoOubeAydw/bUVu/wP/8z0fBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282445; c=relaxed/simple;
-	bh=fXkXL0g83ZznkRuookI7oMd6WuWTNtb/pcI+nXB0DMg=;
+	s=arc-20240116; t=1774275587; c=relaxed/simple;
+	bh=oO6AxUBBeD7x60f9FxHM9uSpJuw5zj4YfIUEPCU3bPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NvBkXyo8TryPdJB5hHbTdn9BQ3gVmw041EnyGIjle80x1ytNvkL9mvIAGkhfmGDy/krc4mE2frOTeiFg8Y7ZF9UwOgRGh7Zy4r/JOKo24N2kBK+iz+WG+jdo0AtKQUl4u6hgTQ70Gz5/XdGXq3p0FkdZuEaBc6j979ygMm7KFpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zONMnbpj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB69CC4CEF7;
-	Mon, 23 Mar 2026 16:14:04 +0000 (UTC)
+	 MIME-Version; b=D5fcNdzStkzqaIv6w979/hMK1J5Fkj0yE6XLf7a2EUco8kTINK6IGRklHo3XPm9bf63fSkKJwy1L56ickNcodLN9fZ5XTveqqM0D1fQNGku34RKOvhgGhH3t6knaAEJtvkj4IL6GknyqUokoCyKHV3i8cWsg0y0j+lnRvhLChi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gg+mREb3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44288C4CEF7;
+	Mon, 23 Mar 2026 14:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282445;
-	bh=fXkXL0g83ZznkRuookI7oMd6WuWTNtb/pcI+nXB0DMg=;
+	s=korg; t=1774275587;
+	bh=oO6AxUBBeD7x60f9FxHM9uSpJuw5zj4YfIUEPCU3bPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zONMnbpjqv0M6DMvhlkJk+xKbs8OBa9kNBM3e3Kd/uMzy0ukXQtrFgr1UdOLv4y7d
-	 JaPe6xndunf66J4uQ7gt51gs+6ipd5gqBbX13C99QoPlqr2YufIKNuR1f/p0tjNBBe
-	 g/hMfk+ELb6MaDiCgOb6iY+rAUnKrSHhG3+Aj7mE=
+	b=gg+mREb3DNXUDhIH4KUN2xZ0rFjkUNCDofv6QS+6KmJxJeAHbc4qFh9S1vQfc58vl
+	 5Z7hVbcedHtkdggNefHkpDy/3PT/J3EvXsexFU22lT+wjNTUhVKuN0XVq8sCHQ8xKu
+	 NdWr1YRTxVvBRObJCVKludbnsYutrqQTPo2RulQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?J . =20Neusch=C3=A4fer?=" <j.ne@posteo.net>,
-	Heiko Schocher <hs@nabladev.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 159/481] powerpc: 83xx: km83xx: Fix keymile vendor prefix
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.12 145/460] s390/pfault: Fix virtual vs physical address confusion
 Date: Mon, 23 Mar 2026 14:42:21 +0100
-Message-ID: <20260323134529.109651715@linuxfoundation.org>
+Message-ID: <20260323134530.146034445@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +64,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229631-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228607-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: D6BEC2FA573
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 2DEE02F4CCA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: J. Neuschäfer <j.ne@posteo.net>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit 691417ffe7821721e0a28bd25ad8c0dc0d4ae4ad ]
+commit d879ac6756b662a085a743e76023c768c3241579 upstream.
 
-When kmeter.c was refactored into km83xx.c in 2011, the "keymile" vendor
-prefix was changed to upper-case "Keymile". The devicetree at
-arch/powerpc/boot/dts/kmeter1.dts never underwent the same change,
-suggesting that this was simply a mistake.
+When Linux is running as guest, runs a user space process and the
+user space process accesses a page that the host has paged out,
+the guest gets a pfault interrupt and schedules a different process.
+Without this mechanism the host would have to suspend the whole
+virtual CPU until the page has been paged in.
 
-Fixes: 93e2b95c81042d ("powerpc/83xx: rename and update kmeter1")
-Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-Reviewed-by: Heiko Schocher <hs@nabladev.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260303-keymile-v1-1-463a11e71702@posteo.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To setup the pfault interrupt the real address of parameter list
+should be passed to DIAGNOSE 0x258, but a virtual address is passed
+instead.
+
+That has a performance impact, since the pfault setup never succeeds,
+the interrupt is never delivered to a guest and the whole virtual CPU
+is suspended as result.
+
+Cc: stable@vger.kernel.org
+Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
+Reported-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/83xx/km83xx.c | 4 ++--
+ arch/s390/mm/pfault.c |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/83xx/km83xx.c b/arch/powerpc/platforms/83xx/km83xx.c
-index 907acdecc94af..25135a1518fc8 100644
---- a/arch/powerpc/platforms/83xx/km83xx.c
-+++ b/arch/powerpc/platforms/83xx/km83xx.c
-@@ -155,8 +155,8 @@ machine_device_initcall(mpc83xx_km, mpc83xx_declare_of_platform_devices);
+--- a/arch/s390/mm/pfault.c
++++ b/arch/s390/mm/pfault.c
+@@ -61,7 +61,7 @@ int __pfault_init(void)
+ 		"0:	nopr	%%r7\n"
+ 		EX_TABLE(0b, 0b)
+ 		: [rc] "+d" (rc)
+-		: [refbk] "a" (&pfault_init_refbk), "m" (pfault_init_refbk)
++		: [refbk] "a" (virt_to_phys(&pfault_init_refbk)), "m" (pfault_init_refbk)
+ 		: "cc");
+ 	return rc;
+ }
+@@ -83,7 +83,7 @@ void __pfault_fini(void)
+ 		"0:	nopr	%%r7\n"
+ 		EX_TABLE(0b, 0b)
+ 		:
+-		: [refbk] "a" (&pfault_fini_refbk), "m" (pfault_fini_refbk)
++		: [refbk] "a" (virt_to_phys(&pfault_fini_refbk)), "m" (pfault_fini_refbk)
+ 		: "cc");
+ }
  
- /* list of the supported boards */
- static char *board[] __initdata = {
--	"Keymile,KMETER1",
--	"Keymile,kmpbec8321",
-+	"keymile,KMETER1",
-+	"keymile,kmpbec8321",
- 	NULL
- };
- 
--- 
-2.51.0
-
 
 
 
