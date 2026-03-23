@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-229126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229599-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iB48Dh5twWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229126-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:02 +0100
+	id aFGHMp5wwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229599-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:58 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B00C2F8984
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F882F9213
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B98FE302BEB8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF99F329ADD4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D536A27AC45;
-	Mon, 23 Mar 2026 15:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C043BAD94;
+	Mon, 23 Mar 2026 16:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k2jKaHqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KQZfe4Gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 987B8261B9C;
-	Mon, 23 Mar 2026 15:02:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3913BA243;
+	Mon, 23 Mar 2026 16:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278142; cv=none; b=UWvY1W1UnhzWvID0zX6k3jnL/C8hsqR8Xg+vRg4QzjsrwWukwfof84992JFpgZFvne/1Xr0kGVSY1VV8gDz71l8WLeyHYe07YpbsHSWNLjWNCwxVtsGkzDAElvwS/CzwoOIZZFQpMzDpZvBOifOI0uBTwOoJkCBkC73C41ydI3M=
+	t=1774282355; cv=none; b=PQnMmxr9P7Va31cEYUknIwmsrUm5+26sXQ/KvNVJVCtlOiZou3k67JabxkFwd9+SuxkeMjRag8g3O8NrFD9xoLF5OCJRB+C2b4jJDAtziCbw5vN1eznMMhwdNrqL5rzvmREzliAh+A/WK7YoBseIkCz5gwpA/+eb34xhkfBHrRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278142; c=relaxed/simple;
-	bh=+fDKxp0Qvg7OseVEJAi4q1LkAADykoagDy0nzhJIrC8=;
+	s=arc-20240116; t=1774282355; c=relaxed/simple;
+	bh=nQvBCQtABAz4Mzx7OtQeDjBuZHy1V4H0hgZeoNPlSXw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bz9fn8bHdAYFW5F3qNNQ9Ce0Fseo3A4HmZFXeKwYN73lQ4WwoGmy5MuprDw9DeDWFOyt+BOmD/GYJro37jH2tMSxgnkhJk3/96cUFZMl3WWeE5fEkxZ5Uf9tjFRH44URQYc9B6A2xPjyg2GuoR6VUaV3Lr3P1h71KZ0zdtUPaRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k2jKaHqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A54C4CEF7;
-	Mon, 23 Mar 2026 15:02:21 +0000 (UTC)
+	 MIME-Version; b=bua+6jQsFt5NM12JoL3srcxx/fl6zz4oRQHESFHZYjoZB33fxIkH1BbI0AtzerIg74+PO4yZMyXQUHwlIhOLXvqjF8s2xnNrP/Xy5M1FRq5Nz0gv3d0OK/QQeyDt+VXAKjm09g1vmfvjSHTzi5mwaCFi5RoGnfE3wplmV6JXhOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KQZfe4Gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E03AEC4CEF7;
+	Mon, 23 Mar 2026 16:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278142;
-	bh=+fDKxp0Qvg7OseVEJAi4q1LkAADykoagDy0nzhJIrC8=;
+	s=korg; t=1774282355;
+	bh=nQvBCQtABAz4Mzx7OtQeDjBuZHy1V4H0hgZeoNPlSXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k2jKaHqtSIveWd6I0rQov5FAl45uinx1VZz0gK3xDV2aly/2YFUO86QCnwPWvA0AA
-	 iffwoArQNfW5U4vhJEwXgNuOTtI+u/EIQh/+jhr9JEzY4oH+MwVdI1ByAAhzncH+W7
-	 kz6yPSe1xTaye+6pDVBtNomvbFTpZ/j8jlQo/hck=
+	b=KQZfe4GcpwY0K3/7BmZ0f8+jIfd78YTmv8BHmFJOdY1TWzfEWXAYlbl7Y4cTW3nlf
+	 FdsKaZs96EStTtkg6ZOfPaa3D0Pm4cjk/T5YwvLnTwU4yY4REmG01G7X5GT/Qkgmxc
+	 f2ai21PH/GD0Rslbts80lU9OI630ZajBBJmnrkXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.6 187/567] apparmor: validate DFA start states are in bounds in unpack_pdb
+	David Thomson <dt@linux-mail.net>,
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 125/481] xen/acpi-processor: fix _CST detection using undersized evaluation buffer
 Date: Mon, 23 Mar 2026 14:41:47 +0100
-Message-ID: <20260323134538.478682723@linuxfoundation.org>
+Message-ID: <20260323134528.326445670@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,85 +70,94 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229126-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229599-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8B00C2F8984
+X-Rspamd-Queue-Id: 56F882F9213
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
+From: David Thomson <dt@linux-mail.net>
 
-commit 9063d7e2615f4a7ab321de6b520e23d370e58816 upstream.
+[ Upstream commit 8b57227d59a86fc06d4f09de08f98133680f2cae ]
 
-Start states are read from untrusted data and used as indexes into the
-DFA state tables. The aa_dfa_next() function call in unpack_pdb() will
-access dfa->tables[YYTD_ID_BASE][start], and if the start state exceeds
-the number of states in the DFA, this results in an out-of-bound read.
+read_acpi_id() attempts to evaluate _CST using a stack buffer of
+sizeof(union acpi_object) (48 bytes), but _CST returns a nested Package
+of sub-Packages (one per C-state, each containing a register descriptor,
+type, latency, and power) requiring hundreds of bytes. The evaluation
+always fails with AE_BUFFER_OVERFLOW.
 
-==================================================================
- BUG: KASAN: slab-out-of-bounds in aa_dfa_next+0x2a1/0x360
- Read of size 4 at addr ffff88811956fb90 by task su/1097
- ...
+On modern systems using FFH/MWAIT entry (where pblk is zero), this
+causes the function to return before setting the acpi_id_cst_present
+bit. In check_acpi_ids(), flags.power is then zero for all Phase 2 CPUs
+(physical CPUs beyond dom0's vCPU count), so push_cxx_to_hypervisor() is
+never called for them.
 
-Reject policies with out-of-bounds start states during unpacking
-to prevent the issue.
+On a system with dom0_max_vcpus=2 and 8 physical CPUs, only PCPUs 0-1
+receive C-state data. PCPUs 2-7 are stuck in C0/C1 idle, unable to
+enter C2/C3. This costs measurable wall power (4W observed on an Intel
+Core Ultra 7 265K with Xen 4.20).
 
-Fixes: ad5ff3db53c6 ("AppArmor: Add ability to load extended policy")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: Massimiliano Pellizzer <massimiliano.pellizzer@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The function never uses the _CST return value -- it only needs to know
+whether _CST exists. Replace the broken acpi_evaluate_object() call with
+acpi_has_method(), which correctly detects _CST presence using
+acpi_get_handle() without any buffer allocation. This brings C-state
+detection to parity with the P-state path, which already works correctly
+for Phase 2 CPUs.
+
+Fixes: 59a568029181 ("xen/acpi-processor: C and P-state driver that uploads said data to hypervisor.")
+Signed-off-by: David Thomson <dt@linux-mail.net>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20260224093707.19679-1-dt@linux-mail.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/xen/xen-acpi-processor.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -764,7 +764,17 @@ static int unpack_pdb(struct aa_ext *e,
- 	if (!aa_unpack_u32(e, &pdb->start[AA_CLASS_FILE], "dfa_start")) {
- 		/* default start state for xmatch and file dfa */
- 		pdb->start[AA_CLASS_FILE] = DFA_START;
--	}	/* setup class index */
-+	}
-+
-+	size_t state_count = pdb->dfa->tables[YYTD_ID_BASE]->td_lolen;
-+
-+	if (pdb->start[0] >= state_count ||
-+	    pdb->start[AA_CLASS_FILE] >= state_count) {
-+		*info = "invalid dfa start state";
-+		goto fail;
-+	}
-+
-+	/* setup class index */
- 	for (i = AA_CLASS_FILE + 1; i <= AA_CLASS_LAST; i++) {
- 		pdb->start[i] = aa_dfa_next(pdb->dfa, pdb->start[0],
- 					       i);
+diff --git a/drivers/xen/xen-acpi-processor.c b/drivers/xen/xen-acpi-processor.c
+index 9cb61db67efde..12877f85bb79d 100644
+--- a/drivers/xen/xen-acpi-processor.c
++++ b/drivers/xen/xen-acpi-processor.c
+@@ -379,11 +379,8 @@ read_acpi_id(acpi_handle handle, u32 lvl, void *context, void **rv)
+ 			 acpi_psd[acpi_id].domain);
+ 	}
+ 
+-	status = acpi_evaluate_object(handle, "_CST", NULL, &buffer);
+-	if (ACPI_FAILURE(status)) {
+-		if (!pblk)
+-			return AE_OK;
+-	}
++	if (!pblk && !acpi_has_method(handle, "_CST"))
++		return AE_OK;
+ 	/* .. and it has a C-state */
+ 	__set_bit(acpi_id, acpi_id_cst_present);
+ 
+-- 
+2.51.0
+
 
 
 
