@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-229616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228578-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SO47Cwl8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229616-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:41 +0100
+	id ILQRJL1LwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228578-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB3792FA538
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A4702F4252
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8DE5F3222CA3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 359A0300862E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42963AEF58;
-	Mon, 23 Mar 2026 16:13:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF69E1A680D;
+	Mon, 23 Mar 2026 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e+wpMRBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iA101lB3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DE03B8D4F;
-	Mon, 23 Mar 2026 16:13:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93965823DD;
+	Mon, 23 Mar 2026 14:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282405; cv=none; b=WN+xCXMLpqW+IszWYjGNB+Bq4fRDaxeJmGT1W1LlJk/uPtfjxPD7ExEt30NcY4QvTcXr1AU7lhhTc0SijCVnb/Mm1WpNXhfxO6vsQddN1S0m/FsrAUKH1KLs/xsOTN7e0Fcc4DxH/kIAxlERT2TdhnpbyTjp9HPbglASYJ/tiz0=
+	t=1774275500; cv=none; b=ZMOgGs/ZlS83YxvE3dbk6+pSy3VG6Qodrreiwni2O30OnxsAzHz5xUd7ouAxyfqD4onN6ZkpvsxymWBC0NGuQwUvZSbUJQBouDfMrR4wpZgaMTByLCadhvlTI51p3pwhABHV7lgFJZ7pb4nKbjLH+2PLIaBmqTDLm3fK1xnEvEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282405; c=relaxed/simple;
-	bh=hzM0cMM+oDUfFncP/Kxwb0/0yonYtyy9sutAKATknQs=;
+	s=arc-20240116; t=1774275500; c=relaxed/simple;
+	bh=DsQ/gYTnYDiLc7pAIfDtQls7mgyOamb4XgEgqvSJBT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shQdX3nkW37zfASyTY1hr2d1onvee2vObzAdTJiqX0GyqwfjJygAzt4YrUlfLgFgzgvDLyusrFOJvLiSahgfvJ512+SiVIoMQST4xFb0tVF9sNOq26iPmumO0adaaovM8x+hlz5egA1t/oFmxq/DQ+w4RcMxJzttSblTGVMz4oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e+wpMRBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F369C4CEF7;
-	Mon, 23 Mar 2026 16:13:24 +0000 (UTC)
+	 MIME-Version; b=dUd5YEXQwPxooc5/aXLxsOnNrRixTKuIxy3H7DCGr+nHmxTb0NEDk66jNE29RzBqK6d20kYLvDty+yiqmKnROiHLoVqLVnN3EGXd3LFJkWtUNveqLB7E9VnldaGrr/JF602UILCJLCmNG588xl02kuKtgScr95zLTD655b8L0Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iA101lB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A9CC4CEF7;
+	Mon, 23 Mar 2026 14:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282404;
-	bh=hzM0cMM+oDUfFncP/Kxwb0/0yonYtyy9sutAKATknQs=;
+	s=korg; t=1774275500;
+	bh=DsQ/gYTnYDiLc7pAIfDtQls7mgyOamb4XgEgqvSJBT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e+wpMRBCQEU5PH40TlgbTfjaor81jOTi3uNZvwsCkrtBUB3i8RrFDQAVMcfZnUcWC
-	 ran2dZBxdgznYeNxcvYHo9rux21b4fpLn5gx71QR803Lp3Tb8EF6S6yLOSNny69OUH
-	 eEcgKX9LlndTmlicfeqfaPt1kcgGXLjvBuYIsefo=
+	b=iA101lB3TmPhG8g9GUx5AovLFaHEYflOuGTIwIBOh0JEpmTNlGm3emG+Vz5eU+ckZ
+	 HKBAEMvjpjhA9xhpIMEBeazAxboSJB8uDkFw2U3VEfwXUE8IJsB84VfVTWgyjLyjHN
+	 s1PpGGXl+Mu5iFvAWD454Kq09XIxYDLtb3TXSAXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guruprasad C P <gurucp2005@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/481] net: bridge: fix nd_tbl NULL dereference when IPv6 is disabled
-Date: Mon, 23 Mar 2026 14:41:59 +0100
-Message-ID: <20260323134528.601632558@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 124/460] kprobes: avoid crash when rmmod/insmod after ftrace killed
+Date: Mon, 23 Mar 2026 14:42:00 +0100
+Message-ID: <20260323134529.666448793@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,117 +66,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,nvidia.com,blackwall.org,kernel.org];
-	TAGGED_FROM(0.00)[bounces-229616-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228578-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nvidia.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,suse.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: AB3792FA538
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 7A4702F4252
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit e5e890630533bdc15b26a34bb8e7ef539bdf1322 ]
+commit e113f0b46d19626ec15388bcb91432c9a4fd6261 upstream.
 
-When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
-initialized because inet6_init() exits before ndisc_init() is called
-which initializes it. Then, if neigh_suppress is enabled and an ICMPv6
-Neighbor Discovery packet reaches the bridge, br_do_suppress_nd() will
-dereference ipv6_stub->nd_tbl which is NULL, passing it to
-neigh_lookup(). This causes a kernel NULL pointer dereference.
+After we hit ftrace is killed by some errors, the kernel crash if
+we remove modules in which kprobe probes.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000268
- Oops: 0000 [#1] PREEMPT SMP NOPTI
- [...]
- RIP: 0010:neigh_lookup+0x16/0xe0
- [...]
- Call Trace:
-  <IRQ>
-  ? neigh_lookup+0x16/0xe0
-  br_do_suppress_nd+0x160/0x290 [bridge]
-  br_handle_frame_finish+0x500/0x620 [bridge]
-  br_handle_frame+0x353/0x440 [bridge]
-  __netif_receive_skb_core.constprop.0+0x298/0x1110
-  __netif_receive_skb_one_core+0x3d/0xa0
-  process_backlog+0xa0/0x140
-  __napi_poll+0x2c/0x170
-  net_rx_action+0x2c4/0x3a0
-  handle_softirqs+0xd0/0x270
-  do_softirq+0x3f/0x60
+BUG: unable to handle page fault for address: fffffbfff805000d
+PGD 817fcc067 P4D 817fcc067 PUD 817fc8067 PMD 101555067 PTE 0
+Oops: Oops: 0000 [#1] SMP KASAN PTI
+CPU: 4 UID: 0 PID: 2012 Comm: rmmod Tainted: G        W  OE
+Tainted: [W]=WARN, [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+RIP: 0010:kprobes_module_callback+0x89/0x790
+RSP: 0018:ffff88812e157d30 EFLAGS: 00010a02
+RAX: 1ffffffff805000d RBX: dffffc0000000000 RCX: ffffffff86a8de90
+RDX: ffffed1025c2af9b RSI: 0000000000000008 RDI: ffffffffc0280068
+RBP: 0000000000000000 R08: 0000000000000001 R09: ffffed1025c2af9a
+R10: ffff88812e157cd7 R11: 205d323130325420 R12: 0000000000000002
+R13: ffffffffc0290488 R14: 0000000000000002 R15: ffffffffc0280040
+FS:  00007fbc450dd740(0000) GS:ffff888420331000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: fffffbfff805000d CR3: 000000010f624000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ notifier_call_chain+0xc6/0x280
+ blocking_notifier_call_chain+0x60/0x90
+ __do_sys_delete_module.constprop.0+0x32a/0x4e0
+ do_syscall_64+0x5d/0xfa0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fix this by replacing IS_ENABLED(IPV6) call with ipv6_mod_enabled() in
-the callers. This is in essence disabling NS/NA suppression when IPv6 is
-disabled.
+This is because the kprobe on ftrace does not correctly handles
+the kprobe_ftrace_disabled flag set by ftrace_kill().
 
-Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
-Reported-by: Guruprasad C P <gurucp2005@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAHXs0ORzd62QOG-Fttqa2Cx_A_VFp=utE2H2VTX5nqfgs7LDxQ@mail.gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260304120357.9778-1-fmancera@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To prevent this error, check kprobe_ftrace_disabled in
+__disarm_kprobe_ftrace() and skip all ftrace related operations.
+
+Link: https://lore.kernel.org/all/176473947565.1727781.13110060700668331950.stgit@mhiramat.tok.corp.google.com/
+
+Reported-by: Ye Bin <yebin10@huawei.com>
+Closes: https://lore.kernel.org/all/20251125020536.2484381-1-yebin@huaweicloud.com/
+Fixes: ae6aa16fdc16 ("kprobes: introduce ftrace based optimization")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_device.c | 2 +-
- net/bridge/br_input.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ kernel/kprobes.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index 036ae99d09841..052986e05e620 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -71,7 +71,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 	     eth_hdr(skb)->h_proto == htons(ETH_P_RARP)) &&
- 	    br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED)) {
- 		br_do_proxy_suppress_arp(skb, br, vid, NULL);
--	} else if (IS_ENABLED(CONFIG_IPV6) &&
-+	} else if (ipv6_mod_enabled() &&
- 		   skb->protocol == htons(ETH_P_IPV6) &&
- 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
- 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index e33500771b30f..aca6db6f95355 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -148,7 +148,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 	    (skb->protocol == htons(ETH_P_ARP) ||
- 	     skb->protocol == htons(ETH_P_RARP))) {
- 		br_do_proxy_suppress_arp(skb, br, vid, p);
--	} else if (IS_ENABLED(CONFIG_IPV6) &&
-+	} else if (ipv6_mod_enabled() &&
- 		   skb->protocol == htons(ETH_P_IPV6) &&
- 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
- 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
--- 
-2.51.0
-
+--- a/kernel/kprobes.c
++++ b/kernel/kprobes.c
+@@ -1113,6 +1113,10 @@ static int __disarm_kprobe_ftrace(struct
+ 	int ret;
+ 
+ 	lockdep_assert_held(&kprobe_mutex);
++	if (unlikely(kprobe_ftrace_disabled)) {
++		/* Now ftrace is disabled forever, disarm is already done. */
++		return 0;
++	}
+ 
+ 	if (*cnt == 1) {
+ 		ret = unregister_ftrace_function(ops);
 
 
 
