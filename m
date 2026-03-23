@@ -1,54 +1,69 @@
-Return-Path: <stable+bounces-227951-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227947-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2FawAs4ZwWn5QQQAu9opvQ
-	(envelope-from <stable+bounces-227951-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:45:34 +0100
+	id MCTNKUEXwWn5QQQAu9opvQ
+	(envelope-from <stable+bounces-227947-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:34:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43CD92F06AC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:45:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1083E2F02B1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:34:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EBEAB303B92B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:40:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47226304DC80
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0B438C42E;
-	Mon, 23 Mar 2026 10:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9602C38C414;
+	Mon, 23 Mar 2026 10:32:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 097EA38C42B;
-	Mon, 23 Mar 2026 10:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.53.16.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3443638C2AC
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:32:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774262424; cv=none; b=Z64fkQWAfbsXt83lcXv7dRDcVar3uOwEqN2p5Q2QKDeaAyqgcs5G+ksqrva3z0rqfb7sEHBEoyxHa6+PE9S0xDADOc/uYhQFjBi8VmVzR35UXs5TYsUA5UYdgV4cLDflZKKDHbCdDDcUjt28Gcp8AEeWg6IS4geQTwTm02qzLNY=
+	t=1774261956; cv=none; b=sWh7ekKghb+MyU2GFPJ+ZKnU6rL7n11q21HbyMzppzMghyH45jGELgdKiv3uXPrMJSTmufFQunAtDfxUyn5mJUaioodvnGnMRn8x3jQlaM62R6a11zXyVushqZSSNr3t07mTcOxlj7ning8DV08JPhtJSYEOcvRILU3NzvbRjHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774262424; c=relaxed/simple;
-	bh=1hCCkmQUs0bLrA/OH4MBJ4sc2NkuG0D52C4RqPnGYSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W+gZTXtOFPNVobH5G9iULe/0ejxJ+rYQyIAI8R/VzFQcxXXsDja6CjwYYTEE1Ls/a0ZbutUtDHhoIUFzhFn92+Vn+Hz43FzY2JlX5Fwy6U950jb5IqTMITBTXKq54hoBgjkplrbIpWFyeLaF8VIcFiQ/AdJAYBU7TiyytBFn8f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaiser.cx; spf=pass smtp.mailfrom=kaiser.cx; arc=none smtp.client-ip=152.53.16.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kaiser.cx
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaiser.cx
-Received: from ipservice-092-208-105-007.092.208.pools.vodafone-ip.de ([92.208.105.7] helo=nb282.user.codasip.com)
-	by akranes.kaiser.cx with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <martin@kaiser.cx>)
-	id 1w4cOk-00000001Wr7-16Ro;
-	Mon, 23 Mar 2026 11:20:38 +0100
-From: Martin Kaiser <martin@kaiser.cx>
-To: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	linux-trace-kernel@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Martin Kaiser <martin@kaiser.cx>,
+	s=arc-20240116; t=1774261956; c=relaxed/simple;
+	bh=dNrsYqqKTf1Z5G3ToizBJEztMv5xegsGRpeOVawV8vU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tmUc2zJzNdKM9UM0YmVl5v+JboGeiTrhAQulKm1ewvpZrFvtwMxHmSSbKhXSqBINiuTjd2WrMj+0afsR0grOx3UoEDZdqCrR+uevCNbul6LN/oh0jXHd5d+Dd1MQZrmrap7EKDkeNqMuBhbn5i0PusiavmgB+yddZR0AEj86Uv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w4caB-0008FL-Jz; Mon, 23 Mar 2026 11:32:27 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1w4caB-001i5e-0c;
+	Mon, 23 Mar 2026 11:32:27 +0100
+Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D23F750A7BD;
+	Mon, 23 Mar 2026 10:32:26 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	stable@vger.kernel.org
-Subject: [PATCH] tracing: fprobe: fix the length of unused fgraph_data
-Date: Mon, 23 Mar 2026 11:19:36 +0100
-Message-ID: <20260323102020.239567-1-martin@kaiser.cx>
-X-Mailer: git-send-email 2.43.7
+Subject: [PATCH net 1/5] can: netlink: can_changelink(): add missing error handling to call can_ctrlmode_changelink()
+Date: Mon, 23 Mar 2026 11:27:57 +0100
+Message-ID: <20260323103224.218099-2-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260323103224.218099-1-mkl@pengutronix.de>
+References: <20260323103224.218099-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,63 +71,74 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.14 / 15.00];
-	MID_CONTAINS_FROM(1.00)[];
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spamd-Result: default: False [0.04 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	MID_CONTAINS_FROM(1.00)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	DMARC_POLICY_SOFTFAIL(0.10)[kaiser.cx : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227951-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	FROM_NEQ_ENVFROM(0.00)[martin@kaiser.cx,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	TAGGED_FROM(0.00)[bounces-227947-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[mkl@pengutronix.de,stable@vger.kernel.org];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	R_DKIM_NA(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 43CD92F06AC
+	TO_DN_SOME(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,pengutronix.de:email,pengutronix.de:mid]
+X-Rspamd-Queue-Id: 1083E2F02B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-If fprobe_entry does not fill the allocated fgraph_data completely, the
-unused part is zeroed with memset.
+In commit e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()") the
+CAN Control Mode (IFLA_CAN_CTRLMODE) handling was factored out into the
+can_ctrlmode_changelink() function. But the call to
+can_ctrlmode_changelink() is missing the error handling.
 
-Fix the length for this memset call. Both reserved_words and used are in
-units of return stack words, but memset needs the number of bytes.
+Add the missing error handling and propagation to the call
+can_ctrlmode_changelink().
 
 Cc: stable@vger.kernel.org
-Fixes: 4346ba160409 ("fprobe: Rewrite fprobe on function-graph tracer")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Fixes: e1a5cd9d6665 ("can: netlink: add can_ctrlmode_changelink()")
+Link: https://patch.msgid.link/20260310-can_ctrlmode_changelink-add-error-handling-v1-1-0daf63d85922@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- kernel/trace/fprobe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/dev/netlink.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/trace/fprobe.c b/kernel/trace/fprobe.c
-index dcadf1d23b8a..6a1192515afd 100644
---- a/kernel/trace/fprobe.c
-+++ b/kernel/trace/fprobe.c
-@@ -451,7 +451,7 @@ static int fprobe_fgraph_entry(struct ftrace_graph_ent *trace, struct fgraph_ops
- 		}
- 	}
- 	if (used < reserved_words)
--		memset(fgraph_data + used, 0, reserved_words - used);
-+		memset(fgraph_data + used, 0, (reserved_words - used) * sizeof(long));
+diff --git a/drivers/net/can/dev/netlink.c b/drivers/net/can/dev/netlink.c
+index 0498198a4696..766d455950f5 100644
+--- a/drivers/net/can/dev/netlink.c
++++ b/drivers/net/can/dev/netlink.c
+@@ -601,7 +601,9 @@ static int can_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	/* We need synchronization with dev->stop() */
+ 	ASSERT_RTNL();
  
- 	/* If any exit_handler is set, data must be used. */
- 	return used != 0;
+-	can_ctrlmode_changelink(dev, data, extack);
++	err = can_ctrlmode_changelink(dev, data, extack);
++	if (err)
++		return err;
+ 
+ 	if (data[IFLA_CAN_BITTIMING]) {
+ 		struct can_bittiming bt;
+
+base-commit: 8a63baadf08453f66eb582fdb6dd234f72024723
 -- 
-2.43.7
+2.53.0
 
 
