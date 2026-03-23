@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-228693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228245-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wOY9NGNowWliSwQAu9opvQ
-	(envelope-from <stable+bounces-228693-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:20:51 +0100
+	id qJePOlhMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228245-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:12 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2310E2F7EC2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:20:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 273262F440F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E03B63033A94
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9441930DE434
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73713B2FF2;
-	Mon, 23 Mar 2026 14:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7598A3B19B3;
+	Mon, 23 Mar 2026 14:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="igTZ4xta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lJDyIbGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E653B2FD5;
-	Mon, 23 Mar 2026 14:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39B9D3B19DB;
+	Mon, 23 Mar 2026 14:02:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276870; cv=none; b=fCdUDs02uxOnnbnOjl/d/vYy8SoG/W+cIKyDvKmrir3TWEOQZvGxi8pqI6DK7y2srFDd3C625oeeM2h/pI8it/SI2tK0wUN8VGITdoKgiB0w3hJY26larNX4gNtXtYTPZz/teaS8BMa3pxeOOUWGm32l2KUf0F3zZJd3r4qz+Jk=
+	t=1774274565; cv=none; b=SLRn+4GRqimgViz71gGvCB8kNIGeWydZeYBO7PB9TomtGi1/MZDIcscsf0eedkAWQD3ctnG0TcGpGq2++uVWbxXKDmbPSJ1fZZdNhKsNWgwfR3jNSoyc3D2q0m7iWqBlaP3U4ajdJi2IhkRrHCwuY4LZF1PHEVzCaKw87bqO+hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276870; c=relaxed/simple;
-	bh=XSljMEnNempKfVFiwnRVqsb2acNT1Iap3H/Dig8auzA=;
+	s=arc-20240116; t=1774274565; c=relaxed/simple;
+	bh=D5ngVfY5jwPC5BuZMz92mGz4DluZljGMbwOM4+kd1wM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDTuIrKRxerWeT+i6Ld+Zcybc9B+rC/OXFuPt8PF490GHbUKq9542y9R8hxqPjAeb0dFnV296V9vQQQpCe3HMZec5BXIRZrg3FVMyvhg4LMqbjyTV/YxtM3YVqGzuYfnJElGfqPmzZ2s47ZeGW6skhNJUqLLdtjj0Rq0RhePE6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=igTZ4xta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BD8C2BC9E;
-	Mon, 23 Mar 2026 14:41:09 +0000 (UTC)
+	 MIME-Version; b=dc8WcgADKfrJPAXlsrtstjDyruoMbduO+uSUE3C/wB4/XI6fCbINB6tGnjjddg/MirJWoYPZgKkYlP6O90n0n5lmFZI8YtY4OeKniVjBDGOOclD3ZmB7Dp7pyAJZZwdszow0h2wzIcGPvGuWCUCNuL9NlvlmIZSlljTrRN4800w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lJDyIbGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9937C2BCB1;
+	Mon, 23 Mar 2026 14:02:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276870;
-	bh=XSljMEnNempKfVFiwnRVqsb2acNT1Iap3H/Dig8auzA=;
+	s=korg; t=1774274565;
+	bh=D5ngVfY5jwPC5BuZMz92mGz4DluZljGMbwOM4+kd1wM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=igTZ4xtadd0NO11bXU4xDej8trlXF22kHMKix5uqyQQdHB0eg+1QYPUWBrj3rFYFO
-	 qYIfr+DKeXTQJdg8zQswynsgybzLtk/1KUnW6qtWJicLSl4bZsJephceQ68JEiKFPT
-	 gFDWZ3ymGhTJsfstDf7w9ZaLq98hLThr3GPTB474=
+	b=lJDyIbGDtd0AC8V9vgZW544o5zHlPZL3nzy+ga6trn4/XO/8/x227ozX3VjGbhbVE
+	 Tbdhg1gyIQaQ5F8MOJ99acEL7zhZw12rtkJf6WLKYzaUT1hcLEYCuoSGMKb75FC6Cj
+	 OALaw/zbgswZhYyXYX59RWPIsETYCa0Sk6OjXl6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Lorenz <lorenz-frank@web.de>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 233/460] mptcp: pm: avoid sending RM_ADDR over same subflow
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Baoquan He <bhe@redhat.com>,
+	Coiby Xu <coxu@redhat.com>,
+	Dave Young <dyoung@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.18 008/212] crash_dump: dont log dm-crypt key bytes in read_key_from_user_keying
 Date: Mon, 23 Mar 2026 14:43:49 +0100
-Message-ID: <20260323134532.222824859@linuxfoundation.org>
+Message-ID: <20260323134504.033549175@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -76,8 +77,8 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228693-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,linux-foundation.org:server fail,linux.dev:server fail,sea.lore.kernel.org:server fail];
+	TAGGED_FROM(0.00)[bounces-228245-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
@@ -89,139 +90,59 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 2310E2F7EC2
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linux.dev:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:email]
+X-Rspamd-Queue-Id: 273262F440F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit fb8d0bccb221080630efcd9660c9f9349e53cc9e ]
+commit 36f46b0e36892eba08978eef7502ff3c94ddba77 upstream.
 
-RM_ADDR are sent over an active subflow, the first one in the subflows
-list. There is then a high chance the initial subflow is picked. With
-the in-kernel PM, when an endpoint is removed, a RM_ADDR is sent, then
-linked subflows are closed. This is done for each active MPTCP
-connection.
+When debug logging is enabled, read_key_from_user_keying() logs the first
+8 bytes of the key payload and partially exposes the dm-crypt key.  Stop
+logging any key bytes.
 
-MPTCP endpoints are likely removed because the attached network is no
-longer available or usable. In this case, it is better to avoid sending
-this RM_ADDR over the subflow that is going to be removed, but prefer
-sending it over another active and non stale subflow, if any.
-
-This modification avoids situations where the other end is not notified
-when a subflow is no longer usable: typically when the endpoint linked
-to the initial subflow is removed, especially on the server side.
-
-Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
-Cc: stable@vger.kernel.org
-Reported-by: Frank Lorenz <lorenz-frank@web.de>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/612
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-2-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted to _nl-prefixed function names in pm_netlink.c and omitted stale subflow fallback ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20260227230008.858641-2-thorsten.blum@linux.dev
+Fixes: 479e58549b0f ("crash_dump: store dm crypt keys in kdump reserved memory")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Coiby Xu <coxu@redhat.com>
+Cc: Dave Young <dyoung@redhat.com>
+Cc: Vivek Goyal <vgoyal@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c         |    2 +-
- net/mptcp/pm_netlink.c |   43 ++++++++++++++++++++++++++++++++++++++-----
- net/mptcp/protocol.h   |    2 ++
- 3 files changed, 41 insertions(+), 6 deletions(-)
+ kernel/crash_dump_dm_crypt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -56,7 +56,7 @@ int mptcp_pm_remove_addr(struct mptcp_so
- 	msk->pm.rm_list_tx = *rm_list;
- 	rm_addr |= BIT(MPTCP_RM_ADDR_SIGNAL);
- 	WRITE_ONCE(msk->pm.addr_signal, rm_addr);
--	mptcp_pm_nl_addr_send_ack(msk);
-+	mptcp_pm_nl_addr_send_ack_avoid_list(msk, rm_list);
- 	return 0;
- }
+diff --git a/kernel/crash_dump_dm_crypt.c b/kernel/crash_dump_dm_crypt.c
+index 1f4067fbdb94..a20d4097744a 100644
+--- a/kernel/crash_dump_dm_crypt.c
++++ b/kernel/crash_dump_dm_crypt.c
+@@ -168,8 +168,8 @@ static int read_key_from_user_keying(struct dm_crypt_key *dm_key)
  
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -855,9 +855,23 @@ bool mptcp_pm_nl_is_init_remote_addr(str
- 	return mptcp_addresses_equal(&mpc_remote, remote, remote->port);
- }
+ 	memcpy(dm_key->data, ukp->data, ukp->datalen);
+ 	dm_key->key_size = ukp->datalen;
+-	kexec_dprintk("Get dm crypt key (size=%u) %s: %8ph\n", dm_key->key_size,
+-		      dm_key->key_desc, dm_key->data);
++	kexec_dprintk("Get dm crypt key (size=%u) %s\n", dm_key->key_size,
++		      dm_key->key_desc);
  
--void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-+static bool subflow_in_rm_list(const struct mptcp_subflow_context *subflow,
-+			       const struct mptcp_rm_list *rm_list)
-+{
-+	u8 i, id = subflow_get_local_id(subflow);
-+
-+	for (i = 0; i < rm_list->nr; i++) {
-+		if (rm_list->ids[i] == id)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
-+					  const struct mptcp_rm_list *rm_list)
- {
--	struct mptcp_subflow_context *subflow;
-+	struct mptcp_subflow_context *subflow, *same_id = NULL;
- 
- 	msk_owned_by_me(msk);
- 	lockdep_assert_held(&msk->pm.lock);
-@@ -867,11 +881,30 @@ void mptcp_pm_nl_addr_send_ack(struct mp
- 		return;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
--		if (__mptcp_subflow_active(subflow)) {
--			mptcp_pm_send_ack(msk, subflow, false, false);
--			break;
-+		if (!__mptcp_subflow_active(subflow))
-+			continue;
-+
-+		if (unlikely(rm_list &&
-+			     subflow_in_rm_list(subflow, rm_list))) {
-+			if (!same_id)
-+				same_id = subflow;
-+		} else {
-+			goto send_ack;
- 		}
- 	}
-+
-+	if (same_id)
-+		subflow = same_id;
-+	else
-+		return;
-+
-+send_ack:
-+	mptcp_pm_send_ack(msk, subflow, false, false);
-+}
-+
-+void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-+{
-+	mptcp_pm_nl_addr_send_ack_avoid_list(msk, NULL);
- }
- 
- int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -1029,6 +1029,8 @@ void mptcp_pm_add_addr_send_ack(struct m
- bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
- 				     const struct mptcp_addr_info *remote);
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
-+void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
-+					  const struct mptcp_rm_list *rm_list);
- void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
- 			       const struct mptcp_rm_list *rm_list);
- void mptcp_pm_mp_prio_received(struct sock *sk, u8 bkup);
+ out:
+ 	up_read(&key->sem);
+-- 
+2.53.0
+
 
 
 
