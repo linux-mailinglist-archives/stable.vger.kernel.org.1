@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228389-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eAp3Fdd8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229922-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:07 +0100
+	id HwwGJnNNwWmxSAQAu9opvQ
+	(envelope-from <stable+bounces-228389-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A97572FA6AE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 336D52F4714
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:25:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7618E32177BA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5F75630168A2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 438783BE168;
-	Mon, 23 Mar 2026 16:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83133B19CC;
+	Mon, 23 Mar 2026 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bG0t8Ryg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ue/+3hs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0FB53BF665;
-	Mon, 23 Mar 2026 16:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FB0C145;
+	Mon, 23 Mar 2026 14:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283224; cv=none; b=rDQSuRmYoevCcRNcUsJDmHPvlX0NTZGmNUWVg1Q0tISD+S1oZqpG8/Keh+ZF6H7uoh21PlFdMSGVKKL/IWPAkV+dHbiK6yQkQ7BI8bXfmUKKHh+1HFwZe6k7lxepa/wtZQCsoWFQ1ss0+o125InTt2N4F7tpnwAtt8Jsdwaa+wg=
+	t=1774274981; cv=none; b=JAiLRnk7EEG1x1n8itU+zwjaD5owrTMOsQX8lkzPGu2DM6/BXl7b6+nkkgdV+6id8g8VmudUCAJ/WLoH5syVIg93xkNMJ2o4LaK4Wv61vIKhHxb26iJ6ZUyeGK7NTFZ5fuuiP+CHTo7py35QbICRYiuLVy2N6pMv/cSJo5aOV1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283224; c=relaxed/simple;
-	bh=FGXCWu436ias0cvU97ocxesWLgkuVP0uOHSQUOjjrlc=;
+	s=arc-20240116; t=1774274981; c=relaxed/simple;
+	bh=XJW3iNtZ2BTYeWAsNdVJIFcm5Sdfvnrw+GNQ0BqNBcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiE+9PcFHbXRWyrrkTH55waBjnja8F6mRpVK+F3psczSsJfWJ4/+73LbmFToEnSX9gXu6Q++16uvJE/lE4M7zYOmv6dFiXtUbNzg94MmdAxrR3fhAQLYkUFBy0W4YIgi4RPsSIq3P0KJ9N4/RMyx9HU72+wokyCTywUj8m9zWlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bG0t8Ryg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8298C4CEF7;
-	Mon, 23 Mar 2026 16:27:03 +0000 (UTC)
+	 MIME-Version; b=VPYoQi3HbLmd3UAaUGU/BQmUzUw1amgQ7pajYWoykatmHvhsdJfAV28oSPSQyxi4b1e1uJ2O0bzLlWgNn04nWXy5Bic9IwadZGgQFkaHaSkP0Gb/+SLnVibkF5oNMke0UvDP3hB2nQGQS0s/nePwJtKXvO6JOXj3Fej/vNwzo0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ue/+3hs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD43C4CEF7;
+	Mon, 23 Mar 2026 14:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283224;
-	bh=FGXCWu436ias0cvU97ocxesWLgkuVP0uOHSQUOjjrlc=;
+	s=korg; t=1774274981;
+	bh=XJW3iNtZ2BTYeWAsNdVJIFcm5Sdfvnrw+GNQ0BqNBcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bG0t8RygqBw2nmaTUFfwpXFY/VE7UDHtNwJAwmWHxwwMcOQHpxo89NVlO15SqFIf/
-	 yTYxMjOsH1fDHnYuD1dqeLBsyQeYhKJ+z6bJ4MNW0BF0fzTaKuKLgmjIrMPLNJnMR6
-	 Nf83UwrKfQ0amJKKzp/uWWS8DJCP5caLA7QBCS0E=
+	b=ue/+3hs1wuxT4JUWYwOlwrYsXeNHccV+Ag8o3G6xqo5SosR2XggNaOZswn1ittD+5
+	 JhNvteuoMpDE3Zdo5431pXXXGg2xyqR+cWVpstK33y/w9riw3For57P/NgVN3VG9A3
+	 qarjxFf9/7Oc5NOkN8ploz9jXrl+Umztsb58ODUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 421/481] net: mana: fix use-after-free in mana_hwc_destroy_channel() by reordering teardown
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.18 182/212] hwmon: (pmbus/mp2869) Check pmbus_read_byte_data() before using its return value
 Date: Mon, 23 Mar 2026 14:46:43 +0100
-Message-ID: <20260323134535.453324798@linuxfoundation.org>
+Message-ID: <20260323134509.500259736@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,99 +65,146 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229922-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228389-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A97572FA6AE
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 336D52F4714
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit fa103fc8f56954a60699a29215cb713448a39e87 ]
+commit c6f45ed26b6eb4766db06f21ff28a97ed485bcbb upstream.
 
-A potential race condition exists in mana_hwc_destroy_channel() where
-hwc->caller_ctx is freed before the HWC's Completion Queue (CQ) and
-Event Queue (EQ) are destroyed. This allows an in-flight CQ interrupt
-handler to dereference freed memory, leading to a use-after-free or
-NULL pointer dereference in mana_hwc_handle_resp().
+In mp2869_read_byte_data() and mp2869_read_word_data(), the return value
+of pmbus_read_byte_data() for PMBUS_STATUS_MFR_SPECIFIC is used directly
+inside FIELD_GET() macro arguments without error checking. If the I2C
+transaction fails, a negative error code is passed to FIELD_GET() and
+FIELD_PREP(), silently corrupting the status register bits being
+constructed.
 
-mana_smc_teardown_hwc() signals the hardware to stop but does not
-synchronize against IRQ handlers already executing on other CPUs. The
-IRQ synchronization only happens in mana_hwc_destroy_cq() via
-mana_gd_destroy_eq() -> mana_gd_deregister_irq(). Since this runs
-after kfree(hwc->caller_ctx), a concurrent mana_hwc_rx_event_handler()
-can dereference freed caller_ctx (and rxq->msg_buf) in
-mana_hwc_handle_resp().
+Extract the nested pmbus_read_byte_data() calls into a separate variable
+and check for errors before use. This also eliminates a redundant duplicate
+read of the same register in the PMBUS_STATUS_TEMPERATURE case.
 
-Fix this by reordering teardown to reverse-of-creation order: destroy
-the TX/RX work queues and CQ/EQ before freeing hwc->caller_ctx. This
-ensures all in-flight interrupt handlers complete before the memory they
-access is freed.
-
-Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/abHA3AjNtqa1nx9k@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a3a2923aaf7f2 ("hwmon: add MP2869,MP29608,MP29612 and MP29816 series driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260317173308.382545-4-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/hw_channel.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hwmon/pmbus/mp2869.c | 35 +++++++++++++++++++++--------------
+ 1 file changed, 21 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index 66a0552fc8b3a..8111f181f9572 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -757,9 +757,6 @@ void mana_hwc_destroy_channel(struct gdma_context *gc)
- 		gc->max_num_cqs = 0;
- 	}
+diff --git a/drivers/hwmon/pmbus/mp2869.c b/drivers/hwmon/pmbus/mp2869.c
+index cc69a1e91dfe..4647892e5112 100644
+--- a/drivers/hwmon/pmbus/mp2869.c
++++ b/drivers/hwmon/pmbus/mp2869.c
+@@ -165,7 +165,7 @@ static int mp2869_read_byte_data(struct i2c_client *client, int page, int reg)
+ {
+ 	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
+ 	struct mp2869_data *data = to_mp2869_data(info);
+-	int ret;
++	int ret, mfr;
  
--	kfree(hwc->caller_ctx);
--	hwc->caller_ctx = NULL;
--
- 	if (hwc->txq)
- 		mana_hwc_destroy_wq(hwc, hwc->txq);
+ 	switch (reg) {
+ 	case PMBUS_VOUT_MODE:
+@@ -188,11 +188,14 @@ static int mp2869_read_byte_data(struct i2c_client *client, int page, int reg)
+ 		if (ret < 0)
+ 			return ret;
  
-@@ -769,6 +766,9 @@ void mana_hwc_destroy_channel(struct gdma_context *gc)
- 	if (hwc->cq)
- 		mana_hwc_destroy_cq(hwc->gdma_dev->gdma_context, hwc->cq);
- 
-+	kfree(hwc->caller_ctx);
-+	hwc->caller_ctx = NULL;
++		mfr = pmbus_read_byte_data(client, page,
++					   PMBUS_STATUS_MFR_SPECIFIC);
++		if (mfr < 0)
++			return mfr;
 +
- 	mana_gd_free_res_map(&hwc->inflight_msg_res);
+ 		ret = (ret & ~GENMASK(2, 2)) |
+ 			FIELD_PREP(GENMASK(2, 2),
+-				   FIELD_GET(GENMASK(1, 1),
+-					     pmbus_read_byte_data(client, page,
+-								  PMBUS_STATUS_MFR_SPECIFIC)));
++				   FIELD_GET(GENMASK(1, 1), mfr));
+ 		break;
+ 	case PMBUS_STATUS_TEMPERATURE:
+ 		/*
+@@ -207,15 +210,16 @@ static int mp2869_read_byte_data(struct i2c_client *client, int page, int reg)
+ 		if (ret < 0)
+ 			return ret;
  
- 	hwc->num_inflight_msg = 0;
++		mfr = pmbus_read_byte_data(client, page,
++					   PMBUS_STATUS_MFR_SPECIFIC);
++		if (mfr < 0)
++			return mfr;
++
+ 		ret = (ret & ~GENMASK(7, 6)) |
+ 			FIELD_PREP(GENMASK(6, 6),
+-				   FIELD_GET(GENMASK(1, 1),
+-					     pmbus_read_byte_data(client, page,
+-								  PMBUS_STATUS_MFR_SPECIFIC))) |
++				   FIELD_GET(GENMASK(1, 1), mfr)) |
+ 			 FIELD_PREP(GENMASK(7, 7),
+-				    FIELD_GET(GENMASK(1, 1),
+-					      pmbus_read_byte_data(client, page,
+-								   PMBUS_STATUS_MFR_SPECIFIC)));
++				    FIELD_GET(GENMASK(1, 1), mfr));
+ 		break;
+ 	default:
+ 		ret = -ENODATA;
+@@ -230,7 +234,7 @@ static int mp2869_read_word_data(struct i2c_client *client, int page, int phase,
+ {
+ 	const struct pmbus_driver_info *info = pmbus_get_driver_info(client);
+ 	struct mp2869_data *data = to_mp2869_data(info);
+-	int ret;
++	int ret, mfr;
+ 
+ 	switch (reg) {
+ 	case PMBUS_STATUS_WORD:
+@@ -246,11 +250,14 @@ static int mp2869_read_word_data(struct i2c_client *client, int page, int phase,
+ 		if (ret < 0)
+ 			return ret;
+ 
++		mfr = pmbus_read_byte_data(client, page,
++					   PMBUS_STATUS_MFR_SPECIFIC);
++		if (mfr < 0)
++			return mfr;
++
+ 		ret = (ret & ~GENMASK(2, 2)) |
+ 			 FIELD_PREP(GENMASK(2, 2),
+-				    FIELD_GET(GENMASK(1, 1),
+-					      pmbus_read_byte_data(client, page,
+-								   PMBUS_STATUS_MFR_SPECIFIC)));
++				    FIELD_GET(GENMASK(1, 1), mfr));
+ 		break;
+ 	case PMBUS_READ_VIN:
+ 		/*
 -- 
-2.51.0
+2.53.0
 
 
 
