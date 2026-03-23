@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-228698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229186-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4K9vHgpTwWkPSQQAu9opvQ
-	(envelope-from <stable+bounces-228698-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:46 +0100
+	id 6KaaCC1uwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229186-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186132F53FE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:49:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B9F2F8BFF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 87B44303F439
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7EC6833FAE13
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404503B38B1;
-	Mon, 23 Mar 2026 14:41:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46349274B5F;
+	Mon, 23 Mar 2026 15:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6das8au"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/UeDcUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9133D3B38A4;
-	Mon, 23 Mar 2026 14:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B943B27F3;
+	Mon, 23 Mar 2026 15:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276883; cv=none; b=VBSPQdmsPM+vTpHWAV69WsEOy+Buxi6k5Sk2gKYeWvvalzyJgxeV3RGYgo+52kYS4fFaC2EziGTFFC9NPbQmr/WyGQfG0sVbmuqYyLVxFhh38GdQqSYbOQ5EzUwtpjUboZviC/W1L8SWQAVr7NHe/jinbKUQlOPYi/cruCMWgMg=
+	t=1774278332; cv=none; b=qqfUZYIZjBPokf+zaSShLhsFr5BOYWlkp+K5uJUOuQAwHQzKbt1EoBm2CnCXc/6ucBHtC/MuItnk0RWkGYSpqWfkXvrxlEzeidxvw8+RlVqi6kbIk6bQdlMvyIFy8dQIzPqDUgIZ1mKJV3S+X7c1YDATbzsqKD1jzUFHUq9rlQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276883; c=relaxed/simple;
-	bh=ZD8cKvpNcJkyAI4++Gg9qLCE0N8qPj9ulSQuJhZkQok=;
+	s=arc-20240116; t=1774278332; c=relaxed/simple;
+	bh=c7/tGWLlqNAGICuxf5yrJobBOU8pXIHUvFdbkdQ7i3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zt4trmlqoIj/bktdH7HZHnI89XEDvm0JUnT/9LdGexWb3dFVGv8UYxxMkrjmNnrYg7kIhMUWj8y7amWoV+iDxAie0Q5Kcora1HJOn9jEP2tOf90yeWfTcnZyJ+i+pYyRV94G3uZOJUqpmzvUkj8FK0yV4LnGtRfVLGbuPnOr2N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6das8au; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E989CC4CEF7;
-	Mon, 23 Mar 2026 14:41:22 +0000 (UTC)
+	 MIME-Version; b=cQPXyjLuDQcpj/Oo6S2eMXGDEw9403ozAloYMJRvLLjfxMAJth+kEvoz3tr9fbdgKlJXHzElrfMeW/H8yPgVB7Uu63V2N0fZjXN8vwBQjxHt5myFcPvohGtd3RVZhE9LZof24KUrhIOA8AbO69BPBrPxaLThgYuUYOAdlufTPCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/UeDcUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831CDC2BCB3;
+	Mon, 23 Mar 2026 15:05:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276883;
-	bh=ZD8cKvpNcJkyAI4++Gg9qLCE0N8qPj9ulSQuJhZkQok=;
+	s=korg; t=1774278331;
+	bh=c7/tGWLlqNAGICuxf5yrJobBOU8pXIHUvFdbkdQ7i3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6das8auqI8vrAtVrapQsPgpUCKgMwulQpBSihbIBoFYUGv/0KIBLinoyoK4Io4V8
-	 mBbAGoTANRQGhLGOnxGNohP9t9Ns4uGvFw7YyeaThJZIEbi4WIuo5PxbqW9Pf7nU8p
-	 TlhAAorx6Lt0C03CevXwnQnZc3T7Ky02IDOKx+7w=
+	b=y/UeDcUFCPFq0gv4C7VUElH0FlH2nUL4kG2IUh45Glrdb7uMaO+vZXZSC2C7UDrC2
+	 85S1ErZUgcSoMrqGQib6Uh0tgiux8BUANplLZtohO4fjNwFK7qZOHvr3/udfcf+Gvz
+	 +ss0ngkmK0f49hxX890NaxozYtDLCq8uijfEizCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.12 196/460] lib/bootconfig: check bounds before writing in __xbc_open_brace()
+	Zilin Guan <zilin@seu.edu.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 272/567] usb: xhci: Fix memory leak in xhci_disable_slot()
 Date: Mon, 23 Mar 2026 14:43:12 +0100
-Message-ID: <20260323134531.361510975@linuxfoundation.org>
+Message-ID: <20260323134540.560398065@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228698-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229186-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,51 +89,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 186132F53FE
+X-Rspamd-Queue-Id: 57B9F2F8BFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 560f763baa0f2c9a44da4294c06af071405ac46f upstream.
+commit c1c8550e70401159184130a1afc6261db01fc0ce upstream.
 
-The bounds check for brace_index happens after the array write.
-While the current call pattern prevents an actual out-of-bounds
-access (the previous call would have returned an error), the
-write-before-check pattern is fragile and would become a real
-out-of-bounds write if the error return were ever not propagated.
+xhci_alloc_command() allocates a command structure and, when the
+second argument is true, also allocates a completion structure.
+Currently, the error handling path in xhci_disable_slot() only frees
+the command structure using kfree(), causing the completion structure
+to leak.
 
-Move the bounds check before the array write so the function is
-self-contained and safe regardless of caller behavior.
+Use xhci_free_command() instead of kfree(). xhci_free_command() correctly
+frees both the command structure and the associated completion structure.
+Since the command structure is allocated with zero-initialization,
+command->in_ctx is NULL and will not be erroneously freed by
+xhci_free_command().
 
-Link: https://lore.kernel.org/all/20260312191143.28719-3-objecting@objecting.org/
+This bug was found using an experimental static analysis tool we are
+developing. The tool is based on the LLVM framework and is specifically
+designed to detect memory management issues. It is currently under
+active development and not yet publicly available, but we plan to
+open-source it after our research is published.
 
-Fixes: ead1e19ad905 ("lib/bootconfig: Fix a bug of breaking existing tree nodes")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+The bug was originally detected on v6.13-rc1 using our static analysis
+tool, and we have verified that the issue persists in the latest mainline
+kernel.
+
+We performed build testing on x86_64 with allyesconfig using GCC=11.4.0.
+Since triggering these error paths in xhci_disable_slot() requires specific
+hardware conditions or abnormal state, we were unable to construct a test
+case to reliably trigger these specific error paths at runtime.
+
+Fixes: 7faac1953ed1 ("xhci: avoid race between disable slot command and host runtime suspend")
+CC: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20260304223639.3882398-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/bootconfig.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -532,9 +532,9 @@ static char *skip_spaces_until_newline(c
- static int __init __xbc_open_brace(char *p)
- {
- 	/* Push the last key as open brace */
--	open_brace[brace_index++] = xbc_node_index(last_parent);
- 	if (brace_index >= XBC_DEPTH_MAX)
- 		return xbc_parse_error("Exceed max depth of braces", p);
-+	open_brace[brace_index++] = xbc_node_index(last_parent);
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -3939,7 +3939,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 	if (state == 0xffffffff || (xhci->xhc_state & XHCI_STATE_DYING) ||
+ 			(xhci->xhc_state & XHCI_STATE_HALTED)) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return -ENODEV;
+ 	}
  
- 	return 0;
- }
+@@ -3947,7 +3947,7 @@ int xhci_disable_slot(struct xhci_hcd *x
+ 				slot_id);
+ 	if (ret) {
+ 		spin_unlock_irqrestore(&xhci->lock, flags);
+-		kfree(command);
++		xhci_free_command(xhci, command);
+ 		return ret;
+ 	}
+ 	xhci_ring_cmd_db(xhci);
 
 
 
