@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229322-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2DdeFPRGwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228134-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:12 +0100
+	id GGarJgBcwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229322-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:00 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A572F3854
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37BD32F652F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9ADD5301C074
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8E460301DDDB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B517B3ACA62;
-	Mon, 23 Mar 2026 13:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E85627FB35;
+	Mon, 23 Mar 2026 15:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg4fkeDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgINRqHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7837C286A4;
-	Mon, 23 Mar 2026 13:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5193E242D70;
+	Mon, 23 Mar 2026 15:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274227; cv=none; b=XkNzAa/dH7GVSwJ8AaHzm+455aPLpi8oAjMqz7gnhCZw6obrNm2T3+tT3RVFjd8kusurCm/Y6u80IYQHGETysVPUWnj4YuIynn7ny22Vx6jzWUm0zCUk3Hm628tslZoDlOeRT6sCr8qDDKJbW1lMux4Lh5e55Jm5chioaFNlBfg=
+	t=1774278753; cv=none; b=TZeK71CK73bGwsayGu3FEhrIkFaxUAaGe6VWOjbPBvhuKl8sEOgW4aoBsDpNSC3QvdZ1g3gKxIR3IeWFJwh62I1CQkPMheh8D3vCGJO3xChVYPWKmquokh3CtyQvydQjDy7P6xZrSY+n50sPHXcNUJijCSe+CHi3T7u288JEfiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274227; c=relaxed/simple;
-	bh=D9komQWLBGBAOArWKNN4G+TIMsoDc0hnGtU6PfIt4fM=;
+	s=arc-20240116; t=1774278753; c=relaxed/simple;
+	bh=Y9B+dvlLesEZ5Et/m9ns622rVVr1P585n+kKitBa6ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEAezw9NMkfWzNHxsQqXRSK851p66PO/kkLM07Z4BfX+l8qz5HTsLdOna4PnhgbhPbu9Jy4mKW/iwu23r6VhWatAYzE+EWCOPFj0HYomOO15T92cO1Mm2Z164G7WFHVBMY4axt+vDwkHREYIbERt1LphotHov9y4ItRP7XDqx9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg4fkeDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE158C4CEF7;
-	Mon, 23 Mar 2026 13:57:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RBsdOBHyOVfZCgLKwZvn4uE116mC4BPpaya+WLR3prIMlEHSycj15mUN6VZZqPWIazVhz432PtgJp1OvyH3lK5FMzuOI0UmPkl0qJfH7iKLHxkEeydp7ZwafJCv1Vwcke/nKYSBjkPT/pYqJ6ZoZi2EcCXqifEaV3c2/jHIiDFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgINRqHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D62D1C4CEF7;
+	Mon, 23 Mar 2026 15:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274227;
-	bh=D9komQWLBGBAOArWKNN4G+TIMsoDc0hnGtU6PfIt4fM=;
+	s=korg; t=1774278753;
+	bh=Y9B+dvlLesEZ5Et/m9ns622rVVr1P585n+kKitBa6ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zg4fkeDh9zngvZKeuuOxhf00f+HGbxeIbeat5DQJQ1dO0KXBnQjFhlk0zh0WKAq7Q
-	 4sHZl7qKGQQ9IsNUtrZGlPvH+hHNHv0QzopFQKYtcxDf7NNKU0GQhgBFb94LVYJWiF
-	 jucklclSYAso7BpYnhJ8SNYbaHGlIFbjQpA3KayU=
+	b=SgINRqHC6mBVMZAnvWd19jria4myONCbNh1mIKR4NHRxva8teVx1jNrJOoCV57gV1
+	 0YqtHSa4S+Ame8mRqTUMIHT0zL1X3aNSoCUK52QWl8bZRaXuy6tDjNeFkw6UIW3vVY
+	 OhdCQP5MNMe2Cgw294QkL9uJBLEXpVd6L3cqrLhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 149/220] net/smc: fix NULL dereference and UAF in smc_tcp_syn_recv_sock()
-Date: Mon, 23 Mar 2026 14:45:26 +0100
-Message-ID: <20260323134509.294705727@linuxfoundation.org>
+	Chuck Lever <chuck.lever@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.6 407/567] nfs: pass explicit offset/count to trace events
+Date: Mon, 23 Mar 2026 14:45:27 +0100
+Message-ID: <20260323134543.948170383@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,246 +64,260 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228134-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,oracle.com,lst.de,Netapp.com,139.com];
+	TAGGED_FROM(0.00)[bounces-229322-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,827ae2bfb3a3529333e9];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,shopee.com:email]
-X-Rspamd-Queue-Id: E5A572F3854
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 37BD32F652F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 6d5e4538364b9ceb1ac2941a4deb86650afb3538 ]
+[ Upstream commit fada32ed6dbc748f447c8d050a961b75d946055a ]
 
-Syzkaller reported a panic in smc_tcp_syn_recv_sock() [1].
+nfs_folio_length is unsafe to use without having the folio locked and a
+check for a NULL ->f_mapping that protects against truncations and can
+lead to kernel crashes.  E.g. when running xfstests generic/065 with
+all nfs trace points enabled.
 
-smc_tcp_syn_recv_sock() is called in the TCP receive path
-(softirq) via icsk_af_ops->syn_recv_sock on the clcsock (TCP
-listening socket). It reads sk_user_data to get the smc_sock
-pointer. However, when the SMC listen socket is being closed
-concurrently, smc_close_active() sets clcsock->sk_user_data
-to NULL under sk_callback_lock, and then the smc_sock itself
-can be freed via sock_put() in smc_release().
+Follow the model of the XFS trace points and pass in an explіcit offset
+and length.  This has the additional benefit that these values can
+be more accurate as some of the users touch partial folio ranges.
 
-This leads to two issues:
-
-1) NULL pointer dereference: sk_user_data is NULL when
-   accessed.
-2) Use-after-free: sk_user_data is read as non-NULL, but the
-   smc_sock is freed before its fields (e.g., queued_smc_hs,
-   ori_af_ops) are accessed.
-
-The race window looks like this (the syzkaller crash [1]
-triggers via the SYN cookie path: tcp_get_cookie_sock() ->
-smc_tcp_syn_recv_sock(), but the normal tcp_check_req() path
-has the same race):
-
-  CPU A (softirq)              CPU B (process ctx)
-
-  tcp_v4_rcv()
-    TCP_NEW_SYN_RECV:
-    sk = req->rsk_listener
-    sock_hold(sk)
-    /* No lock on listener */
-                               smc_close_active():
-                                 write_lock_bh(cb_lock)
-                                 sk_user_data = NULL
-                                 write_unlock_bh(cb_lock)
-                                 ...
-                                 smc_clcsock_release()
-                                 sock_put(smc->sk) x2
-                                   -> smc_sock freed!
-    tcp_check_req()
-      smc_tcp_syn_recv_sock():
-        smc = user_data(sk)
-          -> NULL or dangling
-        smc->queued_smc_hs
-          -> crash!
-
-Note that the clcsock and smc_sock are two independent objects
-with separate refcounts. TCP stack holds a reference on the
-clcsock, which keeps it alive, but this does NOT prevent the
-smc_sock from being freed.
-
-Fix this by using RCU and refcount_inc_not_zero() to safely
-access smc_sock. Since smc_tcp_syn_recv_sock() is called in
-the TCP three-way handshake path, taking read_lock_bh on
-sk_callback_lock is too heavy and would not survive a SYN
-flood attack. Using rcu_read_lock() is much more lightweight.
-
-- Set SOCK_RCU_FREE on the SMC listen socket so that
-  smc_sock freeing is deferred until after the RCU grace
-  period. This guarantees the memory is still valid when
-  accessed inside rcu_read_lock().
-- Use rcu_read_lock() to protect reading sk_user_data.
-- Use refcount_inc_not_zero(&smc->sk.sk_refcnt) to pin the
-  smc_sock. If the refcount has already reached zero (close
-  path completed), it returns false and we bail out safely.
-
-Note: smc_hs_congested() has a similar lockless read of
-sk_user_data without rcu_read_lock(), but it only checks for
-NULL and accesses the global smc_hs_wq, never dereferencing
-any smc_sock field, so it is not affected.
-
-Reproducer was verified with mdelay injection and smc_run,
-the issue no longer occurs with this patch applied.
-
-[1] https://syzkaller.appspot.com/bug?extid=827ae2bfb3a3529333e9
-
-Fixes: 8270d9c21041 ("net/smc: Limit backlog connections")
-Reported-by: syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67eaf9b8.050a0220.3c3d88.004a.GAE@google.com/T/
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Link: https://patch.msgid.link/20260312092909.48325-1-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eb5654b3b89d ("NFS: Enable tracing of nfs_invalidate_folio() and nfs_launder_folio()")
+Reported-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+[ Minor conflict resolved. ]
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/smc/af_smc.c    | 23 +++++++++++++++++------
- net/smc/smc.h       |  5 +++++
- net/smc/smc_close.c |  2 +-
- 3 files changed, 23 insertions(+), 7 deletions(-)
+ fs/nfs/file.c     |    5 +++--
+ fs/nfs/nfstrace.h |   36 ++++++++++++++++++++----------------
+ fs/nfs/read.c     |    8 +++++---
+ fs/nfs/write.c    |   10 +++++-----
+ 4 files changed, 33 insertions(+), 26 deletions(-)
 
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 18c56b0d7ad53..765f26aaca93d 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -131,7 +131,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
- 	struct smc_sock *smc;
- 	struct sock *child;
- 
--	smc = smc_clcsock_user_data(sk);
-+	rcu_read_lock();
-+	smc = smc_clcsock_user_data_rcu(sk);
-+	if (!smc || !refcount_inc_not_zero(&smc->sk.sk_refcnt)) {
-+		rcu_read_unlock();
-+		smc = NULL;
-+		goto drop;
-+	}
-+	rcu_read_unlock();
- 
- 	if (READ_ONCE(sk->sk_ack_backlog) + atomic_read(&smc->queued_smc_hs) >
- 				sk->sk_max_ack_backlog)
-@@ -153,11 +160,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
- 		if (inet_csk(child)->icsk_af_ops == inet_csk(sk)->icsk_af_ops)
- 			inet_csk(child)->icsk_af_ops = smc->ori_af_ops;
- 	}
-+	sock_put(&smc->sk);
- 	return child;
- 
- drop:
- 	dst_release(dst);
- 	tcp_listendrop(sk);
-+	if (smc)
-+		sock_put(&smc->sk);
- 	return NULL;
+--- a/fs/nfs/file.c
++++ b/fs/nfs/file.c
+@@ -441,7 +441,7 @@ static void nfs_invalidate_folio(struct
+ 	/* Cancel any unstarted writes on this page */
+ 	nfs_wb_folio_cancel(inode, folio);
+ 	folio_wait_fscache(folio);
+-	trace_nfs_invalidate_folio(inode, folio);
++	trace_nfs_invalidate_folio(inode, folio_pos(folio) + offset, length);
  }
  
-@@ -254,7 +264,7 @@ static void smc_fback_restore_callbacks(struct smc_sock *smc)
- 	struct sock *clcsk = smc->clcsock->sk;
+ /*
+@@ -509,7 +509,8 @@ static int nfs_launder_folio(struct foli
  
- 	write_lock_bh(&clcsk->sk_callback_lock);
--	clcsk->sk_user_data = NULL;
-+	rcu_assign_sk_user_data(clcsk, NULL);
- 
- 	smc_clcsock_restore_cb(&clcsk->sk_state_change, &smc->clcsk_state_change);
- 	smc_clcsock_restore_cb(&clcsk->sk_data_ready, &smc->clcsk_data_ready);
-@@ -902,7 +912,7 @@ static void smc_fback_replace_callbacks(struct smc_sock *smc)
- 	struct sock *clcsk = smc->clcsock->sk;
- 
- 	write_lock_bh(&clcsk->sk_callback_lock);
--	clcsk->sk_user_data = (void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
-+	__rcu_assign_sk_user_data_with_flags(clcsk, smc, SK_USER_DATA_NOCOPY);
- 
- 	smc_clcsock_replace_cb(&clcsk->sk_state_change, smc_fback_state_change,
- 			       &smc->clcsk_state_change);
-@@ -2665,8 +2675,8 @@ int smc_listen(struct socket *sock, int backlog)
- 	 * smc-specific sk_data_ready function
- 	 */
- 	write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
--	smc->clcsock->sk->sk_user_data =
--		(void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
-+	__rcu_assign_sk_user_data_with_flags(smc->clcsock->sk, smc,
-+					     SK_USER_DATA_NOCOPY);
- 	smc_clcsock_replace_cb(&smc->clcsock->sk->sk_data_ready,
- 			       smc_clcsock_data_ready, &smc->clcsk_data_ready);
- 	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
-@@ -2687,10 +2697,11 @@ int smc_listen(struct socket *sock, int backlog)
- 		write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
- 		smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
- 				       &smc->clcsk_data_ready);
--		smc->clcsock->sk->sk_user_data = NULL;
-+		rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
- 		write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
- 		goto out;
- 	}
-+	sock_set_flag(sk, SOCK_RCU_FREE);
- 	sk->sk_max_ack_backlog = backlog;
- 	sk->sk_ack_backlog = 0;
- 	sk->sk_state = SMC_LISTEN;
-diff --git a/net/smc/smc.h b/net/smc/smc.h
-index 9e6af72784baa..52145df83f6e7 100644
---- a/net/smc/smc.h
-+++ b/net/smc/smc.h
-@@ -346,6 +346,11 @@ static inline struct smc_sock *smc_clcsock_user_data(const struct sock *clcsk)
- 	       ((uintptr_t)clcsk->sk_user_data & ~SK_USER_DATA_NOCOPY);
+ 	folio_wait_fscache(folio);
+ 	ret = nfs_wb_folio(inode, folio);
+-	trace_nfs_launder_folio_done(inode, folio, ret);
++	trace_nfs_launder_folio_done(inode, folio_pos(folio),
++			folio_size(folio), ret);
+ 	return ret;
  }
  
-+static inline struct smc_sock *smc_clcsock_user_data_rcu(const struct sock *clcsk)
-+{
-+	return (struct smc_sock *)rcu_dereference_sk_user_data(clcsk);
-+}
-+
- /* save target_cb in saved_cb, and replace target_cb with new_cb */
- static inline void smc_clcsock_replace_cb(void (**target_cb)(struct sock *),
- 					  void (*new_cb)(struct sock *),
-diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
-index 10219f55aad14..bb0313ef5f7c1 100644
---- a/net/smc/smc_close.c
-+++ b/net/smc/smc_close.c
-@@ -218,7 +218,7 @@ int smc_close_active(struct smc_sock *smc)
- 			write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
- 			smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
- 					       &smc->clcsk_data_ready);
--			smc->clcsock->sk->sk_user_data = NULL;
-+			rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
- 			write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
- 			rc = kernel_sock_shutdown(smc->clcsock, SHUT_RDWR);
- 		}
--- 
-2.51.0
-
+--- a/fs/nfs/nfstrace.h
++++ b/fs/nfs/nfstrace.h
+@@ -933,10 +933,11 @@ TRACE_EVENT(nfs_sillyrename_unlink,
+ DECLARE_EVENT_CLASS(nfs_folio_event,
+ 		TP_PROTO(
+ 			const struct inode *inode,
+-			struct folio *folio
++			loff_t offset,
++			size_t count
+ 		),
+ 
+-		TP_ARGS(inode, folio),
++		TP_ARGS(inode, offset, count),
+ 
+ 		TP_STRUCT__entry(
+ 			__field(dev_t, dev)
+@@ -944,7 +945,7 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
+ 			__field(u64, fileid)
+ 			__field(u64, version)
+ 			__field(loff_t, offset)
+-			__field(u32, count)
++			__field(size_t, count)
+ 		),
+ 
+ 		TP_fast_assign(
+@@ -954,13 +955,13 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
+ 			__entry->fileid = nfsi->fileid;
+ 			__entry->fhandle = nfs_fhandle_hash(&nfsi->fh);
+ 			__entry->version = inode_peek_iversion_raw(inode);
+-			__entry->offset = folio_file_pos(folio);
+-			__entry->count = nfs_folio_length(folio);
++			__entry->offset = offset,
++			__entry->count = count;
+ 		),
+ 
+ 		TP_printk(
+ 			"fileid=%02x:%02x:%llu fhandle=0x%08x version=%llu "
+-			"offset=%lld count=%u",
++			"offset=%lld count=%zu",
+ 			MAJOR(__entry->dev), MINOR(__entry->dev),
+ 			(unsigned long long)__entry->fileid,
+ 			__entry->fhandle, __entry->version,
+@@ -972,18 +973,20 @@ DECLARE_EVENT_CLASS(nfs_folio_event,
+ 	DEFINE_EVENT(nfs_folio_event, name, \
+ 			TP_PROTO( \
+ 				const struct inode *inode, \
+-				struct folio *folio \
++				loff_t offset, \
++				size_t count \
+ 			), \
+-			TP_ARGS(inode, folio))
++			TP_ARGS(inode, offset, count))
+ 
+ DECLARE_EVENT_CLASS(nfs_folio_event_done,
+ 		TP_PROTO(
+ 			const struct inode *inode,
+-			struct folio *folio,
++			loff_t offset,
++			size_t count,
+ 			int ret
+ 		),
+ 
+-		TP_ARGS(inode, folio, ret),
++		TP_ARGS(inode, offset, count, ret),
+ 
+ 		TP_STRUCT__entry(
+ 			__field(dev_t, dev)
+@@ -992,7 +995,7 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done
+ 			__field(u64, fileid)
+ 			__field(u64, version)
+ 			__field(loff_t, offset)
+-			__field(u32, count)
++			__field(size_t, count)
+ 		),
+ 
+ 		TP_fast_assign(
+@@ -1002,14 +1005,14 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done
+ 			__entry->fileid = nfsi->fileid;
+ 			__entry->fhandle = nfs_fhandle_hash(&nfsi->fh);
+ 			__entry->version = inode_peek_iversion_raw(inode);
+-			__entry->offset = folio_file_pos(folio);
+-			__entry->count = nfs_folio_length(folio);
++			__entry->offset = offset,
++			__entry->count = count,
+ 			__entry->ret = ret;
+ 		),
+ 
+ 		TP_printk(
+ 			"fileid=%02x:%02x:%llu fhandle=0x%08x version=%llu "
+-			"offset=%lld count=%u ret=%d",
++			"offset=%lld count=%zu ret=%d",
+ 			MAJOR(__entry->dev), MINOR(__entry->dev),
+ 			(unsigned long long)__entry->fileid,
+ 			__entry->fhandle, __entry->version,
+@@ -1021,10 +1024,11 @@ DECLARE_EVENT_CLASS(nfs_folio_event_done
+ 	DEFINE_EVENT(nfs_folio_event_done, name, \
+ 			TP_PROTO( \
+ 				const struct inode *inode, \
+-				struct folio *folio, \
++				loff_t offset, \
++				size_t count, \
+ 				int ret \
+ 			), \
+-			TP_ARGS(inode, folio, ret))
++			TP_ARGS(inode, offset, count, ret))
+ 
+ DEFINE_NFS_FOLIO_EVENT(nfs_aop_readpage);
+ DEFINE_NFS_FOLIO_EVENT_DONE(nfs_aop_readpage_done);
+--- a/fs/nfs/read.c
++++ b/fs/nfs/read.c
+@@ -333,13 +333,15 @@ out:
+ int nfs_read_folio(struct file *file, struct folio *folio)
+ {
+ 	struct inode *inode = file_inode(file);
++	loff_t pos = folio_pos(folio);
++	size_t len = folio_size(folio);
+ 	struct nfs_pageio_descriptor pgio;
+ 	struct nfs_open_context *ctx;
+ 	int ret;
+ 
+-	trace_nfs_aop_readpage(inode, folio);
++	trace_nfs_aop_readpage(inode, pos, len);
+ 	nfs_inc_stats(inode, NFSIOS_VFSREADPAGE);
+-	task_io_account_read(folio_size(folio));
++	task_io_account_read(len);
+ 
+ 	/*
+ 	 * Try to flush any pending writes to the file..
+@@ -382,7 +384,7 @@ int nfs_read_folio(struct file *file, st
+ out_put:
+ 	put_nfs_open_context(ctx);
+ out:
+-	trace_nfs_aop_readpage_done(inode, folio, ret);
++	trace_nfs_aop_readpage_done(inode, pos, len, ret);
+ 	return ret;
+ out_unlock:
+ 	folio_unlock(folio);
+--- a/fs/nfs/write.c
++++ b/fs/nfs/write.c
+@@ -2131,17 +2131,17 @@ int nfs_wb_folio_cancel(struct inode *in
+  */
+ int nfs_wb_folio(struct inode *inode, struct folio *folio)
+ {
+-	loff_t range_start = folio_file_pos(folio);
+-	loff_t range_end = range_start + (loff_t)folio_size(folio) - 1;
++	loff_t range_start = folio_pos(folio);
++	size_t len = folio_size(folio);
+ 	struct writeback_control wbc = {
+ 		.sync_mode = WB_SYNC_ALL,
+ 		.nr_to_write = 0,
+ 		.range_start = range_start,
+-		.range_end = range_end,
++		.range_end = range_start + len - 1,
+ 	};
+ 	int ret;
+ 
+-	trace_nfs_writeback_folio(inode, folio);
++	trace_nfs_writeback_folio(inode, range_start, len);
+ 
+ 	for (;;) {
+ 		folio_wait_writeback(folio);
+@@ -2159,7 +2159,7 @@ int nfs_wb_folio(struct inode *inode, st
+ 			goto out_error;
+ 	}
+ out_error:
+-	trace_nfs_writeback_folio_done(inode, folio, ret);
++	trace_nfs_writeback_folio_done(inode, range_start, len, ret);
+ 	return ret;
+ }
+ 
 
 
 
