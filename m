@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228862-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KK01HbFNwWmxSAQAu9opvQ
-	(envelope-from <stable+bounces-228424-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:57 +0100
+	id wMQ4GuxpwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-228862-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:24 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A3D2F480A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E46DB2F81F1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 72BD7308D368
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 60E9F323BC6E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9101B3B0AFB;
-	Mon, 23 Mar 2026 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7601F26F2AF;
+	Mon, 23 Mar 2026 14:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFApTyXg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUgKNgRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5375321D00A;
-	Mon, 23 Mar 2026 14:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B93F26D4F9;
+	Mon, 23 Mar 2026 14:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275086; cv=none; b=b+/Iq8L1ncYtdaUqxno7Uy2JCsZvklcc4OwlZz9il6Vf0DmDs+2rR+ci/IaPtVhbr38v86o2rVG1SPX1ljPLzZqZF+avzEVFjIXDPoisyDH78pGAs5PCGDD92MCl48Q956SUufGPXpwSYNbLw70+/GwpdKKfSHCRg5E0xrDGLZc=
+	t=1774277335; cv=none; b=JvLCvh3VUcUBRyKBYuv1DRp85DAAWt66APEAboEHo43F6NuqRORKlwoVqlKiAjt1PtiD38p3iT7bDF/93IVMJWDxA3lB9Jekad+fOUCe64NrQARfCosYLnucv8nDsBOhL1oCRrHXeItFxXrNLhbd0BSODIxM+K98teXj34eKmTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275086; c=relaxed/simple;
-	bh=2h3mX10Fgfs2Jwmrjqhf03pQjaN6+g1X26YuxDsEqQg=;
+	s=arc-20240116; t=1774277335; c=relaxed/simple;
+	bh=Hbu9EyEINJIE68gHugAIJ7viTeFGJX0xbrycsZ5aWn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/DP9QQ3TstJon1j95B/+ZD+yh69VpSC3wTnLsumz8savmPDYhUZ2zkL+rSqkClb2kPJ+UPHq4q0afJIbln90YktPEVYIZD2LwpNptgilqY3ffQuy3CecgsM3M69Ac8/ZgOiYreq0Sro5dOU9eigsZ3j+I5gpmN3HaepPBUba4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFApTyXg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B593EC4CEF7;
-	Mon, 23 Mar 2026 14:11:25 +0000 (UTC)
+	 MIME-Version; b=Enwf8YOSyBldPHXVbIZaC2LVNe0yM8+7+cqnPUNqQN+VwbBGnKuGm3Xg3PpzSzITDaQ4pob23ElSTklKPyO56+Em6XPZATGn9tu7tB08mhNyN1P1smw485XPSODG2oDn1jKuEhQUqXm5llRiZak/xnRPNPY/Hh0g+5ZTQGcPDcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUgKNgRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4A2C4CEF7;
+	Mon, 23 Mar 2026 14:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275086;
-	bh=2h3mX10Fgfs2Jwmrjqhf03pQjaN6+g1X26YuxDsEqQg=;
+	s=korg; t=1774277335;
+	bh=Hbu9EyEINJIE68gHugAIJ7viTeFGJX0xbrycsZ5aWn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFApTyXgtFXZXELZnreORm009oK/wRDY9DhhSC+kgcVnekKXbz3Hh8ggrocVhb113
-	 QxUvSevI7CsGTQn/oJx+NOvlP2NY2XPaioj8bH3jsw36+hD+MS0je5RhtqihmnkFO4
-	 Bcy9qTydspVk2r2EPYRm0saXSjggBW1S5rlsrRk4=
+	b=GUgKNgRkkT2VZXhas7uWOsEB7+CmShNAAJMjq/R9DCUL0choVymUTd7cxV5P15Xk5
+	 9CtofXSeX9wFUD3SYrhIGSoeceG1ovb4AHcLBT5MfSwAOt3BJAoCWOZdakWe/fT+0d
+	 ndtTRQkBiA9XMLehyZIYlvgMx8WNZJq420k3MXp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moses <p@1g4.org>,
+	Justin Chen <justin.chen@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 175/212] net: shaper: protect late read accesses to the hierarchy
-Date: Mon, 23 Mar 2026 14:46:36 +0100
-Message-ID: <20260323134509.293932794@linuxfoundation.org>
+Subject: [PATCH 6.12 401/460] net: bcmgenet: increase WoL poll timeout
+Date: Mon, 23 Mar 2026 14:46:37 +0100
+Message-ID: <20260323134536.417265493@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,122 +69,67 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228424-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228862-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 19A3D2F480A
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email]
+X-Rspamd-Queue-Id: E46DB2F81F1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Justin Chen <justin.chen@broadcom.com>
 
-[ Upstream commit 0f9ea7141f365b4f27226898e62220fb98ef8dc6 ]
+[ Upstream commit 6cfc3bc02b977f2fba5f7268e6504d1931a774f7 ]
 
-We look up a netdev during prep of Netlink ops (pre- callbacks)
-and take a ref to it. Then later in the body of the callback
-we take its lock or RCU which are the actual protections.
+Some systems require more than 5ms to get into WoL mode. Increase the
+timeout value to 50ms.
 
-This is not proper, a conversion from a ref to a locked netdev
-must include a liveness check (a check if the netdev hasn't been
-unregistered already). Fix the read cases (those under RCU).
-Writes needs a separate change to protect from creating the
-hierarchy after flush has already run.
-
-Fixes: 4b623f9f0f59 ("net-shapers: implement NL get operation")
-Reported-by: Paul Moses <p@1g4.org>
-Link: https://lore.kernel.org/20260309173450.538026-1-p@1g4.org
+Fixes: c51de7f3976b ("net: bcmgenet: add Wake-on-LAN support code")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20260312191852.3904571-1-justin.chen@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://patch.msgid.link/20260317161014.779569-1-kuba@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/shaper/shaper.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
-index 318a0567a6981..081dac917dc2d 100644
---- a/net/shaper/shaper.c
-+++ b/net/shaper/shaper.c
-@@ -65,6 +65,21 @@ net_shaper_hierarchy(struct net_shaper_binding *binding)
- 	return NULL;
- }
- 
-+static struct net_shaper_hierarchy *
-+net_shaper_hierarchy_rcu(struct net_shaper_binding *binding)
-+{
-+	/* Readers look up the device and take a ref, then take RCU lock
-+	 * later at which point netdev may have been unregistered and flushed.
-+	 * READ_ONCE() pairs with WRITE_ONCE() in net_shaper_hierarchy_setup.
-+	 */
-+	if (binding->type == NET_SHAPER_BINDING_TYPE_NETDEV &&
-+	    READ_ONCE(binding->netdev->reg_state) <= NETREG_REGISTERED)
-+		return READ_ONCE(binding->netdev->net_shaper_hierarchy);
-+
-+	/* No other type supported yet. */
-+	return NULL;
-+}
-+
- static const struct net_shaper_ops *
- net_shaper_ops(struct net_shaper_binding *binding)
- {
-@@ -251,9 +266,10 @@ static struct net_shaper *
- net_shaper_lookup(struct net_shaper_binding *binding,
- 		  const struct net_shaper_handle *handle)
- {
--	struct net_shaper_hierarchy *hierarchy = net_shaper_hierarchy(binding);
- 	u32 index = net_shaper_handle_to_index(handle);
-+	struct net_shaper_hierarchy *hierarchy;
- 
-+	hierarchy = net_shaper_hierarchy_rcu(binding);
- 	if (!hierarchy || xa_get_mark(&hierarchy->shapers, index,
- 				      NET_SHAPER_NOT_VALID))
- 		return NULL;
-@@ -778,17 +794,19 @@ int net_shaper_nl_get_dumpit(struct sk_buff *skb,
- 
- 	/* Don't error out dumps performed before any set operation. */
- 	binding = net_shaper_binding_from_ctx(ctx);
--	hierarchy = net_shaper_hierarchy(binding);
--	if (!hierarchy)
--		return 0;
- 
- 	rcu_read_lock();
-+	hierarchy = net_shaper_hierarchy_rcu(binding);
-+	if (!hierarchy)
-+		goto out_unlock;
-+
- 	for (; (shaper = xa_find(&hierarchy->shapers, &ctx->start_index,
- 				 U32_MAX, XA_PRESENT)); ctx->start_index++) {
- 		ret = net_shaper_fill_one(skb, binding, shaper, info);
- 		if (ret)
- 			break;
- 	}
-+out_unlock:
- 	rcu_read_unlock();
- 
- 	return ret;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+index 3b082114f2e53..2033fb9d893e0 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
+@@ -123,7 +123,7 @@ static int bcmgenet_poll_wol_status(struct bcmgenet_priv *priv)
+ 	while (!(bcmgenet_rbuf_readl(priv, RBUF_STATUS)
+ 		& RBUF_STATUS_WOL)) {
+ 		retries++;
+-		if (retries > 5) {
++		if (retries > 50) {
+ 			netdev_crit(dev, "polling wol mode timeout\n");
+ 			return -ETIMEDOUT;
+ 		}
 -- 
 2.51.0
 
