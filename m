@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229222-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6FIwHHd0wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229717-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:12:23 +0100
+	id 2NfqFJxdwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229222-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 932DD2F9928
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:12:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5222F682B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 681D7303943C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45ED63422390
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19B1258CD9;
-	Mon, 23 Mar 2026 16:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F97B25333F;
+	Mon, 23 Mar 2026 15:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMmeRrqT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kFTXZsiu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F083BED34;
-	Mon, 23 Mar 2026 16:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5264E246BD5;
+	Mon, 23 Mar 2026 15:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282677; cv=none; b=JXaNURUw6QFD849vt3gkYGT2ph93UbnoRBQqB05WHeBgT/OGf9KI+eRpZe5IHlZQqofkyMqDmQOoWvGzmMxKJaTvzLWyxgBPRSr1qDnZs8dQc5OabY3mf+sE8jPVKDhogKtMhDMOe7dnjQEZVeMjJsUi5Fgexm4s41UOCmOssYs=
+	t=1774278443; cv=none; b=usdvnKUKnMBds4ucf+khE+1VqPkK0/rK56bSk/TmjXpbA9bpdRbF/Q1glfSycsm8BE3NJ2LhXLckRbv7aDVFILz3Qsl1COLU7Uc3Xy4Ze9aERdH+2rcW36VfyMGzqEFxg4/DXFjZj3uGuhqtWhFhkbYGowCynDVLfzldrGb3t/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282677; c=relaxed/simple;
-	bh=FqEOeWCpbit8nKQ8yQ1jMcjmxDiDohxaKA5OwbFZYAU=;
+	s=arc-20240116; t=1774278443; c=relaxed/simple;
+	bh=yWnt8I9Ae56AdmtFBj+rV2qtpd9C5TM81OoLscLq8jQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ULHZrmr3XorgAM9waALDgcw5BbhZVOZQyA37SWCeHMJ/TyDKidmVx7xkykHOsJaCpT/OEz0tcEI1tg+2gAGZWvyY1xRzQPOcRFsooh1eRDDlpcA5UEdrdVXB7ulkGZpKyCnN+FsIkqs2u+bgbsr73ZWPsAzxAMR5h8HU2d4GpMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMmeRrqT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA77C4CEF7;
-	Mon, 23 Mar 2026 16:17:56 +0000 (UTC)
+	 MIME-Version; b=edmkx4X20yZVRBhjyKCdsMlWsQMXvkTjsbFSo63L1hlfkxDaIg80ROnTOtMi5A7boY/QuIYSbt5iOfi+h2DJz2GqTNK/pqv2K9REZ1ofw748n6SOKUJqu6YKKGOLHyQKOjXMZ+2R279hzay5kJCQhB3E1Cr4DW7KfzJtjOBqZb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kFTXZsiu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA7BC4CEF7;
+	Mon, 23 Mar 2026 15:07:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282677;
-	bh=FqEOeWCpbit8nKQ8yQ1jMcjmxDiDohxaKA5OwbFZYAU=;
+	s=korg; t=1774278443;
+	bh=yWnt8I9Ae56AdmtFBj+rV2qtpd9C5TM81OoLscLq8jQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMmeRrqTathw0sVqQ8LqovBsn04Ok1RZElG/Y+803oANCbIa9ucMGkZ25ENAEZztw
-	 kostl9YtLl7IIrLTlPFC3W7p8SI4k+BXcT4OkSMQFPLVnTVHmYnxztXO6ANQPWh2QP
-	 bU+CQBuknvcXK1meM9Ti2kD3t9o26TQitN2nvQqc=
+	b=kFTXZsiu9WB/K4jiC9vcQWCW6ZyhrXc3dW72a5qJGJQj8lK9SDHQiDSBeby49nYJs
+	 F+2Xl0IGpBXJ6jTZ/N8GAyahvOm6YXtBe0kbVnSErKW3o7Dfi0WlYuJgn8CGBfSEXm
+	 DhMEPklvdSYFr0+1Kbe4pyF2WyWPdKsulCasMPdM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marios Makassikis <mmakassikis@freebox.fr>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 246/481] smb: server: fix use-after-free in smb2_open()
+	Osama Abdelkader <osama.abdelkader@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 6.6 308/567] drm/bridge: samsung-dsim: Fix memory leak in error path
 Date: Mon, 23 Mar 2026 14:43:48 +0100
-Message-ID: <20260323134531.148684742@linuxfoundation.org>
+Message-ID: <20260323134541.444249313@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,124 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229717-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229222-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 932DD2F9928
+X-Rspamd-Queue-Id: BB5222F682B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marios Makassikis <mmakassikis@freebox.fr>
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-commit 1e689a56173827669a35da7cb2a3c78ed5c53680 upstream.
+commit 803ec1faf7c1823e6e3b1f2aaa81be18528c9436 upstream.
 
-The opinfo pointer obtained via rcu_dereference(fp->f_opinfo) is
-dereferenced after rcu_read_unlock(), creating a use-after-free
-window.
+In samsung_dsim_host_attach(), drm_bridge_add() is called to add the
+bridge. However, if samsung_dsim_register_te_irq() or
+pdata->host_ops->attach() fails afterwards, the function returns
+without removing the bridge, causing a memory leak.
 
+Fix this by adding proper error handling with goto labels to ensure
+drm_bridge_remove() is called in all error paths. Also ensure that
+samsung_dsim_unregister_te_irq() is called if the attach operation
+fails after the TE IRQ has been registered.
+
+samsung_dsim_unregister_te_irq() function is moved without changes
+to be before samsung_dsim_host_attach() to avoid forward declaration.
+
+Fixes: e7447128ca4a ("drm: bridge: Generalize Exynos-DSI driver into a Samsung DSIM bridge")
 Cc: stable@vger.kernel.org
-Signed-off-by: Marios Makassikis <mmakassikis@freebox.fr>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20260209184115.10937-1-osama.abdelkader@gmail.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/samsung-dsim.c |   25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3343,10 +3343,8 @@ int smb2_open(struct ksmbd_work *work)
- 	memcpy(fp->client_guid, conn->ClientGUID, SMB2_CLIENT_GUID_SIZE);
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -1642,6 +1642,14 @@ static int samsung_dsim_register_te_irq(
+ 	return 0;
+ }
  
- 	rsp->StructureSize = cpu_to_le16(89);
--	rcu_read_lock();
--	opinfo = rcu_dereference(fp->f_opinfo);
-+	opinfo = opinfo_get(fp);
- 	rsp->OplockLevel = opinfo != NULL ? opinfo->level : 0;
--	rcu_read_unlock();
- 	rsp->Flags = 0;
- 	rsp->CreateAction = cpu_to_le32(file_info);
- 	rsp->CreationTime = cpu_to_le64(fp->create_time);
-@@ -3387,6 +3385,7 @@ int smb2_open(struct ksmbd_work *work)
- 		next_ptr = &lease_ccontext->Next;
- 		next_off = conn->vals->create_lease_size;
++static void samsung_dsim_unregister_te_irq(struct samsung_dsim *dsi)
++{
++	if (dsi->te_gpio) {
++		free_irq(gpiod_to_irq(dsi->te_gpio), dsi);
++		gpiod_put(dsi->te_gpio);
++	}
++}
++
+ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
+ 				    struct mipi_dsi_device *device)
+ {
+@@ -1713,13 +1721,13 @@ of_find_panel_or_bridge:
+ 	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO)) {
+ 		ret = samsung_dsim_register_te_irq(dsi, &device->dev);
+ 		if (ret)
+-			return ret;
++			goto err_remove_bridge;
  	}
-+	opinfo_put(opinfo);
  
- 	if (maximal_access_ctxt) {
- 		struct create_context *mxac_ccontext;
+ 	if (pdata->host_ops && pdata->host_ops->attach) {
+ 		ret = pdata->host_ops->attach(dsi, device);
+ 		if (ret)
+-			return ret;
++			goto err_unregister_te_irq;
+ 	}
+ 
+ 	dsi->lanes = device->lanes;
+@@ -1727,14 +1735,13 @@ of_find_panel_or_bridge:
+ 	dsi->mode_flags = device->mode_flags;
+ 
+ 	return 0;
+-}
+ 
+-static void samsung_dsim_unregister_te_irq(struct samsung_dsim *dsi)
+-{
+-	if (dsi->te_gpio) {
+-		free_irq(gpiod_to_irq(dsi->te_gpio), dsi);
+-		gpiod_put(dsi->te_gpio);
+-	}
++err_unregister_te_irq:
++	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO))
++		samsung_dsim_unregister_te_irq(dsi);
++err_remove_bridge:
++	drm_bridge_remove(&dsi->bridge);
++	return ret;
+ }
+ 
+ static int samsung_dsim_host_detach(struct mipi_dsi_host *host,
 
 
 
