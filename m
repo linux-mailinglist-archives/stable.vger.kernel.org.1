@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228424-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yJ3jLutpwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228861-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:23 +0100
+	id KK01HbFNwWmxSAQAu9opvQ
+	(envelope-from <stable+bounces-228424-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65FBA2F81E9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19A3D2F480A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C66A30ACB1A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 72BD7308D368
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FD423EA97;
-	Mon, 23 Mar 2026 14:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9101B3B0AFB;
+	Mon, 23 Mar 2026 14:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBnegwKl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFApTyXg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980883AEF51;
-	Mon, 23 Mar 2026 14:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5375321D00A;
+	Mon, 23 Mar 2026 14:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277332; cv=none; b=cHfRimQRtl/3mRrMD5E4PXPPzP1UzcKlwwJCsy8vB/juSl5hjIKEwrrpJ5o0I062nDKGvIPk8iIupRxWpXgELDgHf4JooMqSKC6AotV3Dg+s4xJalhyOvHpP3ZG/Cm+R17cldwfSX0UOrYdTK1wBTm3Ja/Zn8cZdLacSpMJ3MAU=
+	t=1774275086; cv=none; b=b+/Iq8L1ncYtdaUqxno7Uy2JCsZvklcc4OwlZz9il6Vf0DmDs+2rR+ci/IaPtVhbr38v86o2rVG1SPX1ljPLzZqZF+avzEVFjIXDPoisyDH78pGAs5PCGDD92MCl48Q956SUufGPXpwSYNbLw70+/GwpdKKfSHCRg5E0xrDGLZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277332; c=relaxed/simple;
-	bh=gS0j1ryNCnPU1V5TX6CwlU8rwl7gJwRb/kxWUduzPJw=;
+	s=arc-20240116; t=1774275086; c=relaxed/simple;
+	bh=2h3mX10Fgfs2Jwmrjqhf03pQjaN6+g1X26YuxDsEqQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X+94ev9lNUJGm7Wh1fIX+0wA1ypwSls3e19Tu2CrNel978Lf9AkV6egudoSnymfpEjWMZoXBJnB5/ublbMvOHwRhcpFkblvybjPfZDDjm3slvLd3s8ycFVOEO401kIZ6Ys/VRRkLnq+NZORdj9hkBnC3oXIPqW57jMQuZHTLGzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBnegwKl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D72DEC4CEF7;
-	Mon, 23 Mar 2026 14:48:51 +0000 (UTC)
+	 MIME-Version; b=u/DP9QQ3TstJon1j95B/+ZD+yh69VpSC3wTnLsumz8savmPDYhUZ2zkL+rSqkClb2kPJ+UPHq4q0afJIbln90YktPEVYIZD2LwpNptgilqY3ffQuy3CecgsM3M69Ac8/ZgOiYreq0Sro5dOU9eigsZ3j+I5gpmN3HaepPBUba4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFApTyXg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B593EC4CEF7;
+	Mon, 23 Mar 2026 14:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277332;
-	bh=gS0j1ryNCnPU1V5TX6CwlU8rwl7gJwRb/kxWUduzPJw=;
+	s=korg; t=1774275086;
+	bh=2h3mX10Fgfs2Jwmrjqhf03pQjaN6+g1X26YuxDsEqQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DBnegwKlQ99ntCSxijy/CzkAHF+95/Xy2jMYk56TJsHNR4+h846SYSx/UnfxYHEYV
-	 s4lcCah1/pE6jKEnr/lKGvVtiY0cXPXM/V8hEtn3/TUzLrle69ztNDFwd2P0rIcTMc
-	 //QXSFFPapTcS2JA9YB8+M3P4HkHA79kCWzDZc9Q=
+	b=YFApTyXgtFXZXELZnreORm009oK/wRDY9DhhSC+kgcVnekKXbz3Hh8ggrocVhb113
+	 QxUvSevI7CsGTQn/oJx+NOvlP2NY2XPaioj8bH3jsw36+hD+MS0je5RhtqihmnkFO4
+	 Bcy9qTydspVk2r2EPYRm0saXSjggBW1S5rlsrRk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Paul Moses <p@1g4.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 400/460] netfilter: nf_conntrack_h323: check for zero length in DecodeQ931()
+Subject: [PATCH 6.18 175/212] net: shaper: protect late read accesses to the hierarchy
 Date: Mon, 23 Mar 2026 14:46:36 +0100
-Message-ID: <20260323134536.392359462@linuxfoundation.org>
+Message-ID: <20260323134509.293932794@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +64,127 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228861-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228424-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[vidocsecurity.com:email,strlen.de:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 65FBA2F81E9
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 19A3D2F480A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit f173d0f4c0f689173f8cdac79991043a4a89bf66 ]
+[ Upstream commit 0f9ea7141f365b4f27226898e62220fb98ef8dc6 ]
 
-In DecodeQ931(), the UserUserIE code path reads a 16-bit length from
-the packet, then decrements it by 1 to skip the protocol discriminator
-byte before passing it to DecodeH323_UserInformation(). If the encoded
-length is 0, the decrement wraps to -1, which is then passed as a
-large value to the decoder, leading to an out-of-bounds read.
+We look up a netdev during prep of Netlink ops (pre- callbacks)
+and take a ref to it. Then later in the body of the callback
+we take its lock or RCU which are the actual protections.
 
-Add a check to ensure len is positive after the decrement.
+This is not proper, a conversion from a ref to a locked netdev
+must include a liveness check (a check if the netdev hasn't been
+unregistered already). Fix the read cases (those under RCU).
+Writes needs a separate change to protect from creating the
+hierarchy after flush has already run.
 
-Fixes: 5e35941d9901 ("[NETFILTER]: Add H.323 conntrack/NAT helper")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 4b623f9f0f59 ("net-shapers: implement NL get operation")
+Reported-by: Paul Moses <p@1g4.org>
+Link: https://lore.kernel.org/20260309173450.538026-1-p@1g4.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://patch.msgid.link/20260317161014.779569-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_h323_asn1.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/shaper/shaper.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_h323_asn1.c b/net/netfilter/nf_conntrack_h323_asn1.c
-index c972e9488e16f..7b1497ed97d26 100644
---- a/net/netfilter/nf_conntrack_h323_asn1.c
-+++ b/net/netfilter/nf_conntrack_h323_asn1.c
-@@ -924,6 +924,8 @@ int DecodeQ931(unsigned char *buf, size_t sz, Q931 *q931)
- 				break;
- 			p++;
- 			len--;
-+			if (len <= 0)
-+				break;
- 			return DecodeH323_UserInformation(buf, p, len,
- 							  &q931->UUIE);
- 		}
+diff --git a/net/shaper/shaper.c b/net/shaper/shaper.c
+index 318a0567a6981..081dac917dc2d 100644
+--- a/net/shaper/shaper.c
++++ b/net/shaper/shaper.c
+@@ -65,6 +65,21 @@ net_shaper_hierarchy(struct net_shaper_binding *binding)
+ 	return NULL;
+ }
+ 
++static struct net_shaper_hierarchy *
++net_shaper_hierarchy_rcu(struct net_shaper_binding *binding)
++{
++	/* Readers look up the device and take a ref, then take RCU lock
++	 * later at which point netdev may have been unregistered and flushed.
++	 * READ_ONCE() pairs with WRITE_ONCE() in net_shaper_hierarchy_setup.
++	 */
++	if (binding->type == NET_SHAPER_BINDING_TYPE_NETDEV &&
++	    READ_ONCE(binding->netdev->reg_state) <= NETREG_REGISTERED)
++		return READ_ONCE(binding->netdev->net_shaper_hierarchy);
++
++	/* No other type supported yet. */
++	return NULL;
++}
++
+ static const struct net_shaper_ops *
+ net_shaper_ops(struct net_shaper_binding *binding)
+ {
+@@ -251,9 +266,10 @@ static struct net_shaper *
+ net_shaper_lookup(struct net_shaper_binding *binding,
+ 		  const struct net_shaper_handle *handle)
+ {
+-	struct net_shaper_hierarchy *hierarchy = net_shaper_hierarchy(binding);
+ 	u32 index = net_shaper_handle_to_index(handle);
++	struct net_shaper_hierarchy *hierarchy;
+ 
++	hierarchy = net_shaper_hierarchy_rcu(binding);
+ 	if (!hierarchy || xa_get_mark(&hierarchy->shapers, index,
+ 				      NET_SHAPER_NOT_VALID))
+ 		return NULL;
+@@ -778,17 +794,19 @@ int net_shaper_nl_get_dumpit(struct sk_buff *skb,
+ 
+ 	/* Don't error out dumps performed before any set operation. */
+ 	binding = net_shaper_binding_from_ctx(ctx);
+-	hierarchy = net_shaper_hierarchy(binding);
+-	if (!hierarchy)
+-		return 0;
+ 
+ 	rcu_read_lock();
++	hierarchy = net_shaper_hierarchy_rcu(binding);
++	if (!hierarchy)
++		goto out_unlock;
++
+ 	for (; (shaper = xa_find(&hierarchy->shapers, &ctx->start_index,
+ 				 U32_MAX, XA_PRESENT)); ctx->start_index++) {
+ 		ret = net_shaper_fill_one(skb, binding, shaper, info);
+ 		if (ret)
+ 			break;
+ 	}
++out_unlock:
+ 	rcu_read_unlock();
+ 
+ 	return ret;
 -- 
 2.51.0
 
