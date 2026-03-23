@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229805-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCBXDt5bwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229299-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:26 +0100
+	id uCn0FbZtwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229805-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9F12F6502
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2878A2F8AC8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06A2D305671F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0F9ED31219FC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6481A3B530F;
-	Mon, 23 Mar 2026 15:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894C2285417;
+	Mon, 23 Mar 2026 16:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSZ7/6on"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHN/oUYY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280ED3A9D9D;
-	Mon, 23 Mar 2026 15:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C46D35958;
+	Mon, 23 Mar 2026 16:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278681; cv=none; b=PYde7yxmvPMn54sZotI8Cokcz6H+2slUMK0gCNRr8Fzu4pjCtw6FvU2cZjTnOrI4PIiaNC3z/R2QBAPrWkVh0GWlV/P/9E1dZErdZXyotiha3vVfGKsHqQXfjhnp3Y5kS1kOiNk+eO7XqFyBao/2tySRpN3pWfc3+GItc3NCRuA=
+	t=1774282912; cv=none; b=SYeeh3E+oxQdXXxVLzDanjjuYcGDsTCqUGh3YpSTZWsOUkEZP7CDXTy0ZwD6lnl5S/zoQP6GFOMPrH2hD/RSJnlgtT77kq8NIObmrhPviOpmN4Ja+Ihi5cSBTj/DY6WqDDX5vBMzUsBt1t004NnwDXuic6M3J5Jfvfvk6HkCCQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278681; c=relaxed/simple;
-	bh=WQY49k4KVmUQq483SEw/Wbea265DRJqfklYnYCyhoXI=;
+	s=arc-20240116; t=1774282912; c=relaxed/simple;
+	bh=yW6yA6aWwGvEARyb3nm+RblejYvVEPZE3LCvfYC/Fxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFbZzafP9+7rfvJ5pIyMolqPdYoShXMBBaZGsAoLtamIweQCn4GUsQFiO7abmkcQNsTWZEJ2Anu+Z9ZdbG8xH4BpdwQH2Mdv8IPnejlz/BWB16eQ8t5dr6rfhtruaoVJuTSA15sIN4PdwGsIfdhu87+TMjn+lKWYxVDh9gcRsuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSZ7/6on; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B5CC4CEF7;
-	Mon, 23 Mar 2026 15:11:20 +0000 (UTC)
+	 MIME-Version; b=VcAtbOkubn93zjc1LRlr9ISzYNO4PflGGTl9NbXubN5GwCP/Q8YdihlGJvL964+dcOyf4OMk8WbRUwZusulv7pDX1C5/oVu74srYEBt6WMCi2auKuW+14Rtz6BvOAD/74B6a5Xs28cayrIG+ntvhy0JJPo/GWlbRNTm+TovzXg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHN/oUYY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17EDC4CEF7;
+	Mon, 23 Mar 2026 16:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278681;
-	bh=WQY49k4KVmUQq483SEw/Wbea265DRJqfklYnYCyhoXI=;
+	s=korg; t=1774282912;
+	bh=yW6yA6aWwGvEARyb3nm+RblejYvVEPZE3LCvfYC/Fxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CSZ7/6onOpUvPfNzQA6HnpbftwRvzt0OX5P5Ssd0swZGcQFACcEyEjHGoso7xGSzX
-	 NqceXytUtWrNEQf/gJfWkITku9S2ZSy049N5Mg04YRC4CyKibOhAqSpLOfcr8mEBtG
-	 dAAFW6rnZMmMFyOB0LmbJ9eyaRD9AlG0J8L47hbw=
+	b=eHN/oUYYjoSneg32nA60apZ8ABsDkCsfl5UYd9XtPS8JeTpW9J8m569AJ/7cXoC3Y
+	 6oJj7dfKPT1SiCDmIZnwCTLSFCuyvl9Tj+vUXLeYLQbswoEZ5JzFY9lJqfn4Ug3s5/
+	 rYkudjEMSIchZe0YT5cSg214oa2GBiSUxB7YPR58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 386/567] iomap: reject delalloc mappings during writeback
-Date: Mon, 23 Mar 2026 14:45:06 +0100
-Message-ID: <20260323134543.398145674@linuxfoundation.org>
+Subject: [PATCH 6.1 325/481] selftests: mptcp: join: check RM_ADDR not sent over same subflow
+Date: Mon, 23 Mar 2026 14:45:07 +0100
+Message-ID: <20260323134533.022011986@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,88 +70,142 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229299-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229805-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CC9F12F6502
+X-Rspamd-Queue-Id: 2878A2F8AC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit d320f160aa5ff36cdf83c645cca52b615e866e32 ]
+[ Upstream commit 560edd99b5f58b2d4bbe3c8e51e1eed68d887b0e ]
 
-Filesystems should never provide a delayed allocation mapping to
-writeback; they're supposed to allocate the space before replying.
-This can lead to weird IO errors and crashes in the block layer if the
-filesystem is being malicious, or if it hadn't set iomap->dev because
-it's a delalloc mapping.
+This validates the previous commit: RM_ADDR were sent over the first
+found active subflow which could be the same as the one being removed.
+It is more likely to loose this notification.
 
-Fix this by failing writeback on delalloc mappings.  Currently no
-filesystems actually misbehave in this manner, but we ought to be
-stricter about things like that.
+For this check, RM_ADDR are explicitly dropped when trying to send them
+over the initial subflow, when removing the endpoint attached to it. If
+it is dropped, the test will complain because some RM_ADDR have not been
+received.
 
-Cc: stable@vger.kernel.org # v5.5
-Fixes: 598ecfbaa742ac ("iomap: lift the xfs writeback code to iomap")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Link: https://patch.msgid.link/20260302173002.GL13829@frogsfrogsfrogs
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ no ioend.c ]
+Note that only the RM_ADDR are dropped, to allow the linked subflow to
+be quickly and cleanly closed. To only drop those RM_ADDR, a cBPF byte
+code is used. If the IPTables commands fail, that's OK, the tests will
+continue to pass, but not validate this part. This can be ignored:
+another subtest fully depends on such command, and will be marked as
+skipped.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-3-4b5462b6f016@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted chk_subflow_nr calls to include extra empty first argument ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/iomap/buffered-io.c |   15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   36 ++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1838,10 +1838,19 @@ iomap_writepage_map(struct iomap_writepa
- 		if (error)
- 			break;
- 		trace_iomap_writepage_map(inode, &wpc->iomap);
--		if (WARN_ON_ONCE(wpc->iomap.type == IOMAP_INLINE))
--			continue;
--		if (wpc->iomap.type == IOMAP_HOLE)
-+		switch (wpc->iomap.type) {
-+		case IOMAP_UNWRITTEN:
-+		case IOMAP_MAPPED:
-+			break;
-+		case IOMAP_HOLE:
- 			continue;
-+		default:
-+			WARN_ON_ONCE(1);
-+			error = -EIO;
-+			break;
-+		}
-+		if (error)
-+			break;
- 		iomap_add_to_ioend(inode, pos, folio, ifs, wpc, wbc,
- 				 &submit_list);
- 		count++;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -64,6 +64,24 @@ CBPF_MPTCP_SUBOPTION_ADD_ADDR="14,
+ 			       6 0 0 65535,
+ 			       6 0 0 0"
+ 
++# IPv4: TCP hdr of 48B, a first suboption of 12B (DACK8), the RM_ADDR suboption
++# generated using "nfbpf_compile '(ip[32] & 0xf0) == 0xc0 && ip[53] == 0x0c &&
++#				  (ip[66] & 0xf0) == 0x40'"
++CBPF_MPTCP_SUBOPTION_RM_ADDR="13,
++			      48 0 0 0,
++			      84 0 0 240,
++			      21 0 9 64,
++			      48 0 0 32,
++			      84 0 0 240,
++			      21 0 6 192,
++			      48 0 0 53,
++			      21 0 4 12,
++			      48 0 0 66,
++			      84 0 0 240,
++			      21 0 1 64,
++			      6 0 0 65535,
++			      6 0 0 0"
++
+ init_partial()
+ {
+ 	capout=$(mktemp)
+@@ -3468,6 +3486,14 @@ endpoint_tests()
+ 		wait_mpj $ns2
+ 		chk_subflow_nr "" "after no reject" 3
+ 
++		# To make sure RM_ADDR are sent over a different subflow, but
++		# allow the rest to quickly and cleanly close the subflow
++		local ipt=1
++		ip netns exec "${ns2}" ${iptables} -I OUTPUT -s "10.0.1.2" \
++			-p tcp -m tcp --tcp-option 30 \
++			-m bpf --bytecode \
++			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
++			-j DROP || ipt=0
+ 		local i
+ 		for i in $(seq 3); do
+ 			pm_nl_del_endpoint $ns2 1 10.0.1.2
+@@ -3478,6 +3504,7 @@ endpoint_tests()
+ 			wait_mpj $ns2
+ 			chk_subflow_nr "" "after re-add id 0 ($i)" 3
+ 		done
++		[ ${ipt} = 1 ] && ip netns exec "${ns2}" ${iptables} -D OUTPUT 1
+ 
+ 		kill_wait "${tests_pid}"
+ 		kill_events_pids
+@@ -3527,9 +3554,18 @@ endpoint_tests()
+ 		wait_mpj $ns2
+ 		chk_subflow_nr "" "after re-add" 3
+ 
++		# To make sure RM_ADDR are sent over a different subflow, but
++		# allow the rest to quickly and cleanly close the subflow
++		local ipt=1
++		ip netns exec "${ns1}" ${iptables} -I OUTPUT -s "10.0.1.1" \
++			-p tcp -m tcp --tcp-option 30 \
++			-m bpf --bytecode \
++			"$CBPF_MPTCP_SUBOPTION_RM_ADDR" \
++			-j DROP || ipt=0
+ 		pm_nl_del_endpoint $ns1 42 10.0.1.1
+ 		sleep 0.5
+ 		chk_subflow_nr "" "after delete ID 0" 2
++		[ ${ipt} = 1 ] && ip netns exec "${ns1}" ${iptables} -D OUTPUT 1
+ 
+ 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
+ 		wait_mpj $ns2
 
 
 
