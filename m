@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229257-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kIGOLaZtwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229791-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:18 +0100
+	id 2NjmJgFfwWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229257-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96FBD2F8A9A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:43:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D3D32F6B3D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BD02231ABC38
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 86AA330B84B1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7F63B9D85;
-	Mon, 23 Mar 2026 16:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529BE3B2FFC;
+	Mon, 23 Mar 2026 15:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgCoHFIa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRIDR4vy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26DC1DA0E1;
-	Mon, 23 Mar 2026 16:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1625C3B2FF1;
+	Mon, 23 Mar 2026 15:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282874; cv=none; b=oruzDznhE1wjXIpsAo5GihlZnBEJ8uOOstZ83BRACb31RsIh05ykjyVFgj62oEzPrQfRXYpRAzf4Sah65dKWjNW6HpRLHMG2ZtxHhLbnS+uwAi9D4f4K6EX1TZmPsWuoeCvQAB5HGfv1Mc+wKLRODb1xDVTXf7gg4PazWD67DD4=
+	t=1774278553; cv=none; b=O3yIMk3EglSD4a3Fgq5n++B1UOAs75bhU3/TzZU+Q9nEErDk4fG9vAp4YyhqKN4GAy24hC9mSYW6nvqD+67Ny5bLULOm+DrvptPM0kgyy7En0V88L774rwwuS8AouxUPgR34dXBNQHZFxZNXcM4WqBoT+3ghIFEXLmplXMlutnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282874; c=relaxed/simple;
-	bh=bwInDV4d/4W+KDHk3ZHzY48MzAg08fvjIDq8BtycXjQ=;
+	s=arc-20240116; t=1774278553; c=relaxed/simple;
+	bh=zTYel71kWvAnfrNy1Nc610ER+vfeJgtIjdT9dr9h1S0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuMwnIQBygKu2OVpI0DRnd0qulAM5kWk6P2TTPsrfqMkcNg73DfA0p6z9/UD+nthcgW8nnln7o5tEUoK5Fk1huj8u7BtIKdRuuDu7xNscrpVfB2otkjdNU/usHUUb95PW2bwJGsQr0sRNxlLV1Liqb/cisDU/WDJsuEABIqSZjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgCoHFIa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAAEC4CEF7;
-	Mon, 23 Mar 2026 16:21:14 +0000 (UTC)
+	 MIME-Version; b=XZoVWZPn37ImYr2ooo8VYsNF/MgIVVSCOfi2jalpTXoKhslKEu/2KlIuE5M5vz32zcb21IkUVNs5o/jZ8rnZBPWyT/jKVLxGzx6nP1zwJ7QcBzKSTVaq0cPLk7vQTle/fWkV6YV6gwkBOd1HjzAvl4Pe7T2UuLzO3rJwMrjfCZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRIDR4vy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B56C4CEF7;
+	Mon, 23 Mar 2026 15:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282874;
-	bh=bwInDV4d/4W+KDHk3ZHzY48MzAg08fvjIDq8BtycXjQ=;
+	s=korg; t=1774278552;
+	bh=zTYel71kWvAnfrNy1Nc610ER+vfeJgtIjdT9dr9h1S0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgCoHFIaBIQYzGuXjul7EpOee3+XlMG3fOrq1f029jnNYHYvkzgaVnDSLX4Uw4m+D
-	 TVMZDtB7Xd2nlXKpQC7aPgoaYdyGFFTd3p9k1z5eXtJqlhOeu+ffu+SG2atAVUvowr
-	 ZtpvCe+x+glY/Paex0/M4Au2FcqlALaRaRvwur54=
+	b=eRIDR4vytl2DZQQQfe+7mOMqDDeFUu557KgqUmLx475t7HTvuwncLwe011ARU4AVK
+	 2bji+rWLidLgXflBd6t+cLZq5RYLSQd3uH8uck1O3GZRdozF6JMUw9x2KXoCZ6joCj
+	 X0QUbDqyy+h/6B4o2L1TaixsR3U0mLzUAdyCd8io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 281/481] io_uring/kbuf: check if target buffer list is still legacy on recycle
-Date: Mon, 23 Mar 2026 14:44:23 +0100
-Message-ID: <20260323134531.963769842@linuxfoundation.org>
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 344/567] scsi: core: Fix error handling for scsi_alloc_sdev()
+Date: Mon, 23 Mar 2026 14:44:24 +0100
+Message-ID: <20260323134542.346123803@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,78 +67,74 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229791-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229257-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 96FBD2F8A9A
+X-Rspamd-Queue-Id: 0D3D32F6B3D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-Commit c2c185be5c85d37215397c8e8781abf0a69bec1f upstream.
+commit 4ce7ada40c008fa21b7e52ab9d04e8746e2e9325 upstream.
 
-There's a gap between when the buffer was grabbed and when it
-potentially gets recycled, where if the list is empty, someone could've
-upgraded it to a ring provided type. This can happen if the request
-is forced via io-wq. The legacy recycling is missing checking if the
-buffer_list still exists, and if it's of the correct type. Add those
-checks.
+After scsi_sysfs_device_initialize() was called, error paths must call
+__scsi_remove_device().
 
+Fixes: 1ac22c8eae81 ("scsi: core: Fix refcount leak for tagset_refcnt")
 Cc: stable@vger.kernel.org
-Fixes: c7fb19428d67 ("io_uring: add support for ring mapped supplied buffers")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260304164603.51528-1-junxiao.bi@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/kbuf.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_scan.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -69,9 +69,15 @@ void io_kbuf_recycle_legacy(struct io_ki
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -353,12 +353,8 @@ static struct scsi_device *scsi_alloc_sd
+ 	 * default device queue depth to figure out sbitmap shift
+ 	 * since we use this queue depth most of times.
+ 	 */
+-	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
+-		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
+-		put_device(&starget->dev);
+-		kfree(sdev);
+-		goto out;
+-	}
++	if (scsi_realloc_sdev_budget_map(sdev, depth))
++		goto out_device_destroy;
  
- 	buf = req->kbuf;
- 	bl = io_buffer_get_list(ctx, buf->bgid);
--	list_add(&buf->list, &bl->buf_list);
-+	/*
-+	 * If the buffer list was upgraded to a ring-based one, or removed,
-+	 * while the request was in-flight in io-wq, drop it.
-+	 */
-+	if (bl && !bl->buf_nr_pages)
-+		list_add(&buf->list, &bl->buf_list);
- 	req->flags &= ~REQ_F_BUFFER_SELECTED;
- 	req->buf_index = buf->bgid;
-+	req->kbuf = NULL;
+ 	scsi_change_queue_depth(sdev, depth);
  
- 	io_ring_submit_unlock(ctx, issue_flags);
- 	return;
 
 
 
