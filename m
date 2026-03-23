@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-228700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mCZQD21TwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228700-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:25 +0100
+	id WHDbKcxGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-227997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D7AD2F54F1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:51:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FAB02F37BC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2B060308A077
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AB863063A89
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7449A3AF679;
-	Mon, 23 Mar 2026 14:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11E61EB9F2;
+	Mon, 23 Mar 2026 13:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="In/B+MFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JRqf/MJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D033B2FD4;
-	Mon, 23 Mar 2026 14:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F613A961B;
+	Mon, 23 Mar 2026 13:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276889; cv=none; b=b41slMc7uZrG/uLIRtLuKCt73cFMki/S4vOb/00hnyx2z7Ny+8x2QFhKkxg+zwobSWDPfNqtbbjw6gvIMEIzOxV9T8rGNqlmzSnjOkSKY8TZFJ76sm8lThvQ7lKhQGbODQN+/YShzwuKXV9ljBIEnZ8ZMP6NIX6tJi/YyKBvzEE=
+	t=1774273812; cv=none; b=FaCycBAx6I3ChTGu8veWOADal1nMinH8qO5sg70l8nLDt5iifTjV7q/c1jMliF7MMSptLcFuMNoHcY8Vc+sTCxVJFtzGvqKcbc+UaxdrEr7Z014xc/hS8pUU1kx1QSm/l0QWhIttRAm+CRNVlrsaAmgkOtWTMBThDb4Qw3kSsE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276889; c=relaxed/simple;
-	bh=+YJFKURfNOUtAjHY1X4FnE7kfW8XjTPoFZoDrFKP/ps=;
+	s=arc-20240116; t=1774273812; c=relaxed/simple;
+	bh=+WboHKI+MysxoEABOWvKzVgKpeNayEhygek/MmH4juY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4003P3B+YnAPq1biC/GnGO9YthZxX4tAeYcDDz18SD6czJ/GBqDZ1pHyuFs1XxWBk0EjvS3SYJm2KHw6t+WNRkZu14tXJbg6UngZbofdSsinj9JBYjzOBWBplcUX4n9+DGFNhrjsY8ihp8WEWykFuEfSn1Fo/ioNv8RaxpUOww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=In/B+MFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3890CC4CEF7;
-	Mon, 23 Mar 2026 14:41:28 +0000 (UTC)
+	 MIME-Version; b=NLZ1WzZezKxxu6iPT13o5AlXDKD8kS7Yk50AwuNkN1H31YAAKC/mSbXYHY9TCfQDVKT/tLGeQdcZLnFvIX4ULutj/PdOg9UKtcLizPKgH7bi+fKRRkpmj7OaricFavfUZVuoHNarCIxemgs5VjmcTAqar7jn5+aNkhpmi/18KHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JRqf/MJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACC3C4CEF7;
+	Mon, 23 Mar 2026 13:50:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276888;
-	bh=+YJFKURfNOUtAjHY1X4FnE7kfW8XjTPoFZoDrFKP/ps=;
+	s=korg; t=1774273812;
+	bh=+WboHKI+MysxoEABOWvKzVgKpeNayEhygek/MmH4juY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=In/B+MFhc0R4oO1YwWf3+kflkS2t6AQqCsnumV2f68BmGalICaMiaCr//2PGyuyTM
-	 68J2crd34zGdoDO9OBfVlqZHwno6/H4KAp9pGYiRoAn8TxFt7+gc9cOP5CkxAmwvoO
-	 v54xladZZlHAWUzeNkKd0nC8frQ6yVCnuHQMO6xo=
+	b=JRqf/MJarDG5Dv1IlAePwioJKRHp/M3Iy/YGDArycFKdHKa1ca68ptAG13SXmfVFS
+	 VoxEY9Vb2K4C44U7yB/ZsuCN5LYyWjwQZEgjBueJvMJvihCO/GLQyJ18IPPhEoTBU9
+	 2V78mFW/v2mc5ZE47qZ4xa5YpuSe1/XFBTfdU5Es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 198/460] smb: client: fix in-place encryption corruption in SMB2_write()
+	Felix Lechner <felix.lechner@lease-up.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.19 017/220] parisc: Flush correct cache in cacheflush() syscall
 Date: Mon, 23 Mar 2026 14:43:14 +0100
-Message-ID: <20260323134531.407077245@linuxfoundation.org>
+Message-ID: <20260323134505.121422812@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +65,86 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228700-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-227997-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,lease-up.com,gmx.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-0.997];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0D7AD2F54F1
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,gmx.de:email]
+X-Rspamd-Queue-Id: 1FAB02F37BC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Helge Deller <deller@gmx.de>
 
-commit d78840a6a38d312dc1a51a65317bb67e46f0b929 upstream.
+commit 2c98a8fbd6aa647414c6248dacf254ebe91c79ad upstream.
 
-SMB2_write() places write payload in iov[1..n] as part of rq_iov.
-smb3_init_transform_rq() pointer-shares rq_iov, so crypt_message()
-encrypts iov[1] in-place, replacing the original plaintext with
-ciphertext. On a replayable error, the retry sends the same iov[1]
-which now contains ciphertext instead of the original data,
-resulting in corruption.
+The assembly flush instructions were swapped for I- and D-cache flags:
 
-The corruption is most likely to be observed when connections are
-unstable, as reconnects trigger write retries that re-send the
-already-encrypted data.
+SYSCALL_DEFINE3(cacheflush, ...)
+{
+	if (cache & DCACHE) {
+			"fic ...\n"
+	}
+	if (cache & ICACHE && error == 0) {
+			"fdc ...\n"
+	}
 
-This affects SFU mknod, MF symlinks, etc. On kernels before
-6.10 (prior to the netfs conversion), sync writes also used
-this path and were similarly affected. The async write path
-wasn't unaffected as it uses rq_iter which gets deep-copied.
+Fix it by using fdc for DCACHE, and fic for ICACHE flushing.
 
-Fix by moving the write payload into rq_iter via iov_iter_kvec(),
-so smb3_init_transform_rq() deep-copies it before encryption.
-
-Cc: stable@vger.kernel.org #6.3+
-Acked-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Acked-by: Shyam Prasad N <sprasad@microsoft.com>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: Felix Lechner <felix.lechner@lease-up.com>
+Fixes: c6d96328fecd ("parisc: Add cacheflush() syscall")
+Cc: <stable@vger.kernel.org> # v6.5+
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/smb2pdu.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/parisc/kernel/cache.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -5163,7 +5163,10 @@ replay_again:
- 
- 	memset(&rqst, 0, sizeof(struct smb_rqst));
- 	rqst.rq_iov = iov;
--	rqst.rq_nvec = n_vec + 1;
-+	/* iov[0] is the SMB header; move payload to rq_iter for encryption safety */
-+	rqst.rq_nvec = 1;
-+	iov_iter_kvec(&rqst.rq_iter, ITER_SOURCE, &iov[1], n_vec,
-+		      io_parms->length);
- 
- 	if (retries)
- 		smb2_set_replay(server, &rqst);
+--- a/arch/parisc/kernel/cache.c
++++ b/arch/parisc/kernel/cache.c
+@@ -953,7 +953,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned lon
+ #else
+ 			"1: cmpb,<<,n	%0,%2,1b\n"
+ #endif
+-			"   fic,m	%3(%4,%0)\n"
++			"   fdc,m	%3(%4,%0)\n"
+ 			"2: sync\n"
+ 			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
+ 			: "+r" (start), "+r" (error)
+@@ -968,7 +968,7 @@ SYSCALL_DEFINE3(cacheflush, unsigned lon
+ #else
+ 			"1: cmpb,<<,n	%0,%2,1b\n"
+ #endif
+-			"   fdc,m	%3(%4,%0)\n"
++			"   fic,m	%3(%4,%0)\n"
+ 			"2: sync\n"
+ 			ASM_EXCEPTIONTABLE_ENTRY_EFAULT(1b, 2b, "%1")
+ 			: "+r" (start), "+r" (error)
 
 
 
