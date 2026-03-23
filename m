@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229157-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CEN7IPxMwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228626-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:56 +0100
+	id 2LkkISpbwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229157-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:26 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1B422F45F0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBC82F63B2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2883D302A10C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 41FFE33D57DC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2347239A055;
-	Mon, 23 Mar 2026 14:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A291625A2B5;
+	Mon, 23 Mar 2026 15:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XfziB0RC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLpG2VVS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA074369204;
-	Mon, 23 Mar 2026 14:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6533C255F52;
+	Mon, 23 Mar 2026 15:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275643; cv=none; b=iK6W9Q3GTzlE9J+UOgf+9FEVSYbW8Ofn/+XqNQZUbvmk7Gzil9EjrfyYAotswthicMgamOwIZeW0lJr1r105/L5N8KBtxj7Ypp9q//Acn5UJYZik4L0iBEXJD2dyH4jwIqDv2t8giecMdPkOXS/+SJ2a2Lg9KPpGcpXXWlct94I=
+	t=1774278241; cv=none; b=NaRNYqkv124UPlQiBeuZoM9bxlJEIu9xxp7UPdeRUKzIOYSxwkqzTYsJA17fxo4TsakuYBvCRRuTS7Uj4rwMUUb2fXFGPJVwx4kDnLMQAalpJOreIP/3X9/TWFc0/F1ORaE37gWSudLaHRAWW5bBCcfty9ituBDtPB/cFioHreU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275643; c=relaxed/simple;
-	bh=1kZq8OIeBXOp7N1jcXLHXSS6LJBghEdnYeFbw20EL/w=;
+	s=arc-20240116; t=1774278241; c=relaxed/simple;
+	bh=TdvoM1QedUlji6q4fjmeqQKHKWiGMPbtjCmkGGYPTOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jy+6yoSvUCaKnG3tuX41jLi0igNKA6k9Z7wqG6ycmvNMnQUCMpDkgAgNrQmPlwb32qxKn241zlHvK9cB87B/LbxFdu/RjEnRDlcJwI/O+ajtgm/DFFZXpVZ29+0BZXkEmzLXc9J4pbWRh4S2mh7txSJBKGHGRUIpyJm4V4vPjf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XfziB0RC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C95BC4CEF7;
-	Mon, 23 Mar 2026 14:20:43 +0000 (UTC)
+	 MIME-Version; b=QaETuk6xh1kp7VfuGL0y1PQlOEYVgpcDzAIFpwr4M+QzMO2bZyPW4J9paxbS0VBK0dVKnx1pyHtohGHtE99JkD6gSet82NHyupnHtj/QOX5s18qPpE8RHjT3aFTuFiyI/AxrhweXFKKTJSVVOuQMWaU9n7ymmz3CMGBQowRzxus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLpG2VVS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD21BC4CEF7;
+	Mon, 23 Mar 2026 15:04:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275643;
-	bh=1kZq8OIeBXOp7N1jcXLHXSS6LJBghEdnYeFbw20EL/w=;
+	s=korg; t=1774278241;
+	bh=TdvoM1QedUlji6q4fjmeqQKHKWiGMPbtjCmkGGYPTOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XfziB0RCFzz3iNbUq8u5gQCZFWm3MJoWLOOCh33l7FHzl9KskKIVM8LR6qXzGVOK4
-	 ueI3HZwIDq6D71gAsxNqTnpv5mDAQzC53UG/R0YjDfbCviykdl8p+NQkZh3sZVXWv9
-	 QGn1qqhDa7dL2oUvabtcHknaRZxfmBpLX5apbE7Y=
+	b=cLpG2VVS7dyB1aFWdOpexFkNsoiA5DYHnVArtEY01GUfc6jADw6K7TBIh5PJXoaCg
+	 RXB6u/BRvO7SP2ejo7iJPORGaBZD3WLedLMJglFA1rBFe+SNcw6CXLfDwfNfk8YA/K
+	 VDDJGzc1Ni7xiaus9eknsf+CyhX/RYYV5qpEYim8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 170/460] ksmbd: fix use-after-free in smb_lazy_parent_lease_break_close()
+	Peng Fan <peng.fan@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 246/567] regulator: pca9450: Correct interrupt type
 Date: Mon, 23 Mar 2026 14:42:46 +0100
-Message-ID: <20260323134530.719980912@linuxfoundation.org>
+Message-ID: <20260323134539.920441177@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,75 +66,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229157-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228626-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A1B422F45F0
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: EFBC82F63B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit eac3361e3d5dd8067b3258c69615888eb45e9f25 upstream.
+[ Upstream commit 5d0efaf47ee90ac60efae790acee3a3ed99ebf80 ]
 
-opinfo pointer obtained via rcu_dereference(fp->f_opinfo) is being
-accessed after rcu_read_unlock() has been called. This creates a
-race condition where the memory could be freed by a concurrent
-writer between the unlock and the subsequent pointer dereferences
-(opinfo->is_lease, etc.), leading to a use-after-free.
+Kernel warning on i.MX8MP-EVK when doing module test:
+irq: type mismatch, failed to map hwirq-3 for gpio@30200000!
 
-Fixes: 5fb282ba4fef ("ksmbd: fix possible null-deref in smb_lazy_parent_lease_break_close")
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Per PCA945[X] specification: The IRQ_B pin is pulled low when any unmasked
+interrupt bit status is changed and it is released high once application
+processor read INT1 register.
+
+So the interrupt should be configured as IRQF_TRIGGER_LOW, not
+IRQF_TRIGGER_FALLING.
+
+Fixes: 0935ff5f1f0a4 ("regulator: pca9450: add pca9450 pmic driver")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://patch.msgid.link/20260310-pca9450-irq-v1-1-36adf52c2c55@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/regulator/pca9450-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1123,10 +1123,12 @@ void smb_lazy_parent_lease_break_close(s
- 
- 	rcu_read_lock();
- 	opinfo = rcu_dereference(fp->f_opinfo);
--	rcu_read_unlock();
- 
--	if (!opinfo || !opinfo->is_lease || opinfo->o_lease->version != 2)
-+	if (!opinfo || !opinfo->is_lease || opinfo->o_lease->version != 2) {
-+		rcu_read_unlock();
- 		return;
-+	}
-+	rcu_read_unlock();
- 
- 	p_ci = ksmbd_inode_lookup_lock(fp->filp->f_path.dentry->d_parent);
- 	if (!p_ci)
+diff --git a/drivers/regulator/pca9450-regulator.c b/drivers/regulator/pca9450-regulator.c
+index b8f7b13b0cb08..8f09f7f15a119 100644
+--- a/drivers/regulator/pca9450-regulator.c
++++ b/drivers/regulator/pca9450-regulator.c
+@@ -780,7 +780,7 @@ static int pca9450_i2c_probe(struct i2c_client *i2c)
+ 	if (pca9450->irq) {
+ 		ret = devm_request_threaded_irq(pca9450->dev, pca9450->irq, NULL,
+ 						pca9450_irq_handler,
+-						(IRQF_TRIGGER_FALLING | IRQF_ONESHOT),
++						(IRQF_TRIGGER_LOW | IRQF_ONESHOT),
+ 						"pca9450-irq", pca9450);
+ 		if (ret != 0) {
+ 			dev_err(pca9450->dev, "Failed to request IRQ: %d\n",
+-- 
+2.51.0
+
 
 
 
