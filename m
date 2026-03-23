@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229067-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EFFGCMpOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228534-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:38 +0100
+	id WJ2FAmNWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229067-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC1F2F4A8F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970942F5B37
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 64F15307B6A8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 72D6C302DE13
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04EA3B19CD;
-	Mon, 23 Mar 2026 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5251394461;
+	Mon, 23 Mar 2026 14:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bx0aVNpD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0U7iL7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4CD132470A;
-	Mon, 23 Mar 2026 14:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677EA370D76;
+	Mon, 23 Mar 2026 14:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275385; cv=none; b=WZ3jPcr7EZ1N3W9OLt7WIeDTkXnsJvCpIYG8H5doja11vc+x80WE/WiMLf+ueIo1ghXm7WZqqzOFH5rThFkHDM1W+o2LPOIj7UlckSG45gh3S1UE6nNNGb7A4qpdeGNprqainW2Lrz7ATN0NpTCbkmT/XkmzBMKCe1MADd+Rzho=
+	t=1774277955; cv=none; b=pxMMRVVIGPjvy9ctsFu71cbziBkA3FL/HE5qQmZdKxG3MDS2AwbR+srZIXXeD7y7GaEyNM8dMQ1ucJ/H79tsYq9Z295rlNlKDTX9UEPEiPZDdgKSzkmFz7Tw+58haP4I0Dx7i3axdrruGlARW5lqY2aVQ81O3jaysfbEtFEvbeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275385; c=relaxed/simple;
-	bh=lX9wyF9yjM0nXDjuZd/35s8r87986gDE7FIt2HMSL+g=;
+	s=arc-20240116; t=1774277955; c=relaxed/simple;
+	bh=r4hhbeFieywUIBJRtyC9JG4c7eCpSIlWJ6XyQrgaXl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0o6o2IzQ49qNA369l0Un2x8zzAD3Ipd9/wzqLxeAiaIJ7yM0F/dogOw8f1OjrL2qjWeo2XY5OxkcVAil0smwyJb1MMvdYxDDZX15APesABtyECw1CaCAZqQB4EntCa6NucKnKxQgpPi+7o84m/ucSVm9l1/v+UIpRnjoqO55KU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bx0aVNpD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45266C4CEF7;
-	Mon, 23 Mar 2026 14:16:25 +0000 (UTC)
+	 MIME-Version; b=rgROpySzzreAnK8LDIX5gvBum5APLSQojbDqh6IU7qIUTPy0FtroKcJEloLmglFqpPGef/fWEwXsocZERsPplWgs9Khkt2sOJJOYV9inVdO7xxR8dt8Soy90BspZccD4GF6hi6hbT4hyJzixXU5ZX5iA5Ibx1mOck+I9+QjbbVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0U7iL7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A25C4CEF7;
+	Mon, 23 Mar 2026 14:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275385;
-	bh=lX9wyF9yjM0nXDjuZd/35s8r87986gDE7FIt2HMSL+g=;
+	s=korg; t=1774277955;
+	bh=r4hhbeFieywUIBJRtyC9JG4c7eCpSIlWJ6XyQrgaXl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bx0aVNpDjTaK+gGiqosem23fEE56S2Oo6yZeD4kloFFUM63Xs4U6MKyl123JQw7J+
-	 Yizlub1UXY4xH1Efk1nt4h8E5lxPx3aaqn8WKoRHnWvncr9EtFtX+4AQrGLOfLlp8k
-	 rMAO2BxNO3zO+TPlRdnmzTDicUpH9dDAlD+Qh6NM=
+	b=v0U7iL7qqrPWN7FfNGNNaNFtdL7ugOC3/4WCNHM+tFChaTgsc4lG9GSBghDGC0CiS
+	 dp1rPlYCPIt6wX6+iWTZQvbU7Jn7SbGEmzFC9mRUWNKzXt7+hG5kZhj4fjNzE9KTWd
+	 Hnb+YTrjawK248VSAfra5idAPo+8wL/Hek6zcfU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Alex Sierra <alex.sierra@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+2e2cf5331207053b8106@syzkaller.appspotmail.com,
+	Allison Henderson <achender@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/460] drm/amdkfd: Unreserve bo if queue update failed
+Subject: [PATCH 6.6 156/567] net/rds: Fix circular locking dependency in rds_tcp_tune
 Date: Mon, 23 Mar 2026 14:41:16 +0100
-Message-ID: <20260323134528.646827203@linuxfoundation.org>
+Message-ID: <20260323134537.687239178@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,68 +65,117 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228534-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229067-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,2e2cf5331207053b8106];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: ADC1F2F4A8F
+X-Rspamd-Queue-Id: 970942F5B37
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Allison Henderson <achender@kernel.org>
 
-[ Upstream commit 2ce75a0b7e1bfddbcb9bc8aeb2e5e7fa99971acf ]
+[ Upstream commit 6a877ececd6daa002a9a0002cd0fbca6592a9244 ]
 
-Error handling path should unreserve bo then return failed.
+syzbot reported a circular locking dependency in rds_tcp_tune() where
+sk_net_refcnt_upgrade() is called while holding the socket lock:
 
-Fixes: 305cd109b761 ("drm/amdkfd: Validate user queue update")
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Alex Sierra <alex.sierra@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c24afed7de9ecce341825d8ab55a43a254348b33)
+======================================================
+WARNING: possible circular locking dependency detected
+======================================================
+kworker/u10:8/15040 is trying to acquire lock:
+ffffffff8e9aaf80 (fs_reclaim){+.+.}-{0:0},
+at: __kmalloc_cache_noprof+0x4b/0x6f0
+
+but task is already holding lock:
+ffff88805a3c1ce0 (k-sk_lock-AF_INET6){+.+.}-{0:0},
+at: rds_tcp_tune+0xd7/0x930
+
+The issue occurs because sk_net_refcnt_upgrade() performs memory
+allocation (via get_net_track() -> ref_tracker_alloc()) while the
+socket lock is held, creating a circular dependency with fs_reclaim.
+
+Fix this by moving sk_net_refcnt_upgrade() outside the socket lock
+critical section. This is safe because the fields modified by the
+sk_net_refcnt_upgrade() call (sk_net_refcnt, ns_tracker) are not
+accessed by any concurrent code path at this point.
+
+v2:
+  - Corrected fixes tag
+  - check patch line wrap nits
+  - ai commentary nits
+
+Reported-by: syzbot+2e2cf5331207053b8106@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2e2cf5331207053b8106
+Fixes: 3a58f13a881e ("net: rds: acquire refcount on TCP sockets")
+Signed-off-by: Allison Henderson <achender@kernel.org>
+Link: https://patch.msgid.link/20260227202336.167757-1-achender@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/rds/tcp.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index 4078a81761871..e3749dae5e599 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -600,6 +600,7 @@ int pqm_update_queue_properties(struct process_queue_manager *pqm,
- 					 p->queue_size)) {
- 			pr_debug("ring buf 0x%llx size 0x%llx not mapped on GPU\n",
- 				 p->queue_address, p->queue_size);
-+			amdgpu_bo_unreserve(vm->root.bo);
- 			return -EFAULT;
- 		}
+diff --git a/net/rds/tcp.c b/net/rds/tcp.c
+index 985b05f38b674..dee18da64a322 100644
+--- a/net/rds/tcp.c
++++ b/net/rds/tcp.c
+@@ -494,18 +494,24 @@ bool rds_tcp_tune(struct socket *sock)
+ 	struct rds_tcp_net *rtn;
  
+ 	tcp_sock_set_nodelay(sock->sk);
+-	lock_sock(sk);
+ 	/* TCP timer functions might access net namespace even after
+ 	 * a process which created this net namespace terminated.
+ 	 */
+ 	if (!sk->sk_net_refcnt) {
+-		if (!maybe_get_net(net)) {
+-			release_sock(sk);
++		if (!maybe_get_net(net))
+ 			return false;
+-		}
++		/*
++		 * sk_net_refcnt_upgrade() must be called before lock_sock()
++		 * because it does a GFP_KERNEL allocation, which can trigger
++		 * fs_reclaim and create a circular lock dependency with the
++		 * socket lock.  The fields it modifies (sk_net_refcnt,
++		 * ns_tracker) are not accessed by any concurrent code path
++		 * at this point.
++		 */
+ 		sk_net_refcnt_upgrade(sk);
+ 		put_net(net);
+ 	}
++	lock_sock(sk);
+ 	rtn = net_generic(net, rds_tcp_netid);
+ 	if (rtn->sndbuf_size > 0) {
+ 		sk->sk_sndbuf = rtn->sndbuf_size;
 -- 
 2.51.0
 
