@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229258-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QLxBFyNTwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228727-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:50:11 +0100
+	id qC5BAQhewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229258-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071172F5454
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:50:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D8A2F68F0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 90AB2302690C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 85B2932F4992
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8D23B27F4;
-	Mon, 23 Mar 2026 14:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372323B2FF6;
+	Mon, 23 Mar 2026 15:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9OmSQ3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gD7tfuq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F304D3ACEED;
-	Mon, 23 Mar 2026 14:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF14D388377;
+	Mon, 23 Mar 2026 15:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276959; cv=none; b=dQj/Vcr5uXRNfCjRW15lMVKGXnpFObHMNsYmQ2qbljEkUEeYrGLaz0QvSkRV7sgL9e6egGgKO0CY3e7XeFeQKHTmKEER2tO9xBpOlPTJhO8WO+P7u2fUUef9650ACHSh8GdrPiwsumsHhmv0B5QBwdtVHRsDBMaBhMx37JSebAI=
+	t=1774278556; cv=none; b=RfOI10fmyd8rnwbBr/th06FNG5g8NcUOD0HbFGtQ/Ed0LF8sduUr2Ix5VgL8ARVlHkIOaasfT4zU8Ov0PX0tR04hg8lU9/BSZzr7H37GZdSTV7Z4Rx4gLAadcBozyrDG23QJrmvIukeWYknmvmA45P7WHu09uFNmesA/j7u8XmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276959; c=relaxed/simple;
-	bh=b0H06tpZXzPaCKuNu6ISAbMBAaPAApLdcl+XxQFBGUc=;
+	s=arc-20240116; t=1774278556; c=relaxed/simple;
+	bh=s4G7e3FuKDedSA/gWxQDDrKyWxzgsj1HTRXETxAIs8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A0hViBAuzTAGASlzdEEiDOMRAKn56d8FPUP0D8OabvVk0X1CqdPsh4S08q6LxFG18DvzCXpBtmjiGKcY5HNAdOqY4qpQUVUU5fsIX5D3rul9BsGArZLqFkPL+lYSG42f9ynR/ONu+yFmY2PTtUdvrCqsYjR3U0eB+m9cbjk1Q2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9OmSQ3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D464C4CEF7;
-	Mon, 23 Mar 2026 14:42:38 +0000 (UTC)
+	 MIME-Version; b=QqQPtHNCiNhct0lY+mveIm4GCaB8mTOHzJ1/kMKKaZMikPscl4XxpZ3wUd0/FLovck0PaPKD9wRkmvlEnnLRbpZ2ff68NaxLuKFuTsfgi+Ae0+F/BKa0J2/wpdXf83ZVzx6/TyX+1P/uh1atY/jGH7GviF7QkAWWYMN9c6WJfeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gD7tfuq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B8EC4CEF7;
+	Mon, 23 Mar 2026 15:09:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276958;
-	bh=b0H06tpZXzPaCKuNu6ISAbMBAaPAApLdcl+XxQFBGUc=;
+	s=korg; t=1774278555;
+	bh=s4G7e3FuKDedSA/gWxQDDrKyWxzgsj1HTRXETxAIs8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9OmSQ3Gquxp8BejnTWL3k4QxI9xa8B+0y8PImCJgrE1SG18tb4p6k/LhTHeienNl
-	 EHscmQKHF7ea5/jUFh8GEY6IzpQHUR8GDRV7DDmuBzN62cIltBKAeS7eRddLaYWM1n
-	 rymn6oQ4e9J4gOdCE8LTdcA+8wa91S2Qb0fT24Fw=
+	b=gD7tfuq6cSMM6Bl/rBNLL+xDF/zQzrAdypsCVFH+TDsmfOb/OKx5U0V/Mwb63Yzqn
+	 Di/nnHE2JbLdHbBn/Z47dsjhq2zdFYrqiKndneO1hKwdFqikfEOszpcosj8b0zKWpO
+	 iVEGi98sZ8/mOiwqhM2/RHzp26J8/2Bsu5tpyJrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 268/460] drm/bridge: ti-sn65dsi83: halve horizontal syncs for dual LVDS output
-Date: Mon, 23 Mar 2026 14:44:24 +0100
-Message-ID: <20260323134533.074567903@linuxfoundation.org>
+	Rahul Bukte <rahul.bukte@sony.com>,
+	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 6.6 345/567] x86/apic: Disable x2apic on resume if the kernel expects so
+Date: Mon, 23 Mar 2026 14:44:25 +0100
+Message-ID: <20260323134542.370798311@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +68,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228727-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229258-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 071172F5454
+X-Rspamd-Queue-Id: 57D8A2F68F0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
 
-[ Upstream commit d0d727746944096a6681dc6adb5f123fc5aa018d ]
+commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
 
-Dual LVDS output (available on the SN65DSI84) requires HSYNC_PULSE_WIDTH
-and HORIZONTAL_BACK_PORCH to be divided by two with respect to the values
-used for single LVDS output.
+When resuming from s2ram, firmware may re-enable x2apic mode, which may have
+been disabled by the kernel during boot either because it doesn't support IRQ
+remapping or for other reasons. This causes the kernel to continue using the
+xapic interface, while the hardware is in x2apic mode, which causes hangs.
+This happens on defconfig + bare metal + s2ram.
 
-While not clearly stated in the datasheet, this is needed according to the
-DSI Tuner [0] output. It also makes sense intuitively because in dual LVDS
-output two pixels at a time are output and so the output clock is half of
-the pixel clock.
+Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
+disabled, i.e. when x2apic_mode = 0.
 
-Some dual-LVDS panels refuse to show any picture without this fix.
+The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
+pre-sleep configuration or initial boot configuration for each CPU, including
+MSR state:
 
-Divide by two HORIZONTAL_FRONT_PORCH too, even though this register is used
-only for test pattern generation which is not currently implemented by this
-driver.
+  When executing from the power-on reset vector as a result of waking from an
+  S2 or S3 sleep state, the platform firmware performs only the hardware
+  initialization required to restore the system to either the state the
+  platform was in prior to the initial operating system boot, or to the
+  pre-sleep configuration state. In multiprocessor systems, non-boot
+  processors should be placed in the same state as prior to the initial
+  operating system boot.
 
-[0] https://www.ti.com/tool/DSI-TUNER
+  (further ahead)
 
-Fixes: ceb515ba29ba ("drm/bridge: ti-sn65dsi83: Add TI SN65DSI83 and SN65DSI84 driver")
+  If this is an S2 or S3 wake, then the platform runtime firmware restores
+  minimum context of the system before jumping to the waking vector. This
+  includes:
+
+	CPU configuration. Platform runtime firmware restores the pre-sleep
+	configuration or initial boot configuration of each CPU (MSR, MTRR,
+	firmware update, SMBase, and so on). Interrupts must be disabled (for
+	IA-32 processors, disabled by CLI instruction).
+
+	(and other things)
+
+So at least as per the spec, re-enablement of x2apic by the firmware is
+allowed if "x2apic on" is a part of the initial boot configuration.
+
+  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
+
+  [ bp: Massage. ]
+
+Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
+Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Marek Vasut <marek.vasut@mailbox.org>
-Link: https://patch.msgid.link/20260226-ti-sn65dsi83-dual-lvds-fixes-and-test-pattern-v1-2-2e15f5a9a6a0@bootlin.com
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-[ adapted variable declaration placement ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi83.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/x86/kernel/apic/apic.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi83.c
-@@ -325,6 +325,7 @@ static void sn65dsi83_atomic_pre_enable(
- 					struct drm_bridge_state *old_bridge_state)
- {
- 	struct sn65dsi83 *ctx = bridge_to_sn65dsi83(bridge);
-+	const unsigned int dual_factor = ctx->lvds_dual_link ? 2 : 1;
- 	struct drm_atomic_state *state = old_bridge_state->base.state;
- 	const struct drm_bridge_state *bridge_state;
- 	const struct drm_crtc_state *crtc_state;
-@@ -452,18 +453,18 @@ static void sn65dsi83_atomic_pre_enable(
- 	/* 32 + 1 pixel clock to ensure proper operation */
- 	le16val = cpu_to_le16(32 + 1);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_SYNC_DELAY_LOW, &le16val, 2);
--	le16val = cpu_to_le16(mode->hsync_end - mode->hsync_start);
-+	le16val = cpu_to_le16((mode->hsync_end - mode->hsync_start) / dual_factor);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_HSYNC_PULSE_WIDTH_LOW,
- 			  &le16val, 2);
- 	le16val = cpu_to_le16(mode->vsync_end - mode->vsync_start);
- 	regmap_bulk_write(ctx->regmap, REG_VID_CHA_VSYNC_PULSE_WIDTH_LOW,
- 			  &le16val, 2);
- 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_BACK_PORCH,
--		     mode->htotal - mode->hsync_end);
-+		     (mode->htotal - mode->hsync_end) / dual_factor);
- 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_BACK_PORCH,
- 		     mode->vtotal - mode->vsync_end);
- 	regmap_write(ctx->regmap, REG_VID_CHA_HORIZONTAL_FRONT_PORCH,
--		     mode->hsync_start - mode->hdisplay);
-+		     (mode->hsync_start - mode->hdisplay) / dual_factor);
- 	regmap_write(ctx->regmap, REG_VID_CHA_VERTICAL_FRONT_PORCH,
- 		     mode->vsync_start - mode->vdisplay);
- 	regmap_write(ctx->regmap, REG_VID_CHA_TEST_PATTERN, 0x00);
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1931,6 +1931,7 @@ void __init check_x2apic(void)
+ 
+ static inline void try_to_enable_x2apic(int remap_mode) { }
+ static inline void __x2apic_enable(void) { }
++static inline void __x2apic_disable(void) { }
+ #endif /* !CONFIG_X86_X2APIC */
+ 
+ void __init enable_IR_x2apic(void)
+@@ -2652,6 +2653,11 @@ static void lapic_resume(void)
+ 	if (x2apic_mode) {
+ 		__x2apic_enable();
+ 	} else {
++		if (x2apic_enabled()) {
++			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
++			__x2apic_disable();
++		}
++
+ 		/*
+ 		 * Make sure the APICBASE points to the right address
+ 		 *
 
 
 
