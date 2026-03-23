@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-228492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229567-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KHVDOPJOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228492-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:18 +0100
+	id IMMNBaBswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229567-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:56 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C3D2F4B02
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A52652F885A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E1A02314130B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 792E23077616
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33F1D3AD537;
-	Mon, 23 Mar 2026 14:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB26257851;
+	Mon, 23 Mar 2026 16:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m07Vyppp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7zLjAas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DB03AE6E2;
-	Mon, 23 Mar 2026 14:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD76282F3A;
+	Mon, 23 Mar 2026 16:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275276; cv=none; b=ObR09JeGnIuB7SKE4ThyZuFmjYFZJGdvFrsexTo8Oe3JP0jtFCCx6Q/YvhC9dQKw2X6ZKdq4keJbB2YL65OY5Tb0I9DNenUlEvcrjSF4Kwj+0k0a1Zr+aHnLmb9Y4zJIvLBiOz/J0Jjpin27+FBX1pCUR2ZmJvxqlXq+N646AIc=
+	t=1774282270; cv=none; b=b+aHN5dDzDB6MGuPPagt3lUoa4kAcyo2uVP9Ba0AHF80tGRueTld/3WR+8lEQOG/UYJlJcHrlaWy8cxsXRkD36m/FnHXgig0MNwMopJIhbZZPPnUy1n0bc05FWAOlYwzdNHcfykwpbPFpWMx803NX3ekBOGvFEYPxnJ/L/vbVD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275276; c=relaxed/simple;
-	bh=8ZadGV1fXd4jxC0JJ/Mj5q3GnjNipi2KiXgIKLjxWno=;
+	s=arc-20240116; t=1774282270; c=relaxed/simple;
+	bh=R5a6MQ2femnj0eiGbju8DhHcBEHdoIsmaQlTTAm+3MA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l4dxgwYZGip0Qq7kXjBEJ9MfjDTASujUCjcYvoTlEZn8q8N0G6i5MewIf3sGeSQTPvJX9o46juY9Y7pKW4csTIE2CrashbqK1W2CqeI+GlohHijpc9pqaf4P7jCLzKw7aNJ4rR3VWPPuX1GCaHC5dJkmYaMAbbuptvtk5EZDV0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m07Vyppp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85177C4CEF7;
-	Mon, 23 Mar 2026 14:14:35 +0000 (UTC)
+	 MIME-Version; b=UDZSauLGDSi9eiA30QSye7AthxrccIs2grJmxWEw0k97l5Cgzl/MXv/kyUROFmT5J4mlaJOyrhQyeOzsaQ3ghPugyMl3alO48ImT/2HA0W7OOzzrjNy5L8NSmag9jZZeiOO0DCZiISYnfxmFT38u+rxZLDWXi5x5KoyFqETr1n8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7zLjAas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7C9C2BC9E;
+	Mon, 23 Mar 2026 16:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275275;
-	bh=8ZadGV1fXd4jxC0JJ/Mj5q3GnjNipi2KiXgIKLjxWno=;
+	s=korg; t=1774282270;
+	bh=R5a6MQ2femnj0eiGbju8DhHcBEHdoIsmaQlTTAm+3MA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m07VypppoePZiPKXhXnBvXbw9uN+iR8U7TdHHDhgESaK+GzSeoWwP5YH/oR2/FVzo
-	 R2W3F6sJmjHSdQzdS3tg9jSSZTwk3O+0M91ftmWSjPuqOUn9IHe+w507cR9ECnxvrs
-	 UVwvGSZQY9gIkrFyujepvoZeHOYKgI0UKdKADl7I=
+	b=B7zLjAasPOTHtXkeO4vXxTJOsN/MTvBDFVqI6TETEYCM1FdjtfOQyCK4JKMmzrj00
+	 +eLOyhoNIQJ4oX0QVGj69dmR4iry26RHa5YxHYPU7hsFVG2P1qdjPhYjQGjvHU7IqB
+	 zkWSvIncaZvEZ0SoUKTrRdeWK2a0q8mwLC8FDfRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/460] net/mlx5: Fix deadlock between devlink lock and esw->wq
+Subject: [PATCH 6.1 051/481] ext4: convert bd_bitmap_page to bd_bitmap_folio
 Date: Mon, 23 Mar 2026 14:40:33 +0100
-Message-ID: <20260323134527.619852653@linuxfoundation.org>
+Message-ID: <20260323134526.471433745@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,182 +66,296 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228492-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229567-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 19C3D2F4B02
+X-Rspamd-Queue-Id: A52652F885A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit aed763abf0e905b4b8d747d1ba9e172961572f57 ]
+[ Upstream commit 99b150d84e4939735cfce245e32e3d29312c68ec ]
 
-esw->work_queue executes esw_functions_changed_event_handler ->
-esw_vfs_changed_event_handler and acquires the devlink lock.
+There is no need to make this a multi-page folio, so leave all the
+infrastructure around it in pages.  But since we're locking it, playing
+with its refcount and checking whether it's uptodate, it needs to move
+to the folio API.
 
-.eswitch_mode_set (acquires devlink lock in devlink_nl_pre_doit) ->
-mlx5_devlink_eswitch_mode_set -> mlx5_eswitch_disable_locked ->
-mlx5_eswitch_event_handler_unregister -> flush_workqueue deadlocks
-when esw_vfs_changed_event_handler executes.
-
-Fix that by no longer flushing the work to avoid the deadlock, and using
-a generation counter to keep track of work relevance. This avoids an old
-handler manipulating an esw that has undergone one or more mode changes:
-- the counter is incremented in mlx5_eswitch_event_handler_unregister.
-- the counter is read and passed to the ephemeral mlx5_host_work struct.
-- the work handler takes the devlink lock and bails out if the current
-  generation is different than the one it was scheduled to operate on.
-- mlx5_eswitch_cleanup does the final draining before destroying the wq.
-
-No longer flushing the workqueue has the side effect of maybe no longer
-cancelling pending vport_change_handler work items, but that's ok since
-those are disabled elsewhere:
-- mlx5_eswitch_disable_locked disables the vport eq notifier.
-- mlx5_esw_vport_disable disarms the HW EQ notification and marks
-  vport->enabled under state_lock to false to prevent pending vport
-  handler from doing anything.
-- mlx5_eswitch_cleanup destroys the workqueue and makes sure all events
-  are disabled/finished.
-
-Fixes: f1bc646c9a06 ("net/mlx5: Use devl_ API in mlx5_esw_offloads_devlink_port_register")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260305081019.1811100-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20240416172900.244637-2-willy@infradead.org
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: bdc56a9c46b2 ("ext4: fix e4b bitmap inconsistency reports")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c  |  7 ++++---
- .../net/ethernet/mellanox/mlx5/core/eswitch.h  |  2 ++
- .../mellanox/mlx5/core/eswitch_offloads.c      | 18 +++++++++++++-----
- 3 files changed, 19 insertions(+), 8 deletions(-)
+ fs/ext4/mballoc.c | 98 ++++++++++++++++++++++++-----------------------
+ fs/ext4/mballoc.h |  2 +-
+ 2 files changed, 52 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index b26ab78006ea0..864e88f057714 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1068,10 +1068,11 @@ static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 899d7eb6df3dc..083e4904ed679 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -1345,9 +1345,10 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
+ 	int block, pnum, poff;
+ 	int blocks_per_page;
+ 	struct page *page;
++	struct folio *folio;
  
- static void mlx5_eswitch_event_handler_unregister(struct mlx5_eswitch *esw)
+ 	e4b->bd_buddy_page = NULL;
+-	e4b->bd_bitmap_page = NULL;
++	e4b->bd_bitmap_folio = NULL;
+ 
+ 	blocks_per_page = PAGE_SIZE / sb->s_blocksize;
+ 	/*
+@@ -1358,12 +1359,13 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
+ 	block = group * 2;
+ 	pnum = block / blocks_per_page;
+ 	poff = block % blocks_per_page;
+-	page = find_or_create_page(inode->i_mapping, pnum, gfp);
+-	if (!page)
+-		return -ENOMEM;
+-	BUG_ON(page->mapping != inode->i_mapping);
+-	e4b->bd_bitmap_page = page;
+-	e4b->bd_bitmap = page_address(page) + (poff * sb->s_blocksize);
++	folio = __filemap_get_folio(inode->i_mapping, pnum,
++			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
++	if (IS_ERR(folio))
++		return PTR_ERR(folio);
++	BUG_ON(folio->mapping != inode->i_mapping);
++	e4b->bd_bitmap_folio = folio;
++	e4b->bd_bitmap = folio_address(folio) + (poff * sb->s_blocksize);
+ 
+ 	if (blocks_per_page >= 2) {
+ 		/* buddy and bitmap are on the same page */
+@@ -1381,9 +1383,9 @@ static int ext4_mb_get_buddy_page_lock(struct super_block *sb,
+ 
+ static void ext4_mb_put_buddy_page_lock(struct ext4_buddy *e4b)
  {
--	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev))
-+	if (esw->mode == MLX5_ESWITCH_OFFLOADS &&
-+	    mlx5_eswitch_is_funcs_handler(esw->dev)) {
- 		mlx5_eq_notifier_unregister(esw->dev, &esw->esw_funcs.nb);
--
--	flush_workqueue(esw->work_queue);
-+		atomic_inc(&esw->esw_funcs.generation);
-+	}
- }
+-	if (e4b->bd_bitmap_page) {
+-		unlock_page(e4b->bd_bitmap_page);
+-		put_page(e4b->bd_bitmap_page);
++	if (e4b->bd_bitmap_folio) {
++		folio_unlock(e4b->bd_bitmap_folio);
++		folio_put(e4b->bd_bitmap_folio);
+ 	}
+ 	if (e4b->bd_buddy_page) {
+ 		unlock_page(e4b->bd_buddy_page);
+@@ -1403,6 +1405,7 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
+ 	struct ext4_group_info *this_grp;
+ 	struct ext4_buddy e4b;
+ 	struct page *page;
++	struct folio *folio;
+ 	int ret = 0;
  
- static void mlx5_eswitch_clear_vf_vports_info(struct mlx5_eswitch *esw)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index be6e60d961689..63c2b36ce967b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -312,10 +312,12 @@ struct esw_mc_addr { /* SRIOV only */
- struct mlx5_host_work {
- 	struct work_struct	work;
- 	struct mlx5_eswitch	*esw;
-+	int			work_gen;
- };
+ 	might_sleep();
+@@ -1429,11 +1432,11 @@ int ext4_mb_init_group(struct super_block *sb, ext4_group_t group, gfp_t gfp)
+ 		goto err;
+ 	}
  
- struct mlx5_esw_functions {
- 	struct mlx5_nb		nb;
-+	atomic_t		generation;
- 	bool			host_funcs_disabled;
- 	u16			num_vfs;
- 	u16			num_ec_vfs;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index 7cead1ba0bfa1..b122003d8bcde 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3402,22 +3402,28 @@ static void esw_offloads_steering_cleanup(struct mlx5_eswitch *esw)
- }
+-	page = e4b.bd_bitmap_page;
+-	ret = ext4_mb_init_cache(page, NULL, gfp);
++	folio = e4b.bd_bitmap_folio;
++	ret = ext4_mb_init_cache(&folio->page, NULL, gfp);
+ 	if (ret)
+ 		goto err;
+-	if (!PageUptodate(page)) {
++	if (!folio_test_uptodate(folio)) {
+ 		ret = -EIO;
+ 		goto err;
+ 	}
+@@ -1475,6 +1478,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 	int pnum;
+ 	int poff;
+ 	struct page *page;
++	struct folio *folio;
+ 	int ret;
+ 	struct ext4_group_info *grp;
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+@@ -1493,7 +1497,7 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 	e4b->bd_sb = sb;
+ 	e4b->bd_group = group;
+ 	e4b->bd_buddy_page = NULL;
+-	e4b->bd_bitmap_page = NULL;
++	e4b->bd_bitmap_folio = NULL;
  
- static void
--esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
-+esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, int work_gen,
-+			      const u32 *out)
- {
- 	struct devlink *devlink;
- 	bool host_pf_disabled;
- 	u16 new_num_vfs;
+ 	if (unlikely(EXT4_MB_GRP_NEED_INIT(grp))) {
+ 		/*
+@@ -1514,53 +1518,53 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ 	pnum = block / blocks_per_page;
+ 	poff = block % blocks_per_page;
  
-+	devlink = priv_to_devlink(esw->dev);
-+	devl_lock(devlink);
-+
-+	/* Stale work from one or more mode changes ago. Bail out. */
-+	if (work_gen != atomic_read(&esw->esw_funcs.generation))
-+		goto unlock;
-+
- 	new_num_vfs = MLX5_GET(query_esw_functions_out, out,
- 			       host_params_context.host_num_of_vfs);
- 	host_pf_disabled = MLX5_GET(query_esw_functions_out, out,
- 				    host_params_context.host_pf_disabled);
- 
- 	if (new_num_vfs == esw->esw_funcs.num_vfs || host_pf_disabled)
--		return;
-+		goto unlock;
- 
--	devlink = priv_to_devlink(esw->dev);
--	devl_lock(devlink);
- 	/* Number of VFs can only change from "0 to x" or "x to 0". */
- 	if (esw->esw_funcs.num_vfs > 0) {
- 		mlx5_eswitch_unload_vf_vports(esw, esw->esw_funcs.num_vfs);
-@@ -3432,6 +3438,7 @@ esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
+-	/* we could use find_or_create_page(), but it locks page
+-	 * what we'd like to avoid in fast path ... */
+-	page = find_get_page_flags(inode->i_mapping, pnum, FGP_ACCESSED);
+-	if (page == NULL || !PageUptodate(page)) {
+-		if (page)
++	/* Avoid locking the folio in the fast path ... */
++	folio = __filemap_get_folio(inode->i_mapping, pnum, FGP_ACCESSED, 0);
++	if (IS_ERR(folio) || !folio_test_uptodate(folio)) {
++		if (!IS_ERR(folio))
+ 			/*
+-			 * drop the page reference and try
+-			 * to get the page with lock. If we
++			 * drop the folio reference and try
++			 * to get the folio with lock. If we
+ 			 * are not uptodate that implies
+-			 * somebody just created the page but
+-			 * is yet to initialize the same. So
++			 * somebody just created the folio but
++			 * is yet to initialize it. So
+ 			 * wait for it to initialize.
+ 			 */
+-			put_page(page);
+-		page = find_or_create_page(inode->i_mapping, pnum, gfp);
+-		if (page) {
+-			if (WARN_RATELIMIT(page->mapping != inode->i_mapping,
+-	"ext4: bitmap's paging->mapping != inode->i_mapping\n")) {
++			folio_put(folio);
++		folio = __filemap_get_folio(inode->i_mapping, pnum,
++				FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
++		if (!IS_ERR(folio)) {
++			if (WARN_RATELIMIT(folio->mapping != inode->i_mapping,
++	"ext4: bitmap's mapping != inode->i_mapping\n")) {
+ 				/* should never happen */
+-				unlock_page(page);
++				folio_unlock(folio);
+ 				ret = -EINVAL;
+ 				goto err;
+ 			}
+-			if (!PageUptodate(page)) {
+-				ret = ext4_mb_init_cache(page, NULL, gfp);
++			if (!folio_test_uptodate(folio)) {
++				ret = ext4_mb_init_cache(&folio->page, NULL, gfp);
+ 				if (ret) {
+-					unlock_page(page);
++					folio_unlock(folio);
+ 					goto err;
+ 				}
+-				mb_cmp_bitmaps(e4b, page_address(page) +
++				mb_cmp_bitmaps(e4b, folio_address(folio) +
+ 					       (poff * sb->s_blocksize));
+ 			}
+-			unlock_page(page);
++			folio_unlock(folio);
  		}
  	}
- 	esw->esw_funcs.num_vfs = new_num_vfs;
-+unlock:
- 	devl_unlock(devlink);
+-	if (page == NULL) {
+-		ret = -ENOMEM;
++	if (IS_ERR(folio)) {
++		ret = PTR_ERR(folio);
+ 		goto err;
+ 	}
+-	if (!PageUptodate(page)) {
++	if (!folio_test_uptodate(folio)) {
+ 		ret = -EIO;
+ 		goto err;
+ 	}
+ 
+ 	/* Pages marked accessed already */
+-	e4b->bd_bitmap_page = page;
+-	e4b->bd_bitmap = page_address(page) + (poff * sb->s_blocksize);
++	e4b->bd_bitmap_folio = folio;
++	e4b->bd_bitmap = folio_address(folio) + (poff * sb->s_blocksize);
+ 
+ 	block++;
+ 	pnum = block / blocks_per_page;
+@@ -1608,8 +1612,8 @@ ext4_mb_load_buddy_gfp(struct super_block *sb, ext4_group_t group,
+ err:
+ 	if (page)
+ 		put_page(page);
+-	if (e4b->bd_bitmap_page)
+-		put_page(e4b->bd_bitmap_page);
++	if (e4b->bd_bitmap_folio)
++		folio_put(e4b->bd_bitmap_folio);
+ 
+ 	e4b->bd_buddy = NULL;
+ 	e4b->bd_bitmap = NULL;
+@@ -1624,8 +1628,8 @@ static int ext4_mb_load_buddy(struct super_block *sb, ext4_group_t group,
+ 
+ static void ext4_mb_unload_buddy(struct ext4_buddy *e4b)
+ {
+-	if (e4b->bd_bitmap_page)
+-		put_page(e4b->bd_bitmap_page);
++	if (e4b->bd_bitmap_folio)
++		folio_put(e4b->bd_bitmap_folio);
+ 	if (e4b->bd_buddy_page)
+ 		put_page(e4b->bd_buddy_page);
  }
+@@ -2050,7 +2054,7 @@ static void ext4_mb_use_best_found(struct ext4_allocation_context *ac,
+ 	 * double allocate blocks. The reference is dropped
+ 	 * in ext4_mb_release_context
+ 	 */
+-	ac->ac_bitmap_page = e4b->bd_bitmap_page;
++	ac->ac_bitmap_page = &e4b->bd_bitmap_folio->page;
+ 	get_page(ac->ac_bitmap_page);
+ 	ac->ac_buddy_page = e4b->bd_buddy_page;
+ 	get_page(ac->ac_buddy_page);
+@@ -3715,7 +3719,7 @@ static void ext4_free_data_in_buddy(struct super_block *sb,
+ 		 * balance refcounts from ext4_mb_free_metadata()
+ 		 */
+ 		put_page(e4b.bd_buddy_page);
+-		put_page(e4b.bd_bitmap_page);
++		folio_put(e4b.bd_bitmap_folio);
+ 	}
+ 	ext4_unlock_group(sb, entry->efd_group);
+ 	ext4_mb_unload_buddy(&e4b);
+@@ -5888,7 +5892,7 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
+ 	struct rb_node *parent = NULL, *new_node;
  
-@@ -3448,7 +3455,7 @@ static void esw_functions_changed_event_handler(struct work_struct *work)
- 	if (IS_ERR(out))
- 		goto out;
+ 	BUG_ON(!ext4_handle_valid(handle));
+-	BUG_ON(e4b->bd_bitmap_page == NULL);
++	BUG_ON(e4b->bd_bitmap_folio == NULL);
+ 	BUG_ON(e4b->bd_buddy_page == NULL);
  
--	esw_vfs_changed_event_handler(esw, out);
-+	esw_vfs_changed_event_handler(esw, host_work->work_gen, out);
- 	kvfree(out);
- out:
- 	kfree(host_work);
-@@ -3468,6 +3475,7 @@ int mlx5_esw_funcs_changed_handler(struct notifier_block *nb, unsigned long type
- 	esw = container_of(esw_funcs, struct mlx5_eswitch, esw_funcs);
- 
- 	host_work->esw = esw;
-+	host_work->work_gen = atomic_read(&esw_funcs->generation);
- 
- 	INIT_WORK(&host_work->work, esw_functions_changed_event_handler);
- 	queue_work(esw->work_queue, &host_work->work);
+ 	new_node = &new_entry->efd_node;
+@@ -5901,7 +5905,7 @@ ext4_mb_free_metadata(handle_t *handle, struct ext4_buddy *e4b,
+ 		 * on-disk bitmap and lose not-yet-available
+ 		 * blocks */
+ 		get_page(e4b->bd_buddy_page);
+-		get_page(e4b->bd_bitmap_page);
++		folio_get(e4b->bd_bitmap_folio);
+ 	}
+ 	while (*n) {
+ 		parent = *n;
+diff --git a/fs/ext4/mballoc.h b/fs/ext4/mballoc.h
+index 2d95fcab941f6..24e7c7a04f674 100644
+--- a/fs/ext4/mballoc.h
++++ b/fs/ext4/mballoc.h
+@@ -203,7 +203,7 @@ struct ext4_allocation_context {
+ struct ext4_buddy {
+ 	struct page *bd_buddy_page;
+ 	void *bd_buddy;
+-	struct page *bd_bitmap_page;
++	struct folio *bd_bitmap_folio;
+ 	void *bd_bitmap;
+ 	struct ext4_group_info *bd_info;
+ 	struct super_block *bd_sb;
 -- 
 2.51.0
 
