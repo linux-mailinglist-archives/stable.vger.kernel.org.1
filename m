@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-229087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228559-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oIIjMgFZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:13 +0100
+	id UOZnG0ZUwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228559-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:02 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF902F60E7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72DF2F56C2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 591D130B48C8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9020E31A8069
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDB923A564;
-	Mon, 23 Mar 2026 15:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D1A222590;
+	Mon, 23 Mar 2026 14:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhG2JJfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlPptVB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636D9237707;
-	Mon, 23 Mar 2026 15:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4E93C07A;
+	Mon, 23 Mar 2026 14:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278019; cv=none; b=IxtCi7DtvU3RYmkH9LFn5k34kH50m1l6JfVU71k5/OrXM8Y7K/AyUF1vgUwE1uxZqLRIPKig9dQf8B9kAuSHSDHAshXMXQeKedkR8EnjtujYIewLFV7kxuNE3/y1sk6cO5DgAekMBbfzaOstoHZsxGV5GkbSLvoTJnPIVol1KDw=
+	t=1774275451; cv=none; b=MIuBLDcDk10bpTjNr3rKJ0qJm4+MPXeMt2I0D4ixZvj1deyUhyb2dnZzNfc6V4JuZr8aCsJZBkUs1XnwGGgah8brUWF2fqG1zsTvsMLWcAPuYq1lAtSXCn/Vz6qAbWz6RasNcyo74qaMQxdW7eY+BENC7O87yTGqFQ3wKplkVUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278019; c=relaxed/simple;
-	bh=VPP6WI0exGG98Qi9wQ3chRkc1E3smq/Yh5TW78XJeLY=;
+	s=arc-20240116; t=1774275451; c=relaxed/simple;
+	bh=CK4lZ5YnTJ+4Ib4DZkFwoh2qLdH8VG3h7GOMy34KurQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9kXJhqVIgUltnRit501GSDRzOn/qEIu4JuRpedCUmIybRqWivXDKPWVTZHFBuMToQhP41scvYqaauc8791G4BfNwNpzKBsLF0w1I4r0Sydx3sBsofgDySx0kwQs+nG3MHM4Hz0mO7aJZW81CGwjHlv3vQ9Y16fqSWu/OGivHQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhG2JJfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E20C3C4CEF7;
-	Mon, 23 Mar 2026 15:00:18 +0000 (UTC)
+	 MIME-Version; b=Xd+LdX46akyHSwQxwYaeuaPD1L4qTcCISXqJzeS8KbViXd0/dProhLHnsyZWQPBsEug8YEo3csw/1hgBtXINoE+FT5uYGI9MG83e27Nslxi2eXziAh6ubF842mw7bVZZOwDTOhO5anBsBAyXC6gHem+ctdCoDLuCYwv4SWG98DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlPptVB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D37DFC4CEF7;
+	Mon, 23 Mar 2026 14:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278019;
-	bh=VPP6WI0exGG98Qi9wQ3chRkc1E3smq/Yh5TW78XJeLY=;
+	s=korg; t=1774275451;
+	bh=CK4lZ5YnTJ+4Ib4DZkFwoh2qLdH8VG3h7GOMy34KurQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nhG2JJfMF1h9YhRAf16tiHe44jvN16ypI6wBnlcext+fRehlTK0r2JuV2nOQX6gqQ
-	 y+Kp/Px6IDUk5zy0dLG5LO7u9M3QY09bGny7aQj5enRV7rYbEUXgA5KtOKTBFeYRDq
-	 nN1tHk+mbna9TQWMnszda3I1PRNc2leyGMFPBqqc=
+	b=AlPptVB2RAT+tRhg2Zi+cgegKY03X0UgtAIwRnG3XrGwFEQ71h7aPYo27Mo0kfsHX
+	 rwad+Hj5rHa/5SH2bJAIgrEQKMyxMk8mU/Cjvn816heXXhDhZKmHE2AaPT1r5AGdRw
+	 XAoSLdZKROSU48KtmH3A2gpEsgKwaqnmhAr/ne2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guruprasad C P <gurucp2005@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/567] net: bridge: fix nd_tbl NULL dereference when IPv6 is disabled
+	stable <stable@kernel.org>,
+	A1RM4X <dev@a1rm4x.com>
+Subject: [PATCH 6.12 098/460] USB: add QUIRK_NO_BOS for video capture several devices
 Date: Mon, 23 Mar 2026 14:41:34 +0100
-Message-ID: <20260323134538.141346519@linuxfoundation.org>
+Message-ID: <20260323134529.064791889@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,116 +65,92 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229087-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de,nvidia.com,blackwall.org,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228559-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: EAF902F60E7
+X-Rspamd-Queue-Id: D72DF2F56C2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: A1RM4X <dev@a1rm4x.com>
 
-[ Upstream commit e5e890630533bdc15b26a34bb8e7ef539bdf1322 ]
+commit 93cd0d664661f58f7e7bed7373714ab2ace41734 upstream.
 
-When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
-initialized because inet6_init() exits before ndisc_init() is called
-which initializes it. Then, if neigh_suppress is enabled and an ICMPv6
-Neighbor Discovery packet reaches the bridge, br_do_suppress_nd() will
-dereference ipv6_stub->nd_tbl which is NULL, passing it to
-neigh_lookup(). This causes a kernel NULL pointer dereference.
+Several USB capture devices also need the USB_QUIRK_NO_BOS set for them
+to work properly, odds are they are all the same chip inside, just
+different vendor/product ids.
 
- BUG: kernel NULL pointer dereference, address: 0000000000000268
- Oops: 0000 [#1] PREEMPT SMP NOPTI
- [...]
- RIP: 0010:neigh_lookup+0x16/0xe0
- [...]
- Call Trace:
-  <IRQ>
-  ? neigh_lookup+0x16/0xe0
-  br_do_suppress_nd+0x160/0x290 [bridge]
-  br_handle_frame_finish+0x500/0x620 [bridge]
-  br_handle_frame+0x353/0x440 [bridge]
-  __netif_receive_skb_core.constprop.0+0x298/0x1110
-  __netif_receive_skb_one_core+0x3d/0xa0
-  process_backlog+0xa0/0x140
-  __napi_poll+0x2c/0x170
-  net_rx_action+0x2c4/0x3a0
-  handle_softirqs+0xd0/0x270
-  do_softirq+0x3f/0x60
+This fixes up:
+  - ASUS TUF 4K PRO
+  - Avermedia Live Gamer Ultra 2.1 (GC553G2)
+  - UGREEN 35871
+to now run at full speed (10 Gbps/4K 60 fps mode.)
 
-Fix this by replacing IS_ENABLED(IPV6) call with ipv6_mod_enabled() in
-the callers. This is in essence disabling NS/NA suppression when IPv6 is
-disabled.
-
-Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
-Reported-by: Guruprasad C P <gurucp2005@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAHXs0ORzd62QOG-Fttqa2Cx_A_VFp=utE2H2VTX5nqfgs7LDxQ@mail.gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20260304120357.9778-1-fmancera@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/CACy+XB-f-51xGpNQFCSm5pE_momTQLu=BaZggHYU1DiDmFX=ug@mail.gmail.com
+Cc: stable <stable@kernel.org>
+Signed-off-by: A1RM4X <dev@a1rm4x.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_device.c | 2 +-
- net/bridge/br_input.c  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/quirks.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/bridge/br_device.c b/net/bridge/br_device.c
-index 42d4c3727bf76..4af3e4c67038d 100644
---- a/net/bridge/br_device.c
-+++ b/net/bridge/br_device.c
-@@ -72,7 +72,7 @@ netdev_tx_t br_dev_xmit(struct sk_buff *skb, struct net_device *dev)
- 	     eth_hdr(skb)->h_proto == htons(ETH_P_RARP)) &&
- 	    br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED)) {
- 		br_do_proxy_suppress_arp(skb, br, vid, NULL);
--	} else if (IS_ENABLED(CONFIG_IPV6) &&
-+	} else if (ipv6_mod_enabled() &&
- 		   skb->protocol == htons(ETH_P_IPV6) &&
- 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
- 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
-diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-index 847fe03a08ee8..46d2b20afd5ff 100644
---- a/net/bridge/br_input.c
-+++ b/net/bridge/br_input.c
-@@ -165,7 +165,7 @@ int br_handle_frame_finish(struct net *net, struct sock *sk, struct sk_buff *skb
- 	    (skb->protocol == htons(ETH_P_ARP) ||
- 	     skb->protocol == htons(ETH_P_RARP))) {
- 		br_do_proxy_suppress_arp(skb, br, vid, p);
--	} else if (IS_ENABLED(CONFIG_IPV6) &&
-+	} else if (ipv6_mod_enabled() &&
- 		   skb->protocol == htons(ETH_P_IPV6) &&
- 		   br_opt_get(br, BROPT_NEIGH_SUPPRESS_ENABLED) &&
- 		   pskb_may_pull(skb, sizeof(struct ipv6hdr) +
--- 
-2.51.0
-
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -377,6 +377,9 @@ static const struct usb_device_id usb_qu
+ 	/* SanDisk Extreme 55AE */
+ 	{ USB_DEVICE(0x0781, 0x55ae), .driver_info = USB_QUIRK_NO_LPM },
+ 
++	/* Avermedia Live Gamer Ultra 2.1 (GC553G2) - BOS descriptor fetch hangs at SuperSpeed Plus */
++	{ USB_DEVICE(0x07ca, 0x2553), .driver_info = USB_QUIRK_NO_BOS },
++
+ 	/* Realforce 87U Keyboard */
+ 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
+ 
+@@ -434,6 +437,9 @@ static const struct usb_device_id usb_qu
+ 	{ USB_DEVICE(0x0b05, 0x17e0), .driver_info =
+ 			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
+ 
++	/* ASUS TUF 4K PRO - BOS descriptor fetch hangs at SuperSpeed Plus */
++	{ USB_DEVICE(0x0b05, 0x1ab9), .driver_info = USB_QUIRK_NO_BOS },
++
+ 	/* Realtek Semiconductor Corp. Mass Storage Device (Multicard Reader)*/
+ 	{ USB_DEVICE(0x0bda, 0x0151), .driver_info = USB_QUIRK_CONFIG_INTF_STRINGS },
+ 
+@@ -562,6 +568,9 @@ static const struct usb_device_id usb_qu
+ 
+ 	{ USB_DEVICE(0x2386, 0x350e), .driver_info = USB_QUIRK_NO_LPM },
+ 
++	/* UGREEN 35871 - BOS descriptor fetch hangs at SuperSpeed Plus */
++	{ USB_DEVICE(0x2b89, 0x5871), .driver_info = USB_QUIRK_NO_BOS },
++
+ 	/* APTIV AUTOMOTIVE HUB */
+ 	{ USB_DEVICE(0x2c48, 0x0132), .driver_info =
+ 			USB_QUIRK_SHORT_SET_ADDRESS_REQ_TIMEOUT },
 
 
 
