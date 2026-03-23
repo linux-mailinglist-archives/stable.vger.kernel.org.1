@@ -1,62 +1,60 @@
-Return-Path: <stable+bounces-229660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229117-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +Eg8Cll8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229660-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:01 +0100
+	id GKz5HrNZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229117-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:11 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A052FA5F0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F2D712F61D3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9C88307670C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D60223211372
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633EB3BC661;
-	Mon, 23 Mar 2026 16:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C77B2773EE;
+	Mon, 23 Mar 2026 15:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qApXHnrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9QM+YTk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225933BE650;
-	Mon, 23 Mar 2026 16:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 202D026A1CF;
+	Mon, 23 Mar 2026 15:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282523; cv=none; b=RBI7mHNHZlLjswMZ5/QupG/0HLuEZHEACoNcA1ebdBMJ5WgSAeza0IGRxqEoeu64EDpxNuO+av9yRQ4raiy05jn34DePSQ81lOpOvcc/q6+jLaiXOS7gzn78F7tkw3177PChgMexvrMb/FSA74VkLoExyIjcWk5CjTsd6OdeUOo=
+	t=1774278113; cv=none; b=MBmjmvzLTA+RRwASIwtW29741TQjwSNLj3/cqRa2piJYAFfh2jfMK5WgX7vVVtpMMiC2b10w9U4yK/cSLe6Syat2cgIwrI7vzBzWDlATPpkHMpiqC6LpV+IL9wT5ybYDRK9k009D+TFBQD9RaVYoMEU8nVsw/aefRM6VV2XxNF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282523; c=relaxed/simple;
-	bh=6dDsgIB/5JksJQaarBLl9jF9q3KzEQ+tMd4SpaKvpd8=;
+	s=arc-20240116; t=1774278113; c=relaxed/simple;
+	bh=4/G9O9L/VRFVcgeZp0g2H7+aT7Gu29IZ+Yi9ACvSCs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=orvYyOYpfwTQPvHW+GubosZ3tSBMt7GEzApEJ96JgwgoidSoh9Sg/c2/wtrFupdl+5iSxLzcqKfVRfl6A9ku3XMpJVErLC1IwO2yoIAT/rinWtwtVvtkvw2ou0XpNHFMBA4xeR/bOWwSLAimG6FVdGHxkDgd2U9XZTpdto3dQAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qApXHnrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B36C4CEF7;
-	Mon, 23 Mar 2026 16:15:22 +0000 (UTC)
+	 MIME-Version; b=P29JVwQBCIwCb1DST8wXxD/NgbsWYzEfEPt+33TIShzMtUHb92HE8W/toKuM5eSCHaJOUi3z+M8Hh1IV0KZYMsgJzmpgLwPZn8um/x7wS1WstZz6+QCOT0L5naEHoGP7yqSiLr3jLbwFAmRNZwxN5uGU4xuE8hcIhJtoOrxTIKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9QM+YTk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968EEC4CEF7;
+	Mon, 23 Mar 2026 15:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282523;
-	bh=6dDsgIB/5JksJQaarBLl9jF9q3KzEQ+tMd4SpaKvpd8=;
+	s=korg; t=1774278113;
+	bh=4/G9O9L/VRFVcgeZp0g2H7+aT7Gu29IZ+Yi9ACvSCs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qApXHnrFopHvurcqZc9JV427kYw9xiM96aWLA4uKSOtJImn7rYjRdo3KZJoYskZCU
-	 i6xRD8SR0vqzzAnHbaJXF11kJIrV8zxgwXa2STC1jMXqXbvhNs7NENBAbtTSysFGBX
-	 WSba1x+EHtnCpAN5Ksf8MK1JTgJyRGknHXjsk77k=
+	b=P9QM+YTkDXLtzJpGiSGSlZv6Y8NDJDaSDyX/p9JSV/Rm0WpU0DIeJ50pRQ7s2IPz4
+	 GYZDiOydPnPrC26vRxIRGj6AUTKlVC6Cjshy8ac1NCj6lbcPFW/U6GudORNwQiJ0rm
+	 1kAO9tWtqRVKD/fpjny4URb0k0LJiRetjlYkvd8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Azamat Almazbek uulu <almazbek1608@gmail.com>,
+	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/481] tracing: Add NULL pointer check to trigger_data_free()
+Subject: [PATCH 6.6 205/567] ASoC: amd: yc: Add ASUS EXPERTBOOK BM1503CDA to quirk table
 Date: Mon, 23 Mar 2026 14:42:05 +0100
-Message-ID: <20260323134528.740114697@linuxfoundation.org>
+Message-ID: <20260323134538.913315939@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,80 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,efficios.com,goodmis.org,roeck-us.net];
-	TAGGED_FROM(0.00)[bounces-229660-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229117-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,amd.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,goodmis.org:email]
-X-Rspamd-Queue-Id: 82A052FA5F0
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: F2D712F61D3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Azamat Almazbek uulu <almazbek1608@gmail.com>
 
-[ Upstream commit 457965c13f0837a289c9164b842d0860133f6274 ]
+[ Upstream commit 32fc4168fa56f6301d858c778a3d712774e9657e ]
 
-If trigger_data_alloc() fails and returns NULL, event_hist_trigger_parse()
-jumps to the out_free error path. While kfree() safely handles a NULL
-pointer, trigger_data_free() does not. This causes a NULL pointer
-dereference in trigger_data_free() when evaluating
-data->cmd_ops->set_filter.
+The ASUS ExpertBook BM1503CDA (Ryzen 5 7535U, Barcelo-R) has an
+internal DMIC connected through the AMD ACP (Audio CoProcessor)
+but is missing from the DMI quirk table, so the acp6x machine
+driver probe returns -ENODEV and no DMIC capture device is created.
 
-Fix the problem by adding a NULL pointer check to trigger_data_free().
+Add the DMI entry so the internal microphone works out of the box.
 
-The problem was found by an experimental code review agent based on
-gemini-3.1-pro while reviewing backports into v6.18.y.
-
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Steven Rostedt (Google) <rostedt@goodmis.org>
-Link: https://patch.msgid.link/20260305193339.2810953-1-linux@roeck-us.net
-Fixes: 0550069cc25f ("tracing: Properly process error handling in event_hist_trigger_parse()")
-Assisted-by: Gemini:gemini-3.1-pro
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Azamat Almazbek uulu <almazbek1608@gmail.com>
+Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://patch.msgid.link/20260221114813.5610-1-almazbek1608@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_events_trigger.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
-index 782ccb2433bb4..401d88d3b2c4b 100644
---- a/kernel/trace/trace_events_trigger.c
-+++ b/kernel/trace/trace_events_trigger.c
-@@ -19,6 +19,9 @@ static DEFINE_MUTEX(trigger_cmd_mutex);
- 
- void trigger_data_free(struct event_trigger_data *data)
- {
-+	if (!data)
-+		return;
-+
- 	if (data->cmd_ops->set_filter)
- 		data->cmd_ops->set_filter(NULL, data, NULL);
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 5aeacbcb1f6ad..106012da7443e 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -696,6 +696,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 				DMI_MATCH(DMI_PRODUCT_NAME, "Vivobook_ASUSLaptop M6501RR_M6501RR"),
+ 			}
+ 		},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK BM1503CDA"),
++		}
++	},
+ 	{}
+ };
  
 -- 
 2.51.0
