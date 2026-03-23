@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229719-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEGiGaddwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229224-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:03 +0100
+	id iO2OBVBuwWnDTAQAu9opvQ
+	(envelope-from <stable+bounces-229719-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C34972F6839
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:35:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F0E2F8C57
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:46:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A0A303197CCC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E0E9C306CB18
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAE9F3BC69A;
-	Mon, 23 Mar 2026 15:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE573BC675;
+	Mon, 23 Mar 2026 16:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PxDs7oNd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KfZNGspW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE013245020;
-	Mon, 23 Mar 2026 15:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB343BE168;
+	Mon, 23 Mar 2026 16:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278449; cv=none; b=Y4TzGSA0ZxLd/4Q6HJRK3qI1GoBt/iK0A/R8QVO7rBoFOYy5HQUUfjQa9x4F687ioX3U6NngNpXXrg72LMynIklOGB1lpNACS1/NpJduYU5kNOZeT3OvFnMmnorqJ/ngqADKtFUp2M0FXamHMYa0atAKz9fb0AqU32n1l5q0tqw=
+	t=1774282683; cv=none; b=jvnFGfWJ7qxLhn9oTb9q0oPcdfwaBKkxkR4849y6njbtOKUpjtJF8DZztQTsnL4QSNbHw1e119nreAtVg+WyJRbGBzOQS0TxZlCPg/wNx02yMtObhrPfX9kTZBYfRlvBwNUtplrAL4SoXaORzXv4kThxwojRHR/G0CGJHni3o2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278449; c=relaxed/simple;
-	bh=MssYNBAMJOYf7zDcOhePiWbKw2rFr61KHtUWYgMK8/Y=;
+	s=arc-20240116; t=1774282683; c=relaxed/simple;
+	bh=EZFjr8uPhCSlbMTxaG1372wCrp7xImH4Izsc4OJ2ZJs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vj1fSqqY/WRhggm/Hzj+VetlkjNrSHP+rZryV2mp+l0XJD0L4RGP9YeJ4HMmAzVEJCwme6TDGvq+5eRBrsfOLjV+ATVD097Ezm3JpZWGXz4IufUK+BbI9xffC9Ud+wfN3VAY9tmjTbaTBeiaUkiS2ugG84/hMiASZ0lhRLhK2j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PxDs7oNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32956C2BCB1;
-	Mon, 23 Mar 2026 15:07:29 +0000 (UTC)
+	 MIME-Version; b=SKPeFsp+bGSfmBxpj/akxMDga2Y4rqPkYZ8Kk4jJvmO6syU1+p71xu0UtgY4xf3VUGo0tHH3BWjexTY8KU35dGJpoQkEJCZZqUzatHeXV9p0J/6FCxJZyr+4B56EijVbdZzFIxkJts8whKa2bsdRH2fbsL3YAwaA1uYJkp8KCh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KfZNGspW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0F6C4CEF7;
+	Mon, 23 Mar 2026 16:18:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278449;
-	bh=MssYNBAMJOYf7zDcOhePiWbKw2rFr61KHtUWYgMK8/Y=;
+	s=korg; t=1774282682;
+	bh=EZFjr8uPhCSlbMTxaG1372wCrp7xImH4Izsc4OJ2ZJs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PxDs7oNdyAY/nBvLkoe8V1KZOhrJggzOY9SkAfeKPUkRhUAcM7ZFnNuEDAM5ghH8A
-	 cdZuV7kMEw8JFotJJusxXw1FM1CS3c6yfjBupBVzpFB5EU0Htp847u/AV2CIpCSNOS
-	 HkrBvaNSJDiFsNBdsc8hqmMCLJ9kXX3tVz6NmYJ0=
+	b=KfZNGspWp6tPkr9ffxvU4wLacx7M4uOGhDUzcDM4eYezpXvd8/UE0AsUAaH62Jqm3
+	 IWi2+H/RzZYmNMdYi02bErc4QIal1WSX4qYraNDy4ebpaoGJceMLikRL8bTaivZUY6
+	 +ZE/+5fIpNYQztne+lxxxXERj5Pk8AZuy5tAXdFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.6 310/567] device property: Allow secondary lookup in fwnode_get_next_child_node()
+	Fan Wu <fanwu01@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 248/481] net: ethernet: arc: emac: quiesce interrupts before requesting IRQ
 Date: Mon, 23 Mar 2026 14:43:50 +0100
-Message-ID: <20260323134541.494077997@linuxfoundation.org>
+Message-ID: <20260323134531.196592372@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,107 +65,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229224-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229719-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: C34972F6839
+X-Rspamd-Queue-Id: A8F0E2F8C57
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Fan Wu <fanwu01@zju.edu.cn>
 
-commit 2692c614f8f05929d692b3dbfd3faef1f00fbaf0 upstream.
+commit 2503d08f8a2de618e5c3a8183b250ff4a2e2d52c upstream.
 
-When device_get_child_node_count() got split to the fwnode and device
-respective APIs, the fwnode didn't inherit the ability to traverse over
-the secondary fwnode. Hence any user, that switches from device to fwnode
-API misses this feature. In particular, this was revealed by the commit
-1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
-that effectively broke the GPIO enumeration on Intel Galileo boards.
-Fix this by moving the secondary lookup from device to fwnode API.
+Normal RX/TX interrupts are enabled later, in arc_emac_open(), so probe
+should not see interrupt delivery in the usual case. However, hardware may
+still present stale or latched interrupt status left by firmware or the
+bootloader.
 
-Note, in general no device_*() API should go into the depth of the fwnode
-implementation.
+If probe later unwinds after devm_request_irq() has installed the handler,
+such a stale interrupt can still reach arc_emac_intr() during teardown and
+race with release of the associated net_device.
 
-Fixes: 114dbb4fa7c4 ("drivers property: When no children in primary, try secondary")
+Avoid that window by putting the device into a known quiescent state before
+requesting the IRQ: disable all EMAC interrupt sources and clear any
+pending EMAC interrupt status bits. This keeps the change hardware-focused
+and minimal, while preventing spurious IRQ delivery from leftover state.
+
+Fixes: e4f2379db6c6 ("ethernet/arc/arc_emac - Add new driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://patch.msgid.link/20260210135822.47335-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Fan Wu <fanwu01@zju.edu.cn>
+Link: https://patch.msgid.link/20260309132409.584966-1-fanwu01@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/property.c |   27 +++++++++++++--------------
- 1 file changed, 13 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/arc/emac_main.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/base/property.c
-+++ b/drivers/base/property.c
-@@ -750,7 +750,18 @@ struct fwnode_handle *
- fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
- 			   struct fwnode_handle *child)
- {
--	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
-+	struct fwnode_handle *next;
-+
-+	if (IS_ERR_OR_NULL(fwnode))
-+		return NULL;
-+
-+	/* Try to find a child in primary fwnode */
-+	next = fwnode_call_ptr_op(fwnode, get_next_child_node, child);
-+	if (next)
-+		return next;
-+
-+	/* When no more children in primary, continue with secondary */
-+	return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child);
- }
- EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
+--- a/drivers/net/ethernet/arc/emac_main.c
++++ b/drivers/net/ethernet/arc/emac_main.c
+@@ -934,6 +934,17 @@ int arc_emac_probe(struct net_device *nd
+ 	/* Set poll rate so that it polls every 1 ms */
+ 	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
  
-@@ -794,19 +805,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_availa
- struct fwnode_handle *device_get_next_child_node(const struct device *dev,
- 						 struct fwnode_handle *child)
- {
--	const struct fwnode_handle *fwnode = dev_fwnode(dev);
--	struct fwnode_handle *next;
--
--	if (IS_ERR_OR_NULL(fwnode))
--		return NULL;
--
--	/* Try to find a child in primary fwnode */
--	next = fwnode_get_next_child_node(fwnode, child);
--	if (next)
--		return next;
--
--	/* When no more children in primary, continue with secondary */
--	return fwnode_get_next_child_node(fwnode->secondary, child);
-+	return fwnode_get_next_child_node(dev_fwnode(dev), child);
- }
- EXPORT_SYMBOL_GPL(device_get_next_child_node);
++	/*
++	 * Put the device into a known quiescent state before requesting
++	 * the IRQ. Clear only EMAC interrupt status bits here; leave the
++	 * MDIO completion bit alone and avoid writing TXPL_MASK, which is
++	 * used to force TX polling rather than acknowledge interrupts.
++	 */
++	arc_reg_set(priv, R_ENABLE, 0);
++	arc_reg_set(priv, R_STATUS, RXINT_MASK | TXINT_MASK | ERR_MASK |
++		    TXCH_MASK | MSER_MASK | RXCR_MASK |
++		    RXFR_MASK | RXFL_MASK);
++
+ 	ndev->irq = irq;
+ 	dev_info(dev, "IRQ is %d\n", ndev->irq);
  
 
 
