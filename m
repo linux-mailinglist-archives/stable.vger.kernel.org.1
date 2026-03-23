@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229515-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YKN+KApNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228469-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:10 +0100
+	id OGh8KWtzwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229515-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:07:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED602F4605
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A8752F9799
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:07:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C3B7B309C07E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:14:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBDD935B3783
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC73C3AF650;
-	Mon, 23 Mar 2026 14:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57566257828;
+	Mon, 23 Mar 2026 15:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P6sf0H9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvDY10wT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD04B1EB9F2;
-	Mon, 23 Mar 2026 14:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B38324BBF4;
+	Mon, 23 Mar 2026 15:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275220; cv=none; b=TdJbzVgpB+ysK555VK3KXkc18O6wmsTRngFp59tENJBIuHj/Em8pDcqfknrmaZBem99MQ+slNAnPYTFHYYGGqHSidNqNRwa8HcLq592QzeXtLrEJp0nj8mYLivfQq38PpK5wf93KXdRegI4CKYXZ/VZBk0UY2QRQtr5i+XnoI7Y=
+	t=1774279479; cv=none; b=khJAwELKYV/kmQlCDlU0G4jaOB4uxdBsguvEkenUaoMAjJ51xlMB5QMruiq9/aTV8nxqeofEnvv4UfD6wXELB79eeheHc1xP9+w2zLSL0US4eeHVVf+gGX1o4cO45hPdPX9D3XBsv1LTBuYLdV8nXOTVK48zpoaWJ9PkmQaSWvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275220; c=relaxed/simple;
-	bh=zB1/bYfpLK0+5oADa9puVQWysDGPzAdasDMwEOivdqc=;
+	s=arc-20240116; t=1774279479; c=relaxed/simple;
+	bh=Hgr6K8/2A446NBQA/BV8MwxchnXePXzxFUWt+dANxH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZP5tC1oWfpdcWOlAhkVGk/0LX+jG/o0CDgZD+5s7qC4bi3sWfD7Wooi759f8bF7oba5hLswTiR92ddNHDLsYHg2hrWAAl45zUAFX1iB7JNJj268cF1P3tjDOg8NK3Od+3nOVL23285VuJjdnXLM0QOxKgtl+3Dr55tIVh/8fxME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P6sf0H9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BD9C4CEF7;
-	Mon, 23 Mar 2026 14:13:39 +0000 (UTC)
+	 MIME-Version; b=YoLH8NYCKtuTjCG97XQLZeVrO3dzpxbSXO2Hd4B4+v7tA9lBjhGxBGp3NCw78nfyITYEGVAufL8pkUJavbO0K37Hgs0Xnb50LrSwk72r6wnf/zYtFrpZWOAvlcflwR/KbH0kENWHzc9p8oCK9v7sHMOMvp/y8MW4CWFRFyCp5qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvDY10wT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7CDC2BC9E;
+	Mon, 23 Mar 2026 15:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275220;
-	bh=zB1/bYfpLK0+5oADa9puVQWysDGPzAdasDMwEOivdqc=;
+	s=korg; t=1774279479;
+	bh=Hgr6K8/2A446NBQA/BV8MwxchnXePXzxFUWt+dANxH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P6sf0H9nP5woTkva888MpQGgy53hdWMy/Tc75rSpXmgYge9BZoKnuAHvVHFNeDU1T
-	 AyCqCTT1SXoO4fPROat7qqDd2uEIoBfLy7wx5E6z/smiDf4ektMHU+14A919KyzCfk
-	 FWObe1kiDy1OTwB64bOOnT4D2l8Wn51cGrZMirYM=
+	b=WvDY10wT7+Q22yBR7Qtu03EL66fhadQT2mQplmXrYlv+2pSgXi7gH76BXJNUK85K2
+	 tMj7nlR9xLRWgLBo1EV/PxVEA6R3cGIx+AVGhYQ3pdtN7awwXWCYS6HBi8aWwgr/6p
+	 TeEkv6RtGTtBo4hABavoDo7QFnQbfjiI7CoeYg04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eliav Farber <farbere@amazon.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 017/460] kexec: Consolidate machine_kexec_mask_interrupts() implementation
+Subject: [PATCH 6.1 031/481] media: tegra-video: Fix memory leak in __tegra_channel_try_format()
 Date: Mon, 23 Mar 2026 14:40:13 +0100
-Message-ID: <20260323134527.084575420@linuxfoundation.org>
+Message-ID: <20260323134525.998304641@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,345 +64,110 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229515-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228469-lists,stable=lfdr.de];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,linutronix.de:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 2ED602F4605
+	TAGGED_RCPT(0.00)[stable,cisco];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 0A8752F9799
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eliav Farber <farbere@amazon.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit bad6722e478f5b17a5ceb039dfb4c680cf2c0b48 ]
+[ Upstream commit 43e5302d22334f1183dec3e0d5d8007eefe2817c ]
 
-Consolidate the machine_kexec_mask_interrupts implementation into a common
-function located in a new file: kernel/irq/kexec.c. This removes duplicate
-implementations from architecture-specific files in arch/arm, arch/arm64,
-arch/powerpc, and arch/riscv, reducing code duplication and improving
-maintainability.
+The state object allocated by __v4l2_subdev_state_alloc() must be freed
+with __v4l2_subdev_state_free() when it is no longer needed.
 
-The new implementation retains architecture-specific behavior for
-CONFIG_GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD, which was previously implemented
-for ARM64. When enabled (currently for ARM64), it clears the active state
-of interrupts forwarded to virtual machines (VMs) before handling other
-interrupt masking operations.
+In __tegra_channel_try_format(), two error paths return directly after
+v4l2_subdev_call() fails, without freeing the allocated 'sd_state'
+object. This violates the requirement and causes a memory leak.
 
-Signed-off-by: Eliav Farber <farbere@amazon.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20241204142003.32859-2-farbere@amazon.com
-Stable-dep-of: 20197b967a6a ("powerpc/kexec/core: use big-endian types for crash variables")
+Fix this by introducing a cleanup label and using goto statements in the
+error paths to ensure that __v4l2_subdev_state_free() is always called
+before the function returns.
+
+Fixes: 56f64b82356b7 ("media: tegra-video: Use zero crop settings if subdev has no get_selection")
+Fixes: 1ebaeb09830f3 ("media: tegra-video: Add support for external sensor capture")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/machine_kexec.c   | 23 ------------------
- arch/arm64/Kconfig                |  1 +
- arch/arm64/kernel/machine_kexec.c | 31 ------------------------
- arch/powerpc/include/asm/kexec.h  |  1 -
- arch/powerpc/kexec/core.c         | 22 -----------------
- arch/powerpc/kexec/core_32.c      |  1 +
- arch/riscv/kernel/machine_kexec.c | 23 ------------------
- include/linux/irq.h               |  3 +++
- kernel/irq/Kconfig                |  6 +++++
- kernel/irq/Makefile               |  2 +-
- kernel/irq/kexec.c                | 40 +++++++++++++++++++++++++++++++
- 11 files changed, 52 insertions(+), 101 deletions(-)
- create mode 100644 kernel/irq/kexec.c
+ drivers/staging/media/tegra-video/vi.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
-index 80ceb5bd2680b..dd430477e7c13 100644
---- a/arch/arm/kernel/machine_kexec.c
-+++ b/arch/arm/kernel/machine_kexec.c
-@@ -127,29 +127,6 @@ void crash_smp_send_stop(void)
- 	cpus_stopped = 1;
+diff --git a/drivers/staging/media/tegra-video/vi.c b/drivers/staging/media/tegra-video/vi.c
+index e82ab9044ef3b..ea96fd67035c7 100644
+--- a/drivers/staging/media/tegra-video/vi.c
++++ b/drivers/staging/media/tegra-video/vi.c
+@@ -503,7 +503,7 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
+ 		.target = V4L2_SEL_TGT_CROP_BOUNDS,
+ 	};
+ 	struct v4l2_rect *try_crop;
+-	int ret;
++	int ret = 0;
+ 
+ 	subdev = tegra_channel_get_remote_source_subdev(chan);
+ 	if (!subdev)
+@@ -548,8 +548,10 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
+ 		} else {
+ 			ret = v4l2_subdev_call(subdev, pad, get_selection,
+ 					       NULL, &sdsel);
+-			if (ret)
+-				return -EINVAL;
++			if (ret) {
++				ret = -EINVAL;
++				goto out_free;
++			}
+ 
+ 			try_crop->width = sdsel.r.width;
+ 			try_crop->height = sdsel.r.height;
+@@ -561,14 +563,15 @@ static int __tegra_channel_try_format(struct tegra_vi_channel *chan,
+ 
+ 	ret = v4l2_subdev_call(subdev, pad, set_fmt, sd_state, &fmt);
+ 	if (ret < 0)
+-		return ret;
++		goto out_free;
+ 
+ 	v4l2_fill_pix_format(pix, &fmt.format);
+ 	tegra_channel_fmt_align(chan, pix, fmtinfo->bpp);
+ 
++out_free:
+ 	__v4l2_subdev_state_free(sd_state);
+ 
+-	return 0;
++	return ret;
  }
  
--static void machine_kexec_mask_interrupts(void)
--{
--	unsigned int i;
--	struct irq_desc *desc;
--
--	for_each_irq_desc(i, desc) {
--		struct irq_chip *chip;
--
--		chip = irq_desc_get_chip(desc);
--		if (!chip)
--			continue;
--
--		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
--			chip->irq_eoi(&desc->irq_data);
--
--		if (chip->irq_mask)
--			chip->irq_mask(&desc->irq_data);
--
--		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
--			chip->irq_disable(&desc->irq_data);
--	}
--}
--
- void machine_crash_shutdown(struct pt_regs *regs)
- {
- 	local_irq_disable();
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 0e2902f38e70e..f487c5e21e2f1 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -146,6 +146,7 @@ config ARM64
- 	select GENERIC_IDLE_POLL_SETUP
- 	select GENERIC_IOREMAP
- 	select GENERIC_IRQ_IPI
-+	select GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
- 	select GENERIC_IRQ_PROBE
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_IRQ_SHOW_LEVEL
-diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
-index 82e2203d86a31..6f121a0164a48 100644
---- a/arch/arm64/kernel/machine_kexec.c
-+++ b/arch/arm64/kernel/machine_kexec.c
-@@ -207,37 +207,6 @@ void machine_kexec(struct kimage *kimage)
- 	BUG(); /* Should never get here. */
- }
- 
--static void machine_kexec_mask_interrupts(void)
--{
--	unsigned int i;
--	struct irq_desc *desc;
--
--	for_each_irq_desc(i, desc) {
--		struct irq_chip *chip;
--		int ret;
--
--		chip = irq_desc_get_chip(desc);
--		if (!chip)
--			continue;
--
--		/*
--		 * First try to remove the active state. If this
--		 * fails, try to EOI the interrupt.
--		 */
--		ret = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
--
--		if (ret && irqd_irq_inprogress(&desc->irq_data) &&
--		    chip->irq_eoi)
--			chip->irq_eoi(&desc->irq_data);
--
--		if (chip->irq_mask)
--			chip->irq_mask(&desc->irq_data);
--
--		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
--			chip->irq_disable(&desc->irq_data);
--	}
--}
--
- /**
-  * machine_crash_shutdown - shutdown non-crashing cpus and save registers
-  */
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index 270ee93a0f7d8..601e569303e1b 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -61,7 +61,6 @@ struct pt_regs;
- extern void kexec_smp_wait(void);	/* get and clear naca physid, wait for
- 					  master to copy new code to 0 */
- extern void default_machine_kexec(struct kimage *image);
--extern void machine_kexec_mask_interrupts(void);
- 
- void relocate_new_kernel(unsigned long indirection_page, unsigned long reboot_code_buffer,
- 			 unsigned long start_address) __noreturn;
-diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
-index b8333a49ea5da..58a930a47422b 100644
---- a/arch/powerpc/kexec/core.c
-+++ b/arch/powerpc/kexec/core.c
-@@ -22,28 +22,6 @@
- #include <asm/setup.h>
- #include <asm/firmware.h>
- 
--void machine_kexec_mask_interrupts(void) {
--	unsigned int i;
--	struct irq_desc *desc;
--
--	for_each_irq_desc(i, desc) {
--		struct irq_chip *chip;
--
--		chip = irq_desc_get_chip(desc);
--		if (!chip)
--			continue;
--
--		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
--			chip->irq_eoi(&desc->irq_data);
--
--		if (chip->irq_mask)
--			chip->irq_mask(&desc->irq_data);
--
--		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
--			chip->irq_disable(&desc->irq_data);
--	}
--}
--
- #ifdef CONFIG_CRASH_DUMP
- void machine_crash_shutdown(struct pt_regs *regs)
- {
-diff --git a/arch/powerpc/kexec/core_32.c b/arch/powerpc/kexec/core_32.c
-index c95f96850c9e1..deb28eb44f30f 100644
---- a/arch/powerpc/kexec/core_32.c
-+++ b/arch/powerpc/kexec/core_32.c
-@@ -7,6 +7,7 @@
-  * Copyright (C) 2005 IBM Corporation.
-  */
- 
-+#include <linux/irq.h>
- #include <linux/kexec.h>
- #include <linux/mm.h>
- #include <linux/string.h>
-diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machine_kexec.c
-index 3c830a6f7ef46..2306ce3e5f229 100644
---- a/arch/riscv/kernel/machine_kexec.c
-+++ b/arch/riscv/kernel/machine_kexec.c
-@@ -114,29 +114,6 @@ void machine_shutdown(void)
- #endif
- }
- 
--static void machine_kexec_mask_interrupts(void)
--{
--	unsigned int i;
--	struct irq_desc *desc;
--
--	for_each_irq_desc(i, desc) {
--		struct irq_chip *chip;
--
--		chip = irq_desc_get_chip(desc);
--		if (!chip)
--			continue;
--
--		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
--			chip->irq_eoi(&desc->irq_data);
--
--		if (chip->irq_mask)
--			chip->irq_mask(&desc->irq_data);
--
--		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
--			chip->irq_disable(&desc->irq_data);
--	}
--}
--
- /*
-  * machine_crash_shutdown - Prepare to kexec after a kernel crash
-  *
-diff --git a/include/linux/irq.h b/include/linux/irq.h
-index fa711f80957b6..25f51bf3c351f 100644
---- a/include/linux/irq.h
-+++ b/include/linux/irq.h
-@@ -694,6 +694,9 @@ extern int irq_chip_request_resources_parent(struct irq_data *data);
- extern void irq_chip_release_resources_parent(struct irq_data *data);
- #endif
- 
-+/* Disable or mask interrupts during a kernel kexec */
-+extern void machine_kexec_mask_interrupts(void);
-+
- /* Handling of unhandled and spurious interrupts: */
- extern void note_interrupt(struct irq_desc *desc, irqreturn_t action_ret);
- 
-diff --git a/kernel/irq/Kconfig b/kernel/irq/Kconfig
-index 529adb1f58593..875f25ed6f710 100644
---- a/kernel/irq/Kconfig
-+++ b/kernel/irq/Kconfig
-@@ -141,6 +141,12 @@ config GENERIC_IRQ_DEBUGFS
- 
- 	  If you don't know what to do here, say N.
- 
-+# Clear forwarded VM interrupts during kexec.
-+# This option ensures the kernel clears active states for interrupts
-+# forwarded to virtual machines (VMs) during a machine kexec.
-+config GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
-+	bool
-+
- endmenu
- 
- config GENERIC_IRQ_MULTI_HANDLER
-diff --git a/kernel/irq/Makefile b/kernel/irq/Makefile
-index f19d3080bf11a..c0f44c06d69df 100644
---- a/kernel/irq/Makefile
-+++ b/kernel/irq/Makefile
-@@ -1,6 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0
- 
--obj-y := irqdesc.o handle.o manage.o spurious.o resend.o chip.o dummychip.o devres.o
-+obj-y := irqdesc.o handle.o manage.o spurious.o resend.o chip.o dummychip.o devres.o kexec.o
- obj-$(CONFIG_IRQ_TIMINGS) += timings.o
- ifeq ($(CONFIG_TEST_IRQ_TIMINGS),y)
- 	CFLAGS_timings.o += -DDEBUG
-diff --git a/kernel/irq/kexec.c b/kernel/irq/kexec.c
-new file mode 100644
-index 0000000000000..0f9548c1708dd
---- /dev/null
-+++ b/kernel/irq/kexec.c
-@@ -0,0 +1,40 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <linux/interrupt.h>
-+#include <linux/irq.h>
-+#include <linux/irqdesc.h>
-+#include <linux/irqnr.h>
-+
-+#include "internals.h"
-+
-+void machine_kexec_mask_interrupts(void)
-+{
-+	struct irq_desc *desc;
-+	unsigned int i;
-+
-+	for_each_irq_desc(i, desc) {
-+		struct irq_chip *chip;
-+		int check_eoi = 1;
-+
-+		chip = irq_desc_get_chip(desc);
-+		if (!chip)
-+			continue;
-+
-+		if (IS_ENABLED(CONFIG_GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD)) {
-+			/*
-+			 * First try to remove the active state from an interrupt which is forwarded
-+			 * to a VM. If the interrupt is not forwarded, try to EOI the interrupt.
-+			 */
-+			check_eoi = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
-+		}
-+
-+		if (check_eoi && chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
-+			chip->irq_eoi(&desc->irq_data);
-+
-+		if (chip->irq_mask)
-+			chip->irq_mask(&desc->irq_data);
-+
-+		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
-+			chip->irq_disable(&desc->irq_data);
-+	}
-+}
+ static int tegra_channel_try_format(struct file *file, void *fh,
 -- 
 2.51.0
 
