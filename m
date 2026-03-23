@@ -1,203 +1,224 @@
-Return-Path: <stable+bounces-227974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227975-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kOkMJFM6wWn2RgQAu9opvQ
-	(envelope-from <stable+bounces-227974-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:19 +0100
+	id OMoTHIs6wWn2RgQAu9opvQ
+	(envelope-from <stable+bounces-227975-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8692F2731
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:04:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6FD2F2797
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C669D3014A1E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:03:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 018C93018F15
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:03:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9138C1D5178;
-	Mon, 23 Mar 2026 13:03:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="geSBPm+J"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BD73AA4E7;
+	Mon, 23 Mar 2026 13:03:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD921D45E8
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 13:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F471B4223;
+	Mon, 23 Mar 2026 13:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774271001; cv=none; b=jG0XgDUyei7eHoo8TsX+2ng0WRlzXGDx29YIu6F1fyL/enICDCqcZbGbvT43p7U06aALVpzMGrOH7DcXnIlm4/Xu7BjvgSk0+b35BjuxqyrrLh8Rbd+Nz7pS86h+GA3gSh7KZjGdOPJyJBDWvMdtZ0rfJM4r8mYoBfEnBdc/EAA=
+	t=1774271013; cv=none; b=agFADmg6BqZNLN7rL5HgFm9OPLqmFQ3/0+MywNQ08UnIhQyrdjnOXeGbIVZban9kTkGhWmgTlsu3y/X4vw3M64nhQ6EivoOXnX6OLKDsvXGw8XWMspxk8w8xTDuu1HGQ0u9qrb+JZ+W+lEd2bAVf/wgCT+KfRka+sSlhi7STijc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774271001; c=relaxed/simple;
-	bh=rm8yRXyKEMtcqCElasHXW+eehwQwuzwxvRFVsv2V3QE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Aa2GhOnBqiydq8LJwg9bkdcx65FOnQEYqa5DlWDRmK0MrOT1zbclmtFZ4AnvKqzBqoAZ3uNe9SS2AnsXjSKHruI8z4WHhFgwIREgio6noMPctaQrfNAY9eUaufw+DNTzSgMf/iO2iI0ija6TxTW0llLlC+ukZYSwjYghLmrodVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=geSBPm+J; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5a10d130b37so3229305e87.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 06:03:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1774270998; x=1774875798; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rum/8YcSfFzn+mIlRZrRd8RBJkU4CF1JIzKByDx2Qcc=;
-        b=geSBPm+J+umm9t+vd3JeuXnuQm6SBGqG34cLEXmjfgejaCv8hbzsBPXZ3wGyoi5vX8
-         4VUWKD0FRWyoXGi22Sfd1QHqOiThegLN4tz6W8KKfQQ44qRcwEwEkV8FF0JOUH1hRJ2T
-         2dcpItemcmDk5kqA7zZhkXEHvoQDklBzTYxWg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774270998; x=1774875798;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rum/8YcSfFzn+mIlRZrRd8RBJkU4CF1JIzKByDx2Qcc=;
-        b=ADsyYpEpmmxa6NpfIRDmWF/uFXpBRUuFdtIVHb6QuqGW7Eyfj4E3Sz5UkB7oQe7wjQ
-         yXPc8FCrtld7ei5N/My6zWDwpnuqWk9cxbF4jhqsskDOeVG1XjYgZ079lQcUrOPWmM2O
-         E7uO/dxLSBXCsSsacQkY7V0ZuzS5znCxMxe8UyJCijsksF0S9q9IlWMxJIccd+rx/nZf
-         /xryXSU8JPS5Y/wKPajCiGKy32YUGcjA9U6iglr9/2J/uKzVbps24mjQ04p7WtSTDL6+
-         pOwonB3d9u5jlLOm8oljkXZgam3hxSXMt/OaJIMGJEBM1htzj8JVw8U/BNPOKAM/+bgq
-         mq8w==
-X-Forwarded-Encrypted: i=1; AJvYcCXuIEk7U5JZW0ValdyucQ3apZBF/bxPtlAq7UlXwVzACH26wbuyfT3VrIxnZutVValHqQEtaIY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNM/Gpc+pNomgpVp3dpTvJvlXQlCvO/HGWKoTD5OC3GMRn/Oos
-	qZ2jwOpzWJyrJYBmY6np9YqcY+TUm+ed0mCc43bcot4oUwJZlmDMRW6c2hMQSWIR2w==
-X-Gm-Gg: ATEYQzxHvYUD3sVjToAzazYEofWlckBpxAmMab9Xj7dh4Wh8eo6vRqw6YT4Xa/ufhsQ
-	EGIaJ2JLzdbZ8R2sWI3WNErxkFCMkU5gs6Ormxhveff26Ty14d0Wt4ZdNSOCaRom5mQ1EbkNwfp
-	JuhCBSpzjk+DmiyrJVrVE8tdk7ogNZovCER1X3IhiHW370SyiUnITH7iSpcvrMFARWP0cFwXPIP
-	R2uIeRQhzQaxcAXOrkT1kGtKprE1GT5DnQtXxHH0rtIRd4jtpTDHa4PLeMpOSxf3LzTV7ybQ4qH
-	J8BPLz36waZbBqRBgnjhCjQs7B/wP5HstCzktyDDSD6rWc7fx+z0jmy5rufTmkEGOLKQyTPByc6
-	e+MqGOcjk1talgLEj/musWRgK2cvVVcaUO5yR96alQd07s3ffTWMdAMzV9D6tg7rRdBJRoZGwwR
-	lHGEP6gDihHp9rIHXSDrAhxHSZpnISTYk6Ru/K+pV8Z7SpYBI04aKzT6ttnYqqu1PRuiqiwYXYk
-	Fqp/VU3ubPoo44RDg==
-X-Received: by 2002:ac2:4e01:0:b0:5a1:5994:2773 with SMTP id 2adb3069b0e04-5a2855efc89mr3443970e87.14.1774270997925;
-        Mon, 23 Mar 2026 06:03:17 -0700 (PDT)
-Received: from ribalda.c.googlers.com (252.116.88.34.bc.googleusercontent.com. [34.88.116.252])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a28530bd55sm2534556e87.72.2026.03.23.06.03.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 06:03:15 -0700 (PDT)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 23 Mar 2026 13:03:03 +0000
-Subject: [PATCH] media: uvcvideo: Undup use uvc_endpoint_max_bpi() code
+	s=arc-20240116; t=1774271013; c=relaxed/simple;
+	bh=i+0PDLQo9WcEt2mlaqbT2dwD07UT1Dej2cEKg/tyZo0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QFcVUh8CehkJInMitseewDIE9WFaURix7N4ApEYrizYZa8WLevQAKentb0C6pmzLTSe5F86dBNYpG88z0F8C9vlXVEFLgxUgLevlbpv7COa/S1M62Wpz+b3BGKzCg3MSlsroXTB4YWmPkCA2lCHaYHOft6mrSYK1Z5Psm8Ma1gQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3710B1516;
+	Mon, 23 Mar 2026 06:03:25 -0700 (PDT)
+Received: from e125769.cambridge.arm.com (e125769.cambridge.arm.com [10.1.196.27])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 770CD3F885;
+	Mon, 23 Mar 2026 06:03:29 -0700 (PDT)
+From: Ryan Roberts <ryan.roberts@arm.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/3] arm64: mm: Fix rodata=full block mapping support for realm guests
+Date: Mon, 23 Mar 2026 13:03:13 +0000
+Message-ID: <20260323130317.1737522-2-ryan.roberts@arm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260323130317.1737522-1-ryan.roberts@arm.com>
+References: <20260323130317.1737522-1-ryan.roberts@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260323-uvc-backport-bpi-v1-1-5b62c6798ccf@chromium.org>
-X-B4-Tracking: v=1; b=H4sIAAY6wWkC/x3MQQqAIBBA0avIrBtIDZOuEi3KphoCFa0IorsnL
- d/i/wcyJaYMnXgg0cWZgy+QlQC3jX4l5LkYVK1MrZXG83I4jW6PIR04RUZjtbG0yEa2GkoWEy1
- 8/8t+eN8P4ra/Q2IAAAA=
-X-Change-ID: 20260323-uvc-backport-bpi-68368ef14173
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Hans de Goede <hansg@kernel.org>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Ricardo Ribalda <ribalda@chromium.org>
-X-Mailer: b4 0.14.3
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [0.14 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
-	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
+	DMARC_POLICY_SOFTFAIL(0.10)[arm.com : SPF not aligned (relaxed), No valid DKIM,none];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[12];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[chromium.org:+];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-227974-lists,stable=lfdr.de];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	TAGGED_FROM(0.00)[bounces-227975-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	SEM_URIBL_UNKNOWN_FAIL(0.00)[chromium.org:query timed out];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[ryan.roberts@arm.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,ideasonboard.com:email]
-X-Rspamd-Queue-Id: 6F8692F2731
+	RCVD_COUNT_FIVE(0.00)[5];
+	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,arm.com:email,arm.com:mid]
+X-Rspamd-Queue-Id: 2C6FD2F2797
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-[ Upstream commit 5b9c75c794ce041e6e00789efef75d71915c4f4c ]
+Commit a166563e7ec37 ("arm64: mm: support large block mapping when
+rodata=full") enabled the linear map to be mapped by block/cont while
+still allowing granular permission changes on BBML2_NOABORT systems by
+lazily splitting the live mappings. This mechanism was intended to be
+usable by realm guests since they need to dynamically share dma buffers
+with the host by "decrypting" them - which for Arm CCA, means marking
+them as shared in the page tables.
 
-Replace manual decoding of psize in uvc_parse_streaming(), with the code
-from uvc_endpoint_max_bpi(). It also handles usb3 devices.
+However, it turns out that the mechanism was failing for realm guests
+because realms need to share their dma buffers (via
+__set_memory_enc_dec()) much earlier during boot than
+split_kernel_leaf_mapping() was able to handle. The report linked below
+showed that GIC's ITS was one such user. But during the investigation I
+found other callsites that could not meet the
+split_kernel_leaf_mapping() constraints.
 
-Cc: stable@vger.kernel.org # v5.4+
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+The problem is that we block map the linear map based on the boot CPU
+supporting BBML2_NOABORT, then check that all the other CPUs support it
+too when finalizing the caps. If they don't, then we stop_machine() and
+split to ptes. For safety, split_kernel_leaf_mapping() previously
+wouldn't permit splitting until after the caps were finalized. That
+ensured that if any secondary cpus were running that didn't support
+BBML2_NOABORT, we wouldn't risk breaking them.
+
+I've fix this problem by reducing the black-out window where we refuse
+to split; there are now 2 windows. The first is from T0 until the page
+allocator is inititialized. Splitting allocates memory for the page
+allocator so it must be in use. The second covers the period between
+starting to online the secondary cpus until the system caps are
+finalized (this is a very small window).
+
+All of the problematic callers are calling __set_memory_enc_dec() before
+the secondary cpus come online, so this solves the problem. However, one
+of these callers, swiotlb_update_mem_attributes(), was trying to split
+before the page allocator was initialized. So I have moved this call
+from arch_mm_preinit() to mem_init(), which solves the ordering issue.
+
+I've added warnings and return an error if any attempt is made to split
+in the black-out windows.
+
+Note there are other issues which prevent booting all the way to user
+space, which will be fixed in subsequent patches.
+
+Reported-by: Jinjiang Tu <tujinjiang@huawei.com>
+Closes: https://lore.kernel.org/all/0b2a4ae5-fc51-4d77-b177-b2e9db74f11d@huawei.com/
+Fixes: a166563e7ec37 ("arm64: mm: support large block mapping when rodata=full")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
 ---
-The commit: 9764401bf6f8 ("media: uvcvideo: Fix bandwidth issue for Alcor
-camera"), which has been backported to 5.4+, depends on this patch.
+ arch/arm64/mm/init.c |  9 ++++++++-
+ arch/arm64/mm/mmu.c  | 35 +++++++++++++++++++++++++++--------
+ 2 files changed, 35 insertions(+), 9 deletions(-)
 
-Without it, cameras connected to USB3.0 will stop working properly,
-because the bandwidth quirk will be applied wrongly.
-
-Please help adding this patch to 5.4, 5.10 and 5.15.
-
-Thanks!
----
- drivers/media/usb/uvc/uvc_driver.c | 4 +---
- drivers/media/usb/uvc/uvc_video.c  | 3 +--
- drivers/media/usb/uvc/uvcvideo.h   | 1 +
- 3 files changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 858fc5b26a5e..4ee187a503b8 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -1007,9 +1007,7 @@ static int uvc_parse_streaming(struct uvc_device *dev,
- 				streaming->header.bEndpointAddress);
- 		if (ep == NULL)
- 			continue;
--
--		psize = le16_to_cpu(ep->desc.wMaxPacketSize);
--		psize = (psize & 0x07ff) * (1 + ((psize >> 11) & 3));
-+		psize = uvc_endpoint_max_bpi(dev->udev, ep);
- 		if (psize > streaming->maxpsize)
- 			streaming->maxpsize = psize;
+diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+index 96711b8578fd0..b9b248d24fd10 100644
+--- a/arch/arm64/mm/init.c
++++ b/arch/arm64/mm/init.c
+@@ -350,7 +350,6 @@ void __init arch_mm_preinit(void)
  	}
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index f868a13280a1..fb69d534e299 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -1797,8 +1797,7 @@ static void uvc_video_stop_transfer(struct uvc_streaming *stream,
- /*
-  * Compute the maximum number of bytes per interval for an endpoint.
-  */
--static unsigned int uvc_endpoint_max_bpi(struct usb_device *dev,
--					 struct usb_host_endpoint *ep)
-+u16 uvc_endpoint_max_bpi(struct usb_device *dev, struct usb_host_endpoint *ep)
- {
- 	u16 psize;
- 	u16 mult;
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 95af1591f105..f5bc9fa2c385 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -920,6 +920,7 @@ void uvc_simplify_fraction(u32 *numerator, u32 *denominator,
- u32 uvc_fraction_to_interval(u32 numerator, u32 denominator);
- struct usb_host_endpoint *uvc_find_endpoint(struct usb_host_interface *alts,
- 					    u8 epaddr);
-+u16 uvc_endpoint_max_bpi(struct usb_device *dev, struct usb_host_endpoint *ep);
  
- /* Quirks support */
- void uvc_video_decode_isight(struct uvc_urb *uvc_urb,
-
----
-base-commit: 91d48252ad4b17577cf8cc8d3e1353402e4da8f1
-change-id: 20260323-uvc-backport-bpi-68368ef14173
-
-Best regards,
+ 	swiotlb_init(swiotlb, flags);
+-	swiotlb_update_mem_attributes();
+ 
+ 	/*
+ 	 * Check boundaries twice: Some fundamental inconsistencies can be
+@@ -377,6 +376,14 @@ void __init arch_mm_preinit(void)
+ 	}
+ }
+ 
++bool page_alloc_available __ro_after_init;
++
++void __init mem_init(void)
++{
++	page_alloc_available = true;
++	swiotlb_update_mem_attributes();
++}
++
+ void free_initmem(void)
+ {
+ 	void *lm_init_begin = lm_alias(__init_begin);
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index a6a00accf4f93..5b6a8d53e64b7 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -773,14 +773,33 @@ int split_kernel_leaf_mapping(unsigned long start, unsigned long end)
+ {
+ 	int ret;
+ 
+-	/*
+-	 * !BBML2_NOABORT systems should not be trying to change permissions on
+-	 * anything that is not pte-mapped in the first place. Just return early
+-	 * and let the permission change code raise a warning if not already
+-	 * pte-mapped.
+-	 */
+-	if (!system_supports_bbml2_noabort())
+-		return 0;
++	if (!system_supports_bbml2_noabort()) {
++		/*
++		 * !BBML2_NOABORT systems should not be trying to change
++		 * permissions on anything that is not pte-mapped in the first
++		 * place. Just return early and let the permission change code
++		 * raise a warning if not already pte-mapped.
++		 */
++		if (system_capabilities_finalized() ||
++		    !cpu_supports_bbml2_noabort())
++			return 0;
++
++		/*
++		 * Boot-time: split_kernel_leaf_mapping_locked() allocates from
++		 * page allocator. Can't split until it's available.
++		 */
++		extern bool page_alloc_available;
++		if (WARN_ON(!page_alloc_available))
++			return -EBUSY;
++
++		/*
++		 * Boot-time: Started secondary cpus but don't know if they
++		 * support BBML2_NOABORT yet. Can't allow splitting in this
++		 * window in case they don't.
++		 */
++		if (WARN_ON(num_online_cpus() > 1))
++			return -EBUSY;
++	}
+ 
+ 	/*
+ 	 * If the region is within a pte-mapped area, there is no need to try to
 -- 
-Ricardo Ribalda <ribalda@chromium.org>
+2.43.0
 
 
