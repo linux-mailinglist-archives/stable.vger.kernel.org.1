@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229589-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gGEyDxRswWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229090-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:36 +0100
+	id wN1ZOqV7wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229589-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:43:01 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B38F2F86B5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:36:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EF5A2FA48A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:43:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 862DA3120325
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63484310C7AF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C69423ABAA;
-	Mon, 23 Mar 2026 15:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDCB3BADB2;
+	Mon, 23 Mar 2026 16:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgpIjsb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chm9jKlL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1797D1A00F0;
-	Mon, 23 Mar 2026 15:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D9C3BAD8F;
+	Mon, 23 Mar 2026 16:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278029; cv=none; b=sy93QQHTTwGg8A560fZr7BHbV5ce13+cTibC9MbiH/LFCRRZCwJ6M4COzUzu4toIWpZamjUGrE0SRC1Gtu8vDrU0WlcBdTnXATh8dYuAZ20xroBk7UVqIVt4Hd9LkHlAz7KehiOXizkunVZuGm/dIVDSli7tNlSoaZJJQuRvE/c=
+	t=1774282328; cv=none; b=EK5iXUbMxpRDaw1TBqan97CbmErGC4blYvgVf4t3IBjreHTmeciVXRqeBcv3WH5ZQPgFj4V/oJJMoxv+RwTMvp98+Sdv28T5JVs/69QD+ZqOsxWbQjfKMC2ejI0owowImpT56H6+0/9Ch1yQvdfK5osHwx3q1LHCEzRadStpEOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278029; c=relaxed/simple;
-	bh=y1viK1CE+mGFPlOrZIQDuclwmuHQlM/mO9rlQw8gc+4=;
+	s=arc-20240116; t=1774282328; c=relaxed/simple;
+	bh=s6iTrP8lE7HUfthDsUfV4iUJHrfXo7e+BTQ3yHwD3V0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Oo9U1eT9ohePzd8l4HTeAaiLFyDOtuu42vLv60Pcf54U3zQx6O6lGAOc++VFa6RRXHRvtUGAptvqxgIyNvK8AmoaCM5YYTzQDYJMRz3vsm/JL/vNb4M/RN5t2VcAr9OUCCdtUsl7oey+PowSQB9gNgM23Eb9iZpRaRFm7nww8IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgpIjsb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF18C4CEF7;
-	Mon, 23 Mar 2026 15:00:28 +0000 (UTC)
+	 MIME-Version; b=uYMbQx2pcvf28kDKHDHzkDTALOJ3Onup4JWf/nGAXstrErEUtAPK4+JqzoNf6aUf02WQvfZjyeNHoiWWMTTQ3kZJwpJ6CpO0PHJqJYBn3/6kIjcrxy0McHq9SmY+VR7V6AydGivctFGvSN89yHHly2dG86qfa1h7XqBt39Z8QRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=chm9jKlL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D57C4CEF7;
+	Mon, 23 Mar 2026 16:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278029;
-	bh=y1viK1CE+mGFPlOrZIQDuclwmuHQlM/mO9rlQw8gc+4=;
+	s=korg; t=1774282328;
+	bh=s6iTrP8lE7HUfthDsUfV4iUJHrfXo7e+BTQ3yHwD3V0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgpIjsb6K8AP5BfNnccyHZXiC8WTqJ+eN/wFJQ8qAP4mPWygU1gATlLy1wpCOyXFR
-	 7/qZ93Kh7L6RUi0vjPLakXXRaMEek1cTEd6+sMb6hgjsqzSaehoEQwBchYbafM+4Ij
-	 xYjxw2V8Z05g83/Hzop8lpEaJLkHCaf9y4Pell4o=
+	b=chm9jKlLEMZg9dyYw6ZDMfP1iZbkJEngiNZk7RBodpIYdRpmYOv6/miG3QsSTvyvJ
+	 WjPXMAdULUhrTkdvhyaMaDk6epyxXyLWQbNXa4Np3nTifHZ8KtpxQSuLChBVrwlPH3
+	 v77ReG2ilywuQQiSnBNzjEp6VG75M92tuHZJw8Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruitong Liu <cnitlrt@gmail.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/567] net/sched: act_ife: Fix metalist update behavior
-Date: Mon, 23 Mar 2026 14:41:37 +0100
-Message-ID: <20260323134538.220915928@linuxfoundation.org>
+Subject: [PATCH 6.1 116/481] kunit: tool: Add command line interface to filter and report attributes
+Date: Mon, 23 Mar 2026 14:41:38 +0100
+Message-ID: <20260323134528.106988357@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,430 +69,443 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229090-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,mojatatu.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229589-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.968];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8B38F2F86B5
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[kunit.py:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 5EF5A2FA48A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Rae Moar <rmoar@google.com>
 
-[ Upstream commit e2cedd400c3ec0302ffca2490e8751772906ac23 ]
+[ Upstream commit 723c8258c8fe167191b53e274dea435c4522e4d7 ]
 
-Whenever an ife action replace changes the metalist, instead of
-replacing the old data on the metalist, the current ife code is appending
-the new metadata. Aside from being innapropriate behavior, this may lead
-to an unbounded addition of metadata to the metalist which might cause an
-out of bounds error when running the encode op:
+Add ability to kunit.py to filter attributes and report a list of tests
+including attributes without running tests.
 
-[  138.423369][    C1] ==================================================================
-[  138.424317][    C1] BUG: KASAN: slab-out-of-bounds in ife_tlv_meta_encode (net/ife/ife.c:168)
-[  138.424906][    C1] Write of size 4 at addr ffff8880077f4ffe by task ife_out_out_bou/255
-[  138.425778][    C1] CPU: 1 UID: 0 PID: 255 Comm: ife_out_out_bou Not tainted 7.0.0-rc1-00169-gfbdfa8da05b6 #624 PREEMPT(full)
-[  138.425795][    C1] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[  138.425800][    C1] Call Trace:
-[  138.425804][    C1]  <IRQ>
-[  138.425808][    C1]  dump_stack_lvl (lib/dump_stack.c:122)
-[  138.425828][    C1]  print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
-[  138.425839][    C1]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  138.425844][    C1]  ? __virt_addr_valid (./arch/x86/include/asm/preempt.h:95 (discriminator 1) ./include/linux/rcupdate.h:975 (discriminator 1) ./include/linux/mmzone.h:2207 (discriminator 1) arch/x86/mm/physaddr.c:54 (discriminator 1))
-[  138.425853][    C1]  ? ife_tlv_meta_encode (net/ife/ife.c:168)
-[  138.425859][    C1]  kasan_report (mm/kasan/report.c:221 mm/kasan/report.c:597)
-[  138.425868][    C1]  ? ife_tlv_meta_encode (net/ife/ife.c:168)
-[  138.425878][    C1]  kasan_check_range (mm/kasan/generic.c:186 (discriminator 1) mm/kasan/generic.c:200 (discriminator 1))
-[  138.425884][    C1]  __asan_memset (mm/kasan/shadow.c:84 (discriminator 2))
-[  138.425889][    C1]  ife_tlv_meta_encode (net/ife/ife.c:168)
-[  138.425893][    C1]  ? ife_tlv_meta_encode (net/ife/ife.c:171)
-[  138.425898][    C1]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  138.425903][    C1]  ife_encode_meta_u16 (net/sched/act_ife.c:57)
-[  138.425910][    C1]  ? __pfx_do_raw_spin_lock (kernel/locking/spinlock_debug.c:114)
-[  138.425916][    C1]  ? __asan_memcpy (mm/kasan/shadow.c:105 (discriminator 3))
-[  138.425921][    C1]  ? __pfx_ife_encode_meta_u16 (net/sched/act_ife.c:45)
-[  138.425927][    C1]  ? srso_alias_return_thunk (arch/x86/lib/retpoline.S:221)
-[  138.425931][    C1]  tcf_ife_act (net/sched/act_ife.c:847 net/sched/act_ife.c:879)
+Add flag "--filter" to input filters on test attributes. Tests will be
+filtered out if they do not match all inputted filters.
 
-To solve this issue, fix the replace behavior by adding the metalist to
-the ife rcu data structure.
+Example: --filter speed=slow (This filter would run only the tests that are
+marked as slow)
 
-Fixes: aa9fd9a325d51 ("sched: act: ife: update parameters via rcu handling")
-Reported-by: Ruitong Liu <cnitlrt@gmail.com>
-Tested-by: Ruitong Liu <cnitlrt@gmail.com>
-Co-developed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20260304140603.76500-1-jhs@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Filters have operations: <, >, <=, >=, !=, and =. But note that the
+characters < and > are often interpreted by the shell, so they may need to
+be quoted or escaped.
+
+Example: --filter "speed>slow" or --filter speed\>slow (This filter would
+run only the tests that have the speed faster than slow.
+
+Additionally, multiple filters can be used.
+
+Example: --filter "speed=slow, module!=example" (This filter would run
+only the tests that have the speed slow and are not in the "example"
+module)
+
+Note if the user wants to skip filtered tests instead of not
+running/showing them use the "--filter_action=skip" flag instead.
+
+Expose the output of kunit.action=list option with flag "--list_tests" to
+output a list of tests. Additionally, add flag "--list_tests_attr" to
+output a list of tests and their attributes. These flags are useful to see
+tests and test attributes without needing to run tests.
+
+Example of the output of "--list_tests_attr":
+  example
+  example.test_1
+  example.test_2
+  # example.test_2.speed: slow
+
+This output includes a suite, example, with two test cases, test_1 and
+test_2. And in this instance test_2 has been marked as slow.
+
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Stable-dep-of: 40804c4974b8 ("kunit: tool: copy caller args in run_kernel to prevent mutation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/tc_act/tc_ife.h |  4 +-
- net/sched/act_ife.c         | 93 ++++++++++++++++++-------------------
- 2 files changed, 45 insertions(+), 52 deletions(-)
+ tools/testing/kunit/kunit.py           | 70 ++++++++++++++++++++++++--
+ tools/testing/kunit/kunit_kernel.py    |  8 ++-
+ tools/testing/kunit/kunit_parser.py    | 11 +++-
+ tools/testing/kunit/kunit_tool_test.py | 39 +++++++-------
+ 4 files changed, 99 insertions(+), 29 deletions(-)
 
-diff --git a/include/net/tc_act/tc_ife.h b/include/net/tc_act/tc_ife.h
-index c7f24a2da1cad..24d4d5a62b3c2 100644
---- a/include/net/tc_act/tc_ife.h
-+++ b/include/net/tc_act/tc_ife.h
-@@ -13,15 +13,13 @@ struct tcf_ife_params {
- 	u8 eth_src[ETH_ALEN];
- 	u16 eth_type;
- 	u16 flags;
--
-+	struct list_head metalist;
- 	struct rcu_head rcu;
- };
+diff --git a/tools/testing/kunit/kunit.py b/tools/testing/kunit/kunit.py
+index 1ed7f0f86dee3..23f84f405b4a0 100755
+--- a/tools/testing/kunit/kunit.py
++++ b/tools/testing/kunit/kunit.py
+@@ -55,8 +55,12 @@ class KunitExecRequest(KunitParseRequest):
+ 	build_dir: str
+ 	timeout: int
+ 	filter_glob: str
++	filter: str
++	filter_action: Optional[str]
+ 	kernel_args: Optional[List[str]]
+ 	run_isolated: Optional[str]
++	list_tests: bool
++	list_tests_attr: bool
  
- struct tcf_ife_info {
- 	struct tc_action common;
- 	struct tcf_ife_params __rcu *params;
--	/* list of metaids allowed */
--	struct list_head metalist;
- };
- #define to_ife(a) ((struct tcf_ife_info *)a)
+ @dataclass
+ class KunitRequest(KunitExecRequest, KunitBuildRequest):
+@@ -111,19 +115,41 @@ def config_and_build_tests(linux: kunit_kernel.LinuxSourceTree,
  
-diff --git a/net/sched/act_ife.c b/net/sched/act_ife.c
-index 58c1ab02bd0d2..bf772401b1f41 100644
---- a/net/sched/act_ife.c
-+++ b/net/sched/act_ife.c
-@@ -293,8 +293,8 @@ static int load_metaops_and_vet(u32 metaid, void *val, int len, bool rtnl_held)
- /* called when adding new meta information
- */
- static int __add_metainfo(const struct tcf_meta_ops *ops,
--			  struct tcf_ife_info *ife, u32 metaid, void *metaval,
--			  int len, bool atomic, bool exists)
-+			  struct tcf_ife_params *p, u32 metaid, void *metaval,
-+			  int len, bool atomic)
- {
- 	struct tcf_meta_info *mi = NULL;
- 	int ret = 0;
-@@ -313,45 +313,40 @@ static int __add_metainfo(const struct tcf_meta_ops *ops,
- 		}
- 	}
- 
--	if (exists)
--		spin_lock_bh(&ife->tcf_lock);
--	list_add_tail(&mi->metalist, &ife->metalist);
--	if (exists)
--		spin_unlock_bh(&ife->tcf_lock);
-+	list_add_tail(&mi->metalist, &p->metalist);
- 
- 	return ret;
- }
- 
- static int add_metainfo_and_get_ops(const struct tcf_meta_ops *ops,
--				    struct tcf_ife_info *ife, u32 metaid,
--				    bool exists)
-+				    struct tcf_ife_params *p, u32 metaid)
- {
- 	int ret;
- 
- 	if (!try_module_get(ops->owner))
- 		return -ENOENT;
--	ret = __add_metainfo(ops, ife, metaid, NULL, 0, true, exists);
-+	ret = __add_metainfo(ops, p, metaid, NULL, 0, true);
- 	if (ret)
- 		module_put(ops->owner);
- 	return ret;
- }
- 
--static int add_metainfo(struct tcf_ife_info *ife, u32 metaid, void *metaval,
--			int len, bool exists)
-+static int add_metainfo(struct tcf_ife_params *p, u32 metaid, void *metaval,
-+			int len)
- {
- 	const struct tcf_meta_ops *ops = find_ife_oplist(metaid);
- 	int ret;
- 
- 	if (!ops)
- 		return -ENOENT;
--	ret = __add_metainfo(ops, ife, metaid, metaval, len, false, exists);
-+	ret = __add_metainfo(ops, p, metaid, metaval, len, false);
- 	if (ret)
- 		/*put back what find_ife_oplist took */
- 		module_put(ops->owner);
- 	return ret;
- }
- 
--static int use_all_metadata(struct tcf_ife_info *ife, bool exists)
-+static int use_all_metadata(struct tcf_ife_params *p)
- {
- 	struct tcf_meta_ops *o;
- 	int rc = 0;
-@@ -359,7 +354,7 @@ static int use_all_metadata(struct tcf_ife_info *ife, bool exists)
- 
- 	read_lock(&ife_mod_lock);
- 	list_for_each_entry(o, &ifeoplist, list) {
--		rc = add_metainfo_and_get_ops(o, ife, o->metaid, exists);
-+		rc = add_metainfo_and_get_ops(o, p, o->metaid);
- 		if (rc == 0)
- 			installed += 1;
- 	}
-@@ -371,7 +366,7 @@ static int use_all_metadata(struct tcf_ife_info *ife, bool exists)
- 		return -EINVAL;
- }
- 
--static int dump_metalist(struct sk_buff *skb, struct tcf_ife_info *ife)
-+static int dump_metalist(struct sk_buff *skb, struct tcf_ife_params *p)
- {
- 	struct tcf_meta_info *e;
- 	struct nlattr *nest;
-@@ -379,14 +374,14 @@ static int dump_metalist(struct sk_buff *skb, struct tcf_ife_info *ife)
- 	int total_encoded = 0;
- 
- 	/*can only happen on decode */
--	if (list_empty(&ife->metalist))
-+	if (list_empty(&p->metalist))
- 		return 0;
- 
- 	nest = nla_nest_start_noflag(skb, TCA_IFE_METALST);
- 	if (!nest)
- 		goto out_nlmsg_trim;
- 
--	list_for_each_entry(e, &ife->metalist, metalist) {
-+	list_for_each_entry(e, &p->metalist, metalist) {
- 		if (!e->ops->get(skb, e))
- 			total_encoded += 1;
- 	}
-@@ -403,13 +398,11 @@ static int dump_metalist(struct sk_buff *skb, struct tcf_ife_info *ife)
- 	return -1;
- }
- 
--/* under ife->tcf_lock */
--static void _tcf_ife_cleanup(struct tc_action *a)
-+static void __tcf_ife_cleanup(struct tcf_ife_params *p)
- {
--	struct tcf_ife_info *ife = to_ife(a);
- 	struct tcf_meta_info *e, *n;
- 
--	list_for_each_entry_safe(e, n, &ife->metalist, metalist) {
-+	list_for_each_entry_safe(e, n, &p->metalist, metalist) {
- 		list_del(&e->metalist);
- 		if (e->metaval) {
- 			if (e->ops->release)
-@@ -422,18 +415,23 @@ static void _tcf_ife_cleanup(struct tc_action *a)
- 	}
- }
- 
-+static void tcf_ife_cleanup_params(struct rcu_head *head)
-+{
-+	struct tcf_ife_params *p = container_of(head, struct tcf_ife_params,
-+						rcu);
+ def _list_tests(linux: kunit_kernel.LinuxSourceTree, request: KunitExecRequest) -> List[str]:
+ 	args = ['kunit.action=list']
 +
-+	__tcf_ife_cleanup(p);
-+	kfree(p);
-+}
++	if request.kernel_args:
++		args.extend(request.kernel_args)
 +
- static void tcf_ife_cleanup(struct tc_action *a)
- {
- 	struct tcf_ife_info *ife = to_ife(a);
- 	struct tcf_ife_params *p;
- 
--	spin_lock_bh(&ife->tcf_lock);
--	_tcf_ife_cleanup(a);
--	spin_unlock_bh(&ife->tcf_lock);
--
- 	p = rcu_dereference_protected(ife->params, 1);
- 	if (p)
--		kfree_rcu(p, rcu);
-+		call_rcu(&p->rcu, tcf_ife_cleanup_params);
- }
- 
- static int load_metalist(struct nlattr **tb, bool rtnl_held)
-@@ -455,8 +453,7 @@ static int load_metalist(struct nlattr **tb, bool rtnl_held)
- 	return 0;
- }
- 
--static int populate_metalist(struct tcf_ife_info *ife, struct nlattr **tb,
--			     bool exists, bool rtnl_held)
-+static int populate_metalist(struct tcf_ife_params *p, struct nlattr **tb)
- {
- 	int len = 0;
- 	int rc = 0;
-@@ -468,7 +465,7 @@ static int populate_metalist(struct tcf_ife_info *ife, struct nlattr **tb,
- 			val = nla_data(tb[i]);
- 			len = nla_len(tb[i]);
- 
--			rc = add_metainfo(ife, i, val, len, exists);
-+			rc = add_metainfo(p, i, val, len);
- 			if (rc)
- 				return rc;
- 		}
-@@ -523,6 +520,7 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
- 	p = kzalloc(sizeof(*p), GFP_KERNEL);
- 	if (!p)
- 		return -ENOMEM;
-+	INIT_LIST_HEAD(&p->metalist);
- 
- 	if (tb[TCA_IFE_METALST]) {
- 		err = nla_parse_nested_deprecated(tb2, IFE_META_MAX,
-@@ -567,8 +565,6 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
- 	}
- 
- 	ife = to_ife(*a);
--	if (ret == ACT_P_CREATED)
--		INIT_LIST_HEAD(&ife->metalist);
- 
- 	err = tcf_action_check_ctrlact(parm->action, tp, &goto_ch, extack);
- 	if (err < 0)
-@@ -600,8 +596,7 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
- 	}
- 
- 	if (tb[TCA_IFE_METALST]) {
--		err = populate_metalist(ife, tb2, exists,
--					!(flags & TCA_ACT_FLAGS_NO_RTNL));
-+		err = populate_metalist(p, tb2);
- 		if (err)
- 			goto metadata_parse_err;
- 	} else {
-@@ -610,7 +605,7 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
- 		 * as we can. You better have at least one else we are
- 		 * going to bail out
- 		 */
--		err = use_all_metadata(ife, exists);
-+		err = use_all_metadata(p);
- 		if (err)
- 			goto metadata_parse_err;
- 	}
-@@ -626,13 +621,14 @@ static int tcf_ife_init(struct net *net, struct nlattr *nla,
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
- 	if (p)
--		kfree_rcu(p, rcu);
-+		call_rcu(&p->rcu, tcf_ife_cleanup_params);
- 
- 	return ret;
- metadata_parse_err:
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
- release_idr:
-+	__tcf_ife_cleanup(p);
- 	kfree(p);
- 	tcf_idr_release(*a, bind);
- 	return err;
-@@ -679,7 +675,7 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
- 	if (nla_put(skb, TCA_IFE_TYPE, 2, &p->eth_type))
- 		goto nla_put_failure;
- 
--	if (dump_metalist(skb, ife)) {
-+	if (dump_metalist(skb, p)) {
- 		/*ignore failure to dump metalist */
- 		pr_info("Failed to dump metalist\n");
- 	}
-@@ -693,13 +689,13 @@ static int tcf_ife_dump(struct sk_buff *skb, struct tc_action *a, int bind,
- 	return -1;
- }
- 
--static int find_decode_metaid(struct sk_buff *skb, struct tcf_ife_info *ife,
-+static int find_decode_metaid(struct sk_buff *skb, struct tcf_ife_params *p,
- 			      u16 metaid, u16 mlen, void *mdata)
- {
- 	struct tcf_meta_info *e;
- 
- 	/* XXX: use hash to speed up */
--	list_for_each_entry(e, &ife->metalist, metalist) {
-+	list_for_each_entry_rcu(e, &p->metalist, metalist) {
- 		if (metaid == e->metaid) {
- 			if (e->ops) {
- 				/* We check for decode presence already */
-@@ -716,10 +712,13 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
- {
- 	struct tcf_ife_info *ife = to_ife(a);
- 	int action = ife->tcf_action;
-+	struct tcf_ife_params *p;
- 	u8 *ifehdr_end;
- 	u8 *tlv_data;
- 	u16 metalen;
- 
-+	p = rcu_dereference_bh(ife->params);
++	output = linux.run_kernel(args=args,
++			   timeout=request.timeout,
++			   filter_glob=request.filter_glob,
++			   filter=request.filter,
++			   filter_action=request.filter_action,
++			   build_dir=request.build_dir)
++	lines = kunit_parser.extract_tap_lines(output)
++	# Hack! Drop the dummy TAP version header that the executor prints out.
++	lines.pop()
 +
- 	bstats_update(this_cpu_ptr(ife->common.cpu_bstats), skb);
- 	tcf_lastuse_update(&ife->tcf_tm);
++	# Filter out any extraneous non-test output that might have gotten mixed in.
++	return [l for l in output if re.match(r'^[^\s.]+\.[^\s.]+$', l)]
++
++def _list_tests_attr(linux: kunit_kernel.LinuxSourceTree, request: KunitExecRequest) -> Iterable[str]:
++	args = ['kunit.action=list_attr']
++
+ 	if request.kernel_args:
+ 		args.extend(request.kernel_args)
  
-@@ -745,7 +744,7 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
- 			return TC_ACT_SHOT;
- 		}
+ 	output = linux.run_kernel(args=args,
+ 			   timeout=request.timeout,
+ 			   filter_glob=request.filter_glob,
++			   filter=request.filter,
++			   filter_action=request.filter_action,
+ 			   build_dir=request.build_dir)
+ 	lines = kunit_parser.extract_tap_lines(output)
+ 	# Hack! Drop the dummy TAP version header that the executor prints out.
+ 	lines.pop()
  
--		if (find_decode_metaid(skb, ife, mtype, dlen, curr_data)) {
-+		if (find_decode_metaid(skb, p, mtype, dlen, curr_data)) {
- 			/* abuse overlimits to count when we receive metadata
- 			 * but dont have an ops for it
- 			 */
-@@ -769,12 +768,12 @@ static int tcf_ife_decode(struct sk_buff *skb, const struct tc_action *a,
- /*XXX: check if we can do this at install time instead of current
-  * send data path
- **/
--static int ife_get_sz(struct sk_buff *skb, struct tcf_ife_info *ife)
-+static int ife_get_sz(struct sk_buff *skb, struct tcf_ife_params *p)
- {
--	struct tcf_meta_info *e, *n;
-+	struct tcf_meta_info *e;
- 	int tot_run_sz = 0, run_sz = 0;
+ 	# Filter out any extraneous non-test output that might have gotten mixed in.
+-	return [l for l in lines if re.match(r'^[^\s.]+\.[^\s.]+$', l)]
++	return lines
  
--	list_for_each_entry_safe(e, n, &ife->metalist, metalist) {
-+	list_for_each_entry_rcu(e, &p->metalist, metalist) {
- 		if (e->ops->check_presence) {
- 			run_sz = e->ops->check_presence(skb, e);
- 			tot_run_sz += run_sz;
-@@ -795,7 +794,7 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 	   OUTERHDR:TOTMETALEN:{TLVHDR:Metadatum:TLVHDR..}:ORIGDATA
- 	   where ORIGDATA = original ethernet header ...
- 	 */
--	u16 metalen = ife_get_sz(skb, ife);
-+	u16 metalen = ife_get_sz(skb, p);
- 	int hdrm = metalen + skb->dev->hard_header_len + IFE_METAHDRLEN;
- 	unsigned int skboff = 0;
- 	int new_len = skb->len + hdrm;
-@@ -833,25 +832,21 @@ static int tcf_ife_encode(struct sk_buff *skb, const struct tc_action *a,
- 	if (!ife_meta)
- 		goto drop;
+ def _suites_from_test_list(tests: List[str]) -> List[str]:
+ 	"""Extracts all the suites from an ordered list of tests."""
+@@ -137,10 +163,18 @@ def _suites_from_test_list(tests: List[str]) -> List[str]:
+ 			suites.append(suite)
+ 	return suites
  
--	spin_lock(&ife->tcf_lock);
 -
- 	/* XXX: we dont have a clever way of telling encode to
- 	 * not repeat some of the computations that are done by
- 	 * ops->presence_check...
- 	 */
--	list_for_each_entry(e, &ife->metalist, metalist) {
-+	list_for_each_entry_rcu(e, &p->metalist, metalist) {
- 		if (e->ops->encode) {
- 			err = e->ops->encode(skb, (void *)(ife_meta + skboff),
- 					     e);
- 		}
- 		if (err < 0) {
- 			/* too corrupt to keep around if overwritten */
--			spin_unlock(&ife->tcf_lock);
- 			goto drop;
- 		}
- 		skboff += err;
- 	}
--	spin_unlock(&ife->tcf_lock);
- 	oethh = (struct ethhdr *)skb->data;
+-
+ def exec_tests(linux: kunit_kernel.LinuxSourceTree, request: KunitExecRequest) -> KunitResult:
+ 	filter_globs = [request.filter_glob]
++	if request.list_tests:
++		output = _list_tests(linux, request)
++		for line in output:
++			print(line.rstrip())
++		return KunitResult(status=KunitStatus.SUCCESS, elapsed_time=0.0)
++	if request.list_tests_attr:
++		attr_output = _list_tests_attr(linux, request)
++		for line in attr_output:
++			print(line.rstrip())
++		return KunitResult(status=KunitStatus.SUCCESS, elapsed_time=0.0)
+ 	if request.run_isolated:
+ 		tests = _list_tests(linux, request)
+ 		if request.run_isolated == 'test':
+@@ -164,6 +198,8 @@ def exec_tests(linux: kunit_kernel.LinuxSourceTree, request: KunitExecRequest) -
+ 			args=request.kernel_args,
+ 			timeout=request.timeout,
+ 			filter_glob=filter_glob,
++			filter=request.filter,
++			filter_action=request.filter_action,
+ 			build_dir=request.build_dir)
  
- 	if (!is_zero_ether_addr(p->eth_src))
+ 		_, test_result = parse_tests(request, metadata, run_result)
+@@ -350,6 +386,16 @@ def add_exec_opts(parser: argparse.ArgumentParser) -> None:
+ 			    nargs='?',
+ 			    default='',
+ 			    metavar='filter_glob')
++	parser.add_argument('--filter',
++			    help='Filter KUnit tests with attributes, '
++			    'e.g. module=example or speed>slow',
++			    type=str,
++				default='')
++	parser.add_argument('--filter_action',
++			    help='If set to skip, filtered tests will be skipped, '
++				'e.g. --filter_action=skip. Otherwise they will not run.',
++			    type=str,
++				choices=['skip'])
+ 	parser.add_argument('--kernel_args',
+ 			    help='Kernel command-line parameters. Maybe be repeated',
+ 			     action='append', metavar='')
+@@ -359,6 +405,12 @@ def add_exec_opts(parser: argparse.ArgumentParser) -> None:
+ 			    'what ran before it.',
+ 			    type=str,
+ 			    choices=['suite', 'test'])
++	parser.add_argument('--list_tests', help='If set, list all tests that will be '
++			    'run.',
++			    action='store_true')
++	parser.add_argument('--list_tests_attr', help='If set, list all tests and test '
++			    'attributes.',
++			    action='store_true')
+ 
+ def add_parse_opts(parser: argparse.ArgumentParser) -> None:
+ 	parser.add_argument('--raw_output', help='If set don\'t parse output from kernel. '
+@@ -407,8 +459,12 @@ def run_handler(cli_args: argparse.Namespace) -> None:
+ 					json=cli_args.json,
+ 					timeout=cli_args.timeout,
+ 					filter_glob=cli_args.filter_glob,
++					filter=cli_args.filter,
++					filter_action=cli_args.filter_action,
+ 					kernel_args=cli_args.kernel_args,
+-					run_isolated=cli_args.run_isolated)
++					run_isolated=cli_args.run_isolated,
++					list_tests=cli_args.list_tests,
++					list_tests_attr=cli_args.list_tests_attr)
+ 	result = run_tests(linux, request)
+ 	if result.status != KunitStatus.SUCCESS:
+ 		sys.exit(1)
+@@ -450,8 +506,12 @@ def exec_handler(cli_args: argparse.Namespace) -> None:
+ 					json=cli_args.json,
+ 					timeout=cli_args.timeout,
+ 					filter_glob=cli_args.filter_glob,
++					filter=cli_args.filter,
++					filter_action=cli_args.filter_action,
+ 					kernel_args=cli_args.kernel_args,
+-					run_isolated=cli_args.run_isolated)
++					run_isolated=cli_args.run_isolated,
++					list_tests=cli_args.list_tests,
++					list_tests_attr=cli_args.list_tests_attr)
+ 	result = exec_tests(linux, exec_request)
+ 	stdout.print_with_timestamp((
+ 		'Elapsed time: %.3fs\n') % (result.elapsed_time))
+diff --git a/tools/testing/kunit/kunit_kernel.py b/tools/testing/kunit/kunit_kernel.py
+index faf90dcfed32d..86accd53644c1 100644
+--- a/tools/testing/kunit/kunit_kernel.py
++++ b/tools/testing/kunit/kunit_kernel.py
+@@ -329,11 +329,15 @@ class LinuxSourceTree:
+ 			return False
+ 		return self.validate_config(build_dir)
+ 
+-	def run_kernel(self, args: Optional[List[str]]=None, build_dir: str='', filter_glob: str='', timeout: Optional[int]=None) -> Iterator[str]:
++	def run_kernel(self, args: Optional[List[str]]=None, build_dir: str='', filter_glob: str='', filter: str='', filter_action: Optional[str]=None, timeout: Optional[int]=None) -> Iterator[str]:
+ 		if not args:
+ 			args = []
+ 		if filter_glob:
+-			args.append('kunit.filter_glob='+filter_glob)
++			args.append('kunit.filter_glob=' + filter_glob)
++		if filter:
++			args.append('kunit.filter="' + filter + '"')
++		if filter_action:
++			args.append('kunit.filter_action=' + filter_action)
+ 		args.append('kunit.enable=1')
+ 
+ 		process = self._ops.start(args, build_dir)
+diff --git a/tools/testing/kunit/kunit_parser.py b/tools/testing/kunit/kunit_parser.py
+index d5abd0567c8e0..ca9921ea328a4 100644
+--- a/tools/testing/kunit/kunit_parser.py
++++ b/tools/testing/kunit/kunit_parser.py
+@@ -221,6 +221,7 @@ KTAP_START = re.compile(r'\s*KTAP version ([0-9]+)$')
+ TAP_START = re.compile(r'\s*TAP version ([0-9]+)$')
+ KTAP_END = re.compile(r'\s*(List of all partitions:|'
+ 	'Kernel panic - not syncing: VFS:|reboot: System halted)')
++EXECUTOR_ERROR = re.compile(r'\s*kunit executor: (.*)$')
+ 
+ def extract_tap_lines(kernel_output: Iterable[str]) -> LineStream:
+ 	"""Extracts KTAP lines from the kernel output."""
+@@ -251,6 +252,8 @@ def extract_tap_lines(kernel_output: Iterable[str]) -> LineStream:
+ 				# remove the prefix, if any.
+ 				line = line[prefix_len:]
+ 				yield line_num, line
++			elif EXECUTOR_ERROR.search(line):
++				yield line_num, line
+ 	return LineStream(lines=isolate_ktap_output(kernel_output))
+ 
+ KTAP_VERSIONS = [1]
+@@ -456,7 +459,7 @@ def parse_diagnostic(lines: LineStream) -> List[str]:
+ 	Log of diagnostic lines
+ 	"""
+ 	log = []  # type: List[str]
+-	non_diagnostic_lines = [TEST_RESULT, TEST_HEADER, KTAP_START]
++	non_diagnostic_lines = [TEST_RESULT, TEST_HEADER, KTAP_START, TAP_START]
+ 	while lines and not any(re.match(lines.peek())
+ 			for re in non_diagnostic_lines):
+ 		log.append(lines.pop())
+@@ -722,6 +725,11 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest:
+ 	"""
+ 	test = Test()
+ 	test.log.extend(log)
++
++	# Parse any errors prior to parsing tests
++	err_log = parse_diagnostic(lines)
++	test.log.extend(err_log)
++
+ 	if not is_subtest:
+ 		# If parsing the main/top-level test, parse KTAP version line and
+ 		# test plan
+@@ -783,6 +791,7 @@ def parse_test(lines: LineStream, expected_num: int, log: List[str], is_subtest:
+ 		# Don't override a bad status if this test had one reported.
+ 		# Assumption: no subtests means CRASHED is from Test.__init__()
+ 		if test.status in (TestStatus.TEST_CRASHED, TestStatus.SUCCESS):
++			print_log(test.log)
+ 			test.status = TestStatus.NO_TESTS
+ 			test.add_error('0 tests run!')
+ 
+diff --git a/tools/testing/kunit/kunit_tool_test.py b/tools/testing/kunit/kunit_tool_test.py
+index 9ba0ff95fad5c..04714f59fced6 100755
+--- a/tools/testing/kunit/kunit_tool_test.py
++++ b/tools/testing/kunit/kunit_tool_test.py
+@@ -612,7 +612,7 @@ class KUnitMainTest(unittest.TestCase):
+ 		self.assertEqual(self.linux_source_mock.build_reconfig.call_count, 0)
+ 		self.assertEqual(self.linux_source_mock.run_kernel.call_count, 1)
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=None, build_dir='.kunit', filter_glob='', timeout=300)
++			args=None, build_dir='.kunit', filter_glob='', filter='', filter_action=None, timeout=300)
+ 		self.print_mock.assert_any_call(StrContains('Testing complete.'))
+ 
+ 	def test_run_passes_args_pass(self):
+@@ -620,7 +620,7 @@ class KUnitMainTest(unittest.TestCase):
+ 		self.assertEqual(self.linux_source_mock.build_reconfig.call_count, 1)
+ 		self.assertEqual(self.linux_source_mock.run_kernel.call_count, 1)
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=None, build_dir='.kunit', filter_glob='', timeout=300)
++			args=None, build_dir='.kunit', filter_glob='', filter='', filter_action=None, timeout=300)
+ 		self.print_mock.assert_any_call(StrContains('Testing complete.'))
+ 
+ 	def test_exec_passes_args_fail(self):
+@@ -644,7 +644,7 @@ class KUnitMainTest(unittest.TestCase):
+ 			kunit.main(['run'])
+ 		self.assertEqual(e.exception.code, 1)
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=None, build_dir='.kunit', filter_glob='', timeout=300)
++			args=None, build_dir='.kunit', filter_glob='', filter='', filter_action=None, timeout=300)
+ 		self.print_mock.assert_any_call(StrContains(' 0 tests run!'))
+ 
+ 	def test_exec_raw_output(self):
+@@ -685,13 +685,13 @@ class KUnitMainTest(unittest.TestCase):
+ 		self.linux_source_mock.run_kernel = mock.Mock(return_value=[])
+ 		kunit.main(['run', '--raw_output', 'filter_glob'])
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=None, build_dir='.kunit', filter_glob='filter_glob', timeout=300)
++			args=None, build_dir='.kunit', filter_glob='filter_glob', filter='', filter_action=None, timeout=300)
+ 
+ 	def test_exec_timeout(self):
+ 		timeout = 3453
+ 		kunit.main(['exec', '--timeout', str(timeout)])
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=None, build_dir='.kunit', filter_glob='', timeout=timeout)
++			args=None, build_dir='.kunit', filter_glob='', filter='', filter_action=None, timeout=timeout)
+ 		self.print_mock.assert_any_call(StrContains('Testing complete.'))
+ 
+ 	def test_run_timeout(self):
+@@ -699,7 +699,7 @@ class KUnitMainTest(unittest.TestCase):
+ 		kunit.main(['run', '--timeout', str(timeout)])
+ 		self.assertEqual(self.linux_source_mock.build_reconfig.call_count, 1)
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=None, build_dir='.kunit', filter_glob='', timeout=timeout)
++			args=None, build_dir='.kunit', filter_glob='', filter='', filter_action=None, timeout=timeout)
+ 		self.print_mock.assert_any_call(StrContains('Testing complete.'))
+ 
+ 	def test_run_builddir(self):
+@@ -707,7 +707,7 @@ class KUnitMainTest(unittest.TestCase):
+ 		kunit.main(['run', '--build_dir=.kunit'])
+ 		self.assertEqual(self.linux_source_mock.build_reconfig.call_count, 1)
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=None, build_dir=build_dir, filter_glob='', timeout=300)
++			args=None, build_dir=build_dir, filter_glob='', filter='', filter_action=None, timeout=300)
+ 		self.print_mock.assert_any_call(StrContains('Testing complete.'))
+ 
+ 	def test_config_builddir(self):
+@@ -725,7 +725,7 @@ class KUnitMainTest(unittest.TestCase):
+ 		build_dir = '.kunit'
+ 		kunit.main(['exec', '--build_dir', build_dir])
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=None, build_dir=build_dir, filter_glob='', timeout=300)
++			args=None, build_dir=build_dir, filter_glob='', filter='', filter_action=None, timeout=300)
+ 		self.print_mock.assert_any_call(StrContains('Testing complete.'))
+ 
+ 	def test_run_kunitconfig(self):
+@@ -801,7 +801,7 @@ class KUnitMainTest(unittest.TestCase):
+ 		kunit.main(['run', '--kernel_args=a=1', '--kernel_args=b=2'])
+ 		self.assertEqual(self.linux_source_mock.build_reconfig.call_count, 1)
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-		      args=['a=1','b=2'], build_dir='.kunit', filter_glob='', timeout=300)
++		      args=['a=1','b=2'], build_dir='.kunit', filter_glob='', filter='', filter_action=None, timeout=300)
+ 		self.print_mock.assert_any_call(StrContains('Testing complete.'))
+ 
+ 	def test_list_tests(self):
+@@ -809,13 +809,11 @@ class KUnitMainTest(unittest.TestCase):
+ 		self.linux_source_mock.run_kernel.return_value = ['TAP version 14', 'init: random output'] + want
+ 
+ 		got = kunit._list_tests(self.linux_source_mock,
+-				     kunit.KunitExecRequest(None, None, '.kunit', 300, 'suite*', None, 'suite'))
+-
++				     kunit.KunitExecRequest(None, None, '.kunit', 300, 'suite*', '', None, None, 'suite', False, False))
+ 		self.assertEqual(got, want)
+ 		# Should respect the user's filter glob when listing tests.
+ 		self.linux_source_mock.run_kernel.assert_called_once_with(
+-			args=['kunit.action=list'], build_dir='.kunit', filter_glob='suite*', timeout=300)
+-
++			args=['kunit.action=list'], build_dir='.kunit', filter_glob='suite*', filter='', filter_action=None, timeout=300)
+ 
+ 	@mock.patch.object(kunit, '_list_tests')
+ 	def test_run_isolated_by_suite(self, mock_tests):
+@@ -824,10 +822,10 @@ class KUnitMainTest(unittest.TestCase):
+ 
+ 		# Should respect the user's filter glob when listing tests.
+ 		mock_tests.assert_called_once_with(mock.ANY,
+-				     kunit.KunitExecRequest(None, None, '.kunit', 300, 'suite*.test*', None, 'suite'))
++				     kunit.KunitExecRequest(None, None, '.kunit', 300, 'suite*.test*', '', None, None, 'suite', False, False))
+ 		self.linux_source_mock.run_kernel.assert_has_calls([
+-			mock.call(args=None, build_dir='.kunit', filter_glob='suite.test*', timeout=300),
+-			mock.call(args=None, build_dir='.kunit', filter_glob='suite2.test*', timeout=300),
++			mock.call(args=None, build_dir='.kunit', filter_glob='suite.test*', filter='', filter_action=None, timeout=300),
++			mock.call(args=None, build_dir='.kunit', filter_glob='suite2.test*', filter='', filter_action=None, timeout=300),
+ 		])
+ 
+ 	@mock.patch.object(kunit, '_list_tests')
+@@ -837,13 +835,12 @@ class KUnitMainTest(unittest.TestCase):
+ 
+ 		# Should respect the user's filter glob when listing tests.
+ 		mock_tests.assert_called_once_with(mock.ANY,
+-				     kunit.KunitExecRequest(None, None, '.kunit', 300, 'suite*', None, 'test'))
++				     kunit.KunitExecRequest(None, None, '.kunit', 300, 'suite*', '', None, None, 'test', False, False))
+ 		self.linux_source_mock.run_kernel.assert_has_calls([
+-			mock.call(args=None, build_dir='.kunit', filter_glob='suite.test1', timeout=300),
+-			mock.call(args=None, build_dir='.kunit', filter_glob='suite.test2', timeout=300),
+-			mock.call(args=None, build_dir='.kunit', filter_glob='suite2.test1', timeout=300),
++			mock.call(args=None, build_dir='.kunit', filter_glob='suite.test1', filter='', filter_action=None, timeout=300),
++			mock.call(args=None, build_dir='.kunit', filter_glob='suite.test2', filter='', filter_action=None, timeout=300),
++			mock.call(args=None, build_dir='.kunit', filter_glob='suite2.test1', filter='', filter_action=None, timeout=300),
+ 		])
+ 
+-
+ if __name__ == '__main__':
+ 	unittest.main()
 -- 
 2.51.0
 
