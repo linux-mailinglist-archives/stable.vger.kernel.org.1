@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-229130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229628-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMEqEgFewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229130-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:33 +0100
+	id iKAxKEhtwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229628-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D742F68DA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CC792F89E7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 34BB53118A64
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 82CCD30D57BD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC73B283FC8;
-	Mon, 23 Mar 2026 15:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4173BD655;
+	Mon, 23 Mar 2026 16:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKix/9cr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsCY8KR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900C4282F3A;
-	Mon, 23 Mar 2026 15:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D573B9D9D;
+	Mon, 23 Mar 2026 16:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278155; cv=none; b=JqgKmeQxwt0v3X7K+NiwbDXzNV9lmN0yY6epCJ4y291EYF1JHPH6cNr0tg14LJ93j0ALQk5LS14BlqWXMVwwCZspePjrpzR30uuQI9uIkJZ0AylnGUFIM3wM7Zun8dJFTUxLzawcIcEa6JezgFTiiU7MOCVqkHhH4HpYsdR4hIU=
+	t=1774282437; cv=none; b=Ub9C63lkRJSyyAAJkdoPg5iWLL5fkpbgbZwkzMtRcdfquE6jdTbWzinbw1t6HU1u3d65icjL7lt3vHd0p2BKXqGveFpE+tMXbcnrk4kPoYqsbMHwmSuiulZlMjuebLHY9TDV1DShXvRoiBML17INyh2VoNugDyQp94OJSpYn2No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278155; c=relaxed/simple;
-	bh=JoaO1/5oMoxA8ekyg6vRt3BYk6MMDAU0x7s6m5bqNF4=;
+	s=arc-20240116; t=1774282437; c=relaxed/simple;
+	bh=rxlS4xq4pFgDd6F9NcV4dTP+1B9RKuOKXMEHGy+llms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eCyQSzRtlEPzIv0oBNKDvn4BlKCsradazhK2lNduLS3tg64l06YazgHYZLaw61Gp6Xiqt6wjFsiFVGY9R8mvV/xRsF/HD3k5J29v3mIBWAZdfSu2QqbBR2Db0AhMctBfo4W9NvUWJZdo7a+StMlZ3QLLdMdYRzWeOD8dw+kW5Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKix/9cr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AFAC2BCB5;
-	Mon, 23 Mar 2026 15:02:34 +0000 (UTC)
+	 MIME-Version; b=D/xTmLtvR0dJD2wc2E4JCSyh+sr+GmBmQPU9mLUtKtQVzv4LvNgQ0vjZLFn0aSkrHgwh9kejv39lKABjkYBBXQfaX9nTRqQ0sWo4bsKybMdosmejFOrKwctGsajoaAt6J9ItAhnszWf5j+BYUQM2iz7m4z4xNxdvqKKvkx/ex4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsCY8KR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD91EC4CEF7;
+	Mon, 23 Mar 2026 16:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278155;
-	bh=JoaO1/5oMoxA8ekyg6vRt3BYk6MMDAU0x7s6m5bqNF4=;
+	s=korg; t=1774282437;
+	bh=rxlS4xq4pFgDd6F9NcV4dTP+1B9RKuOKXMEHGy+llms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKix/9cr5AvIwWVwT/LRbMp6SVIIvGsyCDpfEJp9NxYo7hbX1YwZN4ae2PnpbaGZz
-	 dKrNmPy/6rZZqIg2LMTaz6XLCKt0uNSpsLUEoJy8mDBhki2bDC1eJtBMH5QNkWkL2u
-	 BBiAczzLgtx3eu6fwc0u9paI0PDomsFKOTExOzvc=
+	b=IsCY8KR/Tcan6i8yzaQW5ZsXnJo55NdcGn3QbKVvWwAxUEI3gU6YYmybBNxXmqC2w
+	 LcCaFUgGZw3QFAHylP/ILROx0VEvRWNkgzMVrKLHLSqfP+srfffIp+vhsSiSmq2x1W
+	 ExQjgcgL29YLckue3fwfxDoPpYzI68fjEsieeK6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mieczyslaw Nalewaj <namiltd@yahoo.com>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Linus Walleij <linusw@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 217/567] net: dsa: realtek: rtl8365mb: remove ifOutDiscards from rx_packets
-Date: Mon, 23 Mar 2026 14:42:17 +0100
-Message-ID: <20260323134539.196810378@linuxfoundation.org>
+Subject: [PATCH 6.1 156/481] powerpc/uaccess: Fix inline assembly for clang build on PPC32
+Date: Mon, 23 Mar 2026 14:42:18 +0100
+Message-ID: <20260323134529.041368798@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,76 +71,119 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229130-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,yahoo.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229628-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 41D742F68DA
+X-Rspamd-Queue-Id: 2CC792F89E7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+From: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 
-[ Upstream commit f76a93241d71fbba8425e3967097b498c29264ed ]
+[ Upstream commit 0ee95a1d458630272d0415d0ffa9424fcb606c90 ]
 
-rx_packets should report the number of frames successfully received:
-unicast + multicast + broadcast. Subtracting ifOutDiscards (a TX
-counter) is incorrect and can undercount RX packets. RX drops are
-already reported via rx_dropped (e.g. etherStatsDropEvents), so
-there is no need to adjust rx_packets.
+Test robot reports the following error with clang-16.0.6:
 
-This patch removes the subtraction of ifOutDiscards from rx_packets
-in rtl8365mb_stats_update().
+   In file included from kernel/rseq.c:75:
+   include/linux/rseq_entry.h:141:3: error: invalid operand for instruction
+                   unsafe_get_user(offset, &ucs->post_commit_offset, efault);
+                   ^
+   include/linux/uaccess.h:608:2: note: expanded from macro 'unsafe_get_user'
+           arch_unsafe_get_user(x, ptr, local_label);      \
+           ^
+   arch/powerpc/include/asm/uaccess.h:518:2: note: expanded from macro 'arch_unsafe_get_user'
+           __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
+           ^
+   arch/powerpc/include/asm/uaccess.h:284:2: note: expanded from macro '__get_user_size_goto'
+           __get_user_size_allowed(x, ptr, size, __gus_retval);    \
+           ^
+   arch/powerpc/include/asm/uaccess.h:275:10: note: expanded from macro '__get_user_size_allowed'
+           case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
+                   ^
+   arch/powerpc/include/asm/uaccess.h:258:4: note: expanded from macro '__get_user_asm2'
+                   "       li %1+1,0\n"                    \
+                    ^
+   <inline asm>:7:5: note: instantiated into assembly here
+           li 31+1,0
+              ^
+   1 error generated.
 
-Link: https://lore.kernel.org/netdev/878777925.105015.1763423928520@mail.yahoo.com/
-Fixes: 4af2950c50c8 ("net: dsa: realtek-smi: add rtl8365mb subdriver for RTL8365MB-VC")
-Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
-Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20260303-realtek_namiltd_fix2-v1-1-bfa433d3401e@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+On PPC32, for 64 bits vars a pair of registers is used. Usually the
+lower register in the pair is the high part and the higher register is
+the low part. GCC uses r3/r4 ... r11/r12 ... r14/r15 ... r30/r31
+
+In older kernel code inline assembly was using %1 and %1+1 to represent
+64 bits values. However here it looks like clang uses r31 as high part,
+allthough r32 doesn't exist hence the error.
+
+Allthoug %1+1 should work, most places now use %L1 instead of %1+1, so
+let's do the same here.
+
+With that change, the build doesn't fail anymore and a disassembly shows
+clang uses r17/r18 and r31/r14 pair when GCC would have used r16/r17 and
+r30/r31:
+
+	Disassembly of section .fixup:
+
+	00000000 <.fixup>:
+	   0:	38 a0 ff f2 	li      r5,-14
+	   4:	3a 20 00 00 	li      r17,0
+	   8:	3a 40 00 00 	li      r18,0
+	   c:	48 00 00 00 	b       c <.fixup+0xc>
+				c: R_PPC_REL24	.text+0xbc
+	  10:	38 a0 ff f2 	li      r5,-14
+	  14:	3b e0 00 00 	li      r31,0
+	  18:	39 c0 00 00 	li      r14,0
+	  1c:	48 00 00 00 	b       1c <.fixup+0x1c>
+				1c: R_PPC_REL24	.text+0x144
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202602021825.otcItxGi-lkp@intel.com/
+Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Acked-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/8ca3a657a650e497a96bfe7acde2f637dadab344.1770103646.git.chleroy@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/realtek/rtl8365mb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/include/asm/uaccess.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/realtek/rtl8365mb.c b/drivers/net/dsa/realtek/rtl8365mb.c
-index 318eced8f0d34..9d59d93807825 100644
---- a/drivers/net/dsa/realtek/rtl8365mb.c
-+++ b/drivers/net/dsa/realtek/rtl8365mb.c
-@@ -1482,8 +1482,7 @@ static void rtl8365mb_stats_update(struct realtek_priv *priv, int port)
- 
- 	stats->rx_packets = cnt[RTL8365MB_MIB_ifInUcastPkts] +
- 			    cnt[RTL8365MB_MIB_ifInMulticastPkts] +
--			    cnt[RTL8365MB_MIB_ifInBroadcastPkts] -
--			    cnt[RTL8365MB_MIB_ifOutDiscards];
-+			    cnt[RTL8365MB_MIB_ifInBroadcastPkts];
- 
- 	stats->tx_packets = cnt[RTL8365MB_MIB_ifOutUcastPkts] +
- 			    cnt[RTL8365MB_MIB_ifOutMulticastPkts] +
+diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
+index 0d874e343b9f6..bd95fa2c4092b 100644
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -237,7 +237,7 @@ __gus_failed:								\
+ 		".section .fixup,\"ax\"\n"		\
+ 		"4:	li %0,%3\n"			\
+ 		"	li %1,0\n"			\
+-		"	li %1+1,0\n"			\
++		"	li %L1,0\n"			\
+ 		"	b 3b\n"				\
+ 		".previous\n"				\
+ 		EX_TABLE(1b, 4b)			\
 -- 
 2.51.0
 
