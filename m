@@ -1,207 +1,190 @@
-Return-Path: <stable+bounces-229992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229993-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yKpoFaSPwWmuTwQAu9opvQ
-	(envelope-from <stable+bounces-229992-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:08:20 +0100
+	id 6PbGNkuIwWn+TgQAu9opvQ
+	(envelope-from <stable+bounces-229993-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:36:59 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D934A2FBE84
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:08:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812BB2FB62F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C3F6315BF5C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:30:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EE7F7301B792
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:36:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3A873CF04E;
-	Mon, 23 Mar 2026 18:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4112E040D;
+	Mon, 23 Mar 2026 18:36:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aHec/hfo"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="cPKUnUUw"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3156E2F532C;
-	Mon, 23 Mar 2026 18:30:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4958D2DEA7B;
+	Mon, 23 Mar 2026 18:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774290656; cv=none; b=VrymgiMvzlx4f+nBq0J1G4CrlTq/bX/+Dx9eGA18X1CRS6PyUBm17NB/qAvNAaUwosYwkohetM9e3cnOr9eG9kGFxtuXBnQ3u6XUYpLlD9Tn8k/5NT7ig7MD8xMZG2KqIzyoc8Cod0Gfti3k1yLJ/CMbBr4F/15Iea4w7t/pvg8=
+	t=1774290990; cv=none; b=teQGU5BDHC/QGG9JUifdgFi5/4VF0wMHCB3SktbGbJylV/3C3yxrtA1QrPgkcr/b174XZzyG5fT4C8g4COhgjsMuHGQF2f+ELDk/O8anNygnmBd78JPHBgyqqTxa1+2IOKZ998l6au22ncvj7UCEZMZ9Y1B1ti7xFNKsIGyO1yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774290656; c=relaxed/simple;
-	bh=BTj6faIFVDBxcuvZCXtOL40uLPTYUH+bjw6mwF0OGAM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bhQea8pFRdQ4757eN4MpsPZ+pDEONHipHYsdTtjwL+vuwZQfs3QdsVfpDe89ergthmQW2qX9sFJ1ObakvtPb8kM3Y7XrjA0cSkIBaHIu4wP3EBWDjVn/L7cOzdfVfC0rfaWWKdTJqavGdi2kYdqcxd9mbN0LvKeREO9QbY8NV3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aHec/hfo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78ABCC4CEF7;
-	Mon, 23 Mar 2026 18:30:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774290655;
-	bh=BTj6faIFVDBxcuvZCXtOL40uLPTYUH+bjw6mwF0OGAM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aHec/hfoZNsIz60+LI97byVoUl0gB62rPrxLVnfMaLSnNnBYYCVoj3fENKAip/KO9
-	 oYr1eA+rkYYibdF97xgv8fXo27haY3z9/eGOaEWgGkhKUQ74HSpvss4jb4JB3TOdsH
-	 7IhHL/kBHqV9VWTNQndX6P2M98oyVFxHORU7X1yoPTvAMpqo93UcoYp08MOkxy6Wu3
-	 sjXW/4kjgSaPSIQvgaRFdK5nnnrJjzmf1JwD+w/sMlDvQftLpZwF8iEYsglQn5XFCi
-	 zrxOLSl6y5ZNVGNeJ8q6BYzgS1UlHcvur8thMDuWPIFy5/077Kf0lNiffutIsxTnbv
-	 5N/cJGj3FvcZA==
-Message-ID: <4628c5e1-5c27-4715-ac52-c4157a45eaa8@kernel.org>
-Date: Mon, 23 Mar 2026 19:30:52 +0100
+	s=arc-20240116; t=1774290990; c=relaxed/simple;
+	bh=hl6X1HK0MVHB85xw9EAy9uyX8KPSXSWQpDivXp/F078=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DnJa94IT2/tJwD6Z1qcQRQAkUJheF84b4kyEqr0Mu+x0gHxst8hqGSDEIBN45/qq29ZwEaS2J3RvX1ier4JZDYabD5V1UgGjzFPx0o61AzEJudGdWrnDTfmstLzxzpLfpdJi/wfj9/O5yYmVyms40nxW99HaHdMWoEcDjkj4YXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=cPKUnUUw; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=cD48I22UPGx57jyUUL+qOghGNHAJydJTw3sMS1pSeI0=; b=cPKUnUUwkeFEhEgctNdBpHoIDB
+	1knOio2bdLJZD2QgyS15lzFRZGe+xeqmCWVQP6EQuuJX9lerqhBy6pK6n0EQftWQxUIHzAvb51CeP
+	tYiDngYGDRWEc1/07mJmWfCNRmZELdyGffPz+tIohJEc1goTL6zi95l3qgGlOhdr+Fjo3y1Ti/iSn
+	TddLVIWTQ7g1DGPN8PcVdz633HgtmiXAIl41W2gnaJgpZJG7TYuDFnSZG/R9O8tFkMY44yeONzc2Q
+	7LoZBiV1eEg2EajEfqpSn60NQ/luMsZMZ+1KuQktsZ5qbXL38pTafUyEBEcL7XML9HoJaSXByMDY2
+	ND6jUhng==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <aurel32@debian.org>)
+	id 1w4k8a-007jEE-JZ; Mon, 23 Mar 2026 18:36:27 +0000
+Received: from authenticated user
+	by hall.aurel32.net with esmtpsa  (TLS1.3)  tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <aurel32@debian.org>)
+	id 1w4k8T-0000000C72f-3Y9W;
+	Mon, 23 Mar 2026 19:36:21 +0100
+Date: Mon, 23 Mar 2026 19:36:21 +0100
+From: Aurelien Jarno <aurel32@debian.org>
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, kvm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more
+ robust
+Message-ID: <acGIJXccO5JVlrGh@aurel32.net>
+Mail-Followup-To: Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, kvm@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+	Xuerui Wang <kernel@xen0n.name>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org
+References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+ <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
+ <CAAhV-H7rFtju3k=NYkAy6-O7f8U=CTNiryu2_Kr57pScjeH-yQ@mail.gmail.com>
+ <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH 6.1 095/481] selftests: mptcp: join: check removing
- signal+subflow endp
-Content-Language: fr
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Mat Martineau <martineau@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>
-References: <20260323134525.256603107@linuxfoundation.org>
- <20260323134527.595315873@linuxfoundation.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260323134527.595315873@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <696c5177-4a89-f0d0-c305-c1581e72aa3d@loongson.cn>
+User-Agent: Mutt/2.2.13 (2024-03-09)
+X-Debian-User: aurel32
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_DKIM_ALLOW(-0.20)[debian.org:s=smtpauto.stravinsky];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	HAS_ORG_HEADER(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229992-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[matttbe@kernel.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:email]
-X-Rspamd-Queue-Id: D934A2FBE84
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[aurel32@debian.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[debian.org];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229993-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[debian.org:+]
+X-Rspamd-Queue-Id: 812BB2FB62F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Greg,
+Hi,
 
-On 23/03/2026 14:41, Greg Kroah-Hartman wrote:
-> 6.1-stable review patch.  If anyone has any objections, please let me know.
+On 2026-03-23 15:56, Bibo Mao wrote:
+>=20
+>=20
+> On 2026/3/23 =E4=B8=8B=E5=8D=883:08, Huacai Chen wrote:
+> > On Mon, Mar 23, 2026 at 11:16=E2=80=AFAM Bibo Mao <maobibo@loongson.cn>=
+ wrote:
+> > >=20
+> > >=20
+> > >=20
+> > > On 2026/3/22 =E4=B8=8B=E5=8D=889:53, Huacai Chen wrote:
+> > > > kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, =
+so
+> > > > cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for =
+this
+> > > > case so as to make it more robust.
+> > > >=20
+> > > > This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
+> > > >=20
+> > > > Cc: <stable@vger.kernel.org>
+> > > > Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from phys=
+ical cpuid")
+> > > > Reported-by: Aurelien Jarno <aurel32@debian.org>
+> > > > Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
+> > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > > ---
+> > > >    arch/loongarch/kvm/vcpu.c | 3 +++
+> > > >    1 file changed, 3 insertions(+)
+> > > >=20
+> > > > diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> > > > index 8ffd50a470e6..831f381a8fd1 100644
+> > > > --- a/arch/loongarch/kvm/vcpu.c
+> > > > +++ b/arch/loongarch/kvm/vcpu.c
+> > > > @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct k=
+vm *kvm, int cpuid)
+> > > >    {
+> > > >        struct kvm_phyid_map *map;
+> > > >=20
+> > > > +     if (cpuid < 0)
+> > > > +             return NULL;
+> > > > +
+> > > >        if (cpuid >=3D KVM_MAX_PHYID)
+> > > >                return NULL;
+> > > >=20
+> > > >=20
+> > >=20
+> > > if (cpuid < 0 || cpuid >=3D KVM_MAX_PHYID)?
+> > > however both are OK for me.
+> > I use a similar style as kvm_get_vcpu_by_id(). :)
+> >=20
+> > But there is another warning which can't be solved by this series (and
+> > I doubt whether it can be solved unless revert 01a8e68396a6d51f5b).
+> > https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
+>=20
+> what is the kernel config file with bug
+>    https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=3D1131431
+>=20
 
-I do!
+I have just sent the kernel config to the bug report.
 
-> ------------------
-> 
-> From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> 
-> commit 1777f349ff41b62dfe27454b69c27b0bc99ffca5 upstream.
-> 
-> This validates the previous commit: endpoints with both the signal and
-> subflow flags should always be marked as used even if it was not
-> possible to create new subflows due to the MPTCP PM limits.
-> 
-> For this test, an extra endpoint is created with both the signal and the
-> subflow flags, and limits are set not to create extra subflows. In this
-> case, an ADD_ADDR is sent, but no subflows are created. Still, the local
-> endpoint is marked as used, and no warning is fired when removing the
-> endpoint, after having sent a RM_ADDR.
-> 
-> The 'Fixes' tag here below is the same as the one from the previous
-> commit: this patch here is not fixing anything wrong in the selftests,
-> but it validates the previous fix for an issue introduced by this commit
-> ID.
-> 
-> Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Mat Martineau <martineau@kernel.org>
-> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-> Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-5-4b5462b6f016@kernel.org
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> ---
->  tools/testing/selftests/net/mptcp/mptcp_join.sh |   13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> --- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> +++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-> @@ -2389,6 +2389,19 @@ remove_tests()
->  		chk_rst_nr 0 0
->  	fi
->  
-> +	# signal+subflow with limits, remove
-> +	if reset "remove signal+subflow with limits"; then
-> +		pm_nl_set_limits $ns1 0 0
-> +		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,subflow
-> +		pm_nl_set_limits $ns2 0 0
-> +		addr_nr_ns1=-1 speed=slow \
-> +			run_tests $ns1 $ns2 10.0.1.1
+Regards
+Aurelien
 
-In this kernel version, these two lines should be replaced by:
-
-  run_tests $ns1 $ns2 10.0.1.1 0 -1 0 slow
-
-If that's easier, you can drop this patch and I can resend it with the fix.
-
-Cheers,
-Matt
--- 
-Sponsored by the NGI0 Core fund.
-
+--=20
+Aurelien Jarno                          GPG: 4096R/1DDD8C9B
+aurelien@aurel32.net                     http://aurel32.net
 
