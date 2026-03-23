@@ -1,68 +1,58 @@
-Return-Path: <stable+bounces-228523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229560-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mB2KEFBPwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228523-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:52 +0100
+	id 6NxCKmF7wWknTgQAu9opvQ
+	(envelope-from <stable+bounces-229560-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:41:53 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91A362F4BE4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 384062FA3BB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 945E5318D937
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:16:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 90CE3319E0E6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617B62343D2;
-	Mon, 23 Mar 2026 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6298C3B2FF5;
+	Mon, 23 Mar 2026 16:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHY30QnH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Vlo3ddS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243501D63F3;
-	Mon, 23 Mar 2026 14:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267143AC0D3;
+	Mon, 23 Mar 2026 16:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275357; cv=none; b=iWRYrruI4zacAVRnVtqznDYXL9bG62dAEEc3UtFpnp+SO8ltdCIqlZgNzvMVA+pkEoNMXbxBm6HY6iGZu2dlSY7vwXvaNL90oP4CIPMMy87X4X+/qZNBY/fsc1J+UavaxIdfzPvwJdIOgCH4llV6lexrZLu56yK9pkICnGWUNq0=
+	t=1774282251; cv=none; b=FL+BDNdGb48nQCFnj2SfKM5mnTZzRxaMp5at4LoXNBOHO7wZMk3jny5rXR0ppVxL0AMwhkm/gqL0pp3lu1qUWUeAbJ+ehKVovQKuAo6WYcxLa9BMmCBY4LpDt9aKhFZP9Xf3xnLmZzMzhH/Fnmu3akKQrAB0Re4EC3nhyIgjyBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275357; c=relaxed/simple;
-	bh=8glqN8qGyjI/k+WtqDqQozaJ7Kpp4iD1HmZBs62p+m8=;
+	s=arc-20240116; t=1774282251; c=relaxed/simple;
+	bh=nm8IykcwuJ/H5fp6oQRWCJ0dmneg4SLS1Fq9HG+tsmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6y5aAZ8H43t4h5y/GllzcwmPW4PnpmJEdj7xy14xw1FAruu/bCt69LkvFLCrlLF+UCUI/Yizmy7JZRL2Ii0VK5aagSrFkIMArjvF3+fM4/F/K4xedEg1BX6EhBufaFoPj+1cS8TIcayr2yhtKdDfINAKxWZsjjvFEpxg5+r1QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHY30QnH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D5AC4CEF7;
-	Mon, 23 Mar 2026 14:15:56 +0000 (UTC)
+	 MIME-Version; b=B1Q4HNrprCEEOT4H+7tK/5N/YzlyV3erD0vzIAR6x7WdtxZojlsmEtJ5spxb4ydem8C/h/7nL2xV4zs+8io5d2BzG6DAx1Jvgg8r17C9MEAyyYPTlpB9zhP1wsFP5vSkpDuhEdtMFMLR/T4t7WhJWxOeZqPKiSDyyWli6GKL3gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Vlo3ddS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E22EC4CEF7;
+	Mon, 23 Mar 2026 16:10:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275357;
-	bh=8glqN8qGyjI/k+WtqDqQozaJ7Kpp4iD1HmZBs62p+m8=;
+	s=korg; t=1774282250;
+	bh=nm8IykcwuJ/H5fp6oQRWCJ0dmneg4SLS1Fq9HG+tsmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHY30QnHWFdnJvvKKy3k/Aw5mRaP26G+zmnXeiVMyocWza59HKlLqrSTw5OVOkzef
-	 UFY754nD+aBnO1xrGrTx33h9aYfBlZa99WcemsCotApS64nJjbbUe5TI7gpUsqT4wn
-	 4jDxqiTRm4/pqqRMj8SN9ATUEsoz+bCC6xLWsk20=
+	b=0Vlo3ddSOdZ0BnU036c8QdlAsQ+Sk8QSoVC/44uo/IfEDwY4uDpC8V0fFsyr6gvrf
+	 zNrXBVN7Y7kWqZaegvwoPJW71ycXZ4Lto28tNWU7h2mfGF7z5uN8KhKJLjd95itR2T
+	 /tBp3bmgoEaLw+ZR/1izy3YQpFR6L7b2q9d8C61M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/460] perf ftrace: Fix hashmap__new() error checking
-Date: Mon, 23 Mar 2026 14:41:06 +0100
-Message-ID: <20260323134528.415955170@linuxfoundation.org>
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>
+Subject: [PATCH 6.1 085/481] IB/mthca: Add missed mthca_unmap_user_db() for mthca_create_srq()
+Date: Mon, 23 Mar 2026 14:41:07 +0100
+Message-ID: <20260323134527.335217217@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,95 +65,83 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228523-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229560-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 91A362F4BE4
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,nvidia.com:email]
+X-Rspamd-Queue-Id: 384062FA3BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit be34705aa527872e5ce83927b7bc9307ba8095ca ]
+commit 117942ca43e2e3c3d121faae530989931b7f67e1 upstream.
 
-The hashmap__new() function never returns NULL, it returns error
-pointers. Fix the error checking to match.
+Fix a user triggerable leak on the system call failure path.
 
-Additionally, set ftrace->profile_hash to NULL on error, and return the
-exact error code from hashmap__new().
-
-Fixes: 0f223813edd051a5 ("perf ftrace: Add 'profile' command")
-Suggested-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: ec34a922d243 ("[PATCH] IB/mthca: Add SRQ implementation")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://patch.msgid.link/2-v1-83e918d69e73+a9-rdma_udata_rc_jgg@nvidia.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/builtin-ftrace.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mthca/mthca_provider.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-ftrace.c b/tools/perf/builtin-ftrace.c
-index a56cf8b0a7d40..09c484182d5bc 100644
---- a/tools/perf/builtin-ftrace.c
-+++ b/tools/perf/builtin-ftrace.c
-@@ -18,6 +18,7 @@
- #include <poll.h>
- #include <ctype.h>
- #include <linux/capability.h>
-+#include <linux/err.h>
- #include <linux/string.h>
+--- a/drivers/infiniband/hw/mthca/mthca_provider.c
++++ b/drivers/infiniband/hw/mthca/mthca_provider.c
+@@ -428,6 +428,8 @@ static int mthca_create_srq(struct ib_sr
  
- #include "debug.h"
-@@ -998,8 +999,12 @@ static int prepare_func_profile(struct perf_ftrace *ftrace)
- 	ftrace->graph_tail = 1;
+ 	if (context && ib_copy_to_udata(udata, &srq->srqn, sizeof(__u32))) {
+ 		mthca_free_srq(to_mdev(ibsrq->device), srq);
++		mthca_unmap_user_db(to_mdev(ibsrq->device), &context->uar,
++				    context->db_tab, ucmd.db_index);
+ 		return -EFAULT;
+ 	}
  
- 	ftrace->profile_hash = hashmap__new(profile_hash, profile_equal, NULL);
--	if (ftrace->profile_hash == NULL)
--		return -ENOMEM;
-+	if (IS_ERR(ftrace->profile_hash)) {
-+		int err = PTR_ERR(ftrace->profile_hash);
-+
-+		ftrace->profile_hash = NULL;
-+		return err;
-+	}
+@@ -436,6 +438,7 @@ static int mthca_create_srq(struct ib_sr
  
+ static int mthca_destroy_srq(struct ib_srq *srq, struct ib_udata *udata)
+ {
++	mthca_free_srq(to_mdev(srq->device), to_msrq(srq));
+ 	if (udata) {
+ 		struct mthca_ucontext *context =
+ 			rdma_udata_to_drv_context(
+@@ -446,8 +449,6 @@ static int mthca_destroy_srq(struct ib_s
+ 		mthca_unmap_user_db(to_mdev(srq->device), &context->uar,
+ 				    context->db_tab, to_msrq(srq)->db_index);
+ 	}
+-
+-	mthca_free_srq(to_mdev(srq->device), to_msrq(srq));
  	return 0;
  }
--- 
-2.51.0
-
+ 
 
 
 
