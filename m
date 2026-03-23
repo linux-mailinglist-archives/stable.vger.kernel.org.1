@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228926-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eBLbEj5PwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:34 +0100
+	id mFt+M5xYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228926-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D216A2F4BA5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 431FE2F6003
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9FD4530BDFA5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A0E2332B1F6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE11E3AE18C;
-	Mon, 23 Mar 2026 14:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F199264A86;
+	Mon, 23 Mar 2026 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8DBodce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKj3GsFg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB683947A6;
-	Mon, 23 Mar 2026 14:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CE51A5B84;
+	Mon, 23 Mar 2026 14:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275064; cv=none; b=uZhNmbNBPbwMeuTwl+AwnJya6Kb4J0TWiqzShirK9WSuL3kawaxwGzEmL1ne/SitYI6YvwsxfmNmZJ1tuiS2Izjeo8/PROj8AY00Qj1wjRQhne4cQeMyKNOue7/0k9pdH5J5VlMC3gp9LuZyGt21E3Bd8lXy8sofVu5n6DY6vH0=
+	t=1774277506; cv=none; b=N+UXExFfJ8a1WApXEafQGFFSGEQUfT4mkPdCsO0iIR7ogng0mqhhylIm/3UJAKCX7BaZgV6ax6qN+7yXktkFedADV9ulR2cTzjwHI7FLy6pt7wkEfpi16O7zIB3jTmH6ZsVvpHgjo5fnor910PMKKaRapXTbLfbPa/skTFcjjqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275064; c=relaxed/simple;
-	bh=YxhwtmF0wfjOhTFg51h9dPUpho76OFYinC/Lvlyrz7I=;
+	s=arc-20240116; t=1774277506; c=relaxed/simple;
+	bh=Y5oleU44jDc1Xc8pkqQ/RKV5afuzMLqRThIJy4UFhCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5exP52oeAhrz4kZJPsXSeXZVbOTvcYl33KXdh/+84nmivEhnEAI3+x2ep/3h6f5StczG+3oWGIrZKGvKL7GMB9IqYA4dX7iBzEHGfXgnTp30s781EVkWOhXdWKmtCNkeX6x1SYaqU2BckJtHy3A+VwEiVdf3jFhAaZe8Rho+ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8DBodce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26093C4CEF7;
-	Mon, 23 Mar 2026 14:11:03 +0000 (UTC)
+	 MIME-Version; b=rNJLkQjcUXeYPj7doOf4PhJux+R1YQuJ/6A2YnNJ3R1MWXbIAQZH0d9QhARQJyglEP2hXz59U4NZlKoQFPT3vFFqtC1MkA7Q3JZn0ABNRe8lvq2b9JDqp44M2LLqLgnvvhcXsUg6OnX0VFku3O4DDoPuFTpwlWkFmfWXznQ5JGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKj3GsFg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBADC4CEF7;
+	Mon, 23 Mar 2026 14:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275064;
-	bh=YxhwtmF0wfjOhTFg51h9dPUpho76OFYinC/Lvlyrz7I=;
+	s=korg; t=1774277506;
+	bh=Y5oleU44jDc1Xc8pkqQ/RKV5afuzMLqRThIJy4UFhCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w8DBodce3bQ21HLHi6dGuPAJKXDikx7YozdE20ZmShYQTYKQrQGL81Plqwjt377oU
-	 3m5RAtJ7luf8dnWfRersNF1EmX8MEBIkgvW0VCBIIDr4XJqmos0sXgr4p90GX2fkQj
-	 fGcOI2TSMK+3bVmwQHbcIjXuazShtJxKNyMXS684=
+	b=aKj3GsFgkgcmH68teXuZmuIltOrZ8vz6lzJksb1tzMTKEUSKj9/EpIM4wi21j62sb
+	 oYE2WsPahnKRgOp86WmG0Tzd0JCmfmp6Pvan1s23aoBc6+RI6VJL5qkbB3NKDWgbMR
+	 tFL7qtMfPgaqkO7fP9mWtaS409YPSdSfchr6ghnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Kees Cook <kees@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 208/212] fs/tests: exec: Remove bad test vector
+Subject: [PATCH 6.12 433/460] icmp: fix NULL pointer dereference in icmp_tag_validation()
 Date: Mon, 23 Mar 2026 14:47:09 +0100
-Message-ID: <20260323134510.355475638@linuxfoundation.org>
+Message-ID: <20260323134537.193948501@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,67 +67,99 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228417-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228926-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D216A2F4BA5
+X-Rspamd-Queue-Id: 431FE2F6003
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Weiming Shi <bestswngs@gmail.com>
 
-[ Upstream commit c4192754e836e0ffed95833509b6ada975b74418 ]
+[ Upstream commit 614aefe56af8e13331e50220c936fc0689cf5675 ]
 
-Drop an unusable test in the bprm stack limits.
+icmp_tag_validation() unconditionally dereferences the result of
+rcu_dereference(inet_protos[proto]) without checking for NULL.
+The inet_protos[] array is sparse -- only about 15 of 256 protocol
+numbers have registered handlers. When ip_no_pmtu_disc is set to 3
+(hardened PMTU mode) and the kernel receives an ICMP Fragmentation
+Needed error with a quoted inner IP header containing an unregistered
+protocol number, the NULL dereference causes a kernel panic in
+softirq context.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/a3e9b1c2-40c1-45df-9fa2-14ee6a7b3fe2@roeck-us.net
-Fixes: 60371f43e56b ("exec: Add KUnit test for bprm_stack_limits()")
-Signed-off-by: Kees Cook <kees@kernel.org>
+ Oops: general protection fault, probably for non-canonical address 0xdffffc0000000002: 0000 [#1] SMP KASAN NOPTI
+ KASAN: null-ptr-deref in range [0x0000000000000010-0x0000000000000017]
+ RIP: 0010:icmp_unreach (net/ipv4/icmp.c:1085 net/ipv4/icmp.c:1143)
+ Call Trace:
+  <IRQ>
+  icmp_rcv (net/ipv4/icmp.c:1527)
+  ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
+  ip_local_deliver_finish (net/ipv4/ip_input.c:242)
+  ip_local_deliver (net/ipv4/ip_input.c:262)
+  ip_rcv (net/ipv4/ip_input.c:573)
+  __netif_receive_skb_one_core (net/core/dev.c:6164)
+  process_backlog (net/core/dev.c:6628)
+  handle_softirqs (kernel/softirq.c:561)
+  </IRQ>
+
+Add a NULL check before accessing icmp_strict_tag_validation. If the
+protocol has no registered handler, return false since it cannot
+perform strict tag validation.
+
+Fixes: 8ed1dc44d3e9 ("ipv4: introduce hardened ip_no_pmtu_disc mode")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Link: https://patch.msgid.link/20260318130558.1050247-4-bestswngs@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tests/exec_kunit.c | 3 ---
- 1 file changed, 3 deletions(-)
+ net/ipv4/icmp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/tests/exec_kunit.c b/fs/tests/exec_kunit.c
-index f412d1a0f6bba..1c32cac098cf5 100644
---- a/fs/tests/exec_kunit.c
-+++ b/fs/tests/exec_kunit.c
-@@ -94,9 +94,6 @@ static const struct bprm_stack_limits_result bprm_stack_limits_results[] = {
- 	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * (_STK_LIM / 4 * 3 + sizeof(void *)),
- 	    .argc = 0, .envc = 0 },
- 	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
--	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * (_STK_LIM / 4 *  + sizeof(void *)),
--	    .argc = 0, .envc = 0 },
--	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
- 	{ { .p = ULONG_MAX, .rlim_stack.rlim_cur = 4 * _STK_LIM,
- 	    .argc = 0, .envc = 0 },
- 	  .expected_argmin = ULONG_MAX - (_STK_LIM / 4 * 3) + sizeof(void *) },
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 8ab51b51cc9b2..58feb21ff967d 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -877,10 +877,12 @@ static void icmp_socket_deliver(struct sk_buff *skb, u32 info)
+ 
+ static bool icmp_tag_validation(int proto)
+ {
++	const struct net_protocol *ipprot;
+ 	bool ok;
+ 
+ 	rcu_read_lock();
+-	ok = rcu_dereference(inet_protos[proto])->icmp_strict_tag_validation;
++	ipprot = rcu_dereference(inet_protos[proto]);
++	ok = ipprot ? ipprot->icmp_strict_tag_validation : false;
+ 	rcu_read_unlock();
+ 	return ok;
+ }
 -- 
 2.51.0
 
