@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229608-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIxSOHhZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:12 +0100
+	id oDhgHMRwwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229608-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:56:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6322F6163
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D82702F9271
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:56:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9852E3183075
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B63403211CE7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAD8283FEF;
-	Mon, 23 Mar 2026 15:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A09283FEF;
+	Mon, 23 Mar 2026 16:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nywCgDyG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVvNNv48"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A89724CEEA;
-	Mon, 23 Mar 2026 15:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475563AB277;
+	Mon, 23 Mar 2026 16:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278078; cv=none; b=npH6xhqdv8b3Hbxy+ZSH0MU0P25azj6WjujUUV16jHGwW3G1iJEEq3UB+x4PPkIphogdVFSrWxpKa4tCAE/4Dj65pFVcDITJfXEZptqb8VgW6dhgscfm3vyEwm8CEBk8kaw2yk5i1zeSGaFG0J/g6X2k+/qj75y4haE3nJueEBw=
+	t=1774282379; cv=none; b=NKb7/gHlBj1jE6kfiDixsgiNis5iONzFP+CPHMEJW8FBBlZfOXfnaJe5r1K1H7mCwGGLGeA21mX7SpD0erM+zPY3cC3xSFbW7j5hZtwMVEnoA6+RGuiBlNrptJ/TlcJlhGnunD4S2ZX4H4k0S9C30NUjLMfSRwtG65GXyJYvz0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278078; c=relaxed/simple;
-	bh=dLsF34VDWf57mf+1PHWCB2Dcq4Wqx/gFPqr0yuIJB+c=;
+	s=arc-20240116; t=1774282379; c=relaxed/simple;
+	bh=R2oF5RS3t5hRP9UUadSj/fSmcJqGPXLZgVDsg0oP4EY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IWc0Ww0W3agFVRbEE4IOfvxWQlgHqgLughjqxHqaSQIHWVa0wS9gSztxBkC2SZD9lUJzgLh4ahX/GSI9hG1u3RJAW4BPagnaejB76wGVqaR/laWdBoWU0ZGshGy2dlIrXWPdo9fyC2Gj2Nk3w9S1gU7V36YVmwngGo10f5pxzeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nywCgDyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5AE3C4CEF7;
-	Mon, 23 Mar 2026 15:01:17 +0000 (UTC)
+	 MIME-Version; b=tovExsgE/kCQHZu3HhtbbFxYxeq4kUfpaCZ5QDFxcPTdPN6DLYe8Xghxaoe0599O8migmPhY6g3J6XMmMDfYpimv7vyQ2PPccl6oCSPQYfD2ox/lo9+VpS/qNtDzvuZ05dVHz8VoSCXELYf9DHnqdHcwfkqqjCmxIqadAzIiLrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVvNNv48; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC648C4CEF7;
+	Mon, 23 Mar 2026 16:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278078;
-	bh=dLsF34VDWf57mf+1PHWCB2Dcq4Wqx/gFPqr0yuIJB+c=;
+	s=korg; t=1774282379;
+	bh=R2oF5RS3t5hRP9UUadSj/fSmcJqGPXLZgVDsg0oP4EY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nywCgDyG+ncWgPlWCBHL0diS2lbdlkNbNKijqvhJP51PtArZY+YN+D4Uc+ypXs/QE
-	 +WcjDlf4RrXztuL9m64BIEHBdnnomz6GO7SFli4I1maVe/vQGSqpYsfD+FsFkeMUli
-	 FF7bfDKbqwv2dbkQHVopqLoiO9ENHjvnbbWFgKlw=
+	b=JVvNNv483MCaa6OFIkC9/KWz1Zs7s4evhb2nbIr5/NYkwidHeMnHYFOJFxQUK3Lwz
+	 SMMMsCaDRy9at/KsiBRypjJyQ1KkfIWkJ5cUB5zu34mC5b5qGLbh5yAgJFrkpN5VnW
+	 R/qz2abrTd1laF1d/qGNGdROxKu7dr1/uySXo8DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qualys Security Advisory <qsa@qualys.com>,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Georgia Garcia <georgia.garcia@canonical.com>,
-	Cengiz Can <cengiz.can@canonical.com>,
-	John Johansen <john.johansen@canonical.com>
-Subject: [PATCH 6.6 195/567] apparmor: fix differential encoding verification
+	Joe Damato <joe@dama.to>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 133/481] nfc: nci: clear NCI_DATA_EXCHANGE before calling completion callback
 Date: Mon, 23 Mar 2026 14:41:55 +0100
-Message-ID: <20260323134538.673166329@linuxfoundation.org>
+Message-ID: <20260323134528.506111749@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,123 +66,108 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229106-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229608-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7D6322F6163
+X-Rspamd-Queue-Id: D82702F9271
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Johansen <john.johansen@canonical.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 39440b137546a3aa383cfdabc605fb73811b6093 upstream.
+[ Upstream commit 0efdc02f4f6d52f8ca5d5889560f325a836ce0a8 ]
 
-Differential encoding allows loops to be created if it is abused. To
-prevent this the unpack should verify that a diff-encode chain
-terminates.
+Move clear_bit(NCI_DATA_EXCHANGE) before invoking the data exchange
+callback in nci_data_exchange_complete().
 
-Unfortunately the differential encode verification had two bugs.
+The callback (e.g. rawsock_data_exchange_complete) may immediately
+schedule another data exchange via schedule_work(tx_work).  On a
+multi-CPU system, tx_work can run and reach nci_transceive() before
+the current nci_data_exchange_complete() clears the flag, causing
+test_and_set_bit(NCI_DATA_EXCHANGE) to return -EBUSY and the new
+transfer to fail.
 
-1. it conflated states that had gone through check and already been
-   marked, with states that were currently being checked and marked.
-   This means that loops in the current chain being verified are treated
-   as a chain that has already been verified.
+This causes intermittent flakes in nci/nci_dev in NIPA:
 
-2. the order bailout on already checked states compared current chain
-   check iterators j,k instead of using the outer loop iterator i.
-   Meaning a step backwards in states in the current chain verification
-   was being mistaken for moving to an already verified state.
+  # #  RUN           NCI.NCI1_0.t4t_tag_read ...
+  # # t4t_tag_read: Test terminated by timeout
+  # #          FAIL  NCI.NCI1_0.t4t_tag_read
+  # not ok 3 NCI.NCI1_0.t4t_tag_read
 
-Move to a double mark scheme where already verified states get a
-different mark, than the current chain being kept. This enables us
-to also drop the backwards verification check that was the cause of
-the second error as any already verified state is already marked.
-
-Fixes: 031dcc8f4e84 ("apparmor: dfa add support for state differential encoding")
-Reported-by: Qualys Security Advisory <qsa@qualys.com>
-Tested-by: Salvatore Bonaccorso <carnil@debian.org>
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
-Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 38f04c6b1b68 ("NFC: protect nci_data_exchange transactions")
+Reviewed-by: Joe Damato <joe@dama.to>
+Link: https://patch.msgid.link/20260303162346.2071888-5-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/include/match.h |    1 +
- security/apparmor/match.c         |   23 +++++++++++++++++++----
- 2 files changed, 20 insertions(+), 4 deletions(-)
+ net/nfc/nci/data.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/security/apparmor/include/match.h
-+++ b/security/apparmor/include/match.h
-@@ -181,6 +181,7 @@ static inline void aa_put_dfa(struct aa_
- #define MATCH_FLAG_DIFF_ENCODE 0x80000000
- #define MARK_DIFF_ENCODE 0x40000000
- #define MATCH_FLAG_OOB_TRANSITION 0x20000000
-+#define MARK_DIFF_ENCODE_VERIFIED 0x10000000
- #define MATCH_FLAGS_MASK 0xff000000
- #define MATCH_FLAGS_VALID (MATCH_FLAG_DIFF_ENCODE | MATCH_FLAG_OOB_TRANSITION)
- #define MATCH_FLAGS_INVALID (MATCH_FLAGS_MASK & ~MATCH_FLAGS_VALID)
---- a/security/apparmor/match.c
-+++ b/security/apparmor/match.c
-@@ -202,16 +202,31 @@ static int verify_dfa(struct aa_dfa *dfa
- 		size_t j, k;
- 
- 		for (j = i;
--		     (BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE) &&
--		     !(BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE);
-+		     ((BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE) &&
-+		      !(BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE_VERIFIED));
- 		     j = k) {
-+			if (BASE_TABLE(dfa)[j] & MARK_DIFF_ENCODE)
-+				/* loop in current chain */
-+				goto out;
- 			k = DEFAULT_TABLE(dfa)[j];
- 			if (j == k)
-+				/* self loop */
- 				goto out;
--			if (k < j)
--				break;		/* already verified */
- 			BASE_TABLE(dfa)[j] |= MARK_DIFF_ENCODE;
- 		}
-+		/* move mark to verified */
-+		for (j = i;
-+		     (BASE_TABLE(dfa)[j] & MATCH_FLAG_DIFF_ENCODE);
-+		     j = k) {
-+			k = DEFAULT_TABLE(dfa)[j];
-+			if (j < i)
-+				/* jumps to state/chain that has been
-+				 * verified
-+				 */
-+				break;
-+			BASE_TABLE(dfa)[j] &= ~MARK_DIFF_ENCODE;
-+			BASE_TABLE(dfa)[j] |= MARK_DIFF_ENCODE_VERIFIED;
-+		}
+diff --git a/net/nfc/nci/data.c b/net/nfc/nci/data.c
+index 3d36ea5701f02..7a3fb2a397a1e 100644
+--- a/net/nfc/nci/data.c
++++ b/net/nfc/nci/data.c
+@@ -33,7 +33,8 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
+ 	conn_info = nci_get_conn_info_by_conn_id(ndev, conn_id);
+ 	if (!conn_info) {
+ 		kfree_skb(skb);
+-		goto exit;
++		clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
++		return;
  	}
- 	error = 0;
  
+ 	cb = conn_info->data_exchange_cb;
+@@ -45,6 +46,12 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
+ 	del_timer_sync(&ndev->data_timer);
+ 	clear_bit(NCI_DATA_EXCHANGE_TO, &ndev->flags);
+ 
++	/* Mark the exchange as done before calling the callback.
++	 * The callback (e.g. rawsock_data_exchange_complete) may
++	 * want to immediately queue another data exchange.
++	 */
++	clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
++
+ 	if (cb) {
+ 		/* forward skb to nfc core */
+ 		cb(cb_context, skb, err);
+@@ -54,9 +61,6 @@ void nci_data_exchange_complete(struct nci_dev *ndev, struct sk_buff *skb,
+ 		/* no waiting callback, free skb */
+ 		kfree_skb(skb);
+ 	}
+-
+-exit:
+-	clear_bit(NCI_DATA_EXCHANGE, &ndev->flags);
+ }
+ 
+ /* ----------------- NCI TX Data ----------------- */
+-- 
+2.51.0
+
 
 
 
