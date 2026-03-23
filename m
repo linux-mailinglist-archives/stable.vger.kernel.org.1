@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228076-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id EPIhIvlKwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228258-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:21 +0100
+	id eDEBMsdHwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228076-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46362F40A0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E879E2F3A8B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:01:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5A4DF30AAAB3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 671C030E3747
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6EB33B2FDD;
-	Mon, 23 Mar 2026 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 447423AE19E;
+	Mon, 23 Mar 2026 13:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KV9qw7Ga"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMLwecx/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FB13AD536;
-	Mon, 23 Mar 2026 14:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034BA3AE1A5;
+	Mon, 23 Mar 2026 13:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274605; cv=none; b=kCeTRgdfIu2XdI7u4tkIjBVjBn/kETitNwZ+AX2/3NkZblpMXaNOq9wUoLarF36VNPLSgMppqwK+0JI/Zb5mNsGBmg7J/A77ajs1IE+UHgUPK9/P+by0tz2zmYFsKU2uV8npLscjVsDsV4yCYuZOWBj4tCQ8Rajocrc2mTZbzcY=
+	t=1774274057; cv=none; b=UKHPRSaBLkk0fchViAOcwSi+hcTrplSeH1DioVvF7CJI3dV/tqtI06PIwRhrvZLM+2uifJfQVCghuhWCJiplU5+6RaciSCO4kWFPJITTprNVZMCg3N0vKEUGG8akOYx8RZ0OV9FjUy+Y5eUp/FV8o9cJe+F4WC9raNzdRQA2NqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274605; c=relaxed/simple;
-	bh=U2uGr57XNtHcf0IbW81hupwiOn44+KMS2rzXjw0RffA=;
+	s=arc-20240116; t=1774274057; c=relaxed/simple;
+	bh=EOsOr+vUUdp7wRMLoeltvqrVOugVfvgctEgewW0/JLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftPIvO90p0ZhgwMqmI1/p0uqTPuA/WAzMrsLFv0djFRgfFH9fig+atzrd6HDzMDy39O36OEHkSUGFtlHp1n1Bf9dtu82CNEk4Q/YsvGH9ix9clwQgJZrs09DX8qxkysc3kLEwyr0OXHx95R3dS0Ob9H+3c6l2CPiWz/3J/MOiYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KV9qw7Ga; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A84FC4CEF7;
-	Mon, 23 Mar 2026 14:03:24 +0000 (UTC)
+	 MIME-Version; b=CoDwp1jI1zc1R6z/BVzIaRy3QTinfbU9q7brX78GBq4ZrQlQByqyzBY9YjocUkNa0f6ZSYtHog1ka86xCqji+fUFQxDGEMGfM1RdQ28wf4eD4pMUol+KRiyNbveIy2cOU1tYBSln7C491z74v3pfDiihNgtoqLdDnuMb9220QXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMLwecx/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779E6C4CEF7;
+	Mon, 23 Mar 2026 13:54:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274605;
-	bh=U2uGr57XNtHcf0IbW81hupwiOn44+KMS2rzXjw0RffA=;
+	s=korg; t=1774274056;
+	bh=EOsOr+vUUdp7wRMLoeltvqrVOugVfvgctEgewW0/JLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KV9qw7GaoBxIXF6k9Gr1SMqnn3Y8IB6w0oHYZVlikyfdsYlmOcVV3OWE2ex5LoFtA
-	 CFIoKGrcWTS/SsjIhqLQx9qP3n+Z7lvfPo8cpbAgeZfcB6xuTAEkcC9lzNoGdOaE92
-	 qqh58tDZck7KW/yPlYOMSVDczcORMAt+rK4q6zwE=
+	b=OMLwecx/7jIB/fVFV6hV0fqlGDKJmJNrj0LTj/LjWKoRnJHheddC28xbcpKTZULnE
+	 csriJgbsCuNUmgPwsmBl4D2d1rw2175LLrigMkGYBARgToq+7ta9rYaPrwrbW///NZ
+	 tYA89FdDeyUprs/qNgI1G8kjlzMeMbRM1NN/JnLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Khaled Bayan <mhd.khaled.bayan@gmail.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.18 051/212] ata: libata-core: disable LPM on ADATA SU680 SSD
+	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 095/220] btrfs: log new dentries when logging parent dir of a conflicting inode
 Date: Mon, 23 Mar 2026 14:44:32 +0100
-Message-ID: <20260323134505.383030529@linuxfoundation.org>
+Message-ID: <20260323134507.600892587@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,70 +72,130 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228258-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228076-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org,oracle.com];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bur.io,suse.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,launchpad.net:url,oracle.com:email]
-X-Rspamd-Queue-Id: D46362F40A0
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E879E2F3A8B
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit ce5ae93d1a216680460040c7c0465a6e3b629dec upstream.
+[ Upstream commit 9573a365ff9ff45da9222d3fe63695ce562beb24 ]
 
-ADATA SU680 SSDs suffer from NCQ read and write commands timeouts or bus
-errors when link power management (LPM) is enabled. Flag these devices
-with the ATA_QUIRK_NOLPM quirk to prevent the use of LPM and avoid these
-command failures.
+If we log the parent directory of a conflicting inode, we are not logging
+the new dentries of the directory, so when we finish we have the parent
+directory's inode marked as logged but we did not log its new dentries.
+As a consequence if the parent directory is explicitly fsynced later and
+it does not have any new changes since we logged it, the fsync is a no-op
+and after a power failure the new dentries are missing.
 
-Reported-by: Mohammad Khaled Bayan <mhd.khaled.bayan@gmail.com>
-Closes: https://bugs.launchpad.net/ubuntu/+source/linux-hwe-6.17/+bug/2144060
-Cc: stable@vger.kernel.org
-Tested-by: Mohammad-Khaled Bayan <mhd.khaled.bayan@gmail.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Example scenario:
+
+  $ mkdir foo
+
+  $ sync
+
+  $rmdir foo
+
+  $ mkdir dir1
+  $ mkdir dir2
+
+  # A file with the same name and parent as the directory we just deleted
+  # and was persisted in a past transaction. So the deleted directory's
+  # inode is a conflicting inode of this new file's inode.
+  $ touch foo
+
+  $ ln foo dir2/link
+
+  # The fsync on dir2 will log the parent directory (".") because the
+  # conflicting inode (deleted directory) does not exists anymore, but it
+  # it does not log its new dentries (dir1).
+  $ xfs_io -c "fsync" dir2
+
+  # This fsync on the parent directory is no-op, since the previous fsync
+  # logged it (but without logging its new dentries).
+  $ xfs_io -c "fsync" .
+
+  <power failure>
+
+  # After log replay dir1 is missing.
+
+Fix this by ensuring we log new dir dentries whenever we log the parent
+directory of a no longer existing conflicting inode.
+
+A test case for fstests will follow soon.
+
+Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/182055fa-e9ce-4089-9f5f-4b8a23e8dd91@gmail.com/
+Fixes: a3baaf0d786e ("Btrfs: fix fsync after succession of renames and unlink/rmdir")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/tree-log.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4156,6 +4156,9 @@ static const struct ata_dev_quirks_entry
- 	{ "ST3320[68]13AS",	"SD1[5-9]",	ATA_QUIRK_NONCQ |
- 						ATA_QUIRK_FIRMWARE_WARN },
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index 6cffcf0c3e7af..6c40f48cc194d 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -6195,6 +6195,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 				  struct btrfs_root *root,
+ 				  struct btrfs_log_ctx *ctx)
+ {
++	const bool orig_log_new_dentries = ctx->log_new_dentries;
+ 	int ret = 0;
  
-+	/* ADATA devices with LPM issues. */
-+	{ "ADATA SU680",	NULL,		ATA_QUIRK_NOLPM },
+ 	/*
+@@ -6256,7 +6257,11 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 			 * dir index key range logged for the directory. So we
+ 			 * must make sure the deletion is recorded.
+ 			 */
++			ctx->log_new_dentries = false;
+ 			ret = btrfs_log_inode(trans, inode, LOG_INODE_ALL, ctx);
++			if (!ret && ctx->log_new_dentries)
++				ret = log_new_dir_dentries(trans, inode, ctx);
 +
- 	/* Seagate disks with LPM issues */
- 	{ "ST1000DM010-2EP102",	NULL,		ATA_QUIRK_NOLPM },
- 	{ "ST2000DM008-2FR102",	NULL,		ATA_QUIRK_NOLPM },
+ 			btrfs_add_delayed_iput(inode);
+ 			if (ret)
+ 				break;
+@@ -6291,6 +6296,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 			break;
+ 	}
+ 
++	ctx->log_new_dentries = orig_log_new_dentries;
+ 	ctx->logging_conflict_inodes = false;
+ 	if (ret)
+ 		free_conflicting_inodes(ctx);
+-- 
+2.51.0
+
 
 
 
