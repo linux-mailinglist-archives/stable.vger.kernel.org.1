@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229632-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0DGMJsFPwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228607-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:45 +0100
+	id ACASCk1twWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229632-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:49 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DEE02F4CCA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BAC2F89EE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BB1FF30518E0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A1A0130D6876
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088AF36F414;
-	Mon, 23 Mar 2026 14:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFCC3BC660;
+	Mon, 23 Mar 2026 16:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gg+mREb3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWrV/orw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BCF1FFC48;
-	Mon, 23 Mar 2026 14:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07102396566;
+	Mon, 23 Mar 2026 16:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275587; cv=none; b=qGkUo1aaZCTmkb5IVz8cSWOEX7cejfxxi90+Hm9iN+YMD6HpzBOALtvlPndTr3AIJ9zU0C8Xvxvfs/rPEFxGbF6yxdBBwD841w7n34bwkeL5+/UbFhqDPJAy9BsUEXk7MlIApV/e0cUJcBdNxwkoOubeAydw/bUVu/wP/8z0fBQ=
+	t=1774282448; cv=none; b=fxM9c94uBqa/gOmONY8pVkHvie0PTLdArjCGCQFosEl2u8+a+idmuyS+Bi7YALQD8rGb8+ffa6c+/SjMVMO+ZJbpYz28AwcMaokvhnv4u01FkAYA7SLuY66Ptprk6FdSeNueowNX8ob8FE5wDu8K2bWT1EWtB6yeLoLlAtpL/lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275587; c=relaxed/simple;
-	bh=oO6AxUBBeD7x60f9FxHM9uSpJuw5zj4YfIUEPCU3bPY=;
+	s=arc-20240116; t=1774282448; c=relaxed/simple;
+	bh=D0/9f/0EXNcUzHSaFOzKMzIwMbQBHSf3XmLn40M7hOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D5fcNdzStkzqaIv6w979/hMK1J5Fkj0yE6XLf7a2EUco8kTINK6IGRklHo3XPm9bf63fSkKJwy1L56ickNcodLN9fZ5XTveqqM0D1fQNGku34RKOvhgGhH3t6knaAEJtvkj4IL6GknyqUokoCyKHV3i8cWsg0y0j+lnRvhLChi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gg+mREb3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44288C4CEF7;
-	Mon, 23 Mar 2026 14:19:47 +0000 (UTC)
+	 MIME-Version; b=tbHIcI3l2Lri8AJWg1oBq+8VoRcqMs7EK9oekpRLLRYmWm6LjqEcmB2evFh1x8Bjdz5sbaAlVK8JzAxJPp/zDl1lkmZxCmiso1TLpWJcIstgTcDPot+i0acET5YeNs8zYExsyK4Vue9oFpHptpJe5BbaJo9u+vaCDUDwITSo10Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWrV/orw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661FEC4CEF7;
+	Mon, 23 Mar 2026 16:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275587;
-	bh=oO6AxUBBeD7x60f9FxHM9uSpJuw5zj4YfIUEPCU3bPY=;
+	s=korg; t=1774282447;
+	bh=D0/9f/0EXNcUzHSaFOzKMzIwMbQBHSf3XmLn40M7hOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gg+mREb3DNXUDhIH4KUN2xZ0rFjkUNCDofv6QS+6KmJxJeAHbc4qFh9S1vQfc58vl
-	 5Z7hVbcedHtkdggNefHkpDy/3PT/J3EvXsexFU22lT+wjNTUhVKuN0XVq8sCHQ8xKu
-	 NdWr1YRTxVvBRObJCVKludbnsYutrqQTPo2RulQg=
+	b=dWrV/orwUKpdqstGtEXY9dYW7iy65uSq8+CjUHfIS+saFB6uGgOJi2+vyntpCsPFi
+	 xG1T1r0Rw854ifUVPfsfR3jIKbO6U9u4gsfko9z6m+5MoIFMHGbtBtti59MCzAoy0i
+	 TkYlULYTlVSode1dVDsU24/Xp5eLr0/L99btiXXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.12 145/460] s390/pfault: Fix virtual vs physical address confusion
-Date: Mon, 23 Mar 2026 14:42:21 +0100
-Message-ID: <20260323134530.146034445@linuxfoundation.org>
+	Eric Badger <ebadger@purestorage.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 160/481] xprtrdma: Decrement re_receiving on the early exit paths
+Date: Mon, 23 Mar 2026 14:42:22 +0100
+Message-ID: <20260323134529.134501943@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228607-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229632-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,63 +91,99 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2DEE02F4CCA
+X-Rspamd-Queue-Id: E9BAC2F89EE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Eric Badger <ebadger@purestorage.com>
 
-commit d879ac6756b662a085a743e76023c768c3241579 upstream.
+[ Upstream commit 7b6275c80a0c81c5f8943272292dfe67730ce849 ]
 
-When Linux is running as guest, runs a user space process and the
-user space process accesses a page that the host has paged out,
-the guest gets a pfault interrupt and schedules a different process.
-Without this mechanism the host would have to suspend the whole
-virtual CPU until the page has been paged in.
+In the event that rpcrdma_post_recvs() fails to create a work request
+(due to memory allocation failure, say) or otherwise exits early, we
+should decrement ep->re_receiving before returning. Otherwise we will
+hang in rpcrdma_xprt_drain() as re_receiving will never reach zero and
+the completion will never be triggered.
 
-To setup the pfault interrupt the real address of parameter list
-should be passed to DIAGNOSE 0x258, but a virtual address is passed
-instead.
+On a system with high memory pressure, this can appear as the following
+hung task:
 
-That has a performance impact, since the pfault setup never succeeds,
-the interrupt is never delivered to a guest and the whole virtual CPU
-is suspended as result.
+    INFO: task kworker/u385:17:8393 blocked for more than 122 seconds.
+          Tainted: G S          E       6.19.0 #3
+    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+    task:kworker/u385:17 state:D stack:0     pid:8393  tgid:8393  ppid:2      task_flags:0x4248060 flags:0x00080000
+    Workqueue: xprtiod xprt_autoclose [sunrpc]
+    Call Trace:
+     <TASK>
+     __schedule+0x48b/0x18b0
+     ? ib_post_send_mad+0x247/0xae0 [ib_core]
+     schedule+0x27/0xf0
+     schedule_timeout+0x104/0x110
+     __wait_for_common+0x98/0x180
+     ? __pfx_schedule_timeout+0x10/0x10
+     wait_for_completion+0x24/0x40
+     rpcrdma_xprt_disconnect+0x444/0x460 [rpcrdma]
+     xprt_rdma_close+0x12/0x40 [rpcrdma]
+     xprt_autoclose+0x5f/0x120 [sunrpc]
+     process_one_work+0x191/0x3e0
+     worker_thread+0x2e3/0x420
+     ? __pfx_worker_thread+0x10/0x10
+     kthread+0x10d/0x230
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork+0x273/0x2b0
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork_asm+0x1a/0x30
 
-Cc: stable@vger.kernel.org
-Fixes: c98d2ecae08f ("s390/mm: Uncouple physical vs virtual address spaces")
-Reported-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 15788d1d1077 ("xprtrdma: Do not refresh Receive Queue while it is draining")
+Signed-off-by: Eric Badger <ebadger@purestorage.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/pfault.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sunrpc/xprtrdma/verbs.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/arch/s390/mm/pfault.c
-+++ b/arch/s390/mm/pfault.c
-@@ -61,7 +61,7 @@ int __pfault_init(void)
- 		"0:	nopr	%%r7\n"
- 		EX_TABLE(0b, 0b)
- 		: [rc] "+d" (rc)
--		: [refbk] "a" (&pfault_init_refbk), "m" (pfault_init_refbk)
-+		: [refbk] "a" (virt_to_phys(&pfault_init_refbk)), "m" (pfault_init_refbk)
- 		: "cc");
- 	return rc;
- }
-@@ -83,7 +83,7 @@ void __pfault_fini(void)
- 		"0:	nopr	%%r7\n"
- 		EX_TABLE(0b, 0b)
- 		:
--		: [refbk] "a" (&pfault_fini_refbk), "m" (pfault_fini_refbk)
-+		: [refbk] "a" (virt_to_phys(&pfault_fini_refbk)), "m" (pfault_fini_refbk)
- 		: "cc");
- }
+diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
+index cb909329a5039..4132a505d742a 100644
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -1362,7 +1362,7 @@ void rpcrdma_post_recvs(struct rpcrdma_xprt *r_xprt, int needed, bool temp)
+ 		needed += RPCRDMA_MAX_RECV_BATCH;
  
+ 	if (atomic_inc_return(&ep->re_receiving) > 1)
+-		goto out;
++		goto out_dec;
+ 
+ 	/* fast path: all needed reps can be found on the free list */
+ 	wr = NULL;
+@@ -1389,7 +1389,7 @@ void rpcrdma_post_recvs(struct rpcrdma_xprt *r_xprt, int needed, bool temp)
+ 		++count;
+ 	}
+ 	if (!wr)
+-		goto out;
++		goto out_dec;
+ 
+ 	rc = ib_post_recv(ep->re_id->qp, wr,
+ 			  (const struct ib_recv_wr **)&bad_wr);
+@@ -1404,9 +1404,10 @@ void rpcrdma_post_recvs(struct rpcrdma_xprt *r_xprt, int needed, bool temp)
+ 			--count;
+ 		}
+ 	}
++
++out_dec:
+ 	if (atomic_dec_return(&ep->re_receiving) > 0)
+ 		complete(&ep->re_done);
+-
+ out:
+ 	trace_xprtrdma_post_recvs(r_xprt, count);
+ 	ep->re_receive_count += count;
+-- 
+2.51.0
+
 
 
 
