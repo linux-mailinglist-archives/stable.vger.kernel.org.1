@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228345-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHvbKhhwwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229352-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:44 +0100
+	id 4PPyKX1NwWmxSAQAu9opvQ
+	(envelope-from <stable+bounces-228345-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C67D2F9086
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:53:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A8972F4746
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B0773384965
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 590A13220C34
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015F03B6C17;
-	Mon, 23 Mar 2026 15:14:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEBF3B3880;
+	Mon, 23 Mar 2026 14:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npx5aB5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siecbw8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94E33B27ED;
-	Mon, 23 Mar 2026 15:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E806F3ACEF1;
+	Mon, 23 Mar 2026 14:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278847; cv=none; b=UqIlk6WHOiwSdlLbSGeqOtqp88JidN0AmUGbBWkxOLk4lygNSeANnVwngIEr31VGdF2IbuIR48PorZAQLQfduVIOfRU4VkGf0hks7aKKWoI/qUp+eyXZ1j5ULCG0Dr44MTkpB31HqVSyIbYGx270rsBstjZrpdCCZZOIBzhVuLM=
+	t=1774274869; cv=none; b=bOZ6fFjcMxdSSZKuxTcyvojLncYzah+0Frla/lHgFa52fQtagIEWwG5oCNLZRLPSKZIpTxF9szy5P8gpXKMj5+QHmVGaepCOx7SI3N3L5XgnLAkoL5Eu51n+ESHsNv8N1M/jDQ+sLeC9YYbtULGEWTOWZod9zOeD7LC9DpysjAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278847; c=relaxed/simple;
-	bh=AlNe2Gp7Mer0rj+LOhNmdFtOVobO5KINzl1ssVrUl6s=;
+	s=arc-20240116; t=1774274869; c=relaxed/simple;
+	bh=osOvGxUWGgG8G4ZUdbM8NFzvqfeUVN831SS0E2nObSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQJ4vCKKqY4DgHTFkJdhBpwkADBoD08/akkxX8DLXh1wvcErkoijQ+DTgQsKcaxfUodp8LikwQXqpz6WSM/TZ+nWDZIbHRpwQgz8g3+QH32p+Nk8QBylsVfBoKcFXn7/C+z4dDbXjoGr/e+QS9S6NlAnZr4DElYfQnR/ICWZnEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npx5aB5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F191EC2BCB3;
-	Mon, 23 Mar 2026 15:14:06 +0000 (UTC)
+	 MIME-Version; b=bVrlwjalOg6wBW2qTP8nco5yqWct/uCbR3rDDYhBL7sZYwqs/Vlbsqwi/PZew+YuOVdI3n44iA5wUhK7Axf9w6o8Z7D/eonZ03Wv4vEQmiIXqZyqTg4eN3hZZnpzizfZquUUaTUDLwWxY+fsP/Q7jkSMI3ZY31OfFp/taj3PDfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=siecbw8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38500C4CEF7;
+	Mon, 23 Mar 2026 14:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278847;
-	bh=AlNe2Gp7Mer0rj+LOhNmdFtOVobO5KINzl1ssVrUl6s=;
+	s=korg; t=1774274868;
+	bh=osOvGxUWGgG8G4ZUdbM8NFzvqfeUVN831SS0E2nObSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npx5aB5tcxVc4M21IZab4Dbi2QVMdJbc5sxp/tuDfA+e0F3EZWlmP6myLVAqIk/ri
-	 Zz3J4iN7/TZgENcyzQGE3VSPzsywm5D6glrG6wAXEnAicSVgptx1G9m9C6prHt/U4I
-	 hDgtB60jBOw8gTzhLVYp5tXPiDyV/+eim+zhQkvA=
+	b=siecbw8h1grQeEE208s/wxSXC3u7e+0MGON7FPrm2kzvfvfyGZigdoZFVpl5tAWo1
+	 2EEID9vkUoMomWL6GSZQNZ9ItrjXmS0+i5TQzHirdB33SOivBQPfNLWSxOFQTH9mJF
+	 FlNyJDz/j+ZOAKmiIM9rjF0TvcJk493hrzXZnZiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"edumazet@google.com, kuniyu@google.com, kuba@kernel.org, dsahern@kernel.org, netdev@vger.kernel.org, Ruohan Lan" <ruohanlan@aliyun.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 6.6 438/567] net: use dst_dev_rcu() in sk_setup_caps()
-Date: Mon, 23 Mar 2026 14:45:58 +0100
-Message-ID: <20260323134544.788448840@linuxfoundation.org>
+	Yiming Qian <yimingqian591@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 138/212] netfilter: nft_ct: drop pending enqueued packets on removal
+Date: Mon, 23 Mar 2026 14:45:59 +0100
+Message-ID: <20260323134508.135941858@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,163 +70,101 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229352-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,aliyun.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228345-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2C67D2F9086
+X-Rspamd-Queue-Id: 3A8972F4746
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 99a2ace61b211b0be861b07fbaa062fca4b58879 ]
+[ Upstream commit 36eae0956f659e48d5366d9b083d9417f3263ddc ]
 
-Use RCU to protect accesses to dst->dev from sk_setup_caps()
-and sk_dst_gso_max_size().
+Packets sitting in nfqueue might hold a reference to:
 
-Also use dst_dev_rcu() in ip6_dst_mtu_maybe_forward(),
-and ip_dst_mtu_maybe_forward().
+- templates that specify the conntrack zone, because a percpu area is
+  used and module removal is possible.
+- conntrack timeout policies and helper, where object removal leave
+  a stale reference.
 
-ip4_dst_hoplimit() can use dst_dev_net_rcu().
+Since these objects can just go away, drop enqueued packets to avoid
+stale reference to them.
 
-Fixes: 4a6ce2b6f2ec ("net: introduce a new function dst_dev_put()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250828195823.3958522-6-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Adjust context ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If there is a need for finer grain removal, this logic can be revisited
+to make selective packet drop upon dependencies.
+
+Fixes: 7e0b2b57f01d ("netfilter: nft_ct: add ct timeout support")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/ip.h        |    7 +++++--
- include/net/ip6_route.h |    2 +-
- include/net/route.h     |    2 +-
- net/core/sock.c         |   16 ++++++++++------
- 4 files changed, 17 insertions(+), 10 deletions(-)
+ net/netfilter/nft_ct.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -458,9 +458,12 @@ static inline unsigned int ip_dst_mtu_ma
- 						    bool forwarding)
- {
- 	const struct rtable *rt = container_of(dst, struct rtable, dst);
--	struct net *net = dev_net(dst->dev);
-+	struct net *net;
-+	const struct net_device *dev;
- 	unsigned int mtu;
+diff --git a/net/netfilter/nft_ct.c b/net/netfilter/nft_ct.c
+index 6f2ae7cad7310..db1bf69f87750 100644
+--- a/net/netfilter/nft_ct.c
++++ b/net/netfilter/nft_ct.c
+@@ -23,6 +23,7 @@
+ #include <net/netfilter/nf_conntrack_l4proto.h>
+ #include <net/netfilter/nf_conntrack_expect.h>
+ #include <net/netfilter/nf_conntrack_seqadj.h>
++#include "nf_internals.h"
  
-+	dev = dst_dev_rcu(dst);
-+	net = dev_net_rcu(dev);
- 	if (READ_ONCE(net->ipv4.sysctl_ip_fwd_use_pmtu) ||
- 	    ip_mtu_locked(dst) ||
- 	    !forwarding) {
-@@ -474,7 +477,7 @@ static inline unsigned int ip_dst_mtu_ma
- 	if (mtu)
- 		goto out;
- 
--	mtu = READ_ONCE(dst->dev->mtu);
-+	mtu = READ_ONCE(dev->mtu);
- 
- 	if (unlikely(ip_mtu_locked(dst))) {
- 		if (rt->rt_uses_gateway && mtu > 576)
---- a/include/net/ip6_route.h
-+++ b/include/net/ip6_route.h
-@@ -333,7 +333,7 @@ static inline unsigned int ip6_dst_mtu_m
- 
- 	mtu = IPV6_MIN_MTU;
- 	rcu_read_lock();
--	idev = __in6_dev_get(dst->dev);
-+	idev = __in6_dev_get(dst_dev_rcu(dst));
- 	if (idev)
- 		mtu = idev->cnf.mtu6;
- 	rcu_read_unlock();
---- a/include/net/route.h
-+++ b/include/net/route.h
-@@ -363,7 +363,7 @@ static inline int ip4_dst_hoplimit(const
- 		const struct net *net;
- 
- 		rcu_read_lock();
--		net = dev_net_rcu(dst->dev);
-+		net = dst_dev_net_rcu(dst);
- 		hoplimit = READ_ONCE(net->ipv4.sysctl_ip_default_ttl);
- 		rcu_read_unlock();
- 	}
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2440,7 +2440,7 @@ void sk_free_unlock_clone(struct sock *s
- }
- EXPORT_SYMBOL_GPL(sk_free_unlock_clone);
- 
--static u32 sk_dst_gso_max_size(struct sock *sk, struct dst_entry *dst)
-+static u32 sk_dst_gso_max_size(struct sock *sk, const struct net_device *dev)
- {
- 	bool is_ipv6 = false;
- 	u32 max_size;
-@@ -2450,8 +2450,8 @@ static u32 sk_dst_gso_max_size(struct so
- 		   !ipv6_addr_v4mapped(&sk->sk_v6_rcv_saddr));
+ struct nft_ct_helper_obj  {
+ 	struct nf_conntrack_helper *helper4;
+@@ -543,6 +544,7 @@ static void __nft_ct_set_destroy(const struct nft_ctx *ctx, struct nft_ct *priv)
  #endif
- 	/* pairs with the WRITE_ONCE() in netif_set_gso(_ipv4)_max_size() */
--	max_size = is_ipv6 ? READ_ONCE(dst_dev(dst)->gso_max_size) :
--			READ_ONCE(dst_dev(dst)->gso_ipv4_max_size);
-+	max_size = is_ipv6 ? READ_ONCE(dev->gso_max_size) :
-+			READ_ONCE(dev->gso_ipv4_max_size);
- 	if (max_size > GSO_LEGACY_MAX_SIZE && !sk_is_tcp(sk))
- 		max_size = GSO_LEGACY_MAX_SIZE;
+ #ifdef CONFIG_NF_CONNTRACK_ZONES
+ 	case NFT_CT_ZONE:
++		nf_queue_nf_hook_drop(ctx->net);
+ 		mutex_lock(&nft_ct_pcpu_mutex);
+ 		if (--nft_ct_pcpu_template_refcnt == 0)
+ 			nft_ct_tmpl_put_pcpu();
+@@ -1016,6 +1018,7 @@ static void nft_ct_timeout_obj_destroy(const struct nft_ctx *ctx,
+ 	struct nft_ct_timeout_obj *priv = nft_obj_data(obj);
+ 	struct nf_ct_timeout *timeout = priv->timeout;
  
-@@ -2460,9 +2460,12 @@ static u32 sk_dst_gso_max_size(struct so
- 
- void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
++	nf_queue_nf_hook_drop(ctx->net);
+ 	nf_ct_untimeout(ctx->net, timeout);
+ 	nf_ct_netns_put(ctx->net, ctx->family);
+ 	kfree(priv->timeout);
+@@ -1148,6 +1151,7 @@ static void nft_ct_helper_obj_destroy(const struct nft_ctx *ctx,
  {
-+	const struct net_device *dev;
- 	u32 max_segs = 1;
+ 	struct nft_ct_helper_obj *priv = nft_obj_data(obj);
  
--	sk->sk_route_caps = dst_dev(dst)->features;
-+	rcu_read_lock();
-+	dev = dst_dev_rcu(dst);
-+	sk->sk_route_caps = dev->features;
- 	if (sk_is_tcp(sk))
- 		sk->sk_route_caps |= NETIF_F_GSO;
- 	if (sk->sk_route_caps & NETIF_F_GSO)
-@@ -2474,13 +2477,14 @@ void sk_setup_caps(struct sock *sk, stru
- 			sk->sk_route_caps &= ~NETIF_F_GSO_MASK;
- 		} else {
- 			sk->sk_route_caps |= NETIF_F_SG | NETIF_F_HW_CSUM;
--			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dst);
-+			sk->sk_gso_max_size = sk_dst_gso_max_size(sk, dev);
- 			/* pairs with the WRITE_ONCE() in netif_set_gso_max_segs() */
--			max_segs = max_t(u32, READ_ONCE(dst_dev(dst)->gso_max_segs), 1);
-+			max_segs = max_t(u32, READ_ONCE(dev->gso_max_segs), 1);
- 		}
- 	}
- 	sk->sk_gso_max_segs = max_segs;
- 	sk_dst_set(sk, dst);
-+	rcu_read_unlock();
- }
- EXPORT_SYMBOL_GPL(sk_setup_caps);
- 
++	nf_queue_nf_hook_drop(ctx->net);
+ 	if (priv->helper4)
+ 		nf_conntrack_helper_put(priv->helper4);
+ 	if (priv->helper6)
+-- 
+2.51.0
+
 
 
 
