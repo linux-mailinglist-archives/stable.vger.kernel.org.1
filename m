@@ -1,206 +1,225 @@
-Return-Path: <stable+bounces-229978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229979-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aJbkKwp+wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229978-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:53:14 +0100
+	id 6DJHIGB4wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229979-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:29:04 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2062FA8C4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:53:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E9A82F9F11
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:29:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B324B301EF80
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:57:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2643E303F425
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:07:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E270A3C0622;
-	Mon, 23 Mar 2026 16:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68AF3C5541;
+	Mon, 23 Mar 2026 17:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W6gMHxuI"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="lfYT0yiZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B57C3BF678
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 16:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AFB3C4571
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 17:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774285071; cv=none; b=qK7VApU1SsQ7f8ZOKRF5RwQAy1+5f3qfw+HtqJOBejmgWaS34Un8pSNKiotAs6UOLFT6FMqTchZU+Ib8p7eGBiNxX0IxeHHzcV7Q/GdQjHY2yE/tYF7WTFAUG+N/j5S6Fc+AnpEXIO0h7eaYNFbN1pQcJ94w86M6nm6IW9qZRio=
+	t=1774285639; cv=none; b=AVqGbR2evUQyts9xRWPGmK3H64r7kdwsYaJVBKM3hwYcZWAMfgl3ssGqJBdzsW5Y7aWF0S3JjAGUoTcZzw+tM6NpCKuJwDW4lbvoxG8c2HD+QjyW1jcdOnBQc+c2O/UDSocbLac+ft/uyi7tqdnXw1WQa4mBFn3OJ7LEWJ5myH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774285071; c=relaxed/simple;
-	bh=HaKS3N/t/8+2h/Pc8TJ2Vb22p+n4if8KpkCVDIHQAXY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D4kz4qsGnrkXuEQdAQ7JT/+EEFB6omYLMKLi6LP9H1NbwA4PznG165S/1ECTcfQC2sujZlSq+EdJD5hsqYiQJQTe7tjU7K1bJzg76qvsq9tyR+VlYNhPhk0KKRUprs+7C3iFzgWqFw5K79mEl1jszHWHrGaD1BQij1KcZpE90b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W6gMHxuI; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-358ed696623so1437770a91.0
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 09:57:50 -0700 (PDT)
+	s=arc-20240116; t=1774285639; c=relaxed/simple;
+	bh=NXHdFcMsCZ9zeiG0neWEIh44GOUy5j6PRRxlB62eKCI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ncBgkbD8XRg1thiTASzN2XZRl04gj1NSGLc4Egorw1h7Bo8TBtdrQPEs/jmdHm9qz46RcvmQ5K0n8Jbb/Jax34/htwFQAD6v/Ap0pmM0EEO8CdUNKTZHefhYOJ+rAd6UGgPMJW2JLSi0Rv2bcSQlMjOivTuA+9n0j7pT/xYner4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=lfYT0yiZ; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b9841aecf72so344449766b.2
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:07:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1774285070; x=1774889870; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=sZEofwQC58MPpqn9prf+xK4zUFx1LJf9Y6fgKZotzZc=;
-        b=W6gMHxuINpmkk1y+5VslwAOuEjlg+NwOK1UUVjsCllKPuEMXqzhUzVruKjme8dM2Yo
-         rFgEl2mCNsCHA2Uu0Dvi61vuKaxQvI9GPgWi8LuCBIAZMcYlkHOdZPuSGXVlUkX3xgjp
-         7qAwF0/jUACCQ98tU/HRb0UFLOtLxCIWg4M/0Ucxw5IqrJtXpniZB+fT/Ja/SssbIGRB
-         b5RZF6Cay1HyKNELdvYQfR40MWxHwKzSAojPTAla6XvZBL0a3Ob7HFMJ0nRE688UF8T/
-         s6uLlt8ccaK4fvxjGxBpRkcs2ILreI6mzv34nBNMNMUxKy7dATRVq2w8MsZsxr3f4gp0
-         ShdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774285070; x=1774889870;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1774285635; x=1774890435; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sZEofwQC58MPpqn9prf+xK4zUFx1LJf9Y6fgKZotzZc=;
-        b=sT6Y7XMFxZhoaWG+i9fr/df/BBEY6e09IY8d3y37qloo3WRTXmLrl34zfI6Mgaq1aK
-         6hFvZIEPEG1sChYvY2jg5UkVg/mcxV4mDXJBQyMCAlEr8fPVfkjaWSdp7IfSSctNtjzp
-         SGY3u4cWiRV7+aiRXOCyZrOC8kLyuPAXrHbrXlWL7Me3Rkzg4lXaTge8XSR3mKHnLttR
-         /WVZTC6Z9Krs5bmSFcqUyKijxqm6Cxq8NJGpL7vWFKU7UUpi6U78Au/tD6+Wig0pSa0T
-         mKj8ThCGpwc8kwlBjtssx1VPfPjwYYpXy9fFBkcB7hKLgluHYi394cixBTvwRm86ALfN
-         P4Bw==
-X-Forwarded-Encrypted: i=1; AJvYcCWWbIJ4UCq/k9f7osXzAMM/n9tYz7mgD5RiPJn6i7TecqdIP7pWb797FAosH/T30LqGbHrP698=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9PDh2oDIBfhNTIPeWWKjomfc88CINnwJzslweUWkqYCeCl5jR
-	92Mv9BeDFkdIKjit8BdKYQEFgm9rsaTvMr8wtu7Lesn3mgcybpc/YY7t
-X-Gm-Gg: ATEYQzwf/b+GNSUd4BXEDcTyT1O/ZiR1l6GKCXI/nEgePxGtXw2xbgFnivHztIuKeRt
-	gUjpDWkxId69fV+bwu9RX9euqgXdSfffZ0+6+xKvuSNBXCO3/plP7rdBj2jBXufEEL+GOIsY3Ao
-	3CEqyc0uuFtzoIcZERlBJVK1sPvKaA+yLbIX9IrZT84F/mNlw/Q5DtqN5Jcl5iknw5i0lrhSFVx
-	bUEcbKyIiTWYUjBhdft41ngdVOD7I0K3T5z7duu5HktNTbjkN8iK556vXy8/YByZ282LJ4gkSU7
-	6jIt3eZaIZo59A3lL6CnfNY9dBqRlvJP3G5m4L+hhXUDa61bxV614+hLbJEPRFp3cunBaFJg8az
-	f1EYlwNtdtS6/v78RmdeLl9cNmOO9PwGmsfMnq1brpFuQ1dg4yLkru4k4o2I80XrisW7qBZR/nP
-	Q/zATd6VfycbnqIRE=
-X-Received: by 2002:a17:90b:4a50:b0:359:fc88:fa99 with SMTP id 98e67ed59e1d1-35bd2d39c11mr10734530a91.26.1774285069752;
-        Mon, 23 Mar 2026 09:57:49 -0700 (PDT)
-Received: from lgs.. ([199.182.234.55])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35bd4109c3bsm10185767a91.13.2026.03.23.09.57.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2026 09:57:49 -0700 (PDT)
-From: Guangshuo Li <lgs201920130244@gmail.com>
-To: "K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Kees Cook <kees@kernel.org>,
-	Leon Romanovsky <leon@kernel.org>,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Guangshuo Li <lgs201920130244@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PPATCH net v3] net: mana: fix use-after-free in add_adev() error path
-Date: Tue, 24 Mar 2026 00:57:30 +0800
-Message-ID: <20260323165730.945365-1-lgs201920130244@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=0wP0O2YEaaZh2jzplFE2HN0DYzURZaOx4Bx6nnpcvKg=;
+        b=lfYT0yiZMaGP6lZFuVIdLCHWa88SjQLZncYuBn1iZw48oTxtEXXSGHh5Awg23AEzhE
+         Uqua4kO2u4C0JotNes9UvWEaF0wpofYZVY3yMsKxskaRFPK/Cc8yQzO2OHRXKM5nKb2E
+         i3SKZG3KKiL2uYe9BF+dbQiPikcPdFrWQaYVw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774285635; x=1774890435;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=0wP0O2YEaaZh2jzplFE2HN0DYzURZaOx4Bx6nnpcvKg=;
+        b=ENLz/6V+Uuu+AtEfCavUbzK8gZbWOT7zN8q7xX0Uk01uY6OwA/DI1fN0rq5UCbXZ31
+         HvXTkcwkBzhodl5qcueX4nri7Mq0gMewXv5gB/Ix77TIUpmoyRuKOTebo9Xi+QmuvlYg
+         IgWZ+TX8GM2DnAyf1Y9T8tM8GWmA+UzR9v9EJ1nah2M39uVkaIWWrsSyQ/LDEfz8yok0
+         uZq7lfImvxa6xAdusA7IIReQ03g2X3ts23BDeq2MBqLdhlgScHqPIMZOV5c3HiUEGAHF
+         FxBIurad6CX1xr3X1XcyrooJOQZFhhwspW7BvHs45iS4jHgU2vrcYjqgwird9rX6ehBK
+         sR7A==
+X-Forwarded-Encrypted: i=1; AJvYcCXo6JUMbn7G+VaJ9on42TLkWH/YEN0iDfYov6ahjHxb7875WSJbZfleqX7DYXv9B38FWzdoxdk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsfTuLrMQAU2EnhAqJXMNUYjtQPWU3J1W/y5hryIZbJ41rK7sn
+	hKLhphtRT0DkP38/D+YDMwKDrIww08SLPZMCGQekMMdjXZKfrdVBN2uDaj6hRlsVJKcG+MkNyhG
+	ugBrbFd0I
+X-Gm-Gg: ATEYQzy0l8dE7ff/Jz6w+i7ttx4zaD6FMAwkM1H/4C/JhaJsaCPo0NJ22FhiXIUnTmM
+	ajPMJSQWnxkTnDkuF5vbgZTiNznZZQweHJNuoA6iTHRaC+GmeGmGASWekciDx49Z76Ioc0FiDY3
+	JERByiqZEYg889GN1hgHiEFdEAJlDeL9fisD/vM2+ihzB6ZRAUy7DFaxVMXG45FMVOIdc37Nklc
+	yl+zSeLhnQVitzRCSHT3fJGBNfzqFTYrD8Nsqpkf3EFpO9i9Krj9p7O52LW2DSkYgSqWv6dxhk4
+	r+hAOrgidPuLH5+dqmJBjIfJ2GqRCRHMsi3xH80i5Ghhp9LACf1JHZgap7vmq6IhVpWzlpf14pZ
+	VA8nkh/6NImacgIuzAsAfLftCiURcqdqxj2hAjKjsz05GL1MQrKparGEa1qB/6mXViHr3yCAdkD
+	GuVLnUo84pMFOisOiFcTrkC9dVkKAtvMQNpgFzupl0bXxTw29X60NHPvniHWGIuQ==
+X-Received: by 2002:a17:907:d58e:b0:b97:aba7:1969 with SMTP id a640c23a62f3a-b982f3cbc95mr885542266b.45.1774285635274;
+        Mon, 23 Mar 2026 10:07:15 -0700 (PDT)
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com. [209.85.128.42])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b983e4e9b65sm417703366b.31.2026.03.23.10.07.13
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 10:07:13 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4852e9ca034so28871045e9.2
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 10:07:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVBlz4zdAz+p03gj215pEQ2slK4orjZa+I03wd6LCi3ydBCWc+XkCqkGnXaU3KVoWn0eCL+SJ0=@vger.kernel.org
+X-Received: by 2002:a05:600c:a4a:b0:485:5c6e:8a38 with SMTP id
+ 5b1f17b1804b1-486fee0fbabmr171857425e9.17.1774285632783; Mon, 23 Mar 2026
+ 10:07:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+References: <20260320200656.RFC.1.Id750b0fbcc94f23ed04b7aecabcead688d0d8c17@changeid>
+ <2026032152-getting-carmaker-29d5@gregkh> <CAD=FV=Wag5qx9RXkAHrf+zbwtQgVQW1UUc6DRhUzudBtjbD8ug@mail.gmail.com>
+ <2026032114-unlocked-unmoving-091b@gregkh> <CAD=FV=WPD5DueD5iGvsxZYUGy7XAQ2NQ2BTJTyVSVNtYYrWOHQ@mail.gmail.com>
+ <6ff1444b-f83e-47f6-ab0d-6745738523ba@rowland.harvard.edu>
+In-Reply-To: <6ff1444b-f83e-47f6-ab0d-6745738523ba@rowland.harvard.edu>
+From: Doug Anderson <dianders@chromium.org>
+Date: Mon, 23 Mar 2026 10:07:01 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=Vco+hRBNxGpUDf-YofEwTR13ht=nTnjvUvT+3_76+1MA@mail.gmail.com>
+X-Gm-Features: AQROBzD1wQwwLkQqFLAaWiaEUc38lElDQKStGZ6mOr6tab1Sq5qFqqIwOw8EX6M
+Message-ID: <CAD=FV=Vco+hRBNxGpUDf-YofEwTR13ht=nTnjvUvT+3_76+1MA@mail.gmail.com>
+Subject: Re: [RFC PATCH] driver core: Don't link the device to the bus until
+ we're ready to probe
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Saravana Kannan <saravanak@kernel.org>, stable@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWELVE(0.00)[21];
-	TAGGED_FROM(0.00)[bounces-229978-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[chromium.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229979-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	MISSING_XM_UA(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[gmail.com:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_RCPT(0.00)[stable,netdev];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[dianders@chromium.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: DA2062FA8C4
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mail.gmail.com:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,chromium.org:dkim,harvard.edu:email]
+X-Rspamd-Queue-Id: 1E9A82F9F11
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-If auxiliary_device_add() fails, add_adev() jumps to add_fail and calls
-auxiliary_device_uninit(adev).
+Hi,
 
-The auxiliary device has its release callback set to adev_release(),
-which frees the containing struct mana_adev. Since adev is embedded in
-struct mana_adev, the subsequent fall-through to init_fail and access
-to adev->id may result in a use-after-free.
+On Sat, Mar 21, 2026 at 8:54=E2=80=AFAM Alan Stern <stern@rowland.harvard.e=
+du> wrote:
+>
+> > > > I'd also note that the only actual symptom we're seeing is with
+> > > > fw_devlink misbehaving (because dev->fwnode->dev wasn't set early
+> > > > enough). fw_devlink is a "new" (ish) feature, is officially optiona=
+l,
+> > > > and isn't used on all hardware.
+> > >
+> > > That's true too, can we set that earlier?
+> >
+> > Yes, I can post a patch that _just_ moves the set of dev->fwnode->dev
+> > earlier, and that will probably fix my symptoms (I'll need to test).
+> > This patch already moves it a bit earlier, but if we don't break the
+> > linking out as a separate step it would need to move even higher up in
+> > the function.
+> >
+> > Originally, I was going to just propose that, but then I realized that
+> > some of the other code in device_add() probably also ought to run
+> > before we let the driver probe, and hence I ended up with this patch.
+>
+> This sounds like a more generic problem.  A bunch of things happen after
+> bus_add_device() that should be completed before probing can start; the
+> firmware node stuff is just one of them.
+>
+> Splitting bus_add_device() in two sounds reasonable, although I would
+> rename the old routine to bus_link_device, since all it does it add some
+> groups and symlinks.  The new routine can be called bus_add_device().
 
-Fix this by saving the allocated auxiliary device id in a local
-variable before calling auxiliary_device_add(), and use that saved id
-in the cleanup path after auxiliary_device_uninit().
+LOL, so basically you want them named exactly opposite I did? That's
+OK with me, though maybe:
 
-Fixes: a69839d4327d ("net: mana: Add support for auxiliary device")
-Cc: stable@vger.kernel.org
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
----
-v2:
-  - explain the UAF in more detail
-  - retarget to net
-  - preserve reverse xmas tree order for local variables
+bus_prep_device()
+bus_add_device()
 
-v3:
-  - rebase onto the current net tree
 
- drivers/net/ethernet/microsoft/mana/mana_en.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+> The real question is whether any of the other stuff that happens before
+> bus_probe_device() needs to come after the device is added to the bus's
+> list.  The bus_notify() and kobject_uevent() calls are good examples; I
+> don't know what their requirements are.  Should they be moved down,
+> between the new bus_add_device() and bus_probe_device()?
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 9017e806ecda..d03f42245ab8 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -3424,6 +3424,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
- {
- 	struct auxiliary_device *adev;
- 	struct mana_adev *madev;
-+	int id;
- 	int ret;
- 
- 	madev = kzalloc_obj(*madev);
-@@ -3434,7 +3435,8 @@ static int add_adev(struct gdma_dev *gd, const char *name)
- 	ret = mana_adev_idx_alloc();
- 	if (ret < 0)
- 		goto idx_fail;
--	adev->id = ret;
-+	id = ret;
-+	adev->id = id;
- 
- 	adev->name = name;
- 	adev->dev.parent = gd->gdma_context->dev;
-@@ -3460,7 +3462,7 @@ static int add_adev(struct gdma_dev *gd, const char *name)
- 	auxiliary_device_uninit(adev);
- 
- init_fail:
--	mana_adev_idx_free(adev->id);
-+	mana_adev_idx_free(id);
- 
- idx_fail:
- 	kfree(madev);
--- 
-2.43.0
+Yes, this is my question too. The question is, what's worse:
 
+1. Potentially the device getting probed before the calls to
+"bus_notify(dev, BUS_NOTIFY_ADD_DEVICE)" and
+"kobject_uevent(&dev->kobj, KOBJ_ADD)"
+
+2. Calling "bus_notify(dev, BUS_NOTIFY_ADD_DEVICE)" and
+"kobject_uevent(&dev->kobj, KOBJ_ADD)" without first adding to the
+subsystem's list of devices.
+
+As it is, my patch says #2 is worse and thus allows for #1. ...but I
+don't actually know the answer. The main reason I chose to allow for
+#1 is that it makes the behavior less different than it was before my
+patch, but that doesn't mean it's correct.
+
+Reading  through a handful of "BUS_NOTIFY_ADD_DEVICE" calls, my guess
+is that they expect to be called before probe... That would imply that
+my patch made the wrong choice...
+
+
+I think another option here might be to just add a new bitfield flag
+to "struct device", like "ready_to_probe". Right before the call to
+bus_probe_device(dev), we could do something like:
+
+device_lock(dev);
+dev->ready_to_probe =3D true;
+device_unlcok(dev);
+
+Then in __driver_attach() I can have:
+
+device_lock(dev);
+ready_to_probe =3D dev->ready_to_probe;
+device_unlock(dev);
+if (!ready_to_probe)
+  return 0;
+
+If I do that, I don't think I'll even need to re-order anything, and I
+think it's all safe. Basically, it just the device hidden from the
+__driver_attach() logic until probe is ready.
+
+What do you think?
+
+-Doug
 
