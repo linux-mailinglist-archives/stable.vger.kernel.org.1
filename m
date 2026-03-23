@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228416-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WDImO1x2wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229919-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:20:28 +0100
+	id eEhtDglMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228416-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F21572F9BDC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:20:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6B02F4350
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 59C263133491
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 361C430BE694
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601483AE19E;
-	Mon, 23 Mar 2026 16:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C765C3AE1BB;
+	Mon, 23 Mar 2026 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVV1t9Jv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkpRkXmV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E34C284881;
-	Mon, 23 Mar 2026 16:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AED53AB295;
+	Mon, 23 Mar 2026 14:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283216; cv=none; b=pf2lToJqo0DHSxV8WCifWC5QV0uFW0Y1a+sGtNQfug9a9SGySzwxxJZS6DPPv2iV5db+F9U1WsbIl4LkagZSMo3Fn4m7p+MKrCoknnSq+hplBzXzElZ/8zxiGyFD+YxpW38xW1qF2apV/aAd/mm44q93FeL38ubttiP2UDKYOOU=
+	t=1774275061; cv=none; b=Cefa51kXg19kWS2Jnq8rPh3rH1RgrpSPCI/AY69JM8PJx/27RSOnA6gGs+Cbstzhqwtu+NO6VlGyzfVXItEGIQZvBL2HB6uyPvsacQFsTHaL75G0PxQ+BGk6rmWkX941VUmNlQfqYdR0HLqNqKQp2Q8hGeTe50QF4j0CtmbMTvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283216; c=relaxed/simple;
-	bh=1yuim09ubOzXSNmo+9/3QPYCR05c/nEjLTCPmSzps2s=;
+	s=arc-20240116; t=1774275061; c=relaxed/simple;
+	bh=BPDrvE6Mq3oKQPERxcLpaq/hQu+Gc6NJlHKCnDBJpWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5ucCqUPFnkgW3lA8tyeKRc7Uk89cxI+dxVUpTgZcKnJ4zJoj6SweNEVJaS5a5wSuPi62oUy2Kb/ValIeerlSPnrufjiTSWD8l1i8+SU+wen6oMa3XJ5jUoYDH+mI+a3QgI9Ik4udmYPzI3trFZw32owxN+Iwel9LbL+YqedGD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVV1t9Jv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD5DC2BCB5;
-	Mon, 23 Mar 2026 16:26:55 +0000 (UTC)
+	 MIME-Version; b=Do387VDqkMbY1pt5z5u8/KSaGFuufk6vReogCRzt/l9bcnYGKkojxlVnimL748k6xzWrqQeh8trmQc2tUBiDtdPStEvL2kWSMgscwrT5PRequYiSiTmC2RO56UxfE/AAJbYcXzMh6mXJ4UGwRyIUp+CsQFGk2wThqbN1pOb469Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkpRkXmV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A84C4CEF7;
+	Mon, 23 Mar 2026 14:11:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283215;
-	bh=1yuim09ubOzXSNmo+9/3QPYCR05c/nEjLTCPmSzps2s=;
+	s=korg; t=1774275061;
+	bh=BPDrvE6Mq3oKQPERxcLpaq/hQu+Gc6NJlHKCnDBJpWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVV1t9Jvtpb45XMe9bou9/dR3RNgVcfHrtx5WtbXUOLRrhJLhvJEt65t6F9f8FbaV
-	 uX3u0XytmTAAAe/AB6foDQ4OPw0UcMrIVBcEuHSmtT3pW1gOY0mLH5Yf9v3GV/wM74
-	 F+eYHdqAkD3WaAGQzG7ywEn/ORODfPF4Ck6cmqmo=
+	b=nkpRkXmVeqkGXttWLqZBaBYsFBkk3M5vK4uKtWG6v6ZzkLPXZntbg+olKCbNoI8l6
+	 1MslD/Pi4lbMdYKa/XtZMrMyySKOP7cLnKFOO7UxTSvVhkYfwQGVY0m4BIPr+EWmCE
+	 RtR4bQSPiYpDTfeU1vYx7jQbWo34P0qNvdmH4QIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Wu <wusamuel@google.com>,
-	Alex Hoh <Alex.Hoh@mediatek.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.1 445/481] sched/fair: Fix pelt clock sync when entering idle
-Date: Mon, 23 Mar 2026 14:47:07 +0100
-Message-ID: <20260323134536.059920879@linuxfoundation.org>
+	Rahul Bukte <rahul.bukte@sony.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 207/212] drm/i915/gt: Check set_default_submission() before deferencing
+Date: Mon, 23 Mar 2026 14:47:08 +0100
+Message-ID: <20260323134510.328270990@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229919-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228416-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,77 +91,114 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: F21572F9BDC
+X-Rspamd-Queue-Id: BB6B02F4350
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Guittot <vincent.guittot@linaro.org>
+From: Rahul Bukte <rahul.bukte@sony.com>
 
-[ Upstream commit 98c88dc8a1ace642d9021b103b28cba7b51e3abc ]
+[ Upstream commit 0162ab3220bac870e43e229e6e3024d1a21c3f26 ]
 
-Samuel and Alex reported regressions of the util_avg of RT rq with
-commit 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection").
-It happens that fair is updating and syncing the pelt clock with task one
-when pick_next_task_fair() fails to pick a task but before the prev
-scheduling class got a chance to update its pelt signals.
+When the i915 driver firmware binaries are not present, the
+set_default_submission pointer is not set. This pointer is
+dereferenced during suspend anyways.
 
-Move update_idle_rq_clock_pelt() in set_next_task_idle() which is called
-after prev class has been called.
+Add a check to make sure it is set before dereferencing.
 
-Fixes: 17e3e88ed0b6 ("sched/fair: Fix pelt lost idle time detection")
-Reported-by: Samuel Wu <wusamuel@google.com>
-Closes: https://lore.kernel.org/all/CAG2KctpO6VKS6GN4QWDji0t92_gNBJ7HjjXrE+6H+RwRXt=iLg@mail.gmail.com/
-Reported-by: Alex Hoh <Alex.Hoh@mediatek.com>
-Closes: https://lore.kernel.org/all/8cf19bf0e0054dcfed70e9935029201694f1bb5a.camel@mediatek.com/
-Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Tested-by: Samuel Wu <wusamuel@google.com>
-Tested-by: Alex Hoh <Alex.Hoh@mediatek.com>
-Link: https://patch.msgid.link/20260121163317.505635-1-vincent.guittot@linaro.org
-(cherry picked from commit 98c88dc8a1ace642d9021b103b28cba7b51e3abc)
-[ wusamuel: Did not include line 'exec_start = rq_clock_task()', which
-is not present in 6.1.y but found in mainline ]
-Signed-off-by: Samuel Wu <wusamuel@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[   23.289926] PM: suspend entry (deep)
+[   23.293558] Filesystems sync: 0.000 seconds
+[   23.298010] Freezing user space processes
+[   23.302771] Freezing user space processes completed (elapsed 0.000 seconds)
+[   23.309766] OOM killer disabled.
+[   23.313027] Freezing remaining freezable tasks
+[   23.318540] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[   23.342038] serial 00:05: disabled
+[   23.345719] serial 00:02: disabled
+[   23.349342] serial 00:01: disabled
+[   23.353782] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[   23.358993] sd 1:0:0:0: [sdb] Synchronizing SCSI cache
+[   23.361635] ata1.00: Entering standby power mode
+[   23.368863] ata2.00: Entering standby power mode
+[   23.445187] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[   23.452194] #PF: supervisor instruction fetch in kernel mode
+[   23.457896] #PF: error_code(0x0010) - not-present page
+[   23.463065] PGD 0 P4D 0
+[   23.465640] Oops: Oops: 0010 [#1] SMP NOPTI
+[   23.469869] CPU: 8 UID: 0 PID: 211 Comm: kworker/u48:18 Tainted: G S      W           6.19.0-rc4-00020-gf0b9d8eb98df #10 PREEMPT(voluntary)
+[   23.482512] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+[   23.496511] Workqueue: async async_run_entry_fn
+[   23.501087] RIP: 0010:0x0
+[   23.503755] Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+[   23.510324] RSP: 0018:ffffb4a60065fca8 EFLAGS: 00010246
+[   23.515592] RAX: 0000000000000000 RBX: ffff9f428290e000 RCX: 000000000000000f
+[   23.522765] RDX: 0000000000000000 RSI: 0000000000000282 RDI: ffff9f428290e000
+[   23.529937] RBP: ffff9f4282907070 R08: ffff9f4281130428 R09: 00000000ffffffff
+[   23.537111] R10: 0000000000000000 R11: 0000000000000001 R12: ffff9f42829070f8
+[   23.544284] R13: ffff9f4282906028 R14: ffff9f4282900000 R15: ffff9f4282906b68
+[   23.551457] FS:  0000000000000000(0000) GS:ffff9f466b2cf000(0000) knlGS:0000000000000000
+[   23.559588] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   23.565365] CR2: ffffffffffffffd6 CR3: 000000031c230001 CR4: 0000000000f70ef0
+[   23.572539] PKRU: 55555554
+[   23.575281] Call Trace:
+[   23.577770]  <TASK>
+[   23.579905]  intel_engines_reset_default_submission+0x42/0x60
+[   23.585695]  __intel_gt_unset_wedged+0x191/0x200
+[   23.590360]  intel_gt_unset_wedged+0x20/0x40
+[   23.594675]  gt_sanitize+0x15e/0x170
+[   23.598290]  i915_gem_suspend_late+0x6b/0x180
+[   23.602692]  i915_drm_suspend_late+0x35/0xf0
+[   23.607008]  ? __pfx_pci_pm_suspend_late+0x10/0x10
+[   23.611843]  dpm_run_callback+0x78/0x1c0
+[   23.615817]  device_suspend_late+0xde/0x2e0
+[   23.620037]  async_suspend_late+0x18/0x30
+[   23.624082]  async_run_entry_fn+0x25/0xa0
+[   23.628129]  process_one_work+0x15b/0x380
+[   23.632182]  worker_thread+0x2a5/0x3c0
+[   23.635973]  ? __pfx_worker_thread+0x10/0x10
+[   23.640279]  kthread+0xf6/0x1f0
+[   23.643464]  ? __pfx_kthread+0x10/0x10
+[   23.647263]  ? __pfx_kthread+0x10/0x10
+[   23.651045]  ret_from_fork+0x131/0x190
+[   23.654837]  ? __pfx_kthread+0x10/0x10
+[   23.658634]  ret_from_fork_asm+0x1a/0x30
+[   23.662597]  </TASK>
+[   23.664826] Modules linked in:
+[   23.667914] CR2: 0000000000000000
+[   23.671271] ------------[ cut here ]------------
+
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260203044839.1555147-1-suraj.kandpal@intel.com
+(cherry picked from commit daa199abc3d3d1740c9e3a2c3e9216ae5b447cad)
+Fixes: ff44ad51ebf8 ("drm/i915: Move engine->submit_request selection to a vfunc")
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c |    6 ------
- kernel/sched/idle.c |    6 ++++++
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_engine_cs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7924,12 +7924,6 @@ idle:
- 			goto again;
+diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+index b721bbd233567..ce8cdd517daa1 100644
+--- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+@@ -1969,7 +1969,8 @@ void intel_engines_reset_default_submission(struct intel_gt *gt)
+ 		if (engine->sanitize)
+ 			engine->sanitize(engine);
+ 
+-		engine->set_default_submission(engine);
++		if (engine->set_default_submission)
++			engine->set_default_submission(engine);
  	}
- 
--	/*
--	 * rq is about to be idle, check if we need to update the
--	 * lost_idle_time of clock_pelt
--	 */
--	update_idle_rq_clock_pelt(rq);
--
- 	return NULL;
  }
  
---- a/kernel/sched/idle.c
-+++ b/kernel/sched/idle.c
-@@ -456,6 +456,12 @@ static void set_next_task_idle(struct rq
- {
- 	update_idle_core(rq);
- 	schedstat_inc(rq->sched_goidle);
-+
-+	/*
-+	 * rq is about to be idle, check if we need to update the
-+	 * lost_idle_time of clock_pelt
-+	 */
-+	update_idle_rq_clock_pelt(rq);
- }
- 
- #ifdef CONFIG_SMP
+-- 
+2.51.0
+
 
 
 
