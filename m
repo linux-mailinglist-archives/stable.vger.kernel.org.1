@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229124-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yDW7ABpMwWmKSAQAu9opvQ
-	(envelope-from <stable+bounces-228592-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:10 +0100
+	id yDIbOsVZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229124-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F4F2F438C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 931B12F61F8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C475A3018E03
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A5C73263001
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F051F91F6;
-	Mon, 23 Mar 2026 14:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75919242D60;
+	Mon, 23 Mar 2026 15:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZ3BfZ7J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEbwyTG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C371A680D;
-	Mon, 23 Mar 2026 14:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E9927A123;
+	Mon, 23 Mar 2026 15:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275540; cv=none; b=ef50JaH4maMKLlULqvm1v86lrVc3fhJCN7qQlj9BKRFPTJOEentS6sj1SaHvedMlWoI2Eu0B6fHMGQZ2jDASgTjr2MvoojX2ycRU5xRxzrxdcJlr/sjf8LOJtljc413vYXJZ7UR6Acmwqx4QLIFhcd+g5sxNKaJhGtMG9E3QbQM=
+	t=1774278136; cv=none; b=iIKAdaJC1rsyii+SM/zc6wyt6/u0E0z/Ndvhb+XCLEvfLFaod4jjRvzJtAuwSL5kzRcOqMkDViNHRMBLqsuhyDT6k9QmDaWjdV9+6e+FTgZbdD3VRZsbjP+2CWbuzhlomqVa3BAEYbSipEiNA0fXBoMwGmG1IjfZayRyAzsVaAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275540; c=relaxed/simple;
-	bh=llzlygYVS1/+pwm0RTDECJfCtZdyg4nz//PZlOet4WI=;
+	s=arc-20240116; t=1774278136; c=relaxed/simple;
+	bh=ckP+H3JljC/AIq5+RV2WJs/M3Yk2p/BInwiK2JGoeHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R2/cPUfvlKmIJ3rmdG2ELY5whqMYCjKSk7rffwQRd8tEL9RLT7NqlPs/u9DneJ/xSn6YzSH2zpqXcPl9/uvf18Cp7vnPdGoXsdtxlf4xYWMyvlULFJ5fk4OeyZoIkpVITSchJuJZNKBm4Gs1DMD/7i75mfIm26JKbId5jM2aVXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZ3BfZ7J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD73C4CEF7;
-	Mon, 23 Mar 2026 14:18:59 +0000 (UTC)
+	 MIME-Version; b=nhMgFkb1DdiIBirPmxt+rliiXylKxvRT1ddBSkxfbwCW8S1KGorUwa2fY6QDbjCM88xHuBB5BCXVcMKYogbmQ1F044g2t22CxyfG+nLY0kP/lrUX77PNR4rx4nr4l/CWfa8TFRyAgSaZcsBss4wJ7SdSfCaygyWtvKphfaAr2io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEbwyTG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB6BC4CEF7;
+	Mon, 23 Mar 2026 15:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275540;
-	bh=llzlygYVS1/+pwm0RTDECJfCtZdyg4nz//PZlOet4WI=;
+	s=korg; t=1774278136;
+	bh=ckP+H3JljC/AIq5+RV2WJs/M3Yk2p/BInwiK2JGoeHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CZ3BfZ7J4FK7VjnS6WjbqWw+6xzMGhXJuT6xCMY+FEYP8yPceg9g3LTd1JaNy+iUr
-	 ZRH4N7PxgaYT3KIiWuzLvZS8Aw5sBD4vFUM4VT9zI4WqqzeHALMn2RfmYFJHmESk8L
-	 uV1ki+mWqWrnGBGFyCu4fj282bz1Agac3G3PJ8AU=
+	b=HEbwyTG31E5/+9Q31HMaIYmuI23qBIO2XPKIJWEv0kn/KHlpS3hs8gXJKYCFwFwHS
+	 yDwVN8TP/MnuTYscn59crKFDZefOHANErDd+yxxZYVkmR3OmgDnIKCSqOUiHI34gFT
+	 CvZ7QpkOaa7ciDejCp48YiczfWs8bIztXWUXMM+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Yihang Li <liyihang9@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+	Chris Lew <christopher.lew@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/460] scsi: hisi_sas: Add time interval between two H2D FIS following soft reset spec
+Subject: [PATCH 6.6 212/567] remoteproc: sysmon: Correct subsys_name_len type in QMI request
 Date: Mon, 23 Mar 2026 14:42:12 +0100
-Message-ID: <20260323134529.942116538@linuxfoundation.org>
+Message-ID: <20260323134539.077192090@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,66 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229124-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228592-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email]
-X-Rspamd-Queue-Id: 13F4F2F438C
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 931B12F61F8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
 
-[ Upstream commit 3c62791322e42d1afd65acfdb5b3a371bde21ede ]
+[ Upstream commit da994db94e60f9a9411108ddf4d1836147ad4c9c ]
 
-Spec says at least 5us between two H2D FIS when do soft reset, but be
-generous and sleep for about 1ms.
+The QMI message encoder has up until recently read a single byte (as
+elem_size == 1), but with the introduction of big endian support it's
+become apparent that this field is expected to be a full u32 -
+regardless of the size of the length in the encoded message (which is
+what elem_size specifies).
 
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Link: https://lore.kernel.org/r/20241008021822.2617339-11-liyihang9@huawei.com
-Reviewed-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: 8ddc0c269165 ("scsi: hisi_sas: Fix NULL pointer exception during user_scan()")
+The result is that the encoder now reads past the length byte and
+rejects the unreasonably large length formed when including the
+following 3 bytes from the subsys_name array.
+
+Fix this by changing to the expected type.
+
+Fixes: 1fb82ee806d1 ("remoteproc: qcom: Introduce sysmon")
+Signed-off-by: Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>
+Reviewed-by: Chris Lew <christopher.lew@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20260220-qmi-encode-invalid-length-v2-1-5674be35ab29@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/remoteproc/qcom_sysmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index d9500b7306905..43d2ca4c6605f 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1341,6 +1341,7 @@ static int hisi_sas_softreset_ata_disk(struct domain_device *device)
- 	}
+diff --git a/drivers/remoteproc/qcom_sysmon.c b/drivers/remoteproc/qcom_sysmon.c
+index c24e4a8828738..db33a41051a3e 100644
+--- a/drivers/remoteproc/qcom_sysmon.c
++++ b/drivers/remoteproc/qcom_sysmon.c
+@@ -203,7 +203,7 @@ static const struct qmi_elem_info ssctl_shutdown_resp_ei[] = {
+ };
  
- 	if (rc == TMF_RESP_FUNC_COMPLETE) {
-+		usleep_range(900, 1000);
- 		ata_for_each_link(link, ap, EDGE) {
- 			int pmp = sata_srst_pmp(link);
- 
+ struct ssctl_subsys_event_req {
+-	u8 subsys_name_len;
++	u32 subsys_name_len;
+ 	char subsys_name[SSCTL_SUBSYS_NAME_LENGTH];
+ 	u32 event;
+ 	u8 evt_driven_valid;
 -- 
 2.51.0
 
