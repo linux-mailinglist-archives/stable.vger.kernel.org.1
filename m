@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-228410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228895-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iNr4IY9NwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228410-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:23 +0100
+	id +FUMI4RWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228895-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28DF82F479D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:26:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 002E92F5B70
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5C6603089566
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:12:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C2C58311A040
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7F93AE1AA;
-	Mon, 23 Mar 2026 14:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B19AF3AF647;
+	Mon, 23 Mar 2026 14:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDrh3Z6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azwEbmYb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8303E286417;
-	Mon, 23 Mar 2026 14:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7457B3AEF50;
+	Mon, 23 Mar 2026 14:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275041; cv=none; b=ex2D6hDeKP0z0CrcoCNbQ6LfWB4jeQpLCGyVliOGCXUU5TxE88P/9LJs3hrQ/FITK9yXiDy4DwbqLmG6wXhQSmKAp2iLsZCqiVFqPi3auitNi0HyTXYm2yFEBnq6kzg+k5b4hpwXHLXNXfwET3dlNcVtyXM0A7wez1FJfXO26/c=
+	t=1774277424; cv=none; b=e1LOPXdDNGjrICxCxU4PFI47rOJh0PVjm2gqEsvGn4fWzWHDx5gL5raCnj8RjJOfwAJKFKJvbOHmHHEp9u2lWiZSPain60XJ511+OGAFITC4PzS4f/FTzQnIXe2VX9xt9qLFaUSCPn9cxLYJh02bROSAfz7NYkaWWc3afRuGocA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275041; c=relaxed/simple;
-	bh=guCbcVhY/clzBgURMbmNrP2yFcLyziaFYmnKtOT+AfU=;
+	s=arc-20240116; t=1774277424; c=relaxed/simple;
+	bh=/Q8SCDnmUy0r0Job8qz517lf4RRcHd24Okz+Rizinf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVgrEuCyBGqVXVcAu9TH5kmuaN3xELqLvumYwOyS9CKwF2Lya/K5KqqmRxD0oO2K0HFot6JMxaT2X2iS83PtwHIOU7b1BD84nrChiZT9AyLvEnCDmWFoqp2QVWJhtvoJGoeyH9IGqwXUROgExpDyKgpl2UhrHJzFRvJMriw46zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDrh3Z6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AC8C4CEF7;
-	Mon, 23 Mar 2026 14:10:40 +0000 (UTC)
+	 MIME-Version; b=TMiWwRGbHv4lC1tWHCt9/yOL+XMGJi9GJiXrhu2E/T6cU9qQA7WeCxtWJwXmf7HIFA2g1SZnedp+F84m9ujhFw7L4NGzxNk1M2zwwC79r8K7sNrwxag+tQZsvb+dID9t7WBaLo0hlSHDpE9kXI88hJOqimJTcgXo7+7hskXEgyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azwEbmYb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7945C4CEF7;
+	Mon, 23 Mar 2026 14:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275041;
-	bh=guCbcVhY/clzBgURMbmNrP2yFcLyziaFYmnKtOT+AfU=;
+	s=korg; t=1774277424;
+	bh=/Q8SCDnmUy0r0Job8qz517lf4RRcHd24Okz+Rizinf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDrh3Z6hAMy1joOuWEpxFYHFBB2LSg1auVEDju5CE9G0Sv6SFtJy28rtLFL/LbH7T
-	 3QRu7FA29tb6ZVTMLygglZL95QydxwwZfIcq4RGQhoi67a9VqE02BniGax6xv7E+8j
-	 geHK3ab+rUTYOfGqtIdDjMFOaQLAUQjYmteh8rc8=
+	b=azwEbmYbepf4JoFY6igDmK2B3NbE22JpW5XC/qlGSocPJKQ8uXYGCwcJW0Z1FRgpj
+	 0E1eZmr+rxBIJk8nn+sTl9OCDPY8EHZc83gY+9+6DFukkw4teE44hp1wyq25GKijWs
+	 ShnJ5UhFkiPhaovP/1eOUZwAGubZRu/zRJZnQpGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 201/212] iommu/sva: Fix crash in iommu_sva_unbind_device()
-Date: Mon, 23 Mar 2026 14:47:02 +0100
-Message-ID: <20260323134510.141122535@linuxfoundation.org>
+Subject: [PATCH 6.12 427/460] net: bonding: fix NULL deref in bond_debug_rlb_hash_show
+Date: Mon, 23 Mar 2026 14:47:03 +0100
+Message-ID: <20260323134537.044582366@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,86 +70,115 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228410-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228895-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 28DF82F479D
+X-Rspamd-Queue-Id: 002E92F5B70
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 06e14c36e20b48171df13d51b89fe67c594ed07a ]
+[ Upstream commit 605b52497bf89b3b154674deb135da98f916e390 ]
 
-domain->mm->iommu_mm can be freed by iommu_domain_free():
-  iommu_domain_free()
-    mmdrop()
-      __mmdrop()
-        mm_pasid_drop()
-After iommu_domain_free() returns, accessing domain->mm->iommu_mm may
-dereference a freed mm structure, leading to a crash.
+rlb_clear_slave intentionally keeps RLB hash-table entries on
+the rx_hashtbl_used_head list with slave set to NULL when no
+replacement slave is available. However, bond_debug_rlb_hash_show
+visites client_info->slave without checking if it's NULL.
 
-Fix this by moving the code that accesses domain->mm->iommu_mm to before
-the call to iommu_domain_free().
+Other used-list iterators in bond_alb.c already handle this NULL-slave
+state safely:
 
-Fixes: e37d5a2d60a3 ("iommu/sva: invalidate stale IOTLB entries for kernel address space")
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+- rlb_update_client returns early on !client_info->slave
+- rlb_req_update_slave_clients, rlb_clear_slave, and rlb_rebalance
+compare slave values before visiting
+- lb_req_update_subnet_clients continues if slave is NULL
+
+The following NULL deref crash can be trigger in
+bond_debug_rlb_hash_show:
+
+[    1.289791] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[    1.292058] RIP: 0010:bond_debug_rlb_hash_show (drivers/net/bonding/bond_debugfs.c:41)
+[    1.293101] RSP: 0018:ffffc900004a7d00 EFLAGS: 00010286
+[    1.293333] RAX: 0000000000000000 RBX: ffff888102b48200 RCX: ffff888102b48204
+[    1.293631] RDX: ffff888102b48200 RSI: ffffffff839daad5 RDI: ffff888102815078
+[    1.293924] RBP: ffff888102815078 R08: ffff888102b4820e R09: 0000000000000000
+[    1.294267] R10: 0000000000000000 R11: 0000000000000000 R12: ffff888100f929c0
+[    1.294564] R13: ffff888100f92a00 R14: 0000000000000001 R15: ffffc900004a7ed8
+[    1.294864] FS:  0000000001395380(0000) GS:ffff888196e75000(0000) knlGS:0000000000000000
+[    1.295239] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    1.295480] CR2: 0000000000000000 CR3: 0000000102adc004 CR4: 0000000000772ef0
+[    1.295897] Call Trace:
+[    1.296134]  seq_read_iter (fs/seq_file.c:231)
+[    1.296341]  seq_read (fs/seq_file.c:164)
+[    1.296493]  full_proxy_read (fs/debugfs/file.c:378 (discriminator 1))
+[    1.296658]  vfs_read (fs/read_write.c:572)
+[    1.296981]  ksys_read (fs/read_write.c:717)
+[    1.297132]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+[    1.297325]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:130)
+
+Add a NULL check and print "(none)" for entries with no assigned slave.
+
+Fixes: caafa84251b88 ("bonding: add the debugfs interface to see RLB hash table")
+Reported-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Link: https://patch.msgid.link/20260317005034.1888794-1-xmei5@asu.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu-sva.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/bonding/bond_debugfs.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iommu/iommu-sva.c b/drivers/iommu/iommu-sva.c
-index e1e63c2be82b2..fd735aaae9e3f 100644
---- a/drivers/iommu/iommu-sva.c
-+++ b/drivers/iommu/iommu-sva.c
-@@ -182,13 +182,13 @@ void iommu_sva_unbind_device(struct iommu_sva *handle)
- 	iommu_detach_device_pasid(domain, dev, iommu_mm->pasid);
- 	if (--domain->users == 0) {
- 		list_del(&domain->next);
--		iommu_domain_free(domain);
--	}
-+		if (list_empty(&iommu_mm->sva_domains)) {
-+			list_del(&iommu_mm->mm_list_elm);
-+			if (list_empty(&iommu_sva_mms))
-+				iommu_sva_present = false;
-+		}
- 
--	if (list_empty(&iommu_mm->sva_domains)) {
--		list_del(&iommu_mm->mm_list_elm);
--		if (list_empty(&iommu_sva_mms))
--			iommu_sva_present = false;
-+		iommu_domain_free(domain);
+diff --git a/drivers/net/bonding/bond_debugfs.c b/drivers/net/bonding/bond_debugfs.c
+index b19492a7f6ad1..3c1945c3e850a 100644
+--- a/drivers/net/bonding/bond_debugfs.c
++++ b/drivers/net/bonding/bond_debugfs.c
+@@ -34,11 +34,17 @@ static int bond_debug_rlb_hash_show(struct seq_file *m, void *v)
+ 	for (; hash_index != RLB_NULL_INDEX;
+ 	     hash_index = client_info->used_next) {
+ 		client_info = &(bond_info->rx_hashtbl[hash_index]);
+-		seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
+-			&client_info->ip_src,
+-			&client_info->ip_dst,
+-			&client_info->mac_dst,
+-			client_info->slave->dev->name);
++		if (client_info->slave)
++			seq_printf(m, "%-15pI4 %-15pI4 %-17pM %s\n",
++				   &client_info->ip_src,
++				   &client_info->ip_dst,
++				   &client_info->mac_dst,
++				   client_info->slave->dev->name);
++		else
++			seq_printf(m, "%-15pI4 %-15pI4 %-17pM (none)\n",
++				   &client_info->ip_src,
++				   &client_info->ip_dst,
++				   &client_info->mac_dst);
  	}
  
- 	mutex_unlock(&iommu_sva_lock);
+ 	spin_unlock_bh(&bond->mode_lock);
 -- 
 2.51.0
 
