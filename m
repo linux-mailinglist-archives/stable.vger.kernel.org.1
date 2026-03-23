@@ -1,67 +1,61 @@
-Return-Path: <stable+bounces-228572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229105-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eKCgCp9QwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228572-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:27 +0100
+	id gJWaGHdZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229105-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:11 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924672F4EFF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:39:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFCA32F6155
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E0D13325BD69
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A5423325DBB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1413A199FAB;
-	Mon, 23 Mar 2026 14:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AB0248883;
+	Mon, 23 Mar 2026 15:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSpK52J/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bkSCFr2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB4B41D63F3;
-	Mon, 23 Mar 2026 14:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76469245020;
+	Mon, 23 Mar 2026 15:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275484; cv=none; b=eyM+HNG9EJEglZVUYRVdj3SPA6GTvcMegXjvn8SvbWEjhvUXUgihc0GNGWPI7Vf7eBDrf7mYGrUDWKg7rTtecw1TSgSjjb7rUmVqop/JdIRMARqQnq1UglytTIw6h5POhdZJWGJ1Aq9VvKm9aKY10gWg+1Cbd5hriZqQWhFAHGA=
+	t=1774278075; cv=none; b=mZoXN7+0J8VM/wxCO9huBHJloCwqZ0tDUsqleNf6HcNdTDdV8J8wZ6yFlSaqFKi7zCN2iXcEGTfMJf6SljlgTy61jfBrmQ94C9iVwssESS+nrAl45rhDMIG5sm1e/NEG5gkFidXMVEZjqYFH0fuOtT2MUok1BHkkYr8PQjgnqd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275484; c=relaxed/simple;
-	bh=khc+fzSxdcqaWMlX3sli9UxWEBooj370o8Vl3Dann80=;
+	s=arc-20240116; t=1774278075; c=relaxed/simple;
+	bh=KKcYecnD1EOWxiWnyJG8a97RPgwlgJdOygm0iIkgxBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmQMlKe+Pdr177H2nbf/I6SXlvbpI4EWGr8t8/RlgTO8BtEcB9eG5lh22L68yJwBWns/zQmZNZr6V+3P+sk0MZ+6In2C2hOiZtvQZIW5LsOTajJiaXlb/RnDd908ZeQnI+gn+CeVpcIZRWPn6ru1lU7ac3G56xElBCYgeGPuxxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSpK52J/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 370C1C4CEF7;
-	Mon, 23 Mar 2026 14:18:04 +0000 (UTC)
+	 MIME-Version; b=jJapCJ40+6Ok62wcGzJuNyvtHvQWpE11Amfg6gPn0Whh+t2ndJbtoOQkdk4qRTH/Dyj6gaC09TRo5aP9J1LC0ODGnVBw6zPLdXOg/WTSAyBnAv3G2OVcVSokpot5f7guT/MYJFkrSK2RoVO3ay0IldfnqI2Lu2JSh+pulwTka3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bkSCFr2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B3CC4CEF7;
+	Mon, 23 Mar 2026 15:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275484;
-	bh=khc+fzSxdcqaWMlX3sli9UxWEBooj370o8Vl3Dann80=;
+	s=korg; t=1774278075;
+	bh=KKcYecnD1EOWxiWnyJG8a97RPgwlgJdOygm0iIkgxBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSpK52J/zgnjSmnGfm5d8NEGd1vLa8ho+7KuTI/JVO3Leis2pT7d0Dzx4QuzWimfK
-	 EpBEQRxaJLH7/QbvrJMboO4NzNKy4bwg1AhWofM+fsSNSdjwe+g7n00z8i+i5ql22h
-	 uwEbIqZtPGtZNz1joQ9Du5iZrA+iW8OPaA2M4Nz0=
+	b=bkSCFr2tUysdctuXVp2hAbd0uFauUB/ZN7OXWIZhPt+HQaJ2yeEBMKTOxyg72o1zF
+	 JA4p6Wyz9Y1fC73ZSryoy/gZPL1ysbbznmMQcvNSfZq0HecBCpTkCCZDIj9t/gpY2c
+	 oZyr4EcjWCEgEIU/93mK1UDESV5Ev0URh3Z2mbHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kalesh Singh <kaleshsingh@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	SeongJae Park <sj@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	"David Hildenbrand (Arm)" <david@kernel.org>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 118/460] mm/tracing: rss_stat: ensure curr is false from kthread context
+	Qualys Security Advisory <qsa@qualys.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.6 194/567] apparmor: fix unprivileged local user can do privileged policy management
 Date: Mon, 23 Mar 2026 14:41:54 +0100
-Message-ID: <20260323134529.530311575@linuxfoundation.org>
+Message-ID: <20260323134538.651108635@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,112 +68,215 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228572-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229105-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 924672F4EFF
+X-Rspamd-Queue-Id: BFCA32F6155
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh Singh <kaleshsingh@google.com>
+From: John Johansen <john.johansen@canonical.com>
 
-commit 079c24d5690262e83ee476e2a548e416f3237511 upstream.
+commit 6601e13e82841879406bf9f369032656f441a425 upstream.
 
-The rss_stat trace event allows userspace tools, like Perfetto [1], to
-inspect per-process RSS metric changes over time.
+An unprivileged local user can load, replace, and remove profiles by
+opening the apparmorfs interfaces, via a confused deputy attack, by
+passing the opened fd to a privileged process, and getting the
+privileged process to write to the interface.
 
-The curr field was introduced to rss_stat in commit e4dcad204d3a
-("rss_stat: add support to detect RSS updates of external mm").  Its
-intent is to indicate whether the RSS update is for the mm_struct of the
-current execution context; and is set to false when operating on a remote
-mm_struct (e.g., via kswapd or a direct reclaimer).
+This does require a privileged target that can be manipulated to do
+the write for the unprivileged process, but once such access is
+achieved full policy management is possible and all the possible
+implications that implies: removing confinement, DoS of system or
+target applications by denying all execution, by-passing the
+unprivileged user namespace restriction, to exploiting kernel bugs for
+a local privilege escalation.
 
-However, an issue arises when a kernel thread temporarily adopts a user
-process's mm_struct.  Kernel threads do not have their own mm_struct and
-normally have current->mm set to NULL.  To operate on user memory, they
-can "borrow" a memory context using kthread_use_mm(), which sets
-current->mm to the user process's mm.
+The policy management interface can not have its permissions simply
+changed from 0666 to 0600 because non-root processes need to be able
+to load policy to different policy namespaces.
 
-This can be observed, for example, in the USB Function Filesystem (FFS)
-driver.  The ffs_user_copy_worker() handles AIO completions and uses
-kthread_use_mm() to copy data to a user-space buffer.  If a page fault
-occurs during this copy, the fault handler executes in the kthread's
-context.
+Instead ensure the task writing the interface has privileges that
+are a subset of the task that opened the interface. This is already
+done via policy for confined processes, but unconfined can delegate
+access to the opened fd, by-passing the usual policy check.
 
-At this point, current is the kthread, but current->mm points to the user
-process's mm.  Since the rss_stat event (from the page fault) is for that
-same mm, the condition current->mm == mm becomes true, causing curr to be
-incorrectly set to true when the trace event is emitted.
-
-This is misleading because it suggests the mm belongs to the kthread,
-confusing userspace tools that track per-process RSS changes and
-corrupting their mm_id-to-process association.
-
-Fix this by ensuring curr is always false when the trace event is emitted
-from a kthread context by checking for the PF_KTHREAD flag.
-
-Link: https://lkml.kernel.org/r/20260219233708.1971199-1-kaleshsingh@google.com
-Link: https://perfetto.dev/ [1]
-Fixes: e4dcad204d3a ("rss_stat: add support to detect RSS updates of external mm")
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Joel Fernandes <joel@joelfernandes.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>	[5.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: b7fd2c0340eac ("apparmor: add per policy ns .load, .replace, .remove interface files")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/events/kmem.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ security/apparmor/apparmorfs.c     |   16 +++++++++-------
+ security/apparmor/include/policy.h |    2 +-
+ security/apparmor/policy.c         |   34 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 43 insertions(+), 9 deletions(-)
 
---- a/include/trace/events/kmem.h
-+++ b/include/trace/events/kmem.h
-@@ -397,7 +397,13 @@ TRACE_EVENT(rss_stat,
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -412,7 +412,8 @@ static struct aa_loaddata *aa_simple_wri
+ }
  
- 	TP_fast_assign(
- 		__entry->mm_id = mm_ptr_to_hash(mm);
--		__entry->curr = !!(current->mm == mm);
-+		/*
-+		 * curr is true if the mm matches the current task's mm_struct.
-+		 * Since kthreads (PF_KTHREAD) have no mm_struct of their own
-+		 * but can borrow one via kthread_use_mm(), we must filter them
-+		 * out to avoid incorrectly attributing the RSS update to them.
-+		 */
-+		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
- 		__entry->member = member;
- 		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
- 							    << PAGE_SHIFT);
+ static ssize_t policy_update(u32 mask, const char __user *buf, size_t size,
+-			     loff_t *pos, struct aa_ns *ns)
++			     loff_t *pos, struct aa_ns *ns,
++			     const struct cred *ocred)
+ {
+ 	struct aa_loaddata *data;
+ 	struct aa_label *label;
+@@ -423,7 +424,7 @@ static ssize_t policy_update(u32 mask, c
+ 	/* high level check about policy management - fine grained in
+ 	 * below after unpack
+ 	 */
+-	error = aa_may_manage_policy(current_cred(), label, ns, mask);
++	error = aa_may_manage_policy(current_cred(), label, ns, ocred, mask);
+ 	if (error)
+ 		goto end_section;
+ 
+@@ -444,7 +445,8 @@ static ssize_t profile_load(struct file
+ 			    loff_t *pos)
+ {
+ 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
+-	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns);
++	int error = policy_update(AA_MAY_LOAD_POLICY, buf, size, pos, ns,
++				  f->f_cred);
+ 
+ 	aa_put_ns(ns);
+ 
+@@ -462,7 +464,7 @@ static ssize_t profile_replace(struct fi
+ {
+ 	struct aa_ns *ns = aa_get_ns(f->f_inode->i_private);
+ 	int error = policy_update(AA_MAY_LOAD_POLICY | AA_MAY_REPLACE_POLICY,
+-				  buf, size, pos, ns);
++				  buf, size, pos, ns, f->f_cred);
+ 	aa_put_ns(ns);
+ 
+ 	return error;
+@@ -487,7 +489,7 @@ static ssize_t profile_remove(struct fil
+ 	 * below after unpack
+ 	 */
+ 	error = aa_may_manage_policy(current_cred(), label, ns,
+-				     AA_MAY_REMOVE_POLICY);
++				     f->f_cred, AA_MAY_REMOVE_POLICY);
+ 	if (error)
+ 		goto out;
+ 
+@@ -1819,7 +1821,7 @@ static int ns_mkdir_op(struct mnt_idmap
+ 	int error;
+ 
+ 	label = begin_current_label_crit_section();
+-	error = aa_may_manage_policy(current_cred(), label, NULL,
++	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
+ 				     AA_MAY_LOAD_POLICY);
+ 	end_current_label_crit_section(label);
+ 	if (error)
+@@ -1869,7 +1871,7 @@ static int ns_rmdir_op(struct inode *dir
+ 	int error;
+ 
+ 	label = begin_current_label_crit_section();
+-	error = aa_may_manage_policy(current_cred(), label, NULL,
++	error = aa_may_manage_policy(current_cred(), label, NULL, NULL,
+ 				     AA_MAY_LOAD_POLICY);
+ 	end_current_label_crit_section(label);
+ 	if (error)
+--- a/security/apparmor/include/policy.h
++++ b/security/apparmor/include/policy.h
+@@ -401,7 +401,7 @@ bool aa_policy_admin_capable(const struc
+ 			     struct aa_label *label, struct aa_ns *ns);
+ int aa_may_manage_policy(const struct cred *subj_cred,
+ 			 struct aa_label *label, struct aa_ns *ns,
+-			 u32 mask);
++			 const struct cred *ocred, u32 mask);
+ bool aa_current_policy_view_capable(struct aa_ns *ns);
+ bool aa_current_policy_admin_capable(struct aa_ns *ns);
+ 
+--- a/security/apparmor/policy.c
++++ b/security/apparmor/policy.c
+@@ -891,17 +891,44 @@ bool aa_current_policy_admin_capable(str
+ 	return res;
+ }
+ 
++static bool is_subset_of_obj_privilege(const struct cred *cred,
++				       struct aa_label *label,
++				       const struct cred *ocred)
++{
++	if (cred == ocred)
++		return true;
++
++	if (!aa_label_is_subset(label, cred_label(ocred)))
++		return false;
++	/* don't allow crossing userns for now */
++	if (cred->user_ns != ocred->user_ns)
++		return false;
++	if (!cap_issubset(cred->cap_inheritable, ocred->cap_inheritable))
++		return false;
++	if (!cap_issubset(cred->cap_permitted, ocred->cap_permitted))
++		return false;
++	if (!cap_issubset(cred->cap_effective, ocred->cap_effective))
++		return false;
++	if (!cap_issubset(cred->cap_bset, ocred->cap_bset))
++		return false;
++	if (!cap_issubset(cred->cap_ambient, ocred->cap_ambient))
++		return false;
++	return true;
++}
++
++
+ /**
+  * aa_may_manage_policy - can the current task manage policy
+  * @subj_cred; subjects cred
+  * @label: label to check if it can manage policy
+  * @ns: namespace being managed by @label (may be NULL if @label's ns)
++ * @ocred: object cred if request is coming from an open object
+  * @mask: contains the policy manipulation operation being done
+  *
+  * Returns: 0 if the task is allowed to manipulate policy else error
+  */
+ int aa_may_manage_policy(const struct cred *subj_cred, struct aa_label *label,
+-			 struct aa_ns *ns, u32 mask)
++			 struct aa_ns *ns, const struct cred *ocred, u32 mask)
+ {
+ 	const char *op;
+ 
+@@ -917,6 +944,11 @@ int aa_may_manage_policy(const struct cr
+ 		return audit_policy(label, op, NULL, NULL, "policy_locked",
+ 				    -EACCES);
+ 
++	if (ocred && !is_subset_of_obj_privilege(subj_cred, label, ocred))
++		return audit_policy(label, op, NULL, NULL,
++				    "not privileged for target profile",
++				    -EACCES);
++
+ 	if (!aa_policy_admin_capable(subj_cred, label, ns))
+ 		return audit_policy(label, op, NULL, NULL, "not policy admin",
+ 				    -EACCES);
 
 
 
