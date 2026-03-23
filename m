@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-229831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229376-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GKX2N+19wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229831-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:52:45 +0100
+	id eES7D89fwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229376-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:44:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 447F62FA8AD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:52:45 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31F692F6CD3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:44:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA2483080D5F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:23:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C087C30157DC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFE53AEF5C;
-	Mon, 23 Mar 2026 16:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8453D3BE625;
+	Mon, 23 Mar 2026 15:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hEqDEwN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L03J47p8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E07B3AE19E;
-	Mon, 23 Mar 2026 16:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459233B8933;
+	Mon, 23 Mar 2026 15:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282983; cv=none; b=phF6G0isjjiCCoGGbFFtbDcDrrQA3Mgd2pHo2gpwNMfaNk6Q9gaQDn0hImDJ3wOqe7h4CXduDlMNIcKe+mVLXRVJ/RW1IZUciy1qOYLg4s/fweBTPQOZcqEY02CjDYJbwKHi5k8nEMUOOOGGfEhUOswFGfWXhr3zxMgcCfKsBU8=
+	t=1774278921; cv=none; b=U42f8XjZV55ub/z8Nta3rPtC+LM17iRfsQIZ0Fnlz7M9dvaCwcMB/4kPb4S4Y3Fto52m0T4tCiSThCFBBTuVVx/nqaHzBYa4LItS/LcTQY0sPYoohPvExATS2PPyRSXWzWCeFUf1U+JaN0wKpV3L84PRal1qjQB7SzoD798NnSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282983; c=relaxed/simple;
-	bh=nk8ahJimYxk/2RVeRigIZYjhYdl+mTQRnC7EzdsQmB8=;
+	s=arc-20240116; t=1774278921; c=relaxed/simple;
+	bh=IcVKYIqk83fGYz7Tfeg41olf8Obf1xkORYMadpAMdno=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XMfPa2B5szmITkAWkdaBX3XMDIpn7bvv2qOWhq1z2aGIhoufnB8og6FaMqemJGq6jggIPQrIjO9Ug6JEJvlOKGfdvP3Uo5g8QzKSfc8lqfXwrBfFOVmVT/qMsHAEvR08zP/eDgDu3vaduYap7M1ZhfXYGolVfXRdX3++Z2LswfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hEqDEwN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95607C4CEF7;
-	Mon, 23 Mar 2026 16:23:02 +0000 (UTC)
+	 MIME-Version; b=CacEwBAk4I0NIRkf9qfmAENcGzAju/A2u9hbk7iEsMYUeVqKX7IYYtcpn/g3/yYXa3Hxw/iFWPKl/0KHVzBtlp/mA2bfloXaaptDLePb+VAVC57vCQjycCGtiJCTQLiZf3HXlTb48J6kEn86gFm+HECSVpNE/CcwhY3lSNHtOH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L03J47p8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74FBFC2BCB1;
+	Mon, 23 Mar 2026 15:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282982;
-	bh=nk8ahJimYxk/2RVeRigIZYjhYdl+mTQRnC7EzdsQmB8=;
+	s=korg; t=1774278920;
+	bh=IcVKYIqk83fGYz7Tfeg41olf8Obf1xkORYMadpAMdno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hEqDEwN6ZOJg0C/U1DYAtoUxoln6ltvfiPau+sRckroxLQPMdivC14HZZkCk+BKuy
-	 +BujkEQJamotrmHHrK+qRkldvMKOZ+wXi26EeYUvLzgE+DhvGMr083lrBAm5SjivsN
-	 22zxAsqFfrHqMtdNOlN2o5psJyOmee0R66S337Sw=
+	b=L03J47p8PfKfpEO6Qzs9UJWkSv5g1KjcflsvY+hKkJ9wTPSmjQZ//1CA6x6545Xpl
+	 jxUd86X7U3OJbhmZ+2uc34UF6Sh0RZiqKuYZtUAgFIaXbpVi1WLvI07mUxE0vAKQTp
+	 e+N6kXP29eGgMqr1O1D8RD6lC/fOYcDCmXNLrz4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yifan Wu <yifanwucs@gmail.com>,
-	Juefei Pu <tomapufckgml@gmail.com>,
-	Yuan Tan <tanyuan98@outlook.com>,
-	Xin Liu <bird@lzu.edu.cn>,
-	Ao Zhou <n05ec@lzu.edu.cn>,
-	Sven Eckelmann <sven@narfation.org>,
-	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.1 357/481] batman-adv: avoid OGM aggregation when skb tailroom is insufficient
+	syzbot+a2b9a4ed0d61b1efb3f5@syzkaller.appspotmail.com,
+	Christoph Hellwig <hch@lst.de>,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Chen Yu <xnguchen@sina.cn>
+Subject: [PATCH 6.6 419/567] iomap: allocate s_dio_done_wq for async reads as well
 Date: Mon, 23 Mar 2026 14:45:39 +0100
-Message-ID: <20260323134533.806889752@linuxfoundation.org>
+Message-ID: <20260323134544.255084351@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,84 +67,84 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,outlook.com,lzu.edu.cn,narfation.org,simonwunderlich.de];
-	TAGGED_FROM(0.00)[bounces-229831-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,lst.de,redhat.com,kernel.org,sina.cn];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229376-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.910];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,outlook.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,narfation.org:email,lzu.edu.cn:email]
-X-Rspamd-Queue-Id: 447F62FA8AD
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,a2b9a4ed0d61b1efb3f5];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 31F692F6CD3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yang <n05ec@lzu.edu.cn>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 0d4aef630be9d5f9c1227d07669c26c4383b5ad0 upstream.
+commit 7fd8720dff2d9c70cf5a1a13b7513af01952ec02 upstream.
 
-When OGM aggregation state is toggled at runtime, an existing forwarded
-packet may have been allocated with only packet_len bytes, while a later
-packet can still be selected for aggregation. Appending in this case can
-hit skb_put overflow conditions.
+Since commit 222f2c7c6d14 ("iomap: always run error completions in user
+context"), read error completions are deferred to s_dio_done_wq.  This
+means the workqueue also needs to be allocated for async reads.
 
-Reject aggregation when the target skb tailroom cannot accommodate the new
-packet. The caller then falls back to creating a new forward packet
-instead of appending.
-
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Cc: stable@vger.kernel.org
-Reported-by: Yifan Wu <yifanwucs@gmail.com>
-Reported-by: Juefei Pu <tomapufckgml@gmail.com>
-Signed-off-by: Yuan Tan <tanyuan98@outlook.com>
-Signed-off-by: Xin Liu <bird@lzu.edu.cn>
-Signed-off-by: Ao Zhou <n05ec@lzu.edu.cn>
-Signed-off-by: Yang Yang <n05ec@lzu.edu.cn>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-[ Adjust context ]
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Fixes: 222f2c7c6d14 ("iomap: always run error completions in user context")
+Reported-by: syzbot+a2b9a4ed0d61b1efb3f5@syzkaller.appspotmail.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/20251124140013.902853-1-hch@lst.de
+Tested-by: syzbot+a2b9a4ed0d61b1efb3f5@syzkaller.appspotmail.com
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Chen Yu <xnguchen@sina.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_iv_ogm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/iomap/direct-io.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/batman-adv/bat_iv_ogm.c
-+++ b/net/batman-adv/bat_iv_ogm.c
-@@ -465,6 +465,9 @@ batadv_iv_ogm_can_aggregate(const struct
- 	    !time_after_eq(aggregation_end_time, forw_packet->send_time))
- 		return false;
+--- a/fs/iomap/direct-io.c
++++ b/fs/iomap/direct-io.c
+@@ -659,12 +659,12 @@ __iomap_dio_rw(struct kiocb *iocb, struc
+ 			}
+ 			goto out_free_dio;
+ 		}
++	}
  
-+	if (skb_tailroom(forw_packet->skb) < packet_len)
-+		return false;
-+
- 	if (aggregated_bytes > BATADV_MAX_AGGREGATION_BYTES)
- 		return false;
+-		if (!wait_for_completion && !inode->i_sb->s_dio_done_wq) {
+-			ret = sb_init_dio_done_wq(inode->i_sb);
+-			if (ret < 0)
+-				goto out_free_dio;
+-		}
++	if (!wait_for_completion && !inode->i_sb->s_dio_done_wq) {
++		ret = sb_init_dio_done_wq(inode->i_sb);
++		if (ret < 0)
++			goto out_free_dio;
+ 	}
  
+ 	inode_dio_begin(inode);
 
 
 
