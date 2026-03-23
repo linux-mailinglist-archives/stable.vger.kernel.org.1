@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228724-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AFURIQBewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229254-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:32 +0100
+	id iOlfBlBnwWliSwQAu9opvQ
+	(envelope-from <stable+bounces-228724-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:16:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ABD42F68D9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:36:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 827432F7D4D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 32EF9334C2AF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AF79A32406DE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D91D93B27DC;
-	Mon, 23 Mar 2026 15:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E93E3B27ED;
+	Mon, 23 Mar 2026 14:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Up/CsY8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ob2kAVtG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3E23B2FC1;
-	Mon, 23 Mar 2026 15:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BCD3B27EA;
+	Mon, 23 Mar 2026 14:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278543; cv=none; b=pbbn0KQaz9AX4j68idZULjpVnRlKN0BZJZsDXrCmSNpQtuzdvOSi4GiSrSuEq0t0mmAcxz3SOEVUco8BxOksSC0fiuG7A1p6pW1FgI2F0MLA8o+VJ4cDgeJ4gruUUhwGElWl/4acZbOkz4PBTZoAVPgPEMAH8Yz3pU8TWBJdRoY=
+	t=1774276951; cv=none; b=Ag5tQuqsGS6IPBOI/IX4sVNERr0zVGbSxk9ToQ1T7YeoanGrYB9CUbyUjt6aV03+qnLcyVdQHtuIujpj/4vov/frF9sfIWksMR7RJoaygjIoWpIKefbBrNTo2O/9bSrWdx0dipHwDLh3xBwe8zuFDM2uKGCpGwPwfiyXqNG0KNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278543; c=relaxed/simple;
-	bh=fAYJRIEMePh+IHeDeaPib2M04pwI7lBXwizjrN9bUEc=;
+	s=arc-20240116; t=1774276951; c=relaxed/simple;
+	bh=TdrjiJQrMi3BvvNByooasOaeavu7kfNy2RJrWCnLIdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PaTN7f7iT5c+LM8DmUZ6oPvLU0KEbopgi5eIUrSpUIF1eAmI0et72PtME3xbQCfbSYtbneqf9Fld8fOO1n38Hdp3DAK1D66e/gtTb2M2qSDpzqZkR3cTcj9G15EVVFaS6AE/ZrWqM5ygiVq6QuiHI46PmDDaVjd1d2IcKAVSld8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Up/CsY8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F90C4CEF7;
-	Mon, 23 Mar 2026 15:09:02 +0000 (UTC)
+	 MIME-Version; b=fNcmJe7bF5q98d4TFIqmyWdHebcpHe3/kXjJ1qWUU13NSleFrpejulPf+bANGGPAXqYiynHuixt19d9YuAWLZ1q+jO5eDyYa263+L5xybWEnXsqWBAcQ0AfPSYSA/H+BQAWhWKR+LGUevqWIUFj6tWZqTiMaJtTVebKePLsdcN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ob2kAVtG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB33C4CEF7;
+	Mon, 23 Mar 2026 14:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278543;
-	bh=fAYJRIEMePh+IHeDeaPib2M04pwI7lBXwizjrN9bUEc=;
+	s=korg; t=1774276950;
+	bh=TdrjiJQrMi3BvvNByooasOaeavu7kfNy2RJrWCnLIdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Up/CsY8xVZJnP/KqIG/P+HJmRh9phiy6rJ8lPYq+Xd9I9isi05LP+he7wiz+rfJDn
-	 Rlff8B2VjH73w0LP07mTJs6wOkRPjkFXuhU+/BI6Lc61UtCkxpMyYfsF454hszCkTI
-	 67fw58Bg+whtnITUkJtp3gAzJUl5GSBqmlXasLCs=
+	b=ob2kAVtGRTcjIbKLDKoWY3l1qMr0+R2p/j5PzdmDzMRRPs7BqqbuuDNx5BE6u2VLA
+	 D3fFQTq3ovWtbtCyXSB0f7uwALdMP8VlqCzNCCrNmedpNV1M9KrxzUfKusT17ONurD
+	 hGqWnJJaYTZ25Uquj9zbwZcqShQnLXTn+6tl1MrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Hoeppner <hoeppner@linux.ibm.com>,
-	Eduard Shishkin <edward6@linux.ibm.com>,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 342/567] s390/dasd: Copy detected format information to secondary device
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 266/460] KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM
 Date: Mon, 23 Mar 2026 14:44:22 +0100
-Message-ID: <20260323134542.297843361@linuxfoundation.org>
+Message-ID: <20260323134533.022818164@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,105 +69,141 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229254-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228724-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0ABD42F68D9
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url]
+X-Rspamd-Queue-Id: 827432F7D4D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Jim Mattson <jmattson@google.com>
 
-commit 4c527c7e030672efd788d0806d7a68972a7ba3c1 upstream.
+[ Upstream commit e2ffe85b6d2bb7780174b87aa4468a39be17eb81 ]
 
-During online processing for a DASD device an IO operation is started to
-determine the format of the device. CDL format contains specifically
-sized blocks at the beginning of the disk.
+Add KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM to allow L1 to set
+FREEZE_IN_SMM in vmcs12's GUEST_IA32_DEBUGCTL field, as permitted
+prior to commit 6b1dd26544d0 ("KVM: VMX: Preserve host's
+DEBUGCTLMSR_FREEZE_IN_SMM while running the guest").  Enable the quirk
+by default for backwards compatibility (like all quirks); userspace
+can disable it via KVM_CAP_DISABLE_QUIRKS2 for consistency with the
+constraints on WRMSR(IA32_DEBUGCTL).
 
-For a PPRC secondary device no real IO operation is possible therefore
-this IO request can not be started and this step is skipped for online
-processing of secondary devices. This is generally fine since the
-secondary is a copy of the primary device.
+Note that the quirk only bypasses the consistency check.  The vmcs02 bit is
+still owned by the host, and PMCs are not frozen during virtualized SMM.
+In particular, if a host administrator decides that PMCs should not be
+frozen during physical SMM, then L1 has no say in the matter.
 
-In case of an additional partition detection that is run after a swap
-operation the format information is needed to properly drive partition
-detection IO.
-
-Currently the information is not passed leading to IO errors during
-partition detection and a wrongly detected partition table which in turn
-might lead to data corruption on the disk with the wrong partition table.
-
-Fix by passing the format information from primary to secondary device.
-
-Fixes: 413862caad6f ("s390/dasd: add copy pair swap capability")
-Cc: stable@vger.kernel.org #6.1
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Acked-by: Eduard Shishkin <edward6@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://patch.msgid.link/20260310142330.4080106-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 095686e6fcb4 ("KVM: nVMX: Check vmcs12->guest_ia32_debugctl on nested VM-Enter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Link: https://patch.msgid.link/20260205231537.1278753-1-jmattson@google.com
+[sean: tag for stable@, clean-up and fix goofs in the comment and docs]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[Rename quirk. - Paolo]
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd_eckd.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ Documentation/virt/kvm/api.rst  |    8 ++++++++
+ arch/x86/include/asm/kvm_host.h |    3 ++-
+ arch/x86/include/uapi/asm/kvm.h |    1 +
+ arch/x86/kvm/vmx/nested.c       |   22 ++++++++++++++++++----
+ 4 files changed, 29 insertions(+), 5 deletions(-)
 
---- a/drivers/s390/block/dasd_eckd.c
-+++ b/drivers/s390/block/dasd_eckd.c
-@@ -6185,6 +6185,7 @@ static void copy_pair_set_active(struct
- static int dasd_eckd_copy_pair_swap(struct dasd_device *device, char *prim_busid,
- 				    char *sec_busid)
- {
-+	struct dasd_eckd_private *prim_priv, *sec_priv;
- 	struct dasd_device *primary, *secondary;
- 	struct dasd_copy_relation *copy;
- 	struct dasd_block *block;
-@@ -6205,6 +6206,9 @@ static int dasd_eckd_copy_pair_swap(stru
- 	if (!secondary)
- 		return DASD_COPYPAIRSWAP_SECONDARY;
- 
-+	prim_priv = primary->private;
-+	sec_priv = secondary->private;
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -8151,6 +8151,14 @@ KVM_X86_QUIRK_IGNORE_GUEST_PAT      By d
+                                     guest software, for example if it does not
+                                     expose a bochs graphics device (which is
+                                     known to have had a buggy driver).
 +
- 	/*
- 	 * usually the device should be quiesced for swap
- 	 * for paranoia stop device and requeue requests again
-@@ -6237,6 +6241,13 @@ static int dasd_eckd_copy_pair_swap(stru
- 		dasd_device_remove_stop_bits(primary, DASD_STOPPED_QUIESCE);
- 	}
++KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM   By default, KVM relaxes the consistency
++                                      check for GUEST_IA32_DEBUGCTL in vmcs12
++                                      to allow FREEZE_IN_SMM to be set.  When
++                                      this quirk is disabled, KVM requires this
++                                      bit to be cleared.  Note that the vmcs02
++                                      bit is still completely controlled by the
++                                      host, regardless of the quirk setting.
+ =================================== ============================================
  
-+	/*
-+	 * The secondary device never got through format detection, but since it
-+	 * is a copy of the primary device, the format is exactly the same;
-+	 * therefore, the detected layout can simply be copied.
-+	 */
-+	sec_priv->uses_cdl = prim_priv->uses_cdl;
+ 7.32 KVM_CAP_MAX_VCPU_ID
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2387,7 +2387,8 @@ int memslot_rmap_alloc(struct kvm_memory
+ 	 KVM_X86_QUIRK_MWAIT_NEVER_UD_FAULTS |	\
+ 	 KVM_X86_QUIRK_SLOT_ZAP_ALL |		\
+ 	 KVM_X86_QUIRK_STUFF_FEATURE_MSRS |	\
+-	 KVM_X86_QUIRK_IGNORE_GUEST_PAT)
++	 KVM_X86_QUIRK_IGNORE_GUEST_PAT |	\
++	 KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM)
+ 
+ #define KVM_X86_CONDITIONAL_QUIRKS		\
+ 	(KVM_X86_QUIRK_CD_NW_CLEARED |		\
+--- a/arch/x86/include/uapi/asm/kvm.h
++++ b/arch/x86/include/uapi/asm/kvm.h
+@@ -442,6 +442,7 @@ struct kvm_sync_regs {
+ #define KVM_X86_QUIRK_SLOT_ZAP_ALL		(1 << 7)
+ #define KVM_X86_QUIRK_STUFF_FEATURE_MSRS	(1 << 8)
+ #define KVM_X86_QUIRK_IGNORE_GUEST_PAT		(1 << 9)
++#define KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM (1 << 10)
+ 
+ #define KVM_STATE_NESTED_FORMAT_VMX	0
+ #define KVM_STATE_NESTED_FORMAT_SVM	1
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -3142,10 +3142,24 @@ static int nested_vmx_check_guest_state(
+ 	if (CC(vmcs12->guest_cr4 & X86_CR4_CET && !(vmcs12->guest_cr0 & X86_CR0_WP)))
+ 		return -EINVAL;
+ 
+-	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) &&
+-	    (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
+-	     CC(!vmx_is_valid_debugctl(vcpu, vmcs12->guest_ia32_debugctl, false))))
+-		return -EINVAL;
++	if (vmcs12->vm_entry_controls & VM_ENTRY_LOAD_DEBUG_CONTROLS) {
++		u64 debugctl = vmcs12->guest_ia32_debugctl;
 +
- 	/* re-enable device */
- 	dasd_device_remove_stop_bits(primary, DASD_STOPPED_PPRC);
- 	dasd_device_remove_stop_bits(secondary, DASD_STOPPED_PPRC);
++		/*
++		 * FREEZE_IN_SMM is not virtualized, but allow L1 to set it in
++		 * vmcs12's DEBUGCTL under a quirk for backwards compatibility.
++		 * Note that the quirk only relaxes the consistency check.  The
++		 * vmcc02 bit is still under the control of the host.  In
++		 * particular, if a host administrator decides to clear the bit,
++		 * then L1 has no say in the matter.
++		 */
++		if (kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM))
++			debugctl &= ~DEBUGCTLMSR_FREEZE_IN_SMM;
++
++		if (CC(!kvm_dr7_valid(vmcs12->guest_dr7)) ||
++		    CC(!vmx_is_valid_debugctl(vcpu, debugctl, false)))
++			return -EINVAL;
++	}
+ 
+ 	if ((vmcs12->vm_entry_controls & VM_ENTRY_LOAD_IA32_PAT) &&
+ 	    CC(!kvm_pat_valid(vmcs12->guest_ia32_pat)))
 
 
 
