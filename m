@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-228300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229308-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uMzoDxBNwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228300-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:16 +0100
+	id uEFmLBBdwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229308-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CDA2F461C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EA02F6721
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B9756304C11E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 661DA30E2939
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97873B0AD0;
-	Mon, 23 Mar 2026 14:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DB83B5841;
+	Mon, 23 Mar 2026 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVrT5DbW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dy13oPq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8703AC0E3;
-	Mon, 23 Mar 2026 14:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACA1277C88;
+	Mon, 23 Mar 2026 15:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274736; cv=none; b=seKQVfvqXs+jHUFKiesRzaRQTarxsviwAoYxth5Fg9xWCSFJv1nNjNm99xftQbwEisTkENBp9slZY9iUfw+LpFh5MdZ4eN8v9SV2Q3I/yRmpBgdZsxRkfZADOIwK4js8Tv+ev6TXcuD4lnA04vOqbeuKJsbc9Qt9OOVCD7TWMc4=
+	t=1774278708; cv=none; b=JjM8OCsyvJvdnlJsWECGc01EK7A+orLY4F8vUfr3Q1ly90tIdwWbwQ8Q81CzBXrev4dgCsVqisUmlKbNfjpCMJdLSzRyX/4piAO2kBZ3jbTXaG0F7SehfxZC4FEMjuS6czjGeOtj82PsswPrR45ohCD9kZav2xRqP4bwFvRbWBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274736; c=relaxed/simple;
-	bh=6vFmUa5dUuqeTEVJKt5Vt6y0lcVKC3RG4IZh8k99jNI=;
+	s=arc-20240116; t=1774278708; c=relaxed/simple;
+	bh=NEk/RfKbSybFBvOCuaCj4tlCkg0AoE5pEBOu5u1PWVE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyHIg5mqkPOMdw6H75pf2a4Spx11KSci7oAASARld2cPgpvOaiKleer6eca1ffPcoa6YF/38zKk2cF3u/aWno/jG2zFXCxXMl5BRqEraefj7FsTSLtWhEkreFDpb/wJbCADDjjlbB5q0dah715dhg3Z1jdjYmbNuQNQE3cTHTa0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVrT5DbW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1289AC4AF0B;
-	Mon, 23 Mar 2026 14:05:35 +0000 (UTC)
+	 MIME-Version; b=uV3NKrngXiJB6m2eIMFXmevLVnOqF5qTnECLXTAKZY0v/e/GkBol27esjoWJm0hmCpanf5RIhB95+Y9WTW7Vz9QJXxZAMGdqSZFkcNonuhtfLdAMO7w663sPs+mljfKcNjEMd3JRwdwh9LVO+6pLlabEDUyQNeB2UUQo2XbzB3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dy13oPq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDADDC4CEF7;
+	Mon, 23 Mar 2026 15:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274736;
-	bh=6vFmUa5dUuqeTEVJKt5Vt6y0lcVKC3RG4IZh8k99jNI=;
+	s=korg; t=1774278708;
+	bh=NEk/RfKbSybFBvOCuaCj4tlCkg0AoE5pEBOu5u1PWVE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVrT5DbWB6ZobuYdc97LqhYDY5PRZ2zoiIuRRLDIWTr6IBne6TzJMLWKTQi8woJ7m
-	 xxUKew4LJSBzkN0Lh/WK9Kl3gvoS6YTvSNw/g3Zg/rSG6xm/F7JaHRPRovVhZgo0Bw
-	 8qmwLhQX9x/3bk6wCvF9vJ9C+shERLut05e/It68=
+	b=Dy13oPq62clcMMsjejghsAQ5Q6TIyidoOhQk8k3CCRpUdggt6al/HmvgoKovADUn9
+	 N3yrrB7YkiYD4CPob9ywVZt58wfVty5nMlFeVj0WGJ9ytaDTAle3jEeo3H7qeiYOhn
+	 vedGC5c+qvcW3UynDb3pxA1qsBScj0L9oS5OHa7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammed Thasleem <mohammed.thasleem@intel.com>,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Tao Liu <ltao@redhat.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Subject: [PATCH 6.18 093/212] drm/i915/dmc: Fix an unlikely NULL pointer deference at probe
+	Long Li <leo.lilong@huawei.com>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cem@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 394/567] xfs: ensure dquot item is deleted from AIL only after log shutdown
 Date: Mon, 23 Mar 2026 14:45:14 +0100
-Message-ID: <20260323134506.716983161@linuxfoundation.org>
+Message-ID: <20260323134543.606483905@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,112 +71,97 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228300-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229308-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 67CDA2F461C
+X-Rspamd-Queue-Id: 50EA02F6721
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Long Li <leo.lilong@huawei.com>
 
-commit ac57eb3b7d2ad649025b5a0fa207315f755ac4f6 upstream.
+[ Upstream commit 186ac39b8a7d3ec7ce9c5dd45e5c2730177f375c ]
 
-intel_dmc_update_dc6_allowed_count() oopses when DMC hasn't been
-initialized, and dmc is thus NULL.
+In xfs_qm_dqflush(), when a dquot flush fails due to corruption
+(the out_abort error path), the original code removed the dquot log
+item from the AIL before calling xfs_force_shutdown(). This ordering
+introduces a subtle race condition that can lead to data loss after
+a crash.
 
-That would be the case when the call path is
-intel_power_domains_init_hw() -> {skl,bxt,icl}_display_core_init() ->
-gen9_set_dc_state() -> intel_dmc_update_dc6_allowed_count(), as
-intel_power_domains_init_hw() is called *before* intel_dmc_init().
+The AIL tracks the oldest dirty metadata in the journal. The position
+of the tail item in the AIL determines the log tail LSN, which is the
+oldest LSN that must be preserved for crash recovery. When an item is
+removed from the AIL, the log tail can advance past the LSN of that item.
 
-However, gen9_set_dc_state() calls intel_dmc_update_dc6_allowed_count()
-conditionally, depending on the current and target DC states. At probe,
-the target is disabled, but if DC6 is enabled, the function is called,
-and an oops follows. Apparently it's quite unlikely that DC6 is enabled
-at probe, as we haven't seen this failure mode before.
+The race window is as follows: if the dquot item happens to be at
+the tail of the log, removing it from the AIL allows the log tail
+to advance. If a concurrent log write is sampling the tail LSN at
+the same time and subsequently writes a complete checkpoint (i.e.,
+one containing a commit record) to disk before the shutdown takes
+effect, the journal will no longer protect the dquot's last
+modification. On the next mount, log recovery will not replay the
+dquot changes, even though they were never written back to disk,
+resulting in silent data loss.
 
-It is also strange to have DC6 enabled at boot, since that would require
-the DMC firmware (loaded by BIOS); the BIOS loading the DMC firmware and
-the driver stopping / reprogramming the firmware is a poorly specified
-sequence and as such unlikely an intentional BIOS behaviour. It's more
-likely that BIOS is leaving an unintentionally enabled DC6 HW state
-behind (without actually loading the required DMC firmware for this).
+Fix this by calling xfs_force_shutdown() before xfs_trans_ail_delete()
+in the out_abort path. Once the log is shut down, no new log writes
+can complete with an updated tail LSN, making it safe to remove the
+dquot item from the AIL.
 
-The tracking of the DC6 allowed counter only works if starting /
-stopping the counter depends on the _SW_ DC6 state vs. the current _HW_
-DC6 state (since stopping the counter requires the DC5 counter captured
-when the counter was started). Thus, using the HW DC6 state is incorrect
-and it also leads to the above oops. Fix both issues by using the SW DC6
-state for the tracking.
-
-This is v2 of the fix originally sent by Jani, updated based on the
-first Link: discussion below.
-
-Link: https://lore.kernel.org/all/3626411dc9e556452c432d0919821b76d9991217@intel.com
-Link: https://lore.kernel.org/all/20260228130946.50919-2-ltao@redhat.com
-Fixes: 88c1f9a4d36d ("drm/i915/dmc: Create debugfs entry for dc6 counter")
-Cc: Mohammed Thasleem <mohammed.thasleem@intel.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Tao Liu <ltao@redhat.com>
-Cc: <stable@vger.kernel.org> # v6.16+
-Tested-by: Tao Liu <ltao@redhat.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patch.msgid.link/20260309164803.1918158-1-imre.deak@intel.com
-(cherry picked from commit 2344b93af8eb5da5d496b4e0529d35f0f559eaf0)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Fixes: b707fffda6a3 ("xfs: abort consistently on dquot flush failure")
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+[ adapted error path to preserve existing out_unlock label between xfs_trans_ail_delete and xfs_dqfunlock ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_power_well.c |    2 +-
- drivers/gpu/drm/i915/display/intel_dmc.c                |    3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ fs/xfs/xfs_dquot.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_power_well.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_power_well.c
-@@ -796,7 +796,7 @@ void gen9_set_dc_state(struct intel_disp
- 			power_domains->dc_state, val & mask);
+--- a/fs/xfs/xfs_dquot.c
++++ b/fs/xfs/xfs_dquot.c
+@@ -1297,9 +1297,15 @@ xfs_qm_dqflush(
+ 	return 0;
  
- 	enable_dc6 = state & DC_STATE_EN_UPTO_DC6;
--	dc6_was_enabled = val & DC_STATE_EN_UPTO_DC6;
-+	dc6_was_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
- 	if (!dc6_was_enabled && enable_dc6)
- 		intel_dmc_update_dc6_allowed_count(display, true);
- 
---- a/drivers/gpu/drm/i915/display/intel_dmc.c
-+++ b/drivers/gpu/drm/i915/display/intel_dmc.c
-@@ -1569,8 +1569,7 @@ static bool intel_dmc_get_dc6_allowed_co
- 		return false;
- 
- 	mutex_lock(&power_domains->lock);
--	dc6_enabled = intel_de_read(display, DC_STATE_EN) &
--		      DC_STATE_EN_UPTO_DC6;
-+	dc6_enabled = power_domains->dc_state & DC_STATE_EN_UPTO_DC6;
- 	if (dc6_enabled)
- 		intel_dmc_update_dc6_allowed_count(display, false);
- 
+ out_abort:
++	/*
++	 * Shut down the log before removing the dquot item from the AIL.
++	 * Otherwise, the log tail may advance past this item's LSN while
++	 * log writes are still in progress, making these unflushed changes
++	 * unrecoverable on the next mount.
++	 */
++	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
+ 	dqp->q_flags &= ~XFS_DQFLAG_DIRTY;
+ 	xfs_trans_ail_delete(lip, 0);
+-	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
+ out_unlock:
+ 	xfs_dqfunlock(dqp);
+ 	return error;
 
 
 
