@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228716-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CC58FgxIwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228087-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:52 +0100
+	id uHOgGuZUwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228716-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:42 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57D82F3B4F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 671F32F5845
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8E48930F6298
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CD0273091D75
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D82C3ACA5C;
-	Mon, 23 Mar 2026 13:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE013B19C6;
+	Mon, 23 Mar 2026 14:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHATO/il"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ka0dAq4F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2888366570;
-	Mon, 23 Mar 2026 13:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D3533B19AF;
+	Mon, 23 Mar 2026 14:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274085; cv=none; b=HNrgTKS2U2YA5X+vkjilYNGktsmFZVvVTi25zevjVoLg/8a7ZRldq6zdI+ezhGSzY9KQbCiw4UjlL7M31hKdlz0RUJFNseAHeE9+eN08JXETzpLVsyA9k7eoR5oxPV6B3vfehhoOo6jgeBv0V+LH0B02zl2izIG2iUpcyyNYBwE=
+	t=1774276929; cv=none; b=XD7TyYS4SzQhmSKIaEbJkRWQt1FO3yfruoJpDlRe+MLg8JwRGomxnFnqQdCrXoHco4J/M+rGc2HIfkJ6VYV62OX1INsUGmVKBaAvKuK8HeAES57CgSttdlXFElb4os2Cxg2nJb8p1ATsKQfj0wqW7zu1dDu5ieop7eJAGHpkUCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274085; c=relaxed/simple;
-	bh=Cty8iNt7seko30I2NUMwJzu7Hm7itQmB8jF5N6e+WVo=;
+	s=arc-20240116; t=1774276929; c=relaxed/simple;
+	bh=IhA97Pj7W3h5bsOZrW27YYZztvksyLk5S8/k1rjHuSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyFzZ4SdXAkP2zwhclGE7O+wAzRmXizK1OQrYjfBW3Ky2dCxFQjMWLSzj4mHTPQzy2zP7BVSFo5y5OOxWdsVWoduaMlncHbrcXRcSMTLpWyhwO2t6LkawmHo/isL7GQ5s6cqkMQeceB4YYwuPzKuF1Yob4+MCQ8wEgkI2K4q920=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tHATO/il; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6522DC2BCB1;
-	Mon, 23 Mar 2026 13:54:44 +0000 (UTC)
+	 MIME-Version; b=kDXBVW6Q+yah778Dl25pMe3Wlk0sdf3s9tAKmIV86bIY4lZ/tkzNMch4edaF/kjLt9Lj+i3A9tE6dr/Y6yHjqqu556BJSHpERCc5N/CnMA9+uDM7Li1i1TBuyRzZshrTYW8EzI1XUtbpV9VPG5B2vfkGeHX1BF9ao4QAtu+BuvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ka0dAq4F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A4FC2BCB1;
+	Mon, 23 Mar 2026 14:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274084;
-	bh=Cty8iNt7seko30I2NUMwJzu7Hm7itQmB8jF5N6e+WVo=;
+	s=korg; t=1774276929;
+	bh=IhA97Pj7W3h5bsOZrW27YYZztvksyLk5S8/k1rjHuSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHATO/ilTqf7O9gQpDQJjli6N6PNKSYrIHzTL5sjuJFnC4acqgoZ2+c0KP4rRgdi+
-	 aAUqMEcrM/pn17p6T/etcye3CGtlGLpkGT20yaHJOK2AChUkO7I4nQQ9P0b5pXI/hG
-	 UB19hbkV3ZzhZZxQNcYKa/iOnaYPqWzumoMjD394=
+	b=Ka0dAq4FmoFNpGQVp8OcFXm/zNCa8iDe1mWs2fobuIqeAxsKWdOk8ZoVUc9DZp8Ms
+	 kNPfBbmU7eWC8MrX7cDzm7pui+3DXe9owc2xVwYBjD9/4mRcRs1ZL/evF2n5fI1mK+
+	 Zr+kcWIl9idthFOU+QPBxR+TzXvIsH3sXiFtGdyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.19 077/220] drm/amdgpu/mmhub3.0.2: add bounds checking for cid
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shengming Hu <hu.shengming@zte.com.cn>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 258/460] fgraph: Fix thresh_return clear per-task notrace
 Date: Mon, 23 Mar 2026 14:44:14 +0100
-Message-ID: <20260323134507.029206743@linuxfoundation.org>
+Message-ID: <20260323134532.825994386@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +69,79 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228716-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228087-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[amd.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: A57D82F3B4F
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 671F32F5845
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Shengming Hu <hu.shengming@zte.com.cn>
 
-commit e5e6d67b1ce9764e67aef2d0eef9911af53ad99a upstream.
+[ Upstream commit 6ca8379b5d36e22b04e6315c3e49a6083377c862 ]
 
-The value should never exceed the array size as those
-are the only values the hardware is expected to return,
-but add checks anyway.
+When tracing_thresh is enabled, function graph tracing uses
+trace_graph_thresh_return() as the return handler. Unlike
+trace_graph_return(), it did not clear the per-task TRACE_GRAPH_NOTRACE
+flag set by the entry handler for set_graph_notrace addresses. This could
+leave the task permanently in "notrace" state and effectively disable
+function graph tracing for that task.
 
-Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1441f52c7f6ae6553664aa9e3e4562f6fc2fe8ea)
+Mirror trace_graph_return()'s per-task notrace handling by clearing
+TRACE_GRAPH_NOTRACE and returning early when set.
+
 Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260221113007819YgrZsMGABff4Rc-O_fZxL@zte.com.cn
+Fixes: b84214890a9bc ("function_graph: Move graph notrace bit to shadow stack global var")
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Shengming Hu <hu.shengming@zte.com.cn>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/trace/trace_functions_graph.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v3_0_2.c
-@@ -108,7 +108,8 @@ mmhub_v3_0_2_print_l2_protection_fault_s
- 		"MMVM_L2_PROTECTION_FAULT_STATUS:0x%08X\n",
- 		status);
+--- a/kernel/trace/trace_functions_graph.c
++++ b/kernel/trace/trace_functions_graph.c
+@@ -271,10 +271,12 @@ void trace_graph_return(struct ftrace_gr
+ static void trace_graph_thresh_return(struct ftrace_graph_ret *trace,
+ 				      struct fgraph_ops *gops)
+ {
++	unsigned long *task_var = fgraph_get_task_var(gops);
++
+ 	ftrace_graph_addr_finish(gops, trace);
  
--	mmhub_cid = mmhub_client_ids_v3_0_2[cid][rw];
-+	mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_v3_0_2) ?
-+		mmhub_client_ids_v3_0_2[cid][rw] : NULL;
- 	dev_err(adev->dev, "\t Faulty UTCL2 client ID: %s (0x%x)\n",
- 		mmhub_cid ? mmhub_cid : "unknown", cid);
- 	dev_err(adev->dev, "\t MORE_FAULTS: 0x%lx\n",
+-	if (trace_recursion_test(TRACE_GRAPH_NOTRACE_BIT)) {
+-		trace_recursion_clear(TRACE_GRAPH_NOTRACE_BIT);
++	if (*task_var & TRACE_GRAPH_NOTRACE) {
++		*task_var &= ~TRACE_GRAPH_NOTRACE;
+ 		return;
+ 	}
+ 
 
 
 
