@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228887-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aPnoMlpkwWkjSwQAu9opvQ
-	(envelope-from <stable+bounces-229417-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:03:38 +0100
+	id eIDbCPZXwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228887-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9BD2F7583
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:03:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0882F5EA1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2A6963045467
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6DC9A3022B20
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0FEE3BB9E3;
-	Mon, 23 Mar 2026 15:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80C31A5B84;
+	Mon, 23 Mar 2026 14:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVhjet64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVCCNUeo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FD33B2FF0;
-	Mon, 23 Mar 2026 15:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8956923815B;
+	Mon, 23 Mar 2026 14:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279180; cv=none; b=SEWjJbIS55QI2F0uRWPv+qWlxkUF2bAyrQHgeAsTyIWDD7tgwkQZ60aC6DKZp6+8O22dloTl0DbWGIb3VUGufRSbfZ12LXTNo4XBkA28i8CSi7+sIAVwk7oIDF64EiNMOWfay5H3jHu0x5v0Ujc+c8EDLxn8tHcw5Y2+qIlScu4=
+	t=1774277402; cv=none; b=Tpkzoje8xYqMBYwcHvHRWX9oHNKzdq+e0J2UXe6NTWj6LvOg9wCQrYMcv6pCb0z93ukS4GJoQEiQLsJbwEYtLjD6/H0hMx6pEAFeLy4J2c2sjdp2JJ3ffi55NZGX32eEze7rbXW0z0q6Sm8BrSovecRo+1UXRDnQIcKtwjpfytc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279180; c=relaxed/simple;
-	bh=aifukaDpDMkc/+iIEv9Af1Tw7OqRHsQdaZ5S8m5fUys=;
+	s=arc-20240116; t=1774277402; c=relaxed/simple;
+	bh=fEcc+pxT0gBxQW8VWpoPK1co8c7Ncol69HTsFR6gV9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tbxhGKhqPRnCRm0wlY7RswK3M4it8MS/wBJdTwB8atLTNNRA6UszjxIbzNuqSJCSs6GnSg2yayqMnhmVnDACRq59j9m5Exl7gwMOGwVltTnayspMKs73W/GB8C2SNWz5pFKhL/tpJn3mjAM7Bl6Z0mZ1xj/BS8QygbF//BH9UvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVhjet64; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E05DC4CEF7;
-	Mon, 23 Mar 2026 15:19:39 +0000 (UTC)
+	 MIME-Version; b=JYHZ7C/6blGpNNcl48NiyohTlnvIxtgiJVU4y8VrNS6iwIecpCbDbf4cXLCSf1zzZ8URo67ezF1QDCIZgGopmP731LC9YNxLqeeCVTa8WuJCFVR9WuWLgim++cwi/WGrDMcvh5e/hNT2Xq+nWvEcMS/BAwCHYR3WCAp80Xi/DlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVCCNUeo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2766CC4CEF7;
+	Mon, 23 Mar 2026 14:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279180;
-	bh=aifukaDpDMkc/+iIEv9Af1Tw7OqRHsQdaZ5S8m5fUys=;
+	s=korg; t=1774277402;
+	bh=fEcc+pxT0gBxQW8VWpoPK1co8c7Ncol69HTsFR6gV9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVhjet64NoO6yjI+cVEcbzCgS6x1pAUZa617+xoUQinH39ngpes+/H6DCysLkhA7q
-	 wzV+PGdXT8w4LXSOJGRlQwRlh3BGBBOGIbACZxzex0JIqkFnRy+64VL3tN8AyNoVFb
-	 UKVCHtvKkIFi0vSM8iSAdt/Ej0uAwn+la0P+loKs=
+	b=kVCCNUeofigkJBc/Q3xtJHlU+FYcI/+DoOawgebHpKBHuDt8WaONy0Tr3jHfSKzfc
+	 FuNRCmgIvLm176ZjWmuOOwJgZNGgCmodgPZyCidKr2u9TlcIagPwrcE5MqWoWHpFAT
+	 KyF9kHXDfTSlnnnbFhHtH/QEyGKKCHtGxztrBvvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 500/567] wifi: mac80211: Fix static_branch_dec() underflow for aql_disable.
+Subject: [PATCH 6.12 424/460] net/mlx5e: Prevent concurrent access to IPSec ASO context
 Date: Mon, 23 Mar 2026 14:47:00 +0100
-Message-ID: <20260323134546.394567865@linuxfoundation.org>
+Message-ID: <20260323134536.974544616@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,8 +66,7 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
@@ -75,135 +75,137 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229417-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228887-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,feb9ce36a95341bb47a4];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 9A9BD2F7583
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4E0882F5EA1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit b94ae8e0d5fe1bdbbfdc3854ff6ce98f6876a828 ]
+[ Upstream commit 99b36850d881e2d65912b2520a1c80d0fcc9429a ]
 
-syzbot reported static_branch_dec() underflow in aql_enable_write(). [0]
+The query or updating IPSec offload object is through Access ASO WQE.
+The driver uses a single mlx5e_ipsec_aso struct for each PF, which
+contains a shared DMA-mapped context for all ASO operations.
 
-The problem is that aql_enable_write() does not serialise concurrent
-write()s to the debugfs.
+A race condition exists because the ASO spinlock is released before
+the hardware has finished processing WQE. If a second operation is
+initiated immediately after, it overwrites the shared context in the
+DMA area.
 
-aql_enable_write() checks static_key_false(&aql_disable.key) and
-later calls static_branch_inc() or static_branch_dec(), but the
-state may change between the two calls.
+When the first operation's completion is processed later, it reads
+this corrupted context, leading to unexpected behavior and incorrect
+results.
 
-aql_disable does not need to track inc/dec.
+This commit fixes the race by introducing a private context within
+each IPSec offload object. The shared ASO context is now copied to
+this private context while the ASO spinlock is held. Subsequent
+processing uses this saved, per-object context, ensuring its integrity
+is maintained.
 
-Let's use static_branch_enable() and static_branch_disable().
-
-[0]:
-val == 0
-WARNING: kernel/jump_label.c:311 at __static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311, CPU#0: syz.1.3155/20288
-Modules linked in:
-CPU: 0 UID: 0 PID: 20288 Comm: syz.1.3155 Tainted: G     U       L      syzkaller #0 PREEMPT(full)
-Tainted: [U]=USER, [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
-RIP: 0010:__static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311
-Code: f2 c9 ff 5b 5d c3 cc cc cc cc e8 54 f2 c9 ff 48 89 df e8 ac f9 ff ff eb ad e8 45 f2 c9 ff 90 0f 0b 90 eb a2 e8 3a f2 c9 ff 90 <0f> 0b 90 eb 97 48 89 df e8 5c 4b 33 00 e9 36 ff ff ff 0f 1f 80 00
-RSP: 0018:ffffc9000b9f7c10 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffffff9b3e5d40 RCX: ffffffff823c57b4
-RDX: ffff8880285a0000 RSI: ffffffff823c5846 RDI: ffff8880285a0000
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000000a
-R13: 1ffff9200173ef88 R14: 0000000000000001 R15: ffffc9000b9f7e98
-FS:  00007f530dd726c0(0000) GS:ffff8881245e3000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000001140 CR3: 000000007cc4a000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __static_key_slow_dec_cpuslocked kernel/jump_label.c:297 [inline]
- __static_key_slow_dec kernel/jump_label.c:321 [inline]
- static_key_slow_dec+0x7c/0xc0 kernel/jump_label.c:336
- aql_enable_write+0x2b2/0x310 net/mac80211/debugfs.c:343
- short_proxy_write+0x133/0x1a0 fs/debugfs/file.c:383
- vfs_write+0x2aa/0x1070 fs/read_write.c:684
- ksys_pwrite64 fs/read_write.c:793 [inline]
- __do_sys_pwrite64 fs/read_write.c:801 [inline]
- __se_sys_pwrite64 fs/read_write.c:798 [inline]
- __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:798
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xc9/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f530cf9aeb9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f530dd72028 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
-RAX: ffffffffffffffda RBX: 00007f530d215fa0 RCX: 00007f530cf9aeb9
-RDX: 0000000000000003 RSI: 0000000000000000 RDI: 0000000000000010
-RBP: 00007f530d008c1f R08: 0000000000000000 R09: 0000000000000000
-R10: 4200000000000005 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f530d216038 R14: 00007f530d215fa0 R15: 00007ffde89fb978
- </TASK>
-
-Fixes: e908435e402a ("mac80211: introduce aql_enable node in debugfs")
-Reported-by: syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69a8979e.a70a0220.b118c.0025.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260306072405.3649474-1-kuniyu@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 1ed78fc03307 ("net/mlx5e: Update IPsec soft and hard limits")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20260316094603.6999-3-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/debugfs.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ipsec.h         |  1 +
+ .../mellanox/mlx5/core/en_accel/ipsec_offload.c | 17 ++++++++---------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index 207f772bd8ce2..bd7c5dfeaa8c5 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -326,7 +326,6 @@ static ssize_t aql_enable_read(struct file *file, char __user *user_buf,
- static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
- 				size_t count, loff_t *ppos)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+index a37c8a117d80f..2e5ca1cc29bb3 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.h
+@@ -274,6 +274,7 @@ struct mlx5e_ipsec_sa_entry {
+ 	struct mlx5e_ipsec_dwork *dwork;
+ 	struct mlx5e_ipsec_limits limits;
+ 	u32 rx_mapped_id;
++	u8 ctx[MLX5_ST_SZ_BYTES(ipsec_aso)];
+ };
+ 
+ struct mlx5_accel_pol_xfrm_attrs {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+index 820debf3fbbf2..bb2555706d082 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_offload.c
+@@ -371,20 +371,18 @@ static void mlx5e_ipsec_aso_update_soft(struct mlx5e_ipsec_sa_entry *sa_entry,
+ static void mlx5e_ipsec_handle_limits(struct mlx5e_ipsec_sa_entry *sa_entry)
  {
--	bool aql_disabled = static_key_false(&aql_disable.key);
- 	char buf[3];
- 	size_t len;
+ 	struct mlx5_accel_esp_xfrm_attrs *attrs = &sa_entry->attrs;
+-	struct mlx5e_ipsec *ipsec = sa_entry->ipsec;
+-	struct mlx5e_ipsec_aso *aso = ipsec->aso;
+ 	bool soft_arm, hard_arm;
+ 	u64 hard_cnt;
  
-@@ -341,15 +340,12 @@ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
- 	if (len > 0 && buf[len - 1] == '\n')
- 		buf[len - 1] = 0;
+ 	lockdep_assert_held(&sa_entry->x->lock);
  
--	if (buf[0] == '0' && buf[1] == '\0') {
--		if (!aql_disabled)
--			static_branch_inc(&aql_disable);
--	} else if (buf[0] == '1' && buf[1] == '\0') {
--		if (aql_disabled)
--			static_branch_dec(&aql_disable);
--	} else {
-+	if (buf[0] == '0' && buf[1] == '\0')
-+		static_branch_enable(&aql_disable);
-+	else if (buf[0] == '1' && buf[1] == '\0')
-+		static_branch_disable(&aql_disable);
-+	else
- 		return -EINVAL;
--	}
+-	soft_arm = !MLX5_GET(ipsec_aso, aso->ctx, soft_lft_arm);
+-	hard_arm = !MLX5_GET(ipsec_aso, aso->ctx, hard_lft_arm);
++	soft_arm = !MLX5_GET(ipsec_aso, sa_entry->ctx, soft_lft_arm);
++	hard_arm = !MLX5_GET(ipsec_aso, sa_entry->ctx, hard_lft_arm);
+ 	if (!soft_arm && !hard_arm)
+ 		/* It is not lifetime event */
+ 		return;
  
- 	return count;
+-	hard_cnt = MLX5_GET(ipsec_aso, aso->ctx, remove_flow_pkt_cnt);
++	hard_cnt = MLX5_GET(ipsec_aso, sa_entry->ctx, remove_flow_pkt_cnt);
+ 	if (!hard_cnt || hard_arm) {
+ 		/* It is possible to see packet counter equal to zero without
+ 		 * hard limit event armed. Such situation can be if packet
+@@ -455,10 +453,8 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 		container_of(_work, struct mlx5e_ipsec_work, work);
+ 	struct mlx5e_ipsec_sa_entry *sa_entry = work->data;
+ 	struct mlx5_accel_esp_xfrm_attrs *attrs;
+-	struct mlx5e_ipsec_aso *aso;
+ 	int ret;
+ 
+-	aso = sa_entry->ipsec->aso;
+ 	attrs = &sa_entry->attrs;
+ 
+ 	spin_lock_bh(&sa_entry->x->lock);
+@@ -467,8 +463,9 @@ static void mlx5e_ipsec_handle_event(struct work_struct *_work)
+ 		goto unlock;
+ 
+ 	if (attrs->replay_esn.trigger &&
+-	    !MLX5_GET(ipsec_aso, aso->ctx, esn_event_arm)) {
+-		u32 mode_param = MLX5_GET(ipsec_aso, aso->ctx, mode_parameter);
++	    !MLX5_GET(ipsec_aso, sa_entry->ctx, esn_event_arm)) {
++		u32 mode_param = MLX5_GET(ipsec_aso, sa_entry->ctx,
++					  mode_parameter);
+ 
+ 		mlx5e_ipsec_update_esn_state(sa_entry, mode_param);
+ 	}
+@@ -630,6 +627,8 @@ int mlx5e_ipsec_aso_query(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 			/* We are in atomic context */
+ 			udelay(10);
+ 	} while (ret && time_is_after_jiffies(expires));
++	if (!ret)
++		memcpy(sa_entry->ctx, aso->ctx, MLX5_ST_SZ_BYTES(ipsec_aso));
+ 	spin_unlock_bh(&aso->lock);
+ 	return ret;
  }
 -- 
 2.51.0
