@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228091-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id yMeWEGlywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229773-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:37 +0100
+	id qMqoKj9IwWlGSAQAu9opvQ
+	(envelope-from <stable+bounces-228091-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5C492F95B2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE4F2F3BB7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF40F3065331
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9E23310B680
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712DE3AE19E;
-	Mon, 23 Mar 2026 16:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7303AE6FB;
+	Mon, 23 Mar 2026 13:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Km2CbchD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNcD1ODu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345741DA0E1;
-	Mon, 23 Mar 2026 16:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6343ACF03;
+	Mon, 23 Mar 2026 13:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282829; cv=none; b=knyxH7uCVFKpKin9iR6AzZzwsypX/ZvSQVhBI9QkKyMeLrNxV+KvUWzgKDWO7RJ6NjJpNzJPahVRnsBUwELeQpSt3gwK9UiAjHHC0XuT1P1J8D8EFKXqu1vryennOTEAPvZ6oc2FPXet7DKdGgqrkSBNrvt5KMxllaLa7NPy50I=
+	t=1774274097; cv=none; b=fGNFdXLX5U6NpmS791PPgRe+9jcVCmURf5VrT9cumxgwZQZsMgKlmXZw7/wiedKtPF/KvLJ3jGicv+KLWSP665cTKZbFcBakylr05lSuBdvLHxu9zpfa4J8Gi8JSToMkDf8Nia3IT6Q93RI7Dx4KVJevN1wByhrucfy8yEQcrDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282829; c=relaxed/simple;
-	bh=+Fzb3pEwpkPWE8dREIyOCMNztaaB2bEoT+Pc02fvz+k=;
+	s=arc-20240116; t=1774274097; c=relaxed/simple;
+	bh=IBDL3pxtGWgJkWRp5VMCOZE+QRMs8EzOqZO9YwLqhmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cp+tyQd9QMsQlUPFqa5AO0rMACX20AUjvC0ll9+oww/LeBpK/PSfEvhbxTcv3vOIowKAkhVk4+11Z7tABha+xjZ2QcMBsHq9V0stldSPpu2AZn6T6l+VSzNetMGrQDmhKNjJw/j3cGY/7RYi3mm7Jeowc2+GgSOLrA2ICPR+jrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Km2CbchD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B34C4CEF7;
-	Mon, 23 Mar 2026 16:20:28 +0000 (UTC)
+	 MIME-Version; b=Za/wFrF82/1F/O1WLJ2MgvCnCjEerMZWF34vtDk9Ry8w8vlD95okLQx8awHNbzsTgJ2WRqPI2L6A4OghOdPv+LtwQLgIlFW4QcG8ACrYl37eQW3TeU3oJBW5YofZl2wr+tA86fEGnNbDKDdZUb6hNYfc9c6QUGva/fZpP6eLlzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNcD1ODu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3189C4CEF7;
+	Mon, 23 Mar 2026 13:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282829;
-	bh=+Fzb3pEwpkPWE8dREIyOCMNztaaB2bEoT+Pc02fvz+k=;
+	s=korg; t=1774274097;
+	bh=IBDL3pxtGWgJkWRp5VMCOZE+QRMs8EzOqZO9YwLqhmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Km2CbchD+PcqVxJvfD3fN2aBsGqCqCEBUZRQmWexnYs75VbNmHjznZQy1gbrNTRor
-	 kFmqboq9aqMet5m/odmdVgVf/KeB75gZ0vJMY4ibMrb0B3LJtLxqcnw2gIz2BVEg4w
-	 JmF6Mc7FUr5/TgNVo3gdyqbli8zaPq/gQR9V56gM=
+	b=BNcD1ODu3GdwkreZypWlMl6Q6u15LuHFU14VhyaXwP2Sq6ut66Deg9dw3bnZ5Bcoo
+	 gpTC6J1ABpHUWyJokIzuslQldq7OjkIXjckltMe9ZOt6wRBHn+rGPrHL6bF2/7FFVa
+	 +0mo/NBQt5Y373jvfwE+YJilBdZjPrvzbsU18zEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	"Bandal, Shankar" <shankar.bandal@intel.com>,
-	"Murthy, Shanth" <shanth.murthy@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.1 301/481] serial: 8250: Add late synchronize_irq() to shutdown to handle DW UART BUSY
-Date: Mon, 23 Mar 2026 14:44:43 +0100
-Message-ID: <20260323134532.449750301@linuxfoundation.org>
+	Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 107/220] wifi: cfg80211: cancel pmsr_free_wk in cfg80211_pmsr_wdev_down
+Date: Mon, 23 Mar 2026 14:44:44 +0100
+Message-ID: <20260323134507.983119487@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +63,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-229773-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228091-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: B5C492F95B2
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,qualcomm.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: 3CE4F2F3BB7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
 
-commit e0a368ae79531ff92105a2692f10d83052055856 upstream.
+[ Upstream commit 6dccbc9f3e1d38565dff7730d2b7d1e8b16c9b09 ]
 
-When DW UART is !uart_16550_compatible, it can indicate BUSY at any
-point (when under constant Rx pressure) unless a complex sequence of
-steps is performed. Any LCR write can run a foul with the condition
-that prevents writing LCR while the UART is BUSY, which triggers
-BUSY_DETECT interrupt that seems unmaskable using IER bits.
+When the nl80211 socket that originated a PMSR request is
+closed, cfg80211_release_pmsr() sets the request's nl_portid
+to zero and schedules pmsr_free_wk to process the abort
+asynchronously. If the interface is concurrently torn down
+before that work runs, cfg80211_pmsr_wdev_down() calls
+cfg80211_pmsr_process_abort() directly. However, the already-
+scheduled pmsr_free_wk work item remains pending and may run
+after the interface has been removed from the driver. This
+could cause the driver's abort_pmsr callback to operate on a
+torn-down interface, leading to undefined behavior and
+potential crashes.
 
-Normal flow is that dw8250_handle_irq() handles BUSY_DETECT condition
-by reading USR register. This BUSY feature, however, breaks the
-assumptions made in serial8250_do_shutdown(), which runs
-synchronize_irq() after clearing IER and assumes no interrupts can
-occur after that point but then proceeds to update LCR, which on DW
-UART can trigger an interrupt.
+Cancel pmsr_free_wk synchronously in cfg80211_pmsr_wdev_down()
+before calling cfg80211_pmsr_process_abort(). This ensures any
+pending or in-progress work is drained before interface teardown
+proceeds, preventing the work from invoking the driver abort
+callback after the interface is gone.
 
-If serial8250_do_shutdown() releases the interrupt handler before the
-handler has run and processed the BUSY_DETECT condition by read the USR
-register, the IRQ is not deasserted resulting in interrupt storm that
-triggers "irq x: nobody cared" warning leading to disabling the IRQ.
-
-Add late synchronize_irq() into serial8250_do_shutdown() to ensure
-BUSY_DETECT from DW UART is handled before port's interrupt handler is
-released. Alternative would be to add DW UART specific shutdown
-function but it would mostly duplicate the generic code and the extra
-synchronize_irq() seems pretty harmless in serial8250_do_shutdown().
-
-Fixes: 7d4008ebb1c9 ("tty: add a DesignWare 8250 driver")
-Cc: stable <stable@kernel.org>
-Reported-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
-Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/20260203171049.4353-7-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9bb7e0f24e7e ("cfg80211: add peer measurement with FTM initiator API")
+Signed-off-by: Peddolla Harshavardhan Reddy <peddolla.reddy@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260305160712.1263829-3-peddolla.reddy@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/wireless/pmsr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2526,6 +2526,12 @@ void serial8250_do_shutdown(struct uart_
- 	 * the IRQ chain.
- 	 */
- 	serial_port_in(port, UART_RX);
-+	/*
-+	 * LCR writes on DW UART can trigger late (unmaskable) IRQs.
-+	 * Handle them before releasing the handler.
-+	 */
-+	synchronize_irq(port->irq);
-+
- 	serial8250_rpm_put(up);
+diff --git a/net/wireless/pmsr.c b/net/wireless/pmsr.c
+index a117f5093ca29..13801cf35e9fc 100644
+--- a/net/wireless/pmsr.c
++++ b/net/wireless/pmsr.c
+@@ -647,6 +647,7 @@ void cfg80211_pmsr_wdev_down(struct wireless_dev *wdev)
+ 	}
+ 	spin_unlock_bh(&wdev->pmsr_lock);
  
- 	up->ops->release_irq(up);
++	cancel_work_sync(&wdev->pmsr_free_wk);
+ 	if (found)
+ 		cfg80211_pmsr_process_abort(wdev);
+ 
+-- 
+2.51.0
+
 
 
 
