@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-229594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229096-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kElABKlrwWlMTAQAu9opvQ
-	(envelope-from <stable+bounces-229594-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:49 +0100
+	id oO6OMptswWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229096-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BC92F859C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19D2A2F883D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5600330C171C
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E49831B6363
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E15E13B8D75;
-	Mon, 23 Mar 2026 16:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1D611A3029;
+	Mon, 23 Mar 2026 15:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlH8lVIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYkt1hSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25803AC0D3;
-	Mon, 23 Mar 2026 16:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BC735959;
+	Mon, 23 Mar 2026 15:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282341; cv=none; b=t0MAiuRVciD6HB3sTpaOngk8gU122QZV4zGUQWHVqsXlLH2qLMQFIUUYp5a+jSn6shK3BKzaV0HxzhMRyYiWV3g+x6XssFJUWVD0FIMu8WJ7yvfLlGxolxj8f08YZcwfF08HWySAbpIfwGyCuUUXV4vdiezqkDidVmEqUBR1fgU=
+	t=1774278047; cv=none; b=t1TueetPdmP+/Rfksaa6/muxl4lYOpu0H3+V7fCwcagqm+gUMv4KbiS9j8TMtJC81iRmWbmBx7CeNt5DGl8RUB87qP1if+kPjZOQIpKtJWAF6lcyuCQ5tmVmB57oD+ie13GYjpwnno9g/sax6BWdBpOmP5JUdnqqEj1C8Ld9AZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282341; c=relaxed/simple;
-	bh=kmVEdR+rUG1App0km5UNfplLh505No80sugm8jdgZfc=;
+	s=arc-20240116; t=1774278047; c=relaxed/simple;
+	bh=8djZXXHx4/00Z8BJUR7xuBCmkCyaC9a22VMjNVkp7iA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5aLg/lTLdp7Z/QX8s8xLp3GJkStGdCDjIZEW4NRhlxpUaFOfmqpx6GJxuG/74iIsrxKogytD8S+9GIj9usBjs2W3jOXPfHmYJHwF3uu+4ohjUCE2dEb1stOAIxVoiNhNN3xtFy6ka4/wbp7hLYbNbkhFscaMD4IyVs++36wDz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlH8lVIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEDCC4CEF7;
-	Mon, 23 Mar 2026 16:12:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lyUDs5D0M01B8Q/iFa4AlrZq/RQb2mEmWzyCQjgZUWz8aQ96bdC/+DKf5n5t62hakelTdVgeNieFq+8e6B2vERXqnrO8hvIvL1vMFCB4vZ+mFkNy3oJdnzBL4n3PEqrk5hAnRbT1Q/SL8muaUcj+D5H7u9XcoAIUItpdPCZGU3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYkt1hSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B607C4CEF7;
+	Mon, 23 Mar 2026 15:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282341;
-	bh=kmVEdR+rUG1App0km5UNfplLh505No80sugm8jdgZfc=;
+	s=korg; t=1774278047;
+	bh=8djZXXHx4/00Z8BJUR7xuBCmkCyaC9a22VMjNVkp7iA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hlH8lVIxhaNBaaooQMSBFkyoAC8qvhi1l2jAxN8ZCL+COvZXbA2TminJN7jR8drbn
-	 27FBDX7I4k/C1yYtg4VpOGWgjKshNg8kz81QmNe/snP6cUNgkDXDGSYHYi3mWwmeAG
-	 bk4h9GtmvaFPpAkkrCskUgJfuuz+O+w+b5YWghmg=
+	b=QYkt1hSAGdbdWFo3+rY5eTNRD5B2orSmq4Nj06kyfzGivh8+B9XbIOT3qy+i9W06l
+	 PQJZe5x1hjzAljs00D8Ew/sHHhAkWtkKzQIfghjJgeGjf6hS7IAgHXtEkXDnsUhuMv
+	 8VP+/Fbas4zexCaSPzNK1k+VX6lV9FBfGnojIDCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathesh Edara <sedara@marvell.com>,
-	Shinas Rasheed <srasheed@marvell.com>,
-	Vimlesh Kumar <vimleshk@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/481] octeon_ep: avoid compiler and IQ/OQ reordering
+Subject: [PATCH 6.6 182/567] xdp: produce a warning when calculated tailroom is negative
 Date: Mon, 23 Mar 2026 14:41:42 +0100
-Message-ID: <20260323134528.208131040@linuxfoundation.org>
+Message-ID: <20260323134538.354978930@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,189 +66,163 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229594-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229096-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 14BC92F859C
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 19D2A2F883D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vimlesh Kumar <vimleshk@marvell.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-[ Upstream commit 43b3160cb639079a15daeb5f080120afbfbfc918 ]
+[ Upstream commit 8821e857759be9db3cde337ad328b71fe5c8a55f ]
 
-Utilize READ_ONCE and WRITE_ONCE APIs for IO queue Tx/Rx
-variable access to prevent compiler optimization and reordering.
-Additionally, ensure IO queue OUT/IN_CNT registers are flushed
-by performing a read-back after writing.
+Many ethernet drivers report xdp Rx queue frag size as being the same as
+DMA write size. However, the only user of this field, namely
+bpf_xdp_frags_increase_tail(), clearly expects a truesize.
 
-The compiler could reorder reads/writes to pkts_pending, last_pkt_count,
-etc., causing stale values to be used when calculating packets to process
-or register updates to send to hardware. The Octeon hardware requires a
-read-back after writing to OUT_CNT/IN_CNT registers to ensure the write
-has been flushed through any posted write buffers before the interrupt
-resend bit is set. Without this, we have observed cases where the hardware
-didn't properly update its internal state.
+Such difference leads to unspecific memory corruption issues under certain
+circumstances, e.g. in ixgbevf maximum DMA write size is 3 KB, so when
+running xskxceiver's XDP_ADJUST_TAIL_GROW_MULTI_BUFF, 6K packet fully uses
+all DMA-writable space in 2 buffers. This would be fine, if only
+rxq->frag_size was properly set to 4K, but value of 3K results in a
+negative tailroom, because there is a non-zero page offset.
 
-wmb/rmb only provides ordering guarantees but doesn't prevent the compiler
-from performing optimizations like caching in registers, load tearing etc.
+We are supposed to return -EINVAL and be done with it in such case, but due
+to tailroom being stored as an unsigned int, it is reported to be somewhere
+near UINT_MAX, resulting in a tail being grown, even if the requested
+offset is too much (it is around 2K in the abovementioned test). This later
+leads to all kinds of unspecific calltraces.
 
-Fixes: 37d79d0596062 ("octeon_ep: add Tx/Rx processing and interrupt support")
-Signed-off-by: Sathesh Edara <sedara@marvell.com>
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
-Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
-Link: https://patch.msgid.link/20260227091402.1773833-3-vimleshk@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ 7340.337579] xskxceiver[1440]: segfault at 1da718 ip 00007f4161aeac9d sp 00007f41615a6a00 error 6
+[ 7340.338040] xskxceiver[1441]: segfault at 7f410000000b ip 00000000004042b5 sp 00007f415bffecf0 error 4
+[ 7340.338179]  in libc.so.6[61c9d,7f4161aaf000+160000]
+[ 7340.339230]  in xskxceiver[42b5,400000+69000]
+[ 7340.340300]  likely on CPU 6 (core 0, socket 6)
+[ 7340.340302] Code: ff ff 01 e9 f4 fe ff ff 0f 1f 44 00 00 4c 39 f0 74 73 31 c0 ba 01 00 00 00 f0 0f b1 17 0f 85 ba 00 00 00 49 8b 87 88 00 00 00 <4c> 89 70 08 eb cc 0f 1f 44 00 00 48 8d bd f0 fe ff ff 89 85 ec fe
+[ 7340.340888]  likely on CPU 3 (core 0, socket 3)
+[ 7340.345088] Code: 00 00 00 ba 00 00 00 00 be 00 00 00 00 89 c7 e8 31 ca ff ff 89 45 ec 8b 45 ec 85 c0 78 07 b8 00 00 00 00 eb 46 e8 0b c8 ff ff <8b> 00 83 f8 69 74 24 e8 ff c7 ff ff 8b 00 83 f8 0b 74 18 e8 f3 c7
+[ 7340.404334] Oops: general protection fault, probably for non-canonical address 0x6d255010bdffc: 0000 [#1] SMP NOPTI
+[ 7340.405972] CPU: 7 UID: 0 PID: 1439 Comm: xskxceiver Not tainted 6.19.0-rc1+ #21 PREEMPT(lazy)
+[ 7340.408006] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-5.fc42 04/01/2014
+[ 7340.409716] RIP: 0010:lookup_swap_cgroup_id+0x44/0x80
+[ 7340.410455] Code: 83 f8 1c 73 39 48 ba ff ff ff ff ff ff ff 03 48 8b 04 c5 20 55 fa bd 48 21 d1 48 89 ca 83 e1 01 48 d1 ea c1 e1 04 48 8d 04 90 <8b> 00 48 83 c4 10 d3 e8 c3 cc cc cc cc 31 c0 e9 98 b7 dd 00 48 89
+[ 7340.412787] RSP: 0018:ffffcc5c04f7f6d0 EFLAGS: 00010202
+[ 7340.413494] RAX: 0006d255010bdffc RBX: ffff891f477895a8 RCX: 0000000000000010
+[ 7340.414431] RDX: 0001c17e3fffffff RSI: 00fa070000000000 RDI: 000382fc7fffffff
+[ 7340.415354] RBP: 00fa070000000000 R08: ffffcc5c04f7f8f8 R09: ffffcc5c04f7f7d0
+[ 7340.416283] R10: ffff891f4c1a7000 R11: ffffcc5c04f7f9c8 R12: ffffcc5c04f7f7d0
+[ 7340.417218] R13: 03ffffffffffffff R14: 00fa06fffffffe00 R15: ffff891f47789500
+[ 7340.418229] FS:  0000000000000000(0000) GS:ffff891ffdfaa000(0000) knlGS:0000000000000000
+[ 7340.419489] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 7340.420286] CR2: 00007f415bfffd58 CR3: 0000000103f03002 CR4: 0000000000772ef0
+[ 7340.421237] PKRU: 55555554
+[ 7340.421623] Call Trace:
+[ 7340.421987]  <TASK>
+[ 7340.422309]  ? softleaf_from_pte+0x77/0xa0
+[ 7340.422855]  swap_pte_batch+0xa7/0x290
+[ 7340.423363]  zap_nonpresent_ptes.constprop.0.isra.0+0xd1/0x270
+[ 7340.424102]  zap_pte_range+0x281/0x580
+[ 7340.424607]  zap_pmd_range.isra.0+0xc9/0x240
+[ 7340.425177]  unmap_page_range+0x24d/0x420
+[ 7340.425714]  unmap_vmas+0xa1/0x180
+[ 7340.426185]  exit_mmap+0xe1/0x3b0
+[ 7340.426644]  __mmput+0x41/0x150
+[ 7340.427098]  exit_mm+0xb1/0x110
+[ 7340.427539]  do_exit+0x1b2/0x460
+[ 7340.427992]  do_group_exit+0x2d/0xc0
+[ 7340.428477]  get_signal+0x79d/0x7e0
+[ 7340.428957]  arch_do_signal_or_restart+0x34/0x100
+[ 7340.429571]  exit_to_user_mode_loop+0x8e/0x4c0
+[ 7340.430159]  do_syscall_64+0x188/0x6b0
+[ 7340.430672]  ? __do_sys_clone3+0xd9/0x120
+[ 7340.431212]  ? switch_fpu_return+0x4e/0xd0
+[ 7340.431761]  ? arch_exit_to_user_mode_prepare.isra.0+0xa1/0xc0
+[ 7340.432498]  ? do_syscall_64+0xbb/0x6b0
+[ 7340.433015]  ? __handle_mm_fault+0x445/0x690
+[ 7340.433582]  ? count_memcg_events+0xd6/0x210
+[ 7340.434151]  ? handle_mm_fault+0x212/0x340
+[ 7340.434697]  ? do_user_addr_fault+0x2b4/0x7b0
+[ 7340.435271]  ? clear_bhb_loop+0x30/0x80
+[ 7340.435788]  ? clear_bhb_loop+0x30/0x80
+[ 7340.436299]  ? clear_bhb_loop+0x30/0x80
+[ 7340.436812]  ? clear_bhb_loop+0x30/0x80
+[ 7340.437323]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[ 7340.437973] RIP: 0033:0x7f4161b14169
+[ 7340.438468] Code: Unable to access opcode bytes at 0x7f4161b1413f.
+[ 7340.439242] RSP: 002b:00007ffc6ebfa770 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
+[ 7340.440173] RAX: fffffffffffffe00 RBX: 00000000000005a1 RCX: 00007f4161b14169
+[ 7340.441061] RDX: 00000000000005a1 RSI: 0000000000000109 RDI: 00007f415bfff990
+[ 7340.441943] RBP: 00007ffc6ebfa7a0 R08: 0000000000000000 R09: 00000000ffffffff
+[ 7340.442824] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+[ 7340.443707] R13: 0000000000000000 R14: 00007f415bfff990 R15: 00007f415bfff6c0
+[ 7340.444586]  </TASK>
+[ 7340.444922] Modules linked in: rfkill intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit libnvdimm kvm_intel vfat fat kvm snd_pcm irqbypass rapl iTCO_wdt snd_timer intel_pmc_bxt iTCO_vendor_support snd ixgbevf virtio_net soundcore i2c_i801 pcspkr libeth_xdp net_failover i2c_smbus lpc_ich failover libeth virtio_balloon joydev 9p fuse loop zram lz4hc_compress lz4_compress 9pnet_virtio 9pnet netfs ghash_clmulni_intel serio_raw qemu_fw_cfg
+[ 7340.449650] ---[ end trace 0000000000000000 ]---
+
+The issue can be fixed in all in-tree drivers, but we cannot just trust OOT
+drivers to not do this. Therefore, make tailroom a signed int and produce a
+warning when it is negative to prevent such mistakes in the future.
+
+Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail() API")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Link: https://patch.msgid.link/20260305111253.2317394-10-larysa.zaremba@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeon_ep/octep_main.c   | 21 +++++++++------
- .../net/ethernet/marvell/octeon_ep/octep_rx.c | 27 +++++++++++++------
- 2 files changed, 32 insertions(+), 16 deletions(-)
+ net/core/filter.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index aa98cc8fd344e..32b30cbb8c009 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -353,17 +353,22 @@ static void octep_clean_irqs(struct octep_device *oct)
-  */
- static void octep_update_pkt(struct octep_iq *iq, struct octep_oq *oq)
- {
--	u32 pkts_pend = oq->pkts_pending;
-+	u32 pkts_pend = READ_ONCE(oq->pkts_pending);
-+	u32 last_pkt_count = READ_ONCE(oq->last_pkt_count);
-+	u32 pkts_processed = READ_ONCE(iq->pkts_processed);
-+	u32 pkt_in_done = READ_ONCE(iq->pkt_in_done);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 58109f6201b76..b1e9abb3891cc 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -4132,13 +4132,14 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
+ 	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
+ 	skb_frag_t *frag = &sinfo->frags[sinfo->nr_frags - 1];
+ 	struct xdp_rxq_info *rxq = xdp->rxq;
+-	unsigned int tailroom;
++	int tailroom;
  
- 	netdev_dbg(iq->netdev, "enabling intr for Q-%u\n", iq->q_no);
--	if (iq->pkts_processed) {
--		writel(iq->pkts_processed, iq->inst_cnt_reg);
--		iq->pkt_in_done -= iq->pkts_processed;
--		iq->pkts_processed = 0;
-+	if (pkts_processed) {
-+		writel(pkts_processed, iq->inst_cnt_reg);
-+		readl(iq->inst_cnt_reg);
-+		WRITE_ONCE(iq->pkt_in_done, (pkt_in_done - pkts_processed));
-+		WRITE_ONCE(iq->pkts_processed, 0);
- 	}
--	if (oq->last_pkt_count - pkts_pend) {
--		writel(oq->last_pkt_count - pkts_pend, oq->pkts_sent_reg);
--		oq->last_pkt_count = pkts_pend;
-+	if (last_pkt_count - pkts_pend) {
-+		writel(last_pkt_count - pkts_pend, oq->pkts_sent_reg);
-+		readl(oq->pkts_sent_reg);
-+		WRITE_ONCE(oq->last_pkt_count, pkts_pend);
- 	}
+ 	if (!rxq->frag_size || rxq->frag_size > xdp->frame_sz)
+ 		return -EOPNOTSUPP;
  
- 	/* Flush the previous wrties before writing to RESEND bit */
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-index 4f3c1187a6e82..0ecfc4e36f3ac 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-@@ -317,10 +317,16 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
- 				      struct octep_oq *oq)
- {
- 	u32 pkt_count, new_pkts;
-+	u32 last_pkt_count, pkts_pending;
- 
- 	pkt_count = readl(oq->pkts_sent_reg);
--	new_pkts = pkt_count - oq->last_pkt_count;
-+	last_pkt_count = READ_ONCE(oq->last_pkt_count);
-+	new_pkts = pkt_count - last_pkt_count;
- 
-+	if (pkt_count < last_pkt_count) {
-+		dev_err(oq->dev, "OQ-%u pkt_count(%u) < oq->last_pkt_count(%u)\n",
-+			oq->q_no, pkt_count, last_pkt_count);
-+	}
- 	/* Clear the hardware packets counter register if the rx queue is
- 	 * being processed continuously with-in a single interrupt and
- 	 * reached half its max value.
-@@ -331,8 +337,9 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
- 		pkt_count = readl(oq->pkts_sent_reg);
- 		new_pkts += pkt_count;
- 	}
--	oq->last_pkt_count = pkt_count;
--	oq->pkts_pending += new_pkts;
-+	WRITE_ONCE(oq->last_pkt_count, pkt_count);
-+	pkts_pending = READ_ONCE(oq->pkts_pending);
-+	WRITE_ONCE(oq->pkts_pending, (pkts_pending + new_pkts));
- 	return new_pkts;
- }
- 
-@@ -405,7 +412,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 	u16 data_offset;
- 	u32 read_idx;
- 
--	read_idx = oq->host_read_idx;
-+	read_idx = READ_ONCE(oq->host_read_idx);
- 	rx_bytes = 0;
- 	desc_used = 0;
- 	for (pkt = 0; pkt < pkts_to_process; pkt++) {
-@@ -488,7 +495,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 		napi_gro_receive(oq->napi, skb);
- 	}
- 
--	oq->host_read_idx = read_idx;
-+	WRITE_ONCE(oq->host_read_idx, read_idx);
- 	oq->refill_count += desc_used;
- 	oq->stats.packets += pkt;
- 	oq->stats.bytes += rx_bytes;
-@@ -511,22 +518,26 @@ int octep_oq_process_rx(struct octep_oq *oq, int budget)
- {
- 	u32 pkts_available, pkts_processed, total_pkts_processed;
- 	struct octep_device *oct = oq->octep_dev;
-+	u32 pkts_pending;
- 
- 	pkts_available = 0;
- 	pkts_processed = 0;
- 	total_pkts_processed = 0;
- 	while (total_pkts_processed < budget) {
- 		 /* update pending count only when current one exhausted */
--		if (oq->pkts_pending == 0)
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
-+		if (pkts_pending == 0)
- 			octep_oq_check_hw_for_pkts(oct, oq);
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
- 		pkts_available = min(budget - total_pkts_processed,
--				     oq->pkts_pending);
-+				     pkts_pending);
- 		if (!pkts_available)
- 			break;
- 
- 		pkts_processed = __octep_oq_process_rx(oct, oq,
- 						       pkts_available);
--		oq->pkts_pending -= pkts_processed;
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
-+		WRITE_ONCE(oq->pkts_pending, (pkts_pending - pkts_processed));
- 		total_pkts_processed += pkts_processed;
- 	}
+ 	tailroom = rxq->frag_size - skb_frag_size(frag) -
+ 		   skb_frag_off(frag) % rxq->frag_size;
++	WARN_ON_ONCE(tailroom < 0);
+ 	if (unlikely(offset > tailroom))
+ 		return -EINVAL;
  
 -- 
 2.51.0
