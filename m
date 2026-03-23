@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228916-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8GBNIK1iwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229449-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:29 +0100
+	id +O1RNsxWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228916-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B022F7246
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:56:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D66E2F5C36
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C95E13584DDE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F95331267D3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE72E3BE153;
-	Mon, 23 Mar 2026 15:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8013ACEFE;
+	Mon, 23 Mar 2026 14:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwccNDBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDEAkHns"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DAAF3B52EF;
-	Mon, 23 Mar 2026 15:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E7426ED46;
+	Mon, 23 Mar 2026 14:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279269; cv=none; b=aTBfKf4GtYBnKpaHZ+Q4JrXKygIMS47dlL3mB5bZBB5PsNZd6rnzK+xBKzzz9ab6ySKQLkjBN+ehcIcUcNGobb3kIG9vRQT0Q5ygCOaFw4J3oq1QmAZcaRbQiHRGyOUdyql7mvSYRtss12GQkpjTZGlC241lEm8qZKSo+j77j/I=
+	t=1774277480; cv=none; b=AcYyW4C/MC20Ea9b4t7xvT6BqC0YeP0+jsVtqva8V5n1tQGIp6X/LpqFkZFjK5xXMdBgZ360cvBpwP0HyCYECPPmScch8P3goVjZrlO2/MRrpGfNsIEpY/m3Mhv5tWLFwn5PDDsXYN/BBsSSE1YHsgSYONmW6GtTWaueT04XFNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279269; c=relaxed/simple;
-	bh=WAPF7g9VPXu926rOo9BsBptIkDiVfoXkpZz0qTdHGOg=;
+	s=arc-20240116; t=1774277480; c=relaxed/simple;
+	bh=SmD2UZB8Ds4nNjz73y5NYYai4kImMHLg4LZ/IcXjeDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbVwEEF6tiz/pN3jJ1A+4gBvPQ8sBO4L765rvJjdxN51U9Yw8OJyp8RmZ2d0a+SEmBMCZmB6yjg3Rmcw+P+rX0m/Y1+kqp8RIdAKuU7poNGi9eEDzLcLJLTo1H0lWiV1IZTG/Gxz3chIr7gu2H3d1kj4c6npwqTCF2Kp/L985hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwccNDBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E88E9C2BC9E;
-	Mon, 23 Mar 2026 15:21:08 +0000 (UTC)
+	 MIME-Version; b=tauG0+nCYQE+8m2r0GdAW1lcEvABrxhgHGeTu5xyS84Y8V1kAJMgsDwEOHNNRygYW7a9WGfzLlexHZDTzED55/W0JMo+fVMb11cjpa4uqnRqjuukNPkuEgBx9f2NRlCy8FEjurJh3AaIvLqE0tO2f9MlpTv6WxT+tek8fQcikI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDEAkHns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA1AC4CEF7;
+	Mon, 23 Mar 2026 14:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279269;
-	bh=WAPF7g9VPXu926rOo9BsBptIkDiVfoXkpZz0qTdHGOg=;
+	s=korg; t=1774277479;
+	bh=SmD2UZB8Ds4nNjz73y5NYYai4kImMHLg4LZ/IcXjeDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rwccNDBURt++OPAzNKFjX5oMbS/4gMLcuetncNyVXieXl2pZm0R+9rDYWPeQiJWBQ
-	 eI/0ht6hL5VAX5JUoEgfp2BRA6vfRV0Rz7wPZGv4Ne5BjBRedXspeh0GQV0KYE3Kfv
-	 GGwvMB+fudV5RUDXcEeeS02m7R7ptwRTGKv/H2q8=
+	b=DDEAkHns5UHugPy8/n4saQMFGaXGyL533R8BP9zum0Muzr646+GvLd7+/JwLsZ7M3
+	 Iu+oFjNSb/9+y/ArBAFgwxQOn2HWmsgO1Unhn1LvrsMd5daKGrw5mN6wboAAxAG5BG
+	 CulpowcpKnKhzg+nwUpS44S0MuKk39EwhYMRrJ4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Rahul Bukte <rahul.bukte@sony.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 530/567] clsact: Fix use-after-free in init/destroy rollback asymmetry
-Date: Mon, 23 Mar 2026 14:47:30 +0100
-Message-ID: <20260323134547.106953728@linuxfoundation.org>
+Subject: [PATCH 6.12 455/460] drm/i915/gt: Check set_default_submission() before deferencing
+Date: Mon, 23 Mar 2026 14:47:31 +0100
+Message-ID: <20260323134537.756739080@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,146 +69,133 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,iogearbox.net,kernel.org,redhat.com];
-	TAGGED_FROM(0.00)[bounces-229449-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228916-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,iogearbox.net:email]
-X-Rspamd-Queue-Id: F1B022F7246
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 4D66E2F5C36
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Rahul Bukte <rahul.bukte@sony.com>
 
-[ Upstream commit a0671125d4f55e1e98d9bde8a0b671941987e208 ]
+[ Upstream commit 0162ab3220bac870e43e229e6e3024d1a21c3f26 ]
 
-Fix a use-after-free in the clsact qdisc upon init/destroy rollback asymmetry.
-The latter is achieved by first fully initializing a clsact instance, and
-then in a second step having a replacement failure for the new clsact qdisc
-instance. clsact_init() initializes ingress first and then takes care of the
-egress part. This can fail midway, for example, via tcf_block_get_ext(). Upon
-failure, the kernel will trigger the clsact_destroy() callback.
+When the i915 driver firmware binaries are not present, the
+set_default_submission pointer is not set. This pointer is
+dereferenced during suspend anyways.
 
-Commit 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry") details the
-way how the transition is happening. If tcf_block_get_ext on the q->ingress_block
-ends up failing, we took the tcx_miniq_inc reference count on the ingress
-side, but not yet on the egress side. clsact_destroy() tests whether the
-{ingress,egress}_entry was non-NULL. However, even in midway failure on the
-replacement, both are in fact non-NULL with a valid egress_entry from the
-previous clsact instance.
+Add a check to make sure it is set before dereferencing.
 
-What we really need to test for is whether the qdisc instance-specific ingress
-or egress side previously got initialized. This adds a small helper for checking
-the miniq initialization called mini_qdisc_pair_inited, and utilizes that upon
-clsact_destroy() in order to fix the use-after-free scenario. Convert the
-ingress_destroy() side as well so both are consistent to each other.
+[   23.289926] PM: suspend entry (deep)
+[   23.293558] Filesystems sync: 0.000 seconds
+[   23.298010] Freezing user space processes
+[   23.302771] Freezing user space processes completed (elapsed 0.000 seconds)
+[   23.309766] OOM killer disabled.
+[   23.313027] Freezing remaining freezable tasks
+[   23.318540] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
+[   23.342038] serial 00:05: disabled
+[   23.345719] serial 00:02: disabled
+[   23.349342] serial 00:01: disabled
+[   23.353782] sd 0:0:0:0: [sda] Synchronizing SCSI cache
+[   23.358993] sd 1:0:0:0: [sdb] Synchronizing SCSI cache
+[   23.361635] ata1.00: Entering standby power mode
+[   23.368863] ata2.00: Entering standby power mode
+[   23.445187] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[   23.452194] #PF: supervisor instruction fetch in kernel mode
+[   23.457896] #PF: error_code(0x0010) - not-present page
+[   23.463065] PGD 0 P4D 0
+[   23.465640] Oops: Oops: 0010 [#1] SMP NOPTI
+[   23.469869] CPU: 8 UID: 0 PID: 211 Comm: kworker/u48:18 Tainted: G S      W           6.19.0-rc4-00020-gf0b9d8eb98df #10 PREEMPT(voluntary)
+[   23.482512] Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+[   23.496511] Workqueue: async async_run_entry_fn
+[   23.501087] RIP: 0010:0x0
+[   23.503755] Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+[   23.510324] RSP: 0018:ffffb4a60065fca8 EFLAGS: 00010246
+[   23.515592] RAX: 0000000000000000 RBX: ffff9f428290e000 RCX: 000000000000000f
+[   23.522765] RDX: 0000000000000000 RSI: 0000000000000282 RDI: ffff9f428290e000
+[   23.529937] RBP: ffff9f4282907070 R08: ffff9f4281130428 R09: 00000000ffffffff
+[   23.537111] R10: 0000000000000000 R11: 0000000000000001 R12: ffff9f42829070f8
+[   23.544284] R13: ffff9f4282906028 R14: ffff9f4282900000 R15: ffff9f4282906b68
+[   23.551457] FS:  0000000000000000(0000) GS:ffff9f466b2cf000(0000) knlGS:0000000000000000
+[   23.559588] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   23.565365] CR2: ffffffffffffffd6 CR3: 000000031c230001 CR4: 0000000000f70ef0
+[   23.572539] PKRU: 55555554
+[   23.575281] Call Trace:
+[   23.577770]  <TASK>
+[   23.579905]  intel_engines_reset_default_submission+0x42/0x60
+[   23.585695]  __intel_gt_unset_wedged+0x191/0x200
+[   23.590360]  intel_gt_unset_wedged+0x20/0x40
+[   23.594675]  gt_sanitize+0x15e/0x170
+[   23.598290]  i915_gem_suspend_late+0x6b/0x180
+[   23.602692]  i915_drm_suspend_late+0x35/0xf0
+[   23.607008]  ? __pfx_pci_pm_suspend_late+0x10/0x10
+[   23.611843]  dpm_run_callback+0x78/0x1c0
+[   23.615817]  device_suspend_late+0xde/0x2e0
+[   23.620037]  async_suspend_late+0x18/0x30
+[   23.624082]  async_run_entry_fn+0x25/0xa0
+[   23.628129]  process_one_work+0x15b/0x380
+[   23.632182]  worker_thread+0x2a5/0x3c0
+[   23.635973]  ? __pfx_worker_thread+0x10/0x10
+[   23.640279]  kthread+0xf6/0x1f0
+[   23.643464]  ? __pfx_kthread+0x10/0x10
+[   23.647263]  ? __pfx_kthread+0x10/0x10
+[   23.651045]  ret_from_fork+0x131/0x190
+[   23.654837]  ? __pfx_kthread+0x10/0x10
+[   23.658634]  ret_from_fork_asm+0x1a/0x30
+[   23.662597]  </TASK>
+[   23.664826] Modules linked in:
+[   23.667914] CR2: 0000000000000000
+[   23.671271] ------------[ cut here ]------------
 
-Fixes: 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260313065531.98639-1-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260203044839.1555147-1-suraj.kandpal@intel.com
+(cherry picked from commit daa199abc3d3d1740c9e3a2c3e9216ae5b447cad)
+Fixes: ff44ad51ebf8 ("drm/i915: Move engine->submit_request selection to a vfunc")
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sch_generic.h |  5 +++++
- net/sched/sch_ingress.c   | 14 ++++++++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/i915/gt/intel_engine_cs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 15f4a0548d824..385af747b0b4e 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1365,6 +1365,11 @@ void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
- void mini_qdisc_pair_block_init(struct mini_Qdisc_pair *miniqp,
- 				struct tcf_block *block);
+diff --git a/drivers/gpu/drm/i915/gt/intel_engine_cs.c b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+index 4d30a86016f24..d84b6c2af8607 100644
+--- a/drivers/gpu/drm/i915/gt/intel_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/intel_engine_cs.c
+@@ -1970,7 +1970,8 @@ void intel_engines_reset_default_submission(struct intel_gt *gt)
+ 		if (engine->sanitize)
+ 			engine->sanitize(engine);
  
-+static inline bool mini_qdisc_pair_inited(struct mini_Qdisc_pair *miniqp)
-+{
-+	return !!miniqp->p_miniq;
-+}
-+
- void mq_change_real_num_tx(struct Qdisc *sch, unsigned int new_real_tx);
- 
- int sch_frag_xmit_hook(struct sk_buff *skb, int (*xmit)(struct sk_buff *skb));
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index 8dde3548dc11c..70d668cb0db81 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -113,14 +113,15 @@ static void ingress_destroy(struct Qdisc *sch)
- {
- 	struct ingress_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	struct bpf_mprog_entry *entry = rtnl_dereference(dev->tcx_ingress);
-+	struct bpf_mprog_entry *entry;
- 
- 	if (sch->parent != TC_H_INGRESS)
- 		return;
- 
- 	tcf_block_put_ext(q->block, sch, &q->block_info);
- 
--	if (entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp)) {
-+		entry = rtnl_dereference(dev->tcx_ingress);
- 		tcx_miniq_dec(entry);
- 		if (!tcx_entry_is_active(entry)) {
- 			tcx_entry_update(dev, NULL, true);
-@@ -289,10 +290,9 @@ static int clsact_init(struct Qdisc *sch, struct nlattr *opt,
- 
- static void clsact_destroy(struct Qdisc *sch)
- {
-+	struct bpf_mprog_entry *ingress_entry, *egress_entry;
- 	struct clsact_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	struct bpf_mprog_entry *ingress_entry = rtnl_dereference(dev->tcx_ingress);
--	struct bpf_mprog_entry *egress_entry = rtnl_dereference(dev->tcx_egress);
- 
- 	if (sch->parent != TC_H_CLSACT)
- 		return;
-@@ -300,7 +300,8 @@ static void clsact_destroy(struct Qdisc *sch)
- 	tcf_block_put_ext(q->ingress_block, sch, &q->ingress_block_info);
- 	tcf_block_put_ext(q->egress_block, sch, &q->egress_block_info);
- 
--	if (ingress_entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp_ingress)) {
-+		ingress_entry = rtnl_dereference(dev->tcx_ingress);
- 		tcx_miniq_dec(ingress_entry);
- 		if (!tcx_entry_is_active(ingress_entry)) {
- 			tcx_entry_update(dev, NULL, true);
-@@ -308,7 +309,8 @@ static void clsact_destroy(struct Qdisc *sch)
- 		}
+-		engine->set_default_submission(engine);
++		if (engine->set_default_submission)
++			engine->set_default_submission(engine);
  	}
+ }
  
--	if (egress_entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp_egress)) {
-+		egress_entry = rtnl_dereference(dev->tcx_egress);
- 		tcx_miniq_dec(egress_entry);
- 		if (!tcx_entry_is_active(egress_entry)) {
- 			tcx_entry_update(dev, NULL, false);
 -- 
 2.51.0
 
