@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-228106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229750-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wKScJs9IwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228106-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:07 +0100
+	id wOCjODdywWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229750-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A0512F3D07
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C9FF2F956D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8CDC53037926
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0052132D370A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098553ACA5C;
-	Mon, 23 Mar 2026 13:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4963BC67C;
+	Mon, 23 Mar 2026 16:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TFERbcUH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PK5FH7+d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C17441A680D;
-	Mon, 23 Mar 2026 13:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD52C2517AF;
+	Mon, 23 Mar 2026 16:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274143; cv=none; b=Az7OEoAVvtm2uF5FEKuuIS+ogA55ylVVOX8tAPsLxg8YBn3KSOpo+AFPxUC+t3DCkNo7VmsoF7OyFRHugRGLFIZUJ/SlHb62ifufm180vaf+TYCJkg3TWS70iPqE+MFiZO3/HWqAKtaubEcZUat71E43iyhS4m1hRQm9f14VGYA=
+	t=1774282767; cv=none; b=oMaL4HDbWDK+gB7R8Jrx/+UFTVMNF1dN7UyIsiaSWUKC9YnxR2RN6WI4ZFWv56eISiKDaQUJFEXowu7mj9QL+Z9pDC42en+ZS+O54NExWA6s99E6RBIrNx8o1BJZvxLDVoGQgJfXcZYHG1XjsBlw4ocAZe67YQWORyEERcxEqRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274143; c=relaxed/simple;
-	bh=oOhQeBEDwVc5bpF9lSODLhA3e4VNHYcOmG+zpJ1FTdA=;
+	s=arc-20240116; t=1774282767; c=relaxed/simple;
+	bh=3uyPiV1d5YXfu4qQA30EhT/VdxSMKSDFZajoMQxB2rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dr+kDn0wZPKRSDxl0BMJjB/qWAmfYqRcg1N2nwarSK0/k+eNGdX3rKfFwaFsuGd8pblQJ0wYDLGV/aBlyhcR2LttLWU3PspxIbp2inO2Lq8Z6yMGDHCpFDPje0qZZPZrZHa2mUW0kiLFtUGPx9ebAWO/zSKXF8djX8G2Px8lt3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TFERbcUH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E91C4CEF7;
-	Mon, 23 Mar 2026 13:55:42 +0000 (UTC)
+	 MIME-Version; b=UGVN7JITyFK0zNlZwCzpmm3DyN4cRn45hE68WDDsNF5Pl5VW3bnHmBjGwU1hFr7a0PlysooD1+NYW2KMsz95hYMavsb8eurn5WJ4EiiEjEMtT1Do6CN/9gsMFCV7rkq+hylCWbY66Q6Xy8JqvzIr1lmzbTvLeGIx1M6Lb88CUjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PK5FH7+d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E486C4CEF7;
+	Mon, 23 Mar 2026 16:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274143;
-	bh=oOhQeBEDwVc5bpF9lSODLhA3e4VNHYcOmG+zpJ1FTdA=;
+	s=korg; t=1774282767;
+	bh=3uyPiV1d5YXfu4qQA30EhT/VdxSMKSDFZajoMQxB2rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TFERbcUHsUCRCHUQ6hmeOlrvZo5hF3e0IQXSVVvu9zbTdfOpBYnh+HLKuNRCDqK0X
-	 hfWE3lLk3PcGBoiuNGP4l7bUHugipLRU9FKm2/trnJxDdHh9FhD+XMokVlCg0YeIUs
-	 0dyMeLlg6W8xMKJAhfOMX0wlIFsOGe/O2V+hv3z4=
+	b=PK5FH7+dnrEJbJ30SAPB7b78/AAwYLkqAxoR9Yy/m49YPP2NuwJq8IibOaRLTfnCv
+	 yXBo7stOhx0hkaXGRM9egEAmod83h3jgKry7Zwv1S+z4ag5UPF6zmpZVutKdccmGSl
+	 jhoxdxa9Thus0gd91CqczBag2+gmjwsgvJJKHUgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alessio Belle <alessio.belle@imgtec.com>,
-	Matt Coster <matt.coster@imgtec.com>
-Subject: [PATCH 6.19 081/220] drm/imagination: Synchronize interrupts before suspending the GPU
+	John Ripple <john.ripple@keysight.com>,
+	Douglas Anderson <dianders@chromium.org>
+Subject: [PATCH 6.1 276/481] drm/bridge: ti-sn65dsi86: Add support for DisplayPort mode with HPD
 Date: Mon, 23 Mar 2026 14:44:18 +0100
-Message-ID: <20260323134507.156936677@linuxfoundation.org>
+Message-ID: <20260323134531.849785301@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,193 +65,257 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229750-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228106-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 0A0512F3D07
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5C9FF2F956D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Belle <alessio.belle@imgtec.com>
+From: John Ripple <john.ripple@keysight.com>
 
-commit 2d7f05cddf4c268cc36256a2476946041dbdd36d upstream.
+commit 9133bc3f0564890218cbba6cc7e81ebc0841a6f1 upstream.
 
-The runtime PM suspend callback doesn't know whether the IRQ handler is
-in progress on a different CPU core and doesn't wait for it to finish.
+Add support for DisplayPort to the bridge, which entails the following:
+- Get and use an interrupt for HPD;
+- Properly clear all status bits in the interrupt handler;
 
-Depending on timing, the IRQ handler could be running while the GPU is
-suspended, leading to kernel crashes when trying to access GPU
-registers. See example signature below.
-
-In a power off sequence initiated by the runtime PM suspend callback,
-wait for any IRQ handlers in progress on other CPU cores to finish, by
-calling synchronize_irq().
-
-At the same time, remove the runtime PM resume/put calls in the threaded
-IRQ handler. On top of not being the right approach to begin with, and
-being at the wrong place as they should have wrapped all GPU register
-accesses, the driver would hit a deadlock between synchronize_irq()
-being called from a runtime PM suspend callback, holding the device
-power lock, and the resume callback requiring the same.
-
-Example crash signature on a TI AM68 SK platform:
-
-  [  337.241218] SError Interrupt on CPU0, code 0x00000000bf000000 -- SError
-  [  337.241239] CPU: 0 UID: 0 PID: 112 Comm: irq/234-gpu Tainted: G   M                6.17.7-B2C-00005-g9c7bbe4ea16c #2 PREEMPT
-  [  337.241246] Tainted: [M]=MACHINE_CHECK
-  [  337.241249] Hardware name: Texas Instruments AM68 SK (DT)
-  [  337.241252] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  [  337.241256] pc : pvr_riscv_irq_pending+0xc/0x24
-  [  337.241277] lr : pvr_device_irq_thread_handler+0x64/0x310
-  [  337.241282] sp : ffff800085b0bd30
-  [  337.241284] x29: ffff800085b0bd50 x28: ffff0008070d9eab x27: ffff800083a5ce10
-  [  337.241291] x26: ffff000806e48f80 x25: ffff0008070d9eac x24: 0000000000000000
-  [  337.241296] x23: ffff0008068e9bf0 x22: ffff0008068e9bd0 x21: ffff800085b0bd30
-  [  337.241301] x20: ffff0008070d9e00 x19: ffff0008068e9000 x18: 0000000000000001
-  [  337.241305] x17: 637365645f656c70 x16: 0000000000000000 x15: ffff000b7df9ff40
-  [  337.241310] x14: 0000a585fe3c0d0e x13: 000000999704f060 x12: 000000000002771a
-  [  337.241314] x11: 00000000000000c0 x10: 0000000000000af0 x9 : ffff800085b0bd00
-  [  337.241318] x8 : ffff0008071175d0 x7 : 000000000000b955 x6 : 0000000000000003
-  [  337.241323] x5 : 0000000000000000 x4 : 0000000000000002 x3 : 0000000000000000
-  [  337.241327] x2 : ffff800080e39d20 x1 : ffff800080e3fc48 x0 : 0000000000000000
-  [  337.241333] Kernel panic - not syncing: Asynchronous SError Interrupt
-  [  337.241337] CPU: 0 UID: 0 PID: 112 Comm: irq/234-gpu Tainted: G   M                6.17.7-B2C-00005-g9c7bbe4ea16c #2 PREEMPT
-  [  337.241342] Tainted: [M]=MACHINE_CHECK
-  [  337.241343] Hardware name: Texas Instruments AM68 SK (DT)
-  [  337.241345] Call trace:
-  [  337.241348]  show_stack+0x18/0x24 (C)
-  [  337.241357]  dump_stack_lvl+0x60/0x80
-  [  337.241364]  dump_stack+0x18/0x24
-  [  337.241368]  vpanic+0x124/0x2ec
-  [  337.241373]  abort+0x0/0x4
-  [  337.241377]  add_taint+0x0/0xbc
-  [  337.241384]  arm64_serror_panic+0x70/0x80
-  [  337.241389]  do_serror+0x3c/0x74
-  [  337.241392]  el1h_64_error_handler+0x30/0x48
-  [  337.241400]  el1h_64_error+0x6c/0x70
-  [  337.241404]  pvr_riscv_irq_pending+0xc/0x24 (P)
-  [  337.241410]  irq_thread_fn+0x2c/0xb0
-  [  337.241416]  irq_thread+0x170/0x334
-  [  337.241421]  kthread+0x12c/0x210
-  [  337.241428]  ret_from_fork+0x10/0x20
-  [  337.241434] SMP: stopping secondary CPUs
-  [  337.241451] Kernel Offset: disabled
-  [  337.241453] CPU features: 0x040000,02002800,20002001,0400421b
-  [  337.241456] Memory Limit: none
-  [  337.457921] ---[ end Kernel panic - not syncing: Asynchronous SError Interrupt ]---
-
-Fixes: cc1aeedb98ad ("drm/imagination: Implement firmware infrastructure and META FW support")
-Fixes: 96822d38ff57 ("drm/imagination: Handle Rogue safety event IRQs")
-Cc: stable@vger.kernel.org # see patch description, needs adjustments for < 6.16
-Signed-off-by: Alessio Belle <alessio.belle@imgtec.com>
-Reviewed-by: Matt Coster <matt.coster@imgtec.com>
-Link: https://patch.msgid.link/20260310-drain-irqs-before-suspend-v1-1-bf4f9ed68e75@imgtec.com
-Signed-off-by: Matt Coster <matt.coster@imgtec.com>
+Signed-off-by: John Ripple <john.ripple@keysight.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20250915174543.2564994-1-john.ripple@keysight.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/imagination/pvr_device.c |   17 -----------------
- drivers/gpu/drm/imagination/pvr_power.c  |   11 ++++++++---
- 2 files changed, 8 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/bridge/ti-sn65dsi86.c |  112 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 112 insertions(+)
 
---- a/drivers/gpu/drm/imagination/pvr_device.c
-+++ b/drivers/gpu/drm/imagination/pvr_device.c
-@@ -224,29 +224,12 @@ static irqreturn_t pvr_device_irq_thread
- 	}
+--- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
++++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
+@@ -106,10 +106,21 @@
+ #define SN_PWM_EN_INV_REG			0xA5
+ #define  SN_PWM_INV_MASK			BIT(0)
+ #define  SN_PWM_EN_MASK				BIT(1)
++
++#define SN_IRQ_EN_REG				0xE0
++#define  IRQ_EN					BIT(0)
++
++#define SN_IRQ_EVENTS_EN_REG			0xE6
++#define  HPD_INSERTION_EN			BIT(1)
++#define  HPD_REMOVAL_EN				BIT(2)
++
+ #define SN_AUX_CMD_STATUS_REG			0xF4
+ #define  AUX_IRQ_STATUS_AUX_RPLY_TOUT		BIT(3)
+ #define  AUX_IRQ_STATUS_AUX_SHORT		BIT(5)
+ #define  AUX_IRQ_STATUS_NAT_I2C_FAIL		BIT(6)
++#define SN_IRQ_STATUS_REG			0xF5
++#define  HPD_REMOVAL_STATUS			BIT(2)
++#define  HPD_INSERTION_STATUS			BIT(1)
  
- 	if (pvr_dev->has_safety_events) {
--		int err;
--
--		/*
--		 * Ensure the GPU is powered on since some safety events (such
--		 * as ECC faults) can happen outside of job submissions, which
--		 * are otherwise the only time a power reference is held.
--		 */
--		err = pvr_power_get(pvr_dev);
--		if (err) {
--			drm_err_ratelimited(drm_dev,
--					    "%s: could not take power reference (%d)\n",
--					    __func__, err);
--			return ret;
--		}
--
- 		while (pvr_device_safety_irq_pending(pvr_dev)) {
- 			pvr_device_safety_irq_clear(pvr_dev);
- 			pvr_device_handle_safety_events(pvr_dev);
+ #define MIN_DSI_CLK_FREQ_MHZ	40
  
- 			ret = IRQ_HANDLED;
- 		}
--
--		pvr_power_put(pvr_dev);
- 	}
+@@ -152,7 +163,9 @@
+  * @ln_assign:    Value to program to the LN_ASSIGN register.
+  * @ln_polrs:     Value for the 4-bit LN_POLRS field of SN_ENH_FRAME_REG.
+  * @comms_enabled: If true then communication over the aux channel is enabled.
++ * @hpd_enabled:   If true then HPD events are enabled.
+  * @comms_mutex:   Protects modification of comms_enabled.
++ * @hpd_mutex:     Protects modification of hpd_enabled.
+  *
+  * @gchip:        If we expose our GPIOs, this is used.
+  * @gchip_output: A cache of whether we've set GPIOs to output.  This
+@@ -190,7 +203,9 @@ struct ti_sn65dsi86 {
+ 	u8				ln_assign;
+ 	u8				ln_polrs;
+ 	bool				comms_enabled;
++	bool				hpd_enabled;
+ 	struct mutex			comms_mutex;
++	struct mutex			hpd_mutex;
  
- 	return ret;
---- a/drivers/gpu/drm/imagination/pvr_power.c
-+++ b/drivers/gpu/drm/imagination/pvr_power.c
-@@ -90,7 +90,7 @@ pvr_power_request_pwr_off(struct pvr_dev
- }
+ #if defined(CONFIG_OF_GPIO)
+ 	struct gpio_chip		gchip;
+@@ -221,6 +236,23 @@ static const struct regmap_config ti_sn6
+ 	.max_register = 0xFF,
+ };
  
- static int
--pvr_power_fw_disable(struct pvr_device *pvr_dev, bool hard_reset)
-+pvr_power_fw_disable(struct pvr_device *pvr_dev, bool hard_reset, bool rpm_suspend)
++static int ti_sn65dsi86_read_u8(struct ti_sn65dsi86 *pdata, unsigned int reg,
++				u8 *val)
++{
++	int ret;
++	unsigned int reg_val;
++
++	ret = regmap_read(pdata->regmap, reg, &reg_val);
++	if (ret) {
++		dev_err(pdata->dev, "fail to read raw reg %#x: %d\n",
++			reg, ret);
++		return ret;
++	}
++	*val = (u8)reg_val;
++
++	return 0;
++}
++
+ static int __maybe_unused ti_sn65dsi86_read_u16(struct ti_sn65dsi86 *pdata,
+ 						unsigned int reg, u16 *val)
  {
- 	if (!hard_reset) {
- 		int err;
-@@ -106,6 +106,11 @@ pvr_power_fw_disable(struct pvr_device *
- 			return err;
- 	}
+@@ -362,6 +394,7 @@ static void ti_sn65dsi86_disable_comms(s
+ static int __maybe_unused ti_sn65dsi86_resume(struct device *dev)
+ {
+ 	struct ti_sn65dsi86 *pdata = dev_get_drvdata(dev);
++	const struct i2c_client *client = to_i2c_client(pdata->dev);
+ 	int ret;
  
-+	if (rpm_suspend) {
-+		/* Wait for late processing of GPU or firmware IRQs in other cores */
-+		synchronize_irq(pvr_dev->irq);
+ 	ret = regulator_bulk_enable(SN_REGULATOR_SUPPLY_NUM, pdata->supplies);
+@@ -396,6 +429,13 @@ static int __maybe_unused ti_sn65dsi86_r
+ 	if (pdata->refclk)
+ 		ti_sn65dsi86_enable_comms(pdata);
+ 
++	if (client->irq) {
++		ret = regmap_update_bits(pdata->regmap, SN_IRQ_EN_REG, IRQ_EN,
++					 IRQ_EN);
++		if (ret)
++			dev_err(pdata->dev, "Failed to enable IRQ events: %d\n", ret);
 +	}
 +
- 	return pvr_fw_stop(pvr_dev);
+ 	return ret;
  }
  
-@@ -361,7 +366,7 @@ pvr_power_device_suspend(struct device *
- 		return -EIO;
+@@ -1204,6 +1244,8 @@ static void ti_sn65dsi86_debugfs_init(st
+ static void ti_sn_bridge_hpd_enable(struct drm_bridge *bridge)
+ {
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++	const struct i2c_client *client = to_i2c_client(pdata->dev);
++	int ret;
  
- 	if (pvr_dev->fw_dev.booted) {
--		err = pvr_power_fw_disable(pvr_dev, false);
-+		err = pvr_power_fw_disable(pvr_dev, false, true);
- 		if (err)
- 			goto err_drm_dev_exit;
- 	}
-@@ -527,7 +532,7 @@ pvr_power_reset(struct pvr_device *pvr_d
- 			queues_disabled = true;
- 		}
+ 	/*
+ 	 * Device needs to be powered on before reading the HPD state
+@@ -1212,11 +1254,35 @@ static void ti_sn_bridge_hpd_enable(stru
+ 	 */
  
--		err = pvr_power_fw_disable(pvr_dev, hard_reset);
-+		err = pvr_power_fw_disable(pvr_dev, hard_reset, false);
- 		if (!err) {
- 			if (hard_reset) {
- 				pvr_dev->fw_dev.booted = false;
+ 	pm_runtime_get_sync(pdata->dev);
++
++	mutex_lock(&pdata->hpd_mutex);
++	pdata->hpd_enabled = true;
++	mutex_unlock(&pdata->hpd_mutex);
++
++	if (client->irq) {
++		ret = regmap_set_bits(pdata->regmap, SN_IRQ_EVENTS_EN_REG,
++				      HPD_REMOVAL_EN | HPD_INSERTION_EN);
++		if (ret)
++			dev_err(pdata->dev, "Failed to enable HPD events: %d\n", ret);
++	}
+ }
+ 
+ static void ti_sn_bridge_hpd_disable(struct drm_bridge *bridge)
+ {
+ 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
++	const struct i2c_client *client = to_i2c_client(pdata->dev);
++	int ret;
++
++	if (client->irq) {
++		ret = regmap_clear_bits(pdata->regmap, SN_IRQ_EVENTS_EN_REG,
++					HPD_REMOVAL_EN | HPD_INSERTION_EN);
++		if (ret)
++			dev_err(pdata->dev, "Failed to disable HPD events: %d\n", ret);
++	}
++
++	mutex_lock(&pdata->hpd_mutex);
++	pdata->hpd_enabled = false;
++	mutex_unlock(&pdata->hpd_mutex);
+ 
+ 	pm_runtime_put_autosuspend(pdata->dev);
+ }
+@@ -1302,6 +1368,41 @@ static int ti_sn_bridge_parse_dsi_host(s
+ 	return 0;
+ }
+ 
++static irqreturn_t ti_sn_bridge_interrupt(int irq, void *private)
++{
++	struct ti_sn65dsi86 *pdata = private;
++	struct drm_device *dev = pdata->bridge.dev;
++	u8 status;
++	int ret;
++	bool hpd_event;
++
++	ret = ti_sn65dsi86_read_u8(pdata, SN_IRQ_STATUS_REG, &status);
++	if (ret) {
++		dev_err(pdata->dev, "Failed to read IRQ status: %d\n", ret);
++		return IRQ_NONE;
++	}
++
++	hpd_event = status & (HPD_REMOVAL_STATUS | HPD_INSERTION_STATUS);
++
++	dev_dbg(pdata->dev, "(SN_IRQ_STATUS_REG = %#x)\n", status);
++	if (!status)
++		return IRQ_NONE;
++
++	ret = regmap_write(pdata->regmap, SN_IRQ_STATUS_REG, status);
++	if (ret) {
++		dev_err(pdata->dev, "Failed to clear IRQ status: %d\n", ret);
++		return IRQ_NONE;
++	}
++
++	/* Only send the HPD event if we are bound with a device. */
++	mutex_lock(&pdata->hpd_mutex);
++	if (pdata->hpd_enabled && hpd_event)
++		drm_kms_helper_hotplug_event(dev);
++	mutex_unlock(&pdata->hpd_mutex);
++
++	return IRQ_HANDLED;
++}
++
+ static int ti_sn_bridge_probe(struct auxiliary_device *adev,
+ 			      const struct auxiliary_device_id *id)
+ {
+@@ -1933,6 +2034,7 @@ static int ti_sn65dsi86_probe(struct i2c
+ 	dev_set_drvdata(dev, pdata);
+ 	pdata->dev = dev;
+ 
++	mutex_init(&pdata->hpd_mutex);
+ 	mutex_init(&pdata->comms_mutex);
+ 
+ 	pdata->regmap = devm_regmap_init_i2c(client,
+@@ -1963,6 +2065,16 @@ static int ti_sn65dsi86_probe(struct i2c
+ 	if (ret)
+ 		return ret;
+ 
++	if (client->irq) {
++		ret = devm_request_threaded_irq(pdata->dev, client->irq, NULL,
++						ti_sn_bridge_interrupt,
++						IRQF_ONESHOT,
++						dev_name(pdata->dev), pdata);
++
++		if (ret)
++			return dev_err_probe(dev, ret, "failed to request interrupt\n");
++	}
++
+ 	/*
+ 	 * Break ourselves up into a collection of aux devices. The only real
+ 	 * motiviation here is to solve the chicken-and-egg problem of probe
 
 
 
