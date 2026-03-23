@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228313-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MCQONCJvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229817-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:38 +0100
+	id gOAmCnFOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228313-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:09 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 715B12F8DE3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:38 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F4432F49FC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9AE4130FF329
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9E369304734B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4207038B7C4;
-	Mon, 23 Mar 2026 16:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1992B3AEF58;
+	Mon, 23 Mar 2026 14:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1mdmyV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDBVVWVf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F06258CD9;
-	Mon, 23 Mar 2026 16:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DE03ACEFE;
+	Mon, 23 Mar 2026 14:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282945; cv=none; b=hp/7jrLUegYriW4CyUJbNjyYhQC7ip/E137038Jx9oSfu8NkrEqeucRrlwaGH+3QYd1qlNsYiLWx9fzKE92YOpzgFUiE4BQOiKIito0aaHyY7uBgnnp0VoPubwVPenTe23OdAUb9sOIl7KoFLWdSmPRFq73+9L7rwZAvcNBcDaI=
+	t=1774274776; cv=none; b=gqvbSg4DJQZjxzzmG5Bv/3VZHdpW2JYGRbh79lgOAPfLfOdqRqOmzXkuC4I8xLm8mTeupVA7ws1oo0Au21vqY7NlJNfcpkqQuE7v6JZeY3fRes2lAbKVousfjxP5mrjL3IDfBPSkl1utL7JydxbXVVtS129L7XTQjoYjcxZT4Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282945; c=relaxed/simple;
-	bh=YJPn7XlaDnpjAUoVwQcNjCcYGvF+nH5zRX3cIiRzrV4=;
+	s=arc-20240116; t=1774274776; c=relaxed/simple;
+	bh=Ydu9ktrHkKL7dpw1iZNVlingdylqJrrPczYvWohYRKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iekCEDsj3eQBA/PPrj05LXD78GuKyNCUAfe548lmEW/BPnWky69a/hxrD6k5TsXLgGu+zA256FZ3nbVdzRGyf+uSygYnBHboYa1IMJrJYxrYFdH7XWlHBLyRXt8FXV2b6gGztFwHuWG1VyAhgTLkKy0wEq+1pt8QQ/b+xx2lcXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1mdmyV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94D27C4CEF7;
-	Mon, 23 Mar 2026 16:22:24 +0000 (UTC)
+	 MIME-Version; b=rwickJu1I1bbrw9Dg2dXSShmLL2KXAni/ZmE8r2T8mqUk7l4Ky+V4x85dE4UyLHFhHVxKQCQuyfZt0CO9Jo8MaOv5aFv9t2s5xCxw10W6KePSMFPMw0P7dYxwOXbY9aWMXYdWSuke3iaOWwAEB+PIHY3DISERHB7sFe8E9nbnTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDBVVWVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5259FC4CEF7;
+	Mon, 23 Mar 2026 14:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282944;
-	bh=YJPn7XlaDnpjAUoVwQcNjCcYGvF+nH5zRX3cIiRzrV4=;
+	s=korg; t=1774274776;
+	bh=Ydu9ktrHkKL7dpw1iZNVlingdylqJrrPczYvWohYRKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q1mdmyV2ga8HTggIxYVvNOPsya3Sami3x718Z1JZMzPwGJiaNA9FKZ2Pd6BY2M1Kw
-	 1eVZATfhHMfG1ehZkXiCPMdfW326xpWqzVQus6Desu4/37aptytYiu6iCUISCtXQbR
-	 ST3MA16avBNKnW0GfRUv4ibBq87FuVb8JXLMYKy8=
+	b=KDBVVWVfQ5I5OmZjdrKsm8GTjJ2c20PKt7UpSeCzUNmRcxgZ7i9q5ppUeAsurccjG
+	 T5r7acq45T3ZatPgdlQdz0Rmgxe+A5t39MauSWV0h8oH847rvCmHPi8zTRFhilMMae
+	 zCRcvlrbDQw7S4yUcnqw9uqxj6fOt7Q8sDYRaDX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quanyang Wang <quanyang.wang@windriver.com>,
-	Kevin Hao <haokexin@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Richard Genoud <richard.genoud@bootlin.com>,
+	CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 344/481] net: macb: Shuffle the tx ring before enabling tx
+Subject: [PATCH 6.18 105/212] soc: fsl: qbman: fix race condition in qman_destroy_fq
 Date: Mon, 23 Mar 2026 14:45:26 +0100
-Message-ID: <20260323134533.487099495@linuxfoundation.org>
+Message-ID: <20260323134507.102127261@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,217 +70,122 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229817-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,windriver.com,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228313-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.947];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 715B12F8DE3
+X-Rspamd-Queue-Id: 8F4432F49FC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kevin Hao <haokexin@gmail.com>
+From: Richard Genoud <richard.genoud@bootlin.com>
 
-[ Upstream commit 881a0263d502e1a93ebc13a78254e9ad19520232 ]
+[ Upstream commit 014077044e874e270ec480515edbc1cadb976cf2 ]
 
-Quanyang observed that when using an NFS rootfs on an AMD ZynqMp board,
-the rootfs may take an extended time to recover after a suspend.
-Upon investigation, it was determined that the issue originates from a
-problem in the macb driver.
+When QMAN_FQ_FLAG_DYNAMIC_FQID is set, there's a race condition between
+fq_table[fq->idx] state and freeing/allocating from the pool and
+WARN_ON(fq_table[fq->idx]) in qman_create_fq() gets triggered.
 
-According to the Zynq UltraScale TRM [1], when transmit is disabled,
-the transmit buffer queue pointer resets to point to the address
-specified by the transmit buffer queue base address register.
+Indeed, we can have:
+         Thread A                             Thread B
+    qman_destroy_fq()                    qman_create_fq()
+      qman_release_fqid()
+        qman_shutdown_fq()
+        gen_pool_free()
+           -- At this point, the fqid is available again --
+                                           qman_alloc_fqid()
+           -- so, we can get the just-freed fqid in thread B --
+                                           fq->fqid = fqid;
+                                           fq->idx = fqid * 2;
+                                           WARN_ON(fq_table[fq->idx]);
+                                           fq_table[fq->idx] = fq;
+     fq_table[fq->idx] = NULL;
 
-In the current implementation, the code merely resets `queue->tx_head`
-and `queue->tx_tail` to '0'. This approach presents several issues:
+And adding some logs between qman_release_fqid() and
+fq_table[fq->idx] = NULL makes the WARN_ON() trigger a lot more.
 
-- Packets already queued in the tx ring are silently lost,
-  leading to memory leaks since the associated skbs cannot be released.
+To prevent that, ensure that fq_table[fq->idx] is set to NULL before
+gen_pool_free() is called by using smp_wmb().
 
-- Concurrent write access to `queue->tx_head` and `queue->tx_tail` may
-  occur from `macb_tx_poll()` or `macb_start_xmit()` when these values
-  are reset to '0'.
-
-- The transmission may become stuck on a packet that has already been sent
-  out, with its 'TX_USED' bit set, but has not yet been processed. However,
-  due to the manipulation of 'queue->tx_head' and 'queue->tx_tail',
-  `macb_tx_poll()` incorrectly assumes there are no packets to handle
-  because `queue->tx_head == queue->tx_tail`. This issue is only resolved
-  when a new packet is placed at this position. This is the root cause of
-  the prolonged recovery time observed for the NFS root filesystem.
-
-To resolve this issue, shuffle the tx ring and tx skb array so that
-the first unsent packet is positioned at the start of the tx ring.
-Additionally, ensure that updates to `queue->tx_head` and
-`queue->tx_tail` are properly protected with the appropriate lock.
-
-[1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
-
-Fixes: bf9cf80cab81 ("net: macb: Fix tx/rx malfunction after phy link down and up")
-Reported-by: Quanyang Wang <quanyang.wang@windriver.com>
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260307-zynqmp-v2-1-6ef98a70e1d0@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ #include context ]
+Fixes: c535e923bb97 ("soc/fsl: Introduce DPAA 1.x QMan device driver")
+Signed-off-by: Richard Genoud <richard.genoud@bootlin.com>
+Tested-by: CHAMPSEIX Thomas <thomas.champseix@alstomgroup.com>
+Link: https://lore.kernel.org/r/20251223072549.397625-1-richard.genoud@bootlin.com
+Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |   98 ++++++++++++++++++++++++++++++-
- 1 file changed, 95 insertions(+), 3 deletions(-)
+ drivers/soc/fsl/qbman/qman.c | 24 ++++++++++++++++++++++--
+ 1 file changed, 22 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -39,6 +39,7 @@
- #include <linux/ptp_classify.h>
- #include <linux/reset.h>
- #include <linux/firmware/xlnx-zynqmp.h>
-+#include <linux/gcd.h>
- #include "macb.h"
+diff --git a/drivers/soc/fsl/qbman/qman.c b/drivers/soc/fsl/qbman/qman.c
+index 9be240999f877..43a4e8d58b9bc 100644
+--- a/drivers/soc/fsl/qbman/qman.c
++++ b/drivers/soc/fsl/qbman/qman.c
+@@ -1827,6 +1827,8 @@ EXPORT_SYMBOL(qman_create_fq);
  
- /* This structure is only used for MACB on SiFive FU540 devices */
-@@ -668,6 +669,97 @@ static void macb_mac_link_down(struct ph
- 	netif_tx_stop_all_queues(ndev);
- }
- 
-+/* Use juggling algorithm to left rotate tx ring and tx skb array */
-+static void gem_shuffle_tx_one_ring(struct macb_queue *queue)
-+{
-+	unsigned int head, tail, count, ring_size, desc_size;
-+	struct macb_tx_skb tx_skb, *skb_curr, *skb_next;
-+	struct macb_dma_desc *desc_curr, *desc_next;
-+	unsigned int i, cycles, shift, curr, next;
-+	struct macb *bp = queue->bp;
-+	unsigned char desc[24];
-+	unsigned long flags;
+ void qman_destroy_fq(struct qman_fq *fq)
+ {
++	int leaked;
 +
-+	desc_size = macb_dma_desc_get_size(bp);
-+
-+	if (WARN_ON_ONCE(desc_size > ARRAY_SIZE(desc)))
-+		return;
-+
-+	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
-+	head = queue->tx_head;
-+	tail = queue->tx_tail;
-+	ring_size = bp->tx_ring_size;
-+	count = CIRC_CNT(head, tail, ring_size);
-+
-+	if (!(tail % ring_size))
-+		goto unlock;
-+
-+	if (!count) {
-+		queue->tx_head = 0;
-+		queue->tx_tail = 0;
-+		goto unlock;
-+	}
-+
-+	shift = tail % ring_size;
-+	cycles = gcd(ring_size, shift);
-+
-+	for (i = 0; i < cycles; i++) {
-+		memcpy(&desc, macb_tx_desc(queue, i), desc_size);
-+		memcpy(&tx_skb, macb_tx_skb(queue, i),
-+		       sizeof(struct macb_tx_skb));
-+
-+		curr = i;
-+		next = (curr + shift) % ring_size;
-+
-+		while (next != i) {
-+			desc_curr = macb_tx_desc(queue, curr);
-+			desc_next = macb_tx_desc(queue, next);
-+
-+			memcpy(desc_curr, desc_next, desc_size);
-+
-+			if (next == ring_size - 1)
-+				desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
-+			if (curr == ring_size - 1)
-+				desc_curr->ctrl |= MACB_BIT(TX_WRAP);
-+
-+			skb_curr = macb_tx_skb(queue, curr);
-+			skb_next = macb_tx_skb(queue, next);
-+			memcpy(skb_curr, skb_next, sizeof(struct macb_tx_skb));
-+
-+			curr = next;
-+			next = (curr + shift) % ring_size;
+ 	/*
+ 	 * We don't need to lock the FQ as it is a pre-condition that the FQ be
+ 	 * quiesced. Instead, run some checks.
+@@ -1834,11 +1836,29 @@ void qman_destroy_fq(struct qman_fq *fq)
+ 	switch (fq->state) {
+ 	case qman_fq_state_parked:
+ 	case qman_fq_state_oos:
+-		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID))
+-			qman_release_fqid(fq->fqid);
++		/*
++		 * There's a race condition here on releasing the fqid,
++		 * setting the fq_table to NULL, and freeing the fqid.
++		 * To prevent it, this order should be respected:
++		 */
++		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID)) {
++			leaked = qman_shutdown_fq(fq->fqid);
++			if (leaked)
++				pr_debug("FQID %d leaked\n", fq->fqid);
 +		}
-+
-+		desc_curr = macb_tx_desc(queue, curr);
-+		memcpy(desc_curr, &desc, desc_size);
-+		if (i == ring_size - 1)
-+			desc_curr->ctrl &= ~MACB_BIT(TX_WRAP);
-+		if (curr == ring_size - 1)
-+			desc_curr->ctrl |= MACB_BIT(TX_WRAP);
-+		memcpy(macb_tx_skb(queue, curr), &tx_skb,
-+		       sizeof(struct macb_tx_skb));
-+	}
-+
-+	queue->tx_head = count;
-+	queue->tx_tail = 0;
-+
-+	/* Make descriptor updates visible to hardware */
-+	wmb();
-+
-+unlock:
-+	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
-+}
-+
-+/* Rotate the queue so that the tail is at index 0 */
-+static void gem_shuffle_tx_rings(struct macb *bp)
-+{
-+	struct macb_queue *queue;
-+	int q;
-+
-+	for (q = 0, queue = bp->queues; q < bp->num_queues; q++, queue++)
-+		gem_shuffle_tx_one_ring(queue);
-+}
-+
- static void macb_mac_link_up(struct phylink_config *config,
- 			     struct phy_device *phy,
- 			     unsigned int mode, phy_interface_t interface,
-@@ -706,8 +798,6 @@ static void macb_mac_link_up(struct phyl
- 			ctrl |= MACB_BIT(PAE);
  
- 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--			queue->tx_head = 0;
--			queue->tx_tail = 0;
- 			queue_writel(queue, IER,
- 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
- 		}
-@@ -721,8 +811,10 @@ static void macb_mac_link_up(struct phyl
- 
- 	spin_unlock_irqrestore(&bp->lock, flags);
- 
--	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC))
-+	if (!(bp->caps & MACB_CAPS_MACB_IS_EMAC)) {
- 		macb_set_tx_clk(bp, speed);
-+		gem_shuffle_tx_rings(bp);
-+	}
- 
- 	/* Enable Rx and Tx; Enable PTP unicast */
- 	ctrl = macb_readl(bp, NCR);
+ 		DPAA_ASSERT(fq_table[fq->idx]);
+ 		fq_table[fq->idx] = NULL;
++
++		if (fq_isset(fq, QMAN_FQ_FLAG_DYNAMIC_FQID) && !leaked) {
++			/*
++			 * fq_table[fq->idx] should be set to null before
++			 * freeing fq->fqid otherwise it could by allocated by
++			 * qman_alloc_fqid() while still being !NULL
++			 */
++			smp_wmb();
++			gen_pool_free(qm_fqalloc, fq->fqid | DPAA_GENALLOC_OFF, 1);
++		}
+ 		return;
+ 	default:
+ 		break;
+-- 
+2.51.0
+
 
 
 
