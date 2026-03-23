@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-229089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228582-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mC0RAVRdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229089-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:33:40 +0100
+	id QKoUBeNLwWmKSAQAu9opvQ
+	(envelope-from <stable+bounces-228582-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 004742F6788
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:33:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 261712F42B2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A19F030B4996
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5860330095E8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C50335959;
-	Mon, 23 Mar 2026 15:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4E13AC0D2;
+	Mon, 23 Mar 2026 14:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxclhewd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JApXxOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3FFE1A00F0;
-	Mon, 23 Mar 2026 15:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830003AB295;
+	Mon, 23 Mar 2026 14:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278025; cv=none; b=PnyFQ5IsLs2lQLD6MUZ90tEyClRY2Gzui87HTxvTevlKBXgBgQG+EdS9l6mfy9WRnRYRQUc2gAUfNgjloIc7683q4rOVPUQHzhw+lhbkt06Fq4p8BKxRmdU3Jiw7n0iZzG45UshHQ4Ilwpu5EeGcn2HFU5o0UJoEfdlnxRxQscE=
+	t=1774275509; cv=none; b=Sqo6xJwraW3FGUPC43tBUjCufETXsU0+1wFdphbnD1lDoHQkLwWSRm29UP8NkLa4sofbDGF5VVjd4x7JdvwDBWAxbSmzOlSeveQZ/PCDf04corXHK1cmK62a65+HJDqp1uH2ObMf1wJetk1HVltxaxU3jWLlZ0yS1gO4Ulgccno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278025; c=relaxed/simple;
-	bh=H75s8/kZ/P6rcJ+HWuPc1KkrEt8TGAh3VpYjc2+HKJE=;
+	s=arc-20240116; t=1774275509; c=relaxed/simple;
+	bh=fzDAmJO1YGr9oYEU+gfUcVTK5Ke+byR5+gf2RddLtCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GaAP6yh/ZcsyAm6kkWL9rpMjdHQEYzDbHljt2D4RD9LX27G3828F0ePBs/1OxIZOwkLWMgQ5A0kdwXE3G4jhJHoqtMaoOwTHf7S7WPX+GUpanczjnJG3muP4X4IKSrjICmeGZwPnR5ZtlvoT2ATbaIrRSZa9wep1+1rNRgRPO3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxclhewd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7E3C4CEF7;
-	Mon, 23 Mar 2026 15:00:25 +0000 (UTC)
+	 MIME-Version; b=gyDnZecj0afM6sFVlrVBpfJnRPjqBoNlUC0LsIg3hTTMPtkLVFIRxTin/1POXNnNZ2GcBLY+btZcdmhF1wbZJlT1pRRi9EzS8WuFtRLTNS0yGdCf6KQ+k5S80ADxit1Id79f/LaB+Hp25r3Ytgho/NxWaMs8V1WBTjhHnQmugd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JApXxOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24F0C2BC9E;
+	Mon, 23 Mar 2026 14:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278025;
-	bh=H75s8/kZ/P6rcJ+HWuPc1KkrEt8TGAh3VpYjc2+HKJE=;
+	s=korg; t=1774275509;
+	bh=fzDAmJO1YGr9oYEU+gfUcVTK5Ke+byR5+gf2RddLtCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxclhewdZZ1/vcptchsI8xg+i+Qgn9YWBfDO4qQinRutYauNvqtt7dPffGLXghC0o
-	 mdjc0IR7KtVescmj986gCJFj1SV/VZgDl6ADKVi+tG8icNpDDHYit/7Ypa2SVEeFFD
-	 7Ic9CC24lCsQeZDzXHBHXeSVUiPZP/e/ZXIl3k9c=
+	b=0JApXxOiX6g5yc8jznxCwXvyWFJsuWh41wzfJuTl8aOGuaJT8LAHfXIE7CBLZuwlB
+	 JlSKYefQ2hg0AzQ8NXE9fPuW6msSjE+njoHCqzuOZBsRW413228JNvFjTxHKVRrOVH
+	 JVaH1ns8Y4kT7mktpiWDELizQVcWVxI5nIkqp7Lg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@shopee.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/567] net: ipv6: fix panic when IPv4 route references loopback IPv6 nexthop
+	Vyacheslav Vahnenko <vahnenko2003@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 100/460] USB: ezcap401 needs USB_QUIRK_NO_BOS to function on 10gbs usb speed
 Date: Mon, 23 Mar 2026 14:41:36 +0100
-Message-ID: <20260323134538.194196887@linuxfoundation.org>
+Message-ID: <20260323134529.110053023@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +63,70 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229089-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,334190e097a98a1b81bb];
+	TAGGED_FROM(0.00)[bounces-228582-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.org];
 	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 004742F6788
+X-Rspamd-Queue-Id: 261712F42B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+From: Vyacheslav Vahnenko <vahnenko2003@gmail.com>
 
-[ Upstream commit 21ec92774d1536f71bdc90b0e3d052eff99cf093 ]
+commit d0d9b1f4f5391e6a00cee81d73ed2e8f98446d5f upstream.
 
-When a standalone IPv6 nexthop object is created with a loopback device
-(e.g., "ip -6 nexthop add id 100 dev lo"), fib6_nh_init() misclassifies
-it as a reject route. This is because nexthop objects have no destination
-prefix (fc_dst=::), causing fib6_is_reject() to match any loopback
-nexthop. The reject path skips fib_nh_common_init(), leaving
-nhc_pcpu_rth_output unallocated. If an IPv4 route later references this
-nexthop, __mkroute_output() dereferences NULL nhc_pcpu_rth_output and
-panics.
+Add USB_QUIRK_NO_BOS for ezcap401 capture card, without it dmesg will show
+"unable to get BOS descriptor or descriptor too short" and "unable to
+read config index 0 descriptor/start: -71" errors and device will not
+able to work at full speed at 10gbs
 
-Simplify the check in fib6_nh_init() to only match explicit reject
-routes (RTF_REJECT) instead of using fib6_is_reject(). The loopback
-promotion heuristic in fib6_is_reject() is handled separately by
-ip6_route_info_create_nh(). After this change, the three cases behave
-as follows:
-
-1. Explicit reject route ("ip -6 route add unreachable 2001:db8::/64"):
-   RTF_REJECT is set, enters reject path, skips fib_nh_common_init().
-   No behavior change.
-
-2. Implicit loopback reject route ("ip -6 route add 2001:db8::/32 dev lo"):
-   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
-   called. ip6_route_info_create_nh() still promotes it to reject
-   afterward. nhc_pcpu_rth_output is allocated but unused, which is
-   harmless.
-
-3. Standalone nexthop object ("ip -6 nexthop add id 100 dev lo"):
-   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
-   called. nhc_pcpu_rth_output is properly allocated, fixing the crash
-   when IPv4 routes reference this nexthop.
-
-Suggested-by: Ido Schimmel <idosch@nvidia.com>
-Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
-Reported-by: syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/698f8482.a70a0220.2c38d7.00ca.GAE@google.com/T/
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260304113817.294966-2-jiayuan.chen@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vyacheslav Vahnenko <vahnenko2003@gmail.com>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260313123638.20481-1-vahnenko2003@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 72853ef73e821..7a91e539bbd14 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3567,7 +3567,6 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
- 	netdevice_tracker *dev_tracker = &fib6_nh->fib_nh_dev_tracker;
- 	struct net_device *dev = NULL;
- 	struct inet6_dev *idev = NULL;
--	int addr_type;
- 	int err;
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -585,6 +585,9 @@ static const struct usb_device_id usb_qu
+ 	/* Alcor Link AK9563 SC Reader used in 2022 Lenovo ThinkPads */
+ 	{ USB_DEVICE(0x2ce3, 0x9563), .driver_info = USB_QUIRK_NO_LPM },
  
- 	fib6_nh->fib_nh_family = AF_INET6;
-@@ -3609,11 +3608,10 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
++	/* ezcap401 - BOS descriptor fetch hangs at SuperSpeed Plus */
++	{ USB_DEVICE(0x32ed, 0x0401), .driver_info = USB_QUIRK_NO_BOS },
++
+ 	/* DELL USB GEN2 */
+ 	{ USB_DEVICE(0x413c, 0xb062), .driver_info = USB_QUIRK_NO_LPM | USB_QUIRK_RESET_RESUME },
  
- 	fib6_nh->fib_nh_weight = 1;
- 
--	/* We cannot add true routes via loopback here,
--	 * they would result in kernel looping; promote them to reject routes
-+	/* Reset the nexthop device to the loopback device in case of reject
-+	 * routes.
- 	 */
--	addr_type = ipv6_addr_type(&cfg->fc_dst);
--	if (fib6_is_reject(cfg->fc_flags, dev, addr_type)) {
-+	if (cfg->fc_flags & RTF_REJECT) {
- 		/* hold loopback dev/idev if we haven't done so. */
- 		if (dev != net->loopback_dev) {
- 			if (dev) {
--- 
-2.51.0
-
 
 
 
