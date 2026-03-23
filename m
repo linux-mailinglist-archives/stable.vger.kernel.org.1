@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228481-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uDCjClhmwWlQSwQAu9opvQ
-	(envelope-from <stable+bounces-229506-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:08 +0100
+	id ECmaCVRRwWnqSAQAu9opvQ
+	(envelope-from <stable+bounces-228481-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:42:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF9A12F7BA4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:12:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 727FF2F506F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:42:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4D5F830D08A4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 25DE33146693
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B46527FD6D;
-	Mon, 23 Mar 2026 15:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82B8B3ACF03;
+	Mon, 23 Mar 2026 14:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMl+Cozc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpK/DeCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EED2550D5;
-	Mon, 23 Mar 2026 15:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46253823DD;
+	Mon, 23 Mar 2026 14:14:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279451; cv=none; b=HOk9Rd3dp3HJwmi+m634Nw0m7/qjLOBRMYDSXxLwljxLKFkpAELKZS1eH691N4pi8DFck2jOXMZuhNuucLnzkbN6iYTZrDGb6ltWkQd+zjbt/ij1RQc1KCRn9w/MaQNOAT3bLU3xAdhN9i63rZ3x2aOzYqfZSfZTX/1UHsFTgQU=
+	t=1774275248; cv=none; b=DW+CJVBVrjbFcsSE+l928LC5mheZB2THwqtPmP/bSfJu1Mn1ZFJnUpF8OCQQ+f6S/hYcil6S4NcrlNX0lY+zBeODlXgk1jXWcStfQjAjSF6ajimuPbNxDAe3MbXyismQLrqFKJPcGkCHGfpr9S3nqZAEFRgVqyQn+HJV2SJFclM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279451; c=relaxed/simple;
-	bh=nPTftOrtydmtWbdpX7iGiqG6tLTO/y6FkfoHzs4nyqo=;
+	s=arc-20240116; t=1774275248; c=relaxed/simple;
+	bh=KB2AfrzuqtnhbahfcqK4UxrFtkGi4QQMwAHEC3F+qew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMBvEIku4D1DcWksNr3smHh6gTBUpiVsZhgCksgkkoi/QORVYeYD2evbMjqwgwsYqr79y9kTgCaSt5IVgqtF3j+jQ8GWcHTvwl7y9eRW3pud7qvy3iRG/DmKN/uvk6HNvgsihiwxeMpklp4gU3YLRSJ9vitKEjCykSatLLieySA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMl+Cozc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EDC0C4CEF7;
-	Mon, 23 Mar 2026 15:24:10 +0000 (UTC)
+	 MIME-Version; b=r3yoZkWbRUWJV047/qfPC6kyX695flSfs2/EhYSS9UPsojSpue9Pz6ySnOAb/DrcBYzMFVNqNeuDj7Z0albFK29dNSMiYIZIjxXDTeLayhLEiwg6NX8ZxYXdwZirHyAo1Y8HCkUQqxW+6Y2ztEN1k+NJi0R2vRrPyyeBmHJax5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpK/DeCy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7FBCC4CEF7;
+	Mon, 23 Mar 2026 14:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279450;
-	bh=nPTftOrtydmtWbdpX7iGiqG6tLTO/y6FkfoHzs4nyqo=;
+	s=korg; t=1774275248;
+	bh=KB2AfrzuqtnhbahfcqK4UxrFtkGi4QQMwAHEC3F+qew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMl+CozcekaEWQhjrGkQvsQ+XHxWJnMb6cR4Pmd7iPGJ1o1Icnhw7eVlfVp+LA38F
-	 3BrYiIGKpJKgSF7CJzf3AwPU/Nkr47mzP0oNxOXczHM9sbAoApgVhoYmAlkPx6VBGm
-	 Unv2749kS8pOZXxjHiefVsMFl8F/O+Kn4H1KXfiQ=
+	b=mpK/DeCylzx2gD7WlyKAA+uAbPpeIE+jkCVjHBsQ4OQ1kyUtYz+D+iI8BjEZZkMSq
+	 9ux98QLImoq/6Ys+4GBikH8ihx5J3TTkdDbT5wXM25ucxxtbGr8Uz+6dAdhPOoIqD+
+	 Q0YqOFeyJLyqnK4kocwgQXM5Mm8BtFWvjeTmomjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Eric Badger <ebadger@purestorage.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/481] ext4: get rid of ppath in ext4_ext_create_new_leaf()
+Subject: [PATCH 6.12 027/460] xprtrdma: Decrement re_receiving on the early exit paths
 Date: Mon, 23 Mar 2026 14:40:23 +0100
-Message-ID: <20260323134526.234458980@linuxfoundation.org>
+Message-ID: <20260323134527.361847210@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,155 +69,118 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228481-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229506-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,msgid.link:url,suse.cz:email,huawei.com:email]
-X-Rspamd-Queue-Id: BF9A12F7BA4
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 727FF2F506F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Eric Badger <ebadger@purestorage.com>
 
-[ Upstream commit a000bc8678cc2bb10a5b80b4e991e77c7b4612fd ]
+[ Upstream commit 7b6275c80a0c81c5f8943272292dfe67730ce849 ]
 
-The use of path and ppath is now very confusing, so to make the code more
-readable, pass path between functions uniformly, and get rid of ppath.
+In the event that rpcrdma_post_recvs() fails to create a work request
+(due to memory allocation failure, say) or otherwise exits early, we
+should decrement ep->re_receiving before returning. Otherwise we will
+hang in rpcrdma_xprt_drain() as re_receiving will never reach zero and
+the completion will never be triggered.
 
-To get rid of the ppath in ext4_ext_create_new_leaf(), the following is
-done here:
+On a system with high memory pressure, this can appear as the following
+hung task:
 
- * Free the extents path when an error is encountered.
- * Its caller needs to update ppath if it uses ppath.
+    INFO: task kworker/u385:17:8393 blocked for more than 122 seconds.
+          Tainted: G S          E       6.19.0 #3
+    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+    task:kworker/u385:17 state:D stack:0     pid:8393  tgid:8393  ppid:2      task_flags:0x4248060 flags:0x00080000
+    Workqueue: xprtiod xprt_autoclose [sunrpc]
+    Call Trace:
+     <TASK>
+     __schedule+0x48b/0x18b0
+     ? ib_post_send_mad+0x247/0xae0 [ib_core]
+     schedule+0x27/0xf0
+     schedule_timeout+0x104/0x110
+     __wait_for_common+0x98/0x180
+     ? __pfx_schedule_timeout+0x10/0x10
+     wait_for_completion+0x24/0x40
+     rpcrdma_xprt_disconnect+0x444/0x460 [rpcrdma]
+     xprt_rdma_close+0x12/0x40 [rpcrdma]
+     xprt_autoclose+0x5f/0x120 [sunrpc]
+     process_one_work+0x191/0x3e0
+     worker_thread+0x2e3/0x420
+     ? __pfx_worker_thread+0x10/0x10
+     kthread+0x10d/0x230
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork+0x273/0x2b0
+     ? __pfx_kthread+0x10/0x10
+     ret_from_fork_asm+0x1a/0x30
 
-No functional changes.
-
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Tested-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
-Link: https://patch.msgid.link/20240822023545.1994557-14-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 22784ca541c0 ("ext4: subdivide EXT4_EXT_DATA_VALID1")
+Fixes: 15788d1d1077 ("xprtrdma: Do not refresh Receive Queue while it is draining")
+Signed-off-by: Eric Badger <ebadger@purestorage.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 43 ++++++++++++++++++++++---------------------
- 1 file changed, 22 insertions(+), 21 deletions(-)
+ net/sunrpc/xprtrdma/verbs.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index a58f415f882b2..eda6f92a42330 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1392,13 +1392,12 @@ static int ext4_ext_grow_indepth(handle_t *handle, struct inode *inode,
-  * finds empty index and adds new leaf.
-  * if no free index is found, then it requests in-depth growing.
-  */
--static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
--				    unsigned int mb_flags,
--				    unsigned int gb_flags,
--				    struct ext4_ext_path **ppath,
--				    struct ext4_extent *newext)
-+static struct ext4_ext_path *
-+ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
-+			 unsigned int mb_flags, unsigned int gb_flags,
-+			 struct ext4_ext_path *path,
-+			 struct ext4_extent *newext)
- {
--	struct ext4_ext_path *path = *ppath;
- 	struct ext4_ext_path *curp;
- 	int depth, i, err = 0;
+diff --git a/net/sunrpc/xprtrdma/verbs.c b/net/sunrpc/xprtrdma/verbs.c
+index 63262ef0c2e3a..8abbd9c4045a4 100644
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -1362,7 +1362,7 @@ void rpcrdma_post_recvs(struct rpcrdma_xprt *r_xprt, int needed)
+ 	needed += RPCRDMA_MAX_RECV_BATCH;
  
-@@ -1419,28 +1418,25 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
- 		 * entry: create all needed subtree and add new leaf */
- 		err = ext4_ext_split(handle, inode, mb_flags, path, newext, i);
- 		if (err)
--			goto out;
-+			goto errout;
+ 	if (atomic_inc_return(&ep->re_receiving) > 1)
+-		goto out;
++		goto out_dec;
  
- 		/* refill path */
- 		path = ext4_find_extent(inode,
- 				    (ext4_lblk_t)le32_to_cpu(newext->ee_block),
- 				    path, gb_flags);
--		if (IS_ERR(path))
--			err = PTR_ERR(path);
-+		return path;
- 	} else {
- 		/* tree is full, time to grow in depth */
- 		err = ext4_ext_grow_indepth(handle, inode, mb_flags);
- 		if (err)
--			goto out;
-+			goto errout;
+ 	/* fast path: all needed reps can be found on the free list */
+ 	wr = NULL;
+@@ -1385,7 +1385,7 @@ void rpcrdma_post_recvs(struct rpcrdma_xprt *r_xprt, int needed)
+ 		++count;
+ 	}
+ 	if (!wr)
+-		goto out;
++		goto out_dec;
  
- 		/* refill path */
- 		path = ext4_find_extent(inode,
- 				   (ext4_lblk_t)le32_to_cpu(newext->ee_block),
- 				    path, gb_flags);
--		if (IS_ERR(path)) {
--			err = PTR_ERR(path);
--			goto out;
--		}
-+		if (IS_ERR(path))
-+			return path;
- 
- 		/*
- 		 * only first (depth 0 -> 1) produces free space;
-@@ -1452,9 +1448,11 @@ static int ext4_ext_create_new_leaf(handle_t *handle, struct inode *inode,
- 			goto repeat;
+ 	rc = ib_post_recv(ep->re_id->qp, wr,
+ 			  (const struct ib_recv_wr **)&bad_wr);
+@@ -1400,9 +1400,10 @@ void rpcrdma_post_recvs(struct rpcrdma_xprt *r_xprt, int needed)
+ 			--count;
  		}
  	}
--out:
--	*ppath = IS_ERR(path) ? NULL : path;
--	return err;
-+	return path;
 +
-+errout:
-+	ext4_free_ext_path(path);
-+	return ERR_PTR(err);
- }
- 
- /*
-@@ -2097,11 +2095,14 @@ int ext4_ext_insert_extent(handle_t *handle, struct inode *inode,
- 	 */
- 	if (gb_flags & EXT4_GET_BLOCKS_METADATA_NOFAIL)
- 		mb_flags |= EXT4_MB_USE_RESERVED;
--	err = ext4_ext_create_new_leaf(handle, inode, mb_flags, gb_flags,
--				       ppath, newext);
--	if (err)
-+	path = ext4_ext_create_new_leaf(handle, inode, mb_flags, gb_flags,
-+					path, newext);
-+	if (IS_ERR(path)) {
-+		*ppath = NULL;
-+		err = PTR_ERR(path);
- 		goto cleanup;
--	path = *ppath;
-+	}
-+	*ppath = path;
- 	depth = ext_depth(inode);
- 	eh = path[depth].p_hdr;
- 
++out_dec:
+ 	if (atomic_dec_return(&ep->re_receiving) > 0)
+ 		complete(&ep->re_done);
+-
+ out:
+ 	trace_xprtrdma_post_recvs(r_xprt, count);
+ 	ep->re_receive_count += count;
 -- 
 2.51.0
 
