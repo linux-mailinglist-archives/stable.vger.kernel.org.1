@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228154-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4CqOIGdfwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229295-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:42:31 +0100
+	id SHhxKPVPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228154-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED04C2F6C14
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:42:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3E2A2F4D79
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CB9143024455
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F299312E68D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1753B8959;
-	Mon, 23 Mar 2026 15:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BC83A9D9D;
+	Mon, 23 Mar 2026 13:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ck6tTR1w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dW70N6Qm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CBB3B8BC3;
-	Mon, 23 Mar 2026 15:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A081EB9F2;
+	Mon, 23 Mar 2026 13:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278668; cv=none; b=UcVM/RX4J56fAtLZwqdKKyAMZk//ycYExHktOhVm11lm+imPwxQq3pro07/ddV6XHTRAmEYiG+vNZlr6HVGq5C4fdITR0tEqWDBOAA+571q40X2b2FkDMYf8Kkt254xRzbu6oG91a/5YgdrJM5euS7q0Zvk1IaU7WHr/Zr0nO/E=
+	t=1774274289; cv=none; b=n5aOwsfMA9i2k59BrHsIRn63IQRidBMOthJC4ZScSJioX4g2c3jCqpb1bUlZNA12BCATogEYx0gMat5Pz8171mj6c9X6x/TwC7009kif4Vn7HucAGPtvOzBWLnINPY59q2vz3i5PMdA5YQEjhIWm7s0rHcvuHl5LaJHtxMl6c+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278668; c=relaxed/simple;
-	bh=l8b1RXM7h/nv3Btt4PeCpSZ9av5yqUcBmjhXvxw3nNg=;
+	s=arc-20240116; t=1774274289; c=relaxed/simple;
+	bh=rWeuZXR+RA7PbBEthBoEBGeJITdSWsFg/JoC1EiiYyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntwwUOAp4ArxIDz5SBaQQuxebdkJrIrSdeW1F52j7RLU812afoic7Z/Zdj9KOOGje0eUR+CyJrnalDTGKaNpcBfi/ON3mihu3Cys99bOY+DEb/4yFAwjFc6ov8+t9JgrUJyw+5qxMeS3VAOnvoj5I9/YvRkIgaSXfmdUltNIuyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ck6tTR1w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55248C2BC9E;
-	Mon, 23 Mar 2026 15:11:08 +0000 (UTC)
+	 MIME-Version; b=YKRajfFS0UeFYWp1jdYS79/0LqnVXC9hEX8G3JDOQ3m0PxJGCcu+X3TiieJlQnmkwBiSDTgVFtCIvl9JBbVuki/ZDMhvVy7hfMwpo+T+SWduKj22u1jS9rz34eiT4qBpnuYtl5eu7dERaAMd22AhZbfgnO3vn62Ed1x64MPCQqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dW70N6Qm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A718C4CEF7;
+	Mon, 23 Mar 2026 13:58:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278668;
-	bh=l8b1RXM7h/nv3Btt4PeCpSZ9av5yqUcBmjhXvxw3nNg=;
+	s=korg; t=1774274289;
+	bh=rWeuZXR+RA7PbBEthBoEBGeJITdSWsFg/JoC1EiiYyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ck6tTR1wxXQYYtKQz0qbcM5C8uSWYgxGapd7/AuWFEYC5wDwVa2Jhhl7kGs7hGuzz
-	 HSFuuXTv0LUwYn7+H5zpEz5dP5sgE+Fi2ppkFxFiRPtwGU1W+lDZLL6OpCsDr3YnQA
-	 tUNj6dVw0ppi/Ei52hoZ3kkgLkXXqLP438644MP0=
+	b=dW70N6QmHAF7lJkdVHsTEuksx40KDycJ4U6ClHaNEhIQe5u3vSV7FX2H8WIeLLFFd
+	 VC/4P/Dnm1I+XH7fRGMwmF7YV7PQF7d7KVHWg4FZXlpIYQEDP2UhDlTelemSy04hnY
+	 e6yvo5vANm8AZcGhtt+GsOFmpAPHZEI8TgEmu27E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
+	syzbot+14b6d57fb728e27ce23c@syzkaller.appspotmail.com,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 382/567] KVM: SVM: Limit AVIC physical max index based on configured max_vcpu_ids
+Subject: [PATCH 6.19 125/220] Bluetooth: L2CAP: Fix use-after-free in l2cap_unregister_user
 Date: Mon, 23 Mar 2026 14:45:02 +0100
-Message-ID: <20260323134543.292862869@linuxfoundation.org>
+Message-ID: <20260323134508.534896653@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +65,126 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229295-lists,stable=lfdr.de];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228154-lists,stable=lfdr.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,14b6d57fb728e27ce23c];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: ED04C2F6C14
+X-Rspamd-Queue-Id: F3E2A2F4D79
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 
-[ Upstream commit 574ef752d4aea04134bc121294d717f4422c2755 ]
+[ Upstream commit 752a6c9596dd25efd6978a73ff21f3b592668f4a ]
 
-KVM allows VMMs to specify the maximum possible APIC ID for a virtual
-machine through KVM_CAP_MAX_VCPU_ID capability so as to limit data
-structures related to APIC/x2APIC. Utilize the same to set the AVIC
-physical max index in the VMCB, similar to VMX. This helps hardware
-limit the number of entries to be scanned in the physical APIC ID table
-speeding up IPI broadcasts for virtual machines with smaller number of
-vCPUs.
+After commit ab4eedb790ca ("Bluetooth: L2CAP: Fix corrupted list in
+hci_chan_del"), l2cap_conn_del() uses conn->lock to protect access to
+conn->users. However, l2cap_register_user() and l2cap_unregister_user()
+don't use conn->lock, creating a race condition where these functions can
+access conn->users and conn->hchan concurrently with l2cap_conn_del().
 
-Unlike VMX, SVM AVIC requires a single page to be allocated for the
-Physical APIC ID table and the Logical APIC ID table, so retain the
-existing approach of allocating those during VM init.
+This can lead to use-after-free and list corruption bugs, as reported
+by syzbot.
 
-Signed-off-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Link: https://lore.kernel.org/r/adb07ccdb3394cd79cb372ba6bcc69a4e4d4ef54.1757009416.git.naveen@kernel.org
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Stable-dep-of: 87d0f901a9bd ("KVM: SVM: Set/clear CR8 write interception when AVIC is (de)activated")
+Fix this by changing l2cap_register_user() and l2cap_unregister_user()
+to use conn->lock instead of hci_dev_lock(), ensuring consistent locking
+for the l2cap_conn structure.
+
+Reported-by: syzbot+14b6d57fb728e27ce23c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=14b6d57fb728e27ce23c
+Fixes: ab4eedb790ca ("Bluetooth: L2CAP: Fix corrupted list in hci_chan_del")
+Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/avic.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -85,6 +85,7 @@ struct amd_svm_iommu_ir {
- static void avic_activate_vmcb(struct vcpu_svm *svm)
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 05acc2e98f58f..9ea030fc9a9cc 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -1686,17 +1686,15 @@ static void l2cap_info_timeout(struct work_struct *work)
+ 
+ int l2cap_register_user(struct l2cap_conn *conn, struct l2cap_user *user)
  {
- 	struct vmcb *vmcb = svm->vmcb01.ptr;
-+	struct kvm *kvm = svm->vcpu.kvm;
+-	struct hci_dev *hdev = conn->hcon->hdev;
+ 	int ret;
  
- 	vmcb->control.int_ctl &= ~(AVIC_ENABLE_MASK | X2APIC_MODE_MASK);
- 	vmcb->control.avic_physical_id &= ~AVIC_PHYSICAL_MAX_INDEX_MASK;
-@@ -100,7 +101,8 @@ static void avic_activate_vmcb(struct vc
- 	 */
- 	if (x2avic_enabled && apic_x2apic_mode(svm->vcpu.arch.apic)) {
- 		vmcb->control.int_ctl |= X2APIC_MODE_MASK;
--		vmcb->control.avic_physical_id |= X2AVIC_MAX_PHYSICAL_ID;
-+		vmcb->control.avic_physical_id |= min(kvm->arch.max_vcpu_ids - 1,
-+						      X2AVIC_MAX_PHYSICAL_ID);
- 		/* Disabling MSR intercept for x2APIC registers */
- 		svm_set_x2apic_msr_interception(svm, false);
- 	} else {
-@@ -111,7 +113,8 @@ static void avic_activate_vmcb(struct vc
- 		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
+ 	/* We need to check whether l2cap_conn is registered. If it is not, we
+-	 * must not register the l2cap_user. l2cap_conn_del() is unregisters
+-	 * l2cap_conn objects, but doesn't provide its own locking. Instead, it
+-	 * relies on the parent hci_conn object to be locked. This itself relies
+-	 * on the hci_dev object to be locked. So we must lock the hci device
+-	 * here, too. */
++	 * must not register the l2cap_user. l2cap_conn_del() unregisters
++	 * l2cap_conn objects under conn->lock, and we use the same lock here
++	 * to protect access to conn->users and conn->hchan.
++	 */
  
- 		/* For xAVIC and hybrid-xAVIC modes */
--		vmcb->control.avic_physical_id |= AVIC_MAX_PHYSICAL_ID;
-+		vmcb->control.avic_physical_id |= min(kvm->arch.max_vcpu_ids - 1,
-+						      AVIC_MAX_PHYSICAL_ID);
- 		/* Enabling MSR intercept for x2APIC registers */
- 		svm_set_x2apic_msr_interception(svm, true);
- 	}
+-	hci_dev_lock(hdev);
++	mutex_lock(&conn->lock);
+ 
+ 	if (!list_empty(&user->list)) {
+ 		ret = -EINVAL;
+@@ -1717,16 +1715,14 @@ int l2cap_register_user(struct l2cap_conn *conn, struct l2cap_user *user)
+ 	ret = 0;
+ 
+ out_unlock:
+-	hci_dev_unlock(hdev);
++	mutex_unlock(&conn->lock);
+ 	return ret;
+ }
+ EXPORT_SYMBOL(l2cap_register_user);
+ 
+ void l2cap_unregister_user(struct l2cap_conn *conn, struct l2cap_user *user)
+ {
+-	struct hci_dev *hdev = conn->hcon->hdev;
+-
+-	hci_dev_lock(hdev);
++	mutex_lock(&conn->lock);
+ 
+ 	if (list_empty(&user->list))
+ 		goto out_unlock;
+@@ -1735,7 +1731,7 @@ void l2cap_unregister_user(struct l2cap_conn *conn, struct l2cap_user *user)
+ 	user->remove(conn, user);
+ 
+ out_unlock:
+-	hci_dev_unlock(hdev);
++	mutex_unlock(&conn->lock);
+ }
+ EXPORT_SYMBOL(l2cap_unregister_user);
+ 
+-- 
+2.51.0
+
 
 
 
