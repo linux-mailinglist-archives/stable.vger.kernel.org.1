@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-229150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228610-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CJsMNyVZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229150-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:49 +0100
+	id qIcbMmxMwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228610-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7A12F6113
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2F7C2F4451
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A8AAE301BDE6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:07:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 201483017A92
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A19833B774A;
-	Mon, 23 Mar 2026 15:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C7B1FFC48;
+	Mon, 23 Mar 2026 14:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tq0V+EIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/5q6bDS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E623B7746;
-	Mon, 23 Mar 2026 15:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065BB1A6808;
+	Mon, 23 Mar 2026 14:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278219; cv=none; b=KskNQibW6qc9A+5vJ7q/ivuJNv+gFqNi2UX/iXwBzf+WZEnxatWjYqnVG68tEEtnpWVxh9pEC1JCKsLXlsl/mDLWjoDs6LBU2IMlHc9iHAx6lbrXQDknw3EU3FB/mgzBDeWaH7kl+VD5vuVUYCa8mznOy/CHmjsdZ3ysaJXDGjk=
+	t=1774275597; cv=none; b=jalZHtDh4SsGMUicqzc2BHEjBYiQMlAm1NRHiRZl2mCPlv05RBV1KjhlSoQDTVCQYFEm3R6D8+XVAwcs3f+lswIJ1yep0qaGlN+N0ULBl0HnpTFysu1XXxAMIXhd+bTa0MmV4rhros6oHnC2AaS06EQxwF/Uj5lMd2eNoizFy9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278219; c=relaxed/simple;
-	bh=gbb7p8lmAsTABkarQNsPFewfSHz3yQ9jTYV6uCK6QDk=;
+	s=arc-20240116; t=1774275597; c=relaxed/simple;
+	bh=gxp62u7qtudAJKii2uIKD6iBCHpSYDv8beT/ZmHLFQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kvk5K7DyE9H3riqU+952wdlVE2ZMPYUOeYBgHJLPJwS/E/dAdN5eolZ5qSRNA5ZjgOm1QYhfN2QnQSs+Q9sfRkzvTEg8EjnpNALLVgYSREY8X9/fiusXkxKXgZ/GGqiFyndJXFuypAzbey3Vr3dzNwQk86rlIwkpPeprIlK58gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tq0V+EIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE763C2BCB1;
-	Mon, 23 Mar 2026 15:03:38 +0000 (UTC)
+	 MIME-Version; b=qDF431NMRGb1nGtP/IkER3jr6NOFC9IK6IizbecRwyMeijb3PHTJb+hn+arEDL2tHMc5H80gcCZMRtWzOEt6HcCYUkphHUY0sF2iKhvw5JUojkUAjJnTftPu6JDHdUvMzp5v01tEfzuuvrzbwEDERaLfO+MiTP1ZLOxLQ7EA7Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/5q6bDS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB1CC2BC9E;
+	Mon, 23 Mar 2026 14:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278219;
-	bh=gbb7p8lmAsTABkarQNsPFewfSHz3yQ9jTYV6uCK6QDk=;
+	s=korg; t=1774275596;
+	bh=gxp62u7qtudAJKii2uIKD6iBCHpSYDv8beT/ZmHLFQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tq0V+EIRPVEexSnhpD5X5ZIzmcT0LfAtdmxth6W7IIIRiGZOreFlhqgT4pYdtJgoM
-	 GoWKMuuMoaFCm5QPEx1w3qTfVA6eieYJLbBXJiUUucPXDgNldnTZEgjg7IgKt+gWq1
-	 yMoH9AYoieUrG1TDRVSloVEzb80U9vwMHjOOeHCg=
+	b=N/5q6bDSOZ9BThGLaUzMA1X/fIKI/KHbPAB/SdXJO0xByT0NrWmAUesdRo7PcQOsh
+	 CN7lcg3VagwaoQtKEa/ldKxcw7udvMm4KNtMyvxOCHWLFHM7eyBixtD2jrPUyfdqr8
+	 eRJwyPbPG9iy2aJT7Ud8AFzQPEd5COEJqVezsLMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/567] net: sfp: improve Nokia GPON sfp fixup
-Date: Mon, 23 Mar 2026 14:42:31 +0100
-Message-ID: <20260323134539.548611480@linuxfoundation.org>
+	Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 156/460] ice: fix retry for AQ command 0x06EE
+Date: Mon, 23 Mar 2026 14:42:32 +0100
+Message-ID: <20260323134530.397965651@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,105 +68,140 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,armlinux.org.uk,gmail.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229150-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	URIBL_MULTI_FAIL(0.00)[sin.lore.kernel.org:server fail,linuxfoundation.org:server fail,intel.com:server fail,mpg.de:server fail];
+	TAGGED_FROM(0.00)[bounces-228610-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable,kernel];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[10];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 8C7A12F6113
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[mpg.de:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,intel.com:url,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: E2F7C2F4451
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
 
-[ Upstream commit 5ffe330e40bdfad9c49a615c54d2d89343b2f08a ]
+commit fb4903b3354aed4a2301180cf991226f896c87ed upstream.
 
-Improve the Nokia GPON fixup - we need to ignore not only the hardware
-LOS signal, but also the software implementation as well. Do this by
-using the new state_ignore_mask to indicate that we should ignore not
-only the hardware RX_LOS signal, and also clear the LOS bits in the
-option field.
+Executing ethtool -m can fail reporting a netlink I/O error while firmware
+link management holds the i2c bus used to communicate with the module.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Tested-by: Christian Marangi <ansuelsmth@gmail.com>
-Link: https://lore.kernel.org/r/E1qnfXh-008UDe-F9@rmk-PC.armlinux.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 87d126852158 ("net: sfp: improve Huawei MA5671a fixup")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
+Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
+request should to be retried upon receiving EBUSY from firmware.
+
+Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
+implemented it only for part of ice_get_module_eeprom(), leaving all other
+calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
+EBUSY without retrying.
+
+Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
+(AQ) command with opcode 0x06EE to the list of commands that should be
+retried on receiving EBUSY from firmware.
+
+Cc: stable@vger.kernel.org
+Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
+Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/sfp.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_common.c  |    1 
+ drivers/net/ethernet/intel/ice/ice_ethtool.c |   35 ++++++++++-----------------
+ 2 files changed, 15 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 5d1456e1449fb..c47d7232d1c6e 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -345,11 +345,26 @@ static void sfp_fixup_long_startup(struct sfp *sfp)
- 	sfp->module_t_start_up = T_START_UP_BAD_GPON;
- }
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -1554,6 +1554,7 @@ static bool ice_should_retry_sq_send_cmd
+ 	case ice_aqc_opc_lldp_stop:
+ 	case ice_aqc_opc_lldp_start:
+ 	case ice_aqc_opc_lldp_filter_ctrl:
++	case ice_aqc_opc_sff_eeprom:
+ 		return true;
+ 	}
  
-+static void sfp_fixup_ignore_los(struct sfp *sfp)
-+{
-+	/* This forces LOS to zero, so we ignore transitions */
-+	sfp->state_ignore_mask |= SFP_F_LOS;
-+	/* Make sure that LOS options are clear */
-+	sfp->id.ext.options &= ~cpu_to_be16(SFP_OPTIONS_LOS_INVERTED |
-+					    SFP_OPTIONS_LOS_NORMAL);
-+}
-+
- static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
- {
- 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
- }
+--- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
++++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+@@ -4528,7 +4528,7 @@ ice_get_module_eeprom(struct net_device
+ 	struct ice_pf *pf = vsi->back;
+ 	struct ice_hw *hw = &pf->hw;
+ 	bool is_sfp = false;
+-	unsigned int i, j;
++	unsigned int i;
+ 	u16 offset = 0;
+ 	u8 page = 0;
+ 	int status;
+@@ -4570,26 +4570,19 @@ ice_get_module_eeprom(struct net_device
+ 		if (page == 0 || !(data[0x2] & 0x4)) {
+ 			u32 copy_len;
  
-+static void sfp_fixup_nokia(struct sfp *sfp)
-+{
-+	sfp_fixup_long_startup(sfp);
-+	sfp_fixup_ignore_los(sfp);
-+}
-+
- // For 10GBASE-T short-reach modules
- static void sfp_fixup_10gbaset_30m(struct sfp *sfp)
- {
-@@ -449,7 +464,7 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	// Alcatel Lucent G-010S-A can operate at 2500base-X, but report 3.2GBd
- 	// NRZ in their EEPROM
- 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
--		  sfp_fixup_long_startup),
-+		  sfp_fixup_nokia),
+-			/* If i2c bus is busy due to slow page change or
+-			 * link management access, call can fail. This is normal.
+-			 * So we retry this a few times.
+-			 */
+-			for (j = 0; j < 4; j++) {
+-				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
+-							   !is_sfp, value,
+-							   SFF_READ_BLOCK_SIZE,
+-							   0, NULL);
+-				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
+-					   addr, offset, page, is_sfp,
+-					   value[0], value[1], value[2], value[3],
+-					   value[4], value[5], value[6], value[7],
+-					   status);
+-				if (status) {
+-					usleep_range(1500, 2500);
+-					memset(value, 0, SFF_READ_BLOCK_SIZE);
+-					continue;
+-				}
+-				break;
++			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
++						   !is_sfp, value,
++						   SFF_READ_BLOCK_SIZE,
++						   0, NULL);
++			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
++				   addr, offset, page, is_sfp,
++				   value[0], value[1], value[2], value[3],
++				   value[4], value[5], value[6], value[7],
++				   ERR_PTR(status));
++			if (status) {
++				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
++					   __func__, ERR_PTR(status));
++				return status;
+ 			}
  
- 	// Fiberstore SFP-10G-T doesn't identify as copper, and uses the
- 	// Rollball protocol to talk to the PHY.
--- 
-2.51.0
-
+ 			/* Make sure we have enough room for the new block */
 
 
 
