@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228592-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0B2bK7JrwWlMTAQAu9opvQ
-	(envelope-from <stable+bounces-229621-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:58 +0100
+	id yDW7ABpMwWmKSAQAu9opvQ
+	(envelope-from <stable+bounces-228592-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:10 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706202F85D4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F4F2F438C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2A71B30D0BD9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C475A3018E03
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768CD3BBA06;
-	Mon, 23 Mar 2026 16:13:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F051F91F6;
+	Mon, 23 Mar 2026 14:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzcllvk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CZ3BfZ7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A137E274B5F;
-	Mon, 23 Mar 2026 16:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C371A680D;
+	Mon, 23 Mar 2026 14:19:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282418; cv=none; b=QtjI93FW/ipDQc8XdR4lneFomcev6xGYzpUfb05m6QomU5O/Aap5dVOY3mkYruI2GcJjbbZYAlwqAMmb/Bn0RDgHKUALVrrc62uXAGyt27UKNqp7U1+jPDNWg5F4CRoUBfOELz02R3w3Pg0x8F6DhjQ7S3ZgRzdHpWywjMToAAE=
+	t=1774275540; cv=none; b=ef50JaH4maMKLlULqvm1v86lrVc3fhJCN7qQlj9BKRFPTJOEentS6sj1SaHvedMlWoI2Eu0B6fHMGQZ2jDASgTjr2MvoojX2ycRU5xRxzrxdcJlr/sjf8LOJtljc413vYXJZ7UR6Acmwqx4QLIFhcd+g5sxNKaJhGtMG9E3QbQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282418; c=relaxed/simple;
-	bh=QYZCgyQvsaLnD3/gOg98hth1Y+54aN1dFIm12mJ3HJM=;
+	s=arc-20240116; t=1774275540; c=relaxed/simple;
+	bh=llzlygYVS1/+pwm0RTDECJfCtZdyg4nz//PZlOet4WI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g08B41gjGjhRLtRDu4qkMpNGum23SVNJ00YIadAyk3sd3I69uqGiA3aB94ipSNO1IJLMpXmZ+4rqY34c8Zi2kgkvawxM+3Miq9IPNtD8zmb8iBe51BbpbH+6k5W0ZoYteBz9JlGUEVy7HgUCb52SXSjTRj1ZlDHKSSpuAN7gTWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzcllvk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D48EC2BCB4;
-	Mon, 23 Mar 2026 16:13:37 +0000 (UTC)
+	 MIME-Version; b=R2/cPUfvlKmIJ3rmdG2ELY5whqMYCjKSk7rffwQRd8tEL9RLT7NqlPs/u9DneJ/xSn6YzSH2zpqXcPl9/uvf18Cp7vnPdGoXsdtxlf4xYWMyvlULFJ5fk4OeyZoIkpVITSchJuJZNKBm4Gs1DMD/7i75mfIm26JKbId5jM2aVXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CZ3BfZ7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD73C4CEF7;
+	Mon, 23 Mar 2026 14:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282418;
-	bh=QYZCgyQvsaLnD3/gOg98hth1Y+54aN1dFIm12mJ3HJM=;
+	s=korg; t=1774275540;
+	bh=llzlygYVS1/+pwm0RTDECJfCtZdyg4nz//PZlOet4WI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzcllvk6N9FoTNF7leElYe6kJMEfYxHSVsuX2ysZEaeAjgZLHx8YZSIFSqApDEGFd
-	 7mNXIdDb8TCxk2wm800tzx8x8Sfmcr3mmusqmEpkgimfLkQvMol7W0/QinCsuEUKho
-	 Cdtd01XjzKInM7Ysk4dApVSF8662SR9psWUt840o=
+	b=CZ3BfZ7J4FK7VjnS6WjbqWw+6xzMGhXJuT6xCMY+FEYP8yPceg9g3LTd1JaNy+iUr
+	 ZRH4N7PxgaYT3KIiWuzLvZS8Aw5sBD4vFUM4VT9zI4WqqzeHALMn2RfmYFJHmESk8L
+	 uV1ki+mWqWrnGBGFyCu4fj282bz1Agac3G3PJ8AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ramanathan Choodamani <quic_rchoodam@quicinc.com>,
-	Aishwarya R <aishwarya.r@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Xingui Yang <yangxingui@huawei.com>,
+	Yihang Li <liyihang9@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 150/481] wifi: mac80211: set default WMM parameters on all links
+Subject: [PATCH 6.12 136/460] scsi: hisi_sas: Add time interval between two H2D FIS following soft reset spec
 Date: Mon, 23 Mar 2026 14:42:12 +0100
-Message-ID: <20260323134528.904829084@linuxfoundation.org>
+Message-ID: <20260323134529.942116538@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,80 +69,66 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229621-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228592-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 706202F85D4
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,huawei.com:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email]
+X-Rspamd-Queue-Id: 13F4F2F438C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ramanathan Choodamani <quic_rchoodam@quicinc.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit 2259d14499d16b115ef8d5d2ddc867e2be7cb5b5 ]
+[ Upstream commit 3c62791322e42d1afd65acfdb5b3a371bde21ede ]
 
-Currently, mac80211 only initializes default WMM parameters
-on the deflink during do_open(). For MLO cases, this
-leaves the additional links without proper WMM defaults
-if hostapd does not supply per-link WMM parameters, leading
-to inconsistent QoS behavior across links.
+Spec says at least 5us between two H2D FIS when do soft reset, but be
+generous and sleep for about 1ms.
 
-Set default WMM parameters for each link during
-ieee80211_vif_update_links(), because this ensures all
-individual links in an MLD have valid WMM settings during
-bring-up and behave consistently across different BSS.
-
-Signed-off-by: Ramanathan Choodamani <quic_rchoodam@quicinc.com>
-Signed-off-by: Aishwarya R <aishwarya.r@oss.qualcomm.com>
-Link: https://patch.msgid.link/20260205094216.3093542-1-aishwarya.r@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Link: https://lore.kernel.org/r/20241008021822.2617339-11-liyihang9@huawei.com
+Reviewed-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Stable-dep-of: 8ddc0c269165 ("scsi: hisi_sas: Fix NULL pointer exception during user_scan()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/link.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/hisi_sas/hisi_sas_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/link.c b/net/mac80211/link.c
-index a85b44c1bc995..cd84e7f3b742e 100644
---- a/net/mac80211/link.c
-+++ b/net/mac80211/link.c
-@@ -176,6 +176,7 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
- 	struct ieee80211_bss_conf *old[IEEE80211_MLD_MAX_NUM_LINKS];
- 	struct ieee80211_link_data *old_data[IEEE80211_MLD_MAX_NUM_LINKS];
- 	bool use_deflink = old_links == 0; /* set for error case */
-+	bool non_sta = sdata->vif.type != NL80211_IFTYPE_STATION;
- 
- 	sdata_assert_lock(sdata);
- 
-@@ -229,6 +230,7 @@ static int ieee80211_vif_update_links(struct ieee80211_sub_if_data *sdata,
- 		link = links[link_id];
- 		ieee80211_link_init(sdata, link_id, &link->data, &link->conf);
- 		ieee80211_link_setup(&link->data);
-+		ieee80211_set_wmm_default(&link->data, true, non_sta);
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index d9500b7306905..43d2ca4c6605f 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -1341,6 +1341,7 @@ static int hisi_sas_softreset_ata_disk(struct domain_device *device)
  	}
  
- 	if (new_links == 0)
+ 	if (rc == TMF_RESP_FUNC_COMPLETE) {
++		usleep_range(900, 1000);
+ 		ata_for_each_link(link, ap, EDGE) {
+ 			int pmp = sata_srst_pmp(link);
+ 
 -- 
 2.51.0
 
