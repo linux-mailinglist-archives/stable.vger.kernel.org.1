@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228767-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OHhKIwd1wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229798-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:14:47 +0100
+	id IFxLAbpWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228767-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6892F9A01
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:14:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6647A2F5BF4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 177173068DB0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B4FB43109C57
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648523AE6E6;
-	Mon, 23 Mar 2026 16:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7CE3ACEED;
+	Mon, 23 Mar 2026 14:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5hbyXQH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+er2zAr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E6E1DA0E1;
-	Mon, 23 Mar 2026 16:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A145C33CE9A;
+	Mon, 23 Mar 2026 14:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282893; cv=none; b=fW3/HCKI0ncYOkDnsfFifQ+8tVrQVnF6Tb7PBhF+PMuL6U4YPTvedVJbagpo7X4T8WENd8FsvQ0sdn1TS+Yl7ICHaxpc/9ZK5istFkXg2oEyelr32Kn+/WSnOpl0vbteGgP1GUy8tVpyr92edEAm6QXr4pA2l1hq+ENmo1EGSeA=
+	t=1774277068; cv=none; b=s3jM0zmPzYH98REx+2hp5pQxc+6dDnp6KgG3ScyrP+3koZTkvr28Gx0rszdvMudZnff3R/q904FUnTrYBhXPuuR4AlOp15td4UmP7nsWS9U3IZ/9WvCIGmatGG+MN3ql6Ojvj7moWCaNXeFuntAcUVx2h7R041OmTD4+XZe4ADE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282893; c=relaxed/simple;
-	bh=blFAuFJEqGsOpw5dC0UwnJG1iopBdg73YgJIOLkfvaQ=;
+	s=arc-20240116; t=1774277068; c=relaxed/simple;
+	bh=KOWjegGwcsgPa3U8MDbF5s4W8Qr1XTHwj3PqBbLU5Ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8fnO90OWOO4luF5cYY/lWz5FHD/7EK6pHnAgk73EOa29lpBInbymeVRcVqQ1TCmDeQOJEj4KspF5cL9s8k8oucO973r/cFd8zniokS2XDUzZw8gvEpg9/ecuBJvcKkWusGT6yiLn9aJ9FntTlxKDka4r9DE3Gmtbkqmb709PTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5hbyXQH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB713C4CEF7;
-	Mon, 23 Mar 2026 16:21:32 +0000 (UTC)
+	 MIME-Version; b=NTPr04XJv0Su9TbTUP3PPz5DOLVLyulxtiMxPsNpsqYxXcX/sxnIl9zQIR/v5d4kmLf36Ceiy+rhR2vAkv82OSlKnlmVl0LpW27pnAkPg26uCBbixbbSE1q0i01NHLOE+WtUyUfehu8srnXiDb66CWLIkW1Qc5ojLqISRjLvr8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+er2zAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37918C4CEF7;
+	Mon, 23 Mar 2026 14:44:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282893;
-	bh=blFAuFJEqGsOpw5dC0UwnJG1iopBdg73YgJIOLkfvaQ=;
+	s=korg; t=1774277068;
+	bh=KOWjegGwcsgPa3U8MDbF5s4W8Qr1XTHwj3PqBbLU5Ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P5hbyXQHVliqIWtewk47Ojo82U9dTdJf8PS1t7R9IeJLXCQ1MH9Ju+4Seo5mK/b+I
-	 9X3PSK7myn8GjwfOPGmDs8yDxjRqK0cxfIZkAauGkGDpftZdt8lkH5XCxlpgLqqMZd
-	 YO9dWhaXiTfI0xNyD34W4Z+n8+8wgz948I11r8yY=
+	b=r+er2zArZwdfxtD4SCdMfGMMtJhwZeCduB3NQ5UVFMORIKkwgs8FPHhbcSulJZEOY
+	 JEf6Pth+2u4/1g7aUuqbWlDpC1ScVsZYgjgGBCTEcHcHzoFDv49gKfjNBNzhgI2rhH
+	 aAU31IKLiFrh27JbdVBMYnPe7xEkSEWRxodnLF9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Lorenz <lorenz-frank@web.de>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 323/481] mptcp: pm: avoid sending RM_ADDR over same subflow
+	Jiri Kosina <jkosina@suse.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.12 309/460] HID: bpf: prevent buffer overflow in hid_hw_request
 Date: Mon, 23 Mar 2026 14:45:05 +0100
-Message-ID: <20260323134532.972982356@linuxfoundation.org>
+Message-ID: <20260323134534.089979321@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,159 +65,68 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229798-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TAGGED_FROM(0.00)[bounces-228767-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.994];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: BE6892F9A01
+X-Rspamd-Queue-Id: 6647A2F5BF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Benjamin Tissoires <bentiss@kernel.org>
 
-[ Upstream commit fb8d0bccb221080630efcd9660c9f9349e53cc9e ]
+commit 2b658c1c442ec1cd9eec5ead98d68662c40fe645 upstream.
 
-RM_ADDR are sent over an active subflow, the first one in the subflows
-list. There is then a high chance the initial subflow is picked. With
-the in-kernel PM, when an endpoint is removed, a RM_ADDR is sent, then
-linked subflows are closed. This is done for each active MPTCP
-connection.
+right now the returned value is considered to be always valid. However,
+when playing with HID-BPF, the return value can be arbitrary big,
+because it's the return value of dispatch_hid_bpf_raw_requests(), which
+calls the struct_ops and we have no guarantees that the value makes
+sense.
 
-MPTCP endpoints are likely removed because the attached network is no
-longer available or usable. In this case, it is better to avoid sending
-this RM_ADDR over the subflow that is going to be removed, but prefer
-sending it over another active and non stale subflow, if any.
-
-This modification avoids situations where the other end is not notified
-when a subflow is no longer usable: typically when the endpoint linked
-to the initial subflow is removed, especially on the server side.
-
-Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
+Fixes: 8bd0488b5ea5 ("HID: bpf: add HID-BPF hooks for hid_hw_raw_requests")
 Cc: stable@vger.kernel.org
-Reported-by: Frank Lorenz <lorenz-frank@web.de>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/612
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-2-4b5462b6f016@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ adapted to _nl-prefixed function names in pm_netlink.c and omitted stale subflow fallback ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c         |    2 +-
- net/mptcp/pm_netlink.c |   43 ++++++++++++++++++++++++++++++++++++++-----
- net/mptcp/protocol.h   |    2 ++
- 3 files changed, 41 insertions(+), 6 deletions(-)
+ drivers/hid/bpf/hid_bpf_dispatch.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -55,7 +55,7 @@ int mptcp_pm_remove_addr(struct mptcp_so
- 	msk->pm.rm_list_tx = *rm_list;
- 	rm_addr |= BIT(MPTCP_RM_ADDR_SIGNAL);
- 	WRITE_ONCE(msk->pm.addr_signal, rm_addr);
--	mptcp_pm_nl_addr_send_ack(msk);
-+	mptcp_pm_nl_addr_send_ack_avoid_list(msk, rm_list);
- 	return 0;
- }
+--- a/drivers/hid/bpf/hid_bpf_dispatch.c
++++ b/drivers/hid/bpf/hid_bpf_dispatch.c
+@@ -450,6 +450,8 @@ hid_bpf_hw_request(struct hid_bpf_ctx *c
+ 					      (u64)(long)ctx,
+ 					      true); /* prevent infinite recursions */
  
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -850,9 +850,23 @@ bool mptcp_pm_nl_is_init_remote_addr(str
- 	return mptcp_addresses_equal(&mpc_remote, remote, remote->port);
- }
++	if (ret > size)
++		ret = size;
+ 	if (ret > 0)
+ 		memcpy(buf, dma_data, ret);
  
--void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-+static bool subflow_in_rm_list(const struct mptcp_subflow_context *subflow,
-+			       const struct mptcp_rm_list *rm_list)
-+{
-+	u8 i, id = subflow_get_local_id(subflow);
-+
-+	for (i = 0; i < rm_list->nr; i++) {
-+		if (rm_list->ids[i] == id)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
-+void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
-+					  const struct mptcp_rm_list *rm_list)
- {
--	struct mptcp_subflow_context *subflow;
-+	struct mptcp_subflow_context *subflow, *same_id = NULL;
- 
- 	msk_owned_by_me(msk);
- 	lockdep_assert_held(&msk->pm.lock);
-@@ -862,11 +876,30 @@ void mptcp_pm_nl_addr_send_ack(struct mp
- 		return;
- 
- 	mptcp_for_each_subflow(msk, subflow) {
--		if (__mptcp_subflow_active(subflow)) {
--			mptcp_pm_send_ack(msk, subflow, false, false);
--			break;
-+		if (!__mptcp_subflow_active(subflow))
-+			continue;
-+
-+		if (unlikely(rm_list &&
-+			     subflow_in_rm_list(subflow, rm_list))) {
-+			if (!same_id)
-+				same_id = subflow;
-+		} else {
-+			goto send_ack;
- 		}
- 	}
-+
-+	if (same_id)
-+		subflow = same_id;
-+	else
-+		return;
-+
-+send_ack:
-+	mptcp_pm_send_ack(msk, subflow, false, false);
-+}
-+
-+void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
-+{
-+	mptcp_pm_nl_addr_send_ack_avoid_list(msk, NULL);
- }
- 
- int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -818,6 +818,8 @@ void mptcp_pm_add_addr_send_ack(struct m
- bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
- 				     const struct mptcp_addr_info *remote);
- void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
-+void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
-+					  const struct mptcp_rm_list *rm_list);
- void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
- 			       const struct mptcp_rm_list *rm_list);
- void mptcp_pm_mp_prio_received(struct sock *sk, u8 bkup);
 
 
 
