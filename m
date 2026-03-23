@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-229886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229894-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cMoqNkB9wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229886-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:49:52 +0100
+	id cLc9IrBwwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229894-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:56:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6133C2FA7B7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:49:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631EC2F9248
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 672C13115939
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 01B4A3111D27
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250D33B3BE5;
-	Mon, 23 Mar 2026 16:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B137F3B7B80;
+	Mon, 23 Mar 2026 16:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpPnw77B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0sDnu2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCC73B19A2;
-	Mon, 23 Mar 2026 16:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7074D246778;
+	Mon, 23 Mar 2026 16:25:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283128; cv=none; b=VeRiJRETbGO8sbtiAGPFhAgPgf9l8u1oTEv6q/mV98TC0YMaOvvnjt2MUtzIIVIXxkQVhTRZDjD/QtuVBqm748lR8fCABlY2GB2WlK4Ljs7Vr24lj89GOPLSl7RySmCsqMXg8SHQ6CUxULWvyJ3gvygLIM8hOsqTNxBv9+OpK80=
+	t=1774283149; cv=none; b=hTAV2gCKKK/+i4tBEPyNf8cH693yJVGX/GTa2ZCjp9zK6x7MJD76vncSeDVkh1cAscblu0HZ1NCOMB3jm4cIm9fRz9eYx+33zA95trPNIm0MGLMnRqEQQjqsN4FomDzLPzaK1jQpsLKYJXojSnbU9GJwItXb6HQtBXxEZIwu+UY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283128; c=relaxed/simple;
-	bh=FonFDEUxyr+xsmjCLDddmpl7u4FMh1LS9k8IsF6OQ48=;
+	s=arc-20240116; t=1774283149; c=relaxed/simple;
+	bh=HZwU0wZVdw/6UQNzflGYpjbC0EIRhc9squ0bYu39lMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSOQfVZCPH1sAAjzKf46ZVw2qEGKXXffg+G43g3/I8rSSj0nLgFF/tAy+lfKvGKoJkAYz6IRm79UWIKQ5hyjRKiAckR/lbVJTQUmMSP2WfcOHBt++lcc3IxGFL5XAfwGnzoS0ON/XhWO44DYp2n4PYpf47P4psYw4Fp2kEEbmXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpPnw77B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CA59C4CEF7;
-	Mon, 23 Mar 2026 16:25:28 +0000 (UTC)
+	 MIME-Version; b=p2dwM+MOI2ig/0vzOxanUlJsyAtDkZNmBsTpZgiY8al/cRq6YRyEn9JNqldvT0DqTb7VP1CXWL3ecmQnTzz1ZOQYJLoqJlAvTlZKJDtjGCvmrGPmDm9zG+O7wE9/OdbrrsxctPi54+zZetTvTK5NiUx7Rn9plnH27jIJ7gJfapw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0sDnu2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E27C4CEF7;
+	Mon, 23 Mar 2026 16:25:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283128;
-	bh=FonFDEUxyr+xsmjCLDddmpl7u4FMh1LS9k8IsF6OQ48=;
+	s=korg; t=1774283149;
+	bh=HZwU0wZVdw/6UQNzflGYpjbC0EIRhc9squ0bYu39lMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NpPnw77BwnM3auqAEVo8MNlQUZbWNF77r9b7Mg3Swhg0aHxeV+M8ANW1ZNYZeaOAa
-	 aGwr7/RCuF/5mmEFft1NqsoOtgarSpBe2pn0uUeNBdxrcqxNwlQqK6T7D90YiIK5K+
-	 2aGufsgxz9x4blYlsARsZ13zCRJuMaRUKxDO7T7s=
+	b=y0sDnu2QUN4PdH078cAoTR24FlP/XutafWrqhqqM+0OvM0pPxcc4H03rCp88rjbq7
+	 LM7Px9Hhotak+OjFb+oGdY7Je+ro7dEawDHFEPhHBwkeHYGyzSWXljJTVIsT9LCeFl
+	 A9yWlA+A4w5HnyZYba180QpsYOP8pm7t3GM/6WBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Eric Biggers <ebiggers@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 375/481] ksmbd: Compare MACs in constant time
-Date: Mon, 23 Mar 2026 14:45:57 +0100
-Message-ID: <20260323134534.270294854@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 376/481] net/tcp-md5: Fix MAC comparison to be constant-time
+Date: Mon, 23 Mar 2026 14:45:58 +0100
+Message-ID: <20260323134534.296568656@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
 References: <20260323134525.256603107@linuxfoundation.org>
@@ -66,32 +65,31 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229894-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229886-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 6133C2FA7B7
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 631EC2F9248
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,70 +99,81 @@ X-Rspamd-Server: lfdr
 
 From: Eric Biggers <ebiggers@kernel.org>
 
-commit c5794709bc9105935dbedef8b9cf9c06f2b559fa upstream.
+commit 46d0d6f50dab706637f4c18a470aac20a21900d3 upstream.
 
-To prevent timing attacks, MAC comparisons need to be constant-time.
-Replace the memcmp() with the correct function, crypto_memneq().
+To prevent timing attacks, MACs need to be compared in constant
+time.  Use the appropriate helper function for this.
 
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Fixes: cfb6eeb4c860 ("[TCP]: MD5 Signature Option (RFC2385) support.")
+Fixes: 658ddaaf6694 ("tcp: md5: RST: getting md5 key from listener")
 Cc: stable@vger.kernel.org
 Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://patch.msgid.link/20260302203409.13388-1-ebiggers@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/auth.c    |    4 +++-
- fs/smb/server/smb2pdu.c |    5 +++--
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ net/ipv4/tcp.c      |    3 ++-
+ net/ipv4/tcp_ipv4.c |    3 ++-
+ net/ipv6/tcp_ipv6.c |    3 ++-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -13,6 +13,7 @@
- #include <linux/xattr.h>
- #include <crypto/hash.h>
- #include <crypto/aead.h>
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -243,6 +243,7 @@
+ 
+ #define pr_fmt(fmt) "TCP: " fmt
+ 
 +#include <crypto/algapi.h>
- #include <linux/random.h>
+ #include <crypto/hash.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -4680,7 +4681,7 @@ tcp_inbound_md5_hash(const struct sock *
+ 							 hash_expected,
+ 							 NULL, skb);
+ 
+-	if (genhash || memcmp(hash_location, newhash, 16) != 0) {
++	if (genhash || crypto_memneq(hash_location, newhash, 16)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPMD5FAILURE);
+ 		if (family == AF_INET) {
+ 			net_info_ratelimited("MD5 Hash failed for (%pI4, %d)->(%pI4, %d)%s L3 index %d\n",
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -78,6 +78,7 @@
+ #include <linux/inetdevice.h>
+ #include <linux/btf_ids.h>
+ 
++#include <crypto/algapi.h>
+ #include <crypto/hash.h>
  #include <linux/scatterlist.h>
  
-@@ -281,7 +282,8 @@ int ksmbd_auth_ntlmv2(struct ksmbd_conn
- 		goto out;
- 	}
+@@ -776,7 +777,7 @@ static void tcp_v4_send_reset(const stru
  
--	if (memcmp(ntlmv2->ntlmv2_hash, ntlmv2_rsp, CIFS_HMAC_MD5_HASH_SIZE) != 0)
-+	if (crypto_memneq(ntlmv2->ntlmv2_hash, ntlmv2_rsp,
-+			  CIFS_HMAC_MD5_HASH_SIZE))
- 		rc = -EINVAL;
- out:
- 	if (ctx)
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4,6 +4,7 @@
-  *   Copyright (C) 2018 Samsung Electronics Co., Ltd.
-  */
+ 
+ 		genhash = tcp_v4_md5_hash_skb(newhash, key, NULL, skb);
+-		if (genhash || memcmp(hash_location, newhash, 16) != 0)
++		if (genhash || crypto_memneq(hash_location, newhash, 16))
+ 			goto out;
+ 
+ 	}
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -63,6 +63,7 @@
+ #include <linux/proc_fs.h>
+ #include <linux/seq_file.h>
  
 +#include <crypto/algapi.h>
- #include <linux/inetdevice.h>
- #include <net/addrconf.h>
- #include <linux/syscalls.h>
-@@ -8430,7 +8431,7 @@ int smb2_check_sign_req(struct ksmbd_wor
- 				signature))
- 		return 0;
+ #include <crypto/hash.h>
+ #include <linux/scatterlist.h>
  
--	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
-+	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
- 		pr_err("bad smb2 signature\n");
- 		return 0;
- 	}
-@@ -8518,7 +8519,7 @@ int smb3_check_sign_req(struct ksmbd_wor
- 	if (ksmbd_sign_smb3_pdu(conn, signing_key, iov, 1, signature))
- 		return 0;
+@@ -1042,7 +1043,7 @@ static void tcp_v6_send_reset(const stru
+ 			goto out;
  
--	if (memcmp(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
-+	if (crypto_memneq(signature, signature_req, SMB2_SIGNATURE_SIZE)) {
- 		pr_err("bad smb2 signature\n");
- 		return 0;
+ 		genhash = tcp_v6_md5_hash_skb(newhash, key, NULL, skb);
+-		if (genhash || memcmp(hash_location, newhash, 16) != 0)
++		if (genhash || crypto_memneq(hash_location, newhash, 16))
+ 			goto out;
  	}
+ #endif
 
 
 
