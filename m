@@ -1,115 +1,150 @@
-Return-Path: <stable+bounces-227879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227880-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id NhB7Gc6vwGldKAQAu9opvQ
-	(envelope-from <stable+bounces-227879-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 04:13:18 +0100
+	id 0OyaG9iwwGldKAQAu9opvQ
+	(envelope-from <stable+bounces-227880-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 04:17:44 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C70582EC113
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 04:13:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCA042EC205
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 04:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7D01300AEC3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 03:13:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B6A10300D4EF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 03:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895AF221FDE;
-	Mon, 23 Mar 2026 03:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05093239E76;
+	Mon, 23 Mar 2026 03:16:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12742175A61;
-	Mon, 23 Mar 2026 03:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55C105C613;
+	Mon, 23 Mar 2026 03:16:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774235591; cv=none; b=QSbrSCP0X9FLVVCyb3SeH0IAHtpLMmXwuJ5dreFiYp4Buk7r+YUFxIxGwZBN0U9vFLH+wYAMpri67rx9UKG+eW0s+1vOWMcY6hKGG4/+rNSStT3PP8cysDxVjBaSsdfJscruG2MM99ZH3R4RjHv4gLYpsnOzRGILdtHmpB+xcbY=
+	t=1774235795; cv=none; b=QTxUSSGgdYGMRmuHjgcEveet50FPvRp6Qh9t3WXit69h9gD0X/kbEtP5Q73wRkG0yY5u2MoFzSnBTdxI1aS/ZAA3bs0jHgnQlsx9BUHKugQig1Vd8Lw/eGmld3p8mB+6z8fQ2RNeGIoW+WcIjZkDvczf7b0YbTJ5Ih5aGiO/mA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774235591; c=relaxed/simple;
-	bh=SFLooepHlXM+V1On6X3xEFTFbJk6I3Dpm3d2te8NJto=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZyCMAMLh1P0rJ0Yj4oFvGXIRbNrtOI/QygT6Zga1jFF48Be3QeCrmJ/gi4PS6diIzlJmKFs7G/bRcbHlionbAJl5B+mgz4m52BUuI0cV40s2Yyj/gs5KYsNH9i+vQqMPa5uZ7nRV4ahQQnDSKkSTqabY9a/RRnRLNwrvF99sbgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 34ef5c82266611f1a21c59e7364eecb8-20260323
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:9592423b-8bfe-452c-b0e3-fdc846773104,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:89c9d04,CLOUDID:455f0259728736c0511c39bce01185ba,BulkI
-	D:nil,BulkQuantity:0,Recheck:0,SF:81|82|83|102|898,TC:nil,Content:0|15|50,
-	EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 34ef5c82266611f1a21c59e7364eecb8-20260323
-X-User: zhangheng@kylinos.cn
-Received: from [172.25.120.76] [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <zhangheng@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 160417631; Mon, 23 Mar 2026 11:13:04 +0800
-Message-ID: <e2ae2b1f-b058-47d0-9bb6-889044f2af16@kylinos.cn>
-Date: Mon, 23 Mar 2026 11:13:01 +0800
+	s=arc-20240116; t=1774235795; c=relaxed/simple;
+	bh=WsxKjch2e2/UtDDCx7ye2hMFVLesLwiW1Hi3oE/HeR4=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=hZ+rXwR4DuCNgrYHZ9WP81GapArhvDFS7dBHC+K3RIJ3SGlINU/JrJJYflszGVhrGEx+xrfhp5Mb+uWXwYLXgntr7vRm0a1oHtSL/u4Q7ZEDghwqhSDwu1tyXBqSOckRWSm27h2mGsET1gfrTWED+8jQfP6arvrgi28yYj8wSgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8DxPMOKsMBp_KcdAA--.19543S3;
+	Mon, 23 Mar 2026 11:16:26 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJBxacGFsMBpMhFbAA--.28937S3;
+	Mon, 23 Mar 2026 11:16:21 +0800 (CST)
+Subject: Re: [PATCH 1/2] LoongArch: KVM: Make kvm_get_vcpu_by_cpuid() more
+ robust
+To: Huacai Chen <chenhuacai@loongson.cn>, Paolo Bonzini
+ <pbonzini@redhat.com>, Huacai Chen <chenhuacai@kernel.org>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org, Xuerui Wang <kernel@xen0n.name>,
+ Jiaxun Yang <jiaxun.yang@flygoat.com>, stable@vger.kernel.org,
+ Aurelien Jarno <aurel32@debian.org>
+References: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <676198e5-78e4-ab41-e447-4a9d24655890@loongson.cn>
+Date: Mon, 23 Mar 2026 11:13:37 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ALSA: hda/realtek: add new quirk for HP OmniBook 7 Laptop
- 16-bh0xxx
-To: tiwai@suse.com, perex@perex.cz, chris.chiu@canonical.com,
- kailang@realtek.com, sbinding@opensource.cirrus.com
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, "Artem S . Tashkinov" <aros@gmx.com>
-References: <20260323030503.3988941-1-zhangheng@kylinos.cn>
-From: Zhang Heng <zhangheng@kylinos.cn>
-In-Reply-To: <20260323030503.3988941-1-zhangheng@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20260322135346.3720577-1-chenhuacai@loongson.cn>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxacGFsMBpMhFbAA--.28937S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWrZw4fJryxKF1rWFy8Ar48Zrc_yoW8Jr4fpr
+	4Du3ZrX3yrKryj9348Jay5urW7Zr95WFn3Xa4ftas8ArnIgr1UtrsYv39rXF15C3yrtF4I
+	qFn3tF1Yvan8AacCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l
+	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j5o7tUUUUU=
 X-Spamd-Result: default: False [-1.46 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227879-lists,stable=lfdr.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[vger.kernel.org,gmx.com];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[kylinos.cn];
-	MIME_TRACE(0.00)[0:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	FROM_HAS_DN(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[zhangheng@kylinos.cn,stable@vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	R_DKIM_NA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,loongson.cn:email,loongson.cn:mid];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[kylinos.cn:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: C70582EC113
+	MIME_TRACE(0.00)[0:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	R_DKIM_NA(0.00)[];
+	DMARC_NA(0.00)[loongson.cn];
+	FROM_NEQ_ENVFROM(0.00)[maobibo@loongson.cn,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227880-lists,stable=lfdr.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: DCA042EC205
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Please help me check whether it is more appropriate to add a new quirk
-or replace the existing one:
 
-SND_PCI_QUIRK(0x103c, 0x8e60, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2)
 
-with
+On 2026/3/22 下午9:53, Huacai Chen wrote:
+> kvm_get_vcpu_by_cpuid() takes a cpuid parameter whose type is int, so
+> cpuid can be negative. Let kvm_get_vcpu_by_cpuid() return NULL for this
+> case so as to make it more robust.
+> 
+> This fix an out-of-bounds access to kvm_arch::phyid_map::phys_map[].
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 73516e9da512adc ("LoongArch: KVM: Add vcpu mapping from physical cpuid")
+> Reported-by: Aurelien Jarno <aurel32@debian.org>
+> Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1131431
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+>   arch/loongarch/kvm/vcpu.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 8ffd50a470e6..831f381a8fd1 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -588,6 +588,9 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
+>   {
+>   	struct kvm_phyid_map *map;
+>   
+> +	if (cpuid < 0)
+> +		return NULL;
+> +
+>   	if (cpuid >= KVM_MAX_PHYID)
+>   		return NULL;
+>   
+> 
 
-SND_PCI_QUIRK(0x103c, 0x8e60, "HP OmniBook 7 Laptop 16-bh0xxx",
-ALC245_FIXUP_CS35L41_I2C_2_MUTE_LED)
+if (cpuid < 0 || cpuid >= KVM_MAX_PHYID)?
+however both are OK for me.
 
-Both the PCI subsystem ID and the HDA subsystem ID are 0x103c8e60.
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
 
