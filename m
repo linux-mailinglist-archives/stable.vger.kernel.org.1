@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229652-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2HFtAs1cwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229194-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:25 +0100
+	id 0GTxM6prwWkVTAQAu9opvQ
+	(envelope-from <stable+bounces-229652-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2DC2F668E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:31:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 953AD2F85AA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AD57D32253BB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:10:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 339263239E80
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5073BA22C;
-	Mon, 23 Mar 2026 15:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1963E38B7C4;
+	Mon, 23 Mar 2026 16:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uM9MS/NC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LY3/ama8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EAB3B9DBB;
-	Mon, 23 Mar 2026 15:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA1D282F3A;
+	Mon, 23 Mar 2026 16:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278358; cv=none; b=ZNiAmbzNVxlFUq7989cXQku9cEWNjf2R0C9eW5mcQUNplpr6emygQ1o1hdJmmEtFOHc1Etj/SEPsGFNKZZW9k7+oZKMRHu0O8ifv22ZPUnz4Zo+UMJL5wWn06Wjap26U3vbzPqON3WSph12KL+ex9qJNpj8y2t1xkh0Y5p/hdxE=
+	t=1774282501; cv=none; b=baCNFTRUdJoHWDvLAKy+1CjrS+B2gtNFNgJPP0xuJLR2yko7nla6HSHNYvSFxnR+VDgsqtdNkWbs9Ud8SwygyBauk5qQ7kolTV5V3FC4qTF/qb7OHcc19yEBRoXNokqQcpvqsMjQUv5oyGCXNX8w1Ykvs2w4YZIqsiprOoyepJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278358; c=relaxed/simple;
-	bh=/eTzFrwSuLt7tEWjNbJZCvQkpWHbUr9xjHrXkxUS4MI=;
+	s=arc-20240116; t=1774282501; c=relaxed/simple;
+	bh=97JCbjupXr1lTKE3TfBr35UqrSkFWex07HI4h9/x4ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jsBQyOF6DsvzMXRgkA4z67ll3oAapuQhqSd1d7KLU4aAQviahWk/1pgf5Ppdc97FJC6dI+SpIXMYU09YvAMY2vOOtbclTN6cbPuTSQKgG+++HBsFiqmbKrwYWzXsPlorsP1ksVRS/CIllx8qYLjDZm8vjC7TiRuRnSVaaMY6IRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uM9MS/NC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC201C2BC9E;
-	Mon, 23 Mar 2026 15:05:57 +0000 (UTC)
+	 MIME-Version; b=nr2nYCwsXbg4sWyM8L84VtbwZYKz4fWVOGX80ENGxZuM+LOJTJf8QLRK9Qfbe14Itu4Jkn5GeXNrIP+O1I7cjxPNVi3iWv1LdM6boCjSR1B6np7XtKkIsQB7vQjXlWiwqUEMmQ0sRFaRXfzKxrKOEyVIZ+5WDPndVnOd/prxJ48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LY3/ama8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5258BC4CEF7;
+	Mon, 23 Mar 2026 16:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278358;
-	bh=/eTzFrwSuLt7tEWjNbJZCvQkpWHbUr9xjHrXkxUS4MI=;
+	s=korg; t=1774282501;
+	bh=97JCbjupXr1lTKE3TfBr35UqrSkFWex07HI4h9/x4ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uM9MS/NCpmN/cgGeiJf7wzy7AjS8E6oo8DGm32BQWShc3cgerzuKFSrm5A8XK/wgb
-	 5F/eSOhiI3ePhu6O3QSqP4yMMhw9Xj2TH9Mdf4b4LwCV4c4vRSWypxAgWvvRh3AR3B
-	 tSMKNffBZpLT1M1svVgDivmnzO0/8qoESfub9Nk4=
+	b=LY3/ama8gtlIMtP1ugBIHb6z7ufzz4CoTSYt9x9TDk2qrFfRRno5XjDrSxogsEucJ
+	 U+VR9rK1CS9zOQd65wP/yFkIW09/EcjkeWAMUOVrSV8EYXDQZ9oF7nq8gxW3s7tTg1
+	 r8c8Mb7rGk+7GutpObX9PpLsB7nasJ0Dl43Rtm1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Dull <monderasdor@gmail.com>,
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/567] amd-xgbe: prevent CRC errors during RX adaptation with AN disabled
-Date: Mon, 23 Mar 2026 14:42:39 +0100
-Message-ID: <20260323134539.747902471@linuxfoundation.org>
+Subject: [PATCH 6.1 178/481] netfilter: nfnetlink_queue: fix entry leak in bridge verdict error path
+Date: Mon, 23 Mar 2026 14:42:40 +0100
+Message-ID: <20260323134529.550989624@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,198 +67,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229194-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229652-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,strlen.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5F2DC2F668E
+X-Rspamd-Queue-Id: 953AD2F85AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit 27a4dd0c702b3b2b9cf2c045d100cc2fe8720b81 ]
+[ Upstream commit f1ba83755d81c6fc66ac7acd723d238f974091e9 ]
 
-When operating in 10GBASE-KR mode with auto-negotiation disabled and RX
-adaptation enabled, CRC errors can occur during the RX adaptation
-process. This happens because the driver continues transmitting and
-receiving packets while adaptation is in progress.
+nfqnl_recv_verdict() calls find_dequeue_entry() to remove the queue
+entry from the queue data structures, taking ownership of the entry.
+For PF_BRIDGE packets, it then calls nfqa_parse_bridge() to parse VLAN
+attributes.  If nfqa_parse_bridge() returns an error (e.g. NFQA_VLAN
+present but NFQA_VLAN_TCI missing), the function returns immediately
+without freeing the dequeued entry or its sk_buff.
 
-Fix this by stopping TX/RX immediately when the link goes down and RX
-adaptation needs to be re-triggered, and only re-enabling TX/RX after
-adaptation completes and the link is confirmed up. Introduce a flag to
-track whether TX/RX was disabled for adaptation so it can be restored
-correctly.
+This leaks the nf_queue_entry, its associated sk_buff, and all held
+references (net_device refcounts, struct net refcount).  Repeated
+triggering exhausts kernel memory.
 
-This prevents packets from being transmitted or received during the RX
-adaptation window and avoids CRC errors from corrupted frames.
+Fix this by dropping the entry via nfqnl_reinject() with NF_DROP verdict
+on the error path, consistent with other error handling in this file.
 
-The flag tracking the data path state is synchronized with hardware
-state in xgbe_start() to prevent stale state after device restarts.
-This ensures that after a restart cycle (where xgbe_stop disables
-TX/RX and xgbe_start re-enables them), the flag correctly reflects
-that the data path is active.
-
-Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20260306111629.1515676-3-Raju.Rangoju@amd.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8d45ff22f1b4 ("netfilter: bridge: nf queue verdict to use NFQA_VLAN and NFQA_L2HDR")
+Reviewed-by: David Dull <monderasdor@gmail.com>
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c    |  4 ++
- drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 63 ++++++++++++++++++++-
- drivers/net/ethernet/amd/xgbe/xgbe.h        |  4 ++
- 3 files changed, 69 insertions(+), 2 deletions(-)
+ net/netfilter/nfnetlink_queue.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-index 256969ac2cb9e..67e1d8eacdaed 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -1338,6 +1338,10 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index f13eed826cbb8..4e0d1362875bd 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -1262,8 +1262,10 @@ static int nfqnl_recv_verdict(struct sk_buff *skb, const struct nfnl_info *info,
  
- 	hw_if->enable_tx(pdata);
- 	hw_if->enable_rx(pdata);
-+	/* Synchronize flag with hardware state after enabling TX/RX.
-+	 * This prevents stale state after device restart cycles.
-+	 */
-+	pdata->data_path_stopped = false;
- 
- 	udp_tunnel_nic_reset_ntf(netdev);
- 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-index 469b28c159e7d..0a99a21af5815 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-@@ -2125,6 +2125,48 @@ static void xgbe_phy_rx_adaptation(struct xgbe_prv_data *pdata)
- 	xgbe_rx_adaptation(pdata);
- }
- 
-+/*
-+ * xgbe_phy_stop_data_path - Stop TX/RX to prevent packet corruption
-+ * @pdata: driver private data
-+ *
-+ * This function stops the data path (TX and RX) to prevent packet
-+ * corruption during critical PHY operations like RX adaptation.
-+ * Must be called before initiating RX adaptation when link goes down.
-+ */
-+static void xgbe_phy_stop_data_path(struct xgbe_prv_data *pdata)
-+{
-+	if (pdata->data_path_stopped)
-+		return;
-+
-+	/* Stop TX/RX to prevent packet corruption during RX adaptation */
-+	pdata->hw_if.disable_tx(pdata);
-+	pdata->hw_if.disable_rx(pdata);
-+	pdata->data_path_stopped = true;
-+
-+	netif_dbg(pdata, link, pdata->netdev,
-+		  "stopping data path for RX adaptation\n");
-+}
-+
-+/*
-+ * xgbe_phy_start_data_path - Re-enable TX/RX after RX adaptation
-+ * @pdata: driver private data
-+ *
-+ * This function re-enables the data path (TX and RX) after RX adaptation
-+ * has completed successfully. Only called when link is confirmed up.
-+ */
-+static void xgbe_phy_start_data_path(struct xgbe_prv_data *pdata)
-+{
-+	if (!pdata->data_path_stopped)
-+		return;
-+
-+	pdata->hw_if.enable_rx(pdata);
-+	pdata->hw_if.enable_tx(pdata);
-+	pdata->data_path_stopped = false;
-+
-+	netif_dbg(pdata, link, pdata->netdev,
-+		  "restarting data path after RX adaptation\n");
-+}
-+
- static void xgbe_phy_rx_reset(struct xgbe_prv_data *pdata)
- {
- 	int reg;
-@@ -2918,13 +2960,27 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
- 	if (pdata->en_rx_adap) {
- 		/* if the link is available and adaptation is done,
- 		 * declare link up
-+		 *
-+		 * Note: When link is up and adaptation is done, we can
-+		 * safely re-enable the data path if it was stopped
-+		 * for adaptation.
- 		 */
--		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done)
-+		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done) {
-+			xgbe_phy_start_data_path(pdata);
- 			return 1;
+ 	if (entry->state.pf == PF_BRIDGE) {
+ 		err = nfqa_parse_bridge(entry, nfqa);
+-		if (err < 0)
++		if (err < 0) {
++			nfqnl_reinject(entry, NF_DROP);
+ 			return err;
 +		}
- 		/* If either link is not available or adaptation is not done,
- 		 * retrigger the adaptation logic. (if the mode is not set,
- 		 * then issue mailbox command first)
- 		 */
-+
-+		/* CRITICAL: Stop data path BEFORE triggering RX adaptation
-+		 * to prevent CRC errors from packets corrupted during
-+		 * the adaptation process. This is especially important
-+		 * when AN is OFF in 10G KR mode.
-+		 */
-+		xgbe_phy_stop_data_path(pdata);
-+
- 		if (pdata->mode_set) {
- 			xgbe_phy_rx_adaptation(pdata);
- 		} else {
-@@ -2932,8 +2988,11 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
- 			xgbe_phy_set_mode(pdata, phy_data->cur_mode);
- 		}
+ 	}
  
--		if (pdata->rx_adapt_done)
-+		if (pdata->rx_adapt_done) {
-+			/* Adaptation complete, safe to re-enable data path */
-+			xgbe_phy_start_data_path(pdata);
- 			return 1;
-+		}
- 	} else if (reg & MDIO_STAT1_LSTATUS)
- 		return 1;
- 
-diff --git a/drivers/net/ethernet/amd/xgbe/xgbe.h b/drivers/net/ethernet/amd/xgbe/xgbe.h
-index 82a88d0c15e31..ac0f728c5c85d 100644
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -1321,6 +1321,10 @@ struct xgbe_prv_data {
- 	bool en_rx_adap;
- 	int rx_adapt_retries;
- 	bool rx_adapt_done;
-+	/* Flag to track if data path (TX/RX) was stopped for RX adaptation.
-+	 * This prevents packet corruption during the adaptation window.
-+	 */
-+	bool data_path_stopped;
- 	bool mode_set;
- };
- 
+ 	if (nfqa[NFQA_PAYLOAD]) {
 -- 
 2.51.0
 
