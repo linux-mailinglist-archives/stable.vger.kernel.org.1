@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-228129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229317-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 4FjrK91GwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228129-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:49 +0100
+	id MBOSG/1bwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229317-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:57 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C82A2F3810
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17B052F6520
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 392DF301136E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:56:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC4C230FF323
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926893A9D9D;
-	Mon, 23 Mar 2026 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE373B635B;
+	Mon, 23 Mar 2026 15:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o++iwP/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWcwAWtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D3121D00A;
-	Mon, 23 Mar 2026 13:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7683B2FE9;
+	Mon, 23 Mar 2026 15:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274212; cv=none; b=dtL2l3YrPOL+haHhGUTb+XMAxh/sOJBXBOB1flhf2sLakeHo368wGXVFvAyik6yTXqKIRUXTMTQfdUSmkPAz08EOsxpPxcf4bgLFjo9noBvTGj05uBp8cSClv3/iKFNTVfOoJRanbpCguG01IMKNxcU12i3nF9TeqtmFEfUvxFs=
+	t=1774278737; cv=none; b=lQonYXku8K5oG5BqR9V58ZBB9uP3ES4udUUexhq2hJR2G16242KHtdusPy8CQ2UVZSbsrkqiCOMg5TKLGw0SDG17sql0E8Y3W7tsO5sZrMPwjKU1C3z6Tt0iTG02cXjoeZ4Nw3QZ1O2oF49RHPedOExRlWdgUJ/BBb7VKkA1vM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274212; c=relaxed/simple;
-	bh=fXPiHnyQgxw33bexgbslVgdpOce4MdK2Kjrx20grT6w=;
+	s=arc-20240116; t=1774278737; c=relaxed/simple;
+	bh=5W3KklrOrA6hA8A7mtdchKrpSaHsniPaSYRS1duiz7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RzF1Tof+bdCIa7PHPXoIbMlW+/OL6OUUhSEkF2BuOcSR/eZ/QpYo9PO89n9nmT2MNurUUYCtJ5eGqxIPIsKv+cyuzhlI/hkuo+153xpbev/h0122LDeUldeKAj31b2snEZMNYkWhc6hneftC8Nq9sxXKCvrspRSta58r3MOEvbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o++iwP/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90658C4CEF7;
-	Mon, 23 Mar 2026 13:56:51 +0000 (UTC)
+	 MIME-Version; b=PXQ+ICaHui7Xg91FUCiGfLp09lPbdLd7eqllqbVRu4N5Ur6JxeBkclC2mm9chyLf7k6G5ncCVyplfj8Af7guJSvG8mYsyRQSZX8r7JyKzB9kbKdcwk3viWkqqLYWAM+kKlv3JCG0vjP8W6fcHa7skeFH+6TVqkVQKhC8GlJ3Inc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWcwAWtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842D5C4CEF7;
+	Mon, 23 Mar 2026 15:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274212;
-	bh=fXPiHnyQgxw33bexgbslVgdpOce4MdK2Kjrx20grT6w=;
+	s=korg; t=1774278736;
+	bh=5W3KklrOrA6hA8A7mtdchKrpSaHsniPaSYRS1duiz7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o++iwP/3QT54ohhtApTl0Qc6AOkDxnyZmuOHj2wBjzjhwqTpjNdtJXVV5L04TS1PG
-	 4YnvCjzEx5mGgU3eFPxzDQTQWfgd+P5Y9FhVscDqFDjoClMh0hl/iXnmsfb4cEF2YU
-	 sSLVuRkc5jOjFnbORlcN/NqZDwuI4kHWHCKWFdsQ=
+	b=iWcwAWtHtn4jGi3e4q5iXZ3Z376cSdIpAWCUfweR7dpstQfsTKgpxGs9DE7/lvBby
+	 H0GAaYluct1mLYFFMK6LaQeaw3s6h1hcjqfj5Ve4m2XiBjwHm2YwseJogq9vp0mkjd
+	 ORqdV2ox9Cu0AGbIr4+/c6X3RAWdHVkYEgq+dd0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Meghana Malladi <m-malladi@ti.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 145/220] net: ti: icssg-prueth: Fix memory leak in XDP_DROP for non-zero-copy mode
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
+	Eric Chanudet <echanude@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 402/567] arm64: mm: Dont remap pgtables per-cont(pte|pmd) block
 Date: Mon, 23 Mar 2026 14:45:22 +0100
-Message-ID: <20260323134509.176628558@linuxfoundation.org>
+Message-ID: <20260323134543.812649374@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,84 +71,188 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229317-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228129-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url]
-X-Rspamd-Queue-Id: 5C82A2F3810
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 17B052F6520
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meghana Malladi <m-malladi@ti.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 719d3e71691db7c4f1658ba5a6d1472928121594 ]
+[ Upstream commit 5c63db59c5f89925add57642be4f789d0d671ccd ]
 
-Page recycling was removed from the XDP_DROP path in emac_run_xdp() to
-avoid conflicts with AF_XDP zero-copy mode, which uses xsk_buff_free()
-instead.
+A large part of the kernel boot time is creating the kernel linear map
+page tables. When rodata=full, all memory is mapped by pte. And when
+there is lots of physical ram, there are lots of pte tables to populate.
+The primary cost associated with this is mapping and unmapping the pte
+table memory in the fixmap; at unmap time, the TLB entry must be
+invalidated and this is expensive.
 
-However, this causes a memory leak when running XDP programs that drop
-packets in non-zero-copy mode (standard page pool mode). The pages are
-never returned to the page pool, leading to OOM conditions.
+Previously, each pmd and pte table was fixmapped/fixunmapped for each
+cont(pte|pmd) block of mappings (16 entries with 4K granule). This means
+we ended up issuing 32 TLBIs per (pmd|pte) table during the population
+phase.
 
-Fix this by handling cleanup in the caller, emac_rx_packet().
-When emac_run_xdp() returns ICSSG_XDP_CONSUMED for XDP_DROP, the
-caller now recycles the page back to the page pool. The zero-copy
-path, emac_rx_packet_zc() already handles cleanup correctly with
-xsk_buff_free().
+Let's fix that, and fixmap/fixunmap each page once per population, for a
+saving of 31 TLBIs per (pmd|pte) table. This gives a significant boot
+speedup.
 
-Fixes: 7a64bb388df3 ("net: ti: icssg-prueth: Add AF_XDP zero copy for RX")
-Signed-off-by: Meghana Malladi <m-malladi@ti.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260311095441.1691636-1-m-malladi@ti.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Execution time of map_mem(), which creates the kernel linear map page
+tables, was measured on different machines with different RAM configs:
+
+               | Apple M2 VM | Ampere Altra| Ampere Altra| Ampere Altra
+               | VM, 16G     | VM, 64G     | VM, 256G    | Metal, 512G
+---------------|-------------|-------------|-------------|-------------
+               |   ms    (%) |   ms    (%) |   ms    (%) |    ms    (%)
+---------------|-------------|-------------|-------------|-------------
+before         |  168   (0%) | 2198   (0%) | 8644   (0%) | 17447   (0%)
+after          |   78 (-53%) |  435 (-80%) | 1723 (-80%) |  3779 (-78%)
+
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Tested-by: Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Tested-by: Eric Chanudet <echanude@redhat.com>
+Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20240412131908.433043-2-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[ Ryan: Trivial backport ]
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/icssg/icssg_common.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/mm/mmu.c |   27 ++++++++++++++-------------
+ 1 file changed, 14 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
-index 090aa74d3ce72..a9b5f86bc71bc 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_common.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
-@@ -1075,6 +1075,11 @@ static int emac_rx_packet(struct prueth_emac *emac, u32 flow_id, u32 *xdp_state)
- 		xdp_prepare_buff(&xdp, pa, PRUETH_HEADROOM, pkt_len, false);
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -169,12 +169,9 @@ bool pgattr_change_is_safe(u64 old, u64
+ 	return ((old ^ new) & ~mask) == 0;
+ }
  
- 		*xdp_state = emac_run_xdp(emac, &xdp, &pkt_len);
-+		if (*xdp_state == ICSSG_XDP_CONSUMED) {
-+			page_pool_recycle_direct(pool, page);
-+			goto requeue;
-+		}
+-static void init_pte(pmd_t *pmdp, unsigned long addr, unsigned long end,
++static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+ 		     phys_addr_t phys, pgprot_t prot)
+ {
+-	pte_t *ptep;
+-
+-	ptep = pte_set_fixmap_offset(pmdp, addr);
+ 	do {
+ 		pte_t old_pte = READ_ONCE(*ptep);
+ 
+@@ -189,8 +186,6 @@ static void init_pte(pmd_t *pmdp, unsign
+ 
+ 		phys += PAGE_SIZE;
+ 	} while (ptep++, addr += PAGE_SIZE, addr != end);
+-
+-	pte_clear_fixmap();
+ }
+ 
+ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+@@ -201,6 +196,7 @@ static void alloc_init_cont_pte(pmd_t *p
+ {
+ 	unsigned long next;
+ 	pmd_t pmd = READ_ONCE(*pmdp);
++	pte_t *ptep;
+ 
+ 	BUG_ON(pmd_sect(pmd));
+ 	if (pmd_none(pmd)) {
+@@ -216,6 +212,7 @@ static void alloc_init_cont_pte(pmd_t *p
+ 	}
+ 	BUG_ON(pmd_bad(pmd));
+ 
++	ptep = pte_set_fixmap_offset(pmdp, addr);
+ 	do {
+ 		pgprot_t __prot = prot;
+ 
+@@ -226,20 +223,21 @@ static void alloc_init_cont_pte(pmd_t *p
+ 		    (flags & NO_CONT_MAPPINGS) == 0)
+ 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
+ 
+-		init_pte(pmdp, addr, next, phys, __prot);
++		init_pte(ptep, addr, next, phys, __prot);
+ 
++		ptep += pte_index(next) - pte_index(addr);
+ 		phys += next - addr;
+ 	} while (addr = next, addr != end);
 +
- 		if (*xdp_state != ICSSG_XDP_PASS)
- 			goto requeue;
- 		headroom = xdp.data - xdp.data_hard_start;
--- 
-2.51.0
-
++	pte_clear_fixmap();
+ }
+ 
+-static void init_pmd(pud_t *pudp, unsigned long addr, unsigned long end,
++static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		     phys_addr_t phys, pgprot_t prot,
+ 		     phys_addr_t (*pgtable_alloc)(int), int flags)
+ {
+ 	unsigned long next;
+-	pmd_t *pmdp;
+ 
+-	pmdp = pmd_set_fixmap_offset(pudp, addr);
+ 	do {
+ 		pmd_t old_pmd = READ_ONCE(*pmdp);
+ 
+@@ -265,8 +263,6 @@ static void init_pmd(pud_t *pudp, unsign
+ 		}
+ 		phys += next - addr;
+ 	} while (pmdp++, addr = next, addr != end);
+-
+-	pmd_clear_fixmap();
+ }
+ 
+ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+@@ -276,6 +272,7 @@ static void alloc_init_cont_pmd(pud_t *p
+ {
+ 	unsigned long next;
+ 	pud_t pud = READ_ONCE(*pudp);
++	pmd_t *pmdp;
+ 
+ 	/*
+ 	 * Check for initial section mappings in the pgd/pud.
+@@ -294,6 +291,7 @@ static void alloc_init_cont_pmd(pud_t *p
+ 	}
+ 	BUG_ON(pud_bad(pud));
+ 
++	pmdp = pmd_set_fixmap_offset(pudp, addr);
+ 	do {
+ 		pgprot_t __prot = prot;
+ 
+@@ -304,10 +302,13 @@ static void alloc_init_cont_pmd(pud_t *p
+ 		    (flags & NO_CONT_MAPPINGS) == 0)
+ 			__prot = __pgprot(pgprot_val(prot) | PTE_CONT);
+ 
+-		init_pmd(pudp, addr, next, phys, __prot, pgtable_alloc, flags);
++		init_pmd(pmdp, addr, next, phys, __prot, pgtable_alloc, flags);
+ 
++		pmdp += pmd_index(next) - pmd_index(addr);
+ 		phys += next - addr;
+ 	} while (addr = next, addr != end);
++
++	pmd_clear_fixmap();
+ }
+ 
+ static void alloc_init_pud(pgd_t *pgdp, unsigned long addr, unsigned long end,
 
 
 
