@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228552-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6LPOOpx7wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229581-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:42:52 +0100
+	id gJ91EN1OwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228552-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591342FA469
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:42:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DB92F4AC8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:31:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ADD8931C4CB0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2AF4A307E0E7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB8D3BADA3;
-	Mon, 23 Mar 2026 16:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB563AE1A8;
+	Mon, 23 Mar 2026 14:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Todf7KYi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2YqFLjDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38E643BADA2;
-	Mon, 23 Mar 2026 16:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E8C2C181;
+	Mon, 23 Mar 2026 14:17:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282307; cv=none; b=O4/M4aSvZrLsjpWvRzALZW+rsRZGzX/5OrYwdeLSe9J6fEM+Y8kxdV9pmAvxqwuCsAeBCZzGaKxGN99Wq09lHW8r3ucdtasYvPMZDX/ND8vLLPCr4zuy2W3AE2TdRUWJ3OaHipf5dKtTUXFht3GvT7SWBYW5eY7j0Ib1HMOlfIM=
+	t=1774275433; cv=none; b=F0Erg2lpyW+ai5TmrQ3bVE6RJG87wTWmfGlVd5IE2cZhAMCF6HFYBo4T4fIkeifjdmG/GzLbm28z1NuqPQmxLZPziPbZUgAFAAcBp827Ej8Qvzh5OQ0obS9idv4VF0mUIfmjjiWrY4o6qfCVBsOvrxbFocC0CkFYEAIXJoEM1HY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282307; c=relaxed/simple;
-	bh=4bO68dEUu+E9hZilebeWh7W2op/NPfFXh58CpcGRYo0=;
+	s=arc-20240116; t=1774275433; c=relaxed/simple;
+	bh=dZeNsB/SVKAeJZioJek9SECj3aLCpAlesQOzKAw4QVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0RH/vrQDDTUrzJPWEKpIipz5u00at4zACjZAs/L8W2OKzEec1zsQwcL1fpjhO7QnUvgAIiQczSVFz2/g9y2sy/ascg1OH9m/aerfdPBYC+/MCQDwmPUBFOGDrl6DZKGUTsEL7l0obbCacho1XBPew/dvD4WEnTJLaJvvotTCkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Todf7KYi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45A5C4CEF7;
-	Mon, 23 Mar 2026 16:11:46 +0000 (UTC)
+	 MIME-Version; b=ZfFY+KuMXjZ+SMN+84izLLWPAziZKTryswWkO0Gek8rfFYbnOfdWPIZTRAzdYcSWnklDGvXaTtgQEn9xqvvQ/zNR5P+LUZob1B7nEUBbDbN+atb9K2JTnDG7bE7No9SHdr3tsxNTN3ZJ+E19mE9Oaa3MzVifzL8TtsTkp1gtI1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2YqFLjDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85818C4CEF7;
+	Mon, 23 Mar 2026 14:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282307;
-	bh=4bO68dEUu+E9hZilebeWh7W2op/NPfFXh58CpcGRYo0=;
+	s=korg; t=1774275432;
+	bh=dZeNsB/SVKAeJZioJek9SECj3aLCpAlesQOzKAw4QVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Todf7KYiqwW/il4ci8OVBTZPSuQw7WmsGzWboybs5jteN/NfRC7O+UaQJotUIyqza
-	 xGrF/IME8bhPI2hQU1oYdEDvl/zXjFZ/rL9Viq/57FwtvVXvkGSvZsEMmbKn0KtnbR
-	 Jx6oJrY7I1ypbeXd9SM7BiwfTYN3H5IQkmTu3fX4=
+	b=2YqFLjDyWA/zMF5W1zkrbD45sIESzMC5igickNKtXHkFB/swNPBzCT5wYZDPujq8O
+	 E9BdO5SbmqtJKhrWvuIZYLXpYDvHZQaPH31dlLXXQ/eeiMG62Z8MB+hCPOH/ynOcUr
+	 SU1zTXttiAMVdmhex52DA+Vcmyt20L5dU3jTV9pA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Latypov <dlatypov@google.com>,
-	David Gow <davidgow@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/481] kunit: tool: make --json do nothing if --raw_ouput is set
-Date: Mon, 23 Mar 2026 14:41:31 +0100
-Message-ID: <20260323134527.939495684@linuxfoundation.org>
+	Zhang Heng <zhangheng@kylinos.cn>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 096/460] ASoC: amd: yc: Add DMI quirk for ASUS EXPERTBOOK PM1503CDA
+Date: Mon, 23 Mar 2026 14:41:32 +0100
+Message-ID: <20260323134529.017314062@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,150 +65,71 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229581-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228552-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,kunit.py:url]
-X-Rspamd-Queue-Id: 591342FA469
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: D8DB92F4AC8
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Latypov <dlatypov@google.com>
+From: Zhang Heng <zhangheng@kylinos.cn>
 
-[ Upstream commit 309e22effb741a8c65131a2694a49839fd685a27 ]
+commit 325291b20f8a6f14b9c82edbf5d12e4e71f6adaa upstream.
 
-When --raw_output is set (to any value), we don't actually parse the
-test results. So asking to print the test results as json doesn't make
-sense.
+Add a DMI quirk for the ASUS EXPERTBOOK PM1503CDA fixing the
+issue where the internal microphone was not detected.
 
-We internally create a fake test with one passing subtest, so --json
-would actually print out something misleading.
-
-This patch:
-* Rewords the flag descriptions so hopefully this is more obvious.
-* Also updates --raw_output's description to note the default behavior
-  is to print out only "KUnit" results (actually any KTAP results)
-* also renames and refactors some related logic for clarity (e.g.
-  test_result => test, it's a kunit_parser.Test object).
-
-Notably, this patch does not make it an error to specify --json and
---raw_output together. This is an edge case, but I know of at least one
-wrapper around kunit.py that always sets --json. You'd never be able to
-use --raw_output with that wrapper.
-
-Signed-off-by: Daniel Latypov <dlatypov@google.com>
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Stable-dep-of: 40804c4974b8 ("kunit: tool: copy caller args in run_kernel to prevent mutation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=221070
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhang Heng <zhangheng@kylinos.cn>
+Link: https://patch.msgid.link/20260304063255.139331-1-zhangheng@kylinos.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/kunit/kunit.py | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/kunit/kunit.py b/tools/testing/kunit/kunit.py
-index 4d4663fb578bd..e7b6549712d66 100755
---- a/tools/testing/kunit/kunit.py
-+++ b/tools/testing/kunit/kunit.py
-@@ -192,12 +192,11 @@ def _map_to_overall_status(test_status: kunit_parser.TestStatus) -> KunitStatus:
- def parse_tests(request: KunitParseRequest, metadata: kunit_json.Metadata, input_data: Iterable[str]) -> Tuple[KunitResult, kunit_parser.Test]:
- 	parse_start = time.time()
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -703,6 +703,13 @@ static const struct dmi_system_id yc_acp
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "ASUS EXPERTBOOK BM1503CDA"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "PM1503CDA"),
++		}
++	},
+ 	{}
+ };
  
--	test_result = kunit_parser.Test()
--
- 	if request.raw_output:
- 		# Treat unparsed results as one passing test.
--		test_result.status = kunit_parser.TestStatus.SUCCESS
--		test_result.counts.passed = 1
-+		fake_test = kunit_parser.Test()
-+		fake_test.status = kunit_parser.TestStatus.SUCCESS
-+		fake_test.counts.passed = 1
- 
- 		output: Iterable[str] = input_data
- 		if request.raw_output == 'all':
-@@ -206,14 +205,17 @@ def parse_tests(request: KunitParseRequest, metadata: kunit_json.Metadata, input
- 			output = kunit_parser.extract_tap_lines(output, lstrip=False)
- 		for line in output:
- 			print(line.rstrip())
-+		parse_time = time.time() - parse_start
-+		return KunitResult(KunitStatus.SUCCESS, parse_time), fake_test
- 
--	else:
--		test_result = kunit_parser.parse_run_tests(input_data)
--	parse_end = time.time()
-+
-+	# Actually parse the test results.
-+	test = kunit_parser.parse_run_tests(input_data)
-+	parse_time = time.time() - parse_start
- 
- 	if request.json:
- 		json_str = kunit_json.get_json_result(
--					test=test_result,
-+					test=test,
- 					metadata=metadata)
- 		if request.json == 'stdout':
- 			print(json_str)
-@@ -223,10 +225,10 @@ def parse_tests(request: KunitParseRequest, metadata: kunit_json.Metadata, input
- 			stdout.print_with_timestamp("Test results stored in %s" %
- 				os.path.abspath(request.json))
- 
--	if test_result.status != kunit_parser.TestStatus.SUCCESS:
--		return KunitResult(KunitStatus.TEST_FAILURE, parse_end - parse_start), test_result
-+	if test.status != kunit_parser.TestStatus.SUCCESS:
-+		return KunitResult(KunitStatus.TEST_FAILURE, parse_time), test
- 
--	return KunitResult(KunitStatus.SUCCESS, parse_end - parse_start), test_result
-+	return KunitResult(KunitStatus.SUCCESS, parse_time), test
- 
- def run_tests(linux: kunit_kernel.LinuxSourceTree,
- 	      request: KunitRequest) -> KunitResult:
-@@ -359,14 +361,14 @@ def add_exec_opts(parser) -> None:
- 			    choices=['suite', 'test'])
- 
- def add_parse_opts(parser) -> None:
--	parser.add_argument('--raw_output', help='If set don\'t format output from kernel. '
--			    'If set to --raw_output=kunit, filters to just KUnit output.',
-+	parser.add_argument('--raw_output', help='If set don\'t parse output from kernel. '
-+			    'By default, filters to just KUnit output. Use '
-+			    '--raw_output=all to show everything',
- 			     type=str, nargs='?', const='all', default=None, choices=['all', 'kunit'])
- 	parser.add_argument('--json',
- 			    nargs='?',
--			    help='Stores test results in a JSON, and either '
--			    'prints to stdout or saves to file if a '
--			    'filename is specified',
-+			    help='Prints parsed test results as JSON to stdout or a file if '
-+			    'a filename is specified. Does nothing if --raw_output is set.',
- 			    type=str, const='stdout', default=None, metavar='FILE')
- 
- 
--- 
-2.51.0
-
 
 
 
