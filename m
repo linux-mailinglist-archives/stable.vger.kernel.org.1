@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-229184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228678-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WKmgEq9bwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229184-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:39 +0100
+	id oATOGUhmwWlESwQAu9opvQ
+	(envelope-from <stable+bounces-228678-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:11:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD0252F64C9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71492F7B66
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:11:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C21E833EEB03
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 71DEA31B8438
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD87E3B27ED;
-	Mon, 23 Mar 2026 15:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D21E3B0AF0;
+	Mon, 23 Mar 2026 14:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QzY2oEsb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK5k2au9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04783B27D9;
-	Mon, 23 Mar 2026 15:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CC33AEF20;
+	Mon, 23 Mar 2026 14:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278325; cv=none; b=nNi6z3ccxZ0dg+4en+GEFDtb++C1Fqf53dyKKOhnlXgykA8hE0m7QNFAz9XC2/rW64A8YIoWH4apapig93JJ3c0PP226D8D7io4/HAtH62NPAUdEuIldejMV25NVwmsRAIGXsjL5Rxc+AVD9BU6mi+I0eK0LG4+zoMKtaXWWRxY=
+	t=1774276833; cv=none; b=FyccvyitR5bdOy1gSaXsmCgN3pfBip+ssw2bHkrdxabpUGGVyHKtJ5hzdFOlwMbwewsCgXtc92VjTSf+QUd3hcQiNsdG8FcWLO+o+ODSKwwvGufw2X2ptfnCOBwRoxE1v6Iru3tGOpE3u+0VAcAqWrOknwt/cTM3Yg/a+8WGulM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278325; c=relaxed/simple;
-	bh=ygh+FxHCDKvR3ZVMKXY7yo8EPhrFxxWGivRHA+U3YIY=;
+	s=arc-20240116; t=1774276833; c=relaxed/simple;
+	bh=DrNAYDhQGXXsqpi+ozHq1Vrn9oTHKh2On2+T/0vllwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XQofjR2EQleg/wWfUhhdWC3PFe7xinfvxi9cjKPvgVJgB0aFZwaWaqlFQ/aVxsjeWgaA5k5ehg7eU23CJLpQcn+aj21MTlS9fbBUwV4NVPd2yw4xXmpflHjwCSt0otIiB/J8LNnLdQ9wVoe/Ud5FDzNg4K/hYQssGTQx4jQkifE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QzY2oEsb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F88C4CEF7;
-	Mon, 23 Mar 2026 15:05:24 +0000 (UTC)
+	 MIME-Version; b=tWkwegvqH1yXDn4eNGj2CaRjfUNYN9RvNL17LIXH9Kq6wg/TZUEalhBo1n8f86Hev+Jjh00chmB0EQdMOeG/xfugF+WlrFj62W06q29ePnFYf3aeYqSpe9iEh7Ypbyf0sWQYxwJgwEAGJPPipuiyI6xXuY9vbp1TNCaT5D/T8OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK5k2au9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35877C4CEF7;
+	Mon, 23 Mar 2026 14:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278325;
-	bh=ygh+FxHCDKvR3ZVMKXY7yo8EPhrFxxWGivRHA+U3YIY=;
+	s=korg; t=1774276833;
+	bh=DrNAYDhQGXXsqpi+ozHq1Vrn9oTHKh2On2+T/0vllwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QzY2oEsbc2g6a/XUkVrz4NKwbyCO844xdcUAgneYj/weyf5dKyeJfNVeRLI+oQIQr
-	 tUvOjIbdggg3sxzbNq9oYUBL8JTyaLAjvSXNlTIiD+ev5EmtGeeTJ2LeBZLJaCQMEi
-	 ccoEi9C8j0WcXGBFAX1zf2U1+tQQQwHkeMu+pNkU=
+	b=mK5k2au9yh4/S49P+Op0hm6FH4JOh0IwBYTyn32DACxe/ZxwGoNVa4EPDaldOv82z
+	 eDzd5VHRw1ac4EEODsOV5D1e/M5JkklrzsiV2r38CK6MDpgxBX4hGPog4OdbrUi8Gs
+	 1sAJyo6yH/VHTPRjfv0LOtJzpy38RiBnxnS85do4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>
-Subject: [PATCH 6.6 270/567] usb/core/quirks: Add Huawei ME906S-device to wakeup quirk
+	Rahul Bukte <rahul.bukte@sony.com>,
+	Shashank Balaji <shashank.mahadasyam@sony.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 6.12 194/460] x86/apic: Disable x2apic on resume if the kernel expects so
 Date: Mon, 23 Mar 2026 14:43:10 +0100
-Message-ID: <20260323134540.514625204@linuxfoundation.org>
+Message-ID: <20260323134531.315444850@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +68,120 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229184-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228678-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CD0252F64C9
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,alien8.de:email,msgid.link:url,uefi.org:url]
+X-Rspamd-Queue-Id: D71492F7B66
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Shashank Balaji <shashank.mahadasyam@sony.com>
 
-commit 0326ff28d56b4fa202de36ffc8462a354f383a64 upstream.
+commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
 
-Similar to other Huawei LTE modules using this quirk, this version with
-another vid/pid suffers from spurious wakeups.
+When resuming from s2ram, firmware may re-enable x2apic mode, which may have
+been disabled by the kernel during boot either because it doesn't support IRQ
+remapping or for other reasons. This causes the kernel to continue using the
+xapic interface, while the hardware is in x2apic mode, which causes hangs.
+This happens on defconfig + bare metal + s2ram.
 
-Setting the quirk fixes the issue for this device as well.
+Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
+disabled, i.e. when x2apic_mode = 0.
 
-Cc: stable <stable@kernel.org>
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Link: https://patch.msgid.link/20260306172817.2098898-1-wse@tuxedocomputers.com
+The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
+pre-sleep configuration or initial boot configuration for each CPU, including
+MSR state:
+
+  When executing from the power-on reset vector as a result of waking from an
+  S2 or S3 sleep state, the platform firmware performs only the hardware
+  initialization required to restore the system to either the state the
+  platform was in prior to the initial operating system boot, or to the
+  pre-sleep configuration state. In multiprocessor systems, non-boot
+  processors should be placed in the same state as prior to the initial
+  operating system boot.
+
+  (further ahead)
+
+  If this is an S2 or S3 wake, then the platform runtime firmware restores
+  minimum context of the system before jumping to the waking vector. This
+  includes:
+
+	CPU configuration. Platform runtime firmware restores the pre-sleep
+	configuration or initial boot configuration of each CPU (MSR, MTRR,
+	firmware update, SMBase, and so on). Interrupts must be disabled (for
+	IA-32 processors, disabled by CLI instruction).
+
+	(and other things)
+
+So at least as per the spec, re-enablement of x2apic by the firmware is
+allowed if "x2apic on" is a part of the initial boot configuration.
+
+  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
+
+  [ bp: Massage. ]
+
+Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
+Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/quirks.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/apic/apic.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -208,6 +208,10 @@ static const struct usb_device_id usb_qu
- 	/* HP v222w 16GB Mini USB Drive */
- 	{ USB_DEVICE(0x03f0, 0x3f40), .driver_info = USB_QUIRK_DELAY_INIT },
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1887,6 +1887,7 @@ void __init check_x2apic(void)
  
-+	/* Huawei 4G LTE module ME906S  */
-+	{ USB_DEVICE(0x03f0, 0xa31d), .driver_info =
-+			USB_QUIRK_DISCONNECT_SUSPEND },
+ static inline void try_to_enable_x2apic(int remap_mode) { }
+ static inline void __x2apic_enable(void) { }
++static inline void __x2apic_disable(void) { }
+ #endif /* !CONFIG_X86_X2APIC */
+ 
+ void __init enable_IR_x2apic(void)
+@@ -2449,6 +2450,11 @@ static void lapic_resume(void)
+ 	if (x2apic_mode) {
+ 		__x2apic_enable();
+ 	} else {
++		if (x2apic_enabled()) {
++			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
++			__x2apic_disable();
++		}
 +
- 	/* Creative SB Audigy 2 NX */
- 	{ USB_DEVICE(0x041e, 0x3020), .driver_info = USB_QUIRK_RESET_RESUME },
- 
+ 		/*
+ 		 * Make sure the APICBASE points to the right address
+ 		 *
 
 
 
