@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228306-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IKBWIAlXwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228782-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:49 +0100
+	id OG16A/pLwWmKSAQAu9opvQ
+	(envelope-from <stable+bounces-228306-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D132F5CA3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 894FD2F431D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F008632050C5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BD80D303DECD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3063ACA62;
-	Mon, 23 Mar 2026 14:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797DF3B3C0F;
+	Mon, 23 Mar 2026 14:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K93kwhyB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W56RFDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB463AF65F;
-	Mon, 23 Mar 2026 14:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6053AEF22;
+	Mon, 23 Mar 2026 14:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277109; cv=none; b=bFVWV/eqwG8IgGKc1x16FU5xQL90+5TSkhK42Oq5UNcYdaT37QA6XraCmvpPAYCVgdxqAkLxhhKtXTkbeov/YlZN/gnTkV5QIYmo3z7oHRTJLIM8ltpidfOShu85gx+FUY5zSdpB+R+Im9I15w9erEmuV+yXDkTR8CY+fdnKvpc=
+	t=1774274755; cv=none; b=amIW1eqPkb5Jk7DkKrhAm5xcrtI0QKkavTFTXDNkQ0GzBqF7OfWxtGSSWCfKD6t3/8Tm3Wrn48dswpQUxnhdjlw9LM5+1j0HMRhUZb3QGFNfIVK543EAAHXK4e6K5SiOR8uA8u5CLC+Be72AMxUxmhyhxOFXbzXWURvGjSIkPRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277109; c=relaxed/simple;
-	bh=TXOH0dNYuwk/B/QA2TGD66RV66vsnNq1C9pNZEu/zLs=;
+	s=arc-20240116; t=1774274755; c=relaxed/simple;
+	bh=7Kt2vcMJl8cf6UNVI9u59V2x3K3Lu1gboOj9tD15qR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A2Ev9iVP5qMETSsAxunjpojwRc56UxwByqlTzQW0zm4+gFQK7kP0YZSU3SOJ+Tu45JhpaXPyuqPkU5fe8E51AuoZFt/ccs1j7mmb27LroMtEb8uMyqZRMJuDAYxEorfZ2XnM+vfKVigNKuzhFObkabbSNj2toPa3LlhchZUv3gI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K93kwhyB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E890CC4CEF7;
-	Mon, 23 Mar 2026 14:45:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=as9AVyHch5MLvHO9YfiZ9HUnTuIyaL181xqqJ5vK96Os5j6/tCjm4YPjBSjsJktAM6NmLU4TUUloldm9G6p4HZs+psVkl7fZi+UQ07ix08f/0i+EKygI584xaq2PKYmLToj3JeQ30c6RLA6F/vJ99JLEtc7oB+NYlP8xDy5rdVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W56RFDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E33C2BCB1;
+	Mon, 23 Mar 2026 14:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277109;
-	bh=TXOH0dNYuwk/B/QA2TGD66RV66vsnNq1C9pNZEu/zLs=;
+	s=korg; t=1774274754;
+	bh=7Kt2vcMJl8cf6UNVI9u59V2x3K3Lu1gboOj9tD15qR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K93kwhyBWp1uHJry8PHBt7gohbPse0C/vAbZ55DngxiNsorMFz3j/XapG0AKzUrFv
-	 o7PO9IoyQCcAowp0+NUQoUOQMMC5swIh6agkV82Ia5nzU4GFu4jOvf0I9SjJdtrqv0
-	 njCMInw3QEEPLekie6p7Fg71kMd0YvsgSLqQI/bE=
+	b=0W56RFDDyacvKQcqrrE1XSSGrv+By2+PU0petNHXhvuyTwCdNBdr/HLBBJ4SVAQxX
+	 VDTKlSsGOr6DM6Wi4+k8tgQfxQQL8WRjCGSVye04KhIpTCXinnIzN5FBLjWhblX7bf
+	 bslQVFtKiuBxO2ikvVhd4w6/SVs5wyUVuZ9pgNds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Mika Kahola <mika.kahola@intel.com>,
 	=?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-Subject: [PATCH 6.12 323/460] drm/i915/dsc: Add helper for writing DSC Selective Update ET parameters
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 098/212] drm/i915/psr: Compute PSR entry_setup_frames into intel_crtc_state
 Date: Mon, 23 Mar 2026 14:45:19 +0100
-Message-ID: <20260323134534.443113763@linuxfoundation.org>
+Message-ID: <20260323134506.873285514@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,111 +70,101 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228782-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228306-lists,stable=lfdr.de];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: E3D132F5CA3
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 894FD2F431D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Jouni Högander <jouni.hogander@intel.com>
 
-commit bb5f1cd10101c2567bff4d0e760b74aee7c42f44 upstream.
+commit 7caac659a837af9fd4cad85be851982b88859484 upstream.
 
-There are slice row per frame and pic height configuration in DSC Selective
-Update Parameter Set 1 register. Add helper for configuring these.
+PSR entry_setup_frames is currently computed directly into struct
+intel_dp:intel_psr:entry_setup_frames. This causes a problem if mode change
+gets rejected after PSR compute config: Psr_entry_setup_frames computed for
+this rejected state is in intel_dp:intel_psr:entry_setup_frame. Fix this by
+computing it into intel_crtc_state and copy the value into
+intel_dp:intel_psr:entry_setup_frames on PSR enable.
 
-v2:
-  - Add WARN_ON_ONCE if vdsc instances per pipe > 2
-  - instead of checking vdsc instances per pipe being > 1 check == 2
-
-Bspec: 71709
+Fixes: 2b981d57e480 ("drm/i915/display: Support PSR entry VSC packet to be transmitted one frame earlier")
+Cc: Mika Kahola <mika.kahola@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
 Signed-off-by: Jouni Högander <jouni.hogander@intel.com>
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Link: https://patch.msgid.link/20260304113011.626542-4-jouni.hogander@intel.com
-(cherry picked from commit c8698d61aeb3f70fe33761ee9d3d0e131b5bc2eb)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-[tursulin: fixup forward declaration conflict]
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Link: https://patch.msgid.link/20260312083710.1593781-3-jouni.hogander@intel.com
+(cherry picked from commit 8c229b4aa00262c13787982e998c61c0783285e0)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+[ adapted context lines to account for missing `no_psr_reason` field and `alpm_state` struct. ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_vdsc.c |   23 +++++++++++++++++++++++
- drivers/gpu/drm/i915/display/intel_vdsc.h |    3 +++
- 2 files changed, 26 insertions(+)
+ drivers/gpu/drm/i915/display/intel_display_types.h |    1 +
+ drivers/gpu/drm/i915/display/intel_psr.c           |    5 +++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_vdsc.c
-+++ b/drivers/gpu/drm/i915/display/intel_vdsc.c
-@@ -723,6 +723,29 @@ void intel_dsc_dp_pps_write(struct intel
- 				  sizeof(dp_dsc_pps_sdp));
+--- a/drivers/gpu/drm/i915/display/intel_display_types.h
++++ b/drivers/gpu/drm/i915/display/intel_display_types.h
+@@ -1127,6 +1127,7 @@ struct intel_crtc_state {
+ 	u32 dc3co_exitline;
+ 	u16 su_y_granularity;
+ 	u8 active_non_psr_pipes;
++	u8 entry_setup_frames;
+ 
+ 	/*
+ 	 * Frequency the dpll for the port should run at. Differs from the
+--- a/drivers/gpu/drm/i915/display/intel_psr.c
++++ b/drivers/gpu/drm/i915/display/intel_psr.c
+@@ -1585,7 +1585,7 @@ static bool _psr_compute_config(struct i
+ 	entry_setup_frames = intel_psr_entry_setup_frames(intel_dp, adjusted_mode);
+ 
+ 	if (entry_setup_frames >= 0) {
+-		intel_dp->psr.entry_setup_frames = entry_setup_frames;
++		crtc_state->entry_setup_frames = entry_setup_frames;
+ 	} else {
+ 		drm_dbg_kms(display->drm,
+ 			    "PSR condition failed: PSR setup timing not met\n");
+@@ -1657,7 +1657,7 @@ static bool intel_psr_needs_wa_180378188
+ {
+ 	struct intel_display *display = to_intel_display(intel_dp);
+ 
+-	return (DISPLAY_VER(display) == 20 && intel_dp->psr.entry_setup_frames > 0 &&
++	return (DISPLAY_VER(display) == 20 && crtc_state->entry_setup_frames > 0 &&
+ 		!crtc_state->has_sel_update);
  }
  
-+void intel_dsc_su_et_parameters_configure(struct intel_dsb *dsb, struct intel_encoder *encoder,
-+					  const struct intel_crtc_state *crtc_state, int su_lines)
-+{
-+	struct intel_display *display = to_intel_display(crtc_state);
-+	struct intel_crtc *crtc = to_intel_crtc(crtc_state->uapi.crtc);
-+	const struct drm_dsc_config *vdsc_cfg = &crtc_state->dsc.config;
-+	enum pipe pipe = crtc->pipe;
-+	int vdsc_instances_per_pipe = intel_dsc_get_vdsc_per_pipe(crtc_state);
-+	int slice_row_per_frame = su_lines / vdsc_cfg->slice_height;
-+	u32 val;
-+
-+	drm_WARN_ON_ONCE(display->drm, su_lines % vdsc_cfg->slice_height);
-+	drm_WARN_ON_ONCE(display->drm, vdsc_instances_per_pipe > 2);
-+
-+	val = DSC_SUPS0_SU_SLICE_ROW_PER_FRAME(slice_row_per_frame);
-+	val |= DSC_SUPS0_SU_PIC_HEIGHT(su_lines);
-+
-+	intel_de_write_dsb(display, dsb, LNL_DSC0_SU_PARAMETER_SET_0(pipe), val);
-+
-+	if (vdsc_instances_per_pipe == 2)
-+		intel_de_write_dsb(display, dsb, LNL_DSC1_SU_PARAMETER_SET_0(pipe), val);
-+}
-+
- static i915_reg_t dss_ctl1_reg(struct intel_crtc *crtc, enum transcoder cpu_transcoder)
- {
- 	return is_pipe_dsc(crtc, cpu_transcoder) ?
---- a/drivers/gpu/drm/i915/display/intel_vdsc.h
-+++ b/drivers/gpu/drm/i915/display/intel_vdsc.h
-@@ -13,6 +13,7 @@ struct drm_printer;
- enum transcoder;
- struct intel_crtc;
- struct intel_crtc_state;
-+struct intel_dsb;
- struct intel_encoder;
+@@ -2027,6 +2027,7 @@ static void intel_psr_enable_locked(stru
+ 		crtc_state->req_psr2_sdp_prior_scanline;
+ 	intel_dp->psr.active_non_psr_pipes = crtc_state->active_non_psr_pipes;
+ 	intel_dp->psr.pkg_c_latency_used = crtc_state->pkg_c_latency_used;
++	intel_dp->psr.entry_setup_frames = crtc_state->entry_setup_frames;
  
- bool intel_dsc_source_support(const struct intel_crtc_state *crtc_state);
-@@ -29,6 +30,8 @@ void intel_dsc_dsi_pps_write(struct inte
- 			     const struct intel_crtc_state *crtc_state);
- void intel_dsc_dp_pps_write(struct intel_encoder *encoder,
- 			    const struct intel_crtc_state *crtc_state);
-+void intel_dsc_su_et_parameters_configure(struct intel_dsb *dsb, struct intel_encoder *encoder,
-+					  const struct intel_crtc_state *crtc_state, int su_lines);
- void intel_vdsc_state_dump(struct drm_printer *p, int indent,
- 			   const struct intel_crtc_state *crtc_state);
- 
+ 	if (!psr_interrupt_error_check(intel_dp))
+ 		return;
 
 
 
