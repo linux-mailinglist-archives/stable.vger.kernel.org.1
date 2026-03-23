@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229727-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CG1hOGZbwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229232-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:26 +0100
+	id 2PKcAe9xwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229727-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:35 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF632F6420
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CCC52F94CF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4E5CB3084DC6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 990A1321E11D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89722264614;
-	Mon, 23 Mar 2026 15:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F793BBA08;
+	Mon, 23 Mar 2026 16:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATBPOt2B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zw1VcEwt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46EF825F994;
-	Mon, 23 Mar 2026 15:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678272C0298;
+	Mon, 23 Mar 2026 16:18:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278475; cv=none; b=LaRrZtQUZahO+pW2nXupzaz/NTWC3NUY6Oj8ulmer2nOkNkJ5a4Jyb9tQlk+WS4v/PJMtEOSMXBFEDRf3Br2SUR6hAWSG8qFtAuSrwT1jiXkVya1cvskakCOgAAcrP/uDV9ydk50X6XyLWwDDB411Rh+vSvrilqMEXYjBd9twNA=
+	t=1774282704; cv=none; b=NcGQNpyeYhLjsgYduSMwkcxoMQfNioJzDhwSrOell/XfJRFgmXMuqDhwy+7H/KTe6adn8LKVxZ42fyJZMYdgoGQku1jAL/hsvc1gBfeR6uqRqB5uy6fie9IZfajJ92tyUgsibS7rgpAXNt8AimM00/fmp/4vhGS09UR6/IlQdtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278475; c=relaxed/simple;
-	bh=fgu2hshZdxlFLtdoe6nwIi8yNGg+bMBJVETZJmCsz+M=;
+	s=arc-20240116; t=1774282704; c=relaxed/simple;
+	bh=iz+tDc3JqXg3XWU+9UksYzYeacaSvUVt2j5YNs+JsKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kuwNIyMUZu9pVu0C/Yf3tjlTA62r9ueJEp9nMPHQlXOIZt9QClrKxfOu8l/5fmyLfE/mMoKbOe2shOT+PbK/tx3FolOrbYKHC3sohhgUTELvyZPYbDog8NrqSg+sEINQ8y9CO3nGZ4pvtJbPh9KdAK5QPvI2mcJx2ezXz9lmy0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATBPOt2B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F6CC4CEF7;
-	Mon, 23 Mar 2026 15:07:54 +0000 (UTC)
+	 MIME-Version; b=RSKL/ZiP/HpJMW2zFVDgSvgq0ZtUQx5WqUNBcIybFrRyDt1FnTAKa/JVjNUz7D9Jcq0UizgeD+oz9SJLkiK+fbux5kKufvy2GRAjyRq1PWjs7iNbEMlNCuu2Su8eqLqE75uVvjnvB4maTaSd0+iCmUyXd0SkokD/tsWqvsDsZ5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zw1VcEwt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E69C4CEF7;
+	Mon, 23 Mar 2026 16:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278475;
-	bh=fgu2hshZdxlFLtdoe6nwIi8yNGg+bMBJVETZJmCsz+M=;
+	s=korg; t=1774282704;
+	bh=iz+tDc3JqXg3XWU+9UksYzYeacaSvUVt2j5YNs+JsKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ATBPOt2BtcQdHLDnQDpzeHw2mubn3TueiIenfn5iBaHWIghAVfb/EFl+aZt/SyQxf
-	 YfOEWFO8TJoHJSO1vPbyfogimvYKuhKH+LG0xwCE1zNXZWdDrvT1zMWIhKXdZ7lKlE
-	 NHcYE0P+xb2hwTjuWL7Nzvoben5N3NBNfInGoisw=
+	b=zw1VcEwtNJ0rFzulN27A/ZOk4J1T8JUS0brYZ7YTeh5jaFyKPYlo3HZkYApTfiAOJ
+	 wh4jwk88ASMocxACdAaWJn4jY20oGhJKrR5pI5qhqHC1r3rqVje/ednk/KYRXUMvmi
+	 +LV5yj3BdYWb0q7+f261QohzOvcDY1F9kKrFqyhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 317/567] net: mana: Ring doorbell at 4 CQ wraparounds
+	Jan Hoeppner <hoeppner@linux.ibm.com>,
+	Eduard Shishkin <edward6@linux.ibm.com>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 255/481] s390/dasd: Copy detected format information to secondary device
 Date: Mon, 23 Mar 2026 14:43:57 +0100
-Message-ID: <20260323134541.672201771@linuxfoundation.org>
+Message-ID: <20260323134531.369917072@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,18 +70,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229232-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229727-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -91,97 +91,83 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7BF632F6420
+X-Rspamd-Queue-Id: 4CCC52F94CF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-commit dabffd08545ffa1d7183bc45e387860984025291 upstream.
+commit 4c527c7e030672efd788d0806d7a68972a7ba3c1 upstream.
 
-MANA hardware requires at least one doorbell ring every 8 wraparounds
-of the CQ. The driver rings the doorbell as a form of flow control to
-inform hardware that CQEs have been consumed.
+During online processing for a DASD device an IO operation is started to
+determine the format of the device. CDL format contains specifically
+sized blocks at the beginning of the disk.
 
-The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
-poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
-has fewer than 512 entries, a single poll call can process more than
-4 wraparounds without ringing the doorbell. The doorbell threshold
-check also uses ">" instead of ">=", delaying the ring by one extra
-CQE beyond 4 wraparounds. Combined, these issues can cause the driver
-to exceed the 8-wraparound hardware limit, leading to missed
-completions and stalled queues.
+For a PPRC secondary device no real IO operation is possible therefore
+this IO request can not be started and this step is skipped for online
+processing of secondary devices. This is generally fine since the
+secondary is a copy of the primary device.
 
-Fix this by capping the number of CQEs polled per call to 4 wraparounds
-of the CQ in both TX and RX paths. Also change the doorbell threshold
-from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
-reached.
+In case of an additional partition detection that is run after a swap
+operation the format information is needed to properly drive partition
+detection IO.
 
-Cc: stable@vger.kernel.org
-Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20260226192833.1050807-1-longli@microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Currently the information is not passed leading to IO errors during
+partition detection and a wrongly detected partition table which in turn
+might lead to data corruption on the disk with the wrong partition table.
+
+Fix by passing the format information from primary to secondary device.
+
+Fixes: 413862caad6f ("s390/dasd: add copy pair swap capability")
+Cc: stable@vger.kernel.org #6.1
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Acked-by: Eduard Shishkin <edward6@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://patch.msgid.link/20260310142330.4080106-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ drivers/s390/block/dasd_eckd.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1368,8 +1368,14 @@ static void mana_poll_tx_cq(struct mana_
- 	ndev = txq->ndev;
- 	apc = netdev_priv(ndev);
+--- a/drivers/s390/block/dasd_eckd.c
++++ b/drivers/s390/block/dasd_eckd.c
+@@ -6186,6 +6186,7 @@ static void copy_pair_set_active(struct
+ static int dasd_eckd_copy_pair_swap(struct dasd_device *device, char *prim_busid,
+ 				    char *sec_busid)
+ {
++	struct dasd_eckd_private *prim_priv, *sec_priv;
+ 	struct dasd_device *primary, *secondary;
+ 	struct dasd_copy_relation *copy;
+ 	struct dasd_block *block;
+@@ -6206,6 +6207,9 @@ static int dasd_eckd_copy_pair_swap(stru
+ 	if (!secondary)
+ 		return DASD_COPYPAIRSWAP_SECONDARY;
  
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
++	prim_priv = primary->private;
++	sec_priv = secondary->private;
++
+ 	/*
+ 	 * usually the device should be quiesced for swap
+ 	 * for paranoia stop device and requeue requests again
+@@ -6238,6 +6242,13 @@ static int dasd_eckd_copy_pair_swap(stru
+ 		dasd_device_remove_stop_bits(primary, DASD_STOPPED_QUIESCE);
+ 	}
+ 
++	/*
++	 * The secondary device never got through format detection, but since it
++	 * is a copy of the primary device, the format is exactly the same;
++	 * therefore, the detected layout can simply be copied.
 +	 */
- 	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
--				    CQE_POLLING_BUFFER);
-+				    min((cq->gdma_cq->queue_size /
-+					  COMP_ENTRY_SIZE) * 4,
-+					 CQE_POLLING_BUFFER));
- 
- 	if (comp_read < 1)
- 		return;
-@@ -1749,7 +1755,14 @@ static void mana_poll_rx_cq(struct mana_
- 	struct mana_rxq *rxq = cq->rxq;
- 	int comp_read, i;
- 
--	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
-+	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
-+	 * doorbell can be rung in time for the hardware's requirement
-+	 * of at least one doorbell ring every 8 wraparounds.
-+	 */
-+	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
-+				    min((cq->gdma_cq->queue_size /
-+					  COMP_ENTRY_SIZE) * 4,
-+					 CQE_POLLING_BUFFER));
- 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
- 
- 	rxq->xdp_flush = false;
-@@ -1794,11 +1807,11 @@ static int mana_cq_handler(void *context
- 		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
- 		cq->work_done_since_doorbell = 0;
- 		napi_complete_done(&cq->napi, w);
--	} else if (cq->work_done_since_doorbell >
--		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
-+	} else if (cq->work_done_since_doorbell >=
-+		   (cq->gdma_cq->queue_size / COMP_ENTRY_SIZE) * 4) {
- 		/* MANA hardware requires at least one doorbell ring every 8
- 		 * wraparounds of CQ even if there is no need to arm the CQ.
--		 * This driver rings the doorbell as soon as we have exceeded
-+		 * This driver rings the doorbell as soon as it has processed
- 		 * 4 wraparounds.
- 		 */
- 		mana_gd_ring_cq(gdma_queue, 0);
++	sec_priv->uses_cdl = prim_priv->uses_cdl;
++
+ 	/* re-enable device */
+ 	dasd_device_remove_stop_bits(primary, DASD_STOPPED_PPRC);
+ 	dasd_device_remove_stop_bits(secondary, DASD_STOPPED_PPRC);
 
 
 
