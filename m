@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229094-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SIUgCD9SwWn+SAQAu9opvQ
-	(envelope-from <stable+bounces-228603-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:23 +0100
+	id yNKMAMVWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-229094-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91D502F527D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A762F5C17
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2DD7930A896D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F15F4300C0C6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8CDD1A680D;
-	Mon, 23 Mar 2026 14:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8A822FE0A;
+	Mon, 23 Mar 2026 15:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zr9uqKBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHWJW0UH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA0F3C07A;
-	Mon, 23 Mar 2026 14:19:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9A71A3029;
+	Mon, 23 Mar 2026 15:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275574; cv=none; b=gyoI4AX1fRJZwTQ8MG8vsJvsOaRhXB5dyLsXzor8+ypm26rT3zbm3yz7Szlvg+RxsnRu7OU4Z+bpxBbHLVKny10E0bhr5DocBf7pXc9DBVgDN+nvmILAc80p0iXvg8Z2bY05GpMgAMO9xyHI2vi3LyVe9nJqRWZJCbZrmVyjtwo=
+	t=1774278041; cv=none; b=JA5WsH6xxJoesQNySL4KCxj68oxsvzZafVDiJpnhi0hlDjYWAgqwdYSO8ILGILBmEpufASNL1r+XZYmTU0y/syL0e0bHq8iqVhLocMUW5d1NmzyigQOeUV54TCB/PYKUxmoP2mWIMJKluZaCyNYCm/tjJUbr7nSzb5O3h//tvbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275574; c=relaxed/simple;
-	bh=ZCh/EoHX5STux1KL3jH08nhiGQKiJGbwXgULxI4wRag=;
+	s=arc-20240116; t=1774278041; c=relaxed/simple;
+	bh=cI27jRhyQHKDu/JRNTqsBO8r71BxIm3wRnhdwf5i1IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2XfjLA3l0z3+GMwMxrWTuPhWz1yF4Q4MVKfLI5KP+yEN10htdROzleaZysiP6dRln7gaAlpTw8WLluJ5VoMaVJYt/ENdVMsToRiz627cPV4iPyG6dWc4gqqrDUGsdqzm5Z/WCAF5TKDAyZ8BZta07KMUl/D/y6/SIR7+flWNAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zr9uqKBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA99C4CEF7;
-	Mon, 23 Mar 2026 14:19:33 +0000 (UTC)
+	 MIME-Version; b=q5lRmbujBOPCz/Nn7bDY+66tH49LKbK3FOiXl5e67yk5YI70FkiNMfILJVTtDbc/qzKsBXYvuNvd+jNWYPf/RQ/amBNxWmiGjM4Djpxv4Lwn/CPjpXs1jgHG9srFMTRJd8oMHFmlUleBnkywQIISj9D3d71zFXbmRKVh8x539mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHWJW0UH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C66C4CEF7;
+	Mon, 23 Mar 2026 15:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275574;
-	bh=ZCh/EoHX5STux1KL3jH08nhiGQKiJGbwXgULxI4wRag=;
+	s=korg; t=1774278041;
+	bh=cI27jRhyQHKDu/JRNTqsBO8r71BxIm3wRnhdwf5i1IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zr9uqKBpC+Biw9P3ivtr56tiS6QBAdbRUokB4rqv++aNyKf4IMhYAc7LHcKspIeKQ
-	 WPb2sreA/MUQiUR96HkJdbJtdUdxCXQZQItrNDquMnjEF+uUZszqgnCUuR1EONid3A
-	 00J52cFzpQoRZy+j2vLzRdw+wtWOvGN+FYwwfAhM=
+	b=oHWJW0UHhxjxEup4CUdolpj8fCDK3tu9PhIp12W+mvi0roRzl3i6g8TiLie3f4Zn+
+	 04Jw6SAGVoKncr8KrRBoLGPkrhm6Iv6GGzZtdhhuK/zA9CQ3qx8hmXPuW/MuYo4muS
+	 FrNOccOV+fuIf7vjxW7eizCq9rNS+Pek+yDNL3xs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.12 104/460] usb: dwc3: pci: add support for the Intel Nova Lake -H
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 180/567] i40e: fix registering XDP RxQ info
 Date: Mon, 23 Mar 2026 14:41:40 +0100
-Message-ID: <20260323134529.204111076@linuxfoundation.org>
+Message-ID: <20260323134538.300081654@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,72 +67,177 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228603-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229094-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 91D502F527D
+X-Rspamd-Queue-Id: 90A762F5C17
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-commit 17ab4d4078e22be7fd8fd6fc710c15c085a4cb1b upstream.
+[ Upstream commit 8f497dc8a61429cc004720aa8e713743355d80cf ]
 
-This patch adds the necessary PCI ID for Intel Nova Lake -H
-devices.
+Current way of handling XDP RxQ info in i40e has a problem, where frag_size
+is not updated when xsk_buff_pool is detached or when MTU is changed, this
+leads to growing tail always failing for multi-buffer packets.
 
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: stable <stable@kernel.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20260309130204.208661-1-heikki.krogerus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Couple XDP RxQ info registering with buffer allocations and unregistering
+with cleaning the ring.
+
+Fixes: a045d2f2d03d ("i40e: set xdp_rxq_info::frag_size")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Link: https://patch.msgid.link/20260305111253.2317394-6-larysa.zaremba@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-pci.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 34 ++++++++++++---------
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c |  5 +--
+ 2 files changed, 22 insertions(+), 17 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-pci.c
-+++ b/drivers/usb/dwc3/dwc3-pci.c
-@@ -56,6 +56,7 @@
- #define PCI_DEVICE_ID_INTEL_CNPH		0xa36e
- #define PCI_DEVICE_ID_INTEL_CNPV		0xa3b0
- #define PCI_DEVICE_ID_INTEL_RPL			0xa70e
-+#define PCI_DEVICE_ID_INTEL_NVLH		0xd37f
- #define PCI_DEVICE_ID_INTEL_PTLH		0xe332
- #define PCI_DEVICE_ID_INTEL_PTLH_PCH		0xe37e
- #define PCI_DEVICE_ID_INTEL_PTLU		0xe432
-@@ -448,6 +449,7 @@ static const struct pci_device_id dwc3_p
- 	{ PCI_DEVICE_DATA(INTEL, CNPH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, CNPV, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, RPL, &dwc3_pci_intel_swnode) },
-+	{ PCI_DEVICE_DATA(INTEL, NVLH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLH_PCH, &dwc3_pci_intel_swnode) },
- 	{ PCI_DEVICE_DATA(INTEL, PTLU, &dwc3_pci_intel_swnode) },
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 1f233fac9d4e3..ca35979482c67 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -3637,18 +3637,8 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
+ 	if (ring->vsi->type != I40E_VSI_MAIN)
+ 		goto skip;
+ 
+-	if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
+-		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
+-					 ring->queue_index,
+-					 ring->q_vector->napi.napi_id,
+-					 ring->rx_buf_len);
+-		if (err)
+-			return err;
+-	}
+-
+ 	ring->xsk_pool = i40e_xsk_pool(ring);
+ 	if (ring->xsk_pool) {
+-		xdp_rxq_info_unreg(&ring->xdp_rxq);
+ 		ring->rx_buf_len = xsk_pool_get_rx_frame_size(ring->xsk_pool);
+ 		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
+ 					 ring->queue_index,
+@@ -3660,17 +3650,23 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
+ 						 MEM_TYPE_XSK_BUFF_POOL,
+ 						 NULL);
+ 		if (err)
+-			return err;
++			goto unreg_xdp;
+ 		dev_info(&vsi->back->pdev->dev,
+ 			 "Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring %d\n",
+ 			 ring->queue_index);
+ 
+ 	} else {
++		err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
++					 ring->queue_index,
++					 ring->q_vector->napi.napi_id,
++					 ring->rx_buf_len);
++		if (err)
++			return err;
+ 		err = xdp_rxq_info_reg_mem_model(&ring->xdp_rxq,
+ 						 MEM_TYPE_PAGE_SHARED,
+ 						 NULL);
+ 		if (err)
+-			return err;
++			goto unreg_xdp;
+ 	}
+ 
+ skip:
+@@ -3708,7 +3704,8 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
+ 		dev_info(&vsi->back->pdev->dev,
+ 			 "Failed to clear LAN Rx queue context on Rx ring %d (pf_q %d), error: %d\n",
+ 			 ring->queue_index, pf_q, err);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto unreg_xdp;
+ 	}
+ 
+ 	/* set the context in the HMC */
+@@ -3717,7 +3714,8 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
+ 		dev_info(&vsi->back->pdev->dev,
+ 			 "Failed to set LAN Rx queue context on Rx ring %d (pf_q %d), error: %d\n",
+ 			 ring->queue_index, pf_q, err);
+-		return -ENOMEM;
++		err = -ENOMEM;
++		goto unreg_xdp;
+ 	}
+ 
+ 	/* configure Rx buffer alignment */
+@@ -3725,7 +3723,8 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
+ 		if (I40E_2K_TOO_SMALL_WITH_PADDING) {
+ 			dev_info(&vsi->back->pdev->dev,
+ 				 "2k Rx buffer is too small to fit standard MTU and skb_shared_info\n");
+-			return -EOPNOTSUPP;
++			err = -EOPNOTSUPP;
++			goto unreg_xdp;
+ 		}
+ 		clear_ring_build_skb_enabled(ring);
+ 	} else {
+@@ -3755,6 +3754,11 @@ static int i40e_configure_rx_ring(struct i40e_ring *ring)
+ 	}
+ 
+ 	return 0;
++unreg_xdp:
++	if (ring->vsi->type == I40E_VSI_MAIN)
++		xdp_rxq_info_unreg(&ring->xdp_rxq);
++
++	return err;
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index 99604379c87b6..873fd080de939 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -1473,6 +1473,9 @@ void i40e_clean_rx_ring(struct i40e_ring *rx_ring)
+ 	if (!rx_ring->rx_bi)
+ 		return;
+ 
++	if (xdp_rxq_info_is_reg(&rx_ring->xdp_rxq))
++		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
++
+ 	if (rx_ring->xsk_pool) {
+ 		i40e_xsk_clean_rx_ring(rx_ring);
+ 		goto skip_free;
+@@ -1530,8 +1533,6 @@ void i40e_clean_rx_ring(struct i40e_ring *rx_ring)
+ void i40e_free_rx_resources(struct i40e_ring *rx_ring)
+ {
+ 	i40e_clean_rx_ring(rx_ring);
+-	if (rx_ring->vsi->type == I40E_VSI_MAIN)
+-		xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
+ 	rx_ring->xdp_prog = NULL;
+ 	kfree(rx_ring->rx_bi);
+ 	rx_ring->rx_bi = NULL;
+-- 
+2.51.0
+
 
 
 
