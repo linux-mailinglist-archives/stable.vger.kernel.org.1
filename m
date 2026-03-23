@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229309-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cP3FOhRNwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228301-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:20 +0100
+	id OHM1OJdvwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229309-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:51:35 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BBF2F4634
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD672F8EE5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1DD273050A2F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 745F531E97F3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1EF3B0ADE;
-	Mon, 23 Mar 2026 14:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6E23B9D8A;
+	Mon, 23 Mar 2026 15:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esNGEUN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdqFCkRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21173B0ACB;
-	Mon, 23 Mar 2026 14:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD733B531A;
+	Mon, 23 Mar 2026 15:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274739; cv=none; b=snQWwL6AdEh07I9WC/4DK52L2er/RPz4oeE15Q90AwhgEyfQeVPrO+pV7uZeLaHiUZGsfG4alnao+Zz/RkVBAuCkJvUZYwB6SN5MyPj4Xga9csBni+VZwEAeuyeks0e3HAsaz08FLbQhx0+1Ftkq2jPbb0kbm8Url2OnIHPqHbA=
+	t=1774278711; cv=none; b=YC+XPBcgqJYZ7E7Q9ujLNIh7fEZU5UIdSKdXSvIlMq0GfaJ6gLgSiNZWh0cCKsoEuFOmlJU4yllqwZ8hAiRRgxfZABlLMCRmas4Qm12NDGxFgaB8V7cuP1iFWRHGXmrMB7lFXjux8h9iwz62zZhBilAcgfWfYJcieaWG6XCmS0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274739; c=relaxed/simple;
-	bh=JZ4eR8diKEBgV1BckWVhCmfRqXODaVcSNNW0Z69m5fQ=;
+	s=arc-20240116; t=1774278711; c=relaxed/simple;
+	bh=Yvq/pPoGxjYcwKvhDpmwyUYocO2jAEo9sCI/iBWEx+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QBLwLcvL4YCl35MI+7vAXviFRQqmkcZ/JE7N9x3gL7COqsoWOzJDbW/gqxy/cb0jlpKMzFp/MQUmqDIw7MsxD91k0S/oFvVBq8ZsZFnHxBpJs8bCDQVkUKCl2JlRMjRvei9m+j87bIT3GHXF9EfM3Yvel11oyqfoQzr2Axp8W4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esNGEUN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26288C4CEF7;
-	Mon, 23 Mar 2026 14:05:38 +0000 (UTC)
+	 MIME-Version; b=Y69AEiytGAdVJHWWbPUaLXFxTPmmDk25gZCK6PWP0DwvObpRdAN0ia/5tmI7mQhgvNN4BjP71pzo/uktrHoYgOdHV/eTL79vtJZdy42jae224vKpCx0mmirlbespMIbJQmFLnuPf8xEPLLP2sefk0OGBDkJIq0xtYy2lPq4CDQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdqFCkRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027B6C4CEF7;
+	Mon, 23 Mar 2026 15:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274739;
-	bh=JZ4eR8diKEBgV1BckWVhCmfRqXODaVcSNNW0Z69m5fQ=;
+	s=korg; t=1774278711;
+	bh=Yvq/pPoGxjYcwKvhDpmwyUYocO2jAEo9sCI/iBWEx+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esNGEUN6hCWhoEZkQfxeUf+UmrL5ltKcoQt3dpF6a3+A3sf87YtC0yZpEISVqkH9c
-	 9w8zLhddIhzUpM6dXND7JZjFHLH61ItFPJKssMRJt8Rq7J1AcNl1DB/h0t7ZQj+g5x
-	 ui983E+mRVcnDH0H1LfjWT0ZXyXwsRJB609Nulvc=
+	b=FdqFCkRkeHaNfw/G3s4LMvgj9zarna40RbByMlPLzXgcJrJ/fVOwo8cju+ya1HHG/
+	 Hs8JD7+20AQ/oJ7lCh+rUToLgE2BGx8U7JYz0jT+SSuQI1vUr/RjDqwZ4FWDfzKOhw
+	 j9Fqr0PK7hx/JCsWkYETbOvFXZlMSv5hkTlNynAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhanjun Dong <zhanjun.dong@intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
-Subject: [PATCH 6.18 094/212] drm/xe/guc: Ensure CT state transitions via STOP before DISABLED
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 395/567] smb: client: Compare MACs in constant time
 Date: Mon, 23 Mar 2026 14:45:15 +0100
-Message-ID: <20260323134506.748761296@linuxfoundation.org>
+Message-ID: <20260323134543.631170285@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228301-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229309-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 26BBF2F4634
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 6CD672F8EE5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhanjun Dong <zhanjun.dong@intel.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-commit 7838dd8367419e9fc43b79c038321cb3c04de2a2 upstream.
+commit 26bc83b88bbbf054f0980a4a42047a8d1e210e4c upstream.
 
-The GuC CT state transition requires moving to the STOP state before
-entering the DISABLED state. Update the driver teardown sequence to make
-the proper state machine transitions.
+To prevent timing attacks, MAC comparisons need to be constant-time.
+Replace the memcmp() with the correct function, crypto_memneq().
 
-Fixes: ee4b32220a6b ("drm/xe/guc: Add devm release action to safely tear down CT")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zhanjun Dong <zhanjun.dong@intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20260310225039.1320161-6-zhanjun.dong@intel.com
-(cherry picked from commit dace8cb0032f57ea67c87b3b92ad73c89dd2db44)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_ct.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/client/cifsencrypt.c   |    3 ++-
+ fs/smb/client/smb2transport.c |    4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_guc_ct.c
-+++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-@@ -266,6 +266,7 @@ static void guc_action_disable_ct(void *
- {
- 	struct xe_guc_ct *ct = arg;
+--- a/fs/smb/client/cifsencrypt.c
++++ b/fs/smb/client/cifsencrypt.c
+@@ -23,6 +23,7 @@
+ #include <linux/fips.h>
+ #include "../common/arc4.h"
+ #include <crypto/aead.h>
++#include <crypto/utils.h>
  
-+	xe_guc_ct_stop(ct);
- 	guc_ct_change_state(ct, XE_GUC_CT_STATE_DISABLED);
- }
+ /*
+  * Hash data from a BVEC-type iterator.
+@@ -371,7 +372,7 @@ int cifs_verify_signature(struct smb_rqs
+ /*	cifs_dump_mem("what we think it should be: ",
+ 		      what_we_think_sig_should_be, 16); */
  
+-	if (memcmp(server_response_sig, what_we_think_sig_should_be, 8))
++	if (crypto_memneq(server_response_sig, what_we_think_sig_should_be, 8))
+ 		return -EACCES;
+ 	else
+ 		return 0;
+--- a/fs/smb/client/smb2transport.c
++++ b/fs/smb/client/smb2transport.c
+@@ -19,6 +19,7 @@
+ #include <linux/mempool.h>
+ #include <linux/highmem.h>
+ #include <crypto/aead.h>
++#include <crypto/utils.h>
+ #include "cifsglob.h"
+ #include "cifsproto.h"
+ #include "smb2proto.h"
+@@ -732,7 +733,8 @@ smb2_verify_signature(struct smb_rqst *r
+ 	if (rc)
+ 		return rc;
+ 
+-	if (memcmp(server_response_sig, shdr->Signature, SMB2_SIGNATURE_SIZE)) {
++	if (crypto_memneq(server_response_sig, shdr->Signature,
++			  SMB2_SIGNATURE_SIZE)) {
+ 		cifs_dbg(VFS, "sign fail cmd 0x%x message id 0x%llx\n",
+ 			shdr->Command, shdr->MessageId);
+ 		return -EACCES;
 
 
 
