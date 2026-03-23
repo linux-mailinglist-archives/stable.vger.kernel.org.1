@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2IwwATxowWliSwQAu9opvQ
-	(envelope-from <stable+bounces-228675-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:20:12 +0100
+	id uGd/C4FqwWnVSwQAu9opvQ
+	(envelope-from <stable+bounces-229721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:29:53 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CFC62F7E77
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:20:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D73872F82D6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 90A8B3104A32
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:41:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 648F4313F6F1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DF13B0ACB;
-	Mon, 23 Mar 2026 14:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA963BA222;
+	Mon, 23 Mar 2026 16:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEc7DXVH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvVkzizr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3184D3AEF24;
-	Mon, 23 Mar 2026 14:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEB01DA0E1;
+	Mon, 23 Mar 2026 16:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276826; cv=none; b=MSSiKWadzrdOWqkTNA+Rcy8c6ezzuJkkdimHoJUTg9f8N4yxEnMJ3ssopAN5jBl1kmVsdThPp9a9WrCraA9VIt/0mCejJMGY6f9LmIbnyXuCk4CmwRONBKrmNgj2jOix0D2zF7FhTulLF1v0I+VpKu2mCPAmRfvc5UJqqbWamRY=
+	t=1774282688; cv=none; b=SA+4Atu92q39oylfjo5i6kXcIBuktdEOG6SZXszzR6cGq2Z48HKpBFiWyMRdSpAvNTOm3KSWw3JAQ1ySDm8liN8S1HFpQL5chqJBe5aFyyA5B8cyGKOfqdNOSoJt9oiRvL28378WfQg6l0tvlfxx0FCOB+pYwo/5thNnuOSzddE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276826; c=relaxed/simple;
-	bh=naJ6TOYX5ZWzCQGw842B1h0B7G+y6+qLdIUISjrSEok=;
+	s=arc-20240116; t=1774282688; c=relaxed/simple;
+	bh=tugg+6fx+/9Tds9+oH9Ewluo6mCKZq5PG76/VqY6Miw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSNrcadlSxaeC1b+S7m7bhFt63BlULBevD7ttJxpul3COFDFxmCo68xeHKwBnIms5LHR0gQWtoX9ySbpgMDV4gXJFrNzvywS0WAjFe+8fruKPaMsb5lKMcpNiivajhEjPFhfPGErL55WJfeqYk9R7ODKJkMSNwJgurvVedZNqho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEc7DXVH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882E5C4CEF7;
-	Mon, 23 Mar 2026 14:40:25 +0000 (UTC)
+	 MIME-Version; b=HO7eIWYKHeudnPRE9nEK5yW6aN5ZMs/tditrnJz3XkqDHKaJt8ukSUt/t4MwwfawwbZ0hz+p0x5DUQkcmJu9Xymq7EZH/fSWj3gxogYJx17LLhbnROrZJFWAYAxSsicN1LrapBtCj/yexC+IcbzKbGuVI9AcmVlIgJpiQdcvZ4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvVkzizr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE6DDC2BC9E;
+	Mon, 23 Mar 2026 16:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276825;
-	bh=naJ6TOYX5ZWzCQGw842B1h0B7G+y6+qLdIUISjrSEok=;
+	s=korg; t=1774282688;
+	bh=tugg+6fx+/9Tds9+oH9Ewluo6mCKZq5PG76/VqY6Miw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rEc7DXVHi4XYdawjcj57Z2ebXvg4tVWlOMG+Uc3oCGpMHXfzTbeDrXqIb/sfV/wd6
-	 ClDs8YQr1TpQaUKfhYxL8DpdX8nfzC1PguXGD0OvuhpH99zZpvZfaAeQOnNWxheGSv
-	 /WtYC6k7EyC8Ng3FB8uoW89SMLJ+aJeZLL3gU5PA=
+	b=VvVkzizrcS8XU6/p7OPVJLHs4NWALax9b3ktMkgYtYhKTDzu0Org+TlZ2/gQ/ySW3
+	 IiWMzfDPBbiDvLl8LwYyho8UKAW8kZuMs6nYNL+0ciTMfOgZ0rpStKQP09H3z53HvO
+	 ueo/XnbhORPotm/q0SZksEllE5l0kLBlexqlLbho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Ripple <john.ripple@keysight.com>,
-	Douglas Anderson <dianders@chromium.org>
-Subject: [PATCH 6.12 218/460] drm/bridge: ti-sn65dsi86: Add support for DisplayPort mode with HPD
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.1 232/481] device property: Allow secondary lookup in fwnode_get_next_child_node()
 Date: Mon, 23 Mar 2026 14:43:34 +0100
-Message-ID: <20260323134531.859280154@linuxfoundation.org>
+Message-ID: <20260323134530.790566007@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,259 +67,109 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228675-lists,stable=lfdr.de];
-	URIBL_MULTI_FAIL(0.00)[keysight.com:server fail,sea.lore.kernel.org:server fail,chromium.org:server fail,linuxfoundation.org:server fail];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229721-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,chromium.org:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,keysight.com:email]
-X-Rspamd-Queue-Id: 7CFC62F7E77
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: D73872F82D6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Ripple <john.ripple@keysight.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 9133bc3f0564890218cbba6cc7e81ebc0841a6f1 upstream.
+commit 2692c614f8f05929d692b3dbfd3faef1f00fbaf0 upstream.
 
-Add support for DisplayPort to the bridge, which entails the following:
-- Get and use an interrupt for HPD;
-- Properly clear all status bits in the interrupt handler;
+When device_get_child_node_count() got split to the fwnode and device
+respective APIs, the fwnode didn't inherit the ability to traverse over
+the secondary fwnode. Hence any user, that switches from device to fwnode
+API misses this feature. In particular, this was revealed by the commit
+1490cbb9dbfd ("device property: Split fwnode_get_child_node_count()")
+that effectively broke the GPIO enumeration on Intel Galileo boards.
+Fix this by moving the secondary lookup from device to fwnode API.
 
-Signed-off-by: John Ripple <john.ripple@keysight.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20250915174543.2564994-1-john.ripple@keysight.com
+Note, in general no device_*() API should go into the depth of the fwnode
+implementation.
+
+Fixes: 114dbb4fa7c4 ("drivers property: When no children in primary, try secondary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://patch.msgid.link/20260210135822.47335-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c |  112 ++++++++++++++++++++++++++++++++++
- 1 file changed, 112 insertions(+)
+ drivers/base/property.c |   27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -106,10 +106,21 @@
- #define SN_PWM_EN_INV_REG			0xA5
- #define  SN_PWM_INV_MASK			BIT(0)
- #define  SN_PWM_EN_MASK				BIT(1)
-+
-+#define SN_IRQ_EN_REG				0xE0
-+#define  IRQ_EN					BIT(0)
-+
-+#define SN_IRQ_EVENTS_EN_REG			0xE6
-+#define  HPD_INSERTION_EN			BIT(1)
-+#define  HPD_REMOVAL_EN				BIT(2)
-+
- #define SN_AUX_CMD_STATUS_REG			0xF4
- #define  AUX_IRQ_STATUS_AUX_RPLY_TOUT		BIT(3)
- #define  AUX_IRQ_STATUS_AUX_SHORT		BIT(5)
- #define  AUX_IRQ_STATUS_NAT_I2C_FAIL		BIT(6)
-+#define SN_IRQ_STATUS_REG			0xF5
-+#define  HPD_REMOVAL_STATUS			BIT(2)
-+#define  HPD_INSERTION_STATUS			BIT(1)
- 
- #define MIN_DSI_CLK_FREQ_MHZ	40
- 
-@@ -152,7 +163,9 @@
-  * @ln_assign:    Value to program to the LN_ASSIGN register.
-  * @ln_polrs:     Value for the 4-bit LN_POLRS field of SN_ENH_FRAME_REG.
-  * @comms_enabled: If true then communication over the aux channel is enabled.
-+ * @hpd_enabled:   If true then HPD events are enabled.
-  * @comms_mutex:   Protects modification of comms_enabled.
-+ * @hpd_mutex:     Protects modification of hpd_enabled.
-  *
-  * @gchip:        If we expose our GPIOs, this is used.
-  * @gchip_output: A cache of whether we've set GPIOs to output.  This
-@@ -190,7 +203,9 @@ struct ti_sn65dsi86 {
- 	u8				ln_assign;
- 	u8				ln_polrs;
- 	bool				comms_enabled;
-+	bool				hpd_enabled;
- 	struct mutex			comms_mutex;
-+	struct mutex			hpd_mutex;
- 
- #if defined(CONFIG_OF_GPIO)
- 	struct gpio_chip		gchip;
-@@ -221,6 +236,23 @@ static const struct regmap_config ti_sn6
- 	.max_register = 0xFF,
- };
- 
-+static int ti_sn65dsi86_read_u8(struct ti_sn65dsi86 *pdata, unsigned int reg,
-+				u8 *val)
-+{
-+	int ret;
-+	unsigned int reg_val;
-+
-+	ret = regmap_read(pdata->regmap, reg, &reg_val);
-+	if (ret) {
-+		dev_err(pdata->dev, "fail to read raw reg %#x: %d\n",
-+			reg, ret);
-+		return ret;
-+	}
-+	*val = (u8)reg_val;
-+
-+	return 0;
-+}
-+
- static int __maybe_unused ti_sn65dsi86_read_u16(struct ti_sn65dsi86 *pdata,
- 						unsigned int reg, u16 *val)
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -749,7 +749,18 @@ struct fwnode_handle *
+ fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
+ 			   struct fwnode_handle *child)
  {
-@@ -362,6 +394,7 @@ static void ti_sn65dsi86_disable_comms(s
- static int __maybe_unused ti_sn65dsi86_resume(struct device *dev)
- {
- 	struct ti_sn65dsi86 *pdata = dev_get_drvdata(dev);
-+	const struct i2c_client *client = to_i2c_client(pdata->dev);
- 	int ret;
- 
- 	ret = regulator_bulk_enable(SN_REGULATOR_SUPPLY_NUM, pdata->supplies);
-@@ -396,6 +429,13 @@ static int __maybe_unused ti_sn65dsi86_r
- 	if (pdata->refclk)
- 		ti_sn65dsi86_enable_comms(pdata);
- 
-+	if (client->irq) {
-+		ret = regmap_update_bits(pdata->regmap, SN_IRQ_EN_REG, IRQ_EN,
-+					 IRQ_EN);
-+		if (ret)
-+			dev_err(pdata->dev, "Failed to enable IRQ events: %d\n", ret);
-+	}
+-	return fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	struct fwnode_handle *next;
 +
- 	return ret;
++	if (IS_ERR_OR_NULL(fwnode))
++		return NULL;
++
++	/* Try to find a child in primary fwnode */
++	next = fwnode_call_ptr_op(fwnode, get_next_child_node, child);
++	if (next)
++		return next;
++
++	/* When no more children in primary, continue with secondary */
++	return fwnode_call_ptr_op(fwnode->secondary, get_next_child_node, child);
  }
+ EXPORT_SYMBOL_GPL(fwnode_get_next_child_node);
  
-@@ -1223,6 +1263,8 @@ static void ti_sn65dsi86_debugfs_init(st
- static void ti_sn_bridge_hpd_enable(struct drm_bridge *bridge)
+@@ -793,19 +804,7 @@ EXPORT_SYMBOL_GPL(fwnode_get_next_availa
+ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 						 struct fwnode_handle *child)
  {
- 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
-+	const struct i2c_client *client = to_i2c_client(pdata->dev);
-+	int ret;
- 
- 	/*
- 	 * Device needs to be powered on before reading the HPD state
-@@ -1231,11 +1273,35 @@ static void ti_sn_bridge_hpd_enable(stru
- 	 */
- 
- 	pm_runtime_get_sync(pdata->dev);
-+
-+	mutex_lock(&pdata->hpd_mutex);
-+	pdata->hpd_enabled = true;
-+	mutex_unlock(&pdata->hpd_mutex);
-+
-+	if (client->irq) {
-+		ret = regmap_set_bits(pdata->regmap, SN_IRQ_EVENTS_EN_REG,
-+				      HPD_REMOVAL_EN | HPD_INSERTION_EN);
-+		if (ret)
-+			dev_err(pdata->dev, "Failed to enable HPD events: %d\n", ret);
-+	}
+-	const struct fwnode_handle *fwnode = dev_fwnode(dev);
+-	struct fwnode_handle *next;
+-
+-	if (IS_ERR_OR_NULL(fwnode))
+-		return NULL;
+-
+-	/* Try to find a child in primary fwnode */
+-	next = fwnode_get_next_child_node(fwnode, child);
+-	if (next)
+-		return next;
+-
+-	/* When no more children in primary, continue with secondary */
+-	return fwnode_get_next_child_node(fwnode->secondary, child);
++	return fwnode_get_next_child_node(dev_fwnode(dev), child);
  }
+ EXPORT_SYMBOL_GPL(device_get_next_child_node);
  
- static void ti_sn_bridge_hpd_disable(struct drm_bridge *bridge)
- {
- 	struct ti_sn65dsi86 *pdata = bridge_to_ti_sn65dsi86(bridge);
-+	const struct i2c_client *client = to_i2c_client(pdata->dev);
-+	int ret;
-+
-+	if (client->irq) {
-+		ret = regmap_clear_bits(pdata->regmap, SN_IRQ_EVENTS_EN_REG,
-+					HPD_REMOVAL_EN | HPD_INSERTION_EN);
-+		if (ret)
-+			dev_err(pdata->dev, "Failed to disable HPD events: %d\n", ret);
-+	}
-+
-+	mutex_lock(&pdata->hpd_mutex);
-+	pdata->hpd_enabled = false;
-+	mutex_unlock(&pdata->hpd_mutex);
- 
- 	pm_runtime_put_autosuspend(pdata->dev);
- }
-@@ -1321,6 +1387,41 @@ static int ti_sn_bridge_parse_dsi_host(s
- 	return 0;
- }
- 
-+static irqreturn_t ti_sn_bridge_interrupt(int irq, void *private)
-+{
-+	struct ti_sn65dsi86 *pdata = private;
-+	struct drm_device *dev = pdata->bridge.dev;
-+	u8 status;
-+	int ret;
-+	bool hpd_event;
-+
-+	ret = ti_sn65dsi86_read_u8(pdata, SN_IRQ_STATUS_REG, &status);
-+	if (ret) {
-+		dev_err(pdata->dev, "Failed to read IRQ status: %d\n", ret);
-+		return IRQ_NONE;
-+	}
-+
-+	hpd_event = status & (HPD_REMOVAL_STATUS | HPD_INSERTION_STATUS);
-+
-+	dev_dbg(pdata->dev, "(SN_IRQ_STATUS_REG = %#x)\n", status);
-+	if (!status)
-+		return IRQ_NONE;
-+
-+	ret = regmap_write(pdata->regmap, SN_IRQ_STATUS_REG, status);
-+	if (ret) {
-+		dev_err(pdata->dev, "Failed to clear IRQ status: %d\n", ret);
-+		return IRQ_NONE;
-+	}
-+
-+	/* Only send the HPD event if we are bound with a device. */
-+	mutex_lock(&pdata->hpd_mutex);
-+	if (pdata->hpd_enabled && hpd_event)
-+		drm_kms_helper_hotplug_event(dev);
-+	mutex_unlock(&pdata->hpd_mutex);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static int ti_sn_bridge_probe(struct auxiliary_device *adev,
- 			      const struct auxiliary_device_id *id)
- {
-@@ -1954,6 +2055,7 @@ static int ti_sn65dsi86_probe(struct i2c
- 	dev_set_drvdata(dev, pdata);
- 	pdata->dev = dev;
- 
-+	mutex_init(&pdata->hpd_mutex);
- 	mutex_init(&pdata->comms_mutex);
- 
- 	pdata->regmap = devm_regmap_init_i2c(client,
-@@ -1984,6 +2086,16 @@ static int ti_sn65dsi86_probe(struct i2c
- 	if (ret)
- 		return ret;
- 
-+	if (client->irq) {
-+		ret = devm_request_threaded_irq(pdata->dev, client->irq, NULL,
-+						ti_sn_bridge_interrupt,
-+						IRQF_ONESHOT,
-+						dev_name(pdata->dev), pdata);
-+
-+		if (ret)
-+			return dev_err_probe(dev, ret, "failed to request interrupt\n");
-+	}
-+
- 	/*
- 	 * Break ourselves up into a collection of aux devices. The only real
- 	 * motiviation here is to solve the chicken-and-egg problem of probe
 
 
 
