@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229131-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iKAxKEhtwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229628-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:44 +0100
+	id kEyPFt1XwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229131-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:21 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC792F89E7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:41:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FEF2F5E6E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:10:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 82CCD30D57BD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3FF4A304EF3F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4173BD655;
-	Mon, 23 Mar 2026 16:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32B7624CEEA;
+	Mon, 23 Mar 2026 15:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsCY8KR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIfZIWHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D573B9D9D;
-	Mon, 23 Mar 2026 16:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4882248883;
+	Mon, 23 Mar 2026 15:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282437; cv=none; b=Ub9C63lkRJSyyAAJkdoPg5iWLL5fkpbgbZwkzMtRcdfquE6jdTbWzinbw1t6HU1u3d65icjL7lt3vHd0p2BKXqGveFpE+tMXbcnrk4kPoYqsbMHwmSuiulZlMjuebLHY9TDV1DShXvRoiBML17INyh2VoNugDyQp94OJSpYn2No=
+	t=1774278159; cv=none; b=kILD6FDOHjvbsuZQ4/vttJdvPz0szBmr9bt2DhQ6veoU72WxBNyAh4w5CHL0FhlGZJRC9fUKzM1Ew5k4kuCTy9cflcXck6iGeF82AVcMyOa6/SNw5gZBuxxLDYAekADNIBwOEcwXUai6jh8zRidDrVYFX9Tc1wy0LQSjhZtuTcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282437; c=relaxed/simple;
-	bh=rxlS4xq4pFgDd6F9NcV4dTP+1B9RKuOKXMEHGy+llms=;
+	s=arc-20240116; t=1774278159; c=relaxed/simple;
+	bh=H40aJHTkio0Ky9zkhqB4WkQ92WPOFBL2o+62XruVlgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/xTmLtvR0dJD2wc2E4JCSyh+sr+GmBmQPU9mLUtKtQVzv4LvNgQ0vjZLFn0aSkrHgwh9kejv39lKABjkYBBXQfaX9nTRqQ0sWo4bsKybMdosmejFOrKwctGsajoaAt6J9ItAhnszWf5j+BYUQM2iz7m4z4xNxdvqKKvkx/ex4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsCY8KR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD91EC4CEF7;
-	Mon, 23 Mar 2026 16:13:56 +0000 (UTC)
+	 MIME-Version; b=btKk+WTyLwd++H1NubwzYpSnPlfu0yK8dScXXRIeyM29FnIeP+NbM/t9Tc9DtAwaomfoduiuVJDUUmw2oKmckIq8XQPXLg+NPU6lycgZxDk/YyTOmHzG/KNwQkpTWNVLfIF3RjwoTSjZAgfGG1NohHbE6i94Oe6isU/tcgSiip0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIfZIWHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1CFC2BC9E;
+	Mon, 23 Mar 2026 15:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282437;
-	bh=rxlS4xq4pFgDd6F9NcV4dTP+1B9RKuOKXMEHGy+llms=;
+	s=korg; t=1774278158;
+	bh=H40aJHTkio0Ky9zkhqB4WkQ92WPOFBL2o+62XruVlgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IsCY8KR/Tcan6i8yzaQW5ZsXnJo55NdcGn3QbKVvWwAxUEI3gU6YYmybBNxXmqC2w
-	 LcCaFUgGZw3QFAHylP/ILROx0VEvRWNkgzMVrKLHLSqfP+srfffIp+vhsSiSmq2x1W
-	 ExQjgcgL29YLckue3fwfxDoPpYzI68fjEsieeK6s=
+	b=pIfZIWHVGuY1pnVeOUMAitC5b2/JwfMXANL6QXwcRbfwVe32K5vUkMBA/qimtPn7M
+	 zrXG5Pnkfv0/sXux/tz3OhT1Db5sWoAKqQxzWiH2XOa68g5umByLA3TDEMQbgM14AZ
+	 KqM4U1DDII9QZylKj8YptpxE0cFYFKd4CiCNSkEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/481] powerpc/uaccess: Fix inline assembly for clang build on PPC32
+Subject: [PATCH 6.6 218/567] drm/msm/dsi: Document DSC related pclk_rate and hdisplay calculations
 Date: Mon, 23 Mar 2026 14:42:18 +0100
-Message-ID: <20260323134529.041368798@linuxfoundation.org>
+Message-ID: <20260323134539.221450453@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,122 +66,106 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229628-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229131-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2CC792F89E7
+X-Rspamd-Queue-Id: E5FEF2F5E6E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 0ee95a1d458630272d0415d0ffa9424fcb606c90 ]
+[ Upstream commit 3b56d27ba1578c3d61f51de4102cf896a9a8617e ]
 
-Test robot reports the following error with clang-16.0.6:
+Provide actual documentation for the pclk and hdisplay calculations in
+the case of DSC compression being used.
 
-   In file included from kernel/rseq.c:75:
-   include/linux/rseq_entry.h:141:3: error: invalid operand for instruction
-                   unsafe_get_user(offset, &ucs->post_commit_offset, efault);
-                   ^
-   include/linux/uaccess.h:608:2: note: expanded from macro 'unsafe_get_user'
-           arch_unsafe_get_user(x, ptr, local_label);      \
-           ^
-   arch/powerpc/include/asm/uaccess.h:518:2: note: expanded from macro 'arch_unsafe_get_user'
-           __get_user_size_goto(__gu_val, __gu_addr, sizeof(*(p)), e); \
-           ^
-   arch/powerpc/include/asm/uaccess.h:284:2: note: expanded from macro '__get_user_size_goto'
-           __get_user_size_allowed(x, ptr, size, __gus_retval);    \
-           ^
-   arch/powerpc/include/asm/uaccess.h:275:10: note: expanded from macro '__get_user_size_allowed'
-           case 8: __get_user_asm2(x, (u64 __user *)ptr, retval);  break;  \
-                   ^
-   arch/powerpc/include/asm/uaccess.h:258:4: note: expanded from macro '__get_user_asm2'
-                   "       li %1+1,0\n"                    \
-                    ^
-   <inline asm>:7:5: note: instantiated into assembly here
-           li 31+1,0
-              ^
-   1 error generated.
-
-On PPC32, for 64 bits vars a pair of registers is used. Usually the
-lower register in the pair is the high part and the higher register is
-the low part. GCC uses r3/r4 ... r11/r12 ... r14/r15 ... r30/r31
-
-In older kernel code inline assembly was using %1 and %1+1 to represent
-64 bits values. However here it looks like clang uses r31 as high part,
-allthough r32 doesn't exist hence the error.
-
-Allthoug %1+1 should work, most places now use %L1 instead of %1+1, so
-let's do the same here.
-
-With that change, the build doesn't fail anymore and a disassembly shows
-clang uses r17/r18 and r31/r14 pair when GCC would have used r16/r17 and
-r30/r31:
-
-	Disassembly of section .fixup:
-
-	00000000 <.fixup>:
-	   0:	38 a0 ff f2 	li      r5,-14
-	   4:	3a 20 00 00 	li      r17,0
-	   8:	3a 40 00 00 	li      r18,0
-	   c:	48 00 00 00 	b       c <.fixup+0xc>
-				c: R_PPC_REL24	.text+0xbc
-	  10:	38 a0 ff f2 	li      r5,-14
-	  14:	3b e0 00 00 	li      r31,0
-	  18:	39 c0 00 00 	li      r14,0
-	  1c:	48 00 00 00 	b       1c <.fixup+0x1c>
-				1c: R_PPC_REL24	.text+0x144
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202602021825.otcItxGi-lkp@intel.com/
-Fixes: c20beffeec3c ("powerpc/uaccess: Use flexible addressing with __put_user()/__get_user()")
-Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
-Acked-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/8ca3a657a650e497a96bfe7acde2f637dadab344.1770103646.git.chleroy@kernel.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/577534/
+Link: https://lore.kernel.org/r/20240208-fd_document_dsc_pclk_rate-v4-1-56fe59d0a2e0@linaro.org
+Stable-dep-of: e4eb11b34d6c ("drm/msm/dsi: fix pclk rate calculation for bonded dsi")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/uaccess.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/dsi_host.c | 33 ++++++++++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/uaccess.h b/arch/powerpc/include/asm/uaccess.h
-index 0d874e343b9f6..bd95fa2c4092b 100644
---- a/arch/powerpc/include/asm/uaccess.h
-+++ b/arch/powerpc/include/asm/uaccess.h
-@@ -237,7 +237,7 @@ __gus_failed:								\
- 		".section .fixup,\"ax\"\n"		\
- 		"4:	li %0,%3\n"			\
- 		"	li %1,0\n"			\
--		"	li %1+1,0\n"			\
-+		"	li %L1,0\n"			\
- 		"	b 3b\n"				\
- 		".previous\n"				\
- 		EX_TABLE(1b, 4b)			\
+diff --git a/drivers/gpu/drm/msm/dsi/dsi_host.c b/drivers/gpu/drm/msm/dsi/dsi_host.c
+index f90ccdfbb2fc7..48a39f8727441 100644
+--- a/drivers/gpu/drm/msm/dsi/dsi_host.c
++++ b/drivers/gpu/drm/msm/dsi/dsi_host.c
+@@ -529,6 +529,25 @@ void dsi_link_clk_disable_v2(struct msm_dsi_host *msm_host)
+ 	clk_disable_unprepare(msm_host->byte_clk);
+ }
+ 
++/**
++ * dsi_adjust_pclk_for_compression() - Adjust the pclk rate for compression case
++ * @mode: The selected mode for the DSI output
++ * @dsc: DRM DSC configuration for this DSI output
++ *
++ * Adjust the pclk rate by calculating a new hdisplay proportional to
++ * the compression ratio such that:
++ *     new_hdisplay = old_hdisplay * compressed_bpp / uncompressed_bpp
++ *
++ * Porches do not need to be adjusted:
++ * - For VIDEO mode they are not compressed by DSC and are passed as is.
++ * - For CMD mode there are no actual porches. Instead these fields
++ *   currently represent the overhead to the image data transfer. As such, they
++ *   are calculated for the final mode parameters (after the compression) and
++ *   are not to be adjusted too.
++ *
++ *  FIXME: Reconsider this if/when CMD mode handling is rewritten to use
++ *  transfer time and data overhead as a starting point of the calculations.
++ */
+ static unsigned long dsi_adjust_pclk_for_compression(const struct drm_display_mode *mode,
+ 		const struct drm_dsc_config *dsc)
+ {
+@@ -937,8 +956,18 @@ static void dsi_timing_setup(struct msm_dsi_host *msm_host, bool is_bonded_dsi)
+ 		if (ret)
+ 			return;
+ 
+-		/* Divide the display by 3 but keep back/font porch and
+-		 * pulse width same
++		/*
++		 * DPU sends 3 bytes per pclk cycle to DSI. If widebus is
++		 * enabled, bus width is extended to 6 bytes.
++		 *
++		 * Calculate the number of pclks needed to transmit one line of
++		 * the compressed data.
++
++		 * The back/font porch and pulse width are kept intact. For
++		 * VIDEO mode they represent timing parameters rather than
++		 * actual data transfer, see the documentation for
++		 * dsi_adjust_pclk_for_compression(). For CMD mode they are
++		 * unused anyway.
+ 		 */
+ 		h_total -= hdisplay;
+ 		hdisplay = DIV_ROUND_UP(msm_dsc_get_bytes_per_line(msm_host->dsc), 3);
 -- 
 2.51.0
 
