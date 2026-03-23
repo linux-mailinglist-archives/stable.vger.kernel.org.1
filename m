@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228140-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eMlHMApzwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229823-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:18 +0100
+	id cG0ZMftGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228140-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F7912F9721
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 686AA2F3871
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8444B3253DA3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 24B13301CCBB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0422B3B388C;
-	Mon, 23 Mar 2026 16:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDE13AB29B;
+	Mon, 23 Mar 2026 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrT8Q3Va"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwlFmWB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90EE258CD9;
-	Mon, 23 Mar 2026 16:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1043D1F91F6;
+	Mon, 23 Mar 2026 13:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282961; cv=none; b=ru4IZ8RVHhf2dHAJ2C06KHnG7zH5PDsAL6VS1e2WJcz5EehW9HSnasdGRN4ygveyePhJ8bSGRLhdMSZWjxYoC3D/Oi2EWKcVzIJ4DebY+p9KH/2vyeebkWieqXy8aFxiOILZgAQLMrnV+g9UHIuZNGcC/Vp/XmBo+yvNd0I7MTA=
+	t=1774274246; cv=none; b=a170TnZ3wZ3H5Y+1vjxhZM7qRUZ6LTNqQ3YheO2/JGO4zBKqv2qLkji3M7F3QakheDtwo9wvYqKcXYyFxWui8p3syhKjyz+JyuLSzkXhMkQHVnSNPOgalEuGbQTywntci+0nkW4rYnLrKrjzBQSRf+JM848qSvP8wOU8SKWIjKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282961; c=relaxed/simple;
-	bh=1ZjLfw+LMGO5yIQQIsuPXz30GBQSBi3VA2Daig9Ftps=;
+	s=arc-20240116; t=1774274246; c=relaxed/simple;
+	bh=dbfPbLfjpklAliAXq3/KLD0lLMPeAau6Rq9tW4CEnYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ac2gaHVqnF5MUZUXjruP1d7u1pD5EdQdfWLv5Dk6NEpA/VEfPoPyS3iR678+gGSvnZdB8l6wY8aTo5DQk3UGPzHVCJTu2Hcct3x/obdW4tvpb53aR3/8Lns9V3uhefKEwb3TqTu6/TxHuL4bQ6KQpTWUMdiUqqpJZhu9CXaqPXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrT8Q3Va; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2F6C4CEF7;
-	Mon, 23 Mar 2026 16:22:40 +0000 (UTC)
+	 MIME-Version; b=R+rLyHaOeVnEJLa1xRrzlaNDof2XSIeNC1KpWklki+P5p54cwhCohZ2iOKz5HxKv1DDhrIwzo5zjX3QVrGUaK7EwDW4glVldisS8MbkvzsuHurIU3SJKCdTqUkoHJGbdRBfKCQvPuOWdQryLSXFJqiDbMG0Cnpn+i1hFG4KLpuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwlFmWB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F06C4CEF7;
+	Mon, 23 Mar 2026 13:57:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282961;
-	bh=1ZjLfw+LMGO5yIQQIsuPXz30GBQSBi3VA2Daig9Ftps=;
+	s=korg; t=1774274245;
+	bh=dbfPbLfjpklAliAXq3/KLD0lLMPeAau6Rq9tW4CEnYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YrT8Q3VaST1Ur+lD7SqxiDy9pYWROCRJ+buv48dwouZTKjdMKcFr1JHXZOakYGycf
-	 OnOopplQB6q3b3/18Z1ftZdXCVzXD5pSHBvxG3hpuOn6R1QUUPQ4dfAh6eMZgDGmB6
-	 R4Y8BKI1Kr1MfKCEm0wSdyIOf6U7JIXXPfRS5Oto=
+	b=dwlFmWB57JlW8NVnrE6AfSQTgy+qjpZ6JKhAoWbhFysECCumVupo+J0ULDfqaRfZu
+	 aw3nIlRHWnX5QJynIzbeovC4Ch21/mnVO5iycCJtsjQUsRQsVhTxKQ2Dl2mJhk+FqD
+	 mfek6G4y0KE6qXrT2HYFG4picl2QP0m1pVFFwabI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 350/481] kprobes: Remove unneeded goto
+Subject: [PATCH 6.19 155/220] net: usb: aqc111: Do not perform PM inside suspend callback
 Date: Mon, 23 Mar 2026 14:45:32 +0100
-Message-ID: <20260323134533.634120709@linuxfoundation.org>
+Message-ID: <20260323134509.472791507@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,138 +65,107 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229823-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228140-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,redhat.com,kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable,48dc1e8dfc92faf1124c];
+	TO_DN_SOME(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 5F7912F9721
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,appspotmail.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,syzkaller.appspot.com:url]
+X-Rspamd-Queue-Id: 686AA2F3871
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit 5e5b8b49335971b68b54afeb0e7ded004945af07 ]
+[ Upstream commit 069c8f5aebe4d5224cf62acc7d4b3486091c658a ]
 
-Remove unneeded gotos. Since the labels referred by these gotos have
-only one reference for each, we can replace those gotos with the
-referred code.
+syzbot reports "task hung in rpm_resume"
 
-Link: https://lore.kernel.org/all/173371211203.480397.13988907319659165160.stgit@devnote2/
+This is caused by aqc111_suspend calling
+the PM variant of its write_cmd routine.
 
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Stable-dep-of: 5ef268cb7a0a ("kprobes: Remove unneeded warnings from __arm_kprobe_ftrace()")
+The simplified call trace looks like this:
+
+rpm_suspend()
+  usb_suspend_both() - here udev->dev.power.runtime_status == RPM_SUSPENDING
+    aqc111_suspend() - called for the usb device interface
+      aqc111_write32_cmd()
+        usb_autopm_get_interface()
+          pm_runtime_resume_and_get()
+            rpm_resume() - here we call rpm_resume() on our parent
+              rpm_resume() - Here we wait for a status change that will never happen.
+
+At this point we block another task which holds
+rtnl_lock and locks up the whole networking stack.
+
+Fix this by replacing the write_cmd calls with their _nopm variants
+
+Reported-by: syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=48dc1e8dfc92faf1124c
+Fixes: e58ba4544c77 ("net: usb: aqc111: Add support for wake on LAN by MAGIC packet")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Link: https://patch.msgid.link/20260313141643.1181386-1-zlatistiv@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/kprobes.c |   45 +++++++++++++++++++++------------------------
- 1 file changed, 21 insertions(+), 24 deletions(-)
+ drivers/net/usb/aqc111.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1082,20 +1082,18 @@ static int __arm_kprobe_ftrace(struct kp
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 9201ee10a13f7..d316aa66dbc23 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -1400,14 +1400,14 @@ static int aqc111_suspend(struct usb_interface *intf, pm_message_t message)
+ 		aqc111_write16_cmd_nopm(dev, AQ_ACCESS_MAC,
+ 					SFR_MEDIUM_STATUS_MODE, 2, &reg16);
  
- 	if (*cnt == 0) {
- 		ret = register_ftrace_function(ops);
--		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret))
--			goto err_ftrace;
-+		if (WARN(ret < 0, "Failed to register kprobe-ftrace (error %d)\n", ret)) {
-+			/*
-+			 * At this point, sinec ops is not registered, we should be sefe from
-+			 * registering empty filter.
-+			 */
-+			ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
-+			return ret;
-+		}
- 	}
+-		aqc111_write_cmd(dev, AQ_WOL_CFG, 0, 0,
+-				 WOL_CFG_SIZE, &wol_cfg);
+-		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
+-				   &aqc111_data->phy_cfg);
++		aqc111_write_cmd_nopm(dev, AQ_WOL_CFG, 0, 0,
++				      WOL_CFG_SIZE, &wol_cfg);
++		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
++					&aqc111_data->phy_cfg);
+ 	} else {
+ 		aqc111_data->phy_cfg |= AQ_LOW_POWER;
+-		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
+-				   &aqc111_data->phy_cfg);
++		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
++					&aqc111_data->phy_cfg);
  
- 	(*cnt)++;
- 	return ret;
--
--err_ftrace:
--	/*
--	 * At this point, sinec ops is not registered, we should be sefe from
--	 * registering empty filter.
--	 */
--	ftrace_set_filter_ip(ops, (unsigned long)p->addr, 1, 0);
--	return ret;
- }
- 
- static int arm_kprobe_ftrace(struct kprobe *p)
-@@ -1447,7 +1445,7 @@ _kprobe_addr(kprobe_opcode_t *addr, cons
- 	     unsigned long offset, bool *on_func_entry)
- {
- 	if ((symbol_name && addr) || (!symbol_name && !addr))
--		goto invalid;
-+		return ERR_PTR(-EINVAL);
- 
- 	if (symbol_name) {
- 		/*
-@@ -1477,11 +1475,10 @@ _kprobe_addr(kprobe_opcode_t *addr, cons
- 	 * at the start of the function.
- 	 */
- 	addr = arch_adjust_kprobe_addr((unsigned long)addr, offset, on_func_entry);
--	if (addr)
--		return addr;
-+	if (!addr)
-+		return ERR_PTR(-EINVAL);
- 
--invalid:
--	return ERR_PTR(-EINVAL);
-+	return addr;
- }
- 
- static kprobe_opcode_t *kprobe_addr(struct kprobe *p)
-@@ -1504,15 +1501,15 @@ static struct kprobe *__get_valid_kprobe
- 	if (unlikely(!ap))
- 		return NULL;
- 
--	if (p != ap) {
--		list_for_each_entry(list_p, &ap->list, list)
--			if (list_p == p)
--			/* kprobe p is a valid probe */
--				goto valid;
--		return NULL;
--	}
--valid:
--	return ap;
-+	if (p == ap)
-+		return ap;
-+
-+	list_for_each_entry(list_p, &ap->list, list)
-+		if (list_p == p)
-+		/* kprobe p is a valid probe */
-+			return ap;
-+
-+	return NULL;
- }
- 
- /*
+ 		/* Disable RX path */
+ 		aqc111_read16_cmd_nopm(dev, AQ_ACCESS_MAC,
+-- 
+2.51.0
+
 
 
 
