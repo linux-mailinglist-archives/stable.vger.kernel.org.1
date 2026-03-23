@@ -1,167 +1,174 @@
-Return-Path: <stable+bounces-228188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228231-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mJfzCVVLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228188-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:53 +0100
+	id YHVpEXFRwWnqSAQAu9opvQ
+	(envelope-from <stable+bounces-228231-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:42:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A10522F413B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFC372F50B2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 30503318F5F7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:03:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 801FA31C6D9D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AA83B2FEC;
-	Mon, 23 Mar 2026 13:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C31A33B0AF7;
+	Mon, 23 Mar 2026 14:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUXWOahi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IUxUDVi+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BC93B2FE3;
-	Mon, 23 Mar 2026 13:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B313B636B
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 14:02:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274392; cv=none; b=rJjiQbrRRvDr/QGTDbMVrpCoQzbpuJaRDPWJwnD/HSA0gKX74m0GQHy5E97/dHHrtnoTYduXpj+Vx49GCic6+S5t2bPGLeMFUtFZIZGQ8gZj3GHZbsW2fJ5qdTU7jyTCefxlfMundu+cWmSEANqfBucHYQV90tPpcNF9JUPyJxw=
+	t=1774274523; cv=none; b=BunejI/KGMiB443zqRfzk7+iIHYis/cr291PkjypzYkn79NN0zIKWj8++3Dv2B1Pn9rm82b+6h5P2ldgoHkkw+fACceBF/06ssjREYikNxyAzfDo4MovtpiKz9jgdQsama3Ptt2aQNkKAxFb39B00nGr3LHNiOFrpy3vimZOl+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274392; c=relaxed/simple;
-	bh=qfaJPcTX77P50honumdvtbvC4o0DJx2hkKyHdZsXzTY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rIYcZ7Bl8Z0M2GqPn80CgZgMLHjRJF6d5zEEyUgIHASHCjuu5l+6pyE8g9Uxxb5M7s2zPy2bTOzFkBlsFPF5WtO0EJlvDA+6kB4og8HmHpkXDWpShBwxUKzNtthE4r8CLv+Gcnx7kih/c0m3ohXVRQPIz3JJD1MVWCRIXmaRhPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUXWOahi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F6EC2BC9E;
-	Mon, 23 Mar 2026 13:59:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1774274392;
-	bh=qfaJPcTX77P50honumdvtbvC4o0DJx2hkKyHdZsXzTY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iUXWOahiotCOexAWqwMx1xmtmRUXRKlFieRloAcWMX1nzbTuRJGbe9fTHnieFpDV4
-	 hZpTKLDoeqGjAwGoEvkLxTxnBBstmpEbxHERmQHO4P3G4oo76QYuYQ7HcigI0/YwcZ
-	 C686etZd4Fd4FDus+iLGR+ZP7zS309eoZzIAy8oEhheEKRAHsMcVMsHICw0BJ6PlfI
-	 KkMEY3dn+dBapORdXhFBRwDFL0VYGWXfIkAACrVxrK6pHtRUsmQ46hCyilHxcKVkFO
-	 NMR0KH0VVBQca4e4IEhwx1h8DFPZ2r4ZaQYEdkB/GnskXEi6+BL8pZ37lC1g4BckIw
-	 khV2eKde94wYA==
-Received: from johan by xi.lan with local (Exim 4.98.2)
-	(envelope-from <johan@kernel.org>)
-	id 1w4for-00000003aId-2OvU;
-	Mon, 23 Mar 2026 14:59:49 +0100
-Date: Mon, 23 Mar 2026 14:59:49 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Mark Brown <broonie@kernel.org>, Frank Li <Frank.Li@nxp.com>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Laxman Dewangan <ldewangan@nvidia.com>, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] spi: imx: fix use-after-free on unbind
-Message-ID: <acFHVTsDIbQm6GG6@hovoldconsulting.com>
-References: <20260323104948.844583-1-johan@kernel.org>
- <20260323104948.844583-2-johan@kernel.org>
- <20260323-demonic-worthy-guillemot-c2abb8-mkl@pengutronix.de>
- <acEh6KiKMfBehoZO@hovoldconsulting.com>
- <20260323-dangerous-brown-polecat-a4988f-mkl@pengutronix.de>
+	s=arc-20240116; t=1774274523; c=relaxed/simple;
+	bh=v5RkR4GWFbiro/iChqZK9upkZLemhscU1rQeqe+R85Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SXiU+yCTrfG1MaX7UNeXQFp8trfroEmhHk962rzL59i9Ro/JaxAsvZiHQfkaIa+bRVHVmkj/XL00o/lwYZP3Da2vvRJJ0/o/ANUiX0Rqde/kBE8p0gKaeU9qHTi+W3mwrXIzGmkUiP22mbQ+o2oOrnewcytal4t0sML73jCYxR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IUxUDVi+; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-829781b2b01so144578b3a.2
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 07:02:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1774274521; x=1774879321; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=x9LErbosuoksV5lU780U3bAHDdZ81QQelsqNoxIkru8=;
+        b=IUxUDVi+mscfx4KdLWQjbDYnJkMSXgk9mcPTX9TuC6V434ce6C8aUKEKi5EW+qxkwe
+         n0+F8SXEpOQeXdPookeTOvb1FbY7IJGHuxhiK+piYLZKXye1swP/0W5JmjsKlvzYxMC9
+         dTE4EH3FeHKOmo7AKjzcFtbFZIjJFw2rt5xmWEnhARV69iEbePF64kjk8e9sh1m5/qLd
+         eb+l9iiv6GLzb+h0CJ95forUw8qaIUg/KcuYM3vqGaF0HJEdGkUC/6lwSFr52pVSOvKc
+         ctfMiRU+Ijr0MpqBTfgDyeybMxlD9Z6AnyjzdqVU+mJefs3IAGYEKV2vWRS/WFN8GCdg
+         uZPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774274521; x=1774879321;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=x9LErbosuoksV5lU780U3bAHDdZ81QQelsqNoxIkru8=;
+        b=A56UIyY3SYjqM0KNPedKXCOPodwnEZTFSIuOuztbxGEMzsVneZlLBwnk5qmqWj0V2D
+         qpKMJ+ZDgHTbXsg0lOn121JErl87anVSYRivZxyuKremLC1/X6TC554tN/brmtVK8X+N
+         4S+eFYcEK7uCYIA6eqqcsy0I7GvDO+iU7nlNcfozINPitzDsLinCN+Lk3rzikL+z5gKV
+         m4yi625oK7qUr0u/RIBTEouUvjSODoP8gdXGR2uYzD197ydAxGSXOmXV7uQ9XR5rjKYg
+         vsT0iPKNQ+Ou8iqDGELY/Q2KzgMZa8bTTA8L5JuyW3gJQ355hURw2wgg4I0mG76HgMJB
+         1UGw==
+X-Forwarded-Encrypted: i=1; AJvYcCUieH1AyiqmWSv2sV+ODfEqMccZ6jca9aaNtBGpuzfiVxyCZJMvH2SKs0dbsfaORBImA6qt++g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2hhOlGDKwo0EU7bYRK4NOZRQ4NotPEtPNldXAu624DjcpTpfV
+	ibIB9dbY4xeDmMxD7ykM7M353o5LMOPD/TT78Hc2vfvRQ46+Resfg6aD
+X-Gm-Gg: ATEYQzygwl0fe8je0m00xGkB1LUi0iZ1C99f+aoic2yV6eN6ekCOecakXq3tVRKWC1o
+	tMcP5RA2u2QehBcC50+EgWLFQ6vKqA2uoVE62T6M2ST8yWAsUqGW/kXB3iRsqii0+AiSCKnYRuU
+	eQYjQGOIZMAmYtKFBdQcdIIzpE14Qv0ZMNwW+UyoBJROiB98NumdbFcgvDYys58UsnxQAskd7h/
+	E7HTZBHxJlxZ4bDxi48aYNDWb8VyB4KmmtmbJfTiLKyCpbSb50Z5h0KQr6m2u04H/O+jtVA7GAY
+	DB4CViztNX8olmPz15nmaBEAOn8kzHr/E6ZZpBoMMFRs9Auvgkfdg0KNovH0ZT6vjZUg1oVaFPM
+	7yUDZJE+QwvPbbIXZaRtpl38m9pL1THtXrrvGxf7K+ad4wdZX3oiGWdkST8XMS7maLWeBtyDlD0
+	86oWhO+ssm6K53Jg==
+X-Received: by 2002:a05:6a00:23d4:b0:824:9451:c1f5 with SMTP id d2e1a72fcca58-82a8c3c091bmr9909481b3a.58.1774274520721;
+        Mon, 23 Mar 2026 07:02:00 -0700 (PDT)
+Received: from lgs.. ([101.32.189.54])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82b040da3dfsm9467282b3a.45.2026.03.23.07.01.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Mar 2026 07:02:00 -0700 (PDT)
+From: Guangshuo Li <lgs201920130244@gmail.com>
+To: Eddie James <eajames@linux.ibm.com>,
+	Ninad Palsule <ninad@linux.ibm.com>,
+	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+	linux-fsi@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: Guangshuo Li <lgs201920130244@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] fsi: Fix refcount leak in slave init error path
+Date: Mon, 23 Mar 2026 22:01:51 +0800
+Message-ID: <20260323140151.926607-1-lgs201920130244@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cmheixEO6Qo7xv6g"
-Content-Disposition: inline
-In-Reply-To: <20260323-dangerous-brown-polecat-a4988f-mkl@pengutronix.de>
-X-Spamd-Result: default: False [-4.26 / 15.00];
-	SIGNED_PGP(-2.00)[];
+Content-Transfer-Encoding: 8bit
+X-Spamd-Result: default: False [-0.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
-	MIME_GOOD(-0.20)[multipart/signed,text/plain];
-	R_DKIM_ALLOW(-0.20)[kernel.org:s=k20201202];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_DKIM_ALLOW(-0.20)[gmail.com:s=20230601];
 	MAILLIST(-0.15)[generic];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[kernel.org:+];
-	TAGGED_FROM(0.00)[bounces-228188-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+,1:+,2:~];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[johan@kernel.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	FREEMAIL_CC(0.00)[gmail.com,vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228231-lists,stable=lfdr.de];
+	DKIM_TRACE(0.00)[gmail.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FREEMAIL_FROM(0.00)[gmail.com];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[lgs201920130244@gmail.com,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,hovoldconsulting.com:mid]
-X-Rspamd-Queue-Id: A10522F413B
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: DFC372F50B2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
+After device_initialize(), the lifetime of slave is expected to be
+managed through the device core reference counting. In the
+cdev_device_add() failure path, slave and its associated resources are
+freed directly, rather than releasing the device reference with
+put_device(). This may leave the reference count of the embedded struct
+device unbalanced, resulting in a refcount leak and potentially leading
+to a use-after-free.
 
---cmheixEO6Qo7xv6g
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+A possible fix would be to use put_device() in the failure path and let
+fsi_slave_release() handle the final cleanup.
 
-On Mon, Mar 23, 2026 at 12:57:42PM +0100, Marc Kleine-Budde wrote:
-> On 23.03.2026 12:20:08, Johan Hovold wrote:
-> > On Mon, Mar 23, 2026 at 12:00:59PM +0100, Marc Kleine-Budde wrote:
-> > > On 23.03.2026 11:49:44, Johan Hovold wrote:
-> > > > The SPI subsystem frees the controller and any subsystem allocated
-> > > > driver data as part of deregistration (unless the allocation is dev=
-ice
-> > > > managed).
-> > > >
-> > > > Take another reference before deregistering the controller so that =
-the
-> > > > driver data is not freed until the driver is done with it.
-> > >
-> > > Would re-ordering the spi_imx_remove() function be an alternative fix?
-> > > I.e. call spi_unregister_controller() last?
-> >
-> > No, the controller needs to be deregistered before disabling clocks and
-> > releasing other resources.
->=20
-> I see. So the API is a bit strange to use:
->=20
-> Allocate with spi_alloc_host(), free with spi_controller_put() before
-> spi_register_controller(), the free with spi_unregister_controller()
-> afterwards.
->
-> But spi_unregister_controller() shuts down the SPI interface _and_ frees
-> the memory. Which is the culprit here.
+Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+---
+ drivers/fsi/fsi-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-Indeed, it's a known issue with the SPI API. See for example:
+diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
+index c6c115993ebc..f447dd53db62 100644
+--- a/drivers/fsi/fsi-core.c
++++ b/drivers/fsi/fsi-core.c
+@@ -1084,7 +1084,7 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
+ 	rc = cdev_device_add(&slave->cdev, &slave->dev);
+ 	if (rc) {
+ 		dev_err(&slave->dev, "Error %d creating slave device\n", rc);
+-		goto err_free_ida;
++		goto err_put_dev;
+ 	}
+ 
+ 	/* Now that we have the cdev registered with the core, any fatal
+@@ -1110,8 +1110,9 @@ static int fsi_slave_init(struct fsi_master *master, int link, uint8_t id)
+ 
+ 	return 0;
+ 
+-err_free_ida:
+-	fsi_free_minor(slave->dev.devt);
++err_put_dev:
++	put_device(&slave->dev);
++	return rc;
+ err_free:
+ 	of_node_put(slave->dev.of_node);
+ 	kfree(slave);
+-- 
+2.43.0
 
-	68b892f1fdc4 ("spi: document odd controller reference handling")
-	5e844cc37a5c ("spi: Introduce device-managed SPI controller allocation")
-	f0c35a024cce ("spi: fix misleading controller deregistration kernel-doc")
-
-> Would using devm_spi_alloc_host() be an option here?
-
-It can also be used, but that's more intrusive so I did that as a
-follow-on cleanup to the fix (see patch 2/5).
-
-Johan
-
---cmheixEO6Qo7xv6g
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iJEEABYKADkWIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCacFHThsUgAAAAAAEAA5t
-YW51MiwyLjUrMS4xMSwyLDIACgkQC8XNwux9ZQiczgEAgFAtXQwuMDPEX+tSENHm
-cTTnkpGjWt3fAIBRygsEH1MBAKgFuollphgJ2NGAem3qc6lwPoVExuyElb8lP2cg
-2JML
-=AxEu
------END PGP SIGNATURE-----
-
---cmheixEO6Qo7xv6g--
 
