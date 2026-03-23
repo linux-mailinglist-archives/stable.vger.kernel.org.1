@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228359-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id MIhXLHlJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228179-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:57 +0100
+	id CLSJHrpLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228359-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 251412F3E46
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081DC2F4244
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 276D8304F6C2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 426A13192708
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EB63AE1A6;
-	Mon, 23 Mar 2026 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060CA3B38B1;
+	Mon, 23 Mar 2026 14:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EA6f6+cR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnBJQ4je"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6666D3B8D6B;
-	Mon, 23 Mar 2026 13:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCB03AE18A;
+	Mon, 23 Mar 2026 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274367; cv=none; b=KuNP3bLNSjDeg2B6NAaQoc7LRyg5WYP7udm8ZSONgUOP1xu/HyPS5BbtiihV/pV+qPsUBZWf90AyxJ753JrCHIq2BEcHr7j9OIM4WIJTAg6LM//Zi3FYa0FcIrd4PtBzp7INdxDh1PI3N3ru0lgibpxhvwOs24WNKDUcUMNfnWg=
+	t=1774274904; cv=none; b=mUjhvWfGVeLP0HRGGfmNhoQ8qxnCsBGKD0LC4sAxvkYMhi6B3igjvfNG+Q0OTZtJ49bsjNh1jdrgDgxG39/1LkM9E0xU+IzUKsJzOi+pDn10kGuBtV9zEWalHT5I5NRScWt4PyWm2wQfJ8KIjCV7tPND9Lp0BAJAiqPqEqR0+e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274367; c=relaxed/simple;
-	bh=qR1DKnVCfvgpPdxDrfWX5zb1LdrQ58tpi7so6a1L+c0=;
+	s=arc-20240116; t=1774274904; c=relaxed/simple;
+	bh=Ou0t4COv/njE3AYSPyZj07rSWUtSeVgf2TgG5aIDsyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QzVg/UaKV+lgQC10SQyaTymYp4/ELD7j787lsonk9KYGLw3OBFT5xNvBhlOSiY1CnOl+SIwLnuZruK8JnFm9qBDcZD3WDdb0RfWK0LAO2XnzIBq2HvMroLdHysr1x/XinBj1Enl8QzdCKjzRlrYxq/M9NLrlq7RjNE8JGzA3hYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EA6f6+cR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB11AC4CEF7;
-	Mon, 23 Mar 2026 13:59:26 +0000 (UTC)
+	 MIME-Version; b=gyKshDrE/Zz1DtAueEZPSfptwMa3M2UuUD7Ol/AKnUcFUC8euySmhpkdG8APtXB8wjp+C2xdAbwrYXMEHxb3jLCVDvWrXvpKAi/PtRvVVBBGbGTY5jYX21rin+tQiXOWCmyecsTndCjr1ukz9SivlSgvvDDhuJ1H91z1oc7A9wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnBJQ4je; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A19C4CEF7;
+	Mon, 23 Mar 2026 14:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274367;
-	bh=qR1DKnVCfvgpPdxDrfWX5zb1LdrQ58tpi7so6a1L+c0=;
+	s=korg; t=1774274904;
+	bh=Ou0t4COv/njE3AYSPyZj07rSWUtSeVgf2TgG5aIDsyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EA6f6+cRfwGojLrIlRulJ4iZtspWDKU6Nun1EeWvTGTflZ8sd2IEStQ6MCMN973on
-	 wZ2I7CskE2RB/Z8/7ER7xxFnvZQMzMh59R5nRNoqmMUTH+9EXoqyTXz00ahYTIWhjr
-	 nByQQY9RYj5MT3PE2HmecMlw0/Y1Y926tf6Uvxn4=
+	b=OnBJQ4jehAOBgIKqA3mgdoQNQcDJBqt8fqC1sj7UlMlcFq9q4NqmlsCG1yTk8K+eA
+	 NIbp+5/Ake17t4sFE7KC/JI+yaZrsCpECILzs9hhPofFw1CViz7QbnZ3gxqVP3IcP0
+	 nKI/kUWiEMu3yHZxnKDDn8iVlLDwhhZ+f7MAlFDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Roche <william.roche@oracle.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Yazen Ghannam <yazen.ghannam@amd.com>
-Subject: [PATCH 6.19 195/220] x86/mce/amd: Check SMCA feature bit before accessing SMCA MSRs
+	Tobi Gaertner <tob.gaertner@me.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 151/212] net: usb: cdc_ncm: add ndpoffset to NDP16 nframes bounds check
 Date: Mon, 23 Mar 2026 14:46:12 +0100
-Message-ID: <20260323134510.746273669@linuxfoundation.org>
+Message-ID: <20260323134508.534513155@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +66,98 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228179-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228359-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,kernel.org];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email,alien8.de:email,oracle.com:email]
-X-Rspamd-Queue-Id: 251412F3E46
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 081DC2F4244
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Roche <william.roche@oracle.com>
+From: Tobi Gaertner <tob.gaertner@me.com>
 
-commit 201bc182ad6333468013f1af0719ffe125826b6a upstream.
+[ Upstream commit 2aa8a4fa8d5b7d0e1ebcec100e1a4d80a1f4b21a ]
 
-People do effort to inject MCEs into guests in order to simulate/test
-handling of hardware errors. The real use case behind it is testing the
-handling of SIGBUS which the memory failure code sends to the process.
+cdc_ncm_rx_verify_ndp16() validates that the NDP header and its DPE
+entries fit within the skb. The first check correctly accounts for
+ndpoffset:
 
-If that process is QEMU, instead of killing the whole guest, the MCE can
-be injected into the guest kernel so that latter can attempt proper
-handling and kill the user *process*  in the guest, instead, which
-caused the MCE. The assumption being here that the whole injection flow
-can supply enough information that the guest kernel can pinpoint the
-right process. But that's a different topic...
+  if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len)
 
-Regardless of virtualization or not, access to SMCA-specific registers
-like MCA_DESTAT should only be done after having checked the smca
-feature bit. And there are AMD machines like Bulldozer (the one before
-Zen1) which do support deferred errors but are not SMCA machines.
+but the second check omits it:
 
-Therefore, properly check the feature bit before accessing related MSRs.
+  if ((sizeof(struct usb_cdc_ncm_ndp16) +
+       ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len)
 
-  [ bp: Rewrite commit message. ]
+This validates the DPE array size against the total skb length as if
+the NDP were at offset 0, rather than at ndpoffset. When the NDP is
+placed near the end of the NTB (large wNdpIndex), the DPE entries can
+extend past the skb data buffer even though the check passes.
+cdc_ncm_rx_fixup() then reads out-of-bounds memory when iterating
+the DPE array.
 
-Fixes: 7cb735d7c0cb ("x86/mce: Unify AMD DFR handler with MCA Polling")
-Signed-off-by: William Roche <william.roche@oracle.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20260218163025.1316501-1-william.roche@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add ndpoffset to the nframes bounds check and use struct_size_t() to
+express the NDP-plus-DPE-array size more clearly.
+
+Fixes: ff06ab13a4cc ("net: cdc_ncm: splitting rx_fixup for code reuse")
+Signed-off-by: Tobi Gaertner <tob.gaertner@me.com>
+Link: https://patch.msgid.link/20260314054640.2895026-2-tob.gaertner@me.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mce/amd.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/net/usb/cdc_ncm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mce/amd.c b/arch/x86/kernel/cpu/mce/amd.c
-index da13c1e37f87..a030ee4cecc2 100644
---- a/arch/x86/kernel/cpu/mce/amd.c
-+++ b/arch/x86/kernel/cpu/mce/amd.c
-@@ -875,13 +875,18 @@ void amd_clear_bank(struct mce *m)
- {
- 	amd_reset_thr_limit(m->bank);
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 5d123df0a866b..a9d0162b5ee01 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -1656,6 +1656,7 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
+ 	struct usbnet *dev = netdev_priv(skb_in->dev);
+ 	struct usb_cdc_ncm_ndp16 *ndp16;
+ 	int ret = -EINVAL;
++	size_t ndp_len;
  
--	/* Clear MCA_DESTAT for all deferred errors even those logged in MCA_STATUS. */
--	if (m->status & MCI_STATUS_DEFERRED)
--		mce_wrmsrq(MSR_AMD64_SMCA_MCx_DESTAT(m->bank), 0);
-+	if (mce_flags.smca) {
-+		/*
-+		 * Clear MCA_DESTAT for all deferred errors even those
-+		 * logged in MCA_STATUS.
-+		 */
-+		if (m->status & MCI_STATUS_DEFERRED)
-+			mce_wrmsrq(MSR_AMD64_SMCA_MCx_DESTAT(m->bank), 0);
+ 	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len) {
+ 		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
+@@ -1675,8 +1676,8 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
+ 					sizeof(struct usb_cdc_ncm_dpe16));
+ 	ret--; /* we process NDP entries except for the last one */
  
--	/* Don't clear MCA_STATUS if MCA_DESTAT was used exclusively. */
--	if (m->kflags & MCE_CHECK_DFR_REGS)
--		return;
-+		/* Don't clear MCA_STATUS if MCA_DESTAT was used exclusively. */
-+		if (m->kflags & MCE_CHECK_DFR_REGS)
-+			return;
-+	}
- 
- 	mce_wrmsrq(mca_msr_reg(m->bank, MCA_STATUS), 0);
- }
+-	if ((sizeof(struct usb_cdc_ncm_ndp16) +
+-	     ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len) {
++	ndp_len = struct_size_t(struct usb_cdc_ncm_ndp16, dpe16, ret);
++	if (ndpoffset + ndp_len > skb_in->len) {
+ 		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
+ 		ret = -EINVAL;
+ 	}
 -- 
-2.53.0
+2.51.0
 
 
 
