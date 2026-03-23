@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228645-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cIWrGKxZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229175-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:04 +0100
+	id wEdnJzZQwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228645-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2329F2F61BC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68D0B2F4E20
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D412C305CDF4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E7DCA30C1626
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BD83B27C8;
-	Mon, 23 Mar 2026 15:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CA6C37E2FC;
+	Mon, 23 Mar 2026 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHKTtzM6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUTNlWq9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F43F258EE9;
-	Mon, 23 Mar 2026 15:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC7A1A6828;
+	Mon, 23 Mar 2026 14:21:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278297; cv=none; b=Ei+8u/RgVOQz2iXX9X34B8zVIN70OVJVMSmoIECp0516ba8CJaS7lO5rlNfSic8+2qb+gQxEojFIG5aHI4mxVOo8CZUgbofPFTCMytK6v5FDmQZkw9TokUFjCf8H+esGWu7E08R2VoJT1o86FeBK0mFtZEWe0bUAwGSNJG0eNPs=
+	t=1774275701; cv=none; b=R2vvGST8r1OG9PkDko6e1LYtIg9XEttGnbghPWptrQLN+CZsWtigahD+U1hldXlwoy0M3hlKPSplOc8HqKANJS1N13gaoeuPpfjt7icqD0/UhElen1djjKddS/f25kbwqtLWazGBLEsMADYaULWWHOfmJdvOG4S4tgGBI2LUAoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278297; c=relaxed/simple;
-	bh=WgBE758EYTpk/L+J04ljxDzEis7UK2/CYEk+QdgnCe0=;
+	s=arc-20240116; t=1774275701; c=relaxed/simple;
+	bh=KSRDL2BX2A6zExgQbfASdtIeC+MxtnaRwTxf+QydpBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E0hGkSByvZNUL1HBZAE1swfIqfU7WDURcyBagx7Gly1xrX9Q++z8JyEKlh/ZcEAk9x/FXd9sesP5lPVeAwhs5Ctsu0chFiH5fU238QdI+n8y9rGWo7k+JCCY+s6WvF4+ctQtX57vVjmjH4DXHxC1Q497i9OKDNAZfwZ3xucB2BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHKTtzM6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B65FAC4CEF7;
-	Mon, 23 Mar 2026 15:04:56 +0000 (UTC)
+	 MIME-Version; b=mjOcRqSffbtg4J26OGFZGnpSXL35ORP/vUGNbSmM5oT6kOo5KvEUsgrz1sgBGf51lgbUga5pU97tjLBoiv1C6Xd8LKQmQrQnMBO1EoMO9ezBqflRAOS2fAr5hxI0a9TXMW00Cq8qZJ2Jyzk8ClTl1I6ht/Un0VBgMKSHQGapB0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUTNlWq9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69F3C4CEF7;
+	Mon, 23 Mar 2026 14:21:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278297;
-	bh=WgBE758EYTpk/L+J04ljxDzEis7UK2/CYEk+QdgnCe0=;
+	s=korg; t=1774275701;
+	bh=KSRDL2BX2A6zExgQbfASdtIeC+MxtnaRwTxf+QydpBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHKTtzM6p1kky2lmb9Xy78cJrgzMJDiL67VYbydWy/FzdpSK7o/IiJnZ/GEyLqO9M
-	 UhVHMsP5DALQWRVZCAb9IKZThCJhak8AL3LDiVp0PGriiiqfR2AeaPhMAQ6q72hxeG
-	 QJyGpb8otE7rNzyS4I7SSCZNoe/R0nCDpzjOUC0E=
+	b=eUTNlWq9MwWs28C9fOmfwfVn2dPTJQl73YDwapIwyDyE+FwDdkR16KI8U6hSmRCzn
+	 o5kTYNWHhlv5ck7ubCH4NuzPSLu1nNYH13uTQzVTVX/z33thi1YQOcs9ZCmA+5LSzZ
+	 hg7gOXgvyJsKLE3wVj5AXJrnudlvhAJNqRvRh3Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehul Rao <mehulrao@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 262/567] ALSA: pcm: fix use-after-free on linked stream runtime in snd_pcm_drain()
-Date: Mon, 23 Mar 2026 14:43:02 +0100
-Message-ID: <20260323134540.311735501@linuxfoundation.org>
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Souptick Joarder <souptick.joarder@hpe.com>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.12 187/460] xfs: fix returned valued from xfs_defer_can_append
+Date: Mon, 23 Mar 2026 14:43:03 +0100
+Message-ID: <20260323134531.145631002@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +64,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229175-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,suse.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228645-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5]
-X-Rspamd-Queue-Id: 2329F2F61BC
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 68D0B2F4E20
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehul Rao <mehulrao@gmail.com>
+From: Carlos Maiolino <cem@kernel.org>
 
-commit 9b1dbd69ba6f8f8c69bc7b77c2ce3b9c6ed05ba6 upstream.
+commit 54fcd2f95f8d216183965a370ec69e1aab14f5da upstream.
 
-In the drain loop, the local variable 'runtime' is reassigned to a
-linked stream's runtime (runtime = s->runtime at line 2157).  After
-releasing the stream lock at line 2169, the code accesses
-runtime->no_period_wakeup, runtime->rate, and runtime->buffer_size
-(lines 2170-2178) — all referencing the linked stream's runtime without
-any lock or refcount protecting its lifetime.
+xfs_defer_can_append returns a bool, it shouldn't be returning
+a NULL.
 
-A concurrent close() on the linked stream's fd triggers
-snd_pcm_release_substream() → snd_pcm_drop() → pcm_release_private()
-→ snd_pcm_unlink() → snd_pcm_detach_substream() → kfree(runtime).
-No synchronization prevents kfree(runtime) from completing while the
-drain path dereferences the stale pointer.
+Found by code inspection.
 
-Fix by caching the needed runtime fields (no_period_wakeup, rate,
-buffer_size) into local variables while still holding the stream lock,
-and using the cached values after the lock is released.
-
-Fixes: f2b3614cefb6 ("ALSA: PCM - Don't check DMA time-out too shortly")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mehul Rao <mehulrao@gmail.com>
-Link: https://patch.msgid.link/20260305193508.311096-1-mehulrao@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 4dffb2cbb483 ("xfs: allow pausing of pending deferred work items")
+Cc: <stable@vger.kernel.org> # v6.8
+Signed-off-by: Carlos Maiolino <cmaiolino@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Acked-by: Souptick Joarder <souptick.joarder@hpe.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/pcm_native.c |   19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ fs/xfs/libxfs/xfs_defer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/core/pcm_native.c
-+++ b/sound/core/pcm_native.c
-@@ -2148,6 +2148,10 @@ static int snd_pcm_drain(struct snd_pcm_
- 	for (;;) {
- 		long tout;
- 		struct snd_pcm_runtime *to_check;
-+		unsigned int drain_rate;
-+		snd_pcm_uframes_t drain_bufsz;
-+		bool drain_no_period_wakeup;
-+
- 		if (signal_pending(current)) {
- 			result = -ERESTARTSYS;
- 			break;
-@@ -2167,16 +2171,25 @@ static int snd_pcm_drain(struct snd_pcm_
- 		snd_pcm_group_unref(group, substream);
- 		if (!to_check)
- 			break; /* all drained */
-+		/*
-+		 * Cache the runtime fields needed after unlock.
-+		 * A concurrent close() on the linked stream may free
-+		 * its runtime via snd_pcm_detach_substream() once we
-+		 * release the stream lock below.
-+		 */
-+		drain_no_period_wakeup = to_check->no_period_wakeup;
-+		drain_rate = to_check->rate;
-+		drain_bufsz = to_check->buffer_size;
- 		init_waitqueue_entry(&wait, current);
- 		set_current_state(TASK_INTERRUPTIBLE);
- 		add_wait_queue(&to_check->sleep, &wait);
- 		snd_pcm_stream_unlock_irq(substream);
--		if (runtime->no_period_wakeup)
-+		if (drain_no_period_wakeup)
- 			tout = MAX_SCHEDULE_TIMEOUT;
- 		else {
- 			tout = 100;
--			if (runtime->rate) {
--				long t = runtime->buffer_size * 1100 / runtime->rate;
-+			if (drain_rate) {
-+				long t = drain_bufsz * 1100 / drain_rate;
- 				tout = max(t, tout);
- 			}
- 			tout = msecs_to_jiffies(tout);
+--- a/fs/xfs/libxfs/xfs_defer.c
++++ b/fs/xfs/libxfs/xfs_defer.c
+@@ -809,7 +809,7 @@ xfs_defer_can_append(
+ 
+ 	/* Paused items cannot absorb more work */
+ 	if (dfp->dfp_flags & XFS_DEFER_PAUSED)
+-		return NULL;
++		return false;
+ 
+ 	/* Already full? */
+ 	if (ops->max_items && dfp->dfp_count >= ops->max_items)
 
 
 
