@@ -1,160 +1,208 @@
-Return-Path: <stable+bounces-227939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227940-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id IFuZNjwOwWngQAQAu9opvQ
-	(envelope-from <stable+bounces-227939-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:56:12 +0100
+	id iKPPGJgPwWk7QQQAu9opvQ
+	(envelope-from <stable+bounces-227940-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:02:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D052EF76F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 10:56:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B548C2EF951
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 11:01:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0A773063602
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 09:50:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9646F305BAB3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 09:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2210B38758D;
-	Mon, 23 Mar 2026 09:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AB63876A0;
+	Mon, 23 Mar 2026 09:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EChqPTeR"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VX5Vkz5H"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A000A36DA10
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 09:50:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C97B387578
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 09:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774259440; cv=none; b=Q9i7R0K8jdXHJnq0I3GDHSqPXF7OhdcnG9kzKU6ZqnczOPFn1SfchVHD9641IZc5X5WH8/L9/cJZkDiyDPyT27cixZSBlsQ6nD33FwuTOHFT+x+QZT/7oI+Xt9CYUHRyGWgqr6hMzyuNFmsWfsEJlFmg9cYXl1mSr/u90SMuOTQ=
+	t=1774259778; cv=none; b=tSKWdwr2s2YK7EkUXpEtyTXREYF9W0SeskxamyRXeYEJoHD7zrENwK2wkyXVCDE4nsB1M/Y7mHVkbm/gWXclnwiZrg9H1gvV2u0uLG/biLOv4U3s308VKPFgMr6w6BImviPQkJmOV9hNbXY70GeC/ZQhEdhZvb+QhOeWH1mKnXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774259440; c=relaxed/simple;
-	bh=LoTD6yQU6kUFqkIiRgFrYHuMrZ7+p06yFW0pyqLl5DQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GZ4Cn9rXNoLzh9Paj4dumC67Ri5w9b7/qw5HzR5gZs0HWk47pKLYMohAMxlSUvqE8U0oOU1Gfqpfe/JzKYkGKI7rtCBgsqlm091I0Tc9J+wP6/MNe84z5euJ00bvc7//XiE7d52RSaBPhTNc63r+xf3K/xNOMKMv431vw8jGrxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EChqPTeR; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1774259440; x=1805795440;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=LoTD6yQU6kUFqkIiRgFrYHuMrZ7+p06yFW0pyqLl5DQ=;
-  b=EChqPTeRBF5UoOk94Gl6uhry8ZhgpECOvOHX0hxWv7/4dJ2VbBJdkVyO
-   8jEhj9m9L2UoRwFpnk+umXH+Oj8E+gfd2Okq9zr5B2glPU4PSBnXRnjm6
-   Vop60B+91yfbOcZNpYUAI0YPiHoAppWMiW+5p8cTgEOcgoFxTbOmvWQ1+
-   W6ocZ8RMYeeMIrs40L4YB4gFTAQBPsurp5uS3e7S37fdcDdksPa8oThC1
-   K2oA4nmLnMniXyPQxx3pOhFBRuxMwuTTTImTbIOiRQd8nhCcgt9vzk6DL
-   w2J/5yBA87qk0vnuPvDmkCO1U8jO39YnTC3Grx4uJ3XQ7g9ieHfy5eXcN
-   Q==;
-X-CSE-ConnectionGUID: hJwJOvyaQpqVHjwiTUGKMw==
-X-CSE-MsgGUID: 9K0btDp3QlSEvIIF6vLbTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11737"; a="77862579"
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="77862579"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 02:50:39 -0700
-X-CSE-ConnectionGUID: 15v1QZjBSuujZoCgJMmBrQ==
-X-CSE-MsgGUID: kjuWa3qWQWiVJuA/k6XzxA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,137,1770624000"; 
-   d="scan'208";a="217495791"
-Received: from pl-npu-pc-kwachow.igk.intel.com ([10.91.220.239])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Mar 2026 02:50:37 -0700
-From: Karol Wachowski <karol.wachowski@linux.intel.com>
-To: dri-devel@lists.freedesktop.org
-Cc: oded.gabbay@gmail.com,
-	jeff.hugo@oss.qualcomm.com,
-	maciej.falkowski@linux.intel.com,
-	lizhi.hou@amd.com,
-	andrzej.kacprowski@linux.intel.com,
-	Karol Wachowski <karol.wachowski@linux.intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] accel/ivpu: Add disable clock relinquish workaround for NVL-A0
-Date: Mon, 23 Mar 2026 10:50:29 +0100
-Message-ID: <20260323095029.64613-1-karol.wachowski@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1774259778; c=relaxed/simple;
+	bh=3/Rg/BX2DfUy3s37k/M8yXA5dRTcBuREAmBzZiqXRP0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V6XZ5OoNTiLncga4JHMZvLCG1QLhGhal4cTciC3a1a9xGj1DIXd5F+Y7hdFNPtGJ4REt7gKvSXV29DHK6+AK8rvESYBfiw1ll4lU3aHP4X1qfJg5EvNcN4BWgJpr91Uhaafqcs2Sh7Isln79mA2q/CFZ2M9AUNxwMbDxqFw3sQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=VX5Vkz5H; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b97a06d7629so510587666b.0
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 02:56:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1774259775; x=1774864575; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bU5I+1pCOUAYiUlxW8VCH/e+rD3CTOAJqq49cAprQ0w=;
+        b=VX5Vkz5Hy6v/t11nplR0UL5XbFI7BAdAryUaNuzkOZ55rPeSmTl8bpQWwU36XgvlYT
+         kJU0sjWu7/fbq35NcyAjvlVZxVZcg0CqqOhd1bj+tu/3fcr0EPhf2OqzmVSL8xqyTvtW
+         1VJznp9sA5XAA657G3b8SwTawd5WcGzRrtU70=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774259775; x=1774864575;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bU5I+1pCOUAYiUlxW8VCH/e+rD3CTOAJqq49cAprQ0w=;
+        b=BBAmOe/g73ioffR9lgkfQpJzsDr55cNupFa7fSoTbWifwKEu8wT3LDTcyYUjkNBByc
+         wFhB+aenvCQh8eIneo5Aaapr5YAIIrTVLaAXwVnlXQ9KmAQTVinhFDflTR2F/oh7CTkt
+         ebMfxGnAV5SveGFkMBBbf9u+5KI1oNViLmmGrQ/2RmAoDjZlVHpUNNqpgqVYU0mh8YBq
+         bOjzILfj58mfWxtcR66CzA2rCkq4DFI7ulKNRmSiJuV0+rx9HvGNZH5IxMBxFp5r7RHu
+         6L8IvWEmKKWyMaqSmmhrEshC238LHnJTry81PUExAL9hw6dNT4iG8oYJyv3QTA65m39T
+         5ZNw==
+X-Forwarded-Encrypted: i=1; AJvYcCUFjnd0C885BHmPS5CdVGNxGUmyFmUQmWeBhFrDLpfOAmAy7R7sL8aasYdZppjARbOgQukMcKw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwBYEy2CXxQkUm3wfLV+Aii5oWmouKQFddWsFJLGjEmNRz2KLB
+	y9Q5PgkpMCyTlLFp9InKse+5lVI+ZDY0bmXmpKB87XR4yDG/AtfxV+tgdadJ8e+LUG5IVFGeIL9
+	pt48=
+X-Gm-Gg: ATEYQzzF+5lC36Icd6BhztNImyvlZah1xTZ/5O4yBdGNGDGCYibOQN/hiTzW974xFHF
+	8d5Nr7wMHBR2DOMoGx3L+Kq2PWeRMhrumhOy3RIV2b1/nea1CfP489TC2cE39vNjwm8qIazJbSQ
+	jXiyvDvpCVseJuvJEPhs9SLyXouIdGpwmKV9ymaVd8Ax7iPTbwnywjlCOecIqd6xjcLkTHeLVW8
+	O3C7+W3xipP/WkHFRQRVdGJNbCObiTWkHtCESPma51Ph0PFbNUriGL1pxFEt1S13FMxTMyrYyXx
+	hATaiSDKAMNCZP4DfqSD6H12pROoIcVSs0FhoKg1ZeYTG+dUMxW1pkvq+ehsbktHczlv3zJHNux
+	hbc9w4RhMqE6QwUnSyV95pOcSEHkJZCukbR+REPmlGyhCg21TeRInDV1eawUwF7c/5et7uVPltk
+	opkGXLeNaqBzUQAqLwTAS49wNIJeoHHhECP4ssvEabAHHbBUMgpZTXMyASXqHC
+X-Received: by 2002:a17:907:c281:b0:b97:b03d:d264 with SMTP id a640c23a62f3a-b982f0bbca3mr834234766b.4.1774259775173;
+        Mon, 23 Mar 2026 02:56:15 -0700 (PDT)
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com. [209.85.218.49])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9832f44034sm477690166b.4.2026.03.23.02.56.14
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Mar 2026 02:56:14 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-b9795ca4e6dso604301166b.2
+        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 02:56:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVRx5+iZ+u3KpV/8i2PcIvYomjz/bsCoDio3n+CyJVFA1LA2L7Bib5KlGlo9P9WJpNbDE97j/I=@vger.kernel.org
+X-Received: by 2002:a17:906:a895:b0:b97:8503:8313 with SMTP id
+ a640c23a62f3a-b982f30378emr724881766b.27.1774259773686; Mon, 23 Mar 2026
+ 02:56:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [0.84 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+References: <20260321223713.1219297-1-jp@jphein.com>
+In-Reply-To: <20260321223713.1219297-1-jp@jphein.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
+Date: Mon, 23 Mar 2026 10:56:01 +0100
+X-Gmail-Original-Message-ID: <CANiDSCsZf0QWzCQdgFC=hj+V4ChCynwjRNAz6u-F3Y8vzZXXDw@mail.gmail.com>
+X-Gm-Features: AaiRm51pgrzPjR2hqfRCdAFfdxEd-_k1LaQPVJwPrlN7jYDCE9YsC62lPeYFY_o
+Message-ID: <CANiDSCsZf0QWzCQdgFC=hj+V4ChCynwjRNAz6u-F3Y8vzZXXDw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] USB/UVC: Add quirks to prevent Razer Kiyo Pro xHCI
+ cascade failure
+To: JP Hein <jp@jphein.com>
+Cc: Laurent Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede <hansg@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-media@vger.kernel.org, 
+	linux-usb@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[intel.com,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
-	R_DKIM_ALLOW(-0.20)[intel.com:s=Intel];
+	DMARC_POLICY_ALLOW(-0.50)[chromium.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_DKIM_ALLOW(-0.20)[chromium.org:s=google];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227939-lists,stable=lfdr.de];
 	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[chromium.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com,oss.qualcomm.com,linux.intel.com,amd.com,vger.kernel.org];
-	DKIM_TRACE(0.00)[intel.com:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[karol.wachowski@linux.intel.com,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227940-lists,stable=lfdr.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MISSING_XM_UA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[ribalda@chromium.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:dkim,intel.com:email,linux.intel.com:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 41D052EF76F
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,mail.gmail.com:mid,chromium.org:dkim,jphein.com:email]
+X-Rspamd-Queue-Id: B548C2EF951
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Turn on disable clock relinquish workaround for Nova Lake A0.
-Without this workaround NPU may not power off correctly after
-inference, leading to unexpected system behavior.
+Hi JP
 
-Fixes: 550f4dd2cedd ("accel/ivpu: Add support for Nova Lake's NPU")
-Cc: <stable@vger.kernel.org> # v6.19+
+On Sat, 21 Mar 2026 at 23:38, JP Hein <jp@jphein.com> wrote:
+>
+> The Razer Kiyo Pro (1532:0e05) is a USB 3.0 webcam whose firmware has a
+> well-documented failure mode that cascades into complete xHCI host
+> controller death, disconnecting every USB device on the bus =E2=80=94 inc=
+luding
+> keyboards and mice, requiring a hard reboot.
 
-Signed-off-by: Karol Wachowski <karol.wachowski@linux.intel.com>
----
- drivers/accel/ivpu/ivpu_drv.h | 1 +
- drivers/accel/ivpu/ivpu_hw.c  | 6 ++++--
- 2 files changed, 5 insertions(+), 2 deletions(-)
+Have you tried reaching out to Razer in case they have a new firmware
+that fixes your issues?
 
-diff --git a/drivers/accel/ivpu/ivpu_drv.h b/drivers/accel/ivpu/ivpu_drv.h
-index 5b34b6f50e69..f1b6155065ff 100644
---- a/drivers/accel/ivpu/ivpu_drv.h
-+++ b/drivers/accel/ivpu/ivpu_drv.h
-@@ -35,6 +35,7 @@
- #define IVPU_HW_IP_60XX 60
- 
- #define IVPU_HW_IP_REV_LNL_B0 4
-+#define IVPU_HW_IP_REV_NVL_A0 0
- 
- #define IVPU_HW_BTRS_MTL 1
- #define IVPU_HW_BTRS_LNL 2
-diff --git a/drivers/accel/ivpu/ivpu_hw.c b/drivers/accel/ivpu/ivpu_hw.c
-index d69cd0d93569..d4a9bcda4100 100644
---- a/drivers/accel/ivpu/ivpu_hw.c
-+++ b/drivers/accel/ivpu/ivpu_hw.c
-@@ -70,8 +70,10 @@ static void wa_init(struct ivpu_device *vdev)
- 	if (ivpu_hw_btrs_gen(vdev) == IVPU_HW_BTRS_MTL)
- 		vdev->wa.interrupt_clear_with_0 = ivpu_hw_btrs_irqs_clear_with_0_mtl(vdev);
- 
--	if (ivpu_device_id(vdev) == PCI_DEVICE_ID_LNL &&
--	    ivpu_revision(vdev) < IVPU_HW_IP_REV_LNL_B0)
-+	if ((ivpu_device_id(vdev) == PCI_DEVICE_ID_LNL &&
-+	     ivpu_revision(vdev) < IVPU_HW_IP_REV_LNL_B0) ||
-+	    (ivpu_device_id(vdev) == PCI_DEVICE_ID_NVL &&
-+	     ivpu_revision(vdev) == IVPU_HW_IP_REV_NVL_A0))
- 		vdev->wa.disable_clock_relinquish = true;
- 
- 	if (ivpu_test_mode & IVPU_TEST_MODE_CLK_RELINQ_ENABLE)
--- 
-2.43.0
+>
+> The device has two crash triggers:
+>
+>   1. LPM/autosuspend resume: Device enters LPM or autosuspend, fails to
+>      reinitialize on resume, producing EPIPE (-32) on UVC SET_CUR. The
+>      stalled endpoint triggers an xHCI stop-endpoint timeout, and the
+>      kernel declares the host controller dead.
+>
+>   2. Rapid control transfers: ~25 rapid consecutive UVC SET_CUR
+>      operations overwhelm the firmware. The standard error-code query
+>      (GET_CUR on UVC_VC_REQUEST_ERROR_CODE_CONTROL) amplifies the
+>      failure by sending a second transfer to the already-stalling device,
+>      pushing it into a full lockup and xHCI controller death.
+>
+> This has been reported as Ubuntu Launchpad Bug #2061177 and affects
+> multiple kernel versions (tested on 6.5.x through 6.8.x). There are
+> currently no device-specific quirks for this webcam in either the USB
+> core quirks table or the UVC driver device table.
+>
+> This series adds three patches:
+>
+> Patch 1: USB core =E2=80=94 USB_QUIRK_NO_LPM to prevent Link Power Manage=
+ment
+>   transitions that destabilize the device firmware.
+>
+> Patch 2: UVC driver =E2=80=94 introduce UVC_QUIRK_CTRL_THROTTLE to rate-l=
+imit
+>   SET_CUR control transfers (50ms minimum interval) and skip the
+>   error-code query after EPIPE errors on affected devices.
+>
+> Patch 3: UVC driver =E2=80=94 add Razer Kiyo Pro device table entry with
+>   UVC_QUIRK_CTRL_THROTTLE, UVC_QUIRK_DISABLE_AUTOSUSPEND, and
+>   UVC_QUIRK_NO_RESET_RESUME to address both crash triggers.
+>
+> Together, these keep the device in a stable active state, prevent rapid
+> control transfer crashes, and avoid the power management transitions
+> that trigger the firmware bug.
+>
+> Tested on:
+>   - Kernel: 6.8.0-106-generic (Ubuntu 24.04)
+>   - Hardware: Intel Cannon Lake PCH xHCI (8086:a36d)
+>   - Device: Razer Kiyo Pro (1532:0e05), firmware 8.21
+>   - Stress test: 50 rounds of rapid UVC control changes, 0 failures
+>
+> JP Hein (3):
+>   USB: core: add NO_LPM quirk for Razer Kiyo Pro webcam
+>   media: uvcvideo: add UVC_QUIRK_CTRL_THROTTLE for fragile firmware
+>   media: uvcvideo: add quirks for Razer Kiyo Pro webcam
+>
+>  drivers/media/usb/uvc/uvc_driver.c | 16 ++++++++++++++++
+>  drivers/media/usb/uvc/uvc_video.c  | 33 ++++++++++++++++++++++++++++++++=
++
+>  drivers/media/usb/uvc/uvcvideo.h   |  3 +++
+>  drivers/usb/core/quirks.c          |  2 ++
+>  4 files changed, 54 insertions(+)
+>
 
+
+--=20
+Ricardo Ribalda
 
