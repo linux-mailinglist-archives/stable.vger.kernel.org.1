@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-228619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229135-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oLDtFsZMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228619-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:02 +0100
+	id yL+YAvdZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229135-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:19 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FBB72F4544
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:23:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AA882F6242
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3A8343023D91
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:20:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 176C23134D7A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74DB39A055;
-	Mon, 23 Mar 2026 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 997B22580D7;
+	Mon, 23 Mar 2026 15:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blgretnI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kT6n9e6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4CA1D63F3;
-	Mon, 23 Mar 2026 14:20:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE842561A2;
+	Mon, 23 Mar 2026 15:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275622; cv=none; b=Yqvo1bbparQ7ygdgS6CEcT0LNfksp57DNOz+wr9rXzumlVfMAieGiZox/ih02h83lDYX8vqL0HgXmZTP4bJamr0+EyYlSMF6Xu0eez4yykdGs4KmtEdWyqnQbvAQLK7vL2J1A3d60MuHhll2u0LxQFs8IjHSWA7Bb8+qKwb0ZRU=
+	t=1774278171; cv=none; b=EDPoYD+TCj1j++MRk2sD2+rVHIEl7LJA8bJwYbpWgZWXeRzflcIXnpySY0/PiO5kuWOM4A+CRVtkyJgf+1fgC9xHLg09CfK+gNp2RajbEa9QAoJajL4yS8IrEOKTRGENVmToaUxxAcf2mBGAI3zePLMGuo+9FgaVxTJviKhXhyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275622; c=relaxed/simple;
-	bh=+6KUUtlb5f8pAA7MEJEga7rX3pz4eS2cfMBT4jFWknE=;
+	s=arc-20240116; t=1774278171; c=relaxed/simple;
+	bh=8ux85OL4IQFE4oNKAg/oxeO+sV1wRKhDR95CsOn4Lww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQJzn3YnkRceIqkG9Bk0nbpN8CUItedL16ufZWklpf8DLSzGYOy/hA3OBldUM+2NsYIRO3To2IQaZgT//iT3ZV2OyFVi0TxK2kzb1i8dHO3EMEum5QyltTrb41kJ8ahwE+oWYQx4B5lxPsOdbp2Vickecp+2rBaSnotLQ1KFNdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blgretnI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DB7C2BCB1;
-	Mon, 23 Mar 2026 14:20:21 +0000 (UTC)
+	 MIME-Version; b=PrcS+LAac16X1yvx3bJ9QN3iR4M3fSjHVPDLA2YHs72NBGTdnBPQ9ztw8SkAA73+4UcdoyAkmtR8d80kCJZE+YMm8wgZ87GMe1W7lxBjNe1XoNxwTaLbj5N2UEkuW8wTuT9xpfaMPm2bo2MAuBPkDBRuaXUatMetpNHR++ig7dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kT6n9e6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8A5C4CEF7;
+	Mon, 23 Mar 2026 15:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275622;
-	bh=+6KUUtlb5f8pAA7MEJEga7rX3pz4eS2cfMBT4jFWknE=;
+	s=korg; t=1774278171;
+	bh=8ux85OL4IQFE4oNKAg/oxeO+sV1wRKhDR95CsOn4Lww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blgretnIToSc+/8B78Tc4OKshDxXEOwUOOJtFmoaFgCvZ1DHTdZgBr/h0TMColqaY
-	 96fERg7BwPFu0ZHs1O4LiqybaBUHJSDzwBEEx1RB6zqkiK7WENxywQfuWC2Bvl9c/o
-	 clr/nonS7spBJUqI/+dJNbU5/OGxUxT9+FC8LAtA=
+	b=kT6n9e6hDHLos7jSmVluDQZNKUasR/AMhgImeO1ryWz8ny5C4Reg98gDz5cgSYFls
+	 +Bs1XvG429g0pNFipurZfS8/5ZJz5HCrS2NYmrPDxAF4gYCMy4/iup+G76orU81/c/
+	 AHgYaiAufT2HUsVpxO/s7eG8qKLmCMcSI1k5OtVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 146/460] nfsd: Fix cred ref leak in nfsd_nl_listener_set_doit().
+	Daniel Jurgens <danielj@nvidia.com>,
+	William Tu <witu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 222/567] net/mlx5: Query to see if host PF is disabled
 Date: Mon, 23 Mar 2026 14:42:22 +0100
-Message-ID: <20260323134530.171524629@linuxfoundation.org>
+Message-ID: <20260323134539.323020565@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,73 +70,111 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229135-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228619-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,oracle.com:email]
-X-Rspamd-Queue-Id: 8FBB72F4544
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 5AA882F6242
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Daniel Jurgens <danielj@nvidia.com>
 
-commit 92978c83bb4eef55d02a6c990c01c423131eefa7 upstream.
+[ Upstream commit 9e84de72aef9bcf0e751a0bff3ac91b0cf52366f ]
 
-nfsd_nl_listener_set_doit() uses get_current_cred() without
-put_cred().
+The host PF can be disabled, query firmware to check if the host PF of
+this function exists.
 
-As we can see from other callers, svc_xprt_create_from_sa()
-does not require the extra refcount.
-
-nfsd_nl_listener_set_doit() is always in the process context,
-sendmsg(), and current->cred does not go away.
-
-Let's use current_cred() in nfsd_nl_listener_set_doit().
-
-Fixes: 16a471177496 ("NFSD: add listener-{set,get} netlink command")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Jurgens <danielj@nvidia.com>
+Reviewed-by: William Tu <witu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1755112796-467444-2-git-send-email-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: aed763abf0e9 ("net/mlx5: Fix deadlock between devlink lock and esw->wq")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch.c | 23 +++++++++++++++++++
+ .../net/ethernet/mellanox/mlx5/core/eswitch.h |  1 +
+ 2 files changed, 24 insertions(+)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -2081,7 +2081,7 @@ int nfsd_nl_listener_set_doit(struct sk_
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+index 914b380fd3eeb..79fa78b188250 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
+@@ -1038,6 +1038,25 @@ const u32 *mlx5_esw_query_functions(struct mlx5_core_dev *dev)
+ 	return ERR_PTR(err);
+ }
  
- 		ret = svc_xprt_create_from_sa(serv, xcl_name, net, sa, 0,
--					      get_current_cred());
-+					      current_cred());
- 		/* always save the latest error */
- 		if (ret < 0)
- 			err = ret;
++static int mlx5_esw_host_functions_enabled_query(struct mlx5_eswitch *esw)
++{
++	const u32 *query_host_out;
++
++	if (!mlx5_core_is_ecpf_esw_manager(esw->dev))
++		return 0;
++
++	query_host_out = mlx5_esw_query_functions(esw->dev);
++	if (IS_ERR(query_host_out))
++		return PTR_ERR(query_host_out);
++
++	esw->esw_funcs.host_funcs_disabled =
++		MLX5_GET(query_esw_functions_out, query_host_out,
++			 host_params_context.host_pf_not_exist);
++
++	kvfree(query_host_out);
++	return 0;
++}
++
+ static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
+ {
+ 	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev)) {
+@@ -1870,6 +1889,10 @@ int mlx5_eswitch_init(struct mlx5_core_dev *dev)
+ 		goto abort;
+ 	}
+ 
++	err = mlx5_esw_host_functions_enabled_query(esw);
++	if (err)
++		goto abort;
++
+ 	err = mlx5_esw_vports_init(esw);
+ 	if (err)
+ 		goto abort;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+index 3e58e731b5697..23e612dd329db 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
+@@ -315,6 +315,7 @@ struct mlx5_host_work {
+ 
+ struct mlx5_esw_functions {
+ 	struct mlx5_nb		nb;
++	bool			host_funcs_disabled;
+ 	u16			num_vfs;
+ 	u16			num_ec_vfs;
+ };
+-- 
+2.51.0
+
 
 
 
