@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-229443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229939-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kGd8DkJgwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229443-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:10 +0100
+	id iCHwJKJxwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229939-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:18 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA572F6DFA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 501B02F945C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 46814306DFE3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2E4E531508BB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ABC73B7B7F;
-	Mon, 23 Mar 2026 15:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532383BE170;
+	Mon, 23 Mar 2026 16:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UyEhIzA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umyiZc67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499663B7B61;
-	Mon, 23 Mar 2026 15:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419FF26C3BD;
+	Mon, 23 Mar 2026 16:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279250; cv=none; b=NiPX7xYayudkvALiK4MlHnA+cSeSD0IXCnoGLTcRLVTVnT6Nf2OxEbaEa9rXq7O96T4hOmOBafwrvT3dBuUCvl6bTZvjGEHC7K54YYYwS3Nd4ZNrhSQ0Bxp2mswXC8S29WY+fgg9NghKxHy34rKWFcVAEBTt+ls6pp4h9ybMcsI=
+	t=1774283316; cv=none; b=K95l+YMjDU1OUzoorAOFyNJoHuaSWvOZxkQtmwNF3PGBK8B+vBzqi3UshZd6IzwXRY8Bp7fk2XL5St3+inbuuXEib2dFNsZo5k+E86ilJQZ9ElPUKDNK+Yl1f7t+N4CEx9b0ajbdM+v64Q4VMqRs/JxT0ZnTU6X5qllsP4eHK/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279250; c=relaxed/simple;
-	bh=iXUP43xZZBx3q8RC6u/oLjG7fJ/lDM+C+QVu44X8IRs=;
+	s=arc-20240116; t=1774283316; c=relaxed/simple;
+	bh=uv73dyPZlXvDDWSV5zKUap+zoazQJ76zP+RGXqIxdqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sp5b47M7G2ZkyWQ3OWJBvZ9eL4CFlc7T5UB9Hqv6CRrpHLGMwN6tue3YrqbYTwoXVfjE5pD3cGk3zYokbvOHqqmaQkjamNbV/cFm/xiiBys0G3zjSwNs7Ebq5Cl+0aULJJ0S+SxT7WG8veG7VdjNoc4gCaPvXsNEZWzYAhpf32Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UyEhIzA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C21E9C4CEF7;
-	Mon, 23 Mar 2026 15:20:49 +0000 (UTC)
+	 MIME-Version; b=R2ql72XIl9xeVGfGfHke7nZA8uamJhITfcW7YI/7FADvvpFDkZ78sO0a2vzlGELBBcbH+Gs9cMzrwmOAnZUcdHFmYEftVjUPMPTMra9brUs4+Kn6vZ6VhXY3nXAvLfkNd2k934wfiBRe6lRkxw5789aXD2UMThmAurCvsHPOxbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umyiZc67; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DADC4CEF7;
+	Mon, 23 Mar 2026 16:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279250;
-	bh=iXUP43xZZBx3q8RC6u/oLjG7fJ/lDM+C+QVu44X8IRs=;
+	s=korg; t=1774283315;
+	bh=uv73dyPZlXvDDWSV5zKUap+zoazQJ76zP+RGXqIxdqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UyEhIzAiVlW0WuCp1d3epMVyHe9LiOo7yBPQcBZSaHTzpg//RPBe7XR5k/LQUSMF
-	 1ODriRbZO64LETXHeB3EvseIFMdm1/7CPYbMq+kSHilXpBd77c8mLzhXVMpoRCZtYM
-	 si8R7pCqNRf4EV8uJx68M4+eHEwH3ODmefwknb/I=
+	b=umyiZc675PDbdmKo6ryiP8AZ3LwmV5iQvbjAGdiJpGsNNgR0fhnTcSIa4++K5bmby
+	 Ov1+9i6Dr3sYzhts8nk7n5Pmpt4B84lY3Esg1RvLtKdEE/oIHO8FN4+MMv7JYeZPIT
+	 Ls7dF57rjkO8UbjBspBSq3VYVTU4ikUnMtwAvNT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 525/567] PM: runtime: Fix a race condition related to device removal
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	David Ahern <dsahern@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.1 463/481] net: add support for segmenting TCP fraglist GSO packets
 Date: Mon, 23 Mar 2026 14:47:25 +0100
-Message-ID: <20260323134546.992604686@linuxfoundation.org>
+Message-ID: <20260323134536.496611689@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,162 +67,219 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229443-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229939-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,google.com,nbd.name,kernel.org,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,6c905ab800f20cf4086c];
+	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CAA572F6DFA
+X-Rspamd-Queue-Id: 501B02F945C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 29ab768277617452d88c0607c9299cdc63b6e9ff ]
+[ Upstream commit bee88cd5bd83d40b8aec4d6cb729378f707f6197 ]
 
-The following code in pm_runtime_work() may dereference the dev->parent
-pointer after the parent device has been freed:
+Preparation for adding TCP fraglist GRO support. It expects packets to be
+combined in a similar way as UDP fraglist GSO packets.
+For IPv4 packets, NAT is handled in the same way as UDP fraglist GSO.
 
-	/* Maybe the parent is now able to suspend. */
-	if (parent && !parent->power.ignore_children) {
-		spin_unlock(&dev->power.lock);
-
-		spin_lock(&parent->power.lock);
-		rpm_idle(parent, RPM_ASYNC);
-		spin_unlock(&parent->power.lock);
-
-		spin_lock(&dev->power.lock);
-	}
-
-Fix this by inserting a flush_work() call in pm_runtime_remove().
-
-Without this patch blktest block/001 triggers the following complaint
-sporadically:
-
-BUG: KASAN: slab-use-after-free in lock_acquire+0x70/0x160
-Read of size 1 at addr ffff88812bef7198 by task kworker/u553:1/3081
-Workqueue: pm pm_runtime_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x61/0x80
- print_address_description.constprop.0+0x8b/0x310
- print_report+0xfd/0x1d7
- kasan_report+0xd8/0x1d0
- __kasan_check_byte+0x42/0x60
- lock_acquire.part.0+0x38/0x230
- lock_acquire+0x70/0x160
- _raw_spin_lock+0x36/0x50
- rpm_suspend+0xc6a/0xfe0
- rpm_idle+0x578/0x770
- pm_runtime_work+0xee/0x120
- process_one_work+0xde3/0x1410
- worker_thread+0x5eb/0xfe0
- kthread+0x37b/0x480
- ret_from_fork+0x6cb/0x920
- ret_from_fork_asm+0x11/0x20
- </TASK>
-
-Allocated by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_alloc_info+0x3d/0x50
- __kasan_kmalloc+0xa0/0xb0
- __kmalloc_noprof+0x311/0x990
- scsi_alloc_target+0x122/0xb60 [scsi_mod]
- __scsi_scan_target+0x101/0x460 [scsi_mod]
- scsi_scan_channel+0x179/0x1c0 [scsi_mod]
- scsi_scan_host_selected+0x259/0x2d0 [scsi_mod]
- store_scan+0x2d2/0x390 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
- do_syscall_64+0xee/0xfc0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Freed by task 4314:
- kasan_save_stack+0x2a/0x50
- kasan_save_track+0x18/0x40
- kasan_save_free_info+0x3f/0x50
- __kasan_slab_free+0x67/0x80
- kfree+0x225/0x6c0
- scsi_target_dev_release+0x3d/0x60 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_dev_release+0xacf/0x12c0 [scsi_mod]
- device_release+0xa3/0x220
- kobject_cleanup+0x105/0x3a0
- kobject_put+0x72/0xd0
- put_device+0x17/0x20
- scsi_device_put+0x7f/0xc0 [scsi_mod]
- sdev_store_delete+0xa5/0x120 [scsi_mod]
- dev_attr_store+0x43/0x80
- sysfs_kf_write+0xde/0x140
- kernfs_fop_write_iter+0x3ef/0x670
- vfs_write+0x506/0x1470
- ksys_write+0xfd/0x230
- __x64_sys_write+0x76/0xc0
- x64_sys_call+0x213/0x1810
-
-Reported-by: Ming Lei <ming.lei@redhat.com>
-Closes: https://lore.kernel.org/all/ZxdNvLNI8QaOfD2d@fedora/
-Reported-by: syzbot+6c905ab800f20cf4086c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c13942.050a0220.2ff435.000b.GAE@google.com/
-Fixes: 5e928f77a09a ("PM: Introduce core framework for run-time PM of I/O devices (rev. 17)")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://patch.msgid.link/20260312182720.2776083-1-bvanassche@acm.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/runtime.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_offload.c   |   67 +++++++++++++++++++++++++++++++++++++++++++++++
+ net/ipv6/tcpv6_offload.c |   58 ++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 125 insertions(+)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index b28fb11cd6db8..2766bdc9158ab 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1854,6 +1854,7 @@ void pm_runtime_reinit(struct device *dev)
- void pm_runtime_remove(struct device *dev)
- {
- 	__pm_runtime_disable(dev, false);
-+	flush_work(&dev->power.work);
- 	pm_runtime_reinit(dev);
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -30,6 +30,70 @@ static void tcp_gso_tstamp(struct sk_buf
+ 	}
  }
  
--- 
-2.51.0
-
++static void __tcpv4_gso_segment_csum(struct sk_buff *seg,
++				     __be32 *oldip, __be32 newip,
++				     __be16 *oldport, __be16 newport)
++{
++	struct tcphdr *th;
++	struct iphdr *iph;
++
++	if (*oldip == newip && *oldport == newport)
++		return;
++
++	th = tcp_hdr(seg);
++	iph = ip_hdr(seg);
++
++	inet_proto_csum_replace4(&th->check, seg, *oldip, newip, true);
++	inet_proto_csum_replace2(&th->check, seg, *oldport, newport, false);
++	*oldport = newport;
++
++	csum_replace4(&iph->check, *oldip, newip);
++	*oldip = newip;
++}
++
++static struct sk_buff *__tcpv4_gso_segment_list_csum(struct sk_buff *segs)
++{
++	const struct tcphdr *th;
++	const struct iphdr *iph;
++	struct sk_buff *seg;
++	struct tcphdr *th2;
++	struct iphdr *iph2;
++
++	seg = segs;
++	th = tcp_hdr(seg);
++	iph = ip_hdr(seg);
++	th2 = tcp_hdr(seg->next);
++	iph2 = ip_hdr(seg->next);
++
++	if (!(*(const u32 *)&th->source ^ *(const u32 *)&th2->source) &&
++	    iph->daddr == iph2->daddr && iph->saddr == iph2->saddr)
++		return segs;
++
++	while ((seg = seg->next)) {
++		th2 = tcp_hdr(seg);
++		iph2 = ip_hdr(seg);
++
++		__tcpv4_gso_segment_csum(seg,
++					 &iph2->saddr, iph->saddr,
++					 &th2->source, th->source);
++		__tcpv4_gso_segment_csum(seg,
++					 &iph2->daddr, iph->daddr,
++					 &th2->dest, th->dest);
++	}
++
++	return segs;
++}
++
++static struct sk_buff *__tcp4_gso_segment_list(struct sk_buff *skb,
++					      netdev_features_t features)
++{
++	skb = skb_segment_list(skb, features, skb_mac_header_len(skb));
++	if (IS_ERR(skb))
++		return skb;
++
++	return __tcpv4_gso_segment_list_csum(skb);
++}
++
+ static struct sk_buff *tcp4_gso_segment(struct sk_buff *skb,
+ 					netdev_features_t features)
+ {
+@@ -39,6 +103,9 @@ static struct sk_buff *tcp4_gso_segment(
+ 	if (!pskb_may_pull(skb, sizeof(struct tcphdr)))
+ 		return ERR_PTR(-EINVAL);
+ 
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
++		return __tcp4_gso_segment_list(skb, features);
++
+ 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
+ 		const struct iphdr *iph = ip_hdr(skb);
+ 		struct tcphdr *th = tcp_hdr(skb);
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -39,6 +39,61 @@ INDIRECT_CALLABLE_SCOPE int tcp6_gro_com
+ 	return tcp_gro_complete(skb);
+ }
+ 
++static void __tcpv6_gso_segment_csum(struct sk_buff *seg,
++				     __be16 *oldport, __be16 newport)
++{
++	struct tcphdr *th;
++
++	if (*oldport == newport)
++		return;
++
++	th = tcp_hdr(seg);
++	inet_proto_csum_replace2(&th->check, seg, *oldport, newport, false);
++	*oldport = newport;
++}
++
++static struct sk_buff *__tcpv6_gso_segment_list_csum(struct sk_buff *segs)
++{
++	const struct tcphdr *th;
++	const struct ipv6hdr *iph;
++	struct sk_buff *seg;
++	struct tcphdr *th2;
++	struct ipv6hdr *iph2;
++
++	seg = segs;
++	th = tcp_hdr(seg);
++	iph = ipv6_hdr(seg);
++	th2 = tcp_hdr(seg->next);
++	iph2 = ipv6_hdr(seg->next);
++
++	if (!(*(const u32 *)&th->source ^ *(const u32 *)&th2->source) &&
++	    ipv6_addr_equal(&iph->saddr, &iph2->saddr) &&
++	    ipv6_addr_equal(&iph->daddr, &iph2->daddr))
++		return segs;
++
++	while ((seg = seg->next)) {
++		th2 = tcp_hdr(seg);
++		iph2 = ipv6_hdr(seg);
++
++		iph2->saddr = iph->saddr;
++		iph2->daddr = iph->daddr;
++		__tcpv6_gso_segment_csum(seg, &th2->source, th->source);
++		__tcpv6_gso_segment_csum(seg, &th2->dest, th->dest);
++	}
++
++	return segs;
++}
++
++static struct sk_buff *__tcp6_gso_segment_list(struct sk_buff *skb,
++					      netdev_features_t features)
++{
++	skb = skb_segment_list(skb, features, skb_mac_header_len(skb));
++	if (IS_ERR(skb))
++		return skb;
++
++	return __tcpv6_gso_segment_list_csum(skb);
++}
++
+ static struct sk_buff *tcp6_gso_segment(struct sk_buff *skb,
+ 					netdev_features_t features)
+ {
+@@ -50,6 +105,9 @@ static struct sk_buff *tcp6_gso_segment(
+ 	if (!pskb_may_pull(skb, sizeof(*th)))
+ 		return ERR_PTR(-EINVAL);
+ 
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
++		return __tcp6_gso_segment_list(skb, features);
++
+ 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
+ 		const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+ 		struct tcphdr *th = tcp_hdr(skb);
 
 
 
