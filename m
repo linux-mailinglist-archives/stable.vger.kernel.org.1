@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229165-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oJ3tGsJUwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228634-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:06 +0100
+	id mLNGLIlZwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229165-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2582F57F7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:57:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E2E2F6198
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DF3D30D3E4F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D93293088034
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEF0381B03;
-	Mon, 23 Mar 2026 14:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 753A03ACEF0;
+	Mon, 23 Mar 2026 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pj5UBeGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2q+NcsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81210365A0A;
-	Mon, 23 Mar 2026 14:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3848F258EE0;
+	Mon, 23 Mar 2026 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275668; cv=none; b=R6AotRC0cEbPnL7cGCz2cdBGSxYXQcQ854IvbfqaV7oFp4Y9VEcFtZaP2rC1DF2P1zr446weRjPkRq/rTmvVZZHSSftFYKUg11b5J3spv9da09W5TT8TeF/YdRPG0XxEOJpVG4lEIV60j6marAobufmK8gW0qqDrIozGlvP9ORY=
+	t=1774278266; cv=none; b=mMV+w/9JYMycCuVaJmmHLCr/+i6oi/gbW6nUpdnbsASR33LJsHDBUeSEbALlJZJjoqWGikSkcbyfhAPrDyo+Pj71BlXPIkBxSQ7NB/uu/d4VhgSZ24X2mkIK1sIFGFeh3GfxOh6aAnax6QATO8Mff1bSAGlQDvkiR1H+CvpNjGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275668; c=relaxed/simple;
-	bh=8ODFTQijnmCmpSg9AauVG89wcZHsBsxDgEdhWk9VbqM=;
+	s=arc-20240116; t=1774278266; c=relaxed/simple;
+	bh=ORWSxSL94EbT9v/iSZq+yhCJHmqTSfxFUxz0Q0rSMW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pn+baiYMQPkvtAEZD3kt0uoPWhW+Ro3GfnreKvXkpniSxRYazgY0zqIYVkzRqoQER5rEkG9OnxqWEnGq7QjqT0bmR900UDbeAtANMJwrPScMmzcZFEnISs15TREUH6izZgYy72m1bhYhECotNB6Zgidixkrl96qR0yDWtJdzGKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pj5UBeGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06555C4CEF7;
-	Mon, 23 Mar 2026 14:21:07 +0000 (UTC)
+	 MIME-Version; b=tFejWf7SfEkE660sooQGlmnTDR/udpYsz7bCmjOUk1Hgdw/rXsTtfJYz6/HWwtlP2WZ76bUJuYJ63j7OtpquknUItqqXFNR827ZU47YWrM5uvgEVEqMIUp71LfS4EetwHxh1SVUlgW6e40pjCMnE0462y39BEb4wFHwr8Ht0NxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2q+NcsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DCEBC4CEF7;
+	Mon, 23 Mar 2026 15:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275668;
-	bh=8ODFTQijnmCmpSg9AauVG89wcZHsBsxDgEdhWk9VbqM=;
+	s=korg; t=1774278265;
+	bh=ORWSxSL94EbT9v/iSZq+yhCJHmqTSfxFUxz0Q0rSMW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pj5UBeGTPdQ3q1JpkX7TrTPwDBUL/eUrlia7nQe7dWhqK6nDbZnc+yfGXOpG8c+pw
-	 9uadoAZ/94VLnOGQa6cZLt3qLYiBnGdxaGdnV4SEulSgZo7IM7Zle+mudMkjydDhmo
-	 X9r+daQVvLDd2NRxM85LS7GB7Cles389b46joOZs=
+	b=c2q+NcsSv37mbIyFOChyS254B3TZfpDZr88sbY5ga/ARSIcR9vOmbzwyHp5NsLeWr
+	 APb8jXAl0lytW4wBXEuLFVXVrmU6Jo2RYRjpko6ch2zUsHpeBOAyZZ2Y52uPuXl969
+	 fso0p0HqsBZeisRjrRmxcuu4r3h/7ewqcXxa6Nuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 177/460] drm/amd/pm: remove invalid gpu_metrics.energy_accumulator on smu v13.0.x
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 253/567] ASoC: amd: acp3x-rt5682-max9836: Add missing error check for clock acquisition
 Date: Mon, 23 Mar 2026 14:42:53 +0100
-Message-ID: <20260323134530.891380995@linuxfoundation.org>
+Message-ID: <20260323134540.095139585@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228634-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229165-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,71 +90,58 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: DA2582F57F7
+X-Rspamd-Queue-Id: 64E2E2F6198
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Wang <kevinyang.wang@amd.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 68785c5e79e0fc1eacf63026fbba32be3867f410 upstream.
+[ Upstream commit 53f3a900e9a383d47af7253076e19f510c5708d0 ]
 
-v1:
-The metrics->EnergyAccumulator field has been deprecated on newer pmfw.
+The acp3x_5682_init() function did not check the return value of
+clk_get(), which could lead to dereferencing error pointers in
+rt5682_clk_enable().
 
-v2:
-add smu 13.0.0/13.0.7/13.0.10 support.
+Fix this by:
+1. Changing clk_get() to the device-managed devm_clk_get().
+2. Adding proper IS_ERR() checks for both clock acquisitions.
 
-Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8de9edb35976fa56565dc8fbb5d1310e8e10187c)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6b8e4e7db3cd ("ASoC: amd: Add machine driver for Raven based platform")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Link: https://patch.msgid.link/20260310024246.2153827-1-nichen@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c |    8 +++++++-
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c |    3 ++-
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ sound/soc/amd/acp3x-rt5682-max9836.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2033,6 +2033,7 @@ static ssize_t smu_v13_0_0_get_gpu_metri
- 		(struct gpu_metrics_v1_3 *)smu_table->gpu_metrics_table;
- 	SmuMetricsExternal_t metrics_ext;
- 	SmuMetrics_t *metrics = &metrics_ext.SmuMetrics;
-+	uint32_t mp1_ver = amdgpu_ip_version(smu->adev, MP1_HWIP, 0);
- 	int ret = 0;
+diff --git a/sound/soc/amd/acp3x-rt5682-max9836.c b/sound/soc/amd/acp3x-rt5682-max9836.c
+index 28ad5f5b9a766..73575f6de1ee3 100644
+--- a/sound/soc/amd/acp3x-rt5682-max9836.c
++++ b/sound/soc/amd/acp3x-rt5682-max9836.c
+@@ -94,8 +94,13 @@ static int acp3x_5682_init(struct snd_soc_pcm_runtime *rtd)
+ 		return ret;
+ 	}
  
- 	ret = smu_cmn_get_metrics_table(smu,
-@@ -2057,7 +2058,12 @@ static ssize_t smu_v13_0_0_get_gpu_metri
- 					       metrics->Vcn1ActivityPercentage);
- 
- 	gpu_metrics->average_socket_power = metrics->AverageSocketPower;
--	gpu_metrics->energy_accumulator = metrics->EnergyAccumulator;
+-	rt5682_dai_wclk = clk_get(component->dev, "rt5682-dai-wclk");
+-	rt5682_dai_bclk = clk_get(component->dev, "rt5682-dai-bclk");
++	rt5682_dai_wclk = devm_clk_get(component->dev, "rt5682-dai-wclk");
++	if (IS_ERR(rt5682_dai_wclk))
++		return PTR_ERR(rt5682_dai_wclk);
 +
-+	if ((mp1_ver == IP_VERSION(13, 0, 0) && smu->smc_fw_version <= 0x004e1e00) ||
-+	    (mp1_ver == IP_VERSION(13, 0, 10) && smu->smc_fw_version <= 0x00500800))
-+		gpu_metrics->energy_accumulator = metrics->EnergyAccumulator;
-+	else
-+		gpu_metrics->energy_accumulator = UINT_MAX;
++	rt5682_dai_bclk = devm_clk_get(component->dev, "rt5682-dai-bclk");
++	if (IS_ERR(rt5682_dai_bclk))
++		return PTR_ERR(rt5682_dai_bclk);
  
- 	if (metrics->AverageGfxActivity <= SMU_13_0_0_BUSY_THRESHOLD)
- 		gpu_metrics->average_gfxclk_frequency = metrics->AverageGfxclkFrequencyPostDs;
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
-@@ -2043,7 +2043,8 @@ static ssize_t smu_v13_0_7_get_gpu_metri
- 					       metrics->Vcn1ActivityPercentage);
- 
- 	gpu_metrics->average_socket_power = metrics->AverageSocketPower;
--	gpu_metrics->energy_accumulator = metrics->EnergyAccumulator;
-+	gpu_metrics->energy_accumulator = smu->smc_fw_version <= 0x00521400 ?
-+		metrics->EnergyAccumulator : UINT_MAX;
- 
- 	if (metrics->AverageGfxActivity <= SMU_13_0_7_BUSY_THRESHOLD)
- 		gpu_metrics->average_gfxclk_frequency = metrics->AverageGfxclkFrequencyPostDs;
+ 	ret = snd_soc_card_jack_new_pins(card, "Headset Jack",
+ 					 SND_JACK_HEADSET |
+-- 
+2.51.0
+
 
 
 
