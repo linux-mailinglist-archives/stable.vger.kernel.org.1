@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-229366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229367-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sJE7BZhewWmHSgQAu9opvQ
-	(envelope-from <stable+bounces-229366-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:04 +0100
+	id ADZVGo9ewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229367-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:55 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EAE2F6A2F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79302F6A06
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:38:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 89FA830F53F2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C18DD3160684
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB62F3BD633;
-	Mon, 23 Mar 2026 15:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC493BD641;
+	Mon, 23 Mar 2026 15:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxMzZCy6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhkPOp9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CCAE3B776C;
-	Mon, 23 Mar 2026 15:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAF63B47EF;
+	Mon, 23 Mar 2026 15:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278889; cv=none; b=BI6s8qnuf/rqk2ePVKSBgcs5RUN0VDLtv5H9urOhgFHc38g56Ogsm80mMI4S/k8FJtKbccfL15zCOUP3c2YEQ46NKVyltXnkszVhxbZQDAgo4y0SwjoZNdLbOKv7Uh5xST96cJEjN3+FnBwX0roz4gyKdGi3APp4HI/E0SuVGTY=
+	t=1774278892; cv=none; b=VQ2ucvV1OWamT1wVlo9ad5VtXB1r8WnjUCPHi3ToiN62z8QQyg32wnxU9oXU4PU5HLaZxBOi25MychMuToL5r1ehos0JpQnj7qrz1KeAjH7P7dq7MtD4FdvhN02I9eaUXXj+xNmbEB8PJFf/TAdZFdp6anCucbk+S6cM5cBC96Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278889; c=relaxed/simple;
-	bh=KOEQxLzB/fzWYrKdUeFfqd0kp/RLePSliTmEkXiu910=;
+	s=arc-20240116; t=1774278892; c=relaxed/simple;
+	bh=DBwBLmFh7uyALA/BlGXhZYdvXXstYelndNh5QQNiRq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uS7h8acx1Kf6pDiVHIEFoc7V55Flt2qtODg9XQac5L/ohjD4LFWbpA+S0p7889d72Y8h4ifZzHKKoL+pnAcLZTVd430nIyyE2A5U1SxXa478HwI/dw9/YOR7q6DL8onaUpJwFDsP98mcaWcFLJhAHmA5AYdHjXpC7lWeq4kpZPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxMzZCy6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50678C4CEF7;
-	Mon, 23 Mar 2026 15:14:48 +0000 (UTC)
+	 MIME-Version; b=mwEPnXwtETgAMOhWAUxtojTCCfqH7W0PMw+TztVF7uZL8FjdUksFATEos+umto6jPFMO/926wmJPN5uAMOPu3KD7IiJkSDoPC3I/FOHTnKhDSfb2RkDC1/XiNlVbLqfmeOvXaPsWSNjrlm08nnDrsIEKTZfkADa2NwoBKO4/o5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhkPOp9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA26C4CEF7;
+	Mon, 23 Mar 2026 15:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278888;
-	bh=KOEQxLzB/fzWYrKdUeFfqd0kp/RLePSliTmEkXiu910=;
+	s=korg; t=1774278891;
+	bh=DBwBLmFh7uyALA/BlGXhZYdvXXstYelndNh5QQNiRq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CxMzZCy6wvbtx/a5AviokMXxmu4W7zgS312xbI46MZflhBF02ay7ZjQa98PzLgqbw
-	 p9mMX6ge5obveiglt8TMFuCX+zeopAXm0clpyG+Yx6AfDIRdYcul67dX6JkQbxOIB7
-	 EdtgQIBLpVYCLGf3m3U6sNdqRlHWF/rwPRsyYvRY=
+	b=xhkPOp9h5B2ZYPsn53M0J5kBcXOWf2iTOyLKL5Bi9tH5RqnS4Ve9xN7OAJmNud8Pg
+	 stNAGfkri/E4CI5PTngJV12OnYykVbO+jvluLz4gAP2jhYRM+obzax3JubEH/hx14L
+	 hTJQ6ny6t52DyV4139MDJu9Kw9l3NxQE99n6jR/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Ying <liying3@sungrowpower.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Christoph Lameter <cl@linux.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Liam R. Howlett" <Liam.Howlett@Oracle.com>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH 6.6 450/567] mm/mempolicy: fix wrong mmap_read_unlock() in migrate_to_node()
-Date: Mon, 23 Mar 2026 14:46:10 +0100
-Message-ID: <20260323134545.115871073@linuxfoundation.org>
+	Keenan Dong <keenanat2000@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 451/567] io_uring/kbuf: check if target buffer list is still legacy on recycle
+Date: Mon, 23 Mar 2026 14:46:11 +0100
+Message-ID: <20260323134545.142498692@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -70,31 +65,32 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229366-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229367-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,kernel.dk];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 89EAE2F6A2F
+X-Rspamd-Queue-Id: C79302F6A06
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,45 +98,45 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-The backport of commit 091c1dd2d4df ("mm/mempolicy: fix migrate_to_node()
-assuming there is at least one VMA in a MM") contains an error:
-migrate_to_node() does not lock the mmap_lock itself, that is handled by
-the caller instead.
+Commit c2c185be5c85d37215397c8e8781abf0a69bec1f upstream.
 
-So let's drop the wrong mmap_read_unlock(). Fortunately, this path is
-very hard to hit in practice.
+There's a gap between when the buffer was grabbed and when it
+potentially gets recycled, where if the list is empty, someone could've
+upgraded it to a ring provided type. This can happen if the request
+is forced via io-wq. The legacy recycling is missing checking if the
+buffer_list still exists, and if it's of the correct type. Add those
+checks.
 
-Fixes: a13b2b9b0b0b ("mm/mempolicy: fix migrate_to_node() assuming there is at least one VMA in a MM")
-Reported-by: Li Ying <liying3@sungrowpower.com>
-Closes: https://lore.kernel.org/r/aaZgUNxAyKC2IwuG@casper.infradead.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Gregory Price <gourry@gourry.net>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@Oracle.com>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: c7fb19428d67 ("io_uring: add support for ring mapped supplied buffers")
+Reported-by: Keenan Dong <keenanat2000@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/mempolicy.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ io_uring/kbuf.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -1071,10 +1071,8 @@ static long migrate_to_node(struct mm_st
+--- a/io_uring/kbuf.c
++++ b/io_uring/kbuf.c
+@@ -70,9 +70,15 @@ void io_kbuf_recycle_legacy(struct io_ki
  
- 	VM_BUG_ON(!(flags & (MPOL_MF_MOVE | MPOL_MF_MOVE_ALL)));
- 	vma = find_vma(mm, 0);
--	if (unlikely(!vma)) {
--		mmap_read_unlock(mm);
-+	if (unlikely(!vma))
- 		return 0;
--	}
+ 	buf = req->kbuf;
+ 	bl = io_buffer_get_list(ctx, buf->bgid);
+-	list_add(&buf->list, &bl->buf_list);
++	/*
++	 * If the buffer list was upgraded to a ring-based one, or removed,
++	 * while the request was in-flight in io-wq, drop it.
++	 */
++	if (bl && !bl->is_mapped)
++		list_add(&buf->list, &bl->buf_list);
+ 	req->flags &= ~REQ_F_BUFFER_SELECTED;
+ 	req->buf_index = buf->bgid;
++	req->kbuf = NULL;
  
- 	/*
- 	 * This does not migrate the range, but isolates all pages that
+ 	io_ring_submit_unlock(ctx, issue_flags);
+ 	return;
 
 
 
