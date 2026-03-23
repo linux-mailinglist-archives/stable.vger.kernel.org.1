@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228749-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0NTUEj1ewWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229290-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:33 +0100
+	id yNCGCItWwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228749-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C292F6973
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757872F5B7E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86020344AFA8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3645931EEA2E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DA83B47E5;
-	Mon, 23 Mar 2026 15:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F323AF647;
+	Mon, 23 Mar 2026 14:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6rwR0BN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVrRm4Dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AD071A00F0;
-	Mon, 23 Mar 2026 15:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEE939EF1E;
+	Mon, 23 Mar 2026 14:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278653; cv=none; b=iCLDpjaVTEmUH3vEM6gTwyzlXMTW40Qp7paBofVpVjh+M2HdcQh8ReiVLEVddX4cRWXXnGC4tnw56KvNHk68G7g1k81xf8xQt1XMOak8w3r09wm46JHmZPdGmAscqgvrnfcusvq4KtyaVqqKSw3aWUygV+qrYgn8rwr+qPM++Uc=
+	t=1774277019; cv=none; b=tmnJgAUL0Ayj5VFzDFJGpOWZ2lJSXmvTfWJmuDns5nb9jzdzMtHjz7ZobYK/RnHO6A9w8ZlXzksQb5+KbvBS8wO8wQsakGTTzFyE6fcN7Ic4uMHXRROE80L3QET9ar8VCTyi5HpJNxI68H5Cjsi72w5hAaHT8ciZLVsC8CF/7yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278653; c=relaxed/simple;
-	bh=v44Aew+DQO4lBE5bbMmfbKXbAuj5rgMPWtMIwH0CGDc=;
+	s=arc-20240116; t=1774277019; c=relaxed/simple;
+	bh=3r85FM79r8VvIMm/lL2RzBClF5vT5nK/6w897MvIBOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5XYTkAzAPzOIHRZKfilZjWNZJMlQQRa+jwh2yhbswM1s/AmiAK6mM0GNEccUQYqiwnmxAojiesAN4+fpnYqDo4ckjHZ0JzvO8Dx/ZN95LcQ+fxZACkM61PaY/r0bjjjHxClMFDfSHfUN5o4iXWVPD1cv8bliLaiFpxN3tF2Bag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6rwR0BN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72B2C4CEF7;
-	Mon, 23 Mar 2026 15:10:52 +0000 (UTC)
+	 MIME-Version; b=SsPpgqKGNUcg5b03O8hKGAFxVa+IENk98wDjIk9tfQd3WfmASVsto9U8k3paPEP54H7Icgon9egvR/RSt8VMllZ0GlI8v/rgmwOS2u9N/OkU8VpSTaixSdYzBaZOXR/fBTW4SXXU0oMrm/a37kg8XBQ5HKBHYgzLDe32ckdQOyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVrRm4Dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307BFC4CEF7;
+	Mon, 23 Mar 2026 14:43:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278653;
-	bh=v44Aew+DQO4lBE5bbMmfbKXbAuj5rgMPWtMIwH0CGDc=;
+	s=korg; t=1774277019;
+	bh=3r85FM79r8VvIMm/lL2RzBClF5vT5nK/6w897MvIBOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6rwR0BNvboGv2UfRnl+AguFJQ2eentLoBAyNV+t+gyh88J6VnmAwfJThLqmnATYh
-	 4ZSksTvrcXmcsHYINCImeRMBUnxqgkDKbsw5uza73lMV1yTBNlS3VYyGNxX0yv2v7s
-	 fK9vmydA/iLrVSz83Z9jNLvX3L9N7TsMtY8A/CXQ=
+	b=lVrRm4DkkoxM6X3iN7rpX7/jWlVW2ibbSw4dkeGQSEtpwCjTTF35Q23lUsUw5kUcl
+	 p6qGtRaiIQ66xs/pw+eqj7Ny+DyLAPPl472BH7flPz6Tr12reomXsQBXCuIxukwgeH
+	 7hsqhRH6Sm9XlaH+1uT6cEz6w4HEx/+dQN7yobzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Jianpeng Chang <jianpeng.chang.cn@windriver.com>,
-	Will Deacon <will@kernel.org>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 323/567] arm64: mm: Add PTE_DIRTY back to PAGE_KERNEL* to fix kexec/hibernation
+	Jisheng Zhang <jszhang@kernel.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 247/460] mmc: dw_mmc-rockchip: use modern PM macros
 Date: Mon, 23 Mar 2026 14:44:03 +0100
-Message-ID: <20260323134541.823390415@linuxfoundation.org>
+Message-ID: <20260323134532.567489090@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,96 +66,85 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229290-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228749-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: A4C292F6973
+X-Rspamd-Queue-Id: 757872F5B7E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Catalin Marinas <catalin.marinas@arm.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-commit c25c4aa3f79a488cc270507935a29c07dc6bddfc upstream.
+[ Upstream commit 4b43f2bcc84dd550c1a847318db02165d2829573 ]
 
-Commit 143937ca51cc ("arm64, mm: avoid always making PTE dirty in
-pte_mkwrite()") changed pte_mkwrite_novma() to only clear PTE_RDONLY
-when PTE_DIRTY is set. This was to allow writable-clean PTEs for swap
-pages that haven't actually been written.
+Use the modern PM macros for the suspend and resume functions to be
+automatically dropped by the compiler when CONFIG_PM or
+CONFIG_PM_SLEEP are disabled, without having to use #ifdef guards.
 
-However, this broke kexec and hibernation for some platforms. Both go
-through trans_pgd_create_copy() -> _copy_pte(), which calls
-pte_mkwrite_novma() to make the temporary linear-map copy fully
-writable. With the updated pte_mkwrite_novma(), read-only kernel pages
-(without PTE_DIRTY) remain read-only in the temporary mapping.
-While such behaviour is fine for user pages where hardware DBM or
-trapping will make them writeable, subsequent in-kernel writes by the
-kexec relocation code will fault.
+This has the advantage of always compiling these functions in,
+independently of any Kconfig option. Thanks to that, bugs and other
+regressions are subsequently easier to catch.
 
-Add PTE_DIRTY back to all _PAGE_KERNEL* protection definitions. This was
-the case prior to 5.4, commit aa57157be69f ("arm64: Ensure
-VM_WRITE|VM_SHARED ptes are clean by default"). With the kernel
-linear-map PTEs always having PTE_DIRTY set, pte_mkwrite_novma()
-correctly clears PTE_RDONLY.
-
-Fixes: 143937ca51cc ("arm64, mm: avoid always making PTE dirty in pte_mkwrite()")
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Cc: stable@vger.kernel.org
-Reported-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
-Link: https://lore.kernel.org/r/20251204062722.3367201-1-jianpeng.chang.cn@windriver.com
-Cc: Will Deacon <will@kernel.org>
-Cc: Huang, Ying <ying.huang@linux.alibaba.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://lore.kernel.org/r/20250815013413.28641-39-jszhang@kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: 6465a8bbb0f6 ("mmc: dw_mmc-rockchip: Fix runtime PM support for internal phase support")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/pgtable-prot.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/mmc/host/dw_mmc-rockchip.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/include/asm/pgtable-prot.h
-+++ b/arch/arm64/include/asm/pgtable-prot.h
-@@ -45,11 +45,11 @@
+--- a/drivers/mmc/host/dw_mmc-rockchip.c
++++ b/drivers/mmc/host/dw_mmc-rockchip.c
+@@ -568,11 +568,8 @@ static void dw_mci_rockchip_remove(struc
+ }
  
- #define _PAGE_DEFAULT		(_PROT_DEFAULT | PTE_ATTRINDX(MT_NORMAL))
+ static const struct dev_pm_ops dw_mci_rockchip_dev_pm_ops = {
+-	SET_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
+-				pm_runtime_force_resume)
+-	SET_RUNTIME_PM_OPS(dw_mci_runtime_suspend,
+-			   dw_mci_runtime_resume,
+-			   NULL)
++	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
++	RUNTIME_PM_OPS(dw_mci_runtime_suspend, dw_mci_runtime_resume, NULL)
+ };
  
--#define _PAGE_KERNEL		(PROT_NORMAL)
--#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY)
--#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY)
--#define _PAGE_KERNEL_EXEC	(PROT_NORMAL & ~PTE_PXN)
--#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT)
-+#define _PAGE_KERNEL		(PROT_NORMAL | PTE_DIRTY)
-+#define _PAGE_KERNEL_RO		((PROT_NORMAL & ~PTE_WRITE) | PTE_RDONLY | PTE_DIRTY)
-+#define _PAGE_KERNEL_ROX	((PROT_NORMAL & ~(PTE_WRITE | PTE_PXN)) | PTE_RDONLY | PTE_DIRTY)
-+#define _PAGE_KERNEL_EXEC	((PROT_NORMAL & ~PTE_PXN) | PTE_DIRTY)
-+#define _PAGE_KERNEL_EXEC_CONT	((PROT_NORMAL & ~PTE_PXN) | PTE_CONT | PTE_DIRTY)
+ static struct platform_driver dw_mci_rockchip_pltfm_driver = {
+@@ -582,7 +579,7 @@ static struct platform_driver dw_mci_roc
+ 		.name		= "dwmmc_rockchip",
+ 		.probe_type	= PROBE_PREFER_ASYNCHRONOUS,
+ 		.of_match_table	= dw_mci_rockchip_match,
+-		.pm		= &dw_mci_rockchip_dev_pm_ops,
++		.pm		= pm_ptr(&dw_mci_rockchip_dev_pm_ops),
+ 	},
+ };
  
- #define _PAGE_SHARED		(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_UXN | PTE_WRITE)
- #define _PAGE_SHARED_EXEC	(_PAGE_DEFAULT | PTE_USER | PTE_RDONLY | PTE_NG | PTE_PXN | PTE_WRITE)
 
 
 
