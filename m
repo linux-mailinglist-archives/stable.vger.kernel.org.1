@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229138-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8CdrJ/1ZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229136-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:25 +0100
+	id 6IxdBTRYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229138-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F7A2F624A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF88C2F5EFF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1301032A171F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:03:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EA41430701AB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84543282F3C;
-	Mon, 23 Mar 2026 15:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC0939FCBC;
+	Mon, 23 Mar 2026 15:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Dsm2TdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U45oxNEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C66258CD9;
-	Mon, 23 Mar 2026 15:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2E925393B;
+	Mon, 23 Mar 2026 15:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278174; cv=none; b=ezLWpqDrmwjl+2J17XFpjoVAhG0OWVaHhe7U5LsUTSjv410NBFImQTfBa5HSfD/KpXv+sTAp+U5/f8Niapj1EfSEqwkz89Bm/ypkiYUS8fCqRt9R6skTPIR47WoiJV1O0Zirjp3xeWvVuXJYHNAhV+nNUegHhdK0ysRX14Uy3zA=
+	t=1774278181; cv=none; b=bi9+wII0P4twJOdrZzl2nUrbVBM/xDQ6WcQYNeiXCA0ZZsrSPOKtr5H0iZqGpwJktYUgdr95SBdbR9dw/1D11vUeGa0lbPREraBe1Xsn/VMkR4UnC8DdYgiYbWKg1C+rLG0jISZ5K+Xaxlj8e3vk/M1c9gFAHwT7q30OiTVZfGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278174; c=relaxed/simple;
-	bh=r7GAaWAR2EtYYdKxp0zQ1RsOLSezgLzMrID67Bk/C9w=;
+	s=arc-20240116; t=1774278181; c=relaxed/simple;
+	bh=0KgQ3dAugbuY29dxJP3XGTDsamf4sKt8JRx3K4oXNZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNzxv8sUdSkxrjekWQPhjryFghIb6hYrH+EvTeYIp2GRUt+js+vbSJbCBARxaCITX5ih4zn/LHNsvKM+D0+5EaEX8/u+W+GjWGdZdjr+izO34wfJyaTpdhNSfomsT3Z5p3+36ZAWzxN0Mi+iLjgNYsFxbyqGbpS1gF+BA4juX1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Dsm2TdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC1EC2BCB3;
-	Mon, 23 Mar 2026 15:02:53 +0000 (UTC)
+	 MIME-Version; b=M1UpuwTkb3hen7T2rmB3GkFLGOUcNOqex6SPeuCP2Kgs3jTt5A0zdpwnKFc1933cOpB/BaQNj4eJxj4LgPr8VhobK5d9dFE3c1ozhRgtdb4ZDrtl8rRD/UtxS6aozTWy5ocHzzh9fOWupeW7eRbUpJA4jaKLlVtUV5cDqCDnUrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U45oxNEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AD2C2BCB4;
+	Mon, 23 Mar 2026 15:02:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278174;
-	bh=r7GAaWAR2EtYYdKxp0zQ1RsOLSezgLzMrID67Bk/C9w=;
+	s=korg; t=1774278180;
+	bh=0KgQ3dAugbuY29dxJP3XGTDsamf4sKt8JRx3K4oXNZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Dsm2TdAh/RMIzYW9Ql1aueLhB52sFFCj/5aDmMqV0vvtpy3l+LdGx02XFusoPYFF
-	 e4UpnpFoDxnA+G9pbjoryjN5lJ7j6uRVRCpW2jTtRyMSkdQ4tpvp1pOZ/88ll97w4v
-	 4tlDI173Th/SAZUTqXEbR73jwieYUrSYc4KjaJwE=
+	b=U45oxNEl6tQcrXNMO0VSCGuTs03kITMVknR3k7OdFkrcL3vDvtL7iEYRhcQdQYRzT
+	 hCZJXS4UuTAmRubPlZXRoMQpEgWFPehASWXsdj9f2Ek4RjZoe4E6Sj4sUWMtOh0EUC
+	 4u86EkRzyW/MIHx4VU2OIkeWSzbGJWiRGNfVwifI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
 	Dragos Tatulea <dtatulea@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
 	Tariq Toukan <tariqt@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 223/567] net/mlx5: Fix deadlock between devlink lock and esw->wq
-Date: Mon, 23 Mar 2026 14:42:23 +0100
-Message-ID: <20260323134539.348123688@linuxfoundation.org>
+Subject: [PATCH 6.6 224/567] net/mlx5e: Fix DMA FIFO desync on error CQE SQ recovery
+Date: Mon, 23 Mar 2026 14:42:24 +0100
+Message-ID: <20260323134539.374449732@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -73,28 +71,28 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229136-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229138-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 19F7A2F624A
+X-Rspamd-Queue-Id: AF88C2F5EFF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -102,150 +100,80 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit aed763abf0e905b4b8d747d1ba9e172961572f57 ]
+[ Upstream commit 1633111d69053512d099658d4a05fc736fab36b0 ]
 
-esw->work_queue executes esw_functions_changed_event_handler ->
-esw_vfs_changed_event_handler and acquires the devlink lock.
+In case of a TX error CQE, a recovery flow is triggered,
+mlx5e_reset_txqsq_cc_pc() resets dma_fifo_cc to 0 but not dma_fifo_pc,
+desyncing the DMA FIFO producer and consumer.
 
-.eswitch_mode_set (acquires devlink lock in devlink_nl_pre_doit) ->
-mlx5_devlink_eswitch_mode_set -> mlx5_eswitch_disable_locked ->
-mlx5_eswitch_event_handler_unregister -> flush_workqueue deadlocks
-when esw_vfs_changed_event_handler executes.
+After recovery, the producer pushes new DMA entries at the old
+dma_fifo_pc, while the consumer reads from position 0.
+This causes us to unmap stale DMA addresses from before the recovery.
 
-Fix that by no longer flushing the work to avoid the deadlock, and using
-a generation counter to keep track of work relevance. This avoids an old
-handler manipulating an esw that has undergone one or more mode changes:
-- the counter is incremented in mlx5_eswitch_event_handler_unregister.
-- the counter is read and passed to the ephemeral mlx5_host_work struct.
-- the work handler takes the devlink lock and bails out if the current
-  generation is different than the one it was scheduled to operate on.
-- mlx5_eswitch_cleanup does the final draining before destroying the wq.
+The DMA FIFO is a purely software construct with no HW counterpart.
+At the point of reset, all WQEs have been flushed so dma_fifo_cc is
+already equal to dma_fifo_pc. There is no need to reset either counter,
+similar to how skb_fifo pc/cc are untouched.
 
-No longer flushing the workqueue has the side effect of maybe no longer
-cancelling pending vport_change_handler work items, but that's ok since
-those are disabled elsewhere:
-- mlx5_eswitch_disable_locked disables the vport eq notifier.
-- mlx5_esw_vport_disable disarms the HW EQ notification and marks
-  vport->enabled under state_lock to false to prevent pending vport
-  handler from doing anything.
-- mlx5_eswitch_cleanup destroys the workqueue and makes sure all events
-  are disabled/finished.
+Remove the 'dma_fifo_cc = 0' reset.
 
-Fixes: f1bc646c9a06 ("net/mlx5: Use devl_ API in mlx5_esw_offloads_devlink_port_register")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+This fixes the following WARNING:
+    WARNING: CPU: 0 PID: 0 at drivers/iommu/dma-iommu.c:1240 iommu_dma_unmap_page+0x79/0x90
+    Modules linked in: mlx5_vdpa vringh vdpa bonding mlx5_ib mlx5_vfio_pci ipip mlx5_fwctl tunnel4 mlx5_core ib_ipoib geneve ip6_gre ip_gre gre nf_tables ip6_tunnel rdma_ucm ib_uverbs ib_umad vfio_pci vfio_pci_core act_mirred act_skbedit act_vlan vhost_net vhost tap ip6table_mangle ip6table_nat ip6table_filter ip6_tables iptable_mangle cls_matchall nfnetlink_cttimeout act_gact cls_flower sch_ingress vhost_iotlb iptable_raw tunnel6 vfio_iommu_type1 vfio openvswitch nsh rpcsec_gss_krb5 auth_rpcgss oid_registry xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter overlay zram zsmalloc rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core fuse [last unloaded: nf_tables]
+    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5_for_upstream_min_debug_2024_12_30_21_33 #1
+    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+    RIP: 0010:iommu_dma_unmap_page+0x79/0x90
+    Code: 2b 4d 3b 21 72 26 4d 3b 61 08 73 20 49 89 d8 44 89 f9 5b 4c 89 f2 4c 89 e6 48 89 ef 5d 41 5c 41 5d 41 5e 41 5f e9 c7 ae 9e ff <0f> 0b 5b 5d 41 5c 41 5d 41 5e 41 5f c3 66 2e 0f 1f 84 00 00 00 00
+    Call Trace:
+     <IRQ>
+     ? __warn+0x7d/0x110
+     ? iommu_dma_unmap_page+0x79/0x90
+     ? report_bug+0x16d/0x180
+     ? handle_bug+0x4f/0x90
+     ? exc_invalid_op+0x14/0x70
+     ? asm_exc_invalid_op+0x16/0x20
+     ? iommu_dma_unmap_page+0x79/0x90
+     ? iommu_dma_unmap_page+0x2e/0x90
+     dma_unmap_page_attrs+0x10d/0x1b0
+     mlx5e_tx_wi_dma_unmap+0xbe/0x120 [mlx5_core]
+     mlx5e_poll_tx_cq+0x16d/0x690 [mlx5_core]
+     mlx5e_napi_poll+0x8b/0xac0 [mlx5_core]
+     __napi_poll+0x24/0x190
+     net_rx_action+0x32a/0x3b0
+     ? mlx5_eq_comp_int+0x7e/0x270 [mlx5_core]
+     ? notifier_call_chain+0x35/0xa0
+     handle_softirqs+0xc9/0x270
+     irq_exit_rcu+0x71/0xd0
+     common_interrupt+0x7f/0xa0
+     </IRQ>
+     <TASK>
+     asm_common_interrupt+0x22/0x40
+
+Fixes: db75373c91b0 ("net/mlx5e: Recover Send Queue (SQ) from error state")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
 Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260305081019.1811100-1-tariqt@nvidia.com
+Link: https://patch.msgid.link/20260305142634.1813208-4-tariqt@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch.c  |  7 ++++---
- .../net/ethernet/mellanox/mlx5/core/eswitch.h  |  2 ++
- .../mellanox/mlx5/core/eswitch_offloads.c      | 18 +++++++++++++-----
- 3 files changed, 19 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index 79fa78b188250..2559237da49c5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1068,10 +1068,11 @@ static void mlx5_eswitch_event_handler_register(struct mlx5_eswitch *esw)
- 
- static void mlx5_eswitch_event_handler_unregister(struct mlx5_eswitch *esw)
- {
--	if (esw->mode == MLX5_ESWITCH_OFFLOADS && mlx5_eswitch_is_funcs_handler(esw->dev))
-+	if (esw->mode == MLX5_ESWITCH_OFFLOADS &&
-+	    mlx5_eswitch_is_funcs_handler(esw->dev)) {
- 		mlx5_eq_notifier_unregister(esw->dev, &esw->esw_funcs.nb);
--
--	flush_workqueue(esw->work_queue);
-+		atomic_inc(&esw->esw_funcs.generation);
-+	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
+index 51a23345caa18..1319e9ee20fc0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
+@@ -46,7 +46,6 @@ static void mlx5e_reset_txqsq_cc_pc(struct mlx5e_txqsq *sq)
+ 		  "SQ 0x%x: cc (0x%x) != pc (0x%x)\n",
+ 		  sq->sqn, sq->cc, sq->pc);
+ 	sq->cc = 0;
+-	sq->dma_fifo_cc = 0;
+ 	sq->pc = 0;
  }
  
- static void mlx5_eswitch_clear_vf_vports_info(struct mlx5_eswitch *esw)
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-index 23e612dd329db..48bebc3b8b12c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.h
-@@ -311,10 +311,12 @@ struct esw_mc_addr { /* SRIOV only */
- struct mlx5_host_work {
- 	struct work_struct	work;
- 	struct mlx5_eswitch	*esw;
-+	int			work_gen;
- };
- 
- struct mlx5_esw_functions {
- 	struct mlx5_nb		nb;
-+	atomic_t		generation;
- 	bool			host_funcs_disabled;
- 	u16			num_vfs;
- 	u16			num_ec_vfs;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index c218593dc40f4..e69e0f2c33964 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3387,22 +3387,28 @@ static void esw_offloads_steering_cleanup(struct mlx5_eswitch *esw)
- }
- 
- static void
--esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
-+esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, int work_gen,
-+			      const u32 *out)
- {
- 	struct devlink *devlink;
- 	bool host_pf_disabled;
- 	u16 new_num_vfs;
- 
-+	devlink = priv_to_devlink(esw->dev);
-+	devl_lock(devlink);
-+
-+	/* Stale work from one or more mode changes ago. Bail out. */
-+	if (work_gen != atomic_read(&esw->esw_funcs.generation))
-+		goto unlock;
-+
- 	new_num_vfs = MLX5_GET(query_esw_functions_out, out,
- 			       host_params_context.host_num_of_vfs);
- 	host_pf_disabled = MLX5_GET(query_esw_functions_out, out,
- 				    host_params_context.host_pf_disabled);
- 
- 	if (new_num_vfs == esw->esw_funcs.num_vfs || host_pf_disabled)
--		return;
-+		goto unlock;
- 
--	devlink = priv_to_devlink(esw->dev);
--	devl_lock(devlink);
- 	/* Number of VFs can only change from "0 to x" or "x to 0". */
- 	if (esw->esw_funcs.num_vfs > 0) {
- 		mlx5_eswitch_unload_vf_vports(esw, esw->esw_funcs.num_vfs);
-@@ -3417,6 +3423,7 @@ esw_vfs_changed_event_handler(struct mlx5_eswitch *esw, const u32 *out)
- 		}
- 	}
- 	esw->esw_funcs.num_vfs = new_num_vfs;
-+unlock:
- 	devl_unlock(devlink);
- }
- 
-@@ -3433,7 +3440,7 @@ static void esw_functions_changed_event_handler(struct work_struct *work)
- 	if (IS_ERR(out))
- 		goto out;
- 
--	esw_vfs_changed_event_handler(esw, out);
-+	esw_vfs_changed_event_handler(esw, host_work->work_gen, out);
- 	kvfree(out);
- out:
- 	kfree(host_work);
-@@ -3453,6 +3460,7 @@ int mlx5_esw_funcs_changed_handler(struct notifier_block *nb, unsigned long type
- 	esw = container_of(esw_funcs, struct mlx5_eswitch, esw_funcs);
- 
- 	host_work->esw = esw;
-+	host_work->work_gen = atomic_read(&esw_funcs->generation);
- 
- 	INIT_WORK(&host_work->work, esw_functions_changed_event_handler);
- 	queue_work(esw->work_queue, &host_work->work);
 -- 
 2.51.0
 
