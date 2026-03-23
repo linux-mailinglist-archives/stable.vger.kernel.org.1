@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-228368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229872-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oFhOLGNMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228368-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:23 +0100
+	id GJ+mBrFzwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229872-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:09:05 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C862F4442
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 845BF2F9816
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3004B3030852
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 472E232FEB0F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA8A199FAB;
-	Mon, 23 Mar 2026 14:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B0A28504F;
+	Mon, 23 Mar 2026 16:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PR0Bak98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+MGPTpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53343AE1B9;
-	Mon, 23 Mar 2026 14:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A02D376BD1;
+	Mon, 23 Mar 2026 16:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274928; cv=none; b=YSxXGqfPMqHUVNqKMgQ3jCg9e/hu0kZus+IJeeJicvJMcj/WtOeLzTxMAz7mrNphTzlREo3CCyTuK1Bo6WnifSq3KdKznH2ByLRZBCjfpiOUIpZiRXCnR5AEaSY1+ipS95cH1tjOgQ7BL0SE6FgK6yebONgKISeWm1ELdUlFfCA=
+	t=1774283091; cv=none; b=oCbxrcRn4kGnPPiZ3eV80gNkdvVIqsA8K3bB7e+irSbRagOWEH//NAblfomBhyWR2LUha0P6xJST5iun+OMWtzEKD7+GpexRQV0Y215IV4gbln0cz4TpIQUnLStjB72xpuVFEEEvk3J4LJ1LlBS0piq4mR+lh5StlrebghsTIyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274928; c=relaxed/simple;
-	bh=nznFkB9wzQs9LWBP8BC1cVfOxtTVGlRUSS8dXWbutSg=;
+	s=arc-20240116; t=1774283091; c=relaxed/simple;
+	bh=W4piLLsdOGSoJDS4De8zZ3UZFZD0F5dLMVIOqKjwUuQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q6ovnSxvLiOKSZhUucGipqnpG5BRJbd/yZHtBNEtj+d/aEr9+F+VL8lN8mt/3wmXeccGV7IJNbqOoVlhg6il8ufDpH+jk0952OhXjKFSjwgj+qpZJ4m70bTPOAUIj7108AdcE6cXWRFjWjJ/vaNuiHwO/0FRINs4hpuUyHzXXXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PR0Bak98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7882DC4CEF7;
-	Mon, 23 Mar 2026 14:08:47 +0000 (UTC)
+	 MIME-Version; b=bwPEPfz2VNCzU+YUNrwSa0BUo0TgH/Rr388PWMz9BAhW6k/TLH7GZc9eZgRgSgGQF5eWuwj63jtG68fCrOWIc0lCn962HkS5RIIJ4P6e1seDYPK3f+KXDvnFfU+ATJ4zDt8fHYgVLFe+O1fhgQ8C72mcMy+bONqQfVQJHfTfH/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+MGPTpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E212C4CEF7;
+	Mon, 23 Mar 2026 16:24:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274927;
-	bh=nznFkB9wzQs9LWBP8BC1cVfOxtTVGlRUSS8dXWbutSg=;
+	s=korg; t=1774283090;
+	bh=W4piLLsdOGSoJDS4De8zZ3UZFZD0F5dLMVIOqKjwUuQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PR0Bak98JJfTt3zKv2SKTDbesJvhX+bWAdOSZXCTpetfmyVetH4NP+1hEjwbU+HGJ
-	 Sce2gOk1bxQEB0umZOcWSkLnXSSlEHpf/RckLX6QmyCM3YONcoCQ+ySpGyvf27Q0IE
-	 HSxSYiBi3XjpwgLeimsvNbqnVBjtlLFOxcQUh4yE=
+	b=A+MGPTpR8l+/Hs4RGZIKgLH6QZPcWWgXB9NYrbSj5hcGPgukrFyDvsgh//fV6CPY8
+	 /hYkpFLym7z3r0likxrfzBmrUKBnX5NkioncKxPdJSieWexbLMZuES4CvzovRVrh/M
+	 W0bVhJOQXDTzdoJ5cCik1XgDx/MvRypTBZwArHrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.18 159/212] libie: prevent memleak in fwlog code
+	Zilin Guan <zilin@seu.edu.cn>,
+	Christian Brauner <brauner@kernel.org>,
+	Robert Garcia <rob_garcia@163.com>
+Subject: [PATCH 6.1 398/481] binfmt_misc: restore write access before closing files opened by open_exec()
 Date: Mon, 23 Mar 2026 14:46:20 +0100
-Message-ID: <20260323134508.774354066@linuxfoundation.org>
+Message-ID: <20260323134534.864977547@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,187 +66,81 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[intel.com:server fail,sto.lore.kernel.org:server fail,linuxfoundation.org:server fail];
-	TAGGED_FROM(0.00)[bounces-228368-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229872-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,seu.edu.cn,kernel.org,163.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,intel.com:email]
-X-Rspamd-Queue-Id: 52C862F4442
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 845BF2F9816
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 6850deb61118345996f03b87817b4ae0f2f25c38 ]
+commit 90f601b497d76f40fa66795c3ecf625b6aced9fd upstream.
 
-All cmd_buf buffers are allocated and need to be freed after usage.
-Add an error unwinding path that properly frees these buffers.
+bm_register_write() opens an executable file using open_exec(), which
+internally calls do_open_execat() and denies write access on the file to
+avoid modification while it is being executed.
 
-The memory leak happens whenever fwlog configuration is changed. For
-example:
+However, when an error occurs, bm_register_write() closes the file using
+filp_close() directly. This does not restore the write permission, which
+may cause subsequent write operations on the same file to fail.
 
-$echo 256K > /sys/kernel/debug/ixgbe/0000\:32\:00.0/fwlog/log_size
+Fix this by calling exe_file_allow_write_access() before filp_close() to
+restore the write permission properly.
 
-Fixes: 96a9a9341cda ("ice: configure FW logging")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Link: https://patch.msgid.link/20251105022923.1813587-1-zilin@seu.edu.cn
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Use allow_write_access() instead of exe_file_allow_write_access()
+according to commit 0357ef03c94ef
+("fs: don't block write during exec on pre-content watched files"). ]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/libie/fwlog.c | 49 +++++++++++++++++-------
- 1 file changed, 36 insertions(+), 13 deletions(-)
+ fs/binfmt_misc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/libie/fwlog.c b/drivers/net/ethernet/intel/libie/fwlog.c
-index 5d890d9d3c4d5..3b32986c2978a 100644
---- a/drivers/net/ethernet/intel/libie/fwlog.c
-+++ b/drivers/net/ethernet/intel/libie/fwlog.c
-@@ -433,17 +433,21 @@ libie_debugfs_module_write(struct file *filp, const char __user *buf,
- 	module = libie_find_module_by_dentry(fwlog->debugfs_modules, dentry);
- 	if (module < 0) {
- 		dev_info(dev, "unknown module\n");
--		return -EINVAL;
-+		count = -EINVAL;
-+		goto free_cmd_buf;
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -816,8 +816,10 @@ out:
+ 	inode_unlock(d_inode(root));
+ 
+ 	if (err) {
+-		if (f)
++		if (f) {
++			allow_write_access(f);
+ 			filp_close(f, NULL);
++		}
+ 		kfree(e);
+ 		return err;
  	}
- 
- 	cnt = sscanf(cmd_buf, "%s", user_val);
--	if (cnt != 1)
--		return -EINVAL;
-+	if (cnt != 1) {
-+		count = -EINVAL;
-+		goto free_cmd_buf;
-+	}
- 
- 	log_level = sysfs_match_string(libie_fwlog_level_string, user_val);
- 	if (log_level < 0) {
- 		dev_info(dev, "unknown log level '%s'\n", user_val);
--		return -EINVAL;
-+		count = -EINVAL;
-+		goto free_cmd_buf;
- 	}
- 
- 	if (module != LIBIE_AQC_FW_LOG_ID_MAX) {
-@@ -458,6 +462,9 @@ libie_debugfs_module_write(struct file *filp, const char __user *buf,
- 			fwlog->cfg.module_entries[i].log_level = log_level;
- 	}
- 
-+free_cmd_buf:
-+	kfree(cmd_buf);
-+
- 	return count;
- }
- 
-@@ -515,23 +522,31 @@ libie_debugfs_nr_messages_write(struct file *filp, const char __user *buf,
- 		return PTR_ERR(cmd_buf);
- 
- 	ret = sscanf(cmd_buf, "%s", user_val);
--	if (ret != 1)
--		return -EINVAL;
-+	if (ret != 1) {
-+		count = -EINVAL;
-+		goto free_cmd_buf;
-+	}
- 
- 	ret = kstrtos16(user_val, 0, &nr_messages);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		count = ret;
-+		goto free_cmd_buf;
-+	}
- 
- 	if (nr_messages < LIBIE_AQC_FW_LOG_MIN_RESOLUTION ||
- 	    nr_messages > LIBIE_AQC_FW_LOG_MAX_RESOLUTION) {
- 		dev_err(dev, "Invalid FW log number of messages %d, value must be between %d - %d\n",
- 			nr_messages, LIBIE_AQC_FW_LOG_MIN_RESOLUTION,
- 			LIBIE_AQC_FW_LOG_MAX_RESOLUTION);
--		return -EINVAL;
-+		count = -EINVAL;
-+		goto free_cmd_buf;
- 	}
- 
- 	fwlog->cfg.log_resolution = nr_messages;
- 
-+free_cmd_buf:
-+	kfree(cmd_buf);
-+
- 	return count;
- }
- 
-@@ -588,8 +603,10 @@ libie_debugfs_enable_write(struct file *filp, const char __user *buf,
- 		return PTR_ERR(cmd_buf);
- 
- 	ret = sscanf(cmd_buf, "%s", user_val);
--	if (ret != 1)
--		return -EINVAL;
-+	if (ret != 1) {
-+		ret = -EINVAL;
-+		goto free_cmd_buf;
-+	}
- 
- 	ret = kstrtobool(user_val, &enable);
- 	if (ret)
-@@ -624,6 +641,8 @@ libie_debugfs_enable_write(struct file *filp, const char __user *buf,
- 	 */
- 	if (WARN_ON(ret != (ssize_t)count && ret >= 0))
- 		ret = -EIO;
-+free_cmd_buf:
-+	kfree(cmd_buf);
- 
- 	return ret;
- }
-@@ -682,8 +701,10 @@ libie_debugfs_log_size_write(struct file *filp, const char __user *buf,
- 		return PTR_ERR(cmd_buf);
- 
- 	ret = sscanf(cmd_buf, "%s", user_val);
--	if (ret != 1)
--		return -EINVAL;
-+	if (ret != 1) {
-+		ret = -EINVAL;
-+		goto free_cmd_buf;
-+	}
- 
- 	index = sysfs_match_string(libie_fwlog_log_size, user_val);
- 	if (index < 0) {
-@@ -712,6 +733,8 @@ libie_debugfs_log_size_write(struct file *filp, const char __user *buf,
- 	 */
- 	if (WARN_ON(ret != (ssize_t)count && ret >= 0))
- 		ret = -EIO;
-+free_cmd_buf:
-+	kfree(cmd_buf);
- 
- 	return ret;
- }
--- 
-2.51.0
-
 
 
 
