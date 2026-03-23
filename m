@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229338-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qGv+Bm5XwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228806-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:30 +0100
+	id gBRHH4pdwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229338-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2002F5D72
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAE82F67E3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44096324B64F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 60A0B310A895
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D88023D288;
-	Mon, 23 Mar 2026 14:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E68283FE5;
+	Mon, 23 Mar 2026 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AO1Eklnr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oXEWKJkE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EEF1A5B84;
-	Mon, 23 Mar 2026 14:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090E3263F4A;
+	Mon, 23 Mar 2026 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277181; cv=none; b=ishkrQ8xlx0Fi/uAixVYAidT04VI4bMa99qAnmolI/oujxH17PUCCMGsEimQgMlLiJu3kHx/97/eiRZ5dTk1RkcJQTmyR+m2FGMGCHox/6QysTnxDOiJ2jPXQ2riT3gr/14X4mRDoslMolp9my2q44HOu0dZKQOsIP0qlWem3M0=
+	t=1774278803; cv=none; b=BhxSPdKb1yA+9xhV3BpPdL0W77hzY74qDhOB0qWgLUqXcndLisIMvUIq5j8VFhLQ80YetnjECWWl6AFjZx97RcUyivYqVKNFANoh9hDHZtG1+seku/FYxMFnk9lYh+y4nGV+1tRoamw02SinZKzCKVte0qIBimMFtFJLyeWZ3aI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277181; c=relaxed/simple;
-	bh=G7O1XJZGXH6nC4okZtgWgeNCU/MC7H9vLZCBKTkqPjw=;
+	s=arc-20240116; t=1774278803; c=relaxed/simple;
+	bh=4FjBjFDNFWwJzCAEwlO9n/TP/gfSV/1PKZV7ESQ6JXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGiaQxUlBXRN5IuM2CAki5c07ggqygrkQiRHw6HkIfcVWYfHh1UJHxIJ/3sqkNC3uuusCbdVE2P93PPJaECgutavH0dQ9+79kE2+BacCBF3KUXiIWuqgXVLXsxiK1Vj1W//xYF/2LAJ5OrK0uPNFna//0HfZ1DW4z7o1rK1wgGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AO1Eklnr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EE0C4CEF7;
-	Mon, 23 Mar 2026 14:46:21 +0000 (UTC)
+	 MIME-Version; b=N4kpsPVAJn6LYTNxsKqaHD5TG/rh/nKPcvKQa9wYRanKH/ebekskQHi9yy6VLd+zr4U5fWcw4P0cJlMhM9K/NSuzc+0irufvRXtVMb4ZEfL0DGZR/UgBNIz7fRdKhSDIX/eGqN43mCL10if3SD9J+pZdaYN4Sa8K7pL9Id/3fwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oXEWKJkE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81436C4CEF7;
+	Mon, 23 Mar 2026 15:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277181;
-	bh=G7O1XJZGXH6nC4okZtgWgeNCU/MC7H9vLZCBKTkqPjw=;
+	s=korg; t=1774278802;
+	bh=4FjBjFDNFWwJzCAEwlO9n/TP/gfSV/1PKZV7ESQ6JXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AO1EklnrrAlL1C8GGscxiIUjeg2zFwROScsAaGnFujeNwR9aWKt1rrlXnsJdyJYMB
-	 S0QLlRWomxzFSB4C3eFQK4uzImTkHRKgUmqAOz99AYxL+EIqZqhvprUWdmIHJ4RUhU
-	 Umot4ePafVcf3OS21YKZeQRgAEo3YrFJMFIA/18Y=
+	b=oXEWKJkEK8BNHcfxist5zyQqNHNu6aYYtWe0AZC/ZQWs091jBagqXiw2gceDE+3fO
+	 YdwNKXsWuMi43ENQCAN9fyj/O2nJ1z3GOQDfyZ+5Wqk3ILzA8y8gHH7T+R2DOnqXFf
+	 BQVkxNvhRpejcJZ/r4sc8vlMhs2cqpfVI3Yb1c5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Michaelis <code@mgjm.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 348/460] io_uring/kbuf: propagate BUF_MORE through early buffer commit path
-Date: Mon, 23 Mar 2026 14:45:44 +0100
-Message-ID: <20260323134535.100704458@linuxfoundation.org>
+	Felix Fietkau <nbd@nbd.name>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Li hongliang <1468888505@139.com>
+Subject: [PATCH 6.6 425/567] net: gso: fix tcp fraglist segmentation after pull from frag_list
+Date: Mon, 23 Mar 2026 14:45:45 +0100
+Message-ID: <20260323134544.406996061@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +67,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228806-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229338-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,nbd.name,google.com,kernel.org,139.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
-	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6D2002F5D72
+X-Rspamd-Queue-Id: EBAE82F67E3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Felix Fietkau <nbd@nbd.name>
 
-Commit 418eab7a6f3c002d8e64d6e95ec27118017019af upstream.
+[ Upstream commit 17bd3bd82f9f79f3feba15476c2b2c95a9b11ff8 ]
 
-When io_should_commit() returns true (eg for non-pollable files), buffer
-commit happens at buffer selection time and sel->buf_list is set to
-NULL. When __io_put_kbufs() generates CQE flags at completion time, it
-calls __io_put_kbuf_ring() which finds a NULL buffer_list and hence
-cannot determine whether the buffer was consumed or not. This means that
-IORING_CQE_F_BUF_MORE is never set for non-pollable input with
-incrementally consumed buffers.
+Detect tcp gso fraglist skbs with corrupted geometry (see below) and
+pass these to skb_segment instead of skb_segment_list, as the first
+can segment them correctly.
 
-Likewise for io_buffers_select(), which always commits upfront and
-discards the return value of io_kbuf_commit().
+Valid SKB_GSO_FRAGLIST skbs
+- consist of two or more segments
+- the head_skb holds the protocol headers plus first gso_size
+- one or more frag_list skbs hold exactly one segment
+- all but the last must be gso_size
 
-Add REQ_F_BUF_MORE to store the result of io_kbuf_commit() during early
-commit. Then __io_put_kbuf_ring() can check this flag and set
-IORING_F_BUF_MORE accordingy.
+Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
+modify these skbs, breaking these invariants.
 
-Reported-by: Martin Michaelis <code@mgjm.de>
+In extreme cases they pull all data into skb linear. For TCP, this
+causes a NULL ptr deref in __tcpv4_gso_segment_list_csum at
+tcp_hdr(seg->next).
+
+Detect invalid geometry due to pull, by checking head_skb size.
+Don't just drop, as this may blackhole a destination. Convert to be
+able to pass to regular skb_segment.
+
+Approach and description based on a patch by Willem de Bruijn.
+
+Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
+Link: https://lore.kernel.org/netdev/20240922150450.3873767-1-willemdebruijn.kernel@gmail.com/
+Fixes: bee88cd5bd83 ("net: add support for segmenting TCP fraglist GSO packets")
 Cc: stable@vger.kernel.org
-Fixes: ae98dbf43d75 ("io_uring/kbuf: add support for incremental buffer consumption")
-Link: https://github.com/axboe/liburing/issues/1553
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240926085315.51524-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Li hongliang <1468888505@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/io_uring_types.h |    3 +++
- io_uring/kbuf.c                |    6 ++++--
- io_uring/kbuf.h                |    4 +++-
- 3 files changed, 10 insertions(+), 3 deletions(-)
+ net/ipv4/tcp_offload.c   |   10 ++++++++--
+ net/ipv6/tcpv6_offload.c |   10 ++++++++--
+ 2 files changed, 16 insertions(+), 4 deletions(-)
 
---- a/include/linux/io_uring_types.h
-+++ b/include/linux/io_uring_types.h
-@@ -467,6 +467,7 @@ enum {
- 	REQ_F_BL_EMPTY_BIT,
- 	REQ_F_BL_NO_RECYCLE_BIT,
- 	REQ_F_BUFFERS_COMMIT_BIT,
-+	REQ_F_BUF_MORE_BIT,
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -104,8 +104,14 @@ static struct sk_buff *tcp4_gso_segment(
+ 	if (!pskb_may_pull(skb, sizeof(struct tcphdr)))
+ 		return ERR_PTR(-EINVAL);
  
- 	/* not a real bit, just to check we're not overflowing the space */
- 	__REQ_F_LAST_BIT,
-@@ -547,6 +548,8 @@ enum {
- 	REQ_F_BL_NO_RECYCLE	= IO_REQ_FLAG(REQ_F_BL_NO_RECYCLE_BIT),
- 	/* buffer ring head needs incrementing on put */
- 	REQ_F_BUFFERS_COMMIT	= IO_REQ_FLAG(REQ_F_BUFFERS_COMMIT_BIT),
-+	/* incremental buffer consumption, more space available */
-+	REQ_F_BUF_MORE		= IO_REQ_FLAG(REQ_F_BUF_MORE_BIT),
- };
+-	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __tcp4_gso_segment_list(skb, features);
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
++		struct tcphdr *th = tcp_hdr(skb);
++
++		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
++			return __tcp4_gso_segment_list(skb, features);
++
++		skb->ip_summed = CHECKSUM_NONE;
++	}
  
- typedef void (*io_req_tw_func_t)(struct io_kiocb *req, struct io_tw_state *ts);
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -175,7 +175,8 @@ static void __user *io_ring_buffer_selec
- 		 * the transfer completes (or if we get -EAGAIN and must poll of
- 		 * retry).
- 		 */
--		io_kbuf_commit(req, bl, *len, 1);
-+		if (!io_kbuf_commit(req, bl, *len, 1))
-+			req->flags |= REQ_F_BUF_MORE;
- 		req->buf_list = NULL;
- 	}
- 	return ret;
-@@ -321,7 +322,8 @@ int io_buffers_select(struct io_kiocb *r
- 		 */
- 		if (ret > 0) {
- 			req->flags |= REQ_F_BUFFERS_COMMIT | REQ_F_BL_NO_RECYCLE;
--			io_kbuf_commit(req, bl, arg->out_len, ret);
-+			if (!io_kbuf_commit(req, bl, arg->out_len, ret))
-+				req->flags |= REQ_F_BUF_MORE;
- 		}
- 	} else {
- 		ret = io_provided_buffers_select(req, &arg->out_len, bl, arg->iovs);
---- a/io_uring/kbuf.h
-+++ b/io_uring/kbuf.h
-@@ -165,7 +165,9 @@ static inline bool __io_put_kbuf_ring(st
- 		ret = io_kbuf_commit(req, bl, len, nr);
- 		req->buf_index = bl->bgid;
- 	}
--	req->flags &= ~REQ_F_BUFFER_RING;
-+	if (ret && (req->flags & REQ_F_BUF_MORE))
-+		ret = false;
-+	req->flags &= ~(REQ_F_BUFFER_RING | REQ_F_BUF_MORE);
- 	return ret;
- }
+ 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
+ 		const struct iphdr *iph = ip_hdr(skb);
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -106,8 +106,14 @@ static struct sk_buff *tcp6_gso_segment(
+ 	if (!pskb_may_pull(skb, sizeof(*th)))
+ 		return ERR_PTR(-EINVAL);
  
+-	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __tcp6_gso_segment_list(skb, features);
++	if (skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST) {
++		struct tcphdr *th = tcp_hdr(skb);
++
++		if (skb_pagelen(skb) - th->doff * 4 == skb_shinfo(skb)->gso_size)
++			return __tcp6_gso_segment_list(skb, features);
++
++		skb->ip_summed = CHECKSUM_NONE;
++	}
+ 
+ 	if (unlikely(skb->ip_summed != CHECKSUM_PARTIAL)) {
+ 		const struct ipv6hdr *ipv6h = ipv6_hdr(skb);
 
 
 
