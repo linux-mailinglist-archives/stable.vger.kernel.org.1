@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228156-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id qG5lFbVWwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228766-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:25 +0100
+	id CNrzLkNJwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228156-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C83292F5BE5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:05:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30CBF2F3E09
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02C7B3102D9F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 082E9304033F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D953A961B;
-	Mon, 23 Mar 2026 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D1B3AB29B;
+	Mon, 23 Mar 2026 13:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yr3Ge8th"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIGDQJGt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0791133CE9A;
-	Mon, 23 Mar 2026 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BFB1F91F6;
+	Mon, 23 Mar 2026 13:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277066; cv=none; b=UJgMMTJirdRzgdFL5cAEUc2r3F8JHGDxWcu/WXXsBy7KvetNnouFeHPmeUoWtqFqfOv7l+oIZ5HP0pwh3xDJEuLfdx10u9yJVVn/dXBFJtb+MWx2NrfiajeIA7suT9Jo6BuAILTZl6sDeZr490xqN4h/n91rJyU9RMKBHMXhauI=
+	t=1774274295; cv=none; b=u0RlkOHxtIVDjxuv0t+DMr3rjZZHb+R1k/FRJ9LDsiQJj6jj7doRl7B6c0SU/ms7oam5OIrogoFEnK6tCHYx0MCIRRcIZ1jdwS7N4F1XVZ34mZLSwby8ZxBs8nGehBt1xiZpUOniU9qAIEYJNkol3OI7gPV/M8/vM8LWdKa9Oms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277066; c=relaxed/simple;
-	bh=rMjDvjNuXTxCXlKP8HyA+rWF+DSX1KXdZa88VSNJFBk=;
+	s=arc-20240116; t=1774274295; c=relaxed/simple;
+	bh=DxU1P7HrxKQTgzf8wduP1jCU7DhxdhZDN5ouO6nhrMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ufwzTc3NPtVjatafHZsKlzFkjNHlhUsdvX6SXEVHFrnWLXOI6SDqtd1cIdJiLSKQca9zt1NRP6F2v1AGeF47aCttjd4oci1WwmOIXIFX9vpnsIjEpF4AFLlmwogVhgC0YP6aRAxoLgJZwD5lD3Jvcsu49eQBlGa6T9x0HC+pczI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yr3Ge8th; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95635C4CEF7;
-	Mon, 23 Mar 2026 14:44:25 +0000 (UTC)
+	 MIME-Version; b=nV3brIdEZJs8XvH26Q7CjwDGHl6PKC7PMpJ9t+GFi4tG7XvEIJJ6PhOq+DvziZyy4aujNjZgpN4QLDShnPm+q8tTxaRjyF8zZt5Co01k018w+nmlp1u3S0IQOZJ0timC2zx7lJB2fMft7c7zVHt2tE8xZ4golOeTQiWvFB2gDA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIGDQJGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38F1C2BC9E;
+	Mon, 23 Mar 2026 13:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277065;
-	bh=rMjDvjNuXTxCXlKP8HyA+rWF+DSX1KXdZa88VSNJFBk=;
+	s=korg; t=1774274295;
+	bh=DxU1P7HrxKQTgzf8wduP1jCU7DhxdhZDN5ouO6nhrMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yr3Ge8th+mgvoM0bbLJ8PjXzcNNrH8u2hK30x1oId5Kn8FTVdxfB1vCTaBHWEDdp8
-	 k14dCMyrcw37fKRGSDZipH+EsvWflGaWRIuFkJ3xldmNStWrHVpeQeFtcjxPWU/boD
-	 5cA1FKJGfhHkfC2t7Yv8RCclUPBsmwGQvstEi5Xw=
+	b=qIGDQJGtUJiW3dSOPx4o1DMghSxPfEqf0zZxSe1OHXhP9FonwZi0XGZrz16XCN1kt
+	 eXYXESHIiz320lX2b82BGPrrKZJ/e97t61jfVzNbmgfzwqvBtnhkCBzLJaDVyrZdjn
+	 KO7TR76hXTO8v0LBUV/scUHMQW8dZpf+tYHVArtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.12 308/460] selftests/hid: fix compilation when bpf_wq and hid_device are not exported
+	Igor Ushakov <sysroot314@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 127/220] af_unix: Give up GC if MSG_PEEK intervened.
 Date: Mon, 23 Mar 2026 14:45:04 +0100
-Message-ID: <20260323134534.061719162@linuxfoundation.org>
+Message-ID: <20260323134508.596880934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +64,294 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228766-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228156-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: C83292F5BE5
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
+X-Rspamd-Queue-Id: 30CBF2F3E09
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <bentiss@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-commit 5d4c6c132ea9a967d48890dd03e6a786c060e968 upstream.
+[ Upstream commit e5b31d988a41549037b8d8721a3c3cae893d8670 ]
 
-This can happen in situations when CONFIG_HID_SUPPORT is set to no, or
-some complex situations where struct bpf_wq is not exported.
+Igor Ushakov reported that GC purged the receive queue of
+an alive socket due to a race with MSG_PEEK with a nice repro.
 
-So do the usual dance of hiding them before including vmlinux.h, and
-then redefining them and make use of CO-RE to have the correct offsets.
+This is the exact same issue previously fixed by commit
+cbcf01128d0a ("af_unix: fix garbage collect vs MSG_PEEK").
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202603111558.KLCIxsZB-lkp@intel.com/
-Fixes: fe8d561db3e8 ("selftests/hid: add wq test for hid_bpf_input_report()")
-Cc: stable@vger.kernel.org
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Reviewed-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After GC was replaced with the current algorithm, the cited
+commit removed the locking dance in unix_peek_fds() and
+reintroduced the same issue.
+
+The problem is that MSG_PEEK bumps a file refcount without
+interacting with GC.
+
+Consider an SCC containing sk-A and sk-B, where sk-A is
+close()d but can be recv()ed via sk-B.
+
+The bad thing happens if sk-A is recv()ed with MSG_PEEK from
+sk-B and sk-B is close()d while GC is checking unix_vertex_dead()
+for sk-A and sk-B.
+
+  GC thread                    User thread
+  ---------                    -----------
+  unix_vertex_dead(sk-A)
+  -> true   <------.
+                    \
+                     `------   recv(sk-B, MSG_PEEK)
+              invalidate !!    -> sk-A's file refcount : 1 -> 2
+
+                               close(sk-B)
+                               -> sk-B's file refcount : 2 -> 1
+  unix_vertex_dead(sk-B)
+  -> true
+
+Initially, sk-A's file refcount is 1 by the inflight fd in sk-B
+recvq.  GC thinks sk-A is dead because the file refcount is the
+same as the number of its inflight fds.
+
+However, sk-A's file refcount is bumped silently by MSG_PEEK,
+which invalidates the previous evaluation.
+
+At this moment, sk-B's file refcount is 2; one by the open fd,
+and one by the inflight fd in sk-A.  The subsequent close()
+releases one refcount by the former.
+
+Finally, GC incorrectly concludes that both sk-A and sk-B are dead.
+
+One option is to restore the locking dance in unix_peek_fds(),
+but we can resolve this more elegantly thanks to the new algorithm.
+
+The point is that the issue does not occur without the subsequent
+close() and we actually do not need to synchronise MSG_PEEK with
+the dead SCC detection.
+
+When the issue occurs, close() and GC touch the same file refcount.
+If GC sees the refcount being decremented by close(), it can just
+give up garbage-collecting the SCC.
+
+Therefore, we only need to signal the race during MSG_PEEK with
+a proper memory barrier to make it visible to the GC.
+
+Let's use seqcount_t to notify GC when MSG_PEEK occurs and let
+it defer the SCC to the next run.
+
+This way no locking is needed on the MSG_PEEK side, and we can
+avoid imposing a penalty on every MSG_PEEK unnecessarily.
+
+Note that we can retry within unix_scc_dead() if MSG_PEEK is
+detected, but we do not do so to avoid hung task splat from
+abusive MSG_PEEK calls.
+
+Fixes: 118f457da9ed ("af_unix: Remove lock dance in unix_peek_fds().")
+Reported-by: Igor Ushakov <sysroot314@gmail.com>
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260311054043.1231316-1-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/hid/progs/hid_bpf_helpers.h |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/unix/af_unix.c |  2 ++
+ net/unix/af_unix.h |  1 +
+ net/unix/garbage.c | 79 ++++++++++++++++++++++++++++++----------------
+ 3 files changed, 54 insertions(+), 28 deletions(-)
 
---- a/tools/testing/selftests/hid/progs/hid_bpf_helpers.h
-+++ b/tools/testing/selftests/hid/progs/hid_bpf_helpers.h
-@@ -6,8 +6,10 @@
- #define __HID_BPF_HELPERS_H
- 
- /* "undefine" structs and enums in vmlinux.h, because we "override" them below */
-+#define bpf_wq bpf_wq___not_used
- #define hid_bpf_ctx hid_bpf_ctx___not_used
- #define hid_bpf_ops hid_bpf_ops___not_used
-+#define hid_device hid_device___not_used
- #define hid_report_type hid_report_type___not_used
- #define hid_class_request hid_class_request___not_used
- #define hid_bpf_attach_flags hid_bpf_attach_flags___not_used
-@@ -24,8 +26,10 @@
- 
- #include "vmlinux.h"
- 
-+#undef bpf_wq
- #undef hid_bpf_ctx
- #undef hid_bpf_ops
-+#undef hid_device
- #undef hid_report_type
- #undef hid_class_request
- #undef hid_bpf_attach_flags
-@@ -52,6 +56,14 @@ enum hid_report_type {
- 	HID_REPORT_TYPES,
- };
- 
-+struct hid_device {
-+	unsigned int id;
-+} __attribute__((preserve_access_index));
+diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+index 6965b9a49d68a..3db79e83d2114 100644
+--- a/net/unix/af_unix.c
++++ b/net/unix/af_unix.c
+@@ -1958,6 +1958,8 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
+ static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
+ {
+ 	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
 +
-+struct bpf_wq {
-+	__u64 __opaque[2];
-+};
++	unix_peek_fpl(scm->fp);
+ }
+ 
+ static void unix_destruct_scm(struct sk_buff *skb)
+diff --git a/net/unix/af_unix.h b/net/unix/af_unix.h
+index c4f1b2da363de..8119dbeef3a3c 100644
+--- a/net/unix/af_unix.h
++++ b/net/unix/af_unix.h
+@@ -29,6 +29,7 @@ void unix_del_edges(struct scm_fp_list *fpl);
+ void unix_update_edges(struct unix_sock *receiver);
+ int unix_prepare_fpl(struct scm_fp_list *fpl);
+ void unix_destroy_fpl(struct scm_fp_list *fpl);
++void unix_peek_fpl(struct scm_fp_list *fpl);
+ void unix_schedule_gc(struct user_struct *user);
+ 
+ /* SOCK_DIAG */
+diff --git a/net/unix/garbage.c b/net/unix/garbage.c
+index 25f65817faab9..aaa5f5bf51cad 100644
+--- a/net/unix/garbage.c
++++ b/net/unix/garbage.c
+@@ -318,6 +318,25 @@ void unix_destroy_fpl(struct scm_fp_list *fpl)
+ 	unix_free_vertices(fpl);
+ }
+ 
++static bool gc_in_progress;
++static seqcount_t unix_peek_seq = SEQCNT_ZERO(unix_peek_seq);
 +
- struct hid_bpf_ctx {
- 	struct hid_device *hid;
- 	__u32 allocated_size;
++void unix_peek_fpl(struct scm_fp_list *fpl)
++{
++	static DEFINE_SPINLOCK(unix_peek_lock);
++
++	if (!fpl || !fpl->count_unix)
++		return;
++
++	if (!READ_ONCE(gc_in_progress))
++		return;
++
++	/* Invalidate the final refcnt check in unix_vertex_dead(). */
++	spin_lock(&unix_peek_lock);
++	raw_write_seqcount_barrier(&unix_peek_seq);
++	spin_unlock(&unix_peek_lock);
++}
++
+ static bool unix_vertex_dead(struct unix_vertex *vertex)
+ {
+ 	struct unix_edge *edge;
+@@ -351,6 +370,36 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
+ 	return true;
+ }
+ 
++static LIST_HEAD(unix_visited_vertices);
++static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
++
++static bool unix_scc_dead(struct list_head *scc, bool fast)
++{
++	struct unix_vertex *vertex;
++	bool scc_dead = true;
++	unsigned int seq;
++
++	seq = read_seqcount_begin(&unix_peek_seq);
++
++	list_for_each_entry_reverse(vertex, scc, scc_entry) {
++		/* Don't restart DFS from this vertex. */
++		list_move_tail(&vertex->entry, &unix_visited_vertices);
++
++		/* Mark vertex as off-stack for __unix_walk_scc(). */
++		if (!fast)
++			vertex->index = unix_vertex_grouped_index;
++
++		if (scc_dead)
++			scc_dead = unix_vertex_dead(vertex);
++	}
++
++	/* If MSG_PEEK intervened, defer this SCC to the next round. */
++	if (read_seqcount_retry(&unix_peek_seq, seq))
++		return false;
++
++	return scc_dead;
++}
++
+ static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
+ {
+ 	struct unix_vertex *vertex;
+@@ -404,9 +453,6 @@ static bool unix_scc_cyclic(struct list_head *scc)
+ 	return false;
+ }
+ 
+-static LIST_HEAD(unix_visited_vertices);
+-static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
+-
+ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
+ 				     unsigned long *last_index,
+ 				     struct sk_buff_head *hitlist)
+@@ -474,9 +520,7 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
+ 	}
+ 
+ 	if (vertex->index == vertex->scc_index) {
+-		struct unix_vertex *v;
+ 		struct list_head scc;
+-		bool scc_dead = true;
+ 
+ 		/* SCC finalised.
+ 		 *
+@@ -485,18 +529,7 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
+ 		 */
+ 		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
+ 
+-		list_for_each_entry_reverse(v, &scc, scc_entry) {
+-			/* Don't restart DFS from this vertex in unix_walk_scc(). */
+-			list_move_tail(&v->entry, &unix_visited_vertices);
+-
+-			/* Mark vertex as off-stack. */
+-			v->index = unix_vertex_grouped_index;
+-
+-			if (scc_dead)
+-				scc_dead = unix_vertex_dead(v);
+-		}
+-
+-		if (scc_dead) {
++		if (unix_scc_dead(&scc, false)) {
+ 			unix_collect_skb(&scc, hitlist);
+ 		} else {
+ 			if (unix_vertex_max_scc_index < vertex->scc_index)
+@@ -550,19 +583,11 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
+ 	while (!list_empty(&unix_unvisited_vertices)) {
+ 		struct unix_vertex *vertex;
+ 		struct list_head scc;
+-		bool scc_dead = true;
+ 
+ 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
+ 		list_add(&scc, &vertex->scc_entry);
+ 
+-		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
+-			list_move_tail(&vertex->entry, &unix_visited_vertices);
+-
+-			if (scc_dead)
+-				scc_dead = unix_vertex_dead(vertex);
+-		}
+-
+-		if (scc_dead) {
++		if (unix_scc_dead(&scc, true)) {
+ 			cyclic_sccs--;
+ 			unix_collect_skb(&scc, hitlist);
+ 		}
+@@ -577,8 +602,6 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
+ 		   cyclic_sccs ? UNIX_GRAPH_CYCLIC : UNIX_GRAPH_NOT_CYCLIC);
+ }
+ 
+-static bool gc_in_progress;
+-
+ static void unix_gc(struct work_struct *work)
+ {
+ 	struct sk_buff_head hitlist;
+-- 
+2.51.0
+
 
 
 
