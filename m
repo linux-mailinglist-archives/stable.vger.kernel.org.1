@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229361-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id cEROEZBUwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228829-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:16 +0100
+	id iEmLETFewWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229361-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:21 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7432F5760
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21572F694D
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBA9830B2405
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2A6C63143328
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14DFF23C4FF;
-	Mon, 23 Mar 2026 14:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3CA3B38BE;
+	Mon, 23 Mar 2026 15:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="giHaf6U4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFuB51ja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB831A5B84;
-	Mon, 23 Mar 2026 14:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27733B27C5;
+	Mon, 23 Mar 2026 15:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277248; cv=none; b=YxXszVqdDs/v/+7tr9E5ZkcAWezjhWPukPznTZ36By8iAYFsp1EdFzO94/n94qHR+cQ+oDv8YL0rHfAp2SzTbti3MXCvYmbezTeGSWb3OO14YAxGQ/OeBCZnJriInaKAtYSLxLNwvHJU+WzsjHNLZ7+ckFiNk6uxCe83eaAVuUs=
+	t=1774278872; cv=none; b=SIrzmOe0WOhOEeFavtytIYU90Bbp9IixBzB3jQAScUWzMT6TKHZho2PSc1UGAncKQ8H+dqpUJcXjbVg12PVNLuDm7O6JgBzmODnBntsvymnXXV0AMVht8qHODOw+ytDXMbKQoaRj/DA7RvqStDtv6e+rq7cJyIkkSbiyxIpLoyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277248; c=relaxed/simple;
-	bh=3Z4xaFDWhsIOF+VurN1BF2aBY78FX2NIzYXZ+8sLFOo=;
+	s=arc-20240116; t=1774278872; c=relaxed/simple;
+	bh=MMzqA+Dbg2RNNt6LexGsyfqhYByOnlzP2G4aX/vCmD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZwRrou6R2cL+Y0oSlD6E0UMM9DheA12tNd85jRe3dIXYBUwSTTnwcVPhKAxSjDRjjj/RpitGRmG0f6Y2FlMjyAMaFfOjYu7ToEGBZA6V/VKQMSCqJYlcc3o5QXDIeNnlWuOyoAbDuK4aZwBCbM04It0gVVdjdEkVhawpzIgIb5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=giHaf6U4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 612A9C4CEF7;
-	Mon, 23 Mar 2026 14:47:28 +0000 (UTC)
+	 MIME-Version; b=gRj7qWRjYtT8mIG8gQbQNX0pFUsbottVDqfxcT7jw+orSWSZwO7guu2dD1gxTSMH2wp3yyRtV2g8e8qNTo7d8DTSunCXyX65ic62mSK1dba1ZWhPzoYIJ5rzGqh7T/qeQBMZ/KZEPSOqqhZEq4RlnnFJFsSEXxPN5iSzv5ltT7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFuB51ja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45706C4CEF7;
+	Mon, 23 Mar 2026 15:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277248;
-	bh=3Z4xaFDWhsIOF+VurN1BF2aBY78FX2NIzYXZ+8sLFOo=;
+	s=korg; t=1774278872;
+	bh=MMzqA+Dbg2RNNt6LexGsyfqhYByOnlzP2G4aX/vCmD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=giHaf6U4Kvf8McI4kFv4yRwey1GQykWMnrtz6YkTlLz0iK4QQfVTfxOnYk4VDk3/f
-	 FMiHzQ6TVmSDxNPS9nXRaYra9geGYpdf+mccB8xeC7164h6ka7I+pISNrg+hawHuuV
-	 eR3UiPgSXY82WdpsYscHThJ8sHUer/W2W6Fl3i94=
+	b=gFuB51jaTb3g30Qro0ujICX3EaYXLFotm6fA2xYUFFZ1act9p0fZta+fpQS+J76Ig
+	 zu1YHDdplt6gtskjzg3ykkivfF1QLEFuT6WTpxeKJnnygB+8f5wKnidGfZD7/STpXL
+	 z4iyS/7/0JpAFQ+7FVZUkVQD39CgcWSu6TY6is7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 369/460] cache: starfive: fix device node leak in starlink_cache_init()
+	Ovidiu Panait <ovidiu.panait.rb@renesas.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 445/567] net: stmmac: remove support for lpi_intr_o
 Date: Mon, 23 Mar 2026 14:46:05 +0100
-Message-ID: <20260323134535.632107525@linuxfoundation.org>
+Message-ID: <20260323134544.975103378@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,76 +69,242 @@ X-Spamd-Result: default: False [-0.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,huawei.com,microchip.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229361-lists,stable=lfdr.de];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228829-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-0.932];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable,kernel];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CB7432F5760
+X-Rspamd-Queue-Id: B21572F694D
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
 
-[ Upstream commit 3c85234b979af71cb9db5eb976ea08a468415767 ]
+commit 14eb64db8ff07b58a35b98375f446d9e20765674 upstream.
 
-of_find_matching_node() returns a device_node with refcount incremented.
+The dwmac databook for v3.74a states that lpi_intr_o is a sideband
+signal which should be used to ungate the application clock, and this
+signal is synchronous to the receive clock. The receive clock can run
+at 2.5, 25 or 125MHz depending on the media speed, and can stop under
+the control of the link partner. This means that the time it takes to
+clear is dependent on the negotiated media speed, and thus can be 8,
+40, or 400ns after reading the LPI control and status register.
 
-Use __free(device_node) attribute to automatically call of_node_put()
-when the variable goes out of scope, preventing the refcount leak.
+It has been observed with some aggressive link partners, this clock
+can stop while lpi_intr_o is still asserted, meaning that the signal
+remains asserted for an indefinite period that the local system has
+no direct control over.
 
-Fixes: cabff60ca77d ("cache: Add StarFive StarLink cache management")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The LPI interrupts will still be signalled through the main interrupt
+path in any case, and this path is not dependent on the receive clock.
+
+This, since we do not gate the application clock, and the chances of
+adding clock gating in the future are slim due to the clocks being
+ill-defined, lpi_intr_o serves no useful purpose. Remove the code which
+requests the interrupt, and all associated code.
+
+Reported-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Tested-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com> # Renesas RZ/V2H board
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://patch.msgid.link/E1vnJbt-00000007YYN-28nm@rmk-PC.armlinux.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cache/starfive_starlink_cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/common.h          |    1 
+ drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c     |    4 --
+ drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c  |    7 ---
+ drivers/net/ethernet/stmicro/stmmac/stmmac.h          |    2 -
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c     |   36 ------------------
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c |    8 ----
+ include/linux/stmmac.h                                |    1 
+ 7 files changed, 59 deletions(-)
 
-diff --git a/drivers/cache/starfive_starlink_cache.c b/drivers/cache/starfive_starlink_cache.c
-index 24c7d078ca227..3a25d2d7c70ca 100644
---- a/drivers/cache/starfive_starlink_cache.c
-+++ b/drivers/cache/starfive_starlink_cache.c
-@@ -102,11 +102,11 @@ static const struct of_device_id starlink_cache_ids[] = {
+--- a/drivers/net/ethernet/stmicro/stmmac/common.h
++++ b/drivers/net/ethernet/stmicro/stmmac/common.h
+@@ -371,7 +371,6 @@ enum request_irq_err {
+ 	REQ_IRQ_ERR_RX,
+ 	REQ_IRQ_ERR_SFTY_UE,
+ 	REQ_IRQ_ERR_SFTY_CE,
+-	REQ_IRQ_ERR_LPI,
+ 	REQ_IRQ_ERR_WOL,
+ 	REQ_IRQ_ERR_MAC,
+ 	REQ_IRQ_ERR_NO,
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
+@@ -612,7 +612,6 @@ static int intel_mgbe_common_data(struct
  
- static int __init starlink_cache_init(void)
- {
--	struct device_node *np;
- 	u32 block_size;
- 	int ret;
+ 	/* Setup MSI vector offset specific to Intel mGbE controller */
+ 	plat->msi_mac_vec = 29;
+-	plat->msi_lpi_vec = 28;
+ 	plat->msi_sfty_ce_vec = 27;
+ 	plat->msi_sfty_ue_vec = 26;
+ 	plat->msi_rx_base_vec = 0;
+@@ -998,8 +997,6 @@ static int stmmac_config_multi_msi(struc
+ 		res->irq = pci_irq_vector(pdev, plat->msi_mac_vec);
+ 	if (plat->msi_wol_vec < STMMAC_MSI_VEC_MAX)
+ 		res->wol_irq = pci_irq_vector(pdev, plat->msi_wol_vec);
+-	if (plat->msi_lpi_vec < STMMAC_MSI_VEC_MAX)
+-		res->lpi_irq = pci_irq_vector(pdev, plat->msi_lpi_vec);
+ 	if (plat->msi_sfty_ce_vec < STMMAC_MSI_VEC_MAX)
+ 		res->sfty_ce_irq = pci_irq_vector(pdev, plat->msi_sfty_ce_vec);
+ 	if (plat->msi_sfty_ue_vec < STMMAC_MSI_VEC_MAX)
+@@ -1081,7 +1078,6 @@ static int intel_eth_pci_probe(struct pc
+ 	 */
+ 	plat->msi_mac_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_wol_vec = STMMAC_MSI_VEC_MAX;
+-	plat->msi_lpi_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_sfty_ce_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_sfty_ue_vec = STMMAC_MSI_VEC_MAX;
+ 	plat->msi_rx_base_vec = STMMAC_MSI_VEC_MAX;
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
+@@ -138,13 +138,6 @@ static int loongson_dwmac_probe(struct p
+ 		res.wol_irq = res.irq;
+ 	}
  
--	np = of_find_matching_node(NULL, starlink_cache_ids);
-+	struct device_node *np __free(device_node) =
-+		of_find_matching_node(NULL, starlink_cache_ids);
- 	if (!of_device_is_available(np))
- 		return -ENODEV;
+-	res.lpi_irq = of_irq_get_byname(np, "eth_lpi");
+-	if (res.lpi_irq < 0) {
+-		dev_err(&pdev->dev, "IRQ eth_lpi not found\n");
+-		ret = -ENODEV;
+-		goto err_disable_msi;
+-	}
+-
+ 	ret = stmmac_dvr_probe(&pdev->dev, plat, &res);
+ 	if (ret)
+ 		goto err_disable_msi;
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
+@@ -29,7 +29,6 @@ struct stmmac_resources {
+ 	void __iomem *addr;
+ 	u8 mac[ETH_ALEN];
+ 	int wol_irq;
+-	int lpi_irq;
+ 	int irq;
+ 	int sfty_ce_irq;
+ 	int sfty_ue_irq;
+@@ -260,7 +259,6 @@ struct stmmac_priv {
+ 	bool wol_irq_disabled;
+ 	int clk_csr;
+ 	struct timer_list eee_ctrl_timer;
+-	int lpi_irq;
+ 	int eee_enabled;
+ 	int eee_active;
+ 	int tx_lpi_timer;
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -3496,10 +3496,6 @@ static void stmmac_free_irq(struct net_d
+ 			free_irq(priv->sfty_ce_irq, dev);
+ 		fallthrough;
+ 	case REQ_IRQ_ERR_SFTY_CE:
+-		if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq)
+-			free_irq(priv->lpi_irq, dev);
+-		fallthrough;
+-	case REQ_IRQ_ERR_LPI:
+ 		if (priv->wol_irq > 0 && priv->wol_irq != dev->irq)
+ 			free_irq(priv->wol_irq, dev);
+ 		fallthrough;
+@@ -3554,24 +3550,6 @@ static int stmmac_request_irq_multi_msi(
+ 		}
+ 	}
  
--- 
-2.51.0
-
+-	/* Request the LPI IRQ in case of another line
+-	 * is used for LPI
+-	 */
+-	if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq) {
+-		int_name = priv->int_name_lpi;
+-		sprintf(int_name, "%s:%s", dev->name, "lpi");
+-		ret = request_irq(priv->lpi_irq,
+-				  stmmac_mac_interrupt,
+-				  0, int_name, dev);
+-		if (unlikely(ret < 0)) {
+-			netdev_err(priv->dev,
+-				   "%s: alloc lpi MSI %d (error: %d)\n",
+-				   __func__, priv->lpi_irq, ret);
+-			irq_err = REQ_IRQ_ERR_LPI;
+-			goto irq_error;
+-		}
+-	}
+-
+ 	/* Request the Safety Feature Correctible Error line in
+ 	 * case of another line is used
+ 	 */
+@@ -3695,19 +3673,6 @@ static int stmmac_request_irq_single(str
+ 		}
+ 	}
+ 
+-	/* Request the IRQ lines */
+-	if (priv->lpi_irq > 0 && priv->lpi_irq != dev->irq) {
+-		ret = request_irq(priv->lpi_irq, stmmac_interrupt,
+-				  IRQF_SHARED, dev->name, dev);
+-		if (unlikely(ret < 0)) {
+-			netdev_err(priv->dev,
+-				   "%s: ERROR: allocating the LPI IRQ %d (%d)\n",
+-				   __func__, priv->lpi_irq, ret);
+-			irq_err = REQ_IRQ_ERR_LPI;
+-			goto irq_error;
+-		}
+-	}
+-
+ 	return 0;
+ 
+ irq_error:
+@@ -7436,7 +7401,6 @@ int stmmac_dvr_probe(struct device *devi
+ 
+ 	priv->dev->irq = res->irq;
+ 	priv->wol_irq = res->wol_irq;
+-	priv->lpi_irq = res->lpi_irq;
+ 	priv->sfty_ce_irq = res->sfty_ce_irq;
+ 	priv->sfty_ue_irq = res->sfty_ue_irq;
+ 	for (i = 0; i < MTL_MAX_RX_QUEUES; i++)
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -762,14 +762,6 @@ int stmmac_get_platform_resources(struct
+ 		stmmac_res->wol_irq = stmmac_res->irq;
+ 	}
+ 
+-	stmmac_res->lpi_irq =
+-		platform_get_irq_byname_optional(pdev, "eth_lpi");
+-	if (stmmac_res->lpi_irq < 0) {
+-		if (stmmac_res->lpi_irq == -EPROBE_DEFER)
+-			return -EPROBE_DEFER;
+-		dev_info(&pdev->dev, "IRQ eth_lpi not found\n");
+-	}
+-
+ 	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
+ 
+ 	return PTR_ERR_OR_ZERO(stmmac_res->addr);
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -306,7 +306,6 @@ struct plat_stmmacenet_data {
+ 	int ext_snapshot_num;
+ 	int msi_mac_vec;
+ 	int msi_wol_vec;
+-	int msi_lpi_vec;
+ 	int msi_sfty_ce_vec;
+ 	int msi_sfty_ue_vec;
+ 	int msi_rx_base_vec;
 
 
 
