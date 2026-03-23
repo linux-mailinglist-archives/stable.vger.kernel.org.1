@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228283-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uJYUH4FIwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228102-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:04:49 +0100
+	id 2CgdANRLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228283-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:19:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25A82F3C3B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:04:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D053A2F4292
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A2CDA31283C1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 25C3F307763C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604893AD538;
-	Mon, 23 Mar 2026 13:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62EC83B38B9;
+	Mon, 23 Mar 2026 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUdO6hea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="loCMInXk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2255D1A6818;
-	Mon, 23 Mar 2026 13:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F05C1EB9F2;
+	Mon, 23 Mar 2026 14:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274131; cv=none; b=j698Kt7C7aansBmhIJnvWwsaprg7rAVlrJhrn+KnypqqUpEtzBX8Wr7wR3zDBnBUR5FxE+WrFysGe/to82evKFAzUJcl+L1FTyQ24lVsFYgkaDCzFJCCLoFq+62pfUph/PeBQJCVgpOkg5U6oDvbgE0c+kVvY5v+cQ2PUjwCMGs=
+	t=1774274683; cv=none; b=ARCOn0Y0jAmVaRrpTCdRI/BUXk9O1ZhAzXZbg7Tl2N05fivS9X8jAvFtlDdF/BpqeB8xC5v6dB/lozKPrctJOLU3uYt+cDneBFW0BkdbDf9oKU036pdVFHunL4MZAAlu4gYyL+QAHZCA2vhagR1ZtRSDGkG+DIv5t97GfPm8Hgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274131; c=relaxed/simple;
-	bh=V96mNHxAlcmU63StXe+StnhgK2wk7JD62WFzVaXV5YM=;
+	s=arc-20240116; t=1774274683; c=relaxed/simple;
+	bh=bp1mBU1r0dQCPG6Eq6Hqgh4Noc2bTg6zzH0Hmu1L6sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDgEJ4bn50ZEDRoCzU+F12jeVUFLiUGo9bUEEdoJugluN6rl0dOWpaBh0sU1ktx3/ah50flHaRtaGWNAxN4EFy9bPqfXJVvE/Zs4cKE/qoKwCRUhxRDGWVWnaLokzqlRUOPueqWulIactcbgKQMD0JZZVCEl46U85Z+y7AAWaYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUdO6hea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC3CC4CEF7;
-	Mon, 23 Mar 2026 13:55:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gaKrPMsF/YH8dS7zV0pbuGwbhjMIJpdrvEOcS1Z+UiAB0UzrU0yzy5BM6lsIIm2mcbWBHJ/OoPfTrGrv7AcW37RYp6THquMOaCVOJdZYOqEbgdSq2yAGMEnPPgaiKHDbg9frgdvnVMHLlVdf8ACojZBFVjA/qEY7s+1xQIq1LS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=loCMInXk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96865C4CEF7;
+	Mon, 23 Mar 2026 14:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274131;
-	bh=V96mNHxAlcmU63StXe+StnhgK2wk7JD62WFzVaXV5YM=;
+	s=korg; t=1774274683;
+	bh=bp1mBU1r0dQCPG6Eq6Hqgh4Noc2bTg6zzH0Hmu1L6sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vUdO6heaYyF6Lm2Qj/jmphixOvqfd7Di1JAUgBKNq46uhZAKiO81jgvGmhFAk7JIU
-	 1StsnXGq0tp2Pc5n1zsf28eTgGlwQNOwejw5Ys2XJ3paXi+IG5s6vWw8xXYe6YHj6m
-	 e+CJUoeOe8IkhXsuMeyTPEQ/EcSVbQpzMjDK+d7k=
+	b=loCMInXkAKCk2xccfWTEkmPl+eF6ZScN/W/GqU7k9TQPWf1vVtUDm2sBEz9iYYmEM
+	 aH2BREtTAKHILNiSy+SvjcuJPoPyZEgmgJEnuQXR+Mvw/lnDZ5P72IS5DyVjPvvHj9
+	 hxpMhBMBAB5KOwzekqxa02Ftci7HWMUOJDd65JCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 117/220] firmware: arm_scmi: Fix NULL dereference on notify error path
+	"Bandal, Shankar" <shankar.bandal@intel.com>,
+	"Murthy, Shanth" <shanth.murthy@intel.com>,
+	stable <stable@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.18 073/212] serial: 8250_dw: Rework dw8250_handle_irq() locking and IIR handling
 Date: Mon, 23 Mar 2026 14:44:54 +0100
-Message-ID: <20260323134508.300877083@linuxfoundation.org>
+Message-ID: <20260323134506.074155377@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +65,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228102-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228283-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linaro.org:email,arm.com:email]
-X-Rspamd-Queue-Id: E25A82F3C3B
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: D053A2F4292
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 555317d6100164748f7d09f80142739bd29f0cda ]
+commit 883c5a2bc934c165c4491d1ef7da0ac4e9765077 upstream.
 
-Since commit b5daf93b809d1 ("firmware: arm_scmi: Avoid notifier
-registration for unsupported events") the call chains leading to the helper
-__scmi_event_handler_get_ops expect an ERR_PTR to be returned on failure to
-get an handler for the requested event key, while the current helper can
-still return a NULL when no handler could be found or created.
+dw8250_handle_irq() takes port's lock multiple times with no good
+reason to release it in between and calls serial8250_handle_irq()
+that also takes port's lock.
 
-Fix by forcing an ERR_PTR return value when the handler reference is NULL.
+Take port's lock only once in dw8250_handle_irq() and use
+serial8250_handle_irq_locked() to avoid releasing port's lock in
+between.
 
-Fixes: b5daf93b809d1 ("firmware: arm_scmi: Avoid notifier registration for unsupported events")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Message-Id: <20260305131011.541444-1-cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As IIR_NO_INT check in serial8250_handle_irq() was outside of port's
+lock, it has to be done already in dw8250_handle_irq().
+
+DW UART can, in addition to IIR_NO_INT, report BUSY_DETECT (0x7) which
+collided with the IIR_NO_INT (0x1) check in serial8250_handle_irq()
+(because & is used instead of ==) meaning that no other work is done by
+serial8250_handle_irq() during an BUSY_DETECT interrupt.
+
+This allows reorganizing code in dw8250_handle_irq() to do both
+IIR_NO_INT and BUSY_DETECT handling right at the start simplifying
+the logic.
+
+Tested-by: Bandal, Shankar <shankar.bandal@intel.com>
+Tested-by: Murthy, Shanth <shanth.murthy@intel.com>
+Cc: stable <stable@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://patch.msgid.link/20260203171049.4353-5-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/notify.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/8250/8250_dw.c |   37 +++++++++++++++++++++----------------
+ 1 file changed, 21 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/notify.c b/drivers/firmware/arm_scmi/notify.c
-index dee9f238f6fdd..2047edbdc5f6b 100644
---- a/drivers/firmware/arm_scmi/notify.c
-+++ b/drivers/firmware/arm_scmi/notify.c
-@@ -1066,7 +1066,7 @@ static int scmi_register_event_handler(struct scmi_notify_instance *ni,
-  * since at creation time we usually want to have all setup and ready before
-  * events really start flowing.
-  *
-- * Return: A properly refcounted handler on Success, NULL on Failure
-+ * Return: A properly refcounted handler on Success, ERR_PTR on Failure
+--- a/drivers/tty/serial/8250/8250_dw.c
++++ b/drivers/tty/serial/8250/8250_dw.c
+@@ -9,6 +9,9 @@
+  * LCR is written whilst busy.  If it is, then a busy detect interrupt is
+  * raised, the LCR needs to be rewritten and the uart status register read.
   */
- static inline struct scmi_event_handler *
- __scmi_event_handler_get_ops(struct scmi_notify_instance *ni,
-@@ -1113,7 +1113,7 @@ __scmi_event_handler_get_ops(struct scmi_notify_instance *ni,
- 	}
- 	mutex_unlock(&ni->pending_mtx);
++#include <linux/bitfield.h>
++#include <linux/bits.h>
++#include <linux/cleanup.h>
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+@@ -40,6 +43,8 @@
+ #define RZN1_UART_RDMACR 0x110 /* DMA Control Register Receive Mode */
  
--	return hndl;
-+	return hndl ?: ERR_PTR(-ENODEV);
+ /* DesignWare specific register fields */
++#define DW_UART_IIR_IID			GENMASK(3, 0)
++
+ #define DW_UART_MCR_SIRE		BIT(6)
+ 
+ /* Renesas specific register fields */
+@@ -312,7 +317,19 @@ static int dw8250_handle_irq(struct uart
+ 	bool rx_timeout = (iir & 0x3f) == UART_IIR_RX_TIMEOUT;
+ 	unsigned int quirks = d->pdata->quirks;
+ 	unsigned int status;
+-	unsigned long flags;
++
++	switch (FIELD_GET(DW_UART_IIR_IID, iir)) {
++	case UART_IIR_NO_INT:
++		return 0;
++
++	case UART_IIR_BUSY:
++		/* Clear the USR */
++		serial_port_in(p, d->pdata->usr_reg);
++
++		return 1;
++	}
++
++	guard(uart_port_lock_irqsave)(p);
+ 
+ 	/*
+ 	 * There are ways to get Designware-based UARTs into a state where
+@@ -325,20 +342,15 @@ static int dw8250_handle_irq(struct uart
+ 	 * so we limit the workaround only to non-DMA mode.
+ 	 */
+ 	if (!up->dma && rx_timeout) {
+-		uart_port_lock_irqsave(p, &flags);
+ 		status = serial_lsr_in(up);
+ 
+ 		if (!(status & (UART_LSR_DR | UART_LSR_BI)))
+ 			serial_port_in(p, UART_RX);
+-
+-		uart_port_unlock_irqrestore(p, flags);
+ 	}
+ 
+ 	/* Manually stop the Rx DMA transfer when acting as flow controller */
+ 	if (quirks & DW_UART_QUIRK_IS_DMA_FC && up->dma && up->dma->rx_running && rx_timeout) {
+-		uart_port_lock_irqsave(p, &flags);
+ 		status = serial_lsr_in(up);
+-		uart_port_unlock_irqrestore(p, flags);
+ 
+ 		if (status & (UART_LSR_DR | UART_LSR_BI)) {
+ 			dw8250_writel_ext(p, RZN1_UART_RDMACR, 0);
+@@ -346,17 +358,9 @@ static int dw8250_handle_irq(struct uart
+ 		}
+ 	}
+ 
+-	if (serial8250_handle_irq(p, iir))
+-		return 1;
+-
+-	if ((iir & UART_IIR_BUSY) == UART_IIR_BUSY) {
+-		/* Clear the USR */
+-		serial_port_in(p, d->pdata->usr_reg);
++	serial8250_handle_irq_locked(p, iir);
+ 
+-		return 1;
+-	}
+-
+-	return 0;
++	return 1;
  }
  
- static struct scmi_event_handler *
--- 
-2.51.0
-
+ static void dw8250_clk_work_cb(struct work_struct *work)
+@@ -865,6 +869,7 @@ static struct platform_driver dw8250_pla
+ 
+ module_platform_driver(dw8250_platform_driver);
+ 
++MODULE_IMPORT_NS("SERIAL_8250");
+ MODULE_AUTHOR("Jamie Iles");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Synopsys DesignWare 8250 serial port driver");
 
 
 
