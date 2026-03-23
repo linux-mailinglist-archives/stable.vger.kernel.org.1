@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-228473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229499-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBo5Fg5NwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228473-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:14 +0100
+	id SI5oG25hwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229499-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:51:10 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6D62F460E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EA52F7047
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 226B430225F4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5346A3084DB7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:35:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574F0396D3D;
-	Mon, 23 Mar 2026 14:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E6A282F33;
+	Mon, 23 Mar 2026 15:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iryASKzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMg8qUFn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC0132470A;
-	Mon, 23 Mar 2026 14:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B634E242D7B;
+	Mon, 23 Mar 2026 15:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275228; cv=none; b=uWqa4iC2bPpAK3BVCTcwope4e2tdCWVJJYanUijpJExMaGkD8XSPd1w1CZhR9jvAuUkpGsSqkURvWSGApjEeoNcOfDh8AD5IXsrUvNxME2S3bGt7U0E2GSO4RD2NY1ABgb5bFdhahseH6isgz9hHpGw05Kv5bsg7q1MalA9yS0Y=
+	t=1774279428; cv=none; b=HDfiG8f3QULIrB6m8iTw2SrbIVQg6k5hqQBeRzckgu6yL3iWZKDAH3g7HzV44dpRscY2FSWs0ckvc1WbtGXlXST6rf7wSJoeio0tFlWdOP94n+wvdvHhL0XdIwMqwMhZzVfw4oDEXsaBd8Zez20Nzy56ImtvWTqxEV+Y31H62SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275228; c=relaxed/simple;
-	bh=hIjMjKsnaPpvKLBPISBr3ctTRqM6C0C9OvBqmVsPfT4=;
+	s=arc-20240116; t=1774279428; c=relaxed/simple;
+	bh=NMpPc0vO5fJOw2QFkxQP9MKhn9hYGyO69+oOjvBsgw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rSH4wj95eYBNOfTcrYHzXgc70kAumuLMgs76Olg8GaNyNPad1Pps78uR5NFBe1a/zOzB219DzgJCDMHOizQXOlcWTufsrRHHyBmRZ3J1NAIqvNyhcr3jsZ0QdJi3QWHmwnLSsQ4G9OMC1cfdxSGEt8rfFckh74L9W5CzhwpL+nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iryASKzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85E5C2BCB1;
-	Mon, 23 Mar 2026 14:13:47 +0000 (UTC)
+	 MIME-Version; b=FD0PG97l8a3s6Uix3KZ2b+79mEO+j/47TWhFyVq8JOoT6OwKf5MvlOikx/4r85wjgREcFuJhLo4S+4zi36Vq3dkxv5/gf8uwy5Vx/UygLDrc73vOWoeoqlz8EkBNbYwCY+WahKdEt/3WDvhd1opbb7fLItwrQBJqYUI4RF07GeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMg8qUFn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423A1C4CEF7;
+	Mon, 23 Mar 2026 15:23:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275228;
-	bh=hIjMjKsnaPpvKLBPISBr3ctTRqM6C0C9OvBqmVsPfT4=;
+	s=korg; t=1774279428;
+	bh=NMpPc0vO5fJOw2QFkxQP9MKhn9hYGyO69+oOjvBsgw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iryASKzRgYhmeWmhlxwOVNVD281jPI2hJouOzdEY7S44llrrI/djjIitZo+HriM5v
-	 jSkXfOvtuIBQwluiow4ruA5+pUGuf48dtZy6bg6AeYpZHB7qQ+m6TK+zwAezmXSjd3
-	 ZK2lypExre1q8FF3XI28clV/rFOB7Jw9XlTJbP9s=
+	b=OMg8qUFnRFHSNQaOdGwLhbC6aqN/1/JokruSO6lf6qXgEjPvlavFgEa+Z4uGj9xdb
+	 +B+fX7bCbJc3ykESLvwSDykdkqXFji3kl6+k0MSP0dX/1DyE4S2nT5kClc9FhhGXEz
+	 uR6eC5krOdKPT/hdY58ovhc38eDjJeSJwjEo4jE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sean Christopherson <seanjc@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 020/460] powerpc/crash: adjust the elfcorehdr size
+Subject: [PATCH 6.1 034/481] KVM: x86: WARN if a vCPU gets a valid wakeup that KVM cant yet inject
 Date: Mon, 23 Mar 2026 14:40:16 +0100
-Message-ID: <20260323134527.157112440@linuxfoundation.org>
+Message-ID: <20260323134526.068562041@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -74,91 +72,68 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228473-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-229499-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: EA6D62F460E
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 32EA52F7047
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 04e707cb77c272cb0bb2e2e3c5c7f844d804a089 ]
+[ Upstream commit 45405155d876c326da89162b8173b8cc9ab7ed75 ]
 
-With crash hotplug support enabled, additional memory is allocated to
-the elfcorehdr kexec segment to accommodate resources added during
-memory hotplug events. However, the kdump FDT is not updated with the
-same size, which can result in elfcorehdr corruption in the kdump
-kernel.
+WARN if a blocking vCPU is awakened by a valid wake event that KVM can't
+inject, e.g. because KVM needs to complete a nested VM-enter, or needs to
+re-inject an exception.  For the nested VM-Enter case, KVM is supposed to
+clear "nested_run_pending" if L1 puts L2 into HLT, i.e. entering HLT
+"completes" the nested VM-Enter.  And for already-injected exceptions, it
+should be impossible for the vCPU to be in a blocking state if a VM-Exit
+occurred while an exception was being vectored.
 
-Update elf_headers_sz (the kimage member representing the size of the
-elfcorehdr kexec segment) to reflect the total memory allocated for the
-elfcorehdr segment instead of the elfcorehdr buffer size at the time of
-kdump load. This allows of_kexec_alloc_and_setup_fdt() to reserve the
-full elfcorehdr memory in the kdump FDT and prevents elfcorehdr
-corruption.
-
-Fixes: 849599b702ef8 ("powerpc/crash: add crash memory hotplug support")
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20260227171801.2238847-1-sourabhjain@linux.ibm.com
+Link: https://lore.kernel.org/r/20240607172609.3205077-7-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Stable-dep-of: ead63640d4e7 ("KVM: x86: Ignore -EBUSY when checking nested events from vcpu_block()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/file_load_64.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/x86/kvm/x86.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index dc65c13911577..248a0f00a291f 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -633,6 +633,11 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
- 	kbuf->buffer = headers;
- 	kbuf->mem = KEXEC_BUF_MEM_UNKNOWN;
- 	kbuf->bufsz = headers_sz;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index b6fdf084fc92a..824844a7c6e88 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -11064,7 +11064,10 @@ static inline int vcpu_block(struct kvm_vcpu *vcpu)
+ 	 * causes a spurious wakeup from HLT).
+ 	 */
+ 	if (is_guest_mode(vcpu)) {
+-		if (kvm_check_nested_events(vcpu) < 0)
++		int r = kvm_check_nested_events(vcpu);
 +
-+	/*
-+	 * Account for extra space required to accommodate additional memory
-+	 * ranges in elfcorehdr due to memory hotplug events.
-+	 */
- 	kbuf->memsz = headers_sz + kdump_extra_elfcorehdr_size(cmem);
- 	kbuf->top_down = false;
- 
-@@ -643,7 +648,14 @@ static int load_elfcorehdr_segment(struct kimage *image, struct kexec_buf *kbuf)
++		WARN_ON_ONCE(r == -EBUSY);
++		if (r < 0)
+ 			return 0;
  	}
  
- 	image->elf_load_addr = kbuf->mem;
--	image->elf_headers_sz = headers_sz;
-+
-+	/*
-+	 * If CONFIG_CRASH_HOTPLUG is enabled, the elfcorehdr kexec segment
-+	 * memsz can be larger than bufsz. Always initialize elf_headers_sz
-+	 * with memsz. This ensures the correct size is reserved for elfcorehdr
-+	 * memory in the FDT prepared for kdump.
-+	 */
-+	image->elf_headers_sz = kbuf->memsz;
- 	image->elf_headers = headers;
- out:
- 	kfree(cmem);
 -- 
 2.51.0
 
