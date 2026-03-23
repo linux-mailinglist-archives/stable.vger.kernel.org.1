@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-228109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229288-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OJJeGMNIwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228109-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:55 +0100
+	id AP0eLzFfwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229288-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:37 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02062F3CBF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:05:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FE42F6BA6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 99C1D304F227
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9A4E930CE603
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0183AD538;
-	Mon, 23 Mar 2026 13:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0AA3B7B8A;
+	Mon, 23 Mar 2026 15:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="stWbvpPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PXj7CUn0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBD43AD527;
-	Mon, 23 Mar 2026 13:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133EE3B4EB5;
+	Mon, 23 Mar 2026 15:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274152; cv=none; b=Ld3wX+Kn33drOCbQjrak3X9JYt8nKIQ/MkBzdiSjbTPlOPVu27R+bdd5MDnMjKmQ9t5CJwhFsE2F1AiHNWBL1x65HPykVDRwJisJ2Ei8ZO7UCJco7tAAXsFJ4hdi9iRzgFgmFIf2WcTCSeNEn5QT14qMYac7ATrYRxhPBAR83kk=
+	t=1774278647; cv=none; b=VLK+cA3FJLwBB3EKf54dwn1dzU4dhDsrQ8N5zzIwq8knUOP9qkkUu+UJfKjw1W7NjU/7vZenVKAWmjzYRBc+NRwW+bwNNCYp18Na7AS4qAKxzhJ4iglcq5jPds6nix1zc2hwJ0yglOUW9DcNcfNVQT7nyYZR99NHAdS/a7fsckA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274152; c=relaxed/simple;
-	bh=Xg1Ex0QOZ5CzLNt3zKVn2JK9nAhqzLM9i54Dbyfu75I=;
+	s=arc-20240116; t=1774278647; c=relaxed/simple;
+	bh=BiJf0McfEDXbyanES6l6PY2qzxudNHKoOUZgqlVhiDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkUHbXvs8ieWYLUNmdCgF0bpjnGJN9GZqjtb/qsRy8YetEziLY0jduZelDxmg4jTRpvsofSL3rEXgKlX1g7ol5pyfsyiu8UR4j5aERUiWd5fwP7jG94AaIFhsmyWx5swRvtk09uwHeCsrEAiNBL7+w2NM6jK2Qyh+qFmVgwiP1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=stWbvpPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF0AC2BCB1;
-	Mon, 23 Mar 2026 13:55:52 +0000 (UTC)
+	 MIME-Version; b=LBg484p190kQq5jaIMQYobBqSng300R9X5bU6OCydjexz/p9H2idrEDlGbam1fXJdHMZtcGL3yDL59xE/FczUnVqM2xSX+zZzZ0FUvi+5p6ZL3LogxKk0HINuwn0JnhM6foefsEb/IwLYW2gw+53SOnuZbMKr5LUQHgfqwPt/C4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PXj7CUn0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB75C4CEF7;
+	Mon, 23 Mar 2026 15:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274152;
-	bh=Xg1Ex0QOZ5CzLNt3zKVn2JK9nAhqzLM9i54Dbyfu75I=;
+	s=korg; t=1774278647;
+	bh=BiJf0McfEDXbyanES6l6PY2qzxudNHKoOUZgqlVhiDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=stWbvpPEBvr13w6tKu7/aptO+lA8DegOSkTLfS0Ma83RBQMshkv2QowGMAoQZoBen
-	 rmEzBQR8KoC8Kx5aBbgTgIhtH10pU4oiRssJ6JTbiIRobDZFgQE20KLTVv3Jz1gLEO
-	 8igaCrbUgL9EoU18AjiqpJOm4yyMdjVwIpC0MCoA=
+	b=PXj7CUn0G54eKJz27MtokbeoLwz4aHGZXltWIJYb6eMOhGF+jYooOgaQuvZNi1wsP
+	 kVvtsoE5e8ompGfx+nAIHB/9kxNpt0lVe92E3WfAM775133EAlFYxBmjttphTBpT5I
+	 Iuy5Fb5BsDLtV3QTOdLbk47bOts45nEn7HzsgckQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.19 074/220] drm/amdgpu/mmhub2.0: add bounds checking for cid
+	Jian Zhang <zhangjian.3032@bytedance.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 331/567] net: ncsi: fix skb leak in error paths
 Date: Mon, 23 Mar 2026 14:44:11 +0100
-Message-ID: <20260323134506.935406335@linuxfoundation.org>
+Message-ID: <20260323134542.023524390@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,79 +65,118 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229288-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228109-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.992];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: D02062F3CBF
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 53FE42F6BA6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jian Zhang <zhangjian.3032@bytedance.com>
 
-commit 0b26edac4ac5535df1f63e6e8ab44c24fe1acad7 upstream.
+commit 5c3398a54266541610c8d0a7082e654e9ff3e259 upstream.
 
-The value should never exceed the array size as those
-are the only values the hardware is expected to return,
-but add checks anyway.
+Early return paths in NCSI RX and AEN handlers fail to release
+the received skb, resulting in a memory leak.
 
-Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e064cef4b53552602bb6ac90399c18f662f3cacd)
-Cc: stable@vger.kernel.org
+Specifically, ncsi_aen_handler() returns on invalid AEN packets
+without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
+when failing to resolve the NCSI device, response handler, or
+request, leaving the skb unfreed.
+
+CC: stable@vger.kernel.org
+Fixes: 7a82ecf4cfb8 ("net/ncsi: NCSI AEN packet handler")
+Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
+Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+Link: https://patch.msgid.link/20260305060656.3357250-1-zhangjian.3032@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/ncsi/ncsi-aen.c |    3 ++-
+ net/ncsi/ncsi-rsp.c |   16 ++++++++++++----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-@@ -154,14 +154,17 @@ mmhub_v2_0_print_l2_protection_fault_sta
- 	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
- 	case IP_VERSION(2, 0, 0):
- 	case IP_VERSION(2, 0, 2):
--		mmhub_cid = mmhub_client_ids_navi1x[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_navi1x) ?
-+			mmhub_client_ids_navi1x[cid][rw] : NULL;
- 		break;
- 	case IP_VERSION(2, 1, 0):
- 	case IP_VERSION(2, 1, 1):
--		mmhub_cid = mmhub_client_ids_sienna_cichlid[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_sienna_cichlid) ?
-+			mmhub_client_ids_sienna_cichlid[cid][rw] : NULL;
- 		break;
- 	case IP_VERSION(2, 1, 2):
--		mmhub_cid = mmhub_client_ids_beige_goby[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_beige_goby) ?
-+			mmhub_client_ids_beige_goby[cid][rw] : NULL;
- 		break;
- 	default:
- 		mmhub_cid = NULL;
+--- a/net/ncsi/ncsi-aen.c
++++ b/net/ncsi/ncsi-aen.c
+@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_pri
+ 	if (!nah) {
+ 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
+ 			    h->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto out;
+ 	}
+ 
+ 	ret = ncsi_validate_aen_pkt(h, nah->payload);
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -1176,8 +1176,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	/* Find the NCSI device */
+ 	nd = ncsi_find_dev(orig_dev);
+ 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
+-	if (!ndp)
+-		return -ENODEV;
++	if (!ndp) {
++		ret = -ENODEV;
++		goto err_free_skb;
++	}
+ 
+ 	/* Check if it is AEN packet */
+ 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
+@@ -1199,7 +1201,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	if (!nrh) {
+ 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
+ 			   hdr->type);
+-		return -ENOENT;
++		ret = -ENOENT;
++		goto err_free_skb;
+ 	}
+ 
+ 	/* Associate with the request */
+@@ -1207,7 +1210,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, st
+ 	nr = &ndp->requests[hdr->id];
+ 	if (!nr->used) {
+ 		spin_unlock_irqrestore(&ndp->lock, flags);
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto err_free_skb;
+ 	}
+ 
+ 	nr->rsp = skb;
+@@ -1261,4 +1265,8 @@ out_netlink:
+ out:
+ 	ncsi_free_request(nr);
+ 	return ret;
++
++err_free_skb:
++	kfree_skb(skb);
++	return ret;
+ }
 
 
 
