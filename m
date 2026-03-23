@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-228544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229077-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AAs6OHZQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228544-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:46 +0100
+	id KJg1KGtswWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229077-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:03 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76B102F4EB5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:38:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E85002F87B1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:38:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ACDFD3239127
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A46A53045014
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8723B397E84;
-	Mon, 23 Mar 2026 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A0D38B7C4;
+	Mon, 23 Mar 2026 14:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrlwCtp2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPEoi4Fz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D19324B16;
-	Mon, 23 Mar 2026 14:16:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD681A23B1;
+	Mon, 23 Mar 2026 14:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275412; cv=none; b=GHnKSyiuBsm0kOk7BGcq8KIRmaN/5cJIZPpP4ZT0vbv35P73ThuRST9175OC/0rAGK7tBXCE12rCJaH+/n2EWK130pnAAMyB4JH0BDI1BnwgxSezrtuoVGRagxxEicYJyT1zzLGOtCPuKeRTK3twVAK8ugfvYZ38GY6fd0w00N8=
+	t=1774277986; cv=none; b=UAuK1uTD1jYIT9R5/8GhRfjVqg88g0Yl6pQerZ28LjK865d3pjtX4JtKapew/PfFLJPGTIORhNgou1GYrtLqAZxKpTiD0OhmLbVYaDfajZUA9dufHyrpno1xKlkxs7F9voqO5n0k+hudQSQlHF8ROasOZ9DvPaBGVobip+0Uc0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275412; c=relaxed/simple;
-	bh=OO0kfx7yN7hI7Tj2DLcV0UjpOPip/Mdp0uqhMlYUjC8=;
+	s=arc-20240116; t=1774277986; c=relaxed/simple;
+	bh=yc1T2Dv0fZZ+Cen+F2mDBvverlCdwLpnh/9u03OE+1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K7sTqOODb35qvH0DcmdWfxm8iqfdi96F2vQhn8278AAaRUNbDfsuYpxxzfLJN4pXBMGLLPO2fK8ZjYE14Cv6bdXcZp/0hx6PHa3rikXTJTE98Q0eC0OYjWNI3eYuK14w2GSGw0q+MUOhQf39rv4OcKyukf4J3OrKH7iK9TAZYyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrlwCtp2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9730FC4CEF7;
-	Mon, 23 Mar 2026 14:16:51 +0000 (UTC)
+	 MIME-Version; b=AW//6N+/uKtcqkLnNEzVc1iZ24IKWBKciVVbAoGiQXOHhsAIPjw+rwVySFjjVgyXZuB05BWD0s6gTZgHOjz0K9ybwDvF8exrgep8+LPs12tSwPrsrL+L2jxHYjuWXUURvo60ApeRDOKtZhZTCS0P8RnsrYUkJbApg1aNW8z8kkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPEoi4Fz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5283EC4CEF7;
+	Mon, 23 Mar 2026 14:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275412;
-	bh=OO0kfx7yN7hI7Tj2DLcV0UjpOPip/Mdp0uqhMlYUjC8=;
+	s=korg; t=1774277986;
+	bh=yc1T2Dv0fZZ+Cen+F2mDBvverlCdwLpnh/9u03OE+1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrlwCtp2aP8+FRJZCw3O5ZvF86X5dUzg0IUACneZJ4fwSGPfv1eQpJgiO5d/5BCy6
-	 GOFwMil3a2DW30zLQRZLPzTncnVa26nAe2fWYtr4T5T3BCA28doal3Dks/yuXeHYSk
-	 KYiNBh9O+y1jERtF4evvqAI7531NZLaSgEMCS3Ps=
+	b=aPEoi4FzIEsd9Ulg90T3WY2hbasusmPVDuewvrmEVslWV/G7lXDFLB8PaZe1m8jD0
+	 al03LAKmDug+hP7RD6ELAS6tWLk3pf1L2D7ppSZEl8gUDqWOj6SuBwZ2b6bXCflGdU
+	 CAE8cWCsatrrpUlNVWGkRHNFGBzRCa+i2gtI7JMs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingye Zhao <zhaoqingye@honor.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.12 089/460] cgroup: fix race between task migration and iteration
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 165/567] nvme: reject invalid pr_read_keys() num_keys values
 Date: Mon, 23 Mar 2026 14:41:25 +0100
-Message-ID: <20260323134528.856078470@linuxfoundation.org>
+Message-ID: <20260323134537.905170809@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +66,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-228544-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229077-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 76B102F4EB5
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: E85002F87B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingye Zhao <zhaoqingye@honor.com>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-commit 5ee01f1a7343d6a3547b6802ca2d4cdce0edacb1 upstream.
+[ Upstream commit 38ec8469f39e0e96e7dd9b76f05e0f8eb78be681 ]
 
-When a task is migrated out of a css_set, cgroup_migrate_add_task()
-first moves it from cset->tasks to cset->mg_tasks via:
+The pr_read_keys() interface has a u32 num_keys parameter. The NVMe
+Reservation Report command has a u32 maximum length. Reject num_keys
+values that are too large to fit.
 
-    list_move_tail(&task->cg_list, &cset->mg_tasks);
+This will become important when pr_read_keys() is exposed to untrusted
+userspace via an <linux/pr.h> ioctl.
 
-If a css_task_iter currently has it->task_pos pointing to this task,
-css_set_move_task() calls css_task_iter_skip() to keep the iterator
-valid. However, since the task has already been moved to ->mg_tasks,
-the iterator is advanced relative to the mg_tasks list instead of the
-original tasks list. As a result, remaining tasks on cset->tasks, as
-well as tasks queued on cset->mg_tasks, can be skipped by iteration.
-
-Fix this by calling css_set_skip_task_iters() before unlinking
-task->cg_list from cset->tasks. This advances all active iterators to
-the next task on cset->tasks, so iteration continues correctly even
-when a task is concurrently being migrated.
-
-This race is hard to hit in practice without instrumentation, but it
-can be reproduced by artificially slowing down cgroup_procs_show().
-For example, on an Android device a temporary
-/sys/kernel/cgroup/cgroup_test knob can be added to inject a delay
-into cgroup_procs_show(), and then:
-
-  1) Spawn three long-running tasks (PIDs 101, 102, 103).
-  2) Create a test cgroup and move the tasks into it.
-  3) Enable a large delay via /sys/kernel/cgroup/cgroup_test.
-  4) In one shell, read cgroup.procs from the test cgroup.
-  5) Within the delay window, in another shell migrate PID 102 by
-     writing it to a different cgroup.procs file.
-
-Under this setup, cgroup.procs can intermittently show only PID 101
-while skipping PID 103. Once the migration completes, reading the
-file again shows all tasks as expected.
-
-Note that this change does not allow removing the existing
-css_set_skip_task_iters() call in css_set_move_task(). The new call
-in cgroup_migrate_add_task() only handles iterators that are racing
-with migration while the task is still on cset->tasks. Iterators may
-also start after the task has been moved to cset->mg_tasks. If we
-dropped css_set_skip_task_iters() from css_set_move_task(), such
-iterators could keep task_pos pointing to a migrating task, causing
-css_task_iter_advance() to malfunction on the destination css_set,
-up to and including crashes or infinite loops.
-
-The race window between migration and iteration is very small, and
-css_task_iter is not on a hot path. In the worst case, when an
-iterator is positioned on the first thread of the migrating process,
-cgroup_migrate_add_task() may have to skip multiple tasks via
-css_set_skip_task_iters(). However, this only happens when migration
-and iteration actually race, so the performance impact is negligible
-compared to the correctness fix provided here.
-
-Fixes: b636fd38dc40 ("cgroup: Implement css_task_iter_skip()")
-Cc: stable@vger.kernel.org # v5.2+
-Signed-off-by: Qingye Zhao <zhaoqingye@honor.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c3320153769f ("nvme: fix memory allocation in nvme_pr_read_keys()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/pr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2530,6 +2530,7 @@ static void cgroup_migrate_add_task(stru
- 
- 	mgctx->tset.nr_tasks++;
- 
-+	css_set_skip_task_iters(cset, task);
- 	list_move_tail(&task->cg_list, &cset->mg_tasks);
- 	if (list_empty(&cset->mg_node))
- 		list_add_tail(&cset->mg_node,
+diff --git a/drivers/nvme/host/pr.c b/drivers/nvme/host/pr.c
+index 803efc97fd1ea..0636fa4d6f77b 100644
+--- a/drivers/nvme/host/pr.c
++++ b/drivers/nvme/host/pr.c
+@@ -203,7 +203,8 @@ static int nvme_pr_resv_report(struct block_device *bdev, void *data,
+ static int nvme_pr_read_keys(struct block_device *bdev,
+ 		struct pr_keys *keys_info)
+ {
+-	u32 rse_len, num_keys = keys_info->num_keys;
++	size_t rse_len;
++	u32 num_keys = keys_info->num_keys;
+ 	struct nvme_reservation_status_ext *rse;
+ 	int ret, i;
+ 	bool eds;
+@@ -213,6 +214,9 @@ static int nvme_pr_read_keys(struct block_device *bdev,
+ 	 * enough to get enough keys to fill the return keys buffer.
+ 	 */
+ 	rse_len = struct_size(rse, regctl_eds, num_keys);
++	if (rse_len > U32_MAX)
++		return -EINVAL;
++
+ 	rse = kzalloc(rse_len, GFP_KERNEL);
+ 	if (!rse)
+ 		return -ENOMEM;
+-- 
+2.51.0
+
 
 
 
