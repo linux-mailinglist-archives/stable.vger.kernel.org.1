@@ -1,177 +1,269 @@
-Return-Path: <stable+bounces-227888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227889-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iK6sIWnewGn6NQQAu9opvQ
-	(envelope-from <stable+bounces-227888-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:32:09 +0100
+	id KMOzOMrewGn6NQQAu9opvQ
+	(envelope-from <stable+bounces-227889-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:33:46 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F7042ED161
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2815F2ED1B3
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:33:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8E5E73003BC2
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 06:32:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0DE213004CBD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 06:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6962C234E;
-	Mon, 23 Mar 2026 06:32:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B31073191BB;
+	Mon, 23 Mar 2026 06:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="apiZGX1x"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="CZh92Vqp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail115-100.sinamail.sina.com.cn (mail115-100.sinamail.sina.com.cn [218.30.115.100])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243DE2C21F4
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 06:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508172FD7BE
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 06:33:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774247522; cv=none; b=WIdxWUJPIvkTg3ytBw7vfPLrGEk6QbmJbY80145I7SpvKLBbWLF90Zgyyj10j6ckJnahNHgt9fMo0axBjaM0wW3aNOsazPIbJbUm1WZ6gd6QkRxRXbHXvoYsRRV25xKGOcCTcYMh789VsylVoMR4rL0rsnGd5zQ70yQI0M0pb8I=
+	t=1774247613; cv=none; b=GPlyJnVXz6cs0IX4DsHRr3Q5N0Z+KGAgVjQ2MIBElrzgB9vOpajwmEgEZMdPQM8Q4/R9EpX+wuoTPuCyUeJCHNq6MNfC/JK0UcijGcMrBQMuwwyTjj1vGsp4is0RPSgzVRjs2TPf+3KGuyhP6MRUKDqvCFwBRPX8jlAa4QiMr3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774247522; c=relaxed/simple;
-	bh=Rs2neo4FxLnmJGr6Qjf/JC9WoglZcU1W5DKFZwrmMtY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a7mHArbz4/VFP9g4eEIdX36jw7Zz1x8vrIP4EyHB3NHibRPQGth20djSLKJ6XhzF7lW6Hkocu1qmhNNKZAF//6tk5m8wpxKCImjpfHKA2nuxLdsCFIhRktVyXFJL9yg129dyYeTlyAsolspg57V83ulL6BwQ51Nj8VHtHP+QA8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=apiZGX1x; arc=none smtp.client-ip=218.30.115.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1774247519;
-	bh=w/6QTn2RrWbgNuU6QaGGcFWM01G6XO+tMUvHhd4TYjY=;
-	h=From:Subject:Date:Message-Id;
-	b=apiZGX1xPLe0/OOKwdf6suNVwdnBU5rmu4fwPshn/sIMJhR8XqxSXrNpTtU0qydDd
-	 IT7mEGyCvMSmwhd3b9t2bu5af5sdtiYkkj4dLhqBdPQP8VPXzdNrq+L5yVarXf9eFz
-	 re2RQM+57zhvtMux1CI7JRu3xTAgzocqRz4XNrY4=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.23) with ESMTP
-	id 69C0DE330000165C; Mon, 23 Mar 2026 14:31:19 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 6027208913430
-X-SMAIL-UIID: F608F980582B4633BEBF41786CA6AB3D-20260323-143119-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	zhangchunyan@iscas.ac.cn
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	xujiakai2025@iscas.ac.cn,
-	linux-riscv@lists.infradead.org,
-	pjw@kernel.org
-Subject: [PATCH 6.1.y] riscv: stacktrace: Disable KASAN checks for non-current tasks
-Date: Mon, 23 Mar 2026 14:31:14 +0800
-Message-Id: <20260323063115.3555043-1-jianqkang@sina.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1774247613; c=relaxed/simple;
+	bh=TEU6DYkEQGRfvG4wSTCS9MsLZyPrDr/7yC/Q1P9jTVU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AO6R7Z5rZ6zkich9+W+96uD5TOWb7C8aioB4yxwL9KUEReGp8cucG8BxAtZRsCu/VBCoiRm3T+mpi0T4Ids+I7gem3sfA1jJkG+p+7iyCwLp7h1yl2P+B2XZh+bQ/J3gWqSbgENa1B+2NXVIR/4ZHCC6+Upeu2CatipaN0Gi/2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=CZh92Vqp; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-48540d21f7dso28551185e9.0
+        for <stable@vger.kernel.org>; Sun, 22 Mar 2026 23:33:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1774247610; x=1774852410; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=YGTwgK5nYvcCyOG242Pe97TZCZ73pNnFR7VrLz4Ca/Y=;
+        b=CZh92Vqp71WT3svFN9TqQvz7NXrKGXJRRZSmU5xc3AZnwKVojxFqG5JRr9HODAvDBk
+         Lk8Up1C3KQSF0Na/1GPWHhwIgeSRgDJB4Dex6i6hvHyNSu576AhrrltgIhb7K5hqIOgU
+         zHGu9Liti7eg75xGEAB9ziENXA2iwCJJDTKfZNmSkto0T8Wbt+EmEodNGu3iqax3C/HS
+         GOi0ak69EVPGLB4Odes5q0uetAnWPbcY/+M7AIiVyRGPr6Zm8jeEWsl4DTOYV3hfHxAA
+         zXm/dN3GydoSgqEjqEHPsR6Pg4cY27rnnVpFncglC9orYo0ALW/bjluOdR3fLX9GVnP4
+         /1bA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1774247610; x=1774852410;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YGTwgK5nYvcCyOG242Pe97TZCZ73pNnFR7VrLz4Ca/Y=;
+        b=GYaIxHYE/Myu2qlkrlFW8nMSVxUkGZ5r8f61wUhpb+8MzHbYcMvtb70+nx16g873rO
+         8vZBZE55s9I0NEpCTznDht0tQqdDfrajJXPeMelJRU4hNomHXku09teXyRrbVSs9XzIZ
+         oeDaC83iSqcoXnFQuSlpcRMPJrRhG92m/knH+JQcUn5fT5Pc4iYQ6Ssxvh1h3rGhonS5
+         cRv+KgcP+VfsgAXB/NCnXUK3inNnv9+tKagaCwEPL9d9O1fNrrpJVZUjBujalPXerJL2
+         eEEPqYPtdeT783zyBQydFo+ld7Y9VciL3pypaElcm1YgPP+7KWKiPZX2A0NfTp2tEYt4
+         BJBw==
+X-Forwarded-Encrypted: i=1; AJvYcCUO2Y6xXDzZtVTMxIpZJdCyRtO+tMEM5Mus9cqJCLtJj7Bxri73Xyx7xQf8KWXXTK8XGxJq2sI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoKaqpodnwdlZNGQ5D1ggoO1q6JzstGzIEWIEN3a2GofaQ3Hxa
+	cF8aD9/jSlN+j/t8J9joIQLqG7kObpU1BcTLtAONojJPCb39CbgGkUFGuO7YCsEX7uo=
+X-Gm-Gg: ATEYQzzEr0PEZxKqVljzp6fPrP3bY8g4N5fcgavbLPsHV6tyozzboBUSsZD/W8aOVps
+	fojCytokos/eussfOVzbeJgPzs9DSMRSSt1TuKggUZ7Wcc0HRKC3/EkeJDumSgH6+uecmgA9HY3
+	7el0XJBM+g73k+Sq8c0k4L+QozU33g57HZz9exAzvLAUNOHj8IBxk5dd5wHrTMaOF++f/iktD4k
+	jG/8gzb/OtKs6kcAD2LfJKxUI5p5xfqp3+nO1w3kUl69glIxvGUiu2dedtsfy07EOlnh9qCeqXo
+	j+pwMUx7nA+ebHPwSPbiggkcUTtKd5jMddpQkmOcEAch/T2eCNoOljzEVh35OqiZ/NylZog3ufh
+	gxK3DnsGONOBxM3Ls8MFjmBzFfTjhH3/J7KyhsOlMRabanh3sfBkjZy9dP92n1cEQcQWGMkLH5K
+	O1SKU7SIufjOTXtrp+jvpZO6FtGSrg9pYa7AAPfkCH596Y+0PTPD4=
+X-Received: by 2002:a05:600c:45c7:b0:485:3fd1:9936 with SMTP id 5b1f17b1804b1-486fede721amr142064755e9.5.1774247609567;
+        Sun, 22 Mar 2026 23:33:29 -0700 (PDT)
+Received: from ?IPV6:2403:580d:fda1::299? (2403-580d-fda1--299.ip6.aussiebb.net. [2403:580d:fda1::299])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b083516ab1sm127821195ad.5.2026.03.22.23.33.25
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Mar 2026 23:33:28 -0700 (PDT)
+Message-ID: <78228756-0f0c-4ecb-86d5-da6613160a72@suse.com>
+Date: Mon, 23 Mar 2026 17:03:23 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] btrfs: Fix BTRFS arm64 tagged KASAN false-positive
+To: Daniel J Blueman <daniel@quora.org>, Chris Mason <clm@fb.com>,
+ David Sterba <dsterba@suse.com>
+Cc: linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kasan-dev@googlegroups.com, stable@vger.kernel.org
+References: <20260323061827.22903-1-daniel@quora.org>
+Content-Language: en-US
+From: Qu Wenruo <wqu@suse.com>
+Autocrypt: addr=wqu@suse.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNGFF1IFdlbnJ1byA8d3F1QHN1c2UuY29tPsLAlAQTAQgAPgIbAwULCQgHAgYVCAkKCwIE
+ FgIDAQIeAQIXgBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXVgBQkQ/lqxAAoJEMI9kfOh
+ Jf6o+jIH/2KhFmyOw4XWAYbnnijuYqb/obGae8HhcJO2KIGcxbsinK+KQFTSZnkFxnbsQ+VY
+ fvtWBHGt8WfHcNmfjdejmy9si2jyy8smQV2jiB60a8iqQXGmsrkuR+AM2V360oEbMF3gVvim
+ 2VSX2IiW9KERuhifjseNV1HLk0SHw5NnXiWh1THTqtvFFY+CwnLN2GqiMaSLF6gATW05/sEd
+ V17MdI1z4+WSk7D57FlLjp50F3ow2WJtXwG8yG8d6S40dytZpH9iFuk12Sbg7lrtQxPPOIEU
+ rpmZLfCNJJoZj603613w/M8EiZw6MohzikTWcFc55RLYJPBWQ+9puZtx1DopW2jOwE0EWdWB
+ rwEIAKpT62HgSzL9zwGe+WIUCMB+nOEjXAfvoUPUwk+YCEDcOdfkkM5FyBoJs8TCEuPXGXBO
+ Cl5P5B8OYYnkHkGWutAVlUTV8KESOIm/KJIA7jJA+Ss9VhMjtePfgWexw+P8itFRSRrrwyUf
+ E+0WcAevblUi45LjWWZgpg3A80tHP0iToOZ5MbdYk7YFBE29cDSleskfV80ZKxFv6koQocq0
+ vXzTfHvXNDELAuH7Ms/WJcdUzmPyBf3Oq6mKBBH8J6XZc9LjjNZwNbyvsHSrV5bgmu/THX2n
+ g/3be+iqf6OggCiy3I1NSMJ5KtR0q2H2Nx2Vqb1fYPOID8McMV9Ll6rh8S8AEQEAAcLAfAQY
+ AQgAJgIbDBYhBC3fcuWlpVuonapC4cI9kfOhJf6oBQJnEXWBBQkQ/lrSAAoJEMI9kfOhJf6o
+ cakH+QHwDszsoYvmrNq36MFGgvAHRjdlrHRBa4A1V1kzd4kOUokongcrOOgHY9yfglcvZqlJ
+ qfa4l+1oxs1BvCi29psteQTtw+memmcGruKi+YHD7793zNCMtAtYidDmQ2pWaLfqSaryjlzR
+ /3tBWMyvIeWZKURnZbBzWRREB7iWxEbZ014B3gICqZPDRwwitHpH8Om3eZr7ygZck6bBa4MU
+ o1XgbZcspyCGqu1xF/bMAY2iCDcq6ULKQceuKkbeQ8qxvt9hVxJC2W3lHq8dlK1pkHPDg9wO
+ JoAXek8MF37R8gpLoGWl41FIUb3hFiu3zhDDvslYM4BmzI18QgQTQnotJH8=
+In-Reply-To: <20260323061827.22903-1-daniel@quora.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	MID_CONTAINS_FROM(1.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[sina.cn,none];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[suse.com,quarantine];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=google];
 	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
-	R_DKIM_ALLOW(-0.20)[sina.cn:s=201208];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-227888-lists,stable=lfdr.de];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_NEQ_ENVFROM(0.00)[jianqkang@sina.cn,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[sina.cn:+];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[suse.com:+];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-227889-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
 	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FREEMAIL_FROM(0.00)[sina.cn];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[seclists.org:url,iscas.ac.cn:email,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 8F7042ED161
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[wqu@suse.com,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,quora.org:email]
+X-Rspamd-Queue-Id: 2815F2ED1B3
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-From: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
 
-[ Upstream commit 060ea84a484e852b52b938f234bf9b5503a6c910 ]
 
-Unwinding the stack of a task other than current, KASAN would report
-"BUG: KASAN: out-of-bounds in walk_stackframe+0x41c/0x460"
+在 2026/3/23 16:48, Daniel J Blueman 写道:
+> When booting Linux 7.0-rc5 on a Qualcomm Snapdragon X1 with KASAN
+> software tagging with a BTRFS filesystem, we see:
+> 
+> BUG: KASAN: invalid-access in xxh64_update (lib/xxhash.c:143 lib/xxhash.c:283)
+> Read of size 8 at addr 7bff000804fe1000 by task kworker/u49:2/138
+> Pointer tag: [7b], memory tag: [b2]
+> 
+> CPU: 0 UID: 0 PID: 138 Comm: kworker/u49:2 Not tainted 7.0.0-rc4+ #34 PREEMPTLAZY
+> Hardware name: LENOVO 83ED/LNVNB161216, BIOS NHCN60WW 09/11/2025
+> Workqueue: btrfs-endio-meta simple_end_io_work
+> Call trace:
+> show_stack (arch/arm64/kernel/stacktrace.c:501) (C)
+> dump_stack_lvl (lib/dump_stack.c:122)
+> print_report (mm/kasan/report.c:379 mm/kasan/report.c:482)
+> kasan_report (mm/kasan/report.c:597)
+> kasan_check_range (mm/kasan/sw_tags.c:86 (discriminator 1))
+> __hwasan_loadN_noabort (mm/kasan/sw_tags.c:158)
+> xxh64_update (lib/xxhash.c:143 lib/xxhash.c:283)
+> btrfs_csum_update (fs/btrfs/fs.c:106)
+> csum_tree_block (fs/btrfs/disk-io.c:103 (discriminator 3))
+> btrfs_validate_extent_buffer (fs/btrfs/disk-io.c:389)
+> end_bbio_meta_read (fs/btrfs/extent_io.c:3853 (discriminator 1))
+> btrfs_bio_end_io (fs/btrfs/bio.c:152)
+> simple_end_io_work (fs/btrfs/bio.c:388)
+> process_one_work (./arch/arm64/include/asm/jump_label.h:36 ./include/trace/events/workqueue.h:110 kernel/workqueue.c:3281)
+> worker_thread (kernel/workqueue.c:3353 (discriminator 2) kernel/workqueue.c:3440 (discriminator 2))
+> kthread (kernel/kthread.c:436)
+> ret_from_fork (arch/arm64/kernel/entry.S:861)
+> 
+> The buggy address belongs to the physical page:
+> page: refcount:3 mapcount:0 mapping:f1ff00080055dee8 index:0x2467bd pfn:0x884fe1
+> memcg:51ff000800e68ec0 aops:btree_aops ino:1
+> flags: 0x9340000000004000(private|zone=2|kasantag=0x4d)
+> raw: 9340000000004000 0000000000000000 dead000000000122 f1ff00080055dee8
+> raw: 00000000002467bd 43ff00081d0cc6f0 00000003ffffffff 51ff000800e68ec0
+> page dumped because: kasan: bad access detected
+> 
+> Memory state around the buggy address:
+> ffff000804fe0e00: 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b
+> ffff000804fe0f00: 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b 7b
+>> ffff000804fe1000: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
+> ^
+> ffff000804fe1100: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
+> ffff000804fe1200: b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2 b2
+> 
+> This occurs as allocation in btrfs_alloc_page_array is from multiple
+> discrete pages thus different KASAN tags by design, leading to a tag
+> mismatch when linear access is used where the pages are physically
+> contiguous.
+> 
+> Fix this by retagging all the EB pages with the same KASAN tag.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Daniel J Blueman <daniel@quora.org>
+> Fixes: 397239ed6a6c ("btrfs: allow extent buffer helpers to skip cross-page handling")
+> Changelog:
+>   v2: Retag pages rather than bypass linear access optimisation
+>   v1: https://lore.kernel.org/lkml/20260319053413.14771-1-daniel@quora.org/
+> ---
+>   fs/btrfs/extent_io.c | 13 +++++++++++++
+>   1 file changed, 13 insertions(+)
+> 
+> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+> index 5f97a3d2a8d7..37836d685f21 100644
+> --- a/fs/btrfs/extent_io.c
+> +++ b/fs/btrfs/extent_io.c
+> @@ -10,6 +10,7 @@
+>   #include <linux/spinlock.h>
+>   #include <linux/blkdev.h>
+>   #include <linux/swap.h>
+> +#include <linux/kasan.h>
+>   #include <linux/writeback.h>
+>   #include <linux/pagevec.h>
+>   #include <linux/prefetch.h>
+> @@ -706,6 +707,18 @@ static int alloc_eb_folio_array(struct extent_buffer *eb, bool nofail)
+>   	if (ret < 0)
+>   		return ret;
+>   
+> +	/*
+> +	 * Since separate page allocations are used for the same extent with
+> +	 * linear addressing where physically contiguous, apply the same KASAN
+> +	 * tag to prevent false-positive warnings when crossing page boundaries
+> +	 */
+> +	u8 tag = page_kasan_tag(page_array[0]);
 
-There is a same issue on x86 and has been resolved by the commit
-84936118bdf3 ("x86/unwind: Disable KASAN checks for non-current tasks")
-The solution could be applied to RISC-V too.
+We do not mix definition and code.
 
-This patch also can solve the issue:
-https://seclists.org/oss-sec/2025/q4/23
+> +
+> +	for (int i = 1; i < num_pages; i++) {
+> +		page_kasan_tag_set(page_array[i], tag);
 
-Fixes: 5d8544e2d007 ("RISC-V: Generic library routines and assembly")
-Co-developed-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Signed-off-by: Chunyan Zhang <zhangchunyan@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20251022072608.743484-1-zhangchunyan@iscas.ac.cn
-[pjw@kernel.org: clean up checkpatch issues]
-Signed-off-by: Paul Walmsley <pjw@kernel.org>
-[ Minor conflict resolved. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
----
- arch/riscv/kernel/stacktrace.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+Please note that, at alloc_eb_folio_array() we have no idea if the 
+folios are contig yet.
 
-diff --git a/arch/riscv/kernel/stacktrace.c b/arch/riscv/kernel/stacktrace.c
-index 10e311b2759d..4f78b7962651 100644
---- a/arch/riscv/kernel/stacktrace.c
-+++ b/arch/riscv/kernel/stacktrace.c
-@@ -16,6 +16,22 @@
- 
- #ifdef CONFIG_FRAME_POINTER
- 
-+/*
-+ * This disables KASAN checking when reading a value from another task's stack,
-+ * since the other task could be running on another CPU and could have poisoned
-+ * the stack in the meantime.
-+ */
-+#define READ_ONCE_TASK_STACK(task, x)			\
-+({							\
-+	unsigned long val;				\
-+	unsigned long addr = x;				\
-+	if ((task) == current)				\
-+		val = READ_ONCE(addr);			\
-+	else						\
-+		val = READ_ONCE_NOCHECK(addr);		\
-+	val;						\
-+})
-+
- extern asmlinkage void ret_from_exception(void);
- 
- static inline int fp_is_valid(unsigned long fp, unsigned long sp)
-@@ -68,8 +84,9 @@ void notrace walk_stackframe(struct task_struct *task, struct pt_regs *regs,
- 			fp = frame->ra;
- 			pc = regs->ra;
- 		} else {
--			fp = frame->fp;
--			pc = ftrace_graph_ret_addr(current, &graph_idx, frame->ra,
-+			fp = READ_ONCE_TASK_STACK(task, frame->fp);
-+			pc = READ_ONCE_TASK_STACK(task, frame->ra);
-+			pc = ftrace_graph_ret_addr(current, &graph_idx, pc,
- 						   &frame->ra);
- 			if (pc == (unsigned long)ret_from_exception) {
- 				if (unlikely(!__kernel_text_address(pc) || !fn(arg, pc)))
--- 
-2.34.1
+And if they are not contig, tagging them with the same tag will mask 
+some real bugs.
+
+To me, the proper re-tagging timing should be inside 
+alloc_extent_buffer(), under the "if (page_contig)" branch.
+
+Thanks,
+Qu
+
+> +		kasan_unpoison_range(page_address(page_array[i]), PAGE_SIZE);
+> +	}
+> +
+
+
+>   	for (int i = 0; i < num_pages; i++)
+>   		eb->folios[i] = page_folio(page_array[i]);
+>   	eb->folio_size = PAGE_SIZE;
 
 
