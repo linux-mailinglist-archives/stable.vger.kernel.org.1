@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-229786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228103-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHAPE5dywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229786-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:23 +0100
+	id cIVXJkxJwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228103-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C44D2F9611
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:04:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BD382F3E12
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C31532E58EE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD164300B116
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5640E3B95E4;
-	Mon, 23 Mar 2026 16:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 703E63AE1AA;
+	Mon, 23 Mar 2026 13:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAf4aTeS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxA+2YPk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BC3285417;
-	Mon, 23 Mar 2026 16:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335F83AC0D2;
+	Mon, 23 Mar 2026 13:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282861; cv=none; b=JGaaU1nY//fO6hTX4gW7YCN1KcK4NifafnZ+TLJoLpBjKNBIIfdAKBNrciaQZJ4nPSCN7zAkepzZwKqCzvrQV6VNuD+S3KzLqAQDPX+Bv6QsT33g1SxuOK/xGT6zd9K2vy2+CVPy9UKwUyYRftCyct91E9eui+jxEqb3LkrpgnA=
+	t=1774274134; cv=none; b=SVALcHmv3Ae/ehklxxMu6EERWZTgg5G9Wum2I129bP4tBXf+DtlbxfV8g1pcWm1GqlNzPVm1NFWCwFo/ctfHKN/ioDTP90rPTdXKxzhepUq2LcC9RQlLbkZlAw2Lx86C6pfkWhGcUzeNStmP2Zlz+erep31gyyttlcGPuCEniVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282861; c=relaxed/simple;
-	bh=uY67VM6Y5Dkb+ctMjYbwNFpC1bxjGr55r5zielkdAmU=;
+	s=arc-20240116; t=1774274134; c=relaxed/simple;
+	bh=WSeVqXUyh9l1DDYVdWrOVFqeiHzXQtFs8AG2NTsqkD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h2h9VJnqws8BdU27Me2+YrE4RZ5d8VqCiy/s3AbmsW1Ta/q5FTN1+f+x20SCmwNyBghxmcu0Qpsg2dzfEmIF5dEKNws/fVqxn1UkCFTB6vO2daq5vqiRiaJTKhs2YTLN/F0/VyQ5xffvj1Zp/g0v8jURnaHGeiKVSl6NG4nnC9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAf4aTeS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739DDC4CEF7;
-	Mon, 23 Mar 2026 16:21:00 +0000 (UTC)
+	 MIME-Version; b=eK2f2i+bDNuRFWtev/U0v++JzmTKLF8exfRpB07suoT388KhcsjObbrBqoO7uqgmwYDhzon5RXGcYZ4vo+8m/++trRREZiq1JmWgaY78O52TTYlcdlsIgnRhl5QFQvxZT5m0noyonDX3mPcDDK3DipCysHviVBsPe7yZ3e6sbks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxA+2YPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A10C4CEF7;
+	Mon, 23 Mar 2026 13:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282861;
-	bh=uY67VM6Y5Dkb+ctMjYbwNFpC1bxjGr55r5zielkdAmU=;
+	s=korg; t=1774274134;
+	bh=WSeVqXUyh9l1DDYVdWrOVFqeiHzXQtFs8AG2NTsqkD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAf4aTeSENgyclgR/CFCRiwSfkKQGv01j0/3aqdpiNVzwEYMnvE7DtyiU97O9wOad
-	 1RgKos6Wm7oPb8z2jce3d7uIFfXOoOq+3gYZfK6+hXANi8zHWVVpcOIctZz/ov6lse
-	 COD7uH8LypdoZ+Bo62TTEYPGn9TSsGjV/awZ7sCs=
+	b=SxA+2YPk61JtFb4Lgpa6IKBJEzuZDWE6bRR1wqNBptyzvF6roBvGkWrkM9nG/YVkx
+	 9aTLTVXYarVTAn3+VUiuK47b7SHh3ANqgdBBu4lhTDG9qdKPLeQoLz1leOWHADcAOy
+	 moyoj25BHPP2ZfG8m6p7yL36cF31R9OJH59sS1JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Laurence Oberman <loberman@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Liu Shixin <liushixin2@huawei.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	"Uschakow, Stanislav" <suschako@amazon.de>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 312/481] mm/hugetlb: fix two comments related to huge_pmd_unshare()
-Date: Mon, 23 Mar 2026 14:44:54 +0100
-Message-ID: <20260323134532.705657781@linuxfoundation.org>
+	Christian Eggers <ceggers@arri.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.19 118/220] Bluetooth: LE L2CAP: Disconnect if received packets SDU exceeds IMTU
+Date: Mon, 23 Mar 2026 14:44:55 +0100
+Message-ID: <20260323134508.332575668@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,120 +66,89 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229786-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228103-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 2C44D2F9611
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,intel.com:email,linuxfoundation.org:dkim,linuxfoundation.org:mid,arri.de:email]
+X-Rspamd-Queue-Id: 1BD382F3E12
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand (Red Hat) <david@kernel.org>
+From: Christian Eggers <ceggers@arri.de>
 
-commit 3937027caecb4f8251e82dd857ba1d749bb5a428 upstream.
+[ Upstream commit e1d9a66889867c232657a9b6f25d451d7c3ab96f ]
 
-Ever since we stopped using the page count to detect shared PMD page
-tables, these comments are outdated.
+Core 6.0, Vol 3, Part A, 3.4.3:
+"If the SDU length field value exceeds the receiver's MTU, the receiver
+shall disconnect the channel..."
 
-The only reason we have to flush the TLB early is because once we drop the
-i_mmap_rwsem, the previously shared page table could get freed (to then
-get reallocated and used for other purpose).  So we really have to flush
-the TLB before that could happen.
+This fixes L2CAP/LE/CFC/BV-26-C (running together with 'l2test -r -P
+0x0027 -V le_public -I 100').
 
-So let's simplify the comments a bit.
-
-The "If we unshared PMDs, the TLB flush was not recorded in mmu_gather."
-part introduced as in commit a4a118f2eead ("hugetlbfs: flush TLBs
-correctly after huge_pmd_unshare") was confusing: sure it is recorded in
-the mmu_gather, otherwise tlb_flush_mmu_tlbonly() wouldn't do anything.
-So let's drop that comment while at it as well.
-
-We'll centralize these comments in a single helper as we rework the code
-next.
-
-Link: https://lkml.kernel.org/r/20251223214037.580860-3-david@kernel.org
-Fixes: 59d9094df3d7 ("mm: hugetlb: independent PMD page table shared count")
-Signed-off-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Reviewed-by: Rik van Riel <riel@surriel.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: Oscar Salvador <osalvador@suse.de>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Liu Shixin <liushixin2@huawei.com>
-Cc: Lance Yang <lance.yang@linux.dev>
-Cc: "Uschakow, Stanislav" <suschako@amazon.de>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aac23bf63659 ("Bluetooth: Implement LE L2CAP reassembly")
+Signed-off-by: Christian Eggers <ceggers@arri.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |   24 ++++++++----------------
- 1 file changed, 8 insertions(+), 16 deletions(-)
+ net/bluetooth/l2cap_core.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5432,17 +5432,10 @@ static void __unmap_hugepage_range(struc
- 	tlb_end_vma(tlb, vma);
- 
- 	/*
--	 * If we unshared PMDs, the TLB flush was not recorded in mmu_gather. We
--	 * could defer the flush until now, since by holding i_mmap_rwsem we
--	 * guaranteed that the last refernece would not be dropped. But we must
--	 * do the flushing before we return, as otherwise i_mmap_rwsem will be
--	 * dropped and the last reference to the shared PMDs page might be
--	 * dropped as well.
--	 *
--	 * In theory we could defer the freeing of the PMD pages as well, but
--	 * huge_pmd_unshare() relies on the exact page_count for the PMD page to
--	 * detect sharing, so we cannot defer the release of the page either.
--	 * Instead, do flush now.
-+	 * There is nothing protecting a previously-shared page table that we
-+	 * unshared through huge_pmd_unshare() from getting freed after we
-+	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-+	 * succeeded, flush the range corresponding to the pud.
- 	 */
- 	if (force_flush)
- 		tlb_flush_mmu_tlbonly(tlb);
-@@ -6781,11 +6774,10 @@ long hugetlb_change_protection(struct vm
- 		cond_resched();
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 319c87bd795d5..1618fe98dce71 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -6654,8 +6654,10 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		return -ENOBUFS;
  	}
- 	/*
--	 * Must flush TLB before releasing i_mmap_rwsem: x86's huge_pmd_unshare
--	 * may have cleared our pud entry and done put_page on the page table:
--	 * once we release i_mmap_rwsem, another task can do the final put_page
--	 * and that page table be reused and filled with junk.  If we actually
--	 * did unshare a page of pmds, flush the range corresponding to the pud.
-+	 * There is nothing protecting a previously-shared page table that we
-+	 * unshared through huge_pmd_unshare() from getting freed after we
-+	 * release i_mmap_rwsem, so flush the TLB now. If huge_pmd_unshare()
-+	 * succeeded, flush the range corresponding to the pud.
- 	 */
- 	if (shared_pmd)
- 		flush_hugetlb_tlb_range(vma, range.start, range.end);
+ 
+-	if (chan->imtu < skb->len) {
+-		BT_ERR("Too big LE L2CAP PDU");
++	if (skb->len > chan->imtu) {
++		BT_ERR("Too big LE L2CAP PDU: len %u > %u", skb->len,
++		       chan->imtu);
++		l2cap_send_disconn_req(chan, ECONNRESET);
+ 		return -ENOBUFS;
+ 	}
+ 
+@@ -6681,7 +6683,9 @@ static int l2cap_ecred_data_rcv(struct l2cap_chan *chan, struct sk_buff *skb)
+ 		       sdu_len, skb->len, chan->imtu);
+ 
+ 		if (sdu_len > chan->imtu) {
+-			BT_ERR("Too big LE L2CAP SDU length received");
++			BT_ERR("Too big LE L2CAP SDU length: len %u > %u",
++			       skb->len, sdu_len);
++			l2cap_send_disconn_req(chan, ECONNRESET);
+ 			err = -EMSGSIZE;
+ 			goto failed;
+ 		}
+-- 
+2.51.0
+
 
 
 
