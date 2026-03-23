@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229821-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id OO+wJ3tLwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228318-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:31 +0100
+	id EFqhAwRzwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229821-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657082F419B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F212F9712
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:06:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C895A307D9B0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF5B63043AF8
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6383B19CA;
-	Mon, 23 Mar 2026 14:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A7E03AF662;
+	Mon, 23 Mar 2026 16:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUFmPn6h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFG5r9i8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725FC3AE1A6;
-	Mon, 23 Mar 2026 14:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB8D38B7C4;
+	Mon, 23 Mar 2026 16:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274792; cv=none; b=jOvgCWmv0I8B4fD/RJpwW6myj4jmX+Q3gK3hArHKm6FCdE/neQoAOfXSiRo/cWqYmsah1y/i064Bmbzdycm/E+X8mrDqUYp97xGVkf55RVDNPsJ/c/7+XOizD3dtC4+HJAta0ADWQ6exR/KuKtF+9/6wJqfhky/+Svsbp6q/JpQ=
+	t=1774282956; cv=none; b=D3pHpFFkDvJ1imBdVBeMykO1kKbDN22FJQ4EUo6QbWvhK1uqEQAmXNKhkuENuThOwHuiv4dZ42nQgqR8mBGh4SD03Fnnz6NEbntmtAuHN9mD7gQghFIVLhf4kUcbw4hN69I280T6oBbvSKCqUk0o28Zb+ixIF4XOQc/BQHCSMK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274792; c=relaxed/simple;
-	bh=nELRHhvL43eu5wbVfLGsPp7jMk27eMUL1eB54DTktwk=;
+	s=arc-20240116; t=1774282956; c=relaxed/simple;
+	bh=311MuOeqe+Kcxa2VdaK5MdbAKl470hJFhFMdFkI/8ys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JRSZEn+gG1rh0ZldsDNJB/YpAlXm94Ct3glMGAr7PXLhifUdYA4qoJ74Hdee7agH5hjgy7WdgNbLX0nQHIsBeAdrzityX4o26gpzVtqMNEcUq7LqOYoBdwwiZ4BdA8U8j96Mg7ElSuCkGnqYXaiGzWvZGF24qbLmg/f+HNHXhyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUFmPn6h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9CAEC4CEF7;
-	Mon, 23 Mar 2026 14:06:31 +0000 (UTC)
+	 MIME-Version; b=WVB8TL7EALwJHOvv3/bgkqHPEiVtidNNJXFDZEMGFoZUaE/30ZFyEOGwzTa145CQe5aBTv8yofiDoc0dH6Xasbsfk38uOLVhlBAV36cxjF67sErmSNddiRewDG3AgOTWwjEcGW/Ssvv4j49IaOHxOc56skzkVUXutNvn5DGDMos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFG5r9i8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914B6C4CEF7;
+	Mon, 23 Mar 2026 16:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274792;
-	bh=nELRHhvL43eu5wbVfLGsPp7jMk27eMUL1eB54DTktwk=;
+	s=korg; t=1774282955;
+	bh=311MuOeqe+Kcxa2VdaK5MdbAKl470hJFhFMdFkI/8ys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUFmPn6hSfrysaE1rHtmGydepVQSFqvkWIwavCfEn738nWY4+c3bJGAPty8G7Iia8
-	 xrYLg/oK8dr9n35l6ECpfRy42FMEi6L+5Up8UH5E93abjJmXI2mqF6qsuODGcqij7Z
-	 NXDhX+Vvse5siM+C//WA3Dj8etlWvB6Norr5Zvjw=
+	b=fFG5r9i8+N9ZBwjo0dvBqyNuz31ODDkq3EZiGJbk2x3pUDUe6t3o5u+FKlTTbuBR+
+	 yE/Nyu+ETINNKXVm8iACSil0Fxu15qGl8Zg9jo5h5YTMswrvn4UBJNk7N+kC/d27R8
+	 Hrz4inW4IANTU6SIsb1ALiZDDG0ASbuC9tMWdXGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Cavallari <nicolas.cavallari@green-communications.fr>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 109/212] wifi: mac80211: use jiffies_delta_to_msecs() for sta_info inactive times
+Subject: [PATCH 6.1 348/481] crypto: atmel-sha204a - Fix OOM ->tfm_count leak
 Date: Mon, 23 Mar 2026 14:45:30 +0100
-Message-ID: <20260323134507.227950388@linuxfoundation.org>
+Message-ID: <20260323134533.582350787@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,18 +69,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228318-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229821-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -90,62 +90,47 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 657082F419B
+X-Rspamd-Queue-Id: 63F212F9712
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit ac6f24cc9c0a9aefa55ec9696dcafa971d4d760b ]
+[ Upstream commit d240b079a37e90af03fd7dfec94930eb6c83936e ]
 
-Inactive times of around 0xffffffff milliseconds have been observed on
-an ath9k device on ARM.  This is likely due to a memory ordering race in
-the jiffies_to_msecs(jiffies - last_active()) calculation causing an
-overflow when the observed jiffies is below ieee80211_sta_last_active().
+If memory allocation fails, decrement ->tfm_count to avoid blocking
+future reads.
 
-Use jiffies_delta_to_msecs() instead to avoid this problem.
-
-Fixes: 7bbdd2d98797 ("mac80211: implement station stats retrieval")
-Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
-Link: https://patch.msgid.link/20260303161701.31808-1-nicolas.cavallari@green-communications.fr
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: stable@vger.kernel.org
+Fixes: da001fb651b0 ("crypto: atmel-i2c - add support for SHA204A random number generator")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+[ adapted kmalloc_obj() macro to kmalloc(sizeof()) ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/sta_info.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/crypto/atmel-sha204a.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index 1a995bc301b19..b0d9bb830f293 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -2759,7 +2759,9 @@ static void sta_set_link_sinfo(struct sta_info *sta,
- 	}
+--- a/drivers/crypto/atmel-sha204a.c
++++ b/drivers/crypto/atmel-sha204a.c
+@@ -52,9 +52,10 @@ static int atmel_sha204a_rng_read_nonblo
+ 		rng->priv = 0;
+ 	} else {
+ 		work_data = kmalloc(sizeof(*work_data), GFP_ATOMIC);
+-		if (!work_data)
++		if (!work_data) {
++			atomic_dec(&i2c_priv->tfm_count);
+ 			return -ENOMEM;
+-
++		}
+ 		work_data->ctx = i2c_priv;
+ 		work_data->client = i2c_priv->client;
  
- 	link_sinfo->inactive_time =
--		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta, link_id));
-+		jiffies_delta_to_msecs(jiffies -
-+				       ieee80211_sta_last_active(sta,
-+								 link_id));
- 
- 	if (!(link_sinfo->filled & (BIT_ULL(NL80211_STA_INFO_TX_BYTES64) |
- 				    BIT_ULL(NL80211_STA_INFO_TX_BYTES)))) {
-@@ -2992,7 +2994,8 @@ void sta_set_sinfo(struct sta_info *sta, struct station_info *sinfo,
- 	sinfo->connected_time = ktime_get_seconds() - sta->last_connected;
- 	sinfo->assoc_at = sta->assoc_at;
- 	sinfo->inactive_time =
--		jiffies_to_msecs(jiffies - ieee80211_sta_last_active(sta, -1));
-+		jiffies_delta_to_msecs(jiffies -
-+				       ieee80211_sta_last_active(sta, -1));
- 
- 	if (!(sinfo->filled & (BIT_ULL(NL80211_STA_INFO_TX_BYTES64) |
- 			       BIT_ULL(NL80211_STA_INFO_TX_BYTES)))) {
--- 
-2.51.0
-
 
 
 
