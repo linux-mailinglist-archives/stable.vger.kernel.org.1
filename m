@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228777-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEFmLBBdwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229308-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:32 +0100
+	id yJN1EO5WwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228777-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:22 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50EA02F6721
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:32:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECCA2F5C76
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:06:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 661DA30E2939
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:15:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EEBDD3124964
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6DB83B5841;
-	Mon, 23 Mar 2026 15:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001E0175A80;
+	Mon, 23 Mar 2026 14:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dy13oPq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4LmGgIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACA1277C88;
-	Mon, 23 Mar 2026 15:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76C33A9D9D;
+	Mon, 23 Mar 2026 14:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278708; cv=none; b=JjM8OCsyvJvdnlJsWECGc01EK7A+orLY4F8vUfr3Q1ly90tIdwWbwQ8Q81CzBXrev4dgCsVqisUmlKbNfjpCMJdLSzRyX/4piAO2kBZ3jbTXaG0F7SehfxZC4FEMjuS6czjGeOtj82PsswPrR45ohCD9kZav2xRqP4bwFvRbWBk=
+	t=1774277095; cv=none; b=B4LHPBYhjeT8S/+XvjvDbyLb1Bp3Q+dcCbAk+hpOH1jkU/4PdmwnSIOL+GcrOy4HtF5NdvycTTTzaaW6WTq70mL6LPo83XnNXjUfgFa87E3TYugUa497akfaghLuDvI/MfuxYQQpTl44vQPAslPdDkahgBz64sIsKKf2gfy53fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278708; c=relaxed/simple;
-	bh=NEk/RfKbSybFBvOCuaCj4tlCkg0AoE5pEBOu5u1PWVE=;
+	s=arc-20240116; t=1774277095; c=relaxed/simple;
+	bh=1BIQ0L+q98Bi1XEPRRxFUNY/9L6b139P8tA7cGgrmcE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uV3NKrngXiJB6m2eIMFXmevLVnOqF5qTnECLXTAKZY0v/e/GkBol27esjoWJm0hmCpanf5RIhB95+Y9WTW7Vz9QJXxZAMGdqSZFkcNonuhtfLdAMO7w663sPs+mljfKcNjEMd3JRwdwh9LVO+6pLlabEDUyQNeB2UUQo2XbzB3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dy13oPq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDADDC4CEF7;
-	Mon, 23 Mar 2026 15:11:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Fn5+nRt1J5UiE6SDDnxlMDrxGVWRWEgDneyS762iqlVui/PXAG02OJ+XZT2vnIMGExjxmAe91ryexk34uBRmEFcRc50ZosiERNA1yH5rd9yFh+TbHW4MRQQ2+Nez1qu05xQmPAej0C0/sl9GKKB3vlpjxQPp5ZdARFhDgLXAAIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4LmGgIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49846C4CEF7;
+	Mon, 23 Mar 2026 14:44:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278708;
-	bh=NEk/RfKbSybFBvOCuaCj4tlCkg0AoE5pEBOu5u1PWVE=;
+	s=korg; t=1774277095;
+	bh=1BIQ0L+q98Bi1XEPRRxFUNY/9L6b139P8tA7cGgrmcE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dy13oPq62clcMMsjejghsAQ5Q6TIyidoOhQk8k3CCRpUdggt6al/HmvgoKovADUn9
-	 N3yrrB7YkiYD4CPob9ywVZt58wfVty5nMlFeVj0WGJ9ytaDTAle3jEeo3H7qeiYOhn
-	 vedGC5c+qvcW3UynDb3pxA1qsBScj0L9oS5OHa7E=
+	b=j4LmGgIWErE+TV9DUlGEU5O7D8POvNOKCo4araGtKKuWKuatOXRI70hY4yOALXK+J
+	 K9HFWPtgjMublZ2MxI0vpe9yVZFZLbDYc2iCeQ613evcu+uTGc3y7jKjWjjchI+lIG
+	 +niIHRu1lR45sNC+RK8tEV15z5SsoooYydNLb+NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Carlos Maiolino <cmaiolino@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Carlos Maiolino <cem@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 394/567] xfs: ensure dquot item is deleted from AIL only after log shutdown
+	=?UTF-8?q?Lukas=20Johannes=20M=C3=B6ller?= <research@johannes-moeller.dev>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.12 318/460] Bluetooth: L2CAP: Validate L2CAP_INFO_RSP payload length before access
 Date: Mon, 23 Mar 2026 14:45:14 +0100
-Message-ID: <20260323134543.606483905@linuxfoundation.org>
+Message-ID: <20260323134534.317849855@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +62,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228777-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229308-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 50EA02F6721
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: 8ECCA2F5C76
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Lukas Johannes Möller <research@johannes-moeller.dev>
 
-[ Upstream commit 186ac39b8a7d3ec7ce9c5dd45e5c2730177f375c ]
+commit dd815e6e3918dc75a49aaabac36e4f024d675101 upstream.
 
-In xfs_qm_dqflush(), when a dquot flush fails due to corruption
-(the out_abort error path), the original code removed the dquot log
-item from the AIL before calling xfs_force_shutdown(). This ordering
-introduces a subtle race condition that can lead to data loss after
-a crash.
+l2cap_information_rsp() checks that cmd_len covers the fixed
+l2cap_info_rsp header (type + result, 4 bytes) but then reads
+rsp->data without verifying that the payload is present:
 
-The AIL tracks the oldest dirty metadata in the journal. The position
-of the tail item in the AIL determines the log tail LSN, which is the
-oldest LSN that must be preserved for crash recovery. When an item is
-removed from the AIL, the log tail can advance past the LSN of that item.
+ - L2CAP_IT_FEAT_MASK calls get_unaligned_le32(rsp->data), which reads
+   4 bytes past the header (needs cmd_len >= 8).
 
-The race window is as follows: if the dquot item happens to be at
-the tail of the log, removing it from the AIL allows the log tail
-to advance. If a concurrent log write is sampling the tail LSN at
-the same time and subsequently writes a complete checkpoint (i.e.,
-one containing a commit record) to disk before the shutdown takes
-effect, the journal will no longer protect the dquot's last
-modification. On the next mount, log recovery will not replay the
-dquot changes, even though they were never written back to disk,
-resulting in silent data loss.
+ - L2CAP_IT_FIXED_CHAN reads rsp->data[0], 1 byte past the header
+   (needs cmd_len >= 5).
 
-Fix this by calling xfs_force_shutdown() before xfs_trans_ail_delete()
-in the out_abort path. Once the log is shut down, no new log writes
-can complete with an updated tail LSN, making it safe to remove the
-dquot item from the AIL.
+A truncated L2CAP_INFO_RSP with result == L2CAP_IR_SUCCESS triggers an
+out-of-bounds read of adjacent skb data.
 
+Guard each data access with the required payload length check.  If the
+payload is too short, skip the read and let the state machine complete
+with safe defaults (feat_mask and remote_fixed_chan remain zero from
+kzalloc), so the info timer cleanup and l2cap_conn_start() still run
+and the connection is not stalled.
+
+Fixes: 4e8402a3f884 ("[Bluetooth] Retrieve L2CAP features mask on connection setup")
 Cc: stable@vger.kernel.org
-Fixes: b707fffda6a3 ("xfs: abort consistently on dquot flush failure")
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Carlos Maiolino <cem@kernel.org>
-[ adapted error path to preserve existing out_unlock label between xfs_trans_ail_delete and xfs_dqfunlock ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lukas Johannes Möller <research@johannes-moeller.dev>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_dquot.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_dquot.c
-+++ b/fs/xfs/xfs_dquot.c
-@@ -1297,9 +1297,15 @@ xfs_qm_dqflush(
- 	return 0;
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -4587,7 +4587,8 @@ static inline int l2cap_information_rsp(
  
- out_abort:
-+	/*
-+	 * Shut down the log before removing the dquot item from the AIL.
-+	 * Otherwise, the log tail may advance past this item's LSN while
-+	 * log writes are still in progress, making these unflushed changes
-+	 * unrecoverable on the next mount.
-+	 */
-+	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- 	dqp->q_flags &= ~XFS_DQFLAG_DIRTY;
- 	xfs_trans_ail_delete(lip, 0);
--	xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- out_unlock:
- 	xfs_dqfunlock(dqp);
- 	return error;
+ 	switch (type) {
+ 	case L2CAP_IT_FEAT_MASK:
+-		conn->feat_mask = get_unaligned_le32(rsp->data);
++		if (cmd_len >= sizeof(*rsp) + sizeof(u32))
++			conn->feat_mask = get_unaligned_le32(rsp->data);
+ 
+ 		if (conn->feat_mask & L2CAP_FEAT_FIXED_CHAN) {
+ 			struct l2cap_info_req req;
+@@ -4606,7 +4607,8 @@ static inline int l2cap_information_rsp(
+ 		break;
+ 
+ 	case L2CAP_IT_FIXED_CHAN:
+-		conn->remote_fixed_chan = rsp->data[0];
++		if (cmd_len >= sizeof(*rsp) + sizeof(rsp->data[0]))
++			conn->remote_fixed_chan = rsp->data[0];
+ 		conn->info_state |= L2CAP_INFO_FEAT_MASK_REQ_DONE;
+ 		conn->info_ident = 0;
+ 
 
 
 
