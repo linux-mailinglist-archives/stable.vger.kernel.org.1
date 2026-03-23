@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-228846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228146-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gEvJLrJVwWlTSQQAu9opvQ
-	(envelope-from <stable+bounces-228846-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:06 +0100
+	id yP0DJ+xPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228146-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:28 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6387D2F5A13
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:01:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C672F4D62
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 491CC30234EA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96114303A273
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7025A274B5C;
-	Mon, 23 Mar 2026 14:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4DC3A9D9D;
+	Mon, 23 Mar 2026 13:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zbK09N1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmaCBwLB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A34C26F28D;
-	Mon, 23 Mar 2026 14:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7077F1F91F6;
+	Mon, 23 Mar 2026 13:57:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277290; cv=none; b=NgU0XVIvvTFjnOf5xPFT5svFC0V62MUm5+bBE2psJn2x4YGemjbS+MU0QwNCrDl7FoB9sGliIjvslrCxBDPhtLIu4x0B6z1fR3uZ7OYu+80YW1bUAhOfg5WbXclJWYLyqshODCvB9wVUvgC0MQug4VgLz1FERjoFUNpgqLD6WMU=
+	t=1774274264; cv=none; b=ecpcDurb2TwP27F428qgD/LjMnmCRgJ0NslsM0njcHiJiN6/ZCobv03byeqJ/iEtqZnsOh3AGKXgGOwy48Se/KMHXYtJ4vfzUYWGuCKO8wpgLYlONw89Rydta8ndhJbBXUTK7hC7gnAB3HLdwSd7x9vmmvqiccDCB46mlZuxM9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277290; c=relaxed/simple;
-	bh=E2DSqW/v2QGmnlp2ALK3U88T3bOd2dE9sYAd3b7RjAs=;
+	s=arc-20240116; t=1774274264; c=relaxed/simple;
+	bh=2/6O9ncgUkHf+dQJQl/EpLYKZCDj7pZVv9bXhogGP0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tZ4ZYPPh22/dVJvm83SB6lP9RlEl6lEFa/bWkK3IVeWQYj8+vqKMjzS3unQTOal0N4Lg0G7lJAvRExnTIqjXaXOXdsXPapMT/nx+NPU7lWszEr7PfFuEFIdAfFf3twc696yD9bmjLUjjofHFqHsReeDqhl9o0CEJ7lprqaCBZKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zbK09N1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2631C4CEF7;
-	Mon, 23 Mar 2026 14:48:09 +0000 (UTC)
+	 MIME-Version; b=VTh9hebAf9YQNQ4W118arhzBi1zrss9fHnDXfD47c+/d1Y45zz3pbrWQjaluMnFSumr/TyZdXuTKQKmN2e38W1DyJHsWN4cnwHUz24MXXcaV4vIZ1PCnk6Q6uE3m01Lr9s5uHMH/5Hzwin1b9cfYrlDHYZUa+BhqwOhqRc+v+94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmaCBwLB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45FFC4CEF7;
+	Mon, 23 Mar 2026 13:57:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277290;
-	bh=E2DSqW/v2QGmnlp2ALK3U88T3bOd2dE9sYAd3b7RjAs=;
+	s=korg; t=1774274264;
+	bh=2/6O9ncgUkHf+dQJQl/EpLYKZCDj7pZVv9bXhogGP0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0zbK09N1jSeKU1UuAq03uOL356+TTbTN5TQTOttEGrXIs8h0o4menJT1cJ9gxREXS
-	 EIhWT1THzVTomq/GqigkLgS+OJt4X6ExFH9M3etXKaJH2iKvD6DkBstxP+Ad0qd7y0
-	 bPclCo5weY0Eu8vYrDJ3KgW8VA0Oq86EI+Muq1GU=
+	b=RmaCBwLBeIaaTX4Bvmr1VwYZTttnmod7TBKIEuZL4vPsUtjjuW0XZk2OPn1IomH/+
+	 mk0mt0FU1mYtAVNN62uipJ2AjLMYA/3R55aSS0lfFTFUObnXTqS31V8MOmuE7eCOOr
+	 AUcyhthIQzTuceAQuxPUQxcZ4LhgzI5dVh/Nxr6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 341/460] mtd: rawnand: cadence: Fix error check for dma_alloc_coherent() in cadence_nand_init()
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.19 160/220] libie: prevent memleak in fwlog code
 Date: Mon, 23 Mar 2026 14:45:37 +0100
-Message-ID: <20260323134534.914333686@linuxfoundation.org>
+Message-ID: <20260323134509.621696970@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +69,185 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228846-lists,stable=lfdr.de];
-	RSPAMD_URIBL_FAIL(0.00)[oracle.com:query timed out,iscas.ac.cn:query timed out];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228146-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RSPAMD_EMAILBL_FAIL(0.00)[nichen.iscas.ac.cn:query timed out,alok.a.tiwari.oracle.com:query timed out,miquel.raynal.bootlin.com:query timed out];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6387D2F5A13
+X-Rspamd-Queue-Id: 40C672F4D62
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-commit 0410e1a4c545c769c59c6eda897ad5d574d0c865 upstream.
+[ Upstream commit 6850deb61118345996f03b87817b4ae0f2f25c38 ]
 
-Fix wrong variable used for error checking after dma_alloc_coherent()
-call. The function checks cdns_ctrl->dma_cdma_desc instead of
-cdns_ctrl->cdma_desc, which could lead to incorrect error handling.
+All cmd_buf buffers are allocated and need to be freed after usage.
+Add an error unwinding path that properly frees these buffers.
 
-Fixes: ec4ba01e894d ("mtd: rawnand: Add new Cadence NAND driver to MTD subsystem")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Reviewed-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The memory leak happens whenever fwlog configuration is changed. For
+example:
+
+$echo 256K > /sys/kernel/debug/ixgbe/0000\:32\:00.0/fwlog/log_size
+
+Fixes: 96a9a9341cda ("ice: configure FW logging")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/cadence-nand-controller.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/libie/fwlog.c | 49 +++++++++++++++++-------
+ 1 file changed, 36 insertions(+), 13 deletions(-)
 
---- a/drivers/mtd/nand/raw/cadence-nand-controller.c
-+++ b/drivers/mtd/nand/raw/cadence-nand-controller.c
-@@ -2878,7 +2878,7 @@ static int cadence_nand_init(struct cdns
- 						  sizeof(*cdns_ctrl->cdma_desc),
- 						  &cdns_ctrl->dma_cdma_desc,
- 						  GFP_KERNEL);
--	if (!cdns_ctrl->dma_cdma_desc)
-+	if (!cdns_ctrl->cdma_desc)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/intel/libie/fwlog.c b/drivers/net/ethernet/intel/libie/fwlog.c
+index 5d890d9d3c4d5..3b32986c2978a 100644
+--- a/drivers/net/ethernet/intel/libie/fwlog.c
++++ b/drivers/net/ethernet/intel/libie/fwlog.c
+@@ -433,17 +433,21 @@ libie_debugfs_module_write(struct file *filp, const char __user *buf,
+ 	module = libie_find_module_by_dentry(fwlog->debugfs_modules, dentry);
+ 	if (module < 0) {
+ 		dev_info(dev, "unknown module\n");
+-		return -EINVAL;
++		count = -EINVAL;
++		goto free_cmd_buf;
+ 	}
  
- 	cdns_ctrl->buf_size = SZ_16K;
+ 	cnt = sscanf(cmd_buf, "%s", user_val);
+-	if (cnt != 1)
+-		return -EINVAL;
++	if (cnt != 1) {
++		count = -EINVAL;
++		goto free_cmd_buf;
++	}
+ 
+ 	log_level = sysfs_match_string(libie_fwlog_level_string, user_val);
+ 	if (log_level < 0) {
+ 		dev_info(dev, "unknown log level '%s'\n", user_val);
+-		return -EINVAL;
++		count = -EINVAL;
++		goto free_cmd_buf;
+ 	}
+ 
+ 	if (module != LIBIE_AQC_FW_LOG_ID_MAX) {
+@@ -458,6 +462,9 @@ libie_debugfs_module_write(struct file *filp, const char __user *buf,
+ 			fwlog->cfg.module_entries[i].log_level = log_level;
+ 	}
+ 
++free_cmd_buf:
++	kfree(cmd_buf);
++
+ 	return count;
+ }
+ 
+@@ -515,23 +522,31 @@ libie_debugfs_nr_messages_write(struct file *filp, const char __user *buf,
+ 		return PTR_ERR(cmd_buf);
+ 
+ 	ret = sscanf(cmd_buf, "%s", user_val);
+-	if (ret != 1)
+-		return -EINVAL;
++	if (ret != 1) {
++		count = -EINVAL;
++		goto free_cmd_buf;
++	}
+ 
+ 	ret = kstrtos16(user_val, 0, &nr_messages);
+-	if (ret)
+-		return ret;
++	if (ret) {
++		count = ret;
++		goto free_cmd_buf;
++	}
+ 
+ 	if (nr_messages < LIBIE_AQC_FW_LOG_MIN_RESOLUTION ||
+ 	    nr_messages > LIBIE_AQC_FW_LOG_MAX_RESOLUTION) {
+ 		dev_err(dev, "Invalid FW log number of messages %d, value must be between %d - %d\n",
+ 			nr_messages, LIBIE_AQC_FW_LOG_MIN_RESOLUTION,
+ 			LIBIE_AQC_FW_LOG_MAX_RESOLUTION);
+-		return -EINVAL;
++		count = -EINVAL;
++		goto free_cmd_buf;
+ 	}
+ 
+ 	fwlog->cfg.log_resolution = nr_messages;
+ 
++free_cmd_buf:
++	kfree(cmd_buf);
++
+ 	return count;
+ }
+ 
+@@ -588,8 +603,10 @@ libie_debugfs_enable_write(struct file *filp, const char __user *buf,
+ 		return PTR_ERR(cmd_buf);
+ 
+ 	ret = sscanf(cmd_buf, "%s", user_val);
+-	if (ret != 1)
+-		return -EINVAL;
++	if (ret != 1) {
++		ret = -EINVAL;
++		goto free_cmd_buf;
++	}
+ 
+ 	ret = kstrtobool(user_val, &enable);
+ 	if (ret)
+@@ -624,6 +641,8 @@ libie_debugfs_enable_write(struct file *filp, const char __user *buf,
+ 	 */
+ 	if (WARN_ON(ret != (ssize_t)count && ret >= 0))
+ 		ret = -EIO;
++free_cmd_buf:
++	kfree(cmd_buf);
+ 
+ 	return ret;
+ }
+@@ -682,8 +701,10 @@ libie_debugfs_log_size_write(struct file *filp, const char __user *buf,
+ 		return PTR_ERR(cmd_buf);
+ 
+ 	ret = sscanf(cmd_buf, "%s", user_val);
+-	if (ret != 1)
+-		return -EINVAL;
++	if (ret != 1) {
++		ret = -EINVAL;
++		goto free_cmd_buf;
++	}
+ 
+ 	index = sysfs_match_string(libie_fwlog_log_size, user_val);
+ 	if (index < 0) {
+@@ -712,6 +733,8 @@ libie_debugfs_log_size_write(struct file *filp, const char __user *buf,
+ 	 */
+ 	if (WARN_ON(ret != (ssize_t)count && ret >= 0))
+ 		ret = -EIO;
++free_cmd_buf:
++	kfree(cmd_buf);
+ 
+ 	return ret;
+ }
+-- 
+2.51.0
+
 
 
 
