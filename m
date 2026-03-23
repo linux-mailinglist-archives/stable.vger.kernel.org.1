@@ -1,162 +1,125 @@
-Return-Path: <stable+bounces-229995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229997-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uEFzFdSMwWlxTwQAu9opvQ
-	(envelope-from <stable+bounces-229995-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:56:20 +0100
+	id WNt4OlmYwWlNUAQAu9opvQ
+	(envelope-from <stable+bounces-229997-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:45:29 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6BBE2FBB14
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:56:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6963A2FC8BB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 20:45:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1403E30CAE78
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:46:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4E45530672DE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 19:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1C12DECBF;
-	Mon, 23 Mar 2026 18:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8594C32E68D;
+	Mon, 23 Mar 2026 19:13:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="rtDMhlqV"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TAMRB8qX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542B224A076
-	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 18:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E18327C08
+	for <stable@vger.kernel.org>; Mon, 23 Mar 2026 19:13:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774291558; cv=none; b=JYutJ7DpWejeeznzNDr1sXL7waYYcyvzhPaA1dUdh4IJyRxPNZjO6/aND+x4AC0ZG+WkF69rgANP1TDgJLAnhfSQdt8ffvHBpv5ni2lQmaPjCRrPJwR+rQFgv0Nsr4dNbVdb4W5Ne14cRiERqESYcG0iQT6CE8HlkqP8s75dU24=
+	t=1774293195; cv=none; b=YSItQpC8wyBkNMyzr7sheSOInKzhNeeoB/+uKIWnFvE5RVegGzCQZccnU2iiUeAvl9hpvjLLCA8SKJsTLaGjoa86T6buagloFDpk9FPLV/BMFLse6EXwCqaLKnM5e0QhfrIhW8ZrF4+kkiZfSVFhugrVVW4G0sUxG/joC2zIUVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774291558; c=relaxed/simple;
-	bh=xKWqh2Mq3To1C8FNyFOCYh6IisBe2esHhyb63lXCN4Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C67zWpVlmf/OPK4KhXPqbx1/cmBm/pXGJJz2/LAiZL8TIaTMqkCZzotp9sgFj06iiKHhK23J6Odtf0A5kcaLPBjBvlydBin6HHZrtp1PUdtk1UypUke9wit2NBeyixYwwMu/pMU4CVQX8SB5SW7SWuV99pOSGuQPtoVMxeYojYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=rtDMhlqV; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-38a42a0d7f7so42372061fa.1
-        for <stable@vger.kernel.org>; Mon, 23 Mar 2026 11:45:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20251104; t=1774291555; x=1774896355; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=p5I9WcMIMbWgGzcbuEa00kzIbh/DzG5Pp6MMimlIG30=;
-        b=rtDMhlqVppyrDYiVuLUCnKpjKtxyUL55hUA8L0v9aocfcZY711cfYZ9VPxnovaaXNT
-         XdfFWimghihvd2QSEehD/DYtQwH2FIhZYcZDHjkv+Dpn1Yauf7FWAQAU/kzg20VZGLYA
-         A+mLBD6v9ILx2E3qB2Mzo/Hh2/aqYcVwp50iSoOfyJI6/OnkL2k+sygCLE7GQLHd2dNg
-         ynsS0BRlMG7aU1xILmuWPDl3V2WtvLAmDzvvLA1gtbYYIjMvyyX43vTbUt+dCV4UO1vp
-         sTFP/p9IxPAY7TDgNuynVDbMPptDfvvhDpAkOGycpaH0XB/+ziLUE3DCQKPBGpy14vXt
-         M6Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1774291555; x=1774896355;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p5I9WcMIMbWgGzcbuEa00kzIbh/DzG5Pp6MMimlIG30=;
-        b=HkFBjNaDYaMND0bad9EIVI4OxxqUm+d13vMqpTjXg1S7t1vWL97DHjmVal+Vrjupn7
-         AR5gtd3y5UT3kUEPB9E7kBldprpTbbnsegAzID5M6Iy9PG1JCak9eT9vHVt9Ud2O5sSg
-         s3QrlWRcCYpWqs3pYO2B7tTWJmxc/kY11sOJi/rLWfKNThjujPES75NqZIzMfZyB1Ygu
-         DL9fzJd3LdndJVBf9Q9mIkhmuErQWWCUFxNIg4ja8Po7ezDXTwvxUN4Ze7xQ4X65A0OO
-         3arsVBgyKOvFRW7Xpd2ui/S74w5pwp7fzWMZAV3Kg0UYVcasUp+4skDFdXyA7j1Q0H77
-         sbyg==
-X-Forwarded-Encrypted: i=1; AJvYcCX5MBuUzRixjWfdeu47oZIVQy3azjJBhcXcp9PRtQJrtJLNMBhLEQP7L+7Y0o9jYvb3/srrGEA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwevTAoVcA+aMd8jV7UtvBB6O1GC73fdvxyfiKrIjNyDshYd4lF
-	2De3KZ0IsI953Dp9GlQqqtPUgidPdrRufbtPiIm6ToXQ47n/JmfDHUY=
-X-Gm-Gg: ATEYQzxozxhJ+Kd5pYErTNXdHpl7jo4rK60KF91/U58hGmVqp0iAR5O6GLLhKIk4C6x
-	SuJ0vtA2Pv3xxvZ1aHGeuET6BPyJfO+RqP7rcNlr6crGjKnDTNXjDe9nBcz+PI9yJXV2sjdqz6s
-	cQiPiIyY6tfL4JxOa++M4EWOFsTfIdOffNNfW+x58x9PsuXiJMSIES9r9AFHh3YfSuBMumyornB
-	o1dbXWttgxMmUPkFDGJU5Ac6ZbZW5eUpuNX4Ey2/Vqvajlg/u82dAbJiUU7hX/cMAF6vSD/+CF5
-	bBgvcu5QME8gigEMXQryfoffik1Z9NTHCMxhmj88cuLAtysezZ+O0rw7C6+lhunZS1bj7eX3fDc
-	lpc9PD6jbYYSXJ1BIeZ2oOxvXMp8ByBt4e9pZXCKjr415dYL5sfPjay5tiIMXbacT0bGJatr3sI
-	CtWPJjP+wq/HrpwsZQqFt7sskNLFb66I+p8Nur0ovHXf+Zcam2W3Eiyo5UeAXytOGCSzfup0Cvp
-	g==
-X-Received: by 2002:a2e:a30e:0:b0:38b:f1c3:cfb6 with SMTP id 38308e7fff4ca-38c327e9c52mr1248601fa.4.1774291555190;
-        Mon, 23 Mar 2026 11:45:55 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2b444d.dip0.t-ipconnect.de. [91.43.68.77])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-38bf9aa200dsm30082831fa.28.2026.03.23.11.45.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Mar 2026 11:45:54 -0700 (PDT)
-Message-ID: <941eaeda-94b3-4726-ba64-3223ea0cc3d2@googlemail.com>
-Date: Mon, 23 Mar 2026 19:45:53 +0100
+	s=arc-20240116; t=1774293195; c=relaxed/simple;
+	bh=YPvCdw6C6+qB9yiSepX6OYKDZRFLBohSuc7vCWJMFPI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=GqilNUk5tOwYno3zsvzIv62ftvSJ3bqsGabEcLk1c4CYgnKrPXM7agACbxwQg39OqkZaVev1+FegCpnAeapERjO6tN6rUy7aF1sVkAvGR5fhfQ7u10nidESUdzPzW1j4e4K7M0RaozY4hC7+kdwkxRRUqUWq1f8BL/W+/DIc5r4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TAMRB8qX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9C5C4CEF7;
+	Mon, 23 Mar 2026 19:13:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1774293195;
+	bh=YPvCdw6C6+qB9yiSepX6OYKDZRFLBohSuc7vCWJMFPI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TAMRB8qXJk10MxytYpTANIJOrkT9qs7dbZvwtCcqk881kLgNewAwXxSzLkyFca/bM
+	 3IpTnTkYr6HEyeyXNs1ZbUHQ62mOcqhfGchZcGpyks1Q4Hx9ebnnMu3MdXwa/xK5zf
+	 KZ6SDeOCMVWczyd7p84hZnY1XR9YGMWRXDbkGZfg=
+Date: Mon, 23 Mar 2026 12:13:14 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Carlier <devnexen@gmail.com>
+Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
+ David Hildenbrand <david@kernel.org>, YueHaibing <yuehaibing@huawei.com>,
+ Mina Almasry <almasrymina@google.com>, linux-mm@kvack.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] mm/hugetlb: restore reservation on error in
+ hugetlb_mfill_atomic_pte() resubmission path
+Message-Id: <20260323121314.ab3c389ae368c0179624de8c@linux-foundation.org>
+In-Reply-To: <20260322052120.14021-1-devnexen@gmail.com>
+References: <20260322052120.14021-1-devnexen@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.18 000/212] 6.18.20-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@nabladev.com, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260323134503.770111826@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.65 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-1.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[googlemail.com,quarantine];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
-	R_DKIM_ALLOW(-0.20)[googlemail.com:s=20251104];
+	MV_CASE(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_DKIM_ALLOW(-0.20)[linux-foundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229995-lists,stable=lfdr.de];
-	FREEMAIL_FROM(0.00)[googlemail.com];
-	RCPT_COUNT_TWELVE(0.00)[20];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,nabladev.com,nvidia.com,gmail.com,gmx.de,microsoft.com,achill.org,sladewatkins.com];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[pschneider1968@googlemail.com,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[googlemail.com:+];
-	NEURAL_HAM(-0.00)[-0.999];
-	TAGGED_RCPT(0.00)[stable];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FREEMAIL_TO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[bounces-229997-lists,stable=lfdr.de];
+	DMARC_NA(0.00)[linux-foundation.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linux-foundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[akpm@linux-foundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,googlemail.com:dkim,googlemail.com:mid]
-X-Rspamd-Queue-Id: C6BBE2FBB14
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linux-foundation.org:dkim,linux-foundation.org:mid]
+X-Rspamd-Queue-Id: 6963A2FC8BB
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Am 23.03.2026 um 14:43 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.18.20 release.
-> There are 212 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Sun, 22 Mar 2026 05:21:20 +0000 David Carlier <devnexen@gmail.com> wrote:
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+> When the resubmission path in hugetlb_mfill_atomic_pte() allocates a new
+> hugetlb folio via alloc_hugetlb_folio(), a VMA reservation is consumed. If
+> copy_user_large_folio() subsequently fails, folio_put() restores the global
+> hugetlb pool count through free_huge_folio(), but the per-VMA reservation
+> map entry is left in an inconsistent state.
+> 
+> Add the missing restore_reserve_on_error() call before folio_put(), matching
+> the first-attempt error path which already handles this correctly.
+> 
+> ...
+>
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6295,6 +6295,7 @@ int hugetlb_mfill_atomic_pte(pte_t *dst_pte,
+>  		folio_put(*foliop);
+>  		*foliop = NULL;
+>  		if (ret) {
+> +			restore_reserve_on_error(h, dst_vma, dst_addr, folio);
+>  			folio_put(folio);
+>  			goto out;
+>  		}
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+I guess we could goto out_release_nounlock here, although I'm not sure
+that improves anything - keeping track of the value of
+folio_in_pagecache is rather twisty.
 
-
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
