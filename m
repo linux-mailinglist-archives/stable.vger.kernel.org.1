@@ -1,141 +1,192 @@
-Return-Path: <stable+bounces-227895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227896-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iAPTAL3rwGmROgQAu9opvQ
-	(envelope-from <stable+bounces-227895-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:29:01 +0100
+	id RwL/EqjrwGmROgQAu9opvQ
+	(envelope-from <stable+bounces-227896-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:28:40 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ADD22ED9CB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:29:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A91D52ED99A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 08:28:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1B83730179EA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:25:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 41BA1302E7DE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 07:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150CB33C53F;
-	Mon, 23 Mar 2026 07:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0211F35E937;
+	Mon, 23 Mar 2026 07:27:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="tBYaJ/6A"
+	dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="R0hPVjz/"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D1035DA6C;
-	Mon, 23 Mar 2026 07:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from www537.your-server.de (www537.your-server.de [188.40.3.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1102D7DDB;
+	Mon, 23 Mar 2026 07:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.3.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774250733; cv=none; b=D6Ug5XIAQxCOf7XR/03XyIbv0chSSupcbkFNAaZZ64SXsO6/03xzTzFHa1tuBw3M6Ly6XvitegiZfWbW+eUPzm9lO1JCf7dn9uXTfcqffN+7Eye2G2ck3cwO/qBB2QI9kHPBNB+xploEPINLSMKTY6RsbfzjHg2tOmWWUS6mQ/M=
+	t=1774250823; cv=none; b=ZHX1J9i/cN5Ve/RtDuS15xJd+DK+6l+eWLvXGEHxHfH8h+4IZcAe1+l+hh6YN8TedoCX6HqDcDTAaElJlZxeH2QvU6qqUfPR9IzkwyJ9fHHOg0LVX79kylx+P88itMOK15S7rxyfWC1y62RZ44kQivwmqGuYksXUtAkoqDimujU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774250733; c=relaxed/simple;
-	bh=QMPkI9C28s9dOKh7+HT5+gqKM+eJFdtngeELmK0v6NM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D2x6L68pSd+0LnUNkQGEh4SmkZVDMkUr12USVilh1N6PycifECXOp9M8P4cD/+W8Yb/1MAUMypTntv1Xq4EOFuT8G7Cwd+7dMBrTdW5KfSJYdCSYXgkhoG8WXbnsSpH0jIJ1a6cmZaX6SpMT0QVQRBsnTqzlQRW8ZJu4jpgioWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=tBYaJ/6A; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.94.160.76] (unknown [4.194.122.136])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 913CD20B710C;
-	Mon, 23 Mar 2026 00:25:30 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 913CD20B710C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1774250732;
-	bh=YuCeNaV2/BDTmsH1XZAMLctTHRvJc1V4TGzZ9w7DOFk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tBYaJ/6ADkAzMrULIHAJtWUHGpa96StwZRjMa27Q+0Jg172nGhDFb9qy5HVsDX7Yl
-	 mC2CzGSkTc1niQLFSRGJBmIrk1lwwZoqM+8RFQNHaL9B23zh2eUhoHY/pLpFFTadiC
-	 XmqRewSzDj2grjAoPPgb0duhWeKmcclAcsAob7lM=
-Message-ID: <a499a623-252b-433f-a2de-784fe2016b3d@linux.microsoft.com>
-Date: Mon, 23 Mar 2026 12:55:28 +0530
+	s=arc-20240116; t=1774250823; c=relaxed/simple;
+	bh=QMLfOSHN7yBX7dd2DeMRSHAPCl1Q8shqK91AzimibIY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k+ZAtwKdTSNSLRaDamSx3OBq7oMvnak2tJZtNFEVd2oamduXX4KpQLrOWpJCFU5F6+dIpYULxcq99025avjBbKb1el/guylvdvzUhh/iUZgmKV36zkypew7zTJdYEonecyc4vZYMSSiY682yrxpgXK+4Y4/J9otFT3JAra841qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=R0hPVjz/; arc=none smtp.client-ip=188.40.3.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=ew.tq-group.com; s=default2602; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=foORgteAPlfrIAS1ba1QdpFRcnbJ/IN133dyq0cl3iU=; b=R0hPVjz/e4re407HofT8dGEi1i
+	3JQFkXx9UO3s9OlU19vdAjXPHEUcBzvdyiBPi3DsLnMUCj9uOVolF6dMKHg5ofWtTd1S1/g65GYA0
+	bTUmFtRmprxRn8aON9G+L2Rws5xyEd/NkeZSCXRLAUfcPgsoMVHlTQZyiXaZVRhC1zOegPlo/iW3Z
+	d/liLWIOX6ww6cXhLLmsDBL0UeG8/+mGp7VPpE/Q3CuMTKazScNmAjIkVDNJJEItjcHdrFUR5oNfP
+	sog5+bH2+knmqkgqP4jQ7fxHYpymAa1Z5a2dJbVWA7/ss/yw7vI80ZLEOadk7aEOl5i2ASn5wrvat
+	VpK0VGpg==;
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+	by www537.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1w4Zga-000OD6-1i;
+	Mon, 23 Mar 2026 08:26:52 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy06.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <alexander.stein@ew.tq-group.com>)
+	id 1w4Zg2-000N2t-2c;
+	Mon, 23 Mar 2026 08:26:52 +0100
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Frank Li <Frank.Li@nxp.com>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Shenwei Wang <shenwei.wang@nxp.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Shenwei Wang <shenwei.wang@nxp.com>,
+ Peng Fan <peng.fan@nxp.com>, linux-gpio@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-imx@nxp.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2] gpio: mxc: map Both Edge pad wakeup to Rising Edge
+Date: Mon, 23 Mar 2026 08:26:51 +0100
+Message-ID: <2826794.mvXUDI8C0e@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20260320193150.2508850-1-shenwei.wang@nxp.com>
+References: <20260320193150.2508850-1-shenwei.wang@nxp.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] EDAC/versalnet: Release reference to remoteproc
- device in remove
-To: Borislav Petkov <bp@alien8.de>
-Cc: shubhrajyoti.datta@amd.com, tony.luck@intel.com,
- linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260322131107.1684647-1-ptsm@linux.microsoft.com>
- <20260322131134.1684691-1-ptsm@linux.microsoft.com>
- <20260322155947.GAacAR8z1cKR7pG1it@fat_crate.local>
-Content-Language: en-US
-From: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
-In-Reply-To: <20260322155947.GAacAR8z1cKR7pG1it@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27948/Sun Mar 22 07:24:25 2026)
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linux.microsoft.com,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
-	R_DKIM_ALLOW(-0.20)[linux.microsoft.com:s=default];
+	MID_RHS_NOT_FQDN(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[ew.tq-group.com,quarantine];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_DKIM_ALLOW(-0.20)[ew.tq-group.com:s=default2602];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-227895-lists,stable=lfdr.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-227896-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[pengutronix.de,gmail.com,nxp.com,vger.kernel.org,lists.linux.dev,lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[linux.microsoft.com:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
+	HAS_ORG_HEADER(0.00)[];
+	DKIM_TRACE(0.00)[ew.tq-group.com:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	MISSING_XM_UA(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[ptsm@linux.microsoft.com,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[alexander.stein@ew.tq-group.com,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
 	TAGGED_RCPT(0.00)[stable];
-	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_TWELVE(0.00)[15];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 5ADD22ED9CB
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: A91D52ED99A
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-Hi Boris,
+Am Freitag, 20. M=E4rz 2026, 20:31:50 CET schrieb Shenwei Wang:
+> Suspend may fail on i.MX8QM when Falling Edge is used as a pad wakeup
+> trigger due to a hardware bug in the detection logic. Since the hardware
+> does not support Both Edge wakeup, remap requests for Both Edge to Rising
+> Edge by default to avoid hitting this issue.
+>=20
+> A warning is emitted when Falling Edge is selected on i.MX8QM.
+>=20
+> Fixes: f60c9eac54af ("gpio: mxc: enable pad wakeup on i.MX8x platforms")
+> cc: stable@vger.kernel.org
+> Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
+> ---
+>  Changes in V2:
+>   - add a check for i.mx8qm and emit a warning when Falling Edge is
+>     selected.
+>=20
+>  drivers/gpio/gpio-mxc.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpio/gpio-mxc.c b/drivers/gpio/gpio-mxc.c
+> index d7666fe9dbf8..095bcfbc56e0 100644
+> --- a/drivers/gpio/gpio-mxc.c
+> +++ b/drivers/gpio/gpio-mxc.c
+> @@ -584,12 +584,13 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio=
+_port *port, bool enable)
+>  	unsigned long config;
+>  	bool ret =3D false;
+>  	int i, type;
+> +	bool is_imx8qm =3D of_device_is_compatible(port->dev->of_node, "fsl,imx=
+8qm-gpio");
+>=20
+>  	static const u32 pad_type_map[] =3D {
+>  		IMX_SCU_WAKEUP_OFF,		/* 0 */
+>  		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_RISING */
+>  		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_FALLING */
+> -		IMX_SCU_WAKEUP_FALL_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
+> +		IMX_SCU_WAKEUP_RISE_EDGE,	/* IRQ_TYPE_EDGE_BOTH */
+>  		IMX_SCU_WAKEUP_HIGH_LVL,	/* IRQ_TYPE_LEVEL_HIGH */
+>  		IMX_SCU_WAKEUP_OFF,		/* 5 */
+>  		IMX_SCU_WAKEUP_OFF,		/* 6 */
+> @@ -604,6 +605,12 @@ static bool mxc_gpio_set_pad_wakeup(struct mxc_gpio_=
+port *port, bool enable)
+>  				config =3D pad_type_map[type];
+>  			else
+>  				config =3D IMX_SCU_WAKEUP_OFF;
+> +
+> +			if (is_imx8qm && config =3D=3D IMX_SCU_WAKEUP_FALL_EDGE) {
+> +				dev_warn_once(port->dev, "No falling-edge support on i.MX8QM\n");
 
-On 22-03-2026 21:29, Borislav Petkov wrote:
-> On Sun, Mar 22, 2026 at 06:11:34AM -0700, Prasanna Kumar T S M wrote:
->> The rproc reference acquired via rproc_get_by_phandle() during probe
->> is not released in mc_remove(), causing a reference count leak. Add
->> the missing rproc_put() call.
->>
->> Fixes: d5fe2fec6c40d ("EDAC: Add a driver for the AMD Versal NET DDR controller")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Prasanna Kumar T S M <ptsm@linux.microsoft.com>
->> ---
->>   drivers/edac/versalnet_edac.c | 1 +
->>   1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/edac/versalnet_edac.c b/drivers/edac/versalnet_edac.c
->> index f70243bc8a7a..28f5036f381c 100644
->> --- a/drivers/edac/versalnet_edac.c
->> +++ b/drivers/edac/versalnet_edac.c
->> @@ -958,6 +958,7 @@ static void mc_remove(struct platform_device *pdev)
->>   	cdx_mcdi_finish(priv->mcdi);
->>   	unregister_rpmsg_driver(&amd_rpmsg_driver);
->>   	rproc_shutdown(priv->mcdi->r5_rproc);
->> +	rproc_put(priv->mcdi->r5_rproc);
->>   }
->>   
->>   static const struct of_device_id amd_edac_match[] = {
->> -- 
-> 
-> Why is this a separate patch and not part of patch 1?
+How about "No falling-edge support for wakeup on i.MX8QM"? Without
+context this message in the kernellog is confusing.
 
-I can merge this and the previous into a single patch. Will do as part 
-of v2.
+Best regards,
+Alexander
 
-> 
-> Also, do you have the hardware to test this on? IOW, have you tested those
-> patches?
+> +				config =3D IMX_SCU_WAKEUP_OFF;
+> +			}
+> +
+>  			ret |=3D mxc_gpio_generic_config(port, i, config);
+>  		}
+>  	}
+> --
+> 2.43.0
+>=20
+>=20
+>=20
 
-Yes, I do. Tested the change using 6.6 kernel with back ported driver.
 
-Thanks,
-Prasanna Kumar
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
+
 
 
