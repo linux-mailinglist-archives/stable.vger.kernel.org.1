@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-228533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229066-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6L/kNiZUwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228533-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:30 +0100
+	id IH1ZHcZYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-229066-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:14 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC812F5671
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A1B2F6072
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:14:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1ED7C3194EAA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:17:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 15F4030698E2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0953AF643;
-	Mon, 23 Mar 2026 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 515AA242D7F;
+	Mon, 23 Mar 2026 14:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCm8/6Zo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkVD3O5e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70D0E38C41E;
-	Mon, 23 Mar 2026 14:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BF426ED46;
+	Mon, 23 Mar 2026 14:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275383; cv=none; b=GBSssw9qxXkSw5eGQPiD4lW9Atw+hu4D91Ftr1AeZ/lwixzjz5xk9O1bqbAF76VyCcwvczRcKIEkeD0NdyRA1dclnKuAQYaWILcl5yC4DJsesyGBGmpM0b9WYJ7kgu63warlaoqkxej6QakAaPMjT5I42MTvIxbVpawWzSt2Ymo=
+	t=1774277952; cv=none; b=g54zor2Gq2efU3mEItc7w60XnXubdf1EXBsR/jOZeoGI4pwnWA+Np+Gs3LEsG7F4TWlSMQvdp80oC5vV07ZKFymXhq2s27MOpFhD2piCB1bl52MBpswPhscQu6oHnB78wS5BtVFSb1Y6ThrBTmZczjFPv4O230RJss3WdDKSfbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275383; c=relaxed/simple;
-	bh=VDM7DQQh7Ci5V99dVqnDpFXGC9QgS5ZxMP7XJc5Wq6E=;
+	s=arc-20240116; t=1774277952; c=relaxed/simple;
+	bh=bYdnMLEb0lT9wPg9wOGeWUk6wS5H7VkM1g0db3Mw5rI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRPIg8ojtADfuEzOH9x9vmXYVq35YxTJ2hMyHeDgT8yNOzSh+e98HhkCtqr7Ep6OxhzyFRkIUe6C//WYVIfwQpOlslCAM4Z9rFbfg2MQ0ybrTSyRW1YU/ZhT4yXEYBa80bR+LZ7ps/LJEJpFBC/4+j3SjieK8Dr5XOLWVs91Lyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCm8/6Zo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB88C4CEF7;
-	Mon, 23 Mar 2026 14:16:22 +0000 (UTC)
+	 MIME-Version; b=mIfPI8T6WRWVNHaMEzGcaOOt9DY+OYAKD4hTU48cKVuqaCOFsr89oHpqn6pPKxpFG6VQTRVrZnUlyUdt9Xo4qRUaMGM4iiPAMWnSL56xzelwA9ZtklamfO5KAnIGexEeHZypEqJ7O7Ol1mo37Z2b2xmNGVo2WaKqTZYszLYRSz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hkVD3O5e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9462BC4CEF7;
+	Mon, 23 Mar 2026 14:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275383;
-	bh=VDM7DQQh7Ci5V99dVqnDpFXGC9QgS5ZxMP7XJc5Wq6E=;
+	s=korg; t=1774277952;
+	bh=bYdnMLEb0lT9wPg9wOGeWUk6wS5H7VkM1g0db3Mw5rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCm8/6ZoUEAt0H8phtejMdCFIQhsSeWNGU4Z/ykRwn5AbjRlTl6F3AraP9oh3Jy+Z
-	 Km0AII96DQSoP6FFe8JAFYPaDYLnTMbF37Ee1oVA693OqL7KfLqTZ7udwPW4+iLFJY
-	 Uk53xUuy/djqb7FY6hhUh2cYiN348znNTKB8Jhhw=
+	b=hkVD3O5eYng7j5+LFdduANlDXWnlYOR/hrJ6D1IA+nC4gvx/nPNHOTfJLI0/t8hM5
+	 N7YhawuA3Q3sKYiYK26PjaiatsfkesDVRviIpDEqT6nDDyOXAW/hXiPZ7wesAbIhs1
+	 99OG2qhVMzT4bDycjgjG7+iUUWniu0AtIcE3MyzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Casey Connolly <casey.connolly@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/460] ASoC: detect empty DMI strings
+Subject: [PATCH 6.6 155/567] indirect_call_wrapper: do not reevaluate function pointer
 Date: Mon, 23 Mar 2026 14:41:15 +0100
-Message-ID: <20260323134528.623603579@linuxfoundation.org>
+Message-ID: <20260323134537.665409446@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,77 +67,169 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228533-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229066-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
-	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 6EC812F5671
+X-Rspamd-Queue-Id: 32A1B2F6072
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Connolly <casey.connolly@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a9683730e8b1d632674f81844ed03ddfbe4821c0 ]
+[ Upstream commit 710f5c76580306cdb9ec51fac8fcf6a8faff7821 ]
 
-Some bootloaders like recent versions of U-Boot may install some DMI
-properties with empty values rather than not populate them. This manages
-to make its way through the validator and cleanup resulting in a rogue
-hyphen being appended to the card longname.
+We have an increasing number of READ_ONCE(xxx->function)
+combined with INDIRECT_CALL_[1234]() helpers.
 
-Fixes: 4e01e5dbba96 ("ASoC: improve the DMI long card code in asoc-core")
-Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
-Link: https://patch.msgid.link/20260306174707.283071-2-casey.connolly@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Unfortunately this forces INDIRECT_CALL_[1234]() to read
+xxx->function many times, which is not what we wanted.
+
+Fix these macros so that xxx->function value is not reloaded.
+
+$ scripts/bloat-o-meter -t vmlinux.0 vmlinux
+add/remove: 0/0 grow/shrink: 1/65 up/down: 122/-1084 (-962)
+Function                                     old     new   delta
+ip_push_pending_frames                        59     181    +122
+ip6_finish_output                            687     681      -6
+__udp_enqueue_schedule_skb                  1078    1072      -6
+ioam6_output                                2319    2312      -7
+xfrm4_rcv_encap_finish2                       64      56      -8
+xfrm4_output                                 297     289      -8
+vrf_ip_local_out                             278     270      -8
+vrf_ip6_local_out                            278     270      -8
+seg6_input_finish                             64      56      -8
+rpl_output                                   700     692      -8
+ipmr_forward_finish                          124     116      -8
+ip_forward_finish                            143     135      -8
+ip6mr_forward2_finish                        100      92      -8
+ip6_forward_finish                            73      65      -8
+input_action_end_bpf                        1091    1083      -8
+dst_input                                     52      44      -8
+__xfrm6_output                               801     793      -8
+__xfrm4_output                                83      75      -8
+bpf_input                                    500     491      -9
+__tcp_check_space                            530     521      -9
+input_action_end_dt6                         291     280     -11
+vti6_tnl_xmit                               1634    1622     -12
+bpf_xmit                                    1203    1191     -12
+rpl_input                                    497     483     -14
+rawv6_send_hdrinc                           1355    1341     -14
+ndisc_send_skb                              1030    1016     -14
+ipv6_srh_rcv                                1377    1363     -14
+ip_send_unicast_reply                       1253    1239     -14
+ip_rcv_finish                                226     212     -14
+ip6_rcv_finish                               300     286     -14
+input_action_end_x_core                      205     191     -14
+input_action_end_x                           355     341     -14
+input_action_end_t                           205     191     -14
+input_action_end_dx6_finish                  127     113     -14
+input_action_end_dx4_finish                  373     359     -14
+input_action_end_dt4                         426     412     -14
+input_action_end_core                        186     172     -14
+input_action_end_b6_encap                    292     278     -14
+input_action_end_b6                          198     184     -14
+igmp6_send                                  1332    1318     -14
+ip_sublist_rcv                               864     848     -16
+ip6_sublist_rcv                             1091    1075     -16
+ipv6_rpl_srh_rcv                            1937    1920     -17
+xfrm_policy_queue_process                   1246    1228     -18
+seg6_output_core                             903     885     -18
+mld_sendpack                                 856     836     -20
+NF_HOOK                                      756     736     -20
+vti_tunnel_xmit                             1447    1426     -21
+input_action_end_dx6                         664     642     -22
+input_action_end                            1502    1480     -22
+sock_sendmsg_nosec                           134     111     -23
+ip6mr_forward2                               388     364     -24
+sock_recvmsg_nosec                           134     109     -25
+seg6_input_core                              836     810     -26
+ip_send_skb                                  172     146     -26
+ip_local_out                                 140     114     -26
+ip6_local_out                                140     114     -26
+__sock_sendmsg                               162     136     -26
+__ip_queue_xmit                             1196    1170     -26
+__ip_finish_output                           405     379     -26
+ipmr_queue_fwd_xmit                          373     346     -27
+sock_recvmsg                                 173     145     -28
+ip6_xmit                                    1635    1607     -28
+xfrm_output_resume                          1418    1389     -29
+ip_build_and_send_pkt                        625     591     -34
+dst_output                                   504     432     -72
+Total: Before=25217686, After=25216724, chg -0.00%
+
+Fixes: 283c16a2dfd3 ("indirect call wrappers: helpers to speed-up indirect calls of builtin")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20260227172603.1700433-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/indirect_call_wrapper.h | 18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index ea6b39003461f..a1e3829914268 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -1837,12 +1837,15 @@ static void cleanup_dmi_name(char *name)
- 
- /*
-  * Check if a DMI field is valid, i.e. not containing any string
-- * in the black list.
-+ * in the black list and not the empty string.
+diff --git a/include/linux/indirect_call_wrapper.h b/include/linux/indirect_call_wrapper.h
+index c1c76a70a6ce9..227cee5e2a98b 100644
+--- a/include/linux/indirect_call_wrapper.h
++++ b/include/linux/indirect_call_wrapper.h
+@@ -16,22 +16,26 @@
   */
- static int is_dmi_valid(const char *field)
- {
- 	int i = 0;
+ #define INDIRECT_CALL_1(f, f1, ...)					\
+ 	({								\
+-		likely(f == f1) ? f1(__VA_ARGS__) : f(__VA_ARGS__);	\
++		typeof(f) __f1 = (f);					\
++		likely(__f1 == f1) ? f1(__VA_ARGS__) : __f1(__VA_ARGS__);	\
+ 	})
+ #define INDIRECT_CALL_2(f, f2, f1, ...)					\
+ 	({								\
+-		likely(f == f2) ? f2(__VA_ARGS__) :			\
+-				  INDIRECT_CALL_1(f, f1, __VA_ARGS__);	\
++		typeof(f) __f2 = (f);					\
++		likely(__f2 == f2) ? f2(__VA_ARGS__) :			\
++				  INDIRECT_CALL_1(__f2, f1, __VA_ARGS__);	\
+ 	})
+ #define INDIRECT_CALL_3(f, f3, f2, f1, ...)					\
+ 	({									\
+-		likely(f == f3) ? f3(__VA_ARGS__) :				\
+-				  INDIRECT_CALL_2(f, f2, f1, __VA_ARGS__);	\
++		typeof(f) __f3 = (f);						\
++		likely(__f3 == f3) ? f3(__VA_ARGS__) :				\
++				  INDIRECT_CALL_2(__f3, f2, f1, __VA_ARGS__);	\
+ 	})
+ #define INDIRECT_CALL_4(f, f4, f3, f2, f1, ...)					\
+ 	({									\
+-		likely(f == f4) ? f4(__VA_ARGS__) :				\
+-				  INDIRECT_CALL_3(f, f3, f2, f1, __VA_ARGS__);	\
++		typeof(f) __f4 = (f);						\
++		likely(__f4 == f4) ? f4(__VA_ARGS__) :				\
++				  INDIRECT_CALL_3(__f4, f3, f2, f1, __VA_ARGS__);	\
+ 	})
  
-+	if (!field[0])
-+		return 0;
-+
- 	while (dmi_blacklist[i]) {
- 		if (strstr(field, dmi_blacklist[i]))
- 			return 0;
+ #define INDIRECT_CALLABLE_DECLARE(f)	f
 -- 
 2.51.0
 
