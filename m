@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229145-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aNw4I01rwWkVTAQAu9opvQ
-	(envelope-from <stable+bounces-229602-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:17 +0100
+	id 8HdlCqRewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229145-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12C102F84D6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:33:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628FC2F6A64
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8C541329BFFE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2F03300BCBA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DA33BC673;
-	Mon, 23 Mar 2026 16:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F0A23C4F2;
+	Mon, 23 Mar 2026 15:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZ1BVziq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Wp0k6gs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5930F3BADB2;
-	Mon, 23 Mar 2026 16:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F263B6370;
+	Mon, 23 Mar 2026 15:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282363; cv=none; b=Q8NauNWDKgcmzwXdgY032Vzk3Ka1VG53tRtLO/IwwSEdavC+dLp4nm1LZsJJuaECoTlgiYeXF95HQcwghOc7MHY7BIxJ80f+D6lqnmJzPib8UjKcBSEU9j/8XNkcQ4q3ltuNJdQfXRToplQ/TPu8LI7noTEg9Mbj28CEGKEiZ5I=
+	t=1774278204; cv=none; b=r1l3/oH/9HRBnbSVwkn6ZqnvGK/gzU4NfqAv3KZciKIZXprGi7Q8uO+EQYENDE5NFRoOFRBMywW23expu9BEWSg7ocqcUwlAUADdc9ZmxfREdoa9bpQPFDvTv37WhBNaH6CNk+ChomfQZH1EXbJoRfsEWc4H6dMpdnZdbBSKmY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282363; c=relaxed/simple;
-	bh=NfBvylQFe9MwJoMy+nIQj8H1b+voXarH6nDSiDlXn9s=;
+	s=arc-20240116; t=1774278204; c=relaxed/simple;
+	bh=+/Bdhsfnc2p5m0vzli10FdOgVxChApS/Si+THwUm8pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aZ6ymkvn5xK6EZnKMOMBPad8skt0VLkWPwZz34IPWld5zL1Alik5Ck0cGtuteciuAQqAw+ljNPn9Oov3PobQNOqAX0YoN5B/boXGs64m/nd52OXEwas6amYvbiFVxnydjQPNIbjr54K7Fg/a39AyBHHq4vefm0/EI4oRFpyH3x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZ1BVziq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2C1C2BCB0;
-	Mon, 23 Mar 2026 16:12:42 +0000 (UTC)
+	 MIME-Version; b=hNPYoZ6Zo2zg1oYocOBCo+fnww1bdtIeWwl0fBS9nDy/JeZXTxpgfnYB8FpKSiDgzuQhrtnlMqxiCuFlDqZqblEDJUVyZa1tmDxDBdoAhCI99V+/mlILq0uaLVhH3j4FUCnQKk2BNmw0wawGtQcNbr/D+0tbsDq7LAIJE0/ytWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Wp0k6gs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1F1C4CEF7;
+	Mon, 23 Mar 2026 15:03:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282363;
-	bh=NfBvylQFe9MwJoMy+nIQj8H1b+voXarH6nDSiDlXn9s=;
+	s=korg; t=1774278203;
+	bh=+/Bdhsfnc2p5m0vzli10FdOgVxChApS/Si+THwUm8pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZ1BVziqhyDWnAmQbzyrmdXXfxkqRCf8nSBPfdQ9ny/zvfWCs4D9UUve8GKzoEVCh
-	 KRJNxQXkyP20PIleUPQA6iPporSt3CxG9WqnXcInWV3pD617vqZD+allYDbDPNBEsT
-	 VdVnT+UN9FSKUlwHcVolkNZaTAG530nl75ibIVSc=
+	b=0Wp0k6gs5RSwgOTnUHXHecJoUltHN1f7+ByG3c9mX1j22oy8lcG6f3yHCPxJ7NApF
+	 Al19MZhI8ZZ+WvJurNQxXQ9K++gQl92pc9xhnPWD9n/y66e4FLBH2XU/mafbo0pH8Q
+	 gCFLhRC6SjR/I2u3/vgXG86NczjZf53oPhoNNiJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/481] ipv6: fix NULL pointer deref in ip6_rt_get_dev_rcu()
+	Qualys Security Advisory <qsa@qualys.com>,
+	Ryan Lee <ryan.lee@canonical.com>,
+	Cengiz Can <cengiz.can@canonical.com>,
+	John Johansen <john.johansen@canonical.com>
+Subject: [PATCH 6.6 190/567] apparmor: fix: limit the number of levels of policy namespaces
 Date: Mon, 23 Mar 2026 14:41:50 +0100
-Message-ID: <20260323134528.393470047@linuxfoundation.org>
+Message-ID: <20260323134538.554189184@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,86 +69,80 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229145-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229602-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 12C102F84D6
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 628FC2F6A64
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: John Johansen <john.johansen@canonical.com>
 
-[ Upstream commit 2ffb4f5c2ccb2fa1c049dd11899aee7967deef5a ]
+commit 306039414932c80f8420695a24d4fe10c84ccfb2 upstream.
 
-l3mdev_master_dev_rcu() can return NULL when the slave device is being
-un-slaved from a VRF. All other callers deal with this, but we lost
-the fallback to loopback in ip6_rt_pcpu_alloc() -> ip6_rt_get_dev_rcu()
-with commit 4832c30d5458 ("net: ipv6: put host and anycast routes on
-device with address").
+Currently the number of policy namespaces is not bounded relying on
+the user namespace limit. However policy namespaces aren't strictly
+tied to user namespaces and it is possible to create them and nest
+them arbitrarily deep which can be used to exhaust system resource.
 
-  KASAN: null-ptr-deref in range [0x0000000000000108-0x000000000000010f]
-  RIP: 0010:ip6_rt_pcpu_alloc (net/ipv6/route.c:1418)
-  Call Trace:
-   ip6_pol_route (net/ipv6/route.c:2318)
-   fib6_rule_lookup (net/ipv6/fib6_rules.c:115)
-   ip6_route_output_flags (net/ipv6/route.c:2607)
-   vrf_process_v6_outbound (drivers/net/vrf.c:437)
+Hard cap policy namespaces to the same depth as user namespaces.
 
-I was tempted to rework the un-slaving code to clear the flag first
-and insert synchronize_rcu() before we remove the upper. But looks like
-the explicit fallback to loopback_dev is an established pattern.
-And I guess avoiding the synchronize_rcu() is nice, too.
-
-Fixes: 4832c30d5458 ("net: ipv6: put host and anycast routes on device with address")
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20260301194548.927324-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c88d4c7b049e8 ("AppArmor: core policy routines")
+Reported-by: Qualys Security Advisory <qsa@qualys.com>
+Reviewed-by: Ryan Lee <ryan.lee@canonical.com>
+Reviewed-by: Cengiz Can <cengiz.can@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/route.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ security/apparmor/include/policy_ns.h |    2 ++
+ security/apparmor/policy_ns.c         |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index 07e3d59c24059..5aa5390da1095 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -1058,7 +1058,8 @@ static struct net_device *ip6_rt_get_dev_rcu(const struct fib6_result *res)
- 		 */
- 		if (netif_is_l3_slave(dev) &&
- 		    !rt6_need_strict(&res->f6i->fib6_dst.addr))
--			dev = l3mdev_master_dev_rcu(dev);
-+			dev = l3mdev_master_dev_rcu(dev) ? :
-+			      dev_net(dev)->loopback_dev;
- 		else if (!netif_is_l3_master(dev))
- 			dev = dev_net(dev)->loopback_dev;
- 		/* last case is netif_is_l3_master(dev) is true in which
--- 
-2.51.0
-
+--- a/security/apparmor/include/policy_ns.h
++++ b/security/apparmor/include/policy_ns.h
+@@ -18,6 +18,8 @@
+ #include "label.h"
+ #include "policy.h"
+ 
++/* Match max depth of user namespaces */
++#define MAX_NS_DEPTH 32
+ 
+ /* struct aa_ns_acct - accounting of profiles in namespace
+  * @max_size: maximum space allowed for all profiles in namespace
+--- a/security/apparmor/policy_ns.c
++++ b/security/apparmor/policy_ns.c
+@@ -260,6 +260,8 @@ static struct aa_ns *__aa_create_ns(stru
+ 	AA_BUG(!name);
+ 	AA_BUG(!mutex_is_locked(&parent->lock));
+ 
++	if (parent->level > MAX_NS_DEPTH)
++		return ERR_PTR(-ENOSPC);
+ 	ns = alloc_ns(parent->base.hname, name);
+ 	if (!ns)
+ 		return ERR_PTR(-ENOMEM);
 
 
 
