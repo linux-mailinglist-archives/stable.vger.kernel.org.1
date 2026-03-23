@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-228289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228721-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UQ+7I+lRwWn+SAQAu9opvQ
-	(envelope-from <stable+bounces-228289-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:57 +0100
+	id aOOaDzpUwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228721-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1709B2F519E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:44:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558832F56AA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:54:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 052CB3125B56
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2AFB73039CD5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6843AF645;
-	Mon, 23 Mar 2026 14:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEFF33B27C2;
+	Mon, 23 Mar 2026 14:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqnTQf6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3Aa0pHv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F44C3ACF0E;
-	Mon, 23 Mar 2026 14:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F16C3B19DA;
+	Mon, 23 Mar 2026 14:42:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274702; cv=none; b=EQpozcJaYRJK/jzhdTkBrV7tVXy07a1To4xZOmoBgWeamafu9Fn9wg/LCISxThr6CYU3aeQPiek55hzD9vPMpcNtJnS+ISKeGdHAUUcLTjR51XSnFgXo10rDIbs+NXu8OCVZzNrOwZR7VkJM5EB7irwOHUj9OLysCE9NkTAlDh4=
+	t=1774276942; cv=none; b=lrAhlJNw3oQxKY2fik+gOp/tagd3+gCq9l9wnmQ0lDCf+9AeVZi0RNycSj2j6xyyebgqWN3N5xR4+A3G75Tf8QPLt1rj2IUr1ctD3ab5+qe/0395BnpyphF+znkNj4VI3hfkC7utr5PvUDNf2TsnCnUt2tQUN+IbjLORSjY1cb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274702; c=relaxed/simple;
-	bh=YD7OX+o3VPT/yV2fAoFcfY/9SeDckuWUZIiTFNC0jRc=;
+	s=arc-20240116; t=1774276942; c=relaxed/simple;
+	bh=vVuI9J2q8g7SP8yB3gDG8FuljByx7uf4191ekjRO35w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b2kyN1XGJ2kZUPm/wPxJco8v6X8FH3Wgz2s0/zPl02d0YTUpO9efxV3bcbv6TGd60fRkx6/aKy9x5nEFHfmjxS+d8WCFTH0G7O7ZlwoMxP9u+SXGDuPxvduuaXNZRxeH+d+Q883htuc+0FhCYea3gXmr5w1/25KtrEmZaPvas6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqnTQf6R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9404C2BC9E;
-	Mon, 23 Mar 2026 14:05:01 +0000 (UTC)
+	 MIME-Version; b=g4PHQlpoKliMNdwiukoRHklunwApBD91VuADc//9bMo6uC5inqNlJZFa/wTaaQiZgqSXOHcw9Rz+XZhxyQ+mOeB5lyUNSMEnC6kB7nKVKDZtIq+NBVSYakB8oaTVsbxqz4i+IWxPANL6Yf/moqoRaPoRWl9daOL5mtselBrRZJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3Aa0pHv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10575C4CEF7;
+	Mon, 23 Mar 2026 14:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274702;
-	bh=YD7OX+o3VPT/yV2fAoFcfY/9SeDckuWUZIiTFNC0jRc=;
+	s=korg; t=1774276942;
+	bh=vVuI9J2q8g7SP8yB3gDG8FuljByx7uf4191ekjRO35w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xqnTQf6R2siO63jZZKg5VKfJbQzLyYyPkpDy31gMbsDdUWKntZT/rT0ONgI0EKarT
-	 iSSLiQ1E6S6aEl41QIO8kkXO+4nIf1/PnmvlSBEyp7NxTs1i+roixr4mzHVhW+poLt
-	 bEDBD4eEvfQaFP0FEL869YfR+ChNMBnDi2FXQwsc=
+	b=R3Aa0pHvLPVEHTA1BQqf39N777RaqV1TO5Kciy7KI1b2/WFuprsr5jZpS+ed/ckjJ
+	 sd09uGaC1FtSrTMadphF612DM7EOM66dI2oRGBT0Jb9PMlzoj34sliNI+bpjZRtP87
+	 uIBwtkbB4Kte61Ak6lJ5fiJViJt8ke08ulXpq70M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Yan Zhao <yan.y.zhao@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 038/212] drm/i915/vrr: Configure VRR timings after enabling TRANS_DDI_FUNC_CTL
+Subject: [PATCH 6.12 263/460] KVM: x86: Introduce supported_quirks to block disabling quirks
 Date: Mon, 23 Mar 2026 14:44:19 +0100
-Message-ID: <20260323134504.966058428@linuxfoundation.org>
+Message-ID: <20260323134532.946469906@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-2.16 / 15.00];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
+	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_FROM(0.00)[bounces-228289-lists,stable=lfdr.de];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228721-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[]
-X-Rspamd-Queue-Id: 1709B2F519E
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 558832F56AA
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Yan Zhao <yan.y.zhao@intel.com>
 
-[ Upstream commit 237aab549676288d9255bb8dcc284738e56eaa31 ]
+[ Upstream commit bd7d5362b4c4ac8b951385867a0fadfae0ba3c07 ]
 
-Apparently ICL may hang with an MCE if we write TRANS_VRR_VMAX/FLIPLINE
-before enabling TRANS_DDI_FUNC_CTL.
+Introduce supported_quirks in kvm_caps to store platform-specific force-enabled
+quirks.
 
-Personally I was only able to reproduce a hang (on an Dell XPS 7390
-2-in-1) with an external display connected via a dock using a dodgy
-type-C cable that made the link training fail. After the failed
-link training the machine would hang. TGL seemed immune to the
-problem for whatever reason.
+No functional changes intended.
 
-BSpec does tell us to configure VRR after enabling TRANS_DDI_FUNC_CTL
-as well. The DMC firmware also does the VRR restore in two stages:
-- first stage seems to be unconditional and includes TRANS_VRR_CTL
-  and a few other VRR registers, among other things
-- second stage is conditional on the DDI being enabled,
-  and includes TRANS_DDI_FUNC_CTL and TRANS_VRR_VMAX/VMIN/FLIPLINE,
-  among other things
-
-So let's reorder the steps to match to avoid the hang, and
-toss in an extra WARN to make sure we don't screw this up later.
-
-BSpec: 22243
-Cc: stable@vger.kernel.org
-Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-Reported-by: Benjamin Tissoires <bentiss@kernel.org>
-Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/15777
-Tested-by: Benjamin Tissoires <bentiss@kernel.org>
-Fixes: dda7dcd9da73 ("drm/i915/vrr: Use fixed timings for platforms that support VRR")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patch.msgid.link/20260303095414.4331-1-ville.syrjala@linux.intel.com
-Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
-(cherry picked from commit 93f3a267c3dd4d811b224bb9e179a10d81456a74)
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+Message-ID: <20250224070832.31394-1-yan.y.zhao@intel.com>
+[Remove unsupported quirks at KVM_ENABLE_CAP time. - Paolo]
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Stable-dep-of: e2ffe85b6d2b ("KVM: x86: Introduce KVM_X86_QUIRK_VMCS12_ALLOW_FREEZE_IN_SMM")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/display/intel_display.c |    1 -
- drivers/gpu/drm/i915/display/intel_vrr.c     |   14 ++++++++++++++
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ arch/x86/kvm/x86.c |    9 +++++----
+ arch/x86/kvm/x86.h |    2 ++
+ 2 files changed, 7 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display.c
-+++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -1642,7 +1642,6 @@ static void hsw_configure_cpu_transcoder
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -4801,7 +4801,7 @@ int kvm_vm_ioctl_check_extension(struct
+ 		r = enable_pmu ? KVM_CAP_PMU_VALID_MASK : 0;
+ 		break;
+ 	case KVM_CAP_DISABLE_QUIRKS2:
+-		r = KVM_X86_VALID_QUIRKS;
++		r = kvm_caps.supported_quirks;
+ 		break;
+ 	case KVM_CAP_X86_NOTIFY_VMEXIT:
+ 		r = kvm_caps.has_notify_vmexit;
+@@ -6534,11 +6534,11 @@ int kvm_vm_ioctl_enable_cap(struct kvm *
+ 	switch (cap->cap) {
+ 	case KVM_CAP_DISABLE_QUIRKS2:
+ 		r = -EINVAL;
+-		if (cap->args[0] & ~KVM_X86_VALID_QUIRKS)
++		if (cap->args[0] & ~kvm_caps.supported_quirks)
+ 			break;
+ 		fallthrough;
+ 	case KVM_CAP_DISABLE_QUIRKS:
+-		kvm->arch.disabled_quirks |= cap->args[0];
++		kvm->arch.disabled_quirks |= cap->args[0] & kvm_caps.supported_quirks;
+ 		r = 0;
+ 		break;
+ 	case KVM_CAP_SPLIT_IRQCHIP: {
+@@ -9782,6 +9782,7 @@ int kvm_x86_vendor_init(struct kvm_x86_i
+ 		kvm_host.xcr0 = xgetbv(XCR_XFEATURE_ENABLED_MASK);
+ 		kvm_caps.supported_xcr0 = kvm_host.xcr0 & KVM_SUPPORTED_XCR0;
  	}
++	kvm_caps.supported_quirks = KVM_X86_VALID_QUIRKS;
+ 	kvm_caps.inapplicable_quirks = KVM_X86_CONDITIONAL_QUIRKS;
  
- 	intel_set_transcoder_timings(crtc_state);
--	intel_vrr_set_transcoder_timings(crtc_state);
+ 	rdmsrl_safe(MSR_EFER, &kvm_host.efer);
+@@ -12781,7 +12782,7 @@ int kvm_arch_init_vm(struct kvm *kvm, un
+ 	/* Decided by the vendor code for other VM types.  */
+ 	kvm->arch.pre_fault_allowed =
+ 		type == KVM_X86_DEFAULT_VM || type == KVM_X86_SW_PROTECTED_VM;
+-	kvm->arch.disabled_quirks = kvm_caps.inapplicable_quirks;
++	kvm->arch.disabled_quirks = kvm_caps.inapplicable_quirks & kvm_caps.supported_quirks;
  
- 	if (cpu_transcoder != TRANSCODER_EDP)
- 		intel_de_write(display, TRANS_MULT(display, cpu_transcoder),
---- a/drivers/gpu/drm/i915/display/intel_vrr.c
-+++ b/drivers/gpu/drm/i915/display/intel_vrr.c
-@@ -465,6 +465,18 @@ void intel_vrr_set_transcoder_timings(co
- 		return;
- 
- 	/*
-+	 * Bspec says:
-+	 * "(note: VRR needs to be programmed after
-+	 *  TRANS_DDI_FUNC_CTL and before TRANS_CONF)."
-+	 *
-+	 * In practice it turns out that ICL can hang if
-+	 * TRANS_VRR_VMAX/FLIPLINE are written before
-+	 * enabling TRANS_DDI_FUNC_CTL.
-+	 */
-+	drm_WARN_ON(display->drm,
-+		    !(intel_de_read(display, TRANS_DDI_FUNC_CTL(display, cpu_transcoder)) & TRANS_DDI_FUNC_ENABLE));
+ 	ret = kvm_page_track_init(kvm);
+ 	if (ret)
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -32,6 +32,8 @@ struct kvm_caps {
+ 	u64 supported_xcr0;
+ 	u64 supported_xss;
+ 	u64 supported_perf_cap;
 +
-+	/*
- 	 * This bit seems to have two meanings depending on the platform:
- 	 * TGL: generate VRR "safe window" for DSB vblank waits
- 	 * ADL/DG2: make TRANS_SET_CONTEXT_LATENCY effective with VRR
-@@ -658,6 +670,8 @@ void intel_vrr_transcoder_enable(const s
- 	if (!HAS_VRR(display))
- 		return;
- 
-+	intel_vrr_set_transcoder_timings(crtc_state);
-+
- 	if (!intel_vrr_possible(crtc_state))
- 		return;
++	u64 supported_quirks;
+ 	u64 inapplicable_quirks;
+ };
  
 
 
