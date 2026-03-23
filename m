@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-228678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-227993-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oATOGUhmwWlESwQAu9opvQ
-	(envelope-from <stable+bounces-228678-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:11:52 +0100
+	id cApWNAhHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-227993-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D71492F7B66
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:11:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90132F388F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71DEA31B8438
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:41:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AE1DA303AD27
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D21E3B0AF0;
-	Mon, 23 Mar 2026 14:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D8B3AD527;
+	Mon, 23 Mar 2026 13:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mK5k2au9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7BVFfZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CC33AEF20;
-	Mon, 23 Mar 2026 14:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDBDA3ACA5C;
+	Mon, 23 Mar 2026 13:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774276833; cv=none; b=FyccvyitR5bdOy1gSaXsmCgN3pfBip+ssw2bHkrdxabpUGGVyHKtJ5hzdFOlwMbwewsCgXtc92VjTSf+QUd3hcQiNsdG8FcWLO+o+ODSKwwvGufw2X2ptfnCOBwRoxE1v6Iru3tGOpE3u+0VAcAqWrOknwt/cTM3Yg/a+8WGulM=
+	t=1774273799; cv=none; b=bIXhTJFHg4kBmktQKpU5woaGJsZP77z5y6ndBouT7Vqau1qFpW6OslpMjecxAgCnTREJNIED/LtTPF1GXwa/tXojgRjzErrbBDKYmrlczBKEG3g0XpXltz544KwJR8AjuXI9EYC+R/g9NM9SH+U2W6i4UQvxVG0CW8orE+ZpIeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774276833; c=relaxed/simple;
-	bh=DrNAYDhQGXXsqpi+ozHq1Vrn9oTHKh2On2+T/0vllwg=;
+	s=arc-20240116; t=1774273799; c=relaxed/simple;
+	bh=SZjYdjsZbBxNRwrZMmdExAxuL4taCotmXJcLSuWGG1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWkwegvqH1yXDn4eNGj2CaRjfUNYN9RvNL17LIXH9Kq6wg/TZUEalhBo1n8f86Hev+Jjh00chmB0EQdMOeG/xfugF+WlrFj62W06q29ePnFYf3aeYqSpe9iEh7Ypbyf0sWQYxwJgwEAGJPPipuiyI6xXuY9vbp1TNCaT5D/T8OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mK5k2au9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35877C4CEF7;
-	Mon, 23 Mar 2026 14:40:33 +0000 (UTC)
+	 MIME-Version; b=Z9oeD9KY3HfRm5EWCJ0/K3iYAHPvr4H+onwzDwRa0PcEyphdhb3FvE46qD/Mig498IURwYTFVPkOC11nfxZmXs9s+JFElbteyIYlLRGgwakwYUO8pHRaxRVKRxq7/50urEAQHH425R3ffJiuob42PD5mg9+PRjqD3T+3tXAcf7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7BVFfZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 169CBC4CEF7;
+	Mon, 23 Mar 2026 13:49:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774276833;
-	bh=DrNAYDhQGXXsqpi+ozHq1Vrn9oTHKh2On2+T/0vllwg=;
+	s=korg; t=1774273799;
+	bh=SZjYdjsZbBxNRwrZMmdExAxuL4taCotmXJcLSuWGG1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mK5k2au9yh4/S49P+Op0hm6FH4JOh0IwBYTyn32DACxe/ZxwGoNVa4EPDaldOv82z
-	 eDzd5VHRw1ac4EEODsOV5D1e/M5JkklrzsiV2r38CK6MDpgxBX4hGPog4OdbrUi8Gs
-	 1sAJyo6yH/VHTPRjfv0LOtJzpy38RiBnxnS85do4=
+	b=t7BVFfZHoux3/P4nJzt94TTNddpBjXSaEBkVACa2wQH2UdJ6xMxE4C1IkqOi7vivD
+	 /bMr6IqTytG12peoBfS3eYXoO3qezSN4TjeACcmMzwuG94Kwjjk4RfTGROnN2Icl2L
+	 lsATr3xH16E/zUc98BtUZntiWzFf9eK/WOaIaSJI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Bukte <rahul.bukte@sony.com>,
-	Shashank Balaji <shashank.mahadasyam@sony.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Sohil Mehta <sohil.mehta@intel.com>
-Subject: [PATCH 6.12 194/460] x86/apic: Disable x2apic on resume if the kernel expects so
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.19 013/220] LoongArch: No need to flush icache if text copy failed
 Date: Mon, 23 Mar 2026 14:43:10 +0100
-Message-ID: <20260323134531.315444850@linuxfoundation.org>
+Message-ID: <20260323134504.996036612@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,118 +67,72 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228678-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-227993-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,intel.com:email,alien8.de:email,msgid.link:url,uefi.org:url]
-X-Rspamd-Queue-Id: D71492F7B66
+	RCPT_COUNT_FIVE(0.00)[5];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,loongson.cn:email]
+X-Rspamd-Queue-Id: D90132F388F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shashank Balaji <shashank.mahadasyam@sony.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit 8cc7dd77a1466f0ec58c03478b2e735a5b289b96 upstream.
+commit d3b8491961207ac967795c34375890407fd51a45 upstream.
 
-When resuming from s2ram, firmware may re-enable x2apic mode, which may have
-been disabled by the kernel during boot either because it doesn't support IRQ
-remapping or for other reasons. This causes the kernel to continue using the
-xapic interface, while the hardware is in x2apic mode, which causes hangs.
-This happens on defconfig + bare metal + s2ram.
+If copy_to_kernel_nofault() failed, no need to flush icache and just
+return immediately.
 
-Fix this in lapic_resume() by disabling x2apic if the kernel expects it to be
-disabled, i.e. when x2apic_mode = 0.
-
-The ACPI v6.6 spec, Section 16.3 [1] says firmware restores either the
-pre-sleep configuration or initial boot configuration for each CPU, including
-MSR state:
-
-  When executing from the power-on reset vector as a result of waking from an
-  S2 or S3 sleep state, the platform firmware performs only the hardware
-  initialization required to restore the system to either the state the
-  platform was in prior to the initial operating system boot, or to the
-  pre-sleep configuration state. In multiprocessor systems, non-boot
-  processors should be placed in the same state as prior to the initial
-  operating system boot.
-
-  (further ahead)
-
-  If this is an S2 or S3 wake, then the platform runtime firmware restores
-  minimum context of the system before jumping to the waking vector. This
-  includes:
-
-	CPU configuration. Platform runtime firmware restores the pre-sleep
-	configuration or initial boot configuration of each CPU (MSR, MTRR,
-	firmware update, SMBase, and so on). Interrupts must be disabled (for
-	IA-32 processors, disabled by CLI instruction).
-
-	(and other things)
-
-So at least as per the spec, re-enablement of x2apic by the firmware is
-allowed if "x2apic on" is a part of the initial boot configuration.
-
-  [1] https://uefi.org/specs/ACPI/6.6/16_Waking_and_Sleeping.html#initialization
-
-  [ bp: Massage. ]
-
-Fixes: 6e1cb38a2aef ("x64, x2apic/intr-remap: add x2apic support, including enabling interrupt-remapping")
-Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
-Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Thomas Gleixner <tglx@kernel.org>
-Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260306-x2apic-fix-v2-1-bee99c12efa3@sony.com
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/apic/apic.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/loongarch/kernel/inst.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1887,6 +1887,7 @@ void __init check_x2apic(void)
+--- a/arch/loongarch/kernel/inst.c
++++ b/arch/loongarch/kernel/inst.c
+@@ -246,13 +246,15 @@ static int text_copy_cb(void *data)
  
- static inline void try_to_enable_x2apic(int remap_mode) { }
- static inline void __x2apic_enable(void) { }
-+static inline void __x2apic_disable(void) { }
- #endif /* !CONFIG_X86_X2APIC */
- 
- void __init enable_IR_x2apic(void)
-@@ -2449,6 +2450,11 @@ static void lapic_resume(void)
- 	if (x2apic_mode) {
- 		__x2apic_enable();
- 	} else {
-+		if (x2apic_enabled()) {
-+			pr_warn_once("x2apic: re-enabled by firmware during resume. Disabling\n");
-+			__x2apic_disable();
+ 	if (smp_processor_id() == copy->cpu) {
+ 		ret = copy_to_kernel_nofault(copy->dst, copy->src, copy->len);
+-		if (ret)
++		if (ret) {
+ 			pr_err("%s: operation failed\n", __func__);
++			return ret;
 +		}
-+
- 		/*
- 		 * Make sure the APICBASE points to the right address
- 		 *
+ 	}
+ 
+ 	flush_icache_range((unsigned long)copy->dst, (unsigned long)copy->dst + copy->len);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ int larch_insn_text_copy(void *dst, void *src, size_t len)
 
 
 
