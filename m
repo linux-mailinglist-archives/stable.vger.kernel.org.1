@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-229377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228329-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id uHyPJ0liwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229377-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:54:49 +0100
+	id 4Cv9CoBLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228329-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:36 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A692F71A6
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:54:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB41B2F41A9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4FA943016161
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1F1473146122
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80E153B8BC4;
-	Mon, 23 Mar 2026 15:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053843B27F5;
+	Mon, 23 Mar 2026 14:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2L6b1nht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZHtrqFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B3A3B8933;
-	Mon, 23 Mar 2026 15:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2B53AC0D2;
+	Mon, 23 Mar 2026 14:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278924; cv=none; b=p6m/1i/nXUqduRm3r0TpYsOCwomICltOF/58Jd5/l96e7UsYaKPSHAHjaXkbf93fUQqmUZxerJfZK8r1Aze5kd4OIG0cr7aoBLYB1DSSWq0aIqTCiZuxRzJwYvVF0j66Q1Sq8CgEyldhYItFZFXY2cpSC0c7uXVlfMhjAH2hiGw=
+	t=1774274827; cv=none; b=eZPrsaU6WICqhHopYpKzDiw0h6e8zZiA8yqIwZPUw3mvyVrMZFotZfzavrhZdGEHf4GKE7/C9OlpqkFa1+Oyf2qJzshsgGplmpw4R+oSe+ksmRN1uVpbgcLgOun0Is8yFPGmVJfhNLGSyjzRZlbmkhPD0DMNxl3j/x/xa9Ci5Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278924; c=relaxed/simple;
-	bh=NWKIqjJSuPSYwRqv6e6nC92zwhnXs2T1QU9YEcU9dB0=;
+	s=arc-20240116; t=1774274827; c=relaxed/simple;
+	bh=88Tdd2ntgLslEsWu0tY7IymLFVQ+yEqkgGp+KYdPhhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YBb5mO8uUkIiJRRscWvTgECLhahtjfLw8jqos0RufR00A7WssHdUJFa43LiI6KpjETejkq1s0KLMrbscJ33mbtEDKJCx8MR39+oQFqVmU736cgOwehlIFLKLhVQnGPWGuQqw54d7MByBHJrQtPtjc1cJ24ZIHC3fC46HkFF6otE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2L6b1nht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71EAC4CEF7;
-	Mon, 23 Mar 2026 15:15:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XDXZqDxGPw+pdUGOgmVEbzKWXw/lYe4WIAi6+OKwXXbhvvwwLFxz1zcXGb/m2/9WNOGxrkJ2L57rS+wU9DWdm917pw3qt41stFpmDujn7N+E0+T3+V2PXWRBKVHt503N8GpxSusUtctvGmr2wcFCYk8Y5WqJrLI3QL4rfPI3JIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZHtrqFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56ACFC4CEF7;
+	Mon, 23 Mar 2026 14:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278924;
-	bh=NWKIqjJSuPSYwRqv6e6nC92zwhnXs2T1QU9YEcU9dB0=;
+	s=korg; t=1774274827;
+	bh=88Tdd2ntgLslEsWu0tY7IymLFVQ+yEqkgGp+KYdPhhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2L6b1nhtJxYj+8ExHi3H2NJp0oWAGfE0rm1FK2hh0PTSnrad12DMorMSJ9RNLQhSN
-	 GtG/NuFGsmfiJkFQUw5sbmBQ6xRi/gP2RTKZP5SELba/tKTrMc8WpZrrQj7mmCANX2
-	 7v6tlPquc7PKHLZqUjPbPBSZfQi0NOJYjFR/R7vA=
+	b=cZHtrqFP5goHwZEMU+eNEf6NVBGHk0qCtXklFnPZri1lVflP7TZnvfUuvKSdSABoV
+	 ENQcYNCmNvC6S7Pyu4PyC7u1dWyoI3hpGjPa3GRe9ZJNanV7J7iW8DvD9pXn+6lsYw
+	 ADW0VqqVMB3YMivcYo70z8/PhQd0Dv4rZkfnwfXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Rahul Sharma <black.hawk@163.com>
-Subject: [PATCH 6.6 420/567] btrfs: do not strictly require dirty metadata threshold for metadata writepages
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 119/212] firmware: arm_ffa: Remove vm_id argument in ffa_rxtx_unmap()
 Date: Mon, 23 Mar 2026 14:45:40 +0100
-Message-ID: <20260323134544.280132858@linuxfoundation.org>
+Message-ID: <20260323134507.530951010@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,202 +63,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228329-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.cz,bur.io,suse.com,163.com];
-	TAGGED_FROM(0.00)[bounces-229377-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,bur.io:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,suse.com:email]
-X-Rspamd-Queue-Id: 78A692F71A6
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: AB41B2F41A9
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 4e159150a9a56d66d247f4b5510bed46fe58aa1c ]
+[ Upstream commit a4e8473b775160f3ce978f621cf8dea2c7250433 ]
 
-[BUG]
-There is an internal report that over 1000 processes are
-waiting at the io_schedule_timeout() of balance_dirty_pages(), causing
-a system hang and trigger a kernel coredump.
+According to the FF-A specification (DEN0077, v1.1, §13.7), when
+FFA_RXTX_UNMAP is invoked from any instance other than non-secure
+physical, the w1 register must be zero (MBZ). If a non-zero value is
+supplied in this context, the SPMC must return FFA_INVALID_PARAMETER.
 
-The kernel is v6.4 kernel based, but the root problem still applies to
-any upstream kernel before v6.18.
+The Arm FF-A driver operates exclusively as a guest or non-secure
+physical instance where the partition ID is always zero and is not
+invoked from a hypervisor context where w1 carries a VM ID. In this
+execution model, the partition ID observed by the driver is always zero,
+and passing a VM ID is unnecessary and potentially invalid.
 
-[CAUSE]
->From Jan Kara for his wisdom on the dirty page balance behavior first.
+Remove the vm_id parameter from ffa_rxtx_unmap() and ensure that the
+SMC call is issued with w1 implicitly zeroed, as required by the
+specification. This prevents invalid parameter errors and aligns the
+implementation with the defined FF-A ABI behavior.
 
-  This cgroup dirty limit was what was actually playing the role here
-  because the cgroup had only a small amount of memory and so the dirty
-  limit for it was something like 16MB.
-
-  Dirty throttling is responsible for enforcing that nobody can dirty
-  (significantly) more dirty memory than there's dirty limit. Thus when
-  a task is dirtying pages it periodically enters into balance_dirty_pages()
-  and we let it sleep there to slow down the dirtying.
-
-  When the system is over dirty limit already (either globally or within
-  a cgroup of the running task), we will not let the task exit from
-  balance_dirty_pages() until the number of dirty pages drops below the
-  limit.
-
-  So in this particular case, as I already mentioned, there was a cgroup
-  with relatively small amount of memory and as a result with dirty limit
-  set at 16MB. A task from that cgroup has dirtied about 28MB worth of
-  pages in btrfs btree inode and these were practically the only dirty
-  pages in that cgroup.
-
-So that means the only way to reduce the dirty pages of that cgroup is
-to writeback the dirty pages of btrfs btree inode, and only after that
-those processes can exit balance_dirty_pages().
-
-Now back to the btrfs part, btree_writepages() is responsible for
-writing back dirty btree inode pages.
-
-The problem here is, there is a btrfs internal threshold that if the
-btree inode's dirty bytes are below the 32M threshold, it will not
-do any writeback.
-
-This behavior is to batch as much metadata as possible so we won't write
-back those tree blocks and then later re-COW them again for another
-modification.
-
-This internal 32MiB is higher than the existing dirty page size (28MiB),
-meaning no writeback will happen, causing a deadlock between btrfs and
-cgroup:
-
-- Btrfs doesn't want to write back btree inode until more dirty pages
-
-- Cgroup/MM doesn't want more dirty pages for btrfs btree inode
-  Thus any process touching that btree inode is put into sleep until
-  the number of dirty pages is reduced.
-
-Thanks Jan Kara a lot for the analysis of the root cause.
-
-[ENHANCEMENT]
-Since kernel commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
-btree_inode"), btrfs btree inode pages will only be charged to the root
-cgroup which should have a much larger limit than btrfs' 32MiB
-threshold.
-So it should not affect newer kernels.
-
-But for all current LTS kernels, they are all affected by this problem,
-and backporting the whole AS_KERNEL_FILE may not be a good idea.
-
-Even for newer kernels I still think it's a good idea to get
-rid of the internal threshold at btree_writepages(), since for most cases
-cgroup/MM has a better view of full system memory usage than btrfs' fixed
-threshold.
-
-For internal callers using btrfs_btree_balance_dirty() since that
-function is already doing internal threshold check, we don't need to
-bother them.
-
-But for external callers of btree_writepages(), just respect their
-requests and write back whatever they want, ignoring the internal
-btrfs threshold to avoid such deadlock on btree inode dirty page
-balancing.
-
-CC: stable@vger.kernel.org
-CC: Jan Kara <jack@suse.cz>
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ The context change is due to the commit 41044b41ad2c
-("btrfs: add helper to get fs_info from struct inode pointer")
-in v6.9 and the commit c66f2afc7148
-("btrfs: remove pointless writepages callback wrapper")
-in v6.10 which are irrelevant to the logic of this patch. ]
-Signed-off-by: Rahul Sharma <black.hawk@163.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3bbfe9871005 ("firmware: arm_ffa: Add initial Arm FFA driver support")
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Message-Id: <20260304120953.847671-1-yeoreum.yun@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/disk-io.c   |   22 ----------------------
- fs/btrfs/extent_io.c |    3 +--
- fs/btrfs/extent_io.h |    3 +--
- 3 files changed, 2 insertions(+), 26 deletions(-)
+ drivers/firmware/arm_ffa/driver.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/disk-io.c
-+++ b/fs/btrfs/disk-io.c
-@@ -470,28 +470,6 @@ static int btree_migrate_folio(struct ad
- #define btree_migrate_folio NULL
- #endif
- 
--static int btree_writepages(struct address_space *mapping,
--			    struct writeback_control *wbc)
--{
--	struct btrfs_fs_info *fs_info;
--	int ret;
--
--	if (wbc->sync_mode == WB_SYNC_NONE) {
--
--		if (wbc->for_kupdate)
--			return 0;
--
--		fs_info = BTRFS_I(mapping->host)->root->fs_info;
--		/* this is a bit racy, but that's ok */
--		ret = __percpu_counter_compare(&fs_info->dirty_metadata_bytes,
--					     BTRFS_DIRTY_METADATA_THRESH,
--					     fs_info->dirty_metadata_batch);
--		if (ret < 0)
--			return 0;
--	}
--	return btree_write_cache_pages(mapping, wbc);
--}
--
- static bool btree_release_folio(struct folio *folio, gfp_t gfp_flags)
- {
- 	if (folio_test_writeback(folio) || folio_test_dirty(folio))
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1921,8 +1921,7 @@ static int submit_eb_page(struct page *p
- 	return 1;
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 11a702e7f641c..f6ceae987acbc 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -205,12 +205,12 @@ static int ffa_rxtx_map(phys_addr_t tx_buf, phys_addr_t rx_buf, u32 pg_cnt)
+ 	return 0;
  }
  
--int btree_write_cache_pages(struct address_space *mapping,
--				   struct writeback_control *wbc)
-+int btree_writepages(struct address_space *mapping, struct writeback_control *wbc)
+-static int ffa_rxtx_unmap(u16 vm_id)
++static int ffa_rxtx_unmap(void)
  {
- 	struct btrfs_eb_write_context ctx = { .wbc = wbc };
- 	struct btrfs_fs_info *fs_info = BTRFS_I(mapping->host)->root->fs_info;
---- a/fs/btrfs/extent_io.h
-+++ b/fs/btrfs/extent_io.h
-@@ -189,8 +189,7 @@ void extent_write_locked_range(struct in
- 			       bool pages_dirty);
- int extent_writepages(struct address_space *mapping,
- 		      struct writeback_control *wbc);
--int btree_write_cache_pages(struct address_space *mapping,
--			    struct writeback_control *wbc);
-+int btree_writepages(struct address_space *mapping, struct writeback_control *wbc);
- void extent_readahead(struct readahead_control *rac);
- int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
- 		  u64 start, u64 len);
+ 	ffa_value_t ret;
+ 
+ 	invoke_ffa_fn((ffa_value_t){
+-		      .a0 = FFA_RXTX_UNMAP, .a1 = PACK_TARGET_INFO(vm_id, 0),
++		      .a0 = FFA_RXTX_UNMAP,
+ 		      }, &ret);
+ 
+ 	if (ret.a0 == FFA_ERROR)
+@@ -2093,7 +2093,7 @@ static int __init ffa_init(void)
+ 
+ 	pr_err("failed to setup partitions\n");
+ 	ffa_notifications_cleanup();
+-	ffa_rxtx_unmap(drv_info->vm_id);
++	ffa_rxtx_unmap();
+ free_pages:
+ 	if (drv_info->tx_buffer)
+ 		free_pages_exact(drv_info->tx_buffer, rxtx_bufsz);
+@@ -2108,7 +2108,7 @@ static void __exit ffa_exit(void)
+ {
+ 	ffa_notifications_cleanup();
+ 	ffa_partitions_cleanup();
+-	ffa_rxtx_unmap(drv_info->vm_id);
++	ffa_rxtx_unmap();
+ 	free_pages_exact(drv_info->tx_buffer, drv_info->rxtx_bufsz);
+ 	free_pages_exact(drv_info->rx_buffer, drv_info->rxtx_bufsz);
+ 	kfree(drv_info);
+-- 
+2.51.0
+
 
 
 
