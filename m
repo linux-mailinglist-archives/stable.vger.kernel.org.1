@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-229438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229934-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iMUQKVlgwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229438-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:33 +0100
+	id AAKMNeN+wWl2TgQAu9opvQ
+	(envelope-from <stable+bounces-229934-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:56:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 643F82F6E12
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:46:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 693E82FAACC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1144B306ABEB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 749DA323691B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FB53B38A5;
-	Mon, 23 Mar 2026 15:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1372E3BED27;
+	Mon, 23 Mar 2026 16:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdSsYYAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ms7G5SXS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A629B2737EE;
-	Mon, 23 Mar 2026 15:20:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C233B960B;
+	Mon, 23 Mar 2026 16:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279234; cv=none; b=DKLK3jGLnFZwOhRmQHbBGLbXr0JwEHcLlrJ1VMIV4awUQZ5/AXTuMhgJLYvrGn0Uragl2riCyaACJqMC/rZXAKOe8rbch3C8zsLpAD6P4DfmozEB1rUSJ1VmLrkAo1ogpRZiqCikhQmQec0uKCVBKIvPBh7l5Klm55SiFG9/zig=
+	t=1774283261; cv=none; b=hn3REAltWrAIYhrDvejVPbl+txXs9bGYmhBQrY7YM+ZSKSqGzy4RB28kD40kYj/KxzxMiueWDWfUIdbzk0njRF1QQ7lDfuSvPHdvd+NmnXW/sD1yMd2aUPLsATH+WOH2/6Nd6U/z+NwE01IcUzQOYyxIyUPazdTRN79rhpG0eUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279234; c=relaxed/simple;
-	bh=IpLL1lgIX1uaXgiO+T1n78BGU/BG5z8RCraXRI2ySCY=;
+	s=arc-20240116; t=1774283261; c=relaxed/simple;
+	bh=UmfDc7ITnhXU+BDUewXENGHnvGUrFRzbw6HY74imKGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fj/dFC9znAfAoE87/OocH6sKdgXacc+l/xBGy/bW+h0J41JzIYMfQNF+ywqWsm7OI6soUb0Mm7jljEyQ6z42g6psMV454aJKbZ2lwjplEQnm0G7TRPk1U865i64qkq5rmjOsY9Gm+KXaL5Y+Tn7U5b2FtWXnGJd0y8UqaHci+nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdSsYYAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A209C4CEF7;
-	Mon, 23 Mar 2026 15:20:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g8kizyJPFe//pqCWi6hx9PO76ddQ5l+cWyoWeSP4EINy0CtpWGS7gK6SFNQYNUuyGZ0UjsOP/8ZiUz0atQbJTgHGyBywBztqnU8LuuPJacJ7oL0ehwkL3ER1/FQI53L/QPNb0y1pSJNbWKmGZJL+osI63Kmb7h2pmi9WeZD8hI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ms7G5SXS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 591B1C4CEF7;
+	Mon, 23 Mar 2026 16:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279234;
-	bh=IpLL1lgIX1uaXgiO+T1n78BGU/BG5z8RCraXRI2ySCY=;
+	s=korg; t=1774283260;
+	bh=UmfDc7ITnhXU+BDUewXENGHnvGUrFRzbw6HY74imKGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NdSsYYAOyQG3VnRo5DSQuK41MgkwIV+afjwdCNqHBLPFBa1+48vTR60NoM7rPjFjh
-	 cygMtwc3RpFQBNHXlhY5Hf1fZBNdKwY5+kxeC7r2eYprIa46MllCXdkMzS5JnYsvJz
-	 86PND1JM76m2GWe+ep/s+4T9buN0vjNgSSMtoekM=
+	b=ms7G5SXS9dA3s2Crb74s0yvlYZK1DjEywP22XszKPTj/sLH3EP7rWr2WxOu3J+is1
+	 YdTv8Kd/tOyxNBbe3iG5LQk9iD7HAy0h+Z8tY1/Jsrah6ge0XtT+1nnMY8S7yFcwrh
+	 /GPtkotR57MgCCaWtNh0HgQFqoyD8OpAAO0vM3AQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaudia Kloc <klaudia@vidocsecurity.com>,
-	=?UTF-8?q?Dawid=20Moczad=C5=82o?= <dawid@vidocsecurity.com>,
-	Jenny Guanni Qu <qguanni@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 520/567] netfilter: xt_time: use unsigned int for monthday bit shift
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Johnny Hao <johnny_haocn@sina.com>
+Subject: [PATCH 6.1 458/481] net: clear the dst when changing skb protocol
 Date: Mon, 23 Mar 2026 14:47:20 +0100
-Message-ID: <20260323134546.875328945@linuxfoundation.org>
+Message-ID: <20260323134536.373870798@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,15 +70,15 @@ Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,vidocsecurity.com,gmail.com,strlen.de,kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,iogearbox.net,kernel.org,sina.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229438-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229934-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	RCVD_TLS_LAST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
@@ -88,65 +88,121 @@ X-Spamd-Result: default: False [-2.16 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns]
-X-Rspamd-Queue-Id: 643F82F6E12
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,sina.com:email]
+X-Rspamd-Queue-Id: 693E82FAACC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jenny Guanni Qu <qguanni@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 00050ec08cecfda447e1209b388086d76addda3a ]
+commit ba9db6f907ac02215e30128770f85fbd7db2fcf9 upstream.
 
-The monthday field can be up to 31, and shifting a signed integer 1
-by 31 positions (1 << 31) is undefined behavior in C, as the result
-overflows a 32-bit signed int. Use 1U to ensure well-defined behavior
-for all valid monthday values.
+A not-so-careful NAT46 BPF program can crash the kernel
+if it indiscriminately flips ingress packets from v4 to v6:
 
-Change the weekday shift to 1U as well for consistency.
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
+    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
+    process_backlog (net/core/dev.c:6186:4)
+    napi_poll (net/core/dev.c:6906:9)
+    net_rx_action (net/core/dev.c:7028:13)
+    do_softirq (kernel/softirq.c:462:3)
+    netif_rx (net/core/dev.c:5326:3)
+    dev_loopback_xmit (net/core/dev.c:4015:2)
+    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
+    NF_HOOK (./include/linux/netfilter.h:314:9)
+    ip_mc_output (net/ipv4/ip_output.c:400:5)
+    dst_output (./include/net/dst.h:459:9)
+    ip_local_out (net/ipv4/ip_output.c:130:9)
+    ip_send_skb (net/ipv4/ip_output.c:1496:8)
+    udp_send_skb (net/ipv4/udp.c:1040:8)
+    udp_sendmsg (net/ipv4/udp.c:1328:10)
 
-Fixes: ee4411a1b1e0 ("[NETFILTER]: x_tables: add xt_time match")
-Reported-by: Klaudia Kloc <klaudia@vidocsecurity.com>
-Reported-by: Dawid Moczadło <dawid@vidocsecurity.com>
-Tested-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Jenny Guanni Qu <qguanni@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The output interface has a 4->6 program attached at ingress.
+We try to loop the multicast skb back to the sending socket.
+Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
+and changes skb->protocol to v6. We enter ip6_rcv_core which
+tries to use skb_dst(). But the dst is still an IPv4 one left
+after IPv4 mcast output.
+
+Clear the dst in all BPF helpers which change the protocol.
+Try to preserve metadata dsts, those may carry non-routing
+metadata.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
+Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250610001245.1981782-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ The context change is due to the commit d219df60a70e
+  ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+  in v6.3 which is irrelevant to the logic of this patch. ]
+Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_time.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/filter.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/xt_time.c b/net/netfilter/xt_time.c
-index 6aa12d0f54e23..61de85e02a40f 100644
---- a/net/netfilter/xt_time.c
-+++ b/net/netfilter/xt_time.c
-@@ -227,13 +227,13 @@ time_mt(const struct sk_buff *skb, struct xt_action_param *par)
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3232,6 +3232,13 @@ static const struct bpf_func_proto bpf_s
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ };
  
- 	localtime_2(&current_time, stamp);
- 
--	if (!(info->weekdays_match & (1 << current_time.weekday)))
-+	if (!(info->weekdays_match & (1U << current_time.weekday)))
- 		return false;
- 
- 	/* Do not spend time computing monthday if all days match anyway */
- 	if (info->monthdays_match != XT_TIME_ALL_MONTHDAYS) {
- 		localtime_3(&current_time, stamp);
--		if (!(info->monthdays_match & (1 << current_time.monthday)))
-+		if (!(info->monthdays_match & (1U << current_time.monthday)))
- 			return false;
++static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
++{
++	skb->protocol = htons(proto);
++	if (skb_valid_dst(skb))
++		skb_dst_drop(skb);
++}
++
+ static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
+ {
+ 	/* Caller already did skb_cow() with len as headroom,
+@@ -3328,7 +3335,7 @@ static int bpf_skb_proto_4_to_6(struct s
+ 		}
  	}
  
--- 
-2.51.0
-
+-	skb->protocol = htons(ETH_P_IPV6);
++	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3358,7 +3365,7 @@ static int bpf_skb_proto_6_to_4(struct s
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IP);
++	bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3545,10 +3552,10 @@ static int bpf_skb_net_grow(struct sk_bu
+ 		/* Match skb->protocol to new outer l3 protocol */
+ 		if (skb->protocol == htons(ETH_P_IP) &&
+ 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
+-			skb->protocol = htons(ETH_P_IPV6);
++			bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 		else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
+-			skb->protocol = htons(ETH_P_IP);
++			bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	}
+ 
+ 	if (skb_is_gso(skb)) {
 
 
 
