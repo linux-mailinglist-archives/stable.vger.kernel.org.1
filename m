@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-228905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229936-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QMWcEnJYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228905-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:50 +0100
+	id 6IBLMmp2wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229936-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:20:42 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD3932F5FAA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F422F9BF4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:20:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4CEE32E1A4F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86A9E35BC8C4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEBD3B27F5;
-	Mon, 23 Mar 2026 14:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70F8C23504B;
+	Mon, 23 Mar 2026 16:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fCygplxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZFuFldI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA013B27D9;
-	Mon, 23 Mar 2026 14:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36B73BF67B;
+	Mon, 23 Mar 2026 16:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277450; cv=none; b=U7xiaDDvcyvJxxIrqV7AirLGjzx+qytuKpdA1Zwcx18/BO8x2s3vDoBMKFBglLj2FqwlETwpoymVU77cPtcy6uW9CKiYtS15j2h20ggRpb8f+4IetaKFDQA05iLnYwnYY2CMOKpNMuV/oJV5gXZepbtx/xudKZuubjhNZYw39rA=
+	t=1774283308; cv=none; b=Mw6aUwwGuCXX3k9SIxGIyZThq074a7d0LiDJE+H2HwMFlOkQI97rGQ9Nxlm1UQo+8mkEZP2+kCzDIjukCe7p2iMJWGLHbjHP15ANNGxflErNkg5TCN7JgAquPVaFacsM9VamJ6ioGIlCVGVwCimFTtZXN/XVGZoMxiN49+pQmW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277450; c=relaxed/simple;
-	bh=v4fLwQL/NYBrEhg80/5I3eBaqoR5StYLUz1NaQOXyi0=;
+	s=arc-20240116; t=1774283308; c=relaxed/simple;
+	bh=x4GIOloxbHACPRtiGA2MF6KFY9eB071wckxhG0bpx4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AT6Bqg8XBzShRyhJuYkrbTSLSopNS6fVUPJuheaqerfscOiW4Sa4zTU+iJP1qk4HWrye1f28nCNZOHvww0NhPoffHsqS1oD0nmIBroGt97rsBthV5q8yG2+Cjqm71hLqfxvqTmjtAxyWdyIV3xF7ur+G8m9kQm4iUZosa27JYTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fCygplxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E732EC4CEF7;
-	Mon, 23 Mar 2026 14:50:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d7B9E1yYpKDZawNa+o09ttCka5+s6oOLhM90jISkeuEQYRGmcAbghdESCA0xD6GzE0WxYvOS/50bIasqeJUZ/idGGdgwS4RBKdI2YXLj+AQBCuClmQpN75gCw953vDXhI/iR1o6W/uvPgpc4BGsejXFqiqUeJcbc+8VKDOm+3j4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZFuFldI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1085AC4CEF7;
+	Mon, 23 Mar 2026 16:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277450;
-	bh=v4fLwQL/NYBrEhg80/5I3eBaqoR5StYLUz1NaQOXyi0=;
+	s=korg; t=1774283307;
+	bh=x4GIOloxbHACPRtiGA2MF6KFY9eB071wckxhG0bpx4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fCygplxaxEhe6WHypvaQKUCDINDXpGnN6K8DwK5lTN+OwYfIG4aD/p3bpdKRFJA44
-	 SbLPNY5v8Q4GLNuqQX0YzViTZXRHIT0Gv6QJqjxCHW6LvkOPFY28Nx417rkgh97pEL
-	 1ysKFrckExUrwSRBBKuNWWPa5YxMzhCrHFaXtbCo=
+	b=iZFuFldI04vGNx3AOTsgQDmtlc2A5RJmtDvSTXVuVtNet+rU7MdMFVBz09cuNyUY/
+	 +Drgy9cMPadW3t7vLClmgPQU5bJMjqUcTKWcsqgNiCmNhX5orKQAfPA7S65eENUQwf
+	 1JzLPvJBL6YEm/dkMXZ/QfbI5u2/mMHYSVBF0do4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Alex Xu (Hello71)" <alex_y_xu@yahoo.ca>,
-	Kairui Song <ryncsn@gmail.com>,
-	Kairui Song <kasong@tencent.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lance Yang <ioworker0@gmail.com>,
-	Matthew Wilcow <willy@infradead.org>,
-	Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 445/460] mm: shmem: fix potential data corruption during shmem swapin
-Date: Mon, 23 Mar 2026 14:47:21 +0100
-Message-ID: <20260323134537.518504587@linuxfoundation.org>
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Rosen Penev <rosenp@gmail.com>
+Subject: [PATCH 6.1 460/481] drm/amdgpu: clarify DC checks
+Date: Mon, 23 Mar 2026 14:47:22 +0100
+Message-ID: <20260323134536.428244473@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,143 +63,195 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228905-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,linux.alibaba.com,yahoo.ca,gmail.com,tencent.com,redhat.com,infradead.org,google.com,linux-foundation.org];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229936-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,amd.com,gmail.com];
+	FROM_HAS_DN(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AD3932F5FAA
+	RCPT_COUNT_FIVE(0.00)[6]
+X-Rspamd-Queue-Id: 29F422F9BF4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 058313515d5aab10d0a01dd634f92ed4a4e71d4c upstream.
+[ Upstream commit d09ef243035b75a6d403ebfeb7e87fa20d7e25c6 ]
 
-Alex and Kairui reported some issues (system hang or data corruption) when
-swapping out or swapping in large shmem folios.  This is especially easy
-to reproduce when the tmpfs is mount with the 'huge=within_size'
-parameter.  Thanks to Kairui's reproducer, the issue can be easily
-replicated.
+There are several places where we don't want to check
+if a particular asic could support DC, but rather, if
+DC is enabled.  Set a flag if DC is enabled and check
+for that rather than if a device supports DC or not.
 
-The root cause of the problem is that swap readahead may asynchronously
-swap in order 0 folios into the swap cache, while the shmem mapping can
-still store large swap entries.  Then an order 0 folio is inserted into
-the shmem mapping without splitting the large swap entry, which overwrites
-the original large swap entry, leading to data corruption.
-
-When getting a folio from the swap cache, we should split the large swap
-entry stored in the shmem mapping if the orders do not match, to fix this
-issue.
-
-Link: https://lkml.kernel.org/r/2fe47c557e74e9df5fe2437ccdc6c9115fa1bf70.1740476943.git.baolin.wang@linux.alibaba.com
-Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Reported-by: Alex Xu (Hello71) <alex_y_xu@yahoo.ca>
-Reported-by: Kairui Song <ryncsn@gmail.com>
-Closes: https://lore.kernel.org/all/1738717785.im3r5g2vxc.none@localhost/
-Tested-by: Kairui Song <kasong@tencent.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Lance Yang <ioworker0@gmail.com>
-Cc: Matthew Wilcow <willy@infradead.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-[ hughd: removed skip_swapcache dependencies ]
-Signed-off-by: Hugh Dickins <hughd@google.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Rosen Penev <rosenp@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/shmem.c |   30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu.h               |    1 
+ drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c          |    2 -
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c       |    2 -
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c        |   32 +++++++++++-----------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_display.c       |    4 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c           |    2 -
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    1 
+ drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c  |    2 -
+ 8 files changed, 25 insertions(+), 21 deletions(-)
 
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2132,7 +2132,7 @@ static int shmem_swapin_folio(struct ino
- 	struct swap_info_struct *si;
- 	struct folio *folio = NULL;
- 	swp_entry_t swap;
--	int error, nr_pages;
-+	int error, nr_pages, order, split_order;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu.h
+@@ -1071,6 +1071,7 @@ struct amdgpu_device {
+ 	struct work_struct		reset_work;
  
- 	VM_BUG_ON(!*foliop || !xa_is_value(*foliop));
- 	swap = radix_to_swp_entry(*foliop);
-@@ -2151,8 +2151,8 @@ static int shmem_swapin_folio(struct ino
+ 	bool                            job_hang;
++	bool                            dc_enabled;
+ };
  
- 	/* Look it up and read it in.. */
- 	folio = swap_cache_get_folio(swap, NULL, 0);
-+	order = xa_get_order(&mapping->i_pages, index);
- 	if (!folio) {
--		int split_order;
+ static inline struct amdgpu_device *drm_to_adev(struct drm_device *ddev)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c
+@@ -857,7 +857,7 @@ int amdgpu_acpi_init(struct amdgpu_devic
+ 	struct amdgpu_atif *atif = &amdgpu_acpi_priv.atif;
  
- 		/* Or update major stats only when swapin succeeds?? */
- 		if (fault_type) {
-@@ -2189,13 +2189,37 @@ static int shmem_swapin_folio(struct ino
- 			error = -ENOMEM;
- 			goto failed;
- 		}
-+	} else if (order != folio_order(folio)) {
+ 	if (atif->notifications.brightness_change) {
+-		if (amdgpu_device_has_dc_support(adev)) {
++		if (adev->dc_enabled) {
+ #if defined(CONFIG_DRM_AMD_DC)
+ 			struct amdgpu_display_manager *dm = &adev->dm;
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -1981,7 +1981,7 @@ int amdgpu_debugfs_init(struct amdgpu_de
+ 	amdgpu_ta_if_debugfs_init(adev);
+ 
+ #if defined(CONFIG_DRM_AMD_DC)
+-	if (amdgpu_device_has_dc_support(adev))
++	if (adev->dc_enabled)
+ 		dtn_debugfs_init(adev);
+ #endif
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4404,25 +4404,27 @@ int amdgpu_device_resume(struct drm_devi
+ 
+ 	amdgpu_ras_resume(adev);
+ 
+-	/*
+-	 * Most of the connector probing functions try to acquire runtime pm
+-	 * refs to ensure that the GPU is powered on when connector polling is
+-	 * performed. Since we're calling this from a runtime PM callback,
+-	 * trying to acquire rpm refs will cause us to deadlock.
+-	 *
+-	 * Since we're guaranteed to be holding the rpm lock, it's safe to
+-	 * temporarily disable the rpm helpers so this doesn't deadlock us.
+-	 */
++	if (adev->mode_info.num_crtc) {
 +		/*
-+		 * Swap readahead may swap in order 0 folios into swapcache
-+		 * asynchronously, while the shmem mapping can still stores
-+		 * large swap entries. In such cases, we should split the
-+		 * large swap entry to prevent possible data corruption.
++		 * Most of the connector probing functions try to acquire runtime pm
++		 * refs to ensure that the GPU is powered on when connector polling is
++		 * performed. Since we're calling this from a runtime PM callback,
++		 * trying to acquire rpm refs will cause us to deadlock.
++		 *
++		 * Since we're guaranteed to be holding the rpm lock, it's safe to
++		 * temporarily disable the rpm helpers so this doesn't deadlock us.
 +		 */
-+		split_order = shmem_split_large_entry(inode, index, swap, gfp);
-+		if (split_order < 0) {
-+			error = split_order;
-+			goto failed;
-+		}
-+
-+		/*
-+		 * If the large swap entry has already been split, it is
-+		 * necessary to recalculate the new swap entry based on
-+		 * the old order alignment.
-+		 */
-+		if (split_order > 0) {
-+			pgoff_t offset = index - round_down(index, 1 << split_order);
-+
-+			swap = swp_entry(swp_type(swap), swp_offset(swap) + offset);
-+		}
- 	}
+ #ifdef CONFIG_PM
+-	dev->dev->power.disable_depth++;
++		dev->dev->power.disable_depth++;
+ #endif
+-	if (!amdgpu_device_has_dc_support(adev))
+-		drm_helper_hpd_irq_event(dev);
+-	else
+-		drm_kms_helper_hotplug_event(dev);
++		if (!adev->dc_enabled)
++			drm_helper_hpd_irq_event(dev);
++		else
++			drm_kms_helper_hotplug_event(dev);
+ #ifdef CONFIG_PM
+-	dev->dev->power.disable_depth--;
++		dev->dev->power.disable_depth--;
+ #endif
++	}
+ 	adev->in_suspend = false;
  
- 	/* We have to do this with folio locked to prevent races */
- 	folio_lock(folio);
- 	if (!folio_test_swapcache(folio) ||
- 	    folio->swap.val != swap.val ||
--	    !shmem_confirm_swap(mapping, index, swap)) {
-+	    !shmem_confirm_swap(mapping, index, swap) ||
-+	    xa_get_order(&mapping->i_pages, index) != folio_order(folio)) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
+ 	if (adev->enable_mes)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+@@ -534,7 +534,7 @@ uint32_t amdgpu_display_supported_domain
+ 	 */
+ 	if ((bo_flags & AMDGPU_GEM_CREATE_CPU_GTT_USWC) &&
+ 	    amdgpu_bo_support_uswc(bo_flags) &&
+-	    amdgpu_device_has_dc_support(adev) &&
++	    adev->dc_enabled &&
+ 	    adev->mode_info.gpu_vm_support)
+ 		domain |= AMDGPU_GEM_DOMAIN_GTT;
+ #endif
+@@ -1330,7 +1330,7 @@ int amdgpu_display_modeset_create_props(
+ 					 "dither",
+ 					 amdgpu_dither_enum_list, sz);
+ 
+-	if (amdgpu_device_has_dc_support(adev)) {
++	if (adev->dc_enabled) {
+ 		adev->mode_info.abm_level_property =
+ 			drm_property_create_range(adev_to_drm(adev), 0,
+ 						  "abm level", 0, 4);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2530,7 +2530,7 @@ static int amdgpu_runtime_idle_check_dis
+ 		if (ret)
+ 			return ret;
+ 
+-		if (amdgpu_device_has_dc_support(adev)) {
++		if (adev->dc_enabled) {
+ 			struct drm_crtc *crtc;
+ 
+ 			drm_for_each_crtc(crtc, drm_dev) {
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4842,6 +4842,7 @@ static int dm_early_init(void *handle)
+ 		adev_to_drm(adev)->dev,
+ 		&dev_attr_s3_debug);
+ #endif
++	adev->dc_enabled = true;
+ 
+ 	return 0;
+ }
+--- a/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/amd_powerplay.c
+@@ -1567,7 +1567,7 @@ static void pp_pm_compute_clocks(void *h
+ 	struct pp_hwmgr *hwmgr = handle;
+ 	struct amdgpu_device *adev = hwmgr->adev;
+ 
+-	if (!amdgpu_device_has_dc_support(adev)) {
++	if (!adev->dc_enabled) {
+ 		amdgpu_dpm_get_active_displays(adev);
+ 		adev->pm.pm_display_cfg.num_display = adev->pm.dpm.new_active_crtc_count;
+ 		adev->pm.pm_display_cfg.vrefresh = amdgpu_dpm_get_vrefresh(adev);
 
 
 
