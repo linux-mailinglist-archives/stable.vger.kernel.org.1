@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229036-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CBDfMCVQwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228503-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:25 +0100
+	id IIMuJJFcwWlZSgQAu9opvQ
+	(envelope-from <stable+bounces-229036-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E8F2F4DF3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:37:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B46862F6609
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4947A322DBA7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1A93C307E7DF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDD13B19AC;
-	Mon, 23 Mar 2026 14:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2619396D28;
+	Mon, 23 Mar 2026 14:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvGzXi8J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGxMiuf1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FA539C658;
-	Mon, 23 Mar 2026 14:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 767B22737EB;
+	Mon, 23 Mar 2026 14:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275305; cv=none; b=Lup7xSQjpTsvje2UvV1zWW7j1+/sUhbWdOBe7Fo2/tGqwjZ//DihJO6KadXGV/fcO+Vx57YhI9peOG6fAEYUXATjnkfAk4iTWSZXWrkBDDA+jqSmzwCQ/W4htRdRu1BaK9pbL3rCvJ1WH0nCHreMDyS5NkkgV5YGWAznmGYAe5k=
+	t=1774277855; cv=none; b=FIP8Gn+DF2hhgpH5JlMY2pynLCMXA57qY4bHLg4yJ3XctaH69M9m2p0etJXcNRMQZuqbVoDoTCdaf0wwwfiv8RlQBxUGPyDKGsyRqA85ZFK4S+M+4PUa2c9w1Jc1O8dcIP3thVrTiaYL1e7jxzjAIZdQJ9EOb5vujjt5defbF+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275305; c=relaxed/simple;
-	bh=xGAimwdS40COwCRRbJ0BrzMRSjGnENOvcTDkj3tBCKQ=;
+	s=arc-20240116; t=1774277855; c=relaxed/simple;
+	bh=K+INmJzC9CUbHF3cGCEAmUBSOdojpsGkqhCPlzEhnSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHH31b251TxzKSNIKK5FtVeEiZ2Ti6O9PAgc4kEdwhxyP1kz6t8ecaa+VDRdVH0O7UJPA9Nn8aBCmhAFLv3Gs0moxrzH8FhPkGbim3GPBnhYAbWvdN7cyLYllfkh1fPO8THkPvoiIih/yA1FkBHFlv+uIO5K+yhSs8XyeSRBx+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvGzXi8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B30C2BC9E;
-	Mon, 23 Mar 2026 14:15:04 +0000 (UTC)
+	 MIME-Version; b=gJMoVs1Iot8ftOycgkPUI119RI5a62TiBEhIg3AaIrWzQU3f3nv/L1u0tr9tcavT84N8FTap0j2PWEdlkgOhwfM1AUG9DiXFZl0ZzkmacC8KXQrvY9U27vB0QuYrGIyKfQ20mQXTL8tOfW5HoAuLSB8EZuqTf9sfwdHzPAUaMIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGxMiuf1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3180C4CEF7;
+	Mon, 23 Mar 2026 14:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275304;
-	bh=xGAimwdS40COwCRRbJ0BrzMRSjGnENOvcTDkj3tBCKQ=;
+	s=korg; t=1774277855;
+	bh=K+INmJzC9CUbHF3cGCEAmUBSOdojpsGkqhCPlzEhnSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvGzXi8JZtpRsIb/pMrZ/YAcdjckP4shAO/r8Ukxc7KeuIQo8alKxL1/dSQHnCqfO
-	 FOQUABMr86oioThT2Tcc/I1C1uuLBYniXly99tENzcE4VN3Q+ExaPVmLICFlElrHrS
-	 sXZPW9v358qo1kXV6k19zoNuMZHJqEDdL1dvFdec=
+	b=XGxMiuf1X9Xkr5ByTZQL45FTuMbuT1zydfkYYHP8/FmQro9PRruBezElBrkYFwPIq
+	 TGeYXFyZ9vjF2w0h9qfkioTGanAnjwCVsW5VKRIkN202UdFNDlI4AmFwwVj78aEr8u
+	 7U/Qkro7cm7YYbxrY5ilx9yfIulOA+3G+0ysXAKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuangpeng Bai <shuangpeng.kernel@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hao Yu <haoyufine@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/460] serial: caif: hold tty->link reference in ldisc_open and ser_release
+Subject: [PATCH 6.6 123/567] hwmon: (aht10) Fix initialization commands for AHT20
 Date: Mon, 23 Mar 2026 14:40:43 +0100
-Message-ID: <20260323134527.869127865@linuxfoundation.org>
+Message-ID: <20260323134536.847931934@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +64,87 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,linux.dev,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228503-lists,stable=lfdr.de];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TAGGED_FROM(0.00)[bounces-229036-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,roeck-us.net,kernel.org];
 	TO_DN_SOME(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-0.999];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 43E8F2F4DF3
+X-Rspamd-Queue-Id: B46862F6609
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+From: Hao Yu <haoyufine@gmail.com>
 
-[ Upstream commit 288598d80a068a0e9281de35bcb4ce495f189e2a ]
+[ Upstream commit b7497b5a99f54ab8dcda5b14a308385b2fb03d8d ]
 
-A reproducer triggers a KASAN slab-use-after-free in pty_write_room()
-when caif_serial's TX path calls tty_write_room(). The faulting access
-is on tty->link->port.
+According to the AHT20 datasheet (updated to V1.0 after the 2023.09
+version), the initialization command for AHT20 is 0b10111110 (0xBE).
+The previous sequence (0xE1) used in earlier versions is no longer
+compatible with newer AHT20 sensors. Update the initialization
+command to ensure the sensor is properly initialized.
 
-Hold an extra kref on tty->link for the lifetime of the caif_serial line
-discipline: get it in ldisc_open() and drop it in ser_release(), and
-also drop it on the ldisc_open() error path.
+While at it, use binary notation for DHT20_CMD_INIT to match the notation
+used in the datasheet.
 
-With this change applied, the reproducer no longer triggers the UAF in
-my testing.
-
-Link: https://gist.github.com/shuangpengbai/c898debad6bdf170a84be7e6b3d8707f
-Link: https://lore.kernel.org/netdev/20260301220525.1546355-1-shuangpeng.kernel@gmail.com
-Fixes: e31d5a05948e ("caif: tty's are kref objects so take a reference")
-Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://patch.msgid.link/20260306034006.3395740-1-shuangpeng.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d2abcb5cc885 ("hwmon: (aht10) Add support for compatible aht20")
+Signed-off-by: Hao Yu <haoyufine@gmail.com>
+Link: https://lore.kernel.org/r/20260222170332.1616-3-haoyufine@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/caif/caif_serial.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hwmon/aht10.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-index 699ed0ff461e8..6799dbf80f484 100644
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ -311,6 +311,7 @@ static void ser_release(struct work_struct *work)
- 			dev_close(ser->dev);
- 			unregister_netdevice(ser->dev);
- 			debugfs_deinit(ser);
-+			tty_kref_put(tty->link);
- 			tty_kref_put(tty);
- 		}
- 		rtnl_unlock();
-@@ -345,6 +346,7 @@ static int ldisc_open(struct tty_struct *tty)
+diff --git a/drivers/hwmon/aht10.c b/drivers/hwmon/aht10.c
+index 4f235dfb260f8..aa116957d9c96 100644
+--- a/drivers/hwmon/aht10.c
++++ b/drivers/hwmon/aht10.c
+@@ -37,7 +37,9 @@
+ #define AHT10_CMD_MEAS	0b10101100
+ #define AHT10_CMD_RST	0b10111010
  
- 	ser = netdev_priv(dev);
- 	ser->tty = tty_kref_get(tty);
-+	tty_kref_get(tty->link);
- 	ser->dev = dev;
- 	debugfs_init(ser, tty);
- 	tty->receive_room = N_TTY_BUF_SIZE;
-@@ -353,6 +355,7 @@ static int ldisc_open(struct tty_struct *tty)
- 	rtnl_lock();
- 	result = register_netdevice(dev);
- 	if (result) {
-+		tty_kref_put(tty->link);
- 		tty_kref_put(tty);
- 		rtnl_unlock();
- 		free_netdev(dev);
+-#define DHT20_CMD_INIT	0x71
++#define AHT20_CMD_INIT	0b10111110
++
++#define DHT20_CMD_INIT	0b01110001
+ 
+ /*
+  * Flags in the answer byte/command
+@@ -358,7 +360,7 @@ static int aht10_probe(struct i2c_client *client)
+ 		data->meas_size = AHT20_MEAS_SIZE;
+ 		data->crc8 = true;
+ 		crc8_populate_msb(crc8_table, AHT20_CRC8_POLY);
+-		data->init_cmd = AHT10_CMD_INIT;
++		data->init_cmd = AHT20_CMD_INIT;
+ 		break;
+ 	case dht20:
+ 		data->meas_size = AHT20_MEAS_SIZE;
 -- 
 2.51.0
 
