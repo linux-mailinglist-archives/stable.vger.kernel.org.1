@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228877-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id YHhGNid9wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229902-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:49:27 +0100
+	id eDyBC7dXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228877-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:43 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE692FA784
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:49:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C182F5E1C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE6DB31361FC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1E12F30CB18B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED0C3B19A2;
-	Mon, 23 Mar 2026 16:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B989B26D4F9;
+	Mon, 23 Mar 2026 14:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2kAbgno"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RubdQG6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 424CE12CDA5;
-	Mon, 23 Mar 2026 16:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5B43AF672;
+	Mon, 23 Mar 2026 14:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283170; cv=none; b=i4DAtmCrS+1f8TSp6/k85OFIPZQmxc+Pdn+iJgxIAc5ldlWJLuQDjXIO1xZAkrnS6EuiP8eQdY0TMUimaC8Q8Ce3TTBCsvvcqjzH9CDNA620SsezxOhm/CtHx1AnMty+/tjTHQ2gVhttv8U4A6VEL7cv3wFkf3IXlAbYcnkrVwI=
+	t=1774277376; cv=none; b=szIXG1O5lMAzY81Wy4nA3ix2fgIgcdIv0Q7ifSeZ3FgYD90EKXc3kP+FlEPTDsMhRB2oARO8sU+i+aJYnhny80HuCU1cWL/P+a51oHrr3ikQpNhprvjScU/jK9F+iabCikn9V2dpMKtHr5CO/IFY7rAeD6IkhPhAN76SPKEZwPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283170; c=relaxed/simple;
-	bh=Rf80AOXvPmUtA/tX1kQCvinr8aNTmjFO0T79XXActNo=;
+	s=arc-20240116; t=1774277376; c=relaxed/simple;
+	bh=NmK4NgFt6WXt/612Rs0iexWd+4uSInB1pd39fhcM1OU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4/kHHDp69oosUGQ7TvM19qsqNURLWdDIdVEw5TRKeCq5pgyxWAuSsODAmOOP+F0uAk1qI5lH5nknYARoODuqjWUxs5LNO9vyVLmTwVg8ZARjEm/6U1svd/iq7ZSQwaOD52Qf0MIkSzkT50Biix67PSZgdLCrmChlD9AQEZ+mBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2kAbgno; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D938C4CEF7;
-	Mon, 23 Mar 2026 16:26:09 +0000 (UTC)
+	 MIME-Version; b=BYqUOEzJcdzFNT30caVTtGURZMkV173g03igRfCxqPVa610/5iUC5qov7a+kWOEX3jyIFCxmFGqP8wDfP70wLee4R+1e0AjrVnQ1HQ4xZzMxacW0wETpiQI69XHgGHThNHvNZ+i9dFCOl9UGW4RToAzyTtUNsJe9rF/UfvzTWPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RubdQG6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62627C2BC9E;
+	Mon, 23 Mar 2026 14:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283169;
-	bh=Rf80AOXvPmUtA/tX1kQCvinr8aNTmjFO0T79XXActNo=;
+	s=korg; t=1774277375;
+	bh=NmK4NgFt6WXt/612Rs0iexWd+4uSInB1pd39fhcM1OU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2kAbgnoReH+rBCF/7im0MVpNRLGKU8UOD82OAU4rwlrrHGXHg+QGJZSN5jo6dDx/
-	 FwOrYW/MdszuwRpCXdodwv0l+WgGPRyFRLCxtIbeLprr2nTbIy2UwtzdxIH2W5JWO2
-	 PlWpbZz+0w9TZdtiucnxi/10UMDO7hvK72QiKySg=
+	b=RubdQG6wLzdx3/ES0wAg/cocc65DOPROgAz+F2VbzvCUZMUtmx/DV1CXn1xjqyAYE
+	 nGB0ZnFaVZY7ROPEui0/jUrgR0ToncW0XgWCK3cHDmxrDTQWOKBf9K+n31MfHMY1qQ
+	 qiAZnA5SXcU0tQI0kGSWgxgKS1vPq3a0nXO6VcPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weiming Shi <bestswngs@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com,
+	"Nikola Z. Ivanov" <zlatistiv@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 429/481] wifi: mac80211: fix NULL deref in mesh_matches_local()
+Subject: [PATCH 6.12 415/460] net: usb: aqc111: Do not perform PM inside suspend callback
 Date: Mon, 23 Mar 2026 14:46:51 +0100
-Message-ID: <20260323134535.658045321@linuxfoundation.org>
+Message-ID: <20260323134536.744779148@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +65,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,asu.edu,intel.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-229902-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,syzkaller.appspotmail.com,gmail.com,redhat.com,kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228877-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable,48dc1e8dfc92faf1124c];
 	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: 4DE692FA784
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 11C182F5E1C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Mei <xmei5@asu.edu>
+From: Nikola Z. Ivanov <zlatistiv@gmail.com>
 
-[ Upstream commit c73bb9a2d33bf81f6eecaa0f474b6c6dbe9855bd ]
+[ Upstream commit 069c8f5aebe4d5224cf62acc7d4b3486091c658a ]
 
-mesh_matches_local() unconditionally dereferences ie->mesh_config to
-compare mesh configuration parameters. When called from
-mesh_rx_csa_frame(), the parsed action-frame elements may not contain a
-Mesh Configuration IE, leaving ie->mesh_config NULL and triggering a
-kernel NULL pointer dereference.
+syzbot reports "task hung in rpm_resume"
 
-The other two callers are already safe:
-  - ieee80211_mesh_rx_bcn_presp() checks !elems->mesh_config before
-    calling mesh_matches_local()
-  - mesh_plink_get_event() is only reached through
-    mesh_process_plink_frame(), which checks !elems->mesh_config, too
+This is caused by aqc111_suspend calling
+the PM variant of its write_cmd routine.
 
-mesh_rx_csa_frame() is the only caller that passes raw parsed elements
-to mesh_matches_local() without guarding mesh_config. An adjacent
-attacker can exploit this by sending a crafted CSA action frame that
-includes a valid Mesh ID IE but omits the Mesh Configuration IE,
-crashing the kernel.
+The simplified call trace looks like this:
 
-The captured crash log:
+rpm_suspend()
+  usb_suspend_both() - here udev->dev.power.runtime_status == RPM_SUSPENDING
+    aqc111_suspend() - called for the usb device interface
+      aqc111_write32_cmd()
+        usb_autopm_get_interface()
+          pm_runtime_resume_and_get()
+            rpm_resume() - here we call rpm_resume() on our parent
+              rpm_resume() - Here we wait for a status change that will never happen.
 
-Oops: general protection fault, probably for non-canonical address ...
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-Workqueue: events_unbound cfg80211_wiphy_work
-[...]
-Call Trace:
- <TASK>
- ? __pfx_mesh_matches_local (net/mac80211/mesh.c:65)
- ieee80211_mesh_rx_queued_mgmt (net/mac80211/mesh.c:1686)
- [...]
- ieee80211_iface_work (net/mac80211/iface.c:1754 net/mac80211/iface.c:1802)
- [...]
- cfg80211_wiphy_work (net/wireless/core.c:426)
- process_one_work (net/kernel/workqueue.c:3280)
- ? assign_work (net/kernel/workqueue.c:1219)
- worker_thread (net/kernel/workqueue.c:3352)
- ? __pfx_worker_thread (net/kernel/workqueue.c:3385)
- kthread (net/kernel/kthread.c:436)
- [...]
- ret_from_fork_asm (net/arch/x86/entry/entry_64.S:255)
- </TASK>
+At this point we block another task which holds
+rtnl_lock and locks up the whole networking stack.
 
-This patch adds a NULL check for ie->mesh_config at the top of
-mesh_matches_local() to return false early when the Mesh Configuration
-IE is absent.
+Fix this by replacing the write_cmd calls with their _nopm variants
 
-Fixes: 2e3c8736820b ("mac80211: support functions for mesh")
-Reported-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Xiang Mei <xmei5@asu.edu>
-Link: https://patch.msgid.link/20260318034244.2595020-1-xmei5@asu.edu
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+48dc1e8dfc92faf1124c@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=48dc1e8dfc92faf1124c
+Fixes: e58ba4544c77 ("net: usb: aqc111: Add support for wake on LAN by MAGIC packet")
+Signed-off-by: Nikola Z. Ivanov <zlatistiv@gmail.com>
+Link: https://patch.msgid.link/20260313141643.1181386-1-zlatistiv@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/aqc111.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/mac80211/mesh.c b/net/mac80211/mesh.c
-index 3811486f243a7..1b928cd4545aa 100644
---- a/net/mac80211/mesh.c
-+++ b/net/mac80211/mesh.c
-@@ -75,6 +75,9 @@ bool mesh_matches_local(struct ieee80211_sub_if_data *sdata,
- 	 *   - MDA enabled
- 	 * - Power management control on fc
- 	 */
-+	if (!ie->mesh_config)
-+		return false;
-+
- 	if (!(ifmsh->mesh_id_len == ie->mesh_id_len &&
- 	     memcmp(ifmsh->mesh_id, ie->mesh_id, ie->mesh_id_len) == 0 &&
- 	     (ifmsh->mesh_pp_id == ie->mesh_config->meshconf_psel) &&
+diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
+index 9201ee10a13f7..d316aa66dbc23 100644
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -1400,14 +1400,14 @@ static int aqc111_suspend(struct usb_interface *intf, pm_message_t message)
+ 		aqc111_write16_cmd_nopm(dev, AQ_ACCESS_MAC,
+ 					SFR_MEDIUM_STATUS_MODE, 2, &reg16);
+ 
+-		aqc111_write_cmd(dev, AQ_WOL_CFG, 0, 0,
+-				 WOL_CFG_SIZE, &wol_cfg);
+-		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
+-				   &aqc111_data->phy_cfg);
++		aqc111_write_cmd_nopm(dev, AQ_WOL_CFG, 0, 0,
++				      WOL_CFG_SIZE, &wol_cfg);
++		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
++					&aqc111_data->phy_cfg);
+ 	} else {
+ 		aqc111_data->phy_cfg |= AQ_LOW_POWER;
+-		aqc111_write32_cmd(dev, AQ_PHY_OPS, 0, 0,
+-				   &aqc111_data->phy_cfg);
++		aqc111_write32_cmd_nopm(dev, AQ_PHY_OPS, 0, 0,
++					&aqc111_data->phy_cfg);
+ 
+ 		/* Disable RX path */
+ 		aqc111_read16_cmd_nopm(dev, AQ_ACCESS_MAC,
 -- 
 2.51.0
 
