@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-229227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228219-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CP6DFgZvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229227-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:10 +0100
+	id WB1YFLpNwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228219-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:06 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAD72F8D9A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B47612F4821
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:27:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 404FA32A4DCC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:07 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B79EB31551C4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE28257828;
-	Mon, 23 Mar 2026 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E503AF678;
+	Mon, 23 Mar 2026 14:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PSzEASe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExZsEH8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD8D253958;
-	Mon, 23 Mar 2026 15:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A766F3AF66C;
+	Mon, 23 Mar 2026 14:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278459; cv=none; b=TN6mNGTAizm0SKXFlAiWeptNPFMp5uFyS1lBsUWkqvEwvDFl4tTPC3zhKa179dfpSNTpdiy8N+fVvWBKLfAb+dSF8VZMtP8jliXoHZD8nQaay7yrBYukRV9k2vV3sd9rw5ox/k6YOLkzGm4SNVNwzMriZwl2K9pY2kNg+aaECkE=
+	t=1774274486; cv=none; b=NA0eiOjRNyUcG+EPj/XPyeg7vf8MrfdMQxA3MtWpqkvDhqfZJ7wUNI1A8q8C3xiK6UbiIpzrimIf8xDX+StnmdNtUCXLx2Y6Geag+031rvA1S1JcoZbc+cXo3rAmbnGgCm16OiH3q/ay+NPwYr4HTHQJwB/pgBw/bl72UPVnhl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278459; c=relaxed/simple;
-	bh=QkwupSL4pOWLIsVzW44P5l9N7T5SlMKhsNrX9WsONm8=;
+	s=arc-20240116; t=1774274486; c=relaxed/simple;
+	bh=zfzV2NLrMco4BVzVst6Q1fURZrSHZsezzccm/AS7aTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0eFNIiC75OvizNf4gHX+IAy3kynh6zHjJnMICdWrGHGfQbcG+eRpVQXeefvsKovqFXZlJefTkGi3NUk1xxfOOCxXNbO/0eMu/b4JtmWF1ZvxNLDLy+R/VfwV0N5ON+kRxX0WDSzOuhdFN8OidRFD8pfDIVtxNwRwzMZGrhuGBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PSzEASe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20BBC2BC9E;
-	Mon, 23 Mar 2026 15:07:38 +0000 (UTC)
+	 MIME-Version; b=FoYqO1bnJTJoFiCZLgioPM2T5JDYI2vsOIc23/bHks39RUjdtfe/SzBGN7idDA3ZLDh80ImElaIMOwBpf+JcIT66Gn5QWgyPHivEYYOhSorXbtAfzAJUnncOoFeiVDzQ9XYfo22GYH4oL/M7cjmvyS/BMRfMSzLHGWged8+h5Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExZsEH8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED108C2BCB1;
+	Mon, 23 Mar 2026 14:01:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278459;
-	bh=QkwupSL4pOWLIsVzW44P5l9N7T5SlMKhsNrX9WsONm8=;
+	s=korg; t=1774274486;
+	bh=zfzV2NLrMco4BVzVst6Q1fURZrSHZsezzccm/AS7aTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PSzEASe9de3vtLx2SsqZF3IPi02WAVja8B+OJE3txFjGaMvzW+PHmGjF5tU7ir7N0
-	 pipUmmMUT7DfwZJijiXnqBJCCZRwWVK55ENAyatqMJ3LE3oYVlRyiQFx4kRZN9YmZh
-	 tKNzEX9HWvOdIWV4MXM/pcHCl0+xvRINCkyNTG5Q=
+	b=ExZsEH8Z+tQsZsUx9wiU+GatXAAVTOpxPTR8rFVWbL6hHJxsQACdWSSWdLgZCNFMC
+	 tSiOIqVPkdG2Ce4Xr2wHKtJAwi1lp174W8CehkjmX90zK/EULYZH3ONDymssh4O7P0
+	 HyrczjBQOu0FBTMpvmRPsebe1ZAbjrnd+/pcl0aM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 6.6 313/567] ixgbevf: fix link setup issue
-Date: Mon, 23 Mar 2026 14:43:53 +0100
-Message-ID: <20260323134541.570731393@linuxfoundation.org>
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.18 013/212] LoongArch: No need to flush icache if text copy failed
+Date: Mon, 23 Mar 2026 14:43:54 +0100
+Message-ID: <20260323134504.184215406@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +65,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229227-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228219-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 9BAD72F8D9A
+X-Rspamd-Queue-Id: B47612F4821
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
 
-commit feae40a6a178bb525a15f19288016e5778102a99 upstream.
+commit d3b8491961207ac967795c34375890407fd51a45 upstream.
 
-It may happen that VF spawned for E610 adapter has problem with setting
-link up. This happens when ixgbevf supporting mailbox API 1.6 cooperates
-with PF driver which doesn't support this version of API, and hence
-doesn't support new approach for getting PF link data.
+If copy_to_kernel_nofault() failed, no need to flush icache and just
+return immediately.
 
-In that case VF asks PF to provide link data but as PF doesn't support
-it, returns -EOPNOTSUPP what leads to early bail from link configuration
-sequence.
-
-Avoid such situation by using legacy VFLINKS approach whenever negotiated
-API version is less than 1.6.
-
-To reproduce the issue just create VF and set its link up - adapter must
-be any from the E610 family, ixgbevf must support API 1.6 or higher while
-ixgbevf must not.
-
-Fixes: 53f0eb62b4d2 ("ixgbevf: fix getting link speed data for E610 devices")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ixgbevf/vf.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/inst.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -852,7 +852,8 @@ static s32 ixgbevf_check_mac_link_vf(str
- 	if (!mac->get_link_status)
- 		goto out;
+--- a/arch/loongarch/kernel/inst.c
++++ b/arch/loongarch/kernel/inst.c
+@@ -246,13 +246,15 @@ static int text_copy_cb(void *data)
  
--	if (hw->mac.type == ixgbe_mac_e610_vf) {
-+	if (hw->mac.type == ixgbe_mac_e610_vf &&
-+	    hw->api_version >= ixgbe_mbox_api_16) {
- 		ret_val = ixgbevf_get_pf_link_state(hw, speed, link_up);
- 		if (ret_val)
- 			goto out;
+ 	if (smp_processor_id() == copy->cpu) {
+ 		ret = copy_to_kernel_nofault(copy->dst, copy->src, copy->len);
+-		if (ret)
++		if (ret) {
+ 			pr_err("%s: operation failed\n", __func__);
++			return ret;
++		}
+ 	}
+ 
+ 	flush_icache_range((unsigned long)copy->dst, (unsigned long)copy->dst + copy->len);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ int larch_insn_text_copy(void *dst, void *src, size_t len)
 
 
 
