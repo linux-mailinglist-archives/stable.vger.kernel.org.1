@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229729-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id sHylKAJIwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228043-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:42 +0100
+	id 6PkRIPFxwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229729-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:37 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 037C52F3B16
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 300072F94D0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DBAE23031DDD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:52:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D92883215033
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0313AE189;
-	Mon, 23 Mar 2026 13:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 919B03BD638;
+	Mon, 23 Mar 2026 16:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBfHFQAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPwVGNoM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F0321D00A;
-	Mon, 23 Mar 2026 13:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4448A3B9D9F;
+	Mon, 23 Mar 2026 16:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273955; cv=none; b=UFWzvI2cOi7zkNoyn4LgRyVLi9eFNbMPQ4h/FP0rDdiUBSB/LgazZptcTnLoQ8xSng6HI0lQNfYLrkaNDTrDU8Pb2KpGHvkldEQW8er4WmYWzfhn3h5pa1Gut3rBxsYn+mWW/iSgjqKGslxk748XYLcyeRioRnMUkpM5oUe3K9Q=
+	t=1774282710; cv=none; b=SyTkn8DTYCbalJsyBCSLyosz5YFahO1gw4GmD9CkxFV3iVgtHOqWCYB5oORCi2MOusMLeIvPpi7Y8fem2ia42mrBpE1HzgBgWH0AytagfLMX04gvmvylCl5uhjwE7YmvRG+TsfWBmwKIVgpVRQ5P5SedYB2AM7INCRi2WAsaLsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273955; c=relaxed/simple;
-	bh=pHBeLxE//LaKk9Cnb5KOS/WtqutLFOcPntqNBNYY/Xc=;
+	s=arc-20240116; t=1774282710; c=relaxed/simple;
+	bh=Ds2pZcwb8fv8dKnZam8kNqQcBtZqDHb0oAjfmzu59x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fy+8Ck8ngMmopA1ADRUY4qA3IZySjR5wkfH+71nqmBP9EddZqDtEVIg4mV/hDrKoq4p3vih2tO46X4hU9Yg00LY5HXBlWxOIyrRgOuc+Nwy7TAe1oxfJY+ZK223zvCwnq0fWvmg9QZ5epARfPv4vMP3B28ox+yLWpM1JfRn2tqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBfHFQAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB99C4CEF7;
-	Mon, 23 Mar 2026 13:52:34 +0000 (UTC)
+	 MIME-Version; b=bt39w3+xvGn7JssrRGqdM0dH0VBx4CZ0WSSnjcOkLk+3f67bITIr0feek8j7Yiehaeg/3pnouQgHQH4L6YLTIGDaOrjuUFMWIOfGhfm0/GSmLp9D5YMee4QOzrE5ZSeXJZNQ3fk23dDZta/AOAAG9vJTWLXpZwC9Xww5PKEQTT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPwVGNoM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79440C4CEF7;
+	Mon, 23 Mar 2026 16:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273955;
-	bh=pHBeLxE//LaKk9Cnb5KOS/WtqutLFOcPntqNBNYY/Xc=;
+	s=korg; t=1774282709;
+	bh=Ds2pZcwb8fv8dKnZam8kNqQcBtZqDHb0oAjfmzu59x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBfHFQAIHD4Vr6A+89iC5DQ5JiFcmnRzDmUk4xKSLCgX5R4TWtVNhUyS5qUebGA08
-	 0KtPPws6XJ+Ea7scLL02WN2qBQqDLk3qUJuNXRsY3Bz/7DkW58GHUhxgQ39IN3PXaQ
-	 Lb1OQ0VmDbsvi6fw6liW5ybDXJwRL6RtDmlPGHso=
+	b=LPwVGNoMSQ2kNzZ9/52cGKh9Z4iikN8Av1uwO57N/jW6AISeF5zk66ZSfGmHgfvvj
+	 aB0AvT5BtENm0tuNEFJnT7Plq+d/Z5j6RWsa9mVsRssOWaR4VgkCG+OTXVW9iu27BR
+	 Ws4nLQaCub5qCCqSii1u/p1cdGRmswGhG5u4DvT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Peng Zhang <zhangpeng.00@bytedance.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Alban Bedel <alban.bedel@lht.dlh.de>,
-	Maximilian Lueer <maximilian.lueer@lht.dlh.de>
-Subject: [PATCH 6.19 061/220] serial: 8250: always disable IRQ during THRE test
-Date: Mon, 23 Mar 2026 14:43:58 +0100
-Message-ID: <20260323134506.520571377@linuxfoundation.org>
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	John Garry <john.g.garry@oracle.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 257/481] scsi: core: Fix error handling for scsi_alloc_sdev()
+Date: Mon, 23 Mar 2026 14:43:59 +0100
+Message-ID: <20260323134531.416415375@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,86 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228043-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229729-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RSPAMD_URIBL_FAIL(0.00)[acm.org:query timed out];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	TO_DN_SOME(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RSPAMD_EMAILBL_FAIL(0.00)[junxiao.bi.oracle.com:query timed out,bvanassche.acm.org:query timed out,john.g.garry.oracle.com:query timed out];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,msgid.link:url,dlh.de:email]
-X-Rspamd-Queue-Id: 037C52F3B16
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 300072F94D0
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Zhang <zhangpeng.00@bytedance.com>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-commit 24b98e8664e157aff0814a0f49895ee8223f382f upstream.
+commit 4ce7ada40c008fa21b7e52ab9d04e8746e2e9325 upstream.
 
-commit 039d4926379b ("serial: 8250: Toggle IER bits on only after irq
-has been set up") moved IRQ setup before the THRE test, in combination
-with commit 205d300aea75 ("serial: 8250: change lock order in
-serial8250_do_startup()") the interrupt handler can run during the
-test and race with its IIR reads. This can produce wrong THRE test
-results and cause spurious registration of the
-serial8250_backup_timeout timer. Unconditionally disable the IRQ for
-the short duration of the test and re-enable it afterwards to avoid
-the race.
+After scsi_sysfs_device_initialize() was called, error paths must call
+__scsi_remove_device().
 
-Fixes: 039d4926379b ("serial: 8250: Toggle IER bits on only after irq has been set up")
-Depends-on: 205d300aea75 ("serial: 8250: change lock order in serial8250_do_startup()")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Peng Zhang <zhangpeng.00@bytedance.com>
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
-Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
-Tested-by: Maximilian Lueer <maximilian.lueer@lht.dlh.de>
-Link: https://patch.msgid.link/20260224121639.579404-1-alban.bedel@lht.dlh.de
+Fixes: 1ac22c8eae81 ("scsi: core: Fix refcount leak for tagset_refcnt")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20260304164603.51528-1-junxiao.bi@oracle.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_port.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi_scan.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -2147,8 +2147,7 @@ static void serial8250_THRE_test(struct
- 	if (up->port.flags & UPF_NO_THRE_TEST)
- 		return;
+--- a/drivers/scsi/scsi_scan.c
++++ b/drivers/scsi/scsi_scan.c
+@@ -354,12 +354,8 @@ static struct scsi_device *scsi_alloc_sd
+ 	 * default device queue depth to figure out sbitmap shift
+ 	 * since we use this queue depth most of times.
+ 	 */
+-	if (scsi_realloc_sdev_budget_map(sdev, depth)) {
+-		kref_put(&sdev->host->tagset_refcnt, scsi_mq_free_tags);
+-		put_device(&starget->dev);
+-		kfree(sdev);
+-		goto out;
+-	}
++	if (scsi_realloc_sdev_budget_map(sdev, depth))
++		goto out_device_destroy;
  
--	if (port->irqflags & IRQF_SHARED)
--		disable_irq_nosync(port->irq);
-+	disable_irq(port->irq);
+ 	scsi_change_queue_depth(sdev, depth);
  
- 	/*
- 	 * Test for UARTs that do not reassert THRE when the transmitter is idle and the interrupt
-@@ -2170,8 +2169,7 @@ static void serial8250_THRE_test(struct
- 		serial_port_out(port, UART_IER, 0);
- 	}
- 
--	if (port->irqflags & IRQF_SHARED)
--		enable_irq(port->irq);
-+	enable_irq(port->irq);
- 
- 	/*
- 	 * If the interrupt is not reasserted, or we otherwise don't trust the iir, setup a timer to
 
 
 
