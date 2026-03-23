@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-229465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229467-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id +K7dFjllwWkzSwQAu9opvQ
-	(envelope-from <stable+bounces-229465-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:07:21 +0100
+	id GIkyE+ViwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229467-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:57:25 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31BA2F7960
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:07:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7EED2F72A7
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 32F80309FD60
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F2E6C3312F77
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE2A3BE639;
-	Mon, 23 Mar 2026 15:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CF126A1CF;
+	Mon, 23 Mar 2026 15:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSKp5kw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNCJx3yF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6002C35957;
-	Mon, 23 Mar 2026 15:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD7135957;
+	Mon, 23 Mar 2026 15:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279319; cv=none; b=J2gZiRcIC9A1ChpbI+mRi6JbqP/LpIwy786be+/YR2GcL5x2FwWRFVzLZx15G0C1Ww/xo2QXTRY4gyc59TRZ0Qfv7bIdbd7yBY+TMQxMyCocmcC/YCjhxboH+/MyuVJCvADfmue5WdJ6joTfBCUi6eS6nRjuGte/CNPI62hk1EE=
+	t=1774279326; cv=none; b=JUsHise0t12aXPWtCnYBBqjQoYJUvXfHts9Ve4N++4jfv4GuRDE2bJ8/Mc/566fHIH7ihbvMm0YGJKthcOlxKaGx4lreYi1xNzMN6M9Btgw6u6sNoOQrdcLm4nQj1A3Lume4j6LYgkniJ57gx5aPIQGUOtTuqbIH+m6U3HYwBfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279319; c=relaxed/simple;
-	bh=o+D9rq9u1A+2/uLifaHRZowoHxe7DgU/TAvMAUttiFo=;
+	s=arc-20240116; t=1774279326; c=relaxed/simple;
+	bh=p2kOCfh1DPQzbUABEUlvTNWn6fgSOncVPYDtTyuDpQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mu/7uyCq5Vo88zTjb6zv+nSk8S0dLhGjcW1F2Vk+xKtwZ+bk7TeY40un8VLXkt45gqokDqGTEqOCwbdAEcbblzal7aS26CTVac1TPPQip81Cm4qtV8cAq1fa+JKLi32CspmzUmEZs0UWkLH6aU94n7pJOX8mT6MCVTwXJ6SOqXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSKp5kw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F3DC2BC9E;
-	Mon, 23 Mar 2026 15:21:58 +0000 (UTC)
+	 MIME-Version; b=kYqOKX6nDL4Sav8Ihjub7NDcp5xeWkuKMiydWPNInAl43y+RnhArlDEQf6tdoree/DEpCNqBcjCUfIcQOhJWBJs2LOYOaYXLHR4pUCyDP0vkkLG8axxY1Z1wmSQZEKu8GbUdmw6ZIpVeA8ddJsczFwpp4Cxsw40ZzxSVuDXjy2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNCJx3yF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DB2C4CEF7;
+	Mon, 23 Mar 2026 15:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279319;
-	bh=o+D9rq9u1A+2/uLifaHRZowoHxe7DgU/TAvMAUttiFo=;
+	s=korg; t=1774279326;
+	bh=p2kOCfh1DPQzbUABEUlvTNWn6fgSOncVPYDtTyuDpQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSKp5kw1PX88XEp57yEe2ceoMlhoy93Iucb/oZOrbfQ5JLkL0uIXZg+8k0tgAau28
-	 i2LclE+smIuXlQrpvMWcaJAX0YhnDbuy3DXz6CyKDC7R1v0gu3JXvrgQRu1EIzDT+Y
-	 R3nuxjOWr2FotEjfZYjeQnixT/dXCiOM6HSGl59c=
+	b=xNCJx3yFiP1cUG+MWtOXoizo20H3CsV80NhLx7hDcx3mhoU7LZZWOUzPN75DvGQBO
+	 8Q3fP8Zz7xTiv0015FKksqdBAqIW04zVVvXxoCfPN3HQ0i14uNxb/YsGmqF+8fHos3
+	 Y77VhkpKs+bPxNlE41xtHIseMZYH3qsgdXVjX3/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
+	Muhammad Hammad Ijaz <mhijaz@amazon.com>,
+	Gunnar Kudrjavets <gunnarku@amazon.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 545/567] nfnetlink_osf: validate individual option lengths in fingerprints
-Date: Mon, 23 Mar 2026 14:47:45 +0100
-Message-ID: <20260323134547.489748158@linuxfoundation.org>
+Subject: [PATCH 6.6 546/567] net: mvpp2: guard flow control update with global_tx_fc in buffer switching
+Date: Mon, 23 Mar 2026 14:47:46 +0100
+Message-ID: <20260323134547.514918957@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -69,31 +69,30 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,asu.edu,gmail.com,strlen.de,kernel.org];
-	TAGGED_FROM(0.00)[bounces-229465-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229467-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[strlen.de:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: D31BA2F7960
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns]
+X-Rspamd-Queue-Id: A7EED2F72A7
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,81 +100,83 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Muhammad Hammad Ijaz <mhijaz@amazon.com>
 
-[ Upstream commit dbdfaae9609629a9569362e3b8f33d0a20fd783c ]
+[ Upstream commit 8a63baadf08453f66eb582fdb6dd234f72024723 ]
 
-nfnl_osf_add_callback() validates opt_num bounds and string
-NUL-termination but does not check individual option length fields.
-A zero-length option causes nf_osf_match_one() to enter the option
-matching loop even when foptsize sums to zero, which matches packets
-with no TCP options where ctx->optp is NULL:
+mvpp2_bm_switch_buffers() unconditionally calls
+mvpp2_bm_pool_update_priv_fc() when switching between per-cpu and
+shared buffer pool modes. This function programs CM3 flow control
+registers via mvpp2_cm3_read()/mvpp2_cm3_write(), which dereference
+priv->cm3_base without any NULL check.
 
- Oops: general protection fault
- KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
- RIP: 0010:nf_osf_match_one (net/netfilter/nfnetlink_osf.c:98)
- Call Trace:
-  nf_osf_match (net/netfilter/nfnetlink_osf.c:227)
-  xt_osf_match_packet (net/netfilter/xt_osf.c:32)
-  ipt_do_table (net/ipv4/netfilter/ip_tables.c:293)
-  nf_hook_slow (net/netfilter/core.c:623)
-  ip_local_deliver (net/ipv4/ip_input.c:262)
-  ip_rcv (net/ipv4/ip_input.c:573)
+When the CM3 SRAM resource is not present in the device tree (the
+third reg entry added by commit 60523583b07c ("dts: marvell: add CM3
+SRAM memory to cp11x ethernet device tree")), priv->cm3_base remains
+NULL and priv->global_tx_fc is false. Any operation that triggers
+mvpp2_bm_switch_buffers(), for example an MTU change that crosses
+the jumbo frame threshold, will crash:
 
-Additionally, an MSS option (kind=2) with length < 4 causes
-out-of-bounds reads when nf_osf_match_one() unconditionally accesses
-optp[2] and optp[3] for MSS value extraction.  While RFC 9293
-section 3.2 specifies that the MSS option is always exactly 4
-bytes (Kind=2, Length=4), the check uses "< 4" rather than
-"!= 4" because lengths greater than 4 do not cause memory
-safety issues -- the buffer is guaranteed to be at least
-foptsize bytes by the ctx->optsize == foptsize check.
+  Unable to handle kernel NULL pointer dereference at
+  virtual address 0000000000000000
+  Mem abort info:
+    ESR = 0x0000000096000006
+    EC = 0x25: DABT (current EL), IL = 32 bits
+  pc : readl+0x0/0x18
+  lr : mvpp2_cm3_read.isra.0+0x14/0x20
+  Call trace:
+   readl+0x0/0x18
+   mvpp2_bm_pool_update_fc+0x40/0x12c
+   mvpp2_bm_pool_update_priv_fc+0x94/0xd8
+   mvpp2_bm_switch_buffers.isra.0+0x80/0x1c0
+   mvpp2_change_mtu+0x140/0x380
+   __dev_set_mtu+0x1c/0x38
+   dev_set_mtu_ext+0x78/0x118
+   dev_set_mtu+0x48/0xa8
+   dev_ifsioc+0x21c/0x43c
+   dev_ioctl+0x2d8/0x42c
+   sock_ioctl+0x314/0x378
 
-Reject fingerprints where any option has zero length, or where an MSS
-option has length less than 4, at add time rather than trusting these
-values in the packet matching hot path.
+Every other flow control call site in the driver already guards
+hardware access with either priv->global_tx_fc or port->tx_fc.
+mvpp2_bm_switch_buffers() is the only place that omits this check.
 
-Fixes: 11eeef41d5f6 ("netfilter: passive OS fingerprint xtables match")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Add the missing priv->global_tx_fc guard to both the disable and
+re-enable calls in mvpp2_bm_switch_buffers(), consistent with the
+rest of the driver.
+
+Fixes: 3a616b92a9d1 ("net: mvpp2: Add TX flow control support for jumbo frames")
+Signed-off-by: Muhammad Hammad Ijaz <mhijaz@amazon.com>
+Reviewed-by: Gunnar Kudrjavets <gunnarku@amazon.com>
+Link: https://patch.msgid.link/20260316193157.65748-1-mhijaz@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink_osf.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nfnetlink_osf.c b/net/netfilter/nfnetlink_osf.c
-index 50723ba082890..da9d5d6de98f4 100644
---- a/net/netfilter/nfnetlink_osf.c
-+++ b/net/netfilter/nfnetlink_osf.c
-@@ -302,7 +302,9 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
- {
- 	struct nf_osf_user_finger *f;
- 	struct nf_osf_finger *kf = NULL, *sf;
-+	unsigned int tot_opt_len = 0;
- 	int err = 0;
-+	int i;
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+index aabc39f7690f8..410c9dea4fa2e 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2_main.c
+@@ -5012,7 +5012,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
+ 	if (priv->percpu_pools)
+ 		numbufs = port->nrxqs * 2;
  
- 	if (!capable(CAP_NET_ADMIN))
- 		return -EPERM;
-@@ -318,6 +320,17 @@ static int nfnl_osf_add_callback(struct sk_buff *skb,
- 	if (f->opt_num > ARRAY_SIZE(f->opt))
- 		return -EINVAL;
+-	if (change_percpu)
++	if (change_percpu && priv->global_tx_fc)
+ 		mvpp2_bm_pool_update_priv_fc(priv, false);
  
-+	for (i = 0; i < f->opt_num; i++) {
-+		if (!f->opt[i].length || f->opt[i].length > MAX_IPOPTLEN)
-+			return -EINVAL;
-+		if (f->opt[i].kind == OSFOPT_MSS && f->opt[i].length < 4)
-+			return -EINVAL;
-+
-+		tot_opt_len += f->opt[i].length;
-+		if (tot_opt_len > MAX_IPOPTLEN)
-+			return -EINVAL;
-+	}
-+
- 	if (!memchr(f->genre, 0, MAXGENRELEN) ||
- 	    !memchr(f->subtype, 0, MAXGENRELEN) ||
- 	    !memchr(f->version, 0, MAXGENRELEN))
+ 	for (i = 0; i < numbufs; i++)
+@@ -5037,7 +5037,7 @@ static int mvpp2_bm_switch_buffers(struct mvpp2 *priv, bool percpu)
+ 			mvpp2_open(port->dev);
+ 	}
+ 
+-	if (change_percpu)
++	if (change_percpu && priv->global_tx_fc)
+ 		mvpp2_bm_pool_update_priv_fc(priv, true);
+ 
+ 	return 0;
 -- 
 2.51.0
 
