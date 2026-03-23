@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-229176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228011-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QEbYD3dZwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229176-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:11 +0100
+	id IBwYLjNHwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228011-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC3942F6156
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:17:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4AAD2F392E
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 182EC305D0E3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3DF483023DB0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9103B19DA;
-	Mon, 23 Mar 2026 15:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2717B3AC0C9;
+	Mon, 23 Mar 2026 13:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hIKQ9+7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0TDb+ef6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1031A26B2DA;
-	Mon, 23 Mar 2026 15:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1BB3A6B88;
+	Mon, 23 Mar 2026 13:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278301; cv=none; b=p1i0ukzquQw0UCPfC7vNx1rGPT132WCz11M+gtFQdORCYS8oM3bsvdON/rhSpAo6FGXW/grXpce1c1hA9XyuTEtR0IDpc32hmufsbqCoOXmy4cy5W8HChJ/Q4myT+qjmMgimLLZX0e9eh/ZI7uziCEJv6kOVsm/8YzibYT0Ymsw=
+	t=1774273855; cv=none; b=kj4zydkzxewpF+ubCuXJIohH/Cyy/6n4Bp7nGW+WZ+EjB/u6WIi5Qe9VN/LtjWYWtyiiAtkCxAO5TctEnBNQtQ5KKfEXXAXXvhZUqHsAHdpXcRkSfztsS8sk3EXlMPU/dxHoExIh4a1M3pYosV+uk0Em7a0CFea7SKzHybJwWiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278301; c=relaxed/simple;
-	bh=ynwjM3cJ+1z5x4ci2DHABlQqA038fU6Jpg70wLnkAtg=;
+	s=arc-20240116; t=1774273855; c=relaxed/simple;
+	bh=OWyle4wAovgdu9w5AJ2XjgiUAULMBPgyDhMzpEgT9nY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGyPJxTSKSbZgsn8TiMptybjuNj5xQyECwyLdDgBl7TYbTMp1YLuUgsY5gaOBVjvmxwz99gsa6mhMTqJqXNGosmgB4iBgUf36ErgCvllbyjXtKoOPl8l4/15IieN/BT+I22H6WUEQLBExYq2GBLM7iTXUkjhkK+fUIX98pv4hGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hIKQ9+7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54F1C4CEF7;
-	Mon, 23 Mar 2026 15:04:59 +0000 (UTC)
+	 MIME-Version; b=NdAK9T2EPsdP+nNezi9CEyiZ5I/Y6+ydThSB3DAQaBYmDmLIVoXbwybBFljPOnxulR5wZT3mBIqMQAsW/9LrX4+QyFCKGRt7L6gPiXpSrzvCBIshCYTUV0feyylQjKrZAiJlXgcxo8k0Um5fBxydWiZ8S2lFKONnAyZw69I4Blo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0TDb+ef6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3235FC4CEF7;
+	Mon, 23 Mar 2026 13:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278300;
-	bh=ynwjM3cJ+1z5x4ci2DHABlQqA038fU6Jpg70wLnkAtg=;
+	s=korg; t=1774273855;
+	bh=OWyle4wAovgdu9w5AJ2XjgiUAULMBPgyDhMzpEgT9nY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hIKQ9+7GLWkF4me543T1lCx3UTUfKcq/BHmAIR33c1EIkHy4G1oBhyakAmnfPfris
-	 htdGw0EJ6tNufT7wBW30rFhSBAUdt2uA7wOpAY5VUFj4w4upwuE2dwzxPA9g6Q8ut2
-	 zhvIFGThVR08/UVmlcjROhyYFOteqoWmJ9gP7cug=
+	b=0TDb+ef6WW5OryMXiWz2nbj0Ow65rgtBsa8JpQD2uSFvSdyK4wVREDFVPWZGVAg9Z
+	 LhPRlsMOVQSluq1EF8qpTpmhTlZVl5VLwWhopp9MUxLwOXYkQY+ISN+6V0ixxEp4Po
+	 LLQ78IfLKcUrPZM0pkmSH0W0VnneDcliB7RvT/Sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com,
-	syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 263/567] ALSA: usb-audio: Check endpoint numbers at parsing Scarlett2 mixer interfaces
+	NeilBrown <neilb@ownmail.net>,
+	stable@kernel.org,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.19 006/220] sunrpc: fix cache_request leak in cache_release
 Date: Mon, 23 Mar 2026 14:43:03 +0100
-Message-ID: <20260323134540.338808357@linuxfoundation.org>
+Message-ID: <20260323134504.783952444@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +65,123 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[bounces-229176-lists,stable=lfdr.de];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,ownmail.net,kernel.org,oracle.com];
+	TAGGED_FROM(0.00)[bounces-228011-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,8f29539ef9a1c8334f42,ae893a8901067fde2741];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: CC3942F6156
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,oracle.com:email,ownmail.net:email]
+X-Rspamd-Queue-Id: B4AAD2F392E
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit df1d8abf36ca3681c21a6809eaa9a1e01ef897a6 upstream.
+commit 17ad31b3a43b72aec3a3d83605891e1397d0d065 upstream.
 
-The Scarlett2 mixer quirk in USB-audio driver may hit a NULL
-dereference when a malformed USB descriptor is passed, since it
-assumes the presence of an endpoint in the parsed interface in
-scarlett2_find_fc_interface(), as reported by fuzzer.
+When a reader's file descriptor is closed while in the middle of reading
+a cache_request (rp->offset != 0), cache_release() decrements the
+request's readers count but never checks whether it should free the
+request.
 
-For avoiding the NULL dereference, just add the sanity check of
-bNumEndpoints and skip the invalid interface.
+In cache_read(), when readers drops to 0 and CACHE_PENDING is clear, the
+cache_request is removed from the queue and freed along with its buffer
+and cache_head reference. cache_release() lacks this cleanup.
 
-Reported-by: syzbot+8f29539ef9a1c8334f42@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/69acbbe1.050a0220.310d8.0001.GAE@google.com
-Reported-by: syzbot+ae893a8901067fde2741@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/69acf72a.050a0220.310d8.0004.GAE@google.com
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20260309104632.141895-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The only other path that frees requests with readers == 0 is
+cache_dequeue(), but it runs only when CACHE_PENDING transitions from
+set to clear. If that transition already happened while readers was
+still non-zero, cache_dequeue() will have skipped the request, and no
+subsequent call will clean it up.
+
+Add the same cleanup logic from cache_read() to cache_release(): after
+decrementing readers, check if it reached 0 with CACHE_PENDING clear,
+and if so, dequeue and free the cache_request.
+
+Reported-by: NeilBrown <neilb@ownmail.net>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett2.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/sunrpc/cache.c |   26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
---- a/sound/usb/mixer_scarlett2.c
-+++ b/sound/usb/mixer_scarlett2.c
-@@ -3898,6 +3898,8 @@ static int scarlett2_find_fc_interface(s
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -1061,14 +1061,25 @@ static int cache_release(struct inode *i
+ 	struct cache_reader *rp = filp->private_data;
  
- 		if (desc->bInterfaceClass != 255)
- 			continue;
-+		if (desc->bNumEndpoints < 1)
-+			continue;
+ 	if (rp) {
++		struct cache_request *rq = NULL;
++
+ 		spin_lock(&queue_lock);
+ 		if (rp->offset) {
+ 			struct cache_queue *cq;
+-			for (cq= &rp->q; &cq->list != &cd->queue;
+-			     cq = list_entry(cq->list.next, struct cache_queue, list))
++			for (cq = &rp->q; &cq->list != &cd->queue;
++			     cq = list_entry(cq->list.next,
++					     struct cache_queue, list))
+ 				if (!cq->reader) {
+-					container_of(cq, struct cache_request, q)
+-						->readers--;
++					struct cache_request *cr =
++						container_of(cq,
++						struct cache_request, q);
++					cr->readers--;
++					if (cr->readers == 0 &&
++					    !test_bit(CACHE_PENDING,
++						      &cr->item->flags)) {
++						list_del(&cr->q.list);
++						rq = cr;
++					}
+ 					break;
+ 				}
+ 			rp->offset = 0;
+@@ -1076,9 +1087,14 @@ static int cache_release(struct inode *i
+ 		list_del(&rp->q.list);
+ 		spin_unlock(&queue_lock);
  
- 		epd = get_endpoint(intf->altsetting, 0);
- 		private->bInterfaceNumber = desc->bInterfaceNumber;
++		if (rq) {
++			cache_put(rq->item, cd);
++			kfree(rq->buf);
++			kfree(rq);
++		}
++
+ 		filp->private_data = NULL;
+ 		kfree(rp);
+-
+ 	}
+ 	if (filp->f_mode & FMODE_WRITE) {
+ 		atomic_dec(&cd->writers);
 
 
 
