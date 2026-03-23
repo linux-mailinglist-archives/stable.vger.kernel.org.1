@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228213-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id wMQ4GuxpwWnVSwQAu9opvQ
-	(envelope-from <stable+bounces-228862-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:24 +0100
+	id +BB5MpJKwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228213-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:38 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E46DB2F81F1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BD82F3FDE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 60E9F323BC6E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:48:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EAEA73038FE6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7601F26F2AF;
-	Mon, 23 Mar 2026 14:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2738B3B531A;
+	Mon, 23 Mar 2026 14:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUgKNgRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySGOz9Yx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B93F26D4F9;
-	Mon, 23 Mar 2026 14:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB9B3B52F5;
+	Mon, 23 Mar 2026 14:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277335; cv=none; b=JvLCvh3VUcUBRyKBYuv1DRp85DAAWt66APEAboEHo43F6NuqRORKlwoVqlKiAjt1PtiD38p3iT7bDF/93IVMJWDxA3lB9Jekad+fOUCe64NrQARfCosYLnucv8nDsBOhL1oCRrHXeItFxXrNLhbd0BSODIxM+K98teXj34eKmTs=
+	t=1774274467; cv=none; b=hA+8Wz+xZ2c2Sz++4S4JKVNXf2oMbdRRAg8JjhkwNeyIpf93cTHgu5xO+f1VTSInSShwMRxjsc2WCrNgGP1DGIro9hleL/fnYpxsq+uEdoSbVOKv6qCxVdY3JFSzJd5Rrft7FGVsPxiL0HPradKu7E2EFhgfY8V48U5RDjnfn6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277335; c=relaxed/simple;
-	bh=Hbu9EyEINJIE68gHugAIJ7viTeFGJX0xbrycsZ5aWn4=;
+	s=arc-20240116; t=1774274467; c=relaxed/simple;
+	bh=x4v58RKB61KnAMXMGA7yMxYGjLN8ymo2GTFp+OA5nFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Enwf8YOSyBldPHXVbIZaC2LVNe0yM8+7+cqnPUNqQN+VwbBGnKuGm3Xg3PpzSzITDaQ4pob23ElSTklKPyO56+Em6XPZATGn9tu7tB08mhNyN1P1smw485XPSODG2oDn1jKuEhQUqXm5llRiZak/xnRPNPY/Hh0g+5ZTQGcPDcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUgKNgRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4A2C4CEF7;
-	Mon, 23 Mar 2026 14:48:54 +0000 (UTC)
+	 MIME-Version; b=AFEG08OSRp2wsUiSl2i3bRT4jAug2aFMPxoK5VE6nxeUdA93HxdQ5W4J8vqXy147vgPGh+dY+XwrpaICA8UHm72k7Ueu+WekOh5kx/9dqiOh/G7W4d4gYNRGTW14frAQtAlYd2UIsgEQhEXhNplsIXfzqPKJz1aL3J7cY8unC0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySGOz9Yx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AB10C2BC9E;
+	Mon, 23 Mar 2026 14:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277335;
-	bh=Hbu9EyEINJIE68gHugAIJ7viTeFGJX0xbrycsZ5aWn4=;
+	s=korg; t=1774274467;
+	bh=x4v58RKB61KnAMXMGA7yMxYGjLN8ymo2GTFp+OA5nFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUgKNgRkkT2VZXhas7uWOsEB7+CmShNAAJMjq/R9DCUL0choVymUTd7cxV5P15Xk5
-	 9CtofXSeX9wFUD3SYrhIGSoeceG1ovb4AHcLBT5MfSwAOt3BJAoCWOZdakWe/fT+0d
-	 ndtTRQkBiA9XMLehyZIYlvgMx8WNZJq420k3MXp4=
+	b=ySGOz9YxXD37txhW32of1kJEGoDHSvSZcFtHcD3OJxYZk6BXUKhqVamXw+6J6/He7
+	 skc6FXdd6XfniFbB3s7PsZzZvZi8H5WUzZykEG/IH3Hx1TEbdR3QVRFHqNC/OAj3PW
+	 zZssAyWU7305+jLV/cx1JyIFjUaL7MbsLXE4Ud2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Chen <justin.chen@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Naresh Solanki <naresh.solanki@9elements.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 401/460] net: bcmgenet: increase WoL poll timeout
+Subject: [PATCH 6.19 220/220] hwmon: (max6639) Fix pulses-per-revolution implementation
 Date: Mon, 23 Mar 2026 14:46:37 +0100
-Message-ID: <20260323134536.417265493@linuxfoundation.org>
+Message-ID: <20260323134511.448259955@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,67 +68,95 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228862-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228213-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,broadcom.com:email]
-X-Rspamd-Queue-Id: E46DB2F81F1
+	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,9elements.com:email,roeck-us.net:email]
+X-Rspamd-Queue-Id: 61BD82F3FDE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 6cfc3bc02b977f2fba5f7268e6504d1931a774f7 ]
+[ Upstream commit e7bae9a7a5e1251ab414291f4e9304d702bb9221 ]
 
-Some systems require more than 5ms to get into WoL mode. Increase the
-timeout value to 50ms.
+The valid range for the pulses-per-revolution devicetree property is
+1..4. The current code checks for a range of 1..5. Fix it.
 
-Fixes: c51de7f3976b ("net: bcmgenet: add Wake-on-LAN support code")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20260312191852.3904571-1-justin.chen@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Declare the variable used to retrieve pulses per revolution from
+devicetree as u32 (unsigned) to match the of_property_read_u32() API.
+
+The current code uses a postfix decrement when writing the pulses per
+resolution into the chip. This has no effect since the value is evaluated
+before it is decremented. Fix it by decrementing before evaluating the
+value.
+
+Fixes: 7506ebcd662b ("hwmon: (max6639) : Configure based on DT property")
+Cc: Naresh Solanki <naresh.solanki@9elements.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/max6639.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-index 3b082114f2e53..2033fb9d893e0 100644
---- a/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-+++ b/drivers/net/ethernet/broadcom/genet/bcmgenet_wol.c
-@@ -123,7 +123,7 @@ static int bcmgenet_poll_wol_status(struct bcmgenet_priv *priv)
- 	while (!(bcmgenet_rbuf_readl(priv, RBUF_STATUS)
- 		& RBUF_STATUS_WOL)) {
- 		retries++;
--		if (retries > 5) {
-+		if (retries > 50) {
- 			netdev_crit(dev, "polling wol mode timeout\n");
- 			return -ETIMEDOUT;
+diff --git a/drivers/hwmon/max6639.c b/drivers/hwmon/max6639.c
+index 48fde4f1a1561..b6b32286d967a 100644
+--- a/drivers/hwmon/max6639.c
++++ b/drivers/hwmon/max6639.c
+@@ -232,7 +232,7 @@ static int max6639_read_fan(struct device *dev, u32 attr, int channel,
+ static int max6639_set_ppr(struct max6639_data *data, int channel, u8 ppr)
+ {
+ 	/* Decrement the PPR value and shift left by 6 to match the register format */
+-	return regmap_write(data->regmap, MAX6639_REG_FAN_PPR(channel), ppr-- << 6);
++	return regmap_write(data->regmap, MAX6639_REG_FAN_PPR(channel), --ppr << 6);
+ }
+ 
+ static int max6639_write_fan(struct device *dev, u32 attr, int channel,
+@@ -524,8 +524,8 @@ static int max6639_probe_child_from_dt(struct i2c_client *client,
+ 
+ {
+ 	struct device *dev = &client->dev;
+-	u32 i;
+-	int err, val;
++	u32 i, val;
++	int err;
+ 
+ 	err = of_property_read_u32(child, "reg", &i);
+ 	if (err) {
+@@ -540,8 +540,8 @@ static int max6639_probe_child_from_dt(struct i2c_client *client,
+ 
+ 	err = of_property_read_u32(child, "pulses-per-revolution", &val);
+ 	if (!err) {
+-		if (val < 1 || val > 5) {
+-			dev_err(dev, "invalid pulses-per-revolution %d of %pOFn\n", val, child);
++		if (val < 1 || val > 4) {
++			dev_err(dev, "invalid pulses-per-revolution %u of %pOFn\n", val, child);
+ 			return -EINVAL;
  		}
+ 		data->ppr[i] = val;
 -- 
 2.51.0
 
