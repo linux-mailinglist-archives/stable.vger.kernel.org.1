@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-229357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228826-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id iArwNjVwwWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229357-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:13 +0100
+	id wOVUCoxpwWmoSwQAu9opvQ
+	(envelope-from <stable+bounces-228826-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:25:48 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E2702F90D1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:54:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7790E2F80FE
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 95989338B93B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:18:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 25BD2314EA29
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D85274B5F;
-	Mon, 23 Mar 2026 15:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5C1241695;
+	Mon, 23 Mar 2026 14:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zo+JSiCZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzmfjNYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E5E3B2FEB;
-	Mon, 23 Mar 2026 15:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B1B1A5B84;
+	Mon, 23 Mar 2026 14:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278860; cv=none; b=svWYMmXK4dg6negj7ZUMbxxqs6gwBkZ3o408tsHH0ueiWZjHc8ob9qQBWapjntpxyMzDuyxemjz/WZlHtszfGVHn/lk5a5zPdvegBAY+TtQIDiieXnrlFbI8s7QRqL2EljcYv3Hv2YK+I0XpBOwY6gE2KW46OFEMn67Felgrr1w=
+	t=1774277240; cv=none; b=WzwPrig7KGsn6cwETyi86oJqlBNz+U6U9UMx0XaiQ63bK/yICThc5b2D8KfcGqdsXPG8bOzRWV1GcAij3yzNA3PjNbA7LDAHymOtLNotggFp8k9o5Ibxl7r8yWt76diWhzYaMUuCewbG2PDtxXvxL1x6Csg4IwOyLSp20OG/hzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278860; c=relaxed/simple;
-	bh=geYQScBO11h6ejrvHJFGvdBWcfQtFe3cmE1ukYwmgkQ=;
+	s=arc-20240116; t=1774277240; c=relaxed/simple;
+	bh=KBXUMrBJkFMGJTXNsm3FuRt/2qMgCTdOgqgngnPEdBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KJ7TZXX5Dq6hykRhfincwJxvr1oheQIPEp1OPyPuW0UNfVRyKnlPH/lx60a8o0G/GI0+0oKZmsWQd+rikYgKOdvD6c3y5RxM+ENxvXj+yxY9o1LJfAT+eqpzFoCCbqvosPhJX2ouovipj07Ldmw5mi30U958Ka0D4gcD01Noddc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zo+JSiCZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBA5C2BC9E;
-	Mon, 23 Mar 2026 15:14:19 +0000 (UTC)
+	 MIME-Version; b=hUIzTQHDUUo3974FQcdBfjpwr6cWk6YjHZZzFVs5MaLLj1gocNJowQjlcEn04LAcXvRawmS14dHF2ULhqr+3P7hrV3Ml/NL2iKoFKy7E7mJDfndvKAEE+X6pLkGqV57wzTPWubru8Ird57il6Y7zCZqMVb4yqF9UkYQ+6CJJ3V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzmfjNYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F81C4CEF7;
+	Mon, 23 Mar 2026 14:47:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278859;
-	bh=geYQScBO11h6ejrvHJFGvdBWcfQtFe3cmE1ukYwmgkQ=;
+	s=korg; t=1774277240;
+	bh=KBXUMrBJkFMGJTXNsm3FuRt/2qMgCTdOgqgngnPEdBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zo+JSiCZp1fvC8S1dGphr+7xWF7qJRd5CBK1aoi+7bj3kgRMEPDYS5qQjb9wccngD
-	 o8iXWPsmmr0LNwOwD92NWHq9elxfnys2jiNZ75oy4BJPHq5K9U3ihsbG/ko2lIKoA1
-	 5mC7Wkhta4aNJ+Zr6IcBojR6tynR+7JfIRpYnXSo=
+	b=WzmfjNYdGJWDrJQd9QbhaoOkZJwh6lQScM12U4XGBjm8ti4tJ/cWDInccm/4cqDhD
+	 9JRpskARBI+tAEaIieTihhN30CDeY1VK6a3hFf2YhY3QSWpOf21rS651rgTZEexdGK
+	 ylUT9xLL5p2El5H1yU9aoR4FoBr4Liz3XbzkML/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Li hongliang <1468888505@139.com>
-Subject: [PATCH 6.6 442/567] f2fs: zone: fix to avoid inconsistence in between SIT and SSA
+	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
+	Boris Burkov <boris@bur.io>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 366/460] btrfs: log new dentries when logging parent dir of a conflicting inode
 Date: Mon, 23 Mar 2026 14:46:02 +0100
-Message-ID: <20260323134544.889206837@linuxfoundation.org>
+Message-ID: <20260323134535.558042447@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,108 +66,136 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229357-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,google.com,kernel.org,139.com];
+	TAGGED_FROM(0.00)[bounces-228826-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bur.io,suse.com,kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 3E2702F90D1
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,suse.com:email,bur.io:email]
+X-Rspamd-Queue-Id: 7790E2F80FE
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 773704c1ef96a8b70d0d186ab725f50548de82c4 ]
+[ Upstream commit 9573a365ff9ff45da9222d3fe63695ce562beb24 ]
 
-w/ below testcase, it will cause inconsistence in between SIT and SSA.
+If we log the parent directory of a conflicting inode, we are not logging
+the new dentries of the directory, so when we finish we have the parent
+directory's inode marked as logged but we did not log its new dentries.
+As a consequence if the parent directory is explicitly fsynced later and
+it does not have any new changes since we logged it, the fsync is a no-op
+and after a power failure the new dentries are missing.
 
-create_null_blk 512 2 1024 1024
-mkfs.f2fs -m /dev/nullb0
-mount /dev/nullb0 /mnt/f2fs/
-touch /mnt/f2fs/file
-f2fs_io pinfile set /mnt/f2fs/file
-fallocate -l 4GiB /mnt/f2fs/file
+Example scenario:
 
-F2FS-fs (nullb0): Inconsistent segment (0) type [1, 0] in SSA and SIT
-CPU: 5 UID: 0 PID: 2398 Comm: fallocate Tainted: G           O       6.13.0-rc1 #84
-Tainted: [O]=OOT_MODULE
-Hardware name: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
-Call Trace:
- <TASK>
- dump_stack_lvl+0xb3/0xd0
- dump_stack+0x14/0x20
- f2fs_handle_critical_error+0x18c/0x220 [f2fs]
- f2fs_stop_checkpoint+0x38/0x50 [f2fs]
- do_garbage_collect+0x674/0x6e0 [f2fs]
- f2fs_gc_range+0x12b/0x230 [f2fs]
- f2fs_allocate_pinning_section+0x5c/0x150 [f2fs]
- f2fs_expand_inode_data+0x1cc/0x3c0 [f2fs]
- f2fs_fallocate+0x3c3/0x410 [f2fs]
- vfs_fallocate+0x15f/0x4b0
- __x64_sys_fallocate+0x4a/0x80
- x64_sys_call+0x15e8/0x1b80
- do_syscall_64+0x68/0x130
- entry_SYSCALL_64_after_hwframe+0x67/0x6f
-RIP: 0033:0x7f9dba5197ca
-F2FS-fs (nullb0): Stopped filesystem due to reason: 4
+  $ mkdir foo
 
-The reason is f2fs_gc_range() may try to migrate block in curseg, however,
-its SSA block is not uptodate due to the last summary block data is still
-in cache of curseg.
+  $ sync
 
-In this patch, we add a condition in f2fs_gc_range() to check whether
-section is opened or not, and skip block migration for opened section.
+  $rmdir foo
 
-Fixes: 9703d69d9d15 ("f2fs: support file pinning for zoned devices")
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Cc: Daeho Jeong <daehojeong@google.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  $ mkdir dir1
+  $ mkdir dir2
+
+  # A file with the same name and parent as the directory we just deleted
+  # and was persisted in a past transaction. So the deleted directory's
+  # inode is a conflicting inode of this new file's inode.
+  $ touch foo
+
+  $ ln foo dir2/link
+
+  # The fsync on dir2 will log the parent directory (".") because the
+  # conflicting inode (deleted directory) does not exists anymore, but it
+  # it does not log its new dentries (dir1).
+  $ xfs_io -c "fsync" dir2
+
+  # This fsync on the parent directory is no-op, since the previous fsync
+  # logged it (but without logging its new dentries).
+  $ xfs_io -c "fsync" .
+
+  <power failure>
+
+  # After log replay dir1 is missing.
+
+Fix this by ensuring we log new dir dentries whenever we log the parent
+directory of a no longer existing conflicting inode.
+
+A test case for fstests will follow soon.
+
+Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/182055fa-e9ce-4089-9f5f-4b8a23e8dd91@gmail.com/
+Fixes: a3baaf0d786e ("Btrfs: fix fsync after succession of renames and unlink/rmdir")
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/gc.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/tree-log.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -2019,6 +2019,9 @@ int f2fs_gc_range(struct f2fs_sb_info *s
- 		if (!get_valid_blocks(sbi, segno, true))
- 			continue;
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index fa1199fb6b3dd..28dcf8a8997b5 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -5886,6 +5886,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 				  struct btrfs_root *root,
+ 				  struct btrfs_log_ctx *ctx)
+ {
++	const bool orig_log_new_dentries = ctx->log_new_dentries;
+ 	int ret = 0;
  
-+		if (IS_CURSEC(sbi, GET_SEC_FROM_SEG(sbi, segno)))
-+			continue;
+ 	/*
+@@ -5947,7 +5948,11 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 			 * dir index key range logged for the directory. So we
+ 			 * must make sure the deletion is recorded.
+ 			 */
++			ctx->log_new_dentries = false;
+ 			ret = btrfs_log_inode(trans, inode, LOG_INODE_ALL, ctx);
++			if (!ret && ctx->log_new_dentries)
++				ret = log_new_dir_dentries(trans, inode, ctx);
 +
- 		do_garbage_collect(sbi, segno, &gc_list, FG_GC,
- 						dry_run_sections == 0);
- 		put_gc_inode(&gc_list);
+ 			btrfs_add_delayed_iput(inode);
+ 			if (ret)
+ 				break;
+@@ -5982,6 +5987,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
+ 			break;
+ 	}
+ 
++	ctx->log_new_dentries = orig_log_new_dentries;
+ 	ctx->logging_conflict_inodes = false;
+ 	if (ret)
+ 		free_conflicting_inodes(ctx);
+-- 
+2.51.0
+
 
 
 
