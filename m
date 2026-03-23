@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-228028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229713-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id eNm8IxtHwWnpRwQAu9opvQ
-	(envelope-from <stable+bounces-228028-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:51 +0100
+	id OGdEIdRxwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229713-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:08 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0592F38BF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 452422F94B1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:01:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66093306C470
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:51:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5C3B4310BE50
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46A73ACA68;
-	Mon, 23 Mar 2026 13:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C525B3BE62A;
+	Mon, 23 Mar 2026 16:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlNFIcYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xIHOHkHG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D983A961B;
-	Mon, 23 Mar 2026 13:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393B63BD63C;
+	Mon, 23 Mar 2026 16:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774273909; cv=none; b=rW8VZ6IshYQEBiW4Es3XQwqf4kgI7d7IDDOIPnGigtkNKJ4rgGVel3KL8DnhrgHBsN90YPlEQkkWKTTHg92aR9N4WjVpLGL2HW8c2pHZ81ZuQh+QDxi/F5n7aZRbgmwQHQjtfrZ++ucPBAe7AZqJ8ITOrA3tsSAUSWYkdYkLhxI=
+	t=1774282666; cv=none; b=OnVbW5ImdxE68IeN4h6RMSZqyt7aMyiMwAqW1+nDEb79VPHwzRYxKfz4PzvHDbDOx/VBE8M39v8JsJH9FTjPdkQ70jkpsezoYkpjBmCSa/MaAtiLnV4lS/OXs+0CerGJ39Zxo26DRFRD/L5NjXUBVDb+Os8EjiSVunkfkPuuKMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774273909; c=relaxed/simple;
-	bh=Jk63OrMps+XosBadNcDv6b8pTEqtrADP/qACJI4jvRY=;
+	s=arc-20240116; t=1774282666; c=relaxed/simple;
+	bh=Fh2+xz6rZ6CaPrxC6sYCXvurRRFMZSYpT5hL2OORbMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rp7L0Jv4AW9Rjcm9F6nxqKit1Ng8nW7GifbmX5nKH9Sl3F4qVPXa5LK4YoYJl8YJCDSyzPjh1wKwSEaj7lobflNlh59CTTSw2FHCiBfy7kVe+c3iwGjV9sg1ZtSPlDAsj1tVJevK0kfLmjcfB7qYuyX8+azwoE+ntA7pKpBJzkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlNFIcYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BCCC4CEF7;
-	Mon, 23 Mar 2026 13:51:48 +0000 (UTC)
+	 MIME-Version; b=hp0ourfG1GEnatLdQgmSm4TeRSEubkUMqzf4AECuTeFk0JAgBSK7weZJEaoPfw14YegHStTinAMhBZTWa+8t6mVLdEGk75cd0XIC4mpqBJgGFDWGh4LyDa2wdzcGXHDQBUwo9z4fh56kQETo6Om0xnU8Oipx+7W+7d49e9Dh6ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xIHOHkHG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C801C2BCB0;
+	Mon, 23 Mar 2026 16:17:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774273909;
-	bh=Jk63OrMps+XosBadNcDv6b8pTEqtrADP/qACJI4jvRY=;
+	s=korg; t=1774282665;
+	bh=Fh2+xz6rZ6CaPrxC6sYCXvurRRFMZSYpT5hL2OORbMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlNFIcYpF8Axy/VSIB+cA17w7Uc7mM6KyAElH2E3tyOJ6mjRIxrDPo1gmBbI0a5HT
-	 09XB4LMC3GrFxWplrWF9vvskdYVhR2vC2fPvrmCrslOa/B2YgAlwbvSNw8M7+BdGmG
-	 BVBmprcWR1TZUVqUKxuYcbBxlJw/hlePtZgQjCjQ=
+	b=xIHOHkHGbbSIO8uMYmwiTNYO1h0C1MRgHnvmYfrSlb7HX9+/O0hBMTDhSDKuaxYMp
+	 DMdcwNscZydBidm0QuxC7RTUm+p0Zm+5EnhOFpnzBdWghLIAaWFAwgyU4X7FCmZ8TN
+	 ivpZUBhb6V/7y2EgYzpzFp7tG3PE3bRBijvLn/T8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Jander <david@protonic.nl>,
-	Johan Hovold <johan@kernel.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.19 047/220] spi: fix use-after-free on controller registration failure
+	Lyude Paul <lyude@redhat.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.1 242/481] nouveau/dpcd: return EBUSY for aux xfer if the device is asleep
 Date: Mon, 23 Mar 2026 14:43:44 +0100
-Message-ID: <20260323134506.074275295@linuxfoundation.org>
+Message-ID: <20260323134531.041681537@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +66,79 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-229713-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228028-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[airlied.redhat.com:query timed out,dakr.kernel.org:query timed out];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_FIVE(0.00)[6];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid]
-X-Rspamd-Queue-Id: EF0592F38BF
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 452422F94B1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Dave Airlie <airlied@redhat.com>
 
-commit 8634e05b08ead636e926022f4a98416e13440df9 upstream.
+commit 8f3c6f08ababad2e3bdd239728cf66a9949446b4 upstream.
 
-Make sure to deregister from driver core also in the unlikely event that
-per-cpu statistics allocation fails during controller registration to
-avoid use-after-free (of driver resources) and unclocked register
-accesses.
+If we have runtime suspended, and userspace wants to use /dev/drm_dp_*
+then just tell it the device is busy instead of crashing in the GSP
+code.
 
-Fixes: 6598b91b5ac3 ("spi: spi.c: Convert statistics to per-cpu u64_stats_t")
-Cc: stable@vger.kernel.org	# 6.0
-Cc: David Jander <david@protonic.nl>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Link: https://patch.msgid.link/20260312151817.32100-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+WARNING: CPU: 2 PID: 565741 at drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c:164 r535_gsp_msgq_wait+0x9a/0xb0 [nouveau]
+CPU: 2 UID: 0 PID: 565741 Comm: fwupd Not tainted 6.18.10-200.fc43.x86_64 #1 PREEMPT(lazy)
+Hardware name: LENOVO 20QTS0PQ00/20QTS0PQ00, BIOS N2OET65W (1.52 ) 08/05/2024
+RIP: 0010:r535_gsp_msgq_wait+0x9a/0xb0 [nouveau]
+
+This is a simple fix to get backported. We should probably engineer a
+proper power domain solution to wake up devices and keep them awake
+while fw updates are happening.
+
+Cc: stable@vger.kernel.org
+Fixes: 8894f4919bc4 ("drm/nouveau: register a drm_dp_aux channel for each dp connector")
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Link: https://patch.msgid.link/20260224031750.791621-1-airlied@gmail.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_connector.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3344,10 +3344,8 @@ int spi_register_controller(struct spi_c
- 		dev_info(dev, "controller is unqueued, this is deprecated\n");
- 	} else if (ctlr->transfer_one || ctlr->transfer_one_message) {
- 		status = spi_controller_initialize_queue(ctlr);
--		if (status) {
--			device_del(&ctlr->dev);
--			goto free_bus_id;
--		}
-+		if (status)
-+			goto del_ctrl;
- 	}
- 	/* Add statistics */
- 	ctlr->pcpu_statistics = spi_alloc_pcpu_stats(dev);
-@@ -3370,6 +3368,8 @@ int spi_register_controller(struct spi_c
+--- a/drivers/gpu/drm/nouveau/nouveau_connector.c
++++ b/drivers/gpu/drm/nouveau/nouveau_connector.c
+@@ -1210,6 +1210,9 @@ nouveau_connector_aux_xfer(struct drm_dp
+ 	u8 size = msg->size;
+ 	int ret;
  
- destroy_queue:
- 	spi_destroy_queue(ctlr);
-+del_ctrl:
-+	device_del(&ctlr->dev);
- free_bus_id:
- 	mutex_lock(&board_lock);
- 	idr_remove(&spi_controller_idr, ctlr->bus_num);
++	if (pm_runtime_suspended(nv_connector->base.dev->dev))
++		return -EBUSY;
++
+ 	nv_encoder = find_encoder(&nv_connector->base, DCB_OUTPUT_DP);
+ 	if (!nv_encoder || !(aux = nv_encoder->aux))
+ 		return -ENODEV;
 
 
 
