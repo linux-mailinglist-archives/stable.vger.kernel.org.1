@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229705-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGKAL1pbwWlKSgQAu9opvQ
-	(envelope-from <stable+bounces-229164-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:14 +0100
+	id +GPmIcNxwWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229705-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:51 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245362F63FA
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:25:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D542F9491
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:00:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9842233E750A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BFA273103751
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED903AD539;
-	Mon, 23 Mar 2026 15:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ACE33B9D90;
+	Mon, 23 Mar 2026 16:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nigxbni2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omhzLnRy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E82284B36;
-	Mon, 23 Mar 2026 15:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35513C1406;
+	Mon, 23 Mar 2026 16:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278263; cv=none; b=PqR/+83qyMOdAGPpxMGFh43nWCEWt+cEwQqE+lt52Iu5XhE1bLV546wxJOps7CM+bkL5Dy8kfqzwjp4qXwFMXcsu+uF4z7n2S11FryiGXuOjs30uNZuQV2YJZZkZcuknQQS5S0kcEG/chpjzJHtcB8Wyb/8Tc9IdlpINDKORr70=
+	t=1774282644; cv=none; b=nQ7C7vBGZYKfTSihgZ7vsfaOyCN5fzIc1C0eEFqVlko2NxslkPBEuVk1grlyZuiHDkcEd9mpNDtvQB45ETpAIQaEEYBONuT+iwLjUy1GJKlk913bLYkReddbpaqUjaUL+EXNYBA94H9HKQvt2OSN5SI0t9hWUHJOFHi9QOX0qP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278263; c=relaxed/simple;
-	bh=tfqQkNTlDyvl4rfmue+oW+EsJqZAlyw6S6QFYYCj8ZE=;
+	s=arc-20240116; t=1774282644; c=relaxed/simple;
+	bh=8wEYV7JCyx0NTWCAx0AWLMatTG+rB1oXssybI5bvXc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l/sF8NmBiFfU7CcqY//UncVgG48fgjmZ22dDfu7FutMNgLMXGjTp8Q22tYcJiGUvlYxnT2PXYf53tLSYoquAgUFjVptPQyMnI0nAQgK/PKg24EVoZkkNu/gfM4ZO1Yd71TexE0HDltNL7ksD27ciYUNErAkSnxQKif+FoswKK9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nigxbni2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8D3C4CEF7;
-	Mon, 23 Mar 2026 15:04:22 +0000 (UTC)
+	 MIME-Version; b=igUbikIDrtejfS3/wjgYyU6ZNg8kU0IWI3caeTSxjVkibcRFcFWUkNME0z3aXT+wfCTWBLHXuOJYWD02S5tDflMOorhDKP9wh8lyIEEKFl4dAXBpybXOKHDNj35vyLE3eSxeHx5WGiMmmtTNUtIFO7+EEutMbZsQKw2yMtf5Wck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omhzLnRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0BC6C4CEF7;
+	Mon, 23 Mar 2026 16:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278262;
-	bh=tfqQkNTlDyvl4rfmue+oW+EsJqZAlyw6S6QFYYCj8ZE=;
+	s=korg; t=1774282644;
+	bh=8wEYV7JCyx0NTWCAx0AWLMatTG+rB1oXssybI5bvXc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nigxbni2MXAezq839Pvfcr03IzcgPYHSM5r5tGKD4uGjMW42JlKm6UgItNlF7i4Po
-	 FTAUTGWA2U2TJFq4xC6m0pO3VzVptMn9tr6bLYknfnmPwm1uwchkuIwrjRmPNOBG+H
-	 Jd1/7tefI0i3F8ErfWpR7/vocx4QmOGl9Zxi7gJQ=
+	b=omhzLnRyL/mB9pmVTdoL+MKVUiwIj9WuMvIQsZFVl2BiZ9+sz6P6s9shtJ2MjdC9o
+	 rnuHB9quV5te8R2xCqNGig6MTbMOiNPFMc6sfKmQ498LtUaM9tyyDtYOzPSGIeNybo
+	 EKxHUIt39kSvHYCJ3BWLxMVqGe7NRChHgRG0mgIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Casey Connolly <casey.connolly@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 252/567] ACPI: OSL: fix __iomem type on return from acpi_os_map_generic_address()
+Subject: [PATCH 6.1 190/481] ASoC: detect empty DMI strings
 Date: Mon, 23 Mar 2026 14:42:52 +0100
-Message-ID: <20260323134540.070678792@linuxfoundation.org>
+Message-ID: <20260323134529.827825674@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,72 +69,75 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229164-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229705-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RSPAMD_EMAILBL_FAIL(0.00)[broonie.kernel.org:query timed out,sashal.kernel.org:query timed out];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 245362F63FA
+X-Rspamd-Queue-Id: 43D542F9491
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Dooks <ben.dooks@codethink.co.uk>
+From: Casey Connolly <casey.connolly@linaro.org>
 
-[ Upstream commit 393815f57651101f1590632092986d1d5a3a41bd ]
+[ Upstream commit a9683730e8b1d632674f81844ed03ddfbe4821c0 ]
 
-The pointer returned from acpi_os_map_generic_address() is
-tagged with __iomem, so make the rv it is returned to also
-of void __iomem * type.
+Some bootloaders like recent versions of U-Boot may install some DMI
+properties with empty values rather than not populate them. This manages
+to make its way through the validator and cleanup resulting in a rogue
+hyphen being appended to the card longname.
 
-Fixes the following sparse warning:
-
-drivers/acpi/osl.c:1686:20: warning: incorrect type in assignment (different address spaces)
-drivers/acpi/osl.c:1686:20:    expected void *rv
-drivers/acpi/osl.c:1686:20:    got void [noderef] __iomem *
-
-Fixes: 6915564dc5a8 ("ACPI: OSL: Change the type of acpi_os_map_generic_address() return value")
-Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
-[ rjw: Subject tweak, added Fixes tag ]
-Link: https://patch.msgid.link/20260311105835.463030-1-ben.dooks@codethink.co.uk
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 4e01e5dbba96 ("ASoC: improve the DMI long card code in asoc-core")
+Signed-off-by: Casey Connolly <casey.connolly@linaro.org>
+Link: https://patch.msgid.link/20260306174707.283071-2-casey.connolly@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/osl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/soc-core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/osl.c b/drivers/acpi/osl.c
-index f725813d0cce6..28527d246fc36 100644
---- a/drivers/acpi/osl.c
-+++ b/drivers/acpi/osl.c
-@@ -1656,7 +1656,7 @@ acpi_status __init acpi_os_initialize(void)
- 		 * Use acpi_os_map_generic_address to pre-map the reset
- 		 * register if it's in system memory.
- 		 */
--		void *rv;
-+		void __iomem *rv;
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index c673453e8a747..dfd58d9db7c1f 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -1628,12 +1628,15 @@ static void cleanup_dmi_name(char *name)
  
- 		rv = acpi_os_map_generic_address(&acpi_gbl_FADT.reset_register);
- 		pr_debug("%s: Reset register mapping %s\n", __func__,
+ /*
+  * Check if a DMI field is valid, i.e. not containing any string
+- * in the black list.
++ * in the black list and not the empty string.
+  */
+ static int is_dmi_valid(const char *field)
+ {
+ 	int i = 0;
+ 
++	if (!field[0])
++		return 0;
++
+ 	while (dmi_blacklist[i]) {
+ 		if (strstr(field, dmi_blacklist[i]))
+ 			return 0;
 -- 
 2.51.0
 
