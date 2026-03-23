@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-228079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228261-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id AKylOglIwWlGSAQAu9opvQ
-	(envelope-from <stable+bounces-228079-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:49 +0100
+	id sGFJBCFOwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228261-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:49 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40AD52F3B3E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:02:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53F6C2F4923
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 791A930ADD73
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:54:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A21D630BFE93
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640683AD539;
-	Mon, 23 Mar 2026 13:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7993B2FE6;
+	Mon, 23 Mar 2026 14:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VtpHjLSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDrl3/zC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AEC3AD537;
-	Mon, 23 Mar 2026 13:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 204043AEF4E;
+	Mon, 23 Mar 2026 14:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274063; cv=none; b=YQu+9p/KudkBkDG2TmviyLLEx5P4DUABvMqFwF+B5u40p10e1ZFwGLAcDc5J66tSLj6nI94ZDH+1uUGSi+aDHJS69FTsrW9bpfREfkoKKGeZRsa9Pctntjsjpfor57IJssqtfyz1HtJnQAqEnfecjtjN3A7s3pmfcj5IeIC6Mjw=
+	t=1774274615; cv=none; b=jkLh06z0kD2Xlv6jJ3Jsrd8ZTuxjgmV9jCIpDIi0dYQCDNsSfHd+I512odNjnndyBHLR3PRhu/AXO76UAMo7qCGNESEgkp9QOvg1tU6KjwIWlK7xoqZMhhQfUtY12M10/uY6EIY7+L/2VAnAwSWju9m4oZx+JVszOpUs7lgn2bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274063; c=relaxed/simple;
-	bh=u9dGwY+wErL+1I4/MrKFN8uXeUAEfblKzhrdIeiU7Ws=;
+	s=arc-20240116; t=1774274615; c=relaxed/simple;
+	bh=KyrSSWQSwv1WDq79ghrko66jAACPShmKJLiehdOPXrM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TrFKTVUA1G/77ITD9wCIieaBSQ9tQVN0eb3MnyFG55Tu17jgmfhwTpN/NdUf32ig3ll5AiIplm8QIlPKlnMGRYqYmhT2TfCbvxv4ngGYQwo3GA81+62qHhD3wswhqElA5te3fWdRmAs/pU/Rsp6F9+2FOABBzKqDmk5ZvyzOsFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VtpHjLSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA45C4CEF7;
-	Mon, 23 Mar 2026 13:54:22 +0000 (UTC)
+	 MIME-Version; b=q3nV2FtPgSbfWAPvOjn/KaVu/RBzA7vi6qf4ysb9mLQkMSkIuFw+nCWrr3l5K0E7wixrWoSpMg3j827/YzWSKUupqbOHA2JZMo/OFYzGTmOI7P8GrUGGliZrljSx1Ly8rZPQQ6VnBCO5Ve7JFGhjl4gKM+t7/3aijRXhOrg5ta0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDrl3/zC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A042C4CEF7;
+	Mon, 23 Mar 2026 14:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274063;
-	bh=u9dGwY+wErL+1I4/MrKFN8uXeUAEfblKzhrdIeiU7Ws=;
+	s=korg; t=1774274614;
+	bh=KyrSSWQSwv1WDq79ghrko66jAACPShmKJLiehdOPXrM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VtpHjLSHJDCYqGCFP7Yf6SXOYLvHgKy6nfSfiW6JmIfm+6rQr3sDdxulTu6vNKebF
-	 wpz1OcLeg3i9A3y17MXp4W1kdQ69cHTVQZHSJ6MtnFrWjou6fJ5DaWilAIYORq9YHM
-	 b3sDbewHxPUGpR8rML8cv8avTlyDNiD2FtFbvp/A=
+	b=TDrl3/zCwnDhz8LppFN8x6trRhcwwGRHAjisQcyEzclzIEAMuQ7qMmkVoyLH9LCVa
+	 FoNepkasjNovlPoldqQqG+I5T45C6czECUjqzGWgs1EjZhDqddvhYefEjjaRp23+ab
+	 QAooYgvQwzopSp5XW+cYK1rR84GfMo7X5YZB2f2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 097/220] soc: microchip: mpfs: Fix memory leak in mpfs_sys_controller_probe()
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Matthew Schwartz <matthew.schwartz@linux.dev>,
+	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.18 053/212] mmc: sdhci-pci-gli: fix GL9750 DMA write corruption
 Date: Mon, 23 Mar 2026 14:44:34 +0100
-Message-ID: <20260323134507.665856996@linuxfoundation.org>
+Message-ID: <20260323134505.445290263@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,102 +69,91 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228261-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228079-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,microchip.com:email,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,seu.edu.cn:email]
-X-Rspamd-Queue-Id: 40AD52F3B3E
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 53F6C2F4923
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Matthew Schwartz <matthew.schwartz@linux.dev>
 
-[ Upstream commit 5a741f8cc6fe62542f955cd8d24933a1b6589cbd ]
+commit 2b76e0cc7803e5ab561c875edaba7f6bbd87fbb0 upstream.
 
-In mpfs_sys_controller_probe(), if of_get_mtd_device_by_node() fails,
-the function returns immediately without freeing the allocated memory
-for sys_controller, leading to a memory leak.
+The GL9750 SD host controller has intermittent data corruption during
+DMA write operations. The GM_BURST register's R_OSRC_Lmt field
+(bits 17:16), which limits outstanding DMA read requests from system
+memory, is not being cleared during initialization. The Windows driver
+sets R_OSRC_Lmt to zero, limiting requests to the smallest unit.
 
-Fix this by jumping to the out_free label to ensure the memory is
-properly freed.
+Clear R_OSRC_Lmt to match the Windows driver behavior. This eliminates
+write corruption verified with f3write/f3read tests while maintaining
+DMA performance.
 
-Also, consolidate the error handling for the mbox_request_channel()
-failure case to use the same label.
-
-Fixes: 742aa6c563d2 ("soc: microchip: mpfs: enable access to the system controller's flash")
-Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e51df6ce668a ("mmc: host: sdhci-pci: Add Genesys Logic GL975x support")
+Closes: https://lore.kernel.org/linux-mmc/33d12807-5c72-41ce-8679-57aa11831fad@linux.dev/
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
+Reviewed-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/microchip/mpfs-sys-controller.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/mmc/host/sdhci-pci-gli.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/soc/microchip/mpfs-sys-controller.c b/drivers/soc/microchip/mpfs-sys-controller.c
-index 30bc45d17d343..81636cfecd37e 100644
---- a/drivers/soc/microchip/mpfs-sys-controller.c
-+++ b/drivers/soc/microchip/mpfs-sys-controller.c
-@@ -142,8 +142,10 @@ static int mpfs_sys_controller_probe(struct platform_device *pdev)
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -68,6 +68,9 @@
+ #define   GLI_9750_MISC_TX1_DLY_VALUE    0x5
+ #define   SDHCI_GLI_9750_MISC_SSC_OFF    BIT(26)
  
- 	sys_controller->flash = of_get_mtd_device_by_node(np);
- 	of_node_put(np);
--	if (IS_ERR(sys_controller->flash))
--		return dev_err_probe(dev, PTR_ERR(sys_controller->flash), "Failed to get flash\n");
-+	if (IS_ERR(sys_controller->flash)) {
-+		ret = dev_err_probe(dev, PTR_ERR(sys_controller->flash), "Failed to get flash\n");
-+		goto out_free;
-+	}
- 
- no_flash:
- 	sys_controller->client.dev = dev;
-@@ -155,8 +157,7 @@ static int mpfs_sys_controller_probe(struct platform_device *pdev)
- 	if (IS_ERR(sys_controller->chan)) {
- 		ret = dev_err_probe(dev, PTR_ERR(sys_controller->chan),
- 				    "Failed to get mbox channel\n");
--		kfree(sys_controller);
--		return ret;
-+		goto out_free;
- 	}
- 
- 	init_completion(&sys_controller->c);
-@@ -174,6 +175,10 @@ static int mpfs_sys_controller_probe(struct platform_device *pdev)
- 	dev_info(&pdev->dev, "Registered MPFS system controller\n");
- 
- 	return 0;
++#define SDHCI_GLI_9750_GM_BURST_SIZE		  0x510
++#define   SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT  GENMASK(17, 16)
 +
-+out_free:
-+	kfree(sys_controller);
-+	return ret;
- }
+ #define SDHCI_GLI_9750_TUNING_CONTROL	          0x540
+ #define   SDHCI_GLI_9750_TUNING_CONTROL_EN          BIT(4)
+ #define   GLI_9750_TUNING_CONTROL_EN_ON             0x1
+@@ -345,10 +348,16 @@ static void gli_set_9750(struct sdhci_ho
+ 	u32 misc_value;
+ 	u32 parameter_value;
+ 	u32 control_value;
++	u32 burst_value;
+ 	u16 ctrl2;
  
- static void mpfs_sys_controller_remove(struct platform_device *pdev)
--- 
-2.51.0
-
+ 	gl9750_wt_on(host);
+ 
++	/* clear R_OSRC_Lmt to avoid DMA write corruption */
++	burst_value = sdhci_readl(host, SDHCI_GLI_9750_GM_BURST_SIZE);
++	burst_value &= ~SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT;
++	sdhci_writel(host, burst_value, SDHCI_GLI_9750_GM_BURST_SIZE);
++
+ 	driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
+ 	pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
+ 	sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
 
 
 
