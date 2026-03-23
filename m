@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-229259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228729-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id SMYoMkhvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229259-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:16 +0100
+	id kMndCVNUwWkYSQQAu9opvQ
+	(envelope-from <stable+bounces-228729-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:15 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 303D32F8E16
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C5E2F56E5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9DE07334DF08
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 24A573036567
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:43:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECAE3B2FF5;
-	Mon, 23 Mar 2026 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9AD3AF648;
+	Mon, 23 Mar 2026 14:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cquHWbHo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LC7i6z6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A0C388377;
-	Mon, 23 Mar 2026 15:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1453B2FC1;
+	Mon, 23 Mar 2026 14:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278559; cv=none; b=BgJv9lsOX2Z8REgi1XB1l/FZDLLe5H6GdM2YwukP4t6LLCkbroF19j2Q9zihgx9/zsEr6NMLGogVkuzYCLjTi7iD2HD0jjsfI/hTM3fxS5JcrbRW3QZVcjTi2hM+lm2LvvhVolO9ubR3SN5CA5nN8rlz8ZDHiy05DpUdjmwEgyI=
+	t=1774276964; cv=none; b=tLBIkslwvT5t420S/aDiC4uo9xBdTPvk7bjvtVU8nUJGFi0R3x8Vau37gfz2V9scNdzyoX1VyHOBot4F1PjwtWhIU85KQ8fP6ZLdio+kJznXBVP3sf2kXEnxtJ+nbhXUe+14GvWdDs/rsOnpo9rPmFk07KV9FabfwW2/gy6i+hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278559; c=relaxed/simple;
-	bh=ZgzUWQeKa9xepPtm2/tkGzTDYGQTe08RtbCv7iHJEoI=;
+	s=arc-20240116; t=1774276964; c=relaxed/simple;
+	bh=TYIH2kLnNQSX3SQbEkLI6vgfzXFt2/K3/l2CDl24j5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jjc0zRcbxw4uSxA8cufZnbkOACgZDlhETOEFQTrdDtWqNeeI2IQR6b2/XE7msINKKkag0SaWT+g5werE8Dr3fvbZMeE/lAP+yoy5CO/5gPE8yXMfHF/G3dKlVvzmV0ibHERaOiho1OTyFGSDKQNEUc/c2TLlalU0DoWKOf8X6Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cquHWbHo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD2AC2BC9E;
-	Mon, 23 Mar 2026 15:09:18 +0000 (UTC)
+	 MIME-Version; b=iq/EC0XpHAGAW7xAdf88bJTMub+mrIHErLOrEVjeFSpRCs1jSW3okOWgFX/MUfdFveVLsP577AH4CMSGt1g1f6DHdrj7Te13TdKZQV/AfDLcXvWLukHp9NEeQORW6sFKpd8chsZC4Fbb9+TNz1FreXqRUdIq+6YTNb+aepj/XNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LC7i6z6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382DCC4CEF7;
+	Mon, 23 Mar 2026 14:42:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278559;
-	bh=ZgzUWQeKa9xepPtm2/tkGzTDYGQTe08RtbCv7iHJEoI=;
+	s=korg; t=1774276964;
+	bh=TYIH2kLnNQSX3SQbEkLI6vgfzXFt2/K3/l2CDl24j5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cquHWbHoF5awcDpORj243Z1O7uErnQb+aorxAc8BjHQ6RZeVSWTdz1FDtjHJzenkQ
-	 4u3QmL/CKfka0R0vr7Y8KSYKkkpjl4YNZhK7bHYt74IH/S4FlroNBKMrlU6RDdaI/c
-	 PMVMwgTjAjsnyxb+6nXwwnnjQevyrll1S9wjTzpw=
+	b=LC7i6z6fYG24FtWnhwWF4N1v53hIqKbHtnFKwOZqIWb/a3L+uRD+E04P2dQx81eKB
+	 z6DdSPspXviQB/b8ZpPOabz9FcnF8SfrpVJ/ptCYWa4hufkO8PJ7wdHpcOCctyEzSf
+	 DWzb0GSz54mKY738dzliM8SsCT85EsdNE/p7iB2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 346/567] lib/bootconfig: fix snprintf truncation check in xbc_node_compose_key_after()
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 270/460] cifs: open files should not hold ref on superblock
 Date: Mon, 23 Mar 2026 14:44:26 +0100
-Message-ID: <20260323134542.397932907@linuxfoundation.org>
+Message-ID: <20260323134533.121499571@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +69,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229259-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228729-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,49 +90,223 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 303D32F8E16
+X-Rspamd-Queue-Id: 63C5E2F56E5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 1120a36bb1e9b9e22de75ecb4ef0b998f73a97f1 upstream.
+[ Upstream commit 340cea84f691c5206561bb2e0147158fe02070be ]
 
-snprintf() returns the number of characters that would have been
-written excluding the NUL terminator.  Output is truncated when the
-return value is >= the buffer size, not just > the buffer size.
+Today whenever we deal with a file, in addition to holding
+a reference on the dentry, we also get a reference on the
+superblock. This happens in two cases:
+1. when a new cinode is allocated
+2. when an oplock break is being processed
 
-When ret == size, the current code takes the non-truncated path,
-advancing buf by ret and reducing size to 0.  This is wrong because
-the output was actually truncated (the last character was replaced by
-NUL).  Fix by using >= so the truncation path is taken correctly.
+The reasoning for holding the superblock ref was to make sure
+that when umount happens, if there are users of inodes and
+dentries, it does not try to clean them up and wait for the
+last ref to superblock to be dropped by last of such users.
 
-Link: https://lore.kernel.org/all/20260312191143.28719-4-objecting@objecting.org/
+But the side effect of doing that is that umount silently drops
+a ref on the superblock and we could have deferred closes and
+lease breaks still holding these refs.
 
-Fixes: 76db5a27a827 ("bootconfig: Add Extra Boot Config support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Ideally, we should ensure that all of these users of inodes and
+dentries are cleaned up at the time of umount, which is what this
+code is doing.
+
+This code change allows these code paths to use a ref on the
+dentry (and hence the inode). That way, umount is
+ensured to clean up SMB client resources when it's the last
+ref on the superblock (For ex: when same objects are shared).
+
+The code change also moves the call to close all the files in
+deferred close list to the umount code path. It also waits for
+oplock_break workers to be flushed before calling
+kill_anon_super (which eventually frees up those objects).
+
+Fixes: 24261fc23db9 ("cifs: delay super block destruction until all cifsFileInfo objects are gone")
+Fixes: 705c79101ccf ("smb: client: fix use-after-free in cifs_oplock_break")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+[ replaced kmalloc_obj() with kmalloc(sizeof(...)) ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/bootconfig.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/cifsfs.c    |    7 +++++--
+ fs/smb/client/cifsproto.h |    1 +
+ fs/smb/client/file.c      |   11 -----------
+ fs/smb/client/misc.c      |   42 ++++++++++++++++++++++++++++++++++++++++++
+ fs/smb/client/trace.h     |    2 ++
+ 5 files changed, 50 insertions(+), 13 deletions(-)
 
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -318,7 +318,7 @@ int __init xbc_node_compose_key_after(st
- 			       depth ? "." : "");
- 		if (ret < 0)
- 			return ret;
--		if (ret > size) {
-+		if (ret >= size) {
- 			size = 0;
- 		} else {
- 			size -= ret;
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -291,10 +291,14 @@ static void cifs_kill_sb(struct super_bl
+ 
+ 	/*
+ 	 * We need to release all dentries for the cached directories
+-	 * before we kill the sb.
++	 * and close all deferred file handles before we kill the sb.
+ 	 */
+ 	if (cifs_sb->root) {
+ 		close_all_cached_dirs(cifs_sb);
++		cifs_close_all_deferred_files_sb(cifs_sb);
++
++		/* Wait for all pending oplock breaks to complete */
++		flush_workqueue(cifsoplockd_wq);
+ 
+ 		/* finally release root dentry */
+ 		dput(cifs_sb->root);
+@@ -799,7 +803,6 @@ static void cifs_umount_begin(struct sup
+ 	spin_unlock(&tcon->tc_lock);
+ 	spin_unlock(&cifs_tcp_ses_lock);
+ 
+-	cifs_close_all_deferred_files(tcon);
+ 	/* cancel_brl_requests(tcon); */ /* BB mark all brl mids as exiting */
+ 	/* cancel_notify_requests(tcon); */
+ 	if (tcon->ses && tcon->ses->server) {
+--- a/fs/smb/client/cifsproto.h
++++ b/fs/smb/client/cifsproto.h
+@@ -298,6 +298,7 @@ extern void cifs_close_deferred_file(str
+ 
+ extern void cifs_close_all_deferred_files(struct cifs_tcon *cifs_tcon);
+ 
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb);
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *cifs_tcon,
+ 					   struct dentry *dentry);
+ 
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -690,8 +690,6 @@ struct cifsFileInfo *cifs_new_fileinfo(s
+ 	mutex_init(&cfile->fh_mutex);
+ 	spin_lock_init(&cfile->file_info_lock);
+ 
+-	cifs_sb_active(inode->i_sb);
+-
+ 	/*
+ 	 * If the server returned a read oplock and we have mandatory brlocks,
+ 	 * set oplock level to None.
+@@ -746,7 +744,6 @@ static void cifsFileInfo_put_final(struc
+ 	struct inode *inode = d_inode(cifs_file->dentry);
+ 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
+ 	struct cifsLockInfo *li, *tmp;
+-	struct super_block *sb = inode->i_sb;
+ 
+ 	/*
+ 	 * Delete any outstanding lock records. We'll lose them when the file
+@@ -764,7 +761,6 @@ static void cifsFileInfo_put_final(struc
+ 
+ 	cifs_put_tlink(cifs_file->tlink);
+ 	dput(cifs_file->dentry);
+-	cifs_sb_deactive(sb);
+ 	kfree(cifs_file->symlink_target);
+ 	kfree(cifs_file);
+ }
+@@ -3075,12 +3071,6 @@ void cifs_oplock_break(struct work_struc
+ 	__u64 persistent_fid, volatile_fid;
+ 	__u16 net_fid;
+ 
+-	/*
+-	 * Hold a reference to the superblock to prevent it and its inodes from
+-	 * being freed while we are accessing cinode. Otherwise, _cifsFileInfo_put()
+-	 * may release the last reference to the sb and trigger inode eviction.
+-	 */
+-	cifs_sb_active(sb);
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+ 
+@@ -3153,7 +3143,6 @@ oplock_break_ack:
+ 	cifs_put_tlink(tlink);
+ out:
+ 	cifs_done_oplock_break(cinode);
+-	cifs_sb_deactive(sb);
+ }
+ 
+ static int cifs_swap_activate(struct swap_info_struct *sis,
+--- a/fs/smb/client/misc.c
++++ b/fs/smb/client/misc.c
+@@ -27,6 +27,11 @@
+ #include "fs_context.h"
+ #include "cached_dir.h"
+ 
++struct tcon_list {
++	struct list_head entry;
++	struct cifs_tcon *tcon;
++};
++
+ /* The xid serves as a useful identifier for each incoming vfs request,
+    in a similar way to the mid which is useful to track each sent smb,
+    and CurrentXid can also provide a running counter (although it
+@@ -829,6 +834,43 @@ cifs_close_all_deferred_files(struct cif
+ 		kfree(tmp_list);
+ 	}
+ }
++
++void cifs_close_all_deferred_files_sb(struct cifs_sb_info *cifs_sb)
++{
++	struct rb_root *root = &cifs_sb->tlink_tree;
++	struct rb_node *node;
++	struct cifs_tcon *tcon;
++	struct tcon_link *tlink;
++	struct tcon_list *tmp_list, *q;
++	LIST_HEAD(tcon_head);
++
++	spin_lock(&cifs_sb->tlink_tree_lock);
++	for (node = rb_first(root); node; node = rb_next(node)) {
++		tlink = rb_entry(node, struct tcon_link, tl_rbnode);
++		tcon = tlink_tcon(tlink);
++		if (IS_ERR(tcon))
++			continue;
++		tmp_list = kmalloc(sizeof(struct tcon_list), GFP_ATOMIC);
++		if (tmp_list == NULL)
++			break;
++		tmp_list->tcon = tcon;
++		/* Take a reference on tcon to prevent it from being freed */
++		spin_lock(&tcon->tc_lock);
++		++tcon->tc_count;
++		trace_smb3_tcon_ref(tcon->debug_id, tcon->tc_count,
++				    netfs_trace_tcon_ref_get_close_defer_files);
++		spin_unlock(&tcon->tc_lock);
++		list_add_tail(&tmp_list->entry, &tcon_head);
++	}
++	spin_unlock(&cifs_sb->tlink_tree_lock);
++
++	list_for_each_entry_safe(tmp_list, q, &tcon_head, entry) {
++		cifs_close_all_deferred_files(tmp_list->tcon);
++		list_del(&tmp_list->entry);
++		cifs_put_tcon(tmp_list->tcon, netfs_trace_tcon_ref_put_close_defer_files);
++		kfree(tmp_list);
++	}
++}
+ 
+ void cifs_close_deferred_file_under_dentry(struct cifs_tcon *tcon,
+ 					   struct dentry *dentry)
+--- a/fs/smb/client/trace.h
++++ b/fs/smb/client/trace.h
+@@ -47,6 +47,7 @@
+ 	EM(netfs_trace_tcon_ref_get_cached_laundromat,	"GET Ch-Lau") \
+ 	EM(netfs_trace_tcon_ref_get_cached_lease_break,	"GET Ch-Lea") \
+ 	EM(netfs_trace_tcon_ref_get_cancelled_close,	"GET Cn-Cls") \
++	EM(netfs_trace_tcon_ref_get_close_defer_files,	"GET Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_get_dfs_refer,		"GET DfsRef") \
+ 	EM(netfs_trace_tcon_ref_get_find,		"GET Find  ") \
+ 	EM(netfs_trace_tcon_ref_get_find_sess_tcon,	"GET FndSes") \
+@@ -58,6 +59,7 @@
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close,	"PUT Cn-Cls") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_close_fid, "PUT Cn-Fid") \
+ 	EM(netfs_trace_tcon_ref_put_cancelled_mid,	"PUT Cn-Mid") \
++	EM(netfs_trace_tcon_ref_put_close_defer_files,	"PUT Cl-Def") \
+ 	EM(netfs_trace_tcon_ref_put_mnt_ctx,		"PUT MntCtx") \
+ 	EM(netfs_trace_tcon_ref_put_dfs_refer,		"PUT DfsRfr") \
+ 	EM(netfs_trace_tcon_ref_put_reconnect_server,	"PUT Reconn") \
 
 
 
