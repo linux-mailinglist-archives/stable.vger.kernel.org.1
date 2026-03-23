@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-228942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228953-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id Bwu1G4VXwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228942-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:53 +0100
+	id mMrVF5dXwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228953-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:11 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00FBA2F5D99
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:08:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB6E2F5DD2
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3EAC030A6831
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E82A6309E7CC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E2D3AF66A;
-	Mon, 23 Mar 2026 14:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E78A393DC8;
+	Mon, 23 Mar 2026 14:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1GYmL8wP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xinHF6vJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102723AC0EB;
-	Mon, 23 Mar 2026 14:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB432741A0;
+	Mon, 23 Mar 2026 14:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277558; cv=none; b=WZ1jAn4Qx7GRzgOP4knOxIM2RL0aaNavWPi2Qxa4aUrY8ugYH5UtuM5GkNDYACG7aiYUMW4mIdpH5rlh7QZJI6oBu+VWNxgdtGZRw/e/DNo9we3W2TUKO4EoxTXVP6wLal1ZB/8jFHeaUdQXT3ClFN1QkDt0C06gZCGQqG5R7w4=
+	t=1774277592; cv=none; b=D1S0y7mhgOpPKPN+H9KcM11Mkbx1qkZdbD44rOFFFfMaenmDYfk42ao2eayP8XBts9BaK6w3oXOvWXSBCrjzIVRBeXaM1rRcWzqqZnXXxVPGUJtkrmfXh1ahydDfg5N/mtxo46FPHZlISNe4gtEPH928ZKTzc0O3eRbQdeEjlDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277558; c=relaxed/simple;
-	bh=I/OyTXMNQcSYJmYMPk1Mc1K//0Uymh+o5e9rSUMsyhU=;
+	s=arc-20240116; t=1774277592; c=relaxed/simple;
+	bh=MWAhZybxcKjdtTtpgy/hJmtiOh10KwCmZIr9B6KLz1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ch59l+hD9w5vY9qXOgxUbgUgxCBPtsfC6xaNcHG+lyJN4gJyufLiSXTmOb8KIdaOFNy6QNlp2ZpAE0lbcu8ucgA8Lvmj48S4GGRHT2rnQdWBcFRGHk7P79h3auRYkMuWYWVgMl+ApMJFbowGK1c4xSWXfMMVns4Jc4j/nuELb/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1GYmL8wP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87337C4CEF7;
-	Mon, 23 Mar 2026 14:52:37 +0000 (UTC)
+	 MIME-Version; b=Lr93izP0hTHge9b93fJTzc7rgnhyFWnXoRwvgC+RYhiz6NJvpc6vMIv2QTjaE8SN5zH4sokXSeFR1iFsTBijrd72lY/8SZ58l+ohy9mvIpfgzPGrCABwvgXXWyh2MIbxAZ+mm/IAEPFHGyOK8p0+wLlSPY+iXaI9lSXoWWRuljk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xinHF6vJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4AB9C4CEF7;
+	Mon, 23 Mar 2026 14:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277557;
-	bh=I/OyTXMNQcSYJmYMPk1Mc1K//0Uymh+o5e9rSUMsyhU=;
+	s=korg; t=1774277592;
+	bh=MWAhZybxcKjdtTtpgy/hJmtiOh10KwCmZIr9B6KLz1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1GYmL8wP6WsMwVHuRJeOA6WgUfhTUX6MQNEdfE30a2fMaQDClW0W1PI+cXauxBoTP
-	 KW9pld3pSx2aZIbivok9jlhmeBsBtoEJb8QR5xyh/CECnPTEOMcdCynBjKn4fLJFl4
-	 Rg0U0v7OUO01HG7lzFyDfy/RAFneB3jSQzHQcB7s=
+	b=xinHF6vJfpZye/9Ug4ufxP+xIkpVpjrev8tKAWSEg4PdgegsYDQMLrQSIYQWKIy38
+	 6yyfkI6bZ4RcVTTdKPv0//+0CwbzVQNEZLCNxsjhoXq8CP+BMCEzIx6anTf3sAOegl
+	 YcLvO61/bm+e6IUNnNJ1LzlckdEgRE5b0MW4eujs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -49,9 +49,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mark Harmstone <mark@harmstone.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 023/567] btrfs: fix warning in scrub_verify_one_metadata()
-Date: Mon, 23 Mar 2026 14:39:03 +0100
-Message-ID: <20260323134534.341329936@linuxfoundation.org>
+Subject: [PATCH 6.6 024/567] btrfs: fix compat mask in error messages in btrfs_check_features()
+Date: Mon, 23 Mar 2026 14:39:04 +0100
+Message-ID: <20260323134534.369436933@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
 References: <20260323134533.749096647@linuxfoundation.org>
@@ -75,7 +75,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228942-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228953-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -91,7 +91,7 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 00FBA2F5D99
+X-Rspamd-Queue-Id: CCB6E2F5DD2
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -101,36 +101,55 @@ X-Rspamd-Server: lfdr
 
 From: Mark Harmstone <mark@harmstone.com>
 
-[ Upstream commit 44e2fda66427a0442d8d2c0e6443256fb458ab6b ]
+[ Upstream commit 587bb33b10bda645a1028c1737ad3992b3d7cf61 ]
 
-Commit b471965fdb2d ("btrfs: fix replace/scrub failure with
-metadata_uuid") fixed the comparison in scrub_verify_one_metadata() to
-use metadata_uuid rather than fsid, but left the warning as it was. Fix
-it so it matches what we're doing.
+Commit d7f67ac9a928 ("btrfs: relax block-group-tree feature dependency
+checks") introduced a regression when it comes to handling unsupported
+incompat or compat_ro flags. Beforehand we only printed the flags that
+we didn't recognize, afterwards we printed them all, which is less
+useful. Fix the error handling so it behaves like it used to.
 
-Fixes: b471965fdb2d ("btrfs: fix replace/scrub failure with metadata_uuid")
+Fixes: d7f67ac9a928 ("btrfs: relax block-group-tree feature dependency checks")
 Reviewed-by: Qu Wenruo <wqu@suse.com>
 Signed-off-by: Mark Harmstone <mark@harmstone.com>
 Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/disk-io.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 3338e2e7a9a02..d2d2548eea05a 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -635,7 +635,7 @@ static void scrub_verify_one_metadata(struct scrub_stripe *stripe, int sector_nr
- 		btrfs_warn_rl(fs_info,
- 		"tree block %llu mirror %u has bad fsid, has %pU want %pU",
- 			      logical, stripe->mirror_num,
--			      header->fsid, fs_info->fs_devices->fsid);
-+			      header->fsid, fs_info->fs_devices->metadata_uuid);
- 		return;
+diff --git a/fs/btrfs/disk-io.c b/fs/btrfs/disk-io.c
+index 89e98f9cc2026..23431bc81c64a 100644
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -3094,7 +3094,7 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
+ 	if (incompat & ~BTRFS_FEATURE_INCOMPAT_SUPP) {
+ 		btrfs_err(fs_info,
+ 		"cannot mount because of unknown incompat features (0x%llx)",
+-		    incompat);
++		    incompat & ~BTRFS_FEATURE_INCOMPAT_SUPP);
+ 		return -EINVAL;
  	}
- 	if (memcmp(header->chunk_tree_uuid, fs_info->chunk_tree_uuid,
+ 
+@@ -3126,7 +3126,7 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
+ 	if (compat_ro_unsupp && is_rw_mount) {
+ 		btrfs_err(fs_info,
+ 	"cannot mount read-write because of unknown compat_ro features (0x%llx)",
+-		       compat_ro);
++		       compat_ro_unsupp);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -3139,7 +3139,7 @@ int btrfs_check_features(struct btrfs_fs_info *fs_info, bool is_rw_mount)
+ 	    !btrfs_test_opt(fs_info, NOLOGREPLAY)) {
+ 		btrfs_err(fs_info,
+ "cannot replay dirty log with unsupported compat_ro features (0x%llx), try rescue=nologreplay",
+-			  compat_ro);
++			  compat_ro_unsupp);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
 2.51.0
 
