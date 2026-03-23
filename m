@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-229280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228272-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UFlpKWhvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229280-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:48 +0100
+	id YKfvHFRLwWlbSAQAu9opvQ
+	(envelope-from <stable+bounces-228272-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:52 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AB52F8E71
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 177002F4134
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:16:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6AB5A34475DE
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DBA3430AC4CD
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:07:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8813B4EA9;
-	Mon, 23 Mar 2026 15:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148713B389B;
+	Mon, 23 Mar 2026 14:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5yRBRFs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rqyk+0mP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9153B3BFF;
-	Mon, 23 Mar 2026 15:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BB23ACEED;
+	Mon, 23 Mar 2026 14:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278622; cv=none; b=Eg2IGyzSot3d5ltpd0G3qkjA32/FGWZgGW7b7B41K4EwoZCj03ktATxFoTxvCYCZHXQmB1MLkVmkjNX+zzfNBbN3cBaJpegtZmPvj4XNFC0BqD5xAjL8zCq6U6mOpBnJYyNqMo/AdaHGID80wWyuf0yAjidCoDB2OZ78ay8GoUA=
+	t=1774274648; cv=none; b=n7dohtx6wTC0VjD3GmLamipbD2N6au8B3cEkrBm7bmzksZtuZVq1SXhdzOjOyySoE9hx3Ij4Av6rxnfzgNCPT55KWVDtbeqtA89R9sqtg2kwEfWqVOSoThN/Qv+UsAqjMzbUU32q28EPB4Agj5/LEUGt/9JMN1/xORJIAmtTBPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278622; c=relaxed/simple;
-	bh=zgggesL0iiV9ZMbuyQrdao0iVhyPbaHzxlHPM4jnuGg=;
+	s=arc-20240116; t=1774274648; c=relaxed/simple;
+	bh=55sq75iMqIrjKW8eBAvsGFrbRIKTLMHkOcF/2L2lEwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqUfr7IENF4B+f4wzA3oSlEZwFyaYR5mcRXJOg+4auA9AThLV32BVmJCMNzfQ6twrEMRfV5AkG/03Yt+yx2TtiX+3ZEaqt1ZIpZvFJLy1qPbSwJbg9uzlUCjbavpu9Sf1PmSEGUMF/jfhptEGPLM6lYAIhOKRWVXELGElJC7jTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5yRBRFs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFFF4C4CEF7;
-	Mon, 23 Mar 2026 15:10:21 +0000 (UTC)
+	 MIME-Version; b=DbTT/gKC4cV+MFiR8cw3xFE2bL3vLPsbPh5KAgae9belElyy4q4fdfIu/NTTbInZN8mIHgid7llndzv/Sk29meuTkKrjN4gmdimGWjvdtQ4VClbAKAUxu5Nb6rhVr22AoK2ckTMoye0BZmD8+17errdcxvoj24BBQVQZsvi5FR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rqyk+0mP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452EBC4CEF7;
+	Mon, 23 Mar 2026 14:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278622;
-	bh=zgggesL0iiV9ZMbuyQrdao0iVhyPbaHzxlHPM4jnuGg=;
+	s=korg; t=1774274648;
+	bh=55sq75iMqIrjKW8eBAvsGFrbRIKTLMHkOcF/2L2lEwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5yRBRFsvSZqcB1joXPiJ55b6di4PMDzr1rGDja7I4N/OhHKfEVhADDz+CPe/8DtD
-	 pIiLXNLmPQVJ/LhUSrh2PA6i0qhn0sd5Ro+BsWGtpjF0hAVUdMripJbJOeowIzH3H4
-	 gT0Gm6Fr/q946HDcnyNSEk2HIyUT+FL8v0XLp7GQ=
+	b=Rqyk+0mPQDclYmCorsjPU2DcP2Tf+JfLBAgErmOFw46GMlPLeaBV3NDUNigH1/+SL
+	 ahY4zFs/4hE1dQXxODoWbmOgoTBbfT+vVCxMNnvakO4dar/MOiS7A+yk+SEEgvXtMc
+	 HlRQhXuwCbSKRDhXsgoKgntSOb4Q70a3Fx2CKPbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.6 364/567] i3c: mipi-i3c-hci: Add missing TID field to no-op command descriptor
+	Francis Brosseau <francis@malagauche.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.18 063/212] io_uring/poll: fix multishot recv missing EOF on wakeup race
 Date: Mon, 23 Mar 2026 14:44:44 +0100
-Message-ID: <20260323134542.828348827@linuxfoundation.org>
+Message-ID: <20260323134505.765599371@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,87 +65,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229280-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	RCVD_TLS_LAST(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[bounces-228272-lists,stable=lfdr.de];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 08AB52F8E71
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,malagauche.com:email]
+X-Rspamd-Queue-Id: 177002F4134
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit ec3cfd835f7c4bbd23bc9ad909d2fdc772a578bb upstream.
+commit a68ed2df72131447d131531a08fe4dfcf4fa4653 upstream.
 
-The internal control command descriptor used for no-op commands includes a
-Transaction ID (TID) field, but the no-op command constructed in
-hci_dma_dequeue_xfer() omitted it.  As a result, the hardware receives a
-no-op descriptor without the expected TID.
+When a socket send and shutdown() happen back-to-back, both fire
+wake-ups before the receiver's task_work has a chance to run. The first
+wake gets poll ownership (poll_refs=1), and the second bumps it to 2.
+When io_poll_check_events() runs, it calls io_poll_issue() which does a
+recv that reads the data and returns IOU_RETRY. The loop then drains all
+accumulated refs (atomic_sub_return(2) -> 0) and exits, even though only
+the first event was consumed. Since the shutdown is a persistent state
+change, no further wakeups will happen, and the multishot recv can hang
+forever.
 
-This bug has gone unnoticed because the TID is currently not validated in
-the no-op completion path, but the descriptor format requires it to be
-present.
+Check specifically for HUP in the poll loop, and ensure that another
+loop is done to check for status if more than a single poll activation
+is pending. This ensures we don't lose the shutdown event.
 
-Add the missing TID field when generating a no-op descriptor so that its
-layout matches the defined command structure.
-
-Fixes: 9ad9a52cce282 ("i3c/master: introduce the mipi-i3c-hci driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260306072451.11131-10-adrian.hunter@intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: dbc2564cfe0f ("io_uring: let fast poll support multishot")
+Reported-by: Francis Brosseau <francis@malagauche.com>
+Link: https://github.com/axboe/liburing/issues/1549
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/cmd.h |    1 +
- drivers/i3c/master/mipi-i3c-hci/dma.c |    2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ io_uring/poll.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/i3c/master/mipi-i3c-hci/cmd.h
-+++ b/drivers/i3c/master/mipi-i3c-hci/cmd.h
-@@ -17,6 +17,7 @@
- #define CMD_0_TOC			W0_BIT_(31)
- #define CMD_0_ROC			W0_BIT_(30)
- #define CMD_0_ATTR			W0_MASK(2, 0)
-+#define CMD_0_TID			W0_MASK(6, 3)
+--- a/io_uring/poll.c
++++ b/io_uring/poll.c
+@@ -254,6 +254,7 @@ static int io_poll_check_events(struct i
+ 				atomic_andnot(IO_POLL_RETRY_FLAG, &req->poll_refs);
+ 				v &= ~IO_POLL_RETRY_FLAG;
+ 			}
++			v &= IO_POLL_REF_MASK;
+ 		}
  
- /*
-  * Response Descriptor Structure
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -473,7 +473,7 @@ static bool hci_dma_dequeue_xfer(struct
- 			u32 *ring_data = rh->xfer + rh->xfer_struct_sz * idx;
+ 		/* the mask was stashed in __io_poll_execute */
+@@ -286,8 +287,13 @@ static int io_poll_check_events(struct i
+ 				return IOU_POLL_REMOVE_POLL_USE_RES;
+ 			}
+ 		} else {
+-			int ret = io_poll_issue(req, tw);
++			int ret;
  
- 			/* store no-op cmd descriptor */
--			*ring_data++ = FIELD_PREP(CMD_0_ATTR, 0x7);
-+			*ring_data++ = FIELD_PREP(CMD_0_ATTR, 0x7) | FIELD_PREP(CMD_0_TID, xfer->cmd_tid);
- 			*ring_data++ = 0;
- 			if (hci->cmd == &mipi_i3c_hci_cmd_v2) {
- 				*ring_data++ = 0;
++			/* multiple refs and HUP, ensure we loop once more */
++			if ((req->cqe.res & (POLLHUP | POLLRDHUP)) && v != 1)
++				v--;
++
++			ret = io_poll_issue(req, tw);
+ 			if (ret == IOU_COMPLETE)
+ 				return IOU_POLL_REMOVE_POLL_USE_RES;
+ 			else if (ret == IOU_REQUEUE)
+@@ -303,7 +309,6 @@ static int io_poll_check_events(struct i
+ 		 * Release all references, retry if someone tried to restart
+ 		 * task_work while we were executing it.
+ 		 */
+-		v &= IO_POLL_REF_MASK;
+ 	} while (atomic_sub_return(v, &req->poll_refs) & IO_POLL_REF_MASK);
+ 
+ 	io_napi_add(req);
 
 
 
