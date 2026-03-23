@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-228599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228600-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 8Fy4MStSwWnqSAQAu9opvQ
-	(envelope-from <stable+bounces-228599-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:03 +0100
+	id +KvnCi5SwWn+SAQAu9opvQ
+	(envelope-from <stable+bounces-228600-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:06 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA432F5251
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B5B2F525F
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:46:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B199316416E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBBE43100D05
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7360823DD;
-	Mon, 23 Mar 2026 14:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A4A3C07A;
+	Mon, 23 Mar 2026 14:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JP2cMFjl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7UJ7jNz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F231A680D;
-	Mon, 23 Mar 2026 14:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84BA1D63F3;
+	Mon, 23 Mar 2026 14:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275562; cv=none; b=LJysfh6QKhnX9L3sliWS9cwb80Qc3k/yAsh7+japS8y6aJxpLuC12jI/vFLaOkQOSJy6t8B2YaC3LwArBMGpGacUClUlGTdGr90Ocos8BroB30tY4zesIOc27shNK13zoqgRAUsFK2B2/pDR9eNWaAKl6M/dJJwztFQeI2tl68Q=
+	t=1774275565; cv=none; b=p99Lu9xkOdD79zYie35nkWWCcqP6bg0XM15wVMGD66Xvfbz9Iij8uED41OkTeTUxNAmIbHK67AOjmOJfLfYl2zfAdi/50aAANY7KqLzUQVXSXyGVMqiIjW11MmdVn28ZP8FIGmu+OrSvmA+3dV6dyI3TiovhEs1HeSCU1tDSJ50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275562; c=relaxed/simple;
-	bh=P94LZOTKseVt7gkxdoqvr1glguGuDsemotZuikbPqkw=;
+	s=arc-20240116; t=1774275565; c=relaxed/simple;
+	bh=tU6HKLqBcUNmc5pZOdQxtv404A8knkvrTx8mRzfVzgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mh88VCBmB9ikJeiMQmKbpbZGMLDKkr63V8EJu/5Gk54k5OqQoERO01LWwoj7upWV/6GBdPrlePon5bJvyYG/TZBWZs1RPKmSCNTy2e/zRKJ1ptpa/pbJCWiZWc7U76s51m7EQi2V3LWVnWHC8Da9/eAJ0QEzeOBYBwcRLvz9qCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JP2cMFjl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA238C2BCB1;
-	Mon, 23 Mar 2026 14:19:21 +0000 (UTC)
+	 MIME-Version; b=kXDS8p7O9VpSd+CwUbWrSj6OyNoLpJQDATkLlASi6f5A+0rPkWmdv+b39+lbFxa7arHaSXE6n5QE6+1aYpRgMRVWgyec7H7fkH1XvDYIjVZfufRCbiYaZAx18zmR9GkXT0vUxfPxCBi/T7uAUh2Xz4B9z876md1/uu1iK/a+NP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7UJ7jNz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF7DC4CEF7;
+	Mon, 23 Mar 2026 14:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275562;
-	bh=P94LZOTKseVt7gkxdoqvr1glguGuDsemotZuikbPqkw=;
+	s=korg; t=1774275565;
+	bh=tU6HKLqBcUNmc5pZOdQxtv404A8knkvrTx8mRzfVzgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JP2cMFjlJENiabIcUtICFLWVygSYfssuqfnr6R6jUVAhdoi5aibM4f8wShvb75xmp
-	 6kJmsJulnLE2tD589AvpHysv7x/WCHfB54av15tFy4Ou01TmJuYLskG9DJXCsNHINZ
-	 D41OMWEPk274j1GzM5BvX2xezYgO+9PRmfvtPKuM=
+	b=y7UJ7jNzpJ4pM/LZ+Dveg611pNKpQ35LGgpc8fgb7uUKhBzOqYCATR+y6Vz//9oao
+	 pXkQDH24YcRIQcUfPvkTd0BY8Rw6fo12nYTgRn24nv4jS6JbOKR642Z/NQ1a2s5wDX
+	 t48b7kyYYg2JkrEq4W+dFeHDFzzF2sHKuHT3ITAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.12 142/460] drm/amd: Disable MES LR compute W/A
-Date: Mon, 23 Mar 2026 14:42:18 +0100
-Message-ID: <20260323134530.075844721@linuxfoundation.org>
+	Osama Abdelkader <osama.abdelkader@gmail.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 6.12 143/460] drm/bridge: samsung-dsim: Fix memory leak in error path
+Date: Mon, 23 Mar 2026 14:42:19 +0100
+Message-ID: <20260323134530.098351215@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
 References: <20260323134526.647552166@linuxfoundation.org>
@@ -63,33 +63,35 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228599-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228600-lists,stable=lfdr.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bootlin.com];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_FIVE(0.00)[5];
+	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1EA432F5251
+X-Rspamd-Queue-Id: C1B5B2F525F
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
@@ -97,61 +99,88 @@ X-Rspamd-Server: lfdr
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
 
-commit 6b0d812971370c64b837a2db4275410f478272fe upstream.
+commit 803ec1faf7c1823e6e3b1f2aaa81be18528c9436 upstream.
 
-A workaround was introduced in commit 1fb710793ce2 ("drm/amdgpu: Enable
-MES lr_compute_wa by default") to help with some hangs observed in gfx1151.
+In samsung_dsim_host_attach(), drm_bridge_add() is called to add the
+bridge. However, if samsung_dsim_register_te_irq() or
+pdata->host_ops->attach() fails afterwards, the function returns
+without removing the bridge, causing a memory leak.
 
-This WA didn't fully fix the issue.  It was actually fixed by adjusting
-the VGPR size to the correct value that matched the hardware in commit
-b42f3bf9536c ("drm/amdkfd: bump minimum vgpr size for gfx1151").
+Fix this by adding proper error handling with goto labels to ensure
+drm_bridge_remove() is called in all error paths. Also ensure that
+samsung_dsim_unregister_te_irq() is called if the attach operation
+fails after the TE IRQ has been registered.
 
-There are reports of instability on other products with newer GC microcode
-versions, and I believe they're caused by this workaround. As we don't
-need the workaround any more, remove it.
+samsung_dsim_unregister_te_irq() function is moved without changes
+to be before samsung_dsim_host_attach() to avoid forward declaration.
 
-Fixes: b42f3bf9536c ("drm/amdkfd: bump minimum vgpr size for gfx1151")
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9973e64bd6ee7642860a6f3b6958cbf14e89cabd)
+Fixes: e7447128ca4a ("drm: bridge: Generalize Exynos-DSI driver into a Samsung DSIM bridge")
 Cc: stable@vger.kernel.org
+Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20260209184115.10937-1-osama.abdelkader@gmail.com
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c |    5 -----
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c |    5 -----
- 2 files changed, 10 deletions(-)
+ drivers/gpu/drm/bridge/samsung-dsim.c |   25 ++++++++++++++++---------
+ 1 file changed, 16 insertions(+), 9 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -677,11 +677,6 @@ static int mes_v11_0_set_hw_resources(st
- 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
- 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
- 	mes_set_hw_res_pkt.oversubscription_timer = 50;
--	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x7f)
--		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
--	else
--		dev_info_once(mes->adev->dev,
--			      "MES FW version must be >= 0x7f to enable LR compute workaround.\n");
+--- a/drivers/gpu/drm/bridge/samsung-dsim.c
++++ b/drivers/gpu/drm/bridge/samsung-dsim.c
+@@ -1697,6 +1697,14 @@ static int samsung_dsim_register_te_irq(
+ 	return 0;
+ }
  
- 	if (amdgpu_mes_log_enable) {
- 		mes_set_hw_res_pkt.enable_mes_event_int_logging = 1;
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -615,11 +615,6 @@ static int mes_v12_0_set_hw_resources(st
- 	mes_set_hw_res_pkt.use_different_vmid_compute = 1;
- 	mes_set_hw_res_pkt.enable_reg_active_poll = 1;
- 	mes_set_hw_res_pkt.enable_level_process_quantum_check = 1;
--	if ((mes->adev->mes.sched_version & AMDGPU_MES_VERSION_MASK) >= 0x82)
--		mes_set_hw_res_pkt.enable_lr_compute_wa = 1;
--	else
--		dev_info_once(adev->dev,
--			      "MES FW version must be >= 0x82 to enable LR compute workaround.\n");
++static void samsung_dsim_unregister_te_irq(struct samsung_dsim *dsi)
++{
++	if (dsi->te_gpio) {
++		free_irq(gpiod_to_irq(dsi->te_gpio), dsi);
++		gpiod_put(dsi->te_gpio);
++	}
++}
++
+ static int samsung_dsim_host_attach(struct mipi_dsi_host *host,
+ 				    struct mipi_dsi_device *device)
+ {
+@@ -1771,13 +1779,13 @@ of_find_panel_or_bridge:
+ 	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO)) {
+ 		ret = samsung_dsim_register_te_irq(dsi, &device->dev);
+ 		if (ret)
+-			return ret;
++			goto err_remove_bridge;
+ 	}
  
- 	/*
- 	 * Keep oversubscribe timer for sdma . When we have unmapped doorbell
+ 	if (pdata->host_ops && pdata->host_ops->attach) {
+ 		ret = pdata->host_ops->attach(dsi, device);
+ 		if (ret)
+-			return ret;
++			goto err_unregister_te_irq;
+ 	}
+ 
+ 	dsi->lanes = device->lanes;
+@@ -1785,14 +1793,13 @@ of_find_panel_or_bridge:
+ 	dsi->mode_flags = device->mode_flags;
+ 
+ 	return 0;
+-}
+ 
+-static void samsung_dsim_unregister_te_irq(struct samsung_dsim *dsi)
+-{
+-	if (dsi->te_gpio) {
+-		free_irq(gpiod_to_irq(dsi->te_gpio), dsi);
+-		gpiod_put(dsi->te_gpio);
+-	}
++err_unregister_te_irq:
++	if (!(device->mode_flags & MIPI_DSI_MODE_VIDEO))
++		samsung_dsim_unregister_te_irq(dsi);
++err_remove_bridge:
++	drm_bridge_remove(&dsi->bridge);
++	return ret;
+ }
+ 
+ static int samsung_dsim_host_detach(struct mipi_dsi_host *host,
 
 
 
