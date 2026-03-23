@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-229708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229167-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UMcVLWx0wWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229708-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:12:12 +0100
+	id 0IetLPZewWmHSgQAu9opvQ
+	(envelope-from <stable+bounces-229167-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:38 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F392F9911
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:12:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E03842F6B29
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A7BA73194E3D
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 055EE315A1D5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D0DB3C063F;
-	Mon, 23 Mar 2026 16:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09EF3AEF51;
+	Mon, 23 Mar 2026 15:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJVl9/em"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IVvAZPHI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA4B3B9D9D;
-	Mon, 23 Mar 2026 16:17:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CB8284B36;
+	Mon, 23 Mar 2026 15:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282652; cv=none; b=i+2h+OeAz8N0ZIALDKshCaEhgZR1/qspMg3G0mIP7VwnKQIsfFcAAvf6SX74oR+3sciRjr+mv3HwdW90yvfAdOAvu3yPYHK22OpcjM/g1QZz5qPs977kIYbQt/gI3qne91O8ycHUUidlIsop8h8K7NX+Ns0HnW4/XZu4jynugAo=
+	t=1774278272; cv=none; b=TceZwpycmFzUdGSJbT27plThrgVGItNWiDGX8MPubzvdHCeNFM7K5Z1eG6P3Jj7xAYmxy2XzxJrJ6PT7xxEsHfzLJUGPuKOqG0IjCEPu6rBGjX/mLS/XMyhF2P0vvzbr6vIzpPB6N0SWfQ8/g2a3hYvChCmQaNAjPaMiQVHqem0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282652; c=relaxed/simple;
-	bh=LcKMhlzX3SA5DzYqBYEpi/4ceNWORuPGG2OWgvx31MQ=;
+	s=arc-20240116; t=1774278272; c=relaxed/simple;
+	bh=GMQbyHaP3K+5j2w+lknLHlMgfzb0pXMTyCcYjEV5aSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D/YNvtfAZ38k9ZoA64QJqSb6cn5Hqx9xvdLRgBLBRZECmo5vo7OYCT6bGRNkpVfLne6+8jbCIkBl0my8ZAuwVQvq797+aHpS0kHrqaieGlhnf/BYYKApIu/ApHEsp7y0WAm8Yn9+fI81F4wqoflvfNeycoeQfL0Mj5UCwzgfhPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJVl9/em; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9923FC4CEF7;
-	Mon, 23 Mar 2026 16:17:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=awUSu5n5HtYvocU2Aksd0VUgcdIehn4r5ATxsWnnvUmd9gKdlx25A/0u9UBdqGl0nHVxOBS1dN3NXScXtXBF1RB814oXzGHXUqiSZHxVu0Ug8D+v2WGBNk3Dhn96cjb0Ugtz1Zbxebg5gl3oOq5yHIPu1nnpXgGIb5G70D3+8cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IVvAZPHI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58F4C2BC9E;
+	Mon, 23 Mar 2026 15:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282652;
-	bh=LcKMhlzX3SA5DzYqBYEpi/4ceNWORuPGG2OWgvx31MQ=;
+	s=korg; t=1774278272;
+	bh=GMQbyHaP3K+5j2w+lknLHlMgfzb0pXMTyCcYjEV5aSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJVl9/emoZSz23+eZYSc+ezGy3b2rcB1vcEzKFFm+aQ7WICryK7OHoj5c+gpMjOIf
-	 RcBHre3ozsZN7O1omQD/Qk8LxH/yRja2JDhUG2KveFzaKe93uhF1XWOat/APQTHQoC
-	 fEqwxa3NC86i437droTkF4UBpTbkogqfrqZBeUeE=
+	b=IVvAZPHIfDjQ++16tdTe8T7mgSWCr/sxxiTEvqmTjsbdWQInHl0fDBYSSrUQ0YytG
+	 sc3YxYjGxcSuAdb2ToOfaidvleB0FV2SBeGaMKN4BsbSTwe1dmABITlHGg3coT6UPQ
+	 ghXCnahbpQsmJmuoqrhUnenzN5suISQdNeaIipCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Brandeburg <jesse.brandeburg@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	"=?UTF-8?q?Ricardo=20B . =20Marli=C3=A8re?=" <rbm@suse.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 193/481] octeontx2-af: devlink health: use retained error fmsg API
+Subject: [PATCH 6.6 255/567] net: bonding: Fix nd_tbl NULL dereference when IPv6 is disabled
 Date: Mon, 23 Mar 2026 14:42:55 +0100
-Message-ID: <20260323134529.895989861@linuxfoundation.org>
+Message-ID: <20260323134540.142246973@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,583 +65,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229708-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.de,suse.com,gmail.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229167-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: B0F392F9911
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: E03842F6B29
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Ricardo B. Marlière <rbm@suse.com>
 
-[ Upstream commit d8cf03fca3411de8a493dae5e9fcf815a4f0977e ]
+[ Upstream commit 30021e969d48e5819d5ae56936c2f34c0f7ce997 ]
 
-Drop unneeded error checking.
+When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
+initialized because inet6_init() exits before ndisc_init() is called
+which initializes it. If bonding ARP/NS validation is enabled, an IPv6
+NS/NA packet received on a slave can reach bond_validate_na(), which
+calls bond_has_this_ip6(). That path calls ipv6_chk_addr() and can
+crash in __ipv6_chk_addr_and_flags().
 
-devlink_fmsg_*() family of functions is now retaining errors,
-so there is no need to check for them after each call.
+ BUG: kernel NULL pointer dereference, address: 00000000000005d8
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ RIP: 0010:__ipv6_chk_addr_and_flags+0x69/0x170
+ Call Trace:
+  <IRQ>
+  ipv6_chk_addr+0x1f/0x30
+  bond_validate_na+0x12e/0x1d0 [bonding]
+  ? __pfx_bond_handle_frame+0x10/0x10 [bonding]
+  bond_rcv_validate+0x1a0/0x450 [bonding]
+  bond_handle_frame+0x5e/0x290 [bonding]
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  __netif_receive_skb_core.constprop.0+0x3e8/0xe50
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? update_cfs_rq_load_avg+0x1a/0x240
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? __enqueue_entity+0x5e/0x240
+  __netif_receive_skb_one_core+0x39/0xa0
+  process_backlog+0x9c/0x150
+  __napi_poll+0x30/0x200
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  net_rx_action+0x338/0x3b0
+  handle_softirqs+0xc9/0x2a0
+  do_softirq+0x42/0x60
+  </IRQ>
+  <TASK>
+  __local_bh_enable_ip+0x62/0x70
+  __dev_queue_xmit+0x2d3/0x1000
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? packet_parse_headers+0x10a/0x1a0
+  packet_sendmsg+0x10da/0x1700
+  ? kick_pool+0x5f/0x140
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? __queue_work+0x12d/0x4f0
+  __sys_sendto+0x1f3/0x220
+  __x64_sys_sendto+0x24/0x30
+  do_syscall_64+0x101/0xf80
+  ? exc_page_fault+0x6e/0x170
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  </TASK>
 
-Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 87f7dff3ec75 ("octeontx2-af: devlink: fix NIX RAS reporter to use RAS interrupt status")
+Fix this by checking ipv6_mod_enabled() before dispatching IPv6 packets to
+bond_na_rcv(). If IPv6 is disabled, return early from bond_rcv_validate()
+and avoid the path to ipv6_chk_addr().
+
+Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Fixes: 4e24be018eb9 ("bonding: add new parameter ns_targets")
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20260307-net-nd_tbl_fixes-v4-2-e2677e85628c@suse.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../marvell/octeontx2/af/rvu_devlink.c        | 464 +++++-------------
- 1 file changed, 133 insertions(+), 331 deletions(-)
+ drivers/net/bonding/bond_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index 48ce98ae56611..ae06742670dc8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -14,26 +14,16 @@
- 
- #define DRV_NAME "octeontx2-af"
- 
--static int rvu_report_pair_start(struct devlink_fmsg *fmsg, const char *name)
-+static void rvu_report_pair_start(struct devlink_fmsg *fmsg, const char *name)
- {
--	int err;
--
--	err = devlink_fmsg_pair_nest_start(fmsg, name);
--	if (err)
--		return err;
--
--	return  devlink_fmsg_obj_nest_start(fmsg);
-+	devlink_fmsg_pair_nest_start(fmsg, name);
-+	devlink_fmsg_obj_nest_start(fmsg);
- }
- 
--static int rvu_report_pair_end(struct devlink_fmsg *fmsg)
-+static void rvu_report_pair_end(struct devlink_fmsg *fmsg)
- {
--	int err;
--
--	err = devlink_fmsg_obj_nest_end(fmsg);
--	if (err)
--		return err;
--
--	return devlink_fmsg_pair_nest_end(fmsg);
-+	devlink_fmsg_obj_nest_end(fmsg);
-+	devlink_fmsg_pair_nest_end(fmsg);
- }
- 
- static bool rvu_common_request_irq(struct rvu *rvu, int offset,
-@@ -284,175 +274,81 @@ static int rvu_nix_report_show(struct devlink_fmsg *fmsg, void *ctx,
- {
- 	struct rvu_nix_event_ctx *nix_event_context;
- 	u64 intr_val;
--	int err;
- 
- 	nix_event_context = ctx;
- 	switch (health_reporter) {
- 	case NIX_AF_RVU_INTR:
- 		intr_val = nix_event_context->nix_af_rvu_int;
--		err = rvu_report_pair_start(fmsg, "NIX_AF_RVU");
--		if (err)
--			return err;
--		err = devlink_fmsg_u64_pair_put(fmsg, "\tNIX RVU Interrupt Reg ",
--						nix_event_context->nix_af_rvu_int);
--		if (err)
--			return err;
--		if (intr_val & BIT_ULL(0)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tUnmap Slot Error");
--			if (err)
--				return err;
--		}
--		err = rvu_report_pair_end(fmsg);
--		if (err)
--			return err;
-+		rvu_report_pair_start(fmsg, "NIX_AF_RVU");
-+		devlink_fmsg_u64_pair_put(fmsg, "\tNIX RVU Interrupt Reg ",
-+					  nix_event_context->nix_af_rvu_int);
-+		if (intr_val & BIT_ULL(0))
-+			devlink_fmsg_string_put(fmsg, "\n\tUnmap Slot Error");
-+		rvu_report_pair_end(fmsg);
- 		break;
- 	case NIX_AF_RVU_GEN:
- 		intr_val = nix_event_context->nix_af_rvu_gen;
--		err = rvu_report_pair_start(fmsg, "NIX_AF_GENERAL");
--		if (err)
--			return err;
--		err = devlink_fmsg_u64_pair_put(fmsg, "\tNIX General Interrupt Reg ",
--						nix_event_context->nix_af_rvu_gen);
--		if (err)
--			return err;
--		if (intr_val & BIT_ULL(0)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tRx multicast pkt drop");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(1)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tRx mirror pkt drop");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(4)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tSMQ flush done");
--			if (err)
--				return err;
--		}
--		err = rvu_report_pair_end(fmsg);
--		if (err)
--			return err;
-+		rvu_report_pair_start(fmsg, "NIX_AF_GENERAL");
-+		devlink_fmsg_u64_pair_put(fmsg, "\tNIX General Interrupt Reg ",
-+					  nix_event_context->nix_af_rvu_gen);
-+		if (intr_val & BIT_ULL(0))
-+			devlink_fmsg_string_put(fmsg, "\n\tRx multicast pkt drop");
-+		if (intr_val & BIT_ULL(1))
-+			devlink_fmsg_string_put(fmsg, "\n\tRx mirror pkt drop");
-+		if (intr_val & BIT_ULL(4))
-+			devlink_fmsg_string_put(fmsg, "\n\tSMQ flush done");
-+		rvu_report_pair_end(fmsg);
- 		break;
- 	case NIX_AF_RVU_ERR:
- 		intr_val = nix_event_context->nix_af_rvu_err;
--		err = rvu_report_pair_start(fmsg, "NIX_AF_ERR");
--		if (err)
--			return err;
--		err = devlink_fmsg_u64_pair_put(fmsg, "\tNIX Error Interrupt Reg ",
--						nix_event_context->nix_af_rvu_err);
--		if (err)
--			return err;
--		if (intr_val & BIT_ULL(14)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on NIX_AQ_INST_S read");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(13)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on NIX_AQ_RES_S write");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(12)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tAQ Doorbell Error");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(6)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tRx on unmapped PF_FUNC");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(5)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tRx multicast replication error");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(4)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on NIX_RX_MCE_S read");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(3)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on multicast WQE read");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(2)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on mirror WQE read");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(1)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on mirror pkt write");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(0)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on multicast pkt write");
--			if (err)
--				return err;
--		}
--		err = rvu_report_pair_end(fmsg);
--		if (err)
--			return err;
-+		rvu_report_pair_start(fmsg, "NIX_AF_ERR");
-+		devlink_fmsg_u64_pair_put(fmsg, "\tNIX Error Interrupt Reg ",
-+					  nix_event_context->nix_af_rvu_err);
-+		if (intr_val & BIT_ULL(14))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on NIX_AQ_INST_S read");
-+		if (intr_val & BIT_ULL(13))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on NIX_AQ_RES_S write");
-+		if (intr_val & BIT_ULL(12))
-+			devlink_fmsg_string_put(fmsg, "\n\tAQ Doorbell Error");
-+		if (intr_val & BIT_ULL(6))
-+			devlink_fmsg_string_put(fmsg, "\n\tRx on unmapped PF_FUNC");
-+		if (intr_val & BIT_ULL(5))
-+			devlink_fmsg_string_put(fmsg, "\n\tRx multicast replication error");
-+		if (intr_val & BIT_ULL(4))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on NIX_RX_MCE_S read");
-+		if (intr_val & BIT_ULL(3))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on multicast WQE read");
-+		if (intr_val & BIT_ULL(2))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on mirror WQE read");
-+		if (intr_val & BIT_ULL(1))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on mirror pkt write");
-+		if (intr_val & BIT_ULL(0))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on multicast pkt write");
-+		rvu_report_pair_end(fmsg);
- 		break;
- 	case NIX_AF_RVU_RAS:
- 		intr_val = nix_event_context->nix_af_rvu_err;
--		err = rvu_report_pair_start(fmsg, "NIX_AF_RAS");
--		if (err)
--			return err;
--		err = devlink_fmsg_u64_pair_put(fmsg, "\tNIX RAS Interrupt Reg ",
--						nix_event_context->nix_af_rvu_err);
--		if (err)
--			return err;
--		err = devlink_fmsg_string_put(fmsg, "\n\tPoison Data on:");
--		if (err)
--			return err;
--		if (intr_val & BIT_ULL(34)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_INST_S");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(33)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_RES_S");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(32)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tHW ctx");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(4)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tPacket from mirror buffer");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(3)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tPacket from multicast buffer");
--
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(2)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tWQE read from mirror buffer");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(1)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tWQE read from multicast buffer");
--			if (err)
--				return err;
--		}
--		if (intr_val & BIT_ULL(0)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX_RX_MCE_S read");
--			if (err)
--				return err;
--		}
--		err = rvu_report_pair_end(fmsg);
--		if (err)
--			return err;
-+		rvu_report_pair_start(fmsg, "NIX_AF_RAS");
-+		devlink_fmsg_u64_pair_put(fmsg, "\tNIX RAS Interrupt Reg ",
-+					  nix_event_context->nix_af_rvu_err);
-+		devlink_fmsg_string_put(fmsg, "\n\tPoison Data on:");
-+		if (intr_val & BIT_ULL(34))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_INST_S");
-+		if (intr_val & BIT_ULL(33))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX_AQ_RES_S");
-+		if (intr_val & BIT_ULL(32))
-+			devlink_fmsg_string_put(fmsg, "\n\tHW ctx");
-+		if (intr_val & BIT_ULL(4))
-+			devlink_fmsg_string_put(fmsg, "\n\tPacket from mirror buffer");
-+		if (intr_val & BIT_ULL(3))
-+			devlink_fmsg_string_put(fmsg, "\n\tPacket from multicast buffer");
-+		if (intr_val & BIT_ULL(2))
-+			devlink_fmsg_string_put(fmsg, "\n\tWQE read from mirror buffer");
-+		if (intr_val & BIT_ULL(1))
-+			devlink_fmsg_string_put(fmsg, "\n\tWQE read from multicast buffer");
-+		if (intr_val & BIT_ULL(0))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX_RX_MCE_S read");
-+		rvu_report_pair_end(fmsg);
- 		break;
- 	default:
- 		return -EINVAL;
-@@ -919,181 +815,87 @@ static int rvu_npa_report_show(struct devlink_fmsg *fmsg, void *ctx,
- 	struct rvu_npa_event_ctx *npa_event_context;
- 	unsigned int alloc_dis, free_dis;
- 	u64 intr_val;
--	int err;
- 
- 	npa_event_context = ctx;
- 	switch (health_reporter) {
- 	case NPA_AF_RVU_GEN:
- 		intr_val = npa_event_context->npa_af_rvu_gen;
--		err = rvu_report_pair_start(fmsg, "NPA_AF_GENERAL");
--		if (err)
--			return err;
--		err = devlink_fmsg_u64_pair_put(fmsg, "\tNPA General Interrupt Reg ",
--						npa_event_context->npa_af_rvu_gen);
--		if (err)
--			return err;
--		if (intr_val & BIT_ULL(32)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tUnmap PF Error");
--			if (err)
--				return err;
--		}
-+		rvu_report_pair_start(fmsg, "NPA_AF_GENERAL");
-+		devlink_fmsg_u64_pair_put(fmsg, "\tNPA General Interrupt Reg ",
-+					  npa_event_context->npa_af_rvu_gen);
-+		if (intr_val & BIT_ULL(32))
-+			devlink_fmsg_string_put(fmsg, "\n\tUnmap PF Error");
- 
- 		free_dis = FIELD_GET(GENMASK(15, 0), intr_val);
--		if (free_dis & BIT(NPA_INPQ_NIX0_RX)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX0: free disabled RX");
--			if (err)
--				return err;
--		}
--		if (free_dis & BIT(NPA_INPQ_NIX0_TX)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX0:free disabled TX");
--			if (err)
--				return err;
--		}
--		if (free_dis & BIT(NPA_INPQ_NIX1_RX)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX1: free disabled RX");
--			if (err)
--				return err;
--		}
--		if (free_dis & BIT(NPA_INPQ_NIX1_TX)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX1:free disabled TX");
--			if (err)
--				return err;
--		}
--		if (free_dis & BIT(NPA_INPQ_SSO)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFree Disabled for SSO");
--			if (err)
--				return err;
--		}
--		if (free_dis & BIT(NPA_INPQ_TIM)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFree Disabled for TIM");
--			if (err)
--				return err;
--		}
--		if (free_dis & BIT(NPA_INPQ_DPI)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFree Disabled for DPI");
--			if (err)
--				return err;
--		}
--		if (free_dis & BIT(NPA_INPQ_AURA_OP)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFree Disabled for AURA");
--			if (err)
--				return err;
--		}
-+		if (free_dis & BIT(NPA_INPQ_NIX0_RX))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX0: free disabled RX");
-+		if (free_dis & BIT(NPA_INPQ_NIX0_TX))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX0:free disabled TX");
-+		if (free_dis & BIT(NPA_INPQ_NIX1_RX))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX1: free disabled RX");
-+		if (free_dis & BIT(NPA_INPQ_NIX1_TX))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX1:free disabled TX");
-+		if (free_dis & BIT(NPA_INPQ_SSO))
-+			devlink_fmsg_string_put(fmsg, "\n\tFree Disabled for SSO");
-+		if (free_dis & BIT(NPA_INPQ_TIM))
-+			devlink_fmsg_string_put(fmsg, "\n\tFree Disabled for TIM");
-+		if (free_dis & BIT(NPA_INPQ_DPI))
-+			devlink_fmsg_string_put(fmsg, "\n\tFree Disabled for DPI");
-+		if (free_dis & BIT(NPA_INPQ_AURA_OP))
-+			devlink_fmsg_string_put(fmsg, "\n\tFree Disabled for AURA");
- 
- 		alloc_dis = FIELD_GET(GENMASK(31, 16), intr_val);
--		if (alloc_dis & BIT(NPA_INPQ_NIX0_RX)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX0: alloc disabled RX");
--			if (err)
--				return err;
--		}
--		if (alloc_dis & BIT(NPA_INPQ_NIX0_TX)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX0:alloc disabled TX");
--			if (err)
--				return err;
--		}
--		if (alloc_dis & BIT(NPA_INPQ_NIX1_RX)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX1: alloc disabled RX");
--			if (err)
--				return err;
--		}
--		if (alloc_dis & BIT(NPA_INPQ_NIX1_TX)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tNIX1:alloc disabled TX");
--			if (err)
--				return err;
--		}
--		if (alloc_dis & BIT(NPA_INPQ_SSO)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tAlloc Disabled for SSO");
--			if (err)
--				return err;
--		}
--		if (alloc_dis & BIT(NPA_INPQ_TIM)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tAlloc Disabled for TIM");
--			if (err)
--				return err;
--		}
--		if (alloc_dis & BIT(NPA_INPQ_DPI)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tAlloc Disabled for DPI");
--			if (err)
--				return err;
--		}
--		if (alloc_dis & BIT(NPA_INPQ_AURA_OP)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tAlloc Disabled for AURA");
--			if (err)
--				return err;
--		}
--		err = rvu_report_pair_end(fmsg);
--		if (err)
--			return err;
-+		if (alloc_dis & BIT(NPA_INPQ_NIX0_RX))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX0: alloc disabled RX");
-+		if (alloc_dis & BIT(NPA_INPQ_NIX0_TX))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX0:alloc disabled TX");
-+		if (alloc_dis & BIT(NPA_INPQ_NIX1_RX))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX1: alloc disabled RX");
-+		if (alloc_dis & BIT(NPA_INPQ_NIX1_TX))
-+			devlink_fmsg_string_put(fmsg, "\n\tNIX1:alloc disabled TX");
-+		if (alloc_dis & BIT(NPA_INPQ_SSO))
-+			devlink_fmsg_string_put(fmsg, "\n\tAlloc Disabled for SSO");
-+		if (alloc_dis & BIT(NPA_INPQ_TIM))
-+			devlink_fmsg_string_put(fmsg, "\n\tAlloc Disabled for TIM");
-+		if (alloc_dis & BIT(NPA_INPQ_DPI))
-+			devlink_fmsg_string_put(fmsg, "\n\tAlloc Disabled for DPI");
-+		if (alloc_dis & BIT(NPA_INPQ_AURA_OP))
-+			devlink_fmsg_string_put(fmsg, "\n\tAlloc Disabled for AURA");
-+
-+		rvu_report_pair_end(fmsg);
- 		break;
- 	case NPA_AF_RVU_ERR:
--		err = rvu_report_pair_start(fmsg, "NPA_AF_ERR");
--		if (err)
--			return err;
--		err = devlink_fmsg_u64_pair_put(fmsg, "\tNPA Error Interrupt Reg ",
--						npa_event_context->npa_af_rvu_err);
--		if (err)
--			return err;
--
--		if (npa_event_context->npa_af_rvu_err & BIT_ULL(14)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on NPA_AQ_INST_S read");
--			if (err)
--				return err;
--		}
--		if (npa_event_context->npa_af_rvu_err & BIT_ULL(13)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tFault on NPA_AQ_RES_S write");
--			if (err)
--				return err;
--		}
--		if (npa_event_context->npa_af_rvu_err & BIT_ULL(12)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tAQ Doorbell Error");
--			if (err)
--				return err;
--		}
--		err = rvu_report_pair_end(fmsg);
--		if (err)
--			return err;
-+		rvu_report_pair_start(fmsg, "NPA_AF_ERR");
-+		devlink_fmsg_u64_pair_put(fmsg, "\tNPA Error Interrupt Reg ",
-+					  npa_event_context->npa_af_rvu_err);
-+		if (npa_event_context->npa_af_rvu_err & BIT_ULL(14))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on NPA_AQ_INST_S read");
-+		if (npa_event_context->npa_af_rvu_err & BIT_ULL(13))
-+			devlink_fmsg_string_put(fmsg, "\n\tFault on NPA_AQ_RES_S write");
-+		if (npa_event_context->npa_af_rvu_err & BIT_ULL(12))
-+			devlink_fmsg_string_put(fmsg, "\n\tAQ Doorbell Error");
-+		rvu_report_pair_end(fmsg);
- 		break;
- 	case NPA_AF_RVU_RAS:
--		err = rvu_report_pair_start(fmsg, "NPA_AF_RVU_RAS");
--		if (err)
--			return err;
--		err = devlink_fmsg_u64_pair_put(fmsg, "\tNPA RAS Interrupt Reg ",
--						npa_event_context->npa_af_rvu_ras);
--		if (err)
--			return err;
--		if (npa_event_context->npa_af_rvu_ras & BIT_ULL(34)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tPoison data on NPA_AQ_INST_S");
--			if (err)
--				return err;
--		}
--		if (npa_event_context->npa_af_rvu_ras & BIT_ULL(33)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tPoison data on NPA_AQ_RES_S");
--			if (err)
--				return err;
--		}
--		if (npa_event_context->npa_af_rvu_ras & BIT_ULL(32)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tPoison data on HW context");
--			if (err)
--				return err;
--		}
--		err = rvu_report_pair_end(fmsg);
--		if (err)
--			return err;
-+		rvu_report_pair_start(fmsg, "NPA_AF_RVU_RAS");
-+		devlink_fmsg_u64_pair_put(fmsg, "\tNPA RAS Interrupt Reg ",
-+					  npa_event_context->npa_af_rvu_ras);
-+		if (npa_event_context->npa_af_rvu_ras & BIT_ULL(34))
-+			devlink_fmsg_string_put(fmsg, "\n\tPoison data on NPA_AQ_INST_S");
-+		if (npa_event_context->npa_af_rvu_ras & BIT_ULL(33))
-+			devlink_fmsg_string_put(fmsg, "\n\tPoison data on NPA_AQ_RES_S");
-+		if (npa_event_context->npa_af_rvu_ras & BIT_ULL(32))
-+			devlink_fmsg_string_put(fmsg, "\n\tPoison data on HW context");
-+		rvu_report_pair_end(fmsg);
- 		break;
- 	case NPA_AF_RVU_INTR:
--		err = rvu_report_pair_start(fmsg, "NPA_AF_RVU");
--		if (err)
--			return err;
--		err = devlink_fmsg_u64_pair_put(fmsg, "\tNPA RVU Interrupt Reg ",
--						npa_event_context->npa_af_rvu_int);
--		if (err)
--			return err;
--		if (npa_event_context->npa_af_rvu_int & BIT_ULL(0)) {
--			err = devlink_fmsg_string_put(fmsg, "\n\tUnmap Slot Error");
--			if (err)
--				return err;
--		}
--		return rvu_report_pair_end(fmsg);
-+		rvu_report_pair_start(fmsg, "NPA_AF_RVU");
-+		devlink_fmsg_u64_pair_put(fmsg, "\tNPA RVU Interrupt Reg ",
-+					  npa_event_context->npa_af_rvu_int);
-+		if (npa_event_context->npa_af_rvu_int & BIT_ULL(0))
-+			devlink_fmsg_string_put(fmsg, "\n\tUnmap Slot Error");
-+		rvu_report_pair_end(fmsg);
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index b36d1781d8463..114ebaa284daa 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -3447,7 +3447,7 @@ int bond_rcv_validate(const struct sk_buff *skb, struct bonding *bond,
+ 	} else if (is_arp) {
+ 		return bond_arp_rcv(skb, bond, slave);
+ #if IS_ENABLED(CONFIG_IPV6)
+-	} else if (is_ipv6) {
++	} else if (is_ipv6 && likely(ipv6_mod_enabled())) {
+ 		return bond_na_rcv(skb, bond, slave);
+ #endif
+ 	} else {
 -- 
 2.51.0
 
