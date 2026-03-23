@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-228494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229520-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CN0OIPZOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228494-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:22 +0100
+	id RAndFvllwWlQSwQAu9opvQ
+	(envelope-from <stable+bounces-229520-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:10:33 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E172F4B11
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:32:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAEC12F7A8C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:10:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2CB553143EEC
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:15:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EEAEC3181DDB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECB83AEF36;
-	Mon, 23 Mar 2026 14:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9D3265CA2;
+	Mon, 23 Mar 2026 15:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzB7L6If"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PEpmCS83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F5B3AEF24;
-	Mon, 23 Mar 2026 14:14:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54013B19AF;
+	Mon, 23 Mar 2026 15:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774275281; cv=none; b=lrCEZnu8yVb1Q+iUR/yvXCqlT77HFL1b7nx3hAIKnSzvXdNqVCs+JiG1NziNs6BBhgY1MsSPIWS1uFNyV6z2BRX+Dvj9EdAVzYvEwlxaDdXcfMB76Iv4LzoDf3OXIKuPPb1OozjgALNUzkIlxan5M3V/4aHUbaSiEvnyQ9btY9g=
+	t=1774279713; cv=none; b=itpmKZAAzlWwh11EbWW+g7KUZRgpWKXDs4EaJRIxQVqMoAy5MlAikJiN2TDQADwd+7HRAfmmQame2vjE5jnXN9FyWneThxJidYnOxcMPU6rPPKBt166Bdm7rFR5ypWy+e+giSVATDJmZF2UeddHKuu+AhBNf5NtphO6x+QWKjmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774275281; c=relaxed/simple;
-	bh=4h6PpsJvPBKeBsMUBMIIBIUJL/jj2rdlRIxnjTgyVlM=;
+	s=arc-20240116; t=1774279713; c=relaxed/simple;
+	bh=juiokmnXDodA4d3zdSAzkxnK3ne+ZW5KP5UlKQ26/kM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMYQtCYKqU5mmZj6cEwxo7UMUCfdBMpvRJvkSdUPaYfihs1BwPu+wo7onieFE3RzQ3/kS+RnwcVKvLKducHSvVM6kqKTyp+CVoZTgvzSgBAJxamW+C5voHuiG0MteVuFgy60b9KbyfzL+IKfAag8JnHMpEIdITVK5/BQYTUvFY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzB7L6If; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7DE2C4CEF7;
-	Mon, 23 Mar 2026 14:14:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YB4eVmSeYjMMyMmDTncAGFaZLIyvgzfvRm47VO6SMApU5ycUsD4z2B/CHI8a5cFcpWi9E/jvM4v39coLQScNcwx7uc3D2X6r6t9IFjkxCSLi5vXoWJKNwolq3VhX8lbrQIesxCFjWXhGdDbXQq9/DOTZNmpbBSbVU6qedj6XEyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PEpmCS83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CCF6C4CEF7;
+	Mon, 23 Mar 2026 15:28:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774275281;
-	bh=4h6PpsJvPBKeBsMUBMIIBIUJL/jj2rdlRIxnjTgyVlM=;
+	s=korg; t=1774279713;
+	bh=juiokmnXDodA4d3zdSAzkxnK3ne+ZW5KP5UlKQ26/kM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzB7L6IffSUMQjouAugH7NX39L4p2WiJk1EXdmeMu+eFufB5bkR0BO9Lvo1Kz+/Ih
-	 fz6libYbktmaYt2NuMGIDlzK1L26MnHRT1POHwpulbCemAhff4ZpsRFMmGZjr0pcY2
-	 zI2vsElvLhTe1UexsQgNbRkpGGtKSO0SIV/UmAfQ=
+	b=PEpmCS838C+eCcL3mqEKleTyMvOvaZMTaUrihfGVM82hiHfL8KfeOOoQcL75KRlR8
+	 JxT5Dvo8T53Z8Zgcr+0gnivoI95B2ii59Vn1NjMkOTN9ATbqto8hsQSma5pjuw0SsN
+	 pNIrCMbIIL+C93sorT7eR+l4QeiiSfW2kVKAw6PE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 039/460] net/mlx5e: Fix DMA FIFO desync on error CQE SQ recovery
-Date: Mon, 23 Mar 2026 14:40:35 +0100
-Message-ID: <20260323134527.668300505@linuxfoundation.org>
+Subject: [PATCH 6.1 054/481] mfd: qcom-pm8xxx: Convert to platform remove callback returning void
+Date: Mon, 23 Mar 2026 14:40:36 +0100
+Message-ID: <20260323134526.542068707@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,115 +64,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-229520-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228494-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E5E172F4B11
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,linaro.org:email,pengutronix.de:email]
+X-Rspamd-Queue-Id: CAEC12F7A8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 1633111d69053512d099658d4a05fc736fab36b0 ]
+[ Upstream commit 19ea1d3953017518d85db35b69b5aea9bc64d630 ]
 
-In case of a TX error CQE, a recovery flow is triggered,
-mlx5e_reset_txqsq_cc_pc() resets dma_fifo_cc to 0 but not dma_fifo_pc,
-desyncing the DMA FIFO producer and consumer.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is ignored (apart
+from emitting a warning) and this typically results in resource leaks.
 
-After recovery, the producer pushes new DMA entries at the old
-dma_fifo_pc, while the consumer reads from position 0.
-This causes us to unmap stale DMA addresses from before the recovery.
+To improve here there is a quest to make the remove callback return
+void. In the first step of this quest all drivers are converted to
+.remove_new(), which already returns void. Eventually after all drivers
+are converted, .remove_new() will be renamed to .remove().
 
-The DMA FIFO is a purely software construct with no HW counterpart.
-At the point of reset, all WQEs have been flushed so dma_fifo_cc is
-already equal to dma_fifo_pc. There is no need to reset either counter,
-similar to how skb_fifo pc/cc are untouched.
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Remove the 'dma_fifo_cc = 0' reset.
-
-This fixes the following WARNING:
-    WARNING: CPU: 0 PID: 0 at drivers/iommu/dma-iommu.c:1240 iommu_dma_unmap_page+0x79/0x90
-    Modules linked in: mlx5_vdpa vringh vdpa bonding mlx5_ib mlx5_vfio_pci ipip mlx5_fwctl tunnel4 mlx5_core ib_ipoib geneve ip6_gre ip_gre gre nf_tables ip6_tunnel rdma_ucm ib_uverbs ib_umad vfio_pci vfio_pci_core act_mirred act_skbedit act_vlan vhost_net vhost tap ip6table_mangle ip6table_nat ip6table_filter ip6_tables iptable_mangle cls_matchall nfnetlink_cttimeout act_gact cls_flower sch_ingress vhost_iotlb iptable_raw tunnel6 vfio_iommu_type1 vfio openvswitch nsh rpcsec_gss_krb5 auth_rpcgss oid_registry xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter overlay zram zsmalloc rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core fuse [last unloaded: nf_tables]
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5_for_upstream_min_debug_2024_12_30_21_33 #1
-    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:iommu_dma_unmap_page+0x79/0x90
-    Code: 2b 4d 3b 21 72 26 4d 3b 61 08 73 20 49 89 d8 44 89 f9 5b 4c 89 f2 4c 89 e6 48 89 ef 5d 41 5c 41 5d 41 5e 41 5f e9 c7 ae 9e ff <0f> 0b 5b 5d 41 5c 41 5d 41 5e 41 5f c3 66 2e 0f 1f 84 00 00 00 00
-    Call Trace:
-     <IRQ>
-     ? __warn+0x7d/0x110
-     ? iommu_dma_unmap_page+0x79/0x90
-     ? report_bug+0x16d/0x180
-     ? handle_bug+0x4f/0x90
-     ? exc_invalid_op+0x14/0x70
-     ? asm_exc_invalid_op+0x16/0x20
-     ? iommu_dma_unmap_page+0x79/0x90
-     ? iommu_dma_unmap_page+0x2e/0x90
-     dma_unmap_page_attrs+0x10d/0x1b0
-     mlx5e_tx_wi_dma_unmap+0xbe/0x120 [mlx5_core]
-     mlx5e_poll_tx_cq+0x16d/0x690 [mlx5_core]
-     mlx5e_napi_poll+0x8b/0xac0 [mlx5_core]
-     __napi_poll+0x24/0x190
-     net_rx_action+0x32a/0x3b0
-     ? mlx5_eq_comp_int+0x7e/0x270 [mlx5_core]
-     ? notifier_call_chain+0x35/0xa0
-     handle_softirqs+0xc9/0x270
-     irq_exit_rcu+0x71/0xd0
-     common_interrupt+0x7f/0xa0
-     </IRQ>
-     <TASK>
-     asm_common_interrupt+0x22/0x40
-
-Fixes: db75373c91b0 ("net/mlx5e: Recover Send Queue (SQ) from error state")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260305142634.1813208-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231123165627.492259-14-u.kleine-koenig@pengutronix.de
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: 27a8acea47a9 ("mfd: qcom-pm8xxx: Fix OF populate on driver rebind")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mfd/qcom-pm8xxx.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-index dbd9482359e1e..74f9703013b43 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-@@ -45,7 +45,6 @@ static void mlx5e_reset_txqsq_cc_pc(struct mlx5e_txqsq *sq)
- 		  "SQ 0x%x: cc (0x%x) != pc (0x%x)\n",
- 		  sq->sqn, sq->cc, sq->pc);
- 	sq->cc = 0;
--	sq->dma_fifo_cc = 0;
- 	sq->pc = 0;
+diff --git a/drivers/mfd/qcom-pm8xxx.c b/drivers/mfd/qcom-pm8xxx.c
+index 2f2734ba5273e..8831448371290 100644
+--- a/drivers/mfd/qcom-pm8xxx.c
++++ b/drivers/mfd/qcom-pm8xxx.c
+@@ -587,19 +587,17 @@ static int pm8xxx_remove_child(struct device *dev, void *unused)
+ 	return 0;
  }
  
+-static int pm8xxx_remove(struct platform_device *pdev)
++static void pm8xxx_remove(struct platform_device *pdev)
+ {
+ 	struct pm_irq_chip *chip = platform_get_drvdata(pdev);
+ 
+ 	device_for_each_child(&pdev->dev, NULL, pm8xxx_remove_child);
+ 	irq_domain_remove(chip->irqdomain);
+-
+-	return 0;
+ }
+ 
+ static struct platform_driver pm8xxx_driver = {
+ 	.probe		= pm8xxx_probe,
+-	.remove		= pm8xxx_remove,
++	.remove_new	= pm8xxx_remove,
+ 	.driver		= {
+ 		.name	= "pm8xxx-core",
+ 		.of_match_table = pm8xxx_id_table,
 -- 
 2.51.0
 
