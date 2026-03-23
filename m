@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-229261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aFKEL0tvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229261-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:19 +0100
+	id OGj/KPluwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:57 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34CAB2F8E25
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:50:19 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AFBF2F8D92
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 927DC334F2C9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5924130543D1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 636503B389B;
-	Mon, 23 Mar 2026 15:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C73D1DA0E1;
+	Mon, 23 Mar 2026 16:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNrJd8KC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmatMWe/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2661F3B38B1;
-	Mon, 23 Mar 2026 15:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6037612CDA5;
+	Mon, 23 Mar 2026 16:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278562; cv=none; b=EZTULQTHzbZY08Izx7+Vq+9V4LG7vw6nVsOhiR3scF/jVeprR0RiB8uxa6+tbiG8pft3KijJq0gtlsCxyk2EVdXUsny/xGJ5pGEOzzcdZBT1ZAm2kkocxcZqKKFU2sT1jFaSHGn8l+fKw2E8cn2BFO6sfIzQPqlSmQ9D+s/FSPs=
+	t=1774282904; cv=none; b=UvmpkPA+5mC8ii8R/gAI+Ncd+FjZIj3VAD5nRV8YlQGAr7Tmei7dtssHBI+T08yhYGdww/DMWuEl/y4DVOxT5wVVJ/xZl2etgdEWsO9wDeawCABgG/i64vLVB2HpcQk1C0QDtkxtTEYzZpElsXX/U/lHlRKXetfHwjXMrAHla6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278562; c=relaxed/simple;
-	bh=yaDzKXMrbu4OQOK8F7xcC+SjwhPncXP4rAMoWKFcM3Y=;
+	s=arc-20240116; t=1774282904; c=relaxed/simple;
+	bh=LB/CmAzcjic/HmrcXcN4R1m+d7L/E6FFy4CbilB1CiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyu3twazlN97glcF3g69QzyRmSk9I2EwMKoei/DnplBV0O7u/NzxeXJ21SazimBgn83rF7nuuZ3pYRsrw2G505ZDIIcE/aUlG0htRI4w+1JTxgPvBdDzBNcylzvtkzc92/IpmOkAI5Pd4hjYw82vw+hln9MNW6dFo4d+r/p3wsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNrJd8KC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8811C4CEF7;
-	Mon, 23 Mar 2026 15:09:21 +0000 (UTC)
+	 MIME-Version; b=qJhowMw7Zd6nBcNHFtE91DaEksyHjrp/eH37c0EfEUhYlKNROb5wvGoyPwWjrBF1198jclHCe+Hq0j3tifpJLeAP3J4IZOLYUghhkLlqte9Ulv3iGLbLEln+Bdr984ResSmCQZ3ICU9a+4zvIzECYA56A+APjZt83MCFHQpPEDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmatMWe/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F57C4CEF7;
+	Mon, 23 Mar 2026 16:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278562;
-	bh=yaDzKXMrbu4OQOK8F7xcC+SjwhPncXP4rAMoWKFcM3Y=;
+	s=korg; t=1774282904;
+	bh=LB/CmAzcjic/HmrcXcN4R1m+d7L/E6FFy4CbilB1CiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNrJd8KC/mIPZTL0KIj9jxtEb3YjJpdR1DHfdbrF4EZtZPKhYOxSt/ENIav2rDh16
-	 O+M8dDxwQYK+W778VGjgaZbkkWbAp7l1qEQieP9gZqeozPDYXzPRmSQN9pYEHXFARR
-	 /s5GTvtoPIM/4FGsZLtZrk7x/QlZRf7oKl1r33DU=
+	b=NmatMWe/dQZMO0z0kyuVZ2wgTCplWD/YkXjXcYe1dHYWcMq6WskTJi89UBZ/O2TSP
+	 sUrT1hupI7EcL/WAENvXQRi88S6IWggWcSTjYnKB0EfbGkeuLLEivOUJK2BsA9AtX/
+	 wZoVUnIrEIXNsl8HmqxsafL8355jxQSyn9l0BC8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Law <objecting@objecting.org>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Subject: [PATCH 6.6 347/567] lib/bootconfig: check bounds before writing in __xbc_open_brace()
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 285/481] NFC: nxp-nci: allow GPIOs to sleep
 Date: Mon, 23 Mar 2026 14:44:27 +0100
-Message-ID: <20260323134542.421239643@linuxfoundation.org>
+Message-ID: <20260323134532.059708581@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,18 +68,18 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229261-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229802-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
@@ -89,51 +89,50 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 34CAB2F8E25
+X-Rspamd-Queue-Id: 6AFBF2F8D92
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josh Law <objecting@objecting.org>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-commit 560f763baa0f2c9a44da4294c06af071405ac46f upstream.
+commit 55dc632ab2ac2889b15995a9eef56c753d48ebc7 upstream.
 
-The bounds check for brace_index happens after the array write.
-While the current call pattern prevents an actual out-of-bounds
-access (the previous call would have returned an error), the
-write-before-check pattern is fragile and would become a real
-out-of-bounds write if the error return were ever not propagated.
+Allow the firmware and enable GPIOs to sleep.
 
-Move the bounds check before the array write so the function is
-self-contained and safe regardless of caller behavior.
+This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
+connected to I2C GPIO expanders.
 
-Link: https://lore.kernel.org/all/20260312191143.28719-3-objecting@objecting.org/
+-- >8 --
+kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
+-- >8 --
 
-Fixes: ead1e19ad905 ("lib/bootconfig: Fix a bug of breaking existing tree nodes")
+Fixes: 43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor")
 Cc: stable@vger.kernel.org
-Signed-off-by: Josh Law <objecting@objecting.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Link: https://patch.msgid.link/20260317085337.146545-1-ian.ray@gehealthcare.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/bootconfig.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nfc/nxp-nci/i2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/lib/bootconfig.c
-+++ b/lib/bootconfig.c
-@@ -534,9 +534,9 @@ static char *skip_spaces_until_newline(c
- static int __init __xbc_open_brace(char *p)
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *ph
  {
- 	/* Push the last key as open brace */
--	open_brace[brace_index++] = xbc_node_index(last_parent);
- 	if (brace_index >= XBC_DEPTH_MAX)
- 		return xbc_parse_error("Exceed max depth of braces", p);
-+	open_brace[brace_index++] = xbc_node_index(last_parent);
+ 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
  
- 	return 0;
- }
+-	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
+-	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
++	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
++	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
+ 	usleep_range(10000, 15000);
+ 
+ 	if (mode == NXP_NCI_MODE_COLD)
 
 
 
