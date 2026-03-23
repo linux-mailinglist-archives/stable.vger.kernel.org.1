@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-228835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228177-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id aAvaNB5XwWmBSQQAu9opvQ
-	(envelope-from <stable+bounces-228835-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:10 +0100
+	id YBNPHy1NwWmhSAQAu9opvQ
+	(envelope-from <stable+bounces-228177-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:45 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E318D2F5CC7
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:07:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F22392F4687
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:24:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BC1CA3004CBD
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 11D7B30A0C8B
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE741A5B84;
-	Mon, 23 Mar 2026 14:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4695F3B8935;
+	Mon, 23 Mar 2026 13:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEh/F9x3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WK4PEBfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418D423BF9B;
-	Mon, 23 Mar 2026 14:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D793B19BC;
+	Mon, 23 Mar 2026 13:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277265; cv=none; b=Bepy222FcqRZsgYR3nY2rWSuwogpMhmxnv6gUNPE2XxYL/UUAnRd+b0qX6byqMZEdlL6vwgfSs7hVRv+MgNNjBW91aW8HZ21V8fzcnH3jHVYKF9eJprQqNacDEe/yiQbj4/5h01PFVMr1FB0Urya2rXipjcIhv4PevwgVLYzPMo=
+	t=1774274361; cv=none; b=AbQtL8YiNBirePtkilUP4Y48WMHO9wQDT+jC+ZYUQw2T1FY+eYF26376I5oIbgyAxHqHwsY0/JrBe6kW/QI53C0shwNPXZHDqxEtjoqRv3lXryPKCmLekGfyL0glu/4dKHQaLTWC20AtcgHab0713+bEe5Rb+Y+Xfe3zJM6AlUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277265; c=relaxed/simple;
-	bh=VICvPyUIuVW8u8gEkhaC1lPkJKKFwheI1LyX+zFXgk0=;
+	s=arc-20240116; t=1774274361; c=relaxed/simple;
+	bh=6L4Rwy2wCP2zei5g9DQvqA8u3eTP4es8yvA9H36ILXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyKqQkj9fa7gc6bna1GSfP3VzTIky18RDxvKmIeoKDcYg/ZaQYbi8gYOTT4b/zKnPbIgEQW0X4ubMQKwa8PT5Pb/mPtrwMPMjyZrcCEb6V+RKfwp+MydC+BRtU8+/wSee+i57CyyfFOEvbg2lm8roDvNkUb1QG5U0Apj7yzgFSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEh/F9x3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E50C4CEF7;
-	Mon, 23 Mar 2026 14:47:44 +0000 (UTC)
+	 MIME-Version; b=p2PlcNuxIIVuFrV2t1fVo8CTCkj2Xq3qkNa+IP21NCWwDmS2tPY7vZQmzp/kyjpbtRLc7BVwaTUhX7ivu/fLDSWoBA+2PFp5QZP9J1plkz05sv863uVuKE2eXkjRydqI0toox3nlSlBqJXP5Siejxzaz5yfzEdeJcbACyENu8Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WK4PEBfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826E3C4AF09;
+	Mon, 23 Mar 2026 13:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277265;
-	bh=VICvPyUIuVW8u8gEkhaC1lPkJKKFwheI1LyX+zFXgk0=;
+	s=korg; t=1774274360;
+	bh=6L4Rwy2wCP2zei5g9DQvqA8u3eTP4es8yvA9H36ILXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HEh/F9x3FRWcHwqfhM+6TAJZc0onlo27bx9os4TtPuhe92h3jg/VL1V2zGZ+51PC8
-	 u2zMu7rV9ZSwvRhnwY4fOsqbhTL526DC0HssyuYclEmoG32VcfRf7fYWt4dmNcMC6l
-	 VqWNpceKn8z/rx0stbbIBik9V8OWnq54jyJ8hD4k=
+	b=WK4PEBfM947dn7ihsEJMl8lTXMVY3g6Dfzqm/9fztG1BJd/z8cArNAO6eSj3Np6Vw
+	 KK9ZL0FA+D0PC8Hlkyg1BMWjc7oMgzNIBGNfXmk4GXnprTdf+MlSv7Z6GNTZrSufOK
+	 B23W7Nu5peFgmL8EKG7jjw5qViN2JqsLJftAwgUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 374/460] wifi: mac80211: Fix static_branch_dec() underflow for aql_disable.
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.19 193/220] tracing: Fix failure to read user space from system call trace events
 Date: Mon, 23 Mar 2026 14:46:10 +0100
-Message-ID: <20260323134535.755540613@linuxfoundation.org>
+Message-ID: <20260323134510.689152577@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,148 +64,135 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-228835-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228177-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable,feb9ce36a95341bb47a4];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: E318D2F5CC7
+X-Rspamd-Queue-Id: F22392F4687
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit b94ae8e0d5fe1bdbbfdc3854ff6ce98f6876a828 ]
+commit edca33a56297d5741ccf867669debec116681987 upstream.
 
-syzbot reported static_branch_dec() underflow in aql_enable_write(). [0]
+The system call trace events call trace_user_fault_read() to read the user
+space part of some system calls. This is done by grabbing a per-cpu
+buffer, disabling migration, enabling preemption, calling
+copy_from_user(), disabling preemption, enabling migration and checking if
+the task was preempted while preemption was enabled. If it was, the buffer
+is considered corrupted and it tries again.
 
-The problem is that aql_enable_write() does not serialise concurrent
-write()s to the debugfs.
+There's a safety mechanism that will fail out of this loop if it fails 100
+times (with a warning). That warning message was triggered in some
+pi_futex stress tests. Enabling the sched_switch trace event and
+traceoff_on_warning, showed the problem:
 
-aql_enable_write() checks static_key_false(&aql_disable.key) and
-later calls static_branch_inc() or static_branch_dec(), but the
-state may change between the two calls.
+ pi_mutex_hammer-1375    [006] d..21   138.981648: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981651: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981656: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981659: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981664: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981667: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981671: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981675: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981679: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981682: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981687: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981690: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981695: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981698: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981703: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981706: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981711: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981714: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981719: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981722: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981727: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981730: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
+ pi_mutex_hammer-1375    [006] d..21   138.981735: sched_switch: prev_comm=pi_mutex_hammer prev_pid=1375 prev_prio=95 prev_state=R+ ==> next_comm=migration/6 next_pid=47 next_prio=0
+     migration/6-47      [006] d..2.   138.981738: sched_switch: prev_comm=migration/6 prev_pid=47 prev_prio=0 prev_state=S ==> next_comm=pi_mutex_hammer next_pid=1375 next_prio=95
 
-aql_disable does not need to track inc/dec.
+What happened was the task 1375 was flagged to be migrated. When
+preemption was enabled, the migration thread woke up to migrate that task,
+but failed because migration for that task was disabled. This caused the
+loop to fail to exit because the task scheduled out while trying to read
+user space.
 
-Let's use static_branch_enable() and static_branch_disable().
+Every time the task enabled preemption the migration thread would schedule
+in, try to migrate the task, fail and let the task continue. But because
+the loop would only enable preemption with migration disabled, it would
+always fail because each time it enabled preemption to read user space,
+the migration thread would try to migrate it.
 
-[0]:
-val == 0
-WARNING: kernel/jump_label.c:311 at __static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311, CPU#0: syz.1.3155/20288
-Modules linked in:
-CPU: 0 UID: 0 PID: 20288 Comm: syz.1.3155 Tainted: G     U       L      syzkaller #0 PREEMPT(full)
-Tainted: [U]=USER, [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
-RIP: 0010:__static_key_slow_dec_cpuslocked.part.0+0x107/0x120 kernel/jump_label.c:311
-Code: f2 c9 ff 5b 5d c3 cc cc cc cc e8 54 f2 c9 ff 48 89 df e8 ac f9 ff ff eb ad e8 45 f2 c9 ff 90 0f 0b 90 eb a2 e8 3a f2 c9 ff 90 <0f> 0b 90 eb 97 48 89 df e8 5c 4b 33 00 e9 36 ff ff ff 0f 1f 80 00
-RSP: 0018:ffffc9000b9f7c10 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffffffff9b3e5d40 RCX: ffffffff823c57b4
-RDX: ffff8880285a0000 RSI: ffffffff823c5846 RDI: ffff8880285a0000
-RBP: 0000000000000000 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 000000000000000a
-R13: 1ffff9200173ef88 R14: 0000000000000001 R15: ffffc9000b9f7e98
-FS:  00007f530dd726c0(0000) GS:ffff8881245e3000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000200000001140 CR3: 000000007cc4a000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- __static_key_slow_dec_cpuslocked kernel/jump_label.c:297 [inline]
- __static_key_slow_dec kernel/jump_label.c:321 [inline]
- static_key_slow_dec+0x7c/0xc0 kernel/jump_label.c:336
- aql_enable_write+0x2b2/0x310 net/mac80211/debugfs.c:343
- short_proxy_write+0x133/0x1a0 fs/debugfs/file.c:383
- vfs_write+0x2aa/0x1070 fs/read_write.c:684
- ksys_pwrite64 fs/read_write.c:793 [inline]
- __do_sys_pwrite64 fs/read_write.c:801 [inline]
- __se_sys_pwrite64 fs/read_write.c:798 [inline]
- __x64_sys_pwrite64+0x1eb/0x250 fs/read_write.c:798
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xc9/0xf80 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f530cf9aeb9
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f530dd72028 EFLAGS: 00000246 ORIG_RAX: 0000000000000012
-RAX: ffffffffffffffda RBX: 00007f530d215fa0 RCX: 00007f530cf9aeb9
-RDX: 0000000000000003 RSI: 0000000000000000 RDI: 0000000000000010
-RBP: 00007f530d008c1f R08: 0000000000000000 R09: 0000000000000000
-R10: 4200000000000005 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f530d216038 R14: 00007f530d215fa0 R15: 00007ffde89fb978
- </TASK>
+To solve this, when the loop fails to read user space without being
+scheduled out, enabled and disable preemption with migration enabled. This
+will allow the migration task to successfully migrate the task and the
+next loop should succeed to read user space without being scheduled out.
 
-Fixes: e908435e402a ("mac80211: introduce aql_enable node in debugfs")
-Reported-by: syzbot+feb9ce36a95341bb47a4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/69a8979e.a70a0220.b118c.0025.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260306072405.3649474-1-kuniyu@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://patch.msgid.link/20260316130734.1858a998@gandalf.local.home
+Fixes: 64cf7d058a005 ("tracing: Have trace_marker use per-cpu data to read user space")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/debugfs.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ kernel/trace/trace.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/net/mac80211/debugfs.c b/net/mac80211/debugfs.c
-index a0710ae0e7a49..e9b3b2c7b6faa 100644
---- a/net/mac80211/debugfs.c
-+++ b/net/mac80211/debugfs.c
-@@ -327,7 +327,6 @@ static ssize_t aql_enable_read(struct file *file, char __user *user_buf,
- static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
- 				size_t count, loff_t *ppos)
- {
--	bool aql_disabled = static_key_false(&aql_disable.key);
- 	char buf[3];
- 	size_t len;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7546,6 +7546,23 @@ char *trace_user_fault_read(struct trace
  
-@@ -342,15 +341,12 @@ static ssize_t aql_enable_write(struct file *file, const char __user *user_buf,
- 	if (len > 0 && buf[len - 1] == '\n')
- 		buf[len - 1] = 0;
- 
--	if (buf[0] == '0' && buf[1] == '\0') {
--		if (!aql_disabled)
--			static_branch_inc(&aql_disable);
--	} else if (buf[0] == '1' && buf[1] == '\0') {
--		if (aql_disabled)
--			static_branch_dec(&aql_disable);
--	} else {
-+	if (buf[0] == '0' && buf[1] == '\0')
-+		static_branch_enable(&aql_disable);
-+	else if (buf[0] == '1' && buf[1] == '\0')
-+		static_branch_disable(&aql_disable);
-+	else
- 		return -EINVAL;
--	}
- 
- 	return count;
- }
--- 
-2.51.0
-
+ 	do {
+ 		/*
++		 * It is possible that something is trying to migrate this
++		 * task. What happens then, is when preemption is enabled,
++		 * the migration thread will preempt this task, try to
++		 * migrate it, fail, then let it run again. That will
++		 * cause this to loop again and never succeed.
++		 * On failures, enabled and disable preemption with
++		 * migration enabled, to allow the migration thread to
++		 * migrate this task.
++		 */
++		if (trys) {
++			preempt_enable_notrace();
++			preempt_disable_notrace();
++			cpu = smp_processor_id();
++			buffer = per_cpu_ptr(tinfo->tbuf, cpu)->buf;
++		}
++
++		/*
+ 		 * If for some reason, copy_from_user() always causes a context
+ 		 * switch, this would then cause an infinite loop.
+ 		 * If this task is preempted by another user space task, it
 
 
 
