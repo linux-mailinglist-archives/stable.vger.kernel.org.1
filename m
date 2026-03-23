@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-228149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228802-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id QNRCK/VPwWnLSAQAu9opvQ
-	(envelope-from <stable+bounces-228149-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:37 +0100
+	id eKykCYBUwWlXSQQAu9opvQ
+	(envelope-from <stable+bounces-228802-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:56:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A63C2F4D7A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:36:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD3AC2F5758
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5D404305DB95
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 156CD30A7797
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016BD3AC0E3;
-	Mon, 23 Mar 2026 13:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3397D272E56;
+	Mon, 23 Mar 2026 14:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YA7mNqaw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pzCVwzsC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B82143A9D9D;
-	Mon, 23 Mar 2026 13:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0D426CE2D;
+	Mon, 23 Mar 2026 14:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274273; cv=none; b=GEN81IyI3HRD0+9kypvB6uxDk9ktrsFtmhcI/l9vZGspoxWhJCtk20FYiK370eTN9IXiboJgqi8vAKvxp33dz7CSDZiiokzGO29osW+ybkgOEiYdUXF/GZ5uZiycnLkaP3NVgMl6Fmw2wTVKz5DcPrjM5Tz0PO+jJb4wJrDNKh4=
+	t=1774277169; cv=none; b=M4Go0OoiXseFeHL0MKTaXJxgvtgyoa28sG0ou3aYnK6SmLqtSYDYxSdvBaD/RotPrxMF8CUnn5Nmr5gQ4FOAxLHtQbUlHvcJSietcTmPvvv6LstjGpRC74w31ufriXAh3GQB+rhH35zSSbosaV7dpdPueT6CgDe/zMcZFP30nqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274273; c=relaxed/simple;
-	bh=rpa3nbdM+S1c5PFS54kpGERYfUQYSYT4ODzRQFh9mSw=;
+	s=arc-20240116; t=1774277169; c=relaxed/simple;
+	bh=trbhmRnQzzcvo5nz5peKWyU7IEoH6Y4ksz3E0qpijW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/NO+711TPqVI2fR6wLuKTcOZJOPh8k3TTCTGpQXi0E9D7lWZ9aWILraI1JSbyxMgrJMEkh5HsbhINeiozF7vNRthOHbDk1MYz1bWHtTkbZ4PqNbfVHLAS2V5x6b5CRPVQvCKJjKP8bRDr4+ZmPU7yJ5GHmx7rCo2UcyLDQrj4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YA7mNqaw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF80C4CEF7;
-	Mon, 23 Mar 2026 13:57:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b7QjChZovIKvM9otQ2fPkTWlqmwtxwyz/xJVk3Jg1SoqUivmlwN77nd8btT6IYdY5Ef5gPS11ChnVO/Jt1bnS3UhvmMpYAalsPZOcvy3fd8zyznFIvDxmnAr81RMKrZFM39FJrmT7G7cyTgUYUlMnAy2QQsoIybBLX+pCPsFrN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pzCVwzsC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0DFC4CEF7;
+	Mon, 23 Mar 2026 14:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274273;
-	bh=rpa3nbdM+S1c5PFS54kpGERYfUQYSYT4ODzRQFh9mSw=;
+	s=korg; t=1774277169;
+	bh=trbhmRnQzzcvo5nz5peKWyU7IEoH6Y4ksz3E0qpijW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YA7mNqawhBCaqXDTYKARs1p0mK/Pt/ECWZZyHP2DB/BuP5tmiVY8cfoBAlEzltuVd
-	 JdXC55oiIgx3oUDLHHAHZwsln1QP6s6nEQsdgaNNXAPuxSdcIyOp/BJcErcEIKD0WD
-	 2T5uH/ZCY8tcLxjQyIwPHki/EtononzVXoxsJoXQ=
+	b=pzCVwzsCleD/Z4gjp4DWEOAGwjYMsqcqJJtDNCiorQ2uUVceE0xunrr2xCRKT18Wu
+	 aHSaCngD37UVe/G24rQ5X39HvMFSL9ULg/iPbcECvp/tH16ce7iPdnzsY7zs8tZUA6
+	 gjJ/Vzakn/w+brQW+4SLLnYrgsYR9r5hY1x63TOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 163/220] wifi: mac80211: always free skb on ieee80211_tx_prepare_skb() failure
+	=?UTF-8?q?Martin=20Roukala=20 ?= <martin.roukala@mupuf.org>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.12 344/460] serial: 8250_pci: add support for the AX99100
 Date: Mon, 23 Mar 2026 14:45:40 +0100
-Message-ID: <20260323134509.712213301@linuxfoundation.org>
+Message-ID: <20260323134534.994786447@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,156 +62,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.96 / 15.00];
+	CC_EXCESS_QP(1.20)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228802-lists,stable=lfdr.de];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228149-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[6];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 1A63C2F4D7A
+	RCPT_COUNT_FIVE(0.00)[5]
+X-Rspamd-Queue-Id: BD3AC2F5758
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Martin Roukala (né Peres) <martin.roukala@mupuf.org>
 
-[ Upstream commit d5ad6ab61cbd89afdb60881f6274f74328af3ee9 ]
+commit 9c0072bc33d349c83d223e64be30794e11938a6b upstream.
 
-ieee80211_tx_prepare_skb() has three error paths, but only two of them
-free the skb. The first error path (ieee80211_tx_prepare() returning
-TX_DROP) does not free it, while invoke_tx_handlers() failure and the
-fragmentation check both do.
+This is found in popular brands such as StarTech.com or Delock, and has
+been a source of frustration to quite a few people, if I can trust
+Amazon comments complaining about Linux support via the official
+out-of-the-tree driver.
 
-Add kfree_skb() to the first error path so all three are consistent,
-and remove the now-redundant frees in callers (ath9k, mt76,
-mac80211_hwsim) to avoid double-free.
-
-Document the skb ownership guarantee in the function's kdoc.
-
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://patch.msgid.link/20260314065455.2462900-1-nbd@nbd.name
-Fixes: 06be6b149f7e ("mac80211: add ieee80211_tx_prepare_skb() helper function")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Martin Roukala (né Peres) <martin.roukala@mupuf.org>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20260309-8250_pci_ax99100-v1-1-3328bdfd8e94@mupuf.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath9k/channel.c      | 6 ++----
- drivers/net/wireless/mediatek/mt76/scan.c     | 4 +---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 1 -
- include/net/mac80211.h                        | 4 +++-
- net/mac80211/tx.c                             | 4 +++-
- 5 files changed, 9 insertions(+), 10 deletions(-)
+ drivers/tty/serial/8250/8250_pci.c |   17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath9k/channel.c b/drivers/net/wireless/ath/ath9k/channel.c
-index 121e51ce1bc0e..8b27d8cc086ab 100644
---- a/drivers/net/wireless/ath/ath9k/channel.c
-+++ b/drivers/net/wireless/ath/ath9k/channel.c
-@@ -1006,7 +1006,7 @@ static void ath_scan_send_probe(struct ath_softc *sc,
- 	skb_set_queue_mapping(skb, IEEE80211_AC_VO);
+--- a/drivers/tty/serial/8250/8250_pci.c
++++ b/drivers/tty/serial/8250/8250_pci.c
+@@ -137,6 +137,8 @@ struct serial_private {
+ };
  
- 	if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, NULL))
--		goto error;
-+		return;
+ #define PCI_DEVICE_ID_HPE_PCI_SERIAL	0x37e
++#define PCIE_VENDOR_ID_ASIX		0x125B
++#define PCIE_DEVICE_ID_AX99100		0x9100
  
- 	txctl.txq = sc->tx.txq_map[IEEE80211_AC_VO];
- 	if (ath_tx_start(sc->hw, skb, &txctl))
-@@ -1119,10 +1119,8 @@ ath_chanctx_send_vif_ps_frame(struct ath_softc *sc, struct ath_vif *avp,
+ static const struct pci_device_id pci_use_msi[] = {
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_NETMOS, PCI_DEVICE_ID_NETMOS_9900,
+@@ -149,6 +151,8 @@ static const struct pci_device_id pci_us
+ 			 0xA000, 0x1000) },
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_HP_3PAR, PCI_DEVICE_ID_HPE_PCI_SERIAL,
+ 			 PCI_ANY_ID, PCI_ANY_ID) },
++	{ PCI_DEVICE_SUB(PCIE_VENDOR_ID_ASIX, PCIE_DEVICE_ID_AX99100,
++			 0xA000, 0x1000) },
+ 	{ }
+ };
  
- 		skb->priority = 7;
- 		skb_set_queue_mapping(skb, IEEE80211_AC_VO);
--		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta)) {
--			dev_kfree_skb_any(skb);
-+		if (!ieee80211_tx_prepare_skb(sc->hw, vif, skb, band, &sta))
- 			return false;
--		}
+@@ -912,6 +916,7 @@ static int pci_netmos_init(struct pci_de
+ 	case PCI_DEVICE_ID_NETMOS_9912:
+ 	case PCI_DEVICE_ID_NETMOS_9922:
+ 	case PCI_DEVICE_ID_NETMOS_9900:
++	case PCIE_DEVICE_ID_AX99100:
+ 		num_serial = pci_netmos_9900_numports(dev);
  		break;
- 	default:
- 		return false;
-diff --git a/drivers/net/wireless/mediatek/mt76/scan.c b/drivers/net/wireless/mediatek/mt76/scan.c
-index ff9176cdee3de..63b0447e55c15 100644
---- a/drivers/net/wireless/mediatek/mt76/scan.c
-+++ b/drivers/net/wireless/mediatek/mt76/scan.c
-@@ -63,10 +63,8 @@ mt76_scan_send_probe(struct mt76_dev *dev, struct cfg80211_ssid *ssid)
  
- 	rcu_read_lock();
+@@ -2507,6 +2512,14 @@ static struct pci_serial_quirk pci_seria
+ 		.init		= pci_netmos_init,
+ 		.setup		= pci_netmos_9900_setup,
+ 	},
++	{
++		.vendor		= PCIE_VENDOR_ID_ASIX,
++		.device		= PCI_ANY_ID,
++		.subvendor	= PCI_ANY_ID,
++		.subdevice	= PCI_ANY_ID,
++		.init		= pci_netmos_init,
++		.setup		= pci_netmos_9900_setup,
++	},
+ 	/*
+ 	 * EndRun Technologies
+ 	*/
+@@ -6028,6 +6041,10 @@ static const struct pci_device_id serial
+ 		0xA000, 0x3002,
+ 		0, 0, pbn_NETMOS9900_2s_115200 },
  
--	if (!ieee80211_tx_prepare_skb(phy->hw, vif, skb, band, NULL)) {
--		ieee80211_free_txskb(phy->hw, skb);
-+	if (!ieee80211_tx_prepare_skb(phy->hw, vif, skb, band, NULL))
- 		goto out;
--	}
- 
- 	info = IEEE80211_SKB_CB(skb);
- 	if (req->no_cck)
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 79cc63272134d..cfbd0c50be1c9 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -3021,7 +3021,6 @@ static void hw_scan_work(struct work_struct *work)
- 						      hwsim->tmp_chan->band,
- 						      NULL)) {
- 				rcu_read_unlock();
--				kfree_skb(probe);
- 				continue;
- 			}
- 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index c2e49542626c8..706f87c6d905a 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -7291,7 +7291,9 @@ void ieee80211_report_wowlan_wakeup(struct ieee80211_vif *vif,
-  * @band: the band to transmit on
-  * @sta: optional pointer to get the station to send the frame to
-  *
-- * Return: %true if the skb was prepared, %false otherwise
-+ * Return: %true if the skb was prepared, %false otherwise.
-+ * On failure, the skb is freed by this function; callers must not
-+ * free it again.
-  *
-  * Note: must be called under RCU lock
-  */
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 1b55e83404135..0692fbb6c489e 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -1898,8 +1898,10 @@ bool ieee80211_tx_prepare_skb(struct ieee80211_hw *hw,
- 	struct ieee80211_tx_data tx;
- 	struct sk_buff *skb2;
- 
--	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP)
-+	if (ieee80211_tx_prepare(sdata, &tx, NULL, skb) == TX_DROP) {
-+		kfree_skb(skb);
- 		return false;
-+	}
- 
- 	info->band = band;
- 	info->control.vif = vif;
--- 
-2.51.0
-
++	{	PCIE_VENDOR_ID_ASIX, PCIE_DEVICE_ID_AX99100,
++		0xA000, 0x1000,
++		0, 0, pbn_b0_1_115200 },
++
+ 	/*
+ 	 * Best Connectivity and Rosewill PCI Multi I/O cards
+ 	 */
 
 
 
