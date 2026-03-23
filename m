@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-228830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228353-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KDfuOZpXwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-228830-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:14 +0100
+	id 2NhSFWhSwWkPSQQAu9opvQ
+	(envelope-from <stable+bounces-228353-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:47:04 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FB12F5DE0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66002F52EC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:47:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF10E3228B1E
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:47:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18976306C533
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF3D23EA85;
-	Mon, 23 Mar 2026 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A305B3AF645;
+	Mon, 23 Mar 2026 14:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBgOUM9Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTLVoyCj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0D523815B;
-	Mon, 23 Mar 2026 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6649F286417;
+	Mon, 23 Mar 2026 14:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277251; cv=none; b=ARMD1iA8PYlhPNPpt7RaOrq5MRTBHULdAmVVkxx2H+xZXEwxASjcOchsrMFBkC9KhZxlrXjjlXyhQmRfpZLPtxNYFTtkFgb1aju0DsPkA1YxGcNyGjgyg3nolXxueRr9QvWeiD4xa0mQSNDEzHx0RsJtFlBTYzQ1hMpPKB4YWSM=
+	t=1774274889; cv=none; b=Kmj1i/GwS/RdBRdjx3l6cXE9q7G3fxCYHO8cRf/ZOWmhnqPkBJdUoT1pVboB/+Eyezlhmkcfq2s0X1ajmRbfu2/SMCpsPw94A/Ol5m14gt179fVwU/mg5VCu+HcqDebIYKZ95y6ffw1p/dYFt1lNCUnHia0WOpimL1DfiJ6TEfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277251; c=relaxed/simple;
-	bh=TLarNvIdS6zU5M/tq/R45JYd4h9r2R+cnkDCe+h2rsQ=;
+	s=arc-20240116; t=1774274889; c=relaxed/simple;
+	bh=dQJbVBzld0kcIKB2bV/LkDLBsGqAKov9aEiQ8CVcRBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DHHURhcOy67pIAWUNKjOGBOzhnrXJVtqsbhnQvKcb8qBZdqNv9Ot2H+I/F4ucTEVquIwJzILRgznWYVz2owqAT0/vDidC2vWss7S3RcT2TyQAC3uLktvYOEsHbS99nv5C8+9RZLsm5pPMfCNndQp/4HfYMta7QfrB2jWQ2cJSEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBgOUM9Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E748C4CEF7;
-	Mon, 23 Mar 2026 14:47:31 +0000 (UTC)
+	 MIME-Version; b=FsdTt5KItYYFiOQvnDW4O2rR7cMEUdIXAUFmbF4KV91GYSz6UWxGHiQ4U3XqA2kxQQE6K5HRM+Jd35XYXgQ31KJXrZyVG7yl9KFr2Cfuv+/Mv3wQnZMbdnaBrPGGLXMQuy1zY39xJiVEj3FHRol8oQOc3eICoab6g30zvHoI3ZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTLVoyCj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDEDFC4CEF7;
+	Mon, 23 Mar 2026 14:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277251;
-	bh=TLarNvIdS6zU5M/tq/R45JYd4h9r2R+cnkDCe+h2rsQ=;
+	s=korg; t=1774274889;
+	bh=dQJbVBzld0kcIKB2bV/LkDLBsGqAKov9aEiQ8CVcRBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBgOUM9QIQQkngcwa+ssp6ke20iI9x64Kb79lR2Vp0qAMpBVknABr7SvMrpx5/hMs
-	 A3T1Uq6ZjqZNV1PCuLoRoX6pCuU3pk/NvBzMZFHqg4W+jKcxNNEPXJObpk96TVH/wD
-	 ktGHar0BBDao5nq/GSp0hMzVbAsUWk7ep+jBDi1M=
+	b=NTLVoyCjJ+aW0T4x3+8MfjMcy6c4vFUtGQyFJ8WRek1wb2BGicSy8Lvr3NqdXF7jl
+	 7F0mKwWd759e+k3KGg0VZtAZw9+MHEZcFYwcrGnvozfns+yguCKAu+Up7S83bCEXKi
+	 Iwq8wrSwGDU8yFLlDj2eUaRxZ6o681Q/lk84kND8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Gu <ustc.gu@gmail.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Qais Yousef <qyousef@layalina.io>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 370/460] cache: ax45mp: Fix device node reference leak in ax45mp_cache_init()
+Subject: [PATCH 6.18 145/212] sched: idle: Consolidate the handling of two special cases
 Date: Mon, 23 Mar 2026 14:46:06 +0100
-Message-ID: <20260323134535.657812610@linuxfoundation.org>
+Message-ID: <20260323134508.354507508@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
+References: <20260323134503.770111826@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +67,164 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228830-lists,stable=lfdr.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,microchip.com,kernel.org];
+	TAGGED_FROM(0.00)[bounces-228353-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[6];
-	NEURAL_HAM(-0.00)[-0.931];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 57FB12F5DE0
+X-Rspamd-Queue-Id: A66002F52EC
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Gu <ustc.gu@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 0528a348b04b327a4611e29589beb4c9ae81304a ]
+[ Upstream commit f4c31b07b136839e0fb3026f8a5b6543e3b14d2f ]
 
-In ax45mp_cache_init(), of_find_matching_node() returns a device node
-with an incremented reference count that must be released with
-of_node_put(). The current code fails to call of_node_put() which
-causes a reference leak.
+There are two special cases in the idle loop that are handled
+inconsistently even though they are analogous.
 
-Use the __free(device_node) attribute to ensure automatic cleanup when
-the variable goes out of scope.
+The first one is when a cpuidle driver is absent and the default CPU
+idle time power management implemented by the architecture code is used.
+In that case, the scheduler tick is stopped every time before invoking
+default_idle_call().
 
-Fixes: d34599bcd2e4 ("cache: Add L2 cache management for Andes AX45MP RISC-V core")
-Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+The second one is when a cpuidle driver is present, but there is only
+one idle state in its table.  In that case, the scheduler tick is never
+stopped at all.
+
+Since each of these approaches has its drawbacks, reconcile them with
+the help of one simple heuristic.  Namely, stop the tick if the CPU has
+been woken up by it in the previous iteration of the idle loop, or let
+it tick otherwise.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Qais Yousef <qyousef@layalina.io>
+Reviewed-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Fixes: ed98c3491998 ("sched: idle: Do not stop the tick before cpuidle_idle_call()")
+[ rjw: Added Fixes tag, changelog edits ]
+Link: https://patch.msgid.link/4741364.LvFx2qVVIh@rafael.j.wysocki
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cache/ax45mp_cache.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/sched/idle.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/cache/ax45mp_cache.c b/drivers/cache/ax45mp_cache.c
-index 1d7dd3d2c101c..934c5087ec2bd 100644
---- a/drivers/cache/ax45mp_cache.c
-+++ b/drivers/cache/ax45mp_cache.c
-@@ -178,11 +178,11 @@ static const struct of_device_id ax45mp_cache_ids[] = {
+diff --git a/kernel/sched/idle.c b/kernel/sched/idle.c
+index d9c515da328e5..bf92ae29361ed 100644
+--- a/kernel/sched/idle.c
++++ b/kernel/sched/idle.c
+@@ -160,6 +160,14 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	return cpuidle_enter(drv, dev, next_state);
+ }
  
- static int __init ax45mp_cache_init(void)
++static void idle_call_stop_or_retain_tick(bool stop_tick)
++{
++	if (stop_tick || tick_nohz_tick_stopped())
++		tick_nohz_idle_stop_tick();
++	else
++		tick_nohz_idle_retain_tick();
++}
++
+ /**
+  * cpuidle_idle_call - the main idle function
+  *
+@@ -169,7 +177,7 @@ static int call_cpuidle(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+  * set, and it returns with polling set.  If it ever stops polling, it
+  * must clear the polling bit.
+  */
+-static void cpuidle_idle_call(void)
++static void cpuidle_idle_call(bool stop_tick)
  {
--	struct device_node *np;
- 	struct resource res;
- 	int ret;
+ 	struct cpuidle_device *dev = cpuidle_get_device();
+ 	struct cpuidle_driver *drv = cpuidle_get_cpu_driver(dev);
+@@ -185,7 +193,7 @@ static void cpuidle_idle_call(void)
+ 	}
  
--	np = of_find_matching_node(NULL, ax45mp_cache_ids);
-+	struct device_node *np __free(device_node) =
-+		of_find_matching_node(NULL, ax45mp_cache_ids);
- 	if (!of_device_is_available(np))
- 		return -ENODEV;
+ 	if (cpuidle_not_available(drv, dev)) {
+-		tick_nohz_idle_stop_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		default_idle_call();
+ 		goto exit_idle;
+@@ -220,17 +228,19 @@ static void cpuidle_idle_call(void)
+ 		next_state = cpuidle_find_deepest_state(drv, dev, max_latency_ns);
+ 		call_cpuidle(drv, dev, next_state);
+ 	} else if (drv->state_count > 1) {
+-		bool stop_tick = true;
++		/*
++		 * stop_tick is expected to be true by default by cpuidle
++		 * governors, which allows them to select idle states with
++		 * target residency above the tick period length.
++		 */
++		stop_tick = true;
+ 
+ 		/*
+ 		 * Ask the cpuidle framework to choose a convenient idle state.
+ 		 */
+ 		next_state = cpuidle_select(drv, dev, &stop_tick);
+ 
+-		if (stop_tick || tick_nohz_tick_stopped())
+-			tick_nohz_idle_stop_tick();
+-		else
+-			tick_nohz_idle_retain_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		entered_state = call_cpuidle(drv, dev, next_state);
+ 		/*
+@@ -238,7 +248,7 @@ static void cpuidle_idle_call(void)
+ 		 */
+ 		cpuidle_reflect(dev, entered_state);
+ 	} else {
+-		tick_nohz_idle_retain_tick();
++		idle_call_stop_or_retain_tick(stop_tick);
+ 
+ 		/*
+ 		 * If there is only a single idle state (or none), there is
+@@ -266,6 +276,7 @@ static void cpuidle_idle_call(void)
+ static void do_idle(void)
+ {
+ 	int cpu = smp_processor_id();
++	bool got_tick = false;
+ 
+ 	/*
+ 	 * Check if we need to update blocked load
+@@ -336,8 +347,9 @@ static void do_idle(void)
+ 			tick_nohz_idle_restart_tick();
+ 			cpu_idle_poll();
+ 		} else {
+-			cpuidle_idle_call();
++			cpuidle_idle_call(got_tick);
+ 		}
++		got_tick = tick_nohz_idle_got_tick();
+ 		arch_cpu_idle_exit();
+ 	}
  
 -- 
 2.51.0
