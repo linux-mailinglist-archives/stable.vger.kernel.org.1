@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-228393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228874-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id COsGGqRSwWkPSQQAu9opvQ
-	(envelope-from <stable+bounces-228393-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:48:04 +0100
+	id 2A79DAxqwWmoSwQAu9opvQ
+	(envelope-from <stable+bounces-228874-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:56 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8D4D2F5354
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:48:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 863E72F821C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:27:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5FF3C317C833
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:11:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ADF8D3165A2A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264433B27FF;
-	Mon, 23 Mar 2026 14:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851A523B612;
+	Mon, 23 Mar 2026 14:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGYz3iGv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lUUj7qvk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC2F93B27F3;
-	Mon, 23 Mar 2026 14:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF2C3AE70F;
+	Mon, 23 Mar 2026 14:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274991; cv=none; b=ZFGFS4akmj6valBJST1a3RO5hX+KNR7yAqFQWBRrskT/x27UCvGerdf/U320ug12S72d0n1Pm8bCgdysTyKggtk25eM6Wm433VrA2Z0unoH/r8bpUPO3m8ppDHa/QDGC9czDRQnjjLYTmxnHz36VfB83kDFMV/gpvHldjCnJMO4=
+	t=1774277368; cv=none; b=KMHsxMnrVzWf5J5YXv20G3ju84DV2GrvHBA2TUNI6N81usLbtYnJUbpoeBO4iSp//SUIpMjSCNx615tzSnvtVCrDuWUitpWalqUrsr3ZnoZffHwpF8dVHz1wAqUEcd16JE87CHbmvHBsaGlDjV1yfu0jeYFCBxkvEBDZDt3lW8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274991; c=relaxed/simple;
-	bh=TktIoEVVanfo/cbbwgkI/YK10MxZO4iev+b3aS2ejf8=;
+	s=arc-20240116; t=1774277368; c=relaxed/simple;
+	bh=DjHrKctnXrgdjYd5QrqK2AvKV2NUsJEobc9RI5HPCeo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N65Z+z+27nM8bIDeYo6L9rdc3YEEPNRlXRiHcXihKvGCQ8RSCBDUPR6k7Jq3OpUJTITGSLBMNhNCaf8qQXV0ThVSTD58DmzsVRMJ3sqVyZG2ljPG5Mh/qFUfbdIXlNWGTaD4roN2PBOy3LvNwKDh24DRLdzbf+H2J2hJKMcob3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGYz3iGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E17C4CEF7;
-	Mon, 23 Mar 2026 14:09:51 +0000 (UTC)
+	 MIME-Version; b=h5Uma6n889tKfKNGoDIHD4Ajo3pkZhbxI6XkhnZy2EgRdRwRXlqxzcdqwKAAvjVsVtExBp4eIze4NLI+cWIXPKZ5PCpH8o+7vz1pJKMfGOeUZ96oDadvnO4K7erx/oiVr1XZ23SSM4ykgpAXZQeIl/PNKs1Y2m/pQy1lybdo0bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lUUj7qvk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37BAFC2BC9E;
+	Mon, 23 Mar 2026 14:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274991;
-	bh=TktIoEVVanfo/cbbwgkI/YK10MxZO4iev+b3aS2ejf8=;
+	s=korg; t=1774277367;
+	bh=DjHrKctnXrgdjYd5QrqK2AvKV2NUsJEobc9RI5HPCeo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XGYz3iGv+gmXSw2Fx22NYlUUyqOIx5HF8YJNH/KB/XNebKuvKC6tgT5HzR3QRs5bN
-	 xKsU40bsUHf1gmKY9Uqux4s7ypWgRwrxvr3P8GBppy1FSFRRyiYDsINVtxJhkl0imu
-	 n//lkfupPxABCj4pj2qQ0S/IuVJPi4TIHADDFp7s=
+	b=lUUj7qvkrBJszcdGQtKNVRqhNJzdx7D7mNdVLUr9c1V/CympaQeCeLdWgsfeM9Epu
+	 FqY1tv/x1+taPFRAUscxf6Z/FaKXAvYyxHQnMi8ypStJqgFaixaC6TDZyCv881pyRq
+	 bw2lfP4higXDtBp0Ot8jPU8zykrvvgPVtwz17bSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.18 186/212] i2c: fsi: Fix a potential leak in fsi_i2c_probe()
-Date: Mon, 23 Mar 2026 14:46:47 +0100
-Message-ID: <20260323134509.620195033@linuxfoundation.org>
+	Tobi Gaertner <tob.gaertner@me.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 412/460] net: usb: cdc_ncm: add ndpoffset to NDP16 nframes bounds check
+Date: Mon, 23 Mar 2026 14:46:48 +0100
+Message-ID: <20260323134536.675718549@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,63 +73,93 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228393-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,wanadoo.fr,kernel.org];
-	TO_DN_SOME(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228874-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,me.com,kernel.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
 	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D8D4D2F5354
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid]
+X-Rspamd-Queue-Id: 863E72F821C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Tobi Gaertner <tob.gaertner@me.com>
 
-commit be627abcc0d5dbd5882873bd85fbc18aa3d189ed upstream.
+[ Upstream commit 2aa8a4fa8d5b7d0e1ebcec100e1a4d80a1f4b21a ]
 
-In the commit in Fixes:, when the code has been updated to use an explicit
-for loop, instead of for_each_available_child_of_node(), the assumption
-that a reference to a device_node structure would be released at each
-iteration has been broken.
+cdc_ncm_rx_verify_ndp16() validates that the NDP header and its DPE
+entries fit within the skb. The first check correctly accounts for
+ndpoffset:
 
-Now, an explicit of_node_put() is needed to release the reference.
+  if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len)
 
-Fixes: 095561f476ab ("i2c: fsi: Create busses for all ports")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: <stable@vger.kernel.org> # v5.3+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/fd805c39f8de51edf303856103d782138a1633c8.1772382022.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+but the second check omits it:
+
+  if ((sizeof(struct usb_cdc_ncm_ndp16) +
+       ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len)
+
+This validates the DPE array size against the total skb length as if
+the NDP were at offset 0, rather than at ndpoffset. When the NDP is
+placed near the end of the NTB (large wNdpIndex), the DPE entries can
+extend past the skb data buffer even though the check passes.
+cdc_ncm_rx_fixup() then reads out-of-bounds memory when iterating
+the DPE array.
+
+Add ndpoffset to the nframes bounds check and use struct_size_t() to
+express the NDP-plus-DPE-array size more clearly.
+
+Fixes: ff06ab13a4cc ("net: cdc_ncm: splitting rx_fixup for code reuse")
+Signed-off-by: Tobi Gaertner <tob.gaertner@me.com>
+Link: https://patch.msgid.link/20260314054640.2895026-2-tob.gaertner@me.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-fsi.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/cdc_ncm.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-fsi.c
-+++ b/drivers/i2c/busses/i2c-fsi.c
-@@ -728,6 +728,7 @@ static int fsi_i2c_probe(struct device *
- 		rc = i2c_add_adapter(&port->adapter);
- 		if (rc < 0) {
- 			dev_err(dev, "Failed to register adapter: %d\n", rc);
-+			of_node_put(np);
- 			kfree(port);
- 			continue;
- 		}
+diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
+index 5c89e03f93d61..a006583e8e085 100644
+--- a/drivers/net/usb/cdc_ncm.c
++++ b/drivers/net/usb/cdc_ncm.c
+@@ -1657,6 +1657,7 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
+ 	struct usbnet *dev = netdev_priv(skb_in->dev);
+ 	struct usb_cdc_ncm_ndp16 *ndp16;
+ 	int ret = -EINVAL;
++	size_t ndp_len;
+ 
+ 	if ((ndpoffset + sizeof(struct usb_cdc_ncm_ndp16)) > skb_in->len) {
+ 		netif_dbg(dev, rx_err, dev->net, "invalid NDP offset  <%u>\n",
+@@ -1676,8 +1677,8 @@ int cdc_ncm_rx_verify_ndp16(struct sk_buff *skb_in, int ndpoffset)
+ 					sizeof(struct usb_cdc_ncm_dpe16));
+ 	ret--; /* we process NDP entries except for the last one */
+ 
+-	if ((sizeof(struct usb_cdc_ncm_ndp16) +
+-	     ret * (sizeof(struct usb_cdc_ncm_dpe16))) > skb_in->len) {
++	ndp_len = struct_size_t(struct usb_cdc_ncm_ndp16, dpe16, ret);
++	if (ndpoffset + ndp_len > skb_in->len) {
+ 		netif_dbg(dev, rx_err, dev->net, "Invalid nframes = %d\n", ret);
+ 		ret = -EINVAL;
+ 	}
+-- 
+2.51.0
+
 
 
 
