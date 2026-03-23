@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-229924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228928-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 0FczGNh8wWknTgQAu9opvQ
-	(envelope-from <stable+bounces-229924-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:08 +0100
+	id oH+wJaBYwWnbSQQAu9opvQ
+	(envelope-from <stable+bounces-228928-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:36 +0100
 X-Original-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE792FA6B5
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:48:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3BB2F6019
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:13:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3710D321A986
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:27:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 73697332BE65
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1B53BE170;
-	Mon, 23 Mar 2026 16:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCC8242D9D;
+	Mon, 23 Mar 2026 14:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BytGSI9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfTul4+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DF8E3BE17D;
-	Mon, 23 Mar 2026 16:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6046626F28D;
+	Mon, 23 Mar 2026 14:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283229; cv=none; b=fHT9MqSsEJOX4fbWDLZilKMruBKYA55r0Q03puTk/8JzbX+GymInTgVdVl0nnjoLRStA/oZV66pQiNVErmfdhcVBhubxYb8+DICnH++lXFA7nVbsLzfKMH19df8bdcjDEhzbWVbhGj75PAnq/YJPMPTo7k+T1NnD5TI+x4QhpW0=
+	t=1774277513; cv=none; b=SvlGnN9WOPSlk1MyUDno8DGKH+asFfj6ffn9q+1xb7Rrn70gMrZPzvL/mTmyF8xYvqRRZvz6V+sOvtkhsk+XML+g+yJ5RVW81dEF1BmQw74HyepF5HhWkAXDOHz/wJNAcYoN4TJ81A9P6zDxCzTaDOTBYYHN/M/9WiuLnI7ZNlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283229; c=relaxed/simple;
-	bh=Yn89+znhR9DoSRja4jSXiriumXDddx5rUe0rO5LC/DI=;
+	s=arc-20240116; t=1774277513; c=relaxed/simple;
+	bh=n8ybsdhuyvg2XLLGsXoN3vavRBsuu9IB1zu9qsKqtSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CiwWz1AoyVzE6CiEdLXG61GgfV+t5Fsd3RFABDTOAOn/oMFjVek1Q7X3q3Xk0yDgjrmkBRmutHmIFCK7X066IVJltEuECYHnEkU8DuUzg6Y41gu/6ypCE75NDOONfWHFc4ZjKfNTsqHZsR6SfjpF4qlilByhoHCo9UEmfj+uRps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BytGSI9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 181A9C4CEF7;
-	Mon, 23 Mar 2026 16:27:08 +0000 (UTC)
+	 MIME-Version; b=cbSXj/9iC1BCNZOn+bXI8BFHZdY3tQYfyyRH+4UR9FVH5sJKVFbjdsa8LnFvDZbMYePugwn9IlA+HHKMJKdetL45FC4+u0K9gbZGPjfio+pBAFkkYscAgeWjtfGBER/LWSsPI/9H5LUNetBWhXklpZBzSBg43HnQc1FEe48bJbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfTul4+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD3DC4CEF7;
+	Mon, 23 Mar 2026 14:51:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283229;
-	bh=Yn89+znhR9DoSRja4jSXiriumXDddx5rUe0rO5LC/DI=;
+	s=korg; t=1774277513;
+	bh=n8ybsdhuyvg2XLLGsXoN3vavRBsuu9IB1zu9qsKqtSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BytGSI9Zw283q1jJXfijAFk9SRcgkJoOHmuwgG1igZpf7F3zDye3U1qS/YRNdfvXW
-	 RMd/U4ssJJQyqgQxAxuULCdf4U0Jz+1mjrDUzmaRwb09E5h7wmgGYktIoHxUI/AYfu
-	 ts1Uc6MR3XeEevPJNnoSNhgAbrgHHSdT+8S9XIts=
+	b=vfTul4+oQv6fhDzUVc5QzGxJbdj1ON6fAbn7YV4zxAUD1h2tHLltZEkqZuhqtb21N
+	 kIOWBnYVFmHJ2tS/4+iVHG3Mbt9AhzGhY7bBkWOGuiKlBKbiiyZZm2ypQ4kGtBz+vn
+	 7bPfm6XDORugtpwPf5Zj0OgKHUDFKg8PUX2AN/5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamal Dasu <kamal.dasu@broadcom.com>,
-	William Zhang <william.zhang@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 449/481] mtd: rawnand: brcmnand: skip DMA during panic write
+	Sanman Pradhan <psanman@juniper.net>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.12 435/460] hwmon: (pmbus/isl68137) Fix unchecked return value and use sysfs_emit()
 Date: Mon, 23 Mar 2026 14:47:11 +0100
-Message-ID: <20260323134536.156962621@linuxfoundation.org>
+Message-ID: <20260323134537.252676013@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,83 +65,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229924-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228928-lists,stable=lfdr.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FROM_HAS_DN(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,bootlin.com:email,sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,broadcom.com:email]
-X-Rspamd-Queue-Id: DEE792FA6B5
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: 1A3BB2F6019
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamal Dasu <kamal.dasu@broadcom.com>
+From: Sanman Pradhan <psanman@juniper.net>
 
-[ Upstream commit da9ba4dcc01e7cf52b7676f0ee9607b8358c2171 ]
+commit 86259558e422b250aa6aa57163a6d759074573f5 upstream.
 
-When oops_panic_write is set, the driver disables interrupts and
-switches to PIO polling mode but still falls through into the DMA
-path. DMA cannot be used reliably in panic context, so make the
-DMA path an else branch to ensure only PIO is used during panic
-writes.
+isl68137_avs_enable_show_page() uses the return value of
+pmbus_read_byte_data() without checking for errors. If the I2C transaction
+fails, a negative error code is passed through bitwise operations,
+producing incorrect output.
 
-Fixes: c1ac2dc34b51 ("mtd: rawnand: brcmnand: When oops in progress use pio and interrupt polling")
-Signed-off-by: Kamal Dasu <kamal.dasu@broadcom.com>
-Reviewed-by: William Zhang <william.zhang@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add an error check to propagate the return value if it is negative.
+Additionally, modernize the callback by replacing sprintf()
+with sysfs_emit().
+
+Fixes: 038a9c3d1e424 ("hwmon: (pmbus/isl68137) Add driver for Intersil ISL68137 PWM Controller")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sanman Pradhan <psanman@juniper.net>
+Link: https://lore.kernel.org/r/20260318193952.47908-2-sanman.pradhan@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/hwmon/pmbus/isl68137.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 20c6aeef107c8..99e0d7aa2f4bd 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2410,14 +2410,12 @@ static int brcmnand_write(struct mtd_info *mtd, struct nand_chip *chip,
- 	for (i = 0; i < ctrl->max_oob; i += 4)
- 		oob_reg_write(ctrl, i, 0xffffffff);
+--- a/drivers/hwmon/pmbus/isl68137.c
++++ b/drivers/hwmon/pmbus/isl68137.c
+@@ -80,8 +80,11 @@ static ssize_t isl68137_avs_enable_show_
+ {
+ 	int val = pmbus_read_byte_data(client, page, PMBUS_OPERATION);
  
--	if (mtd->oops_panic_write)
-+	if (mtd->oops_panic_write) {
- 		/* switch to interrupt polling and PIO mode */
- 		disable_ctrl_irqs(ctrl);
--
--	if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
-+	} else if (use_dma(ctrl) && (has_edu(ctrl) || !oob) && flash_dma_buf_ok(buf)) {
- 		if (ctrl->dma_trans(host, addr, (u32 *)buf, oob, mtd->writesize,
- 				    CMD_PROGRAM_PAGE))
--
- 			ret = -EIO;
+-	return sprintf(buf, "%d\n",
+-		       (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS ? 1 : 0);
++	if (val < 0)
++		return val;
++
++	return sysfs_emit(buf, "%d\n",
++			   (val & ISL68137_VOUT_AVS) == ISL68137_VOUT_AVS);
+ }
  
- 		goto out;
--- 
-2.51.0
-
+ static ssize_t isl68137_avs_enable_store_page(struct i2c_client *client,
 
 
 
