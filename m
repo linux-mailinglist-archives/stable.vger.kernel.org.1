@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-228361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229866-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id kDO6E1xMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228361-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:16 +0100
+	id ODYNLxNuwWnVTAQAu9opvQ
+	(envelope-from <stable+bounces-229866-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F902F442B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:21:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6CC2F8BD4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:45:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 15EC5305973F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:10:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 34BE531BAC4A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3C23B38A7;
-	Mon, 23 Mar 2026 14:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A193B38A4;
+	Mon, 23 Mar 2026 16:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KDKUArTK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlqaLBLe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C63323947A6;
-	Mon, 23 Mar 2026 14:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64B3283C82;
+	Mon, 23 Mar 2026 16:24:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274909; cv=none; b=oADBGW6Uv19RlSmMoctcmLtmHy7fjHf+FuFVah8qg7Ao9cVOBkjCXHli8WS/dFVFUGltJIX3kVLy9CCFOnz/vZ3t/BKR+12zS5vYJeC17zvMPCXgLjD6UWP/s62xOVzYjKmKXEYYRG1jII+QqaoYAzfaX+D2ckbxPK3JMG/YLFE=
+	t=1774283074; cv=none; b=kMg+DS8g+tZy4x9n9XykmCIvRTMEFks/nrIq46OLLdQXD/QTdBSvtGxJmdTbNG7xqVdTal9TrtggXkzI/afzeT1Tdn0nrZDDvJo05i5ToKd0UtiPM0mVyMWLyR3SeBIJqshmduwYPXQ2REGwxTmxYGxwFWnd62uSHC37KKY1+Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274909; c=relaxed/simple;
-	bh=hBpZa2DO8QFSAPBApZk4ZUpySRFpZEBKWFBjhb16V+w=;
+	s=arc-20240116; t=1774283074; c=relaxed/simple;
+	bh=16RDQAF0mJ/gXhBBAVlVlM/qsGqF5MrGH+DcxVEjc/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LVNxOn7vf1/ZMUXXslzAE8j/8fEksrCnlf5qyfiDNWiiF/TyLXJdiMbwzR+0uBRuzWlNIBD1n51nCYg8HMUCJ4q0xCrsxTE8J8zDrzEE8RzcxevY612xiWDxghXzQZtRxDuw4wmQy0FxYikwyXKZHmnTcLikimMWipIfm2t9bdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KDKUArTK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0B7C2BC9E;
-	Mon, 23 Mar 2026 14:08:29 +0000 (UTC)
+	 MIME-Version; b=J6or4t4jmPTtQFC6CVCUhh6REGGY+GJVb3Uy8QS+Uxhl6uGZvYtHsEK66ftgcTD9BpVvD2hCMIvvHogYSvWhgHHySFLXBAWJbTcue9MrQo564bmwT1HlaUwmIP4qDVHGxgYQETNBL1v2i2j3YHkU5v/n19/8qdg+SmTfsHfdAvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlqaLBLe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F0B2C4CEF7;
+	Mon, 23 Mar 2026 16:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274909;
-	bh=hBpZa2DO8QFSAPBApZk4ZUpySRFpZEBKWFBjhb16V+w=;
+	s=korg; t=1774283073;
+	bh=16RDQAF0mJ/gXhBBAVlVlM/qsGqF5MrGH+DcxVEjc/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KDKUArTKiAusuJDbPVgvPL/zn+6qClRwsi+nQLEte/5ldq0YNc1gUBXKa9uBjlmEd
-	 zhTW3MK3Qge5jB+p5PdzcIV1Me0rbQlTqqClcMvuUfyZiV3HvHeu2VS6MYD7O+TxYj
-	 FQakrPGGD8LW1YOVImDlRD6fUwSQwbuttVE26jsc=
+	b=MlqaLBLeoO4lneYPyqcnzfIR9cV4jQBN3NyRQElMt/IsUFHl2ZJZWDRAT8fFXeAuG
+	 kXf4U9jZtH9B7VNbSXJv1/NxgS568Ma2OvFYFIZisNqoPWV7Tp+67b+G/bvYH8ANOY
+	 cNl7U7pv6tqzmAPH4o2vxsDnMjbBnDPeGQn6tuo8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Keenan Dong <keenanat2000@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 153/212] clsact: Fix use-after-free in init/destroy rollback asymmetry
+	Jan Kara <jack@suse.cz>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.1 392/481] btrfs: do not strictly require dirty metadata threshold for metadata writepages
 Date: Mon, 23 Mar 2026 14:46:14 +0100
-Message-ID: <20260323134508.592202965@linuxfoundation.org>
+Message-ID: <20260323134534.713614370@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,150 +70,196 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	URIBL_MULTI_FAIL(0.00)[linuxfoundation.org:server fail,sto.lore.kernel.org:server fail,iogearbox.net:server fail,msgid.link:server fail];
-	TAGGED_FROM(0.00)[bounces-228361-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229866-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.cz,bur.io,suse.com,163.com];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,iogearbox.net,kernel.org,redhat.com];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,iogearbox.net:email]
-X-Rspamd-Queue-Id: E1F902F442B
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BD6CC2F8BD4
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit a0671125d4f55e1e98d9bde8a0b671941987e208 ]
+[ Upstream commit 4e159150a9a56d66d247f4b5510bed46fe58aa1c ]
 
-Fix a use-after-free in the clsact qdisc upon init/destroy rollback asymmetry.
-The latter is achieved by first fully initializing a clsact instance, and
-then in a second step having a replacement failure for the new clsact qdisc
-instance. clsact_init() initializes ingress first and then takes care of the
-egress part. This can fail midway, for example, via tcf_block_get_ext(). Upon
-failure, the kernel will trigger the clsact_destroy() callback.
+[BUG]
+There is an internal report that over 1000 processes are
+waiting at the io_schedule_timeout() of balance_dirty_pages(), causing
+a system hang and trigger a kernel coredump.
 
-Commit 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry") details the
-way how the transition is happening. If tcf_block_get_ext on the q->ingress_block
-ends up failing, we took the tcx_miniq_inc reference count on the ingress
-side, but not yet on the egress side. clsact_destroy() tests whether the
-{ingress,egress}_entry was non-NULL. However, even in midway failure on the
-replacement, both are in fact non-NULL with a valid egress_entry from the
-previous clsact instance.
+The kernel is v6.4 kernel based, but the root problem still applies to
+any upstream kernel before v6.18.
 
-What we really need to test for is whether the qdisc instance-specific ingress
-or egress side previously got initialized. This adds a small helper for checking
-the miniq initialization called mini_qdisc_pair_inited, and utilizes that upon
-clsact_destroy() in order to fix the use-after-free scenario. Convert the
-ingress_destroy() side as well so both are consistent to each other.
+[CAUSE]
+>From Jan Kara for his wisdom on the dirty page balance behavior first.
 
-Fixes: 1cb6f0bae504 ("bpf: Fix too early release of tcx_entry")
-Reported-by: Keenan Dong <keenanat2000@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20260313065531.98639-1-daniel@iogearbox.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  This cgroup dirty limit was what was actually playing the role here
+  because the cgroup had only a small amount of memory and so the dirty
+  limit for it was something like 16MB.
+
+  Dirty throttling is responsible for enforcing that nobody can dirty
+  (significantly) more dirty memory than there's dirty limit. Thus when
+  a task is dirtying pages it periodically enters into balance_dirty_pages()
+  and we let it sleep there to slow down the dirtying.
+
+  When the system is over dirty limit already (either globally or within
+  a cgroup of the running task), we will not let the task exit from
+  balance_dirty_pages() until the number of dirty pages drops below the
+  limit.
+
+  So in this particular case, as I already mentioned, there was a cgroup
+  with relatively small amount of memory and as a result with dirty limit
+  set at 16MB. A task from that cgroup has dirtied about 28MB worth of
+  pages in btrfs btree inode and these were practically the only dirty
+  pages in that cgroup.
+
+So that means the only way to reduce the dirty pages of that cgroup is
+to writeback the dirty pages of btrfs btree inode, and only after that
+those processes can exit balance_dirty_pages().
+
+Now back to the btrfs part, btree_writepages() is responsible for
+writing back dirty btree inode pages.
+
+The problem here is, there is a btrfs internal threshold that if the
+btree inode's dirty bytes are below the 32M threshold, it will not
+do any writeback.
+
+This behavior is to batch as much metadata as possible so we won't write
+back those tree blocks and then later re-COW them again for another
+modification.
+
+This internal 32MiB is higher than the existing dirty page size (28MiB),
+meaning no writeback will happen, causing a deadlock between btrfs and
+cgroup:
+
+- Btrfs doesn't want to write back btree inode until more dirty pages
+
+- Cgroup/MM doesn't want more dirty pages for btrfs btree inode
+  Thus any process touching that btree inode is put into sleep until
+  the number of dirty pages is reduced.
+
+Thanks Jan Kara a lot for the analysis of the root cause.
+
+[ENHANCEMENT]
+Since kernel commit b55102826d7d ("btrfs: set AS_KERNEL_FILE on the
+btree_inode"), btrfs btree inode pages will only be charged to the root
+cgroup which should have a much larger limit than btrfs' 32MiB
+threshold.
+So it should not affect newer kernels.
+
+But for all current LTS kernels, they are all affected by this problem,
+and backporting the whole AS_KERNEL_FILE may not be a good idea.
+
+Even for newer kernels I still think it's a good idea to get
+rid of the internal threshold at btree_writepages(), since for most cases
+cgroup/MM has a better view of full system memory usage than btrfs' fixed
+threshold.
+
+For internal callers using btrfs_btree_balance_dirty() since that
+function is already doing internal threshold check, we don't need to
+bother them.
+
+But for external callers of btree_writepages(), just respect their
+requests and write back whatever they want, ignoring the internal
+btrfs threshold to avoid such deadlock on btree inode dirty page
+balancing.
+
+CC: stable@vger.kernel.org
+CC: Jan Kara <jack@suse.cz>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ The context change is due to the commit 41044b41ad2c
+("btrfs: add helper to get fs_info from struct inode pointer")
+in v6.9 and the commit c66f2afc7148
+("btrfs: remove pointless writepages callback wrapper")
+in v6.10 which are irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sch_generic.h |  5 +++++
- net/sched/sch_ingress.c   | 14 ++++++++------
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ fs/btrfs/disk-io.c   |   22 ----------------------
+ fs/btrfs/extent_io.c |    3 +--
+ fs/btrfs/extent_io.h |    3 +--
+ 3 files changed, 2 insertions(+), 26 deletions(-)
 
-diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 84c86decebdfa..059eb6cb54f13 100644
---- a/include/net/sch_generic.h
-+++ b/include/net/sch_generic.h
-@@ -1411,6 +1411,11 @@ void mini_qdisc_pair_init(struct mini_Qdisc_pair *miniqp, struct Qdisc *qdisc,
- void mini_qdisc_pair_block_init(struct mini_Qdisc_pair *miniqp,
- 				struct tcf_block *block);
+--- a/fs/btrfs/disk-io.c
++++ b/fs/btrfs/disk-io.c
+@@ -800,28 +800,6 @@ static int btree_migrate_folio(struct ad
+ #define btree_migrate_folio NULL
+ #endif
  
-+static inline bool mini_qdisc_pair_inited(struct mini_Qdisc_pair *miniqp)
-+{
-+	return !!miniqp->p_miniq;
-+}
-+
- void mq_change_real_num_tx(struct Qdisc *sch, unsigned int new_real_tx);
- 
- int sch_frag_xmit_hook(struct sk_buff *skb, int (*xmit)(struct sk_buff *skb));
-diff --git a/net/sched/sch_ingress.c b/net/sched/sch_ingress.c
-index cc6051d4f2ef8..c3e18bae8fbfc 100644
---- a/net/sched/sch_ingress.c
-+++ b/net/sched/sch_ingress.c
-@@ -113,14 +113,15 @@ static void ingress_destroy(struct Qdisc *sch)
+-static int btree_writepages(struct address_space *mapping,
+-			    struct writeback_control *wbc)
+-{
+-	struct btrfs_fs_info *fs_info;
+-	int ret;
+-
+-	if (wbc->sync_mode == WB_SYNC_NONE) {
+-
+-		if (wbc->for_kupdate)
+-			return 0;
+-
+-		fs_info = BTRFS_I(mapping->host)->root->fs_info;
+-		/* this is a bit racy, but that's ok */
+-		ret = __percpu_counter_compare(&fs_info->dirty_metadata_bytes,
+-					     BTRFS_DIRTY_METADATA_THRESH,
+-					     fs_info->dirty_metadata_batch);
+-		if (ret < 0)
+-			return 0;
+-	}
+-	return btree_write_cache_pages(mapping, wbc);
+-}
+-
+ static bool btree_release_folio(struct folio *folio, gfp_t gfp_flags)
  {
- 	struct ingress_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	struct bpf_mprog_entry *entry = rtnl_dereference(dev->tcx_ingress);
-+	struct bpf_mprog_entry *entry;
+ 	if (folio_test_writeback(folio) || folio_test_dirty(folio))
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -2959,8 +2959,7 @@ static int submit_eb_page(struct page *p
+ 	return 1;
+ }
  
- 	if (sch->parent != TC_H_INGRESS)
- 		return;
- 
- 	tcf_block_put_ext(q->block, sch, &q->block_info);
- 
--	if (entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp)) {
-+		entry = rtnl_dereference(dev->tcx_ingress);
- 		tcx_miniq_dec(entry);
- 		if (!tcx_entry_is_active(entry)) {
- 			tcx_entry_update(dev, NULL, true);
-@@ -290,10 +291,9 @@ static int clsact_init(struct Qdisc *sch, struct nlattr *opt,
- 
- static void clsact_destroy(struct Qdisc *sch)
+-int btree_write_cache_pages(struct address_space *mapping,
+-				   struct writeback_control *wbc)
++int btree_writepages(struct address_space *mapping, struct writeback_control *wbc)
  {
-+	struct bpf_mprog_entry *ingress_entry, *egress_entry;
- 	struct clsact_sched_data *q = qdisc_priv(sch);
- 	struct net_device *dev = qdisc_dev(sch);
--	struct bpf_mprog_entry *ingress_entry = rtnl_dereference(dev->tcx_ingress);
--	struct bpf_mprog_entry *egress_entry = rtnl_dereference(dev->tcx_egress);
- 
- 	if (sch->parent != TC_H_CLSACT)
- 		return;
-@@ -301,7 +301,8 @@ static void clsact_destroy(struct Qdisc *sch)
- 	tcf_block_put_ext(q->ingress_block, sch, &q->ingress_block_info);
- 	tcf_block_put_ext(q->egress_block, sch, &q->egress_block_info);
- 
--	if (ingress_entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp_ingress)) {
-+		ingress_entry = rtnl_dereference(dev->tcx_ingress);
- 		tcx_miniq_dec(ingress_entry);
- 		if (!tcx_entry_is_active(ingress_entry)) {
- 			tcx_entry_update(dev, NULL, true);
-@@ -309,7 +310,8 @@ static void clsact_destroy(struct Qdisc *sch)
- 		}
- 	}
- 
--	if (egress_entry) {
-+	if (mini_qdisc_pair_inited(&q->miniqp_egress)) {
-+		egress_entry = rtnl_dereference(dev->tcx_egress);
- 		tcx_miniq_dec(egress_entry);
- 		if (!tcx_entry_is_active(egress_entry)) {
- 			tcx_entry_update(dev, NULL, false);
--- 
-2.51.0
-
+ 	struct extent_buffer *eb_context = NULL;
+ 	struct extent_page_data epd = {
+--- a/fs/btrfs/extent_io.h
++++ b/fs/btrfs/extent_io.h
+@@ -152,8 +152,7 @@ int btrfs_read_folio(struct file *file,
+ int extent_write_locked_range(struct inode *inode, u64 start, u64 end);
+ int extent_writepages(struct address_space *mapping,
+ 		      struct writeback_control *wbc);
+-int btree_write_cache_pages(struct address_space *mapping,
+-			    struct writeback_control *wbc);
++int btree_writepages(struct address_space *mapping, struct writeback_control *wbc);
+ void extent_readahead(struct readahead_control *rac);
+ int extent_fiemap(struct btrfs_inode *inode, struct fiemap_extent_info *fieinfo,
+ 		  u64 start, u64 len);
 
 
 
