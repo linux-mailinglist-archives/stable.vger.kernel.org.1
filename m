@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-229230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229692-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id UETEEApvwWnmTAQAu9opvQ
-	(envelope-from <stable+bounces-229230-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:14 +0100
+	id UC6RJ0xswWlMTAQAu9opvQ
+	(envelope-from <stable+bounces-229692-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:32 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E5132F8DA1
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:49:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA7E82F8760
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:37:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 460F732A5F18
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4D22E30D1708
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EFF259CB2;
-	Mon, 23 Mar 2026 15:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7722D3BE64D;
+	Mon, 23 Mar 2026 16:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gOK/3a6e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VDRG0ydv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA604250BEC;
-	Mon, 23 Mar 2026 15:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4253E3BED3B;
+	Mon, 23 Mar 2026 16:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278469; cv=none; b=trQQSxMoOsRlf3PU0lpzvg3a0yC75UASoCOR/TNR/gGUVA4GsH+p74QvYkI5FG6bDZcBiFVyL4LUy0n3stbV8RQ5ZxwN5rahrf7KwiaFGWBl0xAZzgs/P7HHlP3iURqua6LHp/K4cVphvixU/WA3ayWi1MwsX/icmogaUcAzMEM=
+	t=1774282610; cv=none; b=oMjdbSEcT9K/ZeXtPVG0Ev++1AxMk5Jr0ce7/sDAIoPhkbBGEsnBTEKuQDfbi9AxU8jLqB2ZNg/ri6UBv+qgt+LPTfy+IFI2GSx0KVnyalh+4z9nhGMWsGvkjt6Tsrgmpq1cp6L4CNL10LAcvDhKo1y0fUP8o9CbWqJqhzM7znQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278469; c=relaxed/simple;
-	bh=YZalz3Hy4cM00fod2YrVwYtIQ7zacxMHVPuvK8IPX4Q=;
+	s=arc-20240116; t=1774282610; c=relaxed/simple;
+	bh=1opP8pWpo4pMvVCWr3EzZ4yiwhLEBVnRcHJfNDHMIzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UewA6uKWgtIWPZr7ZYqNpPBe2iTP6iGBy7pnsJ5y1RoYBtAdJzDnyfLgHYAX68eUgU6wm+wMLjfHndsLCTcNWmxMtj2NC4bkfSiGRYuxyB7OsCxuH4jDaf9iPOir5pec+wkNtKc3noLsPqE+O0TZ850ujY81LkncpWbPJP1BCFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gOK/3a6e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233BEC4CEF7;
-	Mon, 23 Mar 2026 15:07:47 +0000 (UTC)
+	 MIME-Version; b=C0sB9c59fZVkBkUEyY9+vdfK3DxlbiKsxvLpO9qaw3pdJyd3rpclpCihdOJOfxTyT+j9uFjr+KQbsXuwxM9++UOLLIlflajXY+ha/GDkBhLJvoJvLVy7rza5AHQdvNxvlKohoOgJwShdfMW1MnGkGCW2nzQGEC+FwBjIG2p3qVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VDRG0ydv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E43CC4CEF7;
+	Mon, 23 Mar 2026 16:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278468;
-	bh=YZalz3Hy4cM00fod2YrVwYtIQ7zacxMHVPuvK8IPX4Q=;
+	s=korg; t=1774282609;
+	bh=1opP8pWpo4pMvVCWr3EzZ4yiwhLEBVnRcHJfNDHMIzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gOK/3a6eFd/Bt8taKXO6NaymR/9CQH9maWeJJjO001N3Weg/8+z5Ezlc7GIXidRwQ
-	 4IAOtB1gRDB7dvp+WtbfMRTJpt2BP4fsjcLsGTfk5DTmUKHe8FUVfLNPQFVOoFMMJB
-	 /kE643+X1204pJlnCJGPmoRQpTQJRyp23ybAk82k=
+	b=VDRG0ydvYy/Nic+X4K/48cgJdLQsuhC0LLfH6KjHHHFsJG9y+0nmRWSDiFJMjD1NY
+	 WKpNCly9I0Hfar35n6IiC0DJwhRW7M3WNjWSgT58kQ9ZJIgF3NTlemhyMeynBS09xC
+	 /7z1edfKqMkciCFSDHUbmNZMOuAdVYmTGvAtXdN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.6 280/567] USB: usbcore: Introduce usb_bulk_msg_killable()
-Date: Mon, 23 Mar 2026 14:43:20 +0100
-Message-ID: <20260323134540.757605341@linuxfoundation.org>
+	Kalesh Singh <kaleshsingh@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	SeongJae Park <sj@kernel.org>,
+	Pedro Falcato <pfalcato@suse.de>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 219/481] mm/tracing: rss_stat: ensure curr is false from kthread context
+Date: Mon, 23 Mar 2026 14:43:21 +0100
+Message-ID: <20260323134530.489201488@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,19 +77,19 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229230-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-229692-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
+	TO_DN_SOME(0.00)[];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
@@ -89,175 +98,88 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7E5132F8DA1
+X-Rspamd-Queue-Id: BA7E82F8760
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Kalesh Singh <kaleshsingh@google.com>
 
-commit 416909962e7cdf29fd01ac523c953f37708df93d upstream.
+commit 079c24d5690262e83ee476e2a548e416f3237511 upstream.
 
-The synchronous message API in usbcore (usb_control_msg(),
-usb_bulk_msg(), and so on) uses uninterruptible waits.  However,
-drivers may call these routines in the context of a user thread, which
-means it ought to be possible to at least kill them.
+The rss_stat trace event allows userspace tools, like Perfetto [1], to
+inspect per-process RSS metric changes over time.
 
-For this reason, introduce a new usb_bulk_msg_killable() function
-which behaves the same as usb_bulk_msg() except for using
-wait_for_completion_killable_timeout() instead of
-wait_for_completion_timeout().  The same can be done later for
-usb_control_msg() later on, if it turns out to be needed.
+The curr field was introduced to rss_stat in commit e4dcad204d3a
+("rss_stat: add support to detect RSS updates of external mm").  Its
+intent is to indicate whether the RSS update is for the mm_struct of the
+current execution context; and is set to false when operating on a remote
+mm_struct (e.g., via kswapd or a direct reclaimer).
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Suggested-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/linux-usb/3acfe838-6334-4f6d-be7c-4bb01704b33d@rowland.harvard.edu/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-CC: stable@vger.kernel.org
-Link: https://patch.msgid.link/248628b4-cc83-4e81-a620-3ce4e0376d41@rowland.harvard.edu
+However, an issue arises when a kernel thread temporarily adopts a user
+process's mm_struct.  Kernel threads do not have their own mm_struct and
+normally have current->mm set to NULL.  To operate on user memory, they
+can "borrow" a memory context using kthread_use_mm(), which sets
+current->mm to the user process's mm.
+
+This can be observed, for example, in the USB Function Filesystem (FFS)
+driver.  The ffs_user_copy_worker() handles AIO completions and uses
+kthread_use_mm() to copy data to a user-space buffer.  If a page fault
+occurs during this copy, the fault handler executes in the kthread's
+context.
+
+At this point, current is the kthread, but current->mm points to the user
+process's mm.  Since the rss_stat event (from the page fault) is for that
+same mm, the condition current->mm == mm becomes true, causing curr to be
+incorrectly set to true when the trace event is emitted.
+
+This is misleading because it suggests the mm belongs to the kthread,
+confusing userspace tools that track per-process RSS changes and
+corrupting their mm_id-to-process association.
+
+Fix this by ensuring curr is always false when the trace event is emitted
+from a kthread context by checking for the PF_KTHREAD flag.
+
+Link: https://lkml.kernel.org/r/20260219233708.1971199-1-kaleshsingh@google.com
+Link: https://perfetto.dev/ [1]
+Fixes: e4dcad204d3a ("rss_stat: add support to detect RSS updates of external mm")
+Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Joel Fernandes <joel@joelfernandes.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>	[5.10+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/message.c |   79 +++++++++++++++++++++++++++++++++++++++------
- include/linux/usb.h        |    5 +-
- 2 files changed, 72 insertions(+), 12 deletions(-)
+ include/trace/events/kmem.h |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -42,16 +42,17 @@ static void usb_api_blocking_completion(
+--- a/include/trace/events/kmem.h
++++ b/include/trace/events/kmem.h
+@@ -360,7 +360,13 @@ TRACE_EVENT(rss_stat,
  
- 
- /*
-- * Starts urb and waits for completion or timeout. Note that this call
-- * is NOT interruptible. Many device driver i/o requests should be
-- * interruptible and therefore these drivers should implement their
-- * own interruptible routines.
-+ * Starts urb and waits for completion or timeout.
-+ * Whether or not the wait is killable depends on the flag passed in.
-+ * For example, compare usb_bulk_msg() and usb_bulk_msg_killable().
-  */
--static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length)
-+static int usb_start_wait_urb(struct urb *urb, int timeout, int *actual_length,
-+		bool killable)
- {
- 	struct api_context ctx;
- 	unsigned long expire;
- 	int retval;
-+	long rc;
- 
- 	init_completion(&ctx.done);
- 	urb->context = &ctx;
-@@ -61,12 +62,21 @@ static int usb_start_wait_urb(struct urb
- 		goto out;
- 
- 	expire = timeout ? msecs_to_jiffies(timeout) : MAX_SCHEDULE_TIMEOUT;
--	if (!wait_for_completion_timeout(&ctx.done, expire)) {
-+	if (killable)
-+		rc = wait_for_completion_killable_timeout(&ctx.done, expire);
-+	else
-+		rc = wait_for_completion_timeout(&ctx.done, expire);
-+	if (rc <= 0) {
- 		usb_kill_urb(urb);
--		retval = (ctx.status == -ENOENT ? -ETIMEDOUT : ctx.status);
-+		if (ctx.status != -ENOENT)
-+			retval = ctx.status;
-+		else if (rc == 0)
-+			retval = -ETIMEDOUT;
-+		else
-+			retval = rc;
- 
- 		dev_dbg(&urb->dev->dev,
--			"%s timed out on ep%d%s len=%u/%u\n",
-+			"%s timed out or killed on ep%d%s len=%u/%u\n",
- 			current->comm,
- 			usb_endpoint_num(&urb->ep->desc),
- 			usb_urb_dir_in(urb) ? "in" : "out",
-@@ -100,7 +110,7 @@ static int usb_internal_control_msg(stru
- 	usb_fill_control_urb(urb, usb_dev, pipe, (unsigned char *)cmd, data,
- 			     len, usb_api_blocking_completion, NULL);
- 
--	retv = usb_start_wait_urb(urb, timeout, &length);
-+	retv = usb_start_wait_urb(urb, timeout, &length, false);
- 	if (retv < 0)
- 		return retv;
- 	else
-@@ -385,10 +395,59 @@ int usb_bulk_msg(struct usb_device *usb_
- 		usb_fill_bulk_urb(urb, usb_dev, pipe, data, len,
- 				usb_api_blocking_completion, NULL);
- 
--	return usb_start_wait_urb(urb, timeout, actual_length);
-+	return usb_start_wait_urb(urb, timeout, actual_length, false);
- }
- EXPORT_SYMBOL_GPL(usb_bulk_msg);
- 
-+/**
-+ * usb_bulk_msg_killable - Builds a bulk urb, sends it off and waits for completion in a killable state
-+ * @usb_dev: pointer to the usb device to send the message to
-+ * @pipe: endpoint "pipe" to send the message to
-+ * @data: pointer to the data to send
-+ * @len: length in bytes of the data to send
-+ * @actual_length: pointer to a location to put the actual length transferred
-+ *	in bytes
-+ * @timeout: time in msecs to wait for the message to complete before
-+ *	timing out (if 0 the wait is forever)
-+ *
-+ * Context: task context, might sleep.
-+ *
-+ * This function is just like usb_blk_msg() except that it waits in a
-+ * killable state.
-+ *
-+ * Return:
-+ * If successful, 0. Otherwise a negative error number. The number of actual
-+ * bytes transferred will be stored in the @actual_length parameter.
-+ *
-+ */
-+int usb_bulk_msg_killable(struct usb_device *usb_dev, unsigned int pipe,
-+		 void *data, int len, int *actual_length, int timeout)
-+{
-+	struct urb *urb;
-+	struct usb_host_endpoint *ep;
-+
-+	ep = usb_pipe_endpoint(usb_dev, pipe);
-+	if (!ep || len < 0)
-+		return -EINVAL;
-+
-+	urb = usb_alloc_urb(0, GFP_KERNEL);
-+	if (!urb)
-+		return -ENOMEM;
-+
-+	if ((ep->desc.bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
-+			USB_ENDPOINT_XFER_INT) {
-+		pipe = (pipe & ~(3 << 30)) | (PIPE_INTERRUPT << 30);
-+		usb_fill_int_urb(urb, usb_dev, pipe, data, len,
-+				usb_api_blocking_completion, NULL,
-+				ep->desc.bInterval);
-+	} else
-+		usb_fill_bulk_urb(urb, usb_dev, pipe, data, len,
-+				usb_api_blocking_completion, NULL);
-+
-+	return usb_start_wait_urb(urb, timeout, actual_length, true);
-+}
-+EXPORT_SYMBOL_GPL(usb_bulk_msg_killable);
-+
- /*-------------------------------------------------------------------*/
- 
- static void sg_clean(struct usb_sg_request *io)
---- a/include/linux/usb.h
-+++ b/include/linux/usb.h
-@@ -1849,8 +1849,9 @@ extern int usb_control_msg(struct usb_de
- extern int usb_interrupt_msg(struct usb_device *usb_dev, unsigned int pipe,
- 	void *data, int len, int *actual_length, int timeout);
- extern int usb_bulk_msg(struct usb_device *usb_dev, unsigned int pipe,
--	void *data, int len, int *actual_length,
--	int timeout);
-+	void *data, int len, int *actual_length, int timeout);
-+extern int usb_bulk_msg_killable(struct usb_device *usb_dev, unsigned int pipe,
-+	void *data, int len, int *actual_length, int timeout);
- 
- /* wrappers around usb_control_msg() for the most common standard requests */
- int usb_control_msg_send(struct usb_device *dev, __u8 endpoint, __u8 request,
+ 	TP_fast_assign(
+ 		__entry->mm_id = mm_ptr_to_hash(mm);
+-		__entry->curr = !!(current->mm == mm);
++		/*
++		 * curr is true if the mm matches the current task's mm_struct.
++		 * Since kthreads (PF_KTHREAD) have no mm_struct of their own
++		 * but can borrow one via kthread_use_mm(), we must filter them
++		 * out to avoid incorrectly attributing the RSS update to them.
++		 */
++		__entry->curr = current->mm == mm && !(current->flags & PF_KTHREAD);
+ 		__entry->member = member;
+ 		__entry->size = (count << PAGE_SHIFT);
+ 	),
 
 
 
