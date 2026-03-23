@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-228307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229810-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id mGTzAGlOwWmhSAQAu9opvQ
-	(envelope-from <stable+bounces-228307-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:01 +0100
+	id QJz5FfJuwWnmTAQAu9opvQ
+	(envelope-from <stable+bounces-229810-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:50 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988A12F49D0
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:00 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF99B2F8D83
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 38F8A305554A
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:08:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EBC203170AEC
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A923B0AE5;
-	Mon, 23 Mar 2026 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A083284881;
+	Mon, 23 Mar 2026 16:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RE4QhhGD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrIjkCL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B7039890A;
-	Mon, 23 Mar 2026 14:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF8429ACC5;
+	Mon, 23 Mar 2026 16:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274758; cv=none; b=k9G9SLuTThqf0g8nseTI752a/dmMkuX5whP/tWYF14uV141UFNK/K0yFQsj4FSb3GipVJPKllEK7I/p7KQTVr0Pk/Qkp59+Etc1rzlg0xm0Cc96q1Lw+0+um8YFlYGXZhO076JtwiqegBvW0vYPoeKdR0+BvBxzvVuotIkFAv5E=
+	t=1774282926; cv=none; b=SZXFhsgafTxYnu2E/pCAhIYXHHZOm2/usLFlaoVVF4ETieUef6tOWBm4a+NAvjTmythFx+ytw0JPYplt1Dn2i3bYyHzEOlMeckR4oSWgMAM7Xr+ppsmwXi2HgOiJZStikLbEWB0Gg6cpVs2MHKN5DmHNflMUYrCnqJD1TKHSrZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274758; c=relaxed/simple;
-	bh=UrSkLn73ZVPOdv604Np05CZeQAQXe57Ofpvc3CpTe2c=;
+	s=arc-20240116; t=1774282926; c=relaxed/simple;
+	bh=siaixflRppTMf9O51d7axVebS605EvTA/MoiUX10c/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OPq7o9YLowlT+0up4vijg9TNphE2bokb/mFGTK5qKje85x6+FKW5mgB4swY+FYbCBqMBHAtINueOA36Puuhxkk5dkkAlxIuzKKg2AsYF5POlypMJ+P79kAsCnU2+OaA7aWiJTJMjD/lk+YauDz2RWz6MiN0pb9liV0GjR0eBG+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RE4QhhGD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B4F9C4CEF7;
-	Mon, 23 Mar 2026 14:05:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QUbGd3uWd6LEsXNBetnTRMi55MbbvjDYSgi3rQPg/He94Gupon8lZNTMkLU4ORhylYuD+hTb7sP+GQdITC2SyxA6aKqQ8VnF51GcFffwjvmlaVFkZB/sinlAiGLE7jxOVuq64DgNyq2wkuFiHgLDk/HVpSchZefhIDdEIyw8W0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrIjkCL/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD4CBC4CEF7;
+	Mon, 23 Mar 2026 16:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274758;
-	bh=UrSkLn73ZVPOdv604Np05CZeQAQXe57Ofpvc3CpTe2c=;
+	s=korg; t=1774282926;
+	bh=siaixflRppTMf9O51d7axVebS605EvTA/MoiUX10c/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RE4QhhGDQ13m0nF6BZ8+plZskG7Q/o/k0+b57HpK+H90kZyErE8iyLHw0YIeJrDY7
-	 vo1xyTRhA7NJWUxQQU3NCICzUP20blqNre87GmPkHpOc4VVsYaHdBNHF7J1f72OAFt
-	 JkJH/Y/sItvcgwaj5Wqa2jIOgaAOe0+zxdx252s0=
+	b=LrIjkCL/XLsMlX+RrOM9CnGoURawI6pUp/aBe0R0bTBv9QPT3nxMhWj+6pVoZ8K64
+	 CuvnfzJfsIjPQkNMcV7/7uuQR7D1VoevZEocYEQjVdPz+/lOMoanAEEqD0yNLL3qzz
+	 1/Zr/Z1kN+1RZYgJC1R+08K8IYzWbYxXZZiaroV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>,
-	Boris Burkov <boris@bur.io>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 099/212] btrfs: log new dentries when logging parent dir of a conflicting inode
+Subject: [PATCH 6.1 338/481] pmdomain: bcm: bcm2835-power: Fix broken reset status read
 Date: Mon, 23 Mar 2026 14:45:20 +0100
-Message-ID: <20260323134506.907374138@linuxfoundation.org>
+Message-ID: <20260323134533.334156019@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +65,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-0.16 / 15.00];
-	SUSPICIOUS_RECIPS(1.50)[];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,bur.io,suse.com,kernel.org];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228307-lists,stable=lfdr.de];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,igalia.com,broadcom.com,gmx.net,linaro.org,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229810-lists,stable=lfdr.de];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 988A12F49D0
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: BF99B2F8D83
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit 9573a365ff9ff45da9222d3fe63695ce562beb24 ]
+[ Upstream commit 550bae2c0931dbb664a61b08c21cf156f0a5362a ]
 
-If we log the parent directory of a conflicting inode, we are not logging
-the new dentries of the directory, so when we finish we have the parent
-directory's inode marked as logged but we did not log its new dentries.
-As a consequence if the parent directory is explicitly fsynced later and
-it does not have any new changes since we logged it, the fsync is a no-op
-and after a power failure the new dentries are missing.
+bcm2835_reset_status() has a misplaced parenthesis on every PM_READ()
+call. Since PM_READ(reg) expands to readl(power->base + (reg)), the
+expression:
 
-Example scenario:
+    PM_READ(PM_GRAFX & PM_V3DRSTN)
 
-  $ mkdir foo
+computes the bitwise AND of the register offset PM_GRAFX with the
+bitmask PM_V3DRSTN before using the result as a register offset, reading
+from the wrong MMIO address instead of the intended PM_GRAFX register.
+The same issue affects the PM_IMAGE cases.
 
-  $ sync
+Fix by moving the closing parenthesis so PM_READ() receives only the
+register offset, and the bitmask is applied to the value returned by
+the read.
 
-  $rmdir foo
-
-  $ mkdir dir1
-  $ mkdir dir2
-
-  # A file with the same name and parent as the directory we just deleted
-  # and was persisted in a past transaction. So the deleted directory's
-  # inode is a conflicting inode of this new file's inode.
-  $ touch foo
-
-  $ ln foo dir2/link
-
-  # The fsync on dir2 will log the parent directory (".") because the
-  # conflicting inode (deleted directory) does not exists anymore, but it
-  # it does not log its new dentries (dir1).
-  $ xfs_io -c "fsync" dir2
-
-  # This fsync on the parent directory is no-op, since the previous fsync
-  # logged it (but without logging its new dentries).
-  $ xfs_io -c "fsync" .
-
-  <power failure>
-
-  # After log replay dir1 is missing.
-
-Fix this by ensuring we log new dir dentries whenever we log the parent
-directory of a no longer existing conflicting inode.
-
-A test case for fstests will follow soon.
-
-Reported-by: Vyacheslav Kovalevsky <slava.kovalevskiy.2014@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/182055fa-e9ce-4089-9f5f-4b8a23e8dd91@gmail.com/
-Fixes: a3baaf0d786e ("Btrfs: fix fsync after succession of renames and unlink/rmdir")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 670c672608a1 ("soc: bcm: bcm2835-pm: Add support for power domains under a new binding.")
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-log.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/soc/bcm/bcm2835-power.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index 6c5db73c3e85f..7505a87522fd7 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -6203,6 +6203,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 				  struct btrfs_root *root,
- 				  struct btrfs_log_ctx *ctx)
- {
-+	const bool orig_log_new_dentries = ctx->log_new_dentries;
- 	int ret = 0;
+--- a/drivers/soc/bcm/bcm2835-power.c
++++ b/drivers/soc/bcm/bcm2835-power.c
+@@ -580,11 +580,11 @@ static int bcm2835_reset_status(struct r
  
- 	/*
-@@ -6264,7 +6265,11 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 			 * dir index key range logged for the directory. So we
- 			 * must make sure the deletion is recorded.
- 			 */
-+			ctx->log_new_dentries = false;
- 			ret = btrfs_log_inode(trans, inode, LOG_INODE_ALL, ctx);
-+			if (!ret && ctx->log_new_dentries)
-+				ret = log_new_dir_dentries(trans, inode, ctx);
-+
- 			btrfs_add_delayed_iput(inode);
- 			if (ret)
- 				break;
-@@ -6299,6 +6304,7 @@ static int log_conflicting_inodes(struct btrfs_trans_handle *trans,
- 			break;
+ 	switch (id) {
+ 	case BCM2835_RESET_V3D:
+-		return !PM_READ(PM_GRAFX & PM_V3DRSTN);
++		return !(PM_READ(PM_GRAFX) & PM_V3DRSTN);
+ 	case BCM2835_RESET_H264:
+-		return !PM_READ(PM_IMAGE & PM_H264RSTN);
++		return !(PM_READ(PM_IMAGE) & PM_H264RSTN);
+ 	case BCM2835_RESET_ISP:
+-		return !PM_READ(PM_IMAGE & PM_ISPRSTN);
++		return !(PM_READ(PM_IMAGE) & PM_ISPRSTN);
+ 	default:
+ 		return -EINVAL;
  	}
- 
-+	ctx->log_new_dentries = orig_log_new_dentries;
- 	ctx->logging_conflict_inodes = false;
- 	if (ret)
- 		free_conflicting_inodes(ctx);
--- 
-2.51.0
-
 
 
 
