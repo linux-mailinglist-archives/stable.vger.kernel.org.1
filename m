@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-229242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228664-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 2C07KG1cwWlZSgQAu9opvQ
-	(envelope-from <stable+bounces-229242-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:49 +0100
+	id WA1mIIBVwWlTSQQAu9opvQ
+	(envelope-from <stable+bounces-228664-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:16 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E01A2F65CF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:29:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECE42F59E6
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 14F6B30A0C81
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:13:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A1BF831F2CEA
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:22:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE453AEF50;
-	Mon, 23 Mar 2026 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A48369204;
+	Mon, 23 Mar 2026 14:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWDyRvC7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OibQwSm5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AA33AE6F2;
-	Mon, 23 Mar 2026 15:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAB71F91F6;
+	Mon, 23 Mar 2026 14:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278506; cv=none; b=d4LIfj1olEe5Wlx1TW6TekJj44VofydmT/7DsGm2I6Eb5PowaBK/GvWUbD3OWC38CZYaxmb9QGksgSxlaPlMiyQQgnDDczI96AxmyAxZOZinYuYAYUmPQ0WcphRKeY2BXJM62nvsWQtmcM1ETfYf09iC/Ump5K0Wd2krEKR7Epo=
+	t=1774275759; cv=none; b=skLmp2ibxafcDpF2rO9F69OKwH0SZC8Bq8cMHfBk5qU8yFhObX1k00IZaRWPgyJQjGVZEBC0MqP0YzU3vOelBB14lzDn6N3aB/ga5slrMu7dWBg8ctbnaBO6ZHCo6xC/gr6Jbe6Uhg/MQatnOZe4CrUQLeIVdi9UreigsE1eG00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278506; c=relaxed/simple;
-	bh=mQfHtqqdiP1PqL4w6NV0n05CerbD546Sj0bDPXA78Yw=;
+	s=arc-20240116; t=1774275759; c=relaxed/simple;
+	bh=IyKIAJGwdXwpZh6Ys13RESgVe4lZXpekzMFRInjcIrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q3w0Y9doh9VU9DPwh7qy+R70mCQvR7bbHThzJwa0gpfZ/SRtW1ge6pQ5coe6+jfiGRTGQXlDNQhtE8ls29pEge4u8fxsY2KlRWjXqAQ3wVB22zPFAKyghRAtJLaICPTbF92ay2UGhYELR9uBaps8JcqxL/8QYWyQYhkV0X2p6GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWDyRvC7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D4DDC2BCB4;
-	Mon, 23 Mar 2026 15:08:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SjfcB2TLdLfeDRVUnFDD27eMDJ+gjhpIASbMtsdKsWS+J3WE64BzqkQt1Ajl0djtI0BITdY/vKaWpUCoIF1Io3LJ3ZO8igFeItvy6dPzesmw3jPRWTEQT1IqBlAmmc/eciPU4GT+NBa/0BhodLgmHfiKJ7p6I2raEobcOTUuhCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OibQwSm5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15DFC2BCB3;
+	Mon, 23 Mar 2026 14:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278506;
-	bh=mQfHtqqdiP1PqL4w6NV0n05CerbD546Sj0bDPXA78Yw=;
+	s=korg; t=1774275759;
+	bh=IyKIAJGwdXwpZh6Ys13RESgVe4lZXpekzMFRInjcIrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWDyRvC7+IF4VLky0EYHVNvuto3pUsM/Qd+Yr0xVLTDBQy3POJAc15w2blg0Jj8lU
-	 pR9lcyL9wd9zzxFXaySacyzRJEaEZWI6lyz67V5PV4dCcx6AfrJfDua/8HqW5xH4AN
-	 RAtSJL6TBVOD2B+E8yIB3nP2fHOj242vhc2hymGg=
+	b=OibQwSm5ON3yZnq2psXjhWC9O9RoG+/SSK7cBLUsXqgTWuKVoAi07SpifRuodug3Q
+	 wkN2zb2YQKrioShZI0OSNgccMRp6Oiqg5IYd1t5JAPAKk4E8Yu+CarznGl+Np8f8r9
+	 K74J4kv7bAz4CD5LSxNdr/2DTvhjma2RsP2RmNtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 285/567] usb: mdc800: handle signal and read racing
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 209/460] iio: buffer: Fix wait_queue not being removed
 Date: Mon, 23 Mar 2026 14:43:25 +0100
-Message-ID: <20260323134540.878783743@linuxfoundation.org>
+Message-ID: <20260323134531.656192172@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-2.16 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229242-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	RCPT_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[bounces-228664-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
 	NEURAL_HAM(-0.00)[-1.000];
-	TAGGED_RCPT(0.00)[stable];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 0E01A2F65CF
+	TAGGED_RCPT(0.00)[stable];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Queue-Id: 0ECE42F59E6
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Nuno Sá <nuno.sa@analog.com>
 
-commit 2d6d260e9a3576256fe9ef6d1f7930c9ec348723 upstream.
+commit 064234044056c93a3719d6893e6e5a26a94a61b6 upstream.
 
-If a signal arrives after a read has partially completed,
-we need to return the number of bytes read. -EINTR is correct
-only if that number is zero.
+In the edge case where the IIO device is unregistered while we're
+buffering, we were directly returning an error without removing the wait
+queue. Instead, set 'ret' and break out of the loop.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20260209142048.1503791-1-oneukum@suse.com
+Fixes: 9eeee3b0bf19 ("iio: Add output buffer support")
+Signed-off-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/image/mdc800.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/industrialio-buffer.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/image/mdc800.c
-+++ b/drivers/usb/image/mdc800.c
-@@ -708,7 +708,7 @@ static ssize_t mdc800_device_read (struc
- 		if (signal_pending (current)) 
- 		{
- 			mutex_unlock(&mdc800->io_lock);
--			return -EINTR;
-+			return len == left ? -EINTR : len-left;
- 		}
+--- a/drivers/iio/industrialio-buffer.c
++++ b/drivers/iio/industrialio-buffer.c
+@@ -228,8 +228,10 @@ static ssize_t iio_buffer_write(struct f
+ 	written = 0;
+ 	add_wait_queue(&rb->pollq, &wait);
+ 	do {
+-		if (!indio_dev->info)
+-			return -ENODEV;
++		if (!indio_dev->info) {
++			ret = -ENODEV;
++			break;
++		}
  
- 		sts=left > (mdc800->out_count-mdc800->out_ptr)?mdc800->out_count-mdc800->out_ptr:left;
+ 		if (!iio_buffer_space_available(rb)) {
+ 			if (signal_pending(current)) {
 
 
 
