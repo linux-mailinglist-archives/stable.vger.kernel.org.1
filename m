@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-229960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228920-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id GAr2I4tuwWnDTAQAu9opvQ
-	(envelope-from <stable+bounces-229960-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:47:07 +0100
+	id KHLvEX5WwWmBSQQAu9opvQ
+	(envelope-from <stable+bounces-228920-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:30 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E2402F8CC9
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:47:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 640F52F5B69
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:04:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6D178303A97F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:30:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 66030305EF1A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:51:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9330B3B27C8;
-	Mon, 23 Mar 2026 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D223AEF53;
+	Mon, 23 Mar 2026 14:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLJ7i+/9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1JNrv0I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527F03BC666;
-	Mon, 23 Mar 2026 16:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0C3235045;
+	Mon, 23 Mar 2026 14:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774283372; cv=none; b=XJERX/TyLDUkKVD8ENroDmxyItuDiXT17j07R8brKysUlyXCF9/MSJfR4Eb1qUfbQz9UHDzeZ8l4mpoq9Sodldkqkxv20WrppFlQunnQFgWkVcGBa3AJ/wzOBPJVFwN5PZpXpNqHpmYAFlW9BbIbw61qfStDIbgIw0hwDj48gR4=
+	t=1774277490; cv=none; b=PcexAtZSA4c0lnPUIVz7aTH61EhYqWExUJs31luNw4Xz1yI0rQmKkoFSitvXQANU/lh3XofNHe7oyRqho6TDvE4462C52gepATiTdW75f42/+/RnfnoEqwbx6xo94b8ix2TrcbMBZPlAmJWlL5IkkUnB34/JMR2oRKiaYHlOZF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774283372; c=relaxed/simple;
-	bh=3adE1lrSVhu7muIYGjUPxg+Q05VuPN9jkF6WiFyea+c=;
+	s=arc-20240116; t=1774277490; c=relaxed/simple;
+	bh=igdljz0GiSHl1+n2QfWSQG5BVFRPzucLab+j6Gr0Q4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcYP86tAB7ASWVSwvu5pqbyJeCVh1L0CxziYt13BA93Pbbp+HXEXTy/2kHXYcvSlTk3tiU7SkbtBdf4/eMDVVR8QBrVzRsIdLhDDra6xden5fkEOr78mGx5ubosB4bHvwsnNWumydXJ2eUBZ9/MqiZjkhOlb99EGNDrmVuQk7EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLJ7i+/9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6866C4CEF7;
-	Mon, 23 Mar 2026 16:29:31 +0000 (UTC)
+	 MIME-Version; b=XGLXRUKXf7BaDq3uEUd4xIz5TddUaWj7wR5n23j0MqYbixlhGZnDN1tCaLv+dHiJxEioawj1I/Ugb66L9J9c+kqWJ67yvrlfu5IHcLXErTOpmsMlAEbENPY65t1hsQm5T1DxIX1A4haeldGubdYCCEzSElWadPwtXWl1VyHfi2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1JNrv0I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70237C4CEF7;
+	Mon, 23 Mar 2026 14:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774283372;
-	bh=3adE1lrSVhu7muIYGjUPxg+Q05VuPN9jkF6WiFyea+c=;
+	s=korg; t=1774277490;
+	bh=igdljz0GiSHl1+n2QfWSQG5BVFRPzucLab+j6Gr0Q4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLJ7i+/9zRbgJRFOeb3HoURbuZN9HaaNBCfCibHWg6twgoCmLFZ3lXfmysOXTH4+M
-	 oCkp1x2dak19OzVrU5PPqXuWteOeep6yTr0Z0swalPvw8i+fSqvbtF5rCoT5yjWPNd
-	 CzVmnJyGQJPH/IMFxcpdrr5pt2bznhJPf/q86kBc=
+	b=f1JNrv0I2GpWEufh1JgqjzVY5LS+Iw1EPSATjpV+5K5/yxEcu6ofpDcZXPLEKj0LG
+	 VGTIE4SxNOe7hgKONchtA2nASChcBqPsl4uIcLZIE3vKuv3YKWjtn1atnE6X35Loyf
+	 gmCw+u0Qnm9rWmUmjJBkaOl6y69evuxUeSgs4BxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
-	Johnny Hao <johnny_haocn@sina.com>
-Subject: [PATCH 6.1 472/481] dlm: fix possible lkb_resource null dereference
+	Josh Law <objecting@objecting.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 458/460] tools/bootconfig: fix fd leak in load_xbc_file() on fstat failure
 Date: Mon, 23 Mar 2026 14:47:34 +0100
-Message-ID: <20260323134536.721033111@linuxfoundation.org>
+Message-ID: <20260323134537.834502602@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,91 +69,74 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c15:e001:75::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-229960-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,redhat.com,sina.com];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228920-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
-	ASN(0.00)[asn:63949, ipnet:2600:3c15::/32, country:SG];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[6];
 	PRECEDENCE_BULK(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_RCPT(0.00)[stable];
 	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 7E2402F8CC9
+X-Rspamd-Queue-Id: 640F52F5B69
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Josh Law <objecting@objecting.org>
 
-[ Upstream commit b98333c67daf887c724cd692e88e2db9418c0861 ]
+[ Upstream commit 3b2c2ab4ceb82af484310c3087541eab00ea288b ]
 
-This patch fixes a possible null pointer dereference when this function is
-called from request_lock() as lkb->lkb_resource is not assigned yet,
-only after validate_lock_args() by calling attach_lkb(). Another issue
-is that a resource name could be a non printable bytearray and we cannot
-assume to be ASCII coded.
+If fstat() fails after open() succeeds, the function returns without
+closing the file descriptor. Also preserve errno across close(), since
+close() may overwrite it before the error is returned.
 
-The log functionality is probably never being hit when DLM is used in
-normal way and no debug logging is enabled. The null pointer dereference
-can only occur on a new created lkb that does not have the resource
-assigned yet, it probably never hits the null pointer dereference but we
-should be sure that other changes might not change this behaviour and we
-actually can hit the mentioned null pointer dereference.
+Link: https://lore.kernel.org/all/20260318155847.78065-3-objecting@objecting.org/
 
-In this patch we just drop the printout of the resource name, the lkb id
-is enough to make a possible connection to a resource name if this
-exists.
-
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-[ The context change is due to the commit e1af8728f600
-("fs: dlm: move internal flags to atomic ops") in v6.4
-which is irrelevant to the logic of this patch. ]
-Signed-off-by: Johnny Hao <johnny_haocn@sina.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 950313ebf79c ("tools: bootconfig: Add bootconfig command")
+Signed-off-by: Josh Law <objecting@objecting.org>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/lock.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ tools/bootconfig/main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/dlm/lock.c
-+++ b/fs/dlm/lock.c
-@@ -2908,16 +2908,14 @@ static int validate_lock_args(struct dlm
- 	case -EINVAL:
- 		/* annoy the user because dlm usage is wrong */
- 		WARN_ON(1);
--		log_error(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_error(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, lkb->lkb_flags, args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	default:
--		log_debug(ls, "%s %d %x %x %x %d %d %s", __func__,
-+		log_debug(ls, "%s %d %x %x %x %d %d", __func__,
- 			  rv, lkb->lkb_id, lkb->lkb_flags, args->flags,
--			  lkb->lkb_status, lkb->lkb_wait_type,
--			  lkb->lkb_resource->res_name);
-+			  lkb->lkb_status, lkb->lkb_wait_type);
- 		break;
- 	}
+diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
+index 8a48cc2536f56..32cf48f2da9a1 100644
+--- a/tools/bootconfig/main.c
++++ b/tools/bootconfig/main.c
+@@ -157,8 +157,11 @@ static int load_xbc_file(const char *path, char **buf)
+ 	if (fd < 0)
+ 		return -errno;
+ 	ret = fstat(fd, &stat);
+-	if (ret < 0)
+-		return -errno;
++	if (ret < 0) {
++		ret = -errno;
++		close(fd);
++		return ret;
++	}
  
+ 	ret = load_xbc_fd(fd, buf, stat.st_size);
+ 
+-- 
+2.51.0
+
 
 
 
