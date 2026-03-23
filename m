@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-229590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228602-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oNyHCuxswWmqTAQAu9opvQ
-	(envelope-from <stable+bounces-229590-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:12 +0100
+	id QLcDHjJMwWmKSAQAu9opvQ
+	(envelope-from <stable+bounces-228602-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:34 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BB82F892B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:40:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2A62F43D5
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DF17630ADDF8
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:12:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C52B83008D0C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2533BBA14;
-	Mon, 23 Mar 2026 16:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8C421E5B88;
+	Mon, 23 Mar 2026 14:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmbMHCH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwoBoa77"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688783BC685;
-	Mon, 23 Mar 2026 16:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C622823DD;
+	Mon, 23 Mar 2026 14:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282331; cv=none; b=an88iptnj2eYIDOy5nqSZ8423dQY2TSj/kWEzECol6DRj/BqFWV7b8A/uX4z1ANqxaKCTGux9M6U38FeOWTKDDwBOkBtUXQtfIMvYSJjUvPvsANZYiHK6fgC6XdFQompVBa0WBXR505cLrCFIdU3WZdt7UtPMxurYC+A7ApmkUo=
+	t=1774275571; cv=none; b=ukwWh6Y2I33Hoi4Kf8CH+3z34bAAGzh5kadYA8aVPnDj3Q7S/ack2A2sQSQrgCIeUhosTMNGdZJp6zSUrQlTZs9ws94MrUeCeSUcyokEMPQmI7uH9jvc7dkBGBRKJUEaoFwUePd/HMQGbiTiyK/lLGArVmNs2HUKa8hQX6fGQjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282331; c=relaxed/simple;
-	bh=2rM3QNxpPIcYmP4FtSSlhwyPOa7Lmh3Wi9B1n5VKnSs=;
+	s=arc-20240116; t=1774275571; c=relaxed/simple;
+	bh=iblsEpQca5t5AecYe+LPlAQ5v65dLvQXo5FySdS5pjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCumXPJ75GmGQeW66X6gOz+LiyXKHZuhb52MKFVm+QGxGjSya+Fc5hG/PrRxUFOD+fAFY0ehSHokOxx+mR1mCz/GPVrEPTgP08YEstJP6M8ROHNKq1YQ3Q+mD+SPLarKoH1yYjIYnM6KZB3pjD0e5D8lmN+9o2OBN/QIIrX/Af0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmbMHCH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC49EC4CEF7;
-	Mon, 23 Mar 2026 16:12:10 +0000 (UTC)
+	 MIME-Version; b=jxTErLzq2WMh3+LQo198bqVY3KdfJg0hqN1BHF68zW/h3C7ImttCe0W5Xxo8ZCafMeKbRmOguPib1fP+AHn539kBZcuhMYoibv/uyHcQOGZHf+XZ9TInaKw45BkuXtc1e+RzTZajE0VlsrW99qySok/dlHv33BM0xeanbYYD4GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwoBoa77; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00120C4CEF7;
+	Mon, 23 Mar 2026 14:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282331;
-	bh=2rM3QNxpPIcYmP4FtSSlhwyPOa7Lmh3Wi9B1n5VKnSs=;
+	s=korg; t=1774275571;
+	bh=iblsEpQca5t5AecYe+LPlAQ5v65dLvQXo5FySdS5pjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmbMHCH4mntT+bOM0xpjUbi4GbQtoa5MJJoat01ASomHMR1lhleBJJXBnNRfiRwWS
-	 COpPEVxPicmPg8VZSJhsaFVN7D5um6mS6+ZiDKnXrJTCTUGPTh1f7AKhejEcFv4L4o
-	 iXknSCbtyvVJrX/Aet61pfnuGWe1pan3boSBIf9I=
+	b=XwoBoa77sAWv7+K2ErZEgocmvDHHoqsUp/zg1z8lNUy7uUZlFFEszpPM3SctYqC15
+	 cJTgtzeb6bkWXBfZiaxv0Hm/dumKkPWi+1cGlOrhIx1kVPcdUaNa0uxsDNzQrWJFy/
+	 NXKp69Tmh3yykHQmL2zZ5zqJgZim1EuooT91/sr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuvam Pandey <shuvampandey1@gmail.com>,
-	David Gow <david@davidgow.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/481] kunit: tool: copy caller args in run_kernel to prevent mutation
+	stable <stable@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.12 103/460] usb: yurex: fix race in probe
 Date: Mon, 23 Mar 2026 14:41:39 +0100
-Message-ID: <20260323134528.134107519@linuxfoundation.org>
+Message-ID: <20260323134529.181834918@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,119 +65,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TAGGED_FROM(0.00)[bounces-228602-lists,stable=lfdr.de];
+	URIBL_MULTI_FAIL(0.00)[sin.lore.kernel.org:server fail,msgid.link:server fail,suse.com:server fail];
 	RCVD_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[bounces-229590-lists,stable=lfdr.de];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,davidgow.net,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	RCPT_COUNT_FIVE(0.00)[5];
 	PRECEDENCE_BULK(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: D7BB82F892B
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sin.lore.kernel.org:helo,sin.lore.kernel.org:rdns,suse.com:email]
+X-Rspamd-Queue-Id: 7D2A62F43D5
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuvam Pandey <shuvampandey1@gmail.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 40804c4974b8df2adab72f6475d343eaff72b7f6 ]
+commit 7a875c09899ba0404844abfd8f0d54cdc481c151 upstream.
 
-run_kernel() appended KUnit flags directly to the caller-provided args
-list. When exec_tests() calls run_kernel() repeatedly (e.g. with
---run_isolated), each call mutated the same list, causing later runs
-to inherit stale filter_glob values and duplicate kunit.enable flags.
+The bbu member of the descriptor must be set to the value
+standing for uninitialized values before the URB whose
+completion handler sets bbu is submitted. Otherwise there is
+a window during which probing can overwrite already retrieved
+data.
 
-Fix this by copying args at the start of run_kernel(). Add a regression
-test that calls run_kernel() twice with the same list and verifies the
-original remains unchanged.
-
-Fixes: ff9e09a3762f ("kunit: tool: support running each suite/test separately")
-Signed-off-by: Shuvam Pandey <shuvampandey1@gmail.com>
-Reviewed-by: David Gow <david@davidgow.net>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20260209143720.1507500-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/kunit/kunit_kernel.py    |  6 ++++--
- tools/testing/kunit/kunit_tool_test.py | 26 ++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+), 2 deletions(-)
+ drivers/usb/misc/yurex.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/kunit/kunit_kernel.py b/tools/testing/kunit/kunit_kernel.py
-index 86accd53644c1..2343f9a77a65a 100644
---- a/tools/testing/kunit/kunit_kernel.py
-+++ b/tools/testing/kunit/kunit_kernel.py
-@@ -330,8 +330,10 @@ class LinuxSourceTree:
- 		return self.validate_config(build_dir)
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -272,6 +272,7 @@ static int yurex_probe(struct usb_interf
+ 			 dev->int_buffer, YUREX_BUF_SIZE, yurex_interrupt,
+ 			 dev, 1);
+ 	dev->urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
++	dev->bbu = -1;
+ 	if (usb_submit_urb(dev->urb, GFP_KERNEL)) {
+ 		retval = -EIO;
+ 		dev_err(&interface->dev, "Could not submitting URB\n");
+@@ -280,7 +281,6 @@ static int yurex_probe(struct usb_interf
  
- 	def run_kernel(self, args: Optional[List[str]]=None, build_dir: str='', filter_glob: str='', filter: str='', filter_action: Optional[str]=None, timeout: Optional[int]=None) -> Iterator[str]:
--		if not args:
--			args = []
-+		# Copy to avoid mutating the caller-supplied list. exec_tests() reuses
-+		# the same args across repeated run_kernel() calls (e.g. --run_isolated),
-+		# so appending to the original would accumulate stale flags on each call.
-+		args = list(args) if args else []
- 		if filter_glob:
- 			args.append('kunit.filter_glob=' + filter_glob)
- 		if filter:
-diff --git a/tools/testing/kunit/kunit_tool_test.py b/tools/testing/kunit/kunit_tool_test.py
-index 04714f59fced6..29063d9ae2851 100755
---- a/tools/testing/kunit/kunit_tool_test.py
-+++ b/tools/testing/kunit/kunit_tool_test.py
-@@ -479,6 +479,32 @@ class LinuxSourceTreeTest(unittest.TestCase):
- 			with open(kunit_kernel.get_outfile_path(build_dir), 'rt') as outfile:
- 				self.assertEqual(outfile.read(), 'hi\nbye\n', msg='Missing some output')
+ 	/* save our data pointer in this interface device */
+ 	usb_set_intfdata(interface, dev);
+-	dev->bbu = -1;
  
-+	def test_run_kernel_args_not_mutated(self):
-+		"""Verify run_kernel() copies args so callers can reuse them."""
-+		start_calls = []
-+
-+		def fake_start(start_args, unused_build_dir):
-+			start_calls.append(list(start_args))
-+			return subprocess.Popen(['printf', 'KTAP version 1\n'],
-+						text=True, stdout=subprocess.PIPE)
-+
-+		with tempfile.TemporaryDirectory('') as build_dir:
-+			tree = kunit_kernel.LinuxSourceTree(build_dir,
-+					kunitconfig_paths=[os.devnull])
-+			with mock.patch.object(tree._ops, 'start', side_effect=fake_start), \
-+			     mock.patch.object(kunit_kernel.subprocess, 'call'):
-+				kernel_args = ['mem=1G']
-+				for _ in tree.run_kernel(args=kernel_args, build_dir=build_dir,
-+							 filter_glob='suite.test1'):
-+					pass
-+				for _ in tree.run_kernel(args=kernel_args, build_dir=build_dir,
-+							 filter_glob='suite.test2'):
-+					pass
-+				self.assertEqual(kernel_args, ['mem=1G'],
-+					'run_kernel() should not modify caller args')
-+				self.assertIn('kunit.filter_glob=suite.test1', start_calls[0])
-+				self.assertIn('kunit.filter_glob=suite.test2', start_calls[1])
-+
- 	def test_build_reconfig_no_config(self):
- 		with tempfile.TemporaryDirectory('') as build_dir:
- 			with open(kunit_kernel.get_kunitconfig_path(build_dir), 'w') as f:
--- 
-2.51.0
-
+ 	/* we can register the device now, as it is ready */
+ 	retval = usb_register_dev(interface, &yurex_class);
 
 
 
