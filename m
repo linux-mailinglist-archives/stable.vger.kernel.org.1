@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-229138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228641-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id 6IxdBTRYwWnbSQQAu9opvQ
-	(envelope-from <stable+bounces-229138-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:48 +0100
+	id HJqHIENPwWnLSAQAu9opvQ
+	(envelope-from <stable+bounces-228641-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:39 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF88C2F5EFF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:11:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3342F4BC1
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:33:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EA41430701AB
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:04:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C7DF630C0DB9
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:21:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AC0939FCBC;
-	Mon, 23 Mar 2026 15:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 526633AE18C;
+	Mon, 23 Mar 2026 14:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U45oxNEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8n2OLVZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2E925393B;
-	Mon, 23 Mar 2026 15:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1604F2C181;
+	Mon, 23 Mar 2026 14:21:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774278181; cv=none; b=bi9+wII0P4twJOdrZzl2nUrbVBM/xDQ6WcQYNeiXCA0ZZsrSPOKtr5H0iZqGpwJktYUgdr95SBdbR9dw/1D11vUeGa0lbPREraBe1Xsn/VMkR4UnC8DdYgiYbWKg1C+rLG0jISZ5K+Xaxlj8e3vk/M1c9gFAHwT7q30OiTVZfGg=
+	t=1774275691; cv=none; b=NQlsLNBTtEJZNXKmtKLuVg3VIDvHklMXvZwylFOuWV8UDe3pYnPhEOJOfp5Tsxm7q1Fg7++r5OpGPug/4uSqatOjH3s0rp6ArVWRVBKDgO/At33nmFqKPHqIarNpqBkCAqrMi4vdftnn97+C054DUgWXCGgXN78WitXD8iDW2NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774278181; c=relaxed/simple;
-	bh=0KgQ3dAugbuY29dxJP3XGTDsamf4sKt8JRx3K4oXNZQ=;
+	s=arc-20240116; t=1774275691; c=relaxed/simple;
+	bh=xmXccoLUHRb96XMtXe8+ONaj0ApHLFzK5XXS1F8ZiVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M1UpuwTkb3hen7T2rmB3GkFLGOUcNOqex6SPeuCP2Kgs3jTt5A0zdpwnKFc1933cOpB/BaQNj4eJxj4LgPr8VhobK5d9dFE3c1ozhRgtdb4ZDrtl8rRD/UtxS6aozTWy5ocHzzh9fOWupeW7eRbUpJA4jaKLlVtUV5cDqCDnUrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U45oxNEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AD2C2BCB4;
-	Mon, 23 Mar 2026 15:02:59 +0000 (UTC)
+	 MIME-Version; b=ZLjG7nqdiOfMatPmVwKLvmUta7y8IkbNSchTFTExL041KnfiojqYffDZnMXiV9mLMNYrBhIpFjwceZs+aDcrSB6TZrRZGJERbju+aRrIJIoMvB2LoiDlqCjCksX4T8eOZOP+MsFfLKjWCEDINzGDDYEGIdEJY3GYZZ1ZRlRgcH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8n2OLVZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DADDC4CEF7;
+	Mon, 23 Mar 2026 14:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774278180;
-	bh=0KgQ3dAugbuY29dxJP3XGTDsamf4sKt8JRx3K4oXNZQ=;
+	s=korg; t=1774275691;
+	bh=xmXccoLUHRb96XMtXe8+ONaj0ApHLFzK5XXS1F8ZiVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U45oxNEl6tQcrXNMO0VSCGuTs03kITMVknR3k7OdFkrcL3vDvtL7iEYRhcQdQYRzT
-	 hCZJXS4UuTAmRubPlZXRoMQpEgWFPehASWXsdj9f2Ek4RjZoe4E6Sj4sUWMtOh0EUC
-	 4u86EkRzyW/MIHx4VU2OIkeWSzbGJWiRGNfVwifI=
+	b=a8n2OLVZo0yHNuJrBIXBoqL8p6/RkhvhQsb19CsH9eJ0NamvNHPhbQbHcDFvOx2my
+	 CZ22X69T/NSw2SHET6fa8DVYizv9f7RMOCWM2p5FB6tmnnirzjDWnodVD43OOR41Lo
+	 IBSbocwwnVdquME5SOFky/6RrI5leOW1qxu8huJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/567] net/mlx5e: Fix DMA FIFO desync on error CQE SQ recovery
+	Marc Zyngier <maz@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Zenghui Yu <zenghui.yu@linux.dev>
+Subject: [PATCH 6.12 148/460] irqchip/gic-v3-its: Limit number of per-device MSIs to the range the ITS supports
 Date: Mon, 23 Mar 2026 14:42:24 +0100
-Message-ID: <20260323134539.374449732@linuxfoundation.org>
+Message-ID: <20260323134530.215940404@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,112 +70,92 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229138-lists,stable=lfdr.de];
+	TAGGED_FROM(0.00)[bounces-228641-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
+	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
 	PRECEDENCE_BULK(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: AF88C2F5EFF
+X-Rspamd-Queue-Id: 1A3342F4BC1
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 1633111d69053512d099658d4a05fc736fab36b0 ]
+commit ce9e40a9a5e5cff0b1b0d2fa582b3d71a8ce68e8 upstream.
 
-In case of a TX error CQE, a recovery flow is triggered,
-mlx5e_reset_txqsq_cc_pc() resets dma_fifo_cc to 0 but not dma_fifo_pc,
-desyncing the DMA FIFO producer and consumer.
+The ITS driver blindly assumes that EventIDs are in abundant supply, to the
+point where it never checks how many the hardware actually supports.
 
-After recovery, the producer pushes new DMA entries at the old
-dma_fifo_pc, while the consumer reads from position 0.
-This causes us to unmap stale DMA addresses from before the recovery.
+It turns out that some pretty esoteric integrations make it so that only a
+few bits are available, all the way down to a single bit.
 
-The DMA FIFO is a purely software construct with no HW counterpart.
-At the point of reset, all WQEs have been flushed so dma_fifo_cc is
-already equal to dma_fifo_pc. There is no need to reset either counter,
-similar to how skb_fifo pc/cc are untouched.
+Enforce the advertised limitation at the point of allocating the device
+structure, and hope that the endpoint driver can deal with such limitation.
 
-Remove the 'dma_fifo_cc = 0' reset.
-
-This fixes the following WARNING:
-    WARNING: CPU: 0 PID: 0 at drivers/iommu/dma-iommu.c:1240 iommu_dma_unmap_page+0x79/0x90
-    Modules linked in: mlx5_vdpa vringh vdpa bonding mlx5_ib mlx5_vfio_pci ipip mlx5_fwctl tunnel4 mlx5_core ib_ipoib geneve ip6_gre ip_gre gre nf_tables ip6_tunnel rdma_ucm ib_uverbs ib_umad vfio_pci vfio_pci_core act_mirred act_skbedit act_vlan vhost_net vhost tap ip6table_mangle ip6table_nat ip6table_filter ip6_tables iptable_mangle cls_matchall nfnetlink_cttimeout act_gact cls_flower sch_ingress vhost_iotlb iptable_raw tunnel6 vfio_iommu_type1 vfio openvswitch nsh rpcsec_gss_krb5 auth_rpcgss oid_registry xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink iptable_nat nf_nat xt_addrtype br_netfilter overlay zram zsmalloc rpcrdma ib_iser libiscsi scsi_transport_iscsi rdma_cm iw_cm ib_cm ib_core fuse [last unloaded: nf_tables]
-    CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted 6.13.0-rc5_for_upstream_min_debug_2024_12_30_21_33 #1
-    Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-    RIP: 0010:iommu_dma_unmap_page+0x79/0x90
-    Code: 2b 4d 3b 21 72 26 4d 3b 61 08 73 20 49 89 d8 44 89 f9 5b 4c 89 f2 4c 89 e6 48 89 ef 5d 41 5c 41 5d 41 5e 41 5f e9 c7 ae 9e ff <0f> 0b 5b 5d 41 5c 41 5d 41 5e 41 5f c3 66 2e 0f 1f 84 00 00 00 00
-    Call Trace:
-     <IRQ>
-     ? __warn+0x7d/0x110
-     ? iommu_dma_unmap_page+0x79/0x90
-     ? report_bug+0x16d/0x180
-     ? handle_bug+0x4f/0x90
-     ? exc_invalid_op+0x14/0x70
-     ? asm_exc_invalid_op+0x16/0x20
-     ? iommu_dma_unmap_page+0x79/0x90
-     ? iommu_dma_unmap_page+0x2e/0x90
-     dma_unmap_page_attrs+0x10d/0x1b0
-     mlx5e_tx_wi_dma_unmap+0xbe/0x120 [mlx5_core]
-     mlx5e_poll_tx_cq+0x16d/0x690 [mlx5_core]
-     mlx5e_napi_poll+0x8b/0xac0 [mlx5_core]
-     __napi_poll+0x24/0x190
-     net_rx_action+0x32a/0x3b0
-     ? mlx5_eq_comp_int+0x7e/0x270 [mlx5_core]
-     ? notifier_call_chain+0x35/0xa0
-     handle_softirqs+0xc9/0x270
-     irq_exit_rcu+0x71/0xd0
-     common_interrupt+0x7f/0xa0
-     </IRQ>
-     <TASK>
-     asm_common_interrupt+0x22/0x40
-
-Fixes: db75373c91b0 ("net/mlx5e: Recover Send Queue (SQ) from error state")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20260305142634.1813208-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 84a6a2e7fc18d ("irqchip: GICv3: ITS: device allocation and configuration")
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Zenghui Yu <zenghui.yu@linux.dev>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260206154816.3582887-1-maz@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/irqchip/irq-gic-v3-its.c   |    4 ++++
+ include/linux/irqchip/arm-gic-v3.h |    1 +
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-index 51a23345caa18..1319e9ee20fc0 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-@@ -46,7 +46,6 @@ static void mlx5e_reset_txqsq_cc_pc(struct mlx5e_txqsq *sq)
- 		  "SQ 0x%x: cc (0x%x) != pc (0x%x)\n",
- 		  sq->sqn, sq->cc, sq->pc);
- 	sq->cc = 0;
--	sq->dma_fifo_cc = 0;
- 	sq->pc = 0;
- }
+--- a/drivers/irqchip/irq-gic-v3-its.c
++++ b/drivers/irqchip/irq-gic-v3-its.c
+@@ -3393,6 +3393,7 @@ static struct its_device *its_create_dev
+ 	int lpi_base;
+ 	int nr_lpis;
+ 	int nr_ites;
++	int id_bits;
+ 	int sz;
  
--- 
-2.51.0
-
+ 	if (!its_alloc_device_table(its, dev_id))
+@@ -3405,7 +3406,10 @@ static struct its_device *its_create_dev
+ 	/*
+ 	 * Even if the device wants a single LPI, the ITT must be
+ 	 * sized as a power of two (and you need at least one bit...).
++	 * Also honor the ITS's own EID limit.
+ 	 */
++	id_bits = FIELD_GET(GITS_TYPER_IDBITS, its->typer) + 1;
++	nvecs = min_t(unsigned int, nvecs, BIT(id_bits));
+ 	nr_ites = max(2, nvecs);
+ 	sz = nr_ites * (FIELD_GET(GITS_TYPER_ITT_ENTRY_SIZE, its->typer) + 1);
+ 	sz = max(sz, ITS_ITT_ALIGN) + ITS_ITT_ALIGN - 1;
+--- a/include/linux/irqchip/arm-gic-v3.h
++++ b/include/linux/irqchip/arm-gic-v3.h
+@@ -394,6 +394,7 @@
+ #define GITS_TYPER_VLPIS		(1UL << 1)
+ #define GITS_TYPER_ITT_ENTRY_SIZE_SHIFT	4
+ #define GITS_TYPER_ITT_ENTRY_SIZE	GENMASK_ULL(7, 4)
++#define GITS_TYPER_IDBITS		GENMASK_ULL(12, 8)
+ #define GITS_TYPER_IDBITS_SHIFT		8
+ #define GITS_TYPER_DEVBITS_SHIFT	13
+ #define GITS_TYPER_DEVBITS		GENMASK_ULL(17, 13)
 
 
 
