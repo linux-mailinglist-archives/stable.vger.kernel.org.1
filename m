@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-229762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229268-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id WMxaNU9ywWkQTQQAu9opvQ
-	(envelope-from <stable+bounces-229762-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:11 +0100
+	id x6uPEBNfwWmaSgQAu9opvQ
+	(envelope-from <stable+bounces-229268-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:07 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E4AB2F9593
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:03:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A70342F6B4C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:41:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C04E32D6DA4
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:20:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3FCB30C4D4A
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FCA63BA222;
-	Mon, 23 Mar 2026 16:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30233B776C;
+	Mon, 23 Mar 2026 15:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTYTkiKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftfI0iUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1387037B03B;
-	Mon, 23 Mar 2026 16:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 872ED274FE8;
+	Mon, 23 Mar 2026 15:09:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774282800; cv=none; b=SpPFx5nCxFoR1xA0RO40We211okRUqbA+3+XPVvs4X8bO2+hDUnW4isMWjmLgs6/b71Sx4Rtq0MnWF452AmafYNybsPFj5Q/zSfIcrkXPh26aYIaVI+3lTR51NxZ0uCFJa+xhNPW7bl7QPYngUuY37LNXVVGMIqGlXBpbHcf474=
+	t=1774278584; cv=none; b=LuYkFyVzUFo90cYPED0klSsMHpZIHO6Q28QQj/K1Hqksnfx2WpkOUWG9TnPUZIokohKabY+w23OfkmhgHSZDbP1wsCGWRxgeEIcdWxxC9unpEMpg0lkKQISQMQhaUpoNut9LuPQbDCEGA57guTN+ycsfJ6iOdHwdpk1N0jH9H0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774282800; c=relaxed/simple;
-	bh=V7+ogQPnbFHln9nWTNUiplQhFRQWuR3azU6ymp5+17o=;
+	s=arc-20240116; t=1774278584; c=relaxed/simple;
+	bh=bSLHgdQRJJE1a8+QPBi1Kmarwf2aD6aVm2G6swFfnR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2NUHajcKcQ/Yrc/k4Isvvb5pZ5bDHD+fngat+H3iQPqdzu0Qe/Wm+seySO3HbXHK/tr+tR3C+0Ey2szF/xwcHsCdNK9tar6Y8L+DCaExICXCvpgc1YLcMYfPKk7vTNTLxfFFBT5aXaA1NcJz3GMRGEtvNorVxw1by8ojomQk9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTYTkiKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9864BC4CEF7;
-	Mon, 23 Mar 2026 16:19:59 +0000 (UTC)
+	 MIME-Version; b=UQQFmYLxmem78S6Ntr3MtUFJ2dLYkQ5XXYATbLL3FPNq8TdHP8TM6naN9x/QTEmLgFDqe0ESpAA+YKXsj9r8yn7A5UGzVBBc6aTogibGOJK6TC8bXRwu1UIBteES1wAzXPSvDn6rMta/HbKbiKBRE1ZDNAtu5aaXPgDZQLL29Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftfI0iUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E5BC4CEF7;
+	Mon, 23 Mar 2026 15:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774282800;
-	bh=V7+ogQPnbFHln9nWTNUiplQhFRQWuR3azU6ymp5+17o=;
+	s=korg; t=1774278584;
+	bh=bSLHgdQRJJE1a8+QPBi1Kmarwf2aD6aVm2G6swFfnR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jTYTkiKRNC9KlfeJ5cERg31Mn8gUnK28t71gQxt3VVTgT5tKhzdmYiaoz1ME5Lfva
-	 Y8liuV3m5qIsirc7mBlt7v8b+FB1DJLjuwVhsbed9OvPoSOOSKr4CaO6CU9UJLSrt5
-	 NlCKxOCtG738v/cX9aGIbdzVZGRbDpbC6H24Xv7U=
+	b=ftfI0iUWOLQpb4fY/dGaV8PU7TaF8kaiuD7OfwS1rUzAr9Bx3TBlX/1YFXBiyE8Rr
+	 mB53FVsRtGqRcuYwzekhGDaWdHI0lerHlnzVjzxXiEgUOb+XMCaMHPK4ArO60ATjjn
+	 qXc6f53iFzAYPLVQH9oHQaf1QPcyovmp6t+8ZmR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Matthew Schwartz <matthew.schwartz@linux.dev>,
-	Ben Chuang <ben.chuang@genesyslogic.com.tw>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 291/481] mmc: sdhci-pci-gli: fix GL9750 DMA write corruption
+	SeungJu Cheon <suunj1331@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 353/567] iio: frequency: adf4377: Fix duplicated soft reset mask
 Date: Mon, 23 Mar 2026 14:44:33 +0100
-Message-ID: <20260323134532.201290765@linuxfoundation.org>
+Message-ID: <20260323134542.569735486@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
-References: <20260323134525.256603107@linuxfoundation.org>
+In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
+References: <20260323134533.749096647@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,93 +66,73 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c04:e001:36c::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-229762-lists,stable=lfdr.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:2600:3c04::/32, country:SG];
-	PRECEDENCE_BULK(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[bounces-229268-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,vger.kernel.org,huawei.com];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_FIVE(0.00)[6];
 	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 4E4AB2F9593
+X-Rspamd-Queue-Id: A70342F6B4C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Schwartz <matthew.schwartz@linux.dev>
+From: SeungJu Cheon <suunj1331@gmail.com>
 
-commit 2b76e0cc7803e5ab561c875edaba7f6bbd87fbb0 upstream.
+commit 6c8bf4b604a8a6346ca71f1c027fa01c2c2e04cb upstream.
 
-The GL9750 SD host controller has intermittent data corruption during
-DMA write operations. The GM_BURST register's R_OSRC_Lmt field
-(bits 17:16), which limits outstanding DMA read requests from system
-memory, is not being cleared during initialization. The Windows driver
-sets R_OSRC_Lmt to zero, limiting requests to the smallest unit.
+The regmap_read_poll_timeout() uses ADF4377_0000_SOFT_RESET_R_MSK
+twice instead of checking both SOFT_RESET_MSK (bit 0) and
+SOFT_RESET_R_MSK (bit 7). This causes an incomplete reset status check.
 
-Clear R_OSRC_Lmt to match the Windows driver behavior. This eliminates
-write corruption verified with f3write/f3read tests while maintaining
-DMA performance.
+The code first sets both SOFT_RESET and SOFT_RESET_R bits to 1 via
+regmap_update_bits(), then polls for them to be cleared. Since we set
+both bits before polling, we should be waiting for both to clear.
 
-Cc: stable@vger.kernel.org
-Fixes: e51df6ce668a ("mmc: host: sdhci-pci: Add Genesys Logic GL975x support")
-Closes: https://lore.kernel.org/linux-mmc/33d12807-5c72-41ce-8679-57aa11831fad@linux.dev/
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Matthew Schwartz <matthew.schwartz@linux.dev>
-Reviewed-by: Ben Chuang <ben.chuang@genesyslogic.com.tw>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fix by using both masks as done in regmap_update_bits() above.
+
+Fixes: eda549e2e524 ("iio: frequency: adf4377: add support for ADF4377")
+Signed-off-by: SeungJu Cheon <suunj1331@gmail.com>
+Cc: Stable@vger.kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-pci-gli.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/iio/frequency/adf4377.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-pci-gli.c
-+++ b/drivers/mmc/host/sdhci-pci-gli.c
-@@ -70,6 +70,9 @@
- #define   GLI_9750_MISC_TX1_DLY_VALUE    0x5
- #define   SDHCI_GLI_9750_MISC_SSC_OFF    BIT(26)
+--- a/drivers/iio/frequency/adf4377.c
++++ b/drivers/iio/frequency/adf4377.c
+@@ -495,7 +495,7 @@ static int adf4377_soft_reset(struct adf
+ 		return ret;
  
-+#define SDHCI_GLI_9750_GM_BURST_SIZE		  0x510
-+#define   SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT  GENMASK(17, 16)
-+
- #define SDHCI_GLI_9750_TUNING_CONTROL	          0x540
- #define   SDHCI_GLI_9750_TUNING_CONTROL_EN          BIT(4)
- #define   GLI_9750_TUNING_CONTROL_EN_ON             0x1
-@@ -212,10 +215,16 @@ static void gli_set_9750(struct sdhci_ho
- 	u32 misc_value;
- 	u32 parameter_value;
- 	u32 control_value;
-+	u32 burst_value;
- 	u16 ctrl2;
+ 	return regmap_read_poll_timeout(st->regmap, 0x0, read_val,
+-					!(read_val & (ADF4377_0000_SOFT_RESET_R_MSK |
++					!(read_val & (ADF4377_0000_SOFT_RESET_MSK |
+ 					ADF4377_0000_SOFT_RESET_R_MSK)), 200, 200 * 100);
+ }
  
- 	gl9750_wt_on(host);
- 
-+	/* clear R_OSRC_Lmt to avoid DMA write corruption */
-+	burst_value = sdhci_readl(host, SDHCI_GLI_9750_GM_BURST_SIZE);
-+	burst_value &= ~SDHCI_GLI_9750_GM_BURST_SIZE_R_OSRC_LMT;
-+	sdhci_writel(host, burst_value, SDHCI_GLI_9750_GM_BURST_SIZE);
-+
- 	driving_value = sdhci_readl(host, SDHCI_GLI_9750_DRIVING);
- 	pll_value = sdhci_readl(host, SDHCI_GLI_9750_PLL);
- 	sw_ctrl_value = sdhci_readl(host, SDHCI_GLI_9750_SW_CTRL);
 
 
 
