@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-228156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229798-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id CNrzLkNJwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228156-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:03 +0100
+	id OHhKIwd1wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229798-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:14:47 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30CBF2F3E09
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:08:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6892F9A01
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:14:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 082E9304033F
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:58:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 177173068DB0
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D1B3AB29B;
-	Mon, 23 Mar 2026 13:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648523AE6E6;
+	Mon, 23 Mar 2026 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIGDQJGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P5hbyXQH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BFB1F91F6;
-	Mon, 23 Mar 2026 13:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E6E1DA0E1;
+	Mon, 23 Mar 2026 16:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274295; cv=none; b=u0RlkOHxtIVDjxuv0t+DMr3rjZZHb+R1k/FRJ9LDsiQJj6jj7doRl7B6c0SU/ms7oam5OIrogoFEnK6tCHYx0MCIRRcIZ1jdwS7N4F1XVZ34mZLSwby8ZxBs8nGehBt1xiZpUOniU9qAIEYJNkol3OI7gPV/M8/vM8LWdKa9Oms=
+	t=1774282893; cv=none; b=fW3/HCKI0ncYOkDnsfFifQ+8tVrQVnF6Tb7PBhF+PMuL6U4YPTvedVJbagpo7X4T8WENd8FsvQ0sdn1TS+Yl7ICHaxpc/9ZK5istFkXg2oEyelr32Kn+/WSnOpl0vbteGgP1GUy8tVpyr92edEAm6QXr4pA2l1hq+ENmo1EGSeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274295; c=relaxed/simple;
-	bh=DxU1P7HrxKQTgzf8wduP1jCU7DhxdhZDN5ouO6nhrMc=;
+	s=arc-20240116; t=1774282893; c=relaxed/simple;
+	bh=blFAuFJEqGsOpw5dC0UwnJG1iopBdg73YgJIOLkfvaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nV3brIdEZJs8XvH26Q7CjwDGHl6PKC7PMpJ9t+GFi4tG7XvEIJJ6PhOq+DvziZyy4aujNjZgpN4QLDShnPm+q8tTxaRjyF8zZt5Co01k018w+nmlp1u3S0IQOZJ0timC2zx7lJB2fMft7c7zVHt2tE8xZ4golOeTQiWvFB2gDA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qIGDQJGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38F1C2BC9E;
-	Mon, 23 Mar 2026 13:58:14 +0000 (UTC)
+	 MIME-Version; b=b8fnO90OWOO4luF5cYY/lWz5FHD/7EK6pHnAgk73EOa29lpBInbymeVRcVqQ1TCmDeQOJEj4KspF5cL9s8k8oucO973r/cFd8zniokS2XDUzZw8gvEpg9/ecuBJvcKkWusGT6yiLn9aJ9FntTlxKDka4r9DE3Gmtbkqmb709PTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P5hbyXQH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB713C4CEF7;
+	Mon, 23 Mar 2026 16:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274295;
-	bh=DxU1P7HrxKQTgzf8wduP1jCU7DhxdhZDN5ouO6nhrMc=;
+	s=korg; t=1774282893;
+	bh=blFAuFJEqGsOpw5dC0UwnJG1iopBdg73YgJIOLkfvaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIGDQJGtUJiW3dSOPx4o1DMghSxPfEqf0zZxSe1OHXhP9FonwZi0XGZrz16XCN1kt
-	 eXYXESHIiz320lX2b82BGPrrKZJ/e97t61jfVzNbmgfzwqvBtnhkCBzLJaDVyrZdjn
-	 KO7TR76hXTO8v0LBUV/scUHMQW8dZpf+tYHVArtw=
+	b=P5hbyXQHVliqIWtewk47Ojo82U9dTdJf8PS1t7R9IeJLXCQ1MH9Ju+4Seo5mK/b+I
+	 9X3PSK7myn8GjwfOPGmDs8yDxjRqK0cxfIZkAauGkGDpftZdt8lkH5XCxlpgLqqMZd
+	 YO9dWhaXiTfI0xNyD34W4Z+n8+8wgz948I11r8yY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Ushakov <sysroot314@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	Frank Lorenz <lorenz-frank@web.de>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.19 127/220] af_unix: Give up GC if MSG_PEEK intervened.
-Date: Mon, 23 Mar 2026 14:45:04 +0100
-Message-ID: <20260323134508.596880934@linuxfoundation.org>
+Subject: [PATCH 6.1 323/481] mptcp: pm: avoid sending RM_ADDR over same subflow
+Date: Mon, 23 Mar 2026 14:45:05 +0100
+Message-ID: <20260323134532.972982356@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
-References: <20260323134504.575022936@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,289 +70,157 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
+	R_SPF_ALLOW(-0.20)[+ip4:104.64.211.4:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,google.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-228156-lists,stable=lfdr.de];
-	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-229798-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,web.de,kernel.org];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[7];
+	ASN(0.00)[asn:63949, ipnet:104.64.192.0/19, country:SG];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	PRECEDENCE_BULK(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,tor.lore.kernel.org:helo,tor.lore.kernel.org:rdns,msgid.link:url]
-X-Rspamd-Queue-Id: 30CBF2F3E09
+	FROM_HAS_DN(0.00)[]
+X-Rspamd-Queue-Id: BE6892F9A01
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit e5b31d988a41549037b8d8721a3c3cae893d8670 ]
+[ Upstream commit fb8d0bccb221080630efcd9660c9f9349e53cc9e ]
 
-Igor Ushakov reported that GC purged the receive queue of
-an alive socket due to a race with MSG_PEEK with a nice repro.
+RM_ADDR are sent over an active subflow, the first one in the subflows
+list. There is then a high chance the initial subflow is picked. With
+the in-kernel PM, when an endpoint is removed, a RM_ADDR is sent, then
+linked subflows are closed. This is done for each active MPTCP
+connection.
 
-This is the exact same issue previously fixed by commit
-cbcf01128d0a ("af_unix: fix garbage collect vs MSG_PEEK").
+MPTCP endpoints are likely removed because the attached network is no
+longer available or usable. In this case, it is better to avoid sending
+this RM_ADDR over the subflow that is going to be removed, but prefer
+sending it over another active and non stale subflow, if any.
 
-After GC was replaced with the current algorithm, the cited
-commit removed the locking dance in unix_peek_fds() and
-reintroduced the same issue.
+This modification avoids situations where the other end is not notified
+when a subflow is no longer usable: typically when the endpoint linked
+to the initial subflow is removed, especially on the server side.
 
-The problem is that MSG_PEEK bumps a file refcount without
-interacting with GC.
-
-Consider an SCC containing sk-A and sk-B, where sk-A is
-close()d but can be recv()ed via sk-B.
-
-The bad thing happens if sk-A is recv()ed with MSG_PEEK from
-sk-B and sk-B is close()d while GC is checking unix_vertex_dead()
-for sk-A and sk-B.
-
-  GC thread                    User thread
-  ---------                    -----------
-  unix_vertex_dead(sk-A)
-  -> true   <------.
-                    \
-                     `------   recv(sk-B, MSG_PEEK)
-              invalidate !!    -> sk-A's file refcount : 1 -> 2
-
-                               close(sk-B)
-                               -> sk-B's file refcount : 2 -> 1
-  unix_vertex_dead(sk-B)
-  -> true
-
-Initially, sk-A's file refcount is 1 by the inflight fd in sk-B
-recvq.  GC thinks sk-A is dead because the file refcount is the
-same as the number of its inflight fds.
-
-However, sk-A's file refcount is bumped silently by MSG_PEEK,
-which invalidates the previous evaluation.
-
-At this moment, sk-B's file refcount is 2; one by the open fd,
-and one by the inflight fd in sk-A.  The subsequent close()
-releases one refcount by the former.
-
-Finally, GC incorrectly concludes that both sk-A and sk-B are dead.
-
-One option is to restore the locking dance in unix_peek_fds(),
-but we can resolve this more elegantly thanks to the new algorithm.
-
-The point is that the issue does not occur without the subsequent
-close() and we actually do not need to synchronise MSG_PEEK with
-the dead SCC detection.
-
-When the issue occurs, close() and GC touch the same file refcount.
-If GC sees the refcount being decremented by close(), it can just
-give up garbage-collecting the SCC.
-
-Therefore, we only need to signal the race during MSG_PEEK with
-a proper memory barrier to make it visible to the GC.
-
-Let's use seqcount_t to notify GC when MSG_PEEK occurs and let
-it defer the SCC to the next run.
-
-This way no locking is needed on the MSG_PEEK side, and we can
-avoid imposing a penalty on every MSG_PEEK unnecessarily.
-
-Note that we can retry within unix_scc_dead() if MSG_PEEK is
-detected, but we do not do so to avoid hung task splat from
-abusive MSG_PEEK calls.
-
-Fixes: 118f457da9ed ("af_unix: Remove lock dance in unix_peek_fds().")
-Reported-by: Igor Ushakov <sysroot314@gmail.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260311054043.1231316-1-kuniyu@google.com
+Fixes: 8dd5efb1f91b ("mptcp: send ack for rm_addr")
+Cc: stable@vger.kernel.org
+Reported-by: Frank Lorenz <lorenz-frank@web.de>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/612
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20260303-net-mptcp-misc-fixes-7-0-rc2-v1-2-4b5462b6f016@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ adapted to _nl-prefixed function names in pm_netlink.c and omitted stale subflow fallback ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/unix/af_unix.c |  2 ++
- net/unix/af_unix.h |  1 +
- net/unix/garbage.c | 79 ++++++++++++++++++++++++++++++----------------
- 3 files changed, 54 insertions(+), 28 deletions(-)
+ net/mptcp/pm.c         |    2 +-
+ net/mptcp/pm_netlink.c |   43 ++++++++++++++++++++++++++++++++++++++-----
+ net/mptcp/protocol.h   |    2 ++
+ 3 files changed, 41 insertions(+), 6 deletions(-)
 
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 6965b9a49d68a..3db79e83d2114 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -1958,6 +1958,8 @@ static void unix_detach_fds(struct scm_cookie *scm, struct sk_buff *skb)
- static void unix_peek_fds(struct scm_cookie *scm, struct sk_buff *skb)
- {
- 	scm->fp = scm_fp_dup(UNIXCB(skb).fp);
-+
-+	unix_peek_fpl(scm->fp);
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -55,7 +55,7 @@ int mptcp_pm_remove_addr(struct mptcp_so
+ 	msk->pm.rm_list_tx = *rm_list;
+ 	rm_addr |= BIT(MPTCP_RM_ADDR_SIGNAL);
+ 	WRITE_ONCE(msk->pm.addr_signal, rm_addr);
+-	mptcp_pm_nl_addr_send_ack(msk);
++	mptcp_pm_nl_addr_send_ack_avoid_list(msk, rm_list);
+ 	return 0;
  }
  
- static void unix_destruct_scm(struct sk_buff *skb)
-diff --git a/net/unix/af_unix.h b/net/unix/af_unix.h
-index c4f1b2da363de..8119dbeef3a3c 100644
---- a/net/unix/af_unix.h
-+++ b/net/unix/af_unix.h
-@@ -29,6 +29,7 @@ void unix_del_edges(struct scm_fp_list *fpl);
- void unix_update_edges(struct unix_sock *receiver);
- int unix_prepare_fpl(struct scm_fp_list *fpl);
- void unix_destroy_fpl(struct scm_fp_list *fpl);
-+void unix_peek_fpl(struct scm_fp_list *fpl);
- void unix_schedule_gc(struct user_struct *user);
- 
- /* SOCK_DIAG */
-diff --git a/net/unix/garbage.c b/net/unix/garbage.c
-index 25f65817faab9..aaa5f5bf51cad 100644
---- a/net/unix/garbage.c
-+++ b/net/unix/garbage.c
-@@ -318,6 +318,25 @@ void unix_destroy_fpl(struct scm_fp_list *fpl)
- 	unix_free_vertices(fpl);
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -850,9 +850,23 @@ bool mptcp_pm_nl_is_init_remote_addr(str
+ 	return mptcp_addresses_equal(&mpc_remote, remote, remote->port);
  }
  
-+static bool gc_in_progress;
-+static seqcount_t unix_peek_seq = SEQCNT_ZERO(unix_peek_seq);
-+
-+void unix_peek_fpl(struct scm_fp_list *fpl)
+-void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
++static bool subflow_in_rm_list(const struct mptcp_subflow_context *subflow,
++			       const struct mptcp_rm_list *rm_list)
 +{
-+	static DEFINE_SPINLOCK(unix_peek_lock);
++	u8 i, id = subflow_get_local_id(subflow);
 +
-+	if (!fpl || !fpl->count_unix)
-+		return;
-+
-+	if (!READ_ONCE(gc_in_progress))
-+		return;
-+
-+	/* Invalidate the final refcnt check in unix_vertex_dead(). */
-+	spin_lock(&unix_peek_lock);
-+	raw_write_seqcount_barrier(&unix_peek_seq);
-+	spin_unlock(&unix_peek_lock);
-+}
-+
- static bool unix_vertex_dead(struct unix_vertex *vertex)
- {
- 	struct unix_edge *edge;
-@@ -351,6 +370,36 @@ static bool unix_vertex_dead(struct unix_vertex *vertex)
- 	return true;
- }
- 
-+static LIST_HEAD(unix_visited_vertices);
-+static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
-+
-+static bool unix_scc_dead(struct list_head *scc, bool fast)
-+{
-+	struct unix_vertex *vertex;
-+	bool scc_dead = true;
-+	unsigned int seq;
-+
-+	seq = read_seqcount_begin(&unix_peek_seq);
-+
-+	list_for_each_entry_reverse(vertex, scc, scc_entry) {
-+		/* Don't restart DFS from this vertex. */
-+		list_move_tail(&vertex->entry, &unix_visited_vertices);
-+
-+		/* Mark vertex as off-stack for __unix_walk_scc(). */
-+		if (!fast)
-+			vertex->index = unix_vertex_grouped_index;
-+
-+		if (scc_dead)
-+			scc_dead = unix_vertex_dead(vertex);
++	for (i = 0; i < rm_list->nr; i++) {
++		if (rm_list->ids[i] == id)
++			return true;
 +	}
 +
-+	/* If MSG_PEEK intervened, defer this SCC to the next round. */
-+	if (read_seqcount_retry(&unix_peek_seq, seq))
-+		return false;
-+
-+	return scc_dead;
++	return false;
 +}
 +
- static void unix_collect_skb(struct list_head *scc, struct sk_buff_head *hitlist)
++void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
++					  const struct mptcp_rm_list *rm_list)
  {
- 	struct unix_vertex *vertex;
-@@ -404,9 +453,6 @@ static bool unix_scc_cyclic(struct list_head *scc)
- 	return false;
- }
+-	struct mptcp_subflow_context *subflow;
++	struct mptcp_subflow_context *subflow, *same_id = NULL;
  
--static LIST_HEAD(unix_visited_vertices);
--static unsigned long unix_vertex_grouped_index = UNIX_VERTEX_INDEX_MARK2;
--
- static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
- 				     unsigned long *last_index,
- 				     struct sk_buff_head *hitlist)
-@@ -474,9 +520,7 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
- 	}
+ 	msk_owned_by_me(msk);
+ 	lockdep_assert_held(&msk->pm.lock);
+@@ -862,11 +876,30 @@ void mptcp_pm_nl_addr_send_ack(struct mp
+ 		return;
  
- 	if (vertex->index == vertex->scc_index) {
--		struct unix_vertex *v;
- 		struct list_head scc;
--		bool scc_dead = true;
- 
- 		/* SCC finalised.
- 		 *
-@@ -485,18 +529,7 @@ static unsigned long __unix_walk_scc(struct unix_vertex *vertex,
- 		 */
- 		__list_cut_position(&scc, &vertex_stack, &vertex->scc_entry);
- 
--		list_for_each_entry_reverse(v, &scc, scc_entry) {
--			/* Don't restart DFS from this vertex in unix_walk_scc(). */
--			list_move_tail(&v->entry, &unix_visited_vertices);
--
--			/* Mark vertex as off-stack. */
--			v->index = unix_vertex_grouped_index;
--
--			if (scc_dead)
--				scc_dead = unix_vertex_dead(v);
--		}
--
--		if (scc_dead) {
-+		if (unix_scc_dead(&scc, false)) {
- 			unix_collect_skb(&scc, hitlist);
- 		} else {
- 			if (unix_vertex_max_scc_index < vertex->scc_index)
-@@ -550,19 +583,11 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- 	while (!list_empty(&unix_unvisited_vertices)) {
- 		struct unix_vertex *vertex;
- 		struct list_head scc;
--		bool scc_dead = true;
- 
- 		vertex = list_first_entry(&unix_unvisited_vertices, typeof(*vertex), entry);
- 		list_add(&scc, &vertex->scc_entry);
- 
--		list_for_each_entry_reverse(vertex, &scc, scc_entry) {
--			list_move_tail(&vertex->entry, &unix_visited_vertices);
--
--			if (scc_dead)
--				scc_dead = unix_vertex_dead(vertex);
--		}
--
--		if (scc_dead) {
-+		if (unix_scc_dead(&scc, true)) {
- 			cyclic_sccs--;
- 			unix_collect_skb(&scc, hitlist);
+ 	mptcp_for_each_subflow(msk, subflow) {
+-		if (__mptcp_subflow_active(subflow)) {
+-			mptcp_pm_send_ack(msk, subflow, false, false);
+-			break;
++		if (!__mptcp_subflow_active(subflow))
++			continue;
++
++		if (unlikely(rm_list &&
++			     subflow_in_rm_list(subflow, rm_list))) {
++			if (!same_id)
++				same_id = subflow;
++		} else {
++			goto send_ack;
  		}
-@@ -577,8 +602,6 @@ static void unix_walk_scc_fast(struct sk_buff_head *hitlist)
- 		   cyclic_sccs ? UNIX_GRAPH_CYCLIC : UNIX_GRAPH_NOT_CYCLIC);
+ 	}
++
++	if (same_id)
++		subflow = same_id;
++	else
++		return;
++
++send_ack:
++	mptcp_pm_send_ack(msk, subflow, false, false);
++}
++
++void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
++{
++	mptcp_pm_nl_addr_send_ack_avoid_list(msk, NULL);
  }
  
--static bool gc_in_progress;
--
- static void unix_gc(struct work_struct *work)
- {
- 	struct sk_buff_head hitlist;
--- 
-2.51.0
-
+ int mptcp_pm_nl_mp_prio_send_ack(struct mptcp_sock *msk,
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -818,6 +818,8 @@ void mptcp_pm_add_addr_send_ack(struct m
+ bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
+ 				     const struct mptcp_addr_info *remote);
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
++void mptcp_pm_nl_addr_send_ack_avoid_list(struct mptcp_sock *msk,
++					  const struct mptcp_rm_list *rm_list);
+ void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
+ 			       const struct mptcp_rm_list *rm_list);
+ void mptcp_pm_mp_prio_received(struct sock *sk, u8 bkup);
 
 
 
