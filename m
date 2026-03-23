@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-229413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-229908-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id KBAiKLpgwWmaSgQAu9opvQ
-	(envelope-from <stable+bounces-229413-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:48:10 +0100
+	id +KOHNuB7wWkQTQQAu9opvQ
+	(envelope-from <stable+bounces-229908-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:00 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E292F6F17
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:48:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 371302FA4DF
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 18:44:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B25193066EDF
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:30:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5831C318ABC4
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 16:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAA23B47C5;
-	Mon, 23 Mar 2026 15:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A763BD22F;
+	Mon, 23 Mar 2026 16:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPm2gz8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R7mE1VvD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401383B27C5;
-	Mon, 23 Mar 2026 15:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C883BC668;
+	Mon, 23 Mar 2026 16:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774279168; cv=none; b=bPu1XBGZDiZMUx5CXXFg4cLE8imu8ClMLZI7eTOSVa6qKrbb7auAMFHhGB76R58wGq9osO4j9eI+7BLDCBj+VnK3TRytEX/ObLNJNs2RT9SX/6hpZUf/LW7p5jrBOuskzxBI2W/U2yDYGRcKWsCqa9Ml/qj3RCHg9yHYtNaSNoo=
+	t=1774283186; cv=none; b=E3zwWKUfdCS7XKW4aof0B3EvtQ7RDi9nRocLTP2BIlu+Q+k+rEU0UQttOMjkThiX2573XjFz7gIbUHJwIFZ1D4c1+pPNLdbECathydY6qHG/p3n5LH/ToWMziWVrivueo6BEZuhW7KzYMdVZabpSTdRSNagW0NKQelOLB6UnsI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774279168; c=relaxed/simple;
-	bh=n5bLzcIlizE0YFFDik3/ko/gDAI0A3yINlFfxmFMTsU=;
+	s=arc-20240116; t=1774283186; c=relaxed/simple;
+	bh=aGVg/neuvv6ybO9qKsAx8PfsUj+qojtAKQztvxr3u2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bt9UZkiNBj3NavKCZp39iF4P824NLFmOi/FSMidyvPq8Q4TDYKxu74PJhmcxuzPbYxQ8I9wqxKU5HK/JCwD37vzLzEFSQFzyAbMiIAQANyDQOzS/1pjpOMMTdojvnLy1rcA9cUANVpqhWIW6jk5Ri8PCQfiPazOBKw82eWq1gRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LPm2gz8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3E3C4CEF7;
-	Mon, 23 Mar 2026 15:19:27 +0000 (UTC)
+	 MIME-Version; b=LkPdYadwrer+7/N+yEHNlRnGOfUbkrQfTpf3vWb1+l7QmJS0kFAzsG/3c751FTB8mlYhE0a/DAbODN+XW3QzzEwHIBbsLplGJJy4l6Wt7dk7M3HhBLXM7+etimUZQgzelp2EgEA4qhikYQ30IjhFyr1O9ZoCSrQmYg71Oxw5RK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R7mE1VvD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03366C4CEF7;
+	Mon, 23 Mar 2026 16:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774279168;
-	bh=n5bLzcIlizE0YFFDik3/ko/gDAI0A3yINlFfxmFMTsU=;
+	s=korg; t=1774283186;
+	bh=aGVg/neuvv6ybO9qKsAx8PfsUj+qojtAKQztvxr3u2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LPm2gz8XP2lklmnqAo44hZHr7dnWo9enkERS9/i6XcY+UyyYTtaJz17n7shY1XTd2
-	 nt3WR1qTvLVySwTl284VClpLn1SMdHu3g4Au+bxmnTgT5ijHhnmJXIWE6CM0ez3ASA
-	 rrqzRlah7KhcTytJ/8sw5OCpW65kF2L2yoQoYpuc=
+	b=R7mE1VvDyfmHcQGgmxztrA+AiVyNFnirznCdOkSfSOUJKYanbQKRMbZCJ8dkCZMAJ
+	 NDoNbLNTZ+THhVfevuy6sCKknNbMbxCzeJeg0f1MRtkfVDxuyKSH/6IswC6q0F6IOJ
+	 KHT+xEvtwJcf+hZvqbU8KZ2LZe4q5+1HK/1EyS08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	ZhengYuan Huang <gality369@gmail.com>,
-	David Sterba <dsterba@suse.com>,
+	Yiming Qian <yimingqian591@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 497/567] btrfs: tree-checker: fix misleading root drop_level error message
+Subject: [PATCH 6.1 435/481] netfilter: nf_tables: release flowtable after rcu grace period on error
 Date: Mon, 23 Mar 2026 14:46:57 +0100
-Message-ID: <20260323134546.325821900@linuxfoundation.org>
+Message-ID: <20260323134535.806303704@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134533.749096647@linuxfoundation.org>
-References: <20260323134533.749096647@linuxfoundation.org>
+In-Reply-To: <20260323134525.256603107@linuxfoundation.org>
+References: <20260323134525.256603107@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,21 +69,21 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip4:172.232.135.74:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c0a:e001:db::/64:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,suse.com,gmail.com,kernel.org];
-	TAGGED_FROM(0.00)[bounces-229413-lists,stable=lfdr.de];
+	FREEMAIL_CC(0.00)[linuxfoundation.org,lists.linux.dev,gmail.com,netfilter.org,strlen.de,kernel.org];
+	TAGGED_FROM(0.00)[bounces-229908-lists,stable=lfdr.de];
 	PRECEDENCE_BULK(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.232.128.0/19, country:SG];
+	ASN(0.00)[asn:63949, ipnet:2600:3c0a::/32, country:SG];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -92,45 +92,57 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	TAGGED_RCPT(0.00)[stable];
 	TO_DN_SOME(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:mid,suse.com:email]
-X-Rspamd-Queue-Id: 40E292F6F17
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,linuxfoundation.org:dkim,linuxfoundation.org:mid,strlen.de:email,netfilter.org:email]
+X-Rspamd-Queue-Id: 371302FA4DF
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhengYuan Huang <gality369@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit fc1cd1f18c34f91e78362f9629ab9fd43b9dcab9 ]
+[ Upstream commit d73f4b53aaaea4c95f245e491aa5eeb8a21874ce ]
 
-Fix tree-checker error message to report "invalid root drop_level"
-instead of the misleading "invalid root level".
+Call synchronize_rcu() after unregistering the hooks from error path,
+since a hook that already refers to this flowtable can be already
+registered, exposing this flowtable to packet path and nfnetlink_hook
+control plane.
 
-Fixes: 259ee7754b67 ("btrfs: tree-checker: Add ROOT_ITEM check")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: ZhengYuan Huang <gality369@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+This error path is rare, it should only happen by reaching the maximum
+number hooks or by failing to set up to hardware offload, just call
+synchronize_rcu().
+
+There is a check for already used device hooks by different flowtable
+that could result in EEXIST at this late stage. The hook parser can be
+updated to perform this check earlier to this error path really becomes
+rarely exercised.
+
+Uncovered by KASAN reported as use-after-free from nfnetlink_hook path
+when dumping hooks.
+
+Fixes: 3b49e2e94e6e ("netfilter: nf_tables: add flow table netlink frontend")
+Reported-by: Yiming Qian <yimingqian591@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
-index e38994ac14848..d2c36b765c83a 100644
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1220,7 +1220,7 @@ static int check_root_item(struct extent_buffer *leaf, struct btrfs_key *key,
- 	}
- 	if (unlikely(btrfs_root_drop_level(&ri) >= BTRFS_MAX_LEVEL)) {
- 		generic_err(leaf, slot,
--			    "invalid root level, have %u expect [0, %u]",
-+			    "invalid root drop_level, have %u expect [0, %u]",
- 			    btrfs_root_drop_level(&ri), BTRFS_MAX_LEVEL - 1);
- 		return -EUCLEAN;
- 	}
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ac36183956515..11a5d5d715d56 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8279,6 +8279,7 @@ static int nf_tables_newflowtable(struct sk_buff *skb,
+ 	return 0;
+ 
+ err_flowtable_hooks:
++	synchronize_rcu();
+ 	nft_trans_destroy(trans);
+ err_flowtable_trans:
+ 	nft_hooks_destroy(&flowtable->hook_list);
 -- 
 2.51.0
 
