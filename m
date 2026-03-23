@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-228327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228765-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id oItPIBxMwWlbSAQAu9opvQ
-	(envelope-from <stable+bounces-228327-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:12 +0100
+	id SLz7HdFowWliSwQAu9opvQ
+	(envelope-from <stable+bounces-228765-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:22:41 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132B62F4396
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:20:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E96952F7F8C
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 17:22:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E8EA3304190B
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:09:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96A1332EDDBB
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56C93B27E7;
-	Mon, 23 Mar 2026 14:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC0138C2CA;
+	Mon, 23 Mar 2026 14:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sj1EcKqj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwouSMfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AAB3C07A;
-	Mon, 23 Mar 2026 14:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9814C394476;
+	Mon, 23 Mar 2026 14:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774274821; cv=none; b=IpWjriZO3NB10nkwKfsx169c7cOK3vhFdCDqlsZzO4hPdyp1ISzwCbYZmAcyVb5Qjx8YkLzLoPf7A22EbR9DtnaD4r9Firu9ZVTCwZPz1XWbsFyMpzVUC7WuZCOJUXQNuoLzuQW0dDKMigR1MxlbTJC8k0rnbasAT8sm/kG+kuw=
+	t=1774277063; cv=none; b=JDqXVs6Twdfy9mjMGB7Dv7BVQ541i5NmiSCchFBz75Y6CAuUCb3FnyYxqVVvVXNlppvOz/zgptBflDYA9Kcngcbwg+36qTX5VHD0mp/owWCgj4G6L4Z7+IvP95fMlKb2GChq7p5Smzd3dx6Sq0/9zXYTl/hvphuRmGwVBrkPxGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774274821; c=relaxed/simple;
-	bh=uC0y2LSZp8VJaPQGttGE0fOAXQbD+OrznBfCpPq3Fis=;
+	s=arc-20240116; t=1774277063; c=relaxed/simple;
+	bh=xskb2567+iJ9D2HNsmKxC1ZfjiSWsIwjfI0rwRgPWX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GraTRuL5tAOTLB4IZyeESOhK5KqgAKHItYW1ro4SmBkQgqh6vMhDj6dYgrqcC1pytfYXLf0xmHDGcOaOPyGufLY7Kfm770RVkzytVC5iZMvNJWiYEKiN5DwZ5i8W5CqR8fS4HF08hJcm4fMB93jXkkrGSfsycxqF38a+F663r5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sj1EcKqj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96CAC4CEF7;
-	Mon, 23 Mar 2026 14:07:00 +0000 (UTC)
+	 MIME-Version; b=CmmwzwWYttE3glMdbchl2PSXvsA/oaXqgWCA5+QeMF54gxJdK1M+v/LNhosXeo1acIzPB4rcTHhx37aSdeEgtM2P8GopNgGQLXDUiy3R3BJELHnMy2JSIBk5w1RQDZA24As+TP790obgnN9149QdaD4ssnGKFLvxBiMQ6Jo0+40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwouSMfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000FDC4CEF7;
+	Mon, 23 Mar 2026 14:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774274821;
-	bh=uC0y2LSZp8VJaPQGttGE0fOAXQbD+OrznBfCpPq3Fis=;
+	s=korg; t=1774277063;
+	bh=xskb2567+iJ9D2HNsmKxC1ZfjiSWsIwjfI0rwRgPWX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sj1EcKqj5AUfG+r5KVynGwlPdoYtG/ONCyzByWPRZO/pp/2shY3iEb3pnrJG7pRDD
-	 nXhmPjHCe2IgKSiknUvuNKUZMFtI7ANDFdQ9Itj4CAb2p+7s+OlgSyf09jNPWucROV
-	 4aWIzuXXUP/eKOrKiKeNsFqosJN4FJyezTqJMAiA=
+	b=NwouSMfVZ9W/4yY1Vyv23i7MpGtFgrCJuC7ZcrF4PpoBTvgFY1YGtstAaAeAmvau/
+	 coyNS5wDbc92QPlaMdSQwPMZKN2UyN9Qv1sNimLs9c0K5vqdRsJYDwVXmVPIuPk6Mo
+	 P2TLVGHMAf+notFfZa77LkPDVQmyKKhEDaedUDyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Cheng <benjamin.cheng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.18 082/212] drm/amdgpu/mmhub2.0: add bounds checking for cid
+	stable@kernel.org,
+	Nicholas Carlini <npc@anthropic.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 307/460] nfsd: fix heap overflow in NFSv4.0 LOCK replay cache
 Date: Mon, 23 Mar 2026 14:45:03 +0100
-Message-ID: <20260323134506.366298123@linuxfoundation.org>
+Message-ID: <20260323134534.039559360@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134503.770111826@linuxfoundation.org>
-References: <20260323134503.770111826@linuxfoundation.org>
+In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
+References: <20260323134526.647552166@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,77 +69,124 @@ X-Spamd-Result: default: False [-1.66 / 15.00];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
-	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
+	R_SPF_ALLOW(-0.20)[+ip4:172.234.253.10:c];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_TRACE(0.00)[linuxfoundation.org:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	TAGGED_FROM(0.00)[bounces-228765-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	PRECEDENCE_BULK(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[bounces-228327-lists,stable=lfdr.de];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	TAGGED_RCPT(0.00)[stable];
-	RCPT_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,amd.com:email]
-X-Rspamd-Queue-Id: 132B62F4396
+	TO_DN_SOME(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
+	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:172.234.224.0/19, country:SG];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[stable];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[sea.lore.kernel.org:helo,sea.lore.kernel.org:rdns,oracle.com:email,linuxfoundation.org:dkim,linuxfoundation.org:email,linuxfoundation.org:mid,anthropic.com:email]
+X-Rspamd-Queue-Id: E96952F7F8C
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-commit 0b26edac4ac5535df1f63e6e8ab44c24fe1acad7 upstream.
+commit 5133b61aaf437e5f25b1b396b14242a6bb0508e2 upstream.
 
-The value should never exceed the array size as those
-are the only values the hardware is expected to return,
-but add checks anyway.
+The NFSv4.0 replay cache uses a fixed 112-byte inline buffer
+(rp_ibuf[NFSD4_REPLAY_ISIZE]) to store encoded operation responses.
+This size was calculated based on OPEN responses and does not account
+for LOCK denied responses, which include the conflicting lock owner as
+a variable-length field up to 1024 bytes (NFS4_OPAQUE_LIMIT).
 
-Reviewed-by: Benjamin Cheng <benjamin.cheng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e064cef4b53552602bb6ac90399c18f662f3cacd)
-Cc: stable@vger.kernel.org
+When a LOCK operation is denied due to a conflict with an existing lock
+that has a large owner, nfsd4_encode_operation() copies the full encoded
+response into the undersized replay buffer via read_bytes_from_xdr_buf()
+with no bounds check. This results in a slab-out-of-bounds write of up
+to 944 bytes past the end of the buffer, corrupting adjacent heap memory.
+
+This can be triggered remotely by an unauthenticated attacker with two
+cooperating NFSv4.0 clients: one sets a lock with a large owner string,
+then the other requests a conflicting lock to provoke the denial.
+
+We could fix this by increasing NFSD4_REPLAY_ISIZE to allow for a full
+opaque, but that would increase the size of every stateowner, when most
+lockowners are not that large.
+
+Instead, fix this by checking the encoded response length against
+NFSD4_REPLAY_ISIZE before copying into the replay buffer. If the
+response is too large, set rp_buflen to 0 to skip caching the replay
+payload. The status is still cached, and the client already received the
+correct response on the original request.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@kernel.org
+Reported-by: Nicholas Carlini <npc@anthropic.com>
+Tested-by: Nicholas Carlini <npc@anthropic.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/nfsd/nfs4xdr.c |    9 +++++++--
+ fs/nfsd/state.h   |   17 ++++++++++++-----
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v2_0.c
-@@ -154,14 +154,17 @@ mmhub_v2_0_print_l2_protection_fault_sta
- 	switch (amdgpu_ip_version(adev, MMHUB_HWIP, 0)) {
- 	case IP_VERSION(2, 0, 0):
- 	case IP_VERSION(2, 0, 2):
--		mmhub_cid = mmhub_client_ids_navi1x[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_navi1x) ?
-+			mmhub_client_ids_navi1x[cid][rw] : NULL;
- 		break;
- 	case IP_VERSION(2, 1, 0):
- 	case IP_VERSION(2, 1, 1):
--		mmhub_cid = mmhub_client_ids_sienna_cichlid[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_sienna_cichlid) ?
-+			mmhub_client_ids_sienna_cichlid[cid][rw] : NULL;
- 		break;
- 	case IP_VERSION(2, 1, 2):
--		mmhub_cid = mmhub_client_ids_beige_goby[cid][rw];
-+		mmhub_cid = cid < ARRAY_SIZE(mmhub_client_ids_beige_goby) ?
-+			mmhub_client_ids_beige_goby[cid][rw] : NULL;
- 		break;
- 	default:
- 		mmhub_cid = NULL;
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -5809,9 +5809,14 @@ nfsd4_encode_operation(struct nfsd4_comp
+ 		int len = xdr->buf->len - (op_status_offset + XDR_UNIT);
+ 
+ 		so->so_replay.rp_status = op->status;
+-		so->so_replay.rp_buflen = len;
+-		read_bytes_from_xdr_buf(xdr->buf, op_status_offset + XDR_UNIT,
++		if (len <= NFSD4_REPLAY_ISIZE) {
++			so->so_replay.rp_buflen = len;
++			read_bytes_from_xdr_buf(xdr->buf,
++						op_status_offset + XDR_UNIT,
+ 						so->so_replay.rp_buf, len);
++		} else {
++			so->so_replay.rp_buflen = 0;
++		}
+ 	}
+ status:
+ 	op->status = nfsd4_map_status(op->status,
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -473,11 +473,18 @@ struct nfs4_client_reclaim {
+ 	struct xdr_netobj	cr_princhash;
+ };
+ 
+-/* A reasonable value for REPLAY_ISIZE was estimated as follows:  
+- * The OPEN response, typically the largest, requires 
+- *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +  8(verifier) + 
+- *   4(deleg. type) + 8(deleg. stateid) + 4(deleg. recall flag) + 
+- *   20(deleg. space limit) + ~32(deleg. ace) = 112 bytes 
++/*
++ * REPLAY_ISIZE is sized for an OPEN response with delegation:
++ *   4(status) + 8(stateid) + 20(changeinfo) + 4(rflags) +
++ *   8(verifier) + 4(deleg. type) + 8(deleg. stateid) +
++ *   4(deleg. recall flag) + 20(deleg. space limit) +
++ *   ~32(deleg. ace) = 112 bytes
++ *
++ * Some responses can exceed this. A LOCK denial includes the conflicting
++ * lock owner, which can be up to 1024 bytes (NFS4_OPAQUE_LIMIT). Responses
++ * larger than REPLAY_ISIZE are not cached in rp_ibuf; only rp_status is
++ * saved. Enlarging this constant increases the size of every
++ * nfs4_stateowner.
+  */
+ 
+ #define NFSD4_REPLAY_ISIZE       112 
 
 
 
