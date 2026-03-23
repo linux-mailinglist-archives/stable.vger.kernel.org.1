@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-228790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-228134-lists+stable=lfdr.de@vger.kernel.org>
 Delivered-To: lists+stable@lfdr.de
 Received: from mail.lfdr.de
 	by lfdr with LMTP
-	id gOymHllUwWkYSQQAu9opvQ
-	(envelope-from <stable+bounces-228790-lists+stable=lfdr.de@vger.kernel.org>)
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:21 +0100
+	id 2DdeFPRGwWnpRwQAu9opvQ
+	(envelope-from <stable+bounces-228134-lists+stable=lfdr.de@vger.kernel.org>)
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:12 +0100
 X-Original-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C8A2F56F3
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 15:55:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A572F3854
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D515030DF838
-	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 14:45:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9ADD5301C074
+	for <lists+stable@lfdr.de>; Mon, 23 Mar 2026 13:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B877233704;
-	Mon, 23 Mar 2026 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B517B3ACA62;
+	Mon, 23 Mar 2026 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ThLbbkqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zg4fkeDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC5322CBC6;
-	Mon, 23 Mar 2026 14:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7837C286A4;
+	Mon, 23 Mar 2026 13:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1774277135; cv=none; b=LhMlBL71gGQ8oXESpukIVd/lcCXRbLNwEfIdDH7A0VE08WeNjBV1/+eVf/wI4Ab+QHulKLYzKCy3lvaKluXSbwKV36tY6sZWftoRaCZpQxCdeXESsqvvMRohNvtcbv8OIjvwK9BtNUb4KPvdRQgeW4VC668VRtkt7ykpBpviW3A=
+	t=1774274227; cv=none; b=XkNzAa/dH7GVSwJ8AaHzm+455aPLpi8oAjMqz7gnhCZw6obrNm2T3+tT3RVFjd8kusurCm/Y6u80IYQHGETysVPUWnj4YuIynn7ny22Vx6jzWUm0zCUk3Hm628tslZoDlOeRT6sCr8qDDKJbW1lMux4Lh5e55Jm5chioaFNlBfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1774277135; c=relaxed/simple;
-	bh=TsWLdPW3hfn5MAXIJM6j2PhbfGK9H8t3kuesROFs25w=;
+	s=arc-20240116; t=1774274227; c=relaxed/simple;
+	bh=D9komQWLBGBAOArWKNN4G+TIMsoDc0hnGtU6PfIt4fM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOXjYJ78SFYTZHF/qRvwLP0u0zIWsrb9VkAvmQ+zFAJ++Ty22+Hh4l4oHKf3M3VHvQq1IYSaDG+x0mXNaqM1Gq5QoCLQgHps3CiyiFNSm4Ra+i7gwwkyRyO3z5cZphTXV46IpnyWypyfSa4axh+Ztxad4IaZybkOnh0UgNQEW8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ThLbbkqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7EBC4CEF7;
-	Mon, 23 Mar 2026 14:45:34 +0000 (UTC)
+	 MIME-Version; b=iEAezw9NMkfWzNHxsQqXRSK851p66PO/kkLM07Z4BfX+l8qz5HTsLdOna4PnhgbhPbu9Jy4mKW/iwu23r6VhWatAYzE+EWCOPFj0HYomOO15T92cO1Mm2Z164G7WFHVBMY4axt+vDwkHREYIbERt1LphotHov9y4ItRP7XDqx9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zg4fkeDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE158C4CEF7;
+	Mon, 23 Mar 2026 13:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1774277135;
-	bh=TsWLdPW3hfn5MAXIJM6j2PhbfGK9H8t3kuesROFs25w=;
+	s=korg; t=1774274227;
+	bh=D9komQWLBGBAOArWKNN4G+TIMsoDc0hnGtU6PfIt4fM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ThLbbkqhRsx3gwMv9WMyKq5ZF+C0b3kFC3uRFcW7h8d26zsELyT860dIKgoV+SDpL
-	 hqeLXvT5zk8/C9IbZyqM4loN5xwKvZVr0d7bV+io5BbTJGcSUv/DMGYfBbWagdlsho
-	 g0hPaKWHABVHdbNRqi4zkmFveFmMG55PnO96ImVU=
+	b=zg4fkeDh9zngvZKeuuOxhf00f+HGbxeIbeat5DQJQ1dO0KXBnQjFhlk0zh0WKAq7Q
+	 4sHZl7qKGQQ9IsNUtrZGlPvH+hHNHv0QzopFQKYtcxDf7NNKU0GQhgBFb94LVYJWiF
+	 jucklclSYAso7BpYnhJ8SNYbaHGlIFbjQpA3KayU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 330/460] btrfs: fix transaction abort when snapshotting received subvolumes
+Subject: [PATCH 6.19 149/220] net/smc: fix NULL dereference and UAF in smc_tcp_syn_recv_sock()
 Date: Mon, 23 Mar 2026 14:45:26 +0100
-Message-ID: <20260323134534.631101640@linuxfoundation.org>
+Message-ID: <20260323134509.294705727@linuxfoundation.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260323134526.647552166@linuxfoundation.org>
-References: <20260323134526.647552166@linuxfoundation.org>
+In-Reply-To: <20260323134504.575022936@linuxfoundation.org>
+References: <20260323134504.575022936@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,206 +66,245 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.66 / 15.00];
+X-Spamd-Result: default: False [-0.16 / 15.00];
+	SUSPICIOUS_RECIPS(1.50)[];
 	ARC_ALLOW(-1.00)[subspace.kernel.org:s=arc-20240116:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[linuxfoundation.org,none];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[linuxfoundation.org:s=korg];
-	R_SPF_ALLOW(-0.20)[+ip4:172.105.105.114:c];
+	R_SPF_ALLOW(-0.20)[+ip6:2600:3c09:e001:a7::/64:c];
 	MAILLIST(-0.15)[generic];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[bounces-228790-lists,stable=lfdr.de];
 	RCVD_COUNT_THREE(0.00)[4];
+	TAGGED_FROM(0.00)[bounces-228134-lists,stable=lfdr.de];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[gregkh@linuxfoundation.org,stable@vger.kernel.org];
 	MIME_TRACE(0.00)[0:+];
 	DKIM_TRACE(0.00)[linuxfoundation.org:+];
-	ASN(0.00)[asn:63949, ipnet:172.105.96.0/20, country:SG];
-	PRECEDENCE_BULK(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:63949, ipnet:2600:3c09::/32, country:SG];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	PRECEDENCE_BULK(0.00)[];
 	RCPT_COUNT_SEVEN(0.00)[8];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[stable];
+	TAGGED_RCPT(0.00)[stable,827ae2bfb3a3529333e9];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[]
-X-Rspamd-Queue-Id: 19C8A2F56F3
+	DBL_BLOCKED_OPENRESOLVER(0.00)[msgid.link:url,syzkaller.appspot.com:url,linuxfoundation.org:dkim,linuxfoundation.org:mid,appspotmail.com:email,sto.lore.kernel.org:helo,sto.lore.kernel.org:rdns,shopee.com:email]
+X-Rspamd-Queue-Id: E5A572F3854
 X-Rspamd-Action: no action
 X-Rspamd-Server: lfdr
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-[ Upstream commit e1b18b959025e6b5dbad668f391f65d34b39595a ]
+[ Upstream commit 6d5e4538364b9ceb1ac2941a4deb86650afb3538 ]
 
-Currently a user can trigger a transaction abort by snapshotting a
-previously received snapshot a bunch of times until we reach a
-BTRFS_UUID_KEY_RECEIVED_SUBVOL item overflow (the maximum item size we
-can store in a leaf). This is very likely not common in practice, but
-if it happens, it turns the filesystem into RO mode. The snapshot, send
-and set_received_subvol and subvol_setflags (used by receive) don't
-require CAP_SYS_ADMIN, just inode_owner_or_capable(). A malicious user
-could use this to turn a filesystem into RO mode and disrupt a system.
+Syzkaller reported a panic in smc_tcp_syn_recv_sock() [1].
 
-Reproducer script:
+smc_tcp_syn_recv_sock() is called in the TCP receive path
+(softirq) via icsk_af_ops->syn_recv_sock on the clcsock (TCP
+listening socket). It reads sk_user_data to get the smc_sock
+pointer. However, when the SMC listen socket is being closed
+concurrently, smc_close_active() sets clcsock->sk_user_data
+to NULL under sk_callback_lock, and then the smc_sock itself
+can be freed via sock_put() in smc_release().
 
-  $ cat test.sh
-  #!/bin/bash
+This leads to two issues:
 
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
+1) NULL pointer dereference: sk_user_data is NULL when
+   accessed.
+2) Use-after-free: sk_user_data is read as non-NULL, but the
+   smc_sock is freed before its fields (e.g., queued_smc_hs,
+   ori_af_ops) are accessed.
 
-  # Use smallest node size to make the test faster.
-  mkfs.btrfs -f --nodesize 4K $DEV
-  mount $DEV $MNT
+The race window looks like this (the syzkaller crash [1]
+triggers via the SYN cookie path: tcp_get_cookie_sock() ->
+smc_tcp_syn_recv_sock(), but the normal tcp_check_req() path
+has the same race):
 
-  # Create a subvolume and set it to RO so that it can be used for send.
-  btrfs subvolume create $MNT/sv
-  touch $MNT/sv/foo
-  btrfs property set $MNT/sv ro true
+  CPU A (softirq)              CPU B (process ctx)
 
-  # Send and receive the subvolume into snaps/sv.
-  mkdir $MNT/snaps
-  btrfs send $MNT/sv | btrfs receive $MNT/snaps
+  tcp_v4_rcv()
+    TCP_NEW_SYN_RECV:
+    sk = req->rsk_listener
+    sock_hold(sk)
+    /* No lock on listener */
+                               smc_close_active():
+                                 write_lock_bh(cb_lock)
+                                 sk_user_data = NULL
+                                 write_unlock_bh(cb_lock)
+                                 ...
+                                 smc_clcsock_release()
+                                 sock_put(smc->sk) x2
+                                   -> smc_sock freed!
+    tcp_check_req()
+      smc_tcp_syn_recv_sock():
+        smc = user_data(sk)
+          -> NULL or dangling
+        smc->queued_smc_hs
+          -> crash!
 
-  # Now snapshot the received subvolume, which has a received_uuid, a
-  # lot of times to trigger the leaf overflow.
-  total=500
-  for ((i = 1; i <= $total; i++)); do
-      echo -ne "\rCreating snapshot $i/$total"
-      btrfs subvolume snapshot -r $MNT/snaps/sv $MNT/snaps/sv_$i > /dev/null
-  done
-  echo
+Note that the clcsock and smc_sock are two independent objects
+with separate refcounts. TCP stack holds a reference on the
+clcsock, which keeps it alive, but this does NOT prevent the
+smc_sock from being freed.
 
-  umount $MNT
+Fix this by using RCU and refcount_inc_not_zero() to safely
+access smc_sock. Since smc_tcp_syn_recv_sock() is called in
+the TCP three-way handshake path, taking read_lock_bh on
+sk_callback_lock is too heavy and would not survive a SYN
+flood attack. Using rcu_read_lock() is much more lightweight.
 
-When running the test:
+- Set SOCK_RCU_FREE on the SMC listen socket so that
+  smc_sock freeing is deferred until after the RCU grace
+  period. This guarantees the memory is still valid when
+  accessed inside rcu_read_lock().
+- Use rcu_read_lock() to protect reading sk_user_data.
+- Use refcount_inc_not_zero(&smc->sk.sk_refcnt) to pin the
+  smc_sock. If the refcount has already reached zero (close
+  path completed), it returns false and we bail out safely.
 
-  $ ./test.sh
-  (...)
-  Create subvolume '/mnt/sdi/sv'
-  At subvol /mnt/sdi/sv
-  At subvol sv
-  Creating snapshot 496/500ERROR: Could not create subvolume: Value too large for defined data type
-  Creating snapshot 497/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 498/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 499/500ERROR: Could not create subvolume: Read-only file system
-  Creating snapshot 500/500ERROR: Could not create subvolume: Read-only file system
+Note: smc_hs_congested() has a similar lockless read of
+sk_user_data without rcu_read_lock(), but it only checks for
+NULL and accesses the global smc_hs_wq, never dereferencing
+any smc_sock field, so it is not affected.
 
-And in dmesg/syslog:
+Reproducer was verified with mdelay injection and smc_run,
+the issue no longer occurs with this patch applied.
 
-  $ dmesg
-  (...)
-  [251067.627338] BTRFS warning (device sdi): insert uuid item failed -75 (0x4628b21c4ac8d898, 0x2598bee2b1515c91) type 252!
-  [251067.629212] ------------[ cut here ]------------
-  [251067.630033] BTRFS: Transaction aborted (error -75)
-  [251067.630871] WARNING: fs/btrfs/transaction.c:1907 at create_pending_snapshot.cold+0x52/0x465 [btrfs], CPU#10: btrfs/615235
-  [251067.632851] Modules linked in: btrfs dm_zero (...)
-  [251067.644071] CPU: 10 UID: 0 PID: 615235 Comm: btrfs Tainted: G        W           6.19.0-rc8-btrfs-next-225+ #1 PREEMPT(full)
-  [251067.646165] Tainted: [W]=WARN
-  [251067.646733] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-  [251067.648735] RIP: 0010:create_pending_snapshot.cold+0x55/0x465 [btrfs]
-  [251067.649984] Code: f0 48 0f (...)
-  [251067.653313] RSP: 0018:ffffce644908fae8 EFLAGS: 00010292
-  [251067.653987] RAX: 00000000ffffff01 RBX: ffff8e5639e63a80 RCX: 00000000ffffffd3
-  [251067.655042] RDX: ffff8e53faa76b00 RSI: 00000000ffffffb5 RDI: ffffffffc0919750
-  [251067.656077] RBP: ffffce644908fbd8 R08: 0000000000000000 R09: ffffce644908f820
-  [251067.657068] R10: ffff8e5adc1fffa8 R11: 0000000000000003 R12: ffff8e53c0431bd0
-  [251067.658050] R13: ffff8e5414593600 R14: ffff8e55efafd000 R15: 00000000ffffffb5
-  [251067.659019] FS:  00007f2a4944b3c0(0000) GS:ffff8e5b27dae000(0000) knlGS:0000000000000000
-  [251067.660115] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [251067.660943] CR2: 00007ffc5aa57898 CR3: 00000005813a2003 CR4: 0000000000370ef0
-  [251067.661972] Call Trace:
-  [251067.662292]  <TASK>
-  [251067.662653]  create_pending_snapshots+0x97/0xc0 [btrfs]
-  [251067.663413]  btrfs_commit_transaction+0x26e/0xc00 [btrfs]
-  [251067.664257]  ? btrfs_qgroup_convert_reserved_meta+0x35/0x390 [btrfs]
-  [251067.665238]  ? _raw_spin_unlock+0x15/0x30
-  [251067.665837]  ? record_root_in_trans+0xa2/0xd0 [btrfs]
-  [251067.666531]  btrfs_mksubvol+0x330/0x580 [btrfs]
-  [251067.667145]  btrfs_mksnapshot+0x74/0xa0 [btrfs]
-  [251067.667827]  __btrfs_ioctl_snap_create+0x194/0x1d0 [btrfs]
-  [251067.668595]  btrfs_ioctl_snap_create_v2+0x107/0x130 [btrfs]
-  [251067.669479]  btrfs_ioctl+0x1580/0x2690 [btrfs]
-  [251067.670093]  ? count_memcg_events+0x6d/0x180
-  [251067.670849]  ? handle_mm_fault+0x1a0/0x2a0
-  [251067.671652]  __x64_sys_ioctl+0x92/0xe0
-  [251067.672406]  do_syscall_64+0x50/0xf20
-  [251067.673129]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [251067.674096] RIP: 0033:0x7f2a495648db
-  [251067.674812] Code: 00 48 89 (...)
-  [251067.678227] RSP: 002b:00007ffc5aa57840 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-  [251067.679691] RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007f2a495648db
-  [251067.681145] RDX: 00007ffc5aa588b0 RSI: 0000000050009417 RDI: 0000000000000004
-  [251067.682511] RBP: 0000000000000002 R08: 0000000000000000 R09: 0000000000000000
-  [251067.683842] R10: 000000000000000a R11: 0000000000000246 R12: 00007ffc5aa59910
-  [251067.685176] R13: 00007ffc5aa588b0 R14: 0000000000000004 R15: 0000000000000006
-  [251067.686524]  </TASK>
-  [251067.686972] ---[ end trace 0000000000000000 ]---
-  [251067.687890] BTRFS: error (device sdi state A) in create_pending_snapshot:1907: errno=-75 unknown
-  [251067.689049] BTRFS info (device sdi state EA): forced readonly
-  [251067.689054] BTRFS warning (device sdi state EA): Skipping commit of aborted transaction.
-  [251067.690119] BTRFS: error (device sdi state EA) in cleanup_transaction:2043: errno=-75 unknown
-  [251067.702028] BTRFS info (device sdi state EA): last unmount of filesystem 46dc3975-30a2-4a69-a18f-418b859cccda
+[1] https://syzkaller.appspot.com/bug?extid=827ae2bfb3a3529333e9
 
-Fix this by ignoring -EOVERFLOW errors from btrfs_uuid_tree_add() in the
-snapshot creation code when attempting to add the
-BTRFS_UUID_KEY_RECEIVED_SUBVOL item. This is OK because it's not critical
-and we are still able to delete the snapshot, as snapshot/subvolume
-deletion ignores if a BTRFS_UUID_KEY_RECEIVED_SUBVOL is missing (see
-inode.c:btrfs_delete_subvolume()). As for send/receive, we can still do
-send/receive operations since it always peeks the first root ID in the
-existing BTRFS_UUID_KEY_RECEIVED_SUBVOL (it could peek any since all
-snapshots have the same content), and even if the key is missing, it
-falls back to searching by BTRFS_UUID_KEY_SUBVOL key.
-
-A test case for fstests will be sent soon.
-
-Fixes: dd5f9615fc5c ("Btrfs: maintain subvolume items in the UUID tree")
-CC: stable@vger.kernel.org # 3.12+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ adapted error check condition to omit unlikely() wrapper ]
+Fixes: 8270d9c21041 ("net/smc: Limit backlog connections")
+Reported-by: syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67eaf9b8.050a0220.3c3d88.004a.GAE@google.com/T/
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Link: https://patch.msgid.link/20260312092909.48325-1-jiayuan.chen@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/transaction.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/smc/af_smc.c    | 23 +++++++++++++++++------
+ net/smc/smc.h       |  5 +++++
+ net/smc/smc_close.c |  2 +-
+ 3 files changed, 23 insertions(+), 7 deletions(-)
 
---- a/fs/btrfs/transaction.c
-+++ b/fs/btrfs/transaction.c
-@@ -1894,6 +1894,22 @@ static noinline int create_pending_snaps
- 		ret = btrfs_uuid_tree_add(trans, new_root_item->received_uuid,
- 					  BTRFS_UUID_KEY_RECEIVED_SUBVOL,
- 					  objectid);
-+		/*
-+		 * We are creating of lot of snapshots of the same root that was
-+		 * received (has a received UUID) and reached a leaf's limit for
-+		 * an item. We can safely ignore this and avoid a transaction
-+		 * abort. A deletion of this snapshot will still work since we
-+		 * ignore if an item with a BTRFS_UUID_KEY_RECEIVED_SUBVOL key
-+		 * is missing (see btrfs_delete_subvolume()). Send/receive will
-+		 * work too since it peeks the first root id from the existing
-+		 * item (it could peek any), and in case it's missing it
-+		 * falls back to search by BTRFS_UUID_KEY_SUBVOL keys.
-+		 * Creation of a snapshot does not require CAP_SYS_ADMIN, so
-+		 * we don't want users triggering transaction aborts, either
-+		 * intentionally or not.
-+		 */
-+		if (ret == -EOVERFLOW)
-+			ret = 0;
- 		if (ret && ret != -EEXIST) {
- 			btrfs_abort_transaction(trans, ret);
- 			goto fail;
+diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+index 18c56b0d7ad53..765f26aaca93d 100644
+--- a/net/smc/af_smc.c
++++ b/net/smc/af_smc.c
+@@ -131,7 +131,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
+ 	struct smc_sock *smc;
+ 	struct sock *child;
+ 
+-	smc = smc_clcsock_user_data(sk);
++	rcu_read_lock();
++	smc = smc_clcsock_user_data_rcu(sk);
++	if (!smc || !refcount_inc_not_zero(&smc->sk.sk_refcnt)) {
++		rcu_read_unlock();
++		smc = NULL;
++		goto drop;
++	}
++	rcu_read_unlock();
+ 
+ 	if (READ_ONCE(sk->sk_ack_backlog) + atomic_read(&smc->queued_smc_hs) >
+ 				sk->sk_max_ack_backlog)
+@@ -153,11 +160,14 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
+ 		if (inet_csk(child)->icsk_af_ops == inet_csk(sk)->icsk_af_ops)
+ 			inet_csk(child)->icsk_af_ops = smc->ori_af_ops;
+ 	}
++	sock_put(&smc->sk);
+ 	return child;
+ 
+ drop:
+ 	dst_release(dst);
+ 	tcp_listendrop(sk);
++	if (smc)
++		sock_put(&smc->sk);
+ 	return NULL;
+ }
+ 
+@@ -254,7 +264,7 @@ static void smc_fback_restore_callbacks(struct smc_sock *smc)
+ 	struct sock *clcsk = smc->clcsock->sk;
+ 
+ 	write_lock_bh(&clcsk->sk_callback_lock);
+-	clcsk->sk_user_data = NULL;
++	rcu_assign_sk_user_data(clcsk, NULL);
+ 
+ 	smc_clcsock_restore_cb(&clcsk->sk_state_change, &smc->clcsk_state_change);
+ 	smc_clcsock_restore_cb(&clcsk->sk_data_ready, &smc->clcsk_data_ready);
+@@ -902,7 +912,7 @@ static void smc_fback_replace_callbacks(struct smc_sock *smc)
+ 	struct sock *clcsk = smc->clcsock->sk;
+ 
+ 	write_lock_bh(&clcsk->sk_callback_lock);
+-	clcsk->sk_user_data = (void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
++	__rcu_assign_sk_user_data_with_flags(clcsk, smc, SK_USER_DATA_NOCOPY);
+ 
+ 	smc_clcsock_replace_cb(&clcsk->sk_state_change, smc_fback_state_change,
+ 			       &smc->clcsk_state_change);
+@@ -2665,8 +2675,8 @@ int smc_listen(struct socket *sock, int backlog)
+ 	 * smc-specific sk_data_ready function
+ 	 */
+ 	write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+-	smc->clcsock->sk->sk_user_data =
+-		(void *)((uintptr_t)smc | SK_USER_DATA_NOCOPY);
++	__rcu_assign_sk_user_data_with_flags(smc->clcsock->sk, smc,
++					     SK_USER_DATA_NOCOPY);
+ 	smc_clcsock_replace_cb(&smc->clcsock->sk->sk_data_ready,
+ 			       smc_clcsock_data_ready, &smc->clcsk_data_ready);
+ 	write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+@@ -2687,10 +2697,11 @@ int smc_listen(struct socket *sock, int backlog)
+ 		write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 		smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
+ 				       &smc->clcsk_data_ready);
+-		smc->clcsock->sk->sk_user_data = NULL;
++		rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
+ 		write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 		goto out;
+ 	}
++	sock_set_flag(sk, SOCK_RCU_FREE);
+ 	sk->sk_max_ack_backlog = backlog;
+ 	sk->sk_ack_backlog = 0;
+ 	sk->sk_state = SMC_LISTEN;
+diff --git a/net/smc/smc.h b/net/smc/smc.h
+index 9e6af72784baa..52145df83f6e7 100644
+--- a/net/smc/smc.h
++++ b/net/smc/smc.h
+@@ -346,6 +346,11 @@ static inline struct smc_sock *smc_clcsock_user_data(const struct sock *clcsk)
+ 	       ((uintptr_t)clcsk->sk_user_data & ~SK_USER_DATA_NOCOPY);
+ }
+ 
++static inline struct smc_sock *smc_clcsock_user_data_rcu(const struct sock *clcsk)
++{
++	return (struct smc_sock *)rcu_dereference_sk_user_data(clcsk);
++}
++
+ /* save target_cb in saved_cb, and replace target_cb with new_cb */
+ static inline void smc_clcsock_replace_cb(void (**target_cb)(struct sock *),
+ 					  void (*new_cb)(struct sock *),
+diff --git a/net/smc/smc_close.c b/net/smc/smc_close.c
+index 10219f55aad14..bb0313ef5f7c1 100644
+--- a/net/smc/smc_close.c
++++ b/net/smc/smc_close.c
+@@ -218,7 +218,7 @@ int smc_close_active(struct smc_sock *smc)
+ 			write_lock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 			smc_clcsock_restore_cb(&smc->clcsock->sk->sk_data_ready,
+ 					       &smc->clcsk_data_ready);
+-			smc->clcsock->sk->sk_user_data = NULL;
++			rcu_assign_sk_user_data(smc->clcsock->sk, NULL);
+ 			write_unlock_bh(&smc->clcsock->sk->sk_callback_lock);
+ 			rc = kernel_sock_shutdown(smc->clcsock, SHUT_RDWR);
+ 		}
+-- 
+2.51.0
+
 
 
 
